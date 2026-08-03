@@ -1,0 +1,38 @@
+/* SALIS AUTO — global stylesheet.
+   Token files are copied verbatim from the design system bundle
+   (_ds/salis-auto-design-system-.../tokens). Do not hand-edit them; re-copy
+   when the design system ships new values. */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/effects.css';
+@import './tokens/base.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The prototypes animate transform only — never opacity. Animating opacity
+   risked content rendering invisible on throttled tabs (handoff README §11). */
+@keyframes fadeUp {
+  from { transform: translateY(12px); }
+  to { transform: none; }
+}
+
+@layer base {
+  html, body, #root {
+    min-height: 100%;
+  }
+  body {
+    background: var(--bg-page);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-faint);
+  }
+  /* Latin-in-Arabic runs (plate numbers, part SKUs, invoice ids, VINs) must not
+     get reordered by the bidi algorithm — screens pin them with dir="ltr". */
+  [dir='ltr'] { unicode-bidi: isolate; }
+}

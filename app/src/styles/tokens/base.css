@@ -1,0 +1,15 @@
+/* Minimal base application of tokens */
+body{background:var(--bg-page);color:var(--text-body);font-family:var(--font-ui);font-size:var(--text-body-size);line-height:var(--text-body-leading);font-feature-settings:"rlig" 1,"calt" 1;margin:0}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-ui);font-weight:600;letter-spacing:-0.02em;color:var(--text-heading);margin:0}
+h1{font-size:var(--text-h1-size);font-weight:var(--text-h1-weight);letter-spacing:var(--text-h1-tracking);line-height:var(--text-h1-leading)}
+h2{font-size:var(--text-h2-size);font-weight:var(--text-h2-weight);line-height:var(--text-h2-leading)}
+h3{font-size:var(--text-h3-size);font-weight:var(--text-h3-weight);line-height:var(--text-h3-leading)}
+label{font-size:var(--text-label-size);font-weight:var(--text-label-weight);letter-spacing:var(--text-label-tracking)}
+a{color:var(--salis-blue);text-decoration:none}
+a:hover{color:var(--salis-blue-hover);text-decoration:underline}
+.dark a{color:var(--salis-blue-bright)}.dark a:hover{color:var(--salis-blue-bright-hover)}
+.text-gradient-salis{background:var(--salis-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:9999px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint)}

@@ -1,0 +1,95 @@
+# SALIS AUTO — application
+
+Production rebuild of the Claude Design handoff in `../project`. React 18 +
+Vite + TypeScript + Tailwind, per `../project/handoff/README.md` §2.
+
+```bash
+npm install
+npm run dev          # http://localhost:5173
+npm run typecheck
+npm run build
+npm run smoke        # needs `npx vite preview --port 4173` running
+```
+
+## How this maps to the design bundle
+
+The design ships 304 `.dc.html` prototypes (191 desktop + 113 mobile). Each one
+inlines its own sidebar, its own theme/language toggles and its own copy of the
+data layer. This app collapses that into shared infrastructure and rebuilds the
+screens against it.
+
+| Design bundle | Here |
+|---|---|
+| `gms-data.js` (NAV, AR, ROLES, PERMS, mock tables) | `src/data/generated/*` — regenerate with `npm run port-design` |
+| `_ds/.../tokens/*.css` | `src/styles/tokens/*` (copied verbatim) + `tailwind.config.js` |
+| `salis-icon.js` web component | `src/components/ui/Icon.tsx` + generated `icon-registry.ts` |
+| Per-screen sidebar + topbar markup | `src/components/shell/AppShell.tsx` |
+| Per-screen `localStorage` theme/lang reads | `src/providers/PreferencesProvider.tsx` |
+| `currentRole()` / `can()` / `navFor()` | `src/data/rbac.ts` + `src/providers/SessionProvider.tsx` |
+| `<a href="Foo.dc.html">` navigation | `src/routes/index.tsx`, routes from `SCREEN_MAP.md` |
+
+### Regenerating from the design
+
+`npm run port-design` re-reads `../project` and rewrites everything under
+`src/data/generated/` plus the icon registry. Hand-written files — `types.ts`,
+`rbac.ts`, `repository.ts`, every screen — are never touched. Run it whenever a
+refreshed design bundle lands.
+
+## Architecture
+
+- **`src/data/`** — generated tables and RBAC matrix, hand-written domain types,
+  and `repository.ts`, the seam screens read through. Swapping `mockRepository`
+  for an HTTP client per `API_ENDPOINTS.md` is a one-line change; no screen moves.
+- **`src/providers/`** — `PreferencesProvider` (theme, language, RTL,
+  notifications) and `SessionProvider` (signed-in role, permission helpers).
+- **`src/components/shell/`** — `AppShell` for operational screens,
+  `AuthLayout` for the unauthenticated chain.
+- **`src/routes/`** — one route per entry in `SCREEN_MAP.md`, guarded by
+  `RequireAccess`. Screens not yet rebuilt render `PendingScreen`, so the nav
+  never dead-ends mid-port.
+
+## Conventions
+
+Carried over from `handoff/README.md` §7 — these are not style preferences:
+
+- **Never** green, red, yellow, purple, pink or teal. Blue is
+  success/active/progress; orange is warnings and critical CTAs only.
+- **Never** `left`/`right` in CSS — use `start`/`end` logical utilities, so RTL
+  works without a second stylesheet.
+- Latin content inside Arabic text (plates, SKUs, invoice ids, VINs) must carry
+  `dir="ltr"` or the bidi algorithm reorders the digits.
+- Currency is SAR with comma thousands and 2 decimals, in `font-mono`.
+- Icons are lucide only, 24×24, 2px stroke, round caps and joins.
+- `fadeUp` animates transform only, never opacity — animating opacity risked
+  invisible content on throttled tabs.
+
+## Deliberate departures from the prototypes
+
+- **Theme and language actually persist.** Every prototype computed
+  `this.props.theme ?? localStorage.getItem(...)`; because the prop always
+  resolved to that file's own default, the stored value was never read, and each
+  `<a href>` full page load discarded the toggle anyway.
+- **Logout routes through `LogoutConfirmation`.** The prototypes linked sidebar
+  Logout straight to Login, orphaning the confirmation screen.
+- **`localStorage` access is wrapped** (`src/lib/storage.ts`) — bare access
+  throws in Safari private mode and took the whole screen down.
+- **The lockout countdown on `AccountLocked` is live** rather than a static
+  string that claims 15 minutes however long you wait.
+
+## Port status
+
+Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
+UI primitives.
+
+Rebuilt: Splash, Welcome, LanguageSelection, RegionSelection, Login,
+Unauthorized, SessionExpired, AccountLocked, LogoutConfirmation, Dashboard.
+
+Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.
+Build order follows `handoff/README.md` §8.
+
+## Not yet built
+
+Per `handoff/README.md` §10 — real database and migrations, real auth (JWT,
+refresh, biometric, PIN, 2FA, SSO), the REST endpoints, workflow orchestration,
+file storage, print/PDF, payment gateway, the OBD protocol bridge, and the
+third-party integrations.

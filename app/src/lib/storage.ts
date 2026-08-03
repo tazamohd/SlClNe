@@ -1,0 +1,35 @@
+/** localStorage that survives private-mode and disabled-storage browsers.
+ *
+ *  The prototypes call `localStorage` bare inside render, which throws in
+ *  Safari private mode and takes the whole screen down with it. */
+export function readStored(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
+export function writeStored(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value)
+  } catch {
+    /* storage unavailable — the session still works, it just won't persist */
+  }
+}
+
+export function clearStored(key: string): void {
+  try {
+    window.localStorage.removeItem(key)
+  } catch {
+    /* ignore */
+  }
+}
+
+export const STORAGE_KEYS = {
+  theme: 'salis-theme',
+  lang: 'salis-lang',
+  role: 'salis-role',
+  notifications: 'salis-notif',
+  region: 'salis-region',
+} as const
