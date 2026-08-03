@@ -14,6 +14,13 @@ import {
   SessionExpired,
   Unauthorized,
 } from '@/screens/auth/StatusScreens'
+import { ForgotPassword, ResetPassword } from '@/screens/auth/PasswordScreens'
+import {
+  BiometricSetup,
+  CreatePIN,
+  OTPVerification,
+  TwoFactorVerification,
+} from '@/screens/auth/VerificationScreens'
 import { Dashboard } from '@/screens/Dashboard'
 
 /** Screens that render without the app shell and without a role check —
@@ -28,6 +35,12 @@ const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
   SessionExpired,
   AccountLocked,
   LogoutConfirmation,
+  ForgotPassword,
+  ResetPassword,
+  OTPVerification,
+  TwoFactorVerification,
+  CreatePIN,
+  BiometricSetup,
 }
 
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a

@@ -75,14 +75,22 @@ Carried over from `handoff/README.md` §7 — these are not style preferences:
   throws in Safari private mode and took the whole screen down.
 - **The lockout countdown on `AccountLocked` is live** rather than a static
   string that claims 15 minutes however long you wait.
+- **Code entry handles focus and paste.** The prototypes rendered six loose
+  inputs with no focus management, so you had to click each box and couldn't
+  paste a code — which is how codes actually arrive.
+- **`ResetPassword` says why it rejected you.** The prototype silently did
+  nothing when the two fields disagreed.
+- **OTP resend is throttled to 60s**, per README §6b, instead of an `href="#"`.
 
 ## Port status
 
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt: Splash, Welcome, LanguageSelection, RegionSelection, Login,
-Unauthorized, SessionExpired, AccountLocked, LogoutConfirmation, Dashboard.
+Rebuilt (16): Splash, Welcome, LanguageSelection, RegionSelection, Login,
+ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
+CreatePIN, BiometricSetup, Unauthorized, SessionExpired, AccountLocked,
+LogoutConfirmation, Dashboard.
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.
 Build order follows `handoff/README.md` §8.

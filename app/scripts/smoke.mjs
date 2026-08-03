@@ -16,6 +16,12 @@ const ROUTES = [
   { path: '/dashboard', expect: 'Dashboard' },
   { path: '/job-cards', expect: 'JobCards' },
   { path: '/unauthorized', expect: '403' },
+  { path: '/forgot-password', expect: 'Reset Password' },
+  { path: '/reset-password', expect: 'Create New Password' },
+  { path: '/otpverification', expect: 'OTP Verification' },
+  { path: '/two-factor-verification', expect: 'Two-Factor Verification' },
+  { path: '/create-pin', expect: 'Create PIN' },
+  { path: '/biometric-setup', expect: 'Biometric Setup' },
 ]
 
 const browser = await chromium.launch({ executablePath:
