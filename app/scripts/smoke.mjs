@@ -14,7 +14,14 @@ const ROUTES = [
   { path: '/region-selection', expect: 'Select your region' },
   { path: '/login', expect: 'Sign In' },
   { path: '/dashboard', expect: 'Dashboard' },
-  { path: '/job-cards', expect: 'JobCards' },
+  { path: '/job-cards', expect: 'Job Cards' },
+  { path: '/job-detail', expect: 'Timeline' },
+  { path: '/workshop-check-in', expect: 'Vehicle Check-In' },
+  { path: '/workshop-inspection', expect: 'Vehicle Inspection' },
+  { path: '/workshop-estimate', expect: 'Cost Estimate' },
+  { path: '/workshop-qc', expect: 'Quality Check' },
+  { path: '/workshop-signature', expect: 'Customer Signature' },
+  { path: '/workshop-delivery', expect: 'Vehicle Delivery' },
   { path: '/unauthorized', expect: '403' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
@@ -98,6 +105,37 @@ for (const route of ROUTES) {
     }
     await context.close()
   }
+}
+
+// The estimate's totals are computed from its line items. Assert the figures
+// match the design's (SAR 1,345 / 201.75 / 1,546.75) so a line-item edit that
+// breaks the arithmetic is caught here.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/workshop-estimate', { waitUntil: 'networkidle' })
+  const text = await page.locator('body').innerText()
+  const expected = ['SAR 1,345.00', 'SAR 201.75', 'SAR 1,546.75']
+  const missing = expected.filter((value) => !text.includes(value))
+  if (missing.length) failures.push({ route: 'estimate totals', problems: [`missing ${missing.join(', ')}`] })
+  else console.log('  ok  estimate totals derived from line items')
+  await context.close()
+}
+
+// Segregation of duties: a technician must not be able to pass QC.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'technician'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/workshop-qc', { waitUntil: 'networkidle' })
+  const approve = page.getByRole('button', { name: /Approve QC/ })
+  if (await approve.isEnabled()) {
+    failures.push({ route: 'sod:qc', problems: ['technician could approve QC'] })
+  } else {
+    console.log('  ok  sod technician cannot approve QC')
+  }
+  await context.close()
 }
 
 await browser.close()

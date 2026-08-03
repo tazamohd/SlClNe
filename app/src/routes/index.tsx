@@ -22,6 +22,14 @@ import {
   TwoFactorVerification,
 } from '@/screens/auth/VerificationScreens'
 import { Dashboard } from '@/screens/Dashboard'
+import { JobCards } from '@/screens/workshop/JobCards'
+import { JobDetail } from '@/screens/workshop/JobDetail'
+import { WorkshopCheckIn } from '@/screens/workshop/WorkshopCheckIn'
+import { WorkshopInspection } from '@/screens/workshop/WorkshopInspection'
+import { WorkshopEstimate } from '@/screens/workshop/WorkshopEstimate'
+import { WorkshopQC } from '@/screens/workshop/WorkshopQC'
+import { WorkshopSignature } from '@/screens/workshop/WorkshopSignature'
+import { WorkshopDelivery } from '@/screens/workshop/WorkshopDelivery'
 
 /** Screens that render without the app shell and without a role check —
  *  the auth chain and the terminal-state pages. */
@@ -47,6 +55,14 @@ const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
  *  PendingScreen, so the nav never dead-ends while the port is in progress. */
 const APP_SCREENS: Record<string, React.ComponentType> = {
   Dashboard,
+  JobCards,
+  JobDetail,
+  WorkshopCheckIn,
+  WorkshopInspection,
+  WorkshopEstimate,
+  WorkshopQC,
+  WorkshopSignature,
+  WorkshopDelivery,
 }
 
 export function AppRoutes() {

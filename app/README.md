@@ -81,16 +81,36 @@ Carried over from `handoff/README.md` §7 — these are not style preferences:
 - **`ResetPassword` says why it rejected you.** The prototype silently did
   nothing when the two fields disagreed.
 - **OTP resend is throttled to 60s**, per README §6b, instead of an `href="#"`.
+- **Segregation of duties is enforced, not just documented.** "Perform repair"
+  and "Pass quality check" are a high-risk pair in the SOD table, so a
+  technician cannot approve QC on `WorkshopQC` — the design let anyone through.
+- **Estimate totals are computed from the line items** rather than hardcoded,
+  so an edited line can't leave the footer disagreeing with the table. The
+  design's figures (1,345 / 201.75 / 1,546.75) fall out of the arithmetic.
+- **The estimate says up front when it exceeds your approval limit**, instead
+  of letting you find out by pressing Approve.
+- **Checklists and stage gates refuse to submit half-complete.** An inspection
+  that recorded nothing is worse than none — the estimate is built on it.
+- **`WorkshopSignature` captures a real signature** on a canvas; the design
+  showed a "tap to sign" placeholder.
+- **Table rows are keyboard-reachable.** The prototypes put the click handler
+  on `<tr>`, so every list was mouse-only.
 
 ## Port status
 
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt (16): Splash, Welcome, LanguageSelection, RegionSelection, Login,
-ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
-CreatePIN, BiometricSetup, Unauthorized, SessionExpired, AccountLocked,
-LogoutConfirmation, Dashboard.
+Rebuilt (24):
+
+- **Auth chain** — Splash, Welcome, LanguageSelection, RegionSelection, Login,
+  ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
+  CreatePIN, BiometricSetup
+- **Terminal states** — Unauthorized, SessionExpired, AccountLocked,
+  LogoutConfirmation
+- **Operations** — Dashboard, JobCards, JobDetail, and the six-stage workshop
+  loop: WorkshopCheckIn, WorkshopInspection, WorkshopEstimate, WorkshopQC,
+  WorkshopSignature, WorkshopDelivery
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.
 Build order follows `handoff/README.md` §8.
