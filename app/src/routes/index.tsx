@@ -30,6 +30,10 @@ import { WorkshopEstimate } from '@/screens/workshop/WorkshopEstimate'
 import { WorkshopQC } from '@/screens/workshop/WorkshopQC'
 import { WorkshopSignature } from '@/screens/workshop/WorkshopSignature'
 import { WorkshopDelivery } from '@/screens/workshop/WorkshopDelivery'
+import { Invoices } from '@/screens/finance/Invoices'
+import { InvoiceDetail } from '@/screens/finance/InvoiceDetail'
+import { InvoiceCreate } from '@/screens/finance/InvoiceCreate'
+import { Payments } from '@/screens/finance/Payments'
 
 /** Screens that render without the app shell and without a role check —
  *  the auth chain and the terminal-state pages. */
@@ -63,6 +67,10 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   WorkshopQC,
   WorkshopSignature,
   WorkshopDelivery,
+  Invoices,
+  InvoiceDetail,
+  InvoiceCreate,
+  Payments,
 }
 
 export function AppRoutes() {

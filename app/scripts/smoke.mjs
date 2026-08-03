@@ -22,6 +22,10 @@ const ROUTES = [
   { path: '/workshop-qc', expect: 'Quality Check' },
   { path: '/workshop-signature', expect: 'Customer Signature' },
   { path: '/workshop-delivery', expect: 'Vehicle Delivery' },
+  { path: '/invoices', expect: 'Invoices' },
+  { path: '/invoice-detail', expect: 'Line items' },
+  { path: '/invoice-create', expect: 'Create Invoice' },
+  { path: '/payments', expect: 'Outstanding' },
   { path: '/unauthorized', expect: '403' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
@@ -120,6 +124,28 @@ for (const route of ROUTES) {
   const missing = expected.filter((value) => !text.includes(value))
   if (missing.length) failures.push({ route: 'estimate totals', problems: [`missing ${missing.join(', ')}`] })
   else console.log('  ok  estimate totals derived from line items')
+  await context.close()
+}
+
+// InvoiceCreate must recompute its summary when a line is removed — the whole
+// point of a create screen the design shipped with fixed totals.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'accountant'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/invoice-create', { waitUntil: 'networkidle' })
+  const before = await page.locator('body').innerText()
+  if (!before.includes('SAR 2,116.00')) {
+    failures.push({ route: 'invoice totals', problems: ['initial total was not SAR 2,116.00'] })
+  } else {
+    await page.getByRole('button', { name: /Remove/ }).first().click()
+    const after = await page.locator('body').innerText()
+    if (after.includes('SAR 2,116.00')) {
+      failures.push({ route: 'invoice totals', problems: ['total did not change after removing a line'] })
+    } else {
+      console.log('  ok  invoice total recomputes when a line is removed')
+    }
+  }
   await context.close()
 }
 

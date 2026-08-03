@@ -95,13 +95,31 @@ Carried over from `handoff/README.md` §7 — these are not style preferences:
   showed a "tap to sign" placeholder.
 - **Table rows are keyboard-reachable.** The prototypes put the click handler
   on `<tr>`, so every list was mouse-only.
+- **`InvoiceCreate` actually creates.** Its "Add Line" button was decorative and
+  its totals were fixed strings, so it could only ever produce the one invoice
+  it was mocked with. Lines are now editable and removable, and the summary
+  recomputes.
+- **`Payments` derives its headline figures.** See below — this one is a
+  behaviour change worth knowing about.
+
+### One number that changed
+
+`Payments.dc.html` shows **SAR 8,090** outstanding and **SAR 61,420** collected.
+The five invoices it renders directly underneath total **9,065** unpaid and
+**1,005** paid. Those headlines were hardcoded and never reconciled against the
+data below them.
+
+This app computes both from the invoice rows, so the figures are self-consistent
+but no longer match the mockup. If 8,090 and 61,420 are real numbers from
+somewhere — a wider ledger, a different period — the fix is to source them from
+that endpoint rather than to re-hardcode them.
 
 ## Port status
 
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt (24):
+Rebuilt (28):
 
 - **Auth chain** — Splash, Welcome, LanguageSelection, RegionSelection, Login,
   ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
@@ -111,6 +129,7 @@ Rebuilt (24):
 - **Operations** — Dashboard, JobCards, JobDetail, and the six-stage workshop
   loop: WorkshopCheckIn, WorkshopInspection, WorkshopEstimate, WorkshopQC,
   WorkshopSignature, WorkshopDelivery
+- **Finance** — Invoices, InvoiceDetail, InvoiceCreate, Payments
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.
 Build order follows `handoff/README.md` §8.
