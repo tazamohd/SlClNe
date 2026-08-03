@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes liveDot{0%,100%{opacity:1}50%{opacity:.35}}
+.frow:hover{background:rgba(10,94,215,.04)}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Diagnostic Report" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:12px 20px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <div style="width:30px;height:30px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Stethoscope" size="15" style="color:#fff"></salis-icon></div>
+    <div style="min-width:0;flex:1">
+      <p style="margin:0;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.title }}</p>
+      <p style="margin:0;font-size:11.5px;color:var(--text-muted)">{{ t.sub }}</p>
+    </div>
+    <a href="OBDDiagnostics.dc.html" style="height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action);flex-shrink:0;white-space:nowrap" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Activity" size="13"></salis-icon>{{ t.liveObd }}</a>
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:11.5px;flex-shrink:0" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="13"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+  </header>
+
+  <div style="max-width:1300px;margin:0 auto;padding:18px 20px 44px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease">
+
+    <div style="padding:15px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
+      <div style="min-width:170px">
+        <p style="margin:0;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.report }}</p>
+        <p style="margin:3px 0 0;font-size:19px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);white-space:nowrap" dir="ltr">DGN-2026-0311</p>
+        <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);white-space:nowrap">{{ t.jobCard }} <span dir="ltr">JC-2026-0884</span></p>
+      </div>
+      <div style="min-width:160px">
+        <p style="margin:0;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.vehicle }}</p>
+        <p style="margin:3px 0 0;font-size:14px;font-weight:700;color:var(--text-heading)">Toyota Camry 2021</p>
+        <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);font-family:var(--font-mono,monospace);white-space:nowrap" dir="ltr">RUH 4821 · 58,420 km</p>
+      </div>
+      <div style="min-width:186px">
+        <p style="margin:0;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.scanTool }}</p>
+        <p style="margin:3px 0 0;font-size:14px;font-weight:700;color:var(--text-heading);white-space:nowrap" dir="ltr">OBD-014 · Techstream</p>
+        <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);white-space:nowrap">{{ t.scannedAt }}</p>
+      </div>
+      <div style="flex:1"></div>
+      <div style="text-align:end">
+        <p style="margin:0;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.runningTotal }}</p>
+        <p style="margin:3px 0 0;font-size:24px;font-family:var(--font-display);font-weight:900;color:{{ totalColor }};font-variant-numeric:tabular-nums;line-height:1.1;white-space:nowrap">{{ grandTotal }}</p>
+        <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted)">{{ totalNote }}</p>
+      </div>
+    </div>
+
+    <div style="padding:15px 17px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <p style="margin:0 0 12px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.routing }}</p>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <sc-for list="{{ stages }}" as="s" hint-placeholder-count="5">
+          <button onClick="{{ s.pick }}" style="{{ s.cardStyle }}">
+            <div style="display:flex;align-items:center;gap:8px;width:100%">
+              <span style="{{ s.numStyle }}"><sc-if value="{{ s.done }}" hint-placeholder-val="{{ true }}"><salis-icon name="Check" size="11" stroke-width="3"></salis-icon></sc-if><sc-if value="{{ s.notDone }}" hint-placeholder-val="{{ false }}">{{ s.n }}</sc-if></span>
+              <span style="flex:1;min-width:0;text-align:start">
+                <span style="display:block;font-size:12px;font-weight:700;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</span>
+                <span style="display:block;font-size:10.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.owner }}</span>
+              </span>
+            </div>
+            <span style="display:block;width:100%;text-align:start;font-size:10px;color:var(--text-muted);font-family:var(--font-mono,monospace);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.at }}</span>
+            <span style="display:block;width:100%;height:3px;border-radius:9999px;background:{{ s.bar }}"></span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top:13px;padding:11px 13px;border-radius:10px;background:rgba(10,94,215,.05);display:flex;gap:9px;align-items:flex-start">
+        <salis-icon name="{{ deskIcon }}" size="14" style="color:var(--salis-blue);flex-shrink:0;margin-top:1px"></salis-icon>
+        <div style="flex:1;min-width:0">
+          <p style="margin:0;font-size:12.5px;font-weight:700;color:var(--text-heading)">{{ deskTitle }}</p>
+          <p style="margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-body);text-wrap:pretty">{{ deskBody }}</p>
+        </div>
+        <button onClick="{{ advance }}" style="{{ advanceStyle }}">{{ advanceLabel }}<salis-icon name="{{ chevIcon }}" size="13"></salis-icon></button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:{{ cols }};gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+
+        <div style="border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:13px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div>
+              <p style="margin:0;font-size:14.5px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.findingsH }}</p>
+              <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted)">{{ t.findingsSub }}</p>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:9999px;background:rgba(249,115,22,.13);color:#F97316;font-size:11px;font-weight:700;font-family:var(--font-action);white-space:nowrap">{{ criticalCount }}</span>
+          </div>
+          <sc-for list="{{ findings }}" as="f" hint-placeholder-count="5">
+            <div class="frow" style="{{ f.rowStyle }}">
+              <span style="{{ f.sevStyle }}"><salis-icon name="{{ f.sevIcon }}" size="13"></salis-icon></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+                  <sc-if value="{{ f.hasDtc }}" hint-placeholder-val="{{ true }}"><span style="font-size:11.5px;font-weight:800;color:var(--salis-blue);font-family:var(--font-mono,monospace)">{{ f.dtc }}</span></sc-if>
+                  <span style="{{ f.sysPill }}">{{ f.system }}</span>
+                  <span style="{{ f.evPill }}"><salis-icon name="{{ f.evIcon }}" size="9"></salis-icon>{{ f.evidence }}</span>
+                </div>
+                <p style="margin:3px 0 0;font-size:13px;color:var(--text-body);text-wrap:pretty">{{ f.finding }}</p>
+              </div>
+              <span style="{{ f.sevPill }}">{{ f.sevLabel }}</span>
+            </div>
+          </sc-for>
+          <div style="padding:12px 18px;border-top:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ attachments }}" as="at" hint-placeholder-count="3">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;background:var(--surface-card);border:1px solid var(--border-default);font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action);white-space:nowrap;flex-shrink:0"><salis-icon name="{{ at.icon }}" size="12" style="color:var(--salis-blue);flex-shrink:0"></salis-icon><span dir="ltr">{{ at.name }}</span><span style="color:var(--text-muted);font-weight:500" dir="ltr">{{ at.size }}</span></span>
+            </sc-for>
+            <button onClick="{{ upload }}" style="display:inline-flex;align-items:center;gap:6px;height:29px;padding:0 11px;border-radius:8px;border:1px dashed rgba(10,94,215,.4);background:transparent;color:var(--salis-blue);cursor:pointer;font-size:11.5px;font-weight:600;font-family:var(--font-action);white-space:nowrap;flex-shrink:0" style-hover="background:rgba(10,94,215,.06)"><salis-icon name="Upload" size="12" style="flex-shrink:0"></salis-icon>{{ t.attach }}</button>
+          </div>
+        </div>
+
+        <div style="border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:13px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div>
+              <p style="margin:0;font-size:14.5px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.partsH }}</p>
+              <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted)">{{ partsSub }}</p>
+            </div>
+            <span style="{{ partsStatePill }}">{{ partsState }}</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;min-width:540px">
+              <thead><tr style="background:var(--surface-inset)">
+                <th style="text-align:start;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)">{{ t.part }}</th>
+                <th style="text-align:start;padding:9px 8px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)">{{ t.stock }}</th>
+                <th style="text-align:end;padding:9px 8px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)">{{ t.qty }}</th>
+                <th style="text-align:end;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)">{{ t.lineTotal }}</th>
+              </tr></thead>
+              <tbody><sc-for list="{{ parts }}" as="p" hint-placeholder-count="5">
+                <tr style="border-top:1px solid var(--border-default)">
+                  <td style="padding:10px 18px">
+                    <p style="margin:0;font-size:12.5px;font-weight:600;color:var(--text-heading)">{{ p.desc }}</p>
+                    <p style="margin:1px 0 0;font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono,monospace);white-space:nowrap" dir="ltr">{{ p.part }}</p>
+                  </td>
+                  <td style="padding:10px 8px"><span style="{{ p.stockPill }}">{{ p.stockLabel }}</span></td>
+                  <td style="padding:10px 8px;text-align:end;font-size:12.5px;color:var(--text-body);font-variant-numeric:tabular-nums">{{ p.qty }}</td>
+                  <td style="padding:10px 18px;text-align:end;font-size:12.5px;font-weight:700;color:{{ p.priceColor }};font-variant-numeric:tabular-nums;white-space:nowrap">{{ p.total }}</td>
+                </tr>
+              </sc-for></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:13px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div>
+              <p style="margin:0;font-size:14.5px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.labourH }}</p>
+              <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted)">{{ labourSub }}</p>
+            </div>
+            <span style="{{ labourStatePill }}">{{ labourState }}</span>
+          </div>
+          <sc-if value="{{ labourReady }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ labour }}" as="l" hint-placeholder-count="3">
+              <div style="{{ l.rowStyle }}">
+                <div style="flex:1;min-width:0">
+                  <p style="margin:0;font-size:12.5px;font-weight:600;color:var(--text-heading)">{{ l.task }}</p>
+                  <p style="margin:1px 0 0;font-size:11px;color:var(--text-muted);font-variant-numeric:tabular-nums">{{ l.detail }}</p>
+                </div>
+                <span style="font-size:12.5px;font-weight:700;color:var(--text-heading);font-variant-numeric:tabular-nums;white-space:nowrap">{{ l.total }}</span>
+              </div>
+            </sc-for>
+            <div style="padding:12px 18px;border-top:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-body)"><salis-icon name="Clock" size="13" style="color:var(--salis-blue)"></salis-icon>{{ t.estTime }} {{ estTime }}</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><salis-icon name="Package" size="13"></salis-icon>{{ t.handling }} {{ handling }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ labourPending }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:30px 20px;text-align:center">
+              <span style="display:inline-flex;padding:10px;border-radius:11px;background:var(--surface-inset);color:var(--text-muted)"><salis-icon name="Hourglass" size="18"></salis-icon></span>
+              <p style="margin:11px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ labourWaitH }}</p>
+              <p style="margin:4px 0 0;font-size:12px;color:var(--text-muted)">{{ labourWaitSub }}</p>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:13px;min-width:0">
+        <div style="padding:16px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-lg)">
+          <p style="margin:0 0 12px;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.costH }}</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ totals }}" as="tt" hint-placeholder-count="5">
+              <div style="{{ tt.rowStyle }}">
+                <span style="font-size:{{ tt.size }};font-weight:{{ tt.weight }};color:{{ tt.labelColor }}">{{ tt.label }}</span>
+                <span style="font-size:{{ tt.size }};font-weight:{{ tt.weight }};color:{{ tt.valColor }};font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0">{{ tt.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ atApproval }}" hint-placeholder-val="{{ false }}">
+            <a href="CustomerApproval.dc.html" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;height:42px;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-size:13.5px;font-weight:700;box-shadow:0 4px 14px rgba(10,94,215,.3);text-decoration:none"><salis-icon name="PenTool" size="15"></salis-icon>{{ t.openApproval }}</a>
+          </sc-if>
+          <sc-if value="{{ notAtApproval }}" hint-placeholder-val="{{ true }}">
+            <p style="margin:13px 0 0;padding:10px 12px;border-radius:10px;background:var(--surface-inset);font-size:11.5px;line-height:1.5;color:var(--text-muted)">{{ costNote }}</p>
+          </sc-if>
+        </div>
+
+        <div style="padding:16px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+          <p style="margin:0 0 4px;font-size:13.5px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.copiesH }}</p>
+          <p style="margin:0 0 12px;font-size:11.5px;line-height:1.5;color:var(--text-muted)">{{ t.copiesSub }}</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ copies }}" as="c" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="{{ c.icStyle }}"><salis-icon name="{{ c.icon }}" size="13"></salis-icon></span>
+                <div style="flex:1;min-width:0">
+                  <p style="margin:0;font-size:12.5px;font-weight:600;color:var(--text-heading)">{{ c.to }}</p>
+                  <p style="margin:0;font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono,monospace);white-space:nowrap">{{ c.at }}</p>
+                </div>
+                <span style="{{ c.pill }}">{{ c.state }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:15px 17px;border-radius:13px;background:rgba(10,94,215,.05);border:1px solid rgba(10,94,215,.16)">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+            <salis-icon name="EyeOff" size="13" style="color:var(--salis-blue)"></salis-icon>
+            <p style="margin:0;font-size:12.5px;font-weight:700;color:var(--text-heading)">{{ t.visH }}</p>
+          </div>
+          <p style="margin:0;font-size:11.5px;line-height:1.55;color:var(--text-body);text-wrap:pretty">{{ visBody }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:20px;inset-inline-end:20px;z-index:100;display:flex;align-items:flex-start;gap:11px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow-lg);max-width:340px;animation:fadeUp .25s ease">
+      <span style="{{ toastIconStyle }}"><salis-icon name="{{ toastIcon }}" size="17"></salis-icon></span>
+      <div style="flex:1;min-width:0"><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-heading)">{{ toastTitle }}</p><p style="margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted)">{{ toastDesc }}</p></div>
+      <button onClick="{{ closeToast }}" aria-label="Dismiss" style="border:none;background:none;cursor:pointer;color:var(--text-muted);padding:0;display:flex;flex-shrink:0"><salis-icon name="X" size="13"></salis-icon></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;stage&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2,&quot;min&quot;:0,&quot;max&quot;:4,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Workflow&quot;}}">
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null,stage:2,toast:null,narrow:false,extraAtt:0};
+  componentDidMount(){
+    import("./gms-data.js").then(m=>this.setState({D:m}));
+    this._mq=window.matchMedia("(max-width:960px)");
+    this._onMq=()=>this.setState({narrow:this._mq.matches});
+    this._onMq(); this._mq.addEventListener("change",this._onMq);
+  }
+  componentWillUnmount(){ clearTimeout(this._tt); if(this._mq) this._mq.removeEventListener("change",this._onMq); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const STG=(D&&D.DIAG_STAGES)||[], FND=(D&&D.DIAG_FINDINGS)||[], PRT=(D&&D.DIAG_PARTS)||[], LAB=(D&&D.DIAG_LABOUR)||[], CPY=(D&&D.DIAG_COPIES)||[];
+    const stage=this.state.stage;                       // 0..4 — which desk the report has reached
+    // data-borne strings (timestamps, lead times) carry English months/words — localise them
+    const loc=x=>String(x||"").replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/g,m=>t(m)).replace(/\b\d+\s+days?\b/g,m=>t(m));
+    const sar=n=>"SAR "+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+    // cost is only known once the relevant desk has handled it
+    const partsPriced=stage>=2, labourPriced=stage>=3;
+    const partsTotal=PRT.reduce((a,p)=>a+p.qty*p.price,0);
+    const labourTotal=LAB.reduce((a,l)=>a+l.hrs*l.rate,0);
+    const handlingFee=Math.round(partsTotal*0.05);
+    const hours=LAB.reduce((a,l)=>a+l.hrs,0);
+    const sub=(partsPriced?partsTotal:0)+(labourPriced?labourTotal+handlingFee:0);
+    const vat=sub*0.15, grand=sub+vat;
+
+    const stages=STG.map((s,i)=>{
+      const done=i<stage, cur=i===stage;
+      return {n:i+1, label:rtl?s.ar:s.label, owner:rtl?s.ar_owner:s.owner,
+        at:i<=stage?loc(s.at):"—", done, notDone:!done,
+        pick:()=>this.setState({stage:i}),
+        numStyle:"width:20px;height:20px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;"+(done?"background:var(--salis-gradient);color:#fff":cur?"background:rgba(10,94,215,.14);color:var(--salis-blue)":"background:var(--surface-inset);color:var(--text-muted)"),
+        bar:done?"var(--salis-gradient)":cur?"rgba(10,94,215,.45)":"var(--border-default)",
+        cardStyle:"flex:1;min-width:158px;display:flex;flex-direction:column;gap:6px;padding:11px 12px;border-radius:11px;cursor:pointer;text-align:start;transition:all .15s ease;font-family:var(--font-ui,'Inter',sans-serif);"+(cur?"background:rgba(10,94,215,.06);border:1.5px solid var(--salis-blue)":"background:var(--surface-card);border:1px solid var(--border-default)")};
+    });
+
+    const SEV={critical:[t("Critical"),"#F97316","rgba(249,115,22,.13)","AlertTriangle"],due:[t("Due now"),"#0BB3FF","rgba(11,179,255,.12)","AlertCircle"],advisory:[t("Advisory"),"var(--text-muted)","rgba(100,116,139,.13)","Info"]};
+    const EV={photo:["Photo","Camera"],freeze:["Freeze frame","Snowflake"],reading:["Live reading","Activity"]};
+    const findings=FND.map((f,i)=>{
+      const s=SEV[f.severity]||SEV.advisory, e=EV[f.evidence]||EV.photo;
+      return {dtc:f.dtc, hasDtc:f.dtc!=="\u2014", finding:rtl?f.ar:f.finding,
+        system:rtl?f.ar_system:f.system, evidence:t(e[0]), evIcon:e[1],
+        sevLabel:s[0], sevIcon:s[3],
+        sevStyle:"width:26px;height:26px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;background:"+s[2]+";color:"+s[1],
+        sevPill:"flex-shrink:0;white-space:nowrap;padding:1px 8px;border-radius:9999px;font-size:10px;font-weight:600;font-family:var(--font-action);background:"+s[2]+";color:"+s[1],
+        sysPill:"white-space:nowrap;padding:1px 7px;border-radius:9999px;background:var(--surface-inset);color:var(--text-muted);font-size:10px;font-weight:600;font-family:var(--font-action)",
+        evPill:"display:inline-flex;align-items:center;gap:3px;white-space:nowrap;padding:1px 7px;border-radius:9999px;background:rgba(11,179,255,.1);color:#0BB3FF;font-size:10px;font-weight:600;font-family:var(--font-action)",
+        rowStyle:"display:flex;align-items:flex-start;gap:11px;padding:12px 18px;transition:background .15s ease;"+(i?"border-top:1px solid var(--border-default)":"")};
+    });
+
+    const STK={in:[t("In stock"),"var(--salis-blue)","rgba(10,94,215,.11)"],order:[t("On order"),"#F97316","rgba(249,115,22,.13)"]};
+    const parts=PRT.map(p=>{
+      const s=STK[p.stock]||STK.in;
+      return {desc:rtl?p.ar:p.desc, part:p.part, qty:p.qty,
+        stockLabel:p.stock==="order"?s[0]+" · "+loc(p.eta):s[0],
+        stockPill:"padding:1px 7px;border-radius:9999px;font-size:10px;font-weight:600;font-family:var(--font-action);white-space:nowrap;background:"+s[2]+";color:"+s[1],
+        total:partsPriced?sar(p.qty*p.price):t("Pending"),
+        priceColor:partsPriced?"var(--text-heading)":"var(--text-muted)"};
+    });
+
+    const labour=LAB.map((l,i)=>({task:rtl?l.ar:l.task,
+      detail:l.hrs+" "+t("hr")+" × "+sar(l.rate),
+      total:sar(l.hrs*l.rate),
+      rowStyle:"display:flex;align-items:center;gap:12px;padding:12px 18px;"+(i?"border-top:1px solid var(--border-default)":"")}));
+
+    const trow=(label,value,strong,accent)=>({label,value,size:strong?"15px":"12.5px",weight:strong?"800":"500",
+      labelColor:strong?"var(--text-heading)":"var(--text-muted)",
+      valColor:strong?(accent||"var(--salis-blue)"):"var(--text-heading)",
+      rowStyle:"display:flex;align-items:baseline;justify-content:space-between;gap:12px;"+(strong?"padding-top:9px;border-top:1px solid var(--border-default)":"")});
+    const totals=[
+      trow(t("Parts"),partsPriced?sar(partsTotal):t("Pending")),
+      trow(t("Labour"),labourPriced?sar(labourTotal):t("Pending")),
+      trow(t("Handling"),labourPriced?sar(handlingFee):t("Pending")),
+      trow(t("VAT")+" 15%",sub?sar(vat):t("Pending")),
+      trow(t("Total"),sub?sar(grand):t("Pending"),true)];
+
+    const CST={sent:[t("Sent"),"var(--salis-blue)","rgba(10,94,215,.11)"],saved:[t("Saved"),"#0BB3FF","rgba(11,179,255,.12)"]};
+    const copies=CPY.map(c=>{
+      const s=CST[c.state]||CST.sent;
+      return {to:rtl?c.ar:c.to, at:loc(c.at), icon:c.icon, state:s[0],
+        icStyle:"width:26px;height:26px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(10,94,215,.1);color:var(--salis-blue)",
+        pill:"flex-shrink:0;white-space:nowrap;padding:1px 8px;border-radius:9999px;font-size:10px;font-weight:600;font-family:var(--font-action);background:"+s[2]+";color:"+s[1]};
+    });
+
+    const DESK=[
+      [t("Technician has completed the scan"),t("Findings, DTC codes and photos are attached. Sending to reception saves a copy to vehicle history and notifies the customer.")],
+      [t("Reception is reviewing with the customer"),t("Reception confirms the concern with the customer, sets priority, then requests pricing from the parts store. No cost is visible yet.")],
+      [t("Storekeeper has priced the parts"),t("Part prices and availability are filled in. One item is on order — the promised date accounts for it. Labour is still unknown.")],
+      [t("Supervisor has added labour and time"),t("Labour lines, handling fee and estimated duration are set. The report is now a complete quote and can go to the customer.")],
+      [t("Waiting on the customer"),t("The customer sees the full quote with VAT, but never the internal part cost or margin. They can approve, defer lines, or decline.")]];
+    const VIS=[
+      t("At this desk the technician records findings only. Part cost, margin and labour rates are hidden from them by role."),
+      t("Reception can see the findings and the customer's contact details, but no cost — pricing has not happened yet."),
+      t("The storekeeper sees purchase cost and supplier terms. Reception, the technician and the customer never see those figures."),
+      t("The supervisor sees full cost and margin to set labour and handling. This is the last desk that sees internal cost."),
+      t("The customer sees line prices and VAT only. Purchase cost, margin and supplier terms are redacted.")];
+
+    const toast=this.state.toast;
+    const fire=(title,desc,err)=>{clearTimeout(this._tt);this.setState({toast:{title,desc,err:!!err}});this._tt=setTimeout(()=>this.setState({toast:null}),3400);};
+    const last=stage>=STG.length-1;
+    const cur=STG[stage]||{};
+
+    const baseAtt=[{name:"OBD-014-scan.pdf",size:"248 KB",icon:"FileText"},{name:"brake-pads.jpg",size:"1.2 MB",icon:"Image"},{name:"rotor-wear.jpg",size:"980 KB",icon:"Image"}];
+    const extra=Array.from({length:this.state.extraAtt},(_,i)=>({name:"cylinder-"+(i+1)+".jpg",size:"1.1 MB",icon:"Image"}));
+
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      chevIcon:rtl?"ChevronLeft":"ChevronRight",
+      cols:this.state.narrow?"1fr":"1fr minmax(280px,320px)",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("Diagnostic Report"),sub:t("From OBD scan to customer approval"),liveObd:t("Live OBD"),
+        report:t("Report"),jobCard:t("Job card"),vehicle:t("Vehicle"),scanTool:t("Scan tool"),
+        scannedAt:t("Scanned")+" 26 "+t("Jul")+" · 09:14",
+        runningTotal:t("Running total"),routing:t("Routing chain"),
+        findingsH:t("Diagnostic findings"),findingsSub:t("Recorded by the technician from the OBD scan and visual inspection"),
+        attach:t("Attach evidence"),
+        partsH:t("Parts required"),part:t("Part"),stock:t("Stock"),qty:t("Qty"),lineTotal:t("Line total"),
+        labourH:t("Labour, handling & time"),estTime:t("Estimated time:"),handling:t("Handling fee:"),
+        costH:t("Cost build-up"),openApproval:t("Open approval screen"),
+        copiesH:t("Distribution"),copiesSub:t("Every desk that holds a copy of this report."),
+        visH:t("What this desk can see")},
+      stages,findings,parts,labour,totals,copies,
+      attachments:[...baseAtt,...extra],
+      upload:()=>{this.setState(s=>({extraAtt:s.extraAtt+1}));fire(t("Evidence attached"),t("Saved to the report and to vehicle history."));},
+      criticalCount:FND.filter(f=>f.severity==="critical").length+" "+t("critical"),
+      grandTotal:sub?sar(grand):t("Pending"),
+      totalColor:sub?"var(--salis-blue)":"var(--text-muted)",
+      totalNote:labourPriced?t("Complete quote · VAT included"):partsPriced?t("Parts only · labour pending"):t("Not yet priced"),
+      partsSub:partsPriced?PRT.length+" "+t("items priced by the storekeeper"):PRT.length+" "+t("items awaiting pricing"),
+      partsState:partsPriced?t("Priced"):t("Awaiting storekeeper"),
+      partsStatePill:"white-space:nowrap;padding:2px 9px;border-radius:9999px;font-size:11px;font-weight:600;font-family:var(--font-action);"+(partsPriced?"background:rgba(10,94,215,.12);color:var(--salis-blue)":"background:rgba(249,115,22,.13);color:#F97316"),
+      labourSub:labourPriced?t("Set by the workshop supervisor"):t("Not yet added"),
+      labourState:labourPriced?t("Complete"):t("Awaiting supervisor"),
+      labourStatePill:"white-space:nowrap;padding:2px 9px;border-radius:9999px;font-size:11px;font-weight:600;font-family:var(--font-action);"+(labourPriced?"background:rgba(10,94,215,.12);color:var(--salis-blue)":"background:rgba(249,115,22,.13);color:#F97316"),
+      labourReady:labourPriced, labourPending:!labourPriced,
+      labourWaitH:t("Waiting on the workshop supervisor"),
+      labourWaitSub:t("Labour hours, handling fee and estimated duration are added once parts are priced."),
+      estTime:hours+" "+t("hr")+" · "+t("same day"),
+      handling:sar(handlingFee),
+      atApproval:last, notAtApproval:!last,
+      costNote:partsPriced?t("Cost completes once the supervisor adds labour and time."):t("No figures are shown until the storekeeper prices the parts."),
+      deskIcon:last?"UserCheck":"ArrowRightCircle",
+      deskTitle:(DESK[stage]||["",""])[0],
+      deskBody:(DESK[stage]||["",""])[1],
+      visBody:VIS[stage]||"",
+      advanceLabel:last?t("Awaiting signature"):(rtl?cur.ar_act:cur.act)||t("Next"),
+      advanceStyle:"flex-shrink:0;height:32px;padding:0 13px;border-radius:9px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;font-family:var(--font-action);"+(last?"border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-muted);cursor:default":"border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;box-shadow:0 3px 10px rgba(10,94,215,.25)"),
+      advance:()=>{ if(last){fire(t("Waiting on the customer"),t("A reminder was sent to their phone."));return;}
+        const nx=stage+1, ns=STG[nx];
+        this.setState({stage:nx});
+        fire(t("Sent to")+" "+(rtl?ns.ar:ns.label),(rtl?ns.ar_owner:ns.owner)+" · "+(rtl?ns.ar_adds:ns.adds));},
+      hasToast:!!toast,toastTitle:toast?toast.title:"",toastDesc:toast?toast.desc:"",
+      toastIcon:toast&&toast.err?"AlertCircle":"CheckCircle2",
+      toastIconStyle:"padding:6px;border-radius:8px;display:flex;flex-shrink:0;"+(toast&&toast.err?"background:rgba(249,115,22,.13);color:#F97316":"background:rgba(10,94,215,.12);color:var(--salis-blue)"),
+      closeToast:()=>this.setState({toast:null})
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Error-404" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif);padding:24px">
+  <div style="position:absolute;inset:0;pointer-events:none"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.06),transparent 65%);filter:blur(64px)"></div></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;max-width:400px;animation:fadeUp .3s ease">
+    <div style="animation:float 4s ease-in-out infinite">
+      <span style="font-size:120px;font-family:var(--font-display);font-weight:900;line-height:1;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 4px 20px rgba(10,94,215,.2))">404</span>
+    </div>
+    <div><h1 style="margin:0;font-size:22px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.title }}</h1><p style="margin:8px 0 0;font-size:14px;color:var(--text-muted);line-height:1.5">{{ t.desc }}</p></div>
+    <div style="display:flex;gap:10px">
+      <a href="Dashboard.dc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:48px;padding:0 20px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="Home" size="16"></salis-icon>{{ t.goHome }}</a>
+      <button onClick="{{ goBack }}" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;height:48px;padding:0 20px;border-radius:8px;border:1.5px solid var(--border-strong);background:none;color:var(--text-body);font-family:var(--font-action);font-weight:500;font-size:14px;cursor:pointer"><salis-icon name="ArrowLeft" size="16"></salis-icon>{{ t.goBack }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return{rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",goBack:()=>history.back(),
+      t:{title:lang==="ar"?"الصفحة غير موجودة":"Page Not Found",desc:lang==="ar"?"الصفحة التي تبحث عنها غير موجودة أو تم نقلها":"The page you're looking for doesn't exist or has been moved.",
+        goHome:t("Go to Dashboard"),goBack:lang==="ar"?"الرجوع":"Go Back"}};
+  }
+}
+</script>
+</body>
+</html>

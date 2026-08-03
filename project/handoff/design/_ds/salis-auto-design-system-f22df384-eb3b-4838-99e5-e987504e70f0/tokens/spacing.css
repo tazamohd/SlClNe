@@ -1,0 +1,6 @@
+/* SALIS AUTO spacing + radius tokens */
+:root{
+--space-section:2rem;--space-content:1.5rem;--space-item:1rem;--space-tight:0.5rem;
+--radius:0.5rem;--radius-md:0.5rem;--radius-lg:0.75rem;--radius-xl:1rem;--radius-2xl:1.25rem;--radius-full:9999px;
+--h-input:44px;--h-btn:44px;--h-btn-sm:36px;--h-btn-lg:48px;--h-topbar:56px;--w-sidebar:280px;
+}

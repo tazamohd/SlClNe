@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Calendar View" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span>
+    <span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;animation:fadeUp .3s ease">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:center;gap:16px"><h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2><span style="flex:1"></span><div style="display:flex;gap:6px"><button style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body)"><salis-icon name="ChevronLeft" size="14"></salis-icon></button><span style="display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:600;color:var(--text-heading)">July 2026</span><button style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body)"><salis-icon name="ChevronRight" size="14"></salis-icon></button></div></div>
+  <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);overflow:hidden">
+    <div style="display:grid;grid-template-columns:repeat(7,1fr)">
+      <sc-for list="{{ dayHeaders }}" as="dh" hint-placeholder-count="7"><div style="padding:12px;text-align:center;font-size:12px;font-weight:600;color:var(--text-muted);border-bottom:1px solid var(--border-default)">{{ dh }}</div></sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr)">
+      <sc-for list="{{ calDays }}" as="d" hint-placeholder-count="35">
+        <div style="min-height:80px;padding:6px;border-bottom:1px solid var(--border-default);border-inline-end:1px solid var(--border-default);background:{{ d.bg }}">
+          <span style="font-size:12px;font-weight:{{ d.weight }};color:{{ d.color }}">{{ d.num }}</span>
+          <sc-if value="{{ d.hasEvent }}" hint-placeholder-val="{{ false }}"><div style="margin-top:4px;padding:3px 6px;border-radius:4px;background:{{ d.eventBg }};font-size:10px;font-weight:500;color:{{ d.eventFg }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.event }}</div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const dayHeaders=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const events={21:"Oil Change - Camry",22:"Brake Insp - Patrol",25:"AC Service - Sonata",28:"Tire Rotation"};
+const evColors={21:["rgba(10,94,215,.1)","#0A5ED7"],22:["rgba(249,115,22,.1)","#F97316"],25:["rgba(11,179,255,.1)","#0BB3FF"],28:["rgba(11,31,59,.1)","#0B1F3B"]};
+const calDays=[];for(let i=0;i<35;i++){const d=i-2;const num=d>=1&&d<=31?String(d):"";const isToday=d===22;const ev=events[d];const ec=evColors[d]||["",""];calDays.push({num,bg:isToday?"rgba(10,94,215,.04)":"transparent",weight:isToday?"700":"400",color:num?(isToday?"var(--salis-blue)":"var(--text-body)"):"transparent",hasEvent:!!ev,event:ev||"",eventBg:ec[0],eventFg:ec[1]});}
+const extra={dayHeaders,calDays,t:{title:"Calendar View"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

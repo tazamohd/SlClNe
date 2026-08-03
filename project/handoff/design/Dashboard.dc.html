@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+input::placeholder{color:#9BA4B0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Dashboard" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)">
+        <span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">{{ userInitial }}</span>
+        <div style="flex:1;min-width:0">
+          <p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</p>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;letter-spacing:.03em;background:rgba(10,94,215,.12);color:var(--salis-blue)">{{ t.admin }}</span>
+            <span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;letter-spacing:.03em;background:var(--salis-gradient);color:#fff">PRO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav style="flex:1;padding:12px;overflow-y:auto">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7">
+          <div>
+            <button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary);transition:background .15s ease" style-hover="background:rgba(10,94,215,.1)">
+              <span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon>
+            </button>
+            <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:2px;margin-top:2px">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+                  <a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+      <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted);transition:all .15s ease" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+      <a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);transition:all .2s ease;height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a>
+    </div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);position:relative;z-index:5">
+      <div style="flex:1"></div>
+      <span style="position:relative;display:flex;align-items:center">
+        <salis-icon name="Search" size="16" style="position:absolute;inset-inline-start:10px;color:var(--text-muted);z-index:1;pointer-events:none"></salis-icon>
+        <input placeholder="{{ t.searchPh }}" style="height:36px;width:260px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;padding-inline-start:32px;font-family:var(--font-ui);font-size:13px;color:var(--text-primary);outline:none;transition:all .2s ease" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15);background:var(--surface-card)">
+      </span>
+      <button style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;color:var(--text-primary);transition:all .2s ease;white-space:nowrap;flex-shrink:0" style-hover="background:var(--salis-gradient);color:#fff;border-color:transparent"><salis-icon name="Zap" size="14"></salis-icon><span>{{ t.quickActions }}</span><kbd style="padding:2px 4px;background:var(--surface-inset);border:1px solid var(--border-default);border-radius:4px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">⌘K</kbd></button>
+      <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);transition:all .15s ease" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+      <button aria-label="Notifications" style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);transition:all .15s ease" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="Bell" size="16"></salis-icon><span style="position:absolute;top:5px;inset-inline-end:6px;width:8px;height:8px;border-radius:50%;background:var(--salis-orange);border:2px solid var(--surface-sidebar)"></span></button>
+      <button aria-label="Chat" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);transition:all .15s ease" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="MessageSquare" size="16"></salis-icon></button>
+    </header>
+    <main style="flex:1;overflow:auto;position:relative">
+      <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
+        <div style="position:absolute;top:0;right:0;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.05),transparent 70%);filter:blur(64px)"></div>
+        <div style="position:absolute;bottom:0;left:0;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(11,179,255,.05),transparent 70%);filter:blur(64px)"></div>
+      </div>
+      <div style="position:relative;z-index:1;padding:24px;display:flex;flex-direction:column;gap:32px;animation:fadeUp .3s ease">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="position:relative">
+              <div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div>
+              <div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="Sparkles" size="32"></salis-icon></div>
+            </div>
+            <div>
+              <h1 style="margin:0;font-size:48px;line-height:1.1;font-family:var(--font-display);font-weight:900;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ t.dashboard }}</h1>
+              <p style="margin:0;font-weight:300;color:var(--text-muted)">{{ t.welcome }} <span style="font-weight:600;color:var(--text-heading)">{{ userName }}</span></p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:8px;border:1.5px solid var(--salis-blue);background:none;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:13px;color:var(--salis-blue);transition:all .2s ease" style-hover="background:rgba(10,94,215,.08)"><salis-icon name="FileText" size="16"></salis-icon>{{ t.newJobCard }}</button>
+            <button style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(10,94,215,.25);transition:all .2s ease" style-hover="background:var(--salis-gradient-hover);transform:translateY(-1px)"><salis-icon name="Car" size="16"></salis-icon>{{ t.addVehicle }}</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+          <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);transition:all .2s ease" style-hover="box-shadow:var(--shadow-lg);border-color:rgba(10,94,215,.3)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px"><span style="padding:8px;border-radius:12px;background:rgba(10,94,215,.1);color:#0A5ED7;display:flex"><salis-icon name="DollarSign" size="20"></salis-icon></span><span style="font-size:14px;font-weight:500;color:var(--text-muted)">{{ t.totalRevenue }}</span></div>
+                <div>
+                  <h3 style="margin:0;font-size:30px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">$128,450</h3>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
+                    <span style="display:inline-flex;align-items:center;gap:2px;font-size:12px;font-weight:600;color:#0A5ED7"><salis-icon name="ArrowUpRight" size="14"></salis-icon>+12%</span>
+                    <svg width="80" height="32" viewBox="0 0 80 32"><polyline fill="none" stroke="#0A5ED7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="0,26 13,22 26,24 40,16 53,18 66,8 80,4"></polyline></svg>
+                  </div>
+                </div>
+              </div>
+              <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0A5ED7,#0BB3FF);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 15px -3px rgba(10,94,215,.2);color:#fff"><salis-icon name="TrendingUp" size="28"></salis-icon></div>
+            </div>
+            <div style="margin-top:16px;height:4px;background:rgba(10,94,215,.1);border-radius:9999px;overflow:hidden"><div style="height:100%;width:75%;background:var(--salis-gradient-r);border-radius:9999px"></div></div>
+          </div>
+          <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);transition:all .2s ease" style-hover="box-shadow:var(--shadow-lg);border-color:rgba(10,94,215,.3)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px"><span style="padding:8px;border-radius:12px;background:rgba(11,179,255,.1);color:#0BB3FF;display:flex"><salis-icon name="Wrench" size="20"></salis-icon></span><span style="font-size:14px;font-weight:500;color:var(--text-muted)">{{ t.activeJobs }}</span></div>
+                <div>
+                  <h3 style="margin:0;font-size:30px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">14</h3>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
+                    <span style="border-radius:9999px;padding:2px 10px;font-size:12px;font-weight:500;background:rgba(249,115,22,.1);color:#F97316;border:1px solid rgba(249,115,22,.3)">{{ t.pending5 }}</span>
+                    <span style="border-radius:9999px;padding:2px 10px;font-size:12px;font-weight:500;background:rgba(11,179,255,.1);color:#0BB3FF;border:1px solid rgba(11,179,255,.3)">{{ t.active9 }}</span>
+                  </div>
+                </div>
+              </div>
+              <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0BB3FF,#06B6D4);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 15px -3px rgba(11,179,255,.2);color:#fff"><salis-icon name="Gauge" size="28"></salis-icon></div>
+            </div>
+          </div>
+          <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);transition:all .2s ease" style-hover="box-shadow:var(--shadow-lg);border-color:rgba(10,94,215,.3)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px"><span style="padding:8px;border-radius:12px;background:rgba(11,31,59,.1);color:#0B1F3B;display:flex"><salis-icon name="Users" size="20"></salis-icon></span><span style="font-size:14px;font-weight:500;color:var(--text-muted)">{{ t.customers }}</span></div>
+                <div>
+                  <h3 style="margin:0;font-size:30px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">248</h3>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
+                    <span style="display:inline-flex;align-items:center;gap:2px;font-size:12px;font-weight:600;color:#0A5ED7"><salis-icon name="ArrowUpRight" size="14"></salis-icon>+8%</span>
+                    <svg width="80" height="32" viewBox="0 0 80 32"><polyline fill="none" stroke="#0B1F3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="0,24 13,20 26,22 40,14 53,16 66,10 80,6"></polyline></svg>
+                  </div>
+                </div>
+              </div>
+              <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0B1F3B,#1e3a5f);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 15px -3px rgba(11,31,59,.2);color:#fff"><salis-icon name="Target" size="28"></salis-icon></div>
+            </div>
+          </div>
+          <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);transition:all .2s ease" style-hover="box-shadow:var(--shadow-lg);border-color:rgba(10,94,215,.3)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px"><span style="padding:8px;border-radius:12px;background:rgba(249,115,22,.1);color:#F97316;display:flex"><salis-icon name="Package" size="20"></salis-icon></span><span style="font-size:14px;font-weight:500;color:var(--text-muted)">{{ t.inventory }}</span></div>
+                <div>
+                  <h3 style="margin:0;font-size:30px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">86%</h3>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap"><span style="font-size:12px;color:#F97316">{{ t.stock }}</span></div>
+                </div>
+              </div>
+              <div style="position:relative;width:56px;height:56px;flex-shrink:0">
+                <svg width="56" height="56" style="transform:rotate(-90deg)"><circle cx="28" cy="28" r="24" stroke="rgba(249,115,22,.2)" stroke-width="6" fill="none"></circle><circle cx="28" cy="28" r="24" stroke="#F97316" stroke-width="6" fill="none" stroke-dasharray="129 150" stroke-linecap="round"></circle></svg>
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#F97316"><salis-icon name="ShieldCheck" size="20"></salis-icon></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:16px">
+          <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="6">
+            <div style="background:var(--surface-card);border-radius:16px;padding:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;gap:12px;transition:all .3s ease" style-hover="transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(10,94,215,.3)">
+              <span style="{{ p.capStyle }}"><salis-icon name="{{ p.icon }}" size="20"></salis-icon></span>
+              <div style="text-align:center"><h4 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ p.count }}</h4><p style="margin:4px 0 0;font-size:12px;font-weight:500;color:var(--text-muted)">{{ p.label }}</p></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+              <span style="padding:8px;border-radius:12px;background:var(--salis-gradient);color:#fff;display:flex;box-shadow:0 10px 15px -3px rgba(10,94,215,.25)"><salis-icon name="TrendingUp" size="20"></salis-icon></span>
+              <h3 style="margin:0;font-size:20px;font-weight:700;color:var(--text-heading)">{{ t.revenueTrend }}</h3>
+            </div>
+            <svg viewBox="0 0 600 260" style="width:100%;height:auto;display:block">
+              <defs><linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0A5ED7" stop-opacity="0.4"></stop><stop offset="100%" stop-color="#0A5ED7" stop-opacity="0"></stop></linearGradient></defs>
+              <path d="M20,121 C57,112 95,94 132,94 C169,94 207,106 244,106 C281,106 319,81 356,69 C393,57 431,55 468,49 C505,43 543,29 580,22 L580,220 L20,220 Z" fill="url(#revGrad)"></path>
+              <path d="M20,121 C57,112 95,94 132,94 C169,94 207,106 244,106 C281,106 319,81 356,69 C393,57 431,55 468,49 C505,43 543,29 580,22" fill="none" stroke="#0A5ED7" stroke-width="2.5"></path>
+              <text x="20" y="244" font-size="11" fill="#64748B" text-anchor="middle" font-family="Inter,sans-serif">Jan</text><text x="132" y="244" font-size="11" fill="#64748B" text-anchor="middle" font-family="Inter,sans-serif">Feb</text><text x="244" y="244" font-size="11" fill="#64748B" text-anchor="middle" font-family="Inter,sans-serif">Mar</text><text x="356" y="244" font-size="11" fill="#64748B" text-anchor="middle" font-family="Inter,sans-serif">Apr</text><text x="468" y="244" font-size="11" fill="#64748B" text-anchor="middle" font-family="Inter,sans-serif">May</text><text x="580" y="244" font-size="11" fill="#64748B" text-anchor="middle" font-family="Inter,sans-serif">Jun</text>
+            </svg>
+          </div>
+          <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+              <span style="padding:8px;border-radius:12px;background:var(--salis-gradient);color:#fff;display:flex;box-shadow:0 10px 15px -3px rgba(10,94,215,.25)"><salis-icon name="BarChart3" size="20"></salis-icon></span>
+              <h3 style="margin:0;font-size:20px;font-weight:700;color:var(--text-heading)">{{ t.jobStatus }}</h3>
+            </div>
+            <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+              <div style="width:180px;height:180px;border-radius:50%;background:conic-gradient(#0A5ED7 0% 22.22%,#0BB3FF 22.22% 55.56%,#F97316 55.56% 74.07%,#0B1F3B 74.07% 88.89%,#64748B 88.89% 100%);position:relative;flex-shrink:0">
+                <div style="position:absolute;inset:36px;border-radius:50%;background:var(--surface-card);display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <span style="font-family:var(--font-display);font-weight:900;font-size:28px;color:var(--text-heading)">27</span>
+                  <span style="font-size:11px;color:var(--text-muted)">{{ t.jobs }}</span>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ legend }}" as="l" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="{{ l.swStyle }}"></span><span style="color:var(--text-body);min-width:90px">{{ l.label }}</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted)">{{ l.count }}</span></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 12px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="padding:8px;border-radius:12px;background:var(--salis-gradient);color:#fff;display:flex;box-shadow:0 10px 15px -3px rgba(10,94,215,.25)"><salis-icon name="ClipboardList" size="20"></salis-icon></span>
+              <h3 style="margin:0;font-size:20px;font-weight:700;color:var(--text-heading)">{{ t.latestJobCards }}</h3>
+            </div>
+            <button style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:none;border-radius:8px;background:none;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;color:var(--salis-blue);transition:all .15s ease" style-hover="background:rgba(10,94,215,.08)">{{ t.viewAll }}<salis-icon name="ArrowUpRight" size="14"></salis-icon></button>
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-family:var(--font-ui);font-size:14px;color:var(--text-primary)">
+            <thead>
+              <tr>
+                <th style="height:44px;padding:0 24px;text-align:start;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-default);white-space:nowrap">{{ t.thJob }}</th>
+                <th style="height:44px;padding:0 24px;text-align:start;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-default);white-space:nowrap">{{ t.thCustomer }}</th>
+                <th style="height:44px;padding:0 24px;text-align:start;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-default);white-space:nowrap">{{ t.thVehicle }}</th>
+                <th style="height:44px;padding:0 24px;text-align:start;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-default);white-space:nowrap">{{ t.thService }}</th>
+                <th style="height:44px;padding:0 24px;text-align:start;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-default);white-space:nowrap">{{ t.thPriority }}</th>
+                <th style="height:44px;padding:0 24px;text-align:start;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border-default);white-space:nowrap">{{ t.thStatus }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="5">
+                <tr style="transition:background .15s ease" style-hover="background:rgba(10,94,215,.04)">
+                  <td style="padding:12px 24px;border-bottom:1px solid var(--border-default);vertical-align:middle;font-family:var(--font-mono);font-size:13px" dir="ltr">{{ j.id }}</td>
+                  <td style="padding:12px 24px;border-bottom:1px solid var(--border-default);vertical-align:middle">{{ j.cust }}</td>
+                  <td style="padding:12px 24px;border-bottom:1px solid var(--border-default);vertical-align:middle">{{ j.veh }}</td>
+                  <td style="padding:12px 24px;border-bottom:1px solid var(--border-default);vertical-align:middle"><span style="{{ j.svcStyle }}">{{ j.svc }}</span></td>
+                  <td style="padding:12px 24px;border-bottom:1px solid var(--border-default);vertical-align:middle"><span style="{{ j.prStyle }}">{{ j.pr }}</span></td>
+                  <td style="padding:12px 24px;border-bottom:1px solid var(--border-default);vertical-align:middle"><span style="{{ j.stStyle }}">{{ j.st }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <div style="padding:16px 24px 20px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:13px;color:var(--text-muted)">{{ t.showing }}</span>
+            <div style="display:flex;gap:6px">
+              <button aria-label="Previous page" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-faint)"><salis-icon name="{{ prevChev }}" size="14"></salis-icon></button>
+              <button style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;font-size:13px;font-weight:600">1</button>
+              <button style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-body);font-size:13px" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">2</button>
+              <button style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-body);font-size:13px" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">3</button>
+              <button aria-label="Next page" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-body)" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="{{ nextChev }}" size="14"></salis-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Khalid Al-Amri&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,open:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;
+    const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const NAV=D?(D.navFor?D.navFor(D.NAV):D.NAV):[];
+    const open=this.state.open??NAV.map(g=>g.label);
+    const navGroups=NAV.map(g=>{
+      const isOpen=open.includes(g.label);
+      return {label:t(g.label),open:isOpen,chev:isOpen?"ChevronDown":(rtl?"ChevronLeft":"ChevronRight"),
+        toggle:()=>this.setState({open:isOpen?open.filter(x=>x!==g.label):[...open,g.label]}),
+        items:g.items.map(it=>{
+          const on=it.r==="dashboard";
+          return {label:t(it.l),icon:g.icon,href:it.href||"#",
+            style:"display:flex;align-items:center;gap:8px;padding:6px 12px;padding-inline-start:24px;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;transition:all .2s ease;text-decoration:none;"+(on?"background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)":"color:var(--text-primary)")};
+        })};
+    });
+    const svcB=D?D.SVC_BADGE:{},stB=D?D.ST_BADGE:{},prB=D?D.PR_BADGE:{};
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:12px;font-weight:500;background:"+bg+";color:"+fg+";text-transform:capitalize;white-space:nowrap";
+    const jobs=(D?D.JOBS:[]).map(j=>{
+      const s=svcB[j.svc]||["rgba(100,116,139,.1)","#64748B"],st=stB[j.st]||s,pr=prB[j.pr]||["#64748B"];
+      return {id:j.id,cust:j.cust,veh:j.veh,
+        svc:t(j.svc.replace(/_/g," ")),svcStyle:pill(s[0],s[1]),
+        st:t(j.st.replace(/_/g," ")),stStyle:pill(st[0],st[1]),
+        pr:t(j.pr),prStyle:pill(pr[0],"#fff")+";font-weight:600"};
+    });
+    const cap=g=>"padding:12px;border-radius:12px;background:"+g+";color:#fff;display:flex;box-shadow:var(--shadow-lg)";
+    const pipeline=[["Clock","Check-In",5,"linear-gradient(135deg,#F97316,#FB923C)"],["Wrench","In Repair",9,"linear-gradient(135deg,#0A5ED7,#0BB3FF)"],["AlertCircle","QC",6,"linear-gradient(135deg,#0BB3FF,#06B6D4)"],["CheckCircle","Done",6,"linear-gradient(135deg,#0A5ED7,#0BB3FF)"],["Car","Delivered",4,"linear-gradient(135deg,#0B1F3B,#1e3a5f)"],["Activity","Total",27,"linear-gradient(135deg,#64748B,#94A3B8)"]].map(p=>({icon:p[0],label:t(p[1]),count:String(p[2]),capStyle:cap(p[3])}));
+    const legend=[["Completed",6,"#0A5ED7"],["In Progress",9,"#0BB3FF"],["Pending",5,"#F97316"],["Delivered",4,"#0B1F3B"],["Cancelled",3,"#64748B"]].map(l=>({label:t(l[0]),count:String(l[1]),swStyle:"width:10px;height:10px;border-radius:3px;flex-shrink:0;background:"+l[2]}));
+    const _rid=(D&&D.currentRole)?D.currentRole():null;const _rl=((D&&D.ROLES)||[]).find(x=>x.id===_rid);const userName=_rl?(rtl?_rl.demo.ar:_rl.demo.name):(this.props.userName??"Khalid Al-Amri");const roleLabel=_rl?(rtl?_rl.ar:_rl.label):null;
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",
+      themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      userName,userInitial:userName.trim()[0]||"K",
+      navGroups,jobs,pipeline,legend,
+      prevChev:rtl?"ChevronRight":"ChevronLeft",nextChev:rtl?"ChevronLeft":"ChevronRight",
+      t:{admin:roleLabel||t("ADMIN"),logout:t("Logout"),searchPh:t("Search customers, vehicles, parts..."),quickActions:t("Quick Actions"),dashboard:t("Dashboard"),welcome:t("Welcome back,"),newJobCard:t("New Job Card"),addVehicle:t("Add Vehicle"),totalRevenue:t("Total Revenue"),activeJobs:t("Active Jobs"),customers:t("Customers"),inventory:t("Inventory"),pending5:t("5 pending"),active9:t("9 active"),stock:t("142/165 in stock"),revenueTrend:t("Revenue Trend"),jobStatus:t("Job Status"),jobs:t("jobs"),latestJobCards:t("Latest Job Cards"),viewAll:t("View All"),thJob:t("Job Card"),thCustomer:t("Customer"),thVehicle:t("Vehicle"),thService:t("Service"),thPriority:t("Priority"),thStatus:t("Status"),showing:t("Showing 1–5 of 27")}
+    };
+  }
+}
+</script>
+</body>
+</html>

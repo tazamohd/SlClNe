@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.icard:hover{border-color:rgba(10,94,215,.35)!important;box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="OEM Integrations" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:12px 20px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <div style="width:30px;height:30px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Plug" size="15" style="color:#fff"></salis-icon></div>
+    <div style="min-width:0;flex:1">
+      <p style="margin:0;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.title }}</p>
+      <p style="margin:0;font-size:11.5px;color:var(--text-muted)">{{ t.sub }}</p>
+    </div>
+    <a href="OBDDiagnostics.dc.html" style="height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action);flex-shrink:0" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Activity" size="13"></salis-icon>{{ t.live }}</a>
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:11.5px;flex-shrink:0" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="13"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+  </header>
+  <div style="max-width:1240px;margin:0 auto;padding:18px 20px 40px;display:flex;flex-direction:column;gap:15px;animation:fadeUp .3s ease">
+    <div style="padding:15px 18px;border-radius:13px;background:rgba(10,94,215,.05);border:1px solid rgba(10,94,215,.16);display:flex;gap:11px;align-items:flex-start">
+      <salis-icon name="Info" size="15" style="color:var(--salis-blue);flex-shrink:0;margin-top:2px"></salis-icon>
+      <p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-body);text-wrap:pretty;max-width:88ch">{{ t.note }}</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:10px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="padding:13px 15px;border-radius:12px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:11px">
+          <span style="{{ s.icStyle }}"><salis-icon name="{{ s.icon }}" size="16"></salis-icon></span>
+          <div style="min-width:0">
+            <p style="margin:0;font-size:19px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);font-variant-numeric:tabular-nums;line-height:1.1">{{ s.n }}</p>
+            <p style="margin:2px 0 0;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:2px">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="4"><button onClick="{{ tb.pick }}" style="{{ tb.style }}">{{ tb.label }}</button></sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+      <sc-for list="{{ tools }}" as="o" hint-placeholder-count="8">
+        <div class="icard" style="padding:15px 16px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:12px;transition:all .18s ease">
+          <div style="display:flex;align-items:flex-start;gap:11px">
+            <span style="{{ o.icStyle }}"><salis-icon name="Wrench" size="17"></salis-icon></span>
+            <div style="flex:1;min-width:0">
+              <p style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.tool }}</p>
+              <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.brand }}</p>
+            </div>
+            <span style="{{ o.pill }}">{{ o.statusLabel }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+            <div style="padding:8px 10px;border-radius:9px;background:var(--surface-inset)">
+              <p style="margin:0;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.protocol }}</p>
+              <p style="margin:3px 0 0;font-size:11.5px;font-weight:600;color:var(--text-heading);font-family:var(--font-mono,monospace)">{{ o.protocol }}</p>
+            </div>
+            <div style="padding:8px 10px;border-radius:9px;background:var(--surface-inset)">
+              <p style="margin:0;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.fleetCovered }}</p>
+              <p style="margin:3px 0 0;font-size:11.5px;font-weight:600;color:var(--text-heading);font-variant-numeric:tabular-nums">{{ o.vehicles }}</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:9px;padding-top:11px;border-top:1px solid var(--border-default)">
+            <span style="font-size:11px;color:var(--text-muted)">{{ o.licenceLine }}</span>
+            <button onClick="{{ o.act }}" style="{{ o.btnStyle }}">{{ o.btnLabel }}</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:20px;inset-inline-end:20px;z-index:100;display:flex;align-items:flex-start;gap:11px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow-lg);max-width:320px;animation:fadeUp .25s ease">
+      <span style="{{ toastIconStyle }}"><salis-icon name="{{ toastIcon }}" size="17"></salis-icon></span>
+      <div style="flex:1;min-width:0"><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-heading)">{{ toastTitle }}</p><p style="margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted)">{{ toastDesc }}</p></div>
+      <button onClick="{{ closeToast }}" aria-label="Dismiss" style="border:none;background:none;cursor:pointer;color:var(--text-muted);padding:0;display:flex;flex-shrink:0"><salis-icon name="X" size="13"></salis-icon></button>
+    </div>
+  </sc-if>
+</div></x-dc><script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Appearance"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Appearance"}}'>
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null,filter:"all",toast:null};
+  componentDidMount(){ import("./gms-data.js").then(m=>this.setState({D:m})); }
+  componentWillUnmount(){ clearTimeout(this._tt); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const toast=this.state.toast;
+    const fire=(title,desc,err)=>{clearTimeout(this._tt);this.setState({toast:{title,desc,err:!!err}});this._tt=setTimeout(()=>this.setState({toast:null}),3200);};
+    const ALL=(D&&D.OEM_TOOLS)||[];
+    const f=this.state.filter;
+    const ST={connected:[t("Connected"),"var(--salis-blue)","rgba(10,94,215,.12)"],pending:[t("Pending licence"),"#F97316","rgba(249,115,22,.13)"],available:[t("Available"),"var(--text-muted)","rgba(100,116,139,.13)"]};
+    const TABS=[["all",t("All")],["connected",t("Connected")],["pending",t("Pending")],["available",t("Available")]];
+    const tabs=TABS.map(([k,label])=>({label,pick:()=>this.setState({filter:k}),
+      style:"flex-shrink:0;height:32px;padding:0 13px;border-radius:9999px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action);transition:all .15s ease;"+(f===k?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)")}));
+    const list=ALL.filter(o=>f==="all"||o.status===f);
+    const tools=list.map(o=>{
+      const s=ST[o.status]||ST.available, isC=o.status==="connected";
+      return {tool:o.tool,brand:o.brand,protocol:o.protocol,vehicles:o.vehicles.toLocaleString("en-US")+" "+t("vehicles"),
+        statusLabel:s[0],
+        pill:"flex-shrink:0;padding:2px 8px;border-radius:9999px;font-size:10.5px;font-weight:600;font-family:var(--font-action);background:"+s[2]+";color:"+s[1],
+        icStyle:"width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(10,94,215,.1);color:var(--salis-blue)",
+        licenceLine:isC?t("Licence to")+" "+o.expires:t("Licence")+": "+t(o.licence),
+        btnLabel:isC?t("Configure"):o.status==="pending"?t("Add licence"):t("Connect"),
+        btnStyle:"height:29px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:11.5px;font-weight:600;font-family:var(--font-action);"+(isC?"border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)":"border:none;background:var(--salis-gradient);color:#fff"),
+        act:()=>fire(isC?t("Opening configuration"):t("Connection started"),o.tool+" · "+o.brand)};
+    });
+    const st=(n,label,icon,color)=>({n,label,icon,icStyle:"width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,"+color+" 12%,transparent);color:"+color});
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      hasToast:!!toast,toastTitle:toast?toast.title:"",toastDesc:toast?toast.desc:"",
+      toastIcon:toast&&toast.err?"AlertCircle":"CheckCircle2",
+      toastIconStyle:"padding:6px;border-radius:8px;display:flex;flex-shrink:0;"+(toast&&toast.err?"background:rgba(249,115,22,.13);color:#F97316":"background:rgba(10,94,215,.12);color:var(--salis-blue)"),
+      closeToast:()=>this.setState({toast:null}),
+      t:{title:t("OEM Diagnostic Software"),sub:t("Genuine manufacturer tools linked to the workshop"),live:t("Live OBD"),
+        note:t("Each manufacturer tool runs under its own licence and connects through a J2534 pass-thru interface. SALIS AUTO stores the session log and attaches the diagnostic report to the job card — it does not replace or emulate the manufacturer software."),
+        protocol:t("Protocol"),fleetCovered:t("Fleet covered")},
+      tabs,tools,
+      stats:[st(ALL.length,t("Brands supported"),"Boxes","#0A5ED7"),
+             st(ALL.filter(o=>o.status==="connected").length,t("Connected"),"CheckCircle2","#0A5ED7"),
+             st(ALL.filter(o=>o.status==="pending").length,t("Awaiting licence"),"Clock","#F97316"),
+             st(ALL.reduce((a,o)=>a+o.vehicles,0).toLocaleString("en-US"),t("Vehicles covered"),"Car","#0BB3FF")]
+    };
+  }
+}
+</script></body></html>

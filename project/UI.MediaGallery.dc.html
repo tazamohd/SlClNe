@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Media Gallery" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<div style="display:flex;gap:8px"><sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="4"><button onClick="{{ tb.click }}" style="{{ tb.style }}">{{ tb.label }}</button></sc-for></div>
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px">
+<sc-for list="{{ media }}" as="m" hint-placeholder-count="10">
+<div style="border-radius:14px;overflow:hidden;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;transition:all .2s ease" style-hover="box-shadow:var(--shadow-lg);border-color:rgba(10,94,215,.3)">
+<div style="height:130px;background:{{ m.bg }};display:flex;align-items:center;justify-content:center;position:relative"><salis-icon name="{{ m.icon }}" size="30" style="color:{{ m.fg }};opacity:.35"></salis-icon><sc-if value="{{ m.isVideo }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;bottom:8px;inset-inline-end:8px;padding:2px 6px;border-radius:4px;background:rgba(11,31,59,.75);color:#fff;font-family:var(--font-mono);font-size:10px">{{ m.duration }}</span></sc-if></div>
+<div style="padding:10px"><p style="margin:0;font-size:12px;font-weight:500;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.name }}</p><p style="margin:2px 0 0;font-size:10px;color:var(--text-muted)">{{ m.date }} · {{ m.size }}</p></div>
+</div></sc-for></div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null,filter:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");const t=s=>s;const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const filter=this.state.filter??"all";
+const tabStyle=a=>"height:32px;padding:0 14px;border-radius:8px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;"+(a?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)");
+const tabs=[["all","All"],["photo","Photos"],["video","Videos"],["doc","Documents"]].map(f=>({label:f[1],click:()=>this.setState({filter:f[0]}),style:tabStyle(filter===f[0])}));
+const raw=[
+ ["photo","Front bumper damage","Jul 21","3.2 MB","Image","#0BB3FF",""],
+ ["photo","Engine bay — before","Jul 21","2.8 MB","Image","#0A5ED7",""],
+ ["photo","Engine bay — after","Jul 22","2.9 MB","Image","#0A5ED7",""],
+ ["video","Diagnostic walkthrough","Jul 21","28 MB","Video","#F97316","1:42"],
+ ["photo","Brake pad wear","Jul 21","1.9 MB","Image","#0B1F3B",""],
+ ["doc","Inspection checklist","Jul 21","640 KB","FileText","#64748B",""],
+ ["photo","Odometer reading","Jul 21","1.1 MB","Image","#0BB3FF",""],
+ ["video","Test drive recording","Jul 23","64 MB","Video","#F97316","3:08"],
+ ["photo","Delivery handover","Jul 23","2.4 MB","Image","#0A5ED7",""],
+ ["doc","Signed delivery note","Jul 23","320 KB","FileText","#64748B",""]
+];
+const bgFor=fg=>"linear-gradient(135deg,"+fg+"14,"+fg+"08)";
+const media=raw.filter(m=>filter==="all"||m[0]===filter).map(m=>({name:m[1],date:m[2],size:m[3],icon:m[4],fg:m[5],bg:bgFor(m[5]),isVideo:m[0]==="video",duration:m[6]}));
+const extra={tabs,media,t:{title:"Media Gallery"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

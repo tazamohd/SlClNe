@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#0B1F3B}a{color:#0BB3FF;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}@keyframes glow{0%,100%{box-shadow:0 0 40px rgba(10,94,215,.3)}50%{box-shadow:0 0 60px rgba(10,94,215,.5)}}@keyframes scan{0%{top:0}100%{top:calc(100% - 3px)}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Kiosk-CheckIn" style="width:100%;min-height:100vh;display:flex;flex-direction:column;background:#0B1F3B;font-family:var(--font-ui,'Inter',sans-serif);color:#fff;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;pointer-events:none"><div style="position:absolute;top:-200px;right:-200px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.2),transparent 65%);filter:blur(80px)"></div><div style="position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(11,179,255,.12),transparent 65%);filter:blur(80px)"></div></div>
+  <!-- Top Bar -->
+  <div style="position:relative;z-index:1;padding:20px 32px;display:flex;align-items:center;gap:12px">
+    <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:48px;height:auto">
+    <div><h1 style="margin:0;font-size:18px;font-family:var(--font-display);font-weight:900;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">SALIS AUTO</h1><p style="margin:0;font-size:11px;color:rgba(255,255,255,.5)">{{ t.tagline }}</p></div>
+    <div style="flex:1"></div>
+    <div style="display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.5);font-size:12px;font-family:var(--font-mono)"><salis-icon name="Clock" size="14"></salis-icon><span dir="ltr">{{ time }}</span></div>
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer;color:rgba(255,255,255,.6);font-family:var(--font-action);font-size:11px;display:flex;align-items:center;gap:4px"><salis-icon name="Globe" size="12"></salis-icon><span>{{ langLabel }}</span></button>
+  </div>
+  <!-- Main Content -->
+  <div style="flex:1;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:32px;animation:fadeUp .4s ease">
+    <div style="text-align:center">
+      <h2 style="margin:0;font-size:36px;font-family:var(--font-display);font-weight:900;letter-spacing:-.02em">{{ t.welcomeTitle }}</h2>
+      <p style="margin:8px 0 0;font-size:16px;color:rgba(255,255,255,.6)">{{ t.welcomeDesc }}</p>
+    </div>
+    <!-- Scan / Plate Entry -->
+    <div style="display:flex;gap:24px;width:100%;max-width:700px">
+      <!-- QR Scan Area -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:16px">
+        <div style="width:200px;height:200px;border-radius:20px;border:3px solid rgba(10,94,215,.4);background:rgba(10,94,215,.05);display:flex;align-items:center;justify-content:center;position:relative;animation:glow 3s ease-in-out infinite">
+          <div style="position:absolute;top:0;left:10%;right:10%;height:3px;background:var(--salis-gradient);border-radius:2px;animation:scan 2s ease-in-out infinite"></div>
+          <salis-icon name="QrCode" size="64" style="color:rgba(10,94,215,.4)"></salis-icon>
+        </div>
+        <p style="margin:0;font-size:14px;color:rgba(255,255,255,.5)">{{ t.scanQR }}</p>
+      </div>
+      <!-- Or Divider -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px"><div style="width:1px;flex:1;background:rgba(255,255,255,.1)"></div><span style="font-size:12px;color:rgba(255,255,255,.3);font-weight:600">{{ t.or }}</span><div style="width:1px;flex:1;background:rgba(255,255,255,.1)"></div></div>
+      <!-- Manual Entry -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:16px;justify-content:center">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:rgba(255,255,255,.5)">{{ t.plateNumber }}</label>
+          <input value="{{ plate }}" onChange="{{ setPlate }}" dir="ltr" placeholder="RUH 4821" style="height:56px;border-radius:12px;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);padding:0 16px;font-family:var(--font-mono);font-size:20px;font-weight:700;color:#fff;text-align:center;outline:none;letter-spacing:.08em;text-transform:uppercase" style-focus="border-color:var(--salis-blue);box-shadow:0 0 0 4px rgba(10,94,215,.2);background:rgba(10,94,215,.08)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:rgba(255,255,255,.5)">{{ t.phoneNumber }}</label>
+          <input value="{{ phone }}" onChange="{{ setPhone }}" dir="ltr" placeholder="+966 5X XXX XXXX" style="height:56px;border-radius:12px;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);padding:0 16px;font-family:var(--font-mono);font-size:18px;color:#fff;text-align:center;outline:none" style-focus="border-color:var(--salis-blue);box-shadow:0 0 0 4px rgba(10,94,215,.2);background:rgba(10,94,215,.08)">
+        </div>
+        <button onClick="{{ checkIn }}" style="height:56px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 8px 24px rgba(10,94,215,.4);display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.02em"><salis-icon name="CheckCircle" size="20"></salis-icon>{{ t.checkInBtn }}</button>
+      </div>
+    </div>
+    <!-- Service Options -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;max-width:600px">
+      <sc-for list="{{ services }}" as="svc" hint-placeholder-count="5">
+        <button onClick="{{ svc.select }}" style="{{ svc.style }}"><salis-icon name="{{ svc.icon }}" size="18"></salis-icon><span style="font-size:12px;font-weight:600">{{ svc.label }}</span></button>
+      </sc-for>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div style="position:relative;z-index:1;padding:16px 32px;display:flex;align-items:center;justify-content:center;gap:16px;color:rgba(255,255,255,.3);font-size:11px">
+    <span>{{ t.footer }}</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1024,&quot;height&quot;:768},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:true,lang:null,AR:{},plate:"",phone:"",selectedSvc:"Maintenance",time:""};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));this._updateTime();this._iv=setInterval(()=>this._updateTime(),1000);}
+  componentWillUnmount(){clearInterval(this._iv);}
+  _updateTime(){const d=new Date();this.setState({time:d.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",hour12:true})});}
+  renderVals(){
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const sel=this.state.selectedSvc;
+    const svcs=[["Wrench","Maintenance"],["Cog","Repair"],["SearchCheck","Inspection"],["CircleDot","Tire Service"],["Droplets","Oil Change"]];
+    const services=svcs.map(([icon,label])=>{const on=sel===label;return{icon,label:t(label),select:()=>this.setState({selectedSvc:label}),
+      style:"display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 20px;border-radius:12px;cursor:pointer;transition:all .2s ease;"+(on?"background:var(--salis-gradient);color:#fff;box-shadow:0 4px 16px rgba(10,94,215,.4);border:none":"background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1)")};});
+    return{rootClass:"dark",dir:rtl?"rtl":"ltr",time:this.state.time,plate:this.state.plate,phone:this.state.phone,services,
+      langLabel:rtl?"English":"عربي",
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      setPlate:e=>this.setState({plate:e.target.value}),setPhone:e=>this.setState({phone:e.target.value}),
+      checkIn:()=>location.href="WorkshopCheckIn.dc.html",
+      t:{tagline:rtl?"نظام إدارة ورش السيارات المتكامل":"Integrated Workshop Management",welcomeTitle:t("Vehicle Check-In"),
+        welcomeDesc:rtl?"امسح رمز QR أو أدخل بيانات المركبة":"Scan your QR code or enter vehicle details",
+        scanQR:rtl?"وجّه الكاميرا نحو رمز QR":"Point camera at QR code",or:rtl?"أو":"OR",
+        plateNumber:rtl?"رقم اللوحة":"License Plate",phoneNumber:t("Phone"),checkInBtn:t("Check-In"),
+        footer:rtl?"مدعوم من SALIS AUTO":"Powered by SALIS AUTO"}};
+  }
+}
+</script>
+</body>
+</html>

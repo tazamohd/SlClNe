@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}input::placeholder{color:#9BA4B0}textarea::placeholder{color:#9BA4B0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="CheckIn-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="JobCards.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1;min-width:0"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.vehicleCheckIn }}</h1><p style="margin:0;font-size:11px;color:var(--text-muted)" dir="ltr">JC-A3F8B2C1</p></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+    <button onClick="{{ toggleLang }}" style="height:30px;padding:0 8px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:11px"><salis-icon name="Globe" size="12"></salis-icon></button>
+  </div>
+  <!-- Stepper -->
+  <div style="padding:12px 16px;overflow-x:auto;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:0;background:var(--surface-card)">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6"><div style="display:flex;align-items:center;gap:0;flex-shrink:0"><div style="display:flex;align-items:center;gap:4px"><span style="{{ s.dotStyle }}">{{ s.num }}</span><span style="font-family:var(--font-action);font-size:10px;font-weight:600;white-space:nowrap;{{ s.labelColor }}">{{ s.label }}</span></div><sc-if value="{{ s.hasLine }}" hint-placeholder-val="{{ true }}"><div style="width:16px;height:2px;margin:0 4px;border-radius:1px;flex-shrink:0;{{ s.lineColor }}"></div></sc-if></div></sc-for>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- Customer -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="User" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.customerInfo }}</h3></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><span style="font-size:10px;color:var(--text-muted)">{{ t.name }}</span><p style="margin:2px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)">Ahmed Al-Rashid</p></div>
+        <div><span style="font-size:10px;color:var(--text-muted)">{{ t.phone }}</span><p style="margin:2px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">+966 55 210 4471</p></div>
+      </div>
+    </div>
+    <!-- Vehicle -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="Car" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.vehicleInfo }}</h3></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><span style="font-size:10px;color:var(--text-muted)">{{ t.makeModel }}</span><p style="margin:2px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)">Toyota Camry 2022</p></div>
+        <div><span style="font-size:10px;color:var(--text-muted)">{{ t.plate }}</span><p style="margin:2px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">RUH 4821</p></div>
+      </div>
+    </div>
+    <!-- Check-In Form -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="ClipboardList" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.checkInDetails }}</h3></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.odometer }}</label><input value="{{ odo }}" onChange="{{ setOdo }}" dir="ltr" style="height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-family:var(--font-mono);font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15)"></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.fuelLevel }}</label><div style="display:flex;gap:6px"><sc-for list="{{ fuelLevels }}" as="fl" hint-placeholder-count="4"><button onClick="{{ fl.select }}" style="{{ fl.style }}">{{ fl.label }}</button></sc-for></div></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.reportedIssues }}</label><textarea rows="3" placeholder="{{ t.describeIssues }}" style="width:100%;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:10px 12px;font-family:var(--font-ui);font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box;resize:none" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15)"></textarea></div>
+      <div style="height:100px;border-radius:8px;border:1.5px dashed var(--border-strong);background:var(--surface-inset);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--text-muted)"><salis-icon name="Camera" size="20"></salis-icon><span style="font-size:12px">{{ t.addPhotos }}</span></div>
+    </div>
+    <button onClick="{{ completeCheckIn }}" style="width:100%;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0"><salis-icon name="Check" size="18"></salis-icon>{{ t.completeCheckIn }}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},odo:"42,180 km",fuel:"3/4"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const stepData=[["Check-In",true],["Inspection",false],["Estimate",false],["QC",false],["Delivery",false]];
+    const steps=stepData.map(([label,current],i)=>({label:t(label==="QC"?"Quality Check":label),num:String(i+1),current,hasLine:i<4,
+      dotStyle:"width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;"+(current?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);border:1px solid var(--border-default);color:var(--text-muted)"),
+      labelColor:current?"color:var(--salis-blue)":"color:var(--text-muted)",lineColor:"background:var(--border-default)"}));
+    const fuelOpts=["1/4","1/2","3/4","Full"];
+    const fuelLevels=fuelOpts.map(f=>({label:f,select:()=>this.setState({fuel:f}),
+      style:"flex:1;height:38px;border-radius:8px;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;border:none;"+(this.state.fuel===f?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);border:1px solid var(--border-default);color:var(--text-body)")}));
+    return {rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      steps,fuelLevels,odo:this.state.odo,setOdo:e=>this.setState({odo:e.target.value}),
+      completeCheckIn:()=>location.href="WorkshopInspection.Mobile.dc.html",
+      t:{vehicleCheckIn:t("Vehicle Check-In"),customerInfo:t("Customer Information"),vehicleInfo:t("Vehicle Information"),checkInDetails:t("Check-In Details"),
+        name:t("Name"),phone:t("Phone"),makeModel:t("Make & Model"),plate:t("Plate"),odometer:t("Odometer Reading"),fuelLevel:t("Fuel Level"),
+        reportedIssues:t("Reported Issues"),describeIssues:rtl?"صف المشاكل...":"Describe issues...",addPhotos:rtl?"إضافة صور":"Add Photos",completeCheckIn:t("Complete Check-In")}};
+  }
+}
+</script>
+</body>
+</html>

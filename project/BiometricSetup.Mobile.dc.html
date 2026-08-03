@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0;text-decoration:underline}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Biometric-Setup-Mobile" style="min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 16px">
+    <button onClick="{{ toggleLang }}" aria-label="Toggle language" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+    <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 16px 24px;position:relative;z-index:1;animation:fadeUp .3s ease;text-align:center;gap:16px">
+    <span style="display:inline-flex;padding:24px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);animation:pulse 2s ease-in-out infinite"><salis-icon name="Fingerprint" size="44"></salis-icon></span>
+    <h1 style="margin:0;font-size:22px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.title }}</h1>
+    <p style="margin:0;font-family:var(--font-action);font-size:14px;color:var(--text-muted);max-width:280px">{{ t.desc }}</p>
+    <a href="Dashboard.Mobile.dc.html" style="margin-top:8px;width:100%;max-width:320px;display:inline-flex;align-items:center;justify-content:center;height:50px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.enable }}</a>
+    <a href="Dashboard.Mobile.dc.html" style="font-family:var(--font-action);font-size:13px;color:var(--text-muted)">{{ t.skip }}</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",
+      themeIcon:dark?"Sun":"Moon",langLabel:lang==="ar"?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=lang==="ar"?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("Biometric Setup"),desc:t("Use your fingerprint or face to sign in faster"),enable:t("Continue"),skip:t("Skip for now")}};
+  }
+}
+</script>
+</body>
+</html>

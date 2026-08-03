@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Delivery-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="WorkshopQC.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.vehicleDelivery }}</h1><p style="margin:0;font-size:11px;color:var(--text-muted)" dir="ltr">JC-A3F8B2C1</p></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- Delivery Checklist -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="ListChecks" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.deliveryChecklist }}</h3></div>
+      <sc-for list="{{ deliveryItems }}" as="d" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-default)">
+          <button onClick="{{ d.toggle }}" style="{{ d.cbStyle }}"><sc-if value="{{ d.checked }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="12" stroke-width="3"></salis-icon></sc-if></button>
+          <salis-icon name="{{ d.icon }}" size="14" style="color:var(--text-muted)"></salis-icon>
+          <span style="flex:1;font-size:13px;color:var(--text-body)">{{ d.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Invoice Summary -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><salis-icon name="Receipt" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.invoiceSummary }}</h3></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.parts }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 590</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.labor }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 755</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 201.75</span></div>
+      <div style="height:1px;background:var(--border-default)"></div>
+      <div style="display:flex;justify-content:space-between;font-size:17px;font-weight:800;color:var(--text-heading)"><span>{{ t.total }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 1,546.75</span></div>
+    </div>
+    <!-- Odometer -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px">
+      <div style="flex:1;text-align:center"><span style="font-size:10px;color:var(--text-muted)">{{ t.checkInOdo }}</span><p style="margin:4px 0 0;font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--text-heading)" dir="ltr">42,180 km</p></div>
+      <salis-icon name="ArrowRight" size="16" style="color:var(--text-muted);flex-shrink:0"></salis-icon>
+      <div style="flex:1;text-align:center"><span style="font-size:10px;color:var(--text-muted)">{{ t.deliveryOdo }}</span><p style="margin:4px 0 0;font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--salis-blue)" dir="ltr">42,195 km</p></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:50px;border:1.5px solid var(--border-strong);border-radius:8px;background:none;color:var(--text-body);font-family:var(--font-action);font-weight:500;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Printer" size="15"></salis-icon>{{ t.print }}</button>
+      <button onClick="{{ complete }}" style="flex:1;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="CheckCircle" size="15"></salis-icon>{{ t.completeDelivery }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},checked:{"Customer Notified":true,"Keys Returned":true,"Documents Ready":false,"Invoice Attached":false,"Vehicle Cleaned":false,"Final Walk-Around":false}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const C=this.state.checked;
+    const dlItems=[["Bell","Customer Notified"],["Key","Keys Returned"],["FileText","Documents Ready"],["Receipt","Invoice Attached"],["Sparkles","Vehicle Cleaned"],["Eye","Final Walk-Around"]];
+    const deliveryItems=dlItems.map(([icon,label])=>{const on=C[label];return{icon,label:t(label==="Vehicle Cleaned"?"Cleaned":label==="Final Walk-Around"?"Quality Check":label),checked:on,
+      toggle:()=>this.setState(s=>({checked:{...s.checked,[label]:!on}})),
+      cbStyle:"width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;border:none;"+(on?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:transparent")};});
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      deliveryItems,complete:()=>location.href="WorkshopSignature.Mobile.dc.html",
+      t:{vehicleDelivery:t("Vehicle Delivery"),deliveryChecklist:t("Delivery Checklist"),invoiceSummary:rtl?"ملخص الفاتورة":"Invoice Summary",
+        parts:t("Parts"),labor:t("Labor"),vat:t("VAT (15%)"),total:t("Grand Total"),
+        checkInOdo:rtl?"عند الاستلام":"At Check-In",deliveryOdo:rtl?"عند التسليم":"At Delivery",
+        print:t("Print Delivery Note"),completeDelivery:t("Complete Delivery")}};
+  }
+}
+</script>
+</body>
+</html>

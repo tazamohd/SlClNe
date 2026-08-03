@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="AI Assistant" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh"><div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">{{ userInitial }}</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">{{ userName }}</p><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:rgba(10,94,215,.12);color:var(--salis-blue)">{{ t.admin }}</span><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:var(--salis-gradient);color:#fff">PRO</span></div></div></div></div><nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav><div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button><a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a></div></aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+      <div style="display:flex;align-items:center;gap:8px"><span style="padding:6px;border-radius:8px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Sparkles" size="16"></salis-icon></span><span style="font-size:14px;font-weight:600;color:var(--text-heading)">SALIS AI</span></div>
+      <div style="flex:1"></div>
+      <button style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:none;border-radius:8px;background:none;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-blue)" style-hover="background:rgba(10,94,215,.08)"><salis-icon name="Plus" size="14"></salis-icon>{{ t.newChat }}</button>
+      <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+    </header>
+    <main style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+      <div style="flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px 0">
+          <div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:50%;filter:blur(20px);opacity:.25"></div><div style="position:relative;width:64px;height:64px;border-radius:50%;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;box-shadow:0 20px 30px rgba(10,94,215,.3)"><salis-icon name="Sparkles" size="32" style="color:#fff"></salis-icon></div></div>
+          <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.greeting }}</h2>
+          <p style="margin:0;font-size:14px;color:var(--text-muted);max-width:400px;text-align:center">{{ t.greetingDesc }}</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:720px;margin:0 auto;width:100%">
+          <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="6">
+            <button style="display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:12px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;text-align:start;transition:all .2s ease" style-hover="border-color:rgba(10,94,215,.3);box-shadow:var(--shadow-lg)">
+              <span style="{{ s.iconStyle }}"><salis-icon name="{{ s.icon }}" size="14"></salis-icon></span>
+              <span style="font-size:13px;font-weight:500;color:var(--text-heading)">{{ s.title }}</span>
+              <span style="font-size:11px;color:var(--text-muted)">{{ s.desc }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <sc-for list="{{ messages }}" as="msg" hint-placeholder-count="0">
+          <div style="display:flex;gap:12px;max-width:720px;margin:0 auto;width:100%;flex-direction:{{ msg.dir }}">
+            <span style="width:32px;height:32px;border-radius:50%;background:{{ msg.avatarBg }};color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">{{ msg.avatar }}</span>
+            <div style="flex:1;padding:14px 16px;border-radius:14px;background:{{ msg.bubbleBg }};border:1px solid {{ msg.bubbleBorder }}"><p style="margin:0;font-size:14px;color:var(--text-body);line-height:1.6">{{ msg.text }}</p></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:16px 24px 24px;border-top:1px solid var(--border-default);background:var(--surface-sidebar)">
+        <div style="display:flex;gap:10px;max-width:720px;margin:0 auto">
+          <span style="position:relative;flex:1;display:flex;align-items:center">
+            <input placeholder="{{ t.askPlaceholder }}" style="width:100%;height:48px;border-radius:14px;border:1.5px solid var(--border-default);background:var(--surface-card);padding:0 52px 0 16px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box;transition:border-color .2s" style-focus="border-color:var(--salis-blue);box-shadow:0 0 0 3px rgba(10,94,215,.1)">
+            <button style="position:absolute;inset-inline-end:6px;width:36px;height:36px;border-radius:10px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(10,94,215,.2)"><salis-icon name="ArrowUp" size="18"></salis-icon></button>
+          </span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Khalid Al-Amri&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+
+class Component extends DCLogic {
+  state={dark:null,lang:null,open:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const NAV=D?(D.navFor?D.navFor(D.NAV):D.NAV):[];const open=this.state.open??NAV.map(g=>g.label);
+    const navGroups=NAV.map(g=>{const isOpen=open.includes(g.label);return{label:t(g.label),open:isOpen,chev:isOpen?"ChevronDown":(rtl?"ChevronLeft":"ChevronRight"),toggle:()=>this.setState({open:isOpen?open.filter(x=>x!==g.label):[...open,g.label]}),items:g.items.map(it=>{const on=it.r==="ai-assistant";return{label:t(it.l),icon:g.icon,href:it.href||"#",style:"display:flex;align-items:center;gap:8px;padding:6px 12px;padding-inline-start:24px;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;text-decoration:none;"+(on?"background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)":"color:var(--text-primary)")}})};});
+    const _rid=(D&&D.currentRole)?D.currentRole():null;const _rl=((D&&D.ROLES)||[]).find(x=>x.id===_rid);const userName=_rl?(rtl?_rl.demo.ar:_rl.demo.name):(this.props.userName??"Khalid Al-Amri");const roleLabel=_rl?(rtl?_rl.ar:_rl.label):null;
+    const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";
+    const suggestions=[
+      {title:t("Revenue Analysis"),desc:t("Show me this month's revenue breakdown"),icon:"TrendingUp",iconStyle:ic("rgba(10,94,215,.1)","#0A5ED7")},
+      {title:t("Low Stock Check"),desc:t("Which parts need reordering?"),icon:"Package",iconStyle:ic("rgba(249,115,22,.1)","#F97316")},
+      {title:t("Overdue Invoices"),desc:t("List all overdue invoices this month"),icon:"AlertCircle",iconStyle:ic("rgba(249,115,22,.1)","#F97316")},
+      {title:t("Technician Load"),desc:t("Show technician workload distribution"),icon:"Users",iconStyle:ic("rgba(11,179,255,.1)","#0BB3FF")},
+      {title:t("Customer Insights"),desc:t("Top customers by revenue this quarter"),icon:"Heart",iconStyle:ic("rgba(11,31,59,.1)","#0B1F3B")},
+      {title:t("Generate Report"),desc:t("Create a monthly operations summary"),icon:"FileBarChart",iconStyle:ic("rgba(10,94,215,.1)","#0A5ED7")}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      userName,userInitial:userName.trim()[0]||"K",navGroups,suggestions,messages:[],
+      t:{admin:roleLabel||t("ADMIN"),logout:t("Logout"),newChat:t("New Chat"),greeting:t("How can I help you today?"),greetingDesc:t("Ask me anything about your workshop — revenue, inventory, scheduling, or let me generate reports for you."),askPlaceholder:t("Ask SALIS AI anything...")}};
+  }
+}
+
+</script>
+</body>
+</html>

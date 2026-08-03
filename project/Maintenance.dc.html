@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Maintenance-Mode" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif);padding:24px">
+  <div style="position:absolute;inset:0;pointer-events:none"><div style="position:absolute;bottom:-150px;left:50%;transform:translateX(-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(11,179,255,.08),transparent 65%);filter:blur(64px)"></div></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;max-width:420px;animation:fadeUp .3s ease">
+    <div style="position:relative">
+      <div style="width:100px;height:100px;border-radius:50%;border:3px dashed rgba(10,94,215,.2);display:flex;align-items:center;justify-content:center;animation:spin 8s linear infinite"><salis-icon name="Cog" size="44" style="color:var(--salis-blue);opacity:.6"></salis-icon></div>
+      <div style="position:absolute;top:-4px;inset-inline-end:-4px;width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(10,94,215,.4)"><salis-icon name="Wrench" size="14"></salis-icon></div>
+    </div>
+    <div><h1 style="margin:0;font-size:22px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.title }}</h1><p style="margin:8px 0 0;font-size:14px;color:var(--text-muted);line-height:1.5">{{ t.desc }}</p></div>
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">{{ t.estReturn }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--salis-blue)" dir="ltr">~30 {{ t.minutes }}</span></div>
+      <div style="height:4px;border-radius:2px;background:var(--surface-inset)"><div style="height:100%;width:65%;border-radius:2px;background:var(--salis-gradient);transition:width 1s ease"></div></div>
+    </div>
+    <p style="margin:0;font-size:12px;color:var(--text-faint)">{{ t.contact }} <a href="mailto:support@salisauto.com" style="font-weight:600">support@salisauto.com</a></p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    return{rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",
+      t:{title:lang==="ar"?"النظام تحت الصيانة":"System Under Maintenance",desc:lang==="ar"?"نقوم حالياً بتحسين النظام. نعود قريباً.":"We're upgrading the system to serve you better. We'll be back shortly.",
+        estReturn:lang==="ar"?"الوقت المتوقع":"Est. Return",minutes:lang==="ar"?"دقيقة":"min",contact:lang==="ar"?"للمساعدة:":"Need help?"}};
+  }
+}
+</script>
+</body>
+</html>

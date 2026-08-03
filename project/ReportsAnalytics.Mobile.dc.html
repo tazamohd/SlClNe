@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Reports-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="Reports.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.reportsTitle }}</h1></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:10px 16px;border-bottom:1px solid var(--border-default);display:flex;gap:6px;overflow-x:auto;background:var(--surface-card)">
+    <sc-for list="{{ periodTabs }}" as="pt" hint-placeholder-count="4"><button onClick="{{ pt.select }}" style="height:30px;padding:0 12px;border-radius:8px;border:none;cursor:pointer;font-family:var(--font-action);font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0;{{ pt.style }}">{{ pt.label }}</button></sc-for>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- KPIs -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10px;color:var(--text-muted)">{{ k.label }}</span><span style="{{ k.iconStyle }}"><salis-icon name="{{ k.icon }}" size="12"></salis-icon></span></div>
+          <span style="font-size:18px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)" dir="ltr">{{ k.value }}</span>
+          <span style="{{ k.changeStyle }}">{{ k.change }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Revenue Bars -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.revenueAnalysis }}</h3>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:120px">
+        <sc-for list="{{ revBars }}" as="bar" hint-placeholder-count="7">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end">
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted)" dir="ltr">{{ bar.value }}</span>
+            <div style="width:100%;border-radius:3px 3px 0 0;background:var(--salis-gradient);{{ bar.heightStyle }};min-height:3px"></div>
+            <span style="font-size:10px;color:var(--text-muted)">{{ bar.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <!-- Service Breakdown -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.serviceBreakdown }}</h3>
+      <sc-for list="{{ serviceBreakdown }}" as="sb" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text-body)">{{ sb.label }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--text-heading)">{{ sb.pct }}%</span></div>
+          <div style="height:5px;border-radius:3px;background:var(--surface-inset)"><div style="height:100%;border-radius:3px;{{ sb.barStyle }};width:{{ sb.pct }}%"></div></div>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Top Technicians -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.techPerformance }}</h3>
+      <sc-for list="{{ techPerf }}" as="tp" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-default)">
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">{{ tp.initial }}</span>
+          <div style="flex:1"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ tp.name }}</p><p style="margin:1px 0 0;font-size:10px;color:var(--text-muted)">{{ tp.jobs }} {{ t.jobs }} · ★ {{ tp.rating }}</p></div>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ tp.revenue }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},period:"month"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const p=this.state.period;
+    const periodTabs=[["week",t("This Week")],["month",t("This Month")],["quarter",t("This Quarter")],["year",t("This Year")]].map(([id,label])=>({label,select:()=>this.setState({period:id}),style:p===id?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);color:var(--text-body)"}));
+    const pill=(bg,fg)=>"font-size:10px;font-weight:600;padding:2px 6px;border-radius:9999px;background:"+bg+";color:"+fg;
+    const kpis=[
+      {icon:"DollarSign",label:t("Total Revenue"),value:"128.4K",change:"↑ 12.3%",changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:6px;border-radius:6px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"},
+      {icon:"Wrench",label:t("Jobs Completed"),value:"142",change:"↑ 8.5%",changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:6px;border-radius:6px;background:rgba(11,179,255,.1);color:#0BB3FF;display:flex"},
+      {icon:"TrendingUp",label:t("Avg Job Value"),value:"SAR 904",change:"↑ 3.2%",changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:6px;border-radius:6px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"},
+      {icon:"Users",label:t("Customer Retention"),value:"87%",change:"↑ 2.1%",changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:6px;border-radius:6px;background:rgba(11,179,255,.1);color:#0BB3FF;display:flex"}
+    ];
+    const months=rtl?["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو"]:["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+    const vals=[82,95,78,110,92,125,128];const maxV=Math.max(...vals);
+    const revBars=months.map((m,i)=>({label:m,value:vals[i]+"K",heightStyle:"height:"+Math.round(vals[i]/maxV*100)+"%"}));
+    const serviceBreakdown=[
+      {label:t("Maintenance"),pct:35,barStyle:"background:var(--salis-gradient)"},
+      {label:t("Repair"),pct:28,barStyle:"background:#0BB3FF"},
+      {label:t("Diagnostics"),pct:18,barStyle:"background:var(--salis-blue)"},
+      {label:t("Inspection"),pct:12,barStyle:"background:#64748B"},
+      {label:t("Tire Service"),pct:7,barStyle:"background:#0B1F3B"}
+    ];
+    const techPerf=[
+      {name:"Yousef Al-Otaibi",initial:"Y",jobs:"38",revenue:"SAR 34.2K",rating:"4.9"},
+      {name:"Bandar Al-Qahtani",initial:"B",jobs:"31",revenue:"SAR 27.9K",rating:"4.7"},
+      {name:"Faisal Al-Harbi",initial:"F",jobs:"29",revenue:"SAR 26.1K",rating:"4.8"},
+      {name:"Nasser Al-Dosari",initial:"N",jobs:"22",revenue:"SAR 19.8K",rating:"4.6"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      periodTabs,kpis,revBars,serviceBreakdown,techPerf,
+      t:{reportsTitle:t("Reports & Analytics"),revenueAnalysis:t("Revenue Analysis"),serviceBreakdown:t("Service Breakdown"),techPerformance:t("Technician Performance"),jobs:t("jobs")}};
+  }
+}
+</script>
+</body>
+</html>

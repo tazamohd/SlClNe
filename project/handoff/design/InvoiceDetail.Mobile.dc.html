@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Invoice-Detail-Mobile" style="position:relative;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm)">
+    <a href="Invoices.Mobile.dc.html" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:var(--text-primary)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <p style="margin:0;flex:1;font-size:15px;font-weight:700;color:var(--text-heading);font-family:var(--font-mono)" dir="ltr">{{ inv.id }}</p>
+    <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="height:calc(100vh - 56px);overflow-y:auto">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <p style="margin:0;font-size:14px;font-weight:600;color:var(--text-heading)">{{ inv.cust }}</p>
+        <span style="{{ inv.stStyle }}">{{ inv.status }}</span>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted)"><span>{{ t.dueDate }}</span><span style="color:var(--text-heading)">{{ inv.due }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted);padding-top:10px;border-top:1px solid var(--border-default)"><span>{{ t.subtotal }}</span><span dir="ltr">{{ inv.subtotal }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted)"><span>{{ t.vat }}</span><span dir="ltr">{{ inv.vat }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:var(--text-heading);padding-top:8px;border-top:1px solid var(--border-default)"><span>{{ t.total }}</span><span dir="ltr">{{ inv.amount }}</span></div>
+      </div>
+      <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:14px;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="Printer" size="16"></salis-icon>{{ t.print }}</button>
+    </div>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;
+    const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const params=new URLSearchParams(location.search);
+    const id=params.get("id");
+    const list=D?D.INVOICES:[];
+    const i=list.find(x=>x.id===id)||list[0]||{id:"INV-2026-0142",cust:"Ahmed Al-Rashid",amount:"SAR 1,840",due:"Jul 28, 2026",status:"unpaid"};
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:12px;font-weight:600;background:"+bg+";color:"+fg;
+    const stMap={paid:pill("rgba(10,94,215,.1)","#0A5ED7"),unpaid:pill("rgba(100,116,139,.1)","#64748B"),overdue:pill("rgba(249,115,22,.1)","#F97316")};
+    const total=parseFloat((i.amount.match(/[\d,]+/)||["0"])[0].replace(/,/g,""))||0;
+    const subtotal=total/1.15,vat=total-subtotal;
+    const fmt=n=>"SAR "+n.toLocaleString(undefined,{maximumFractionDigits:0});
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",backChev:rtl?"ArrowRight":"ArrowLeft",
+      themeIcon:dark?"Sun":"Moon",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      inv:{id:i.id,cust:i.cust,amount:i.amount,due:i.due,subtotal:fmt(subtotal),vat:fmt(vat),
+        status:t(i.status[0].toUpperCase()+i.status.slice(1)),stStyle:stMap[i.status]},
+      t:{dueDate:t("Due Date"),subtotal:t("Subtotal"),vat:t("VAT (15%)"),total:t("Total"),print:t("Print Job Card")}
+    };
+  }
+}
+
+</script>
+</body>
+</html>

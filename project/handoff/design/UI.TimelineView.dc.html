@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Timeline View" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span>
+    <span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;animation:fadeUp .3s ease">
+<div style="max-width:800px;display:flex;flex-direction:column;gap:16px">
+  <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+  <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default)">
+    <div style="display:flex;gap:0;overflow-x:auto;padding-bottom:8px">
+      <sc-for list="{{ events }}" as="ev" hint-placeholder-count="6">
+        <div style="flex:0 0 180px;display:flex;flex-direction:column;align-items:center;gap:0">
+          <div style="width:16px;height:16px;border-radius:50%;background:{{ ev.color }};border:3px solid var(--surface-card);position:relative;z-index:1"></div>
+          <div style="width:2px;height:20px;background:var(--border-default)"></div>
+          <div style="background:var(--surface-inset);border-radius:10px;padding:12px;border:1px solid var(--border-default);width:160px;text-align:center">
+            <p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ ev.title }}</p>
+            <p style="margin:4px 0 0;font-size:11px;color:var(--text-muted)">{{ ev.desc }}</p>
+            <p style="margin:4px 0 0;font-size:10px;color:var(--text-faint)">{{ ev.date }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const events=[
+  {title:"Check-In",desc:"Vehicle received",date:"Jul 21, 9:15 AM",color:"#0A5ED7"},
+  {title:"Inspection",desc:"Multi-point check",date:"Jul 21, 10:30 AM",color:"#0BB3FF"},
+  {title:"Estimate",desc:"SAR 1,250 approved",date:"Jul 21, 2:00 PM",color:"#F97316"},
+  {title:"Repair",desc:"In progress",date:"Jul 22, 8:00 AM",color:"#0A5ED7"},
+  {title:"QC",desc:"Pending",date:"—",color:"#CBD5E1"},
+  {title:"Delivery",desc:"Scheduled",date:"Jul 23, 4:00 PM",color:"#CBD5E1"}
+];const extra={events,t:{title:"Timeline View"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

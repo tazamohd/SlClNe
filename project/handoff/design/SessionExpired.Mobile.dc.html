@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Session-Expired-Mobile" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;box-sizing:border-box;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif);animation:fadeUp .3s ease">
+  <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px">
+    <svg width="64" height="64" style="position:absolute;inset:0;transform:rotate(-90deg)"><circle cx="32" cy="32" r="27" fill="none" stroke="rgba(11,179,255,.15)" stroke-width="4"></circle><circle cx="32" cy="32" r="27" fill="none" stroke="#0BB3FF" stroke-width="4" stroke-linecap="round" stroke-dasharray="170" stroke-dashoffset="50"></circle></svg>
+    <salis-icon name="TimerOff" size="24" style="color:#0BB3FF"></salis-icon>
+  </span>
+  <h1 style="margin:0;font-size:19px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.title }}</h1>
+  <p style="margin:0;font-family:var(--font-action);font-size:13px;color:var(--text-muted)">{{ t.desc }}</p>
+  <a href="Login.Mobile.dc.html" style="margin-top:8px;width:100%;display:inline-flex;align-items:center;justify-content:center;height:46px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25);white-space:nowrap;box-sizing:border-box">{{ t.signIn }}</a>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",t:{title:t("Session Expired"),desc:t("Your session has expired. Please sign in again."),signIn:t("Sign In")}};
+  }
+}
+
+</script>
+</body>
+</html>

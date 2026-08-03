@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0;text-decoration:underline}
+input::placeholder{color:#9BA4B0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Onboarding-Mobile" style="min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none">
+    <div style="position:absolute;top:0;right:0;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.1),transparent 65%);filter:blur(48px)"></div>
+  </div>
+  <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px">
+    <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:88px;height:auto">
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ toggleLang }}" aria-label="Toggle language" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="13"></salis-icon><span>{{ langLabel }}</span></button>
+      <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+    </div>
+  </div>
+  <div style="flex:1;position:relative;z-index:1;padding:4px 16px 16px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease">
+    <div style="text-align:center">
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:900;font-size:24px;letter-spacing:-.03em;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ t.title }}</h1>
+      <p style="margin:4px 0 0;font-family:var(--font-action);font-size:13px;color:var(--text-muted)">{{ t.subtitle }}</p>
+    </div>
+    <div style="background:color-mix(in srgb,var(--surface-card) 92%,transparent);backdrop-filter:blur(24px);border:1px solid var(--border-default);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column;flex:1">
+      <div style="height:4px;background:rgba(10,94,215,.1);flex-shrink:0"><div style="{{ progStyle }}"></div></div>
+      <div style="padding:16px 16px 0;display:flex;align-items:center;gap:0;flex-shrink:0">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;flex:{{ s.flex }};min-width:0">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+              <span style="{{ s.circleStyle }}"><sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="14" stroke-width="3"></salis-icon></sc-if><sc-if value="{{ s.notDone }}" hint-placeholder-val="{{ true }}"><span>{{ s.n }}</span></sc-if></span>
+              <span style="{{ s.labelStyle }}">{{ s.label }}</span>
+            </div>
+            <sc-if value="{{ s.hasLine }}" hint-placeholder-val="{{ true }}"><div style="{{ s.lineStyle }}"></div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:18px 16px;display:flex;flex-direction:column;gap:18px;flex:1;overflow-y:auto">
+        <sc-if value="{{ isStep0 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label for="wname" style="font-family:var(--font-action);font-size:12px;font-weight:500;letter-spacing:.025em;color:var(--text-primary)">{{ t.wsName }}</label>
+              <span style="position:relative;display:flex;align-items:center">
+                <salis-icon name="Warehouse" size="18" style="position:absolute;inset-inline-start:12px;color:var(--text-muted);pointer-events:none;z-index:1"></salis-icon>
+                <input id="wname" placeholder="{{ t.wsNamePh }}" value="{{ wsName }}" onChange="{{ setWsName }}" style="width:100%;height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;padding-inline-start:38px;font-family:var(--font-action);font-size:15px;color:var(--text-primary);outline:none;box-sizing:border-box" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15);background:var(--surface-card)">
+              </span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label for="wcity" style="font-family:var(--font-action);font-size:12px;font-weight:500;letter-spacing:.025em;color:var(--text-primary)">{{ t.city }}</label>
+              <select id="wcity" value="{{ city }}" onChange="{{ setCity }}" style="width:100%;height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-family:var(--font-action);font-size:15px;color:var(--text-primary);outline:none;cursor:pointer;box-sizing:border-box">
+                <sc-for list="{{ cities }}" as="c" hint-placeholder-count="5"><option value="{{ c.v }}">{{ c.l }}</option></sc-for>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label for="wphone" style="font-family:var(--font-action);font-size:12px;font-weight:500;letter-spacing:.025em;color:var(--text-primary)">{{ t.phone }}</label>
+              <span style="position:relative;display:flex;align-items:center">
+                <salis-icon name="Phone" size="18" style="position:absolute;inset-inline-start:12px;color:var(--text-muted);pointer-events:none;z-index:1"></salis-icon>
+                <input id="wphone" dir="ltr" placeholder="+966 5X XXX XXXX" value="{{ phone }}" onChange="{{ setPhone }}" style="width:100%;height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;padding-inline-start:38px;font-family:var(--font-mono);font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15);background:var(--surface-card)">
+              </span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label for="wvat" style="font-family:var(--font-action);font-size:12px;font-weight:500;letter-spacing:.025em;color:var(--text-primary)">{{ t.vat }}</label>
+              <span style="position:relative;display:flex;align-items:center">
+                <salis-icon name="Receipt" size="18" style="position:absolute;inset-inline-start:12px;color:var(--text-muted);pointer-events:none;z-index:1"></salis-icon>
+                <input id="wvat" dir="ltr" placeholder="3XXXXXXXXXXXXX3" value="{{ vat }}" onChange="{{ setVat }}" style="width:100%;height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;padding-inline-start:38px;font-family:var(--font-mono);font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15);background:var(--surface-card)">
+              </span>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;font-family:var(--font-action);font-size:13px;color:var(--text-muted)">{{ t.svcHint }}</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+              <button onClick="{{ s.toggle }}" style="{{ s.style }}">
+                <span style="{{ s.capStyle }}"><salis-icon name="{{ s.icon }}" size="18"></salis-icon></span>
+                <span style="font-family:var(--font-action);font-size:11px;font-weight:500;text-align:center">{{ s.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h3 style="margin:0;font-size:16px;font-weight:500;color:var(--text-heading)">{{ t.inviteTitle }}</h3>
+            <p style="margin:4px 0 0;font-family:var(--font-action);font-size:13px;color:var(--text-muted)">{{ t.inviteHint }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="position:relative;display:flex;align-items:center">
+              <salis-icon name="Mail" size="18" style="position:absolute;inset-inline-start:12px;color:var(--text-muted);pointer-events:none;z-index:1"></salis-icon>
+              <input placeholder="{{ t.emailPh }}" value="{{ invEmail }}" onChange="{{ setInvEmail }}" style="width:100%;height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;padding-inline-start:38px;font-family:var(--font-action);font-size:15px;color:var(--text-primary);outline:none;box-sizing:border-box" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15);background:var(--surface-card)">
+            </span>
+            <div style="display:flex;gap:10px">
+              <select value="{{ invRole }}" onChange="{{ setInvRole }}" style="flex:1;height:44px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-family:var(--font-action);font-size:13px;color:var(--text-primary);outline:none;cursor:pointer">
+                <sc-for list="{{ roles }}" as="r" hint-placeholder-count="3"><option value="{{ r.v }}">{{ r.l }}</option></sc-for>
+              </select>
+              <button onClick="{{ addInvite }}" style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer"><salis-icon name="Plus" size="14"></salis-icon>{{ t.add }}</button>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ invites }}" as="i" hint-placeholder-count="0">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset)">
+                <span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">{{ i.initial }}</span>
+                <span style="flex:1;font-size:12px;color:var(--text-body);font-family:var(--font-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" dir="ltr">{{ i.email }}</span>
+                <span style="border-radius:9999px;padding:2px 8px;font-size:11px;font-weight:500;background:rgba(10,94,215,.1);color:var(--salis-blue);flex-shrink:0">{{ i.role }}</span>
+                <button onClick="{{ i.remove }}" aria-label="Remove" style="border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;padding:4px;flex-shrink:0"><salis-icon name="X" size="14"></salis-icon></button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="padding:14px 16px;border-top:1px solid var(--border-default);display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goBack }}" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;border:1.5px solid var(--border-strong);background:none;cursor:pointer;color:var(--text-body)"><salis-icon name="{{ backChev }}" size="18"></salis-icon></button>
+        </sc-if>
+        <a href="Dashboard.Mobile.dc.html" style="font-family:var(--font-action);font-size:12px;color:var(--text-muted)">{{ t.skip }}</a>
+        <span style="flex:1"></span>
+        <button onClick="{{ goNext }}" style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ nextLabel }}<salis-icon name="{{ nextChev }}" size="16"></salis-icon></button>
+      </div>
+    </div>
+    <p style="margin:0;text-align:center;font-family:var(--font-action);font-size:11px;color:var(--text-faint)">{{ stepCounter }}</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,step:0,wsName:"",city:"Riyadh",phone:"",vat:"",sel:["Maintenance","Repair"],invEmail:"",invRole:"Technician",invites:[],AR:{},SERVICES:[]};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,SERVICES:m.SERVICES}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    const step=this.state.step,rtl=lang==="ar";
+    const stepLabels=["Details","Services","Team"];
+    const steps=stepLabels.map((l,i)=>{
+      const done=i<step,active=i===step;
+      return {n:String(i+1),label:t(l),done,notDone:!done,hasLine:i<2,flex:i<2?"1":"0",
+        circleStyle:"width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-action);font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s ease;"+(done||active?"background:var(--salis-gradient);color:#fff;box-shadow:0 4px 12px rgba(10,94,215,.3)":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:var(--text-muted)"),
+        labelStyle:"font-family:var(--font-action);font-size:10px;font-weight:500;letter-spacing:.02em;white-space:nowrap;"+(active?"color:var(--salis-blue)":"color:var(--text-muted)"),
+        lineStyle:"flex:1;height:2px;margin:0 8px;margin-bottom:16px;border-radius:9999px;"+(done?"background:var(--salis-gradient-r)":"background:var(--border-default)")};
+    });
+    const services=(this.state.SERVICES||[]).map(([icon,label])=>{
+      const on=this.state.sel.includes(label);
+      return {icon,label:t(label),
+        style:"display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;border-radius:12px;cursor:pointer;transition:all .2s ease;font-family:var(--font-action);"+(on?"border:1.5px solid var(--salis-blue);background:rgba(10,94,215,.06);color:var(--salis-blue);box-shadow:0 0 0 1px rgba(10,94,215,.15)":"border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)"),
+        capStyle:"padding:8px;border-radius:10px;display:flex;"+(on?"background:var(--salis-gradient);color:#fff":"background:rgba(10,94,215,.08);color:var(--salis-blue)"),
+        toggle:()=>this.setState(s=>({sel:s.sel.includes(label)?s.sel.filter(x=>x!==label):[...s.sel,label]}))};
+    });
+    const invites=this.state.invites.map((iv,idx)=>({email:iv.email,role:t(iv.role),initial:iv.email[0].toUpperCase(),remove:()=>this.setState(s=>({invites:s.invites.filter((_,j)=>j!==idx)}))}));
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",
+      themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("Workshop Setup"),subtitle:t("Set up your workshop in a few steps"),wsName:t("Workshop Name"),wsNamePh:t("Al-Amri Auto Center"),city:t("City"),phone:t("Phone"),vat:t("VAT Number"),svcHint:t("Select the services you offer"),inviteTitle:t("Invite your team"),inviteHint:t("You can also do this later from Settings"),emailPh:t("Email address"),add:t("Add"),back:t("Back"),skip:t("Skip for now")},
+      progStyle:"height:100%;width:"+((step+1)/3*100)+"%;background:var(--salis-gradient-r);border-radius:9999px;transition:width .3s ease",
+      steps,services,invites,
+      cities:["Riyadh","Jeddah","Dammam","Makkah","Madinah"].map(c=>({v:c,l:t(c)})),
+      roles:["Technician","Service Advisor","Manager"].map(r=>({v:r,l:t(r)})),
+      isStep0:step===0,isStep1:step===1,isStep2:step===2,
+      wsName:this.state.wsName,city:this.state.city,phone:this.state.phone,vat:this.state.vat,
+      setWsName:e=>this.setState({wsName:e.target.value}),setCity:e=>this.setState({city:e.target.value}),
+      setPhone:e=>this.setState({phone:e.target.value}),setVat:e=>this.setState({vat:e.target.value}),
+      invEmail:this.state.invEmail,invRole:this.state.invRole,
+      setInvEmail:e=>this.setState({invEmail:e.target.value}),setInvRole:e=>this.setState({invRole:e.target.value}),
+      addInvite:()=>{const em=this.state.invEmail.trim();if(!em)return;this.setState(s=>({invites:[...s.invites,{email:em,role:s.invRole}],invEmail:""}));},
+      canBack:step>0,goBack:()=>this.setState({step:Math.max(0,step-1)}),
+      goNext:()=>{if(step<2)this.setState({step:step+1});else location.href="Dashboard.Mobile.dc.html";},
+      nextLabel:step<2?t("Continue"):t("Finish"),
+      backChev:rtl?"ChevronRight":"ChevronLeft",nextChev:step<2?(rtl?"ChevronLeft":"ChevronRight"):"Check",
+      stepCounter:t("Step")+" "+(step+1)+" "+t("of")+" 3"
+    };
+  }
+}
+</script>
+</body>
+</html>

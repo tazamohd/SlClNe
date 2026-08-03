@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Messages" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span>
+    <span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;animation:fadeUp .3s ease">
+<div style="display:flex;gap:20px;height:calc(100vh - 104px)">
+  <div style="width:300px;background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:14px;border-bottom:1px solid var(--border-default)"><span style="position:relative;display:flex;align-items:center"><salis-icon name="Search" size="14" style="position:absolute;left:10px;color:var(--text-muted)"></salis-icon><input placeholder="Search messages..." style="width:100%;height:36px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 10px 0 30px;font-size:12px;color:var(--text-primary);outline:none;box-sizing:border-box"></span></div>
+    <div style="flex:1;overflow-y:auto">
+      <sc-for list="{{ conversations }}" as="c" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border-default);cursor:pointer;background:{{ c.bg }}" style-hover="background:rgba(10,94,215,.04)">
+          <span style="width:36px;height:36px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">{{ c.initial }}</span>
+          <div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ c.name }}</p><span style="font-size:10px;color:var(--text-muted)">{{ c.time }}</span></div><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.preview }}</p></div>
+          <sc-if value="{{ c.unread }}" hint-placeholder-val="{{ false }}"><span style="width:18px;height:18px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0">{{ c.unreadCount }}</span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="flex:1;background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="width:32px;height:32px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">A</span><div><p style="margin:0;font-size:14px;font-weight:600;color:var(--text-heading)">Ahmed Al-Rashid</p><p style="margin:0;font-size:11px;color:var(--salis-blue)">Online</p></div></div>
+    <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:12px;overflow-y:auto">
+      <div style="align-self:flex-start;max-width:70%;padding:12px 16px;border-radius:14px 14px 14px 4px;background:var(--surface-inset);border:1px solid var(--border-default)"><p style="margin:0;font-size:13px;color:var(--text-body)">Hi, when will my car be ready?</p><span style="display:block;margin-top:4px;font-size:10px;color:var(--text-faint)">10:30 AM</span></div>
+      <div style="align-self:flex-end;max-width:70%;padding:12px 16px;border-radius:14px 14px 4px 14px;background:var(--salis-gradient);color:#fff"><p style="margin:0;font-size:13px">Your Camry is in the QC stage now. Should be ready by 4 PM today.</p><span style="display:block;margin-top:4px;font-size:10px;opacity:.7">10:32 AM</span></div>
+      <div style="align-self:flex-start;max-width:70%;padding:12px 16px;border-radius:14px 14px 14px 4px;background:var(--surface-inset);border:1px solid var(--border-default)"><p style="margin:0;font-size:13px;color:var(--text-body)">Great, thank you!</p><span style="display:block;margin-top:4px;font-size:10px;color:var(--text-faint)">10:33 AM</span></div>
+    </div>
+    <div style="padding:14px 18px;border-top:1px solid var(--border-default);display:flex;gap:10px"><input placeholder="Type a message..." style="flex:1;height:40px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:13px;color:var(--text-primary);outline:none"><button style="width:40px;height:40px;border-radius:10px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="Send" size="16"></salis-icon></button></div>
+  </div>
+</div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const conversations=[{name:"Ahmed Al-Rashid",initial:"A",preview:"Great, thank you!",time:"10:33 AM",unread:false,unreadCount:"0",bg:"rgba(10,94,215,.04)"},{name:"Fatima Al-Zahrani",initial:"F",preview:"Is the part available?",time:"9:15 AM",unread:true,unreadCount:"2",bg:"transparent"},{name:"Omar Al-Ghamdi",initial:"O",preview:"I'll bring the car tomorrow",time:"Yesterday",unread:false,unreadCount:"0",bg:"transparent"},{name:"Mohammed Hassan",initial:"M",preview:"Please send the invoice",time:"Jul 20",unread:true,unreadCount:"1",bg:"transparent"},{name:"Sara Al-Mutairi",initial:"S",preview:"Thanks for the great service",time:"Jul 19",unread:false,unreadCount:"0",bg:"transparent"}];const extra={conversations,t:{title:"Messages"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

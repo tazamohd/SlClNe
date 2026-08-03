@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Estimate-Detail-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="Estimates.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)" dir="ltr">EST-0232</h1><p style="margin:0;font-size:11px;color:var(--text-muted)">Ahmed Al-Rashid</p></div>
+    <span style="padding:3px 8px;border-radius:9999px;background:rgba(249,115,22,.1);color:#F97316;font-size:10px;font-weight:600">{{ t.awaiting }}</span>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <sc-for list="{{ recServices }}" as="rs" hint-placeholder-count="3">
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;{{ rs.bg }}">
+        <div style="display:flex;align-items:center;gap:8px"><span style="padding:5px;border-radius:6px;display:flex;{{ rs.iconBg }}"><salis-icon name="{{ rs.icon }}" size="13"></salis-icon></span><span style="flex:1;font-size:13px;font-weight:600;color:var(--text-heading)">{{ rs.title }}</span><span style="{{ rs.urgencyStyle }}">{{ rs.urgency }}</span></div>
+        <p style="margin:0;font-size:12px;color:var(--text-muted);line-height:1.4">{{ rs.reason }}</p>
+        <span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-heading);align-self:flex-end" dir="ltr">{{ rs.cost }}</span>
+      </div>
+    </sc-for>
+    <!-- Findings -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="SearchCheck" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.findings }}</h3></div>
+      <sc-for list="{{ findings }}" as="f" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-default)"><span style="{{ f.dotStyle }}"></span><span style="flex:1;font-size:12px;color:var(--text-body)">{{ f.label }}</span><span style="{{ f.resultStyle }}">{{ f.result }}</span></div>
+      </sc-for>
+    </div>
+    <!-- Summary -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.parts }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 590</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.labor }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 755</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 201.75</span></div>
+      <div style="height:1px;background:var(--border-default)"></div>
+      <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800;color:var(--text-heading)"><span>{{ t.total }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 1,546.75</span></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:50px;border:1.5px solid var(--salis-orange);border-radius:8px;background:none;color:var(--salis-orange);font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer">{{ t.decline }}</button>
+      <button style="flex:1;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.approve }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:600;background:"+bg+";color:"+fg;
+    const recServices=[
+      {icon:"Disc",title:t("Brake Pads (Front)")+" — "+t("Replace"),reason:rtl?"تآكل 85٪":"85% worn",cost:"SAR 535",urgency:rtl?"عاجل":"Urgent",urgencyStyle:pill("rgba(249,115,22,.1)","#F97316"),iconBg:"background:rgba(249,115,22,.08);color:#F97316",bg:"border-color:rgba(249,115,22,.2)"},
+      {icon:"Cog",title:t("Oil Change"),reason:rtl?"10,000 كم منذ آخر تغيير":"10K km since last",cost:"SAR 590",urgency:rtl?"مطلوب":"Required",urgencyStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",bg:""},
+      {icon:"Zap",title:t("Air Filter (Universal)"),reason:rtl?"متسخ":"Dirty",cost:"SAR 95",urgency:rtl?"موصى":"Suggested",urgencyStyle:pill("rgba(100,116,139,.1)","#64748B"),iconBg:"background:rgba(100,116,139,.06);color:#64748B",bg:""}
+    ];
+    const findings=[
+      {label:t("Oil Level"),result:t("Fail"),resultStyle:pill("rgba(249,115,22,.1)","#F97316"),dotStyle:"width:7px;height:7px;border-radius:50%;background:#F97316;flex-shrink:0"},
+      {label:t("Brake Pads"),result:t("Fail"),resultStyle:pill("rgba(249,115,22,.1)","#F97316"),dotStyle:"width:7px;height:7px;border-radius:50%;background:#F97316;flex-shrink:0"},
+      {label:t("Coolant"),result:t("Pass"),resultStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),dotStyle:"width:7px;height:7px;border-radius:50%;background:var(--salis-blue);flex-shrink:0"},
+      {label:t("Battery"),result:t("Pass"),resultStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),dotStyle:"width:7px;height:7px;border-radius:50%;background:var(--salis-blue);flex-shrink:0"},
+      {label:t("Tire Tread"),result:t("Pass"),resultStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),dotStyle:"width:7px;height:7px;border-radius:50%;background:var(--salis-blue);flex-shrink:0"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",backChev:rtl?"ChevronRight":"ChevronLeft",recServices,findings,
+      t:{awaiting:rtl?"بانتظار الموافقة":"Awaiting",findings:rtl?"نتائج الفحص":"Findings",parts:t("Parts"),labor:t("Labor"),vat:t("VAT (15%)"),total:t("Grand Total"),decline:rtl?"رفض":"Decline",approve:t("Approve")}};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Appointment-Calendar" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:rgba(10,94,215,.12);color:var(--salis-blue)">{{ t.admin }}</span><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:var(--salis-gradient);color:#fff">PRO</span></div></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button><a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div><div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="Calendar" size="28"></salis-icon></div></div><div><h1 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.calendar }}</h1><p style="margin:2px 0 0;font-size:14px;color:var(--text-muted)">{{ t.appointmentsTitle }}</p></div></div>
+          <div style="flex:1"></div>
+          <!-- View Toggle -->
+          <div style="display:flex;border-radius:8px;border:1px solid var(--border-default);overflow:hidden">
+            <sc-for list="{{ viewTabs }}" as="vt" hint-placeholder-count="3">
+              <button onClick="{{ vt.select }}" style="height:36px;padding:0 16px;border:none;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:600;{{ vt.style }}">{{ vt.label }}</button>
+            </sc-for>
+          </div>
+          <!-- Nav -->
+          <div style="display:flex;align-items:center;gap:8px">
+            <button onClick="{{ prevDay }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="{{ prevChev }}" size="16"></salis-icon></button>
+            <span style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text-heading);min-width:160px;text-align:center">{{ dateLabel }}</span>
+            <button onClick="{{ nextDay }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="{{ nextChev }}" size="16"></salis-icon></button>
+            <button onClick="{{ goToday }}" style="height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-body)" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">{{ t.today }}</button>
+          </div>
+          <button style="height:40px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;gap:6px"><salis-icon name="Plus" size="16"></salis-icon>{{ t.newAppointment }}</button>
+        </div>
+        <!-- Week View -->
+        <sc-if value="{{ isWeek }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+            <!-- Day Headers -->
+            <div style="display:grid;grid-template-columns:60px repeat(7,1fr);border-bottom:1px solid var(--border-default)">
+              <div style="padding:12px 8px"></div>
+              <sc-for list="{{ weekDays }}" as="wd" hint-placeholder-count="7">
+                <div style="padding:12px 8px;text-align:center;border-inline-start:1px solid var(--border-default);{{ wd.headerBg }}">
+                  <p style="margin:0;font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-muted)">{{ wd.dayName }}</p>
+                  <p style="margin:2px 0 0;font-size:18px;font-weight:700;{{ wd.numColor }}">{{ wd.dayNum }}</p>
+                </div>
+              </sc-for>
+            </div>
+            <!-- Time Grid -->
+            <div style="display:grid;grid-template-columns:60px repeat(7,1fr);max-height:520px;overflow-y:auto">
+              <sc-for list="{{ timeSlots }}" as="ts" hint-placeholder-count="8">
+                <div style="padding:8px 4px;text-align:end;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);border-bottom:1px solid var(--border-default);height:52px;display:flex;align-items:flex-start;justify-content:flex-end" dir="ltr">{{ ts.time }}</div>
+                <sc-for list="{{ ts.cells }}" as="cell" hint-placeholder-count="7">
+                  <div style="border-inline-start:1px solid var(--border-default);border-bottom:1px solid var(--border-default);height:52px;padding:2px;position:relative;{{ cell.bg }}">
+                    <sc-if value="{{ cell.hasAppt }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute;inset:2px;border-radius:6px;padding:4px 6px;display:flex;flex-direction:column;gap:1px;{{ cell.apptStyle }}">
+                        <span style="font-size:10px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ cell.apptName }}</span>
+                        <span style="font-size:9px;opacity:.8">{{ cell.apptSvc }}</span>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{},view:"week",dayOffset:0};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href,active)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;"+(active?"background:var(--salis-gradient);color:#fff":"color:var(--text-body)")});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href,i.l==="Appointments"))};});
+    const v=this.state.view;
+    const viewTabs=["Day","Week","Month"].map(vv=>({label:t(vv),select:()=>this.setState({view:vv.toLowerCase()}),
+      style:v===vv.toLowerCase()?"background:var(--salis-gradient);color:#fff":"background:var(--surface-card);color:var(--text-body)"}));
+    const dayNames=rtl?["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const baseDate=new Date(2026,6,20+this.state.dayOffset);
+    const startOfWeek=new Date(baseDate);startOfWeek.setDate(baseDate.getDate()-baseDate.getDay());
+    const weekDays=Array.from({length:7},(_,i)=>{const d=new Date(startOfWeek);d.setDate(startOfWeek.getDate()+i);const isToday=d.getDate()===22&&d.getMonth()===6;
+      return{dayName:dayNames[i],dayNum:String(d.getDate()),
+        headerBg:isToday?"background:rgba(10,94,215,.06)":"",numColor:isToday?"color:var(--salis-blue)":"color:var(--text-heading)"};});
+    const months=rtl?["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"]:["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const dateLabel=months[startOfWeek.getMonth()]+" "+startOfWeek.getDate()+"–"+(startOfWeek.getDate()+6)+", "+startOfWeek.getFullYear();
+    const appts={
+      "2-9":["Ahmed Al-Rashid",t("Maintenance"),"background:rgba(10,94,215,.15);color:var(--salis-blue);border-left:3px solid var(--salis-blue)"],
+      "3-10":["Fatima Al-Zahrani",t("Inspection"),"background:rgba(11,179,255,.15);color:#0BB3FF;border-left:3px solid #0BB3FF"],
+      "1-13":["Fahad Al-Qahtani",t("Tire Service"),"background:rgba(100,116,139,.12);color:#64748B;border-left:3px solid #64748B"],
+      "4-15":["Noura Al-Harbi",t("Repair"),"background:rgba(249,115,22,.12);color:#F97316;border-left:3px solid #F97316"],
+      "2-11":["Omar Al-Ghamdi",t("Diagnostics"),"background:rgba(10,94,215,.15);color:var(--salis-blue);border-left:3px solid var(--salis-blue)"],
+      "5-9":["Mohammed Hassan",t("Oil Change"),"background:rgba(11,179,255,.15);color:#0BB3FF;border-left:3px solid #0BB3FF"],
+      "0-14":["Sara Al-Mutairi",t("AC Service"),"background:rgba(10,94,215,.15);color:var(--salis-blue);border-left:3px solid var(--salis-blue)"]
+    };
+    const hours=["8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM"];
+    const timeSlots=hours.map((time,hi)=>{const cells=Array.from({length:7},(_,di)=>{const key=di+"-"+(hi+8);const a=appts[key];
+      return{hasAppt:!!a,apptName:a?a[0]:"",apptSvc:a?a[1]:"",apptStyle:a?a[2]:"",bg:di===2&&hi+8===22?"background:rgba(10,94,215,.03)":""};});
+      return{time,cells};});
+    return {rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      prevChev:rtl?"ChevronRight":"ChevronLeft",nextChev:rtl?"ChevronLeft":"ChevronRight",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,viewTabs,weekDays,timeSlots,dateLabel,isWeek:true,
+      prevDay:()=>this.setState(s=>({dayOffset:s.dayOffset-7})),
+      nextDay:()=>this.setState(s=>({dayOffset:s.dayOffset+7})),
+      goToday:()=>this.setState({dayOffset:0}),
+      t:{admin:t("ADMIN"),logout:t("Logout"),calendar:t("Calendar"),appointmentsTitle:t("Appointments"),
+        today:t("Today"),newAppointment:t("New Appointment")}};
+  }
+}
+</script>
+</body>
+</html>

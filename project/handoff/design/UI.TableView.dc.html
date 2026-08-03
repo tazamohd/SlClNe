@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Table View" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+<div style="padding:14px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="position:relative;display:flex;align-items:center"><salis-icon name="Search" size="14" style="position:absolute;inset-inline-start:10px;color:var(--text-muted)"></salis-icon><input placeholder="{{ t.search }}" style="width:240px;height:34px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;padding-inline-start:30px;font-size:12px;color:var(--text-primary);outline:none"></span><span style="flex:1"></span><button style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;color:var(--text-body)"><salis-icon name="Columns3" size="13"></salis-icon>{{ t.columns }}</button><button style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;color:var(--text-body)"><salis-icon name="ArrowUpDown" size="13"></salis-icon>{{ t.sort }}</button></div>
+<table style="width:100%;border-collapse:collapse;font-family:var(--font-ui);font-size:14px;color:var(--text-primary)">
+<thead><tr>
+<th style="width:44px;padding:0 0 0 20px;height:42px;border-bottom:1px solid var(--border-default)"><input type="checkbox" style="accent-color:#0A5ED7;width:15px;height:15px"></th>
+<sc-for list="{{ cols }}" as="c" hint-placeholder-count="5"><th style="{{ c.style }}"><span style="display:inline-flex;align-items:center;gap:4px;cursor:pointer">{{ c.label }}<salis-icon name="ChevronsUpDown" size="11" style="opacity:.5"></salis-icon></span></th></sc-for>
+</tr></thead>
+<tbody><sc-for list="{{ rows }}" as="r" hint-placeholder-count="6"><tr style="transition:background .15s" style-hover="background:rgba(10,94,215,.03)">
+<td style="padding:0 0 0 20px;border-bottom:1px solid var(--border-default)"><input type="checkbox" style="accent-color:#0A5ED7;width:15px;height:15px"></td>
+<sc-for list="{{ r.cells }}" as="cell" hint-placeholder-count="5"><td style="{{ cell.style }}">{{ cell.v }}</td></sc-for>
+</tr></sc-for></tbody></table>
+<div style="padding:12px 20px;display:flex;align-items:center;border-top:1px solid var(--border-default)"><span style="font-size:12px;color:var(--text-muted)">{{ t.showing }}</span><span style="flex:1"></span><div style="display:flex;gap:4px"><sc-for list="{{ pages }}" as="pg" hint-placeholder-count="4"><button style="{{ pg.style }}">{{ pg.n }}</button></sc-for></div></div>
+</div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");const t=s=>s;const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const hStyle=(end)=>"height:42px;padding:0 20px;text-align:"+(end?"end":"start")+";font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);border-bottom:1px solid var(--border-default)";
+const colRaw=["Job Card","Customer","Vehicle","Technician","Status","Total"];
+const cols=colRaw.map((c,i)=>({label:c,style:hStyle(i===colRaw.length-1)}));
+const cStyle=(i,n)=>"padding:12px 20px;border-bottom:1px solid var(--border-default);"+(i===0?"font-family:var(--font-mono);font-size:12px;color:var(--salis-blue)":i===n-1?"text-align:end;font-family:var(--font-mono);font-size:13px;font-weight:600":"");
+const rowRaw=[
+ ["JC-A3F8B2C1","Ahmed Al-Rashid","Toyota Camry 2022","Yousef Al-Otaibi","In Progress","SAR 1,840"],
+ ["JC-B7D1E4A9","Layla Al-Sulaiman","Nissan Patrol 2021","Bandar Al-Qahtani","QC","SAR 940"],
+ ["JC-C2F9A013","Mohammed Hassan","Lexus ES 350","Faisal Al-Harbi","Waiting Parts","SAR 620"],
+ ["JC-D5A8C731","Sara Al-Mutairi","Hyundai Sonata 2023","Nasser Al-Dosari","In Progress","SAR 1,310"],
+ ["JC-E1B4F620","Gulf Transport Co.","Ford Explorer 2022","Yousef Al-Otaibi","In Progress","SAR 4,180"],
+ ["JC-F8C2D145","Noura Al-Saud","Kia Sportage 2021","Nasser Al-Dosari","Ready","SAR 780"]
+];
+const rows=rowRaw.map(r=>({cells:r.map((v,i)=>({v,style:cStyle(i,r.length)}))}));
+const pStyle=a=>"width:30px;height:30px;border-radius:8px;cursor:pointer;font-family:var(--font-mono);font-size:12px;"+(a?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)");
+const pages=[1,2,3,4].map(n=>({n:String(n),style:pStyle(n===1)}));
+const extra={cols,rows,pages,t:{title:"Table View",search:"Search records...",columns:"Columns",sort:"Sort",showing:"Showing 1–6 of 42"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

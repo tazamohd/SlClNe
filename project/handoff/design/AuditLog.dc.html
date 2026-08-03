@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Audit-Log" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="5"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default)"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center"><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease;max-width:1100px">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div><div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="ScrollText" size="28"></salis-icon></div></div><div><h1 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.auditLog }}</h1><p style="margin:2px 0 0;font-size:14px;color:var(--text-muted)">{{ t.subtitle }}</p></div></div>
+          <div style="flex:1"></div>
+          <div style="display:flex;border-radius:8px;border:1px solid var(--border-default);overflow:hidden">
+            <sc-for list="{{ filterTabs }}" as="ft" hint-placeholder-count="4"><button onClick="{{ ft.select }}" style="height:34px;padding:0 14px;border:none;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:600;{{ ft.style }}">{{ ft.label }}</button></sc-for>
+          </div>
+          <button style="height:34px;padding:0 14px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;color:var(--text-body);display:flex;align-items:center;gap:6px" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Download" size="14"></salis-icon>{{ t.export }}</button>
+        </div>
+        <!-- Timeline -->
+        <div style="display:flex;flex-direction:column;gap:0;position:relative;padding-inline-start:28px">
+          <div style="position:absolute;inset-inline-start:13px;top:0;bottom:0;width:2px;background:var(--border-default)"></div>
+          <sc-for list="{{ logEntries }}" as="le" hint-placeholder-count="8">
+            <div style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--border-default);position:relative">
+              <span style="position:absolute;inset-inline-start:-22px;top:18px;width:10px;height:10px;border-radius:50%;{{ le.dotColor }};border:2px solid var(--bg-page)"></span>
+              <div style="flex:1;display:flex;align-items:flex-start;gap:12px">
+                <span style="padding:6px;border-radius:8px;display:flex;flex-shrink:0;{{ le.iconBg }}"><salis-icon name="{{ le.icon }}" size="14"></salis-icon></span>
+                <div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;color:var(--text-body)"><span style="font-weight:600;color:var(--text-heading)">{{ le.user }}</span> {{ le.action }}</p><p style="margin:3px 0 0;font-size:11px;color:var(--text-muted)">{{ le.detail }}</p></div>
+                <div style="text-align:end;flex-shrink:0"><span style="font-size:11px;color:var(--text-muted)">{{ le.time }}</span><p style="margin:2px 0 0;font-size:10px;color:var(--text-faint)" dir="ltr">{{ le.ip }}</p></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:center"><button style="height:36px;padding:0 20px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;color:var(--text-body)" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">{{ t.loadMore }}</button></div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{},filter:"all"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href,active)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;"+(active?"background:var(--salis-gradient);color:#fff":"color:var(--text-body)")});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href,i.l==="Settings"))};});
+    const f=this.state.filter;
+    const filterTabs=[["all",rtl?"الكل":"All"],["auth",rtl?"مصادقة":"Auth"],["data",rtl?"بيانات":"Data"],["system",rtl?"نظام":"System"]].map(([id,label])=>({label,select:()=>this.setState({filter:id}),
+      style:f===id?"background:var(--salis-gradient);color:#fff":"background:var(--surface-card);color:var(--text-body)"}));
+    const logEntries=[
+      {icon:"LogIn",user:"Khalid Al-Amri",action:rtl?"سجل دخول":"logged in",detail:rtl?"جلسة جديدة — متصفح Chrome":"New session — Chrome browser",time:"10:02 AM",ip:"192.168.1.45",dotColor:"background:var(--salis-blue)",iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",cat:"auth"},
+      {icon:"Plus",user:"Khalid Al-Amri",action:rtl?"أنشأ بطاقة عمل":"created job card",detail:"JC-A3F8B2C1 — Ahmed Al-Rashid · Toyota Camry",time:"10:15 AM",ip:"192.168.1.45",dotColor:"background:var(--salis-blue)",iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",cat:"data"},
+      {icon:"UserPlus",user:"Khalid Al-Amri",action:rtl?"عيّن فني":"assigned technician",detail:"Yousef Al-Otaibi → JC-A3F8B2C1",time:"10:18 AM",ip:"192.168.1.45",dotColor:"background:#0BB3FF",iconBg:"background:rgba(11,179,255,.08);color:#0BB3FF",cat:"data"},
+      {icon:"CheckCircle",user:"Yousef Al-Otaibi",action:rtl?"أكمل الفحص":"completed inspection",detail:rtl?"فحص متعدد النقاط — 18/22 ناجح":"Multi-point inspection — 18/22 pass",time:"11:45 AM",ip:"192.168.1.102",dotColor:"background:var(--salis-blue)",iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",cat:"data"},
+      {icon:"Receipt",user:"Khalid Al-Amri",action:rtl?"أنشأ عرض سعر":"created estimate",detail:"EST-0232 — SAR 1,546.75",time:"12:10 PM",ip:"192.168.1.45",dotColor:"background:var(--salis-blue)",iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",cat:"data"},
+      {icon:"Send",user:t("System"),action:rtl?"أرسل عرض السعر للعميل":"sent estimate to customer",detail:rtl?"بريد إلكتروني إلى ahmed@email.com":"Email to ahmed@email.com",time:"12:12 PM",ip:"—",dotColor:"background:#64748B",iconBg:"background:rgba(100,116,139,.06);color:#64748B",cat:"system"},
+      {icon:"Shield",user:"Khalid Al-Amri",action:rtl?"غيّر إعدادات الأمان":"changed security settings",detail:rtl?"تفعيل المصادقة الثنائية":"Enabled 2FA",time:"1:30 PM",ip:"192.168.1.45",dotColor:"background:#F97316",iconBg:"background:rgba(249,115,22,.08);color:#F97316",cat:"system"},
+      {icon:"LogOut",user:"Layla Al-Sulaiman",action:rtl?"سجلت خروج":"logged out",detail:rtl?"انتهاء الجلسة":"Session expired",time:"2:00 PM",ip:"192.168.1.78",dotColor:"background:#64748B",iconBg:"background:rgba(100,116,139,.06);color:#64748B",cat:"auth"}
+    ];
+    const filtered=f==="all"?logEntries:logEntries.filter(e=>e.cat===f);
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,filterTabs,logEntries:filtered,
+      t:{auditLog:rtl?"سجل المراجعة":"Audit Log",subtitle:rtl?"تتبع جميع إجراءات النظام":"Track all system actions",export:rtl?"تصدير":"Export",loadMore:rtl?"تحميل المزيد":"Load More"}};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Card View" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+<sc-for list="{{ cards }}" as="c" hint-placeholder-count="8">
+<div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);cursor:pointer;transition:all .2s ease;display:flex;flex-direction:column;gap:12px" style-hover="border-color:rgba(10,94,215,.3);box-shadow:var(--shadow-lg);transform:translateY(-2px)">
+<div style="display:flex;align-items:center;gap:10px"><span style="{{ c.iconStyle }}"><salis-icon name="{{ c.icon }}" size="16"></salis-icon></span><span style="flex:1"></span><span style="{{ c.stStyle }}">{{ c.status }}</span></div>
+<div><h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ c.title }}</h3><p style="margin:3px 0 0;font-size:12px;color:var(--text-muted)">{{ c.subtitle }}</p></div>
+<div style="display:flex;align-items:center;gap:8px;padding-top:10px;border-top:1px solid var(--border-default)"><span style="width:24px;height:24px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0">{{ c.initial }}</span><span style="flex:1;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.assignee }}</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--salis-blue)" dir="ltr">{{ c.value }}</span></div>
+</div></sc-for></div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");const t=s=>s;const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const stA=pill("rgba(10,94,215,.1)","#0A5ED7");const stW=pill("rgba(249,115,22,.1)","#F97316");const stB=pill("rgba(11,179,255,.1)","#0BB3FF");const stN=pill("rgba(100,116,139,.1)","#64748B");
+const tints=[["rgba(10,94,215,.08)","#0A5ED7"],["rgba(11,179,255,.08)","#0BB3FF"],["rgba(249,115,22,.08)","#F97316"],["rgba(11,31,59,.08)","#0B1F3B"]];
+const raw=[
+ ["Toyota Camry 2022","RUH 4821 · Maintenance","Yousef Al-Otaibi","SAR 1,840","In Progress",stA,"Car",0],
+ ["Nissan Patrol 2021","RUH 9955 · AC Service","Bandar Al-Qahtani","SAR 940","QC",stB,"Car",1],
+ ["Lexus ES 350","RUH 2214 · Diagnostics","Faisal Al-Harbi","SAR 620","Waiting Parts",stW,"Car",2],
+ ["Hyundai Sonata 2023","RUH 3357 · Brakes","Nasser Al-Dosari","SAR 1,310","In Progress",stA,"Car",0],
+ ["Ford Explorer 2022","RUH 7702 · Transmission","Yousef Al-Otaibi","SAR 4,180","In Progress",stA,"Car",3],
+ ["Kia Sportage 2021","RUH 5518 · Tires","Nasser Al-Dosari","SAR 780","Ready",stB,"Car",1],
+ ["Honda Accord 2022","RUH 8840 · Full Service","Majed Al-Shehri","SAR 2,240","Delivered",stN,"Car",2],
+ ["GMC Yukon 2023","RUH 1163 · Inspection","Faisal Al-Harbi","SAR 460","Ready",stB,"Car",3]
+];
+const cards=raw.map(c=>({title:c[0],subtitle:c[1],assignee:c[2],initial:c[2][0],value:c[3],status:c[4],stStyle:c[5],icon:c[6],iconStyle:ic(tints[c[7]][0],tints[c[7]][1])}));
+const extra={cards,t:{title:"Card View"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

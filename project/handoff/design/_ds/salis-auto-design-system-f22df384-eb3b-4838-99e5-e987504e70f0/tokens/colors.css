@@ -1,0 +1,31 @@
+/* SALIS AUTO color tokens — exact values from client/src/index.css + Layout.tsx */
+:root{
+/* Brand */
+--salis-blue:#0A5ED7;--salis-blue-hover:#0952C0;
+--salis-blue-bright:#0BB3FF;--salis-blue-bright-hover:#0AA3EE;
+--salis-navy:#0B1F3B;--salis-orange:#F97316;--salis-orange-hover:#EA580C;
+--salis-gradient:linear-gradient(135deg,#0A5ED7 0%,#0BB3FF 100%); /* @kind color */
+--salis-gradient-hover:linear-gradient(135deg,#0952C0 0%,#0AA3EE 100%); /* @kind color */
+--salis-gradient-r:linear-gradient(90deg,#0A5ED7 0%,#0BB3FF 100%); /* @kind color */
+/* Neutrals — light (app values) */
+--bg-page:#F8FAFC;--bg-page-alt:#E6E9ED;
+--surface-card:#FFFFFF;--surface-inset:#F8FAFC;--surface-sidebar:#FFFFFF;
+--border-default:#E2E8F0;--border-strong:#C9D1DA;
+--text-primary:#0F172A;--text-heading:#0B1F3B;--text-body:#2A2F3A;--text-muted:#64748B;--text-faint:#9BA4B0;
+/* Semantic — BLUE means success (green is forbidden) */
+--success:var(--salis-blue);--success-fg:#FFFFFF;
+--info:var(--salis-blue-bright);--info-fg:#FFFFFF;
+--warning:var(--salis-orange);--warning-fg:#FFFFFF;
+--destructive:var(--salis-orange);--destructive-fg:#FFFFFF;
+--ring:var(--salis-blue);
+/* Charts (brand-safe only) */
+--chart-1:#0A5ED7;--chart-2:#0BB3FF;--chart-3:#38BDF8;--chart-4:#64748B;--chart-5:#F97316;
+}
+.dark{
+--bg-page:#0E1117;--bg-page-alt:#0E1117;
+--surface-card:#151A23;--surface-inset:#0E1117;--surface-sidebar:#0B1F3B;
+--border-default:#232A36;--border-strong:#232A36;
+--text-primary:#FFFFFF;--text-heading:#FFFFFF;--text-body:#E6EAF0;--text-muted:#9BA4B0;--text-faint:#9BA4B0;
+--success:var(--salis-blue-bright);--info:var(--salis-blue);
+--ring:var(--salis-blue-bright);
+}

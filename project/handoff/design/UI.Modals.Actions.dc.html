@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Modals - Actions" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+    <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:start">
+      <!-- Approve -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:14px;border-radius:50%;background:rgba(10,94,215,.08);display:flex"><salis-icon name="ThumbsUp" size="28" style="color:#0A5ED7"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Approve Estimate?</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">Approve estimate <span style="font-weight:600;color:var(--text-heading)" dir="ltr">EST-0231</span> for <span style="font-family:var(--font-mono);font-weight:700;color:var(--salis-blue)" dir="ltr">SAR 1,250</span></p>
+          <div style="display:flex;flex-direction:column;gap:4px;width:100%"><label style="font-size:12px;font-weight:500;color:var(--text-primary);text-align:start">Notes (optional)</label><textarea rows="2" placeholder="Add approval notes..." style="border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:10px;font-size:13px;color:var(--text-primary);outline:none;resize:none;font-family:var(--font-ui)"></textarea></div>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center;gap:10px"><button style="height:40px;padding:0 20px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Cancel</button><button style="height:40px;padding:0 20px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Approve</button></div>
+      </div>
+      <!-- Share -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:18px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(11,179,255,.08);color:#0BB3FF;display:flex"><salis-icon name="Share2" size="16"></salis-icon></span><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">Share Invoice</h3><span style="flex:1"></span><button style="width:28px;height:28px;border:none;border-radius:6px;background:none;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="X" size="16"></salis-icon></button></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;font-weight:500;color:var(--text-primary)">Send via</label><div style="display:flex;gap:8px"><button style="flex:1;height:40px;border:1px solid var(--salis-blue);border-radius:8px;background:rgba(10,94,215,.04);color:var(--salis-blue);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Mail" size="14"></salis-icon>Email</button><button style="flex:1;height:40px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="MessageCircle" size="14"></salis-icon>WhatsApp</button><button style="flex:1;height:40px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Link" size="14"></salis-icon>Link</button></div></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;font-weight:500;color:var(--text-primary)">Recipient Email</label><input placeholder="customer@email.com" style="height:44px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none"></div>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:flex-end"><button style="height:36px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600"><salis-icon name="Send" size="14" style="vertical-align:-2px;margin-inline-end:4px"></salis-icon>Send</button></div>
+      </div>
+      <!-- Upload File -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:18px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">Upload Files</h3><span style="flex:1"></span><button style="width:28px;height:28px;border:none;border-radius:6px;background:none;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="X" size="16"></salis-icon></button></div>
+        <div style="padding:20px"><div style="border:2px dashed var(--border-default);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .15s" style-hover="border-color:var(--salis-blue);background:rgba(10,94,215,.02)"><salis-icon name="Upload" size="32" style="color:var(--salis-blue);margin-bottom:10px"></salis-icon><p style="margin:0;font-size:14px;font-weight:500;color:var(--text-heading)">Drop files here</p><p style="margin:4px 0 0;font-size:12px;color:var(--text-muted)">or click to browse (PDF, JPG, PNG · max 10MB)</p></div></div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:flex-end"><button style="height:36px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Upload</button></div>
+      </div>
+      <!-- Bulk Actions -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:18px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="CheckSquare" size="16"></salis-icon></span><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">Bulk Actions</h3><span style="font-size:12px;font-weight:600;padding:2px 10px;border-radius:9999px;background:rgba(10,94,215,.08);color:var(--salis-blue)">5 selected</span><span style="flex:1"></span><button style="width:28px;height:28px;border:none;border-radius:6px;background:none;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="X" size="16"></salis-icon></button></div>
+        <div style="padding:12px 20px;display:flex;flex-direction:column;gap:4px">
+          <sc-for list="{{ bulkActions }}" as="ba" hint-placeholder-count="5">
+            <button style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border:none;border-radius:8px;background:none;cursor:pointer;font-family:var(--font-action);font-size:13px;color:{{ ba.color }};transition:background .15s" style-hover="background:{{ ba.hoverBg }}"><salis-icon name="{{ ba.icon }}" size="16"></salis-icon>{{ ba.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const bulkActions=[
+  {label:"Mark as Completed",icon:"CheckCircle",color:"var(--salis-blue)",hoverBg:"rgba(10,94,215,.06)"},
+  {label:"Assign to Technician",icon:"UserPlus",color:"var(--text-body)",hoverBg:"rgba(10,94,215,.04)"},
+  {label:"Export Selected",icon:"Download",color:"var(--text-body)",hoverBg:"rgba(10,94,215,.04)"},
+  {label:"Archive",icon:"Archive",color:"var(--text-muted)",hoverBg:"rgba(100,116,139,.06)"},
+  {label:"Delete Selected",icon:"Trash2",color:"var(--salis-orange)",hoverBg:"rgba(249,115,22,.06)"}
+];
+const extra={bulkActions,t:{title:"Action Modals"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

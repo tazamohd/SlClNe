@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.rw:hover{background:rgba(10,94,215,.04)}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="RBAC Spec" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="height:60px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 28px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:9px"><div style="width:30px;height:30px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="15" style="color:#fff"></salis-icon></div><span style="font-size:15px;font-weight:800;font-family:var(--font-display);color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <a href="Index.dc.html" style="height:34px;padding:0 12px;border-radius:9px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--text-muted);font-family:var(--font-action)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="LayoutGrid" size="14"></salis-icon>{{ t.index }}</a>
+    <button onClick="{{ toggleLang }}" style="height:34px;padding:0 11px;border-radius:9px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:12px" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:34px;height:34px;border-radius:9px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+
+  <div style="max-width:1320px;margin:0 auto;padding:30px 28px 56px;display:flex;flex-direction:column;gap:30px;animation:fadeUp .3s ease">
+    <div>
+      <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--salis-blue);font-family:var(--font-action)">{{ t.eyebrow }}</p>
+      <h1 style="margin:6px 0 0;font-size:34px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);letter-spacing:-.03em">{{ t.title }}</h1>
+      <p style="margin:8px 0 0;max-width:70ch;font-size:14px;line-height:1.6;color:var(--text-muted);text-wrap:pretty">{{ t.intro }}</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="padding:15px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+          <p style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:{{ s.color }};font-variant-numeric:tabular-nums">{{ s.n }}</p>
+          <p style="margin:3px 0 0;font-size:11px;font-weight:500;color:var(--text-muted);font-family:var(--font-action)">{{ s.label }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:7px;border-radius:9px;background:rgba(10,94,215,.09);color:var(--salis-blue);display:flex"><salis-icon name="Users" size="15"></salis-icon></span><h2 style="margin:0;font-size:19px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.rolesH }}</h2></div>
+      <p style="margin:0;font-size:13px;color:var(--text-muted);max-width:74ch">{{ t.rolesSub }}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+        <sc-for list="{{ roleCards }}" as="r" hint-placeholder-count="6">
+          <div style="padding:16px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:34px;height:34px;border-radius:10px;background:{{ r.tint }};color:{{ r.color }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ r.icon }}" size="17"></salis-icon></span>
+              <div style="min-width:0;flex:1">
+                <p style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ r.label }}</p>
+                <p style="margin:1px 0 0;font-size:11.5px;color:var(--text-muted);font-family:var(--font-mono,monospace)">{{ r.id }}</p>
+              </div>
+              <span style="{{ r.scopePill }}">{{ r.scopeLabel }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-size:11px;font-weight:600;color:var(--text-muted);min-width:74px;font-family:var(--font-action)">{{ t.limit }}</span><span style="font-size:12.5px;font-weight:600;color:var(--text-heading);font-variant-numeric:tabular-nums">{{ r.limitLabel }}</span></div>
+              <div style="display:flex;align-items:baseline;gap:7px"><span style="font-size:11px;font-weight:600;color:var(--text-muted);min-width:74px;font-family:var(--font-action)">{{ t.modules }}</span><span style="font-size:12.5px;color:var(--text-body)">{{ r.modCount }}</span></div>
+            </div>
+            <p style="margin:0;padding-top:9px;border-top:1px solid var(--border-default);font-size:12px;line-height:1.55;color:var(--text-muted);text-wrap:pretty">{{ r.summary }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:7px;border-radius:9px;background:rgba(10,94,215,.09);color:var(--salis-blue);display:flex"><salis-icon name="Grid3x3" size="15"></salis-icon></span><h2 style="margin:0;font-size:19px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.matrixH }}</h2></div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="6">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-muted);font-family:var(--font-action)"><span style="{{ l.chip }}">{{ l.k }}</span>{{ l.label }}</span>
+        </sc-for>
+      </div>
+      <div style="border:1px solid var(--border-default);border-radius:13px;overflow:hidden;background:var(--surface-card);box-shadow:var(--shadow-sm)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;min-width:1040px">
+            <thead><tr style="background:var(--surface-inset)">
+              <th style="text-align:start;padding:11px 14px;font-size:10.5px;font-weight:700;letter-spacing:.055em;text-transform:uppercase;color:var(--text-muted);position:sticky;inset-inline-start:0;background:var(--surface-inset);z-index:1">{{ t.module }}</th>
+              <sc-for list="{{ roleHeads }}" as="h" hint-placeholder-count="14"><th style="padding:11px 5px;font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap"><span title="{{ h.label }}">{{ h.short }}</span></th></sc-for>
+            </tr></thead>
+            <tbody><sc-for list="{{ matrix }}" as="m" hint-placeholder-count="12">
+              <tr class="rw" style="border-top:1px solid var(--border-default)">
+                <td style="padding:9px 14px;font-size:12.5px;font-weight:600;color:var(--text-heading);white-space:nowrap;position:sticky;inset-inline-start:0;background:var(--surface-card)">{{ m.label }}</td>
+                <sc-for list="{{ m.cells }}" as="c" hint-placeholder-count="14"><td style="padding:7px 5px;text-align:center"><span style="{{ c.style }}">{{ c.txt }}</span></td></sc-for>
+              </tr>
+            </sc-for></tbody>
+          </table>
+        </div>
+      </div>
+      <p style="margin:0;font-size:12px;color:var(--text-muted)">{{ t.matrixNote }}</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:7px;border-radius:9px;background:rgba(249,115,22,.12);color:#F97316;display:flex"><salis-icon name="EyeOff" size="15"></salis-icon></span><h2 style="margin:0;font-size:19px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.fieldsH }}</h2></div>
+      <p style="margin:0;font-size:13px;color:var(--text-muted);max-width:74ch">{{ t.fieldsSub }}</p>
+      <div style="border:1px solid var(--border-default);border-radius:13px;overflow:hidden;background:var(--surface-card);box-shadow:var(--shadow-sm)">
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="7">
+          <div style="{{ f.rowStyle }}">
+            <div style="min-width:190px;flex:0 0 auto"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ f.field }}</p></div>
+            <div style="flex:1;display:flex;flex-wrap:wrap;gap:5px">
+              <sc-for list="{{ f.roles }}" as="rr" hint-placeholder-count="5"><span style="padding:2px 8px;border-radius:9999px;background:rgba(249,115,22,.11);color:#F97316;font-size:11px;font-weight:600;font-family:var(--font-action)">{{ rr }}</span></sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:7px;border-radius:9px;background:rgba(249,115,22,.12);color:#F97316;display:flex"><salis-icon name="AlertTriangle" size="15"></salis-icon></span><h2 style="margin:0;font-size:19px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.sodH }}</h2></div>
+      <p style="margin:0;font-size:13px;color:var(--text-muted);max-width:74ch">{{ t.sodSub }}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px">
+        <sc-for list="{{ sod }}" as="s" hint-placeholder-count="6">
+          <div style="padding:14px 16px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.conflict }}</span><span style="{{ s.pill }}">{{ s.riskLabel }}</span></div>
+            <div style="display:flex;align-items:center;gap:9px">
+              <span style="flex:1;padding:8px 10px;border-radius:8px;background:var(--surface-inset);font-size:12.5px;font-weight:600;color:var(--text-heading)">{{ s.a }}</span>
+              <salis-icon name="X" size="13" style="color:#F97316;flex-shrink:0"></salis-icon>
+              <span style="flex:1;padding:8px 10px;border-radius:8px;background:var(--surface-inset);font-size:12.5px;font-weight:600;color:var(--text-heading)">{{ s.b }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:7px;border-radius:9px;background:rgba(10,94,215,.09);color:var(--salis-blue);display:flex"><salis-icon name="GitBranch" size="15"></salis-icon></span><h2 style="margin:0;font-size:19px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.edgeH }}</h2></div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ edges }}" as="e" hint-placeholder-count="8">
+          <div style="display:flex;gap:12px;padding:13px 16px;border-radius:11px;background:var(--surface-card);border:1px solid var(--border-default)">
+            <span style="width:22px;height:22px;border-radius:7px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums">{{ e.n }}</span>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:var(--text-body);text-wrap:pretty">{{ e.txt }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:7px;border-radius:9px;background:rgba(10,94,215,.09);color:var(--salis-blue);display:flex"><salis-icon name="MonitorOff" size="15"></salis-icon></span><h2 style="margin:0;font-size:19px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.uxH }}</h2></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+        <sc-for list="{{ uxRules }}" as="u" hint-placeholder-count="4">
+          <div style="padding:16px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><span style="padding:6px;border-radius:8px;background:{{ u.tint }};color:{{ u.color }};display:flex"><salis-icon name="{{ u.icon }}" size="14"></salis-icon></span><p style="margin:0;font-size:13.5px;font-weight:700;color:var(--text-heading)">{{ u.title }}</p></div>
+            <p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-muted);text-wrap:pretty">{{ u.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null};
+  componentDidMount(){ import("./gms-data.js").then(m=>this.setState({D:m})); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const ROLES=(D&&D.ROLES)||[], PERMS=(D&&D.PERMS)||{}, FR=(D&&D.FIELD_RULES)||[], SODS=(D&&D.SOD)||[];
+
+    const MODS=[["dashboard","Dashboard"],["jobcards","Job Cards"],["appointments","Appointments"],["estimates","Estimates"],["customers","Customers"],["vehicles","Vehicles"],["inventory","Inventory"],["procurement","Procurement"],["invoices","Invoices"],["payments","Payments"],["accounting","Accounting"],["hr","HR & Payroll"],["technicians","Technicians"],["crm","CRM"],["callcenter","Call Center"],["reports","Reports"],["ai","AI Platform"],["admin","Administration"],["settings","Settings"],["audit","Audit Log"],["network","Parts Network"],["execreports","Executive & Commercial Reports"],["portaltech","Technician Portal"],["portalcustomer","Customer Portal"],["portalsupplier","Supplier Portal"],["portalprocure","Procurement Portal"],["approvals","Approvals"],["kiosk","Kiosk"]];
+    const ACT={v:"View",c:"Create",e:"Edit",d:"Delete",a:"Approve",x:"Export"};
+    const ACT_AR={v:"عرض",c:"إنشاء",e:"تعديل",d:"حذف",a:"اعتماد",x:"تصدير"};
+    const SHORT={owner:"OWN",superadmin:"SA",manager:"MGR",advisor:"ADV",technician:"TECH",qc:"QC",parts:"PART",accountant:"ACCT",hr:"HR",frontdesk:"DESK",callcenter:"CALL",procurement:"PROC",supplier:"SUPP",customer:"CUST"};
+    const SCOPE={all:["All branches","كل الفروع"],branch:["Own branch","فرعه"],own:["Own jobs","أعماله"],self:["Own records","سجلاته"],external:["External","خارجي"],platform:["Platform","المنصة"]};
+    const SUM={
+      owner:["Unrestricted. The only role that can waive labour entirely, change approval limits, and delete financial records.","صلاحية كاملة. الدور الوحيد الذي يمكنه إسقاط الأجر كاملاً وتغيير حدود الاعتماد وحذف السجلات المالية."],
+      superadmin:["Platform operator, not a workshop user. Manages tenants and system config; deliberately cannot read customer financial data.","مشغّل المنصة وليس مستخدماً للورشة. يدير المستأجرين وإعدادات النظام، ولا يمكنه قراءة البيانات المالية للعملاء."],
+      manager:["Runs one branch end to end. Approves above the advisor limit and overrides any workflow transition.","يدير فرعاً كاملاً. يعتمد ما يتجاوز حد المستشار ويتجاوز أي انتقال في سير العمل."],
+      advisor:["Owns the customer relationship: books, quotes, takes approvals, delivers. Never sees cost or margin.","يملك علاقة العميل: الحجز والتسعير وأخذ الاعتمادات والتسليم. لا يرى التكلفة أو الهامش أبداً."],
+      technician:["Sees only jobs assigned to them. Moves work between inspection, repair and waiting-parts; cannot price anything.","يرى أعماله المخصصة فقط. ينقل العمل بين الفحص والإصلاح وانتظار القطع، ولا يمكنه التسعير."],
+      qc:["Passes or fails quality checks and returns work with notes. Cannot edit the estimate or perform the repair.","ينجح أو يرجّع فحوص الجودة مع ملاحظات. لا يمكنه تعديل عرض السعر أو تنفيذ الإصلاح."],
+      parts:["Owns stock accuracy: receiving, issuing, counts, reorder. Raises requisitions but cannot approve them.","مسؤول عن دقة المخزون: الاستلام والصرف والجرد وإعادة الطلب. يرفع الطلبات ولا يعتمدها."],
+      accountant:["Full ledger across all branches. Posts and approves entries, reconciles banks, files VAT.","دفتر أستاذ كامل لجميع الفروع. يسجّل ويعتمد القيود ويسوّي البنوك ويقدّم الإقرارات."],
+      hr:["Employees, contracts, attendance, payroll. The only non-owner role that may see salaries.","الموظفون والعقود والحضور والرواتب. الدور الوحيد غير المالك الذي يرى الرواتب."],
+      frontdesk:["Greets, books, checks in, takes payment. No workshop or financial depth.","الاستقبال والحجز والاستلام وقبض الدفعات. بلا صلاحيات ورشة أو مالية."],
+      callcenter:["Inbound and outbound calls across all branches. Books and updates leads; cannot touch money.","المكالمات الواردة والصادرة لكل الفروع. يحجز ويحدّث العملاء المحتملين، ولا يتعامل مع الأموال."],
+      procurement:["Sources parts, runs RFQs, compares quotes, raises and approves POs within limit.","يوفّر القطع ويدير طلبات العروض ويقارنها ويرفع أوامر الشراء ويعتمدها ضمن حده."],
+      supplier:["External. Sees only RFQs sent to them and their own quotes, orders and invoices.","خارجي. يرى فقط طلبات العروض المرسلة إليه وعروضه وطلباته وفواتيره."],
+      customer:["External. Sees only their own vehicles, jobs, estimates and invoices — never internal cost.","خارجي. يرى مركباته وأعماله وعروضه وفواتيره فقط — دون التكلفة الداخلية."]
+    };
+
+    const fmt=n=>n===null?t("Unlimited"):(n===0?t("No approval rights"):"SAR "+n.toLocaleString("en-US"));
+    const roleCards=ROLES.map(r=>{
+      const modCount=MODS.filter(m=>((PERMS[m[0]]||{})[r.id]||"").includes("v")).length;
+      const sc=SCOPE[r.scope]||["—","—"];
+      return {id:r.id,label:rtl?r.ar:r.label,icon:r.icon,color:r.color,
+        tint:"color-mix(in srgb,"+r.color+" 13%,transparent)",
+        scopeLabel:rtl?sc[1]:sc[0],
+        scopePill:"padding:2px 8px;border-radius:9999px;font-size:10.5px;font-weight:600;flex-shrink:0;font-family:var(--font-action);background:color-mix(in srgb,"+r.color+" 12%,transparent);color:"+r.color,
+        limitLabel:fmt(r.limit),
+        modCount:modCount+" / "+MODS.length,
+        summary:(SUM[r.id]||["",""])[rtl?1:0]};
+    });
+
+    const cell=g=>{
+      if(!g) return {txt:"—",style:"display:inline-flex;align-items:center;justify-content:center;min-width:20px;font-size:11px;color:var(--text-muted);opacity:.45"};
+      const full=g.length>=5;
+      return {txt:g.toUpperCase(),
+        style:"display:inline-block;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.03em;font-family:var(--font-mono,monospace);"+(full?"background:var(--salis-gradient);color:#fff":"background:rgba(10,94,215,.11);color:var(--salis-blue)")};
+    };
+    const matrix=MODS.map(m=>({label:t(m[1]),cells:ROLES.map(r=>cell((PERMS[m[0]]||{})[r.id]))}));
+
+    const nameOf=id=>{const r=ROLES.find(x=>x.id===id);return r?(rtl?r.ar:r.label):id;};
+    const fields=FR.map((f,i)=>({field:rtl?f.ar:f.field,roles:f.hidden.map(nameOf),
+      rowStyle:"display:flex;gap:14px;align-items:flex-start;padding:12px 16px;"+(i?"border-top:1px solid var(--border-default)":"")}));
+
+    const sod=SODS.map(s=>({a:rtl?s.ar[0]:s.a,b:rtl?s.ar[1]:s.b,
+      riskLabel:s.risk==="high"?t("High risk"):t("Medium risk"),
+      pill:"padding:2px 8px;border-radius:9999px;font-size:10.5px;font-weight:600;font-family:var(--font-action);"+(s.risk==="high"?"background:rgba(249,115,22,.14);color:#F97316":"background:rgba(11,179,255,.12);color:#0BB3FF")}));
+
+    const EDGES=[
+      ["A technician opens a job that is not theirs → the record is not hidden but renders read-only, with the assigned technician named. Hiding it entirely makes handovers impossible.","يفتح الفني عملاً ليس له ← لا يُخفى السجل بل يُعرض للقراءة فقط مع ذكر الفني المسؤول. الإخفاء الكامل يمنع تسليم العمل."],
+      ["An advisor prices a job above SAR 5,000 → they may still build and save it; only Send is blocked, with the manager named in the tooltip.","يسعّر المستشار عملاً أعلى من 5,000 ر.س ← يمكنه بناؤه وحفظه، ويُحجب الإرسال فقط مع ذكر المدير في التلميح."],
+      ["A manager is on leave → approval rights delegate for a fixed window; the audit log records the delegation, not just the approval.","المدير في إجازة ← تُفوّض صلاحيات الاعتماد لمدة محددة، ويسجّل سجل التدقيق التفويض وليس الاعتماد فقط."],
+      ["A role loses a permission mid-session → the nav item disappears on next navigation; any open form saves once, then becomes read-only.","يفقد الدور صلاحية أثناء الجلسة ← يختفي عنصر القائمة عند التنقل التالي، ويُحفظ أي نموذج مفتوح مرة واحدة ثم يصبح للقراءة فقط."],
+      ["The same person is both technician and QC in a small garage → allowed, but the second self-certification on one job escalates to the manager.","نفس الشخص فني ومفتش جودة في ورشة صغيرة ← مسموح، لكن الاعتماد الذاتي الثاني لنفس العمل يُصعّد إلى المدير."],
+      ["A supplier is sent an RFQ then removed from the network → their existing quotes stay visible and honourable; only new RFQs stop.","يُرسل طلب عرض لمورد ثم يُزال من الشبكة ← تبقى عروضه القائمة مرئية وسارية، ويتوقف إرسال طلبات جديدة فقط."],
+      ["A customer's vehicle is sold to another customer → job history splits at the transfer date; neither party sees the other's records.","تُباع مركبة عميل لعميل آخر ← ينقسم سجل الأعمال عند تاريخ النقل، ولا يرى أي طرف سجلات الآخر."],
+      ["Accountant needs a technician's job detail to resolve a dispute → granted read-only, and the access itself is logged as a cross-role read.","يحتاج المحاسب تفاصيل عمل فني لحل خلاف ← يُمنح عرضاً للقراءة فقط، ويُسجّل الوصول نفسه كقراءة بين الأدوار."]
+    ];
+    const edges=EDGES.map((e,i)=>({n:i+1,txt:rtl?e[1]:e[0]}));
+
+    const UX=[
+      ["Hide, don't tease","أخفِ ولا تُلوّح","EyeOff","#0A5ED7","A module the role cannot view is removed from the sidebar entirely — no greyed-out rows. Discovery clutter is worse than absence.","الوحدة التي لا يستطيع الدور عرضها تُزال من القائمة الجانبية تماماً — بلا صفوف باهتة. فوضى الاستكشاف أسوأ من الغياب."],
+      ["Disable in place, explain why","عطّل في مكانه واشرح السبب","Lock","#F97316","An action the role can see but not perform stays visible, disabled, with a tooltip naming the required role or limit. Never a dead click.","الإجراء الذي يراه الدور ولا ينفّذه يبقى مرئياً ومعطلاً مع تلميح يذكر الدور أو الحد المطلوب. لا نقرة ميتة أبداً."],
+      ["Redact, don't blank","احجب ولا تُفرّغ","Asterisk","#0A5ED7","A hidden field shows a lock glyph in place of the value, so the layout and the existence of the field stay honest.","الحقل المحجوب يعرض رمز قفل بدل القيمة، فيبقى التصميم ووجود الحقل صادقين."],
+      ["Read-only beats missing","العرض أفضل من الإخفاء","Eye","#0BB3FF","Out-of-scope records render read-only rather than 404, so handovers, disputes and audits remain possible.","السجلات خارج النطاق تُعرض للقراءة فقط بدل خطأ 404، فتبقى التسليمات والخلافات والتدقيق ممكنة."]
+    ];
+    const uxRules=UX.map(u=>({title:rtl?u[1]:u[0],icon:u[2],color:u[3],tint:"color-mix(in srgb,"+u[3]+" 12%,transparent)",body:rtl?u[5]:u[4]}));
+
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("RBAC Specification"),index:t("Index"),eyebrow:t("Access Control"),
+        intro:t("Every role in SALIS AUTO, what it may do in each module, which fields it may never see, the duties that must stay separated, and how a missing permission looks on screen. This is the contract between design and implementation."),
+        rolesH:t("Roles"),rolesSub:t("Fourteen roles, each with a data scope and an approval ceiling. Scope decides which records exist for the role; the ceiling decides what it can sign off."),
+        matrixH:t("Permission Matrix"),module:t("Module"),
+        matrixNote:t("A dash means the module is hidden from the sidebar entirely for that role. A gradient cell means full control including delete and approve."),
+        fieldsH:t("Field-Level Redaction"),fieldsSub:t("Screen access is not enough. These fields are hidden from the roles listed even on screens they are allowed to open."),
+        sodH:t("Segregation of Duties"),sodSub:t("One person must never hold both sides of these pairs. The system warns when a role assignment would create the conflict."),
+        conflict:t("Conflict"),edgeH:t("Edge Cases"),uxH:t("How Denial Looks"),
+        limit:t("Approval limit"),modules:t("Modules")},
+      stats:[{n:ROLES.length||14,label:t("Roles"),color:"var(--text-heading)"},
+             {n:MODS.length,label:t("Modules"),color:"var(--salis-blue)"},
+             {n:FR.length||7,label:t("Redacted fields"),color:"#0BB3FF"},
+             {n:SODS.length||6,label:t("SoD conflicts"),color:"#F97316"}],
+      roleCards,matrix,fields,sod,edges,uxRules,
+      roleHeads:ROLES.map(r=>({label:rtl?r.ar:r.label,short:SHORT[r.id]||r.id.toUpperCase()})),
+      legend:Object.keys(ACT).map(k=>({k:k.toUpperCase(),label:rtl?ACT_AR[k]:ACT[k],
+        chip:"display:inline-block;padding:1px 5px;border-radius:5px;background:rgba(10,94,215,.11);color:var(--salis-blue);font-size:10px;font-weight:700;font-family:var(--font-mono,monospace)"}))
+    };
+  }
+}
+</script>
+</body>
+</html>

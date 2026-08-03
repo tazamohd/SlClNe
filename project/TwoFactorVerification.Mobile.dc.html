@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0;text-decoration:underline}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="2FA-Mobile" style="min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none">
+    <div style="position:absolute;top:0;right:0;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.12),transparent 65%);filter:blur(48px)"></div>
+  </div>
+  <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 16px">
+    <button onClick="{{ toggleLang }}" aria-label="Toggle language" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+    <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 16px 24px;position:relative;z-index:1;animation:fadeUp .3s ease">
+    <div style="background:color-mix(in srgb,var(--surface-card) 92%,transparent);backdrop-filter:blur(24px);border:1px solid var(--border-default);border-radius:14px;box-shadow:var(--shadow-lg);padding:24px;text-align:center">
+      <span style="display:inline-flex;padding:14px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);margin-bottom:14px"><salis-icon name="ShieldCheck" size="26"></salis-icon></span>
+      <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:22px;color:var(--text-heading)">{{ t.title }}</h2>
+      <p style="margin:8px 0 20px;font-family:var(--font-action);font-size:13px;color:var(--text-muted)">{{ t.desc }}</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px" dir="ltr">
+        <sc-for list="{{ digits }}" as="d" hint-placeholder-count="6">
+          <input value="{{ d.val }}" onChange="{{ d.set }}" maxlength="1" style="width:44px;height:52px;text-align:center;font-size:20px;font-weight:700;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);color:var(--text-primary);outline:none" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15)">
+        </sc-for>
+      </div>
+      <button onClick="{{ verify }}" style="width:100%;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.verify }}</button>
+      <p style="margin:14px 0 0;font-size:12px;color:var(--text-faint)">{{ t.refreshHint }}</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},codes:["","","","","",""]};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    const digits=this.state.codes.map((v,i)=>({val:v,set:e=>{const c=[...this.state.codes];c[i]=e.target.value.slice(-1);this.setState({codes:c});}}));
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",digits,
+      themeIcon:dark?"Sun":"Moon",langLabel:lang==="ar"?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=lang==="ar"?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      verify:()=>location.href="Dashboard.Mobile.dc.html",
+      t:{title:t("Two-Factor Verification"),desc:t("Enter the code from your authenticator app"),verify:t("Verify"),refreshHint:lang==="ar"?"يتم تحديث الرمز كل 30 ثانية":"Code refreshes every 30 seconds"}};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes liveDot{0%,100%{opacity:1}50%{opacity:.3}}
+.dvc:hover{border-color:rgba(10,94,215,.35)!important}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="OBD Diagnostics" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:12px 20px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <div style="width:30px;height:30px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Activity" size="15" style="color:#fff"></salis-icon></div>
+    <div style="min-width:0;flex:1">
+      <p style="margin:0;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.title }}</p>
+      <p style="margin:0;font-size:11.5px;color:var(--text-muted)">{{ t.sub }}</p>
+    </div>
+    <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:9999px;background:rgba(10,94,215,.1);color:var(--salis-blue);font-size:11.5px;font-weight:600;font-family:var(--font-action);flex-shrink:0"><span style="width:6px;height:6px;border-radius:50%;background:var(--salis-blue);animation:liveDot 1.4s infinite"></span>{{ t.liveCount }}</span>
+    <a href="OEMIntegrations.dc.html" style="height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action);flex-shrink:0" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Plug" size="13"></salis-icon>{{ t.oem }}</a>
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:11.5px;flex-shrink:0" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="13"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+  </header>
+
+  <div style="max-width:1320px;margin:0 auto;padding:18px 20px 40px;display:grid;grid-template-columns:{{ cols }};gap:16px;align-items:start;animation:fadeUp .3s ease">
+
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+      <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.devices }}</p>
+      <sc-for list="{{ devices }}" as="d" hint-placeholder-count="4">
+        <button onClick="{{ d.pick }}" class="dvc" style="{{ d.cardStyle }}">
+          <div style="display:flex;align-items:center;gap:9px;width:100%">
+            <span style="{{ d.dotStyle }}"></span>
+            <div style="flex:1;min-width:0;text-align:start">
+              <p style="margin:0;font-size:12.5px;font-weight:700;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.vehicle }}</p>
+              <p style="margin:1px 0 0;font-size:11px;color:var(--text-muted);font-family:var(--font-mono,monospace)">{{ d.meta }}</p>
+            </div>
+            <sc-if value="{{ d.hasDtc }}" hint-placeholder-val="{{ true }}">
+              <span style="flex-shrink:0;min-width:19px;height:19px;padding:0 5px;border-radius:9999px;background:rgba(249,115,22,.15);color:#F97316;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums">{{ d.dtc }}</span>
+            </sc-if>
+          </div>
+        </button>
+      </sc-for>
+      <div style="padding:12px 14px;border-radius:12px;background:rgba(10,94,215,.05);border:1px dashed rgba(10,94,215,.28);display:flex;gap:9px;align-items:flex-start">
+        <salis-icon name="Bluetooth" size="14" style="color:var(--salis-blue);flex-shrink:0;margin-top:1px"></salis-icon>
+        <div><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ t.pairH }}</p><p style="margin:2px 0 0;font-size:11px;line-height:1.45;color:var(--text-muted)">{{ t.pairSub }}</p></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:15px;min-width:0">
+      <div style="padding:16px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap">
+          <div style="min-width:0">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <p style="margin:0;font-size:18px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ sel.vehicle }}</p>
+              <span style="{{ sel.statusPill }}">{{ sel.statusLabel }}</span>
+            </div>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--text-muted);font-family:var(--font-mono,monospace)">VIN {{ sel.vin }} · {{ sel.bay }} · {{ sel.id }}</p>
+          </div>
+          <div style="display:flex;gap:7px">
+            <button onClick="{{ scan }}" style="height:34px;padding:0 13px;border-radius:9px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action);display:flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(10,94,215,.25)"><salis-icon name="RefreshCw" size="13"></salis-icon>{{ t.rescan }}</button>
+            <button onClick="{{ clearCodes }}" style="height:34px;padding:0 13px;border-radius:9px;border:1.5px solid rgba(249,115,22,.4);background:var(--surface-card);color:#F97316;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action)" style-hover="background:rgba(249,115,22,.07)">{{ t.clearCodes }}</button>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:9px">
+          <sc-for list="{{ pids }}" as="p" hint-placeholder-count="4">
+            <div style="padding:11px 13px;border-radius:11px;background:var(--surface-inset);border:1px solid var(--border-default)">
+              <p style="margin:0;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ p.label }}</p>
+              <p style="margin:4px 0 0;font-size:19px;font-family:var(--font-display);font-weight:900;color:{{ p.color }};font-variant-numeric:tabular-nums;line-height:1.1">{{ p.value }}</p>
+              <div style="margin-top:7px;height:3px;border-radius:9999px;background:var(--border-default);overflow:hidden"><div style="{{ p.barStyle }}"></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:13px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div>
+            <p style="margin:0;font-size:14.5px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.dtcH }}</p>
+            <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted)">{{ t.dtcSub }}</p>
+          </div>
+          <span style="{{ dtcCountPill }}">{{ dtcCount }}</span>
+        </div>
+        <sc-if value="{{ hasCodes }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ codes }}" as="c" hint-placeholder-count="5">
+            <div style="{{ c.rowStyle }}">
+              <span style="{{ c.sevStyle }}"><salis-icon name="{{ c.sevIcon }}" size="14"></salis-icon></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span style="font-size:13.5px;font-weight:800;color:var(--text-heading);font-family:var(--font-mono,monospace)">{{ c.code }}</span>
+                  <span style="{{ c.sysPill }}">{{ c.system }}</span>
+                  <sc-if value="{{ c.freeze }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:4px;padding:1px 7px;border-radius:9999px;background:rgba(11,179,255,.12);color:#0BB3FF;font-size:10px;font-weight:600;font-family:var(--font-action)"><salis-icon name="Camera" size="9"></salis-icon>{{ t.freeze }}</span></sc-if>
+                </div>
+                <p style="margin:3px 0 0;font-size:12.5px;color:var(--text-body);text-wrap:pretty">{{ c.desc }}</p>
+              </div>
+              <div style="display:flex;gap:6px;flex-shrink:0">
+                <button onClick="{{ c.toKb }}" style="height:29px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:11px;font-weight:600;color:var(--salis-blue);font-family:var(--font-action);display:flex;align-items:center;gap:5px" style-hover="background:rgba(10,94,215,.07)"><salis-icon name="BookOpen" size="11"></salis-icon>{{ t.procedure }}</button>
+                <button onClick="{{ c.toJob }}" style="height:29px;padding:0 10px;border-radius:8px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;font-size:11px;font-weight:600;font-family:var(--font-action)">{{ t.addToJob }}</button>
+              </div>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ noCodes }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:38px 20px;text-align:center">
+            <span style="display:inline-flex;padding:11px;border-radius:12px;background:rgba(10,94,215,.09);color:var(--salis-blue)"><salis-icon name="ShieldCheck" size="20"></salis-icon></span>
+            <p style="margin:12px 0 0;font-size:14.5px;font-weight:700;color:var(--text-heading)">{{ t.cleanH }}</p>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--text-muted)">{{ t.cleanSub }}</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:20px;inset-inline-end:20px;z-index:100;display:flex;align-items:flex-start;gap:11px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow-lg);max-width:320px;animation:fadeUp .25s ease">
+      <span style="{{ toastIconStyle }}"><salis-icon name="{{ toastIcon }}" size="17"></salis-icon></span>
+      <div style="flex:1;min-width:0"><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-heading)">{{ toastTitle }}</p><p style="margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted)">{{ toastDesc }}</p></div>
+      <button onClick="{{ closeToast }}" aria-label="Dismiss" style="border:none;background:none;cursor:pointer;color:var(--text-muted);padding:0;display:flex;flex-shrink:0"><salis-icon name="X" size="13"></salis-icon></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null,pick:0,cleared:false,tick:0,toast:null,narrow:false};
+  componentDidMount(){
+    import("./gms-data.js").then(m=>this.setState({D:m}));
+    this._iv=setInterval(()=>this.setState(s=>({tick:s.tick+1})),1600);
+    this._mq=window.matchMedia("(max-width:900px)");
+    this._onMq=()=>this.setState({narrow:this._mq.matches});
+    this._onMq(); this._mq.addEventListener("change",this._onMq);
+  }
+  componentWillUnmount(){ clearInterval(this._iv); clearTimeout(this._tt); if(this._mq) this._mq.removeEventListener("change",this._onMq); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const DEV=(D&&D.OBD_DEVICES)||[], ALLC=(D&&D.DTC_CODES)||[];
+    const sel=DEV[this.state.pick]||{vehicle:"—",vin:"—",bay:"—",id:"—",status:"offline",rpm:0,coolant:0,voltage:0,load:0,dtc:0};
+
+    const STAT={live:[t("Live"),"var(--salis-blue)","rgba(10,94,215,.12)"],idle:[t("Idle"),"#0BB3FF","rgba(11,179,255,.12)"],offline:[t("Offline"),"var(--text-muted)","rgba(100,116,139,.13)"]};
+    const devices=DEV.map((d,i)=>{
+      const on=i===this.state.pick, s=STAT[d.status]||STAT.offline;
+      return {vehicle:d.vehicle, meta:d.plate+" · "+d.bay, dtc:d.dtc, hasDtc:d.dtc>0,
+        pick:()=>this.setState({pick:i,cleared:false}),
+        dotStyle:"width:8px;height:8px;border-radius:50%;flex-shrink:0;background:"+s[1]+";"+(d.status==="live"?"animation:liveDot 1.4s infinite":""),
+        cardStyle:"width:100%;padding:11px 13px;border-radius:12px;cursor:pointer;text-align:start;transition:all .15s ease;font-family:var(--font-ui,'Inter',sans-serif);"+(on?"background:rgba(10,94,215,.07);border:1.5px solid var(--salis-blue)":"background:var(--surface-card);border:1px solid var(--border-default)")};
+    });
+
+    // live jitter only when the device is streaming
+    const j=(base,amp)=>sel.status==="live"&&base>0?Math.max(0,Math.round((base+(Math.sin(this.state.tick*1.7+base)*amp))*10)/10):base;
+    const pid=(label,value,unit,pct,color)=>({label,value:value+(unit?" "+unit:""),color,
+      barStyle:"height:100%;width:"+Math.max(2,Math.min(100,pct))+"%;border-radius:9999px;background:"+color+";transition:width .8s ease"});
+    const rpm=j(sel.rpm,55), cool=j(sel.coolant,1.5), volt=Math.round(j(sel.voltage,.15)*10)/10, load=j(sel.load,3);
+    const pids=[
+      pid(t("Engine RPM"),Math.round(rpm),"",rpm/70,"var(--salis-blue)"),
+      pid(t("Coolant"),Math.round(cool),"°C",cool,cool>105?"#F97316":"var(--salis-blue)"),
+      pid(t("Battery"),volt.toFixed(1),"V",(volt/15)*100,volt<12?"#F97316":"#0BB3FF"),
+      pid(t("Engine load"),Math.round(load),"%",load,"#0BB3FF")];
+
+    const SEV={high:["#F97316","rgba(249,115,22,.13)","AlertTriangle"],medium:["#0BB3FF","rgba(11,179,255,.13)","AlertCircle"],low:["var(--text-muted)","rgba(100,116,139,.13)","Info"]};
+    const shown=this.state.cleared?[]:ALLC.slice(0,sel.dtc);
+    const codes=shown.map((c,i)=>{
+      const s=SEV[c.severity]||SEV.low;
+      return {code:c.code, desc:rtl?c.ar:c.desc, system:t(c.system), freeze:c.freeze,
+        sevIcon:s[2],
+        sevStyle:"width:28px;height:28px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;background:"+s[1]+";color:"+s[0],
+        sysPill:"padding:1px 7px;border-radius:9999px;background:var(--surface-inset);color:var(--text-muted);font-size:10px;font-weight:600;font-family:var(--font-action)",
+        rowStyle:"display:flex;align-items:flex-start;gap:11px;padding:13px 18px;"+(i?"border-top:1px solid var(--border-default)":""),
+        toKb:()=>{location.href="TechnicianKB.dc.html";},
+        toJob:()=>fire(t("Added to job card"),c.code+" · "+(rtl?c.ar:c.desc))};
+    });
+
+    const toast=this.state.toast;
+    const fire=(title,desc,err)=>{clearTimeout(this._tt);this.setState({toast:{title,desc,err:!!err}});this._tt=setTimeout(()=>this.setState({toast:null}),3200);};
+    const s=STAT[sel.status]||STAT.offline;
+
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      cols:this.state.narrow?"1fr":"minmax(240px,285px) 1fr",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("OBD-II Live Diagnostics"),sub:t("Connected scan tools across the workshop"),
+        liveCount:DEV.filter(d=>d.status==="live").length+" "+t("streaming"),
+        oem:t("OEM tools"),devices:t("Scan tools"),
+        pairH:t("Pair a new tool"),pairSub:t("Plug the dongle into the OBD port and hold the pair button for 3 seconds."),
+        rescan:t("Re-scan"),clearCodes:t("Clear codes"),
+        dtcH:t("Trouble codes"),dtcSub:t("Read from the last scan, newest first"),
+        freeze:t("Freeze frame"),procedure:t("Procedure"),addToJob:t("Add to job"),
+        cleanH:t("No codes stored"),cleanSub:t("The ECU reports no active or pending faults.")},
+      devices,sel:{vehicle:sel.vehicle,vin:sel.vin,bay:t(sel.bay),id:sel.id,
+        statusLabel:s[0],
+        statusPill:"padding:2px 9px;border-radius:9999px;font-size:11px;font-weight:600;font-family:var(--font-action);background:"+s[2]+";color:"+s[1]},
+      pids,codes,hasCodes:shown.length>0,noCodes:shown.length===0,
+      dtcCount:shown.length,
+      dtcCountPill:"min-width:24px;height:24px;padding:0 8px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;"+(shown.length?"background:rgba(249,115,22,.14);color:#F97316":"background:rgba(10,94,215,.1);color:var(--salis-blue)"),
+      scan:()=>{this.setState({cleared:false});fire(t("Scan complete"),sel.dtc?sel.dtc+" "+t("codes found"):t("No codes stored"));},
+      clearCodes:()=>{this.setState({cleared:true});fire(t("Codes cleared"),t("Drive cycle required to confirm the repair."));},
+      hasToast:!!toast,toastTitle:toast?toast.title:"",toastDesc:toast?toast.desc:"",
+      toastIcon:toast&&toast.err?"AlertCircle":"CheckCircle2",
+      toastIconStyle:"padding:6px;border-radius:8px;display:flex;flex-shrink:0;"+(toast&&toast.err?"background:rgba(249,115,22,.13);color:#F97316":"background:rgba(10,94,215,.12);color:var(--salis-blue)"),
+      closeToast:()=>this.setState({toast:null})
+    };
+  }
+}
+</script>
+</body>
+</html>

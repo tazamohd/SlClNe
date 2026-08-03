@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}input::placeholder{color:#9BA4B0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Profile-Completion" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none"><div style="position:absolute;top:0;right:0;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.1),transparent 65%);filter:blur(64px)"></div></div>
+  <div style="width:100%;max-width:440px;padding:16px;position:relative;z-index:1;animation:fadeUp .3s ease">
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;box-shadow:var(--shadow-lg);padding:24px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:18px">
+        <span style="width:64px;height:64px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700">K</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--text-heading)">{{ t.title }}</h2>
+        <p style="margin:0;font-size:13px;color:var(--text-muted)">{{ t.desc }}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.fullName }}</label><input value="{{ name }}" onChange="{{ setName }}" style="height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.phone }}</label><input dir="ltr" value="{{ phone }}" onChange="{{ setPhone }}" style="height:46px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;font-family:var(--font-mono);font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+        <button onClick="{{ next }}" style="width:100%;height:48px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);white-space:nowrap;box-sizing:border-box">{{ t.continue }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},name:"Khalid Al-Amri",phone:"+966 55 123 4567"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",
+      name:this.state.name,setName:e=>this.setState({name:e.target.value}),
+      phone:this.state.phone,setPhone:e=>this.setState({phone:e.target.value}),
+      next:()=>location.href="RoleSelection.dc.html",
+      t:{title:t("Profile Completion"),desc:t("Tell us a bit about yourself"),fullName:t("Full Name"),phone:t("Phone"),continue:t("Continue")}};
+  }
+}
+
+</script>
+</body>
+</html>

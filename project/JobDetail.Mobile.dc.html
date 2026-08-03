@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Job-Detail-Mobile" style="position:relative;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm);position:relative;z-index:5">
+    <a href="JobCards.Mobile.dc.html" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:var(--text-primary);flex-shrink:0"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <p style="margin:0;flex:1;font-size:15px;font-weight:700;color:var(--text-heading);font-family:var(--font-mono)" dir="ltr">{{ job.id }}</p>
+    <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="height:calc(100vh - 56px);overflow-y:auto">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div><p style="margin:0;font-size:14px;font-weight:600;color:var(--text-heading)">{{ job.cust }}</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">{{ job.veh }}</p></div>
+        <span style="{{ job.stStyle }}">{{ job.st }}</span>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+        <h3 style="margin:0 0 14px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.timeline }}</h3>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <sc-for list="{{ timeline }}" as="s" hint-placeholder-count="6">
+            <div style="display:flex;gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <span style="{{ s.dotStyle }}"><salis-icon name="{{ s.icon }}" size="12"></salis-icon></span>
+                <sc-if value="{{ s.hasLine }}" hint-placeholder-val="{{ true }}"><span style="width:2px;flex:1;min-height:18px;background:var(--border-default)"></span></sc-if>
+              </div>
+              <div style="padding-bottom:16px">
+                <p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ s.label }}</p>
+                <p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ s.time }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+        <h3 style="margin:0 0 10px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.assignedTech }}</h3>
+        <div style="display:flex;align-items:center;gap:10px"><span style="width:32px;height:32px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">{{ tech.initial }}</span><span style="font-size:13px;color:var(--text-body)">{{ tech.name }}</span></div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+        <h3 style="margin:0 0 10px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.partsUsed }}</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ parts }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-body)">{{ p.name }}</span><span style="font-family:var(--font-mono);color:var(--text-muted)">{{ p.price }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted)"><span>{{ t.laborCost }}</span><span>SAR 350</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted)"><span>{{ t.partsCost }}</span><span>SAR 490</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;color:var(--text-heading);padding-top:8px;border-top:1px solid var(--border-default)"><span>{{ t.totalCost }}</span><span>SAR 840</span></div>
+      </div>
+      <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:14px;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="Printer" size="16"></salis-icon>{{ t.print }}</button>
+    </div>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;
+    const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:600;background:"+bg+";color:"+fg+";text-transform:capitalize";
+    const j=(D?D.JOBS:[])[3]||{id:"D8C1B6F4",cust:"Mohammed Hassan",veh:"Lexus ES 350 2020",st:"in_progress"};
+    const stB=D?D.ST_BADGE:{},st=stB[j.st]||["rgba(10,94,215,.1)","#0A5ED7"];
+    const dotDone="width:24px;height:24px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0";
+    const dotPend="width:24px;height:24px;border-radius:50%;background:var(--surface-inset);border:1.5px solid var(--border-strong);color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0";
+    const steps=[["CheckCircle","Vehicle Checked In","Jul 18, 9:02 AM",true],["SearchCheck","Diagnostics Started","Jul 18, 9:40 AM",true],["Package","Parts Ordered","Jul 18, 11:15 AM",true],["Wrench","Repair In Progress","Jul 19, 8:30 AM",true],["ShieldCheck","Quality Check","Pending",false],["Car","Ready for Delivery","Pending",false]];
+    const timeline=steps.map((s,i)=>({icon:s[0],label:t(s[1]),time:s[3]?s[2]:t(s[2]),hasLine:i<steps.length-1,dotStyle:s[3]?dotDone:dotPend}));
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",backChev:rtl?"ArrowRight":"ArrowLeft",
+      themeIcon:dark?"Sun":"Moon",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      job:{id:j.id,cust:j.cust,veh:j.veh,st:t(j.st.replace(/_/g," ")),stStyle:pill(st[0],st[1])},
+      tech:{name:"Yousef Al-Otaibi",initial:"Y"},
+      parts:[{name:t("Oil Filter"),price:"SAR 85"},{name:t("Brake Pads"),price:"SAR 310"},{name:t("Air Filter"),price:"SAR 95"}],
+      timeline,
+      t:{timeline:t("Timeline"),assignedTech:t("Assigned Technician"),partsUsed:t("Parts Used"),laborCost:t("Labor Cost"),partsCost:t("Parts Cost"),totalCost:t("Total Cost"),print:t("Print Job Card")}
+    };
+  }
+}
+
+</script>
+</body>
+</html>

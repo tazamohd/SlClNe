@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}@keyframes fadeUp{from{transform:translateY(12px)}to{transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Language-Selection" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none"><div style="position:absolute;top:0;inset-inline-end:0;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.1),transparent 65%);filter:blur(64px)"></div></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:22px;max-width:440px;padding:24px 16px;animation:fadeUp .3s ease">
+    <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:112px;height:auto">
+    <h1 style="margin:0;font-size:22px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);text-align:center">{{ t.choose }}</h1>
+    <div style="display:flex;gap:14px;width:100%">
+      <button onClick="{{ pickEn }}" style="{{ enStyle }}"><span style="font-size:24px">🇬🇧</span><span style="font-family:var(--font-action);font-weight:600;font-size:14px">{{ t.english }}</span></button>
+      <button onClick="{{ pickAr }}" style="{{ arStyle }}"><span style="font-size:24px">🇸🇦</span><span style="font-family:var(--font-action);font-weight:600;font-size:14px">{{ t.arabic }}</span></button>
+    </div>
+
+    <div style="width:100%;padding:16px;border-radius:12px;border:1px solid var(--border-default);background:var(--surface-card);display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="flex-shrink:0;width:38px;height:38px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(10,94,215,.25)"><salis-icon name="Bell" size="18"></salis-icon></span>
+        <div style="flex:1;min-width:0">
+          <p style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading);font-family:var(--font-action)">{{ t.stay }}</p>
+          <p style="margin:2px 0 0;font-size:12px;line-height:1.4;color:var(--text-muted);text-wrap:pretty">{{ t.stayDesc }}</p>
+        </div>
+      </div>
+      <button onClick="{{ toggleNotif }}" style="{{ notifBtnStyle }}">
+        <span style="display:flex;align-items:center;gap:10px">
+          <span style="{{ notifDotStyle }}"></span>
+          <span>{{ t.enable }}</span>
+        </span>
+        <span style="{{ switchStyle }}"><span style="{{ switchKnobStyle }}"></span></span>
+      </button>
+      <p style="margin:0;font-size:11px;color:var(--text-muted);text-align:center">{{ t.later }}</p>
+    </div>
+
+    <a href="RegionSelection.dc.html" style="width:100%;display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25);white-space:nowrap;box-sizing:border-box">{{ t.continue }}</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,notif:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const notif=this.state.notif??((localStorage.getItem("salis-notif")??"on")==="on");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    const rtl=lang==="ar";
+    const cardBase="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px;border-radius:12px;cursor:pointer;font-family:var(--font-action);transition-property:all;transition-duration:.15s;transition-timing-function:ease;border-style:solid;border-width:1px;";
+    const on="border-color:var(--salis-blue);background-color:"+(dark?"#10233D":"#EFF4FD")+";color:var(--salis-blue)";
+    const off="border-color:var(--border-default);background-color:var(--surface-card);color:var(--text-body)";
+    return {rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",
+      pickEn:()=>{localStorage.setItem("salis-lang","en");this.setState({lang:"en"});},
+      pickAr:()=>{localStorage.setItem("salis-lang","ar");this.setState({lang:"ar"});},
+      toggleNotif:()=>{const n=!notif;localStorage.setItem("salis-notif",n?"on":"off");this.setState({notif:n});},
+      enStyle:cardBase+(lang==="en"?on:off),
+      arStyle:cardBase+(lang==="ar"?on:off),
+      notifBtnStyle:"display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:12px 14px;border-radius:10px;cursor:pointer;font-family:var(--font-action);font-size:13.5px;font-weight:600;background-color:"+(notif?(dark?"#10233D":"#EFF4FD"):"var(--surface-inset)")+";border-style:solid;border-width:1px;border-color:"+(notif?"var(--salis-blue)":"var(--border-default)")+";color:"+(notif?"var(--salis-blue)":"var(--text-body)")+";transition-property:all;transition-duration:.15s;transition-timing-function:ease",
+      notifDotStyle:"width:8px;height:8px;border-radius:50%;background-color:"+(notif?"var(--salis-blue)":"#94A3B8")+";flex-shrink:0",
+      switchStyle:"position:relative;flex-shrink:0;width:38px;height:22px;border-radius:9999px;background-color:"+(notif?"var(--salis-blue)":"#CBD5E1")+";transition-property:background-color;transition-duration:.15s",
+      switchKnobStyle:"position:absolute;top:2px;"+(rtl?(notif?"right:2px":"right:18px"):(notif?"left:18px":"left:2px"))+";width:18px;height:18px;border-radius:50%;background-color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition-property:left,right;transition-duration:.15s",
+      t:{choose:t("Choose your language"),english:t("English"),arabic:t("Arabic"),continue:t("Continue"),
+         stay:t("Stay in the loop"),stayDesc:t("Turn on notifications to receive news, appointment reminders and job updates."),
+         enable:t("Enable notifications"),later:t("You can change this later in Settings.")}};
+  }
+}
+
+</script>
+</body>
+</html>

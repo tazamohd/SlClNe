@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Workspace-Selection" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none"><div style="position:absolute;top:0;left:0;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(11,179,255,.1),transparent 65%);filter:blur(64px)"></div></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:24px;max-width:460px;width:100%;padding:16px;animation:fadeUp .3s ease">
+    <div style="text-align:center">
+      <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:90px;height:auto">
+      <h1 style="margin:12px 0 0;font-size:22px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1>
+      <p style="margin:6px 0 0;font-size:13px;color:var(--text-muted)">{{ t.desc }}</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ workspaces }}" as="w" hint-placeholder-count="3">
+        <button onClick="{{ w.select }}" style="{{ w.style }}">
+          <span style="width:42px;height:42px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(10,94,215,.2)">{{ w.initial }}</span>
+          <div style="flex:1;text-align:start;min-width:0">
+            <span style="font-size:14px;font-weight:600">{{ w.label }}</span>
+            <div style="display:flex;gap:12px;margin-top:4px">
+              <span style="display:flex;align-items:center;gap:3px;font-size:11px;opacity:.7"><salis-icon name="Car" size="11"></salis-icon>{{ w.vehicles }}</span>
+              <span style="display:flex;align-items:center;gap:3px;font-size:11px;opacity:.7"><salis-icon name="Wrench" size="11"></salis-icon>{{ w.jobs }}</span>
+              <span style="display:flex;align-items:center;gap:3px;font-size:11px;opacity:.7"><salis-icon name="Users" size="11"></salis-icon>{{ w.team }}</span>
+            </div>
+          </div>
+          <sc-if value="{{ w.picked }}" hint-placeholder-val="{{ false }}"><span style="width:22px;height:22px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(10,94,215,.3)"><salis-icon name="Check" size="12" stroke-width="3"></salis-icon></span></sc-if>
+          <sc-if value="{{ w.notPicked }}" hint-placeholder-val="{{ true }}"><span style="width:22px;height:22px;border-radius:50%;border:2px solid var(--border-strong);flex-shrink:0"></span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <a href="Dashboard.dc.html" style="width:100%;display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.continue }}</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;ar&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},picked:"Al-Amri Auto Center"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    const rtl=lang==="ar";
+    const data=[
+      ["Al-Amri Auto Center","48 "+t("Vehicles"),"12 "+t("Active Jobs"),"8"],
+      ["Riyadh North Branch","31 "+t("Vehicles"),"7 "+t("Active Jobs"),"5"],
+      ["Jeddah Service Center","22 "+t("Vehicles"),"4 "+t("Active Jobs"),"4"]
+    ];
+    const workspaces=data.map(([n,vehicles,jobs,team])=>{const on=this.state.picked===n;
+      return {label:n,initial:n[0],vehicles,jobs,team,picked:on,notPicked:!on,select:()=>this.setState({picked:n}),
+        style:"width:100%;display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;font-family:var(--font-action);transition:all .2s ease;box-sizing:border-box;"+(on?"border:1.5px solid var(--salis-blue);background:rgba(10,94,215,.06);color:var(--salis-blue);box-shadow:0 4px 16px rgba(10,94,215,.1)":"border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)")};
+    });
+    return {rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",workspaces,t:{title:t("Workspace Selection"),desc:t("Select a workspace to continue"),continue:t("Continue")}};
+  }
+}
+</script>
+</body>
+</html>

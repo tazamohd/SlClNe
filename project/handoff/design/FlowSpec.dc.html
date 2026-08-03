@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Flow Spec" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:10"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="14"></salis-icon>{{ langLabel }}</button><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease;max-width:1240px;margin:0 auto">
+<div>
+  <h2 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+  <p style="margin:7px 0 0;font-size:14px;color:var(--text-muted);max-width:700px;text-wrap:pretty">{{ t.sub }}</p>
+</div>
+<div style="display:flex;gap:8px"><sc-for list="{{ flowTabs }}" as="ft" hint-placeholder-count="2"><button onClick="{{ ft.click }}" style="{{ ft.style }}"><salis-icon name="{{ ft.icon }}" size="14"></salis-icon>{{ ft.label }}</button></sc-for></div>
+
+<div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+  <h3 style="margin:0 0 4px;font-size:16px;font-weight:700;color:var(--text-heading)">{{ flow.name }}</h3>
+  <p style="margin:0 0 22px;font-size:13px;color:var(--text-muted)">{{ flow.desc }}</p>
+  <div class="hscroll" style="display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:6px">
+    <sc-for list="{{ flow.steps }}" as="s" hint-placeholder-count="6">
+      <div style="display:flex;align-items:flex-start;flex-shrink:0">
+        <div style="width:168px;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center">
+          <span style="width:42px;height:42px;border-radius:12px;background:{{ s.bg }};color:{{ s.fg }};display:flex;align-items:center;justify-content:center"><salis-icon name="{{ s.icon }}" size="19"></salis-icon></span>
+          <div><p style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ s.label }}</p><p style="margin:3px 0 0;font-size:11px;color:var(--text-muted);line-height:1.5">{{ s.actor }}</p></div>
+          <span style="{{ s.gateStyle }}">{{ s.gate }}</span>
+        </div>
+        <sc-if value="{{ s.hasArrow }}" hint-placeholder-val="{{ true }}"><div style="width:26px;display:flex;align-items:center;justify-content:center;padding-top:14px"><salis-icon name="ArrowRight" size="15" style="color:var(--border-strong)"></salis-icon></div></sc-if>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:start">
+  <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+    <div style="padding:15px 20px;border-bottom:1px solid var(--border-default)"><h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.transitions }}</h3></div>
+    <table style="width:100%;border-collapse:collapse;font-family:var(--font-ui);font-size:13px;color:var(--text-primary)">
+      <thead><tr><sc-for list="{{ trCols }}" as="c" hint-placeholder-count="4"><th style="{{ c.style }}">{{ c.label }}</th></sc-for></tr></thead>
+      <tbody><sc-for list="{{ flow.transitions }}" as="tr" hint-placeholder-count="6"><tr style="transition:background .15s" style-hover="background:rgba(10,94,215,.03)">
+        <td style="padding:11px 20px;border-bottom:1px solid var(--border-default);font-size:12px;color:var(--text-muted)">{{ tr.from }}</td>
+        <td style="padding:11px 12px;border-bottom:1px solid var(--border-default);text-align:center"><salis-icon name="ArrowRight" size="13" style="color:var(--salis-blue)"></salis-icon></td>
+        <td style="padding:11px 12px;border-bottom:1px solid var(--border-default);font-size:12px;font-weight:600;color:var(--text-heading)">{{ tr.to }}</td>
+        <td style="padding:11px 20px;border-bottom:1px solid var(--border-default)"><p style="margin:0;font-size:12px;color:var(--text-body)">{{ tr.rule }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ tr.who }}</p></td>
+      </tr></sc-for></tbody>
+    </table>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 14px;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.permissions }}</h3>
+      <div style="display:flex;flex-direction:column;gap:11px"><sc-for list="{{ flow.roles }}" as="r" hint-placeholder-count="4">
+        <div style="display:flex;align-items:flex-start;gap:10px"><span style="{{ r.iconStyle }}"><salis-icon name="{{ r.icon }}" size="14"></salis-icon></span><div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ r.role }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted);line-height:1.55">{{ r.can }}</p></div></div>
+      </sc-for></div>
+    </div>
+    <div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 14px;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.sideEffects }}</h3>
+      <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ flow.effects }}" as="e" hint-placeholder-count="4">
+        <div style="display:flex;gap:9px;padding:11px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default)"><salis-icon name="{{ e.icon }}" size="14" style="color:var(--salis-blue);flex-shrink:0;margin-top:1px"></salis-icon><div><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ e.on }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted);line-height:1.55">{{ e.does }}</p></div></div>
+      </sc-for></div>
+    </div>
+    <div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid rgba(249,115,22,.25);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 14px;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.edgeCases }}</h3>
+      <div style="display:flex;flex-direction:column;gap:9px"><sc-for list="{{ flow.edges }}" as="ed" hint-placeholder-count="4">
+        <div style="display:flex;gap:9px"><salis-icon name="AlertTriangle" size="13" style="color:#F97316;flex-shrink:0;margin-top:2px"></salis-icon><p style="margin:0;font-size:12px;color:var(--text-body);line-height:1.55">{{ ed }}</p></div>
+      </sc-for></div>
+    </div>
+  </div>
+</div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null,lang:null,data:null,flow:null};componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}renderVals(){
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const ic=(bg,fg)=>"padding:7px;border-radius:9px;background:"+bg+";color:"+fg+";display:flex";
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 9px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const pick=this.state.flow??"job";
+const tabStyle=a=>"display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:9px;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;"+(a?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)");
+const flowTabs=[["job","Job Card Lifecycle","ClipboardList"],["est","Estimate Approval","FileCheck"]].map(f=>({label:t(f[1]),icon:f[2],click:()=>this.setState({flow:f[0]}),style:tabStyle(pick===f[0])}));
+const B=["rgba(10,94,215,.1)","#0A5ED7"],C=["rgba(11,179,255,.1)","#0BB3FF"],O=["rgba(249,115,22,.1)","#F97316"],N=["rgba(11,31,59,.1)","#0B1F3B"],G=["rgba(100,116,139,.1)","#64748B"];
+const gateAuto=pill("rgba(100,116,139,.1)","#64748B"),gateGate=pill("rgba(249,115,22,.1)","#F97316"),gateSign=pill("rgba(10,94,215,.1)","#0A5ED7");
+const step=(icon,label,actor,c,gate,gs,arrow)=>({icon,label:t(label),actor:t(actor),bg:c[0],fg:c[1],gate:t(gate),gateStyle:gs,hasArrow:arrow});
+const FLOWS={
+ job:{name:t("Job Card Lifecycle"),desc:t("From vehicle arrival to keys handed back. Six states, three of them gated."),
+  steps:[
+   step("Car","Check-In","Service Advisor",O,"Vehicle + customer required",gateGate,true),
+   step("SearchCheck","Inspection","Technician",C,"Photos required",gateGate,true),
+   step("FileText","Estimate","Service Advisor",B,"Customer approval",gateSign,true),
+   step("Wrench","Repair","Technician",B,"Parts allocated",gateGate,true),
+   step("CheckCircle","Quality Check","QC / Senior Tech",C,"Checklist 100%",gateGate,true),
+   step("Truck","Delivery","Service Advisor",N,"Signature + payment",gateSign,false)],
+  transitions:[
+   {from:t("Check-In"),to:t("Inspection"),rule:t("Bay and technician assigned"),who:t("Service Advisor, Manager")},
+   {from:t("Inspection"),to:t("Estimate"),rule:t("At least one inspection photo attached"),who:t("Technician")},
+   {from:t("Estimate"),to:t("Repair"),rule:t("Customer approved in portal, app, or on signature pad"),who:t("Customer, or Advisor on their behalf")},
+   {from:t("Repair"),to:t("Waiting Parts"),rule:t("Any line item unavailable in stock"),who:t("Technician (automatic)")},
+   {from:t("Repair"),to:t("Quality Check"),rule:t("All labour lines marked complete"),who:t("Technician")},
+   {from:t("Quality Check"),to:t("Repair"),rule:t("QC failed — returns to the same technician with notes"),who:t("QC, Manager")},
+   {from:t("Quality Check"),to:t("Delivery"),rule:t("All checklist items passed"),who:t("QC, Manager")},
+   {from:t("Delivery"),to:t("Closed"),rule:t("Customer signature captured and invoice settled or on account"),who:t("Service Advisor")}],
+  roles:[
+   {role:t("Service Advisor"),can:t("Create job cards, build estimates, take approvals, deliver vehicles. Cannot pass QC."),icon:"Headphones",iconStyle:ic(C[0],C[1])},
+   {role:t("Technician"),can:t("Move only their assigned jobs between Inspection, Repair and Waiting Parts. Cannot edit prices."),icon:"Wrench",iconStyle:ic(B[0],B[1])},
+   {role:t("QC / Senior Tech"),can:t("Pass or fail quality checks and return jobs with notes. Cannot alter the estimate."),icon:"CheckCircle",iconStyle:ic(N[0],N[1])},
+   {role:t("Manager"),can:t("Override any transition, reassign technicians, and approve estimates above the advisor limit."),icon:"Crown",iconStyle:ic(O[0],O[1])}],
+  effects:[
+   {on:t("On Check-In"),does:t("Vehicle mileage recorded, WhatsApp confirmation sent, bay marked occupied."),icon:"MessageCircle"},
+   {on:t("On Estimate approved"),does:t("Parts reserved from stock; a requisition is raised for anything below reorder level."),icon:"Package"},
+   {on:t("On QC pass"),does:t("Draft ZATCA e-invoice generated with 15% VAT and a QR code."),icon:"Receipt"},
+   {on:t("On Delivery"),does:t("Signature stored on the job card, bay released, satisfaction survey queued for 24h later."),icon:"PenTool"}],
+  edges:[
+   t("Customer declines the estimate → job moves to Declined, parts reservations release, vehicle is scheduled for collection."),
+   t("Parts delayed beyond the promised date → customer is notified automatically and the promised date is recalculated."),
+   t("QC fails twice on the same job → escalates to the Manager and blocks a third self-certification."),
+   t("Vehicle collected before payment → job closes as On Account and appears in the receivables ageing report.")]},
+ est:{name:t("Estimate Approval"),desc:t("Quote to authorised work, with the approval limits that decide who can sign."),
+  steps:[
+   step("FilePlus","Draft","Service Advisor",G,"Editable",gateAuto,true),
+   step("Calculator","Priced","Service Advisor",C,"Parts + labour costed",gateGate,true),
+   step("UserCheck","Internal Review","Manager",O,"Above SAR 5,000 only",gateGate,true),
+   step("Send","Sent","System",B,"Customer notified",gateAuto,true),
+   step("ThumbSup","Approved","Customer",B,"Signature or OTP",gateSign,false)],
+  transitions:[
+   {from:t("Draft"),to:t("Priced"),rule:t("Every line has a part or labour rate attached"),who:t("Service Advisor")},
+   {from:t("Priced"),to:t("Sent"),rule:t("Total at or below SAR 5,000 — advisor may send directly"),who:t("Service Advisor")},
+   {from:t("Priced"),to:t("Internal Review"),rule:t("Total above SAR 5,000 requires a manager"),who:t("System (automatic)")},
+   {from:t("Internal Review"),to:t("Sent"),rule:t("Manager approves the pricing and discount"),who:t("Manager, Owner")},
+   {from:t("Sent"),to:t("Approved"),rule:t("Customer signs on the pad, in the app, or confirms an SMS OTP"),who:t("Customer")},
+   {from:t("Sent"),to:t("Revised"),rule:t("Customer requests changes — a new version is created, history kept"),who:t("Customer, Advisor")},
+   {from:t("Sent"),to:t("Declined"),rule:t("Customer rejects, or no response within 72 hours"),who:t("Customer, or system timeout")}],
+  roles:[
+   {role:t("Service Advisor"),can:t("Draft, price and send estimates up to SAR 5,000. May apply discounts up to 5%."),icon:"Headphones",iconStyle:ic(C[0],C[1])},
+   {role:t("Manager"),can:t("Approve estimates above SAR 5,000 and discounts up to 15%."),icon:"Briefcase",iconStyle:ic(B[0],B[1])},
+   {role:t("Owner"),can:t("Approve any amount and any discount. Only role that can waive labour entirely."),icon:"Crown",iconStyle:ic(O[0],O[1])},
+   {role:t("Customer"),can:t("Approve, request a revision, or decline. Cannot see internal cost or margin."),icon:"User",iconStyle:ic(G[0],G[1])}],
+  effects:[
+   {on:t("On Sent"),does:t("WhatsApp and email issued with a signed link valid for 72 hours."),icon:"Send"},
+   {on:t("On Approved"),does:t("Job card unblocks to Repair, parts are reserved, approval PDF attached to the record."),icon:"Lock"},
+   {on:t("On Revised"),does:t("Version number increments; the customer always sees the latest, staff can view the diff."),icon:"GitBranch"},
+   {on:t("On Declined"),does:t("Reason logged against the customer record and surfaced in the lost-work report."),icon:"XCircle"}],
+  edges:[
+   t("Link expires unopened → one reminder is sent, then the estimate lapses to Expired rather than Declined."),
+   t("Customer approves only part of the work → advisor splits it into an approved estimate and a deferred one."),
+   t("Price changes after approval → requires re-approval; work is blocked until the customer signs again."),
+   t("Fleet accounts with a standing PO skip customer approval and go straight to Repair under the contract terms.")]}
+};
+const flow=FLOWS[pick];
+const hS=(a)=>"height:40px;padding:0 "+(a==="center"?"12px":"20px")+";text-align:"+a+";font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);border-bottom:1px solid var(--border-default)";
+const trCols=[[t("From"),"start"],["","center"],[t("To"),"start"],[t("Rule & who can do it"),"start"]].map(c=>({label:c[0],style:hS(c[1])}));
+const extra={flowTabs,flow,trCols,
+ t:{title:t("Flow Specification"),sub:t("The two flows that carry the most money and the most disputes. Each state, the gate that guards it, who may cross it, what fires automatically, and how it breaks."),
+ transitions:t("State Transitions"),permissions:t("Who Can Do What"),sideEffects:t("Automatic Side Effects"),edgeCases:t("Edge Cases")}};
+return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+ toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+ toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})},...extra};}}</script></body></html>

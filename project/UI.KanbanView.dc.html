@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Kanban View" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span>
+    <span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;animation:fadeUp .3s ease">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+  <div style="display:flex;gap:16px;overflow-x:auto;padding-bottom:8px">
+    <sc-for list="{{ columns }}" as="col" hint-placeholder-count="5">
+      <div style="flex:0 0 280px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface-card);border-radius:12px;border:1px solid var(--border-default)"><span style="width:8px;height:8px;border-radius:50%;background:{{ col.color }}"></span><span style="font-size:13px;font-weight:600;color:var(--text-heading)">{{ col.label }}</span><span style="margin-inline-start:auto;font-size:11px;font-weight:600;padding:2px 8px;border-radius:9999px;background:rgba(10,94,215,.08);color:var(--salis-blue)">{{ col.count }}</span></div>
+        <sc-for list="{{ col.items }}" as="item" hint-placeholder-count="2">
+          <div style="background:var(--surface-card);border-radius:12px;padding:14px;border:1px solid var(--border-default);cursor:grab;transition:all .15s" style-hover="border-color:rgba(10,94,215,.3);box-shadow:var(--shadow-lg)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)" dir="ltr">{{ item.id }}</span><span style="{{ item.prStyle }}">{{ item.priority }}</span></div>
+            <p style="margin:0 0 6px;font-size:13px;font-weight:500;color:var(--text-heading)">{{ item.title }}</p>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:22px;height:22px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">{{ item.assignee }}</span><span style="font-size:11px;color:var(--text-muted)">{{ item.vehicle }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+</div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:600;background:"+bg+";color:"+fg;
+const columns=[
+  {label:"Check-In",color:"#F97316",count:"3",items:[{id:"JC-001",title:"Oil change + filter",priority:"Medium",prStyle:pill("rgba(11,179,255,.1)","#0BB3FF"),assignee:"Y",vehicle:"Camry 2022"},{id:"JC-004",title:"AC not cooling",priority:"High",prStyle:pill("rgba(249,115,22,.1)","#F97316"),assignee:"B",vehicle:"Patrol 2021"}]},
+  {label:"In Repair",color:"#0A5ED7",count:"4",items:[{id:"JC-002",title:"Engine diagnostics",priority:"Urgent",prStyle:pill("rgba(249,115,22,.15)","#F97316"),assignee:"Y",vehicle:"Lexus 350"},{id:"JC-005",title:"Brake replacement",priority:"High",prStyle:pill("rgba(249,115,22,.1)","#F97316"),assignee:"N",vehicle:"Sonata 2023"}]},
+  {label:"QC",color:"#0BB3FF",count:"2",items:[{id:"JC-003",title:"Transmission service",priority:"Medium",prStyle:pill("rgba(11,179,255,.1)","#0BB3FF"),assignee:"F",vehicle:"Explorer 2022"}]},
+  {label:"Ready",color:"#0A5ED7",count:"1",items:[{id:"JC-006",title:"Tire rotation",priority:"Low",prStyle:pill("rgba(100,116,139,.1)","#64748B"),assignee:"N",vehicle:"Sportage 2021"}]},
+  {label:"Delivered",color:"#0B1F3B",count:"2",items:[{id:"JC-007",title:"Full service",priority:"Medium",prStyle:pill("rgba(11,179,255,.1)","#0BB3FF"),assignee:"Y",vehicle:"Accord 2022"}]}
+];const extra={columns,t:{title:"Kanban View"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

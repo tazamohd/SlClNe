@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Export Center" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span>
+    <span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;animation:fadeUp .3s ease">
+<div style="max-width:720px;display:flex;flex-direction:column;gap:20px">
+  <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <sc-for list="{{ exportTypes }}" as="et" hint-placeholder-count="6">
+      <div style="background:var(--surface-card);border-radius:14px;padding:18px;border:1px solid var(--border-default);cursor:pointer;transition:all .2s ease;display:flex;flex-direction:column;gap:10px" style-hover="border-color:rgba(10,94,215,.3);box-shadow:var(--shadow-lg)">
+        <span style="{{ et.iconStyle }}"><salis-icon name="{{ et.icon }}" size="18"></salis-icon></span>
+        <h3 style="margin:0;font-size:14px;font-weight:600;color:var(--text-heading)">{{ et.name }}</h3>
+        <p style="margin:0;font-size:11px;color:var(--text-muted)">{{ et.desc }}</p>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <sc-for list="{{ et.formats }}" as="fmt" hint-placeholder-count="2">
+            <span style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;font-family:var(--font-mono);background:var(--surface-inset);border:1px solid var(--border-default);color:var(--text-muted)">{{ fmt }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const ic=(bg,fg)=>"padding:8px;border-radius:10px;background:"+bg+";color:"+fg+";display:flex";
+const exportTypes=[
+  {name:"Job Cards",desc:"Export all job card records",icon:"ClipboardList",iconStyle:ic("rgba(10,94,215,.1)","#0A5ED7"),formats:["CSV","PDF","Excel"]},
+  {name:"Invoices",desc:"Export invoice history",icon:"Receipt",iconStyle:ic("rgba(249,115,22,.1)","#F97316"),formats:["PDF","CSV"]},
+  {name:"Customers",desc:"Export customer database",icon:"Users",iconStyle:ic("rgba(11,179,255,.1)","#0BB3FF"),formats:["CSV","Excel"]},
+  {name:"Inventory",desc:"Export parts inventory",icon:"Package",iconStyle:ic("rgba(11,31,59,.1)","#0B1F3B"),formats:["CSV","Excel"]},
+  {name:"Financial",desc:"Export accounting data",icon:"DollarSign",iconStyle:ic("rgba(10,94,215,.1)","#0A5ED7"),formats:["PDF","Excel"]},
+  {name:"Reports",desc:"Export generated reports",icon:"BarChart3",iconStyle:ic("rgba(11,179,255,.1)","#0BB3FF"),formats:["PDF"]}
+];const extra={exportTypes,t:{title:"Export Center"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="JobCard-Detail" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:rgba(10,94,215,.12);color:var(--salis-blue)">ADMIN</span></div></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default)"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center"><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease;max-width:1200px">
+        <div><a href="JobCards.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:13px;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="14"></salis-icon>{{ t.back }}</a></div>
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div><div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="ClipboardList" size="28"></salis-icon></div></div><div><h1 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)" dir="ltr">JC-A3F8B2C1</h1><p style="margin:2px 0 0;font-size:14px;color:var(--text-muted)">{{ t.createdDate }}</p></div></div>
+          <div style="flex:1"></div>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;background:rgba(11,179,255,.1);color:#0BB3FF;font-family:var(--font-action);font-size:12px;font-weight:600"><salis-icon name="Clock" size="14"></salis-icon>{{ t.inProgress }}</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;background:rgba(249,115,22,.1);color:#F97316;font-family:var(--font-action);font-size:12px;font-weight:600"><salis-icon name="AlertTriangle" size="14"></salis-icon>{{ t.highPriority }}</span>
+          <button style="height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-body);display:flex;align-items:center;gap:6px" style-hover="border-color:var(--salis-blue)"><salis-icon name="Printer" size="14"></salis-icon>{{ t.print }}</button>
+        </div>
+        <!-- Workflow Stepper -->
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px 24px;display:flex;align-items:center;gap:0;overflow-x:auto">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6"><div style="display:flex;align-items:center;gap:0;flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span style="{{ s.dotStyle }}"><sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="12" stroke-width="3"></salis-icon></sc-if><sc-if value="{{ s.current }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:700">{{ s.num }}</span></sc-if><sc-if value="{{ s.future }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;font-weight:600">{{ s.num }}</span></sc-if></span><span style="font-family:var(--font-action);font-size:12px;font-weight:600;{{ s.labelColor }}">{{ s.label }}</span></div><sc-if value="{{ s.hasLine }}" hint-placeholder-val="{{ true }}"><div style="flex:1;height:2px;margin:0 10px;border-radius:1px;{{ s.lineColor }}"></div></sc-if></div></sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <!-- Customer & Vehicle -->
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;gap:8px"><salis-icon name="User" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.customerVehicle }}</h3></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default)">
+              <span style="width:40px;height:40px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">A</span>
+              <div><p style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">Ahmed Al-Rashid</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)" dir="ltr">+966 55 210 4471 · ahmed@email.com</p></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.vehicle }}</span><p style="margin:3px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)">Toyota Camry 2022</p></div>
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.plate }}</span><p style="margin:3px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">RUH 4821</p></div>
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.odometer }}</span><p style="margin:3px 0 0;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">42,180 km</p></div>
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.fuelLevel }}</span><p style="margin:3px 0 0;font-size:13px;font-weight:600;color:var(--text-heading)">3/4</p></div>
+            </div>
+          </div>
+          <!-- Assignment & Timeline -->
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Users" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.assignment }}</h3></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default)">
+              <span style="width:36px;height:36px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">Y</span>
+              <div style="flex:1"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">Yousef Al-Otaibi</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ t.leadTechnician }}</p></div>
+              <span style="font-size:11px;color:var(--salis-blue);font-weight:600">★ 4.9</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.checkInTime }}</span><p style="margin:3px 0 0;font-size:13px;color:var(--text-body)">Jul 22, 8:30 AM</p></div>
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.estCompletion }}</span><p style="margin:3px 0 0;font-size:13px;color:var(--salis-blue);font-weight:600">Jul 22, 5:00 PM</p></div>
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.serviceAdvisor }}</span><p style="margin:3px 0 0;font-size:13px;color:var(--text-body)">Khalid Al-Amri</p></div>
+              <div><span style="font-size:11px;color:var(--text-muted)">{{ t.bay }}</span><p style="margin:3px 0 0;font-size:13px;color:var(--text-body)">Bay 3</p></div>
+            </div>
+          </div>
+        </div>
+        <!-- Services & Parts -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Wrench" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.services }}</h3></div>
+            <sc-for list="{{ serviceItems }}" as="si" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-default)">
+                <span style="padding:6px;border-radius:8px;display:flex;flex-shrink:0;{{ si.iconBg }}"><salis-icon name="{{ si.icon }}" size="14"></salis-icon></span>
+                <div style="flex:1"><p style="margin:0;font-size:13px;font-weight:500;color:var(--text-body)">{{ si.label }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ si.detail }}</p></div>
+                <span style="{{ si.statusStyle }}">{{ si.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Package" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.parts }}</h3></div>
+            <sc-for list="{{ partItems }}" as="pi" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-default)"><div style="flex:1"><p style="margin:0;font-size:13px;font-weight:500;color:var(--text-body)">{{ pi.name }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)" dir="ltr">{{ pi.sku }}</p></div><span style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted)">×{{ pi.qty }}</span><span style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ pi.cost }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+        <!-- Cost Summary -->
+        <div style="display:flex;justify-content:flex-end">
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;width:320px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.partsTotal }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 590</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.laborTotal }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 755</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 201.75</span></div>
+            <div style="height:1px;background:var(--border-default)"></div>
+            <div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;color:var(--text-heading)"><span>{{ t.total }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 1,546.75</span></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href,active)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;"+(active?"background:var(--salis-gradient);color:#fff":"color:var(--text-body)")});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href,i.l==="Job Cards"))};});
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:600;background:"+bg+";color:"+fg;
+    const stepData=[["Check-In",true,false,false],["Inspection",true,false,false],["Estimate",true,false,false],["Repair",false,true,false],["Quality Check",false,false,true],["Delivery",false,false,true]];
+    const steps=stepData.map(([label,done,current,future],i)=>({label:t(label),num:String(i+1),done,current,future,hasLine:i<5,
+      dotStyle:"width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"+(current?"background:var(--salis-gradient);color:#fff;box-shadow:0 2px 8px rgba(10,94,215,.3)":done?"background:var(--salis-blue);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:var(--text-muted)"),
+      labelColor:current?"color:var(--salis-blue)":done?"color:var(--text-heading)":"color:var(--text-muted)",lineColor:done?"background:var(--salis-blue)":"background:var(--border-default)"}));
+    const serviceItems=[
+      {icon:"Cog",label:t("Oil Change"),detail:rtl?"صيانة دورية — 1h":"Scheduled maintenance — 1h",status:t("Completed"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)"},
+      {icon:"Disc",label:t("Brake Pads (Front)")+" — "+t("Replace"),detail:rtl?"إصلاح — 1.5h":"Repair — 1.5h",status:t("In Progress"),statusStyle:pill("rgba(11,179,255,.1)","#0BB3FF"),iconBg:"background:rgba(11,179,255,.08);color:#0BB3FF"},
+      {icon:"SearchCheck",label:t("Multi-Point Inspection"),detail:rtl?"فحص شامل — 1h":"Full inspection — 1h",status:t("Pending"),statusStyle:pill("rgba(100,116,139,.1)","#64748B"),iconBg:"background:rgba(100,116,139,.06);color:#64748B"}
+    ];
+    const partItems=[
+      {name:t("Oil Filter (Toyota)"),sku:"OF-TY-118",qty:"1",cost:"SAR 45"},
+      {name:t("Brake Pads (Front)"),sku:"BP-FR-220",qty:"1",cost:"SAR 310"},
+      {name:t("Air Filter (Universal)"),sku:"AF-UN-002",qty:"1",cost:"SAR 95"},
+      {name:"5W-30 Engine Oil 4L",sku:"OL-5W30-4",qty:"1",cost:"SAR 140"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,steps,serviceItems,partItems,
+      t:{back:t("Back to Job Cards"),createdDate:rtl?"تم الإنشاء: 22 يوليو 2026، 8:30 ص":"Created: Jul 22, 2026, 8:30 AM",inProgress:t("In Progress"),
+        highPriority:rtl?"أولوية عالية":"High Priority",print:t("Print"),customerVehicle:rtl?"العميل والمركبة":"Customer & Vehicle",
+        vehicle:t("Vehicle"),plate:rtl?"اللوحة":"Plate",odometer:t("Odometer Reading"),fuelLevel:t("Fuel Level"),
+        assignment:rtl?"التعيين والجدول":"Assignment & Schedule",leadTechnician:rtl?"الفني الرئيسي":"Lead Technician",
+        checkInTime:rtl?"وقت الاستلام":"Check-In Time",estCompletion:rtl?"الموعد المتوقع":"Est. Completion",
+        serviceAdvisor:t("Service Advisor"),bay:rtl?"المنصة":"Bay",
+        services:rtl?"الخدمات":"Services",parts:t("Parts"),
+        partsTotal:t("Parts"),laborTotal:t("Labor"),vat:t("VAT (15%)"),total:t("Grand Total")}};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Workshop-Inspection" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:rgba(10,94,215,.12);color:var(--salis-blue)">{{ t.admin }}</span><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:var(--salis-gradient);color:#fff">PRO</span></div></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+      <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+      <a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a>
+    </div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+      <div style="flex:1"></div>
+      <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+    </header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease;max-width:1200px">
+        <div><a href="WorkshopCheckIn.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:13px;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="14"></salis-icon>{{ t.backToCheckIn }}</a></div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div><div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="SearchCheck" size="28"></salis-icon></div></div><div><h1 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.vehicleInspection }}</h1><p style="margin:2px 0 0;font-size:14px;color:var(--text-muted)">{{ t.multiPoint }}</p></div></div>
+          <div style="flex:1"></div>
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:10px;padding:8px 16px;display:flex;align-items:center;gap:8px"><span style="font-family:var(--font-action);font-size:12px;color:var(--text-muted)">{{ t.progress }}</span><div style="width:120px;height:6px;border-radius:3px;background:var(--surface-inset)"><div style="{{ progressStyle }}"></div></div><span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--salis-blue)">{{ progressPct }}</span></div>
+        </div>
+        <!-- Workflow Stepper -->
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px 24px;display:flex;align-items:center;gap:0;overflow-x:auto">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:0;flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span style="{{ s.dotStyle }}"><sc-if value="{{ s.done }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="12" stroke-width="3"></salis-icon></sc-if><sc-if value="{{ s.current }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:700">{{ s.num }}</span></sc-if><sc-if value="{{ s.future }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;font-weight:600">{{ s.num }}</span></sc-if></span><span style="font-family:var(--font-action);font-size:12px;font-weight:600;{{ s.labelColor }}">{{ s.label }}</span></div>
+              <sc-if value="{{ s.hasLine }}" hint-placeholder-val="{{ true }}"><div style="flex:1;height:2px;margin:0 10px;border-radius:1px;{{ s.lineColor }}"></div></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <!-- Inspection Categories -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="{{ cat.icon }}" size="16"></salis-icon></span><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ cat.label }}</h3><span style="flex:1"></span><span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-muted)">{{ cat.doneCount }}/{{ cat.totalCount }}</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ cat.items }}" as="item" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-default)">
+                    <span style="flex:1;font-size:13px;color:var(--text-body)">{{ item.label }}</span>
+                    <div style="display:flex;gap:4px">
+                      <button onClick="{{ item.setPass }}" style="{{ item.passStyle }}">{{ t.pass }}</button>
+                      <button onClick="{{ item.setFail }}" style="{{ item.failStyle }}">{{ t.fail }}</button>
+                      <button onClick="{{ item.setNA }}" style="{{ item.naStyle }}">{{ t.na }}</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <button onClick="{{ submitInspection }}" style="width:100%;max-width:400px;height:48px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:8px;align-self:flex-end"><salis-icon name="CheckCircle" size="18"></salis-icon>{{ t.submitInspection }}</button>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{},results:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href,active)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;transition:all .15s ease;"+(active?"background:var(--salis-gradient);color:#fff;box-shadow:0 4px 12px rgba(10,94,215,.25)":"color:var(--text-body)")});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href,false))};});
+    const stepData=[["Check-In",false,false,true],["Inspection",true,false,false],["Estimate",false,true,false],["Repair",false,true,false],["Quality Check",false,true,false],["Delivery",false,true,false]];
+    const steps=stepData.map(([label,current,future,done],i)=>({label:t(label),num:String(i+1),current,future,done,hasLine:i<stepData.length-1,
+      dotStyle:"width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"+(current?"background:var(--salis-gradient);color:#fff;box-shadow:0 2px 8px rgba(10,94,215,.3)":done?"background:var(--salis-blue);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:var(--text-muted)"),
+      labelColor:current?"color:var(--salis-blue)":done?"color:var(--text-heading)":"color:var(--text-muted)",lineColor:done?"background:var(--salis-blue)":"background:var(--border-default)"}));
+    const inspCats=[
+      ["Cog","Engine & Transmission",["Oil Level","Coolant","Transmission Fluid","Engine Noise"]],
+      ["Disc","Brakes & Suspension",["Brake Pads","Brake Discs","Brake Fluid","Shock Absorbers"]],
+      ["CircleDot","Tires & Wheels",["Tire Tread","Tire Pressure","Wheel Alignment"]],
+      ["Zap","Electrical & Lighting",["Battery","Headlights","Tail Lights","Indicators"]],
+      ["Droplets","Fluids & Filters",["Coolant","Power Steering","Air Filter"]],
+      ["Car","Body & Interior",["Windshield","Paint Condition","Interior Trim","Seats"]]
+    ];
+    const R=this.state.results;
+    const btnStyle=(key,val,bg,fg)=>"height:26px;padding:0 8px;border-radius:4px;cursor:pointer;font-family:var(--font-action);font-size:10px;font-weight:600;border:none;white-space:nowrap;"+(R[key]===val?"background:"+bg+";color:"+fg:"background:var(--surface-inset);color:var(--text-muted)");
+    let totalItems=0,doneItems=0;
+    const categories=inspCats.map(([icon,catLabel,items])=>{
+      const catItems=items.map(item=>{
+        const key=catLabel+"-"+item;totalItems++;
+        if(R[key])doneItems++;
+        return {label:t(item),
+          passStyle:btnStyle(key,"pass","rgba(10,94,215,.15)","#0A5ED7"),
+          failStyle:btnStyle(key,"fail","rgba(249,115,22,.15)","#F97316"),
+          naStyle:btnStyle(key,"na","rgba(100,116,139,.12)","#64748B"),
+          setPass:()=>this.setState(s=>({results:{...s.results,[key]:"pass"}})),
+          setFail:()=>this.setState(s=>({results:{...s.results,[key]:"fail"}})),
+          setNA:()=>this.setState(s=>({results:{...s.results,[key]:"na"}}))};
+      });
+      const done=catItems.filter(i=>R[catLabel+"-"+i.label]||R[catLabel+"-"+(rtl?"":"")+i.label]).length;
+      return {icon,label:t(catLabel),items:catItems,doneCount:items.filter(i=>R[catLabel+"-"+i]).length,totalCount:items.length};
+    });
+    const pct=totalItems?Math.round(doneItems/totalItems*100):0;
+    return {rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",
+      themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,steps,categories,progressPct:pct+"%",
+      progressStyle:"height:100%;border-radius:3px;background:var(--salis-gradient);width:"+pct+"%;transition:width .3s ease",
+      submitInspection:()=>location.href="WorkshopEstimate.dc.html",
+      t:{admin:t("ADMIN"),logout:t("Logout"),backToCheckIn:t("Back to Job Cards"),vehicleInspection:t("Vehicle Inspection"),multiPoint:t("Multi-Point Inspection"),
+        progress:rtl?"التقدم":"Progress",pass:t("Pass"),fail:t("Fail"),na:t("N/A"),submitInspection:t("Submit Inspection")}};
+  }
+}
+</script>
+</body>
+</html>

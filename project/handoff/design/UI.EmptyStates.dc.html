@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-460px 0}100%{background-position:460px 0}}
+@keyframes indeterminate{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+@keyframes pulseSoft{0%,100%{opacity:1}50%{opacity:.55}}
+.sk{background:linear-gradient(90deg,var(--surface-inset) 0%,rgba(10,94,215,.07) 50%,var(--surface-inset) 100%);background-size:460px 100%;animation:shimmer 1.4s linear infinite;border-radius:6px}
+</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Empty States" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="14"></salis-icon>{{ langLabel }}</button><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<p style="margin:-14px 0 0;font-size:14px;color:var(--text-muted);max-width:640px;text-wrap:pretty">{{ t.sub }}</p>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
+<sc-for list="{{ states }}" as="s" hint-placeholder-count="6">
+  <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+    <div style="padding:10px 16px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:8px"><span style="{{ s.tagStyle }}">{{ s.tag }}</span><span style="font-size:12px;color:var(--text-muted)">{{ s.when }}</span></div>
+    <div style="padding:44px 32px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+      <span style="width:64px;height:64px;border-radius:50%;background:{{ s.iconBg }};color:{{ s.iconFg }};display:flex;align-items:center;justify-content:center"><salis-icon name="{{ s.icon }}" size="28"></salis-icon></span>
+      <div><h3 style="margin:0;font-size:17px;font-weight:700;color:var(--text-heading)">{{ s.title }}</h3><p style="margin:6px auto 0;font-size:13px;color:var(--text-muted);max-width:300px;line-height:1.6;text-wrap:pretty">{{ s.body }}</p></div>
+      <div style="display:flex;gap:8px;margin-top:2px">
+        <sc-if value="{{ s.hasSecondary }}" hint-placeholder-val="{{ false }}"><button style="height:38px;padding:0 16px;border-radius:8px;border:1.5px solid var(--border-strong);background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">{{ s.secondary }}</button></sc-if>
+        <sc-if value="{{ s.hasPrimary }}" hint-placeholder-val="{{ true }}"><button style="display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 17px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="{{ s.primaryIcon }}" size="15"></salis-icon>{{ s.primary }}</button></sc-if>
+      </div>
+    </div>
+  </div>
+</sc-for>
+</div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null,lang:null,data:null};componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}renderVals(){
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const tagA=pill("rgba(10,94,215,.1)","#0A5ED7"),tagB=pill("rgba(249,115,22,.1)","#F97316"),tagC=pill("rgba(100,116,139,.1)","#64748B");
+const states=[
+ {tag:t("First run"),tagStyle:tagA,when:t("Workshop has no job cards yet"),icon:"ClipboardList",iconBg:"rgba(10,94,215,.09)",iconFg:"#0A5ED7",
+  title:t("No job cards yet"),body:t("Job cards appear here once a vehicle is checked in. Start with a walk-in or convert an approved estimate."),
+  hasPrimary:true,primary:t("New Job Card"),primaryIcon:"Plus",hasSecondary:true,secondary:t("Import from CSV")},
+ {tag:t("No results"),tagStyle:tagC,when:t("Search or filter returned nothing"),icon:"SearchX",iconBg:"rgba(100,116,139,.1)",iconFg:"#64748B",
+  title:t("No matches found"),body:t("No records match your search and filters. Try a shorter term, or clear the filters to see everything."),
+  hasPrimary:true,primary:t("Clear Filters"),primaryIcon:"FilterX",hasSecondary:false,secondary:""},
+ {tag:t("First run"),tagStyle:tagA,when:t("No customers registered"),icon:"Users",iconBg:"rgba(11,179,255,.1)",iconFg:"#0BB3FF",
+  title:t("No customers yet"),body:t("Add your first customer to start booking appointments and issuing invoices. You can also import an existing list."),
+  hasPrimary:true,primary:t("Add Customer"),primaryIcon:"UserPlus",hasSecondary:true,secondary:t("Import from CSV")},
+ {tag:t("Cleared"),tagStyle:tagA,when:t("Everything is handled"),icon:"CheckCircle",iconBg:"rgba(10,94,215,.09)",iconFg:"#0A5ED7",
+  title:t("All caught up"),body:t("No pending approvals or overdue items. New requests will show up here as they arrive."),
+  hasPrimary:false,primary:"",primaryIcon:"Plus",hasSecondary:true,secondary:t("View History")},
+ {tag:t("Blocked"),tagStyle:tagB,when:t("Integration not connected"),icon:"PlugZap",iconBg:"rgba(249,115,22,.1)",iconFg:"#F97316",
+  title:t("Connect ZATCA to continue"),body:t("E-invoices cannot be issued until the ZATCA integration is connected and your VAT number is verified."),
+  hasPrimary:true,primary:t("Connect"),primaryIcon:"Plug",hasSecondary:true,secondary:t("Learn More")},
+ {tag:t("Error"),tagStyle:tagB,when:t("Data could not be loaded"),icon:"CloudOff",iconBg:"rgba(249,115,22,.1)",iconFg:"#F97316",
+  title:t("Couldn't load reports"),body:t("The request timed out. Your data is safe — retry, or check the service status if this keeps happening."),
+  hasPrimary:true,primary:t("Retry"),primaryIcon:"RefreshCw",hasSecondary:true,secondary:t("Service Status")}
+];
+const extra={states,t:{title:t("Empty States"),sub:t("Six states every list and detail screen needs: first run, no search results, all-clear, blocked by setup, and load failure. Each pairs one clear sentence with the action that resolves it.")}};
+return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+ toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+ toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})},...extra};}}</script></body></html>

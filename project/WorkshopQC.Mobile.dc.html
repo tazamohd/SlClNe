@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="QC-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="WorkshopEstimate.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.qualityControl }}</h1><p style="margin:0;font-size:11px;color:var(--text-muted)" dir="ltr">JC-A3F8B2C1</p></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- QC Checklist -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="ClipboardCheck" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.qcChecklist }}</h3></div>
+      <sc-for list="{{ qcItems }}" as="q" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-default)">
+          <button onClick="{{ q.toggle }}" style="{{ q.cbStyle }}"><sc-if value="{{ q.checked }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="12" stroke-width="3"></salis-icon></sc-if></button>
+          <span style="flex:1;font-size:13px;color:var(--text-body)">{{ q.label }}</span>
+          <span style="{{ q.statusStyle }}">{{ q.statusLabel }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Work Summary -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="FileText" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.workSummary }}</h3></div>
+      <sc-for list="{{ workItems }}" as="w" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border-default)">
+          <span style="padding:4px;border-radius:6px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="{{ w.icon }}" size="13"></salis-icon></span>
+          <span style="flex:1;font-size:12px;color:var(--text-body)">{{ w.label }}</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ w.cost }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Technician -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px">
+      <span style="width:36px;height:36px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">Y</span>
+      <div style="flex:1"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">Yousef Al-Otaibi</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ t.technician }}</p></div>
+      <span style="font-size:11px;color:var(--salis-blue);font-weight:600">★ 4.9</span>
+    </div>
+    <!-- Actions -->
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:50px;border:1.5px solid var(--salis-orange);border-radius:8px;background:none;color:var(--salis-orange);font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="RotateCcw" size="15"></salis-icon>{{ t.returnRepair }}</button>
+      <button onClick="{{ approve }}" style="flex:1;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="CheckCircle" size="15"></salis-icon>{{ t.approveQC }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},checked:{"Repair Verified":true,"Fluids Topped":true,"Test Drive":false,"Cleaned":false,"Final Inspection":false,"Documentation":false}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const C=this.state.checked;
+    const qcLabels=["Repair Verified","Fluids Topped","Test Drive","Cleaned","Final Inspection","Documentation"];
+    const qcItems=qcLabels.map(label=>{const on=C[label];return{label:t(label==="Final Inspection"?"Quality Check":label==="Documentation"?"Documents Ready":label),checked:on,
+      toggle:()=>this.setState(s=>({checked:{...s.checked,[label]:!on}})),
+      cbStyle:"width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;border:none;"+(on?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:transparent"),
+      statusStyle:"font-size:10px;font-weight:600;padding:2px 8px;border-radius:9999px;"+(on?"background:rgba(10,94,215,.1);color:var(--salis-blue)":"background:var(--surface-inset);color:var(--text-muted)"),
+      statusLabel:on?t("QC Pass"):t("Pending")};});
+    const workItems=[{icon:"Wrench",label:t("Brake Pads (Front)"),cost:"SAR 535"},{icon:"Cog",label:t("Oil Filter (Toyota)"),cost:"SAR 270"},{icon:"SearchCheck",label:t("Multi-Point Inspection"),cost:"SAR 170"}];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      qcItems,workItems,approve:()=>location.href="WorkshopDelivery.Mobile.dc.html",
+      t:{qualityControl:t("Quality Control"),qcChecklist:t("QC Checklist"),workSummary:t("Work Summary"),technician:rtl?"الفني المسؤول":"Assigned Technician",returnRepair:t("Return to Repair"),approveQC:t("Approve QC")}};
+  }
+}
+</script>
+</body>
+</html>

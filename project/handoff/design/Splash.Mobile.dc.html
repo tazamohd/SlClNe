@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Splash-Mobile" style="height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none"><div style="position:absolute;top:0;right:0;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.12),transparent 65%);filter:blur(48px)"></div></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px;animation:fadeUp .4s ease">
+    <div style="position:relative"><div style="position:absolute;inset:-16px;background:var(--salis-gradient);border-radius:16px;filter:blur(24px);opacity:.25;animation:pulse 2s ease-in-out infinite"></div><img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="position:relative;width:140px;height:auto"></div>
+    <div style="width:130px;height:4px;border-radius:9999px;background:rgba(10,94,215,.12);overflow:hidden"><div style="height:100%;width:60%;background:var(--salis-gradient-r);border-radius:9999px"></div></div>
+    <p style="margin:0;font-family:var(--font-action);font-size:12px;color:var(--text-muted)">{{ t.loading }}</p>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));this._t=setTimeout(()=>{location.href="Welcome.Mobile.dc.html";},2200);}
+  componentWillUnmount(){clearTimeout(this._t);}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",t:{loading:t("Loading...")}};
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Biometric-Setup" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:360px;padding:16px;animation:fadeUp .3s ease">
+    <span style="display:inline-flex;padding:22px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);animation:pulse 2s ease-in-out infinite"><salis-icon name="Fingerprint" size="40"></salis-icon></span>
+    <h1 style="margin:0;font-size:20px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.title }}</h1>
+    <p style="margin:0;font-family:var(--font-action);font-size:14px;color:var(--text-muted)">{{ t.desc }}</p>
+    <a href="Dashboard.dc.html" style="margin-top:8px;width:100%;display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25);white-space:nowrap;box-sizing:border-box">{{ t.enable }}</a>
+    <a href="Dashboard.dc.html" style="font-family:var(--font-action);font-size:13px;color:var(--text-muted);white-space:nowrap">{{ t.skip }}</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",t:{title:t("Biometric Setup")||"Biometric Setup",desc:t("Use your fingerprint or face to sign in faster")||"Use your fingerprint or face to sign in faster",enable:t("Continue"),skip:t("Skip for now")}};
+  }
+}
+
+</script>
+</body>
+</html>

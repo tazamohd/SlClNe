@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.arow:hover{background:rgba(10,94,215,.04)}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Approval Inbox" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:12px 20px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <div style="width:30px;height:30px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Inbox" size="15" style="color:#fff"></salis-icon></div>
+    <div style="min-width:0;flex:1">
+      <p style="margin:0;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.title }}</p>
+      <p style="margin:0;font-size:11.5px;color:var(--text-muted)">{{ t.sub }}</p>
+    </div>
+    <span style="{{ rolePill }}"><salis-icon name="{{ roleIcon }}" size="12"></salis-icon>{{ roleLabel }}</span>
+    <a href="RBACSpec.dc.html" style="height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action);flex-shrink:0" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Shield" size="13"></salis-icon>{{ t.rules }}</a>
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:11.5px;flex-shrink:0" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="13"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+  </header>
+
+  <div style="max-width:1240px;margin:0 auto;padding:18px 20px 40px;display:flex;flex-direction:column;gap:15px;animation:fadeUp .3s ease">
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="padding:13px 15px;border-radius:12px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:11px">
+          <span style="{{ s.icStyle }}"><salis-icon name="{{ s.icon }}" size="16"></salis-icon></span>
+          <div style="min-width:0">
+            <p style="margin:0;font-size:19px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);font-variant-numeric:tabular-nums;line-height:1.1">{{ s.n }}</p>
+            <p style="margin:2px 0 0;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ hasSod }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:14px 17px;border-radius:13px;background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.28);display:flex;gap:12px;align-items:flex-start">
+        <span style="padding:7px;border-radius:9px;background:rgba(249,115,22,.14);color:#F97316;display:flex;flex-shrink:0"><salis-icon name="AlertTriangle" size="15"></salis-icon></span>
+        <div style="flex:1;min-width:0">
+          <p style="margin:0;font-size:13.5px;font-weight:700;color:var(--text-heading)">{{ t.sodH }}</p>
+          <p style="margin:3px 0 0;font-size:12.5px;line-height:1.55;color:var(--text-body);text-wrap:pretty">{{ sodText }}</p>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:2px">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="4"><button onClick="{{ tb.pick }}" style="{{ tb.style }}">{{ tb.label }}</button></sc-for>
+    </div>
+
+    <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+      <div style="border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <sc-for list="{{ items }}" as="i" hint-placeholder-count="6">
+          <div class="arow" style="{{ i.rowStyle }}">
+            <span style="{{ i.icStyle }}"><salis-icon name="{{ i.icon }}" size="16"></salis-icon></span>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+                <span style="font-size:13px;font-weight:700;color:var(--text-heading);font-family:var(--font-mono,monospace)">{{ i.ref }}</span>
+                <span style="{{ i.typePill }}">{{ i.type }}</span>
+                <sc-if value="{{ i.overLimit }}" hint-placeholder-val="{{ true }}">
+                  <span style="display:inline-flex;align-items:center;gap:4px;padding:1px 7px;border-radius:9999px;background:rgba(249,115,22,.13);color:#F97316;font-size:10px;font-weight:700;font-family:var(--font-action)"><salis-icon name="ArrowUp" size="9"></salis-icon>{{ t.aboveLimit }}</span>
+                </sc-if>
+              </div>
+              <p style="margin:3px 0 0;font-size:13px;font-weight:600;color:var(--text-heading);text-wrap:pretty">{{ i.subject }}</p>
+              <p style="margin:2px 0 0;font-size:11.5px;color:var(--text-muted)">{{ i.meta }}</p>
+            </div>
+            <div style="text-align:end;flex-shrink:0;min-width:96px">
+              <p style="margin:0;font-size:14px;font-weight:800;color:var(--text-heading);font-variant-numeric:tabular-nums">{{ i.amount }}</p>
+              <p style="margin:2px 0 0;font-size:11px;color:{{ i.ageColor }}">{{ i.age }}</p>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0">
+              <button onClick="{{ i.approve }}" disabled="{{ i.blocked }}" title="{{ i.blockTip }}" style="{{ i.okStyle }}"><salis-icon name="{{ i.okIcon }}" size="13"></salis-icon>{{ i.okLabel }}</button>
+              <button onClick="{{ i.reject }}" style="height:31px;padding:0 11px;border-radius:8px;border:1.5px solid rgba(249,115,22,.4);background:var(--surface-card);color:#F97316;cursor:pointer;font-size:11.5px;font-weight:600;font-family:var(--font-action)" style-hover="background:rgba(249,115,22,.07)">{{ t.reject }}</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ noItems }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:46px 20px;text-align:center;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default)">
+        <span style="display:inline-flex;padding:12px;border-radius:13px;background:rgba(10,94,215,.09);color:var(--salis-blue)"><salis-icon name="CheckCircle2" size="22"></salis-icon></span>
+        <p style="margin:13px 0 0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.emptyH }}</p>
+        <p style="margin:5px 0 0;font-size:13px;color:var(--text-muted)">{{ t.emptySub }}</p>
+      </div>
+    </sc-if>
+
+    <div style="padding:15px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <p style="margin:0 0 4px;font-size:13.5px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.delegH }}</p>
+      <p style="margin:0 0 12px;font-size:12px;line-height:1.5;color:var(--text-muted);text-wrap:pretty">{{ t.delegSub }}</p>
+      <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap">
+        <button onClick="{{ toggleDeleg }}" style="{{ delegBtn }}"><salis-icon name="{{ delegIcon }}" size="13"></salis-icon>{{ delegLabel }}</button>
+        <sc-if value="{{ delegOn }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:12px;color:var(--text-body)">{{ delegDetail }}</span>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:20px;inset-inline-end:20px;z-index:100;display:flex;align-items:flex-start;gap:11px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow-lg);max-width:330px;animation:fadeUp .25s ease">
+      <span style="{{ toastIconStyle }}"><salis-icon name="{{ toastIcon }}" size="17"></salis-icon></span>
+      <div style="flex:1;min-width:0"><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-heading)">{{ toastTitle }}</p><p style="margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted)">{{ toastDesc }}</p></div>
+      <button onClick="{{ closeToast }}" aria-label="Dismiss" style="border:none;background:none;cursor:pointer;color:var(--text-muted);padding:0;display:flex;flex-shrink:0"><salis-icon name="X" size="13"></salis-icon></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null,filter:"all",done:[],deleg:false,toast:null};
+  componentDidMount(){ import("./gms-data.js").then(m=>this.setState({D:m})); }
+  componentWillUnmount(){ clearTimeout(this._tt); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const role=(D&&D.currentRole)?D.currentRole():"owner";
+    const meta=(D&&D.roleMeta)?D.roleMeta(role):{label:"Owner / CEO",ar:"المالك",icon:"Crown",limit:null,color:"#0A5ED7"};
+    const limit=meta.limit;
+    const sar=n=>"SAR "+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+    const QUEUE=[
+      {ref:"EST-2026-0418",type:"Estimate",  icon:"FileText",  subject:"Brake overhaul · Toyota Camry 2021",       ar:"صيانة فرامل شاملة · تويوتا كامري 2021",   by:"Noura Al-Qahtani", ar_by:"نورة القحطاني", amount:8420,  hrs:3,  sod:false},
+      {ref:"PO-2026-1142", type:"Purchase Order",icon:"ShoppingCart",subject:"Genuine brake components · Al-Jazira",ar:"قطع فرامل أصلية · الجزيرة",              by:"Yousef Al-Ghamdi",ar_by:"يوسف الغامدي",  amount:14600, hrs:7,  sod:true},
+      {ref:"EST-2026-0421",type:"Estimate",  icon:"FileText",  subject:"Transmission service · Ford F-150",          ar:"خدمة ناقل الحركة · فورد F-150",           by:"Noura Al-Qahtani", ar_by:"نورة القحطاني", amount:3180,  hrs:11, sod:false},
+      {ref:"JV-2026-0087", type:"Journal Entry",icon:"BookOpen", subject:"Q2 depreciation · Riyadh Main",           ar:"إهلاك الربع الثاني · الرياض الرئيسي",     by:"Hessa Al-Mutairi",ar_by:"حصة المطيري",   amount:26400, hrs:19, sod:true},
+      {ref:"DSC-2026-0034",type:"Discount",  icon:"Percent",   subject:"12% goodwill · repeat QC failure",           ar:"خصم 12% كحسن نية · تكرار فشل الجودة",     by:"Faisal Al-Harbi", ar_by:"فيصل الحربي",   amount:1260,  hrs:26, sod:false},
+      {ref:"PAY-2026-0455",type:"Payroll",   icon:"Wallet",    subject:"July payroll run · 34 employees",            ar:"مسير رواتب يوليو · 34 موظفاً",            by:"Reem Al-Dossari", ar_by:"ريم الدوسري",   amount:412000,hrs:41, sod:false}
+    ];
+
+    const done=this.state.done, f=this.state.filter;
+    const over=q=>limit!==null&&q.amount>limit;
+    const live=QUEUE.filter(q=>!done.includes(q.ref));
+    const TABS=[["all",t("All")],["overLimit",t("Above my limit")],["sod",t("SoD flagged")],["old",t("Waiting over 24h")]];
+    const tabs=TABS.map(([k,label])=>({label,pick:()=>this.setState({filter:k}),
+      style:"flex-shrink:0;height:32px;padding:0 13px;border-radius:9999px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action);transition:all .15s ease;"+(f===k?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)")}));
+    const shown=live.filter(q=>f==="all"||(f==="overLimit"&&over(q))||(f==="sod"&&q.sod)||(f==="old"&&q.hrs>24));
+
+    const toast=this.state.toast;
+    const fire=(title,desc,err)=>{clearTimeout(this._tt);this.setState({toast:{title,desc,err:!!err}});this._tt=setTimeout(()=>this.setState({toast:null}),3200);};
+
+    const items=shown.map((q,idx)=>{
+      const blocked=over(q), old=q.hrs>24;
+      return {ref:q.ref, type:t(q.type), icon:q.icon,
+        subject:rtl?q.ar:q.subject,
+        meta:t("Raised by")+" "+(rtl?q.ar_by:q.by),
+        amount:sar(q.amount), overLimit:blocked,
+        age:q.hrs+" "+t("h waiting"),
+        ageColor:old?"#F97316":"var(--text-muted)",
+        typePill:"padding:1px 7px;border-radius:9999px;background:rgba(11,179,255,.12);color:#0BB3FF;font-size:10px;font-weight:600;font-family:var(--font-action)",
+        icStyle:"width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;background:rgba(10,94,215,.1);color:var(--salis-blue)",
+        rowStyle:"display:flex;align-items:flex-start;gap:12px;padding:14px 18px;transition:background .15s ease;"+(idx?"border-top:1px solid var(--border-default)":""),
+        blocked,
+        blockTip:blocked?t("Above your approval limit")+" ("+sar(limit)+") — "+t("escalate to a manager"):"",
+        okIcon:blocked?"Lock":"Check",
+        okLabel:blocked?t("Escalate"):t("Approve"),
+        okStyle:"height:31px;padding:0 11px;border-radius:8px;display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;font-family:var(--font-action);"+(blocked?"border:1px solid var(--border-default);background:var(--surface-inset);color:var(--text-muted);cursor:not-allowed":"border:none;background:var(--salis-gradient);color:#fff;cursor:pointer"),
+        approve:()=>{ if(blocked){fire(t("Escalated"),t("Sent to your manager for approval."));return;}
+          this.setState(s=>({done:[...s.done,q.ref]}));
+          fire(t("Approved"),q.ref+" · "+sar(q.amount));},
+        reject:()=>{ this.setState(s=>({done:[...s.done,q.ref]}));
+          fire(t("Rejected"),q.ref+" — "+t("the raiser has been notified."),true);}};
+    });
+
+    const sodCount=live.filter(q=>q.sod).length;
+    const st=(n,label,icon,color)=>({n,label,icon,icStyle:"width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,"+color+" 12%,transparent);color:"+color});
+    const deleg=this.state.deleg;
+
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      roleLabel:rtl?meta.ar:meta.label, roleIcon:meta.icon,
+      rolePill:"display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:9999px;font-size:11.5px;font-weight:600;font-family:var(--font-action);flex-shrink:0;background:color-mix(in srgb,"+meta.color+" 12%,transparent);color:"+meta.color,
+      t:{title:t("Approval Inbox"),sub:t("Everything waiting on your signature"),rules:t("Access rules"),
+        aboveLimit:t("Above limit"),reject:t("Reject"),
+        sodH:t("Segregation of duties"),
+        emptyH:t("Everything is handled"),emptySub:t("No pending approvals or overdue items. New requests will show up here as they arrive."),
+        delegH:t("Delegate my approvals"),
+        delegSub:t("Hand your approval rights to another role for a fixed window. The delegation itself is written to the audit log, not just the approvals made under it.")},
+      tabs,items,hasItems:shown.length>0,noItems:shown.length===0,
+      hasSod:sodCount>0,
+      sodText:sodCount+" "+t("items were raised by the same person who would approve them. Approving here creates a segregation-of-duties conflict — reassign or escalate instead."),
+      stats:[st(live.length,t("Awaiting me"),"Inbox","#0A5ED7"),
+             st(live.filter(over).length,t("Above my limit"),"ArrowUp","#F97316"),
+             st(sodCount,t("SoD conflicts"),"AlertTriangle","#F97316"),
+             st(limit===null?t("Unlimited"):sar(limit).replace(".00",""),t("My ceiling"),"Gauge","#0BB3FF")],
+      delegOn:deleg,
+      delegLabel:deleg?t("Cancel delegation"):t("Delegate"),
+      delegIcon:deleg?"X":"UserCheck",
+      delegDetail:t("Faisal Al-Harbi")+" · "+t("until 2 Aug 2026"),
+      delegBtn:"height:32px;padding:0 12px;border-radius:8px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action);"+(deleg?"border:1.5px solid rgba(249,115,22,.4);background:var(--surface-card);color:#F97316":"border:none;background:var(--salis-gradient);color:#fff"),
+      toggleDeleg:()=>{const n=!deleg;this.setState({deleg:n});fire(n?t("Delegation active"):t("Delegation cancelled"),n?t("Faisal Al-Harbi")+" · "+t("until 2 Aug 2026"):t("Approvals return to you."));},
+      hasToast:!!toast,toastTitle:toast?toast.title:"",toastDesc:toast?toast.desc:"",
+      toastIcon:toast&&toast.err?"AlertCircle":"CheckCircle2",
+      toastIconStyle:"padding:6px;border-radius:8px;display:flex;flex-shrink:0;"+(toast&&toast.err?"background:rgba(249,115,22,.13);color:#F97316":"background:rgba(10,94,215,.12);color:var(--salis-blue)"),
+      closeToast:()=>this.setState({toast:null})
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* SALIS AUTO type tokens — Inter UI, Poppins actions/nav, Montserrat display, JetBrains Mono metrics */
+:root{
+--font-ui:'Inter','SF Pro','IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+--font-action:'Poppins','Inter',sans-serif;
+--font-display:'Montserrat','Poppins',sans-serif;
+--font-mono:'JetBrains Mono','SF Mono',monospace;
+/* Strict scale */
+--text-h1-size:30px;--text-h1-weight:700;--text-h1-tracking:-0.03em;--text-h1-leading:1.2;
+--text-h2-size:22px;--text-h2-weight:500;--text-h2-tracking:-0.02em;--text-h2-leading:1.3;
+--text-h3-size:17px;--text-h3-weight:500;--text-h3-tracking:-0.02em;--text-h3-leading:1.4;
+--text-body-size:14px;--text-body-weight:400;--text-body-leading:1.5;
+--text-label-size:12px;--text-label-weight:500;--text-label-tracking:0.025em;
+--text-caption-size:11px;
+--display-lg-size:32px;--display-lg-weight:700;--display-lg-tracking:-0.03em;
+--display-md-size:24px;--display-md-weight:600;--display-md-tracking:-0.02em;
+--display-sm-size:20px;--display-sm-weight:500;--display-sm-tracking:-0.02em;
+--headline-size:20px;--headline-weight:600;--headline-tracking:-0.02em;
+}

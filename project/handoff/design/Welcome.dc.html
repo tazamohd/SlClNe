@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Welcome" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none">
+    <div style="position:absolute;top:0;right:0;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.1),transparent 65%);filter:blur(64px)"></div>
+    <div style="position:absolute;bottom:0;left:0;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.06),transparent 65%);filter:blur(64px)"></div>
+  </div>
+  <div style="position:absolute;top:16px;inset-inline-end:16px;z-index:50"><button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:12px">{{ langLabel }}</button></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;max-width:420px;padding:16px;animation:fadeUp .3s ease">
+    <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:140px;height:auto">
+    <div><h1 style="margin:0;font-size:28px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.welcome }}</h1><p style="margin:10px 0 0;font-family:var(--font-action);font-size:15px;color:var(--text-muted)">{{ t.tagline }}</p></div>
+    <a href="Login.dc.html" style="width:100%;display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;box-shadow:0 4px 12px rgba(10,94,215,.25);white-space:nowrap;box-sizing:border-box">{{ t.getStarted }}</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",langLabel:lang==="ar"?"English":"عربي",
+      toggleLang:()=>{const l=lang==="ar"?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{welcome:t("Welcome to SALIS AUTO"),tagline:t("Integrated automotive workshop management system"),getStarted:t("Get Started")}};
+  }
+}
+
+</script>
+</body>
+</html>

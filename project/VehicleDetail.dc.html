@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Vehicle-Detail" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="5"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default)"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center"><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease;max-width:1100px">
+        <div><a href="Customers.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:13px;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="14"></salis-icon>{{ t.back }}</a></div>
+        <!-- Vehicle Header -->
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:14px;padding:24px;display:flex;align-items:center;gap:20px">
+          <div style="width:72px;height:72px;border-radius:16px;background:rgba(10,94,215,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Car" size="32" style="color:var(--salis-blue)"></salis-icon></div>
+          <div style="flex:1">
+            <h1 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">Toyota Camry 2022</h1>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap">
+              <span style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-muted)" dir="ltr"><salis-icon name="Hash" size="13"></salis-icon>RUH 4821</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-muted)" dir="ltr"><salis-icon name="Palette" size="13"></salis-icon>Silver</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-muted)" dir="ltr"><salis-icon name="Key" size="13"></salis-icon>VIN: 6T1BF...A8210</span>
+            </div>
+          </div>
+          <span style="padding:4px 12px;border-radius:9999px;background:rgba(11,179,255,.1);color:#0BB3FF;font-size:11px;font-weight:600">{{ t.inService }}</span>
+        </div>
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <sc-for list="{{ vehStats }}" as="vs" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px"><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ vs.label }}</p><h3 style="margin:4px 0 0;font-size:20px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)" dir="ltr">{{ vs.value }}</h3></div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <!-- Mileage Log -->
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Gauge" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.mileageLog }}</h3></div>
+            <sc-for list="{{ mileageLog }}" as="ml" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-default)"><span style="font-size:12px;color:var(--text-muted);width:70px">{{ ml.date }}</span><div style="flex:1;height:4px;border-radius:2px;background:var(--surface-inset)"><div style="height:100%;border-radius:2px;background:var(--salis-gradient);width:{{ ml.pct }}%"></div></div><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading);width:70px;text-align:end" dir="ltr">{{ ml.odo }}</span></div>
+            </sc-for>
+          </div>
+          <!-- Parts Replaced -->
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Package" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.partsReplaced }}</h3></div>
+            <sc-for list="{{ replacedParts }}" as="rp" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-default)"><div style="flex:1"><p style="margin:0;font-size:13px;font-weight:500;color:var(--text-body)">{{ rp.part }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ rp.date }} · {{ rp.odo }}</p></div><span style="{{ rp.warrantyStyle }}">{{ rp.warranty }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-body)"});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href))};});
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:600;background:"+bg+";color:"+fg;
+    const vehStats=[{label:t("Odometer"),value:"42,195 km"},{label:t("Total Jobs"),value:"8"},{label:t("Total Spent"),value:"SAR 8.4K"},{label:rtl?"آخر خدمة":"Last Service",value:"Jul 22"}];
+    const mileageLog=[{date:"Jul 22",odo:"42,195",pct:100},{date:"Jun 15",odo:"41,800",pct:93},{date:"Apr 8",odo:"40,200",pct:85},{date:"Feb 20",odo:"38,700",pct:78},{date:"Dec 3",odo:"36,100",pct:68}];
+    const replacedParts=[
+      {part:t("Brake Pads (Front)"),date:"Jul 22",odo:"42,195 km",warranty:rtl?"ضمان":"Warranty",warrantyStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+      {part:t("Oil Filter (Toyota)"),date:"Jul 22",odo:"42,195 km",warranty:rtl?"ضمان":"Warranty",warrantyStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+      {part:t("Air Filter (Universal)"),date:"Apr 8",odo:"40,200 km",warranty:rtl?"منتهي":"Expired",warrantyStyle:pill("rgba(100,116,139,.1)","#64748B")},
+      {part:t("Spark Plug Set"),date:"Feb 20",odo:"38,700 km",warranty:rtl?"ضمان":"Warranty",warrantyStyle:pill("rgba(10,94,215,.1)","#0A5ED7")}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,vehStats,mileageLog,replacedParts,
+      t:{back:t("Back to Job Cards"),inService:t("In Service"),mileageLog:rtl?"سجل المسافة":"Mileage Log",partsReplaced:rtl?"القطع المستبدلة":"Parts Replaced"}};
+  }
+}
+</script>
+</body>
+</html>

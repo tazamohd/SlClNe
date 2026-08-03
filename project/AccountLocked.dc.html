@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Account-Locked" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none"><div style="position:absolute;bottom:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,.08),transparent 65%);filter:blur(64px)"></div><div style="position:absolute;top:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.06),transparent 65%);filter:blur(64px)"></div></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;max-width:420px;padding:16px;animation:fadeUp .3s ease">
+    <!-- Vault Icon -->
+    <div style="position:relative;animation:shake .5s ease .3s">
+      <div style="width:96px;height:96px;border-radius:24px;background:rgba(249,115,22,.08);border:2px solid rgba(249,115,22,.15);display:flex;align-items:center;justify-content:center;position:relative">
+        <salis-icon name="Lock" size="36" style="color:#F97316"></salis-icon>
+        <div style="position:absolute;top:-6px;inset-inline-end:-6px;width:24px;height:24px;border-radius:50%;background:var(--salis-orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;box-shadow:0 2px 8px rgba(249,115,22,.4)">!</div>
+      </div>
+    </div>
+    <div>
+      <h1 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1>
+      <p style="margin:8px 0 0;font-family:var(--font-action);font-size:14px;color:var(--text-muted);line-height:1.5">{{ t.desc }}</p>
+    </div>
+    <!-- Details Card -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px"><span style="color:var(--text-muted)">{{ t.refLabel }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--text-heading)" dir="ltr"><span dir="ltr">LK-2026-4471</span></span></div>
+      <div style="height:1px;background:var(--border-default)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px"><span style="color:var(--text-muted)">{{ t.attemptsLabel }}</span><div style="display:flex;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--salis-orange)"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--salis-orange)"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--salis-orange)"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--salis-orange)"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--salis-orange)"></span></div></div>
+      <div style="height:1px;background:var(--border-default)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px"><span style="color:var(--text-muted)">{{ t.unlockIn }}</span><span style="font-family:var(--font-mono);font-weight:700;color:var(--salis-orange);animation:pulse 1.5s ease-in-out infinite" dir="ltr">{{ countdown }}</span></div>
+    </div>
+    <div style="display:flex;gap:10px;width:100%">
+      <a href="Login.dc.html" style="flex:1;display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:8px;border:1.5px solid var(--border-strong);background:none;color:var(--text-body);font-family:var(--font-action);font-weight:500;font-size:14px;text-decoration:none">{{ t.backToLogin }}</a>
+      <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:48px;border-radius:8px;border:none;background:var(--salis-orange);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(249,115,22,.3)"><salis-icon name="Headphones" size="16"></salis-icon>{{ t.contact }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},secs:1790};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));this._iv=setInterval(()=>this.setState(s=>({secs:Math.max(0,s.secs-1)})),1000);}
+  componentWillUnmount(){clearInterval(this._iv);}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    const m=Math.floor(this.state.secs/60),s=this.state.secs%60;
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",
+      countdown:String(m).padStart(2,"0")+":"+String(s).padStart(2,"0"),
+      t:{title:t("Account Locked"),desc:t("Your account has been locked for security reasons."),contact:t("Contact Support"),
+        backToLogin:t("Back to Sign In"),refLabel:lang==="ar"?"رقم المرجع":"Reference ID",attemptsLabel:lang==="ar"?"محاولات فاشلة":"Failed Attempts",
+        unlockIn:lang==="ar"?"إلغاء القفل خلال":"Unlocks in"}};
+  }
+}
+</script>
+</body>
+</html>

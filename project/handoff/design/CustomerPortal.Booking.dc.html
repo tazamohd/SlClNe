@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Customer-Booking" style="max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="CustomerPortal.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.bookAppointment }}</h1>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- Step Indicator -->
+    <div style="display:flex;align-items:center;gap:0">
+      <sc-for list="{{ bookingSteps }}" as="bs" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:0;flex:1">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0">
+            <span style="{{ bs.dotStyle }}">{{ bs.num }}</span>
+            <span style="font-size:9px;font-weight:600;{{ bs.labelColor }}">{{ bs.label }}</span>
+          </div>
+          <sc-if value="{{ bs.hasLine }}" hint-placeholder-val="{{ true }}"><div style="flex:1;height:2px;margin:0 6px;margin-bottom:14px;{{ bs.lineColor }}"></div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Vehicle Selection -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="Car" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.selectVehicle }}</h3></div>
+      <sc-for list="{{ vehicles }}" as="v" hint-placeholder-count="2">
+        <button onClick="{{ v.select }}" style="{{ v.style }}">
+          <span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="Car" size="14"></salis-icon></span>
+          <div style="flex:1;text-align:start"><p style="margin:0;font-size:13px;font-weight:600">{{ v.make }}</p><p style="margin:1px 0 0;font-size:10px;opacity:.7" dir="ltr">{{ v.plate }}</p></div>
+          <sc-if value="{{ v.picked }}" hint-placeholder-val="{{ false }}"><salis-icon name="CheckCircle" size="16" style="color:var(--salis-blue)"></salis-icon></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <!-- Service Selection -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="Wrench" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.selectService }}</h3></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ services }}" as="svc" hint-placeholder-count="5">
+          <button onClick="{{ svc.select }}" style="{{ svc.style }}"><salis-icon name="{{ svc.icon }}" size="14"></salis-icon><span>{{ svc.label }}</span></button>
+        </sc-for>
+      </div>
+    </div>
+    <!-- Date & Time -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="Calendar" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.dateTime }}</h3></div>
+      <!-- Date Chips -->
+      <div style="display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <sc-for list="{{ datePills }}" as="dp" hint-placeholder-count="5">
+          <button onClick="{{ dp.select }}" style="{{ dp.style }}"><span style="font-size:10px;opacity:.7">{{ dp.day }}</span><span style="font-size:16px;font-weight:700">{{ dp.num }}</span></button>
+        </sc-for>
+      </div>
+      <!-- Time Slots -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+        <sc-for list="{{ timeSlots }}" as="ts" hint-placeholder-count="6">
+          <button onClick="{{ ts.select }}" style="{{ ts.style }}" dir="ltr">{{ ts.time }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <!-- Notes -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px">
+      <label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.notes }}</label>
+      <textarea rows="2" placeholder="{{ t.notesPlaceholder }}" style="width:100%;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:10px 12px;font-family:var(--font-ui);font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box;resize:none" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15)"></textarea>
+    </div>
+    <button style="width:100%;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0"><salis-icon name="CalendarCheck" size="18"></salis-icon>{{ t.confirmBooking }}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:932},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},pickedVeh:"Toyota Camry 2022",pickedSvc:"Maintenance",pickedDate:2,pickedTime:"9:00 AM"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const stepData=[["Car",1,true],["Wrench",2,true],["Calendar",3,false],["Check",4,false]];
+    const stepLabels=[t("Vehicle"),t("Service"),t("Time"),t("Confirm")];
+    const bookingSteps=stepData.map(([_,num,done],i)=>({num:String(num),label:stepLabels[i],hasLine:i<3,
+      dotStyle:"width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;"+(i===2?"background:var(--salis-gradient);color:#fff":done?"background:var(--salis-blue);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:var(--text-muted)"),
+      labelColor:i===2?"color:var(--salis-blue)":done?"color:var(--text-heading)":"color:var(--text-muted)",lineColor:done?"background:var(--salis-blue)":"background:var(--border-default)"}));
+    const vehs=[["Toyota Camry 2022","RUH 4821"],["Lexus ES 350 2020","RUH 7743"]];
+    const vehicles=vehs.map(([make,plate])=>{const on=this.state.pickedVeh===make;return{make,plate,picked:on,select:()=>this.setState({pickedVeh:make}),
+      style:"width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer;border:none;font-family:var(--font-action);"+(on?"background:rgba(10,94,215,.06);color:var(--salis-blue)":"background:var(--surface-inset);color:var(--text-body)")};});
+    const svcList=[["Wrench","Maintenance"],["Cog","Repair"],["SearchCheck","Inspection"],["CircleDot","Tire Service"],["Droplets","Oil Change"]];
+    const services=svcList.map(([icon,label])=>{const on=this.state.pickedSvc===label;return{icon,label:t(label),select:()=>this.setState({pickedSvc:label}),
+      style:"display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:600;border:none;"+(on?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);color:var(--text-body)")};});
+    const dayNames=rtl?["أحد","اثنين","ثلاثاء","أربعاء","خميس"]:["Sun","Mon","Tue","Wed","Thu"];
+    const datePills=Array.from({length:5},(_,i)=>({day:dayNames[i],num:String(20+i),select:()=>this.setState({pickedDate:i}),
+      style:"display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;border-radius:10px;cursor:pointer;border:none;min-width:48px;flex-shrink:0;"+(this.state.pickedDate===i?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);color:var(--text-body)")}));
+    const times=["8:00 AM","9:00 AM","10:00 AM","11:00 AM","1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM"];
+    const bookedTimes=new Set(["11:00 AM","2:00 PM"]);
+    const timeSlots=times.map(time=>{const on=this.state.pickedTime===time;const booked=bookedTimes.has(time);
+      return{time,select:booked?()=>{}:()=>this.setState({pickedTime:time}),
+        style:"height:38px;border-radius:8px;cursor:"+(booked?"default":"pointer")+";font-family:var(--font-mono);font-size:12px;font-weight:600;border:none;"+(booked?"background:var(--surface-inset);color:var(--text-faint);opacity:.5":on?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);color:var(--text-body)")};});
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      bookingSteps,vehicles,services,datePills,timeSlots,
+      t:{bookAppointment:t("Book Appointment"),selectVehicle:t("Select Vehicle"),selectService:t("Select Service"),dateTime:t("Date & Time"),
+        notes:t("Notes"),notesPlaceholder:rtl?"ملاحظات إضافية...":"Any additional notes...",confirmBooking:t("Confirm Booking")}};
+  }
+}
+</script>
+</body>
+</html>

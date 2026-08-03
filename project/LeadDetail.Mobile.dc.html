@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="LeadDetail-Mobile" style="position:relative;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm);position:relative;z-index:5">
+    <a href="LeadPipeline.Mobile.dc.html" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:var(--text-primary);flex-shrink:0"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <p style="margin:0;flex:1;font-size:16px;font-weight:700;color:var(--text-heading)">{{ t.title }}</p>
+    <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="height:calc(100vh - 56px);overflow-y:auto">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="width:48px;height:48px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;box-shadow:0 8px 16px rgba(10,94,215,.25)">H</span>
+        <div style="flex:1;min-width:0">
+          <h1 style="margin:0;font-size:20px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">Huda Al-Rashid</h1>
+          <p style="margin:2px 0 0;font-size:13px;color:var(--text-muted)">Riyadh Motors Group</p>
+        </div>
+        <span style="display:inline-flex;align-items:center;border-radius:9999px;padding:3px 10px;font-size:12px;font-weight:600;background:rgba(11,179,255,.1);color:#0BB3FF">{{ t.qualified }}</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button style="flex:1;height:40px;border-radius:8px;border:1.5px solid var(--salis-blue);background:none;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:13px;color:var(--salis-blue);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Edit" size="14"></salis-icon>{{ t.edit }}</button>
+        <button style="flex:1;height:40px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="ArrowRight" size="14"></salis-icon>{{ t.convert }}</button>
+      </div>
+      <div style="background:var(--surface-card);border-radius:14px;padding:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:12px">
+        <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.contact }}</h3>
+        <div style="display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="Mail" size="14"></salis-icon></span><div><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ t.email }}</p><p style="margin:0;font-size:13px;color:var(--text-body)">huda@riyadhmotors.sa</p></div></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="Phone" size="14"></salis-icon></span><div><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ t.phone }}</p><p style="margin:0;font-size:13px;font-family:var(--font-mono);color:var(--text-body)" dir="ltr">+966 50 445 7821</p></div></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="MapPin" size="14"></salis-icon></span><div><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ t.location }}</p><p style="margin:0;font-size:13px;color:var(--text-body)">Riyadh, Saudi Arabia</p></div></div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:14px;padding:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px">
+        <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.deal }}</h3>
+        <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text-muted)">{{ t.value }}</span><span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-heading)" dir="ltr">SAR 120,000</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text-muted)">{{ t.prob }}</span><span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--salis-blue)">75%</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text-muted)">{{ t.close }}</span><span style="font-size:13px;color:var(--text-body)">Sep 1, 2026</span></div>
+        <div><p style="margin:0 0 4px;font-size:13px;color:var(--text-muted)">{{ t.score }}</p><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;background:rgba(10,94,215,.08);border-radius:9999px;overflow:hidden"><div style="height:100%;width:91%;background:var(--salis-gradient-r);border-radius:9999px"></div></div><span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--salis-blue)">91</span></div></div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:14px;padding:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+        <h3 style="margin:0 0 12px;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.activity }}</h3>
+        <div style="display:flex;flex-direction:column;gap:0;padding-inline-start:16px;border-inline-start:2px solid var(--border-default)">
+          <sc-for list="{{ timeline }}" as="ev" hint-placeholder-count="4">
+            <div style="position:relative;padding:0 0 16px 16px">
+              <span style="position:absolute;inset-inline-start:-6px;top:2px;width:10px;height:10px;border-radius:50%;background:{{ ev.color }};border:2px solid var(--surface-card)"></span>
+              <p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ ev.title }}</p>
+              <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">{{ ev.desc }}</p>
+              <p style="margin:2px 0 0;font-size:11px;color:var(--text-faint)">{{ ev.date }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:14px;padding:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+        <h3 style="margin:0 0 10px;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.notes }}</h3>
+        <div style="background:var(--surface-inset);border-radius:10px;padding:10px;border:1px solid var(--border-default);margin-bottom:10px"><p style="margin:0;font-size:12px;color:var(--text-body)">Interested in comprehensive fleet maintenance package. Has 45+ vehicles across 3 locations.</p><p style="margin:4px 0 0;font-size:10px;color:var(--text-muted)">Khalid Al-Amri · Jul 18, 2026</p></div>
+        <div style="display:flex;gap:8px"><input placeholder="{{ t.addNote }}" style="flex:1;height:40px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"><button style="height:40px;width:40px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Send" size="16"></salis-icon></button></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+
+class Component extends DCLogic {
+  state={dark:null,lang:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const timeline=[
+      {title:t("Proposal Sent"),date:"Jul 18, 2026",desc:"Sent service agreement proposal",color:"#0A5ED7"},
+      {title:t("Meeting"),date:"Jul 15, 2026",desc:"On-site visit at headquarters",color:"#0BB3FF"},
+      {title:t("Phone Call"),date:"Jul 12, 2026",desc:"Initial discovery call",color:"#0BB3FF"},
+      {title:t("Lead Created"),date:"Jul 10, 2026",desc:"Referred by Ahmed Al-Rashid",color:"#64748B"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      timeline,
+      t:{title:t("Lead Details"),qualified:t("Qualified"),edit:t("Edit"),convert:t("Convert"),contact:t("Contact"),email:t("Email"),phone:t("Phone"),location:t("Location"),deal:t("Deal Information"),value:t("Deal Value"),prob:t("Probability"),close:t("Expected Close"),score:t("Lead Score"),activity:t("Activity"),notes:t("Notes"),addNote:t("Add a note...")}};
+  }
+}
+
+</script>
+</body>
+</html>

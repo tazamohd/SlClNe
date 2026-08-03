@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:rgba(11,31,59,.5)}a{color:#0A5ED7;text-decoration:none}input::placeholder{color:#9BA4B0}@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Global-Search" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:80px 16px 24px;font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="width:100%;max-width:640px;animation:fadeIn .2s ease;display:flex;flex-direction:column;gap:0;background:var(--surface-card);border:1px solid var(--border-default);border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,.3);overflow:hidden">
+    <!-- Search Input -->
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border-default)">
+      <salis-icon name="Search" size="20" style="color:var(--text-muted);flex-shrink:0"></salis-icon>
+      <input value="{{ query }}" onChange="{{ setQuery }}" autofocus placeholder="{{ t.placeholder }}" style="flex:1;height:32px;border:none;background:none;font-size:16px;color:var(--text-primary);outline:none;font-family:var(--font-ui)">
+      <kbd style="padding:3px 8px;border-radius:4px;background:var(--surface-inset);border:1px solid var(--border-default);font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">ESC</kbd>
+    </div>
+    <!-- Results -->
+    <div style="max-height:480px;overflow-y:auto">
+      <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+        <sc-for list="{{ resultGroups }}" as="rg" hint-placeholder-count="3">
+          <div style="padding:8px 20px 4px"><span style="font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)">{{ rg.label }}</span></div>
+          <sc-for list="{{ rg.items }}" as="ri" hint-placeholder-count="3">
+            <a href="{{ ri.href }}" style="display:flex;align-items:center;gap:12px;padding:10px 20px;text-decoration:none;transition:background .1s ease" style-hover="background:rgba(10,94,215,.04)">
+              <span style="padding:6px;border-radius:8px;display:flex;flex-shrink:0;{{ ri.iconBg }}"><salis-icon name="{{ ri.icon }}" size="14"></salis-icon></span>
+              <div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:500;color:var(--text-heading)">{{ ri.title }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ ri.subtitle }}</p></div>
+              <span style="{{ ri.badgeStyle }}">{{ ri.badge }}</span>
+            </a>
+          </sc-for>
+        </sc-for>
+      </sc-if>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:40px 20px;text-align:center"><salis-icon name="SearchX" size="32" style="color:var(--text-muted);margin-bottom:8px"></salis-icon><p style="margin:0;font-size:14px;color:var(--text-muted)">{{ t.noResults }}</p></div>
+      </sc-if>
+    </div>
+    <!-- Footer -->
+    <div style="padding:10px 20px;border-top:1px solid var(--border-default);display:flex;align-items:center;gap:12px">
+      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-faint)"><kbd style="padding:1px 5px;border-radius:3px;background:var(--surface-inset);border:1px solid var(--border-default);font-family:var(--font-mono);font-size:10px">↑↓</kbd>{{ t.navigate }}</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-faint)"><kbd style="padding:1px 5px;border-radius:3px;background:var(--surface-inset);border:1px solid var(--border-default);font-family:var(--font-mono);font-size:10px">↵</kbd>{{ t.open }}</span>
+      <span style="flex:1"></span>
+      <span style="font-size:11px;color:var(--text-faint)">{{ t.poweredBy }}</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},query:"Ahmed"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const q=this.state.query.trim().toLowerCase();
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:600;background:"+bg+";color:"+fg;
+    const allResults=[
+      {group:t("Customers"),icon:"User",title:"Ahmed Al-Rashid",subtitle:rtl?"عميل · +966 55 210 4471":"Customer · +966 55 210 4471",href:"CustomerDetail.dc.html",badge:t("Loyal"),badgeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",search:"ahmed al-rashid customer"},
+      {group:t("Job Cards"),icon:"ClipboardList",title:"JC-A3F8B2C1",subtitle:"Ahmed Al-Rashid · Toyota Camry 2022 · "+t("In Progress"),href:"JobCardDetail.dc.html",badge:t("In Progress"),badgeStyle:pill("rgba(11,179,255,.1)","#0BB3FF"),iconBg:"background:rgba(11,179,255,.08);color:#0BB3FF",search:"ahmed jc-a3f8b2c1 camry"},
+      {group:t("Vehicles"),icon:"Car",title:"Toyota Camry 2022",subtitle:"RUH 4821 · Ahmed Al-Rashid · 42,195 km",href:"VehicleDetail.dc.html",badge:t("In Service"),badgeStyle:pill("rgba(11,179,255,.1)","#0BB3FF"),iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",search:"ahmed toyota camry ruh 4821"},
+      {group:t("Invoices"),icon:"Receipt",title:"INV-2026-0143",subtitle:"Ahmed Al-Rashid · SAR 2,116 · Jul 22",href:"InvoicePreview.dc.html",badge:t("Pending"),badgeStyle:pill("rgba(249,115,22,.1)","#F97316"),iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",search:"ahmed inv-2026-0143 invoice"},
+      {group:t("Customers"),icon:"User",title:"Sara Al-Mutairi",subtitle:rtl?"عميلة · +966 55 891 3344":"Customer · +966 55 891 3344",href:"CustomerDetail.dc.html",badge:t("New"),badgeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconBg:"background:rgba(10,94,215,.08);color:var(--salis-blue)",search:"sara al-mutairi"},
+      {group:t("Job Cards"),icon:"ClipboardList",title:"JC-E5D7A3B5",subtitle:"Sara Al-Mutairi · Ford Explorer 2022",href:"JobCardDetail.dc.html",badge:t("Check-In"),badgeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconBg:"background:rgba(11,179,255,.08);color:#0BB3FF",search:"sara ford jc-e5d7a3b5"}
+    ];
+    const filtered=q?allResults.filter(r=>r.search.includes(q)):allResults.slice(0,4);
+    const groups={};filtered.forEach(r=>{if(!groups[r.group])groups[r.group]=[];groups[r.group].push(r);});
+    const resultGroups=Object.keys(groups).map(g=>({label:g,items:groups[g]}));
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",query:this.state.query,setQuery:e=>this.setState({query:e.target.value}),
+      hasResults:filtered.length>0,noResults:filtered.length===0,resultGroups,
+      t:{placeholder:rtl?"ابحث عن عملاء، مركبات، فواتير...":"Search customers, vehicles, invoices...",noResults:rtl?"لا توجد نتائج":"No results found",
+        navigate:rtl?"تنقل":"Navigate",open:rtl?"فتح":"Open",poweredBy:"⌘K"}};
+  }
+}
+</script>
+</body>
+</html>

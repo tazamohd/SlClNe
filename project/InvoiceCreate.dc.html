@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}input::placeholder{color:#9BA4B0}textarea::placeholder{color:#9BA4B0}select{appearance:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Invoice-Create" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:rgba(10,94,215,.12);color:var(--salis-blue)">{{ t.admin }}</span><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:var(--salis-gradient);color:#fff">PRO</span></div></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button><a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease;max-width:1200px">
+        <div><a href="Invoices.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:13px;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="14"></salis-icon>{{ t.backToInvoices }}</a></div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div><div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="FilePlus" size="28"></salis-icon></div></div><div><h1 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.createInvoice }}</h1><p style="margin:2px 0 0;font-size:14px;color:var(--text-muted)" dir="ltr"><span dir="ltr">INV-2026-0143</span></p></div></div>
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:rgba(10,94,215,.08);border:1px solid rgba(10,94,215,.2)"><salis-icon name="ShieldCheck" size="14" style="color:var(--salis-blue)"></salis-icon><span style="font-family:var(--font-action);font-size:12px;font-weight:600;color:var(--salis-blue)">{{ t.zatcaReady }}</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px">
+          <!-- Left: Invoice Form -->
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <!-- Bill To -->
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px"><salis-icon name="User" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.billTo }}</h3></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.customer }}</label><div style="height:40px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;display:flex;align-items:center;font-size:13px;font-weight:500;color:var(--text-heading)">Ahmed Al-Rashid</div></div>
+                <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.vatReg }}</label><div style="height:40px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;display:flex;align-items:center;font-family:var(--font-mono);font-size:12px;color:var(--text-body)" dir="ltr"><span dir="ltr">310456789012345</span></div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.issueDate }}</label><div style="height:40px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;display:flex;align-items:center;font-size:13px;color:var(--text-body)">Jul 22, 2026</div></div>
+                <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.paymentTerms }}</label><div style="height:40px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--text-body)"><span>{{ t.net30 }}</span><salis-icon name="ChevronDown" size="14" style="color:var(--text-muted)"></salis-icon></div></div>
+              </div>
+            </div>
+            <!-- Line Items -->
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px"><salis-icon name="List" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.lineItems }}</h3></div><button style="height:30px;padding:0 12px;border-radius:6px;border:1px solid var(--salis-blue);background:none;color:var(--salis-blue);font-family:var(--font-action);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px" style-hover="background:rgba(10,94,215,.08)"><salis-icon name="Plus" size="12"></salis-icon>{{ t.addLine }}</button></div>
+              <table style="width:100%;border-collapse:collapse">
+                <thead><tr>
+                  <th style="padding:10px 20px;text-align:start;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted);border-bottom:1px solid var(--border-default)">{{ t.description }}</th>
+                  <th style="padding:10px 12px;text-align:center;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted);border-bottom:1px solid var(--border-default);width:70px">{{ t.qty }}</th>
+                  <th style="padding:10px 12px;text-align:end;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted);border-bottom:1px solid var(--border-default);width:100px">{{ t.unitPrice }}</th>
+                  <th style="padding:10px 20px;text-align:end;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted);border-bottom:1px solid var(--border-default);width:100px">{{ t.total }}</th>
+                  <th style="width:40px;border-bottom:1px solid var(--border-default)"></th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ lineItems }}" as="li" hint-placeholder-count="4">
+                    <tr style="border-bottom:1px solid var(--border-default)">
+                      <td style="padding:10px 20px;font-size:13px;color:var(--text-body)">{{ li.desc }}</td>
+                      <td style="padding:10px 12px;text-align:center;font-family:var(--font-mono);font-size:13px;color:var(--text-body)">{{ li.qty }}</td>
+                      <td style="padding:10px 12px;text-align:end;font-family:var(--font-mono);font-size:13px;color:var(--text-body)" dir="ltr">{{ li.unit }}</td>
+                      <td style="padding:10px 20px;text-align:end;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ li.total }}</td>
+                      <td style="padding:10px 8px;text-align:center"><button style="border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;padding:0" style-hover="color:var(--salis-orange)"><salis-icon name="Trash2" size="14"></salis-icon></button></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+            <!-- Notes -->
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px">
+              <label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.notes }}</label>
+              <textarea rows="2" placeholder="{{ t.notesPlaceholder }}" style="width:100%;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:10px 12px;font-family:var(--font-ui);font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box;resize:none" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.15)"></textarea>
+            </div>
+          </div>
+          <!-- Right: Summary + ZATCA -->
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <!-- Totals -->
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;position:sticky;top:24px">
+              <h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.invoiceSummary }}</h3>
+              <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.subtotal }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 1,840.00</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 276.00</span></div>
+              <div style="height:1px;background:var(--border-default)"></div>
+              <div style="display:flex;justify-content:space-between;font-size:20px;font-weight:800;color:var(--text-heading)"><span>{{ t.total }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 2,116.00</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+                <button style="width:100%;height:44px;border:1.5px solid var(--border-strong);border-radius:8px;background:none;color:var(--text-body);font-family:var(--font-action);font-weight:500;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Save" size="14"></salis-icon>{{ t.saveDraft }}</button>
+                <button style="width:100%;height:44px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Send" size="14"></salis-icon>{{ t.sendInvoice }}</button>
+              </div>
+            </div>
+            <!-- ZATCA Card -->
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="ShieldCheck" size="16"></salis-icon></span><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.zatca }}</h3></div>
+              <div style="display:flex;gap:14px;align-items:center">
+                <div style="width:80px;height:80px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 40 40" style="width:56px;height:56px"><rect x="2" y="2" width="10" height="10" rx="1" fill="var(--text-heading)"></rect><rect x="14" y="2" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="20" y="2" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="28" y="2" width="10" height="10" rx="1" fill="var(--text-heading)"></rect><rect x="2" y="14" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="8" y="14" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="20" y="14" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="28" y="14" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="2" y="20" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="14" y="20" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="20" y="20" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="34" y="20" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="2" y="28" width="10" height="10" rx="1" fill="var(--text-heading)"></rect><rect x="14" y="28" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="28" y="28" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="34" y="34" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect></svg></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">{{ t.seller }}</span><span style="color:var(--text-body)">Al-Amri Auto Center</span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">{{ t.vatReg }}</span><span style="font-family:var(--font-mono);color:var(--text-body)" dir="ltr"><span dir="ltr">300456789012345</span></span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">{{ t.taxInvoice }}</span><span style="font-family:var(--font-mono);color:var(--text-body)" dir="ltr"><span dir="ltr">INV-2026-0143</span></span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">{{ t.total }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--text-heading)" dir="ltr">SAR 2,116.00</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href,active)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;"+(active?"background:var(--salis-gradient);color:#fff":"color:var(--text-body)")});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href,i.l==="Invoices"))};});
+    const lineItems=[
+      {desc:t("Brake Pads (Front)")+" — "+t("Repair"),qty:"1",unit:"SAR 310",total:"SAR 310"},
+      {desc:t("Oil Filter (Toyota)")+" — "+t("Maintenance"),qty:"2",unit:"SAR 45",total:"SAR 90"},
+      {desc:t("Air Filter (Universal)"),qty:"1",unit:"SAR 95",total:"SAR 95"},
+      {desc:t("Diagnostics")+" — 1.5h",qty:"1",unit:"SAR 225",total:"SAR 225"},
+      {desc:t("Brake Repair")+" — 2h "+t("Labor"),qty:"1",unit:"SAR 360",total:"SAR 360"},
+      {desc:t("Multi-Point Inspection"),qty:"1",unit:"SAR 170",total:"SAR 170"},
+      {desc:t("Maintenance")+" — "+t("Oil Change"),qty:"1",unit:"SAR 590",total:"SAR 590"}
+    ];
+    return {rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,lineItems,
+      t:{admin:t("ADMIN"),logout:t("Logout"),backToInvoices:t("Back to Job Cards"),createInvoice:t("Create Invoice"),zatcaReady:t("E-Invoice Ready"),
+        billTo:t("Bill To"),customer:t("Customer"),vatReg:t("VAT Registration"),issueDate:t("Issue Date"),paymentTerms:t("Payment Terms"),net30:t("Net 30"),
+        lineItems:t("Line Items"),addLine:t("Add Line Item"),description:t("Description"),qty:t("Quantity"),unitPrice:t("Unit Price"),total:t("Total"),
+        notes:t("Notes"),notesPlaceholder:rtl?"ملاحظات إضافية...":"Additional notes...",
+        invoiceSummary:rtl?"ملخص الفاتورة":"Invoice Summary",subtotal:t("Subtotal"),vat:t("VAT (15%)"),
+        saveDraft:t("Save Draft"),sendInvoice:t("Send Invoice"),
+        zatca:t("ZATCA Compliance"),seller:t("Seller"),taxInvoice:t("Tax Invoice")}};
+  }
+}
+</script>
+</body>
+</html>

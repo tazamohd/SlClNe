@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Procurement Portal - Requisitions" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<aside style="width:252px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+  <div style="padding:16px 14px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border-default)"><div style="width:32px;height:32px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="ShoppingCart" size="16" style="color:#fff"></salis-icon></div><div style="min-width:0"><p style="margin:0;font-size:13px;font-weight:800;font-family:var(--font-display);color:var(--text-heading)">SALIS AUTO</p><p style="margin:0;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--salis-blue)">{{ t.brandRole }}</p></div></div>
+  <nav style="flex:1;padding:12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;overflow-x:hidden"><a href="ProcurementPortal.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="LayoutDashboard" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_dash }}</span></a><a href="ProcurementPortal.Requisitions.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)"><salis-icon name="ClipboardList" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_requisitions }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="MessageSquareQuote" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_rfq }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="GitCompareArrows" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_compare }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="FileText" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_pos }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="Building2" size="15"></salis-icon><span>{{ t.nav_suppliers }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="FileSignature" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_contracts }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="TrendingUp" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_spend }}</span></a></nav>
+  <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:9px;padding:9px;border-radius:9px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:30px;height:30px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">{{ userInitial }}</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</p><p style="margin:0;font-size:10px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.userRole }}</p></div></div>
+    <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 9px;border:none;background:none;border-radius:7px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+    <a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:7px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="15"></salis-icon><span>{{ t.logout }}</span></a>
+  </div>
+</aside>
+<div style="flex:1;display:flex;flex-direction:column;min-width:0">
+  <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <span style="position:relative;display:flex;align-items:center"><salis-icon name="Search" size="14" style="position:absolute;inset-inline-start:11px;color:var(--text-muted)"></salis-icon><input placeholder="{{ t.search }}" style="width:250px;height:34px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;padding-inline-start:31px;font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"></span>
+    <div style="flex:1"></div>
+    <button style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;position:relative"><salis-icon name="Bell" size="16"></salis-icon><span style="position:absolute;top:5px;inset-inline-end:6px;width:7px;height:7px;border-radius:50%;background:var(--salis-orange);border:2px solid var(--surface-sidebar)"></span></button>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="flex:1;overflow:auto"><div style="padding:24px;display:flex;flex-direction:column;gap:22px;animation:fadeUp .3s ease">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:15px;filter:blur(12px);opacity:.28"></div><div style="position:relative;padding:11px;border-radius:15px;background:var(--salis-gradient);box-shadow:0 16px 22px -6px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="ClipboardList" size="25"></salis-icon></div></div><div><h1 style="margin:0;font-size:27px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1><p style="margin:2px 0 0;font-size:13px;color:var(--text-muted)">{{ t.subtitle }}</p></div></div><div style="display:flex;gap:9px"><button style="display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:8px;border:1.5px solid var(--salis-blue);background:none;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:13px;color:var(--salis-blue)"><salis-icon name="Download" size="15"></salis-icon>{{ t.export }}</button><button style="display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="Plus" size="15"></salis-icon>{{ t.newReq }}</button></div></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+  <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="5"><button onClick="{{ tb.click }}" style="{{ tb.style }}">{{ tb.label }} <span style="font-family:var(--font-mono);opacity:.75;margin-inline-start:3px">{{ tb.count }}</span></button></sc-for>
+  <span style="flex:1"></span>
+  <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;align-items:center;gap:9px;padding:5px 6px 5px 13px;border-radius:9px;background:rgba(10,94,215,.05);border:1px solid rgba(10,94,215,.22)">
+      <span style="font-size:12px;font-weight:600;color:var(--salis-blue)">{{ selCount }} {{ t.selected }}</span>
+      <button style="height:29px;padding:0 11px;border:1px solid var(--border-default);border-radius:7px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500">{{ t.reject }}</button>
+      <button style="height:29px;padding:0 12px;border:none;border-radius:7px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:600">{{ t.approveSel }}</button>
+    </div>
+  </sc-if>
+</div>
+<div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+<table style="width:100%;border-collapse:collapse;font-family:var(--font-ui);font-size:14px;color:var(--text-primary)">
+<thead><tr>
+<th style="width:44px;height:43px;padding:0 0 0 20px;border-bottom:1px solid var(--border-default)"><input type="checkbox" checked="{{ allChecked }}" onChange="{{ toggleAll }}" style="accent-color:#0A5ED7;width:15px;height:15px;cursor:pointer"></th>
+<sc-for list="{{ cols }}" as="c" hint-placeholder-count="6"><th style="{{ c.style }}">{{ c.label }}</th></sc-for>
+</tr></thead>
+<tbody><sc-for list="{{ rows }}" as="r" hint-placeholder-count="7"><tr style="transition:background .15s;background:{{ r.rowBg }}" style-hover="background:rgba(10,94,215,.03)">
+<td style="padding:0 0 0 20px;border-bottom:1px solid var(--border-default)"><input type="checkbox" checked="{{ r.checked }}" onChange="{{ r.toggle }}" style="accent-color:#0A5ED7;width:15px;height:15px;cursor:pointer"></td>
+<td style="padding:13px 20px;border-bottom:1px solid var(--border-default);font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--salis-blue)" dir="ltr">{{ r.id }}</td>
+<td style="padding:13px 20px;border-bottom:1px solid var(--border-default)"><p style="margin:0;font-size:13px;color:var(--text-body)">{{ r.what }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ r.from }}</p></td>
+<td style="padding:13px 20px;border-bottom:1px solid var(--border-default)"><span style="{{ r.prStyle }}">{{ r.priority }}</span></td>
+<td style="padding:13px 20px;border-bottom:1px solid var(--border-default);color:var(--text-muted);font-size:13px">{{ r.raised }}</td>
+<td style="padding:13px 20px;border-bottom:1px solid var(--border-default);text-align:end;font-family:var(--font-mono);font-size:13px;font-weight:600" dir="ltr">{{ r.amount }}</td>
+<td style="padding:13px 20px;border-bottom:1px solid var(--border-default)"><span style="{{ r.stStyle }}">{{ r.status }}</span></td>
+</tr></sc-for></tbody></table>
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:52px 32px;display:flex;flex-direction:column;align-items:center;gap:13px;text-align:center">
+    <span style="width:60px;height:60px;border-radius:50%;background:rgba(10,94,215,.09);color:var(--salis-blue);display:flex;align-items:center;justify-content:center"><salis-icon name="CheckCircle" size="26"></salis-icon></span>
+    <div><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">{{ t.emptyTitle }}</h3><p style="margin:5px auto 0;font-size:13px;color:var(--text-muted);max-width:290px;line-height:1.6">{{ t.emptyBody }}</p></div>
+  </div>
+</sc-if>
+<sc-if value="{{ notEmpty }}" hint-placeholder-val="{{ true }}"><div style="padding:13px 20px;display:flex;align-items:center;border-top:1px solid var(--border-default)"><span style="font-size:12px;color:var(--text-muted)">{{ t.showing }}</span><span style="flex:1"></span><div style="display:flex;gap:5px"><button style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body)"><salis-icon name="ChevronLeft" size="13"></salis-icon></button><button style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body)"><salis-icon name="ChevronRight" size="13"></salis-icon></button></div></div></sc-if>
+</div>
+  </div></main>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"},"userName":{"editor":"text","default":"","tsType":"string","section":"Content"}}'>
+class Component extends DCLogic{state={dark:null,lang:null,data:null,filter:null,sel:null};componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}renderVals(){
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const ic=(bg,fg)=>"padding:8px;border-radius:10px;background:"+bg+";color:"+fg+";display:flex";
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const userName=this.props.userName||"Nasser Al-Dosari";
+const filter=this.state.filter??"pending";
+const sel=this.state.sel??{};
+const tabStyle=a=>"height:34px;padding:0 14px;border-radius:8px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;"+(a?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)");
+const prU=pill("rgba(249,115,22,.14)","#F97316"),prH=pill("rgba(249,115,22,.1)","#F97316"),prM=pill("rgba(11,179,255,.1)","#0BB3FF"),prL=pill("rgba(100,116,139,.1)","#64748B");
+const prMap={urgent:prU,high:prH,medium:prM,low:prL};
+const stMap={pending:pill("rgba(249,115,22,.1)","#F97316"),approved:pill("rgba(10,94,215,.1)","#0A5ED7"),rejected:pill("rgba(100,116,139,.1)","#64748B"),converted:pill("rgba(11,31,59,.1)","#0B1F3B")};
+const stLabel={pending:t("Pending"),approved:t("Approved"),rejected:t("Rejected"),converted:t("PO Raised")};
+const raw=[
+ ["pending","REQ-0518","urgent",t("Brake Pads (Front) ×40 — stock below reorder"),t("Riyadh Main")+" · "+t("Inventory"),t("2 hours ago"),"SAR 12,400"],
+ ["pending","REQ-0517","high",t("Diagnostic scanner — workshop equipment"),t("Jeddah Branch")+" · "+t("Workshop"),t("5 hours ago"),"SAR 28,000"],
+ ["pending","REQ-0515","medium",t("Oil Filter (Toyota) ×120 — routine restock"),t("Riyadh North")+" · "+t("Inventory"),t("Yesterday"),"SAR 5,400"],
+ ["pending","REQ-0512","low",t("Office supplies — quarterly order"),t("Head Office")+" · "+t("Administration"),"2 "+t("days"),"SAR 1,850"],
+ ["approved","REQ-0509","high",t("Battery 12V ×24"),t("Jeddah Branch")+" · "+t("Inventory"),"Jul 21","SAR 9,120"],
+ ["converted","REQ-0504","medium",t("Spark Plug Set ×80, Coolant 4L ×40"),t("Riyadh Main")+" · "+t("Inventory"),"Jul 18","SAR 14,360"],
+ ["rejected","REQ-0498","low",t("Branded uniforms — 30 sets"),t("Head Office")+" · "+t("Administration"),"Jul 15","SAR 7,200"]
+];
+const counts={all:raw.length,pending:0,approved:0,converted:0,rejected:0};raw.forEach(r=>counts[r[0]]++);
+const tabs=[["pending","Pending"],["approved","Approved"],["converted","PO Raised"],["rejected","Rejected"],["all","All"]].map(f=>({label:t(f[1]),count:String(counts[f[0]]),click:()=>this.setState({filter:f[0],sel:{}}),style:tabStyle(filter===f[0])}));
+const hStyle=(end)=>"height:43px;padding:0 20px;text-align:"+(end?"end":"start")+";font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);border-bottom:1px solid var(--border-default)";
+const cols=[t("Req #"),t("Request"),t("Priority"),t("Raised"),t("Amount"),t("Status")].map((c,i)=>({label:c,style:hStyle(i===4)}));
+const visible=raw.filter(r=>filter==="all"||r[0]===filter);
+const rows=visible.map(r=>{const on=!!sel[r[1]];return{id:r[1],what:r[3],from:r[4],raised:r[5],amount:r[6],
+ priority:t(r[2].charAt(0).toUpperCase()+r[2].slice(1)),prStyle:prMap[r[2]],status:stLabel[r[0]],stStyle:stMap[r[0]],
+ checked:on,rowBg:on?"rgba(10,94,215,.04)":"transparent",toggle:()=>this.setState(s=>({sel:{...s.sel,[r[1]]:!s.sel[r[1]]}}))};});
+const selCount=rows.filter(r=>r.checked).length;
+const extra={tabs,cols,rows,hasSelection:selCount>0,selCount:String(selCount),
+ allChecked:selCount>0&&selCount===rows.length,
+ toggleAll:()=>{const all=selCount===rows.length;const next={};if(!all)visible.forEach(r=>next[r[1]]=true);this.setState({sel:next});},
+ isEmpty:rows.length===0,notEmpty:rows.length>0,
+ t:{brandRole:t("Procurement"),userRole:t("Procurement Agent")+" · "+t("Head Office"),logout:t("Logout"),search:rtl?"البحث في طلبات الشراء والموردين...":"Search requisitions, suppliers...",
+ nav_dash:t("Dashboard"),nav_requisitions:t("Requisitions"),nav_rfq:t("RFQs"),nav_compare:t("Quote Comparison"),nav_pos:t("Purchase Orders"),nav_suppliers:t("Suppliers"),nav_contracts:t("Contracts"),nav_spend:t("Spend Analytics"),title:t("Requisitions"),subtitle:t("Requests raised by branches awaiting procurement action"),
+ export:t("Export"),newReq:t("New Requisition"),selected:t("selected"),approveSel:t("Approve"),reject:t("Reject"),
+ emptyTitle:t("Nothing to review"),emptyBody:t("No requisitions in this state. New requests from branches will appear here."),
+ showing:t("Showing")+" 1–"+rows.length+" "+t("of")+" "+visible.length}};
+return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",userName,userInitial:userName.trim()[0]||"S",
+ toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+ toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})},...extra};}}</script></body></html>

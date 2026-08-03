@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(10,94,215,.3)}70%{box-shadow:0 0 0 10px rgba(10,94,215,0)}100%{box-shadow:0 0 0 0 rgba(10,94,215,0)}}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Customer Approval" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:13px 20px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <div style="width:30px;height:30px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Car" size="15" style="color:#fff"></salis-icon></div>
+    <div style="min-width:0;flex:1">
+      <p style="margin:0;font-size:13px;font-weight:800;font-family:var(--font-display);color:var(--text-heading)">SALIS AUTO</p>
+      <p style="margin:0;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.branch }}</p>
+    </div>
+    <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:9999px;background:rgba(10,94,215,.1);color:var(--salis-blue);font-size:11px;font-weight:600;font-family:var(--font-action);flex-shrink:0"><salis-icon name="ShieldCheck" size="12"></salis-icon>{{ t.secure }}</span>
+    <button onClick="{{ toggleLang }}" style="height:30px;padding:0 9px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:11px;font-weight:500;flex-shrink:0" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="12"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="14"></salis-icon></button>
+  </header>
+
+  <div style="max-width:1180px;margin:0 auto;padding:20px 18px 40px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .3s ease">
+
+    <div style="display:flex;align-items:center;gap:9px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+          <div style="height:4px;border-radius:9999px;background:{{ s.bar }}"></div>
+          <div style="display:flex;align-items:center;gap:5px">
+            <salis-icon name="{{ s.icon }}" size="12" style="color:{{ s.fg }};flex-shrink:0"></salis-icon>
+            <span style="font-size:11px;font-weight:600;color:{{ s.fg }};font-family:var(--font-action);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="padding:16px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="min-width:180px;flex:1">
+        <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.estimate }}</p>
+        <p style="margin:3px 0 0;font-size:20px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);font-variant-numeric:tabular-nums"><span dir="ltr">EST-2026-0418</span></p>
+        <p style="margin:3px 0 0;font-size:12.5px;color:var(--text-muted)">{{ t.validUntil }} · <span style="font-weight:600;color:#F97316">{{ t.hoursLeft }}</span></p>
+      </div>
+      <div style="min-width:150px">
+        <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.vehicle }}</p>
+        <p style="margin:3px 0 0;font-size:14px;font-weight:700;color:var(--text-heading)">Toyota Camry 2021</p>
+        <p style="margin:2px 0 0;font-size:12.5px;color:var(--text-muted);font-family:var(--font-mono,monospace)">RUH 4821 · 58,420 km</p>
+      </div>
+      <div style="min-width:150px">
+        <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.advisor }}</p>
+        <p style="margin:3px 0 0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.advisorName }}</p>
+        <p style="margin:2px 0 0;font-size:12.5px;color:var(--text-muted);font-family:var(--font-mono,monospace)"><span dir="ltr">+966 55 214 8890</span></p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:{{ cols }};gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div style="border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:14px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div>
+              <p style="margin:0;font-size:15px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.linesH }}</p>
+              <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">{{ t.linesSub }}</p>
+            </div>
+            <div style="display:flex;gap:7px">
+              <button onClick="{{ selectAll }}" style="height:30px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action)" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">{{ t.all }}</button>
+              <button onClick="{{ selectCritical }}" style="height:30px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action)" style-hover="border-color:#F97316;color:#F97316">{{ t.criticalOnly }}</button>
+            </div>
+          </div>
+          <sc-for list="{{ lines }}" as="l" hint-placeholder-count="6">
+            <div style="{{ l.rowStyle }}">
+              <button onClick="{{ l.toggle }}" aria-label="Toggle line" style="{{ l.cbStyle }}"><sc-if value="{{ l.on }}" hint-placeholder-val="{{ true }}"><salis-icon name="Check" size="12" stroke-width="3"></salis-icon></sc-if></button>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+                  <p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-heading)">{{ l.item }}</p>
+                  <span style="{{ l.urgPill }}">{{ l.urgLabel }}</span>
+                  <sc-if value="{{ l.isLabour }}" hint-placeholder-val="{{ false }}"><span style="padding:1px 6px;border-radius:9999px;background:rgba(100,116,139,.14);color:var(--text-muted);font-size:10px;font-weight:600;font-family:var(--font-action)">{{ t.labour }}</span></sc-if>
+                </div>
+                <sc-if value="{{ l.hasNote }}" hint-placeholder-val="{{ true }}"><p style="margin:3px 0 0;font-size:12px;color:var(--text-muted)">{{ l.note }}</p></sc-if>
+              </div>
+              <div style="text-align:end;flex-shrink:0">
+                <p style="margin:0;font-size:13.5px;font-weight:700;color:var(--text-heading);font-variant-numeric:tabular-nums">{{ l.total }}</p>
+                <p style="margin:1px 0 0;font-size:11px;color:var(--text-muted);font-variant-numeric:tabular-nums">{{ l.qtyLabel }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:15px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+          <p style="margin:0 0 11px;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.signH }}</p>
+          <p style="margin:0 0 12px;font-size:12.5px;line-height:1.55;color:var(--text-muted);text-wrap:pretty">{{ t.signSub }}</p>
+          <div style="position:relative;border:1.5px dashed {{ sigBorder }};border-radius:11px;background:var(--surface-inset);height:150px;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:crosshair" onClick="{{ sign }}">
+            <sc-if value="{{ signed }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center">
+                <p style="margin:0;font-family:'Brush Script MT',cursive;font-size:38px;color:var(--salis-blue);line-height:1">{{ sigName }}</p>
+                <p style="margin:6px 0 0;font-size:11px;color:var(--text-muted);font-family:var(--font-mono,monospace)">{{ sigStamp }}</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ notSigned }}" hint-placeholder-val="{{ true }}">
+              <div style="text-align:center;pointer-events:none">
+                <salis-icon name="PenTool" size="24" style="color:var(--text-muted);opacity:.5"></salis-icon>
+                <p style="margin:7px 0 0;font-size:12.5px;font-weight:500;color:var(--text-muted)">{{ t.signHint }}</p>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;flex-wrap:wrap">
+            <button onClick="{{ clearSig }}" style="height:30px;padding:0 11px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:11.5px;font-weight:600;color:var(--text-muted);font-family:var(--font-action);display:flex;align-items:center;gap:5px" style-hover="border-color:#F97316;color:#F97316"><salis-icon name="Eraser" size="12"></salis-icon>{{ t.clear }}</button>
+            <p style="margin:0;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px"><salis-icon name="Lock" size="11" style="color:var(--salis-blue)"></salis-icon>{{ t.legal }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;position:sticky;top:76px;min-width:0">
+        <div style="padding:16px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-lg)">
+          <p style="margin:0 0 12px;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.summary }}</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ totals }}" as="tt" hint-placeholder-count="4">
+              <div style="{{ tt.rowStyle }}">
+                <span style="font-size:{{ tt.size }};font-weight:{{ tt.weight }};color:{{ tt.labelColor }}">{{ tt.label }}</span>
+                <span style="font-size:{{ tt.size }};font-weight:{{ tt.weight }};color:{{ tt.valColor }};font-variant-numeric:tabular-nums">{{ tt.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:13px;padding:10px 12px;border-radius:10px;background:rgba(10,94,215,.06);display:flex;gap:8px">
+            <salis-icon name="Info" size="13" style="color:var(--salis-blue);flex-shrink:0;margin-top:1px"></salis-icon>
+            <p style="margin:0;font-size:11.5px;line-height:1.5;color:var(--text-body)">{{ t.deferNote }}</p>
+          </div>
+        </div>
+
+        <div style="padding:16px 18px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+          <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.otpH }}</p>
+          <p style="margin:0 0 11px;font-size:11.5px;line-height:1.5;color:var(--text-muted)">{{ t.otpSub }}</p>
+          <div style="display:flex;gap:7px">
+            <sc-for list="{{ otpBoxes }}" as="o" hint-placeholder-count="4">
+              <span style="{{ o.style }}">{{ o.v }}</span>
+            </sc-for>
+          </div>
+          <button onClick="{{ verifyOtp }}" style="width:100%;margin-top:10px;height:34px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:12px;font-weight:600;color:var(--salis-blue);font-family:var(--font-action)" style-hover="background:rgba(10,94,215,.07)">{{ otpBtnLabel }}</button>
+        </div>
+
+        <button onClick="{{ approve }}" disabled="{{ cantApprove }}" style="{{ approveStyle }}">
+          <salis-icon name="{{ approveIcon }}" size="16"></salis-icon>{{ approveLabel }}
+        </button>
+        <p style="margin:0;text-align:center;font-size:11px;color:var(--text-muted);min-height:15px">{{ blockReason }}</p>
+        <div style="display:flex;gap:8px">
+          <button onClick="{{ requestChange }}" style="flex:1;height:38px;border-radius:9px;border:1.5px solid var(--border-strong);background:var(--surface-card);cursor:pointer;font-size:12px;font-weight:600;color:var(--text-body);font-family:var(--font-action)" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">{{ t.requestChange }}</button>
+          <button onClick="{{ decline }}" style="flex:1;height:38px;border-radius:9px;border:1.5px solid rgba(249,115,22,.4);background:var(--surface-card);cursor:pointer;font-size:12px;font-weight:600;color:#F97316;font-family:var(--font-action)" style-hover="background:rgba(249,115,22,.07)">{{ t.decline }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:20px;inset-inline-end:20px;z-index:100;display:flex;align-items:flex-start;gap:11px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow-lg);max-width:330px;animation:fadeUp .25s ease">
+      <span style="{{ toastIconStyle }}"><salis-icon name="{{ toastIcon }}" size="17"></salis-icon></span>
+      <div style="flex:1;min-width:0"><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-heading)">{{ toastTitle }}</p><p style="margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-muted)">{{ toastDesc }}</p></div>
+      <button onClick="{{ closeToast }}" aria-label="Dismiss" style="border:none;background:none;cursor:pointer;color:var(--text-muted);padding:0;display:flex;flex-shrink:0"><salis-icon name="X" size="13"></salis-icon></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null,off:[],signed:false,otp:"",verified:false,toast:null,narrow:false,stamp:""};
+  componentDidMount(){
+    import("./gms-data.js").then(m=>this.setState({D:m}));
+    this._mq=window.matchMedia("(max-width:880px)");
+    this._onMq=()=>this.setState({narrow:this._mq.matches});
+    this._onMq(); this._mq.addEventListener("change",this._onMq);
+  }
+  componentWillUnmount(){ if(this._mq) this._mq.removeEventListener("change",this._onMq); clearTimeout(this._tt); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const LINES=(D&&D.APPROVAL_LINES)||[];
+    const off=this.state.off, isOn=id=>!off.includes(id);
+    const sar=n=>"SAR "+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+    const URG={critical:[t("Critical"),"#F97316","rgba(249,115,22,.13)"],due:[t("Due now"),"#0BB3FF","rgba(11,179,255,.13)"],advisory:[t("Advisory"),"var(--text-muted)","rgba(100,116,139,.13)"]};
+    const lines=LINES.map((l,i)=>{
+      const on=isOn(l.id), u=URG[l.urgency]||URG.advisory, note=rtl?l.ar_note:l.note;
+      return {item:rtl?l.ar:l.item, on, isLabour:l.kind==="labour",
+        hasNote:!!note, note,
+        urgLabel:u[0],
+        urgPill:"padding:1px 7px;border-radius:9999px;font-size:10px;font-weight:600;font-family:var(--font-action);background:"+u[2]+";color:"+u[1],
+        total:sar(l.qty*l.unit), qtyLabel:l.qty+" × "+sar(l.unit),
+        rowStyle:"display:flex;align-items:flex-start;gap:11px;padding:13px 18px;transition:background .15s ease;"+(i?"border-top:1px solid var(--border-default);":"")+(on?"":"opacity:.5;"),
+        cbStyle:"width:19px;height:19px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;margin-top:1px;transition:all .15s ease;"+(on?"background:var(--salis-gradient);border:none;color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:transparent"),
+        toggle:()=>this.setState(s=>({off:s.off.includes(l.id)?s.off.filter(x=>x!==l.id):[...s.off,l.id]}))};
+    });
+
+    const chosen=LINES.filter(l=>isOn(l.id));
+    const sub=chosen.reduce((a,l)=>a+l.qty*l.unit,0);
+    const deferred=LINES.filter(l=>!isOn(l.id)).reduce((a,l)=>a+l.qty*l.unit,0);
+    const vat=sub*0.15, grand=sub+vat;
+    const row=(label,value,strong)=>({label,value,
+      size:strong?"15px":"12.5px", weight:strong?"800":"500",
+      labelColor:strong?"var(--text-heading)":"var(--text-muted)",
+      valColor:strong?"var(--salis-blue)":"var(--text-heading)",
+      rowStyle:"display:flex;align-items:baseline;justify-content:space-between;gap:12px;"+(strong?"padding-top:9px;border-top:1px solid var(--border-default)":"")});
+    const totals=[row(t("Subtotal"),sar(sub)),row(t("VAT")+" 15%",sar(vat)),
+      ...(deferred>0?[row(t("Deferred"),"− "+sar(deferred))]:[]),row(t("Total due"),sar(grand),true)];
+
+    const otp=this.state.otp, verified=this.state.verified;
+    const otpBoxes=[0,1,2,3].map(i=>({v:otp[i]||"",
+      style:"flex:1;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;font-family:var(--font-mono,monospace);font-variant-numeric:tabular-nums;"+(verified?"background:rgba(10,94,215,.09);border:1.5px solid var(--salis-blue);color:var(--salis-blue)":otp[i]?"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:var(--text-heading)":"background:var(--surface-inset);border:1.5px solid var(--border-default);color:var(--text-muted)")}));
+
+    const signed=this.state.signed, ready=signed&&verified&&chosen.length>0;
+    const blocked=!signed?t("Sign above to enable approval"):!verified?t("Verify the code sent to your phone"):chosen.length===0?t("Select at least one line to approve"):"";
+
+    const STEPS=[[t("Review"),true],[t("Sign"),signed],[t("Confirm"),ready]];
+    const steps=STEPS.map(([label,done])=>({label,
+      icon:done?"CheckCircle2":"Circle",
+      fg:done?"var(--salis-blue)":"var(--text-muted)",
+      bar:done?"var(--salis-gradient)":"var(--border-default)"}));
+
+    const toast=this.state.toast;
+    const fire=(title,desc,err)=>{clearTimeout(this._tt);this.setState({toast:{title,desc,err:!!err}});this._tt=setTimeout(()=>this.setState({toast:null}),3400);};
+
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      cols:this.state.narrow?"1fr":"1fr minmax(290px,330px)",
+      t:{branch:t("Riyadh Main")+" · "+t("Service Advisor"),secure:t("Secure link"),
+        estimate:t("Estimate"),validUntil:t("Valid until 28 Jul 2026"),hoursLeft:t("41 hours left"),
+        vehicle:t("Vehicle"),advisor:t("Your advisor"),advisorName:t("Noura Al-Qahtani"),
+        linesH:t("What we found"),linesSub:t("Untick anything you would rather defer to a later visit."),
+        all:t("Select all"),criticalOnly:t("Critical only"),labour:t("Labour"),
+        signH:t("Your signature"),signSub:t("Signing confirms you authorise the ticked work at the price shown. A signed PDF is emailed to you and attached to the job card."),
+        signHint:t("Tap or click to sign"),clear:t("Clear"),legal:t("Legally binding e-signature"),
+        summary:t("Summary"),deferNote:t("Deferred items stay on your vehicle record and we will remind you at the next service."),
+        otpH:t("Confirm it's you"),otpSub:t("We sent a 4-digit code to +966 55 ••• 8890."),
+        requestChange:t("Request changes"),decline:t("Decline")},
+      steps,lines,totals,otpBoxes,
+      signed,notSigned:!signed,sigName:t("Khalid Al-Amri"),sigStamp:this.state.stamp,
+      sigBorder:signed?"var(--salis-blue)":"var(--border-strong)",
+      sign:()=>{ if(signed) return;
+        const d=new Date();
+        this.setState({signed:true,stamp:d.toISOString().slice(0,16).replace("T"," ")+" · IP 89.108.24.11"});
+        fire(t("Signature captured"),t("Now confirm the code sent to your phone."));},
+      clearSig:()=>this.setState({signed:false,stamp:""}),
+      selectAll:()=>this.setState({off:[]}),
+      selectCritical:()=>this.setState({off:LINES.filter(l=>l.urgency!=="critical").map(l=>l.id)}),
+      verifyOtp:()=>{ if(verified){this.setState({verified:false,otp:""});return;}
+        this.setState({otp:"4813",verified:true}); fire(t("Code verified"),t("You can now approve the work."));},
+      otpBtnLabel:verified?t("Use a different code"):t("Enter demo code"),
+      cantApprove:!ready,
+      approveIcon:ready?"CheckCircle2":"Lock",
+      approveLabel:ready?t("Approve")+" · "+sar(grand):t("Approve work"),
+      approveStyle:"width:100%;height:46px;border-radius:10px;border:none;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-action);font-size:14px;font-weight:700;transition:all .2s ease;"+(ready?"background:var(--salis-gradient);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(10,94,215,.3);animation:pulseRing 2s infinite":"background:var(--surface-inset);color:var(--text-muted);cursor:not-allowed"),
+      blockReason:blocked,
+      approve:()=>{ if(!ready) return; fire(t("Work approved"),t("Job card unblocked to Repair. Parts reserved and a signed PDF is on its way to you."));},
+      requestChange:()=>fire(t("Change requested"),t("Noura will call you and issue a revised estimate. Version history is kept.")),
+      decline:()=>fire(t("Estimate declined"),t("Your vehicle is scheduled for collection. Nothing has been charged."),true),
+      hasToast:!!toast,toastTitle:toast?toast.title:"",toastDesc:toast?toast.desc:"",
+      toastIcon:toast&&toast.err?"AlertCircle":"CheckCircle2",
+      toastIconStyle:"padding:6px;border-radius:8px;display:flex;flex-shrink:0;"+(toast&&toast.err?"background:rgba(249,115,22,.13);color:#F97316":"background:rgba(10,94,215,.12);color:var(--salis-blue)"),
+      closeToast:()=>this.setState({toast:null})
+    };
+  }
+}
+</script>
+</body>
+</html>

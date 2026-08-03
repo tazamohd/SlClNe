@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Financial Statements" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif);display:flex;flex-direction:column;max-width:430px;margin:0 auto">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar);position:sticky;top:0;z-index:5">
+    <a href="FinancialReports.Mobile.dc.html" style="display:flex;color:var(--text-muted);width:44px;height:44px;align-items:center;justify-content:flex-start"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1;min-width:0"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.title }}</h1><p style="margin:0;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.subtitle }}</p></div>
+    <button onClick="{{ toggleLang }}" style="height:44px;min-width:44px;padding:0 8px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:11px;font-weight:500;white-space:nowrap">{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:44px;height:44px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="18"></salis-icon></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease">
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -16px;padding-inline:16px">
+        <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="4">
+          <button onClick="{{ tb.click }}" style="{{ tb.mStyle }}"><salis-icon name="{{ tb.icon }}" size="14" style="flex-shrink:0;display:block"></salis-icon><span style="white-space:nowrap">{{ tb.label }}</span></button>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:8px">
+            <span style="{{ k.iconStyle }}"><salis-icon name="{{ k.icon }}" size="15"></salis-icon></span>
+            <div><p style="margin:0;font-size:10.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.label }}</p>
+            <p style="margin:3px 0 0;font-size:17px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);white-space:nowrap" dir="ltr">{{ k.value }}</p>
+            <p style="margin:2px 0 0;font-size:10.5px;font-weight:600;color:{{ k.subColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</p></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+        <div style="padding:13px 14px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:0"><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading);text-wrap:pretty">{{ stmt.name }}</h3><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ stmt.note }}</p></div>
+          <span style="{{ balancedStyleM }}">{{ stmt.balanced }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ stmtRowsM }}" as="sr" hint-placeholder-count="10">
+            <div style="{{ sr.cardStyle }}">
+              <p style="{{ sr.labelStyle }}">{{ sr.label }}</p>
+              <div style="display:flex;gap:14px;flex-wrap:wrap">
+                <sc-for list="{{ sr.cells }}" as="cl" hint-placeholder-count="3">
+                  <div style="min-width:74px">
+                    <p style="margin:0;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action);white-space:nowrap">{{ cl.label }}</p>
+                    <p style="{{ cl.valStyle }}" dir="ltr">{{ cl.value }}</p>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px">
+        <h3 style="margin:0 0 13px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.composition }}</h3>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <sc-for list="{{ stmt.bars }}" as="b" hint-placeholder-count="5">
+            <div>
+              <div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:5px">
+                <span style="color:var(--text-body);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ b.label }}</span>
+                <span style="font-family:var(--font-mono);font-weight:600;color:var(--text-muted);white-space:nowrap" dir="ltr">{{ b.amount }}</span>
+              </div>
+              <div style="height:6px;background:rgba(10,94,215,.08);border-radius:9999px;overflow:hidden"><div style="height:100%;width:{{ b.pct }}%;background:{{ b.color }};border-radius:9999px"></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+        <div style="padding:13px 14px;border-bottom:1px solid var(--border-default)"><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.ratios }}</h3></div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ ratios }}" as="r" hint-placeholder-count="4">
+            <div style="padding:12px 14px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ r.label }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted);text-wrap:pretty">{{ r.hint }}</p></div>
+              <p style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:900;color:{{ r.color }};white-space:nowrap" dir="ltr">{{ r.value }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+        <div style="padding:13px 14px;border-bottom:1px solid var(--border-default)"><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.compliance }}</h3></div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ compliance }}" as="cp" hint-placeholder-count="4">
+            <div style="padding:12px 14px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px">
+              <salis-icon name="{{ cp.icon }}" size="17" style="color:{{ cp.color }};flex-shrink:0"></salis-icon>
+              <p style="margin:0;flex:1;min-width:0;font-size:13px;color:var(--text-heading);text-wrap:pretty">{{ cp.label }}</p>
+              <span style="font-size:11px;font-weight:600;color:{{ cp.color }};white-space:nowrap">{{ cp.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{
+  state={dark:null,lang:null,data:null,stmt:null,menu:false};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const ic=(bg,fg)=>"padding:8px;border-radius:10px;background:"+bg+";color:"+fg+";display:flex";
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const NAV=D?(D.navFor?D.navFor(D.NAV):D.NAV):[];const open=this.state.open??NAV.map(g=>g.label);
+
+const _rid=(D&&D.currentRole)?D.currentRole():null;const _rl=((D&&D.ROLES)||[]).find(x=>x.id===_rid);const userName=_rl?(rtl?_rl.demo.ar:_rl.demo.name):(this.props.userName??"Khalid Al-Amri");const roleLabel=_rl?(rtl?_rl.ar:_rl.label):null;
+const pick=this.state.stmt??"tb";
+const tabStyle=a=>"display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:9px;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;"+(a?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)");
+const tabs=[["tb","Trial Balance","Scale"],["is","Income Statement","TrendingUp"],["bs","Balance Sheet","Landmark"],["cf","Cash Flow Statement","ArrowUpDown"]].map(x=>({label:t(x[1]),icon:x[2],click:()=>this.setState({stmt:x[0]}),style:tabStyle(pick===x[0])}));
+const hS=(a)=>"height:42px;padding:0 22px;text-align:"+a+";font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);border-bottom:1px solid var(--border-default)";
+const cols4=(a,b,c,dd)=>[[a,"start"],[b,"end"],[c,"end"],[dd,"end"]].map(x=>({label:x[0],style:hS(x[1])}));
+const L=(indent,bold)=>"padding:11px 22px;padding-inline-start:"+(22+indent*18)+"px;border-bottom:1px solid var(--border-default);font-size:13px;"+(bold?"font-weight:700;color:var(--text-heading)":"color:var(--text-body)");
+const N=(bold,color)=>"padding:11px 22px;border-bottom:1px solid var(--border-default);text-align:end;font-family:var(--font-mono);font-size:13px;"+(bold?"font-weight:700;":"")+"color:"+(color||"var(--text-heading)");
+const rowTotal="background:rgba(10,94,215,.04)";
+const r=(label,indent,c1,c2,c3,opt)=>({label,c1:c1||"",c2:c2||"",c3:c3||"",rowStyle:(opt&&opt.total)?rowTotal:"",labelStyle:L(indent,!!(opt&&opt.bold)),c1Style:N(!!(opt&&opt.bold)),c2Style:N(!!(opt&&opt.bold)),c3Style:N(!!(opt&&opt.bold),(opt&&opt.c3Color)||null)});
+const okPill=pill("rgba(10,94,215,.12)","#0A5ED7");
+const bar=(label,amount,pct,color)=>({label:t(label),amount,pct:String(pct),color});
+const STMT={
+ tb:{name:t("Trial Balance"),note:t("As at 31 Jul 2026 · SAR"),balanced:t("Balanced"),balancedStyle:okPill,
+  cols:cols4(t("Account"),t("Debit"),t("Credit"),t("Balance")),
+  rows:[
+   r(t("Cash & Bank"),0,"842,500","—","842,500"),
+   r(t("Accounts Receivable"),0,"156,200","—","156,200"),
+   r(t("Inventory"),0,"234,800","—","234,800"),
+   r(t("Fixed Assets"),0,"1,450,000","—","1,450,000"),
+   r(t("Accounts Payable"),0,"—","98,400","(98,400)"),
+   r(t("VAT Payable"),0,"—","42,150","(42,150)"),
+   r(t("Owner's Equity"),0,"—","2,800,000","(2,800,000)"),
+   r(t("Service Revenue"),0,"—","1,284,500","(1,284,500)"),
+   r(t("Cost of Services"),0,"645,200","—","645,200"),
+   r(t("Operating Expenses"),0,"312,400","—","312,400"),
+   r(t("Total"),0,"3,641,100","4,225,050","—",{bold:true,total:true})],
+  bars:[bar("Assets","SAR 2.68M",100,"var(--salis-gradient-r)"),bar("Liabilities","SAR 140K",5,"#F97316"),bar("Equity","SAR 2.8M",100,"#0B1F3B"),bar("Revenue","SAR 1.28M",48,"#0BB3FF"),bar("Expenses","SAR 957K",36,"#64748B")]},
+ is:{name:t("Income Statement"),note:t("1 Jan – 31 Jul 2026 · SAR"),balanced:t("Net Profit")+" 25.5%",balancedStyle:okPill,
+  cols:cols4(t("Line"),t("This Period"),t("Prior Period"),t("Variance")),
+  rows:[
+   r(t("Service Revenue"),0,"1,284,500","1,142,000","+12.5%",{c3Color:"var(--salis-blue)"}),
+   r(t("Parts Revenue"),0,"286,400","248,900","+15.1%",{c3Color:"var(--salis-blue)"}),
+   r(t("Total Revenue"),0,"1,570,900","1,390,900","+12.9%",{bold:true,total:true,c3Color:"var(--salis-blue)"}),
+   r(t("Cost of Services"),1,"(645,200)","(602,400)","+7.1%"),
+   r(t("Parts Cost"),1,"(198,300)","(176,100)","+12.6%"),
+   r(t("Gross Profit"),0,"727,400","612,400","+18.8%",{bold:true,total:true,c3Color:"var(--salis-blue)"}),
+   r(t("Salaries & Wages"),1,"(248,000)","(232,000)","+6.9%"),
+   r(t("Rent"),1,"(175,000)","(175,000)","0.0%"),
+   r(t("Utilities"),1,"(38,400)","(34,200)","+12.3%"),
+   r(t("Marketing"),1,"(26,500)","(18,900)","+40.2%",{c3Color:"#F97316"}),
+   r(t("Operating Expenses"),0,"(487,900)","(460,100)","+6.0%",{bold:true,total:true}),
+   r(t("Net Profit"),0,"239,500","152,300","+57.3%",{bold:true,total:true,c3Color:"var(--salis-blue)"})],
+  bars:[bar("Service Revenue","SAR 1.28M",100,"var(--salis-gradient-r)"),bar("Parts Revenue","SAR 286K",22,"#0BB3FF"),bar("Cost of Services","SAR 645K",50,"#F97316"),bar("Operating Expenses","SAR 488K",38,"#64748B"),bar("Net Profit","SAR 240K",19,"#0B1F3B")]},
+ bs:{name:t("Balance Sheet"),note:t("As at 31 Jul 2026 · SAR"),balanced:t("Balanced"),balancedStyle:okPill,
+  cols:cols4(t("Line"),t("Current"),t("Prior Year"),t("Change")),
+  rows:[
+   r(t("Current Assets"),0,"","","",{bold:true}),
+   r(t("Cash & Bank"),1,"842,500","683,200","+159,300"),
+   r(t("Accounts Receivable"),1,"156,200","148,900","+7,300"),
+   r(t("Inventory"),1,"234,800","227,100","+7,700"),
+   r(t("Total Current Assets"),0,"1,233,500","1,059,200","+174,300",{bold:true,total:true}),
+   r(t("Fixed Assets"),1,"1,450,000","1,495,000","(45,000)"),
+   r(t("Total Assets"),0,"2,683,500","2,554,200","+129,300",{bold:true,total:true,c3Color:"var(--salis-blue)"}),
+   r(t("Accounts Payable"),1,"98,400","112,600","(14,200)"),
+   r(t("VAT Payable"),1,"42,150","38,200","+3,950"),
+   r(t("Total Liabilities"),0,"140,550","150,800","(10,250)",{bold:true,total:true}),
+   r(t("Owner's Equity"),1,"2,303,450","2,251,100","+52,350"),
+   r(t("Retained Earnings"),1,"239,500","152,300","+87,200"),
+   r(t("Total Equity & Liabilities"),0,"2,683,500","2,554,200","+129,300",{bold:true,total:true,c3Color:"var(--salis-blue)"})],
+  bars:[bar("Cash & Bank","SAR 842K",58,"var(--salis-gradient-r)"),bar("Fixed Assets","SAR 1.45M",100,"#0B1F3B"),bar("Inventory","SAR 235K",16,"#0BB3FF"),bar("Receivables","SAR 156K",11,"#F97316"),bar("Liabilities","SAR 141K",10,"#64748B")]},
+ cf:{name:t("Cash Flow Statement"),note:t("1 Jan – 31 Jul 2026 · SAR"),balanced:t("Net")+" +159,300",balancedStyle:okPill,
+  cols:cols4(t("Line"),t("This Period"),t("Prior Period"),t("Variance")),
+  rows:[
+   r(t("Operating Activities"),0,"","","",{bold:true}),
+   r(t("Net Profit"),1,"239,500","152,300","+87,200"),
+   r(t("Depreciation"),1,"45,000","45,000","0"),
+   r(t("Change in Receivables"),1,"(7,300)","(12,400)","+5,100"),
+   r(t("Change in Payables"),1,"(14,200)","8,900","(23,100)"),
+   r(t("Net Operating Cash"),0,"263,000","193,800","+69,200",{bold:true,total:true,c3Color:"var(--salis-blue)"}),
+   r(t("Investing Activities"),0,"","","",{bold:true}),
+   r(t("Equipment Purchase"),1,"(45,000)","(28,000)","(17,000)"),
+   r(t("Net Investing Cash"),0,"(45,000)","(28,000)","(17,000)",{bold:true,total:true}),
+   r(t("Financing Activities"),0,"","","",{bold:true}),
+   r(t("Owner Drawings"),1,"(58,700)","(52,000)","(6,700)"),
+   r(t("Net Financing Cash"),0,"(58,700)","(52,000)","(6,700)",{bold:true,total:true}),
+   r(t("Net Change in Cash"),0,"159,300","113,800","+45,500",{bold:true,total:true,c3Color:"var(--salis-blue)"})],
+  bars:[bar("Operating","SAR 263K",100,"var(--salis-gradient-r)"),bar("Investing","-SAR 45K",17,"#F97316"),bar("Financing","-SAR 59K",22,"#64748B"),bar("Net Change","SAR 159K",60,"#0BB3FF")]}
+};
+const stmt=STMT[pick];
+const kpis=[
+ {icon:"Banknote",label:t("Total Revenue"),value:"SAR 1.57M",iconStyle:ic("rgba(10,94,215,.09)","#0A5ED7"),sub:"+12.9% "+t("vs Last Period"),subColor:"var(--salis-blue)"},
+ {icon:"TrendingUp",label:t("Net Profit"),value:"SAR 240K",iconStyle:ic("rgba(11,179,255,.09)","#0BB3FF"),sub:"25.5% "+t("margin"),subColor:"var(--salis-blue)"},
+ {icon:"Landmark",label:t("Total Assets"),value:"SAR 2.68M",iconStyle:ic("rgba(11,31,59,.09)","#0B1F3B"),sub:"+SAR 129K "+t("YTD"),subColor:"var(--text-muted)"},
+ {icon:"Wallet",label:t("Cash Position"),value:"SAR 842K",iconStyle:ic("rgba(249,115,22,.09)","#F97316"),sub:"+SAR 159K "+t("YTD"),subColor:"var(--salis-blue)"}
+];
+const ratios=[
+ {label:t("Current Ratio"),hint:t("Current assets / liabilities"),value:"8.8x",color:"var(--salis-blue)"},
+ {label:t("Gross Margin"),hint:t("Gross profit / revenue"),value:"46.3%",color:"var(--salis-blue)"},
+ {label:t("Net Margin"),hint:t("Net profit / revenue"),value:"15.2%",color:"var(--salis-blue)"},
+ {label:t("Inventory Turnover"),hint:t("Annualised"),value:"4.2x",color:"var(--salis-blue)"},
+ {label:t("Receivable Days"),hint:t("Average collection period"),value:"27 "+t("days"),color:"#F97316"}
+];
+const compliance=[
+ {label:t("ZATCA e-invoicing"),status:t("Compliant"),icon:"CheckCircle",color:"var(--salis-blue)"},
+ {label:t("VAT Return")+" Q2 2026",status:t("Filed"),icon:"CheckCircle",color:"var(--salis-blue)"},
+ {label:t("Zakat assessment"),status:t("Due Nov 2026"),icon:"Clock",color:"#F97316"}
+];
+const extra={tabs,stmt,kpis,ratios,compliance,
+ t:{admin:roleLabel||t("ADMIN"),logout:t("Logout"),title:t("Financial Statements"),subtitle:t("Accounting")+" · "+t("IFRS for SMEs"),period:"Jan – Jul 2026",export:t("Export"),
+ composition:t("Composition"),ratios:t("Key Ratios"),compliance:t("Compliance Status")}};
+
+  const kpisM=kpis.map(x=>({...x,iconStyle:String(x.iconStyle||"").replace("display:flex","display:inline-flex")+";align-self:flex-start;width:fit-content"}));
+  const FS_CL=(stmt.cols||[]).map(c=>c.label);
+  const stmtRowsM=(stmt.rows||[]).map(rw=>{
+    const pad=parseInt(String(rw.labelStyle||"").match(/padding-inline-start:(\d+)px/)?.[1]||"22",10);
+    const ind=Math.max(0,Math.round((pad-22)/18));
+    const total=!!String(rw.rowStyle||"").trim();
+    const bold=/font-weight:700/.test(String(rw.labelStyle||""));
+    const cells=[[FS_CL[1],rw.c1],[FS_CL[2],rw.c2],[FS_CL[3],rw.c3]]
+      .filter(x=>x[1]!==""&&x[1]!=null)
+      .map(x=>({label:x[0]||"",value:x[1],
+        valStyle:"margin:2px 0 0;font-size:13.5px;font-family:var(--font-mono);font-weight:"+(bold||total?"800":"600")+";color:"+(total?"var(--salis-blue)":"var(--text-heading)")+";white-space:nowrap"}));
+    return {label:rw.label,cells,
+      cardStyle:"padding:12px 14px;padding-inline-start:"+(14+ind*13)+"px;border-bottom:1px solid var(--border-default);display:flex;flex-direction:column;gap:7px;"+(total?"background:rgba(10,94,215,.05)":""),
+      labelStyle:"margin:0;font-size:13px;font-weight:"+(bold||total?"800":"500")+";color:"+(bold||total?"var(--text-heading)":"var(--text-body)")+";text-wrap:pretty"};
+  });
+  const FS_IDS=["tb","is","bs","cf"];
+  const tabsM=tabs.map((x,i)=>{const a=FS_IDS[i]===pick;return{...x,mStyle:"display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 14px;border-radius:9px;border:1px solid "+(a?"transparent":"var(--border-default)")+";background:"+(a?"var(--salis-gradient)":"var(--surface-card)")+";color:"+(a?"#fff":"var(--text-body)")+";font-family:var(--font-action);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0"};});
+  return{...extra,tabs:tabsM,kpis:kpisM,stmtRowsM,balancedStyleM:String(stmt.balancedStyle||"")+";white-space:nowrap;flex-shrink:0",rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+    backChev:rtl?"ChevronRight":"ChevronLeft",
+    toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+    toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})}};}}
+</script></body></html>

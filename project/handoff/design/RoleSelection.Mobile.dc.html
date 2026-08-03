@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Role-Selection-Mobile" style="min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none"><div style="position:absolute;bottom:0;right:0;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.12),transparent 65%);filter:blur(48px)"></div></div>
+  <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 16px">
+    <button onClick="{{ toggleLang }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+    <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 16px 24px;position:relative;z-index:1;animation:fadeUp .3s ease">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="text-align:center">
+        <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:80px;height:auto">
+        <h1 style="margin:10px 0 0;font-size:20px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1>
+        <p style="margin:4px 0 0;font-size:12px;color:var(--text-muted)">{{ t.subtitle }}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+        <sc-for list="{{ roles }}" as="r" hint-placeholder-count="4">
+          <button onClick="{{ r.select }}" style="{{ r.style }}">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="{{ r.iconStyle }}"><salis-icon name="{{ r.icon }}" size="16"></salis-icon></span>
+              <span style="font-family:var(--font-action);font-weight:700;font-size:12px">{{ r.label }}</span>
+            </div>
+            <p style="margin:0;font-size:11px;line-height:1.4;opacity:.7;text-align:start">{{ r.desc }}</p>
+            <div style="display:flex;align-items:center;gap:4px;font-size:10px;opacity:.5"><salis-icon name="Users" size="10"></salis-icon><span>{{ r.count }}</span></div>
+          </button>
+        </sc-for>
+      </div>
+      <a href="WorkspaceSelection.Mobile.dc.html" style="width:100%;display:inline-flex;align-items:center;justify-content:center;height:50px;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.continue }}</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},picked:"Workshop Owner"};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;const rtl=lang==="ar";
+    const items=[
+      ["Crown","Workshop Owner",rtl?"إدارة كاملة للورشة":"Full workshop management","248"],
+      ["ClipboardList","Service Advisor",rtl?"استقبال العملاء":"Customer intake","1.2K"],
+      ["Wrench","Technician",rtl?"تنفيذ الأعمال":"Execute jobs","3.4K"],
+      ["Users","Manager",rtl?"التقارير والإشراف":"Reports & oversight","680"]
+    ];
+    const roles=items.map(([icon,label,desc,count])=>{const on=this.state.picked===label;
+      return{icon,label:t(label),desc,count,select:()=>this.setState({picked:label}),
+        iconStyle:"padding:8px;border-radius:10px;display:flex;flex-shrink:0;"+(on?"background:var(--salis-gradient);color:#fff;box-shadow:0 4px 12px rgba(10,94,215,.25)":"background:rgba(10,94,215,.08);color:var(--salis-blue)"),
+        style:"display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:12px;cursor:pointer;text-align:start;"+(on?"border:1.5px solid var(--salis-blue);background:rgba(10,94,215,.06);color:var(--salis-blue);box-shadow:0 6px 20px rgba(10,94,215,.1)":"border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)")};
+    });
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",roles,themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("Select Your Role"),subtitle:rtl?"اختر دورك في المنظومة":"Choose your role",continue:t("Continue")}};
+  }
+}
+</script>
+</body>
+</html>

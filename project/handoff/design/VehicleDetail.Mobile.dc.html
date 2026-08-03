@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Vehicle-Detail-Mobile" style="position:relative;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm)">
+    <a href="Vehicles.Mobile.dc.html" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:var(--text-primary)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <p style="margin:0;flex:1;font-size:15px;font-weight:700;color:var(--text-heading);font-family:var(--font-mono)" dir="ltr">{{ veh.plate }}</p>
+    <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="height:calc(100vh - 56px);overflow-y:auto">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div><p style="margin:0;font-size:14px;font-weight:600;color:var(--text-heading)">{{ veh.make }}</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">{{ veh.owner }}</p></div>
+        <span style="{{ veh.stStyle }}">{{ veh.status }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default)"><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ t.mileage }}</p><h3 style="margin:6px 0 0;font-size:16px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)" dir="ltr">{{ veh.mileage }}</h3></div>
+        <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default)"><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ t.lastService }}</p><h3 style="margin:6px 0 0;font-size:14px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ veh.last }}</h3></div>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:16px;border:1px solid var(--border-default)">
+        <h3 style="margin:0 0 12px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.serviceHistory }}</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-default)">
+              <div><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ j.id }}</span><span style="margin-inline-start:8px;font-size:12px;color:var(--text-body)">{{ j.svc }}</span></div>
+              <span style="{{ j.stStyle }}">{{ j.st }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;
+    const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const params=new URLSearchParams(location.search);
+    const id=params.get("id");
+    const list=D?D.VEHICLES:[];
+    const v=list.find(x=>x.plate===id)||list[0]||{plate:"RUH 4821",make:"Toyota Camry 2022",owner:"Ahmed Al-Rashid",mileage:"42,180 km",last:"2 weeks ago",status:"active"};
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:11px;font-weight:600;background:"+bg+";color:"+fg;
+    const jobPill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg+";text-transform:capitalize";
+    const stB=D?D.ST_BADGE:{},svcB=D?D.SVC_BADGE:{};
+    const jobs=(D?D.JOBS:[]).filter(j=>j.veh===v.make).map(j=>{const st=stB[j.st]||["rgba(100,116,139,.1)","#64748B"];
+      return {id:j.id,svc:t(j.svc.replace(/_/g," ")),st:t(j.st.replace(/_/g," ")),stStyle:jobPill(st[0],st[1])};});
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",backChev:rtl?"ArrowRight":"ArrowLeft",
+      themeIcon:dark?"Sun":"Moon",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      veh:{plate:v.plate,make:v.make,owner:v.owner,mileage:v.mileage,
+        last:v.status==="service"?t("In Service"):v.last,
+        status:v.status==="service"?t("In Service"):t("Active"),
+        stStyle:v.status==="service"?pill("rgba(249,115,22,.1)","#F97316"):pill("rgba(10,94,215,.1)","#0A5ED7")},
+      jobs,
+      t:{mileage:t("Mileage"),lastService:t("Last Service"),serviceHistory:t("Latest Job Cards")}
+    };
+  }
+}
+
+</script>
+</body>
+</html>

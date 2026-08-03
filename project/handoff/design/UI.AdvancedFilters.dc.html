@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Advanced Filters" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span>
+    <span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;animation:fadeUp .3s ease">
+<div style="max-width:720px;display:flex;flex-direction:column;gap:20px">
+  <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+  <div style="background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default)">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><span style="padding:8px;border-radius:10px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="SlidersHorizontal" size="18"></salis-icon></span><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">Filter Builder</h3><span style="flex:1"></span><button style="height:28px;padding:0 10px;border:none;border-radius:6px;background:none;color:var(--salis-blue);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500">Reset All</button></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ filterRows }}" as="fr" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface-inset);border-radius:10px;border:1px solid var(--border-default)">
+          <select style="height:32px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);padding:0 8px;font-size:12px;color:var(--text-primary);outline:none"><option>{{ fr.field }}</option></select>
+          <select style="height:32px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);padding:0 8px;font-size:12px;color:var(--text-primary);outline:none"><option>{{ fr.op }}</option></select>
+          <input value="{{ fr.value }}" style="flex:1;height:32px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);padding:0 8px;font-size:12px;color:var(--text-primary);outline:none">
+          <button style="width:28px;height:28px;border:none;border-radius:6px;background:rgba(249,115,22,.08);color:var(--salis-orange);cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="X" size="13"></salis-icon></button>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px dashed var(--border-default);border-radius:6px;background:none;cursor:pointer;font-size:12px;color:var(--salis-blue)"><salis-icon name="Plus" size="13"></salis-icon>Add Filter</button>
+      <span style="flex:1"></span>
+      <button style="height:32px;padding:0 14px;border:none;border-radius:6px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500">Apply Filters</button>
+    </div>
+  </div>
+</div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const filterRows=[{field:"Status",op:"equals",value:"In Progress"},{field:"Priority",op:"is not",value:"Low"},{field:"Assigned To",op:"contains",value:"Yousef"}];const extra={filterRows,t:{title:"Advanced Filters"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

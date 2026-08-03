@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="OTP-Verification-Mobile" style="height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif);padding:20px;box-sizing:border-box;text-align:center">
+  <span style="display:inline-flex;padding:12px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);margin-bottom:12px"><salis-icon name="MessageSquareText" size="22"></salis-icon></span>
+  <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--text-heading)">{{ t.title }}</h2>
+  <p style="margin:8px 0 20px;font-family:var(--font-action);font-size:12px;color:var(--text-muted)">{{ t.desc }} <span style="color:var(--text-heading);font-weight:600" dir="ltr">+966 55 •••• 471</span></p>
+  <div style="display:flex;gap:6px;justify-content:center;margin-bottom:20px" dir="ltr">
+    <sc-for list="{{ digits }}" as="d" hint-placeholder-count="6">
+      <input value="{{ d.val }}" onChange="{{ d.set }}" maxlength="1" style="width:38px;height:48px;text-align:center;font-size:18px;font-weight:700;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);color:var(--text-primary);outline:none">
+    </sc-for>
+  </div>
+  <button onClick="{{ verify }}" style="width:100%;height:48px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);white-space:nowrap;box-sizing:border-box">{{ t.verify }}</button>
+  <p style="margin:16px 0 0;font-size:12px;color:var(--text-muted)">{{ t.noCode }} <a href="#" style="font-weight:600">{{ t.resend }}</a></p>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},codes:["","","","","",""]};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const AR=this.state.AR,t=s=>lang==="ar"?(AR[s]||s):s;
+    const digits=this.state.codes.map((v,i)=>({val:v,set:e=>{const c=[...this.state.codes];c[i]=e.target.value.slice(-1);this.setState({codes:c});}}));
+    return {rootClass:dark?"dark":"",dir:lang==="ar"?"rtl":"ltr",digits,
+      verify:()=>location.href="Dashboard.Mobile.dc.html",
+      t:{title:t("OTP Verification"),desc:t("Enter the 6-digit code sent to"),verify:t("Verify"),noCode:t("Didn't receive a code?"),resend:t("Resend Code")}};
+  }
+}
+
+</script>
+</body>
+</html>

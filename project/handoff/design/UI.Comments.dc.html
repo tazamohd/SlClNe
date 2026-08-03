@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Comments" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<div style="max-width:720px;background:var(--surface-card);border-radius:16px;padding:24px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"><span style="padding:8px;border-radius:10px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="MessageSquare" size="16"></salis-icon></span><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">{{ t.thread }}</h3><span style="font-size:12px;font-weight:600;padding:2px 10px;border-radius:9999px;background:rgba(10,94,215,.08);color:var(--salis-blue)">{{ count }}</span></div>
+<div style="display:flex;flex-direction:column;gap:18px">
+<sc-for list="{{ comments }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;gap:12px;margin-inline-start:{{ c.indent }}px">
+<span style="width:34px;height:34px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">{{ c.initial }}</span>
+<div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:13px;font-weight:600;color:var(--text-heading)">{{ c.author }}</span><span style="{{ c.roleStyle }}">{{ c.role }}</span><span style="font-size:11px;color:var(--text-faint)">{{ c.time }}</span></div>
+<p style="margin:0;font-size:13px;color:var(--text-body);line-height:1.6">{{ c.text }}</p>
+<div style="display:flex;gap:14px;margin-top:6px"><button style="border:none;background:none;cursor:pointer;padding:0;font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--salis-blue);display:flex;align-items:center;gap:4px"><salis-icon name="CornerDownRight" size="11"></salis-icon>{{ t.reply }}</button><button style="border:none;background:none;cursor:pointer;padding:0;font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-muted);display:flex;align-items:center;gap:4px"><salis-icon name="ThumbsUp" size="11"></salis-icon>{{ c.likes }}</button></div>
+</div></div></sc-for>
+</div>
+<div style="display:flex;gap:10px;margin-top:20px;padding-top:18px;border-top:1px solid var(--border-default)">
+<span style="width:34px;height:34px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">K</span>
+<input placeholder="{{ t.placeholder }}" style="flex:1;height:40px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:13px;color:var(--text-primary);outline:none">
+<button style="height:40px;padding:0 16px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">{{ t.post }}</button>
+</div></div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");const t=s=>s;const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const rRole=pill("rgba(10,94,215,.1)","#0A5ED7");const rTech=pill("rgba(11,179,255,.1)","#0BB3FF");const rCust=pill("rgba(100,116,139,.1)","#64748B");
+const comments=[
+ {author:"Fatima Al-Zahrani",initial:"F",role:"Service Advisor",roleStyle:rRole,time:"2 hours ago",text:"Customer approved the extra brake pad replacement over the phone. Estimate updated to SAR 1,250.",likes:"3",indent:0},
+ {author:"Yousef Al-Otaibi",initial:"Y",role:"Technician",roleStyle:rTech,time:"1 hour ago",text:"Noted. Starting on the front pads now — should be done before 2 PM.",likes:"1",indent:46},
+ {author:"Ahmed Al-Rashid",initial:"A",role:"Customer",roleStyle:rCust,time:"45 min ago",text:"Thanks! Please also check the AC while it's in the bay.",likes:"0",indent:0},
+ {author:"Fatima Al-Zahrani",initial:"F",role:"Service Advisor",roleStyle:rRole,time:"30 min ago",text:"Added an AC diagnostic line item. No charge if nothing is found.",likes:"2",indent:46}
+];
+const extra={comments,count:String(comments.length),t:{title:"Comments",thread:"Job Card JC-A3F8B2C1",reply:"Reply",post:"Post",placeholder:"Write a comment..."}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

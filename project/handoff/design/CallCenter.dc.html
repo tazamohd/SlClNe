@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes ring{0%,100%{opacity:1}50%{opacity:.45}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Call Center - Agent Console" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<aside style="width:252px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+  <div style="padding:16px 14px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border-default)"><div style="width:32px;height:32px;border-radius:9px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="PhoneCall" size="16" style="color:#fff"></salis-icon></div><div style="min-width:0"><p style="margin:0;font-size:13px;font-weight:800;font-family:var(--font-display);color:var(--text-heading)">SALIS AUTO</p><p style="margin:0;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--salis-blue)">{{ t.brandRole }}</p></div></div>
+  <nav style="flex:1;padding:12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;overflow-x:hidden"><a href="CallCenter.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)"><salis-icon name="Headphones" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_console }}</span></a><a href="CallCenter.Logs.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="List" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_logs }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="GitBranch" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_queues }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="Workflow" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_ivr }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="Users" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_agents }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="FileText" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_scripts }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="BadgeCheck" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_quality }}</span></a><a href="#" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="BarChart3" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_reports }}</span></a></nav>
+  <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+    <div style="padding:10px;border-radius:9px;background:var(--surface-inset);border:1px solid var(--border-default)">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span style="width:30px;height:30px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">{{ userInitial }}</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</p><p style="margin:0;font-size:10px;color:var(--text-muted)">{{ t.userRole }}</p></div></div>
+      <div style="display:flex;gap:4px"><sc-for list="{{ presence }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.click }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+    </div>
+    <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 9px;border:none;background:none;border-radius:7px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+    <a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:7px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="15"></salis-icon><span>{{ t.logout }}</span></a>
+  </div>
+</aside>
+<div style="flex:1;display:flex;flex-direction:column;min-width:0">
+  <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <span style="position:relative;display:flex;align-items:center"><salis-icon name="Search" size="14" style="position:absolute;inset-inline-start:11px;color:var(--text-muted)"></salis-icon><input placeholder="{{ t.search }}" style="width:250px;height:34px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;padding-inline-start:31px;font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"></span>
+    <div style="flex:1"></div>
+    <div style="display:flex;align-items:center;gap:7px;padding:5px 11px;border-radius:9999px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22)"><span style="width:7px;height:7px;border-radius:50%;background:var(--salis-orange);animation:ring 1.4s ease-in-out infinite"></span><span style="font-size:12px;font-weight:600;color:var(--salis-orange)">{{ queueDepth }} {{ t.inQueue }}</span></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="flex:1;overflow:auto"><div style="padding:24px;display:flex;flex-direction:column;gap:22px;animation:fadeUp .3s ease">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:15px;filter:blur(12px);opacity:.28"></div><div style="position:relative;padding:11px;border-radius:15px;background:var(--salis-gradient);box-shadow:0 16px 22px -6px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="Headphones" size="25"></salis-icon></div></div><div><h1 style="margin:0;font-size:27px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1><p style="margin:2px 0 0;font-size:13px;color:var(--text-muted)">{{ t.subtitle }}</p></div></div></div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px"><sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4"><div style="background:var(--surface-card);border-radius:14px;padding:17px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><span style="{{ k.iconStyle }}"><salis-icon name="{{ k.icon }}" size="16"></salis-icon></span><span style="font-size:12px;font-weight:500;color:var(--text-muted)">{{ k.label }}</span></div><h4 style="margin:9px 0 0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)" dir="ltr">{{ k.value }}</h4><p style="margin:4px 0 0;font-size:11px;color:{{ k.subColor }}">{{ k.sub }}</p></div></sc-for></div>
+
+<div style="display:grid;grid-template-columns:290px 1fr 320px;gap:20px;align-items:start">
+  <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:8px"><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.liveQueue }}</h3><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:9999px;background:rgba(249,115,22,.1);color:#F97316">{{ queueDepth }}</span></div>
+    <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
+      <div style="padding:13px 16px;border-bottom:1px solid var(--border-default);display:flex;flex-direction:column;gap:7px;transition:background .15s" style-hover="background:rgba(10,94,215,.03)">
+        <div style="display:flex;align-items:center;gap:7px"><span style="{{ q.chStyle }}"><salis-icon name="{{ q.chIcon }}" size="12"></salis-icon></span><span style="flex:1;min-width:0;font-size:13px;font-weight:600;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ q.name }}</span><span style="{{ q.slaStyle }}">{{ q.wait }}</span></div>
+        <p style="margin:0;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ q.reason }}</p>
+        <div style="display:flex;align-items:center;gap:6px"><span style="{{ q.prStyle }}">{{ q.priority }}</span><span style="flex:1"></span><button style="height:26px;padding:0 11px;border:none;border-radius:6px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:11px;font-weight:600">{{ t.answer }}</button></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="background:var(--salis-gradient);border-radius:16px;padding:20px;color:#fff;box-shadow:0 12px 28px rgba(10,94,215,.28)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex-shrink:0">A</span>
+        <div style="flex:1;min-width:0"><p style="margin:0;font-size:17px;font-weight:800">Ahmed Al-Rashid</p><p style="margin:2px 0 0;font-size:12px;opacity:.85;font-family:var(--font-mono)" dir="ltr">+966 55 210 4471</p></div>
+        <div style="text-align:end"><p style="margin:0;font-size:11px;opacity:.8">{{ t.duration }}</p><p style="margin:1px 0 0;font-size:20px;font-weight:800;font-family:var(--font-mono)" dir="ltr">04:32</p></div>
+      </div>
+      <div style="display:flex;gap:8px"><sc-for list="{{ controls }}" as="c" hint-placeholder-count="5"><button style="{{ c.style }}"><salis-icon name="{{ c.icon }}" size="15"></salis-icon><span style="font-size:11px;font-weight:600">{{ c.label }}</span></button></sc-for></div>
+    </div>
+    <div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 14px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.disposition }}</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px"><sc-for list="{{ dispositions }}" as="dp" hint-placeholder-count="6"><button onClick="{{ dp.click }}" style="{{ dp.style }}">{{ dp.label }}</button></sc-for></div>
+      <textarea rows="3" placeholder="{{ t.notesPh }}" style="width:100%;border-radius:9px;border:1px solid var(--border-default);background:var(--surface-inset);padding:11px 13px;font-size:13px;color:var(--text-primary);outline:none;resize:vertical;font-family:var(--font-ui);box-sizing:border-box"></textarea>
+      <div style="display:flex;gap:9px;margin-top:13px"><button style="display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:8px;border:1.5px solid var(--salis-blue);background:none;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;color:var(--salis-blue)"><salis-icon name="CalendarPlus" size="15"></salis-icon>{{ t.bookAppt }}</button><button style="display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:8px;border:1.5px solid var(--salis-blue);background:none;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500;color:var(--salis-blue)"><salis-icon name="ClipboardPlus" size="15"></salis-icon>{{ t.newJob }}</button><span style="flex:1"></span><button style="height:38px;padding:0 17px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.saveWrap }}</button></div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 13px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.customerCtx }}</h3>
+      <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ ctx }}" as="c" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:9px"><span style="{{ c.iconStyle }}"><salis-icon name="{{ c.icon }}" size="13"></salis-icon></span><div style="flex:1;min-width:0"><p style="margin:0;font-size:10px;color:var(--text-muted)">{{ c.label }}</p><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.value }}</p></div></div></sc-for></div>
+    </div>
+    <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 13px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.openItems }}</h3>
+      <div style="display:flex;flex-direction:column;gap:9px"><sc-for list="{{ openItems }}" as="o" hint-placeholder-count="3"><div style="padding:11px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default)"><div style="display:flex;align-items:center;gap:7px;margin-bottom:4px"><span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--salis-blue)" dir="ltr">{{ o.id }}</span><span style="flex:1"></span><span style="{{ o.stStyle }}">{{ o.status }}</span></div><p style="margin:0;font-size:12px;color:var(--text-body)">{{ o.what }}</p></div></sc-for></div>
+    </div>
+    <div style="background:var(--surface-card);border-radius:16px;padding:18px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+      <h3 style="margin:0 0 13px;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.recentCalls }}</h3>
+      <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ recent }}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:9px"><span style="{{ r.dirStyle }}"><salis-icon name="{{ r.dirIcon }}" size="12"></salis-icon></span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.reason }}</p><p style="margin:1px 0 0;font-size:10px;color:var(--text-muted)">{{ r.when }} · {{ r.agent }}</p></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)" dir="ltr">{{ r.dur }}</span></div></sc-for></div>
+    </div>
+  </div>
+</div>
+  </div></main>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"},"userName":{"editor":"text","default":"","tsType":"string","section":"Content"}}'>
+class Component extends DCLogic{state={dark:null,lang:null,data:null,presence:null,disp:null};componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}renderVals(){
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const ic=(bg,fg)=>"padding:8px;border-radius:10px;background:"+bg+";color:"+fg+";display:flex";
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const userName=this.props.userName||"Fatima Al-Zahrani";
+const pres=this.state.presence??"oncall";
+const pStyle=a=>"flex:1;height:26px;border:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:10px;font-weight:600;"+(a?"background:var(--salis-gradient);color:#fff":"background:var(--surface-card);color:var(--text-muted);border:1px solid var(--border-default)");
+const presence=[["avail","Available"],["oncall","On Call"],["break","Break"]].map(p=>({label:t(p[1]),click:()=>this.setState({presence:p[0]}),style:pStyle(pres===p[0])}));
+const slaOk=pill("rgba(10,94,215,.1)","#0A5ED7"),slaWarn=pill("rgba(249,115,22,.12)","#F97316");
+const prU=pill("rgba(249,115,22,.14)","#F97316"),prN=pill("rgba(100,116,139,.1)","#64748B"),prV=pill("rgba(10,94,215,.1)","#0A5ED7");
+const chP=ic("rgba(10,94,215,.09)","#0A5ED7"),chW=ic("rgba(11,179,255,.09)","#0BB3FF");
+const queue=[
+ {name:"Layla Al-Sulaiman",reason:t("Asking about repair status"),wait:"0:42",slaStyle:slaOk,priority:t("VIP"),prStyle:prV,chIcon:"Phone",chStyle:chP},
+ {name:"Mohammed Hassan",reason:t("Wants to reschedule appointment"),wait:"1:58",slaStyle:slaOk,priority:t("Normal"),prStyle:prN,chIcon:"Phone",chStyle:chP},
+ {name:"Gulf Transport Co.",reason:t("Fleet — 3 vehicles overdue service"),wait:"3:24",slaStyle:slaWarn,priority:t("Urgent"),prStyle:prU,chIcon:"Phone",chStyle:chP},
+ {name:"Sara Al-Mutairi",reason:t("Invoice query"),wait:"4:11",slaStyle:slaWarn,priority:t("Normal"),prStyle:prN,chIcon:"MessageCircle",chStyle:chW}
+];
+const cBtn=(danger)=>"flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;border-radius:10px;cursor:pointer;border:1px solid rgba(255,255,255,.25);background:"+(danger?"var(--salis-orange)":"rgba(255,255,255,.15)")+";color:#fff";
+const controls=[["MicOff","Mute",false],["Pause","Hold",false],["ArrowRightLeft","Transfer",false],["Users","Conference",false],["PhoneOff","End",true]].map(c=>({icon:c[0],label:t(c[1]),style:cBtn(c[2])}));
+const pickD=this.state.disp??"status";
+const dStyle=a=>"height:30px;padding:0 12px;border-radius:8px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;"+(a?"background:rgba(10,94,215,.1);color:var(--salis-blue);border:1.5px solid var(--salis-blue)":"background:var(--surface-inset);color:var(--text-body);border:1px solid var(--border-default)");
+const dispositions=[["status","Status Enquiry"],["book","Appointment Booked"],["quote","Quote Requested"],["complaint","Complaint"],["invoice","Invoice Query"],["other","Other"]].map(x=>({label:t(x[1]),click:()=>this.setState({disp:x[0]}),style:dStyle(pickD===x[0])}));
+const ctx=[
+ {label:t("Customer Since"),value:"Mar 2023 · "+t("Loyal"),icon:"UserCheck",iconStyle:ic("rgba(10,94,215,.09)","#0A5ED7")},
+ {label:t("Vehicles"),value:"Toyota Camry, Nissan Patrol",icon:"Car",iconStyle:ic("rgba(11,179,255,.09)","#0BB3FF")},
+ {label:t("Lifetime Value"),value:"SAR 48,200",icon:"Banknote",iconStyle:ic("rgba(11,31,59,.09)","#0B1F3B")},
+ {label:t("Satisfaction"),value:"4.8 / 5 · 6 "+t("reviews"),icon:"Star",iconStyle:ic("rgba(249,115,22,.09)","#F97316")}
+];
+const stA=pill("rgba(10,94,215,.1)","#0A5ED7"),stO=pill("rgba(249,115,22,.1)","#F97316");
+const openItems=[
+ {id:"JC-A3F8B2C1",what:t("Toyota Camry — maintenance, in QC"),status:t("In Progress"),stStyle:stA},
+ {id:"INV-2026-0142",what:t("SAR 1,840 — awaiting payment"),status:t("Pending"),stStyle:stO},
+ {id:"APT-0318",what:t("Oil change — Jul 25, 10:00"),status:t("Confirmed"),stStyle:stA}
+];
+const dIn=ic("rgba(10,94,215,.09)","#0A5ED7"),dOut=ic("rgba(11,179,255,.09)","#0BB3FF");
+const recent=[
+ {reason:t("Repair status update"),when:"Jul 22",agent:"Fatima",dur:"3:12",dirIcon:"PhoneIncoming",dirStyle:dIn},
+ {reason:t("Estimate approval call"),when:"Jul 21",agent:"Omar",dur:"5:48",dirIcon:"PhoneOutgoing",dirStyle:dOut},
+ {reason:t("Appointment confirmation"),when:"Jul 18",agent:"Fatima",dur:"1:34",dirIcon:"PhoneOutgoing",dirStyle:dOut}
+];
+const kpis=[
+ {icon:"PhoneCall",label:t("Calls Today"),value:"34",iconStyle:ic("rgba(10,94,215,.09)","#0A5ED7"),sub:"28 "+t("inbound")+" · 6 "+t("outbound"),subColor:"var(--text-muted)"},
+ {icon:"Timer",label:t("Avg Handle Time"),value:"4:12",iconStyle:ic("rgba(11,179,255,.09)","#0BB3FF"),sub:"-0:18 "+t("vs Last Period"),subColor:"var(--salis-blue)"},
+ {icon:"Gauge",label:t("Service Level"),value:"92%",iconStyle:ic("rgba(11,31,59,.09)","#0B1F3B"),sub:t("answered within 30s"),subColor:"var(--text-muted)"},
+ {icon:"PhoneMissed",label:t("Abandoned"),value:"3.1%",iconStyle:ic("rgba(249,115,22,.09)","#F97316"),sub:t("target under 5%"),subColor:"var(--text-muted)"}
+];
+const extra={kpis,queue,controls,dispositions,ctx,openItems,recent,queueDepth:String(queue.length),
+ t:{brandRole:t("Call Center"),userRole:t("Call Agent"),logout:t("Logout"),search:rtl?"البحث في المكالمات والعملاء...":"Search calls, customers...",nav_console:t("Agent Console"),nav_logs:t("Call Logs"),nav_queues:t("Queues & Routing"),nav_ivr:t("IVR Builder"),nav_agents:t("Agents"),nav_scripts:t("Call Scripts"),nav_quality:t("Quality Monitoring"),nav_reports:t("Call Reports"),
+ title:t("Agent Console"),subtitle:t("Live queue, active call and customer context"),inQueue:t("in queue"),liveQueue:t("Live Queue"),answer:t("Answer"),
+ duration:t("Duration"),disposition:t("Call Disposition"),notesPh:t("What did the customer need, and what did you do?"),bookAppt:t("Book Appointment"),newJob:t("New Job Card"),saveWrap:t("Save & Wrap Up"),
+ customerCtx:t("Customer Context"),openItems:t("Open Items"),recentCalls:t("Recent Calls")}};
+return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",userName,userInitial:userName.trim()[0]||"F",presence,
+ toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+ toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})},...extra};}}</script></body></html>

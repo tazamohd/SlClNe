@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="PO-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="Inventory.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.createPO }}</h1><p style="margin:0;font-size:11px;color:var(--text-muted)" dir="ltr"><span dir="ltr">PO-2026-0087</span></p></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- Reorder Alert -->
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.15)"><salis-icon name="AlertTriangle" size="14" style="color:#F97316"></salis-icon><span style="font-family:var(--font-action);font-size:12px;font-weight:600;color:#F97316">{{ reorderAlert }}</span></div>
+    <!-- Supplier -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:6px"><salis-icon name="Building2" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.supplier }}</h3></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)">
+        <span style="width:32px;height:32px;border-radius:8px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Building2" size="14"></salis-icon></span>
+        <div><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ supplierName }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ contactPerson }}</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="font-size:10px;color:var(--text-muted)">{{ t.orderDate }}</span><p style="margin:2px 0 0;font-size:12px;font-weight:500;color:var(--text-body)">Jul 22, 2026</p></div>
+        <div style="padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="font-size:10px;color:var(--text-muted)">{{ t.expectedDelivery }}</span><p style="margin:2px 0 0;font-size:12px;font-weight:500;color:var(--text-body)">Jul 29, 2026</p></div>
+      </div>
+    </div>
+    <!-- Order Items -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:6px"><salis-icon name="Package" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.orderItems }}</h3></div><button style="height:28px;padding:0 10px;border-radius:6px;border:1px solid var(--salis-blue);background:none;color:var(--salis-blue);font-family:var(--font-action);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:3px"><salis-icon name="Plus" size="11"></salis-icon>{{ t.add }}</button></div>
+      <sc-for list="{{ orderRows }}" as="r" hint-placeholder-count="5">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border-default);display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:500;color:var(--text-body)">{{ r.name }}</span><span style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ r.total }}</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-muted)"><span dir="ltr">{{ r.sku }}</span><span>·</span><span style="{{ r.stockStyle }}">{{ r.stock }}</span><span>·</span><span>{{ t.order }}: <span style="color:var(--salis-blue);font-weight:600">{{ r.orderQty }}</span></span></div>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Summary -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.subtotal }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 4,830</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 724.50</span></div>
+      <div style="height:1px;background:var(--border-default)"></div>
+      <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800;color:var(--text-heading)"><span>{{ t.total }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 5,554.50</span></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:50px;border:1.5px solid var(--border-strong);border-radius:8px;background:none;color:var(--text-body);font-family:var(--font-action);font-weight:500;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Save" size="15"></salis-icon>{{ t.saveDraft }}</button>
+      <button style="flex:1;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Send" size="15"></salis-icon>{{ t.placeOrder }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const pill=(bg,fg)=>"font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:"+bg+";color:"+fg;
+    const orderRows=[
+      {name:t("Brake Pads (Front)"),sku:"BP-FR-220",stock:"18",stockStyle:pill("rgba(249,115,22,.12)","#F97316"),orderQty:"50",total:"SAR 1,400"},
+      {name:t("Spark Plug Set"),sku:"SP-SET-04",stock:"12",stockStyle:pill("rgba(249,115,22,.12)","#F97316"),orderQty:"40",total:"SAR 1,280"},
+      {name:t("Air Filter (Universal)"),sku:"AF-UN-002",stock:"96",stockStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),orderQty:"30",total:"SAR 540"},
+      {name:t("Oil Filter (Toyota)"),sku:"OF-TY-118",stock:"142",stockStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),orderQty:"60",total:"SAR 720"},
+      {name:t("Power Steering")+" Fluid",sku:"PS-FL-009",stock:"8",stockStyle:pill("rgba(249,115,22,.12)","#F97316"),orderQty:"30",total:"SAR 890"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      orderRows,supplierName:rtl?"شركة قطع الغيار المتحدة":"United Auto Parts Co.",contactPerson:rtl?"فهد القحطاني":"Fahad Al-Qahtani",
+      reorderAlert:"3 "+t("items below reorder level"),
+      t:{createPO:t("Create Purchase Order"),supplier:t("Supplier"),orderDate:t("Order Date"),expectedDelivery:t("Expected Delivery"),
+        orderItems:t("Order Items"),add:t("Add"),order:rtl?"طلب":"Qty",subtotal:t("Subtotal"),vat:t("VAT (15%)"),total:t("Grand Total"),
+        saveDraft:t("Save Draft"),placeOrder:t("Place Order")}};
+  }
+}
+</script>
+</body>
+</html>

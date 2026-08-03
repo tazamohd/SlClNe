@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Modals - CRUD" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+    <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:start">
+      <!-- Add New -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:18px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="Plus" size="16"></salis-icon></span><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">Add New Customer</h3><span style="flex:1"></span><button style="width:28px;height:28px;border:none;border-radius:6px;background:none;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="X" size="16"></salis-icon></button></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;font-weight:500;color:var(--text-primary)">Full Name</label><input placeholder="Enter customer name" style="height:44px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none"></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;font-weight:500;color:var(--text-primary)">Phone</label><input placeholder="+966 5X XXX XXXX" dir="ltr" style="height:44px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-family:var(--font-mono);font-size:14px;color:var(--text-primary);outline:none"></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><label style="font-size:12px;font-weight:500;color:var(--text-primary)">Email</label><input placeholder="email@example.com" style="height:44px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none"></div>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:flex-end;gap:10px"><button style="height:36px;padding:0 16px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Cancel</button><button style="height:36px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(10,94,215,.25)">Add Customer</button></div>
+      </div>
+      <!-- Delete Confirmation -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:14px;border-radius:50%;background:rgba(249,115,22,.1);display:flex"><salis-icon name="Trash2" size="28" style="color:#F97316"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Delete Job Card?</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted);max-width:320px">This action cannot be undone. Job card <span style="font-family:var(--font-mono);font-weight:600;color:var(--text-heading)" dir="ltr">JC-A3F8B2C1</span> will be permanently removed.</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center;gap:10px"><button style="height:40px;padding:0 20px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Cancel</button><button style="height:40px;padding:0 20px;border:none;border-radius:8px;background:var(--salis-orange);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Delete</button></div>
+      </div>
+      <!-- Save Draft -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:14px;border-radius:50%;background:rgba(10,94,215,.08);display:flex"><salis-icon name="Save" size="28" style="color:#0A5ED7"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Save as Draft?</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted);max-width:320px">Your changes will be saved as a draft. You can continue editing later.</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center;gap:10px"><button style="height:40px;padding:0 20px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Discard</button><button style="height:40px;padding:0 20px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Save Draft</button></div>
+      </div>
+      <!-- Assign / Reassign -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:18px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(11,179,255,.08);color:#0BB3FF;display:flex"><salis-icon name="UserPlus" size="16"></salis-icon></span><h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-heading)">Assign Technician</h3><span style="flex:1"></span><button style="width:28px;height:28px;border:none;border-radius:6px;background:none;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center"><salis-icon name="X" size="16"></salis-icon></button></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ technicians }}" as="tech" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--border-default);cursor:pointer;transition:all .15s" style-hover="border-color:rgba(10,94,215,.3);background:rgba(10,94,215,.02)">
+              <span style="width:36px;height:36px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">{{ tech.initial }}</span>
+              <div style="flex:1"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ tech.name }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ tech.specialty }}</p></div>
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--text-muted)">{{ tech.load }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:flex-end"><button style="height:36px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Assign</button></div>
+      </div>
+    </div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const technicians=[{name:"Yousef Al-Otaibi",initial:"Y",specialty:"Engine & Diagnostics",load:"3 jobs"},{name:"Bandar Al-Qahtani",initial:"B",specialty:"Body & Paint",load:"2 jobs"},{name:"Faisal Al-Harbi",initial:"F",specialty:"Electrical",load:"4 jobs"},{name:"Nasser Al-Dosari",initial:"N",specialty:"Tires & Suspension",load:"1 job"}];
+const extra={technicians,t:{title:"CRUD Modals"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

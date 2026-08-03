@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Inspection-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="WorkshopCheckIn.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.title }}</h1></div>
+    <div style="display:flex;align-items:center;gap:4px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:8px;padding:4px 10px"><div style="width:60px;height:4px;border-radius:2px;background:var(--surface-inset)"><div style="{{ progressBar }}"></div></div><span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--salis-blue)">{{ progressPct }}</span></div>
+  </div>
+  <div style="padding:8px 16px;overflow-x:auto;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:0;background:var(--surface-card)">
+    <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:0;flex-shrink:0"><div style="display:flex;align-items:center;gap:4px"><span style="{{ s.dotStyle }}">{{ s.icon }}</span><span style="font-family:var(--font-action);font-size:10px;font-weight:600;white-space:nowrap;{{ s.labelColor }}">{{ s.label }}</span></div><sc-if value="{{ s.hasLine }}" hint-placeholder-val="{{ true }}"><div style="width:12px;height:2px;margin:0 3px;border-radius:1px;flex-shrink:0;{{ s.lineColor }}"></div></sc-if></div></sc-for>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:6px"><span style="padding:5px;border-radius:6px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="{{ cat.icon }}" size="14"></salis-icon></span><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ cat.label }}</h3><span style="flex:1"></span><span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">{{ cat.doneCount }}/{{ cat.totalCount }}</span></div>
+        <sc-for list="{{ cat.items }}" as="item" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border-default)">
+            <span style="flex:1;font-size:13px;color:var(--text-body)">{{ item.label }}</span>
+            <div style="display:flex;gap:4px">
+              <button onClick="{{ item.setPass }}" style="{{ item.passStyle }}">{{ t.pass }}</button>
+              <button onClick="{{ item.setFail }}" style="{{ item.failStyle }}">{{ t.fail }}</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+    <button onClick="{{ submit }}" style="width:100%;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0"><salis-icon name="CheckCircle" size="18"></salis-icon>{{ t.submitInspection }}</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},results:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const stepLabels=["Check-In","Inspection","Estimate","QC","Delivery"];
+    const steps=stepLabels.map((l,i)=>{const done=i<1;const current=i===1;return{label:t(l==="QC"?"Quality Check":l),icon:done?"✓":String(i+1),hasLine:i<4,
+      dotStyle:"width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:700;"+(current?"background:var(--salis-gradient);color:#fff":done?"background:var(--salis-blue);color:#fff":"background:var(--surface-inset);border:1px solid var(--border-default);color:var(--text-muted)"),
+      labelColor:current?"color:var(--salis-blue)":done?"color:var(--text-heading)":"color:var(--text-muted)",lineColor:done?"background:var(--salis-blue)":"background:var(--border-default)"};});
+    const R=this.state.results;
+    const btn=(key,val,bg,fg)=>"height:28px;padding:0 10px;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:11px;font-weight:600;border:none;"+(R[key]===val?"background:"+bg+";color:"+fg:"background:var(--surface-inset);color:var(--text-muted)");
+    const cats=[["Cog","Engine & Transmission",["Oil Level","Coolant","Transmission Fluid"]],["Disc","Brakes & Suspension",["Brake Pads","Brake Discs","Shock Absorbers"]],["CircleDot","Tires & Wheels",["Tire Tread","Tire Pressure","Wheel Alignment"]],["Zap","Electrical & Lighting",["Battery","Headlights","Indicators"]],["Droplets","Fluids & Filters",["Coolant","Brake Fluid","Air Filter"]],["Car","Body & Interior",["Windshield","Paint Condition","Seats"]]];
+    let total=0,done=0;
+    const categories=cats.map(([icon,catL,items])=>{const ci=items.map(item=>{const k=catL+"-"+item;total++;if(R[k])done++;
+      return{label:t(item),passStyle:btn(k,"pass","rgba(10,94,215,.15)","#0A5ED7"),failStyle:btn(k,"fail","rgba(249,115,22,.15)","#F97316"),
+        setPass:()=>this.setState(s=>({results:{...s.results,[k]:"pass"}})),setFail:()=>this.setState(s=>({results:{...s.results,[k]:"fail"}}))};});
+      return{icon,label:t(catL),items:ci,doneCount:items.filter(i=>R[catL+"-"+i]).length,totalCount:items.length};});
+    const pct=total?Math.round(done/total*100):0;
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      steps,categories,progressPct:pct+"%",progressBar:"height:100%;border-radius:2px;background:var(--salis-gradient);width:"+pct+"%;transition:width .3s ease",
+      submit:()=>location.href="WorkshopEstimate.Mobile.dc.html",
+      t:{title:t("Vehicle Inspection"),pass:t("Pass"),fail:t("Fail"),submitInspection:t("Submit Inspection")}};
+  }
+}
+</script>
+</body>
+</html>

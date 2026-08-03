@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Invoice-Preview" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+    <div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">K</span><div style="flex:1"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">Khalid Al-Amri</p></div></div></div>
+    <nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="5"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav>
+    <div style="padding:12px;border-top:1px solid var(--border-default)"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px">
+      <a href="Invoices.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:13px;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="14"></salis-icon>{{ t.back }}</a>
+      <div style="flex:1"></div>
+      <button style="height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;color:var(--text-body);display:flex;align-items:center;gap:4px" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Download" size="13"></salis-icon>PDF</button>
+      <button style="height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:12px;color:var(--text-body);display:flex;align-items:center;gap:4px" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="Send" size="13"></salis-icon>{{ t.resend }}</button>
+      <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+    </header>
+    <main style="flex:1;overflow:auto;display:flex;justify-content:center;padding:24px">
+      <!-- Invoice Document -->
+      <div style="width:100%;max-width:680px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;box-shadow:var(--shadow-lg);padding:40px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+        <!-- Invoice Header -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="display:flex;align-items:center;gap:12px"><img src="assets/logo-blue-orange.png" alt="" style="width:48px;height:auto"><div><h2 style="margin:0;font-size:18px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">SALIS AUTO</h2><p style="margin:0;font-size:11px;color:var(--text-muted)">Al-Amri Auto Center</p></div></div>
+          <div style="text-align:end"><h1 style="margin:0;font-size:28px;font-family:var(--font-display);font-weight:900;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ t.taxInvoice }}</h1><p style="margin:4px 0 0;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-heading)" dir="ltr"><span dir="ltr">INV-2026-0143</span></p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">Jul 22, 2026</p></div>
+        </div>
+        <div style="height:2px;background:var(--salis-gradient);border-radius:1px"></div>
+        <!-- Bill From / To -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <div><p style="margin:0;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)">{{ t.from }}</p><p style="margin:6px 0 0;font-size:14px;font-weight:600;color:var(--text-heading)">Al-Amri Auto Center</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">Riyadh, Saudi Arabia</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)" dir="ltr">VAT: 300456789012345</p></div>
+          <div><p style="margin:0;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)">{{ t.to }}</p><p style="margin:6px 0 0;font-size:14px;font-weight:600;color:var(--text-heading)">Ahmed Al-Rashid</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)" dir="ltr">+966 55 210 4471</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)" dir="ltr">VAT: 310456789012345</p></div>
+        </div>
+        <!-- Line Items -->
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="border-bottom:2px solid var(--border-default)"><th style="padding:10px 0;text-align:start;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;color:var(--text-muted)">{{ t.description }}</th><th style="padding:10px 0;text-align:center;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;color:var(--text-muted);width:60px">{{ t.qty }}</th><th style="padding:10px 0;text-align:end;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;color:var(--text-muted);width:90px">{{ t.rate }}</th><th style="padding:10px 0;text-align:end;font-family:var(--font-action);font-size:11px;font-weight:600;text-transform:uppercase;color:var(--text-muted);width:90px">{{ t.amount }}</th></tr></thead>
+          <tbody><sc-for list="{{ lineItems }}" as="li" hint-placeholder-count="5"><tr style="border-bottom:1px solid var(--border-default)"><td style="padding:10px 0;font-size:13px;color:var(--text-body)">{{ li.desc }}</td><td style="padding:10px 0;text-align:center;font-family:var(--font-mono);font-size:13px;color:var(--text-body)">{{ li.qty }}</td><td style="padding:10px 0;text-align:end;font-family:var(--font-mono);font-size:13px;color:var(--text-body)" dir="ltr">{{ li.rate }}</td><td style="padding:10px 0;text-align:end;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ li.amount }}</td></tr></sc-for></tbody>
+        </table>
+        <!-- Totals -->
+        <div style="display:flex;justify-content:flex-end"><div style="width:240px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">{{ t.subtotal }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--text-body)" dir="ltr">SAR 1,345.00</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--text-body)" dir="ltr">SAR 201.75</span></div>
+          <div style="height:2px;background:var(--salis-gradient);border-radius:1px"></div>
+          <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800"><span style="color:var(--text-heading)">{{ t.total }}</span><span style="font-family:var(--font-mono);color:var(--text-heading)" dir="ltr">SAR 1,546.75</span></div>
+        </div></div>
+        <!-- ZATCA QR + Status -->
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default)">
+          <div style="width:64px;height:64px;border-radius:8px;background:var(--surface-card);border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 40 40" style="width:44px;height:44px"><rect x="2" y="2" width="10" height="10" rx="1" fill="var(--text-heading)"></rect><rect x="14" y="2" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="28" y="2" width="10" height="10" rx="1" fill="var(--text-heading)"></rect><rect x="2" y="14" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="20" y="14" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect><rect x="2" y="28" width="10" height="10" rx="1" fill="var(--text-heading)"></rect><rect x="28" y="28" width="4" height="4" rx="0.5" fill="var(--text-heading)"></rect></svg></div>
+          <div style="flex:1"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ t.zatca }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ t.zatcaCompliant }}</p></div>
+          <span style="padding:4px 12px;border-radius:9999px;background:rgba(10,94,215,.1);color:var(--salis-blue);font-size:11px;font-weight:600">{{ t.paid }}</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{},NAV:[],collapsed:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR,NAV:(m.navFor?m.navFor(m.NAV):m.NAV)}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const navItem=(icon,label,href,active)=>({icon,label:t(label),href,style:"display:flex;align-items:center;gap:8px;padding:8px 8px 8px 28px;border-radius:6px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;"+(active?"background:var(--salis-gradient);color:#fff":"color:var(--text-body)")});
+    const navGroups=this.state.NAV.map(g=>{const o=!this.state.collapsed[g.label];return{label:t(g.label),chev:o?"ChevronDown":"ChevronRight",open:o,toggle:()=>this.setState(s=>({collapsed:{...s.collapsed,[g.label]:o}})),items:g.items.map(i=>navItem(g.icon,i.l,i.href,i.l==="Invoices"))};});
+    const lineItems=[
+      {desc:t("Oil Filter (Toyota)"),qty:"1",rate:"SAR 45",amount:"SAR 45"},
+      {desc:t("Brake Pads (Front)"),qty:"1",rate:"SAR 310",amount:"SAR 310"},
+      {desc:t("Air Filter (Universal)"),qty:"1",rate:"SAR 95",amount:"SAR 95"},
+      {desc:t("Diagnostics")+" — 1.5h",qty:"1",rate:"SAR 150/hr",amount:"SAR 225"},
+      {desc:t("Brake Repair")+" — 2h",qty:"1",rate:"SAR 180/hr",amount:"SAR 360"},
+      {desc:t("Multi-Point Inspection"),qty:"1",rate:"SAR 170",amount:"SAR 170"},
+      {desc:t("Oil Change")+" — "+t("Full Service"),qty:"1",rate:"SAR 140",amount:"SAR 140"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      navGroups,lineItems,
+      t:{back:t("Back to Job Cards"),resend:rtl?"إعادة إرسال":"Resend",taxInvoice:t("Tax Invoice"),
+        from:rtl?"من":"From",to:rtl?"إلى":"Bill To",description:t("Description"),qty:rtl?"الكمية":"Qty",rate:rtl?"السعر":"Rate",amount:rtl?"المبلغ":"Amount",
+        subtotal:t("Subtotal"),vat:t("VAT (15%)"),total:t("Grand Total"),
+        zatca:t("ZATCA Compliance"),zatcaCompliant:rtl?"متوافقة مع هيئة الزكاة":"ZATCA e-invoice compliant",paid:t("Paid")}};
+  }
+}
+</script>
+</body>
+</html>

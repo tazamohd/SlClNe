@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Modals - Status" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+    <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div>
+    <span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span>
+    <div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+    <h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start">
+      <!-- Success -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:16px;border-radius:50%;background:rgba(10,94,215,.08);display:flex"><salis-icon name="CheckCircle" size="32" style="color:#0A5ED7"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Success</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">Job card has been created successfully.</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center"><button style="height:40px;padding:0 24px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Continue</button></div>
+      </div>
+      <!-- Warning -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:16px;border-radius:50%;background:rgba(249,115,22,.08);display:flex"><salis-icon name="AlertTriangle" size="32" style="color:#F97316"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Warning</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">This invoice is overdue by 15 days. Send a reminder?</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center;gap:10px"><button style="height:40px;padding:0 20px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Skip</button><button style="height:40px;padding:0 20px;border:none;border-radius:8px;background:var(--salis-orange);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Send Reminder</button></div>
+      </div>
+      <!-- Error -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:16px;border-radius:50%;background:rgba(249,115,22,.08);display:flex"><salis-icon name="XCircle" size="32" style="color:#F97316"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Error</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">Failed to process payment. Please check card details and try again.</p>
+          <div style="padding:8px 12px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default);font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">ERR_PAYMENT_DECLINED</div>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center"><button style="height:40px;padding:0 24px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Try Again</button></div>
+      </div>
+      <!-- Offline Conflict -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:16px;border-radius:50%;background:rgba(100,116,139,.08);display:flex"><salis-icon name="WifiOff" size="32" style="color:#64748B"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Offline Conflict</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">Changes were made offline and conflict with the server version.</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center;gap:10px"><button style="height:40px;padding:0 16px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Keep Local</button><button style="height:40px;padding:0 16px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Use Server</button></div>
+      </div>
+      <!-- Session Timeout -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:16px;border-radius:50%;background:rgba(249,115,22,.08);display:flex"><salis-icon name="Clock" size="32" style="color:#F97316"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Session Expiring</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">Your session will expire in 2 minutes. Would you like to stay logged in?</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center;gap:10px"><button style="height:40px;padding:0 20px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">Log Out</button><button style="height:40px;padding:0 20px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Stay Logged In</button></div>
+      </div>
+      <!-- Permission Denied -->
+      <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <span style="padding:16px;border-radius:50%;background:rgba(11,31,59,.08);display:flex"><salis-icon name="Lock" size="32" style="color:#0B1F3B"></salis-icon></span>
+          <h3 style="margin:0;font-size:18px;font-weight:700;color:var(--text-heading)">Permission Denied</h3>
+          <p style="margin:0;font-size:14px;color:var(--text-muted)">You don't have permission to perform this action. Contact your administrator.</p>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid var(--border-default);display:flex;justify-content:center"><button style="height:40px;padding:0 24px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:600">Go Back</button></div>
+      </div>
+    </div>
+  </div>
+</div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const extra={t:{title:"Status Modals"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

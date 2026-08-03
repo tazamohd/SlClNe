@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Super-Admin" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <!-- Compact Sidebar -->
+  <aside style="width:260px;flex-shrink:0;background:#0B1F3B;display:flex;flex-direction:column;height:100vh">
+    <div style="padding:16px;display:flex;align-items:center;gap:10px"><img src="assets/logo-blue-orange.png" alt="" style="width:32px;height:auto"><div><h1 style="margin:0;font-size:14px;font-family:var(--font-display);font-weight:900;color:#fff">SALIS AUTO</h1><p style="margin:0;font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em">{{ t.superAdmin }}</p></div></div>
+    <nav style="flex:1;padding:8px 12px;display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ adminNav }}" as="an" hint-placeholder-count="7">
+        <a href="#" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;transition:all .15s ease;{{ an.style }}" style-hover="background:rgba(255,255,255,.08)"><salis-icon name="{{ an.icon }}" size="16"></salis-icon><span>{{ an.label }}</span><sc-if value="{{ an.badge }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;padding:2px 7px;border-radius:9999px;background:var(--salis-orange);color:#fff;font-size:10px;font-weight:700">{{ an.badgeVal }}</span></sc-if></a>
+      </sc-for>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">S</span><div><p style="margin:0;font-size:11px;font-weight:600;color:#fff">Super Admin</p><p style="margin:0;font-size:9px;color:rgba(255,255,255,.4)">admin@salisauto.com</p></div></div>
+  </aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)">
+      <h2 style="margin:0;font-size:16px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.platformOverview }}</h2>
+      <div style="flex:1"></div>
+      <button onClick="{{ toggleLang }}" style="height:30px;padding:0 10px;border-radius:6px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-family:var(--font-action);font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px"><salis-icon name="Globe" size="12"></salis-icon><span>{{ langLabel }}</span></button>
+      <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+    </header>
+    <main style="flex:1;overflow:auto">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease;max-width:1200px">
+        <!-- Platform KPIs -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <sc-for list="{{ platformKPIs }}" as="k" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text-muted)">{{ k.label }}</span><span style="{{ k.iconStyle }}"><salis-icon name="{{ k.icon }}" size="16"></salis-icon></span></div>
+              <h3 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ k.value }}</h3>
+              <span style="{{ k.changeStyle }}">{{ k.change }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <!-- Organizations -->
+          <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px"><salis-icon name="Building2" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.organizations }}</h3></div><button style="height:28px;padding:0 10px;border-radius:6px;border:1px solid var(--salis-blue);background:none;color:var(--salis-blue);font-family:var(--font-action);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:3px"><salis-icon name="Plus" size="11"></salis-icon>{{ t.add }}</button></div>
+            <sc-for list="{{ orgs }}" as="org" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--border-default)" style-hover="background:rgba(10,94,215,.02)">
+                <span style="width:32px;height:32px;border-radius:8px;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">{{ org.initial }}</span>
+                <div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ org.name }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ org.workspaces }} · {{ org.users }}</p></div>
+                <span style="{{ org.planStyle }}">{{ org.plan }}</span>
+                <span style="{{ org.statusStyle }}">{{ org.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <!-- System Health -->
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Activity" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.systemHealth }}</h3><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--salis-blue)"><span style="width:6px;height:6px;border-radius:50%;background:var(--salis-blue)"></span>{{ t.allOperational }}</span></div>
+              <sc-for list="{{ healthMetrics }}" as="hm" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:12px;color:var(--text-body);flex:1">{{ hm.label }}</span>
+                  <div style="width:100px;height:4px;border-radius:2px;background:var(--surface-inset)"><div style="height:100%;border-radius:2px;{{ hm.barStyle }};width:{{ hm.pct }}%"></div></div>
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-heading);width:40px;text-align:end" dir="ltr">{{ hm.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <!-- Subscriptions -->
+            <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px"><salis-icon name="CreditCard" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.subscriptions }}</h3></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+                <sc-for list="{{ planStats }}" as="ps" hint-placeholder-count="3">
+                  <div style="padding:12px;border-radius:10px;text-align:center;{{ ps.bg }}"><p style="margin:0;font-size:20px;font-weight:900;color:var(--text-heading)">{{ ps.count }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ ps.label }}</p></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text-muted)">{{ t.mrr }}</span><span style="font-family:var(--font-mono);font-weight:800;color:var(--text-heading)" dir="ltr">SAR 186,400</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- Recent Activity -->
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:8px"><salis-icon name="Activity" size="16" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ t.recentActivity }}</h3></div>
+          <sc-for list="{{ activityLog }}" as="al" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-default)">
+              <span style="padding:6px;border-radius:8px;display:flex;flex-shrink:0;{{ al.iconBg }}"><salis-icon name="{{ al.icon }}" size="14"></salis-icon></span>
+              <div style="flex:1"><p style="margin:0;font-size:13px;color:var(--text-body)">{{ al.text }}</p></div>
+              <span style="font-size:11px;color:var(--text-muted)">{{ al.time }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:600;background:"+bg+";color:"+fg;
+    const adminNav=[
+      {icon:"LayoutDashboard",label:t("Dashboard"),style:"background:rgba(10,94,215,.15);color:#0BB3FF",badge:false},
+      {icon:"Building2",label:t("Organizations"),style:"color:rgba(255,255,255,.6)",badge:false},
+      {icon:"Users",label:t("Users"),style:"color:rgba(255,255,255,.6)",badge:false},
+      {icon:"CreditCard",label:t("Subscriptions"),style:"color:rgba(255,255,255,.6)",badge:false},
+      {icon:"Activity",label:t("System Health"),style:"color:rgba(255,255,255,.6)",badge:false},
+      {icon:"AlertTriangle",label:t("Alerts"),style:"color:rgba(255,255,255,.6)",badge:true,badgeVal:"3"},
+      {icon:"Settings",label:t("Settings"),style:"color:rgba(255,255,255,.6)",badge:false}
+    ];
+    const platformKPIs=[
+      {icon:"Building2",label:t("Organizations"),value:"47",change:"↑ 4 "+t("This Month"),changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:8px;border-radius:8px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"},
+      {icon:"Users",label:rtl?"إجمالي المستخدمين":"Total Users",value:"1,248",change:"↑ 89 "+t("This Month"),changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:8px;border-radius:8px;background:rgba(11,179,255,.1);color:#0BB3FF;display:flex"},
+      {icon:"Wrench",label:rtl?"أعمال نشطة":"Active Jobs",value:"342",change:"↑ 12.4%",changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:8px;border-radius:8px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"},
+      {icon:"DollarSign",label:t("MRR"),value:"SAR 186K",change:"↑ 8.2%",changeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),iconStyle:"padding:8px;border-radius:8px;background:rgba(11,179,255,.1);color:#0BB3FF;display:flex"}
+    ];
+    const orgs=[
+      {name:"SALIS AUTO Holding",initial:"S",workspaces:"3 "+t("Workspaces"),users:"24 "+t("Users"),plan:"Enterprise",planStyle:pill("var(--salis-gradient)","#fff"),status:t("Active"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+      {name:"Al-Amri Auto Group",initial:"A",workspaces:"2 "+t("Workspaces"),users:"11 "+t("Users"),plan:"Pro",planStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),status:t("Active"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+      {name:"Najd Motors Est.",initial:"N",workspaces:"1 "+t("Workspace"),users:"6 "+t("Users"),plan:"Starter",planStyle:pill("rgba(100,116,139,.1)","#64748B"),status:t("Active"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+      {name:"Gulf Fleet Services",initial:"G",workspaces:"4 "+t("Workspaces"),users:"38 "+t("Users"),plan:"Enterprise",planStyle:pill("var(--salis-gradient)","#fff"),status:rtl?"تجديد":"Renewal",statusStyle:pill("rgba(249,115,22,.1)","#F97316")}
+    ];
+    const healthMetrics=[
+      {label:"API Uptime",pct:99.9,value:"99.9%",barStyle:"background:var(--salis-gradient)"},
+      {label:"Response Time",pct:85,value:"142ms",barStyle:"background:var(--salis-gradient)"},
+      {label:"CPU Usage",pct:34,value:"34%",barStyle:"background:#0BB3FF"},
+      {label:"Storage",pct:62,value:"62%",barStyle:"background:#0BB3FF"}
+    ];
+    const planStats=[
+      {label:"Starter",count:"18",bg:"background:var(--surface-inset)"},
+      {label:"Pro",count:"21",bg:"background:rgba(10,94,215,.06)"},
+      {label:"Enterprise",count:"8",bg:"background:rgba(10,94,215,.1)"}
+    ];
+    const activityLog=[
+      {icon:"Building2",text:rtl?"تم إنشاء مؤسسة جديدة: Gulf Fleet Services":"New org created: Gulf Fleet Services",time:"2h",iconBg:"background:rgba(10,94,215,.1);color:var(--salis-blue)"},
+      {icon:"CreditCard",text:rtl?"ترقية اشتراك: Al-Amri Auto → Pro":"Subscription upgrade: Al-Amri Auto → Pro",time:"5h",iconBg:"background:rgba(11,179,255,.1);color:#0BB3FF"},
+      {icon:"AlertTriangle",text:rtl?"تنبيه: استخدام مرتفع للتخزين — Najd Motors":"Alert: High storage usage — Najd Motors",time:"1d",iconBg:"background:rgba(249,115,22,.1);color:#F97316"},
+      {icon:"Users",text:rtl?"38 مستخدم جديد هذا الأسبوع":"38 new users this week",time:"2d",iconBg:"background:rgba(10,94,215,.1);color:var(--salis-blue)"}
+    ];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      adminNav,platformKPIs,orgs,healthMetrics,planStats,activityLog,
+      t:{superAdmin:rtl?"إدارة المنصة":"PLATFORM ADMIN",platformOverview:rtl?"نظرة عامة على المنصة":"Platform Overview",
+        organizations:t("Organizations"),add:t("Add"),systemHealth:rtl?"صحة النظام":"System Health",allOperational:rtl?"جميع الأنظمة تعمل":"All Operational",
+        subscriptions:rtl?"الاشتراكات":"Subscriptions",mrr:rtl?"الإيراد الشهري المتكرر":"Monthly Recurring Revenue",recentActivity:rtl?"النشاط الأخير":"Recent Activity"}};
+  }
+}
+</script>
+</body>
+</html>

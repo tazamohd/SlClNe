@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Roles & Permissions" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <aside style="width:280px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh"><div style="padding:12px 12px 4px"><div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">{{ userInitial }}</span><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary)">{{ userName }}</p><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:rgba(10,94,215,.12);color:var(--salis-blue)">{{ t.admin }}</span><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:var(--salis-gradient);color:#fff">PRO</span></div></div></div></div><nav style="flex:1;padding:12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px"><sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div><button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)" style-hover="background:rgba(10,94,215,.1)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button><sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px"><sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for></div></sc-if></div></sc-for></div></nav><div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px"><button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button><a href="Login.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange);height:32px;box-sizing:border-box" style-hover="background:var(--salis-orange);color:#fff"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a></div></aside>
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+    <main style="flex:1;overflow:auto"><div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:12px"><div style="position:relative"><div style="position:absolute;inset:0;background:#0A5ED7;border-radius:16px;filter:blur(12px);opacity:.3"></div><div style="position:relative;padding:12px;border-radius:16px;background:var(--salis-gradient);box-shadow:0 20px 25px -5px rgba(10,94,215,.25);color:#fff;display:flex"><salis-icon name="ShieldCheck" size="28"></salis-icon></div></div><div><h1 style="margin:0;font-size:30px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1><p style="margin:2px 0 0;font-size:13px;color:var(--text-muted)">{{ t.subtitle }}</p></div></div>
+        <button style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="Plus" size="16"></salis-icon>{{ t.createRole }}</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ t.pickRole }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <sc-for list="{{ roleChips }}" as="r" hint-placeholder-count="14">
+            <button onClick="{{ r.pick }}" style="{{ r.style }}"><salis-icon name="{{ r.icon }}" size="13"></salis-icon>{{ r.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+        <sc-for list="{{ selStats }}" as="s" hint-placeholder-count="4">
+          <div style="padding:14px 16px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm)">
+            <p style="margin:0;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-action)">{{ s.label }}</p>
+            <p style="margin:5px 0 0;font-size:17px;font-family:var(--font-display);font-weight:800;color:{{ s.color }};font-variant-numeric:tabular-nums">{{ s.value }}</p>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="border:1px solid var(--border-default);border-radius:14px;background:var(--surface-card);box-shadow:var(--shadow-sm);overflow:hidden">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div>
+            <p style="margin:0;font-size:15px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.matrixH }}</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted)">{{ matrixSub }}</p>
+          </div>
+          <div style="display:flex;gap:7px">
+            <button onClick="{{ grantAll }}" style="height:31px;padding:0 12px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:11.5px;font-weight:600;color:var(--text-body);font-family:var(--font-action)" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)">{{ t.grantAll }}</button>
+            <button onClick="{{ revokeAll }}" style="height:31px;padding:0 12px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;font-size:11.5px;font-weight:600;color:#F97316;font-family:var(--font-action)" style-hover="border-color:#F97316">{{ t.revokeAll }}</button>
+            <button onClick="{{ resetPerms }}" style="height:31px;padding:0 12px;border-radius:8px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;font-size:11.5px;font-weight:600;font-family:var(--font-action)">{{ t.reset }}</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;min-width:620px">
+            <thead><tr style="background:var(--surface-inset)">
+              <th style="text-align:start;padding:10px 18px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)">{{ t.module }}</th>
+              <sc-for list="{{ actHeads }}" as="a" hint-placeholder-count="6">
+                <th style="padding:10px 6px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap">{{ a }}</th>
+              </sc-for>
+            </tr></thead>
+            <tbody><sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
+              <tr style="border-top:1px solid var(--border-default)">
+                <td style="padding:8px 18px;font-size:12.5px;font-weight:600;color:var(--text-heading);white-space:nowrap">{{ r.label }}</td>
+                <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="6">
+                  <td style="padding:6px;text-align:center"><button onClick="{{ c.toggle }}" aria-label="{{ c.aria }}" style="{{ c.style }}"><sc-if value="{{ c.on }}" hint-placeholder-val="{{ true }}"><salis-icon name="Check" size="11" stroke-width="3"></salis-icon></sc-if></button></td>
+                </sc-for>
+              </tr>
+            </sc-for></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border-default);border-radius:14px;background:var(--surface-card);box-shadow:var(--shadow-sm);padding:16px 18px">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px">
+          <span style="padding:6px;border-radius:8px;background:rgba(249,115,22,.12);color:#F97316;display:flex"><salis-icon name="EyeOff" size="14"></salis-icon></span>
+          <p style="margin:0;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.hiddenH }}</p>
+        </div>
+        <sc-if value="{{ hasHidden }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ hiddenFields }}" as="h" hint-placeholder-count="4">
+              <span style="padding:3px 10px;border-radius:9999px;background:rgba(249,115,22,.1);color:#F97316;font-size:11.5px;font-weight:600;font-family:var(--font-action)">{{ h }}</span>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noHidden }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;font-size:12.5px;color:var(--text-muted)">{{ t.nothingHidden }}</p>
+        </sc-if>
+      </div>
+    </div></main>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Khalid Al-Amri&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+
+class Component extends DCLogic {
+  state={selRole:"advisor",edits:{},dark:null,lang:null,open:null,data:null};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const NAV=D?(D.navFor?D.navFor(D.NAV):D.NAV):[];const open=this.state.open??NAV.map(g=>g.label);
+    const navGroups=NAV.map(g=>{const isOpen=open.includes(g.label);return{label:t(g.label),open:isOpen,chev:isOpen?"ChevronDown":(rtl?"ChevronLeft":"ChevronRight"),toggle:()=>this.setState({open:isOpen?open.filter(x=>x!==g.label):[...open,g.label]}),items:g.items.map(it=>{const on=it.r==="roles-permissions";return{label:t(it.l),icon:g.icon,href:it.href||"#",style:"display:flex;align-items:center;gap:8px;padding:6px 12px;padding-inline-start:24px;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;text-decoration:none;"+(on?"background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)":"color:var(--text-primary)")}})};});
+    const _rid=(D&&D.currentRole)?D.currentRole():null;const _rl=((D&&D.ROLES)||[]).find(x=>x.id===_rid);const userName=_rl?(rtl?_rl.demo.ar:_rl.demo.name):(this.props.userName??"Khalid Al-Amri");const roleLabel=_rl?(rtl?_rl.ar:_rl.label):null;
+    const ic=(bg,fg)=>"padding:8px;border-radius:10px;background:"+bg+";color:"+fg+";display:flex";
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+    const perm=(icon,label,color)=>({icon,label:t(label),color});
+    const roles=[
+      {name:t("Owner"),users:"1",icon:"Crown",iconStyle:ic("rgba(10,94,215,.1)","#0A5ED7"),type:t("System"),typeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),perms:[perm("Shield","Full Access","#0A5ED7"),perm("Settings","System Config","#0A5ED7"),perm("Users","User Mgmt","#0A5ED7")]},
+      {name:t("Manager"),users:"2",icon:"Briefcase",iconStyle:ic("rgba(11,179,255,.1)","#0BB3FF"),type:t("System"),typeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),perms:[perm("Eye","Read All","#0BB3FF"),perm("Edit","Write Ops","#0BB3FF"),perm("BarChart3","Reports","#0BB3FF"),perm("Users","Team Mgmt","#0BB3FF")]},
+      {name:t("Service Advisor"),users:"2",icon:"Headphones",iconStyle:ic("rgba(249,115,22,.1)","#F97316"),type:t("System"),typeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),perms:[perm("FileText","Job Cards","#F97316"),perm("Calendar","Appointments","#F97316"),perm("Receipt","Invoices","#F97316")]},
+      {name:t("Technician"),users:"4",icon:"Wrench",iconStyle:ic("rgba(11,31,59,.1)","#0B1F3B"),type:t("System"),typeStyle:pill("rgba(10,94,215,.1)","#0A5ED7"),perms:[perm("ClipboardList","Assigned Jobs","#0B1F3B"),perm("Package","Parts Request","#0B1F3B")]},
+      {name:t("Accountant"),users:"1",icon:"Calculator",iconStyle:ic("rgba(100,116,139,.1)","#64748B"),type:t("Custom"),typeStyle:pill("rgba(249,115,22,.1)","#F97316"),perms:[perm("Receipt","Invoices","#64748B"),perm("DollarSign","Payments","#64748B"),perm("BookOpen","Accounting","#64748B"),perm("PieChart","Finance Reports","#64748B")]}
+    ];
+    
+    const RB_ROLES=(D&&D.ROLES)||[], RB_PERMS=(D&&D.PERMS)||{}, RB_FR=(D&&D.FIELD_RULES)||[];
+    const MODS=[["dashboard","Dashboard"],["jobcards","Job Cards"],["appointments","Appointments"],["estimates","Estimates"],["customers","Customers"],["vehicles","Vehicles"],["inventory","Inventory"],["procurement","Procurement"],["invoices","Invoices"],["payments","Payments"],["accounting","Accounting"],["hr","HR & Payroll"],["technicians","Technicians"],["crm","CRM"],["callcenter","Call Center"],["reports","Reports"],["ai","AI Platform"],["admin","Administration"],["settings","Settings"],["audit","Audit Log"],["network","Parts Network"]];
+    const ACTS=[["v","View"],["c","Create"],["e","Edit"],["d","Delete"],["a","Approve"],["x","Export"]];
+    const selRole=this.state.selRole, edits=this.state.edits;
+    const grantOf=mod=>{ const k=selRole+"|"+mod; return (k in edits)?edits[k]:((RB_PERMS[mod]||{})[selRole]||""); };
+    const selMeta=RB_ROLES.find(r=>r.id===selRole)||{label:"",ar:"",icon:"User",limit:0,scope:"branch",color:"#0A5ED7"};
+    const SCOPE_L={all:["All branches","كل الفروع"],branch:["Own branch","فرعه"],own:["Own jobs","أعماله"],self:["Own records","سجلاته"],external:["External only","خارجي فقط"],platform:["Platform","المنصة"]};
+    const roleChips=RB_ROLES.map(r=>{
+      const on=r.id===selRole;
+      return {label:rtl?r.ar:r.label, icon:r.icon, pick:()=>this.setState({selRole:r.id}),
+        style:"display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:9999px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action);transition:all .15s ease;"+(on?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)")};
+    });
+    const visCount=MODS.filter(m=>grantOf(m[0]).includes("v")).length;
+    const sc=SCOPE_L[selMeta.scope]||["—","—"];
+    const selStats=[
+      {label:t("Role"),value:rtl?selMeta.ar:selMeta.label,color:"var(--text-heading)"},
+      {label:t("Data scope"),value:rtl?sc[1]:sc[0],color:"var(--salis-blue)"},
+      {label:t("Approval limit"),value:selMeta.limit===null?t("Unlimited"):(selMeta.limit===0?t("No approval rights"):"SAR "+selMeta.limit.toLocaleString("en-US")),color:selMeta.limit===0?"var(--text-muted)":"#0BB3FF"},
+      {label:t("Modules visible"),value:visCount+" / "+MODS.length,color:"var(--text-heading)"}];
+    const rows=MODS.map(m=>{
+      const g=grantOf(m[0]);
+      return {label:t(m[1]), cells:ACTS.map(([a,al])=>{
+        const on=g.includes(a);
+        return {on, aria:t(al)+" "+t(m[1]),
+          style:"width:24px;height:24px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s ease;"+(on?"background:var(--salis-gradient);border:none;color:#fff":"background:var(--surface-inset);border:1px solid var(--border-default);color:transparent"),
+          toggle:()=>this.setState(st=>{
+            const key=st.selRole+"|"+m[0];
+            const cur=(key in st.edits)?st.edits[key]:((RB_PERMS[m[0]]||{})[st.selRole]||"");
+            const next=cur.includes(a)?cur.split("").filter(x=>x!==a).join(""):cur+a;
+            return {edits:{...st.edits,[key]:next}};
+          })};
+      })};
+    });
+    const hiddenFields=RB_FR.filter(f=>f.hidden.includes(selRole)).map(f=>rtl?f.ar:f.field);
+    return{roleChips,selStats,rows,hiddenFields,hasHidden:hiddenFields.length>0,noHidden:hiddenFields.length===0,
+      actHeads:ACTS.map(a=>t(a[1])),
+      matrixSub:(rtl?selMeta.ar:selMeta.label)+" · "+visCount+" "+t("of")+" "+MODS.length+" "+t("modules"),
+      grantAll:()=>this.setState(st=>{const e={...st.edits};MODS.forEach(m=>e[st.selRole+"|"+m[0]]="vcedax");return{edits:e};}),
+      revokeAll:()=>this.setState(st=>{const e={...st.edits};MODS.forEach(m=>e[st.selRole+"|"+m[0]]="");return{edits:e};}),
+      resetPerms:()=>this.setState({edits:{}}),
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      userName,userInitial:userName.trim()[0]||"K",navGroups,roles,
+      t:{pickRole:t("Select a role"),matrixH:t("Permission Matrix"),module:t("Module"),grantAll:t("Grant all"),revokeAll:t("Revoke all"),reset:t("Reset to default"),hiddenH:t("Fields hidden from this role"),nothingHidden:t("This role can see every field."),admin:roleLabel||t("ADMIN"),logout:t("Logout"),title:t("Roles & Permissions"),subtitle:t("Administration"),createRole:t("Create Role"),users:t("users")}};
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Invoices-Mobile" style="position:relative;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="height:56px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm);position:relative;z-index:5">
+    <button onClick="{{ openDrawer }}" aria-label="Open menu" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-primary);flex-shrink:0"><salis-icon name="Menu" size="20"></salis-icon></button>
+    <p style="margin:0;flex:1;font-size:16px;font-weight:700;color:var(--text-heading)">{{ t.title }}</p>
+    <button onClick="{{ toggleTheme }}" aria-label="Toggle theme" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </header>
+  <main style="height:calc(100vh - 56px);overflow-y:auto">
+    <div style="padding:16px;display:flex;flex-direction:column;gap:12px;animation:fadeUp .3s ease">
+      <span style="position:relative;display:flex;align-items:center">
+        <salis-icon name="Search" size="15" style="position:absolute;inset-inline-start:12px;color:var(--text-muted)"></salis-icon>
+        <input value="{{ query }}" onChange="{{ setQuery }}" placeholder="{{ t.filterPlaceholder }}" style="width:100%;height:40px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;padding-inline-start:32px;font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box">
+      </span>
+      <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(10,94,215,.25)"><salis-icon name="Plus" size="16"></salis-icon>{{ t.newInvoice }}</button>
+      <sc-for list="{{ invoices }}" as="i" hint-placeholder-count="5">
+        <div onClick="{{ i.open }}" style="background:var(--surface-card);border-radius:14px;padding:14px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px;cursor:pointer">
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ i.id }}</span><span style="{{ i.stStyle }}">{{ i.status }}</span></div>
+          <div style="font-size:13px;color:var(--text-body)">{{ i.cust }}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text-muted)">{{ i.due }}</span><span style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ i.amount }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20"></div>
+    <aside style="position:fixed;top:0;bottom:0;inset-inline-start:0;width:78%;max-width:300px;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;z-index:21;box-shadow:var(--shadow-lg)">
+      <div style="padding:14px 12px;display:flex;align-items:center;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;padding:8px;border-radius:8px;background:var(--surface-inset);border:1px solid var(--border-default)">
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">{{ userInitial }}</span>
+          <div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ userName }}</p><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:9999px;background:var(--salis-gradient);color:#fff">PRO</span></div>
+        </div>
+        <button onClick="{{ closeDrawer }}" aria-label="Close menu" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-primary);flex-shrink:0"><salis-icon name="X" size="18"></salis-icon></button>
+      </div>
+      <nav style="flex:1;padding:8px 12px;overflow-y:auto"><div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="7"><div>
+          <button onClick="{{ g.toggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-primary)"><span>{{ g.label }}</span><span style="flex:1"></span><salis-icon name="{{ g.chev }}" size="12" style="color:var(--text-muted)"></salis-icon></button>
+          <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:2px;margin-top:2px">
+            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><a href="{{ it.href }}" style="{{ it.style }}"><salis-icon name="{{ it.icon }}" size="14"></salis-icon><span>{{ it.label }}</span></a></sc-for>
+          </div></sc-if>
+        </div></sc-for>
+      </div></nav>
+      <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+        <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:none;background:none;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+        <a href="Login.Mobile.dc.html" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--salis-orange)"><salis-icon name="LogOut" size="16"></salis-icon><span>{{ t.logout }}</span></a>
+      </div>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Khalid Al-Amri&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,open:null,data:null,drawerOpen:false,query:""};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;
+    const t=s=>rtl&&D?(D.AR[s]||s):s;
+    const NAV=D?(D.navFor?D.navFor(D.NAV):D.NAV):[];
+    const open=this.state.open??NAV.map(g=>g.label);
+    const navGroups=NAV.map(g=>{
+      const isOpen=open.includes(g.label);
+      return {label:t(g.label),open:isOpen,chev:isOpen?"ChevronDown":(rtl?"ChevronLeft":"ChevronRight"),
+        toggle:()=>this.setState({open:isOpen?open.filter(x=>x!==g.label):[...open,g.label]}),
+        items:g.items.map(it=>{
+          const on=it.r==="invoices";
+          return {label:t(it.l),icon:g.icon,href:(D&&D.MOBILE_HREF&&D.MOBILE_HREF[it.r])||it.href||"#",
+            style:"display:flex;align-items:center;gap:8px;padding:6px 12px;padding-inline-start:24px;border-radius:6px;cursor:pointer;font-family:var(--font-action);font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;text-decoration:none;"+(on?"background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)":"color:var(--text-primary)")};
+        })};
+    });
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+    const stMap={paid:pill("rgba(10,94,215,.1)","#0A5ED7"),unpaid:pill("rgba(100,116,139,.1)","#64748B"),overdue:pill("rgba(249,115,22,.1)","#F97316")};
+    const query=this.state.query,qLower=query.trim().toLowerCase();
+    const invoices=(D?D.INVOICES:[]).filter(i=>!qLower||[i.id,i.cust].some(v=>v.toLowerCase().includes(qLower))).map(i=>({id:i.id,cust:i.cust,amount:i.amount,due:i.due,status:t(i.status[0].toUpperCase()+i.status.slice(1)),stStyle:stMap[i.status],open:()=>location.href="InvoiceDetail.Mobile.dc.html?id="+encodeURIComponent(i.id)}));
+    const _rid=(D&&D.currentRole)?D.currentRole():null;const _rl=((D&&D.ROLES)||[]).find(x=>x.id===_rid);const userName=_rl?(rtl?_rl.demo.ar:_rl.demo.name):(this.props.userName??"Khalid Al-Amri");const roleLabel=_rl?(rtl?_rl.ar:_rl.label):null;
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",
+      themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      userName,userInitial:userName.trim()[0]||"K",
+      drawerOpen:this.state.drawerOpen,openDrawer:()=>this.setState({drawerOpen:true}),closeDrawer:()=>this.setState({drawerOpen:false}),
+      navGroups,invoices,query,setQuery:e=>this.setState({query:e.target.value}),
+      t:{logout:t("Logout"),title:t("Invoices"),newInvoice:t("New Invoice"),filterPlaceholder:t("Search customers, vehicles, parts...")}
+    };
+  }
+}
+</script>
+</body>
+</html>

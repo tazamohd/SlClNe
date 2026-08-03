@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#F8FAFC}
+a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.pcard:hover{border-color:rgba(10,94,215,.35)!important;box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Technician KB" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <header style="background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:12px 18px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)">
+    <a href="TechnicianPortal.dc.html" style="width:32px;height:32px;border-radius:9px;border:1px solid var(--border-default);display:flex;align-items:center;justify-content:center;color:var(--text-muted);flex-shrink:0" style-hover="border-color:var(--salis-blue);color:var(--salis-blue)"><salis-icon name="{{ backIcon }}" size="15"></salis-icon></a>
+    <div style="min-width:0;flex:1">
+      <p style="margin:0;font-size:14px;font-weight:700;font-family:var(--font-display);color:var(--text-heading)">{{ t.title }}</p>
+      <p style="margin:0;font-size:11.5px;color:var(--text-muted)">{{ t.sub }}</p>
+    </div>
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:11.5px;font-weight:500;flex-shrink:0" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="13"></salis-icon>{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+  </header>
+
+  <div style="max-width:1180px;margin:0 auto;padding:18px;display:flex;flex-direction:column;gap:15px;animation:fadeUp .3s ease">
+
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <span style="position:relative;display:flex;align-items:center">
+        <salis-icon name="Search" size="17" style="position:absolute;inset-inline-start:13px;color:var(--text-muted);pointer-events:none"></salis-icon>
+        <input value="{{ q }}" onChange="{{ setQ }}" placeholder="{{ t.search }}" style="width:100%;height:46px;border-radius:11px;border:1px solid var(--border-default);background:var(--surface-card);padding:0 14px;padding-inline-start:40px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box;transition:all .2s ease" style-focus="border-color:var(--ring);box-shadow:0 0 0 3px rgba(10,94,215,.14)">
+      </span>
+      <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:2px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+          <button onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="padding:13px 15px;border-radius:12px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:11px">
+          <span style="{{ s.icStyle }}"><salis-icon name="{{ s.icon }}" size="16"></salis-icon></span>
+          <div style="min-width:0">
+            <p style="margin:0;font-size:19px;font-family:var(--font-display);font-weight:900;color:var(--text-heading);font-variant-numeric:tabular-nums;line-height:1.1">{{ s.n }}</p>
+            <p style="margin:2px 0 0;font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">
+        <sc-for list="{{ procs }}" as="p" hint-placeholder-count="6">
+          <div class="pcard" style="padding:15px 16px;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:11px;transition:all .18s ease;cursor:pointer">
+            <div style="display:flex;align-items:flex-start;gap:11px">
+              <span style="{{ p.icStyle }}"><salis-icon name="{{ p.icon }}" size="17"></salis-icon></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
+                  <span style="font-size:10.5px;font-weight:700;color:var(--text-muted);font-family:var(--font-mono,monospace)">{{ p.id }}</span>
+                  <sc-if value="{{ p.tsb }}" hint-placeholder-val="{{ true }}"><span style="padding:1px 6px;border-radius:9999px;background:rgba(249,115,22,.13);color:#F97316;font-size:9.5px;font-weight:700;letter-spacing:.04em;font-family:var(--font-action)">TSB</span></sc-if>
+                </div>
+                <p style="margin:0;font-size:13.5px;font-weight:700;color:var(--text-heading);line-height:1.35;text-wrap:pretty">{{ p.title }}</p>
+                <p style="margin:3px 0 0;font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.make }}</p>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="{{ p.catPill }}">{{ p.cat }}</span>
+              <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:9999px;background:var(--surface-inset);color:var(--text-body);font-size:10.5px;font-weight:600;font-family:var(--font-action)"><salis-icon name="Clock" size="10"></salis-icon>{{ p.mins }}</span>
+              <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:9999px;background:var(--surface-inset);color:var(--text-body);font-size:10.5px;font-weight:600;font-family:var(--font-action)"><salis-icon name="ListOrdered" size="10"></salis-icon>{{ p.steps }}</span>
+            </div>
+            <div style="padding:9px 11px;border-radius:9px;background:rgba(10,94,215,.05);border-inline-start:2px solid var(--salis-blue)">
+              <p style="margin:0;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--salis-blue);font-family:var(--font-action)">{{ t.torque }}</p>
+              <p style="margin:3px 0 0;font-size:11.5px;line-height:1.45;color:var(--text-body);font-family:var(--font-mono,monospace)">{{ p.torque }}</p>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:9px;padding-top:10px;border-top:1px solid var(--border-default)">
+              <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><salis-icon name="Eye" size="11"></salis-icon>{{ p.views }}</span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--salis-blue);font-family:var(--font-action)">{{ t.open }}<salis-icon name="{{ chevIcon }}" size="12"></salis-icon></span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:44px 20px;text-align:center;border-radius:13px;background:var(--surface-card);border:1px solid var(--border-default)">
+        <span style="display:inline-flex;padding:12px;border-radius:13px;background:var(--surface-inset);color:var(--text-muted)"><salis-icon name="SearchX" size="22"></salis-icon></span>
+        <p style="margin:13px 0 0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.emptyH }}</p>
+        <p style="margin:5px 0 0;font-size:13px;color:var(--text-muted)">{{ t.emptySub }}</p>
+        <button onClick="{{ reset }}" style="margin-top:15px;height:36px;padding:0 15px;border-radius:9px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;font-size:12.5px;font-weight:600;font-family:var(--font-action)">{{ t.clearFilters }}</button>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic{
+  state={dark:null,lang:null,D:null,q:"",cat:"All"};
+  componentDidMount(){ import("./gms-data.js").then(m=>this.setState({D:m})); }
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar", D=this.state.D, AR=(D&&D.AR)||{}, t=s=>rtl?(AR[s]||s):s;
+    const ALL=(D&&D.KB_PROCEDURES)||[];
+    const q=this.state.q.trim().toLowerCase(), cat=this.state.cat;
+
+    const ICON={Brakes:"Disc3",Engine:"Cog",HVAC:"Wind",Electrical:"Zap",Drivetrain:"Settings2","EV / Hybrid":"BatteryCharging"};
+    const CATS=["All",...[...new Set(ALL.map(p=>p.cat))]];
+    const cats=CATS.map(c=>{
+      const on=cat===c;
+      return {label:t(c==="All"?"All":c),
+        pick:()=>this.setState({cat:c}),
+        style:"flex-shrink:0;height:32px;padding:0 13px;border-radius:9999px;cursor:pointer;font-size:12px;font-weight:600;font-family:var(--font-action);transition:all .15s ease;"+(on?"background:var(--salis-gradient);color:#fff;border:none":"background:var(--surface-card);color:var(--text-body);border:1px solid var(--border-default)")};
+    });
+
+    const match=p=>{
+      if(cat!=="All"&&p.cat!==cat) return false;
+      if(!q) return true;
+      return ((rtl?p.ar:p.title)+" "+p.title+" "+p.id+" "+p.make+" "+p.cat).toLowerCase().includes(q);
+    };
+    const list=ALL.filter(match);
+    const procs=list.map(p=>({
+      id:p.id, title:rtl?p.ar:p.title, make:p.make, cat:t(p.cat), tsb:p.tsb,
+      mins:p.mins+" "+t("min"), steps:p.steps+" "+t("steps"),
+      views:p.views.toLocaleString("en-US"),
+      torque:rtl?p.ar_torque:p.torque,
+      icon:ICON[p.cat]||"Wrench",
+      icStyle:"width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(10,94,215,.1);color:var(--salis-blue)",
+      catPill:"padding:2px 8px;border-radius:9999px;background:rgba(11,179,255,.12);color:#0BB3FF;font-size:10.5px;font-weight:600;font-family:var(--font-action)"}));
+
+    const st=(n,label,icon,color)=>({n,label,icon,
+      icStyle:"width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,"+color+" 12%,transparent);color:"+color});
+
+    return{
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      backIcon:rtl?"ArrowRight":"ArrowLeft", chevIcon:rtl?"ChevronLeft":"ChevronRight",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{title:t("Technician Knowledge Base"),sub:t("Procedures, torque specs and service bulletins"),
+        search:t("Search by procedure, code, or vehicle..."),torque:t("Torque specification"),
+        open:t("Open"),emptyH:t("Nothing matches"),
+        emptySub:t("Try a shorter term, a different category, or search by vehicle."),
+        clearFilters:t("Clear filters")},
+      q:this.state.q, setQ:e=>this.setState({q:e.target.value}),
+      cats, procs, hasResults:list.length>0, noResults:list.length===0,
+      reset:()=>this.setState({q:"",cat:"All"}),
+      stats:[st(ALL.length,t("Procedures"),"BookOpen","#0A5ED7"),
+             st(ALL.filter(p=>p.tsb).length,t("Service bulletins"),"AlertTriangle","#F97316"),
+             st([...new Set(ALL.map(p=>p.cat))].length,t("Systems"),"Layers","#0BB3FF"),
+             st(ALL.reduce((a,p)=>a+p.views,0).toLocaleString("en-US"),t("Total views"),"Eye","#0A5ED7")]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>
+body{margin:0;background:#1a1f2b}
+::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Native-iOS" style="min-height:100vh;background:#1a1f2b;font-family:var(--font-ui,'Inter',sans-serif);display:flex;flex-direction:column;gap:24px;align-items:center;padding:32px 16px">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button onClick="{{ toggleLang }}" style="height:32px;padding:0 12px;border-radius:8px;border:1px solid #33394a;background:#232939;color:#cbd5e1;font-family:var(--font-action);font-size:12px;cursor:pointer">{{ langLabel }}</button>
+    <button onClick="{{ toggleTheme }}" style="height:32px;width:32px;border-radius:8px;border:1px solid #33394a;background:#232939;color:#cbd5e1;cursor:pointer"><salis-icon name="{{ themeIcon }}" size="15"></salis-icon></button>
+    <span style="color:#64748b;font-family:var(--font-action);font-size:12px">iOS · SALIS AUTO</span>
+  </div>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center">
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Login" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;z-index:0;pointer-events:none">
+          <div style="position:absolute;top:0;right:0;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.12),transparent 65%);filter:blur(48px)"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 20px 20px;position:relative;z-index:1;gap:20px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+            <img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:104px;height:auto">
+            <div style="text-align:center">
+              <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--text-heading)">{{ t.signIn }}</h2>
+              <p style="margin:4px 0 0;font-family:var(--font-action);font-size:12px;color:var(--text-muted)">{{ t.creds }}</p>
+            </div>
+          </div>
+          <form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.email }}</label>
+              <span style="position:relative;display:flex;align-items:center">
+                <salis-icon name="Mail" size="17" style="position:absolute;inset-inline-start:12px;color:var(--text-muted);z-index:1"></salis-icon>
+                <input type="email" placeholder="your@email.com" value="{{ email }}" onChange="{{ setEmail }}" style="width:100%;height:46px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;padding-inline-start:36px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box">
+              </span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.password }}</label>
+              <span style="position:relative;display:flex;align-items:center">
+                <salis-icon name="Lock" size="17" style="position:absolute;inset-inline-start:12px;color:var(--text-muted);z-index:1"></salis-icon>
+                <input type="password" placeholder="••••••••" value="{{ pw }}" onChange="{{ setPw }}" style="width:100%;height:46px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 14px;padding-inline-start:36px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box">
+              </span>
+            </div>
+            <button type="submit" style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.signIn }}</button>
+          </form>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Splash" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-page);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;pointer-events:none"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.15),transparent 65%);filter:blur(60px)"></div></div>
+        <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div style="position:relative"><div style="position:absolute;inset:-16px;background:var(--salis-gradient);border-radius:20px;filter:blur(24px);opacity:.25"></div><img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="position:relative;width:120px;height:auto"></div>
+          <h1 style="margin:0;font-family:var(--font-display);font-weight:900;font-size:22px;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">SALIS AUTO</h1>
+          <p style="margin:0;font-size:11px;color:var(--text-muted);letter-spacing:.02em">{{ t.obSvcHint2 }}</p>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Register" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;pointer-events:none"><div style="position:absolute;top:0;right:0;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.12),transparent 65%);filter:blur(48px)"></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 20px 20px;position:relative;z-index:1;gap:16px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><img src="assets/logo-blue-orange.png" alt="SALIS AUTO" style="width:80px;height:auto"><h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--text-heading)">{{ t.registerTitle }}</h2></div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.fullName }}</label><input placeholder="Khalid Al-Amri" style="height:44px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.email }}</label><input placeholder="your@email.com" style="height:44px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.phoneLabel }}</label><input dir="ltr" placeholder="+966 5X XXX XXXX" style="height:44px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-family:var(--font-mono);font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.password }}</label><input type="password" placeholder="••••••••" style="height:44px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+            <button style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.registerTitle }}</button>
+            <p style="margin:0;text-align:center;font-size:12px;color:var(--text-muted)">{{ t.haveAcct }} <span style="color:var(--salis-blue);font-weight:600">{{ t.signIn }}</span></p>
+          </div>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Forgot Password" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;pointer-events:none"><div style="position:absolute;top:0;right:0;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(10,94,215,.12),transparent 65%);filter:blur(48px)"></div></div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;position:relative;z-index:1;gap:20px">
+          <span style="padding:14px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="KeyRound" size="26"></salis-icon></span>
+          <div style="text-align:center"><h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--text-heading)">{{ t.resetPw }}</h2><p style="margin:6px 0 0;font-size:12px;color:var(--text-muted)">{{ t.resetPwDesc }}</p></div>
+          <div style="width:100%;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.email }}</label><input placeholder="your@email.com" style="width:100%;height:46px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:14px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+            <button style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.sendResetLink }}</button>
+          </div>
+          <span style="font-size:13px;color:var(--salis-blue);font-weight:500">{{ t.backToSignIn }}</span>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="OTP" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);position:relative;overflow:hidden">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:20px">
+          <span style="padding:14px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="Mail" size="26"></salis-icon></span>
+          <div style="text-align:center"><h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--text-heading)">{{ t.otpTitle }}</h2><p style="margin:6px 0 0;font-size:12px;color:var(--text-muted)">{{ t.otpDesc }}</p></div>
+          <div style="display:flex;gap:8px" dir="ltr"><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">3</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">7</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--salis-blue);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">•</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-faint)"></span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-faint)"></span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-faint)"></span></div>
+          <button style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.verifyBtn }}</button>
+          <p style="margin:0;font-size:12px;color:var(--text-muted)">{{ t.resendHint }} <span style="color:var(--salis-blue);font-weight:600">{{ t.resendCode }}</span></p>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="2FA" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page)">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:20px">
+          <span style="padding:14px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="ShieldCheck" size="26"></salis-icon></span>
+          <div style="text-align:center"><h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--text-heading)">{{ t.twoFaTitle }}</h2><p style="margin:6px 0 0;font-size:12px;color:var(--text-muted)">{{ t.twoFaDesc }}</p></div>
+          <div style="display:flex;gap:8px" dir="ltr"><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">4</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">9</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">2</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--salis-blue);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--text-heading)">•</span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-faint)"></span><span style="width:42px;height:50px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-faint)"></span></div>
+          <button style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.verifyBtn }}</button>
+          <p style="margin:0;font-size:11px;color:var(--text-faint)">{{ t.refreshHint }}</p>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Role Selection" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page)">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px;gap:18px">
+          <div style="text-align:center"><img src="assets/logo-blue-orange.png" alt="" style="width:70px;height:auto"><h2 style="margin:10px 0 0;font-family:var(--font-display);font-weight:800;font-size:18px;color:var(--text-heading)">{{ t.selectRole }}</h2></div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:14px;border:1.5px solid var(--salis-blue);background:rgba(10,94,215,.06);color:var(--salis-blue)"><span style="padding:10px;border-radius:12px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Crown" size="18"></salis-icon></span><span style="font-family:var(--font-action);font-weight:600;font-size:12px">{{ t.workshopOwner }}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:14px;border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)"><span style="padding:10px;border-radius:12px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="ClipboardList" size="18"></salis-icon></span><span style="font-family:var(--font-action);font-weight:600;font-size:12px">{{ t.serviceAdvisor }}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:14px;border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)"><span style="padding:10px;border-radius:12px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="Wrench" size="18"></salis-icon></span><span style="font-family:var(--font-action);font-weight:600;font-size:12px">{{ t.technicianRole }}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:14px;border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)"><span style="padding:10px;border-radius:12px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="Users" size="18"></salis-icon></span><span style="font-family:var(--font-action);font-weight:600;font-size:12px">{{ t.managerRole }}</span></div>
+          </div>
+          <button style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.continue }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Create PIN" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-page);gap:22px;padding:20px">
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--text-heading)">{{ t.createPin }}</h2>
+        <div style="display:flex;gap:14px"><span style="width:16px;height:16px;border-radius:50%;background:var(--salis-gradient)"></span><span style="width:16px;height:16px;border-radius:50%;background:var(--salis-gradient)"></span><span style="width:16px;height:16px;border-radius:50%;background:var(--surface-inset);border:1px solid var(--border-default)"></span><span style="width:16px;height:16px;border-radius:50%;background:var(--surface-inset);border:1px solid var(--border-default)"></span></div>
+        <div style="display:grid;grid-template-columns:repeat(3,60px);gap:10px">
+          <span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">1</span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">2</span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">3</span>
+          <span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">4</span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">5</span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">6</span>
+          <span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">7</span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">8</span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">9</span>
+          <span style="width:60px;height:60px"></span><span style="width:60px;height:60px;border-radius:50%;border:1px solid var(--border-default);background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-heading)">0</span><span style="width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-muted)"><salis-icon name="Delete" size="20"></salis-icon></span>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Biometric" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-page);gap:16px;padding:20px;text-align:center">
+        <span style="display:inline-flex;padding:22px;border-radius:50%;background:rgba(10,94,215,.1);color:var(--salis-blue)"><salis-icon name="Fingerprint" size="40"></salis-icon></span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:19px;color:var(--text-heading)">{{ t.biometricTitle }}</h2>
+        <p style="margin:0;font-size:13px;color:var(--text-muted);max-width:260px">{{ t.biometricDesc }}</p>
+        <button style="width:100%;height:48px;border:none;border-radius:12px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);margin-top:8px">{{ t.continue }}</button>
+        <span style="font-size:13px;color:var(--text-muted)">{{ t.skipForNow }}</span>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Onboarding" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:14px 16px 0;flex-shrink:0">
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--text-heading)">{{ t.obTitle }}</h2>
+          <p style="margin:2px 0 0;font-family:var(--font-action);font-size:12px;color:var(--text-muted)">{{ t.obSvcHint }}</p>
+        </div>
+        <div style="padding:14px 16px;flex:1;overflow-y:auto">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <sc-for list="{{ obServices }}" as="s" hint-placeholder-count="7">
+              <button onClick="{{ s.toggle }}" style="{{ s.style }}">
+                <span style="{{ s.capStyle }}"><salis-icon name="{{ s.icon }}" size="18"></salis-icon></span>
+                <span style="font-family:var(--font-action);font-size:11px;font-weight:500;text-align:center">{{ s.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:14px 16px;border-top:1px solid var(--border-default);display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span style="font-family:var(--font-action);font-size:11px;color:var(--text-faint)">{{ t.obStep }}</span>
+          <span style="flex:1"></span>
+          <button style="display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 20px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25)">{{ t.continue }}<salis-icon name="{{ nextChev }}" size="16"></salis-icon></button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Dashboard" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:10px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <div style="padding:8px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Sparkles" size="18"></salis-icon></div>
+          <div style="min-width:0">
+            <h1 style="margin:0;font-size:19px;font-family:var(--font-display);font-weight:900;background:var(--salis-gradient-r);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">{{ t.dashboard }}</h1>
+            <p style="margin:0;font-size:11px;color:var(--text-muted)">{{ t.welcome }} <span style="font-weight:600;color:var(--text-heading)">{{ userName }}</span></p>
+          </div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:4px 16px 20px;display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ statCards }}" as="c" hint-placeholder-count="3">
+            <div style="background:var(--surface-card);border-radius:14px;padding:14px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0">
+                <span style="{{ c.iconStyle }}"><salis-icon name="{{ c.icon }}" size="16"></salis-icon></span>
+                <div style="min-width:0"><p style="margin:0;font-size:11px;color:var(--text-muted)">{{ c.label }}</p><h4 style="margin:0;font-size:20px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ c.value }}</h4></div>
+              </div>
+            </div>
+          </sc-for>
+          <div>
+            <h3 style="margin:0 0 8px;font-size:12px;font-weight:700;color:var(--text-heading);text-transform:uppercase;letter-spacing:.03em">{{ t.latestJobCards }}</h3>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="3">
+                <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ j.id }}</span><span style="{{ j.stStyle }}">{{ j.st }}</span></div>
+                  <span style="font-size:12px;color:var(--text-body)">{{ j.cust }} · {{ j.veh }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Job Cards" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Wrench" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.jobCardsTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ jobsAll }}" as="j" hint-placeholder-count="5">
+            <div onClick="{{ j.open }}" style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:6px;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ j.id }}</span><span style="{{ j.stStyle }}">{{ j.st }}</span></div>
+              <span style="font-size:12px;color:var(--text-body)">{{ j.cust }} · {{ j.veh }}</span>
+              <span style="{{ j.svcStyle }};align-self:flex-start">{{ j.svc }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Appointments" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Calendar" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.appointmentsTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ appts }}" as="a" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;align-items:center;gap:10px">
+              <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--salis-blue);flex-shrink:0" dir="ltr">{{ a.time }}</span>
+              <div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ a.cust }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ a.veh }} · {{ a.svc }}</p></div>
+              <span style="{{ a.stStyle }}">{{ a.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Estimates" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="FileText" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.estimatesTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ estimatesL }}" as="e" hint-placeholder-count="3">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ e.id }}</span><span style="{{ e.stStyle }}">{{ e.status }}</span></div>
+              <span style="font-size:12px;color:var(--text-body)">{{ e.cust }} · {{ e.veh }}</span>
+              <span style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ e.amount }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Customers" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Users" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.customersTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ customersL }}" as="c" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;align-items:center;gap:10px">
+              <span style="width:32px;height:32px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">{{ c.initial }}</span>
+              <div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ c.name }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)" dir="ltr">{{ c.phone }}</p></div>
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--salis-blue)" dir="ltr">{{ c.spent }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Fleet Management" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Truck" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.fleetTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ fleetsL }}" as="f" hint-placeholder-count="3">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--text-heading)">{{ f.name }}</span><span style="{{ f.stStyle }}">{{ f.status }}</span></div>
+              <span style="font-size:12px;color:var(--text-muted)">{{ f.vehicles }} {{ t.vehiclesLabel }} · {{ f.active }} {{ t.activeJobs }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Inventory" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Package" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.inventoryTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ partsL }}" as="p" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--text-heading)">{{ p.name }}</span><span style="{{ p.stStyle }}">{{ p.stLabel }}</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)"><span dir="ltr">{{ p.sku }}</span><span>{{ p.stock }} {{ t.usersLabel }}</span><span style="font-family:var(--font-mono)">{{ p.price }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Technicians" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="HardHat" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.techniciansTitle }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+          <sc-for list="{{ techsL }}" as="tc" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+              <span style="width:40px;height:40px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">{{ tc.initial }}</span>
+              <p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ tc.name }}</p>
+              <p style="margin:0;font-size:10px;color:var(--text-muted)">{{ tc.specialty }}</p>
+              <span style="font-size:11px;color:var(--salis-blue);font-weight:600">★ {{ tc.rating }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Invoices" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Receipt" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.invoicesTitle }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ invoicesL }}" as="i" hint-placeholder-count="5">
+            <div onClick="{{ i.open }}" style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:6px;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-heading)" dir="ltr">{{ i.id }}</span><span style="{{ i.stStyle }}">{{ i.status }}</span></div>
+              <span style="font-size:12px;color:var(--text-body)">{{ i.cust }}</span>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--text-muted)">{{ i.due }}</span><span style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ i.amount }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Subscription" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="CreditCard" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.subscriptionTitle }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--surface-card);border-radius:14px;padding:16px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text-muted)">{{ t.currentPlan }}</span><span style="font-size:13px;font-weight:700;color:var(--salis-blue)">PRO</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-body)"><span>{{ t.usersLabel }}</span><span>8/10</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-body)"><span>{{ t.storageLabel }}</span><span>62/100 GB</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-body)"><span>{{ t.nextBilling }}</span><span>Aug 1, 2026</span></div>
+          </div>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer">{{ t.managePlan }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Backup & Export" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Shield" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.backupTitle }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer"><salis-icon name="RefreshCw" size="15"></salis-icon>{{ t.runBackup }}</button>
+          <div style="background:var(--surface-card);border-radius:14px;padding:14px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:12px;font-weight:700;color:var(--text-heading);text-transform:uppercase;letter-spacing:.03em">{{ t.backupHistory }}</h3>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)"><span>Jul 20, 2026</span><span style="color:var(--salis-blue)">✓</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)"><span>Jul 19, 2026</span><span style="color:var(--salis-blue)">✓</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)"><span>Jul 18, 2026</span><span style="color:var(--salis-blue)">✓</span></div>
+          </div>
+          <div style="background:var(--surface-card);border-radius:14px;padding:14px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:12px;font-weight:700;color:var(--text-heading);text-transform:uppercase;letter-spacing:.03em">{{ t.exportData }}</h3>
+            <span style="font-size:12px;color:var(--text-body)">{{ t.exportCustomers }}</span>
+            <span style="font-size:12px;color:var(--text-body)">{{ t.exportJobCards }}</span>
+            <span style="font-size:12px;color:var(--text-body)">{{ t.exportInvoices }}</span>
+          </div>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Profile" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="UserCircle" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.profileTitle }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:48px;height:48px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700">{{ userInitial }}</span><div><p style="margin:0;font-size:14px;font-weight:700;color:var(--text-heading)">{{ userName }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ t.role }}: {{ t.admin }}</p></div></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:11px;font-weight:500;color:var(--text-primary)">{{ t.fullName }}</label><input value="{{ userName }}" style="height:44px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-inset);padding:0 12px;font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"></div>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer">{{ t.saveChanges }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Check-In" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="ClipboardCheck" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.wsCheckIn }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="width:36px;height:36px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">A</span><div><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">Ahmed Al-Rashid</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)" dir="ltr">Toyota Camry 2022 · RUH 4821</p></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default)"><span style="font-size:10px;color:var(--text-muted)">{{ t.wsOdometer }}</span><p style="margin:4px 0 0;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--text-heading)" dir="ltr">42,180 km</p></div>
+            <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default)"><span style="font-size:10px;color:var(--text-muted)">{{ t.wsFuel }}</span><p style="margin:4px 0 0;font-size:15px;font-weight:700;color:var(--salis-blue)">3/4</p></div>
+          </div>
+          <div style="height:80px;border-radius:10px;border:1.5px dashed var(--border-strong);background:var(--surface-inset);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--text-muted)"><salis-icon name="Camera" size="18"></salis-icon><span style="font-size:12px">{{ t.wsPhotos }}</span></div>
+          <button style="width:100%;height:46px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Check" size="16"></salis-icon>{{ t.wsComplete }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Inspection" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="SearchCheck" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.wsInspection }}</h2><div style="display:flex;align-items:center;gap:4px"><div style="width:48px;height:4px;border-radius:2px;background:var(--surface-inset)"><div style="height:100%;width:33%;border-radius:2px;background:var(--salis-gradient)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--salis-blue)">33%</span></div></div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ wsInspCats }}" as="c" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:6px"><span style="padding:4px;border-radius:6px;background:rgba(10,94,215,.1);color:var(--salis-blue);display:flex"><salis-icon name="{{ c.icon }}" size="13"></salis-icon></span><span style="font-size:12px;font-weight:700;color:var(--text-heading)">{{ c.label }}</span></div>
+              <sc-for list="{{ c.items }}" as="it" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border-default)"><span style="flex:1;font-size:12px;color:var(--text-body)">{{ it }}</span><span style="height:24px;padding:0 8px;border-radius:4px;background:var(--surface-inset);color:var(--text-muted);font-size:10px;font-weight:600;display:flex;align-items:center">{{ t.wsPass }}</span><span style="height:24px;padding:0 8px;border-radius:4px;background:var(--surface-inset);color:var(--text-muted);font-size:10px;font-weight:600;display:flex;align-items:center">{{ t.wsFail }}</span></div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Estimate" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Receipt" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.wsEstimate }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ wsEstParts }}" as="p" hint-placeholder-count="3">
+            <div style="background:var(--surface-card);border-radius:10px;padding:10px 12px;border:1px solid var(--border-default);display:flex;justify-content:space-between;align-items:center"><div><p style="margin:0;font-size:12px;font-weight:500;color:var(--text-body)">{{ p.name }}</p><p style="margin:1px 0 0;font-size:10px;color:var(--text-muted)" dir="ltr">{{ p.detail }}</p></div><span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ p.total }}</span></div>
+          </sc-for>
+          <div style="background:var(--surface-card);border-radius:12px;padding:14px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)"><span>{{ t.wsSubtotal }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 1,345</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)"><span>{{ t.wsVat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 201.75</span></div>
+            <div style="height:1px;background:var(--border-default)"></div>
+            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:800;color:var(--text-heading)"><span>{{ t.wsTotal }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 1,546.75</span></div>
+          </div>
+          <button style="width:100%;height:44px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Check" size="14"></salis-icon>{{ t.wsApprove }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Quality Control" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="ShieldCheck" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.wsQC }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:0">
+            <sc-for list="{{ wsQCItems }}" as="q" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border-default)"><span style="{{ q.cbStyle }}"><sc-if value="{{ q.on }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="10" stroke-width="3"></salis-icon></sc-if></span><span style="flex:1;font-size:12px;color:var(--text-body)">{{ q.label }}</span><span style="{{ q.badge }}">{{ q.status }}</span></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button style="flex:1;height:42px;border:1px solid var(--salis-orange);border-radius:10px;background:none;color:var(--salis-orange);font-family:var(--font-action);font-weight:600;font-size:12px;cursor:pointer">{{ t.wsReturnRepair }}</button>
+            <button style="flex:1;height:42px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:12px;cursor:pointer">{{ t.wsApproveQC }}</button>
+          </div>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Delivery" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="CarFront" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.wsDelivery }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--surface-card);border-radius:12px;padding:14px;border:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><div style="flex:1;text-align:center"><span style="font-size:9px;color:var(--text-muted)">{{ t.wsCheckInOdo }}</span><p style="margin:2px 0 0;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-heading)" dir="ltr">42,180 km</p></div><salis-icon name="ArrowRight" size="14" style="color:var(--text-muted)"></salis-icon><div style="flex:1;text-align:center"><span style="font-size:9px;color:var(--text-muted)">{{ t.wsDeliveryOdo }}</span><p style="margin:2px 0 0;font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--salis-blue)" dir="ltr">42,195 km</p></div></div>
+          <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:0">
+            <sc-for list="{{ wsDeliveryItems }}" as="d" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border-default)"><span style="{{ d.cbStyle }}"><sc-if value="{{ d.on }}" hint-placeholder-val="{{ false }}"><salis-icon name="Check" size="10" stroke-width="3"></salis-icon></sc-if></span><salis-icon name="{{ d.icon }}" size="13" style="color:var(--text-muted)"></salis-icon><span style="flex:1;font-size:12px;color:var(--text-body)">{{ d.label }}</span></div>
+            </sc-for>
+          </div>
+          <button style="width:100%;height:44px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="CheckCircle" size="14"></salis-icon>{{ t.wsCompleteDelivery }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Invoice" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="FilePlus" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.wsInvoice }}</h2><div style="display:flex;align-items:center;gap:3px;padding:3px 6px;border-radius:4px;background:rgba(10,94,215,.08)"><salis-icon name="ShieldCheck" size="10" style="color:var(--salis-blue)"></salis-icon><span style="font-size:8px;font-weight:600;color:var(--salis-blue)">ZATCA</span></div></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default);display:flex;align-items:center;gap:8px"><span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">A</span><div><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">Ahmed Al-Rashid</p><p style="margin:0;font-size:9px;color:var(--text-muted)" dir="ltr">INV-2026-0143 · Net 30</p></div></div>
+          <sc-for list="{{ wsInvItems }}" as="ii" hint-placeholder-count="3"><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border-default);font-size:11px"><span style="color:var(--text-body)">{{ ii.name }}</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--text-heading)" dir="ltr">{{ ii.total }}</span></div></sc-for>
+          <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default);display:flex;flex-direction:column;gap:4px;margin-top:4px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)"><span>{{ t.wsSubtotal }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 1,840</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)"><span>{{ t.wsVat }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 276</span></div>
+            <div style="height:1px;background:var(--border-default)"></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:var(--text-heading)"><span>{{ t.wsTotal }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 2,116</span></div>
+          </div>
+          <button style="width:100%;height:40px;border:none;border-radius:10px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:4px"><salis-icon name="Send" size="13"></salis-icon>{{ t.wsSendInv }}</button>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Calendar" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Calendar" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.wsCalendar }}</h2><salis-icon name="Plus" size="18" style="color:var(--salis-blue)"></salis-icon></div>
+        <div style="padding:8px 16px;display:flex;gap:4px;border-bottom:1px solid var(--border-default)"><span style="flex:1;text-align:center;padding:6px 0;border-radius:8px;background:var(--surface-inset);font-size:10px;color:var(--text-muted)"><span style="display:block;font-weight:500">Sun</span><span style="font-weight:700;color:var(--text-heading)">19</span></span><span style="flex:1;text-align:center;padding:6px 0;border-radius:8px;background:var(--surface-inset);font-size:10px;color:var(--text-muted)"><span style="display:block;font-weight:500">Mon</span><span style="font-weight:700;color:var(--text-heading)">20</span></span><span style="flex:1;text-align:center;padding:6px 0;border-radius:8px;background:var(--salis-gradient);font-size:10px;color:#fff"><span style="display:block;font-weight:500">Tue</span><span style="font-weight:700">21</span></span><span style="flex:1;text-align:center;padding:6px 0;border-radius:8px;background:var(--surface-inset);font-size:10px;color:var(--text-muted)"><span style="display:block;font-weight:500">Wed</span><span style="font-weight:700;color:var(--text-heading)">22</span></span><span style="flex:1;text-align:center;padding:6px 0;border-radius:8px;background:var(--surface-inset);font-size:10px;color:var(--text-muted)"><span style="display:block;font-weight:500">Thu</span><span style="font-weight:700;color:var(--text-heading)">23</span></span></div>
+        <div style="flex:1;overflow-y:auto;padding:10px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;gap:8px"><span style="width:40px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);padding-top:8px" dir="ltr">9:00</span><div style="flex:1;border-radius:8px;padding:8px;background:rgba(10,94,215,.1);color:var(--salis-blue);border-inline-start:3px solid var(--salis-blue)"><p style="margin:0;font-size:11px;font-weight:600">Ahmed Al-Rashid</p><p style="margin:1px 0 0;font-size:9px;opacity:.8">Maintenance · 1h</p></div></div>
+          <div style="display:flex;gap:8px"><span style="width:40px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);padding-top:8px" dir="ltr">11:00</span><div style="flex:1;border-radius:8px;padding:8px;background:rgba(11,179,255,.1);color:#0BB3FF;border-inline-start:3px solid #0BB3FF"><p style="margin:0;font-size:11px;font-weight:600">Omar Al-Ghamdi</p><p style="margin:1px 0 0;font-size:9px;opacity:.8">Diagnostics · 30m</p></div></div>
+          <div style="display:flex;gap:8px"><span style="width:40px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);padding-top:8px" dir="ltr">1:00</span><div style="flex:1;height:36px;border-radius:8px;border:1px dashed var(--border-default);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-faint)">Available</div></div>
+          <div style="display:flex;gap:8px"><span style="width:40px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);padding-top:8px" dir="ltr">3:00</span><div style="flex:1;height:36px;border-radius:8px;border:1px dashed var(--border-default);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-faint)">Available</div></div>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Notifications" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Bell" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.wsNotifs }}</h2><span style="font-size:11px;color:var(--salis-blue);font-weight:600">4 new</span></div>
+        <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:0">
+          <sc-for list="{{ wsNotifItems }}" as="ni" hint-placeholder-count="5">
+            <div style="display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border-default);{{ ni.bg }}">
+              <span style="padding:7px;border-radius:10px;display:flex;flex-shrink:0;{{ ni.iconBg }}"><salis-icon name="{{ ni.icon }}" size="14"></salis-icon></span>
+              <div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:600;color:var(--text-heading)">{{ ni.title }}</p><p style="margin:2px 0 0;font-size:10px;color:var(--text-muted);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden">{{ ni.body }}</p><span style="font-size:9px;color:var(--text-faint)">{{ ni.time }}</span></div>
+              <sc-if value="{{ ni.dot }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:var(--salis-blue);flex-shrink:0;margin-top:4px"></span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="HR & Payroll" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="Users" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.wsHR }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div style="background:var(--surface-card);border-radius:8px;padding:8px;border:1px solid var(--border-default)"><span style="font-size:9px;color:var(--text-muted)">Total</span><p style="margin:1px 0 0;font-size:16px;font-weight:900;color:var(--text-heading)">12</p></div><div style="background:var(--surface-card);border-radius:8px;padding:8px;border:1px solid var(--border-default)"><span style="font-size:9px;color:var(--text-muted)">Present</span><p style="margin:1px 0 0;font-size:16px;font-weight:900;color:var(--text-heading)">9</p></div></div>
+          <sc-for list="{{ wsEmployees }}" as="emp" hint-placeholder-count="4">
+            <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default);display:flex;align-items:center;gap:8px">
+              <span style="width:28px;height:28px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">{{ emp.initial }}</span>
+              <div style="flex:1;min-width:0"><p style="margin:0;font-size:11px;font-weight:600;color:var(--text-heading)">{{ emp.name }}</p><p style="margin:0;font-size:9px;color:var(--text-muted)">{{ emp.role }}</p></div>
+              <span style="{{ emp.statusStyle }}">{{ emp.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Reports" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="BarChart3" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading);flex:1">{{ t.wsReports }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default)"><span style="font-size:9px;color:var(--text-muted)">Revenue</span><p style="margin:2px 0 0;font-size:16px;font-weight:900;color:var(--text-heading)" dir="ltr">128.4K</p><span style="font-size:9px;color:var(--salis-blue)">↑ 12.3%</span></div>
+            <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default)"><span style="font-size:9px;color:var(--text-muted)">Jobs</span><p style="margin:2px 0 0;font-size:16px;font-weight:900;color:var(--text-heading)">142</p><span style="font-size:9px;color:var(--salis-blue)">↑ 8.5%</span></div>
+          </div>
+          <div style="background:var(--surface-card);border-radius:10px;padding:10px;border:1px solid var(--border-default)"><p style="margin:0 0 6px;font-size:11px;font-weight:700;color:var(--text-heading)">Revenue</p><div style="display:flex;align-items:flex-end;gap:4px;height:60px"><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:64%"></div><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:74%"></div><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:61%"></div><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:86%"></div><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:72%"></div><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:98%"></div><div style="flex:1;border-radius:3px 3px 0 0;background:var(--salis-gradient);height:100%"></div></div></div>
+          <sc-for list="{{ wsServiceBreakdown }}" as="sb" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:8px;padding:4px 0"><span style="flex:1;font-size:11px;color:var(--text-body)">{{ sb.label }}</span><div style="width:60px;height:4px;border-radius:2px;background:var(--surface-inset)"><div style="height:100%;border-radius:2px;{{ sb.bar }};width:{{ sb.pct }}%"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);width:28px;text-align:end">{{ sb.pct }}%</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="Signature" dark="{{ dark }}" hint-size="402,874">
+      <div dir="{{ dir }}" style="height:100%;display:flex;flex-direction:column;background:var(--bg-page);overflow:hidden">
+        <div style="padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-bottom:1px solid var(--border-default)"><span style="padding:7px;border-radius:10px;background:var(--salis-gradient);color:#fff;display:flex"><salis-icon name="PenTool" size="16"></salis-icon></span><h2 style="margin:0;font-size:15px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.wsSignature }}</h2></div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:var(--surface-card);border-radius:12px;padding:12px;border:1px solid var(--border-default);display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><span style="font-size:9px;color:var(--text-muted)">{{ t.wsJobCard }}</span><p style="margin:2px 0 0;font-size:12px;font-weight:700;color:var(--text-heading)" dir="ltr">JC-A3F8B2C1</p></div>
+            <div><span style="font-size:9px;color:var(--text-muted)">{{ t.wsCustomer }}</span><p style="margin:2px 0 0;font-size:12px;font-weight:600;color:var(--text-heading)">Ahmed Al-Rashid</p></div>
+            <div><span style="font-size:9px;color:var(--text-muted)">{{ t.wsVehicle }}</span><p style="margin:2px 0 0;font-size:12px;color:var(--text-body)">Toyota Camry 2022</p></div>
+            <div><span style="font-size:9px;color:var(--text-muted)">{{ t.wsAmount }}</span><p style="margin:2px 0 0;font-size:12px;font-family:var(--font-mono);font-weight:700;color:var(--text-heading)" dir="ltr">SAR 1,546.75</p></div>
+          </div>
+          <div style="height:140px;border-radius:10px;border:2px dashed var(--border-strong);background:var(--surface-inset);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--text-muted)"><salis-icon name="PenTool" size="22"></salis-icon><span style="font-size:12px">{{ t.wsTapSign }}</span></div>
+          <div style="display:flex;align-items:center;gap:6px"><span style="width:18px;height:18px;border-radius:4px;background:var(--surface-inset);border:1.5px solid var(--border-strong);flex-shrink:0"></span><span style="font-size:11px;color:var(--text-body)">{{ t.wsAuthorize }}</span></div>
+          <button style="width:100%;height:44px;border:none;border-radius:10px;background:var(--surface-inset);color:var(--text-muted);font-family:var(--font-action);font-weight:600;font-size:13px;cursor:default">{{ t.wsConfirmSig }}</button>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;ar&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Khalid Al-Amri&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,email:"",pw:"",data:null,obSel:["Maintenance","Repair"]};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",D=this.state.data;
+    const AR=D?D.AR:{},t=s=>rtl?(AR[s]||s):s;
+    const stB=D?D.ST_BADGE:{};
+    const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:500;background:"+bg+";color:"+fg+";text-transform:capitalize;white-space:nowrap";
+    const jobs=(D?D.JOBS:[]).slice(0,3).map(j=>{
+      const st=stB[j.st]||["rgba(100,116,139,.1)","#64748B"];
+      return {id:j.id,cust:j.cust,veh:j.veh,st:t(j.st.replace(/_/g," ")),stStyle:pill(st[0],st[1])};
+    });
+    const obServices=(D?D.SERVICES:[]).map(([icon,label])=>{
+      const on=this.state.obSel.includes(label);
+      return {icon,label:t(label),
+        style:"display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;border-radius:12px;cursor:pointer;transition:all .2s ease;font-family:var(--font-action);"+(on?"border:1.5px solid var(--salis-blue);background:rgba(10,94,215,.06);color:var(--salis-blue)":"border:1px solid var(--border-default);background:var(--surface-card);color:var(--text-body)"),
+        capStyle:"padding:8px;border-radius:10px;display:flex;"+(on?"background:var(--salis-gradient);color:#fff":"background:rgba(10,94,215,.08);color:var(--salis-blue)"),
+        toggle:()=>this.setState(s=>({obSel:s.obSel.includes(label)?s.obSel.filter(x=>x!==label):[...s.obSel,label]}))};
+    });
+    const _rid=(D&&D.currentRole)?D.currentRole():null;const _rl=((D&&D.ROLES)||[]).find(x=>x.id===_rid);const userName=_rl?(rtl?_rl.demo.ar:_rl.demo.name):(this.props.userName??"Khalid Al-Amri");const roleLabel=_rl?(rtl?_rl.ar:_rl.label):null;
+    const statCards=[["DollarSign","Total Revenue","$128,450","rgba(10,94,215,.1)","#0A5ED7"],["Wrench","Active Jobs","14","rgba(11,179,255,.1)","#0BB3FF"],["Users","Customers","248","rgba(11,31,59,.1)","#0B1F3B"]].map(c=>({icon:c[0],label:t(c[1]),value:c[2],iconStyle:"padding:8px;border-radius:10px;background:"+c[3]+";color:"+c[4]+";display:flex;flex-shrink:0"}));
+    const svcB=D?D.SVC_BADGE:{};
+    const jobsAll=(D?D.JOBS:[]).map(j=>{const s=svcB[j.svc]||["rgba(100,116,139,.1)","#64748B"];const st=stB[j.st]||s;return {id:j.id,cust:j.cust,veh:j.veh,svc:t(j.svc.replace(/_/g," ")),svcStyle:pill(s[0],s[1]),st:t(j.st.replace(/_/g," ")),stStyle:pill(st[0],st[1]),open:()=>location.href="JobDetail.dc.html"};});
+    const apptStMap={confirmed:pill("rgba(10,94,215,.1)","#0A5ED7"),awaiting:pill("rgba(249,115,22,.1)","#F97316")};
+    const appts=(D?D.APPOINTMENTS:[]).map(a=>({time:a.time,cust:a.cust,veh:a.veh,svc:t(a.svc),status:a.status==="confirmed"?t("Confirmed"):t("Awaiting"),stStyle:apptStMap[a.status]}));
+    const estStMap={draft:pill("rgba(100,116,139,.1)","#64748B"),sent:pill("rgba(11,179,255,.1)","#0BB3FF"),approved:pill("rgba(10,94,215,.1)","#0A5ED7")};
+    const estimatesL=(D?D.ESTIMATES:[]).map(e=>({id:e.id,cust:e.cust,veh:e.veh,amount:e.amount,status:t(e.status[0].toUpperCase()+e.status.slice(1)),stStyle:estStMap[e.status]}));
+    const customersL=(D?D.CUSTOMERS:[]).map(c=>({name:c.name,initial:c.name[0],phone:c.phone,vehicles:c.vehicles,spent:c.spent,last:c.last==="In Service"?t("In Service"):c.last}));
+    const fleetStMap={active:pill("rgba(10,94,215,.1)","#0A5ED7"),renewal:pill("rgba(249,115,22,.1)","#F97316")};
+    const fleetsL=(D?D.FLEETS:[]).map(f=>({name:f.name,vehicles:f.vehicles,active:f.active,status:f.contract==="active"?t("Active"):t("Renewal Due"),stStyle:fleetStMap[f.contract]}));
+    const partsL=(D?D.PARTS:[]).map(p=>({name:p.name,sku:p.sku,stock:p.stock,reorder:p.reorder,price:p.price,stStyle:p.stock<p.reorder?pill("rgba(249,115,22,.1)","#F97316"):pill("rgba(10,94,215,.1)","#0A5ED7"),stLabel:p.stock<p.reorder?t("Low Stock"):t("In Stock Status")}));
+    const techsL=(D?D.TECHS:[]).map(tc=>({name:tc.name,initial:tc.name[0],specialty:t(tc.specialty),jobs:tc.jobs,rating:tc.rating}));
+    const invStMap={paid:pill("rgba(10,94,215,.1)","#0A5ED7"),unpaid:pill("rgba(100,116,139,.1)","#64748B"),overdue:pill("rgba(249,115,22,.1)","#F97316")};
+    const invoicesL=(D?D.INVOICES:[]).map(i=>({id:i.id,cust:i.cust,amount:i.amount,due:i.due,status:t(i.status[0].toUpperCase()+i.status.slice(1)),stStyle:invStMap[i.status],open:()=>location.href="InvoiceDetail.dc.html?id="+encodeURIComponent(i.id)}));
+    return {
+      rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",dark,
+      themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      t:{signIn:t("Sign In"),creds:t("Enter your credentials to access your account"),email:t("Email"),password:t("Password"),
+        registerTitle:t("Register"),phoneLabel:t("Phone"),haveAcct:rtl?"لديك حساب؟":"Already have an account?",
+        resetPw:t("Reset Password"),resetPwDesc:t("We'll send a reset link to your email"),sendResetLink:t("Send Reset Link"),backToSignIn:t("Back to Sign In"),
+        otpTitle:t("OTP Verification"),otpDesc:t("Enter the 6-digit code sent to")+"\nyour@email.com",verifyBtn:t("Verify"),resendHint:t("Didn't receive a code?"),resendCode:t("Resend Code"),
+        twoFaTitle:t("Two-Factor Verification"),twoFaDesc:t("Enter the code from your authenticator app"),refreshHint:rtl?"يتم تحديث الرمز كل 30 ثانية":"Code refreshes every 30 seconds",
+        selectRole:t("Select Your Role"),workshopOwner:t("Workshop Owner"),serviceAdvisor:t("Service Advisor"),technicianRole:t("Technician"),managerRole:t("Manager"),
+        createPin:t("Create PIN"),biometricTitle:t("Biometric Setup"),biometricDesc:t("Use your fingerprint or face to sign in faster"),skipForNow:t("Skip for now"),
+        obSvcHint2:rtl?"نظام إدارة ورش السيارات المتكامل":"Integrated automotive workshop management system",dashboard:t("Dashboard"),welcome:t("Welcome back,"),latestJobCards:t("Latest Job Cards"),obTitle:t("Workshop Setup"),obSvcHint:t("Select the services you offer"),obStep:t("Step")+" 2 "+t("of")+" 3",continue:t("Continue"),
+        jobCardsTitle:t("Job Cards"),newJobCard:t("New Job Card"),appointmentsTitle:t("Appointments"),newAppointment:t("New Appointment"),estimatesTitle:t("Estimates"),newEstimate:t("New Estimate"),customersTitle:t("Customers"),addCustomer:t("Add Customer"),vehiclesLabel:t("Vehicles"),
+        fleetTitle:t("Fleet Management"),addFleet:t("Add Fleet Account"),activeJobs:t("Active Jobs"),contract:t("Contract"),inventoryTitle:t("Inventory"),addPart:t("Add Part"),
+        techniciansTitle:t("Technicians"),rating:t("Rating"),invoicesTitle:t("Invoices"),newInvoiceT:t("New Invoice"),subscriptionTitle:t("Subscription"),managePlan:t("Manage Plan"),usersLabel:t("Users"),storageLabel:t("Storage"),nextBilling:t("Next Billing Date"),currentPlan:t("Current Plan"),
+        backupTitle:t("Backup & Export"),runBackup:t("Run Backup Now"),backupHistory:t("Backup History"),exportData:t("Export Data"),exportCustomers:t("Export Customers"),exportJobCards:t("Export Job Cards"),exportInvoices:t("Export Invoices"),
+        profileTitle:t("Profile"),fullName:t("Full Name"),role:t("Role"),admin:roleLabel||t("ADMIN"),changePassword:t("Change Password"),currentPassword:t("Current Password"),newPassword:t("New Password"),saveChanges:t("Save Changes"),
+        wsCheckIn:t("Vehicle Check-In"),wsOdometer:t("Odometer Reading"),wsFuel:t("Fuel Level"),wsPhotos:rtl?"إضافة صور":"Add Photos",wsComplete:t("Complete Check-In"),
+        wsInspection:t("Vehicle Inspection"),wsPass:t("Pass"),wsFail:t("Fail"),
+        wsEstimate:t("Cost Estimate"),wsSubtotal:t("Subtotal"),wsVat:t("VAT (15%)"),wsTotal:t("Grand Total"),wsApprove:t("Approve Estimate"),
+        wsQC:t("Quality Control"),wsReturnRepair:t("Return to Repair"),wsApproveQC:t("Approve QC"),
+        wsDelivery:t("Vehicle Delivery"),wsCheckInOdo:rtl?"عند الاستلام":"At Check-In",wsDeliveryOdo:rtl?"عند التسليم":"At Delivery",wsCompleteDelivery:t("Complete Delivery"),
+        wsSignature:t("Customer Signature"),wsJobCard:t("Job Card"),wsCustomer:t("Customer"),wsVehicle:t("Vehicle"),wsAmount:rtl?"المبلغ":"Amount",wsTapSign:rtl?"انقر للتوقيع":"Tap to sign",wsAuthorize:t("I authorize the above work"),wsConfirmSig:t("Confirm Signature"),
+        wsInvoice:t("Create Invoice"),wsSendInv:t("Send Invoice"),wsCalendar:t("Calendar"),wsNotifs:t("Notification Center"),wsHR:t("HR & Payroll"),wsReports:t("Reports & Analytics")},
+      email:this.state.email,pw:this.state.pw,
+      setEmail:e=>this.setState({email:e.target.value}),setPw:e=>this.setState({pw:e.target.value}),
+      submit:e=>{e.preventDefault();},
+      nextChev:rtl?"ChevronLeft":"ChevronRight",
+      userName,userInitial:userName.trim()[0]||"K",jobs,statCards,obServices,
+      jobsAll,appts,estimatesL,customersL,fleetsL,partsL,techsL,invoicesL,
+      wsInspCats:[{icon:"Cog",label:t("Engine & Transmission"),items:[t("Oil Level"),t("Coolant"),t("Transmission Fluid")]},{icon:"Disc",label:t("Brakes & Suspension"),items:[t("Brake Pads"),t("Brake Discs")]},{icon:"CircleDot",label:t("Tires & Wheels"),items:[t("Tire Tread"),t("Tire Pressure")]},{icon:"Zap",label:t("Electrical & Lighting"),items:[t("Battery"),t("Headlights")]}],
+      wsEstParts:[{name:t("Oil Filter (Toyota)"),detail:"1 × SAR 45",total:"SAR 45"},{name:t("Brake Pads (Front)"),detail:"1 × SAR 310",total:"SAR 310"},{name:t("Air Filter (Universal)"),detail:"1 × SAR 95",total:"SAR 95"},{name:t("Diagnostics"),detail:"1.5h × SAR 150/hr",total:"SAR 225"},{name:t("Brake Repair"),detail:"2h × SAR 180/hr",total:"SAR 360"}],
+      wsQCItems:["Repair Verified","Fluids Topped","Test Drive","Cleaned","Documentation"].map((l,i)=>{const on=i<2;return{label:t(l==="Documentation"?"Documents Ready":l),on,
+        cbStyle:"width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"+(on?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:transparent"),
+        badge:"font-size:9px;font-weight:600;padding:2px 6px;border-radius:9999px;"+(on?"background:rgba(10,94,215,.1);color:var(--salis-blue)":"background:var(--surface-inset);color:var(--text-muted)"),status:on?t("QC Pass"):t("Pending")};}),
+      wsDeliveryItems:[["Bell","Customer Notified",true],["Key","Keys Returned",true],["FileText","Documents Ready",false],["Receipt","Invoice Attached",false]].map(([icon,l,on])=>({icon,label:t(l),on,
+        cbStyle:"width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"+(on?"background:var(--salis-gradient);color:#fff":"background:var(--surface-inset);border:1.5px solid var(--border-strong);color:transparent")})),
+      wsInvItems:[{name:t("Brake Pads (Front)"),total:"SAR 310"},{name:t("Oil Filter (Toyota)")+" ×2",total:"SAR 90"},{name:t("Diagnostics")+" 1.5h",total:"SAR 225"},{name:t("Brake Repair")+" 2h",total:"SAR 360"},{name:t("Oil Change"),total:"SAR 590"}],
+      wsNotifItems:[
+        {icon:"Wrench",title:t("New Job Card Created"),body:"Sara Al-Mutairi · Ford Explorer",time:t("just now"),dot:true,bg:"background:rgba(10,94,215,.03)",iconBg:"background:rgba(10,94,215,.1);color:var(--salis-blue)"},
+        {icon:"Calendar",title:t("Appointment Confirmed"),body:"Ahmed Al-Rashid · Maintenance",time:"5m",dot:true,bg:"background:rgba(10,94,215,.03)",iconBg:"background:rgba(11,179,255,.1);color:#0BB3FF"},
+        {icon:"AlertTriangle",title:t("Invoice Overdue"),body:"Fatima Al-Zahrani · SAR 4,250",time:"2h",dot:true,bg:"background:rgba(10,94,215,.03)",iconBg:"background:rgba(249,115,22,.1);color:#F97316"},
+        {icon:"Package",title:t("Low Stock Alert"),body:"Brake Pads · 18/25",time:"3h",dot:true,bg:"background:rgba(10,94,215,.03)",iconBg:"background:rgba(249,115,22,.1);color:#F97316"},
+        {icon:"CreditCard",title:t("Payment Received"),body:"Omar Al-Ghamdi · SAR 620",time:t("yesterday"),dot:false,bg:"",iconBg:"background:rgba(10,94,215,.1);color:var(--salis-blue)"}],
+      wsEmployees:[
+        {name:"Yousef Al-Otaibi",initial:"Y",role:t("Technician"),status:t("Present"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+        {name:"Bandar Al-Qahtani",initial:"B",role:t("Technician"),status:t("Present"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7")},
+        {name:"Faisal Al-Harbi",initial:"F",role:t("Technician"),status:t("On Leave"),statusStyle:pill("rgba(11,179,255,.1)","#0BB3FF")},
+        {name:"Khalid Al-Amri",initial:"K",role:t("Manager"),status:t("Present"),statusStyle:pill("rgba(10,94,215,.1)","#0A5ED7")}],
+      wsServiceBreakdown:[{label:t("Maintenance"),pct:35,bar:"background:var(--salis-gradient)"},{label:t("Repair"),pct:28,bar:"background:#0BB3FF"},{label:t("Diagnostics"),pct:18,bar:"background:var(--salis-blue)"},{label:t("Inspection"),pct:12,bar:"background:#64748B"}]
+    };
+  }
+}
+</script>
+</body>
+</html>

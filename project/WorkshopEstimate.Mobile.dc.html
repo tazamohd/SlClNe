@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css">
+<script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Estimate-Mobile" style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+  <div style="padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-default);background:var(--surface-sidebar)">
+    <a href="WorkshopInspection.Mobile.dc.html" style="display:flex;color:var(--text-muted)"><salis-icon name="{{ backChev }}" size="20"></salis-icon></a>
+    <div style="flex:1"><h1 style="margin:0;font-size:17px;font-family:var(--font-display);font-weight:800;color:var(--text-heading)">{{ t.costEstimate }}</h1><p style="margin:0;font-size:11px;color:var(--text-muted)" dir="ltr">EST-0232</p></div>
+    <button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .3s ease;-webkit-overflow-scrolling:touch">
+    <!-- Parts -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:6px"><salis-icon name="Package" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.parts }}</h3></div>
+      <sc-for list="{{ partsRows }}" as="r" hint-placeholder-count="4">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border-default);display:flex;justify-content:space-between;align-items:center">
+          <div><p style="margin:0;font-size:13px;color:var(--text-body)">{{ r.desc }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ t.qty }}: {{ r.qty }} × {{ r.unit }}</p></div>
+          <span style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ r.total }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Labor -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:6px"><salis-icon name="Wrench" size="14" style="color:var(--salis-blue)"></salis-icon><h3 style="margin:0;font-size:13px;font-weight:700;color:var(--text-heading)">{{ t.labor }}</h3></div>
+      <sc-for list="{{ laborRows }}" as="r" hint-placeholder-count="3">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border-default);display:flex;justify-content:space-between;align-items:center">
+          <div><p style="margin:0;font-size:13px;color:var(--text-body)">{{ r.desc }}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-muted)">{{ r.hrs }}h × {{ r.rate }}</p></div>
+          <span style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-heading)" dir="ltr">{{ r.total }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Summary -->
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.subtotal }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 1,345</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--text-body)"><span>{{ t.vat }}</span><span style="font-family:var(--font-mono);font-weight:600" dir="ltr">SAR 201.75</span></div>
+      <div style="height:1px;background:var(--border-default)"></div>
+      <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:800;color:var(--text-heading)"><span>{{ t.grandTotal }}</span><span style="font-family:var(--font-mono)" dir="ltr">SAR 1,546.75</span></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:50px;border:1.5px solid var(--border-strong);border-radius:8px;background:none;color:var(--text-body);font-family:var(--font-action);font-weight:500;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Send" size="15"></salis-icon>{{ t.send }}</button>
+      <button onClick="{{ approve }}" style="flex:1;height:50px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(10,94,215,.25);display:flex;align-items:center;justify-content:center;gap:6px"><salis-icon name="Check" size="15"></salis-icon>{{ t.approve }}</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variant&quot;}}">
+class Component extends DCLogic {
+  state={dark:null,lang:null,AR:{}};
+  componentDidMount(){import("./gms-data.js").then(m=>this.setState({AR:m.AR}));}
+  renderVals(){
+    const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+    const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+    const rtl=lang==="ar",AR=this.state.AR,t=s=>rtl?(AR[s]||s):s;
+    const partsRows=[{desc:t("Oil Filter (Toyota)"),qty:"1",unit:"SAR 45",total:"SAR 45"},{desc:t("Brake Pads (Front)"),qty:"1",unit:"SAR 310",total:"SAR 310"},{desc:t("Air Filter (Universal)"),qty:"1",unit:"SAR 95",total:"SAR 95"},{desc:t("Spark Plug Set"),qty:"1",unit:"SAR 140",total:"SAR 140"}];
+    const laborRows=[{desc:t("Diagnostics"),hrs:"1.5",rate:"SAR 150/hr",total:"SAR 225"},{desc:t("Brakes & Suspension"),hrs:"2.0",rate:"SAR 180/hr",total:"SAR 360"},{desc:t("Multi-Point Inspection"),hrs:"1.0",rate:"SAR 170/hr",total:"SAR 170"}];
+    return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",backChev:rtl?"ChevronRight":"ChevronLeft",
+      toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark});},
+      toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l});},
+      partsRows,laborRows,approve:()=>location.href="WorkshopQC.Mobile.dc.html",
+      t:{costEstimate:t("Cost Estimate"),parts:t("Parts"),labor:t("Labor"),qty:t("Quantity"),subtotal:t("Subtotal"),vat:t("VAT (15%)"),grandTotal:t("Grand Total"),send:t("Send to Customer"),approve:t("Approve Estimate")}};
+  }
+}
+</script>
+</body>
+</html>

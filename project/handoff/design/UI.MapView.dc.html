@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.hscroll::-webkit-scrollbar{display:none}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Map View" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start">
+<div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden;position:relative;height:520px">
+  <svg viewBox="0 0 800 520" style="width:100%;height:100%;display:block">
+    <rect width="800" height="520" fill="var(--surface-inset)"></rect>
+    <g stroke="var(--border-default)" stroke-width="1" opacity="0.9">
+      <path d="M0,120 H800" /><path d="M0,260 H800" /><path d="M0,400 H800" />
+      <path d="M160,0 V520" /><path d="M400,0 V520" /><path d="M640,0 V520" />
+    </g>
+    <g stroke="#0A5ED7" stroke-width="5" opacity="0.16" stroke-linecap="round">
+      <path d="M0,260 H800" /><path d="M400,0 V520" />
+    </g>
+    <sc-for list="{{ pins }}" as="p" hint-placeholder-count="5">
+      <g>
+        <circle cx="{{ p.x }}" cy="{{ p.y }}" r="22" fill="{{ p.color }}" opacity="0.14"></circle>
+        <circle cx="{{ p.x }}" cy="{{ p.y }}" r="9" fill="{{ p.color }}" stroke="#fff" stroke-width="2.5"></circle>
+        <text x="{{ p.x }}" y="{{ p.labelY }}" font-size="11" font-weight="600" fill="var(--text-heading)" text-anchor="middle" font-family="Inter,sans-serif">{{ p.label }}</text>
+      </g>
+    </sc-for>
+  </svg>
+  <div style="position:absolute;top:14px;inset-inline-end:14px;display:flex;flex-direction:column;gap:6px"><button style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body);box-shadow:var(--shadow-sm)"><salis-icon name="Plus" size="14"></salis-icon></button><button style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body);box-shadow:var(--shadow-sm)"><salis-icon name="Minus" size="14"></salis-icon></button><button style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border-default);background:var(--surface-card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-body);box-shadow:var(--shadow-sm)"><salis-icon name="Locate" size="14"></salis-icon></button></div>
+  <div style="position:absolute;bottom:14px;inset-inline-start:14px;padding:10px 14px;border-radius:10px;background:var(--surface-card);border:1px solid var(--border-default);box-shadow:var(--shadow);display:flex;gap:14px"><sc-for list="{{ legend }}" as="lg" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:{{ lg.color }}"></span><span style="font-size:11px;color:var(--text-body)">{{ lg.label }}</span></div></sc-for></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm)"><h3 style="margin:0 0 12px;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.locations }}</h3><div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ locations }}" as="l" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default);cursor:pointer;transition:all .15s" style-hover="border-color:rgba(10,94,215,.3)"><span style="width:9px;height:9px;border-radius:50%;background:{{ l.color }};flex-shrink:0"></span><div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:500;color:var(--text-heading)">{{ l.name }}</p><p style="margin:1px 0 0;font-size:11px;color:var(--text-muted)">{{ l.detail }}</p></div><span style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);flex-shrink:0">{{ l.dist }}</span></div></sc-for></div></div>
+</div></div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"dark","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null};renderVals(){const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");const t=s=>s;const ic=(bg,fg)=>"padding:6px;border-radius:8px;background:"+bg+";color:"+fg+";display:flex";const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const pins=[
+ {x:"180",y:"150",labelY:"128",color:"#0A5ED7",label:"Riyadh Main"},
+ {x:"470",y:"215",labelY:"193",color:"#0BB3FF",label:"Riyadh North"},
+ {x:"300",y:"350",labelY:"328",color:"#0A5ED7",label:"Jeddah"},
+ {x:"620",y:"390",labelY:"368",color:"#F97316",label:"Dammam"},
+ {x:"560",y:"110",labelY:"88",color:"#F97316",label:"Van #3"}
+];
+const legend=[{label:"Active branch",color:"#0A5ED7"},{label:"Secondary",color:"#0BB3FF"},{label:"Mobile unit / setup",color:"#F97316"}];
+const locations=[
+ {name:"Riyadh Main",detail:"Al-Olaya · 6 bays · 12 staff",dist:"0 km",color:"#0A5ED7"},
+ {name:"Riyadh North",detail:"Al-Nakheel · 4 bays · 8 staff",dist:"14 km",color:"#0BB3FF"},
+ {name:"Jeddah Branch",detail:"Al-Safa · 5 bays · 10 staff",dist:"842 km",color:"#0A5ED7"},
+ {name:"Dammam Branch",detail:"Al-Faisaliah · 3 bays · setup",dist:"398 km",color:"#F97316"},
+ {name:"Mobile Van #3",detail:"En route — Tariq Al-Dosari",dist:"6 km",color:"#F97316"}
+];
+const extra={pins,legend,locations,t:{title:"Map View",locations:"Locations"}};
+return{rootClass:dark?"dark":"",dir:"ltr",themeIcon:dark?"Sun":"Moon",toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},...extra};}}</script></body></html>

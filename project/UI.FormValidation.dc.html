@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script>
+<style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+input:focus,textarea:focus,select:focus{border-color:var(--salis-blue)!important;box-shadow:0 0 0 3px rgba(10,94,215,.12)!important}
+input.err:focus,textarea.err:focus{border-color:#F97316!important;box-shadow:0 0 0 3px rgba(249,115,22,.14)!important}
+</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Form Validation" style="min-height:100vh;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<div style="height:56px;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:8px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center"><salis-icon name="Car" size="14" style="color:#fff"></salis-icon></div><span style="font-size:14px;font-weight:700;color:var(--text-heading)">SALIS AUTO</span></div><span style="font-size:13px;color:var(--text-muted)">·</span><span style="font-size:13px;font-weight:600;color:var(--text-body)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleLang }}" style="height:32px;padding:0 10px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;gap:6px;font-family:var(--font-action);font-size:12px;font-weight:500"><salis-icon name="Globe" size="14"></salis-icon>{{ langLabel }}</button><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></div>
+<div style="padding:24px;display:flex;flex-direction:column;gap:24px;animation:fadeUp .3s ease">
+<h2 style="margin:0;font-size:24px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h2>
+<p style="margin:-14px 0 0;font-size:14px;color:var(--text-muted);max-width:660px;text-wrap:pretty">{{ t.sub }}</p>
+<div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start">
+
+  <div style="background:var(--surface-card);border-radius:16px;padding:22px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:18px">
+    <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.fieldStates }}</h3>
+    <sc-for list="{{ fields }}" as="f" hint-placeholder-count="5">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <label style="display:flex;align-items:center;gap:5px;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ f.label }}<sc-if value="{{ f.required }}" hint-placeholder-val="{{ false }}"><span style="color:var(--salis-orange)">*</span></sc-if><span style="flex:1"></span><span style="{{ f.tagStyle }}">{{ f.tag }}</span></label>
+        <span style="position:relative;display:flex;align-items:center">
+          <input class="{{ f.cls }}" value="{{ f.value }}" placeholder="{{ f.ph }}" readonly="{{ f.ro }}" style="{{ f.style }}">
+          <sc-if value="{{ f.hasIcon }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset-inline-end:11px;display:flex;color:{{ f.iconColor }};pointer-events:none"><salis-icon name="{{ f.icon }}" size="15"></salis-icon></span></sc-if>
+        </span>
+        <sc-if value="{{ f.hasMsg }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:flex-start;gap:5px;font-size:11px;color:{{ f.msgColor }};line-height:1.5"><salis-icon name="{{ f.msgIcon }}" size="12" style="flex-shrink:0;margin-top:1px"></salis-icon>{{ f.msg }}</span></sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <div style="background:var(--surface-card);border-radius:16px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);overflow:hidden">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="padding:6px;border-radius:8px;background:rgba(10,94,215,.08);color:var(--salis-blue);display:flex"><salis-icon name="UserPlus" size="15"></salis-icon></span><h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.formEx }}</h3><span style="flex:1"></span><span style="{{ errBanner.pillStyle }}">{{ errBanner.pill }}</span></div>
+      <div style="padding:16px 22px 0"><div style="display:flex;gap:9px;padding:12px 14px;border-radius:10px;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.22)"><salis-icon name="AlertTriangle" size="15" style="color:#F97316;flex-shrink:0;margin-top:1px"></salis-icon><div><p style="margin:0;font-size:13px;font-weight:600;color:#F97316">{{ t.bannerTitle }}</p><p style="margin:3px 0 0;font-size:12px;color:var(--text-body);line-height:1.55">{{ t.bannerBody }}</p></div></div></div>
+      <div style="padding:20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.fName }}<span style="color:var(--salis-orange)">*</span></label><input value="Layla Al-Sulaiman" style="height:44px;border-radius:9px;padding:0 13px;font-size:14px;color:var(--text-primary);outline:none;background:var(--surface-inset);box-sizing:border-box;transition:border-color .15s,box-shadow .15s;width:100%;border:1px solid var(--border-default)"><span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--salis-blue)"><salis-icon name="Check" size="12"></salis-icon>{{ t.okName }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.fPhone }}<span style="color:var(--salis-orange)">*</span></label><input class="err" value="05 5210" dir="ltr" style="height:44px;border-radius:9px;padding:0 13px;font-size:14px;color:var(--text-primary);outline:none;background:var(--surface-inset);box-sizing:border-box;transition:border-color .15s,box-shadow .15s;width:100%;border:1.5px solid #F97316;font-family:var(--font-mono)"><span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#F97316"><salis-icon name="AlertCircle" size="12"></salis-icon>{{ t.errPhone }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.fEmail }}</label><input class="err" value="layla@" style="height:44px;border-radius:9px;padding:0 13px;font-size:14px;color:var(--text-primary);outline:none;background:var(--surface-inset);box-sizing:border-box;transition:border-color .15s,box-shadow .15s;width:100%;border:1.5px solid #F97316"><span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#F97316"><salis-icon name="AlertCircle" size="12"></salis-icon>{{ t.errEmail }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.fVat }}</label><input value="3104567890" dir="ltr" style="height:44px;border-radius:9px;padding:0 13px;font-size:14px;color:var(--text-primary);outline:none;background:var(--surface-inset);box-sizing:border-box;transition:border-color .15s,box-shadow .15s;width:100%;border:1px solid var(--border-default);font-family:var(--font-mono)"><span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><salis-icon name="Info" size="12"></salis-icon>{{ t.hintVat }}</span></div>
+        <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:6px"><label style="font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-primary)">{{ t.fNotes }}</label><textarea rows="2" placeholder="{{ t.phNotes }}" style="border-radius:9px;border:1px solid var(--border-default);background:var(--surface-inset);padding:11px 13px;font-size:14px;color:var(--text-primary);outline:none;resize:vertical;font-family:var(--font-ui);transition:border-color .15s,box-shadow .15s"></textarea><span style="display:flex;justify-content:flex-end;font-size:11px;color:var(--text-muted);font-family:var(--font-mono)">0 / 500</span></div>
+      </div>
+      <div style="padding:14px 22px;border-top:1px solid var(--border-default);display:flex;align-items:center;gap:10px"><span style="font-size:12px;color:var(--text-muted)">{{ t.requiredNote }}</span><span style="flex:1"></span><button style="height:38px;padding:0 16px;border:1px solid var(--border-default);border-radius:8px;background:var(--surface-card);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:13px;font-weight:500">{{ t.cancel }}</button><button disabled="{{ true }}" style="height:38px;padding:0 18px;border:none;border-radius:8px;background:var(--salis-gradient);color:#fff;font-family:var(--font-action);font-size:13px;font-weight:600;opacity:.5;cursor:not-allowed">{{ t.save }}</button></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
+      <div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px">
+        <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.inlineRules }}</h3>
+        <sc-for list="{{ rules }}" as="r" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px"><span style="width:17px;height:17px;border-radius:5px;background:{{ r.bg }};color:{{ r.fg }};display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="{{ r.icon }}" size="10"></salis-icon></span><span style="font-size:12px;color:{{ r.textColor }}">{{ r.label }}</span></div></sc-for>
+      </div>
+      <div style="background:var(--surface-card);border-radius:16px;padding:20px;border:1px solid var(--border-default);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px">
+        <h3 style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.toasts }}</h3>
+        <sc-for list="{{ toasts }}" as="to" hint-placeholder-count="3"><div style="display:flex;gap:10px;padding:12px 13px;border-radius:10px;background:{{ to.bg }};border:1px solid {{ to.border }}"><salis-icon name="{{ to.icon }}" size="15" style="color:{{ to.fg }};flex-shrink:0;margin-top:1px"></salis-icon><div style="flex:1;min-width:0"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-heading)">{{ to.title }}</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);line-height:1.5">{{ to.body }}</p></div><button style="width:22px;height:22px;border:none;border-radius:5px;background:none;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="X" size="12"></salis-icon></button></div></sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null,lang:null,data:null};componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}renderVals(){
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;background:"+bg+";color:"+fg;
+const B='1px solid var(--border-default)',E='1.5px solid #F97316',OK='1.5px solid var(--salis-blue)';
+const base="height:44px;border-radius:9px;padding:0 13px;font-size:14px;color:var(--text-primary);outline:none;background:var(--surface-inset);box-sizing:border-box;transition:border-color .15s,box-shadow .15s;width:100%";
+const tagN=pill("rgba(100,116,139,.1)","#64748B"),tagE=pill("rgba(249,115,22,.12)","#F97316"),tagO=pill("rgba(10,94,215,.1)","#0A5ED7");
+const fields=[
+ {label:t("Default"),tag:t("rest"),tagStyle:tagN,required:false,value:"",ph:t("Enter a value"),cls:"",style:base+";border:"+B,hasIcon:false,icon:"",iconColor:"",hasMsg:false,msg:"",msgColor:"",msgIcon:"",ro:false},
+ {label:t("Focused"),tag:t("focus"),tagStyle:tagO,required:false,value:"Toyota Camry 2022",ph:"",cls:"",style:base+";border:"+OK+";box-shadow:0 0 0 3px rgba(10,94,215,.12)",hasIcon:false,icon:"",iconColor:"",hasMsg:true,msg:t("Helper text sits below the field and explains the expected format."),msgColor:"var(--text-muted)",msgIcon:"Info",ro:false},
+ {label:t("Valid"),tag:t("valid"),tagStyle:tagO,required:true,value:"+966 55 210 4471",ph:"",cls:"",style:base+";border:"+B+";font-family:var(--font-mono)",hasIcon:true,icon:"Check",iconColor:"var(--salis-blue)",hasMsg:true,msg:t("Verified with the customer record."),msgColor:"var(--salis-blue)",msgIcon:"Check",ro:false},
+ {label:t("Error"),tag:t("invalid"),tagStyle:tagE,required:true,value:"3104",cls:"err",ph:"",style:base+";border:"+E+";font-family:var(--font-mono)",hasIcon:true,icon:"AlertCircle",iconColor:"#F97316",hasMsg:true,msg:t("VAT number must be 15 digits and start with 3."),msgColor:"#F97316",msgIcon:"AlertCircle",ro:false},
+ {label:t("Read-only"),tag:t("locked"),tagStyle:tagN,required:false,value:"JC-A3F8B2C1",ph:"",cls:"",style:base+";border:"+B+";font-family:var(--font-mono);color:var(--text-muted);cursor:not-allowed;opacity:.7",hasIcon:true,icon:"Lock",iconColor:"var(--text-muted)",hasMsg:true,msg:t("Generated automatically and cannot be edited."),msgColor:"var(--text-muted)",msgIcon:"Lock",ro:true}
+];
+const rules=[
+ {label:t("At least 8 characters"),icon:"Check",bg:"rgba(10,94,215,.12)",fg:"#0A5ED7",textColor:"var(--text-body)"},
+ {label:t("One uppercase letter"),icon:"Check",bg:"rgba(10,94,215,.12)",fg:"#0A5ED7",textColor:"var(--text-body)"},
+ {label:t("One number"),icon:"Check",bg:"rgba(10,94,215,.12)",fg:"#0A5ED7",textColor:"var(--text-body)"},
+ {label:t("One special character"),icon:"X",bg:"rgba(249,115,22,.12)",fg:"#F97316",textColor:"var(--text-muted)"}
+];
+const toasts=[
+ {title:t("Customer saved"),body:t("Layla Al-Sulaiman was added and can now be booked."),icon:"CheckCircle",fg:"#0A5ED7",bg:"rgba(10,94,215,.05)",border:"rgba(10,94,215,.2)"},
+ {title:t("Check the highlighted fields"),body:t("Two fields need attention before this form can be saved."),icon:"AlertTriangle",fg:"#F97316",bg:"rgba(249,115,22,.05)",border:"rgba(249,115,22,.2)"},
+ {title:t("Draft saved automatically"),body:t("Your changes are kept for 7 days if you leave this page."),icon:"Save",fg:"#64748B",bg:"var(--surface-inset)",border:"var(--border-default)"}
+];
+const errBanner={pill:"2 "+t("errors"),pillStyle:tagE};
+const extra={fields,rules,toasts,errBanner,
+ t:{title:t("Form Validation"),sub:t("Field states, inline rules, a summary banner and result toasts. Errors use Action Orange, success and focus use blue — never green or red."),
+ fieldStates:t("Field States"),formEx:t("Add Customer"),bannerTitle:t("Check the highlighted fields"),bannerBody:t("Phone number and email address are not in a valid format. Fix them to continue."),
+ fName:t("Full Name"),fPhone:t("Phone"),fEmail:t("Email"),fVat:t("VAT Registration #"),fNotes:t("Notes"),phNotes:t("Anything the workshop should know about this customer"),
+ okName:t("Looks good."),errPhone:t("Enter a Saudi mobile number, e.g. +966 5X XXX XXXX."),errEmail:t("Enter a complete email address."),hintVat:t("Optional. Required only for VAT-registered business customers."),
+ requiredNote:t("* Required fields"),cancel:t("Cancel"),save:t("Save Customer"),
+ inlineRules:t("Live Rule Checklist"),toasts:t("Result Toasts"),errors:t("errors")}};
+return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",
+ toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+ toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})},...extra};}}</script></body></html>

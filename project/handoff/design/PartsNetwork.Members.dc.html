@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><script src="./support.js"></script></head><body><x-dc>
+<helmet><link rel="stylesheet" href="_ds/salis-auto-design-system-f22df384-eb3b-4838-99e5-e987504e70f0/styles.css"><script src="https://unpkg.com/lucide@0.462.0/dist/umd/lucide.min.js"></script><script src="salis-icon.js"></script><style>body{margin:0;background:#F8FAFC}a{color:#0A5ED7;text-decoration:none}a:hover{color:#0952C0}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}</style></helmet>
+<div class="{{ rootClass }}" dir="{{ dir }}" data-screen-label="Parts Network - Network Members" style="display:flex;height:100vh;overflow:hidden;background:var(--bg-page);font-family:var(--font-ui,'Inter',sans-serif)">
+<aside style="width:250px;flex-shrink:0;background:var(--surface-sidebar);border-inline-end:1px solid var(--border-default);display:flex;flex-direction:column;height:100vh">
+  <a href="Dashboard.dc.html" style="display:flex;align-items:center;gap:8px;padding:14px 14px 12px;font-family:var(--font-action);font-size:13px;font-weight:500;color:var(--text-muted)" style-hover="color:var(--salis-blue)"><salis-icon name="{{ backChev }}" size="15"></salis-icon>{{ t.backToDash }}</a>
+  <div style="padding:0 14px 14px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border-default)"><div style="width:34px;height:34px;border-radius:10px;background:var(--salis-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0"><salis-icon name="Package" size="17" style="color:#fff"></salis-icon></div><div style="min-width:0"><p style="margin:0;font-size:14px;font-weight:800;font-family:var(--font-display);color:var(--text-heading)">{{ t.brandName }}</p><p style="margin:0;font-size:10px;font-weight:600;color:var(--salis-blue)">B2B · {{ t.brandAr }}</p></div></div>
+  <nav style="flex:1;padding:12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto;overflow-x:hidden"><a href="PartsNetwork.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="LayoutDashboard" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_hub }}</span></a><a href="PartsNetwork.SendRequest.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="Send" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_send }}</span></a><a href="PartsNetwork.Requests.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="Inbox" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_mine }}</span></a><a href="PartsNetwork.Incoming.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="ArrowDownLeft" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_incoming }}</span></a><a href="PartsNetwork.Quotations.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="BarChart3" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_quotes }}</span></a><a href="PartsNetwork.Orders.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;background:var(--salis-gradient-r);color:#fff;box-shadow:var(--shadow)"><salis-icon name="ShoppingCart" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_orders }}</span></a><a href="PartsNetwork.Members.dc.html" style="display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-family:var(--font-action);font-size:13px;font-weight:500;text-decoration:none;color:var(--text-primary)"><salis-icon name="Building2" size="15" style="flex-shrink:0"></salis-icon><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nav_members }}</span></a></nav>
+  <div style="padding:12px;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:9px">
+    <p style="margin:0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted)">{{ t.quickStats }}</p>
+    <div style="display:flex;gap:8px"><sc-for list="{{ quickStats }}" as="q" hint-placeholder-count="2"><div style="flex:1;padding:10px;border-radius:10px;background:var(--surface-inset);border:1px solid var(--border-default);text-align:center"><p style="margin:0;font-size:19px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ q.value }}</p><p style="margin:2px 0 0;font-size:10px;color:var(--text-muted);line-height:1.3">{{ q.label }}</p></div></sc-for></div>
+    <button onClick="{{ toggleLang }}" style="display:flex;align-items:center;gap:8px;padding:6px 9px;border:none;background:none;border-radius:7px;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500;color:var(--text-muted)" style-hover="background:rgba(10,94,215,.08);color:var(--salis-blue)"><salis-icon name="Globe" size="14"></salis-icon><span>{{ langLabel }}</span></button>
+  </div>
+</aside>
+<div style="flex:1;display:flex;flex-direction:column;min-width:0">
+  <header style="height:54px;flex-shrink:0;background:var(--surface-sidebar);border-bottom:1px solid var(--border-default);padding:0 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm)"><span style="font-size:15px;font-weight:700;color:var(--text-heading)">{{ t.title }}</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="width:32px;height:32px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;justify-content:center"><salis-icon name="{{ themeIcon }}" size="16"></salis-icon></button></header>
+  <main style="flex:1;overflow:auto"><div style="padding:24px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .3s ease">
+    <div><h1 style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:var(--text-heading)">{{ t.title }}</h1><p style="margin:4px 0 0;font-size:13px;color:var(--text-muted)">{{ t.subtitle }}</p></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+  <span style="position:relative;display:flex;align-items:center;flex:1;min-width:230px"><salis-icon name="Search" size="15" style="position:absolute;inset-inline-start:12px;color:var(--text-muted)"></salis-icon><input placeholder="{{ t.searchPh }}" style="width:100%;height:44px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-card);padding:0 13px;padding-inline-start:34px;font-size:13px;color:var(--text-primary);outline:none;box-sizing:border-box"></span>
+  <sc-for list="{{ selects }}" as="sl" hint-placeholder-count="2"><span style="position:relative;display:flex;align-items:center"><select style="height:44px;min-width:150px;border-radius:10px;border:1px solid var(--border-default);background:var(--surface-card);padding:0 34px 0 13px;font-size:13px;color:var(--text-primary);outline:none;appearance:none;cursor:pointer"><option>{{ sl }}</option></select><salis-icon name="ChevronDown" size="15" style="position:absolute;inset-inline-end:12px;color:var(--text-muted);pointer-events:none"></salis-icon></span></sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px"><sc-for list="{{ tiles }}" as="ti" hint-placeholder-count="4"><div style="{{ ti.style }}"><p style="margin:0;font-size:26px;font-family:var(--font-display);font-weight:900;color:{{ ti.color }}" dir="ltr">{{ ti.value }}</p><p style="margin:3px 0 0;font-size:12px;font-weight:500;color:{{ ti.labelColor }}">{{ ti.label }}</p></div></sc-for></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px">
+  <sc-for list="{{ members }}" as="m" hint-placeholder-count="4">
+    <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:16px;padding:18px;box-shadow:var(--shadow-sm);transition:all .15s ease" style-hover="border-color:rgba(10,94,215,.3);box-shadow:var(--shadow-lg)">
+      <div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:13px">
+        <span style="width:42px;height:42px;border-radius:50%;background:var(--salis-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0">{{ m.initials }}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px"><p style="margin:0;font-size:15px;font-weight:700;color:var(--text-heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.name }}</p><salis-icon name="BadgeCheck" size="14" style="color:var(--salis-blue);flex-shrink:0"></salis-icon></div>
+          <p style="margin:2px 0 0;font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" dir="rtl">{{ m.nameAr }}</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap">
+        <span style="{{ m.typeStyle }}"><salis-icon name="{{ m.typeIcon }}" size="11"></salis-icon>{{ m.type }}</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text-muted)"><salis-icon name="MapPin" size="12"></salis-icon>{{ m.city }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--text-heading)"><salis-icon name="Star" size="13" style="color:var(--salis-orange)"></salis-icon>{{ m.rating }}</span>
+        <span style="font-size:12px;color:var(--text-muted)">{{ m.quotes }} {{ t.quotesWord }}</span>
+        <sc-if value="{{ m.hasResponse }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;font-weight:600;color:var(--salis-blue)">{{ m.response }} {{ t.responseWord }}</span></sc-if>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px"><sc-for list="{{ m.brands }}" as="b" hint-placeholder-count="3"><span style="padding:2px 9px;border-radius:7px;font-size:11px;font-weight:500;background:var(--surface-inset);border:1px solid var(--border-default);color:var(--text-body)">{{ b }}</span></sc-for></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px"><salis-icon name="Phone" size="12" style="color:var(--text-muted)"></salis-icon><span style="font-size:12px;font-family:var(--font-mono);color:var(--text-body)" dir="ltr">{{ m.phone }}</span></div>
+      <div style="display:flex;gap:8px">
+        <button style="flex:1;height:38px;border-radius:9px;border:1px solid var(--border-default);background:var(--surface-inset);color:var(--text-body);cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:500">{{ t.viewProfile }}</button>
+        <button style="flex:1;height:38px;border-radius:9px;border:none;background:var(--salis-gradient);color:#fff;cursor:pointer;font-family:var(--font-action);font-size:12px;font-weight:600">{{ t.contact }}</button>
+      </div>
+    </div>
+  </sc-for>
+</div>  </div></main>
+</div></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","tsType":"string","section":"Variant"},"lang":{"editor":"enum","options":["en","ar"],"default":"en","tsType":"string","section":"Variant"}}'>
+class Component extends DCLogic{state={dark:null,lang:null,data:null};componentDidMount(){import("./gms-data.js").then(m=>this.setState({data:m}));}renderVals(){
+const dark=this.state.dark??((localStorage.getItem("salis-theme")??this.props.theme)==="dark");
+const lang=this.state.lang??(localStorage.getItem("salis-lang")??this.props.lang??"en");
+const rtl=lang==="ar",D=this.state.data;const t=s=>rtl&&D?(D.AR[s]||s):s;
+const ic=(bg,fg)=>"padding:8px;border-radius:10px;background:"+bg+";color:"+fg+";display:flex";
+const pill=(bg,fg)=>"display:inline-flex;align-items:center;gap:4px;border-radius:9999px;padding:2px 9px;font-size:11px;font-weight:600;background:"+bg+";color:"+fg;
+const quickStats=[{value:"12",label:t("Open Requests")},{value:"8",label:t("New Quotes")}];
+const prU=pill("rgba(249,115,22,.14)","#F97316");
+const tile=(bg,bd)=>"background:"+bg+";border:1px solid "+bd+";border-radius:14px;padding:17px;text-align:center";
+const tiles=[
+ {value:"62",label:t("Suppliers"),style:tile("rgba(10,94,215,.05)","rgba(10,94,215,.22)"),color:"#0A5ED7",labelColor:"var(--text-body)"},
+ {value:"38",label:t("Dealers"),style:tile("rgba(11,31,59,.05)","rgba(11,31,59,.2)"),color:"#0B1F3B",labelColor:"var(--text-body)"},
+ {value:"31",label:t("Stores"),style:tile("rgba(11,179,255,.06)","rgba(11,179,255,.25)"),color:"#0BB3FF",labelColor:"var(--text-body)"},
+ {value:"25",label:t("Garages"),style:tile("rgba(249,115,22,.05)","rgba(249,115,22,.22)"),color:"#F97316",labelColor:"var(--text-body)"}
+];
+const selects=[t("All Types"),t("All Regions")];
+const tSup=pill("rgba(10,94,215,.12)","#0A5ED7"),tDeal=pill("rgba(11,31,59,.12)","#0B1F3B"),tStore=pill("rgba(11,179,255,.12)","#0BB3FF"),tGar=pill("rgba(249,115,22,.12)","#F97316");
+const typeMap={supplier:[tSup,"Package",t("Supplier")],dealer:[tDeal,"Building2",t("Dealer")],store:[tStore,"Store",t("Store")],garage:[tGar,"Wrench",t("Garage")]};
+const raw=[
+ ["Al-Faisal Auto Parts","قطع غيار الفيصل","AL","supplier","Riyadh","4.8","156","95%",["Toyota","Honda","Nissan"],"+966 50 123 4567"],
+ ["Saudi Parts Company","شركة القطع السعودية","SA","dealer","Jeddah","4.5","89","88%",["Mercedes-Benz","BMW","Audi"],"+966 55 987 6543"],
+ ["Eastern Auto Warehouse","مستودع الشرقية للسيارات","EA","store","Dammam","4.2","45","82%",["Hyundai","Kia","Chevrolet"],"+966 53 456 7890"],
+ ["Premium Auto Services","خدمات بريميوم للسيارات","PR","garage","Riyadh","4.6","78","",["Toyota","Lexus"],"+966 56 789 0123"]
+];
+const members=raw.map(m=>({name:m[0],nameAr:m[1],initials:m[2],type:typeMap[m[3]][2],typeStyle:typeMap[m[3]][0],typeIcon:typeMap[m[3]][1],
+ city:t(m[4]),rating:m[5],quotes:m[6],hasResponse:!!m[7],response:m[7],brands:m[8],phone:m[9]}));
+const extra={tiles,selects,members,
+ t:{brandName:t("Parts Network"),brandAr:t("Parts Network AR"),backToDash:t("Back to Dashboard"),quickStats:t("Quick Stats"),
+ nav_hub:t("Dashboard"),nav_send:t("Send Request"),nav_mine:t("My Requests"),nav_incoming:t("Incoming Requests"),nav_quotes:t("Quotations"),nav_orders:t("Orders"),nav_members:t("Network Members"),
+ title:t("Network Members"),subtitle:t("Suppliers, Dealers & Partners"),searchPh:t("Search by company name or contact..."),
+ quotesWord:t("quotes"),responseWord:t("response"),viewProfile:t("View Profile"),contact:t("Contact")}};
+return{rootClass:dark?"dark":"",dir:rtl?"rtl":"ltr",themeIcon:dark?"Sun":"Moon",langLabel:rtl?"English":"عربي",backChev:rtl?"ArrowRight":"ArrowLeft",quickStats,
+ toggleTheme:()=>{localStorage.setItem("salis-theme",dark?"light":"dark");this.setState({dark:!dark})},
+ toggleLang:()=>{const l=rtl?"en":"ar";localStorage.setItem("salis-lang",l);this.setState({lang:l})},...extra};}}</script></body></html>
