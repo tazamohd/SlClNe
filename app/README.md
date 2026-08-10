@@ -164,3 +164,19 @@ screenshots reproduce their **structure and content**, not their palette.
 
 The specs are templated: only title, purpose, roles and navigation path vary
 per screen. The screenshots carry the real layout information.
+
+A smoke check enforces this: it walks the computed styles of several rebuilt
+screens and fails on any dominant green or purple. Copying a screenshot too
+literally is a real way to reintroduce them.
+
+### How the 211 undesigned screens get built
+
+They share one shape across their screenshots — header, optional tabs, a stat
+row, then panels — so `components/shell/FeatureScreen.tsx` provides that shape
+once and `screens/feature/definitions.ts` describes each screen's content as
+data. Consistency across 211 screens comes free, and any screen that grows real
+behaviour graduates to its own component (`screens/feature/Inventory.tsx` is the
+first, deriving stock status from each part's reorder point).
+
+Where the reference app shows an empty state, the empty state is reproduced
+honestly rather than filled with invented rows.

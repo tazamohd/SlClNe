@@ -35,6 +35,9 @@ import { Invoices } from '@/screens/finance/Invoices'
 import { InvoiceDetail } from '@/screens/finance/InvoiceDetail'
 import { InvoiceCreate } from '@/screens/finance/InvoiceCreate'
 import { Payments } from '@/screens/finance/Payments'
+import { Inventory } from '@/screens/feature/Inventory'
+import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
+import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
 
 /** Screens that render without the app shell and without a role check —
  *  the auth chain and the terminal-state pages. */
@@ -72,6 +75,7 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   InvoiceDetail,
   InvoiceCreate,
   Payments,
+  Inventory,
 }
 
 export function AppRoutes() {
@@ -103,25 +107,32 @@ export function AppRoutes() {
           a reference screenshot under project/spec-shots/, so the route and nav
           entry exist and PendingScreen names what to build from. Screens that
           do have a design are already routed above. */}
-      {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => (
-        <Route
-          key={spec.id}
-          path={spec.route}
-          element={
-            <RequireAccess screen={spec.name}>
-              <PendingScreen
-                screen={{
-                  name: spec.title,
-                  route: spec.route,
-                  hasMobile: false,
-                  purpose: spec.purpose,
-                }}
-                specId={spec.id}
-              />
-            </RequireAccess>
-          }
-        />
-      ))}
+      {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
+        const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
+        return (
+          <Route
+            key={spec.id}
+            path={spec.route}
+            element={
+              <RequireAccess screen={spec.name}>
+                {def ? (
+                  <FeatureScreenView def={def} />
+                ) : (
+                  <PendingScreen
+                    screen={{
+                      name: spec.title,
+                      route: spec.route,
+                      hasMobile: false,
+                      purpose: spec.purpose,
+                    }}
+                    specId={spec.id}
+                  />
+                )}
+              </RequireAccess>
+            }
+          />
+        )
+      })}
 
       {/* Routes the design references but SCREEN_MAP doesn't list. */}
       <Route path="/logout-confirmation" element={<LogoutConfirmation />} />

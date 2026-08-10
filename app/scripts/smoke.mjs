@@ -29,7 +29,11 @@ const ROUTES = [
   { path: '/unauthorized', expect: '403' },
   // A feature-map screen with no design: route exists, names its reference.
   { path: '/license-plate-recognition', expect: 'License Plate Recognition' },
-  { path: '/vin-decoder', expect: 'VIN Decoder' },
+  { path: '/vin-decoder', expect: 'Decoded Today' },
+  { path: '/inventory', expect: 'Inventory & Parts Management' },
+  { path: '/loaner-vehicles', expect: 'Loaner Register' },
+  { path: '/predictive-maintenance', expect: 'Upcoming Services' },
+  { path: '/stripe-payment-processing', expect: 'Transactions' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },
@@ -188,6 +192,44 @@ for (const route of ROUTES) {
   if (overflows) problems.push('page scrolls horizontally at 390px')
   if (problems.length) failures.push({ route: 'mobile:/job-cards', problems })
   else console.log('  ok  mobile job-cards renders the card layout')
+  await context.close()
+}
+
+// Brand guard: handoff README section 7 forbids green, red, purple, pink and
+// teal. The reference screenshots use green and purple, so it is genuinely
+// possible to reintroduce them by copying a screenshot too literally.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  const offenders = []
+  for (const path of ['/dashboard', '/inventory', '/license-plate-recognition', '/job-cards']) {
+    await page.goto(BASE + path, { waitUntil: 'networkidle' })
+    const bad = await page.evaluate(() => {
+      const hits = []
+      const parse = (c) => (c.match(/\d+/g) || []).slice(0, 3).map(Number)
+      for (const el of document.querySelectorAll('*')) {
+        const s = getComputedStyle(el)
+        for (const prop of ['color', 'backgroundColor', 'borderTopColor']) {
+          const v = s[prop]
+          if (!v || !v.startsWith('rgb')) continue
+          const [r, g, b] = parse(v)
+          if ([r, g, b].some((n) => Number.isNaN(n))) continue
+          const alpha = v.startsWith('rgba') ? Number(v.split(',')[3]) : 1
+          if (alpha < 0.04) continue
+          // Green: clearly dominant green channel. Purple: red and blue both
+          // clearly above green.
+          const green = g > 90 && g - r > 40 && g - b > 40
+          const purple = r > 90 && b > 90 && r - g > 40 && b - g > 40
+          if (green || purple) hits.push(`${v} on <${el.tagName.toLowerCase()}>`)
+        }
+      }
+      return [...new Set(hits)].slice(0, 5)
+    })
+    if (bad.length) offenders.push(`${path}: ${bad.join(', ')}`)
+  }
+  if (offenders.length) failures.push({ route: 'brand palette', problems: offenders })
+  else console.log('  ok  no forbidden green/purple in rebuilt screens')
   await context.close()
 }
 
