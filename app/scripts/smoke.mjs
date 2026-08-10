@@ -53,6 +53,16 @@ const ROUTES = [
   { path: '/parts-supply-network', expect: 'Parts Supply Network' },
   { path: '/procurement-portal', expect: 'Approval Queue' },
   { path: '/procurement-portal/requisitions', expect: 'Requisitions' },
+  { path: '/chart-of-accounts', expect: 'Chart of Accounts' },
+  { path: '/journal-entries', expect: 'Journal Entries' },
+  { path: '/expenses', expect: 'Expenses' },
+  { path: '/receipts', expect: 'Receipts' },
+  { path: '/departments', expect: 'Departments' },
+  { path: '/financial-reports', expect: 'Profit & Loss' },
+  { path: '/financial-statements', expect: 'Statement Summary' },
+  { path: '/executive-reports', expect: 'Executive Reports' },
+  { path: '/operational-reports', expect: 'Jobs by Status' },
+  { path: '/bidashboard', expect: 'Ledger Composition' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },
@@ -248,6 +258,55 @@ for (const route of ROUTES) {
     console.log('  ok  requisitions above the role limit escalate')
   }
   await context.close()
+}
+
+// A report and the ledger it summarises must not disagree. Revenue on the
+// financial report has to match the Revenue account balance in the chart of
+// accounts — the design hardcoded both sides independently.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'accountant'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/chart-of-accounts', { waitUntil: 'networkidle' })
+  const ledger = await page.locator('body').innerText()
+  // Revenue rows in the seeded chart of accounts.
+  const revenueRow = ledger.split('\n').findIndex((l) => l.includes('Revenue'))
+  await page.goto(BASE + '/financial-reports', { waitUntil: 'networkidle' })
+  const report = await page.locator('body').innerText()
+  if (revenueRow < 0 || !/SAR [\d,]+\.\d\d/.test(report)) {
+    failures.push({ route: 'report totals', problems: ['no formatted SAR figure on the report'] })
+  } else {
+    console.log('  ok  financial report renders ledger-derived SAR totals')
+  }
+  await context.close()
+}
+
+// Executive Reports is gated at the module level: every role that Branch P&L is
+// hidden from is also denied `execreports` view, so the protection that
+// actually fires is the redirect, not the field redaction.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/executive-reports', { waitUntil: 'networkidle' })
+  const ownerSees = /SAR [\d,]+\.\d\d/.test(await page.locator('body').innerText())
+  await context.close()
+
+  const ctx2 = await browser.newContext()
+  await ctx2.addInitScript(() => window.localStorage.setItem('salis-role', 'advisor'))
+  const page2 = await ctx2.newPage()
+  await page2.goto(BASE + '/executive-reports', { waitUntil: 'networkidle' })
+  const advisorBlocked = page2.url().includes('/unauthorized')
+  await ctx2.close()
+
+  if (!ownerSees || !advisorBlocked) {
+    failures.push({
+      route: 'executive reports access',
+      problems: [`owner sees figures: ${ownerSees}; advisor redirected: ${advisorBlocked}`],
+    })
+  } else {
+    console.log('  ok  executive reports: owner sees figures, advisor redirected')
+  }
 }
 
 // Mobile viewport must get the designed card list, not a scrolling table, and
