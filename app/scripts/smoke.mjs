@@ -27,6 +27,9 @@ const ROUTES = [
   { path: '/invoice-create', expect: 'Create Invoice' },
   { path: '/payments', expect: 'Outstanding' },
   { path: '/unauthorized', expect: '403' },
+  // A feature-map screen with no design: route exists, names its reference.
+  { path: '/license-plate-recognition', expect: 'License Plate Recognition' },
+  { path: '/vin-decoder', expect: 'VIN Decoder' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },

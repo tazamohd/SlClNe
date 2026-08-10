@@ -94,3 +94,21 @@ export interface ScreenMeta {
 
 export type Language = 'en' | 'ar'
 export type Theme = 'light' | 'dark'
+
+/** A screen from the product feature map (`project/spec/`). Superset of the
+ *  designed screens — most have a screenshot but no `.dc.html`. */
+export interface SpecScreen {
+  /** Zero-padded number from the spec filename, e.g. "036". */
+  id: string
+  name: string
+  title: string
+  route: string
+  purpose: string | null
+  roles: string | null
+  /** Top-level nav group from the spec's Navigation Path, when it had one. */
+  group: string | null
+  /** Matching `.dc.html` design, when one exists. */
+  designScreen: string | null
+  /** Reference screenshot path, relative to `project/`. */
+  screenshot: string
+}

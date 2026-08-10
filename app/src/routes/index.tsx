@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { SCREENS } from '@/data/generated/screens'
+import { SPEC_SCREENS } from '@/data/generated/spec-screens'
 import { RequireAccess } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
 
@@ -97,6 +98,30 @@ export function AppRoutes() {
           />
         )
       })}
+
+      {/* Feature-map screens with no `.dc.html` design. They carry a spec and
+          a reference screenshot under project/spec-shots/, so the route and nav
+          entry exist and PendingScreen names what to build from. Screens that
+          do have a design are already routed above. */}
+      {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => (
+        <Route
+          key={spec.id}
+          path={spec.route}
+          element={
+            <RequireAccess screen={spec.name}>
+              <PendingScreen
+                screen={{
+                  name: spec.title,
+                  route: spec.route,
+                  hasMobile: false,
+                  purpose: spec.purpose,
+                }}
+                specId={spec.id}
+              />
+            </RequireAccess>
+          }
+        />
+      ))}
 
       {/* Routes the design references but SCREEN_MAP doesn't list. */}
       <Route path="/logout-confirmation" element={<LogoutConfirmation />} />

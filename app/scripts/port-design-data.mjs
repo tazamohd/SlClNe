@@ -9,7 +9,7 @@
 //
 // Hand-written files (types.ts, rbac.ts, the repository layer) are never
 // touched by this script.
-import { writeFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs'
+import { writeFileSync, mkdirSync, readFileSync, readdirSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -193,3 +193,58 @@ async function emitIconRegistry() {
 }
 
 console.log(`\nPorted ${screens.length} screens, ${Object.keys(D.AR).length} AR keys, ${TABLES.length} tables.`)
+
+// ── Feature-map screens (from project/spec/) ─────────────────────────────────
+// The 235 numbered specs describe the product's full feature surface — a
+// superset of the 191 designed `.dc.html` screens. Only 24 names overlap, so
+// the rest have a screenshot under project/spec-shots/ and a templated README
+// but no design file. Emitting them gives every feature a route and a nav
+// entry; the ones without a design render PendingScreen until built.
+emitSpecScreens()
+
+function emitSpecScreens() {
+  const specDir = resolve(designDir, 'spec')
+  if (!existsSync(specDir)) return
+
+  const slug = (s) =>
+    '/' + s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/[^A-Za-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '').toLowerCase()
+
+  const designByNorm = new Map(
+    [...screenMap.values()].map((s) => [s.name.replace(/[^a-z0-9]/gi, '').toLowerCase(), s])
+  )
+
+  const specs = readdirSync(specDir).filter((f) => f.endsWith('.README.md')).sort()
+  const rows = specs.map((file) => {
+    const [, num, name] = file.match(/^(\d+)-(.+)\.README\.md$/)
+    const text = readFileSync(resolve(specDir, file), 'utf8')
+    const field = (key) => (text.match(new RegExp(`\\*\\*${key}\\*\\*:\\s*(.+)`)) || [, ''])[1].trim()
+    const title = name.replace(/-/g, ' ')
+    const design = designByNorm.get(name.replace(/[^a-z0-9]/gi, '').toLowerCase())
+    const navPath = field('Navigation Path')
+    return {
+      id: num,
+      name,
+      title,
+      // Reuse the design's canonical route when this screen has one, so a
+      // feature screen and its design never end up on two different URLs.
+      route: design ? design.route : slug(name),
+      purpose: field('Purpose') || null,
+      roles: field('Primary User Roles') || null,
+      group: navPath ? navPath.split('>')[0].trim() : null,
+      designScreen: design ? design.name : null,
+      screenshot: `spec-shots/${num}-${name}.png`,
+    }
+  })
+
+  const withDesign = rows.filter((r) => r.designScreen).length
+  emit(
+    'spec-screens.ts',
+    `import type { SpecScreen } from '../types'\n\n` +
+      `/** The product's full feature map — ${rows.length} screens parsed from\n` +
+      ` *  project/spec/. ${withDesign} have a matching \`.dc.html\` design;\n` +
+      ` *  the rest have only a screenshot and a templated spec. */\n` +
+      `export const SPEC_SCREENS: readonly SpecScreen[] = ${lit(rows)}\n`
+  )
+  console.log(`  (${rows.length} spec screens, ${withDesign} with a design)`)
+}

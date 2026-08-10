@@ -10,7 +10,15 @@ import type { ScreenMeta } from '@/data/types'
  *  the routing rather than as work still queued. This says plainly which screen
  *  is missing and which `.dc.html` file holds its design, so the route table
  *  stays honest and complete at every point in the port. */
-export function PendingScreen({ screen }: { screen: ScreenMeta }) {
+export function PendingScreen({
+  screen,
+  specId,
+}: {
+  screen: ScreenMeta
+  /** Set for feature-map screens that have a reference screenshot but no
+   *  `.dc.html` design — points at what to build from. */
+  specId?: string
+}) {
   const { t } = usePreferences()
 
   return (
@@ -41,9 +49,17 @@ export function PendingScreen({ screen }: { screen: ScreenMeta }) {
           <div className="flex justify-between gap-4">
             <dt className="text-muted">{t('Design file')}</dt>
             <dd className="font-mono text-heading" dir="ltr">
-              {screen.name}.dc.html
+              {specId ? `spec/${specId}-*.README.md` : `${screen.name}.dc.html`}
             </dd>
           </div>
+          {specId ? (
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted">{t('Reference')}</dt>
+              <dd className="font-mono text-heading" dir="ltr">
+                spec-shots/{specId}-*.png
+              </dd>
+            </div>
+          ) : null}
           <div className="flex justify-between gap-4">
             <dt className="text-muted">{t('Mobile variant')}</dt>
             <dd className="font-mono text-heading" dir="ltr">

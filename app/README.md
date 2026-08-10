@@ -140,3 +140,27 @@ Per `handoff/README.md` §10 — real database and migrations, real auth (JWT,
 refresh, biometric, PIN, 2FA, SSO), the REST endpoints, workflow orchestration,
 file storage, print/PDF, payment gateway, the OBD protocol bridge, and the
 third-party integrations.
+
+## Two sources of truth
+
+This app is built from two overlapping inputs, and it's worth being clear which
+governs what:
+
+| | Screens | What it is | Authority |
+|---|---|---|---|
+| `project/*.dc.html` | 191 desktop + 113 mobile | The Claude Design bundle. Brand-compliant prototypes. | **Look and behaviour** for the screens it covers |
+| `project/spec/` + `project/spec-shots/` | 235 | Specs and screenshots of an existing running app — a superset of the design. | **Feature scope**: which screens exist at all |
+
+Only **24 names overlap**. The other 211 feature screens have a screenshot and a
+templated spec but no design; they are routed and render `PendingScreen`, which
+names the spec and screenshot to build each one from.
+
+### Where the two disagree, the design system wins
+
+The screenshots show the existing app using **green** (QC check marks) and
+**purple** (metric icons). `handoff/README.md` §7 forbids both — blue is
+success/active/progress, orange is warnings. So screens rebuilt from
+screenshots reproduce their **structure and content**, not their palette.
+
+The specs are templated: only title, purpose, roles and navigation path vary
+per screen. The screenshots carry the real layout information.
