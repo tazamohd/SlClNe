@@ -8,10 +8,13 @@ import { usePreferences } from '@/providers/PreferencesProvider'
  *  an icon tile; the registries use this quieter one. Both are in the design. */
 export function ListPageHeader({
   title,
+  subtitle,
   search,
   actions,
 }: {
   title: string
+  /** Module name shown above the title, as the accounting screens do. */
+  subtitle?: string
   /** Wire up the filter box. Omit for lists with no search. */
   search?: { value: string; onChange: (next: string) => void; placeholder?: string }
   actions?: ReactNode
@@ -20,7 +23,14 @@ export function ListPageHeader({
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
-      <h1 className="font-display text-3xl font-black text-heading">{title}</h1>
+      <div className="min-w-0">
+        {subtitle ? (
+          <p className="font-action text-xs font-semibold uppercase tracking-[.06em] text-muted">
+            {subtitle}
+          </p>
+        ) : null}
+        <h1 className="font-display text-3xl font-black text-heading">{title}</h1>
+      </div>
       <div className="flex flex-wrap items-center gap-2.5">
         {search ? (
           <span className="relative flex flex-shrink-0 items-center">

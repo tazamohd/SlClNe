@@ -57,6 +57,20 @@ import {
   ProcurementPortal,
   ProcurementRequisitions,
 } from '@/screens/network/Procurement'
+import {
+  ChartOfAccounts,
+  Departments,
+  Expenses,
+  JournalEntries,
+  Receipts,
+} from '@/screens/accounting/Accounting'
+import {
+  BIDashboard,
+  ExecutiveReports,
+  FinancialReports,
+  FinancialStatements,
+  OperationalReports,
+} from '@/screens/accounting/Reports'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -115,6 +129,16 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   PartsSupplyNetwork,
   ProcurementPortal,
   'ProcurementPortal.Requisitions': ProcurementRequisitions,
+  ChartOfAccounts,
+  JournalEntries,
+  Expenses,
+  Receipts,
+  Departments,
+  FinancialReports,
+  FinancialStatements,
+  ExecutiveReports,
+  OperationalReports,
+  BIDashboard,
 }
 
 export function AppRoutes() {
