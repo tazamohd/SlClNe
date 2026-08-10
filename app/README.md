@@ -119,7 +119,7 @@ that endpoint rather than to re-hardcode them.
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt (70):
+Rebuilt (80):
 
 - **Auth chain** — Splash, Welcome, LanguageSelection, RegionSelection, Login,
   ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
@@ -132,6 +132,9 @@ Rebuilt (70):
 - **Finance** — Invoices, InvoiceDetail, InvoiceCreate, Payments
 - **Registries** — Customers, Vehicles, Estimates, Technicians, FleetManagement,
   Appointments
+- **Parts network & procurement** — PartsNetwork dashboard, Requests,
+  Quotations, Orders, Members, Incoming, SendRequest, PartsSupplyNetwork,
+  ProcurementPortal, Requisitions
 - **Feature map** — Inventory plus 35 screens rendered through the feature kit
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.

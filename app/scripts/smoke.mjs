@@ -43,6 +43,16 @@ const ROUTES = [
   { path: '/quality-control', expect: 'Recent Checks' },
   { path: '/tire-management', expect: 'Tire Sets' },
   { path: '/diagnostics-obd-hub', expect: 'Connected Devices' },
+  { path: '/parts-network', expect: 'Parts Network' },
+  { path: '/parts-network/requests', expect: 'My Requests' },
+  { path: '/parts-network/quotations', expect: 'Quotations' },
+  { path: '/parts-network/orders', expect: 'Orders' },
+  { path: '/parts-network/members', expect: 'Network Members' },
+  { path: '/parts-network/incoming', expect: 'Incoming Requests' },
+  { path: '/parts-network/send-request', expect: 'Part Details' },
+  { path: '/parts-supply-network', expect: 'Parts Supply Network' },
+  { path: '/procurement-portal', expect: 'Approval Queue' },
+  { path: '/procurement-portal/requisitions', expect: 'Requisitions' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },
@@ -197,6 +207,45 @@ for (const route of ROUTES) {
     })
   } else {
     console.log('  ok  appointments status filter narrows the list')
+  }
+  await context.close()
+}
+
+// Sorting quotes must actually reorder the table — the design's sort buttons
+// only restyled themselves, and comparing quotes is the point of the screen.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/parts-network/quotations', { waitUntil: 'networkidle' })
+  const first = () => page.locator('tbody tr').first().innerText()
+  const byPrice = await first()
+  await page.getByRole('tab', { name: /Rating/ }).click()
+  const byRating = await first()
+  if (byPrice === byRating) {
+    failures.push({ route: 'quote sort', problems: ['sorting by rating did not reorder the table'] })
+  } else {
+    console.log('  ok  quote sorting reorders the table')
+  }
+  await context.close()
+}
+
+// A procurement agent's 20,000 SAR ceiling must gate the 28,000 requisition.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'procurement'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/procurement-portal/requisitions', { waitUntil: 'networkidle' })
+  const text = await page.locator('body').innerText()
+  const approves = (text.match(/Approve/g) || []).length
+  const escalates = (text.match(/Escalate/g) || []).length
+  if (!(approves > 0 && escalates > 0)) {
+    failures.push({
+      route: 'requisition limits',
+      problems: [`expected both Approve and Escalate buttons; got ${approves}/${escalates}`],
+    })
+  } else {
+    console.log('  ok  requisitions above the role limit escalate')
   }
   await context.close()
 }

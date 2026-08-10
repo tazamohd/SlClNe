@@ -43,6 +43,20 @@ import {
   Vehicles,
 } from '@/screens/registry/Registries'
 import { Appointments } from '@/screens/registry/Appointments'
+import {
+  PartsNetworkDashboard,
+  PartsNetworkIncoming,
+  PartsNetworkMembers,
+  PartsNetworkOrders,
+  PartsNetworkRequests,
+} from '@/screens/network/PartsNetwork'
+import {
+  PartsNetworkQuotations,
+  PartsNetworkSendRequest,
+  PartsSupplyNetwork,
+  ProcurementPortal,
+  ProcurementRequisitions,
+} from '@/screens/network/Procurement'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -90,6 +104,17 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   Technicians,
   FleetManagement,
   Appointments,
+  // Dotted design names map to sub-routes like /parts-network/requests.
+  PartsNetwork: PartsNetworkDashboard,
+  'PartsNetwork.Requests': PartsNetworkRequests,
+  'PartsNetwork.Quotations': PartsNetworkQuotations,
+  'PartsNetwork.Orders': PartsNetworkOrders,
+  'PartsNetwork.Members': PartsNetworkMembers,
+  'PartsNetwork.Incoming': PartsNetworkIncoming,
+  'PartsNetwork.SendRequest': PartsNetworkSendRequest,
+  PartsSupplyNetwork,
+  ProcurementPortal,
+  'ProcurementPortal.Requisitions': ProcurementRequisitions,
 }
 
 export function AppRoutes() {
