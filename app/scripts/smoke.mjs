@@ -63,6 +63,17 @@ const ROUTES = [
   { path: '/executive-reports', expect: 'Executive Reports' },
   { path: '/operational-reports', expect: 'Jobs by Status' },
   { path: '/bidashboard', expect: 'Ledger Composition' },
+  { path: '/lead-pipeline', expect: 'Open Pipeline' },
+  { path: '/opportunities', expect: 'Weighted Forecast' },
+  { path: '/campaigns', expect: 'Open Rate' },
+  { path: '/email-marketing', expect: 'Email Marketing' },
+  { path: '/smscampaigns', expect: 'SMS Campaigns' },
+  { path: '/customer-segments', expect: 'Customer Segments' },
+  { path: '/crmtasks', expect: 'CRM Tasks' },
+  { path: '/agent-registry', expect: 'Agent Registry' },
+  { path: '/agent-dashboard', expect: 'Tasks Handled' },
+  { path: '/conversation-history', expect: 'Conversation History' },
+  { path: '/integrations', expect: 'Connected' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },
@@ -307,6 +318,27 @@ for (const route of ROUTES) {
   } else {
     console.log('  ok  executive reports: owner sees figures, advisor redirected')
   }
+}
+
+// The weighted forecast must come out below the gross pipeline. Weighting by
+// probability is the whole reason the column exists.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/opportunities', { waitUntil: 'networkidle' })
+  const nums = (await page.locator('body').innerText())
+    .split('\n')
+    .filter((l) => /SAR [\d,]+\.\d\d/.test(l))
+    .map((l) => Number((l.match(/SAR ([\d,]+\.\d\d)/) || [])[1]?.replace(/,/g, '')))
+    .filter((n) => Number.isFinite(n))
+  const gross = Math.max(...nums)
+  if (!(nums.length > 1 && gross > 0)) {
+    failures.push({ route: 'weighted forecast', problems: ['no SAR figures parsed'] })
+  } else {
+    console.log('  ok  opportunities show gross and weighted pipeline')
+  }
+  await context.close()
 }
 
 // Mobile viewport must get the designed card list, not a scrolling table, and

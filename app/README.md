@@ -119,7 +119,7 @@ that endpoint rather than to re-hardcode them.
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt (90):
+Rebuilt (102):
 
 - **Auth chain** — Splash, Welcome, LanguageSelection, RegionSelection, Login,
   ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
@@ -139,6 +139,9 @@ Rebuilt (90):
   Departments
 - **Reports** — FinancialReports, FinancialStatements, ExecutiveReports,
   OperationalReports, BIDashboard
+- **CRM & AI** — LeadPipeline, Opportunities, Campaigns, EmailMarketing,
+  SMSCampaigns, WhatsAppCampaigns, CustomerSegments, CRMTasks, AgentRegistry,
+  AgentDashboard, ConversationHistory, Integrations
 - **Feature map** — Inventory plus 35 screens rendered through the feature kit
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.
