@@ -35,6 +35,14 @@ import { Invoices } from '@/screens/finance/Invoices'
 import { InvoiceDetail } from '@/screens/finance/InvoiceDetail'
 import { InvoiceCreate } from '@/screens/finance/InvoiceCreate'
 import { Payments } from '@/screens/finance/Payments'
+import {
+  Customers,
+  Estimates,
+  FleetManagement,
+  Technicians,
+  Vehicles,
+} from '@/screens/registry/Registries'
+import { Appointments } from '@/screens/registry/Appointments'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -76,6 +84,12 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   InvoiceCreate,
   Payments,
   Inventory,
+  Customers,
+  Vehicles,
+  Estimates,
+  Technicians,
+  FleetManagement,
+  Appointments,
 }
 
 export function AppRoutes() {

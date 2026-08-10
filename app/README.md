@@ -119,7 +119,7 @@ that endpoint rather than to re-hardcode them.
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt (28):
+Rebuilt (70):
 
 - **Auth chain** — Splash, Welcome, LanguageSelection, RegionSelection, Login,
   ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
@@ -130,6 +130,9 @@ Rebuilt (28):
   loop: WorkshopCheckIn, WorkshopInspection, WorkshopEstimate, WorkshopQC,
   WorkshopSignature, WorkshopDelivery
 - **Finance** — Invoices, InvoiceDetail, InvoiceCreate, Payments
+- **Registries** — Customers, Vehicles, Estimates, Technicians, FleetManagement,
+  Appointments
+- **Feature map** — Inventory plus 35 screens rendered through the feature kit
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.
 Build order follows `handoff/README.md` §8.
