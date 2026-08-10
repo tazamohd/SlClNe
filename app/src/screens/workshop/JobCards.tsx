@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
@@ -67,6 +68,21 @@ export function JobCards() {
         rowKey={(job) => job.id}
         loading={isLoading}
         onRowClick={(job) => navigate(`/job-detail?id=${job.id}`)}
+        mobileCard={(job) => (
+          <>
+            <MobileCardHeader
+              title={job.id}
+              code
+              trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+            />
+            <MobileCardRow>{job.cust}</MobileCardRow>
+            <MobileCardRow>{job.veh}</MobileCardRow>
+            <div className="flex items-center gap-2">
+              <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+              <PriorityBadge value={job.pr} label={t(job.pr)} />
+            </div>
+          </>
+        )}
         empty={
           query ? (
             <EmptyState

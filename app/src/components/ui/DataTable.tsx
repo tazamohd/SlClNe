@@ -3,6 +3,8 @@ import { cn } from '@/lib/cn'
 import { Card } from './Card'
 import { Icon } from './Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobileCard, MobileList } from '@/components/shell/MobileShell'
 
 /** Column definition. `header` is an English source string — it gets
  *  translated at render, so callers pass plain text. */
@@ -16,7 +18,13 @@ export interface Column<TRow> {
   className?: string
 }
 
-/** The bordered table every list screen in the design uses.
+/** Every list screen in the design, in both its layouts.
+ *
+ *  Desktop renders the bordered table. Below 860px it renders the mobile
+ *  design's stacked card list instead — those are genuinely different layouts
+ *  in the bundle, not a narrowed table, so a horizontally-scrolling table would
+ *  not be the designed mobile screen. Pass `mobileCard` to describe a row's
+ *  card body; without it the table falls back to horizontal scroll.
  *
  *  Beyond the prototypes' markup: a real empty state (they rendered a bare
  *  table with no rows and no explanation), a loading state, and keyboard-
@@ -31,6 +39,7 @@ export function DataTable<TRow>({
   empty,
   footer,
   className,
+  mobileCard,
 }: {
   columns: readonly Column<TRow>[]
   rows: readonly TRow[]
@@ -41,8 +50,42 @@ export function DataTable<TRow>({
   empty?: ReactNode
   footer?: ReactNode
   className?: string
+  /** Row body for the mobile card layout. */
+  mobileCard?: (row: TRow) => ReactNode
 }) {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
+
+  if (isMobile && mobileCard) {
+    if (loading) {
+      return (
+        <MobileList>
+          {Array.from({ length: 5 }, (_, index) => (
+            <MobileCard key={index}>
+              <span className="block h-4 w-2/3 animate-pulse rounded bg-inset" />
+              <span className="block h-3 w-full animate-pulse rounded bg-inset" />
+            </MobileCard>
+          ))}
+        </MobileList>
+      )
+    }
+    if (!rows.length) {
+      return <Card className="p-6">{empty ?? <EmptyState />}</Card>
+    }
+    return (
+      <MobileList>
+        {rows.map((row, index) => (
+          <MobileCard
+            key={rowKey(row, index)}
+            onClick={onRowClick ? () => onRowClick(row) : undefined}
+          >
+            {mobileCard(row)}
+          </MobileCard>
+        ))}
+        {footer}
+      </MobileList>
+    )
+  }
 
   return (
     <Card className={cn('overflow-hidden', className)}>

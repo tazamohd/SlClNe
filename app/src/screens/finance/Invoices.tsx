@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -80,6 +81,20 @@ export function Invoices() {
         rowKey={(invoice) => invoice.id}
         loading={isLoading}
         onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
+        mobileCard={(invoice) => (
+          <>
+            <MobileCardHeader
+              title={invoice.id}
+              code
+              trailing={<InvoiceStatusBadge status={invoice.status} />}
+            />
+            <MobileCardRow>{invoice.cust}</MobileCardRow>
+            <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
+            <MobileCardRow label={t('Amount')}>
+              <Money sar={parseSar(invoice.amount)} className="font-semibold text-heading" />
+            </MobileCardRow>
+          </>
+        )}
         empty={
           <EmptyState
             icon={query ? 'SearchX' : 'Receipt'}

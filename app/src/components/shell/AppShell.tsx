@@ -5,6 +5,7 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { Icon } from '@/components/ui/Icon'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
+import { MobileHeader } from './MobileShell'
 
 /** The one shell for every operational screen.
  *
@@ -54,10 +55,19 @@ export function AppShell({ children }: { children: ReactNode }) {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar onOpenNav={isMobile ? () => setDrawerOpen(true) : undefined} />
+        {/* The mobile designs use their own 56px header composition, not a
+            narrowed Topbar — no search box, user chip instead. */}
+        {isMobile ? <MobileHeader onOpenNav={() => setDrawerOpen(true)} /> : <Topbar />}
         <main className="relative flex-1 overflow-auto">
           <PageBackdrop />
-          <div className="relative z-[1] flex animate-fade-up flex-col gap-8 p-6">{children}</div>
+          <div
+            className={cn(
+              'relative z-[1] flex animate-fade-up flex-col',
+              isMobile ? 'gap-5 p-4' : 'gap-8 p-6'
+            )}
+          >
+            {children}
+          </div>
         </main>
       </div>
     </div>

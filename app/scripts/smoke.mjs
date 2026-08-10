@@ -164,6 +164,30 @@ for (const route of ROUTES) {
   await context.close()
 }
 
+// Mobile viewport must get the designed card list, not a scrolling table, and
+// the mobile header rather than the desktop Topbar.
+{
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/job-cards', { waitUntil: 'networkidle' })
+  const tables = await page.locator('table').count()
+  const cards = await page.getByRole('button', { name: /A3F8B2C1/ }).count()
+  const menu = await page.getByRole('button', { name: 'Open menu' }).count()
+  const problems = []
+  if (tables > 0) problems.push('rendered a table at 390px instead of the card list')
+  if (cards === 0) problems.push('no job card rendered as a tappable card')
+  if (menu === 0) problems.push('mobile header / drawer trigger missing')
+  // The page itself must never scroll sideways on a phone.
+  const overflows = await page.evaluate(
+    () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+  )
+  if (overflows) problems.push('page scrolls horizontally at 390px')
+  if (problems.length) failures.push({ route: 'mobile:/job-cards', problems })
+  else console.log('  ok  mobile job-cards renders the card layout')
+  await context.close()
+}
+
 await browser.close()
 
 if (failures.length) {

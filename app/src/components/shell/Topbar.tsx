@@ -2,18 +2,15 @@ import { useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
-/** 56px header: search, command palette hint, theme, notifications, chat.
- *
- *  `onOpenNav` is supplied on narrow viewports to reveal the drawer. */
-export function Topbar({ onOpenNav }: { onOpenNav?: () => void }) {
+/** 56px desktop header: search, command palette hint, theme, notifications,
+ *  chat. Below 860px `AppShell` renders `MobileHeader` instead — the design's
+ *  mobile header is a different composition, not this one narrowed. */
+export function Topbar() {
   const { t, theme, toggleTheme } = usePreferences()
   const navigate = useNavigate()
 
   return (
     <header className="relative z-[5] flex h-topbar flex-shrink-0 items-center gap-3 border-b border-border bg-sidebar px-6 shadow-sm">
-      {onOpenNav ? (
-        <IconButton label="Open navigation" icon="Menu" onClick={onOpenNav} />
-      ) : null}
       <div className="flex-1" />
 
       <span className="relative hidden items-center sm:flex">
