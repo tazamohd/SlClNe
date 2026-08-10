@@ -71,6 +71,20 @@ import {
   FinancialStatements,
   OperationalReports,
 } from '@/screens/accounting/Reports'
+import {
+  AgentDashboard,
+  AgentRegistry,
+  Campaigns,
+  ConversationHistory,
+  CRMTasks,
+  CustomerSegments,
+  EmailMarketing,
+  Integrations,
+  LeadPipeline,
+  Opportunities,
+  SMSCampaigns,
+  WhatsAppCampaigns,
+} from '@/screens/crm/Crm'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -139,6 +153,18 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   ExecutiveReports,
   OperationalReports,
   BIDashboard,
+  LeadPipeline,
+  Opportunities,
+  Campaigns,
+  EmailMarketing,
+  SMSCampaigns,
+  WhatsAppCampaigns,
+  CustomerSegments,
+  CRMTasks,
+  AgentRegistry,
+  AgentDashboard,
+  ConversationHistory,
+  Integrations,
 }
 
 export function AppRoutes() {
