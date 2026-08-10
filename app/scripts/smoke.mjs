@@ -34,6 +34,15 @@ const ROUTES = [
   { path: '/loaner-vehicles', expect: 'Loaner Register' },
   { path: '/predictive-maintenance', expect: 'Upcoming Services' },
   { path: '/stripe-payment-processing', expect: 'Transactions' },
+  { path: '/customers', expect: 'Customers' },
+  { path: '/vehicles', expect: 'All Vehicles' },
+  { path: '/estimates', expect: 'Estimates' },
+  { path: '/technicians', expect: 'Technicians' },
+  { path: '/fleet-management', expect: 'Fleet Management' },
+  { path: '/appointments', expect: 'Appointments' },
+  { path: '/quality-control', expect: 'Recent Checks' },
+  { path: '/tire-management', expect: 'Tire Sets' },
+  { path: '/diagnostics-obd-hub', expect: 'Connected Devices' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },
@@ -167,6 +176,27 @@ for (const route of ROUTES) {
     failures.push({ route: 'sod:qc', problems: ['technician could approve QC'] })
   } else {
     console.log('  ok  sod technician cannot approve QC')
+  }
+  await context.close()
+}
+
+// The Appointments status filter must actually filter — the design shipped the
+// chips as static decoration.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/appointments', { waitUntil: 'networkidle' })
+  const before = await page.locator('tbody tr').count()
+  await page.getByRole('tab', { name: /No Show/ }).click()
+  const after = await page.locator('tbody tr').count()
+  if (!(before > 0 && after > 0 && after < before)) {
+    failures.push({
+      route: 'appointments filter',
+      problems: [`rows went ${before} -> ${after}; expected a smaller non-zero count`],
+    })
+  } else {
+    console.log('  ok  appointments status filter narrows the list')
   }
   await context.close()
 }

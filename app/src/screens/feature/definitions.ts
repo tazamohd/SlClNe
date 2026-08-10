@@ -536,6 +536,283 @@ export const FEATURE_DEFS: readonly FeatureDef[] = [
       },
     ],
   },
+
+  // ── AI hub ────────────────────────────────────────────────────────────────
+  {
+    id: '057',
+    route: '/smart-parts-recommender',
+    title: 'Smart Parts Recommender',
+    subtitle: 'Suggested parts for a job from history and vehicle fitment',
+    icon: 'Lightbulb',
+    stats: [
+      { label: 'Suggestions', value: 0, caption: 'This month', highlight: true },
+      { label: 'Accepted', value: 0, caption: 'Added to jobs', tone: 'info' },
+      { label: 'Fitment Conflicts', value: 0, caption: 'Blocked', tone: 'warning' },
+      { label: 'Accuracy', value: '0%', caption: 'Accepted / suggested' },
+    ],
+    sections: [
+      {
+        title: 'Recent Suggestions',
+        columns: ['Job Card', 'Vehicle', 'Part', 'Confidence', 'Outcome'],
+        empty: { icon: 'Lightbulb', title: 'No recommendations yet' },
+      },
+    ],
+  },
+  {
+    id: '059',
+    route: '/smart-inventory-forecasting',
+    title: 'Smart Inventory Forecasting',
+    subtitle: 'Projected parts demand from booking and service trends',
+    icon: 'LineChart',
+    stats: [
+      { label: 'SKUs Forecast', value: 0, caption: 'Modelled', highlight: true },
+      { label: 'Shortfalls Predicted', value: 0, caption: 'Next 30 days', tone: 'warning' },
+      { label: 'Overstock', value: 0, caption: 'Above need', tone: 'info' },
+      { label: 'Forecast Horizon', value: '30d', caption: 'Rolling window' },
+    ],
+    sections: [
+      {
+        title: 'Forecast',
+        searchable: true,
+        columns: ['Part', 'SKU', 'On Hand', 'Projected Need', 'Gap'],
+        empty: { icon: 'LineChart', title: 'Not enough history to forecast yet' },
+      },
+    ],
+  },
+  {
+    id: '018',
+    route: '/routing-optimizer',
+    title: 'Routing Optimizer',
+    subtitle: 'Efficient routes for mobile service and vehicle collection',
+    icon: 'Route',
+    stats: [
+      { label: 'Routes Planned', value: 0, caption: 'Today', highlight: true },
+      { label: 'Stops', value: 0, caption: 'Scheduled', tone: 'info' },
+      { label: 'Distance Saved', value: '0 km', caption: 'Versus manual' },
+      { label: 'Late Risk', value: 0, caption: 'Stops at risk', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Planned Routes',
+        columns: ['Route', 'Driver', 'Stops', 'Distance', 'Window'],
+        empty: { icon: 'Route', title: 'No routes planned' },
+      },
+    ],
+  },
+
+  // ── Enterprise / quality ──────────────────────────────────────────────────
+  {
+    id: '045',
+    route: '/quality-control',
+    title: 'Quality Control',
+    subtitle: 'QC outcomes across jobs, technicians and branches',
+    icon: 'ShieldCheck',
+    stats: [
+      { label: 'Checks This Month', value: 0, caption: 'Completed', highlight: true },
+      { label: 'Passed First Time', value: '0%', caption: 'Right first time', tone: 'info' },
+      { label: 'Returned to Repair', value: 0, caption: 'Failed QC', tone: 'warning' },
+      { label: 'Avg Turnaround', value: '0h', caption: 'Repair to sign-off' },
+    ],
+    sections: [
+      {
+        title: 'Recent Checks',
+        columns: ['Job Card', 'Vehicle', 'Technician', 'Inspector', 'Result'],
+        empty: { icon: 'ShieldCheck', title: 'No quality checks recorded yet' },
+      },
+    ],
+  },
+  {
+    id: '042',
+    route: '/service-templates',
+    title: 'Service Templates',
+    subtitle: 'Reusable job definitions with standard parts and labour times',
+    icon: 'ClipboardList',
+    action: { label: 'New Template', icon: 'Plus' },
+    stats: [
+      { label: 'Templates', value: 0, caption: 'Defined', highlight: true },
+      { label: 'Used This Month', value: 0, caption: 'Applied to jobs', tone: 'info' },
+      { label: 'Needs Review', value: 0, caption: 'Stale pricing', tone: 'warning' },
+      { label: 'Avg Labour Hours', value: '0.0', caption: 'Across templates' },
+    ],
+    sections: [
+      {
+        title: 'Templates',
+        searchable: true,
+        columns: ['Template', 'Category', 'Parts', 'Labour Hours', 'Price'],
+        empty: { icon: 'ClipboardList', title: 'No service templates yet' },
+      },
+    ],
+  },
+  {
+    id: '044',
+    route: '/live-service-tracking',
+    title: 'Live Service Tracking',
+    subtitle: 'Real-time job progress shared with the customer',
+    icon: 'Radio',
+    stats: [
+      { label: 'Tracked Jobs', value: 0, caption: 'In progress', highlight: true },
+      { label: 'Customers Watching', value: 0, caption: 'Live viewers', tone: 'info' },
+      { label: 'Behind Schedule', value: 0, caption: 'Past estimate', tone: 'warning' },
+      { label: 'Updates Sent', value: 0, caption: 'Today' },
+    ],
+    sections: [
+      {
+        title: 'Live Jobs',
+        columns: ['Job Card', 'Vehicle', 'Stage', 'Elapsed', 'Estimate'],
+        empty: { icon: 'Radio', title: 'No jobs currently in progress' },
+      },
+    ],
+  },
+
+  // ── Video / consultation ──────────────────────────────────────────────────
+  {
+    id: '049',
+    route: '/video-estimates',
+    title: 'Video Estimates',
+    subtitle: 'Estimates supported by a technician video walkthrough',
+    icon: 'Video',
+    stats: [
+      { label: 'Video Estimates', value: 0, caption: 'Sent', highlight: true },
+      { label: 'Viewed', value: 0, caption: 'By customer', tone: 'info' },
+      { label: 'Approved', value: 0, caption: 'After viewing' },
+      { label: 'Awaiting Response', value: 0, caption: 'No reply yet', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Sent Estimates',
+        columns: ['Estimate', 'Customer', 'Vehicle', 'Sent', 'Status'],
+        empty: { icon: 'Video', title: 'No video estimates sent yet' },
+      },
+    ],
+  },
+  {
+    id: '050',
+    route: '/video-consultations',
+    title: 'Video Consultations',
+    subtitle: 'Remote diagnosis calls with customers',
+    icon: 'VideoIcon',
+    action: { label: 'Start Call', icon: 'Video' },
+    stats: [
+      { label: 'Consultations', value: 0, caption: 'This month', highlight: true },
+      { label: 'Converted to Jobs', value: 0, caption: 'Booked after call', tone: 'info' },
+      { label: 'Missed', value: 0, caption: 'No-shows', tone: 'warning' },
+      { label: 'Avg Duration', value: '0m', caption: 'Per call' },
+    ],
+    sections: [
+      {
+        title: 'Scheduled Calls',
+        columns: ['Customer', 'Vehicle', 'Scheduled', 'Advisor', 'Status'],
+        empty: { icon: 'VideoIcon', title: 'No consultations scheduled' },
+      },
+    ],
+  },
+
+  // ── Vehicle storage / towing ──────────────────────────────────────────────
+  {
+    id: '026',
+    route: '/vehicle-storage',
+    title: 'Vehicle Storage',
+    subtitle: 'Vehicles held on site beyond their service window',
+    icon: 'Warehouse',
+    stats: [
+      { label: 'In Storage', value: 0, caption: 'Vehicles', highlight: true },
+      { label: 'Chargeable', value: 0, caption: 'Past free period', tone: 'info' },
+      { label: 'Over 30 Days', value: 0, caption: 'Needs escalation', tone: 'warning' },
+      { label: 'Storage Revenue', value: 'SAR 0.00', caption: 'This month' },
+    ],
+    sections: [
+      {
+        title: 'Stored Vehicles',
+        searchable: true,
+        columns: ['Vehicle', 'Plate', 'Owner', 'Since', 'Days'],
+        empty: { icon: 'Warehouse', title: 'No vehicles in storage' },
+      },
+    ],
+  },
+  {
+    id: '033',
+    route: '/towing-services',
+    title: 'Towing Services',
+    subtitle: 'Recovery jobs and partner tow operators',
+    icon: 'Truck',
+    action: { label: 'Request Tow', icon: 'Plus' },
+    stats: [
+      { label: 'Active Requests', value: 0, caption: 'In progress', highlight: true },
+      { label: 'Completed', value: 0, caption: 'This month', tone: 'info' },
+      { label: 'Delayed', value: 0, caption: 'Past ETA', tone: 'warning' },
+      { label: 'Avg Response', value: '0m', caption: 'Request to arrival' },
+    ],
+    sections: [
+      {
+        title: 'Tow Requests',
+        columns: ['Reference', 'Vehicle', 'Pickup', 'Operator', 'Status'],
+        empty: { icon: 'Truck', title: 'No tow requests' },
+      },
+    ],
+  },
+  {
+    id: '030',
+    route: '/tire-management',
+    title: 'Tire Management',
+    subtitle: 'Tread depth, rotation schedules and seasonal storage',
+    icon: 'CircleDot',
+    stats: [
+      { label: 'Tire Sets Tracked', value: 0, caption: 'Registered', highlight: true },
+      { label: 'Due for Rotation', value: 0, caption: 'This month', tone: 'info' },
+      { label: 'Below Legal Tread', value: 0, caption: 'Replace now', tone: 'warning' },
+      { label: 'In Storage', value: 0, caption: 'Seasonal sets' },
+    ],
+    sections: [
+      {
+        title: 'Tire Sets',
+        searchable: true,
+        columns: ['Vehicle', 'Plate', 'Position', 'Tread', 'Status'],
+        empty: { icon: 'CircleDot', title: 'No tire sets tracked yet' },
+      },
+    ],
+  },
+
+  // ── Diagnostics hub ───────────────────────────────────────────────────────
+  {
+    id: '037',
+    route: '/diagnostics-obd-hub',
+    title: 'Diagnostics & OBD Hub',
+    subtitle: 'Connected diagnostic tools and live fault codes',
+    icon: 'Cpu',
+    stats: [
+      { label: 'Devices Online', value: 0, caption: 'Connected', highlight: true },
+      { label: 'Active Sessions', value: 0, caption: 'Reading now', tone: 'info' },
+      { label: 'Open Fault Codes', value: 0, caption: 'Unresolved', tone: 'warning' },
+      { label: 'Scans Today', value: 0, caption: 'Completed' },
+    ],
+    sections: [
+      {
+        title: 'Connected Devices',
+        columns: ['Device', 'Bay', 'Vehicle', 'Status', 'Fault Codes'],
+        empty: { icon: 'Cpu', title: 'No diagnostic devices connected' },
+      },
+    ],
+  },
+  {
+    id: '040',
+    route: '/oem-software-subscriptions',
+    title: 'OEM Software Subscriptions',
+    subtitle: 'Manufacturer diagnostic licences and renewal dates',
+    icon: 'KeyRound',
+    stats: [
+      { label: 'Subscriptions', value: 0, caption: 'Active licences', highlight: true },
+      { label: 'Expiring Soon', value: 0, caption: 'Within 30 days', tone: 'warning' },
+      { label: 'Seats In Use', value: 0, caption: 'Of allocated', tone: 'info' },
+      { label: 'Annual Cost', value: 'SAR 0.00', caption: 'Committed' },
+    ],
+    sections: [
+      {
+        title: 'Licences',
+        columns: ['Manufacturer', 'Product', 'Seats', 'Renews', 'Status'],
+        empty: { icon: 'KeyRound', title: 'No OEM subscriptions recorded' },
+      },
+    ],
+  },
 ]
 
 /** route → definition, for the router. */
