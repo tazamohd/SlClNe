@@ -32,7 +32,7 @@
     "routeSmoke": {
       "runner": "playwright",
       "present": true,
-      "covered": 78,
+      "covered": 402,
       "of": 402,
       "note": "scripts/smoke.mjs — route checks parsed from the spec"
     },

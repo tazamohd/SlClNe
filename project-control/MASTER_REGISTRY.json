@@ -10,10 +10,12 @@
     "rendered": 114,
     "placeholder": 248,
     "designedMobileOwed": 57,
-    "untested": 284,
+    "untested": 0,
     "mockOnly": 114,
     "dataBacked": 0,
-    "e2eCovered": 78,
+    "e2eCovered": 402,
+    "contentAsserted": 79,
+    "renderedWithoutAssertion": 35,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -28,7 +30,7 @@
       "route": "/account-locked",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -68,8 +70,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -85,7 +88,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY"
       ]
     },
@@ -140,8 +143,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -152,8 +156,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -211,6 +214,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -284,6 +288,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -355,8 +360,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -367,8 +373,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -424,8 +429,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -436,8 +442,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -495,8 +500,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -507,8 +513,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -568,6 +573,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -642,8 +648,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -654,8 +661,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -710,8 +716,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -722,8 +729,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -779,8 +785,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -791,8 +798,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -846,8 +852,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -858,8 +865,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -914,8 +920,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -926,8 +933,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -984,6 +990,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1051,6 +1058,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1120,8 +1128,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1132,8 +1141,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -1190,8 +1198,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1202,8 +1211,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -1260,8 +1268,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1272,8 +1281,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -1331,6 +1339,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1403,6 +1412,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1476,6 +1486,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1543,6 +1554,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1614,8 +1626,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1626,8 +1639,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -1685,6 +1697,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1750,8 +1763,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1765,7 +1779,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -1819,6 +1833,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1885,6 +1900,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1949,8 +1965,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -1964,7 +1981,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2016,8 +2033,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2031,7 +2049,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2085,6 +2103,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2151,6 +2170,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2217,6 +2237,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2283,6 +2304,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2349,6 +2371,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2415,6 +2438,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2489,8 +2513,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2501,8 +2526,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -2561,8 +2585,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2573,8 +2598,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -2633,8 +2657,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2645,8 +2670,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -2704,8 +2728,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2716,8 +2741,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -2775,8 +2799,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2787,8 +2812,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -2849,6 +2873,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2922,6 +2947,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -2997,8 +3023,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3009,8 +3036,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -3075,6 +3101,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3148,6 +3175,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3224,8 +3252,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3236,8 +3265,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -3295,6 +3323,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3320,7 +3349,7 @@
       "route": "/error404",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -3360,8 +3389,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3372,8 +3402,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -3433,8 +3462,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3445,8 +3475,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -3508,6 +3537,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3580,6 +3610,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3652,6 +3683,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3724,6 +3756,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3796,6 +3829,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3871,8 +3905,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3883,8 +3918,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -3946,6 +3980,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -3971,7 +4006,7 @@
       "route": "/flow-spec",
       "surface": "reference",
       "shell": "none",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "REFERENCE_ONLY",
       "domain": "ui",
@@ -4011,8 +4046,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4073,6 +4109,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4151,8 +4188,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4163,8 +4201,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -4220,8 +4257,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4232,8 +4270,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -4243,7 +4280,7 @@
       "route": "/index",
       "surface": "reference",
       "shell": "none",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "REFERENCE_ONLY",
       "domain": "ui",
@@ -4283,8 +4320,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4348,8 +4386,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4360,8 +4399,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -4417,6 +4455,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4493,6 +4532,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4568,8 +4608,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4580,8 +4621,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -4631,8 +4671,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4643,8 +4684,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -4704,6 +4744,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4779,6 +4820,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4852,8 +4894,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -4864,8 +4907,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -4925,6 +4967,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5001,8 +5044,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5013,8 +5057,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5077,6 +5120,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5155,6 +5199,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5227,6 +5272,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5299,8 +5345,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5311,8 +5358,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5368,8 +5414,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5380,8 +5427,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5433,6 +5479,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5504,8 +5551,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5516,8 +5564,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5575,6 +5622,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5645,8 +5693,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5657,8 +5706,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5668,7 +5716,7 @@
       "route": "/login",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -5710,6 +5758,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5775,8 +5824,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5792,7 +5842,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY"
       ]
     },
@@ -5803,7 +5853,7 @@
       "route": "/maintenance",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -5843,8 +5893,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5855,8 +5906,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5912,8 +5962,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5924,8 +5975,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -5975,8 +6025,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -5988,7 +6039,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -6039,8 +6089,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6052,7 +6103,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -6116,8 +6166,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6128,8 +6179,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -6190,8 +6240,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6202,8 +6253,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -6257,8 +6307,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6269,8 +6320,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -6320,8 +6370,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6332,8 +6383,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -6395,6 +6445,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6468,6 +6519,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6537,8 +6589,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6549,8 +6602,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -6600,8 +6652,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6612,8 +6665,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -6665,6 +6717,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6739,6 +6792,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6804,6 +6858,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6870,6 +6925,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -6936,6 +6992,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7002,6 +7059,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7068,6 +7126,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7134,6 +7193,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7207,6 +7267,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7279,6 +7340,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7304,7 +7366,7 @@
       "route": "/privacy-policy",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -7344,8 +7406,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7356,8 +7419,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7416,6 +7478,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7488,6 +7551,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7564,8 +7628,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7576,8 +7641,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7627,8 +7691,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7639,8 +7704,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7696,8 +7760,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7708,8 +7773,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7759,8 +7823,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7771,8 +7836,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7822,8 +7886,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7834,8 +7899,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7885,8 +7949,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7897,8 +7962,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -7948,8 +8012,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -7960,8 +8025,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8011,8 +8075,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8023,8 +8088,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8074,8 +8138,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8086,8 +8151,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8137,8 +8201,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8149,8 +8214,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8200,8 +8264,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8212,8 +8277,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8263,8 +8327,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8275,8 +8340,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8326,8 +8390,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8338,8 +8403,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8397,8 +8461,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8409,8 +8474,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8420,7 +8484,7 @@
       "route": "/rbacspec",
       "surface": "reference",
       "shell": "none",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "REFERENCE_ONLY",
       "domain": "ui",
@@ -8460,8 +8524,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8529,6 +8594,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8596,6 +8662,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8661,8 +8728,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8673,8 +8741,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8734,8 +8801,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8746,8 +8814,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8807,8 +8874,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8819,8 +8887,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -8872,6 +8939,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8937,8 +9005,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -8949,8 +9018,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9004,8 +9072,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9016,8 +9085,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9072,8 +9140,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9084,8 +9153,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9095,7 +9163,7 @@
       "route": "/session-expired",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -9135,8 +9203,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9152,7 +9221,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY"
       ]
     },
@@ -9207,8 +9276,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9219,8 +9289,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9278,6 +9347,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9343,8 +9413,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9355,8 +9426,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9366,7 +9436,7 @@
       "route": "/splash",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -9406,8 +9476,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9423,7 +9494,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
         "MOCK_ONLY"
       ]
     },
@@ -9474,8 +9544,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9486,8 +9557,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9541,8 +9611,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9553,8 +9624,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9608,8 +9678,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9620,8 +9691,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9678,8 +9748,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9690,8 +9761,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9748,8 +9818,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9760,8 +9831,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9815,8 +9885,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9827,8 +9898,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9883,8 +9953,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9895,8 +9966,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -9955,8 +10025,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9967,8 +10038,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -10025,8 +10095,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10037,8 +10108,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -10095,8 +10165,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10107,8 +10178,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -10169,6 +10239,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10243,8 +10314,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10255,8 +10327,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -10310,8 +10381,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10322,8 +10394,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -10333,7 +10404,7 @@
       "route": "/terms-conditions",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -10373,8 +10444,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10385,8 +10457,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -10438,6 +10509,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10503,8 +10575,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10563,8 +10636,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10623,8 +10697,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10683,8 +10758,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10743,8 +10819,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10803,8 +10880,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10863,8 +10941,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10883,7 +10962,7 @@
       "route": "/ui/empty-states",
       "surface": "reference",
       "shell": "none",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "REFERENCE_ONLY",
       "domain": "ui",
@@ -10923,8 +11002,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -10983,8 +11063,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11003,7 +11084,7 @@
       "route": "/ui/form-validation",
       "surface": "reference",
       "shell": "none",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "REFERENCE_ONLY",
       "domain": "ui",
@@ -11043,8 +11124,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11103,8 +11185,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11163,8 +11246,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11223,8 +11307,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11243,7 +11328,7 @@
       "route": "/ui/loading-states",
       "surface": "reference",
       "shell": "none",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "REFERENCE_ONLY",
       "domain": "ui",
@@ -11283,8 +11368,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11343,8 +11429,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11403,8 +11490,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11463,8 +11551,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11523,8 +11612,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11583,8 +11673,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11643,8 +11734,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11703,8 +11795,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11763,8 +11856,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11823,8 +11917,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11883,8 +11978,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11943,8 +12039,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -11963,7 +12060,7 @@
       "route": "/unauthorized",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -12005,6 +12102,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12074,8 +12172,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12086,8 +12185,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -12147,8 +12245,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12159,8 +12258,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -12222,6 +12320,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12247,7 +12346,7 @@
       "route": "/welcome",
       "surface": "auth",
       "shell": "AuthLayout",
-      "module": null,
+      "module": "ungated",
       "permissions": [],
       "category": "PRODUCT",
       "domain": "auth",
@@ -12289,6 +12388,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12360,8 +12460,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12377,7 +12478,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY"
       ]
     },
@@ -12434,8 +12535,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12446,8 +12548,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -12510,6 +12611,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12588,6 +12690,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12665,6 +12768,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12743,6 +12847,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12821,6 +12926,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12896,8 +13002,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -12908,8 +13015,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -12972,6 +13078,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13037,8 +13144,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13049,8 +13157,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER",
-        "UNTESTED"
+        "PLACEHOLDER"
       ]
     },
     {
@@ -13100,8 +13207,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13113,7 +13221,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13164,8 +13271,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13177,7 +13285,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13228,8 +13335,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13241,7 +13349,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13292,8 +13399,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13305,7 +13413,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13356,8 +13463,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13371,7 +13479,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -13423,8 +13531,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13438,7 +13547,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -13490,8 +13599,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13505,7 +13615,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -13557,8 +13667,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13570,7 +13681,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13621,8 +13731,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13636,7 +13747,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -13688,8 +13799,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13703,7 +13815,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -13755,8 +13867,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13768,7 +13881,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13819,8 +13931,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13832,7 +13945,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -13883,8 +13995,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13898,7 +14011,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -13950,8 +14063,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -13965,7 +14079,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14017,8 +14131,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14032,7 +14147,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14084,8 +14199,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14097,7 +14213,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -14148,8 +14263,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14161,7 +14277,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -14212,8 +14327,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14227,7 +14343,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14279,8 +14395,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14292,7 +14409,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -14343,8 +14459,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14358,7 +14475,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14410,8 +14527,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14425,7 +14543,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14477,8 +14595,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14492,7 +14611,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14546,6 +14665,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14610,8 +14730,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14623,7 +14744,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -14676,6 +14796,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14742,6 +14863,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14806,8 +14928,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14819,7 +14942,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -14870,8 +14992,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14885,7 +15008,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -14937,8 +15060,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -14952,7 +15076,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15004,8 +15128,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15019,7 +15144,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15073,6 +15198,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15139,6 +15265,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15203,8 +15330,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15218,7 +15346,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15272,6 +15400,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15336,8 +15465,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15351,7 +15481,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15403,8 +15533,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15418,7 +15549,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15470,8 +15601,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15485,7 +15617,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15537,8 +15669,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15552,7 +15685,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15606,6 +15739,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15670,8 +15804,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15685,7 +15820,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15737,8 +15872,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15752,7 +15888,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15804,8 +15940,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15819,7 +15956,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15873,6 +16010,7 @@
         "integration": false,
         "e2e": true
       },
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15937,8 +16075,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -15952,7 +16091,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16004,8 +16143,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16017,7 +16157,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16068,8 +16207,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16083,7 +16223,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16135,8 +16275,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16150,7 +16291,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16202,8 +16343,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16217,7 +16359,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16269,8 +16411,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16282,7 +16425,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16333,8 +16475,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16348,7 +16491,7 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "UNTESTED",
+        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16400,8 +16543,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16413,7 +16557,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16464,8 +16607,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16477,7 +16621,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16528,8 +16671,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16541,7 +16685,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16592,8 +16735,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16605,7 +16749,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16656,8 +16799,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16669,7 +16813,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16720,8 +16863,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16733,7 +16877,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16784,8 +16927,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16797,7 +16941,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16848,8 +16991,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16861,7 +17005,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16912,8 +17055,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16925,7 +17069,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16976,8 +17119,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -16989,7 +17133,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17040,8 +17183,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17053,7 +17197,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17104,8 +17247,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17117,7 +17261,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17168,8 +17311,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17181,7 +17325,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17232,8 +17375,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17245,7 +17389,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17296,8 +17439,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17309,7 +17453,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17360,8 +17503,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17373,7 +17517,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17424,8 +17567,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17437,7 +17581,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17488,8 +17631,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17501,7 +17645,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17552,8 +17695,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17565,7 +17709,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17616,8 +17759,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17629,7 +17773,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17680,8 +17823,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17693,7 +17837,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17744,8 +17887,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17757,7 +17901,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17808,8 +17951,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17821,7 +17965,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17872,8 +18015,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17885,7 +18029,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17936,8 +18079,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -17949,7 +18093,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18000,8 +18143,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18013,7 +18157,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18064,8 +18207,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18077,7 +18221,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18128,8 +18271,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18141,7 +18285,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18192,8 +18335,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18205,7 +18349,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18256,8 +18399,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18269,7 +18413,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18320,8 +18463,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18333,7 +18477,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18384,8 +18527,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18397,7 +18541,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18448,8 +18591,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18461,7 +18605,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18512,8 +18655,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18525,7 +18669,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18576,8 +18719,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18589,7 +18733,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18640,8 +18783,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18653,7 +18797,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18704,8 +18847,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18717,7 +18861,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18768,8 +18911,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18781,7 +18925,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18832,8 +18975,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18845,7 +18989,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18896,8 +19039,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18909,7 +19053,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18960,8 +19103,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -18973,7 +19117,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19024,8 +19167,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19037,7 +19181,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19088,8 +19231,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19101,7 +19245,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19152,8 +19295,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19165,7 +19309,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19216,8 +19359,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19229,7 +19373,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19280,8 +19423,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19293,7 +19437,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19344,8 +19487,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19357,7 +19501,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19408,8 +19551,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19421,7 +19565,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19472,8 +19615,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19485,7 +19629,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19536,8 +19679,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19549,7 +19693,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19600,8 +19743,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19613,7 +19757,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19664,8 +19807,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19677,7 +19821,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19728,8 +19871,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19741,7 +19885,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19792,8 +19935,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19805,7 +19949,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19856,8 +19999,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19869,7 +20013,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19920,8 +20063,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19933,7 +20077,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19984,8 +20127,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -19997,7 +20141,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20048,8 +20191,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20061,7 +20205,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20112,8 +20255,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20125,7 +20269,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20176,8 +20319,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20189,7 +20333,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20240,8 +20383,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20253,7 +20397,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20304,8 +20447,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20317,7 +20461,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20368,8 +20511,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20381,7 +20525,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20432,8 +20575,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20445,7 +20589,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20496,8 +20639,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20509,7 +20653,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20560,8 +20703,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20573,7 +20717,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20624,8 +20767,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20637,7 +20781,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20688,8 +20831,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20701,7 +20845,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20752,8 +20895,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20765,7 +20909,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20816,8 +20959,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20829,7 +20973,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20880,8 +21023,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20893,7 +21037,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20944,8 +21087,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -20957,7 +21101,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21008,8 +21151,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21021,7 +21165,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21072,8 +21215,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21085,7 +21229,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21136,8 +21279,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21149,7 +21293,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21200,8 +21343,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21262,8 +21406,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21275,7 +21420,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21326,8 +21470,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21339,7 +21484,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21390,8 +21534,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21403,7 +21548,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21454,8 +21598,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21467,7 +21612,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21518,8 +21662,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21531,7 +21676,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21582,8 +21726,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21595,7 +21740,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21646,8 +21790,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21659,7 +21804,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21710,8 +21854,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21723,7 +21868,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21774,8 +21918,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21787,7 +21932,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21838,8 +21982,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21851,7 +21996,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21902,8 +22046,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21915,7 +22060,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21966,8 +22110,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -21979,7 +22124,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22030,8 +22174,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22043,7 +22188,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22094,8 +22238,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22107,7 +22252,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22158,8 +22302,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22171,7 +22316,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22222,8 +22366,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22235,7 +22380,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22286,8 +22430,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22299,7 +22444,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22350,8 +22494,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22363,7 +22508,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22414,8 +22558,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22427,7 +22572,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22478,8 +22622,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22491,7 +22636,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22542,8 +22686,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22555,7 +22700,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22606,8 +22750,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22619,7 +22764,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22670,8 +22814,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22683,7 +22828,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22734,8 +22878,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22747,7 +22892,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22798,8 +22942,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22811,7 +22956,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22862,8 +23006,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22875,7 +23020,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22926,8 +23070,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -22939,7 +23084,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22990,8 +23134,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23003,7 +23148,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23054,8 +23198,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23067,7 +23212,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23118,8 +23262,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23131,7 +23276,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23182,8 +23326,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23195,7 +23340,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23246,8 +23390,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23259,7 +23404,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23310,8 +23454,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23323,7 +23468,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23374,8 +23518,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23387,7 +23532,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23438,8 +23582,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23451,7 +23596,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23502,8 +23646,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23515,7 +23660,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23566,8 +23710,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23579,7 +23724,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23630,8 +23774,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23643,7 +23788,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23694,8 +23838,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23707,7 +23852,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23758,8 +23902,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23771,7 +23916,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23822,8 +23966,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23835,7 +23980,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23886,8 +24030,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23899,7 +24044,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23950,8 +24094,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -23963,7 +24108,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24014,8 +24158,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24027,7 +24172,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24078,8 +24222,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24091,7 +24236,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24142,8 +24286,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24155,7 +24300,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24206,8 +24350,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24219,7 +24364,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24270,8 +24414,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24283,7 +24428,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24334,8 +24478,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24347,7 +24492,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24398,8 +24542,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24460,8 +24605,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24522,8 +24668,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24535,7 +24682,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24586,8 +24732,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24599,7 +24746,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24650,8 +24796,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24663,7 +24810,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24714,8 +24860,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24727,7 +24874,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24778,8 +24924,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24791,7 +24938,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24842,8 +24988,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24855,7 +25002,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24906,8 +25052,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24919,7 +25066,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24970,8 +25116,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -24983,7 +25130,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25034,8 +25180,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25096,8 +25243,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25158,8 +25306,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25220,8 +25369,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25282,8 +25432,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25344,8 +25495,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25406,8 +25558,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25468,8 +25621,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25481,7 +25635,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25532,8 +25685,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25594,8 +25748,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25656,8 +25811,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25669,7 +25825,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25720,8 +25875,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25733,7 +25889,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25784,8 +25939,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25797,7 +25953,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25848,8 +26003,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25861,7 +26017,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25912,8 +26067,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25925,7 +26081,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25976,8 +26131,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -25989,7 +26145,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26040,8 +26195,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26053,7 +26209,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26104,8 +26259,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26117,7 +26273,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26168,8 +26323,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26181,7 +26337,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26232,8 +26387,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26245,7 +26401,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26296,8 +26451,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26309,7 +26465,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26360,8 +26515,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26373,7 +26529,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26424,8 +26579,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26437,7 +26593,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26488,8 +26643,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26501,7 +26657,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26552,8 +26707,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26565,7 +26721,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26616,8 +26771,9 @@
       "tests": {
         "unit": false,
         "integration": false,
-        "e2e": false
+        "e2e": true
       },
+      "e2eContent": false,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -26629,7 +26785,6 @@
       "evidence": [],
       "flags": [
         "PLACEHOLDER",
-        "UNTESTED",
         "NO_RBAC_MODULE"
       ]
     }

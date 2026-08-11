@@ -15,10 +15,12 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | rendered | 114 |
 | placeholder | 248 |
 | designed mobile owed | 57 |
-| untested | 284 |
+| untested | 0 |
 | mock only | 114 |
 | data backed | 0 |
-| e2e covered | 78 |
+| e2e covered | 402 |
+| content asserted | 79 |
+| rendered without assertion | 35 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |
@@ -27,15 +29,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
-| auth | 28 | 15 | 13 | 15 | 11 |
-| app | 312 | 86 | 214 | 42 | 57 |
-| call-center | 2 | 0 | 2 | 0 | 0 |
-| customer-app | 11 | 11 | 0 | 0 | 8 |
-| portal | 8 | 2 | 6 | 0 | 2 |
-| reference | 28 | 0 | 0 | 0 | 0 |
-| kiosk | 1 | 0 | 1 | 0 | 0 |
-| native | 2 | 0 | 2 | 0 | 0 |
-| public | 10 | 0 | 10 | 0 | 0 |
+| auth | 28 | 15 | 13 | 15 | 28 |
+| app | 312 | 86 | 214 | 42 | 312 |
+| call-center | 2 | 0 | 2 | 0 | 2 |
+| customer-app | 11 | 11 | 0 | 0 | 11 |
+| portal | 8 | 2 | 6 | 0 | 8 |
+| reference | 28 | 0 | 0 | 0 | 28 |
+| kiosk | 1 | 0 | 1 | 0 | 1 |
+| native | 2 | 0 | 2 | 0 | 2 |
+| public | 10 | 0 | 10 | 0 | 10 |
 
 ## By domain
 
@@ -87,4 +89,5 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | reports | 6 | 1 |
 | settings | 7 | 0 |
 | technicians | 3 | 1 |
+| ungated | 16 | 6 |
 | vehicles | 4 | 2 |

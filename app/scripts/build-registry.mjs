@@ -67,10 +67,12 @@ const pickObject = (src, name) => {
 const PERMS = pickObject(rbacSrc, 'PERMS')
 const SCREEN_MODULE = pickObject(rbacSrc, 'SCREEN_MODULE')
 const ROLES = JSON.parse(rbacSrc.slice(rbacSrc.indexOf('['), rbacSrc.indexOf('\n]') + 2))
-const UNGATED = JSON.parse(
-  rbacSrc.slice(rbacSrc.indexOf('RBAC_UNGATED'), rbacSrc.indexOf(']', rbacSrc.indexOf('RBAC_UNGATED')) + 1)
-    .replace(/^[^[]*/, '')
-)
+/** Careful: the declaration is `readonly string[] = [...]`, so the first `]`
+ *  after the name belongs to the *type*, not the array. Slicing to it yields an
+ *  empty list and silently mis-flags every ungated screen. Find the `[` that
+ *  follows the `=` instead. */
+const ungatedStart = rbacSrc.indexOf('[', rbacSrc.indexOf('=', rbacSrc.indexOf('RBAC_UNGATED')))
+const UNGATED = JSON.parse(rbacSrc.slice(ungatedStart, rbacSrc.indexOf(']', ungatedStart) + 1))
 
 const routesSrc = readApp('src/routes/index.tsx')
 const featureDefsSrc = readApp('src/screens/feature/definitions.ts')
@@ -99,7 +101,16 @@ const IMPL = {
   customerApp: screensIn('CUSTOMER_APP_SCREENS'),
 }
 const KIT_ROUTES = new Set([...featureDefsSrc.matchAll(/route: '([^']+)'/g)].map((m) => m[1]))
-const SMOKE_ROUTES = new Set([...smokeSrc.matchAll(/path: '([^']+)'/g)].map((m) => m[1]))
+/** Route coverage moved into the smoke runner itself: it reads this registry and
+ *  checks every entry, so grepping it for route literals now matches nothing.
+ *  Two distinct facts are worth tracking separately — that a route is visited at
+ *  all, and that something specific is asserted about what it renders. A visit
+ *  with no assertion is the weakest possible test, and counting it as coverage
+ *  is how a suite comes to look thorough while proving very little. */
+const SMOKE_READS_REGISTRY = /master-registry/.test(smokeSrc)
+const SMOKE_CONTENT_ROUTES = new Set(
+  [...smokeSrc.matchAll(/^\s*'([^']+)':\s*'/gm)].map((m) => m[1]).filter((r) => r.startsWith('/'))
+)
 const NAV_SCREENS = new Set(
   NAV.flatMap((g) => g.items ?? []).map((i) => i.screen).filter(Boolean)
 )
@@ -240,7 +251,8 @@ for (const s of SCREENS) {
     dataSource: [],
     crud: { create: false, read: built, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
-    tests: { unit: false, integration: false, e2e: SMOKE_ROUTES.has(s.route) },
+    tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
+    e2eContent: SMOKE_CONTENT_ROUTES.has(s.route),
     visualTests: false, accessibilityTests: false, securityTests: false, performanceTest: false,
     inNav: NAV_SCREENS.has(s.name),
     status: built ? 'IMPLEMENTED' : 'DISCOVERED',
@@ -284,7 +296,8 @@ for (const s of SPEC_SCREENS) {
     dataSource: [],
     crud: { create: false, read: kit, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
-    tests: { unit: false, integration: false, e2e: SMOKE_ROUTES.has(s.route) },
+    tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
+    e2eContent: SMOKE_CONTENT_ROUTES.has(s.route),
     visualTests: false, accessibilityTests: false, securityTests: false, performanceTest: false,
     inNav: false,
     status: kit ? 'IMPLEMENTED' : 'DISCOVERED',
@@ -315,7 +328,8 @@ for (const e of entries) {
   if (rendered && e.tablet === 'MISSING') f.push('TABLET_MISSING')
   if (rendered && e.arabic !== 'VERIFIED') f.push('ARABIC_MISSING')
   if (rendered && e.rtl !== 'VERIFIED') f.push('RTL_BROKEN')
-  if (!e.tests.e2e && product) f.push('UNTESTED')
+  if (product && !e.tests.e2e) f.push('UNTESTED')
+  if (product && e.tests.e2e && !e.e2eContent && rendered) f.push('NO_CONTENT_ASSERTION')
   if (product && rendered && !e.dataBacked) f.push('MOCK_ONLY')
   if (product && e.surface !== 'auth' && e.surface !== 'public' && !e.module) f.push('NO_RBAC_MODULE')
 }
@@ -386,6 +400,8 @@ const totals = {
   mockOnly: count(entries, (e) => e.flags.includes('MOCK_ONLY')),
   dataBacked: count(entries, (e) => e.dataBacked),
   e2eCovered: count(entries, (e) => e.tests.e2e),
+  contentAsserted: count(entries, (e) => e.e2eContent),
+  renderedWithoutAssertion: count(entries, (e) => e.status === 'IMPLEMENTED' && !e.e2eContent),
   unregisteredDesigns: unregistered.length,
   orphanScreenFiles: orphanFiles.length,
   productionReady: count(entries, (e) => e.status === 'PRODUCTION_READY'),
@@ -469,6 +485,10 @@ const blockers = [
     detail: 'They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
   totals.untested && { id: 'BLK-005', severity: 'CRITICAL', title: `${totals.untested} product capabilities have no route check`,
     detail: 'Route coverage is generated from this registry once the test harness lands.', owner: '07', wave: 'W1' },
+  totals.renderedWithoutAssertion && { id: 'BLK-012', severity: 'HIGH',
+    title: `${totals.renderedWithoutAssertion} rendering capabilities are visited but assert nothing`,
+    detail: 'The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.',
+    owner: '07', wave: 'W2' },
   totals.designedMobileOwed && { id: 'BLK-006', severity: 'HIGH', title: `${totals.designedMobileOwed} built screens owe their designed mobile layout`,
     detail: 'A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.', owner: '18', wave: 'W3' },
   { id: 'BLK-007', severity: 'CRITICAL', title: 'No modal system, so 23 CTAs do nothing',

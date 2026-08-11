@@ -13,7 +13,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/account-locked",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
@@ -25,7 +25,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -47,8 +47,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/AdvancedSettings.dc.html",
@@ -121,8 +120,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/AIAnalytics.dc.html",
@@ -143,8 +141,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/AIAssistant.dc.html",
@@ -165,8 +162,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/AppointmentCalendar.dc.html",
@@ -213,8 +209,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/ApprovalInbox.dc.html",
@@ -235,8 +230,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/AuditLog.dc.html",
@@ -257,8 +251,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/AutomationRules.dc.html",
@@ -279,8 +272,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Backup.dc.html",
@@ -301,8 +293,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/BankReconciliation.dc.html",
@@ -375,8 +366,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Branches.dc.html",
@@ -397,8 +387,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CallCenter.dc.html",
@@ -419,8 +408,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CallCenter.Logs.dc.html",
@@ -545,8 +533,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CRMCalendar.dc.html",
@@ -596,7 +583,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -672,7 +659,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -698,7 +685,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -871,8 +858,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CustomerApproval.dc.html",
@@ -893,8 +879,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/CustomerDetail.dc.html",
@@ -915,8 +900,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CustomerFeedback.dc.html",
@@ -937,8 +921,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CustomerPortal.dc.html",
@@ -959,8 +942,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/CustomerPortal.Booking.dc.html",
@@ -1033,8 +1015,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/CustomReports.dc.html",
@@ -1107,8 +1088,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/DiagnosticReport.dc.html",
@@ -1148,15 +1128,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/error404",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/Error404.dc.html",
@@ -1177,8 +1156,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/EstimateDetail.dc.html",
@@ -1329,8 +1307,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/FleetContract.dc.html",
@@ -1370,7 +1347,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/flow-spec",
     "surface": "reference",
     "shell": "none",
-    "module": null,
+    "module": "ungated",
     "category": "REFERENCE_ONLY",
     "domain": "ui",
     "owner": "02",
@@ -1422,8 +1399,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/GlobalSearch.dc.html",
@@ -1444,8 +1420,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/HRPayroll.dc.html",
@@ -1459,7 +1434,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/index",
     "surface": "reference",
     "shell": "none",
-    "module": null,
+    "module": "ungated",
     "category": "REFERENCE_ONLY",
     "domain": "ui",
     "owner": "02",
@@ -1485,8 +1460,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/InsuranceReports.dc.html",
@@ -1559,8 +1533,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/InventoryReports.dc.html",
@@ -1581,8 +1554,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/InviteAcceptance.dc.html",
@@ -1655,8 +1627,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/InvoicePreview.dc.html",
@@ -1703,8 +1674,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/JobCardDetail.dc.html",
@@ -1803,8 +1773,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/KioskCheckIn.dc.html",
@@ -1825,8 +1794,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/KnowledgeBase.dc.html",
@@ -1873,8 +1841,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/LeadDetail.dc.html",
@@ -1921,8 +1888,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/LoanReports.dc.html",
@@ -1936,7 +1902,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/login",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
@@ -1974,7 +1940,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1989,15 +1955,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/maintenance",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/Maintenance.dc.html",
@@ -2018,8 +1983,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/ModelSettings.dc.html",
@@ -2041,7 +2005,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2064,7 +2027,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2086,8 +2048,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/NotificationCenter.dc.html",
@@ -2108,8 +2069,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/OBDDiagnostics.dc.html",
@@ -2130,8 +2090,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/OEMIntegrations.dc.html",
@@ -2152,8 +2111,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/Onboarding.dc.html",
@@ -2226,8 +2184,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Organizations.dc.html",
@@ -2248,8 +2205,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/OrganizationSelection.dc.html",
@@ -2513,15 +2469,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/privacy-policy",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PrivacyPolicy.dc.html",
@@ -2590,8 +2545,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Profile.dc.html",
@@ -2612,8 +2566,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/ProfileCompletion.dc.html",
@@ -2634,8 +2587,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/PromptLibrary.dc.html",
@@ -2656,8 +2608,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.About.dc.html",
@@ -2678,8 +2629,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Blog.dc.html",
@@ -2700,8 +2650,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Contact.dc.html",
@@ -2722,8 +2671,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.FAQ.dc.html",
@@ -2744,8 +2692,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Insurance.dc.html",
@@ -2766,8 +2713,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Landing.dc.html",
@@ -2788,8 +2734,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Loans.dc.html",
@@ -2810,8 +2755,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Marketplace.dc.html",
@@ -2832,8 +2776,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Services.dc.html",
@@ -2854,8 +2797,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Support.dc.html",
@@ -2876,8 +2818,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/PurchaseOrder.dc.html",
@@ -2891,7 +2832,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/rbacspec",
     "surface": "reference",
     "shell": "none",
-    "module": null,
+    "module": "ungated",
     "category": "REFERENCE_ONLY",
     "domain": "ui",
     "owner": "02",
@@ -2969,8 +2910,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/Register.dc.html",
@@ -2991,8 +2931,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Reports.dc.html",
@@ -3013,8 +2952,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/ReportsAnalytics.dc.html",
@@ -3061,8 +2999,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/RoleSelection.dc.html",
@@ -3083,8 +3020,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/RolesPermissions.dc.html",
@@ -3105,8 +3041,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/SalesReports.dc.html",
@@ -3120,7 +3055,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/session-expired",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
@@ -3132,7 +3067,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3154,8 +3089,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Settings.dc.html",
@@ -3202,8 +3136,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/SocialLogin.dc.html",
@@ -3217,7 +3150,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/splash",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
@@ -3229,7 +3162,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3251,8 +3183,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/SSOLogin.dc.html",
@@ -3273,8 +3204,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Subscription.dc.html",
@@ -3295,8 +3225,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/SuperAdmin.dc.html",
@@ -3317,8 +3246,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/SupplierPortal.dc.html",
@@ -3339,8 +3267,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/SupplierPortal.Orders.dc.html",
@@ -3361,8 +3288,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/SystemIntegrations.dc.html",
@@ -3383,8 +3309,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/TaxManagement.dc.html",
@@ -3405,8 +3330,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/TechnicianKB.dc.html",
@@ -3427,8 +3351,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/TechnicianPortal.dc.html",
@@ -3449,8 +3372,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/TechnicianPortal.JobDetail.dc.html",
@@ -3497,8 +3419,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/TechnicianSchedule.dc.html",
@@ -3519,8 +3440,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/Templates.dc.html",
@@ -3534,15 +3454,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/terms-conditions",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/TermsConditions.dc.html",
@@ -3715,7 +3634,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/ui/empty-states",
     "surface": "reference",
     "shell": "none",
-    "module": null,
+    "module": "ungated",
     "category": "REFERENCE_ONLY",
     "domain": "ui",
     "owner": "04",
@@ -3753,7 +3672,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/ui/form-validation",
     "surface": "reference",
     "shell": "none",
-    "module": null,
+    "module": "ungated",
     "category": "REFERENCE_ONLY",
     "domain": "ui",
     "owner": "04",
@@ -3829,7 +3748,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/ui/loading-states",
     "surface": "reference",
     "shell": "none",
-    "module": null,
+    "module": "ungated",
     "category": "REFERENCE_ONLY",
     "domain": "ui",
     "owner": "04",
@@ -4057,7 +3976,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/unauthorized",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
@@ -4090,8 +4009,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/UsersTeams.dc.html",
@@ -4112,8 +4030,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/VehicleDetail.dc.html",
@@ -4153,7 +4070,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/welcome",
     "surface": "auth",
     "shell": "AuthLayout",
-    "module": null,
+    "module": "ungated",
     "category": "PRODUCT",
     "domain": "auth",
     "owner": "06",
@@ -4191,7 +4108,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -4213,8 +4130,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/WorkflowBuilder.dc.html",
@@ -4365,8 +4281,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": true,
     "designSource": "project/WorkshopReports.dc.html",
@@ -4413,8 +4328,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "DISCOVERED",
     "flags": [
-      "PLACEHOLDER",
-      "UNTESTED"
+      "PLACEHOLDER"
     ],
     "inNav": false,
     "designSource": "project/WorkspaceSelection.dc.html",
@@ -4436,7 +4350,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4459,7 +4372,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4482,7 +4394,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4505,7 +4416,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4530,7 +4440,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4556,7 +4466,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4582,7 +4492,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4606,7 +4516,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4631,7 +4540,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4657,7 +4566,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4681,7 +4590,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4704,7 +4612,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4729,7 +4636,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4755,7 +4662,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4781,7 +4688,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4805,7 +4712,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4828,7 +4734,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4853,7 +4758,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4877,7 +4782,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4902,7 +4806,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4928,7 +4832,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -4954,7 +4858,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5003,7 +4907,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5076,7 +4979,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5101,7 +5003,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5127,7 +5029,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5153,7 +5055,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5229,7 +5131,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5280,7 +5182,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5306,7 +5208,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5332,7 +5234,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5358,7 +5260,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5409,7 +5311,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5435,7 +5337,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5461,7 +5363,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5512,7 +5414,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5536,7 +5438,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5561,7 +5462,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5587,7 +5488,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5613,7 +5514,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5637,7 +5538,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5662,7 +5562,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "UNTESTED",
+      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5686,7 +5586,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5709,7 +5608,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5732,7 +5630,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5755,7 +5652,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5778,7 +5674,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5801,7 +5696,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5824,7 +5718,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5847,7 +5740,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5870,7 +5762,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5893,7 +5784,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5916,7 +5806,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5939,7 +5828,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5962,7 +5850,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5985,7 +5872,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6008,7 +5894,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6031,7 +5916,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6054,7 +5938,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6077,7 +5960,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6100,7 +5982,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6123,7 +6004,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6146,7 +6026,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6169,7 +6048,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6192,7 +6070,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6215,7 +6092,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6238,7 +6114,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6261,7 +6136,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6284,7 +6158,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6307,7 +6180,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6330,7 +6202,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6353,7 +6224,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6376,7 +6246,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6399,7 +6268,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6422,7 +6290,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6445,7 +6312,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6468,7 +6334,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6491,7 +6356,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6514,7 +6378,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6537,7 +6400,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6560,7 +6422,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6583,7 +6444,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6606,7 +6466,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6629,7 +6488,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6652,7 +6510,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6675,7 +6532,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6698,7 +6554,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6721,7 +6576,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6744,7 +6598,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6767,7 +6620,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6790,7 +6642,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6813,7 +6664,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6836,7 +6686,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6859,7 +6708,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6882,7 +6730,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6905,7 +6752,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6928,7 +6774,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6951,7 +6796,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6974,7 +6818,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6997,7 +6840,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7020,7 +6862,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7043,7 +6884,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7066,7 +6906,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7089,7 +6928,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7112,7 +6950,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7135,7 +6972,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7158,7 +6994,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7181,7 +7016,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7204,7 +7038,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7227,7 +7060,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7250,7 +7082,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7273,7 +7104,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7296,7 +7126,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7319,7 +7148,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7342,7 +7170,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7365,7 +7192,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7388,7 +7214,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7430,7 +7255,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7453,7 +7277,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7476,7 +7299,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7499,7 +7321,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7522,7 +7343,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7545,7 +7365,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7568,7 +7387,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7591,7 +7409,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7614,7 +7431,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7637,7 +7453,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7660,7 +7475,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7683,7 +7497,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7706,7 +7519,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7729,7 +7541,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7752,7 +7563,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7775,7 +7585,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7798,7 +7607,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7821,7 +7629,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7844,7 +7651,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7867,7 +7673,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7890,7 +7695,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7913,7 +7717,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7936,7 +7739,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7959,7 +7761,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7982,7 +7783,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8005,7 +7805,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8028,7 +7827,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8051,7 +7849,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8074,7 +7871,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8097,7 +7893,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8120,7 +7915,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8143,7 +7937,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8166,7 +7959,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8189,7 +7981,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8212,7 +8003,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8235,7 +8025,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8258,7 +8047,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8281,7 +8069,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8304,7 +8091,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8327,7 +8113,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8350,7 +8135,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8373,7 +8157,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8396,7 +8179,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8419,7 +8201,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8442,7 +8223,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8465,7 +8245,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8488,7 +8267,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8511,7 +8289,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8534,7 +8311,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8595,7 +8371,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8618,7 +8393,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8641,7 +8415,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8664,7 +8437,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8687,7 +8459,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8710,7 +8481,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8733,7 +8503,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8756,7 +8525,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8912,7 +8680,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8973,7 +8740,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8996,7 +8762,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9019,7 +8784,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9042,7 +8806,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9065,7 +8828,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9088,7 +8850,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9111,7 +8872,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9134,7 +8894,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9157,7 +8916,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9180,7 +8938,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9203,7 +8960,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9226,7 +8982,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9249,7 +9004,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9272,7 +9026,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9295,7 +9048,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -9318,7 +9070,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "DISCOVERED",
     "flags": [
       "PLACEHOLDER",
-      "UNTESTED",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

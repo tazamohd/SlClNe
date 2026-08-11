@@ -12,7 +12,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
 | BLK-004 | CRITICAL | 114 rendered capabilities are mock-only | 05 | W2 |
-| BLK-005 | CRITICAL | 284 product capabilities have no route check | 07 | W1 |
+| BLK-012 | HIGH | 35 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-006 | HIGH | 57 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
@@ -22,7 +22,6 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | Flag | Count | Meaning |
 |---|---|---|
-| UNTESTED | 284 | no route check in the smoke suite |
 | PLACEHOLDER | 248 | product route renders PendingScreen |
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
 | TABLET_MISSING | 114 | never verified at 768–1024 |
@@ -31,6 +30,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | MOCK_ONLY | 114 | renders, but from fixtures rather than an API |
 | MOBILE_MISSING | 57 | a .Mobile design exists and is not built |
 | DESKTOP_ONLY | 57 | renders on desktop with no mobile treatment |
+| NO_CONTENT_ASSERTION | 35 | — |
 
 ## Designs not in the registry
 

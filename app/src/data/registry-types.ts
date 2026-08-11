@@ -38,6 +38,11 @@ export type CapabilityStatus =
  *  hardcoded screen count hides. */
 export type RegistryFlag =
   | 'PLACEHOLDER' | 'DUPLICATE' | 'ORPHANED' | 'UNREGISTERED' | 'UNTESTED'
+  /** Visited by the route suite, but nothing is asserted about what it renders.
+   *  Distinct from UNTESTED on purpose: a visit with no assertion is the weakest
+   *  possible test, and counting it as coverage is how a suite comes to look
+   *  thorough while proving very little. */
+  | 'NO_CONTENT_ASSERTION'
   | 'DESKTOP_ONLY' | 'MOBILE_MISSING' | 'TABLET_MISSING'
   | 'ARABIC_MISSING' | 'RTL_BROKEN' | 'MOCK_ONLY' | 'NO_RBAC_MODULE'
 

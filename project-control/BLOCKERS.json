@@ -35,12 +35,12 @@
       "wave": "W2"
     },
     {
-      "id": "BLK-005",
-      "severity": "CRITICAL",
-      "title": "284 product capabilities have no route check",
-      "detail": "Route coverage is generated from this registry once the test harness lands.",
+      "id": "BLK-012",
+      "severity": "HIGH",
+      "title": "35 rendering capabilities are visited but assert nothing",
+      "detail": "The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.",
       "owner": "07",
-      "wave": "W1"
+      "wave": "W2"
     },
     {
       "id": "BLK-006",
