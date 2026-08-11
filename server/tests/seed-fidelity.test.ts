@@ -1,0 +1,118 @@
+/** The proof that swapping the mock repository for the API is non-destructive.
+ *
+ *  Every collection is fetched from the running API and compared, field by
+ *  field and row by row, with the fixture the app renders today. Money makes a
+ *  full round trip on the way: `"SAR 1,840"` → 184000 halalas in a bigint
+ *  column → `"SAR 1,840"`. If a single formatting decision drifts, a screen
+ *  would render differently after the swap, and this fails instead.
+ */
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import * as T from '../../app/src/data/generated/tables'
+import { COLLECTIONS } from '../src/registry'
+import { startHarness, type Harness } from './harness'
+
+/** Repository key → the fixture that key serves today. */
+const FIXTURES: Record<string, readonly unknown[]> = {
+  vehicles: T.VEHICLES,
+  invoices: T.INVOICES,
+  invoiceLines: T.INVOICE_LINES,
+  invoicePayments: T.INVOICE_PAYMENTS,
+  jobs: T.JOBS,
+  appointments: T.APPOINTMENTS,
+  estimates: T.ESTIMATES,
+  customers: T.CUSTOMERS,
+  fleets: T.FLEETS,
+  parts: T.PARTS,
+  technicians: T.TECHS,
+  services: T.SERVICES,
+  leads: T.LEADS,
+  opportunities: T.OPPORTUNITIES,
+  campaigns: T.CAMPAIGNS,
+  segments: T.SEGMENTS,
+  crmTasks: T.CRM_TASKS,
+  chartOfAccounts: T.ACCOUNTS_COA,
+  journalEntries: T.JOURNAL_ENTRIES,
+  expenses: T.EXPENSES_DATA,
+  receipts: T.RECEIPTS,
+  departments: T.DEPARTMENTS,
+  aiAgents: T.AI_AGENTS,
+  conversations: T.CONVERSATIONS,
+  obdDevices: T.OBD_DEVICES,
+  dtcCodes: T.DTC_CODES,
+  oemTools: T.OEM_TOOLS,
+  integrations: T.SYS_INTEGRATIONS,
+  kbProcedures: T.KB_PROCEDURES,
+  approvalLines: T.APPROVAL_LINES,
+  diagStages: T.DIAG_STAGES,
+  diagFindings: T.DIAG_FINDINGS,
+  diagParts: T.DIAG_PARTS,
+  diagLabour: T.DIAG_LABOUR,
+  diagCopies: T.DIAG_COPIES,
+}
+
+/** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and
+ *  the halalas values a screen may want, and extra keys are additive by
+ *  design. What must not change is any key a screen already reads. */
+function pickLike(expected: unknown, actual: unknown): unknown {
+  if (Array.isArray(expected)) return actual
+  if (expected && typeof expected === 'object') {
+    const out: Record<string, unknown> = {}
+    for (const key of Object.keys(expected as Record<string, unknown>)) {
+      out[key] = (actual as Record<string, unknown>)[key]
+    }
+    return out
+  }
+  return actual
+}
+
+let harness: Harness
+
+beforeAll(async () => {
+  harness = await startHarness()
+}, 120_000)
+
+afterAll(async () => {
+  await harness?.close()
+})
+
+describe('the seeded API serves exactly what the fixtures serve', () => {
+  it('covers every collection the app repository exposes', () => {
+    expect(COLLECTIONS.map((c) => c.key).sort()).toEqual(Object.keys(FIXTURES).sort())
+  })
+
+  for (const def of COLLECTIONS) {
+    it(`${def.key} matches app/src/data/generated/tables.ts`, async () => {
+      const token = await harness.token('owner')
+      const response = await harness.app.inject({
+        method: 'GET',
+        url: `/api/v1/${def.path}?pageSize=200`,
+        headers: { authorization: `Bearer ${token}` },
+      })
+      expect(response.statusCode, response.body).toBe(200)
+      const body = response.json() as { rows: unknown[]; page: { total: number } }
+      const fixture = FIXTURES[def.key]
+
+      expect(body.rows.length, `${def.key} row count`).toBe(fixture.length)
+      expect(body.page.total).toBe(fixture.length)
+
+      body.rows.forEach((row, index) => {
+        expect(pickLike(fixture[index], row), `${def.key}[${index}]`).toEqual(fixture[index])
+      })
+    })
+  }
+
+  it('carries an addressable id and version on every object row', async () => {
+    const token = await harness.token('owner')
+    for (const def of COLLECTIONS) {
+      if (def.key === 'services') continue
+      const response = await harness.app.inject({
+        method: 'GET',
+        url: `/api/v1/${def.path}?pageSize=1`,
+        headers: { authorization: `Bearer ${token}` },
+      })
+      const [row] = (response.json() as { rows: Record<string, unknown>[] }).rows
+      expect(typeof row?._id, def.key).toBe('string')
+      expect(typeof row?._version, def.key).toBe('number')
+    }
+  })
+})

@@ -1,0 +1,36 @@
+{
+  "name": "@salis/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SALIS AUTO API — Node 20 + Fastify + Drizzle + PostgreSQL row-level security.",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:reset": "tsx scripts/migrate.ts --reset && tsx scripts/seed.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "@fastify/helmet": "^12.0.1",
+    "@fastify/rate-limit": "^10.2.1",
+    "drizzle-orm": "^0.36.4",
+    "fastify": "^5.1.0",
+    "jose": "^5.9.6",
+    "postgres": "^3.4.5",
+    "ulid": "^2.3.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "drizzle-kit": "^0.28.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
+  }
+}
