@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { PreferencesProvider } from '@/providers/PreferencesProvider'
 import { SessionProvider } from '@/providers/SessionProvider'
+import { ModalProvider } from '@/components/ui/Modal'
 import { ToastProvider } from '@/components/ui/Toast'
 import { AppRoutes } from '@/routes'
 
@@ -17,9 +18,13 @@ export function App() {
       <PreferencesProvider>
         <SessionProvider>
           <ToastProvider>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
+            {/* Inside ToastProvider so a toast raised from a dialog still
+                paints over it — the toast layer sits above the dialog layer. */}
+            <ModalProvider>
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </ModalProvider>
           </ToastProvider>
         </SessionProvider>
       </PreferencesProvider>

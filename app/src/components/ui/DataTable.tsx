@@ -1,10 +1,14 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from './Card'
-import { Icon } from './Icon'
+import { EmptyState, Skeleton } from './States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCard, MobileList } from '@/components/shell/MobileShell'
+
+// Re-exported: `EmptyState` lived here while tables were its only caller, and
+// screens still import it from this module.
+export { EmptyState }
 
 /** Column definition. `header` is an English source string — it gets
  *  translated at render, so callers pass plain text. */
@@ -62,8 +66,8 @@ export function DataTable<TRow>({
         <MobileList>
           {Array.from({ length: 5 }, (_, index) => (
             <MobileCard key={index}>
-              <span className="block h-4 w-2/3 animate-pulse rounded bg-inset" />
-              <span className="block h-3 w-full animate-pulse rounded bg-inset" />
+              <Skeleton className="w-2/3" />
+              <Skeleton className="h-3" />
             </MobileCard>
           ))}
         </MobileList>
@@ -167,44 +171,12 @@ function SkeletonRows({ columns }: { columns: number }) {
         <tr key={row}>
           {Array.from({ length: columns }, (_, column) => (
             <td key={column} className="border-b border-border px-6 py-3">
-              <span className="block h-4 w-full animate-pulse rounded bg-inset" />
+              <Skeleton />
             </td>
           ))}
         </tr>
       ))}
     </>
-  )
-}
-
-/** Neutral empty state. Screens pass their own copy via `empty` when they can
- *  say something more useful than "nothing here". */
-export function EmptyState({
-  icon = 'Inbox',
-  title,
-  description,
-  action,
-}: {
-  icon?: string
-  title?: string
-  description?: string
-  action?: ReactNode
-}) {
-  const { t } = usePreferences()
-  return (
-    <div className="flex flex-col items-center gap-3 py-6 text-center">
-      <span className="flex rounded-full bg-inset p-4 text-muted">
-        <Icon name={icon} size={24} />
-      </span>
-      <div>
-        <p className="font-action text-sm font-semibold text-heading">
-          {title ?? t('No results')}
-        </p>
-        <p className="mt-1 text-[13px] text-muted">
-          {description ?? t('Nothing matches the current filters.')}
-        </p>
-      </div>
-      {action}
-    </div>
   )
 }
 
