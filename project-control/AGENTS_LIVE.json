@@ -1,6 +1,6 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling \u2014 a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-11T16:35:00Z",
+  "asOf": "2026-08-11T20:55:00Z",
   "wave": "W1",
   "waveName": "Foundation",
   "waveNote": "The critical path. Ten product agents idle until these contracts are stable.",
@@ -19,7 +19,7 @@
       "blocks": [
         "every merge to main \u2014 no agent merges its own branch"
       ],
-      "notes": "CI landed as 8996bd3, plus two generator fixes the agents' work exposed: RBAC_UNGATED parsed as empty because `readonly string[]` closes a bracket before the array opens, and route coverage was grepping a route list that no longer exists."
+      "notes": "Verifying rather than trusting has now caught: a mis-parse in my own generator, a wrongly-framed SOD finding, and an agent that produced 68 files and no report."
     },
     {
       "id": "04",
@@ -45,7 +45,7 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-11T15:52:00Z",
       "scope": "Fastify + Drizzle schema + RLS + migrations, seed from the existing fixtures, core entity routes with server-side RBAC and audit, repository mutations and httpRepository",
       "owns": [
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done \u2014 real data, persistence and audit are clauses in it"
       ],
-      "notes": "Postgres may not be available in this container; schema, migrations, RLS and seed are still written in full and anything unverifiable is reported rather than faked."
+      "notes": "Landed as dcb4d54 \u2014 but the agent never reported. Its work was on disk when it went away, so nothing arrived with a claim attached and everything was verified from scratch: 146 server tests against a real PostgreSQL 16 started in this container, plus a direct RLS probe showing a tenant cannot read, update, delete or forge another tenant's rows, and that a missing context fails closed."
     },
     {
       "id": "07",
@@ -92,7 +92,7 @@
       "blocks": [
         "G10 portals \u2014 separate audiences need a session model"
       ],
-      "notes": "Held until agent 05 lands the server scaffold. The plan runs all four concurrently, but auth builds on the server it authenticates: launching both into server/** at once is exactly the shared-file contention the ownership rule exists to prevent."
+      "notes": "Unblocked: the server scaffold it builds on now exists and is verified. Launching next."
     }
   ],
   "shared": {
