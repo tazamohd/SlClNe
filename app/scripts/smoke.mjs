@@ -1,128 +1,293 @@
-// Smoke test: loads key routes in a real browser and fails on console errors,
-// page errors or a blank render. Cheap insurance that the port actually runs —
-// a typecheck says nothing about whether a screen mounts.
+// Route smoke: every capability in the registry, loaded in a real browser.
+//
+// The route list is generated from `src/data/generated/master-registry.ts`, not
+// maintained here. A capability therefore cannot exist without appearing in
+// coverage, and nobody hand-maintains four hundred checks. Each PRODUCT entry
+// must render, land on its own route, put up the shell the registry says it
+// has, and raise no console error or page error. Entries the registry flags
+// PLACEHOLDER are asserted to be *known* placeholders — they render
+// `PendingScreen` and are counted, so the number can fall but never quietly
+// grow.
+//
+// Below the generated pass are the behaviour checks: language switch, RBAC nav
+// filtering, derived totals, segregation of duties, approval ceilings, the
+// customer-app frame, the mobile card layout and the brand guard. Those are the
+// model — "returns 200" is not a test.
 //
 //   npm run build && npx vite preview --port 4173 &
 //   node scripts/smoke.mjs
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
 
 const BASE = process.env.SMOKE_BASE ?? 'http://localhost:4173'
+const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
-const ROUTES = [
-  { path: '/language-selection', expect: 'Choose your language' },
-  { path: '/welcome', expect: 'Welcome to SALIS AUTO' },
-  { path: '/region-selection', expect: 'Select your region' },
-  { path: '/login', expect: 'Sign In' },
-  { path: '/dashboard', expect: 'Dashboard' },
-  { path: '/job-cards', expect: 'Job Cards' },
-  { path: '/job-detail', expect: 'Timeline' },
-  { path: '/workshop-check-in', expect: 'Vehicle Check-In' },
-  { path: '/workshop-inspection', expect: 'Vehicle Inspection' },
-  { path: '/workshop-estimate', expect: 'Cost Estimate' },
-  { path: '/workshop-qc', expect: 'Quality Check' },
-  { path: '/workshop-signature', expect: 'Customer Signature' },
-  { path: '/workshop-delivery', expect: 'Vehicle Delivery' },
-  { path: '/invoices', expect: 'Invoices' },
-  { path: '/invoice-detail', expect: 'Line items' },
-  { path: '/invoice-create', expect: 'Create Invoice' },
-  { path: '/payments', expect: 'Outstanding' },
-  { path: '/unauthorized', expect: '403' },
+/** The registry, read straight from the generated module.
+ *
+ *  The generator writes the array with `JSON.stringify`, so the literal is
+ *  valid JSON; slicing it out keeps this script free of a TypeScript loader and
+ *  free of a second copy of the route list. */
+function loadRegistry() {
+  const file = path.join(APP, 'src/data/generated/master-registry.ts')
+  const source = fs.readFileSync(file, 'utf8')
+  const marker = source.indexOf('export const REGISTRY')
+  const open = source.indexOf('= [', marker)
+  if (marker < 0 || open < 0) {
+    throw new Error(`smoke: could not find the REGISTRY array in ${file}`)
+  }
+  const entries = JSON.parse(source.slice(open + 2, source.lastIndexOf(']') + 1))
+  if (!Array.isArray(entries) || !entries.length) throw new Error('smoke: registry is empty')
+  for (const entry of entries) {
+    if (!entry.route || !entry.category || !entry.shell || !entry.status) {
+      throw new Error(`smoke: registry entry ${entry.screenId} is missing route/category/shell/status`)
+    }
+  }
+  return entries
+}
+
+const REGISTRY = loadRegistry()
+
+/** Content each rebuilt screen must actually show. Route coverage proves a
+ *  screen mounts; these prove it mounted the right screen — a router that sent
+ *  every path to the dashboard would otherwise pass. Screens not listed are
+ *  covered by the shell and placeholder assertions instead. */
+const EXPECTED_TEXT = {
+  '/language-selection': 'Choose your language',
+  '/welcome': 'Welcome to SALIS AUTO',
+  '/region-selection': 'Select your region',
+  '/login': 'Sign In',
+  '/dashboard': 'Dashboard',
+  '/job-cards': 'Job Cards',
+  '/job-detail': 'Timeline',
+  '/workshop-check-in': 'Vehicle Check-In',
+  '/workshop-inspection': 'Vehicle Inspection',
+  '/workshop-estimate': 'Cost Estimate',
+  '/workshop-qc': 'Quality Check',
+  '/workshop-signature': 'Customer Signature',
+  '/workshop-delivery': 'Vehicle Delivery',
+  '/invoices': 'Invoices',
+  '/invoice-detail': 'Line items',
+  '/invoice-create': 'Create Invoice',
+  '/payments': 'Outstanding',
+  '/unauthorized': '403',
   // A feature-map screen with no design: route exists, names its reference.
-  { path: '/license-plate-recognition', expect: 'License Plate Recognition' },
-  { path: '/vin-decoder', expect: 'Decoded Today' },
-  { path: '/inventory', expect: 'Inventory & Parts Management' },
-  { path: '/loaner-vehicles', expect: 'Loaner Register' },
-  { path: '/predictive-maintenance', expect: 'Upcoming Services' },
-  { path: '/stripe-payment-processing', expect: 'Transactions' },
-  { path: '/customers', expect: 'Customers' },
-  { path: '/vehicles', expect: 'All Vehicles' },
-  { path: '/estimates', expect: 'Estimates' },
-  { path: '/technicians', expect: 'Technicians' },
-  { path: '/fleet-management', expect: 'Fleet Management' },
-  { path: '/appointments', expect: 'Appointments' },
-  { path: '/quality-control', expect: 'Recent Checks' },
-  { path: '/tire-management', expect: 'Tire Sets' },
-  { path: '/diagnostics-obd-hub', expect: 'Connected Devices' },
-  { path: '/parts-network', expect: 'Parts Network' },
-  { path: '/parts-network/requests', expect: 'My Requests' },
-  { path: '/parts-network/quotations', expect: 'Quotations' },
-  { path: '/parts-network/orders', expect: 'Orders' },
-  { path: '/parts-network/members', expect: 'Network Members' },
-  { path: '/parts-network/incoming', expect: 'Incoming Requests' },
-  { path: '/parts-network/send-request', expect: 'Part Details' },
-  { path: '/parts-supply-network', expect: 'Parts Supply Network' },
-  { path: '/procurement-portal', expect: 'Approval Queue' },
-  { path: '/procurement-portal/requisitions', expect: 'Requisitions' },
-  { path: '/chart-of-accounts', expect: 'Chart of Accounts' },
-  { path: '/journal-entries', expect: 'Journal Entries' },
-  { path: '/expenses', expect: 'Expenses' },
-  { path: '/receipts', expect: 'Receipts' },
-  { path: '/departments', expect: 'Departments' },
-  { path: '/financial-reports', expect: 'Profit & Loss' },
-  { path: '/financial-statements', expect: 'Statement Summary' },
-  { path: '/executive-reports', expect: 'Executive Reports' },
-  { path: '/operational-reports', expect: 'Jobs by Status' },
-  { path: '/bidashboard', expect: 'Ledger Composition' },
-  { path: '/lead-pipeline', expect: 'Open Pipeline' },
-  { path: '/opportunities', expect: 'Weighted Forecast' },
-  { path: '/campaigns', expect: 'Open Rate' },
-  { path: '/email-marketing', expect: 'Email Marketing' },
-  { path: '/smscampaigns', expect: 'SMS Campaigns' },
-  { path: '/customer-segments', expect: 'Customer Segments' },
-  { path: '/crmtasks', expect: 'CRM Tasks' },
-  { path: '/agent-registry', expect: 'Agent Registry' },
-  { path: '/agent-dashboard', expect: 'Tasks Handled' },
-  { path: '/conversation-history', expect: 'Conversation History' },
-  { path: '/integrations', expect: 'Connected' },
-  { path: '/customer-app/home', expect: 'My Vehicles' },
-  { path: '/customer-app/garage', expect: 'My Garage' },
-  { path: '/customer-app/wallet', expect: 'Transactions' },
-  { path: '/customer-app/orders', expect: 'My Orders' },
-  { path: '/customer-app/marketplace', expect: 'Marketplace' },
-  { path: '/customer-app/service-tracking', expect: 'Progress' },
-  { path: '/customer-app/notifications', expect: 'Notifications' },
-  { path: '/customer-app/profile', expect: 'Logout' },
-  { path: '/forgot-password', expect: 'Reset Password' },
-  { path: '/reset-password', expect: 'Create New Password' },
-  { path: '/otpverification', expect: 'OTP Verification' },
-  { path: '/two-factor-verification', expect: 'Two-Factor Verification' },
-  { path: '/create-pin', expect: 'Create PIN' },
-  { path: '/biometric-setup', expect: 'Biometric Setup' },
-]
+  '/license-plate-recognition': 'License Plate Recognition',
+  '/vin-decoder': 'Decoded Today',
+  '/inventory': 'Inventory & Parts Management',
+  '/loaner-vehicles': 'Loaner Register',
+  '/predictive-maintenance': 'Upcoming Services',
+  '/stripe-payment-processing': 'Transactions',
+  '/customers': 'Customers',
+  '/vehicles': 'All Vehicles',
+  '/estimates': 'Estimates',
+  '/technicians': 'Technicians',
+  '/fleet-management': 'Fleet Management',
+  '/appointments': 'Appointments',
+  '/quality-control': 'Recent Checks',
+  '/tire-management': 'Tire Sets',
+  '/diagnostics-obd-hub': 'Connected Devices',
+  '/parts-network': 'Parts Network',
+  '/parts-network/requests': 'My Requests',
+  '/parts-network/quotations': 'Quotations',
+  '/parts-network/orders': 'Orders',
+  '/parts-network/members': 'Network Members',
+  '/parts-network/incoming': 'Incoming Requests',
+  '/parts-network/send-request': 'Part Details',
+  '/parts-supply-network': 'Parts Supply Network',
+  '/procurement-portal': 'Approval Queue',
+  '/procurement-portal/requisitions': 'Requisitions',
+  '/chart-of-accounts': 'Chart of Accounts',
+  '/journal-entries': 'Journal Entries',
+  '/expenses': 'Expenses',
+  '/receipts': 'Receipts',
+  '/departments': 'Departments',
+  '/financial-reports': 'Profit & Loss',
+  '/financial-statements': 'Statement Summary',
+  '/executive-reports': 'Executive Reports',
+  '/operational-reports': 'Jobs by Status',
+  '/bidashboard': 'Ledger Composition',
+  '/lead-pipeline': 'Open Pipeline',
+  '/opportunities': 'Weighted Forecast',
+  '/campaigns': 'Open Rate',
+  '/email-marketing': 'Email Marketing',
+  '/smscampaigns': 'SMS Campaigns',
+  '/customer-segments': 'Customer Segments',
+  '/crmtasks': 'CRM Tasks',
+  '/agent-registry': 'Agent Registry',
+  '/agent-dashboard': 'Tasks Handled',
+  '/conversation-history': 'Conversation History',
+  '/integrations': 'Connected',
+  '/customer-app/home': 'My Vehicles',
+  '/customer-app/garage': 'My Garage',
+  '/customer-app/wallet': 'Transactions',
+  '/customer-app/orders': 'My Orders',
+  '/customer-app/marketplace': 'Marketplace',
+  '/customer-app/service-tracking': 'Progress',
+  '/customer-app/notifications': 'Notifications',
+  '/customer-app/profile': 'Logout',
+  '/forgot-password': 'Reset Password',
+  '/reset-password': 'Create New Password',
+  '/otpverification': 'OTP Verification',
+  '/two-factor-verification': 'Two-Factor Verification',
+  '/create-pin': 'Create PIN',
+  '/biometric-setup': 'Biometric Setup',
+}
 
-const browser = await chromium.launch({ executablePath:
-    process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' })
+/** Routes that deliberately hand off to another screen. Anything else that
+ *  redirects is a capability that cannot be reached at its own address. */
+const EXPECTED_REDIRECTS = {
+  '/splash': '/welcome',
+}
+
+/** Built screens whose registry shell does not exist yet, so they render inside
+ *  the operational shell today. Tracked rather than tolerated: the list may
+ *  shrink, and a new entry has to be added here deliberately. */
+const SHELL_NOT_BUILT = new Set(['/procurement-portal', '/procurement-portal/requisitions'])
+
+/** Product routes still rendering `PendingScreen`, per the registry. The count
+ *  is asserted so the number can fall but never quietly rise. */
+const PLACEHOLDER_BUDGET = 248
+
+/** Marker text `PendingScreen` renders, and nothing else does. */
+const PENDING_MARKER = 'Designed, not yet rebuilt'
+
+/** Third-party hosts (the Google Fonts CDN the design system imports) are
+ *  unreachable in sandboxed CI. Those failures say nothing about the app. */
+const isExternal = (text) =>
+  /fonts\.googleapis|fonts\.gstatic|ERR_CERT_AUTHORITY_INVALID/.test(text)
+
+/** What each shell owes the DOM. `PendingScreen` renders inside the operational
+ *  shell whatever the registry's eventual target is, so a placeholder is judged
+ *  against `AppShell`. */
+const SHELL_CONTRACT = {
+  AppShell: (page) => {
+    const problems = []
+    if (page.aside !== 1) problems.push(`expected the operational sidebar, found ${page.aside}`)
+    if (page.main !== 1) problems.push(`expected one <main>, found ${page.main}`)
+    return problems
+  },
+  AuthLayout: (page) => {
+    const problems = []
+    if (page.aside) problems.push('auth screen rendered the operational sidebar')
+    if (page.main) problems.push('auth screen rendered the app shell <main>')
+    return problems
+  },
+  CustomerAppShell: (page) => {
+    const problems = []
+    if (page.aside) problems.push('customer app rendered the operational sidebar')
+    if (!page.nav) problems.push('customer app has no bottom tab bar')
+    if (page.mainWidth > 431) problems.push(`customer frame was ${page.mainWidth}px, expected <= 430`)
+    return problems
+  },
+}
+
+function expectedShell(entry) {
+  // A screen that has not been rebuilt renders PendingScreen in the app shell.
+  if (entry.status !== 'IMPLEMENTED') return 'AppShell'
+  if (SHELL_NOT_BUILT.has(entry.route)) return 'AppShell'
+  return entry.shell
+}
+
+const browser = await chromium.launch({
+  executablePath:
+    process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+})
 const failures = []
 
-for (const route of ROUTES) {
+// ── Generated route coverage ────────────────────────────────────────────────
+{
   const context = await browser.newContext()
+  // Every guarded route needs a signed-in role; seed it before the app boots.
+  // The owner holds `view` on all 28 modules, so a redirect here means the
+  // route is broken rather than forbidden.
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
-  const problems = []
 
-  // Third-party hosts (the Google Fonts CDN the design system imports) are
-  // unreachable in sandboxed CI. Those failures say nothing about the app.
-  const isExternal = (text) => /fonts\.googleapis|fonts\.gstatic|ERR_CERT_AUTHORITY_INVALID/.test(text)
-
+  let problems = []
   page.on('console', (msg) => {
     if (msg.type() === 'error' && !isExternal(msg.text())) problems.push(`console: ${msg.text()}`)
   })
   page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`))
 
-  // Every guarded route needs a signed-in role; seed it before the app boots.
-  await context.addInitScript(() => {
-    window.localStorage.setItem('salis-role', 'owner')
-  })
+  let placeholders = 0
+  let checked = 0
 
-  await page.goto(BASE + route.path, { waitUntil: 'networkidle' })
+  for (const entry of REGISTRY) {
+    problems = []
+    await page.goto(BASE + entry.route, { waitUntil: 'domcontentloaded' })
+    await page
+      .waitForFunction(() => document.body.innerText.trim().length > 20, null, { timeout: 10_000 })
+      .catch(() => problems.push('page rendered blank'))
 
-  const text = await page.locator('body').innerText()
-  if (!text.includes(route.expect)) {
-    problems.push(`expected text ${JSON.stringify(route.expect)} not found`)
+    const rendered = await page.evaluate((marker) => {
+      const main = document.querySelector('main')
+      return {
+        route: location.pathname,
+        aside: document.querySelectorAll('aside').length,
+        main: document.querySelectorAll('main').length,
+        nav: document.querySelectorAll('nav').length,
+        mainWidth: Math.round(main ? main.getBoundingClientRect().width : 0),
+        text: document.body.innerText,
+        pending: document.body.innerText.includes(marker),
+      }
+    }, PENDING_MARKER)
+
+    const destination = EXPECTED_REDIRECTS[entry.route] ?? entry.route
+    if (rendered.route !== destination) {
+      problems.push(`landed on ${rendered.route}, expected ${destination}`)
+    }
+
+    const shell = expectedShell(entry)
+    const contract = SHELL_CONTRACT[shell]
+    if (!contract) {
+      problems.push(`no shell contract for ${shell} — add one rather than skipping the route`)
+    } else {
+      problems.push(...contract(rendered))
+    }
+
+    // A placeholder must be a *known* placeholder: the registry says so, and
+    // the screen says so. Either half missing is a capability whose real state
+    // and recorded state disagree.
+    const isPlaceholder = entry.status !== 'IMPLEMENTED'
+    if (isPlaceholder !== rendered.pending) {
+      problems.push(
+        rendered.pending
+          ? `renders PendingScreen but the registry records it ${entry.status}`
+          : `registry records it ${entry.status} (placeholder) but no PendingScreen rendered`
+      )
+    }
+    if (isPlaceholder && entry.category === 'PRODUCT') placeholders += 1
+    if (
+      entry.category === 'PRODUCT' &&
+      isPlaceholder !== entry.flags.includes('PLACEHOLDER')
+    ) {
+      problems.push('PLACEHOLDER flag disagrees with the capability status')
+    }
+
+    const expected = EXPECTED_TEXT[entry.route]
+    if (expected && !rendered.text.includes(expected)) {
+      problems.push(`expected text ${JSON.stringify(expected)} not found`)
+    }
+
+    checked += 1
+    if (problems.length) failures.push({ route: entry.route, problems: [...problems] })
   }
-  if (text.trim().length < 20) problems.push('page rendered blank')
 
-  if (problems.length) failures.push({ route: route.path, problems })
-  else console.log(`  ok  ${route.path}`)
+  console.log(`  ok  ${checked - failures.length}/${checked} registry routes render their shell`)
+
+  if (placeholders > PLACEHOLDER_BUDGET) {
+    failures.push({
+      route: 'placeholder budget',
+      problems: [`${placeholders} product routes render PendingScreen; the budget is ${PLACEHOLDER_BUDGET}`],
+    })
+  } else {
+    console.log(
+      `  ok  ${placeholders} product placeholders, within the tracked budget of ${PLACEHOLDER_BUDGET}` +
+        (placeholders < PLACEHOLDER_BUDGET ? ' — lower PLACEHOLDER_BUDGET to lock the gain in' : '')
+    )
+  }
 
   await context.close()
 }
@@ -435,8 +600,8 @@ for (const route of ROUTES) {
 await browser.close()
 
 if (failures.length) {
-  console.error('\nSMOKE FAILURES:')
+  console.error(`\nSMOKE FAILURES (${failures.length}):`)
   for (const f of failures) console.error(` ${f.route}\n   - ${f.problems.join('\n   - ')}`)
   process.exit(1)
 }
-console.log('\nAll smoke checks passed.')
+console.log(`\nAll smoke checks passed — ${REGISTRY.length} registry routes.`)
