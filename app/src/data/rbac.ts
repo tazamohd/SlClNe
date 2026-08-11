@@ -65,9 +65,20 @@ export function approvalLimit(role: string): number | null {
 /** Approval rights are derived, never stored: any role with a non-zero limit
  *  implicitly gets `approvals: "va"`. Encoding it here keeps the matrix and the
  *  Approval Inbox from ever disagreeing (README §11). */
-export function canApprove(role: string, amountSar?: number): boolean {
+export function canApprove(role: string, amountSar?: number, module = 'approvals'): boolean {
+  // Authority and ceiling are separate questions, and the matrix is explicit
+  // that they are: `qc` holds approve on jobcards with a ceiling of zero — it
+  // passes quality, it does not release money — while `superadmin` has an
+  // unlimited ceiling and approve only on ai, admin and settings, because a
+  // platform administrator administers the platform rather than approving a
+  // tenant's purchase orders.
+  //
+  // Reading the ceiling alone answered yes for superadmin on every business
+  // document, which is both a tenant-boundary violation and a disagreement with
+  // the Approval Inbox, since that screen reads the matrix. Both must hold.
+  if (!can(module, 'a', role)) return false
   const limit = approvalLimit(role)
-  if (limit === 0) return false
+  if (limit === 0) return amountSar === undefined // authority without a money ceiling, e.g. QC
   if (limit === null) return true
   return amountSar === undefined || amountSar <= limit
 }

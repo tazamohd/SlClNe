@@ -1354,7 +1354,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [],
-    "inNav": true,
+    "inNav": false,
     "designSource": "project/FlowSpec.dc.html",
     "designMobileSource": null,
     "featureMapSource": null
@@ -1441,7 +1441,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [],
-    "inNav": true,
+    "inNav": false,
     "designSource": "project/Index.dc.html",
     "designMobileSource": null,
     "featureMapSource": null
@@ -2839,7 +2839,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [],
-    "inNav": true,
+    "inNav": false,
     "designSource": "project/RBACSpec.dc.html",
     "designMobileSource": null,
     "featureMapSource": null
@@ -3641,7 +3641,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [],
-    "inNav": true,
+    "inNav": false,
     "designSource": "project/UI.EmptyStates.dc.html",
     "designMobileSource": null,
     "featureMapSource": null
@@ -3679,7 +3679,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [],
-    "inNav": true,
+    "inNav": false,
     "designSource": "project/UI.FormValidation.dc.html",
     "designMobileSource": null,
     "featureMapSource": null
@@ -3755,7 +3755,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "DISCOVERED",
     "flags": [],
-    "inNav": true,
+    "inNav": false,
     "designSource": "project/UI.LoadingStates.dc.html",
     "designMobileSource": null,
     "featureMapSource": null

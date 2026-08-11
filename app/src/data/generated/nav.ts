@@ -241,12 +241,6 @@ export const NAV: readonly NavGroup[] = [
         "key": "sys-int",
         "screen": "SystemIntegrations",
         "route": "/system-integrations"
-      },
-      {
-        "label": "RBAC Specification",
-        "key": "rbac-spec",
-        "screen": "RBACSpec",
-        "route": "/rbacspec"
       }
     ]
   },
@@ -595,42 +589,6 @@ export const NAV: readonly NavGroup[] = [
         "key": "super-admin",
         "screen": "SuperAdmin",
         "route": "/super-admin"
-      }
-    ]
-  },
-  {
-    "label": "Design Reference",
-    "icon": "Boxes",
-    "items": [
-      {
-        "label": "Screen Index",
-        "key": "screen-index",
-        "screen": "Index",
-        "route": "/index"
-      },
-      {
-        "label": "Flow Spec",
-        "key": "flow-spec",
-        "screen": "FlowSpec",
-        "route": "/flow-spec"
-      },
-      {
-        "label": "Empty States",
-        "key": "empty-states",
-        "screen": "UI.EmptyStates",
-        "route": "/ui/empty-states"
-      },
-      {
-        "label": "Loading States",
-        "key": "loading-states",
-        "screen": "UI.LoadingStates",
-        "route": "/ui/loading-states"
-      },
-      {
-        "label": "Form Validation",
-        "key": "form-validation",
-        "screen": "UI.FormValidation",
-        "route": "/ui/form-validation"
       }
     ]
   }

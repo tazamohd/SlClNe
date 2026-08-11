@@ -65,16 +65,29 @@ function routeForHref(href) {
   return screenMap.get(key)?.route ?? null
 }
 
+/** Prototype-navigation aids, not product menu items. The design bundle lists
+ *  the screen index, the flow and RBAC specifications and the pattern galleries
+ *  in the sidebar so a reviewer can reach them while clicking through the
+ *  prototypes. Left in, they appear in *every* role's menu — a signed-in
+ *  customer or supplier finds the RBAC specification in their navigation.
+ *
+ *  They stay routed and reachable by URL for the team; it is the menu entry that
+ *  is wrong, not the page. Dropping them here rather than filtering at render
+ *  time keeps one definition of what the sidebar contains. */
+const REFERENCE_ONLY = /^(Index|FlowSpec|RBACSpec|UI\.)/
+
 const nav = D.NAV.map((g) => ({
   label: g.label,
   icon: g.icon,
-  items: g.items.map((it) => ({
-    label: it.l,
-    key: it.r ?? null,
-    screen: (it.href ?? '').replace('.dc.html', '') || null,
-    route: routeForHref(it.href),
-  })),
-}))
+  items: g.items
+    .map((it) => ({
+      label: it.l,
+      key: it.r ?? null,
+      screen: (it.href ?? '').replace('.dc.html', '') || null,
+      route: routeForHref(it.href),
+    }))
+    .filter((it) => !it.screen || !REFERENCE_ONLY.test(it.screen)),
+})).filter((g) => g.items.length > 0)
 
 const unresolved = nav.flatMap((g) =>
   g.items.filter((i) => !i.route).map((i) => `${g.label} › ${i.label}`)

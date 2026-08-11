@@ -18,25 +18,29 @@
     },
     {
       "id": "F-002",
-      "severity": "HIGH",
+      "severity": "RESOLVED",
       "title": "canApprove and PERMS.approvals disagree for superadmin",
       "detail": "superadmin carries an unlimited approval ceiling (limit: null) but no `a` grant on the approvals module (\"vx\"). Note: with x now known to be export, superadmin's 'vx' on approvals means view and export \u2014 it grants no approve at all, so the disagreement with an unlimited ceiling is real and sharper than first stated.",
       "why": "The engine and the Approval Inbox would answer the same question differently, and which one wins depends on which code path a screen happens to use.",
       "foundBy": "07",
       "verified": "confirmed \u2014 orchestrator read both values directly",
       "owner": "06",
-      "wave": "W1"
+      "wave": "W1",
+      "status": "fixed",
+      "resolution": "The data was right and the function was wrong. Every role with a ceiling holds `a` on approvals except superadmin, whose approve grants are ai/admin/settings \u2014 a platform administrator administers the platform, it does not approve a tenant's purchase orders. And qc holds approve on jobcards with a ceiling of zero: it passes quality, it releases no money. Authority and ceiling are orthogonal; canApprove read only the ceiling. It now requires both, and takes the module (default 'approvals'), so the engine and the Approval Inbox cannot disagree."
     },
     {
       "id": "F-003",
-      "severity": "HIGH",
+      "severity": "RESOLVED",
       "title": "Design-reference pages appear in every role's sidebar",
       "detail": "RBACSpec, Index, FlowSpec, UI.EmptyStates, UI.LoadingStates and UI.FormValidation are RBAC-ungated and also present in NAV.",
       "why": "A signed-in customer or supplier sees the RBAC specification page in their menu. The ungated exemption belongs on the route, not the navigation.",
       "foundBy": "07",
       "verified": "confirmed \u2014 orchestrator cross-referenced RBAC_UNGATED against NAV. Finding this also exposed a parse bug in build-registry.mjs that had silently emptied the same list.",
       "owner": "04",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Reference pages are filtered out of NAV in port-design-data.mjs, dropping the 'Design Reference' group and the RBAC Specification entry. They stay routed and reachable by URL for the team \u2014 the menu entry was the defect, not the page. The characterization test that pinned the leak now asserts its absence."
     },
     {
       "id": "F-004",
@@ -64,7 +68,7 @@
       "id": "F-006",
       "severity": "MEDIUM",
       "title": "roleMeta fails open on an unknown role",
-      "detail": "An unrecognised role falls back to ROLES[0] \u2014 owner \u2014 inheriting an unlimited approval ceiling, while can() fails closed.",
+      "detail": "An unrecognised role falls back to ROLES[0] \u2014 owner \u2014 inheriting an unlimited approval ceiling, while can() fails closed. Partially mitigated: canApprove now consults can() first, which fails closed, so an unknown role can no longer inherit an unlimited ceiling through that path. roleMeta's fallback is still wrong for its other callers.",
       "why": "Unreachable today because isRoleId guards the session. It stops being unreachable the moment the role arrives in a JWT claim, which is exactly what agent 05 is building.",
       "foundBy": "07",
       "verified": "reported",

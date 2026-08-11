@@ -222,26 +222,25 @@ describe('navFor()', () => {
     expect(navFor('technician', custom)).toHaveLength(0)
   })
 
-  it('leaks exactly the six ungated reference screens into every role’s sidebar', () => {
-    // DEFECT (reported, not fixed): the design-reference pages skip RBAC by
-    // design, but they are also in NAV, so a signed-in customer or supplier
-    // gets a sidebar containing the RBAC specification page. The exemption
-    // belongs on the route, not on the menu.
+  it('keeps design-reference pages out of every role’s sidebar', () => {
+    // Was a characterization test pinning a defect: the reference pages skip
+    // RBAC by design and were also in NAV, so a signed-in customer got a
+    // sidebar containing the RBAC specification. Fixed in the generator — the
+    // exemption belongs on the route, not the menu — so this now asserts the
+    // fix, and fails again if a reference page returns to the sidebar.
     const ungatedInNav = NAV_SCREENS.filter((item) => item.screen && !SCREEN_MODULE[item.screen])
       .map((item) => item.screen)
       .sort()
-    expect(ungatedInNav).toEqual([
-      'FlowSpec',
-      'Index',
-      'RBACSpec',
-      'UI.EmptyStates',
-      'UI.FormValidation',
-      'UI.LoadingStates',
-    ])
-    const customerLabels = navFor('customer')
-      .flatMap((group) => group.items)
-      .map((item) => item.screen)
-    expect(customerLabels).toContain('RBACSpec')
+    expect(ungatedInNav).toEqual([])
+
+    // The pages stay reachable by URL for the team; only the menu entry is gone.
+    for (const role of ['customer', 'supplier', 'technician', 'owner'] as const) {
+      const screens = navFor(role)
+        .flatMap((group) => group.items)
+        .map((item) => item.screen)
+      expect(screens).not.toContain('RBACSpec')
+      expect(screens).not.toContain('Index')
+    }
   })
 })
 
@@ -350,13 +349,30 @@ describe('approval ceilings', () => {
     for (const role of ROLE_IDS) expect(approvalLimit(role)).toBe(LIMITS[role])
   })
 
-  it('lets the owner and the super admin approve any amount', () => {
-    for (const role of UNLIMITED) {
-      expect(approvalLimit(role)).toBeNull()
-      expect(canApprove(role)).toBe(true)
-      expect(canApprove(role, 0)).toBe(true)
-      expect(canApprove(role, 9_999_999_999)).toBe(true)
-    }
+  it('lets the owner approve any amount, and holds the super admin to its own modules', () => {
+    // Both carry an unlimited ceiling, and they are not interchangeable. The
+    // owner holds approve across the business modules; the super admin holds it
+    // only on ai, admin and settings, because a platform administrator
+    // administers the platform rather than approving a tenant's documents.
+    expect(approvalLimit('owner')).toBeNull()
+    expect(canApprove('owner')).toBe(true)
+    expect(canApprove('owner', 9_999_999_999)).toBe(true)
+
+    expect(approvalLimit('superadmin')).toBeNull()
+    expect(canApprove('superadmin')).toBe(false)
+    expect(canApprove('superadmin', 9_999_999_999)).toBe(false)
+    expect(canApprove('superadmin', undefined, 'admin')).toBe(true)
+    expect(canApprove('superadmin', 9_999_999_999, 'settings')).toBe(true)
+  })
+
+  it('separates authority from ceiling — QC approves a job card it cannot pay for', () => {
+    // The clearest case that the two are different questions: qc holds approve
+    // on jobcards with a ceiling of zero. It passes quality; it releases no money.
+    expect(can('jobcards', 'a', 'qc')).toBe(true)
+    expect(approvalLimit('qc')).toBe(0)
+    expect(canApprove('qc', undefined, 'jobcards')).toBe(true)
+    expect(canApprove('qc', 1, 'jobcards')).toBe(false)
+    expect(canApprove('qc')).toBe(false)
   })
 
   it('refuses a zero-ceiling role even with no amount to judge', () => {
@@ -391,33 +407,25 @@ describe('approval ceilings', () => {
     expect(canApprove('manager', 28_000)).toBe(true)
   })
 
-  it('matches the approvals module grant for every role but one', () => {
-    // The engine derives approval rights from the ceiling; `PERMS.approvals`
-    // states them separately. DEFECT (reported, not fixed): the two disagree
-    // for `superadmin`, which has an unlimited ceiling — so `canApprove` says
-    // yes — but no `a` grant on the approvals module, so the Approval Inbox
-    // would deny it. One of the two is wrong; the matrix and the inbox must not
-    // be able to disagree.
-    const disagreeing = ROLE_IDS.filter(
-      (role) => canApprove(role) !== can('approvals', 'a', role)
-    )
-    expect(disagreeing).toEqual(['superadmin'])
-  })
-
-  it.fails('derives approval rights and the approvals grant from one source', () => {
+  it('never lets the engine and the approvals grant disagree', () => {
+    // Was a characterization test pinning superadmin as the one role where the
+    // ceiling said yes and the matrix said no. canApprove now requires both, so
+    // the engine and the Approval Inbox cannot answer the same question
+    // differently — which is the property worth protecting, not the count.
     const disagreeing = ROLE_IDS.filter(
       (role) => canApprove(role) !== can('approvals', 'a', role)
     )
     expect(disagreeing).toEqual([])
   })
 
-  it.fails('denies approval to a role it has never heard of', () => {
-    // DEFECT (reported, not fixed): `roleMeta` falls back to `ROLES[0]`, which
-    // is the owner, so an unrecognised role inherits an unlimited ceiling.
-    // `can()` fails closed and this fails open. Unreachable today because
-    // `isRoleId` guards the session, but it stops being unreachable the moment
-    // the role arrives in a JWT claim.
+  it('denies approval to a role it has never heard of', () => {
+    // `roleMeta` still falls back to ROLES[0] — the owner — so an unrecognised
+    // role inherits an unlimited *ceiling*. That no longer decides anything:
+    // canApprove asks can() first, and can() fails closed. The roleMeta
+    // fallback remains wrong for its other callers and is tracked as F-006.
     expect(canApprove('not-a-role')).toBe(false)
+    expect(canApprove('not-a-role', 1)).toBe(false)
+    expect(canApprove('', 1)).toBe(false)
   })
 })
 
