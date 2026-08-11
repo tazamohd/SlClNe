@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling \u2014 a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T00:20:00Z",
+  "asOf": "2026-08-12T00:55:00Z",
   "wave": "W1",
   "waveName": "Foundation",
-  "waveNote": "The critical path. Ten product agents idle until these contracts are stable.",
+  "waveNote": "Complete. All five foundation agents landed and verified; the product wave is unblocked.",
   "agents": [
     {
       "id": "03",
@@ -19,7 +19,7 @@
       "blocks": [
         "every merge to main \u2014 no agent merges its own branch"
       ],
-      "notes": "Verifying rather than trusting has caught: a mis-parse in my own generator, a wrongly-framed SOD finding, an agent that produced 68 files and no report, and a claim I made twice that agent 06 was running when it had never been launched \u2014 this file said 'queued' the whole time."
+      "notes": "Re-verification caught, this wave: a mis-parse in my own generator, a wrongly-framed SOD finding, an agent that produced 68 files and no report, a claim I made twice that agent 06 was running when it had not been launched, and \u2014 on the first server test run \u2014 the exact harness flake agent 06 had flagged as open, which is now fixed rather than tolerated."
     },
     {
       "id": "04",
@@ -80,7 +80,7 @@
       "id": "06",
       "name": "Auth & Security",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T00:20:00Z",
       "scope": "JWT with rotating refresh and reuse detection, argon2id, session revocation, OTP throttling, server-side RBAC middleware, tenant and branch isolation tests",
       "owns": [
@@ -92,7 +92,7 @@
       "blocks": [
         "G10 portals \u2014 separate audiences need a session model"
       ],
-      "notes": "Launched. Also carries four findings: F-002 (fixed in the client, must match server-side), F-004 (sodViolation exists and is tested but has no caller \u2014 wire it over the audit log), F-005 (two dead field rules), F-006 (roleMeta fails open, and a role is about to arrive from a JWT claim, which is when that stops being unreachable)."
+      "notes": "Landed as f4a5a52. Found and closed a live privilege escalation: routes/collections.ts checked 'x' for DELETE, and 'x' is export \u2014 that granted delete to every role holding view-plus-export, including accountant on the audit log. Closed F-002, F-004, F-005, F-006. 225 server tests pass against a real PostgreSQL, including 21 isolation tests at the HTTP boundary. Reported open items honestly rather than claiming completeness."
     }
   ],
   "shared": {

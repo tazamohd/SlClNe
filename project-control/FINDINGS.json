@@ -44,7 +44,7 @@
     },
     {
       "id": "F-004",
-      "severity": "HIGH",
+      "severity": "RESOLVED",
       "title": "Four of six segregation-of-duties pairs are held by a single role",
       "detail": "Purchase order raise + approve (owner, manager, procurement); supplier create + payment approve (owner, manager); journal post + approve (accountant); repair + QC (owner, manager, advisor). Only technician/QC is genuinely separated, and WorkshopQC enforces it with a literal role check rather than from the SOD table. A sixth pair (issue stock / adjust stock count) maps to the same permission and cannot be expressed at all.",
       "why": "The SOD table documents a control that exists in one screen and nowhere else. Enforcement must come from the table, server-side, or the table is decoration.",
@@ -52,30 +52,32 @@
       "verified": "confirmed, and the framing corrected. The finding said role checks cannot express four of six pairs; the sharper truth is that they cannot express any of them. The table pairs activities, so the control is 'this person must not do both on this record' \u2014 a question about a user and a record, which the role matrix cannot answer even when two roles differ.",
       "owner": "06",
       "wave": "W1",
-      "status": "reframed and specified \u2014 real enforcement is agent 05/06 work",
+      "status": "fixed",
       "resolution": "sodRuleFor / sodCounterpart / sodViolation added to rbac.ts, so the table is load-bearing instead of documentation, and WorkshopQC names its activity rather than hardcoding `role === 'technician'`. The role proxy remains, and now says why: no job record carries a performer, so it over-blocks (every technician, including one who never touched the job) and under-blocks (a manager who did the repair passes their own QC). sodViolation implements the real check and is tested; it needs the audit trail agent 05 is building \u2014 actor, action, entity, entityId is exactly its input."
     },
     {
       "id": "F-005",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "A second field rule is unreachable",
       "detail": "\"Employee salary\" joins Branch P&L as a dead rule: every role in its hidden list is already denied hr view by the module gate. The other five rules are live, and the split is now pinned by a test.",
       "why": "A redaction rule that never fires looks like protection and provides none. Both are kept as defence in depth, but neither should be counted as working.",
       "foundBy": "07",
       "verified": "reported \u2014 consistent with the Branch P&L finding the orchestrator confirmed earlier",
       "owner": "06",
-      "wave": "W1"
+      "wave": "W1",
+      "status": "fixed"
     },
     {
       "id": "F-006",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "roleMeta fails open on an unknown role",
       "detail": "An unrecognised role falls back to ROLES[0] \u2014 owner \u2014 inheriting an unlimited approval ceiling, while can() fails closed. Partially mitigated: canApprove now consults can() first, which fails closed, so an unknown role can no longer inherit an unlimited ceiling through that path. roleMeta's fallback is still wrong for its other callers.",
       "why": "Unreachable today because isRoleId guards the session. It stops being unreachable the moment the role arrives in a JWT claim, which is exactly what agent 05 is building.",
       "foundBy": "07",
       "verified": "reported",
       "owner": "06",
-      "wave": "W1"
+      "wave": "W1",
+      "status": "fixed"
     },
     {
       "id": "F-007",
@@ -121,6 +123,19 @@
       "owner": "02",
       "wave": "W1",
       "status": "worked around, durable fix outstanding"
+    },
+    {
+      "id": "F-011",
+      "severity": "RESOLVED",
+      "title": "DELETE routes checked the export permission, granting delete to view-plus-export roles",
+      "detail": "routes/collections.ts required 'x' for DELETE, bulk delete and includeDeleted. With x = export, that granted delete to roles holding 'vx' \u2014 accountant on audit, execreports, jobcards, estimates and inventory; technician and customer on their portals. Roughly 20 cells, live in the API.",
+      "why": "This is the concrete harm F-001 predicted. Settling the letters was not academic \u2014 the routes had already been written against the wrong reading.",
+      "foundBy": "06",
+      "verified": "confirmed \u2014 orchestrator read the routes directly before and after",
+      "owner": "06",
+      "wave": "W1",
+      "status": "fixed",
+      "resolution": "Changed to 'd' and proven over HTTP. The shared contract's five-letter enum and ceiling-only canApprove were corrected at the same time, since any other caller reading them got the wrong answer to both questions."
     }
   ]
 }
