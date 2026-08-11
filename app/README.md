@@ -43,7 +43,8 @@ refreshed design bundle lands.
 - **`src/providers/`** — `PreferencesProvider` (theme, language, RTL,
   notifications) and `SessionProvider` (signed-in role, permission helpers).
 - **`src/components/shell/`** — `AppShell` for operational screens,
-  `AuthLayout` for the unauthenticated chain.
+  `AuthLayout` for the unauthenticated chain, `CustomerAppShell` for the
+  customer phone app. `RequireAccess` picks the shell per route.
 - **`src/routes/`** — one route per entry in `SCREEN_MAP.md`, guarded by
   `RequireAccess`. Screens not yet rebuilt render `PendingScreen`, so the nav
   never dead-ends mid-port.
@@ -119,7 +120,7 @@ that endpoint rather than to re-hardcode them.
 Foundation complete: tokens, data layer, RBAC, i18n/RTL, AppShell, routing,
 UI primitives.
 
-Rebuilt (102):
+Rebuilt (113):
 
 - **Auth chain** — Splash, Welcome, LanguageSelection, RegionSelection, Login,
   ForgotPassword, ResetPassword, OTPVerification, TwoFactorVerification,
@@ -142,6 +143,9 @@ Rebuilt (102):
 - **CRM & AI** — LeadPipeline, Opportunities, Campaigns, EmailMarketing,
   SMSCampaigns, WhatsAppCampaigns, CustomerSegments, CRMTasks, AgentRegistry,
   AgentDashboard, ConversationHistory, Integrations
+- **Customer app** — the eleven `CustomerApp.*` screens (Home, Garage,
+  Appointments, ServiceTracking, Wallet, Orders, Marketplace, Notifications,
+  Insurance, Loans, Profile) in their own 430px phone frame
 - **Feature map** — Inventory plus 35 screens rendered through the feature kit
 
 Everything else in `SCREEN_MAP.md` is routed and renders `PendingScreen`.

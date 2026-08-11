@@ -74,6 +74,14 @@ const ROUTES = [
   { path: '/agent-dashboard', expect: 'Tasks Handled' },
   { path: '/conversation-history', expect: 'Conversation History' },
   { path: '/integrations', expect: 'Connected' },
+  { path: '/customer-app/home', expect: 'My Vehicles' },
+  { path: '/customer-app/garage', expect: 'My Garage' },
+  { path: '/customer-app/wallet', expect: 'Transactions' },
+  { path: '/customer-app/orders', expect: 'My Orders' },
+  { path: '/customer-app/marketplace', expect: 'Marketplace' },
+  { path: '/customer-app/service-tracking', expect: 'Progress' },
+  { path: '/customer-app/notifications', expect: 'Notifications' },
+  { path: '/customer-app/profile', expect: 'Logout' },
   { path: '/forgot-password', expect: 'Reset Password' },
   { path: '/reset-password', expect: 'Create New Password' },
   { path: '/otpverification', expect: 'OTP Verification' },
@@ -338,6 +346,27 @@ for (const route of ROUTES) {
   } else {
     console.log('  ok  opportunities show gross and weighted pipeline')
   }
+  await context.close()
+}
+
+// The customer app is a separate surface: 430px frame with a bottom tab bar
+// and no operational sidebar, even on a desktop viewport.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => window.localStorage.setItem('salis-role', 'customer'))
+  const page = await context.newPage()
+  await page.goto(BASE + '/customer-app/home', { waitUntil: 'networkidle' })
+  const problems = []
+  if (await page.locator('aside').count()) problems.push('operational sidebar rendered')
+  const tabs = await page.getByRole('navigation').count()
+  if (!tabs) problems.push('bottom tab bar missing')
+  const width = await page.evaluate(() => {
+    const main = document.querySelector('main')
+    return main ? main.getBoundingClientRect().width : 0
+  })
+  if (width > 431) problems.push(`frame was ${Math.round(width)}px; expected <= 430`)
+  if (problems.length) failures.push({ route: 'customer app shell', problems })
+  else console.log('  ok  customer app renders its own 430px frame')
   await context.close()
 }
 
