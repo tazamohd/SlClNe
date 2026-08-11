@@ -1,27 +1,29 @@
 {
-  "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently — an agent's report is a claim, not a verification.",
+  "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently \u2014 an agent's report is a claim, not a verification.",
   "updatedAt": "2026-08-11",
   "findings": [
     {
       "id": "F-001",
-      "severity": "BLOCKER",
+      "severity": "RESOLVED",
       "title": "PERMS uses six grant letters where the Action type declares five",
       "detail": "The type documents v/c/e/x/a with x = delete. The matrix actually contains a-c-d-e-v-x, and 36 grants carry both `d` and `x`, so one of the two is really export. Under the declared reading, accountant holds delete on audit, execreports and jobcards.",
       "why": "The server will implement whatever the letters say. Shipping the matrix before this is settled bakes an accidental delete grant on the audit log into production authorization.",
       "foundBy": "07",
-      "verified": "confirmed — orchestrator re-derived the letter set and the 36 dual grants directly from PERMS",
+      "verified": "confirmed and resolved \u2014 orchestrator derived the meaning from the grant distribution rather than asking",
       "owner": "01",
       "wave": "W1",
-      "decision": "needed: which letter is delete and which is export"
+      "decision": "needed: which letter is delete and which is export",
+      "status": "resolved by evidence, no decision needed",
+      "resolution": "x = export, d = delete. The matrix itself settles it: dashboard/owner, hr/manager and accounting/manager are all 'vx', and nobody deletes a dashboard \u2014 'vx' is view-plus-export, which is what those roles need. 'd' appears as 'vced' for roles that may remove an appointment and 'vcedax' for the complete set. handoff/RBAC.md documents five letters and mislabels x; the Action type has been corrected to six with the evidence recorded. No caller passed 'x', so nothing depended on the wrong reading."
     },
     {
       "id": "F-002",
       "severity": "HIGH",
       "title": "canApprove and PERMS.approvals disagree for superadmin",
-      "detail": "superadmin carries an unlimited approval ceiling (limit: null) but no `a` grant on the approvals module (\"vx\").",
+      "detail": "superadmin carries an unlimited approval ceiling (limit: null) but no `a` grant on the approvals module (\"vx\"). Note: with x now known to be export, superadmin's 'vx' on approvals means view and export \u2014 it grants no approve at all, so the disagreement with an unlimited ceiling is real and sharper than first stated.",
       "why": "The engine and the Approval Inbox would answer the same question differently, and which one wins depends on which code path a screen happens to use.",
       "foundBy": "07",
-      "verified": "confirmed — orchestrator read both values directly",
+      "verified": "confirmed \u2014 orchestrator read both values directly",
       "owner": "06",
       "wave": "W1"
     },
@@ -32,7 +34,7 @@
       "detail": "RBACSpec, Index, FlowSpec, UI.EmptyStates, UI.LoadingStates and UI.FormValidation are RBAC-ungated and also present in NAV.",
       "why": "A signed-in customer or supplier sees the RBAC specification page in their menu. The ungated exemption belongs on the route, not the navigation.",
       "foundBy": "07",
-      "verified": "confirmed — orchestrator cross-referenced RBAC_UNGATED against NAV. Finding this also exposed a parse bug in build-registry.mjs that had silently emptied the same list.",
+      "verified": "confirmed \u2014 orchestrator cross-referenced RBAC_UNGATED against NAV. Finding this also exposed a parse bug in build-registry.mjs that had silently emptied the same list.",
       "owner": "04",
       "wave": "W2"
     },
@@ -43,7 +45,7 @@
       "detail": "Purchase order raise + approve (owner, manager, procurement); supplier create + payment approve (owner, manager); journal post + approve (accountant); repair + QC (owner, manager, advisor). Only technician/QC is genuinely separated, and WorkshopQC enforces it with a literal role check rather than from the SOD table. A sixth pair (issue stock / adjust stock count) maps to the same permission and cannot be expressed at all.",
       "why": "The SOD table documents a control that exists in one screen and nowhere else. Enforcement must come from the table, server-side, or the table is decoration.",
       "foundBy": "07",
-      "verified": "reported — not independently re-checked by the orchestrator",
+      "verified": "reported \u2014 not independently re-checked by the orchestrator",
       "owner": "06",
       "wave": "W1"
     },
@@ -54,7 +56,7 @@
       "detail": "\"Employee salary\" joins Branch P&L as a dead rule: every role in its hidden list is already denied hr view by the module gate. The other five rules are live, and the split is now pinned by a test.",
       "why": "A redaction rule that never fires looks like protection and provides none. Both are kept as defence in depth, but neither should be counted as working.",
       "foundBy": "07",
-      "verified": "reported — consistent with the Branch P&L finding the orchestrator confirmed earlier",
+      "verified": "reported \u2014 consistent with the Branch P&L finding the orchestrator confirmed earlier",
       "owner": "06",
       "wave": "W1"
     },
@@ -62,7 +64,7 @@
       "id": "F-006",
       "severity": "MEDIUM",
       "title": "roleMeta fails open on an unknown role",
-      "detail": "An unrecognised role falls back to ROLES[0] — owner — inheriting an unlimited approval ceiling, while can() fails closed.",
+      "detail": "An unrecognised role falls back to ROLES[0] \u2014 owner \u2014 inheriting an unlimited approval ceiling, while can() fails closed.",
       "why": "Unreachable today because isRoleId guards the session. It stops being unreachable the moment the role arrives in a JWT claim, which is exactly what agent 05 is building.",
       "foundBy": "07",
       "verified": "reported",
@@ -107,9 +109,9 @@
       "severity": "MEDIUM",
       "title": "23 icon names resolve to no glyph",
       "detail": "lucide renamed a family in v0.4xx (AlertTriangle to TriangleAlert, CheckCircle to CircleCheckBig, Home to House). The design bundle still asks for the old names and port-design-data.mjs intersects against lucide's current keys, dropping the misses silently. Its scanner also never collected single-letter names, so the close X on every toast rendered blank.",
-      "why": "User-visible in shipped screens — the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
+      "why": "User-visible in shipped screens \u2014 the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
       "foundBy": "04",
-      "verified": "confirmed — orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
+      "verified": "confirmed \u2014 orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
       "owner": "02",
       "wave": "W1",
       "status": "worked around, durable fix outstanding"
