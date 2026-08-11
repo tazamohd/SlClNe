@@ -9,12 +9,12 @@ import {
   SCREEN_MODULE,
   RBAC_UNGATED,
   FIELD_RULES,
+  SOD,
 } from './generated/rbac'
 import { NAV } from './generated/nav'
-import type { Action, NavGroup, Role, RoleId } from './types'
+import type { Action, NavGroup, Role, RoleId, SodRule } from './types'
 
-export { ROLES, PERMS, SCREEN_MODULE, RBAC_UNGATED, FIELD_RULES }
-export { SOD } from './generated/rbac'
+export { ROLES, PERMS, SCREEN_MODULE, RBAC_UNGATED, FIELD_RULES, SOD }
 
 export const DEFAULT_ROLE: RoleId = 'owner'
 
@@ -95,4 +95,57 @@ const LOGIN_DESTINATION: Partial<Record<RoleId, string>> = {
 
 export function destinationFor(role: string): string {
   return LOGIN_DESTINATION[role as RoleId] ?? '/dashboard'
+}
+
+// ── Segregation of duties ────────────────────────────────────────────────────
+
+/** The SOD table pairs *activities*, not roles: "Perform repair" must not be
+ *  done by whoever will "Pass quality check". That is a question about people
+ *  and records — did this actor perform the counterpart on this job? — and the
+ *  permission matrix cannot answer it. Four of the six pairs are held on both
+ *  sides by a single role (owner, manager, advisor, accountant, procurement),
+ *  so a role check cannot express the control at all.
+ *
+ *  Until a record carries who performed each step, screens use a role proxy and
+ *  say so. The proxy is wrong in both directions: it blocks every technician,
+ *  including one who never touched the job, and it lets a manager who performed
+ *  the repair sign off their own work.
+ *
+ *  The real check belongs on the server, over the audit log, which already
+ *  records actor, action, entity and entityId for exactly this purpose:
+ *
+ *      the actor who performed activity A on entity X
+ *      may not perform the counterpart activity B on entity X
+ *
+ *  `sodViolation` implements that and is ready for the first caller with the
+ *  data; `sodRuleFor` lets a screen name its activity instead of hardcoding a
+ *  role, so the table is load-bearing rather than documentation. */
+
+/** The rule pairing this activity with its counterpart, if the table has one. */
+export function sodRuleFor(activity: string): SodRule | undefined {
+  return SOD.find((rule) => rule.a === activity || rule.b === activity)
+}
+
+/** The activity that must not share a holder with this one. */
+export function sodCounterpart(activity: string): string | undefined {
+  const rule = sodRuleFor(activity)
+  if (!rule) return undefined
+  return rule.a === activity ? rule.b : rule.a
+}
+
+/** Whether `actor` performing `activity` would breach segregation of duties,
+ *  given who performed what on this record already. `history` is the record's
+ *  audit trail — the actor identity must be the *user*, not the role, because
+ *  two managers are two people and the control is about one person doing both. */
+export function sodViolation(
+  activity: string,
+  actor: string,
+  history: readonly { activity: string; actor: string }[]
+): SodRule | undefined {
+  const counterpart = sodCounterpart(activity)
+  if (!counterpart) return undefined
+  const conflicted = history.some(
+    (entry) => entry.activity === counterpart && entry.actor === actor
+  )
+  return conflicted ? sodRuleFor(activity) : undefined
 }

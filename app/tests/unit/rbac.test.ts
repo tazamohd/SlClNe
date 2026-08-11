@@ -15,6 +15,9 @@ import {
   isRoleId,
   navFor,
   roleMeta,
+  sodCounterpart,
+  sodRuleFor,
+  sodViolation,
 } from '@/data/rbac'
 import { NAV } from '@/data/generated/nav'
 import { REGISTRY } from '@/data/generated/master-registry'
@@ -538,5 +541,43 @@ describe('role metadata and destinations', () => {
       expect(screen).toBeDefined()
       expect(canScreen(screen as string, role), `${role} cannot open its destination`).toBe(true)
     }
+  })
+})
+
+describe('segregation of duties', () => {
+  it('pairs each activity with its counterpart from the table', () => {
+    expect(sodCounterpart('Pass quality check')).toBe('Perform repair')
+    expect(sodCounterpart('Perform repair')).toBe('Pass quality check')
+    expect(sodCounterpart('Approve purchase order')).toBe('Raise purchase order')
+    expect(sodCounterpart('Not an activity')).toBeUndefined()
+  })
+
+  it('is symmetric across every pair the table declares', () => {
+    for (const rule of SOD) {
+      expect(sodCounterpart(rule.a)).toBe(rule.b)
+      expect(sodCounterpart(rule.b)).toBe(rule.a)
+      expect(sodRuleFor(rule.a)).toBe(sodRuleFor(rule.b))
+    }
+  })
+
+  it('breaches only when the same actor performed the counterpart on the record', () => {
+    const history = [{ activity: 'Perform repair', actor: 'tech-7' }]
+    // Same person, both sides of the pair — the control the table describes.
+    expect(sodViolation('Pass quality check', 'tech-7', history)?.risk).toBe('high')
+    // A different person, however senior, is not a breach.
+    expect(sodViolation('Pass quality check', 'qc-2', history)).toBeUndefined()
+    // Nothing performed yet, nothing to conflict with.
+    expect(sodViolation('Pass quality check', 'tech-7', [])).toBeUndefined()
+    // An activity outside the table is unconstrained.
+    expect(sodViolation('Water the plants', 'tech-7', history)).toBeUndefined()
+  })
+
+  it('catches what the role proxy cannot: one role holding both sides', () => {
+    // Four of six pairs are held on both sides by a single role, so no role
+    // check can express them. This is the case a role check misses entirely —
+    // a manager who performed the repair signing off their own work.
+    const history = [{ activity: 'Perform repair', actor: 'manager-1' }]
+    expect(sodViolation('Pass quality check', 'manager-1', history)).toBeDefined()
+    expect(can('jobcards', 'a', 'manager')).toBe(true)
   })
 })

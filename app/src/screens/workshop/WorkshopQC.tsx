@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/Card'
 import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { sodRuleFor } from '@/data/rbac'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -33,6 +34,9 @@ const ASSIGNED_TECH = 'Yousef Al-Otaibi'
  *  Segregation of duties: "Perform repair" and "Pass quality check" are a
  *  high-risk pair in the SOD table, so the technician who did the work must not
  *  be the one signing it off. The design didn't enforce that; this does. */
+/** What this screen does, in the SOD table's own words. */
+const QC_ACTIVITY = 'Pass quality check'
+
 export function WorkshopQC() {
   const { t, rtl } = usePreferences()
   const { role, roleMeta } = useSession()
@@ -43,15 +47,29 @@ export function WorkshopQC() {
   const done = countChecked(QC_CHECKS, checked)
   const complete = done === QC_CHECKS.length
 
-  // A technician may view this screen (jobcards: "ve") but must never pass QC
-  // on their own work.
+  // Named from the SOD table rather than hardcoded here, so the table is the
+  // rule and this screen only says which activity it performs.
+  const rule = sodRuleFor(QC_ACTIVITY)
+
+  // The control is "whoever performed the repair must not pass its quality
+  // check" — a question about a person and a record. No job record carries a
+  // performer yet, so this falls back to a role proxy, and the proxy is wrong
+  // in both directions: it blocks every technician including one who never
+  // touched this job, and it lets a manager who did the repair sign off their
+  // own work. Once the audit trail lands, swap this line for
+  // `sodViolation(QC_ACTIVITY, userName, job.history)` and the control becomes
+  // real; the message below already reads from the table either way.
   const sodConflict = role === 'technician'
 
   function approve() {
     if (sodConflict) {
       toast.show({
         title: t('Segregation of duties'),
-        description: t('The technician who performed the repair cannot pass its quality check.'),
+        description: rule
+          ? t('%a and %b must not be done by the same person.')
+              .replace('%a', t(rule.a))
+              .replace('%b', t(rule.b))
+          : t('The technician who performed the repair cannot pass its quality check.'),
         error: true,
       })
       return
