@@ -1,0 +1,118 @@
+{
+  "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently — an agent's report is a claim, not a verification.",
+  "updatedAt": "2026-08-11",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "BLOCKER",
+      "title": "PERMS uses six grant letters where the Action type declares five",
+      "detail": "The type documents v/c/e/x/a with x = delete. The matrix actually contains a-c-d-e-v-x, and 36 grants carry both `d` and `x`, so one of the two is really export. Under the declared reading, accountant holds delete on audit, execreports and jobcards.",
+      "why": "The server will implement whatever the letters say. Shipping the matrix before this is settled bakes an accidental delete grant on the audit log into production authorization.",
+      "foundBy": "07",
+      "verified": "confirmed — orchestrator re-derived the letter set and the 36 dual grants directly from PERMS",
+      "owner": "01",
+      "wave": "W1",
+      "decision": "needed: which letter is delete and which is export"
+    },
+    {
+      "id": "F-002",
+      "severity": "HIGH",
+      "title": "canApprove and PERMS.approvals disagree for superadmin",
+      "detail": "superadmin carries an unlimited approval ceiling (limit: null) but no `a` grant on the approvals module (\"vx\").",
+      "why": "The engine and the Approval Inbox would answer the same question differently, and which one wins depends on which code path a screen happens to use.",
+      "foundBy": "07",
+      "verified": "confirmed — orchestrator read both values directly",
+      "owner": "06",
+      "wave": "W1"
+    },
+    {
+      "id": "F-003",
+      "severity": "HIGH",
+      "title": "Design-reference pages appear in every role's sidebar",
+      "detail": "RBACSpec, Index, FlowSpec, UI.EmptyStates, UI.LoadingStates and UI.FormValidation are RBAC-ungated and also present in NAV.",
+      "why": "A signed-in customer or supplier sees the RBAC specification page in their menu. The ungated exemption belongs on the route, not the navigation.",
+      "foundBy": "07",
+      "verified": "confirmed — orchestrator cross-referenced RBAC_UNGATED against NAV. Finding this also exposed a parse bug in build-registry.mjs that had silently emptied the same list.",
+      "owner": "04",
+      "wave": "W2"
+    },
+    {
+      "id": "F-004",
+      "severity": "HIGH",
+      "title": "Four of six segregation-of-duties pairs are held by a single role",
+      "detail": "Purchase order raise + approve (owner, manager, procurement); supplier create + payment approve (owner, manager); journal post + approve (accountant); repair + QC (owner, manager, advisor). Only technician/QC is genuinely separated, and WorkshopQC enforces it with a literal role check rather than from the SOD table. A sixth pair (issue stock / adjust stock count) maps to the same permission and cannot be expressed at all.",
+      "why": "The SOD table documents a control that exists in one screen and nowhere else. Enforcement must come from the table, server-side, or the table is decoration.",
+      "foundBy": "07",
+      "verified": "reported — not independently re-checked by the orchestrator",
+      "owner": "06",
+      "wave": "W1"
+    },
+    {
+      "id": "F-005",
+      "severity": "MEDIUM",
+      "title": "A second field rule is unreachable",
+      "detail": "\"Employee salary\" joins Branch P&L as a dead rule: every role in its hidden list is already denied hr view by the module gate. The other five rules are live, and the split is now pinned by a test.",
+      "why": "A redaction rule that never fires looks like protection and provides none. Both are kept as defence in depth, but neither should be counted as working.",
+      "foundBy": "07",
+      "verified": "reported — consistent with the Branch P&L finding the orchestrator confirmed earlier",
+      "owner": "06",
+      "wave": "W1"
+    },
+    {
+      "id": "F-006",
+      "severity": "MEDIUM",
+      "title": "roleMeta fails open on an unknown role",
+      "detail": "An unrecognised role falls back to ROLES[0] — owner — inheriting an unlimited approval ceiling, while can() fails closed.",
+      "why": "Unreachable today because isRoleId guards the session. It stops being unreachable the moment the role arrives in a JWT claim, which is exactly what agent 05 is building.",
+      "foundBy": "07",
+      "verified": "reported",
+      "owner": "06",
+      "wave": "W1"
+    },
+    {
+      "id": "F-007",
+      "severity": "MEDIUM",
+      "title": "Money formatting edge cases",
+      "detail": "formatSar(-0.004) renders \"SAR -0.00\", so a reconciliation residue reads as a credit; formatSar(NaN) renders \"SAR NaN\"; parseSar(\"(1,200)\") returns +1200, dropping the accounting-negative sign.",
+      "why": "No seeded row hits the last case today. All three become reachable the moment real ledger data arrives.",
+      "foundBy": "07",
+      "verified": "reported",
+      "owner": "12",
+      "wave": "W2"
+    },
+    {
+      "id": "F-008",
+      "severity": "MEDIUM",
+      "title": "The seeded chart of accounts does not balance",
+      "detail": "Assets are out against liabilities plus equity by SAR 257,050. FinancialReports already says so on screen, and a test now pins that honesty.",
+      "why": "The seed becomes the database. An unbalanced ledger seeded into Postgres makes every financial-integrity test meaningless.",
+      "foundBy": "07",
+      "verified": "reported",
+      "owner": "05",
+      "wave": "W1"
+    },
+    {
+      "id": "F-009",
+      "severity": "LOW",
+      "title": "Two implemented screens render a shell that does not exist yet",
+      "detail": "/procurement-portal and /procurement-portal/requisitions are PortalShell in the registry and render AppShell, because PortalShell is not built. The other 60 shell mismatches are placeholder screens correctly rendering PendingScreen in the operational shell.",
+      "why": "Tracked so the mismatch closes when agent 04 builds PortalShell, rather than being discovered again later.",
+      "foundBy": "07",
+      "verified": "reported",
+      "owner": "04",
+      "wave": "W2"
+    },
+    {
+      "id": "F-010",
+      "severity": "MEDIUM",
+      "title": "23 icon names resolve to no glyph",
+      "detail": "lucide renamed a family in v0.4xx (AlertTriangle to TriangleAlert, CheckCircle to CircleCheckBig, Home to House). The design bundle still asks for the old names and port-design-data.mjs intersects against lucide's current keys, dropping the misses silently. Its scanner also never collected single-letter names, so the close X on every toast rendered blank.",
+      "why": "User-visible in shipped screens — the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
+      "foundBy": "04",
+      "verified": "confirmed — orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
+      "owner": "02",
+      "wave": "W1",
+      "status": "worked around, durable fix outstanding"
+    }
+  ]
+}

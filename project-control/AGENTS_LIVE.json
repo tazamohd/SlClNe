@@ -1,6 +1,6 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling \u2014 a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-11T16:20:00Z",
+  "asOf": "2026-08-11T16:35:00Z",
   "wave": "W1",
   "waveName": "Foundation",
   "waveNote": "The critical path. Ten product agents idle until these contracts are stable.",
@@ -19,13 +19,13 @@
       "blocks": [
         "every merge to main \u2014 no agent merges its own branch"
       ],
-      "notes": "CI only runs checks that exist. Suites still being built are absent rather than stubbed green; a job reporting success without running anything is the CI equivalent of a screen rendering a total it did not compute."
+      "notes": "CI landed as 8996bd3, plus two generator fixes the agents' work exposed: RBAC_UNGATED parsed as empty because `readonly string[]` closes a bracket before the array opens, and route coverage was grepping a route list that no longer exists."
     },
     {
       "id": "04",
       "name": "UI Foundation",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-11T15:52:00Z",
       "scope": "Modal system (6 variants, focus trap, mobile sheet), Form system over Zod, Charts extracted from accounting/Reports.tsx, state kit",
       "owns": [
@@ -39,7 +39,7 @@
         "G10 portals",
         "G11 website"
       ],
-      "notes": null
+      "notes": "Landed as 2095896. Found 23 icon names resolving to nothing \u2014 lucide renamed a family in v0.4xx and the generator dropped the misses silently, so the close X on every toast rendered blank. Aliased in Icon.tsx; durable fix belongs in port-design-data.mjs."
     },
     {
       "id": "05",
@@ -63,7 +63,7 @@
       "id": "07",
       "name": "Test Infrastructure",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-11T15:52:00Z",
       "scope": "vitest + jsdom + testing-library, RBAC unit tests across 14 roles \u00d7 28 modules \u00d7 5 actions, FIELD_RULES reachability audit, component tests, registry-driven route coverage in smoke.mjs",
       "owns": [
@@ -74,7 +74,7 @@
       "blocks": [
         "every later tranche's verification"
       ],
-      "notes": null
+      "notes": "Landed as a87fde5. 174 tests, route coverage now generated from the registry (402 checked). Nine defects found in existing code \u2014 see BLOCKERS.json BLK-013 to BLK-016."
     },
     {
       "id": "06",
