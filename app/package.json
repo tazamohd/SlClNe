@@ -13,6 +13,9 @@
     "check-no-fake": "node scripts/check-no-fake.mjs",
     "check-tokens": "node scripts/check-tokens.mjs",
     "gates": "npm run registry && npm run check-no-fake && npm run check-tokens",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
     "certify": "npm run registry && node scripts/check-no-fake.mjs --strict && node scripts/check-tokens.mjs --strict",
     "smoke": "node scripts/smoke.mjs"
   },
@@ -24,18 +27,26 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
     "tailwind-merge": "^2.5.5",
+    "zod": "^3.25.76",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.3",
     "@types/node": "^26.1.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.9",
     "autoprefixer": "^10.4.20",
+    "jsdom": "^25.0.1",
+    "msw": "^2.15.0",
     "playwright": "^1.62.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
-    "vite": "^5.4.11"
+    "vite": "^5.4.11",
+    "vitest": "^2.1.9"
   }
 }

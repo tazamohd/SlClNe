@@ -1,0 +1,57 @@
+{
+  "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
+  "asOf": "2026-08-11T15:52:00Z",
+  "wave": "W1",
+  "waveName": "Foundation",
+  "waveNote": "The critical path. Ten product agents idle until these contracts are stable.",
+  "agents": [
+    {
+      "id": "04",
+      "name": "UI Foundation",
+      "team": "fnd",
+      "state": "running",
+      "startedAt": "2026-08-11T15:52:00Z",
+      "scope": "Modal system (6 variants, focus trap, mobile sheet), Form system over Zod, Charts extracted from accounting/Reports.tsx, state kit",
+      "owns": ["app/src/components/ui/**", "app/src/components/shell/**", "app/src/styles/**"],
+      "blocks": ["every create/edit/delete flow", "23 dead CTAs", "G10 portals", "G11 website"],
+      "notes": null
+    },
+    {
+      "id": "05",
+      "name": "Backend & Data",
+      "team": "fnd",
+      "state": "running",
+      "startedAt": "2026-08-11T15:52:00Z",
+      "scope": "Fastify + Drizzle schema + RLS + migrations, seed from the existing fixtures, core entity routes with server-side RBAC and audit, repository mutations and httpRepository",
+      "owns": ["server/**", "packages/contract/**", "app/src/data/repository.ts", "app/src/data/useCollection.ts"],
+      "blocks": ["every capability's Definition of Done — real data, persistence and audit are clauses in it"],
+      "notes": "Postgres may not be available in this container; schema, migrations, RLS and seed are still written in full and anything unverifiable is reported rather than faked."
+    },
+    {
+      "id": "07",
+      "name": "Test Infrastructure",
+      "team": "fnd",
+      "state": "running",
+      "startedAt": "2026-08-11T15:52:00Z",
+      "scope": "vitest + jsdom + testing-library, RBAC unit tests across 14 roles × 28 modules × 5 actions, FIELD_RULES reachability audit, component tests, registry-driven route coverage in smoke.mjs",
+      "owns": ["app/vitest.config.ts", "app/tests/**", "app/scripts/smoke.mjs"],
+      "blocks": ["every later tranche's verification"],
+      "notes": null
+    },
+    {
+      "id": "06",
+      "name": "Auth & Security",
+      "team": "fnd",
+      "state": "queued",
+      "startedAt": null,
+      "scope": "JWT with rotating refresh and reuse detection, argon2id, session revocation, OTP throttling, server-side RBAC middleware, tenant and branch isolation tests",
+      "owns": ["server/src/auth/**", "app/src/providers/SessionProvider.tsx", "app/src/routes/RequireAccess.tsx", "app/src/screens/auth/**"],
+      "blocks": ["G10 portals — separate audiences need a session model"],
+      "notes": "Held until agent 05 lands the server scaffold. The plan runs all four concurrently, but auth builds on the server it authenticates: launching both into server/** at once is exactly the shared-file contention the ownership rule exists to prevent."
+    }
+  ],
+  "shared": {
+    "arbiter": "01",
+    "note": "package.json was updated by the orchestrator before launch — vitest, testing-library, jsdom, msw and zod are installed, and the test scripts added — so no agent needs to touch it. That file is the top contention point in the plan."
+  }
+}

@@ -151,6 +151,39 @@
   .tip b{color:var(--ink);display:block;font-size:11px;margin-bottom:2px}
   .tip .m{font-family:var(--mono);font-size:9px;color:var(--ink-3)}
 
+  /* agents panel */
+  .ag{padding:7px 9px;margin-bottom:4px;border-radius:5px;background:var(--card);
+      border:1px solid var(--line);border-inline-start:3px solid var(--tone)}
+  .ag-top{display:flex;align-items:center;gap:7px}
+  .ag-id{font-family:var(--mono);font-size:9px;color:var(--void);background:var(--tone);
+         border-radius:3px;padding:1px 5px;font-weight:700}
+  .ag-name{font-size:11px;font-weight:600;flex:1}
+  .ag-state{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+            padding:2px 7px;border-radius:999px;border:1px solid currentColor}
+  .ag-state.running{color:var(--fnd)} .ag-state.queued{color:var(--ink-3)}
+  .ag-state.done{color:var(--prd)} .ag-state.blocked{color:var(--stop)}
+  .ag-scope{font-size:9.5px;color:var(--ink-2);line-height:1.5;margin-top:5px}
+  .ag-owns{font-family:var(--mono);font-size:8px;color:var(--ink-3);margin-top:4px;line-height:1.6}
+  .ag-blocks{font-size:9px;color:var(--cmd);margin-top:4px}
+  .ag-note{font-size:9px;color:var(--ink-3);margin-top:4px;line-height:1.5;font-style:italic}
+  .asof{font-family:var(--mono);font-size:8px;color:var(--ink-4);letter-spacing:.06em;
+        margin-bottom:7px;display:block}
+
+  /* run panel */
+  .cmd{margin-bottom:7px;border-radius:5px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+  .cmd-h{padding:6px 9px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line)}
+  .cmd-h .t{font-size:10px;font-weight:600;flex:1}
+  .cmd-h .w{font-family:var(--mono);font-size:8px;color:var(--ink-4)}
+  .cmd-b{padding:7px 9px;font-family:var(--mono);font-size:9.5px;color:var(--fnd);
+         white-space:pre-wrap;word-break:break-all;line-height:1.6;background:var(--sunk)}
+  .cmd-f{padding:5px 9px;display:flex;gap:5px;align-items:center}
+  .cmd-f .why{flex:1;font-size:8.5px;color:var(--ink-3);line-height:1.5}
+  .copy{border:1px solid var(--line-2);background:var(--card);color:var(--ink-3);
+        font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;
+        border-radius:4px;padding:4px 9px;cursor:pointer;flex-shrink:0}
+  .copy:hover{color:var(--cmd);border-color:var(--cmd)}
+  .copy.done{color:var(--prd);border-color:var(--prd)}
+
   ::-webkit-scrollbar{width:3px}
   ::-webkit-scrollbar-track{background:transparent}
   ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
@@ -185,7 +218,7 @@
     <div class="scroll" id="panel"></div>
 
     <div class="rail-foot">
-      <label class="btn" for="loadReg">Load registry</label>
+      <label class="btn" for="loadReg">Load data</label>
       <input id="loadReg" type="file" accept="application/json,.json" hidden>
       <button class="btn" id="exportBtn" type="button">Export</button>
       <label class="btn" for="loadState">Import</label>
@@ -211,6 +244,7 @@
 <script>
 const DATA = __DATA__;
 const PLAN = __PLAN__;
+const LIVE = __LIVE__;
 </script>
 <script>
 (function(){
@@ -428,6 +462,16 @@ const PLAN = __PLAN__;
       g.setAttribute("aria-label", "Agent " + ag.id + " " + ag.n + ", " +
         (live ? s.done + " of " + s.total + " capabilities rendering" : "no capabilities in the registry"));
 
+      // A running agent gets a pulse. It is driven by AGENTS_LIVE.json, so it
+      // means "was running as of that stamp" — not a heartbeat this page can see.
+      var liveAg = (LIVE.agents || []).filter(function(x){ return x.id === ag.id; })[0];
+      if (liveAg && liveAg.state === "running") {
+        var pulse = svgEl("circle",{cx:p.x,cy:p.y,r:16,fill:"none",
+          stroke:TEAM[ag.t],"stroke-width":"1",opacity:"0.5"});
+        pulse.appendChild(svgEl("animate",{attributeName:"r",values:"12;22;12",dur:"2.2s",repeatCount:"indefinite"}));
+        pulse.appendChild(svgEl("animate",{attributeName:"opacity",values:"0.55;0.05;0.55",dur:"2.2s",repeatCount:"indefinite"}));
+        g.appendChild(pulse);
+      }
       if (live && s.pct === 100) {
         var ring = svgEl("circle",{cx:p.x,cy:p.y,r:18,fill:TEAM[ag.t],opacity:"0.08"});
         g.appendChild(ring);
@@ -492,8 +536,8 @@ const PLAN = __PLAN__;
   }
 
   /* ── panels ────────────────────────────────────────────────────────── */
-  var TABS = [["domains","Track"],["golden","Golden"],["waves","Waves"],
-              ["score","Score"],["gates","Gates"],["notes","Notes"]];
+  var TABS = [["domains","Track"],["agents","Agents"],["waves","Waves"],["golden","Golden"],
+              ["score","Score"],["gates","Gates"],["run","Run"],["notes","Notes"]];
   function renderTabs(){
     var host = document.getElementById("tabs"); host.textContent = "";
     TABS.forEach(function(t){
@@ -664,6 +708,62 @@ const PLAN = __PLAN__;
       return;
     }
 
+    if (tab === "agents") {
+      var stamp = el("span","asof",
+        "WAVE " + (LIVE.wave || "—") + " · " + (LIVE.waveName || "") +
+        " · AS OF " + new Date(LIVE.asOf).toLocaleString());
+      host.appendChild(stamp);
+      host.appendChild(el("p","hint", LIVE.waveNote || ""));
+      (LIVE.agents || []).forEach(function(a){
+        var box = el("div","ag");
+        box.style.setProperty("--tone", TEAM[a.team] || "var(--ink-3)");
+        var top = el("div","ag-top");
+        top.appendChild(el("span","ag-id", a.id));
+        top.appendChild(el("span","ag-name", a.name));
+        top.appendChild(el("span","ag-state " + a.state, a.state));
+        box.appendChild(top);
+        box.appendChild(el("div","ag-scope", a.scope));
+        if (a.owns && a.owns.length) box.appendChild(el("div","ag-owns", a.owns.join("  ")));
+        if (a.blocks && a.blocks.length)
+          box.appendChild(el("div","ag-blocks", "blocks: " + a.blocks.join(" · ")));
+        if (a.notes) box.appendChild(el("div","ag-note", a.notes));
+        host.appendChild(box);
+      });
+      if (LIVE.shared && LIVE.shared.note) {
+        var sh = el("div","ag"); sh.style.setProperty("--tone","var(--cmd)");
+        var t = el("div","ag-top");
+        t.appendChild(el("span","ag-id", LIVE.shared.arbiter));
+        t.appendChild(el("span","ag-name","Shared files"));
+        sh.appendChild(t);
+        sh.appendChild(el("div","ag-scope", LIVE.shared.note));
+        host.appendChild(sh);
+      }
+      return;
+    }
+
+    if (tab === "run") {
+      host.appendChild(el("p","hint",
+        "This page cannot run anything on your machine — it is a sandboxed document. " +
+        "Copy a command, or use the runner script so there is nothing to transcribe."));
+      COMMANDS.forEach(function(c){
+        var box = el("div","cmd");
+        var h = el("div","cmd-h");
+        h.appendChild(el("span","t", c.title));
+        h.appendChild(el("span","w", c.where));
+        box.appendChild(h);
+        var body = el("div","cmd-b", c.cmd);
+        box.appendChild(body);
+        var f = el("div","cmd-f");
+        f.appendChild(el("span","why", c.why));
+        var btn = el("button","copy","copy"); btn.type = "button";
+        btn.addEventListener("click", function(){ copyText(c.cmd, btn); });
+        f.appendChild(btn);
+        box.appendChild(f);
+        host.appendChild(box);
+      });
+      return;
+    }
+
     if (tab === "notes") {
       var form = el("form","note-form");
       var inp = el("input"); inp.placeholder = "Blocker, decision, follow-up…";
@@ -694,14 +794,73 @@ const PLAN = __PLAN__;
     }
   }
 
+  /* ── runnable commands ─────────────────────────────────────────────── */
+  var COMMANDS = [
+    { title:"Apply a patch and push", where:"repo root",
+      cmd:'.\\project-control\\run.ps1 apply "C:\\Users\\Salisco\\Desktop\\<patch-file>"',
+      why:"git am, shows the log, then pushes. Aborts cleanly and tells you how to recover if the patch does not apply." },
+    { title:"Gates — after every tranche", where:"repo root",
+      cmd:".\\project-control\\run.ps1 gates",
+      why:"Rebuilds the registry and re-runs the placeholder and design-token ratchets. This is what keeps this deck honest." },
+    { title:"Full per-tranche chain", where:"repo root",
+      cmd:".\\project-control\\run.ps1 all",
+      why:"gates → test → build → smoke, with the preview server started and stopped for you." },
+    { title:"Where am I?", where:"repo root",
+      cmd:".\\project-control\\run.ps1 status",
+      why:"Branch, unpushed commits and the current registry totals." },
+    { title:"Refresh this deck's data", where:"repo root",
+      cmd:".\\project-control\\run.ps1 deck",
+      why:"Regenerates tracker-data.json. Then use Load below to read it in." },
+    { title:"Gates — without the runner", where:"app/",
+      cmd:"npm run gates",
+      why:"The same checks if you prefer running npm directly." },
+    { title:"Tests", where:"app/", cmd:"npm run test",
+      why:"vitest: unit, component and integration." },
+    { title:"Typecheck and build", where:"app/", cmd:"npm run typecheck && npm run build",
+      why:"Must both pass before any tranche is submitted." },
+    { title:"Certification gates (W5)", where:"app/", cmd:"npm run certify",
+      why:"The same ratchets with --strict, where the only acceptable number is zero." },
+    { title:"First-time setup", where:"app/", cmd:"npm install",
+      why:"Only needed once, or after new dependencies land." }
+  ];
+
+  function copyText(text, btn){
+    var done = function(){
+      var was = btn.textContent;
+      btn.textContent = "copied"; btn.classList.add("done");
+      setTimeout(function(){ btn.textContent = was; btn.classList.remove("done"); }, 1400);
+    };
+    // The clipboard API is often unavailable in a sandboxed frame, so fall back
+    // to a selection rather than failing silently.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function(){ legacy(); });
+    } else { legacy(); }
+    function legacy(){
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch(e){}
+      document.body.removeChild(ta);
+      if (ok) done();
+      else { btn.textContent = "select it"; setTimeout(function(){ btn.textContent = "copy"; }, 1600); }
+    }
+  }
+
   /* ── import / export ───────────────────────────────────────────────── */
   document.getElementById("loadReg").addEventListener("change", function(e){
     var f = e.target.files && e.target.files[0]; if (!f) return;
     f.text().then(function(txt){
       try {
         var next = JSON.parse(txt);
-        if (!next.domains) throw new Error("not a tracker dataset");
-        data = next; state.items = {};   // a fresh repo read supersedes the overlay
+        if (next.domains) {
+          data = next; state.items = {};  // a fresh repo read supersedes the overlay
+        } else if (next.agents) {
+          LIVE.wave = next.wave; LIVE.waveName = next.waveName; LIVE.waveNote = next.waveNote;
+          LIVE.agents = next.agents; LIVE.asOf = next.asOf; LIVE.shared = next.shared;
+        } else {
+          throw new Error("not a tracker dataset or a wave status file");
+        }
         save(); renderAll();
       } catch(err){
         document.getElementById("fieldMeta").textContent = "LOAD FAILED · " + err.message;
