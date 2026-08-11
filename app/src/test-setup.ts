@@ -71,9 +71,39 @@ export function setViewportWidth(width: number): void {
   window.dispatchEvent(new Event('resize'))
 }
 
+/** jsdom usually provides `window.localStorage`, but not on every host: a
+ *  Windows run on the same Node version reported it undefined and failed all
+ *  177 tests at once, on a line that has nothing to do with what any of them
+ *  assert. Node 22 also carries an experimental `localStorage` of its own that
+ *  is inert without `--localstorage-file`, so which implementation a test run
+ *  gets depends on the machine.
+ *
+ *  The app already wraps storage access (`src/lib/storage.ts`) because bare
+ *  access throws in Safari private mode. The suite should be at least as
+ *  robust: supply a minimal in-memory store when the environment has none, so a
+ *  test fails for what it tests rather than for where it ran. */
+function ensureLocalStorage() {
+  if (typeof window.localStorage?.clear === 'function') return
+  const store = new Map<string, string>()
+  Object.defineProperty(window, 'localStorage', {
+    configurable: true,
+    value: {
+      get length() {
+        return store.size
+      },
+      key: (i: number) => [...store.keys()][i] ?? null,
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => void store.set(k, String(v)),
+      removeItem: (k: string) => void store.delete(k),
+      clear: () => store.clear(),
+    },
+  })
+}
+
 beforeEach(() => {
   lists.clear()
   installMatchMedia()
+  ensureLocalStorage()
   // Desktop is the default; a test that wants the mobile design asks for it.
   Object.defineProperty(window, 'innerWidth', { value: 1280, configurable: true, writable: true })
   window.localStorage.clear()
