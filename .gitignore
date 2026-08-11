@@ -1,0 +1,19 @@
+# Dependencies and build output, wherever they appear. Each workspace also
+# carries its own ignore file; this one exists so a new workspace cannot arrive
+# without them — the server agent ran its own install, and 6,840 files were one
+# `git add` away from a patch.
+node_modules/
+dist/
+build/
+coverage/
+.turbo/
+
+# Secrets. `.env.example` is committed; values never are.
+.env
+.env.*
+!.env.example
+
+# Local tooling noise
+*.log
+.DS_Store
+*.tsbuildinfo
