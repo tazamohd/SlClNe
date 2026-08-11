@@ -2,6 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { useSession } from '@/providers/SessionProvider'
 import { AppShell } from '@/components/shell/AppShell'
+import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
 
 /** Guards an operational route.
  *
@@ -14,10 +15,14 @@ import { AppShell } from '@/components/shell/AppShell'
 export function RequireAccess({
   screen,
   children,
+  shell = 'app',
 }: {
   /** Screen name as used in SCREEN_MODULE, e.g. "JobCards". */
   screen: string
   children: ReactNode
+  /** Which chrome to render inside. The customer app is a separate surface
+   *  with its own 430px frame and bottom tab bar, not the operational shell. */
+  shell?: 'app' | 'customer-app'
 }) {
   const { signedIn, canScreen } = useSession()
   const location = useLocation()
@@ -28,5 +33,6 @@ export function RequireAccess({
   if (!canScreen(screen)) {
     return <Navigate to="/unauthorized" replace />
   }
-  return <AppShell>{children}</AppShell>
+  const Shell = shell === 'customer-app' ? CustomerAppShell : AppShell
+  return <Shell>{children}</Shell>
 }

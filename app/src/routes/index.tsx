@@ -85,6 +85,19 @@ import {
   SMSCampaigns,
   WhatsAppCampaigns,
 } from '@/screens/crm/Crm'
+import {
+  CustomerAppAppointments,
+  CustomerAppGarage,
+  CustomerAppHome,
+  CustomerAppInsurance,
+  CustomerAppLoans,
+  CustomerAppMarketplace,
+  CustomerAppNotifications,
+  CustomerAppOrders,
+  CustomerAppProfile,
+  CustomerAppServiceTracking,
+  CustomerAppWallet,
+} from '@/screens/customer-app/CustomerApp'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -167,6 +180,21 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   Integrations,
 }
 
+/** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
+const CUSTOMER_APP_SCREENS: Record<string, React.ComponentType> = {
+  'CustomerApp.Home': CustomerAppHome,
+  'CustomerApp.Garage': CustomerAppGarage,
+  'CustomerApp.Appointments': CustomerAppAppointments,
+  'CustomerApp.ServiceTracking': CustomerAppServiceTracking,
+  'CustomerApp.Wallet': CustomerAppWallet,
+  'CustomerApp.Orders': CustomerAppOrders,
+  'CustomerApp.Marketplace': CustomerAppMarketplace,
+  'CustomerApp.Notifications': CustomerAppNotifications,
+  'CustomerApp.Insurance': CustomerAppInsurance,
+  'CustomerApp.Loans': CustomerAppLoans,
+  'CustomerApp.Profile': CustomerAppProfile,
+}
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -176,6 +204,21 @@ export function AppRoutes() {
         const Public = PUBLIC_SCREENS[screen.name]
         if (Public) {
           return <Route key={screen.name} path={screen.route} element={<Public />} />
+        }
+
+        const CustomerScreen = CUSTOMER_APP_SCREENS[screen.name]
+        if (CustomerScreen) {
+          return (
+            <Route
+              key={screen.name}
+              path={screen.route}
+              element={
+                <RequireAccess screen={screen.name} shell="customer-app">
+                  <CustomerScreen />
+                </RequireAccess>
+              }
+            />
+          )
         }
 
         const Implemented = APP_SCREENS[screen.name]
@@ -224,6 +267,7 @@ export function AppRoutes() {
       })}
 
       {/* Routes the design references but SCREEN_MAP doesn't list. */}
+      <Route path="/customer-app" element={<Navigate to="/customer-app/home" replace />} />
       <Route path="/logout-confirmation" element={<LogoutConfirmation />} />
       <Route path="/support" element={<Navigate to="/call-center" replace />} />
       <Route path="*" element={<Navigate to="/error404" replace />} />
