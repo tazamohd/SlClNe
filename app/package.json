@@ -9,6 +9,11 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "port-design": "node scripts/port-design-data.mjs",
+    "registry": "node scripts/build-registry.mjs",
+    "check-no-fake": "node scripts/check-no-fake.mjs",
+    "check-tokens": "node scripts/check-tokens.mjs",
+    "gates": "npm run registry && npm run check-no-fake && npm run check-tokens",
+    "certify": "npm run registry && node scripts/check-no-fake.mjs --strict && node scripts/check-tokens.mjs --strict",
     "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {

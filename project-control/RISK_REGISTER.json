@@ -1,0 +1,60 @@
+{
+  "note": "Risks to delivery, with an owner and a mitigation. A risk with no owner is a wish. Reviewed at each wave boundary.",
+  "updatedAt": "2026-08-11",
+  "risks": [
+    { "id": "R-01", "title": "Divergent git histories between the cloud session and the local clone",
+      "likelihood": "occurred", "impact": "high", "owner": "01", "status": "mitigated",
+      "detail": "Five commits of screen work (registries, parts network, accounting, CRM, customer app) existed only in the cloud container and were never on GitHub. A reset to the pushed branch silently rewound the working tree to a state missing 62 built screens; the registry caught it by reporting 52 rendering instead of 114.",
+      "mitigation": "The five commits were cherry-picked onto the pushed branch. Going forward: the registry's `rendered` count is checked after any branch operation, and the session pushes through the user rather than assuming its own history is canonical." },
+
+    { "id": "R-02", "title": "This environment cannot push to the remote",
+      "likelihood": "occurred", "impact": "medium", "owner": "01", "status": "open",
+      "detail": "The sandbox proxy returns 403 on push; fetch works. Every handover therefore needs a patch file and a manual push, which is slow and loses commit authorship.",
+      "mitigation": "Connect the GitHub account to the environment. Until then: commit locally, hand over `git format-patch` output, verify the pushed hash before continuing." },
+
+    { "id": "R-03", "title": "Three GitHub PATs were pasted in chat",
+      "likelihood": "occurred", "impact": "high", "owner": "06", "status": "open",
+      "detail": "Tokens appear in the transcript and possibly in provider logs. At least one was auto-revoked by GitHub secret scanning; the others are unconfirmed.",
+      "mitigation": "Rotate all three, add gitleaks to CI, and never paste a credential into chat again — use the environment's connection instead." },
+
+    { "id": "R-04", "title": "The repository is public",
+      "likelihood": "certain", "impact": "medium", "owner": "01", "status": "open",
+      "detail": "It carries the design bundle, 235 production screenshots, the RBAC matrix, the API contract and now the full execution plan — a detailed map of a commercial product's internals.",
+      "mitigation": "Make it private. Costs nothing and changes nothing about the work." },
+
+    { "id": "R-05", "title": "Shared-file contention across ten concurrent product agents",
+      "likelihood": "likely", "impact": "high", "owner": "01", "status": "open",
+      "detail": "routes/index.tsx, repository.ts, rbac.ts and the migrations are touched by every agent. Simultaneous edits are the specific failure that turns an 8-week parallel build back into a 25-week serial one.",
+      "mitigation": "OWNERSHIP.json serialises them through Agent 01, and the registry-driven route table removes routes/index.tsx from the contention set entirely." },
+
+    { "id": "R-06", "title": "The design bundle violates its own brand rules",
+      "likelihood": "occurred", "impact": "low", "owner": "04", "status": "open",
+      "detail": "Dashboard.dc.html uses #06B6D4 (teal) in two gradients, which handoff/README.md §7 forbids. The port reproduced it faithfully, so the violation is now in Dashboard.tsx:73 and :398.",
+      "mitigation": "Replace with #0AA3EE from the token set — same darkening intent, inside the palette. Decided rather than silently tuned: the token gate keeps flagging it until it is fixed, and narrowing the gate's hue band to hide it is explicitly not the fix." },
+
+    { "id": "R-07", "title": "Estimates assume no rework",
+      "likelihood": "likely", "impact": "medium", "owner": "01", "status": "open",
+      "detail": "265 engineer-days assumes each capability is built once. Backend contract changes after W1 would force rework across W2's ten agents simultaneously.",
+      "mitigation": "Freeze the contract package at the end of W1 and version it; contract changes after that go through Agent 03 as a scheduled migration, not an ad-hoc edit." },
+
+    { "id": "R-08", "title": "Feature-map screens have no design, only a screenshot and a templated spec",
+      "likelihood": "certain", "impact": "medium", "owner": "02", "status": "accepted",
+      "detail": "175 of 402 capabilities are specified only by a screenshot and four templated fields. Fidelity expectations cannot be the same as for designed screens.",
+      "mitigation": "They are built through the feature kit and reproduce the reference's structure and empty states honestly. Where the reference is empty, the empty state ships — inventing rows would make unbuilt features look shipped." },
+
+    { "id": "R-09", "title": "Twelve capabilities depend on hardware or paid services we do not have",
+      "likelihood": "certain", "impact": "low", "owner": "02", "status": "accepted",
+      "detail": "Drone inspection, VR showroom, AR guides, wearables, security cameras, digital signage, blockchain, quantum, voice — all categorised EXTERNAL_DEPENDENCY in the registry.",
+      "mitigation": "Each ships complete UI, a real adapter interface, a mocked contract and an explicit unconfigured state, with the dependency named. None is ever labelled 'coming soon'." },
+
+    { "id": "R-10", "title": "Mock-to-API swap could silently change behaviour",
+      "likelihood": "possible", "impact": "high", "owner": "05", "status": "open",
+      "detail": "114 screens currently render from fixtures. Swapping the repository for HTTP touches every one of them at once.",
+      "mitigation": "The database seeds from src/data/generated/tables.ts, so the seeded API renders exactly what the fixtures render, and every existing smoke assertion must still pass after the swap. A failing assertion is the swap being wrong, not the test being stale." },
+
+    { "id": "R-11", "title": "Agents claiming completion without evidence",
+      "likelihood": "likely", "impact": "high", "owner": "03", "status": "open",
+      "detail": "A subagent reporting 'done' is a claim, not a verification — and at ten concurrent agents the claims arrive faster than they can be read.",
+      "mitigation": "Agent 03 re-runs the Definition of Done rather than trusting the report, and the registry's evidence[] must name a screenshot or test artefact before status rises above IMPLEMENTED." }
+  ]
+}

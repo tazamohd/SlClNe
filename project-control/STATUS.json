@@ -1,0 +1,433 @@
+{
+  "generatedAt": "2026-08-11",
+  "totals": {
+    "capabilities": 402,
+    "product": 362,
+    "referenceOnly": 28,
+    "externalDependency": 12,
+    "rendered": 114,
+    "placeholder": 248,
+    "designedMobileOwed": 57,
+    "untested": 284,
+    "mockOnly": 114,
+    "dataBacked": 0,
+    "e2eCovered": 78,
+    "unregisteredDesigns": 0,
+    "orphanScreenFiles": 0,
+    "productionReady": 0
+  },
+  "bySurface": {
+    "auth": {
+      "total": 28,
+      "rendered": 15,
+      "placeholder": 13,
+      "mobileOwed": 15,
+      "e2e": 11,
+      "dataBacked": 0
+    },
+    "app": {
+      "total": 312,
+      "rendered": 86,
+      "placeholder": 214,
+      "mobileOwed": 42,
+      "e2e": 57,
+      "dataBacked": 0
+    },
+    "call-center": {
+      "total": 2,
+      "rendered": 0,
+      "placeholder": 2,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "customer-app": {
+      "total": 11,
+      "rendered": 11,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 8,
+      "dataBacked": 0
+    },
+    "portal": {
+      "total": 8,
+      "rendered": 2,
+      "placeholder": 6,
+      "mobileOwed": 0,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "reference": {
+      "total": 28,
+      "rendered": 0,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "kiosk": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "native": {
+      "total": 2,
+      "rendered": 0,
+      "placeholder": 2,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "public": {
+      "total": 10,
+      "rendered": 0,
+      "placeholder": 10,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    }
+  },
+  "byDomain": {
+    "auth": {
+      "total": 28,
+      "rendered": 15,
+      "placeholder": 13,
+      "mobileOwed": 15,
+      "e2e": 11,
+      "dataBacked": 0
+    },
+    "admin": {
+      "total": 17,
+      "rendered": 1,
+      "placeholder": 16,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "ai": {
+      "total": 10,
+      "rendered": 3,
+      "placeholder": 7,
+      "mobileOwed": 3,
+      "e2e": 3,
+      "dataBacked": 0
+    },
+    "workshop": {
+      "total": 22,
+      "rendered": 12,
+      "placeholder": 10,
+      "mobileOwed": 12,
+      "e2e": 12,
+      "dataBacked": 0
+    },
+    "accounting": {
+      "total": 23,
+      "rendered": 14,
+      "placeholder": 9,
+      "mobileOwed": 14,
+      "e2e": 14,
+      "dataBacked": 0
+    },
+    "portals": {
+      "total": 13,
+      "rendered": 2,
+      "placeholder": 11,
+      "mobileOwed": 0,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "crm": {
+      "total": 17,
+      "rendered": 11,
+      "placeholder": 6,
+      "mobileOwed": 11,
+      "e2e": 10,
+      "dataBacked": 0
+    },
+    "customerapp": {
+      "total": 11,
+      "rendered": 11,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 8,
+      "dataBacked": 0
+    },
+    "ui": {
+      "total": 28,
+      "rendered": 0,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "hr": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "parts": {
+      "total": 10,
+      "rendered": 9,
+      "placeholder": 1,
+      "mobileOwed": 1,
+      "e2e": 9,
+      "dataBacked": 0
+    },
+    "website": {
+      "total": 10,
+      "rendered": 0,
+      "placeholder": 10,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "procurement": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "featuremap": {
+      "total": 211,
+      "rendered": 36,
+      "placeholder": 163,
+      "mobileOwed": 0,
+      "e2e": 8,
+      "dataBacked": 0
+    }
+  },
+  "byModule": {
+    "settings": {
+      "total": 7,
+      "rendered": 0,
+      "placeholder": 7,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "ai": {
+      "total": 10,
+      "rendered": 3,
+      "placeholder": 7,
+      "mobileOwed": 3,
+      "e2e": 3,
+      "dataBacked": 0
+    },
+    "appointments": {
+      "total": 2,
+      "rendered": 1,
+      "placeholder": 1,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "approvals": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "audit": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "accounting": {
+      "total": 7,
+      "rendered": 5,
+      "placeholder": 2,
+      "mobileOwed": 5,
+      "e2e": 5,
+      "dataBacked": 0
+    },
+    "execreports": {
+      "total": 5,
+      "rendered": 2,
+      "placeholder": 3,
+      "mobileOwed": 2,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "admin": {
+      "total": 6,
+      "rendered": 1,
+      "placeholder": 5,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "callcenter": {
+      "total": 2,
+      "rendered": 0,
+      "placeholder": 2,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "crm": {
+      "total": 10,
+      "rendered": 8,
+      "placeholder": 2,
+      "mobileOwed": 8,
+      "e2e": 7,
+      "dataBacked": 0
+    },
+    "estimates": {
+      "total": 4,
+      "rendered": 2,
+      "placeholder": 2,
+      "mobileOwed": 2,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "customers": {
+      "total": 3,
+      "rendered": 1,
+      "placeholder": 2,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "portalcustomer": {
+      "total": 2,
+      "rendered": 0,
+      "placeholder": 2,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "reports": {
+      "total": 6,
+      "rendered": 1,
+      "placeholder": 5,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "dashboard": {
+      "total": 4,
+      "rendered": 1,
+      "placeholder": 3,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "hr": {
+      "total": 2,
+      "rendered": 1,
+      "placeholder": 1,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "jobcards": {
+      "total": 10,
+      "rendered": 7,
+      "placeholder": 3,
+      "mobileOwed": 7,
+      "e2e": 7,
+      "dataBacked": 0
+    },
+    "vehicles": {
+      "total": 4,
+      "rendered": 2,
+      "placeholder": 2,
+      "mobileOwed": 2,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "inventory": {
+      "total": 1,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "invoices": {
+      "total": 4,
+      "rendered": 3,
+      "placeholder": 1,
+      "mobileOwed": 3,
+      "e2e": 3,
+      "dataBacked": 0
+    },
+    "kiosk": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "network": {
+      "total": 2,
+      "rendered": 2,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "payments": {
+      "total": 2,
+      "rendered": 2,
+      "placeholder": 0,
+      "mobileOwed": 2,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "portalprocure": {
+      "total": 2,
+      "rendered": 2,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 2,
+      "dataBacked": 0
+    },
+    "procurement": {
+      "total": 1,
+      "rendered": 0,
+      "placeholder": 1,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "portalsupplier": {
+      "total": 2,
+      "rendered": 0,
+      "placeholder": 2,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    },
+    "technicians": {
+      "total": 3,
+      "rendered": 1,
+      "placeholder": 2,
+      "mobileOwed": 1,
+      "e2e": 1,
+      "dataBacked": 0
+    },
+    "portaltech": {
+      "total": 2,
+      "rendered": 0,
+      "placeholder": 2,
+      "mobileOwed": 0,
+      "e2e": 0,
+      "dataBacked": 0
+    }
+  }
+}

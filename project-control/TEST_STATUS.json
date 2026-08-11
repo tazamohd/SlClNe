@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-08-11",
+  "suites": {
+    "unit": {
+      "runner": "vitest",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W1 — Agent 07"
+    },
+    "component": {
+      "runner": "vitest+RTL",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W1 — Agent 07"
+    },
+    "integration": {
+      "runner": "vitest+MSW",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W1 — Agent 07"
+    },
+    "api": {
+      "runner": "supertest",
+      "present": false,
+      "covered": 0,
+      "of": 0,
+      "note": "W1 — Agent 05"
+    },
+    "routeSmoke": {
+      "runner": "playwright",
+      "present": true,
+      "covered": 78,
+      "of": 402,
+      "note": "scripts/smoke.mjs — route checks parsed from the spec"
+    },
+    "goldenPaths": {
+      "runner": "playwright",
+      "present": false,
+      "covered": 0,
+      "of": 23,
+      "note": "W4 — Agent 23"
+    },
+    "mobile": {
+      "runner": "playwright",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W3 — Agent 18"
+    },
+    "tablet": {
+      "runner": "playwright",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W3 — Agent 18"
+    },
+    "rtl": {
+      "runner": "playwright",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W3 — Agent 19"
+    },
+    "a11y": {
+      "runner": "axe",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W3 — Agent 20"
+    },
+    "visual": {
+      "runner": "playwright",
+      "present": false,
+      "covered": 0,
+      "of": 402,
+      "note": "W3 — Agent 23"
+    },
+    "security": {
+      "runner": "rbac-lab",
+      "present": false,
+      "covered": 0,
+      "of": 392,
+      "note": "W3 — Agent 21"
+    }
+  }
+}

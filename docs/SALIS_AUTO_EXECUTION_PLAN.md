@@ -1,9 +1,13 @@
 # SALIS AUTO — Master Rebuild & Production Execution Plan
 
-> Written against the **MASTER REBUILD & PRODUCTION EXECUTION PROMPT** (§0–§64).
-> `§n` below refers to that document. Where two revisions of the prompt differ
-> (registry schema, breakpoints, website page list), this plan implements the
-> **union** of both.
+> Written against three governing documents: the **MASTER REBUILD & PRODUCTION
+> EXECUTION PROMPT** (§0–§64), the mandatory **FINAL CORRECTIONS, HARDENING &
+> 10/10 PRODUCTION ADDENDUM** (§A1–§A59), and the **MASTER REBUILD, MULTI-AGENT
+> & 10/10 PRODUCTION EXECUTION PLAN** (§M0–§M90). `§n` refers to the master
+> prompt, `§An` to the addendum, `§Mn` to the multi-agent plan. Where revisions
+> differ (registry schema, breakpoints, website page list), this plan implements
+> the **union** of all three. None of it is optional enhancement work — together
+> they define 10/10.
 
 ---
 
@@ -29,6 +33,18 @@ secure, tested, production-ready product** (§63).
 
 Nothing is invented where the sources are silent; ambiguity is recorded as an
 assumption in the registry rather than resolved by fabrication (§3, §63).
+
+> **Counts in this document are dated audit snapshots, not the source of truth**
+> (§A1). 113 / 289 / 402 describe the repository on the day of the audit. Once
+> `MASTER_SCREEN_REGISTRY` exists (Part 2.1) it is generated from the repository
+> on every run and becomes the only authoritative inventory; no plan, README or
+> report may restate a hardcoded total. Every number in Parts 1, 5 and 10 below
+> should be read as "as of the audit" and re-derived from the registry before it
+> is quoted anywhere else.
+>
+> **The primary KPI is verified business capabilities, not screens completed**
+> (§A56). Route, mobile, RBAC, test, golden-path, accessibility and visual
+> coverage are secondary indicators of that, never substitutes for it.
 
 ---
 
@@ -92,7 +108,7 @@ satisfied. Portal-flavoured spec screens (Client Portal ×9, Technician Portal
 ### 8. Missing website / landing capabilities
 
 Everything. No `PublicShell`, no marketing pages, no landing page, no SEO, no
-marketing code-split, no lead capture. §31 requires 21 public pages; the design
+marketing code-split, no lead capture. §31 and §A26 require ~33 public pages; the design
 bundle supplies 10.
 
 ### 9. Missing backend / API capabilities
@@ -170,14 +186,16 @@ security 5, testing 8, production readiness 0).
 
 # Part 2 — Foundations that govern everything
 
-## 2.1 Master completion registry (§4)
+## 2.1 `MASTER_SCREEN_REGISTRY` (§4, §A1) — the authoritative inventory
 
-`app/scripts/build-registry.mjs` merges `SCREEN_MAP.md`, `project/spec/`, the
-`.dc.html` inventory and an authored overlay into
-**`src/data/generated/master-registry.ts`**, rendering
-**`docs/SALIS_AUTO_MASTER_MATRIX.md`**.
+`app/scripts/build-registry.mjs` **discovers** rather than transcribes: it walks
+`project/*.dc.html`, `project/spec/`, `SCREEN_MAP.md`, `src/routes/**`,
+`src/screens/**` and the test artefacts, reconciles them, and emits
+**`project-control/MASTER_REGISTRY.json`** plus
+**`docs/SALIS_AUTO_MASTER_MATRIX.md`**. Running it is how any total is obtained;
+a stale hardcoded count is itself a defect (§A1).
 
-Fields are exactly those §4 requires:
+Fields are the union of §4 and §A1:
 
 ```ts
 export interface RegistryEntry {
@@ -185,26 +203,60 @@ export interface RegistryEntry {
   surface: 'erp'|'portal'|'customer-app'|'public'|'auth'|'kiosk'|'native'|'reference'
   route: string
   shell: 'AppShell'|'AuthShell'|'CustomerAppShell'|'PublicShell'|'PortalShell'|'KioskShell'
-  desktop: Cov; tablet: Cov; mobile: Cov
-  designedDesktop: string | null      // project/X.dc.html
-  designedMobile:  string | null      // project/X.Mobile.dc.html
+  desktop: Cov; tablet: Cov; mobile: Cov; responsive: Cov
+  designSource:     string | null     // project/X.dc.html
+  designMobileSource: string | null   // project/X.Mobile.dc.html
+  featureMapSource: string | null     // project/spec/NNN + spec-shots/NNN.png
+  mobileType: 'A-designed' | 'B-responsive' | 'native-frame' | 'N/A'  // §A2
   arabic: Cov; rtl: Cov
+  loadingState: Cov; emptyState: Cov; errorState: Cov; successState: Cov
   dataBacked: boolean
   crud: { create: boolean; read: boolean; update: boolean; delete: boolean }
   rbac: string[]                      // roles × actions from RBAC.md
   api: string[]                       // endpoints from API_ENDPOINTS.md
   audit: boolean; notifications: boolean; files: boolean; print: boolean
   accessibility: Cov
-  e2e: boolean; visualTest: boolean; performanceTest: boolean; securityTest: boolean
+  tests: { unit: boolean; integration: boolean; e2e: boolean }
+  visualTests: boolean; accessibilityTests: boolean; securityTests: boolean
+  performanceTest: boolean
+  score: ScreenScore                  // §A49, 12 dimensions out of 10
+  flags: RegistryFlag[]               // §A1, computed — see below
+  owner: AgentId                      // §M4 — which specialist owns it
+  dependencies: string[]              // registry ids that must land first (§M4)
   status:
     | 'DISCOVERED' | 'PLANNED' | 'IN_PROGRESS' | 'IMPLEMENTED' | 'DATA_BACKED'
     | 'TESTED' | 'VISUAL_VERIFIED' | 'PRODUCTION_READY'
     | 'BLOCKED' | 'REFERENCE_ONLY' | 'DEPRECATED' | 'REDIRECT'
   blockers: string[]                  // incl. EXTERNAL_DEPENDENCY notes (§60)
   source: string[]                    // dc.html, spec id, screenshot, assumptions
+  evidence: string[]                  // screenshot + test artefact paths
 }
 type Cov = 'MISSING' | 'PARTIAL' | 'DONE' | 'VERIFIED' | 'N/A'
+
+/** §A49 — a screen cannot be "complete" because its route returns 200. */
+interface ScreenScore {
+  ui: number; desktop: number; tablet: number; mobile: number
+  arabic: number; rtl: number; data: number; businessLogic: number
+  rbac: number; accessibility: number; tests: number; performance: number
+}
+
+/** §A1 — computed by the builder, not authored. */
+type RegistryFlag =
+  | 'MISSING' | 'DUPLICATE' | 'ORPHANED' | 'PLACEHOLDER' | 'UNREGISTERED'
+  | 'UNTESTED' | 'DESKTOP_ONLY' | 'MOBILE_MISSING' | 'TABLET_MISSING'
+  | 'ARABIC_MISSING' | 'RTL_BROKEN'
 ```
+
+`ORPHANED` = a route with no registry entry or a screen file no route reaches;
+`UNREGISTERED` = a `.dc.html` or spec screen with no entry at all; `DUPLICATE` =
+two entries claiming the same route or two components rendering the same screen.
+All three are release blockers, because they are exactly the failures a hardcoded
+count hides.
+
+**Module scores (§A50)** roll up from screen scores across Workshop, Mini ERP,
+Parts, Inventory, Procurement, Accounting, CRM, Insurance, Fleet, Loans, HR, AI,
+Portals, Website and Administration. **Critical modules require ≥ 9.5/10 before
+release.**
 
 **Everything downstream is generated from this registry, never hand-maintained**
 (§4, §47): the route table, nav, route/E2E coverage checks at every breakpoint,
@@ -321,31 +373,267 @@ and fails CI on drift. This subsumes and extends the existing brand guard, which
 already walks computed styles for forbidden green/purple across sample routes and
 will be extended to the full route inventory.
 
+## 2.4 Multi-tenancy, audit, concurrency and idempotency (§A4–§A9, §A16–§A17)
+
+**Ownership hierarchy** — every tenant-owned record carries it explicitly:
+
+```text
+Organization → Branch → Users/Teams → Customers → Vehicles → Appointments
+→ Jobs → Parts/Inventory → Invoices/Payments
+```
+
+**Isolation is server-side, never frontend filtering.** The enforcement chain is
+`UI → client permission checks → HTTP API → authentication → authorization →
+tenant/branch isolation → business rules → database`, and every sensitive
+operation validates identity, organization, branch, role, permission, resource
+ownership and business rule. Bypassing the UI must still be denied (§A5).
+Explicit isolation tests (§A7): Organization A → Organization B, Branch A →
+Branch B, User A → Branch B, Admin A → Organization B — by direct URL **and**
+direct API call. Cross-tenant reads return **404, not 403**.
+
+**Audit standard (§A8)** — every sensitive mutation writes an immutable record:
+
+```text
+actor · actorRole · organization · branch · action · entity · entityId
+· timestamp · before · after · reason · source · requestId
+```
+
+covering permissions, customers, vehicles, jobs, estimates, approvals, invoices,
+payments, inventory, procurement, configuration, integrations and AI actions.
+Application users cannot edit or delete audit rows.
+
+**Concurrency control (§A9)** — transactions, optimistic locking with version
+numbers, database constraints and idempotency together. Tested scenarios: two
+users editing one invoice · two technicians reserving the same part · two users
+approving the same estimate · two users receiving the same purchase order ·
+duplicate payment submission · duplicate webhook. A race must never corrupt
+financial or inventory data.
+
+**Idempotency (§A17)** — `Idempotency-Key` plus an `idempotency_keys` table on
+payments, webhooks, imports, inventory receiving, stock movements, notifications,
+invoice creation and purchase orders. Replay returns the original result and
+creates no second business effect.
+
+**Optimistic update safety (§A16)** — every optimistic mutation implements
+apply → success → rollback → error notification → cache refresh. The UI may never
+be left showing a state the backend rejected.
+
+## 2.5 Responsive, localization and formatting contract (§A2, §A3, §A35, §A36)
+
+**Two kinds of mobile, never conflated (§A2).**
+*Type A — designed mobile*: a `*.Mobile.dc.html` exists, so layout, hierarchy,
+typography, spacing, components, navigation, actions and interaction patterns are
+reproduced faithfully. *Type B — responsive*: no mobile design exists, so a
+deliberate responsive experience is designed from the SALIS AUTO system —
+**never a shrunken desktop**. The registry's `mobileType` records which applies,
+and the mobile E2E suite asserts the right one.
+
+**Breakpoints (§A2, §M20–§M22)** — mobile is **mandatory for every product
+screen**, with `390` and `430` as the primary targets and `360` / `375` checked
+where practical; tablet at `768 · 820 · 834 · 1024`; desktop at
+`1280 · 1440 · 1536 · 1920`, matched against the design source. Tables use
+`mobileCard`, detail screens get mobile branches, navigation gets a mobile
+pattern — never a scaled-down desktop.
+
+**Tablet is a first-class target (§A3, §M21)**, verified in **portrait and
+landscape**, checking navigation, tables, forms, filters, modals, drawers,
+sidebars, detail layouts, charts, sticky actions and keyboard interaction.
+
+**Arabic/RTL certification (§A35)** covers text, icons, arrows, chevrons, tables,
+charts, forms, modal placement, sidebar, navigation, dates, numbers and currency.
+Logical CSS properties only; no left/right assumptions anywhere.
+
+**One formatting module (§A36)** — `src/lib/format.ts` owns date, time, timezone,
+currency, number and Arabic-numeral formatting for the whole application, server
+included via the shared contract package. No module formats a date or a SAR value
+its own way. Financial and tax behaviour stays configurable (VAT rate, invoice
+requirements, tax reporting, e-invoicing, payment records) rather than hardcoded,
+so Saudi compliance changes are a configuration change (§A37).
+
+## 2.6 Master control system (§M3)
+
+Machine-readable state that agents read and write, so no agent re-discovers the
+repository and no two agents disagree about status:
+
+```text
+/project-control/
+  MASTER_REGISTRY.json     # generated by build-registry.mjs (Part 2.1)
+  DEPENDENCIES.json        # capability → prerequisite capability graph
+  OWNERSHIP.json           # path globs → owning agent (§M62)
+  STATUS.json              # per-capability live status, rolled up from agents
+  BLOCKERS.json            # open blockers with owner, severity, ETA
+  TEST_STATUS.json         # suite → last run, pass/fail, artefacts
+  RISK_REGISTER.json       # risk, likelihood, impact, mitigation, owner
+```
+
+Human-readable companions in `docs/`: `MASTER_ARCHITECTURE.md`,
+`MASTER_SCOPE_REGISTRY.md`, `MASTER_GAP_REPORT.md`,
+`MASTER_DEPENDENCY_GRAPH.md`, `MASTER_AGENT_OWNERSHIP.md`,
+`MASTER_DEFINITION_OF_DONE.md`, `MASTER_TEST_STRATEGY.md`,
+`MASTER_BUSINESS_RULES.md`, `MASTER_RBAC_MATRIX.md`, `MASTER_RELEASE_PLAN.md`.
+
+The `.json` files are the machine truth; the `.md` files are generated from them
+so documentation cannot drift from state (§56, §A48, §M56). `project-control/tracker/`
+renders that state as the follow-up deck described in Part 3.3 — **already built
+and live**, so progress is visible from the first tranche rather than at the end.
+
 ---
 
-# Part 3 — Execution order (§58's 36 steps)
+# Part 3 — Execution model and order
 
-Vertical slices, not disconnected screens. Each slice: implement → typecheck →
-build → tests → smoke → visual QA → **390 px check (§59)** → RBAC QA → registry
-update → commit (§57, §63).
+## 3.0 Capability-first, not screen-first (§M72)
 
-| Group | §58 steps | Content |
+The unit of completion is a **capability**, not a file. "Customer Management" is
+done when UI + API + database + CRUD + RBAC + validation + desktop + tablet +
+mobile + Arabic + RTL + loading/empty/error/success + accessibility + tests +
+audit all hold — not when `Customers.tsx` renders. The registry tracks
+capabilities; screens are how they are delivered.
+
+## 3.1 Multi-agent execution (§M57–§M65)
+
+Execution is parallel, with explicit ownership — not one worker walking a list,
+and not every agent editing the same files at once.
+
+| Team | Agents | Owns |
 |---|---|---|
-| **G0** | 1 Audit | Done — Part 1 |
-| **G1** | 2 Registry | `build-registry.mjs`, master registry, master matrix, generated route/test coverage, fake-completion gate, token-drift check |
-| **G2** | 3 Foundation · 4 Modal/Form · 5 Shells | The whole of Part 2.3 + test infrastructure + **23 dead CTAs repaired** |
-| **G3** | 6 Core data architecture | `server/` scaffold, schema + migrations + RLS, seed from mocks, auth lifecycle (§35), server-side RBAC + ceilings + SOD, audit, idempotency, `httpRepository`, contract package |
-| **G4** | 7 Customer · 8 Vehicle | Full CRUD + the §13/§14 detail experiences on real endpoints |
-| **G5** | 9 Workshop · 10 Estimates · 11 Invoices · 12 Payments | The §12 end-to-end chain as one connected record flow, each transition validating permission + state + data + business rules, emitting audit and notifications |
-| **G6** | 13 Inventory · 14 Procurement | §15 and §16 lists in full, with ceilings, SOD, authorization, audit |
-| **G7** | 15 Accounting | §17 list, calculations centralised and tested (VAT, discounts, rounding, totals, balances, allocation, credit/refund) |
-| **G8** | 16 CRM · 17 HR · 18 Insurance · 19 Loans | §18–§21 lists |
-| **G9** | 20 AI · 21 Admin | §22 AI hub with permission + audit + human approval for consequential automation; §23 admin with `RolesPermissions` derived from live RBAC |
-| **G10** | 22–26 Portals · 27 Customer Mobile | Customer, technician, supplier, procurement portals, kiosk and the customer app, each to its §25–§30 capability list, desktop + mobile |
-| **G11** | 28 Website · 29 Landing | `PublicShell`, 21 public pages, the §32 landing system, §33 SEO, marketing code-split |
-| **G12** | (feature map) | The 175 remaining spec screens, tranches of 25 |
-| **G13** | 30 Integrations · 31 Security · 32 Accessibility · 33 Performance | §40 adapters, §37 files, §38 notifications, §39 search, §41 print/PDF, §50 security suite, §43 a11y, §51 performance |
-| **G14** | 34 Full testing · 35 Staging · 36 Certification | §46–§49 suites, §53 backup/DR drill, §54 CI/CD, §55 staging, §61 report, §62 score |
+| **Command** | 01 Chief Architect / Orchestrator · 02 Scope & Registry Auditor · 03 Integration & Release Manager | Architecture, dependency graph, critical path, shared-file arbitration · registry and gap reconciliation · merging, build, typecheck, release gates, certification |
+| **Foundation** | 04 UI Foundation · 05 Backend & Data · 06 Auth & Security · 07 Test Infrastructure | Part 2.3 primitives · Part 2.2 + 2.4 server, repository, tenancy, concurrency · authn/authz, RBAC, isolation · runners, fixtures, harnesses |
+| **Product** | 08 Workshop/Mini ERP · 09 Customers/CRM · 10 Parts/Inventory · 11 Procurement · 12 Accounting · 13 Insurance/Fleet/Loans · 14 HR · 15 AI/Automation · 16 Portals · 17 Website & Landing | Their domain's screens, data and rules |
+| **Cross-cutting** | 18 Mobile/Tablet · 19 Arabic/RTL · 20 Accessibility · 21 Security Audit · 22 Performance · 23 QA/E2E · 24 Documentation | Sweep capabilities as they become reviewable — they do not wait for the last screen |
+
+**Ownership boundary (§M62)** — each agent declares path globs in
+`OWNERSHIP.json` (e.g. Workshop → `src/screens/workshop/*`, `src/data/workshop/*`)
+and does not casually edit another agent's domain. A needed change outside your
+boundary is a request to the owner, or an orchestrator decision.
+
+**Shared files (§M63)** — `src/routes/index.tsx`, `src/data/repository.ts`,
+`src/data/rbac.ts`, the design tokens, `package.json`, database migrations and
+the master registry are **serialised through the orchestrator**. Concurrent edits
+to these are the main way a parallel build corrupts itself.
+
+**Branching (§M64)** — no agent commits directly to `main`. Each works on
+`agent/<domain>` (worktree-isolated where the agent mutates files another agent
+is also touching), runs implement → typecheck → tests → commit, then submits for
+integration. **Agent 03 controls every merge to `main`.**
+
+**Status (§M74)** — each agent maintains `STATUS.md` in its branch: completed,
+changed files, tests, known issues, blockers, dependencies, next action. This is
+what stops repeated repository re-discovery across sessions.
+
+**Agent Definition of Done (§M73)** — before an agent submits: design
+implemented · desktop · tablet · mobile · Arabic · RTL · data connected · API
+connected · persistence correct · RBAC correct · loading/empty/error/success ·
+validation · accessibility · tests · visual QA · no dead CTA · no placeholder ·
+typecheck passes · build passes · **registry updated**. Agent 03 re-verifies
+rather than trusting the claim (§M0.5: no "done" without evidence).
+
+## 3.2 Waves (§M66–§M71)
+
+| Wave | Runs concurrently | Exit condition |
+|---|---|---|
+| **W0 Reconnaissance** | Scope · design · architecture · data/API · testing · security audits | `MASTER_SCOPE_REGISTRY`, `MASTER_GAP_REPORT`, `DEPENDENCY_GRAPH`, `RISK_REGISTER` exist. Part 1 of this plan is W0's first pass; W0 completes it into the control system. **No mass implementation yet.** |
+| **W1 Foundation** | Agents 04, 05, 06, 07 | Contracts stable: primitives, repository + API + schema, authn/authz, test harness. This is the critical path — product agents idle until it lands |
+| **W2 Product** | Agents 08–17, dependency-permitting | Every domain capability implemented against real endpoints |
+| **W3 Hardening** | Agents 18–23, **starting as soon as any capability is reviewable** | Mobile, tablet, Arabic/RTL, a11y, security, performance sweeps current with W2, not queued behind it |
+| **W4 Integration** | Agent 03 + 23 | Full regression: typecheck, build, unit, integration, E2E, RBAC, security, visual, responsive, RTL, performance. Regressions fixed immediately, never accumulated |
+| **W5 Certification** | Agent 03 | Registry fully verified; Part 11 gates pass; certification report generated |
+
+**Parallelism rule (§M65)** — the orchestrator continuously identifies
+independent work, runs it concurrently, keeps dependency-bound work waiting,
+protects shared files, prevents duplicate work, prioritises the critical path,
+and starts QA the moment something is reviewable. Concurrency is bounded by
+available resources and by contention, not maximised for its own sake.
+
+## 3.3 Follow-up tracker — the SAHEL Command Deck
+
+**Live deck:** https://claude.ai/code/artifact/304051f7-bacf-4f14-baa5-0a3a59f6ca1d
+**Source in repo:** `project-control/tracker/` — `plan-structure.json`,
+`template.html`, `tracker-data.json` (emitted by `app/scripts/build-registry.mjs`).
+
+The deck is the human-readable face of the control system in 2.6. It shows six
+tabs: **Waves & agents** (W0–W5 with their groups, agents, exit conditions and
+live progress), **Capabilities** (all 402 registry routes across 14 domains,
+filterable, with a "mobile owed" flag), **Golden paths** (the 23 named specs),
+**Release score** (22 categories × ≥9.5), **Release gates** (the absolute
+blockers) and **Notes**.
+
+**It is generated, not typed.** `app/scripts/build-registry.mjs` reads
+`screens.ts`, `spec-screens.ts`, `routes/index.tsx`, `definitions.ts`, the
+`.dc.html` inventory and the RBAC matrix, and derives every capability's status
+from what the repository actually renders — emitting the deck's dataset and the
+release gates' input from one pass. It reports **114 rendering of 402**.
+
+That is one more than Part 1's hand-audit, and the registry is right: the earlier
+count missed `PartsNetwork`, whose router entry uses `PartsNetwork:
+PartsNetworkDashboard` — a colon my ad-hoc regex did not match. Part 5.2 still
+lists it as pending; it is built. This is exactly why §A1 forbids trusting a
+hand-written total.
+
+| Layer | Lives in | Written by |
+|---|---|---|
+| Capability inventory and status | `project-control/MASTER_REGISTRY.json` | `build-registry.mjs` (Part 2.1) |
+| Deck dataset | `project-control/tracker/tracker-data.json` | `build-registry.mjs` |
+| In-progress / blocked overlay | the browser | you, while an agent is mid-flight; cleared by the next repo read |
+| Golden paths, scores, gates, notes | browser + state export | you, from CI evidence — never from an agent's claim |
+| Per-agent detail | `agent/<domain>` → `STATUS.md` | each specialist agent (§M74) |
+
+**Per-tranche ritual** — after each agent's tranche merges:
+
+```bash
+cd app && npm run gates    # rebuild the registry, re-run both ratchets
+```
+
+then "Load registry JSON" in the deck. Nothing on the page needs hand-editing to
+stay current, and the overlay never outranks the repository.
+
+Two deliberate departures from the uploaded `sahelcommanddeck.jsx`:
+
+- **Statuses are read, not clicked.** The original had every item start unmarked
+  and cycle by hand, which drifts from reality within a day and reproduces the
+  §A1 failure — a count that looks authoritative and isn't. Clicking now only
+  layers *in progress* / *blocked* on top of repo truth.
+- **Its palette is not the product's.** The original used `#4ECB71` green and
+  `#A98EE0` purple, both forbidden by `handoff/README.md` §7. That is fine for a
+  PM tool living outside `app/` — but this code must never be copied into
+  `app/src`, or the brand guard will fail it. The deck ships an amber/slate
+  palette instead, so the distinction stays visible.
+
+## 3.4 Order of work (§58's 36 steps, §A54's dependency order)
+
+Vertical slices, not disconnected screens. The groups below are the master
+prompt's 36 steps and the addendum's dependency order (§A54: audit → shared UI →
+modal → backend → detail pages → **Mini ERP connected** → remaining ERP →
+portals → auth → website → landing → AI/integrations → mobile/tablet/Arabic →
+certification) expressed once; where they differ, the addendum's ordering wins,
+because it puts the backend before the detail pages that depend on it.
+
+Every tranche is 10–25 screens or capabilities and runs the full §A55 chain:
+
+```text
+AUDIT → IMPLEMENT → TYPECHECK → BUILD → UNIT → INTEGRATION → E2E → VISUAL QA
+      → MOBILE QA → TABLET QA → ARABIC/RTL QA → RBAC QA → SECURITY QA
+      → FIX → RETEST → REGISTRY UPDATE → COMMIT
+```
+
+Failures are never carried across tranches.
+
+| Group | §58 steps | Wave | Agents | Content |
+|---|---|---|---|---|
+| **G0** | 1 Audit | W0 | 02 | Done — Part 1 |
+| **G1** | 2 Registry | W0 | 02 | `build-registry.mjs`, master registry, master matrix, generated route/test coverage, fake-completion gate, token-drift check |
+| **G2** | 3 Foundation · 4 Modal/Form · 5 Shells | W1 | 04, 07 | The whole of Part 2.3 + test infrastructure + **23 dead CTAs repaired** |
+| **G3** | 6 Core data architecture | W1 | 05, 06 | `server/` scaffold, schema + migrations + RLS, seed from mocks, auth lifecycle (§35), server-side RBAC + ceilings + SOD, audit, idempotency, `httpRepository`, contract package |
+| **G4** | 7 Customer · 8 Vehicle | W2 | 09 | Full CRUD + the §13/§14 detail experiences on real endpoints |
+| **G5** | 9 Workshop · 10 Estimates · 11 Invoices · 12 Payments | W2 | 08, 12 | The §12 end-to-end chain as one connected record flow, each transition validating permission + state + data + business rules, emitting audit and notifications |
+| **G6** | 13 Inventory · 14 Procurement | W2 | 10, 11 | §15 and §16 lists in full, with ceilings, SOD, authorization, audit |
+| **G7** | 15 Accounting | W2 | 12 | §17 list, calculations centralised and tested (VAT, discounts, rounding, totals, balances, allocation, credit/refund) |
+| **G8** | 16 CRM · 17 HR · 18 Insurance · 19 Loans | W2 | 09, 13, 14 | §18–§21 lists |
+| **G9** | 20 AI · 21 Admin | W2 | 15 | §22 AI hub with permission + audit + human approval for consequential automation; §23 admin with `RolesPermissions` derived from live RBAC |
+| **G10** | 22–26 Portals · 27 Customer Mobile | W2 | 16 | Customer, technician, supplier, procurement portals, kiosk and the customer app, each to its §25–§30 capability list, desktop + mobile |
+| **G11** | 28 Website · 29 Landing | W2 | 17 | `PublicShell`, the ~33 Tier A/B/C public pages, the §32/§A27 landing section system, §33/§A29 SEO, §A28 analytics, marketing code-split |
+| **G12** | (feature map) | W2 | 08–17 | The 175 remaining spec screens, tranches of 25 |
+| **G13** | 30 Integrations · 31 Security · 32 Accessibility · 33 Performance | W3 | 18–22 | §40 adapters, §37 files, §38 notifications, §39 search, §41 print/PDF, §50 security suite, §43 a11y, §51 performance |
+| **G14** | 34 Full testing · 35 Staging · 36 Certification | W4–W5 | 03, 23, 24 | §46–§49 suites, §53 backup/DR drill, §54 CI/CD, §55 staging, §61 report, §62 score |
 
 **Mobile is never deferred** (§59): every screen is checked at 390 px in the
 tranche that builds it; G-late adds the full refinement pass, not the first look.
@@ -365,9 +653,16 @@ tranche that builds it; G-late adds the full refinement pass, not the first look
 - **File platform** (§37) — upload, MIME and size validation, storage, preview,
   download, delete, attach/detach, versioning, permissions, audit, virus
   scanning at the boundary.
-- **Notifications** (§38) — in-app, email, SMS, push behind one abstraction, with
-  templates in both languages, per-user preferences, delivery status, retry,
-  read/unread, deep links and audit.
+- **Notifications** (§38, §A19) — one event-driven pipeline,
+  `business event → notification service → provider → delivery → status →
+  retry`, carrying in-app, email, SMS and push. Templates in both languages,
+  per-user preferences, delivery status, read/unread, deep links and audit.
+  Tested against provider failure, retry, duplicate event and preference
+  suppression; delivery is idempotent.
+- **Import / export** (§A18) — never decorative. CSV throughout, Excel and PDF
+  where the reference requires them, plus print. Tested against large files,
+  invalid files, duplicates, malformed records, partial failure, permission
+  denial, cancel, retry and error reporting.
 - **Print / PDF** (§41) — invoice, estimate, job card, purchase order, receipt,
   statement, report, insurance and loan documents; A4, print and PDF, English
   and Arabic with correct RTL composition; rendered server-side.
@@ -438,7 +733,7 @@ Subscription*, SuperAdmin, SystemIntegrations, OEMIntegrations, AuditLog*.
 
 **Call centre (2)** CallCenter, CallCenter.Logs.
 
-**Parts (1)** PartsNetwork (dashboard root).
+~~**Parts (1)** PartsNetwork (dashboard root).~~ — **already built.** The registry found `PartsNetwork: PartsNetworkDashboard` in the router; this hand-audit entry was wrong. Designed screens still to build: **113**, not 114.
 
 **Portals (7)** CustomerPortal, CustomerPortal.Booking, TechnicianPortal,
 TechnicianPortal.JobDetail, SupplierPortal, SupplierPortal.Orders, KioskCheckIn.
@@ -460,15 +755,32 @@ UI.Modals.Capture — each a **live gallery of the real §6 primitive**, not a s
 registry), FlowSpec (rendered from `FLOW_SPEC.md`), RBACSpec (rendered from the
 live `PERMS` matrix — §23 requires the matrix be derived, never duplicated).
 
-## 5.3 Public website — full page set (§31, 21 pages)
+## 5.3 Public website — full page set (§31, §A26), classified by source (§A25)
 
-Home · About · Services · Workshop · Marketplace · Spare Parts · Insurance ·
-Loans · AI · Solutions · Pricing · Partners · Blog · FAQ · Contact · Support ·
-Privacy · Terms · Cookies · 404 · Maintenance.
+Provenance is recorded per page in the registry. **A newly written marketing
+page is never presented as if it came from the design handoff.**
 
-Ten come from the designed `PublicPortal.*` set; eleven are new. Each needs
-desktop, tablet, mobile, Arabic, RTL, navigation, applicable loading/error
-states, accessibility and SEO.
+**Tier A — design-authoritative (10)**, from `PublicPortal.*.dc.html`:
+Landing/Home · About · Services · Marketplace · Insurance · Loans · Blog · FAQ ·
+Contact · Support.
+
+**Tier B — design-system pages (16)**, required by the product, built from the
+approved system: Solutions · Products · Mini ERP · Workshop Management · Spare
+Parts · CRM · Accounting · AI · Automation · Customer Portal · Technician
+Portal · Supplier Portal · Fleet · Integrations · Features · Industries.
+
+**Tier C — content / SEO pages (7)**: Pricing · Resources · Request Demo · Book
+Demo · Careers · Privacy Policy · Terms · Cookie Policy — plus the public
+`404` and `Maintenance` states shared with the app.
+
+Plus **every public route the registry discovers** beyond this list. Each page
+needs desktop, tablet, mobile, Arabic, RTL, navigation, applicable
+loading/error states, accessibility and SEO.
+
+**Marketing analytics (§A28)** — where analytics infrastructure exists, track CTA
+clicks, demo requests, contact submissions, booking requests, lead source and
+landing-page conversion. Collect no unnecessary personal data; honour consent and
+privacy requirements.
 
 **Landing page (§32)** is composed from reusable sections in
 `src/screens/public/sections/` — Hero, Value Proposition, Trust, Statistics,
@@ -586,7 +898,60 @@ Payroll period cannot be reopened after posting
 The list grows as further rules are found in the repository, rather than being
 treated as closed.
 
-## Golden user journeys — 30–50, run against the real application
+## Financial integrity suite (§A10)
+
+A dedicated automated suite, separate from ordinary unit tests, proving that
+
+```text
+Invoice → Payment → Receipt → Ledger → Reports
+```
+
+stays consistent. It covers subtotal, discount, tax, rounding, grand total,
+partial payment, multiple payments, remaining balance, refund, credit,
+cancellation, journal entries, ledger and reports; and the edge cases zero,
+prohibited negatives, very large amounts, decimal precision, rounding, tax
+exemptions, discount+tax combinations, partial payment, overpayment and refund.
+**No financial calculation may depend solely on frontend JavaScript** — the
+server computes, the client displays.
+
+## Inventory integrity suite (§A11)
+
+Quantities are tracked as On Hand · Reserved · Available · Committed · Consumed ·
+Received · Returned · Damaged · Adjusted · Transferred, and the suite asserts
+
+```text
+OnHand = Opening + Received + TransferIn − Consumed − TransferOut
+         ± Adjustments − Damaged
+```
+
+after every operation, with business rules preventing negative inventory where
+prohibited, double consumption, double receiving, duplicate transfer and
+duplicate reservation.
+
+## Golden Paths (§A13) — the named release-blocking suite
+
+`SALIS AUTO GOLDEN PATHS`, 23 specs, each run desktop + 390 px + Arabic/RTL:
+
+```text
+01 New Customer to Paid Invoice      13 Loan Workflow
+02 Existing Customer Service         14 Employee Onboarding
+03 Mobile Customer Booking           15 Organization / Branch Setup
+04 Technician Job Completion         16 User Invitation + RBAC
+05 Customer Estimate Approval        17 Accounting Reconciliation
+06 Parts Procurement                 18 Report Generation
+07 Inventory Receiving               19 Customer Portal
+08 Inventory Consumption             20 Technician Portal
+09 Supplier Order                    21 Supplier Portal
+10 CRM Lead Conversion               22 Call Center
+11 Insurance Claim                   23 Kiosk
+12 Fleet Contract
+```
+
+**A failing critical golden path blocks release.** Golden Path 01 is the §A12
+Mini ERP proof: the whole chain must execute as **one connected business
+transaction**, not as sixteen screens that happen to render.
+
+## Additional journeys — run against the real application
 
 The certification journey is one spec end to end:
 
@@ -626,7 +991,19 @@ retry → no duplicate.
 
 - **Chaos** — API timeout, database timeout, network disconnect, payment / SMS /
   email / storage failure, duplicate webhook, expired session, slow API, partial
-  response. The application must degrade gracefully, never silently.
+  response. The application must degrade gracefully, never silently. No external
+  service failure may crash the application (§A20).
+- **Offline and weak network (§A21)** — for mobile-critical workflows
+  (technician job updates, kiosk check-in, customer booking) the behaviour of
+  online, slow network, temporary disconnect, reconnect and request timeout is
+  defined explicitly. Where offline operation is supported, synchronization rules
+  are written down and tested. **The app never pretends an operation succeeded
+  while offline.**
+- **Large dataset testing (§A31)** — seeded volumes of 10,000 customers, 50,000
+  vehicles, 100,000 appointments, 100,000 inventory records, a large audit log
+  and a large transaction history, verifying pagination, search, filtering,
+  sorting, charts, exports, memory, rendering and API response time. The
+  application is never validated only against five demo records.
 - **Recovery** — network lost → operation fails → retry → success → **no
   duplicate data**, proven against the idempotency keys; plus a real
   backup-and-restore drill, not a documented intention.
@@ -658,8 +1035,10 @@ QR + XML + clearance) · `ObdAdapter` · `OemToolAdapter` · `InsuranceAdapter` 
 `SmsAdapter` (Unifonic) · `WhatsAppAdapter` · `MapAdapter` · `StorageAdapter` ·
 `PdfAdapter` · `OcrAdapter` · `AiAdapter` · `AccountingExportAdapter`.
 
-Each ships configuration UI, authentication, health state, failure state, retry
-with backoff, logging, permission gating, secure secret handling and a test mode.
+Each ships (§A20) configuration, authentication, authorization, **health check**,
+timeout, retry with backoff, failure state, logging, audit, secure secret
+handling and a test mode. An external service failing must never crash the
+application — it degrades to a visible, explained failure state.
 
 ---
 
@@ -683,7 +1062,15 @@ with backoff, logging, permission gating, secure secret handling and a test mode
   security-header tests; secret scanning (gitleaks) and dependency scanning in CI.
 - Structured logs with PII redaction (§52); immutable `audit_log` for every
   mutation, approval and permission denial.
-- **Rotate the three exposed GitHub PATs**; decide whether the repo stays public.
+- **Error handling (§A40)** — every major operation exposes loading, success,
+  validation failure, permission failure, network failure, server failure and
+  retry. Messages are human-readable and localized in both languages; a raw
+  stack trace is never shown to a user.
+- **Secret management (§A39)** — **rotate the three exposed GitHub PATs**, then
+  sweep `.env`, source, **git history**, logs, documentation, build artefacts and
+  public assets for credentials; add secret scanning to CI so a future leak fails
+  the build. API keys, tokens, passwords, database credentials and private
+  certificates are never committed. Decide whether the repo stays public.
 
 ---
 
@@ -695,12 +1082,18 @@ with backoff, logging, permission gating, secure secret handling and a test mode
 | Component | vitest + testing-library | Every §6 primitive: modal focus trap/Escape/restore, form validation and server errors, `DataTable` both layouts, filters, charts, navigation |
 | Integration | vitest + MSW | Screens + repository: create→list refresh, edit→recompute, delete→confirm, optimistic rollback, cache invalidation, concurrency conflict, permission state |
 | API | vitest + supertest + ephemeral Postgres | Every endpoint × every role: 200/401/403/404/409/422; tenant and branch isolation; ceilings; SOD; idempotent replay |
+| Contract | Zod schema diffing + supertest (§A14) | Request/response schema, required fields, types, enums, error responses, authorization, pagination, sorting, filtering — asserted against the same `packages/contract` both sides import, so frontend and backend cannot drift apart silently |
+| Financial integrity | vitest + API (§A10) | The Invoice→Payment→Receipt→Ledger→Reports chain and every money edge case |
+| Inventory integrity | vitest + API (§A11) | The On Hand equation and the double-movement prohibitions |
+| Golden Paths | Playwright (§A13) | The 23 named paths; critical failures block release |
+| Concurrency | API + Playwright (§A9) | Simultaneous edit, reservation, approval, receiving, duplicate payment, duplicate webhook |
+| Large dataset | seeded Postgres + Playwright (§A31) | Enterprise volumes; pagination, search, sort, export, memory, latency |
 | Route smoke | Playwright, **generated from the registry** | Every route: exists, renders, correct shell, correct permission, no crash, no console error (§47) |
 | E2E | Playwright | The §49 cross-product journeys — workshop, procurement, CRM, customer portal, permissions |
 | Mobile E2E | Playwright @375/390/430 | Every screen family: no overflow, no clipping, usable nav/dialogs/forms, table→card, touch targets |
 | Tablet | Playwright @768/834/1024, both orientations | Navigation, two-column, tables, forms, detail pages, modal dimensions |
 | RTL | Playwright `lang=ar` | English LTR, Arabic RTL, mixed content, SAR, dates, numbers, VIN, phone, tables, charts, forms, dialogs, navigation |
-| Accessibility | axe + keyboard specs | WCAG 2.2 AA on every route; keyboard-only path through the workshop journey |
+| Accessibility | axe + keyboard specs | WCAG 2.2 AA on every route: keyboard navigation, focus management, focus trap, screen-reader labels, semantic HTML, ARIA, contrast, form errors, headings, landmarks, tables, dialogs, tooltips, touch targets, **reduced motion** (§A32); keyboard-only golden journeys |
 | Visual regression | Playwright screenshots | Every `*.dc.html` and `*.Mobile.dc.html` against its build, with a **documented tolerance** — no chasing renderer noise (§48) |
 | Security | the Part 7 suite | Every permission boundary |
 | Performance | Lighthouse CI + k6 | LCP, INP, CLS, TTFB, initial JS, route chunk size, API latency, large-table and mobile performance |
@@ -713,13 +1106,28 @@ unexplained `PendingScreen`, 0 dead CTAs** (§47).
 
 # Part 9 — CI/CD, staging, production, recovery (§51–§56)
 
-**CI on every PR** (§54), merge blocked on failure:
+**CI on every PR** (§54, §A44), merge blocked on failure:
 
 ```text
-Lint → Typecheck → Unit → Component → Integration → Build → Security → API
-     → Desktop E2E → Mobile E2E → RTL → Accessibility → Visual Regression
-     → Performance
+Lint → Typecheck → Token check → Placeholder check → Unit → Component
+     → Integration → Contract → Build → Secret scan → Dependency scan
+     → Security → API → Desktop E2E → Mobile E2E → Tablet → RTL
+     → Accessibility → Visual Regression → Golden Paths → RBAC lab
+     → Performance budgets
 ```
+
+**Environment separation (§A45)** — development, test, staging and production are
+distinct, with distinct credentials and data. Local or demo development is never
+pointed at production data.
+
+**Migration safety (§A46)** — every schema change is versioned, repeatable,
+reviewable, tested and backward-aware where a rolling deploy requires it.
+Production schema is never modified outside migration tracking.
+
+**Seeding (§A47)** — deterministic seed/demo data for organization, branches,
+users, roles, customers, vehicles, appointments, jobs, parts, inventory,
+suppliers, invoices, payments, CRM and reports, isolated in a `demo` organization
+that can never become production data.
 
 | Environment | Frontend | API | Database |
 |---|---|---|---|
@@ -736,12 +1144,30 @@ regression, accessibility and security suites, monitoring verified.
 authentication, secrets management, monitoring, alerts, backups, rollback,
 migration strategy. No secret ever in source or build output.
 
-**Backup / DR (§53)** — backup, retention, restore, RPO/RTO targets, DR runbook
-and rollback, all **exercised** (a Backup screen is not a backup system).
+**Backup / DR (§53, §A42–§A43)** — database backup, restore, point-in-time
+recovery, file recovery and configuration recovery, with a written **RPO, RTO,
+backup frequency, retention, restore procedure, incident owner and recovery
+test**. *A backup that has never been restored successfully is not a verified
+backup*: at least one full restoration drill runs before certification.
 
-**Performance work (§51)** — route-level code splitting, lazy loading, image and
-font optimization (self-hosted), caching, pagination, virtualization on large
-tables; reference screenshots excluded from the bundle.
+**Performance budgets (§51, §A30)** — measurable, not aspirational. Tracked and
+enforced in CI for critical public and app routes:
+
+| Budget | Target |
+|---|---|
+| Initial JS (public site) | ≤ 150 kB gzip |
+| Initial JS (app shell) | ≤ 250 kB gzip |
+| Per-route chunk | ≤ 120 kB gzip |
+| CSS | ≤ 60 kB gzip |
+| LCP (landing, mobile 4G) | ≤ 2.5 s |
+| INP | ≤ 200 ms |
+| CLS | ≤ 0.1 |
+| TTFB | ≤ 600 ms |
+
+Achieved through route-level code splitting, lazy loading, pagination,
+virtualization, image and self-hosted font optimization, caching and request
+deduplication; reference screenshots are excluded from the bundle. **A
+performance regression on a critical public page fails CI.**
 
 **Observability (§52)** — frontend errors, API errors, performance, auth
 failures, failed mutations, integration failures; every event carrying release,
@@ -760,7 +1186,7 @@ the size used so far.
 |---|---|---|---|---|
 | G1 | Registry, matrix, generated coverage, fake-completion + token gates | 3 | 2 | 1 |
 | G2 | 24 primitives, state system, form system, modal system, 4 shells, DetailPage, 23 CTAs, test infra | 18 | 8 | 5 |
-| G3 | Server, schema + RLS, seed, auth lifecycle, server RBAC, audit, idempotency, repository swap | 22 | 13 | 6 |
+| G3 | Server, schema + RLS, seed, auth lifecycle, server RBAC, tenancy + branch isolation, audit standard, concurrency, idempotency, repository swap | 24 | 14 | 7 |
 | G4 | Customer + Vehicle: CRUD, detail experiences, documents, activity | 12 | 6 | 3 |
 | G5 | Workshop chain, estimates, invoices, payments, feedback | 16 | 8 | 4 |
 | G6 | Inventory + procurement | 12 | 6 | 3 |
@@ -768,24 +1194,44 @@ the size used so far.
 | G8 | CRM, HR, insurance, loans | 16 | 7 | 4 |
 | G9 | AI hub + administration | 14 | 6 | 4 |
 | G10 | 4 portals + kiosk + customer mobile depth + native frames | 20 | 9 | 5 |
-| G11 | 21 public pages + landing system + SEO | 14 | 6 | 4 |
+| G11 | 33 public pages (Tier A/B/C) + landing system + SEO + marketing analytics | 18 | 8 | 5 |
 | G12 | 175 feature screens (7 tranches of 25) | 28 | 12 | 7 |
-| G13 | Integrations, files, notifications, search, print/PDF, security, a11y, performance | 24 | 11 | 6 |
-| G14 | Full test suite, visual regression, backup/DR drill, CI/CD, staging, certification | 20 | 9 | 5 |
-| **Responsive/RTL sweep** | 57 mobile backfills + 8 breakpoints + Arabic certification | 18 | 8 | 5 |
-| | **Total** | **249 d ≈ 50 wks** | **117 d ≈ 23 wks** | **65** |
+| G13 | Integrations, files, notifications, search, print/PDF, security, a11y, performance budgets | 26 | 12 | 7 |
+| G14 | Full suite: contract, financial + inventory integrity, concurrency, large dataset, golden paths, visual regression, backup/DR restore drill, CI/CD, staging, certification | 28 | 13 | 7 |
+| **Responsive/RTL sweep** | 57 mobile backfills + 7 breakpoints + 4 tablet widths (portrait + landscape) + Arabic/RTL certification | 18 | 8 | 5 |
+| | **Total** | **265 d ≈ 53 wks** | **125 d ≈ 25 wks** | **70** |
 
-**Critical path: G1 → G2 → G3.** Nothing can reach the Definition of Done before
-the backend exists, because real data, persistence and audit are clauses in it.
-G4–G12 parallelise once G3 lands. The responsive sweep runs late so each screen
-is refined once — but every tranche still checks 390 px as it lands (§59).
+**Critical path: G1 → G2 → G3** (waves W0 → W1). Nothing can reach the Definition
+of Done before the backend exists, because real data, persistence and audit are
+clauses in it. G4–G12 parallelise once G3 lands. The responsive sweep runs late
+so each screen is refined once — but every tranche still checks 390 px as it
+lands (§59).
+
+**Under the multi-agent model** the day totals are unchanged — they are the work,
+not the wall-clock. What changes is how much runs at once:
+
+| Wave | Concurrent agents | Serial share of the 265 days | Elapsed (indicative) |
+|---|---|---|---|
+| W0 Reconnaissance | 2 (01, 02) | ~3 d | ~2 d |
+| W1 Foundation | 4 (04, 05, 06, 07) | ~42 d | ~14 d |
+| W2 Product | 8–10 (08–17) | ~146 d | ~20 d |
+| W3 Hardening | 5 (18–22), overlapping W2 | ~44 d | ~10 d incremental |
+| W4 Integration + W5 Certification | 3 (03, 23, 24) | ~30 d | ~10 d |
+| | | **265 d** | **≈ 8 weeks** |
+
+W1 is the hard serial bottleneck: ten product agents idle behind four foundation
+agents, so shortening W1 shortens everything. W3 deliberately overlaps W2 rather
+than queueing behind it (§M69), which is where most of the apparent saving comes
+from. Elapsed figures assume no contention on the §M63 shared files; contention
+on `routes/index.tsx`, `repository.ts` or the migrations is the failure mode that
+turns 8 weeks back into 25.
 
 **Milestones**
 - **M1 — end G2 (≈ 4 wks)** — zero dead CTAs, full component system, CI running.
 - **M2 — end G3 (≈ 9 wks)** — real database and API, mocks retired, server authz.
-- **M3 — end G10 (≈ 33 wks / 16 wks @3×)** — every product surface functional.
-- **M4 — end G12 + sweep (≈ 44 wks)** — 402 routes at DoD, 8 breakpoints, EN + AR.
-- **M5 — end G14 (≈ 50 wks)** — production certification.
+- **M3 — end G10 (≈ 34 wks / 17 wks @3×)** — every product surface functional.
+- **M4 — end G12 + sweep (≈ 46 wks)** — every registry route at DoD, 7 breakpoints + 4 tablet widths, EN + AR.
+- **M5 — end G14 (≈ 53 wks)** — production certification, restore drill passed.
 
 ---
 
@@ -813,6 +1259,13 @@ dependencies · known limitations.
 | 5 % | Performance |
 | 10 % | Production readiness |
 
+**Category gate (§M86)** — independently of the weighted score, each major
+category must reach **≥ 9.5/10**: Architecture · UI/UX · Desktop · Tablet ·
+Mobile · Arabic/RTL · Backend · Data · Mini ERP · ERP · Portals · Website · AI ·
+Integrations · RBAC · Security · Accessibility · Performance · Testing ·
+Observability · Recovery · Documentation. A strong category never compensates for
+a security or business-integrity failure.
+
 **Production readiness scorecard** — generated alongside the score, rating all 34
 areas out of 10: PRODUCT · UX/UI · DESKTOP · TABLET · MOBILE · ARABIC/RTL · MINI
 ERP · WORKSHOP · PARTS/INVENTORY · ACCOUNTING · PROCUREMENT · CRM · INSURANCE ·
@@ -834,6 +1287,60 @@ defect exists. Targets: 100 % required route, capability, portal, ERP, website,
 landing, mobile and testing coverage; 0 critical defects; 0 dead CTAs; 0 broken
 routes; 0 unexplained runtime errors; 0 known critical security issues.
 
+## Release blockers (§A51)
+
+Any one of these blocks production, whatever the score says:
+
+```text
+P0 defect · P1 defect · critical golden-path failure · unauthorized tenant access
+· unauthorized financial operation · financial calculation corruption
+· inventory corruption · exposed production secret · broken authentication
+· broken payment workflow · broken invoice workflow
+· broken critical mobile workflow · major data loss · failed backup recovery
+· critical security vulnerability
+```
+
+## Final production checklist (§A53)
+
+Generated from the registry and CI artefacts; every line must be TRUE:
+
+design-authoritative desktop screens complete · supplied mobile designs complete
+· responsive screens complete · tablet verified · feature-map screens represented
+· sub-pages complete · detail pages complete · modal system complete · dead CTAs
+removed · **Mini ERP connected end-to-end** · main ERP complete · customer,
+technician, supplier and procurement portals complete · call centre complete ·
+kiosk complete · authentication complete · onboarding complete · administration
+complete · AI complete · automation complete · public website complete · landing
+pages complete · Arabic complete · RTL complete · real persistence complete ·
+backend API complete · multi-tenancy complete · branch isolation complete ·
+server-side RBAC complete · audit complete · financial integrity verified ·
+inventory integrity verified · concurrency verified · idempotency verified ·
+integration contracts verified · import/export verified · notifications verified
+· accessibility verified · visual QA verified · performance verified · security
+verified · backup verified · recovery verified · CI/CD verified · unit,
+integration, E2E, golden-path, RBAC-lab, mobile, tablet and Arabic/RTL suites
+pass · no critical console errors · no critical placeholders · no dead critical
+routes or CTAs · no exposed secrets · documentation complete · production build
+passes.
+
+## Final certification report (§A59)
+
+The last deliverable is `docs/SALIS_AUTO_FINAL_PRODUCTION_CERTIFICATION.md`,
+generated — never hand-written — from the registry and CI artefacts:
+
+total screens · completed · remaining · desktop / tablet / mobile / Arabic / RTL
+coverage · ERP and Mini ERP coverage · portal, website and landing coverage ·
+backend, API and database coverage · RBAC coverage · security findings ·
+financial and inventory integrity status · AI status · integration status ·
+accessibility and performance status · unit, integration, E2E, visual,
+golden-path, RBAC-lab and backup/recovery results · CI status · open defects ·
+known limitations · production blockers · final score.
+
+**10/10 — PRODUCTION READY** is stated only when every gate above passes, and
+never on route coverage alone (§A57): a beautiful UI with broken persistence, a
+working backend with broken mobile UX, a complete desktop app with missing
+portals, or a complete app with untested recovery is not 10/10.
+
 ---
 
 # Verification
@@ -846,18 +1353,32 @@ npm run test                       # vitest: unit + component + integration
 npm --prefix ../server run test    # API tests against ephemeral Postgres
 npm run build
 npm run check-no-fake              # §60 gate, registry-driven
+npm run check-tokens               # design-token drift (§A34)
 npm run smoke                      # routes + shells + permissions
-npm run e2e                        # journeys @375/390/430/768/834/1024/1280/1440
+npm run e2e                        # journeys @390/430/768/820/834/1024/1280/1440/1536
                                    # + RTL + a11y + brand + visual regression
+npm run golden                     # the 23 named Golden Paths (§A13)
 npm run rbac-lab                   # persona matrix: ALLOWED / DENIED / UNEXPECTED
+npm run integrity                  # financial + inventory + no-orphan + data quality
+npm run registry                   # rebuild the registry; fails on new flags
 ```
 
 Then update the registry and commit the tranche (§57) — small, reviewable,
 never overwriting unrelated work.
 
+Under the multi-agent model the same commands run **inside each agent's
+branch/worktree** before submission, and Agent 03 re-runs the full set on the
+integration branch before any merge to `main` (§M64). An agent's green run is
+evidence for review, not permission to merge.
+
 ---
 
 # Open items outside the code
+
+- **The multi-agent model needs your go-ahead before it runs.** Waves W1–W3 mean
+  spawning 4–10 concurrent agents on isolated branches, which is a large token
+  spend and a lot of parallel change. Say the word and I start with W0 (control
+  system + registry) single-threaded, then open W1 as four agents.
 
 - **Rotate the three GitHub PATs** pasted in chat; §56 forbids reusing exposed
   credentials.

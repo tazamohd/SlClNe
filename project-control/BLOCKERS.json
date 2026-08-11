@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-08-11",
+  "open": 9,
+  "blockers": [
+    {
+      "id": "BLK-001",
+      "severity": "BLOCKER",
+      "title": "248 product routes render PendingScreen",
+      "detail": "Violates the no-placeholder rule. Cleared only when every PRODUCT entry renders a real component.",
+      "owner": "01",
+      "wave": "W2"
+    },
+    {
+      "id": "BLK-002",
+      "severity": "BLOCKER",
+      "title": "No capability is backed by real data",
+      "detail": "No server, database, persistence or server-side authorization exists. Gates the Definition of Done for every screen.",
+      "owner": "05",
+      "wave": "W1"
+    },
+    {
+      "id": "BLK-003",
+      "severity": "BLOCKER",
+      "title": "Three GitHub PATs were exposed in chat and are not confirmed rotated",
+      "detail": "Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.",
+      "owner": "06",
+      "wave": "W0"
+    },
+    {
+      "id": "BLK-004",
+      "severity": "CRITICAL",
+      "title": "114 rendered capabilities are mock-only",
+      "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
+      "owner": "05",
+      "wave": "W2"
+    },
+    {
+      "id": "BLK-005",
+      "severity": "CRITICAL",
+      "title": "284 product capabilities have no route check",
+      "detail": "Route coverage is generated from this registry once the test harness lands.",
+      "owner": "07",
+      "wave": "W1"
+    },
+    {
+      "id": "BLK-006",
+      "severity": "HIGH",
+      "title": "57 built screens owe their designed mobile layout",
+      "detail": "A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.",
+      "owner": "18",
+      "wave": "W3"
+    },
+    {
+      "id": "BLK-007",
+      "severity": "CRITICAL",
+      "title": "No modal system, so 23 CTAs do nothing",
+      "detail": "Blocks every create/edit/delete flow in the ERP.",
+      "owner": "04",
+      "wave": "W1"
+    },
+    {
+      "id": "BLK-008",
+      "severity": "HIGH",
+      "title": "No tablet verification anywhere",
+      "detail": "768/820/834/1024, portrait and landscape, has never been checked.",
+      "owner": "18",
+      "wave": "W3"
+    },
+    {
+      "id": "BLK-011",
+      "severity": "MEDIUM",
+      "title": "2 hardcoded colours sit in a forbidden hue band",
+      "detail": "The brand permits blue and orange only. Run scripts/check-tokens.mjs for the offenders.",
+      "owner": "04",
+      "wave": "W1"
+    }
+  ]
+}

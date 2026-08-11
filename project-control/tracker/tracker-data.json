@@ -5,6 +5,7 @@
       "id": "workshop",
       "label": "Workshop & Mini ERP",
       "group": "G5",
+      "agent": "08",
       "items": [
         {
           "name": "AppointmentCalendar",
@@ -12,7 +13,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Appointments",
@@ -20,7 +22,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ApprovalInbox",
@@ -28,7 +31,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CustomerApproval",
@@ -36,7 +40,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Dashboard",
@@ -44,7 +49,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "DiagnosticReport",
@@ -52,7 +58,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "EstimateDetail",
@@ -60,7 +67,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Estimates",
@@ -68,7 +76,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "JobCardDetail",
@@ -76,7 +85,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "JobCards",
@@ -84,7 +94,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "JobDetail",
@@ -92,7 +103,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "OBDDiagnostics",
@@ -100,7 +112,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "TechnicianKB",
@@ -108,7 +121,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Technicians",
@@ -116,7 +130,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "TechnicianSchedule",
@@ -124,7 +139,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopCheckIn",
@@ -132,7 +148,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopDelivery",
@@ -140,7 +157,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopEstimate",
@@ -148,7 +166,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopInspection",
@@ -156,7 +175,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopQC",
@@ -164,7 +184,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopReports",
@@ -172,7 +193,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkshopSignature",
@@ -180,7 +202,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -188,6 +211,7 @@
       "id": "crm",
       "label": "Customers, vehicles & CRM",
       "group": "G4/G8",
+      "agent": "09",
       "items": [
         {
           "name": "Campaigns",
@@ -195,7 +219,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CRMCalendar",
@@ -203,7 +228,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CRMTasks",
@@ -211,7 +237,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CustomerDetail",
@@ -219,7 +246,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CustomerFeedback",
@@ -227,7 +255,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Customers",
@@ -235,7 +264,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CustomerSegments",
@@ -243,7 +273,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "EmailMarketing",
@@ -251,7 +282,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "FleetContract",
@@ -259,7 +291,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "FleetManagement",
@@ -267,7 +300,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "LeadDetail",
@@ -275,7 +309,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "LeadPipeline",
@@ -283,7 +318,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Opportunities",
@@ -291,7 +327,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SMSCampaigns",
@@ -299,7 +336,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "VehicleDetail",
@@ -307,7 +345,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Vehicles",
@@ -315,7 +354,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WhatsAppCampaigns",
@@ -323,7 +363,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -331,6 +372,7 @@
       "id": "parts",
       "label": "Parts & inventory",
       "group": "G6",
+      "agent": "10",
       "items": [
         {
           "name": "Inventory",
@@ -338,7 +380,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "InventoryReports",
@@ -346,63 +389,71 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "PartsNetwork",
           "route": "/parts-network",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PartsNetwork.Incoming",
+          "name": "PartsNetwork · Incoming",
           "route": "/parts-network/incoming",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PartsNetwork.Members",
+          "name": "PartsNetwork · Members",
           "route": "/parts-network/members",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PartsNetwork.Orders",
+          "name": "PartsNetwork · Orders",
           "route": "/parts-network/orders",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PartsNetwork.Quotations",
+          "name": "PartsNetwork · Quotations",
           "route": "/parts-network/quotations",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PartsNetwork.Requests",
+          "name": "PartsNetwork · Requests",
           "route": "/parts-network/requests",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PartsNetwork.SendRequest",
+          "name": "PartsNetwork · SendRequest",
           "route": "/parts-network/send-request",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "PartsSupplyNetwork",
@@ -410,7 +461,8 @@
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -418,6 +470,7 @@
       "id": "procurement",
       "label": "Procurement",
       "group": "G6",
+      "agent": "11",
       "items": [
         {
           "name": "PurchaseOrder",
@@ -425,7 +478,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -433,6 +487,7 @@
       "id": "accounting",
       "label": "Accounting & reporting",
       "group": "G7",
+      "agent": "12",
       "items": [
         {
           "name": "BankReconciliation",
@@ -440,7 +495,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "BIDashboard",
@@ -448,7 +504,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ChartOfAccounts",
@@ -456,7 +513,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CustomReports",
@@ -464,7 +522,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Departments",
@@ -472,7 +531,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ExecutiveReports",
@@ -480,7 +540,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Expenses",
@@ -488,7 +549,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "FinancialReports",
@@ -496,7 +558,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "FinancialStatements",
@@ -504,15 +567,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "HRPayroll",
-          "route": "/hrpayroll",
-          "status": "pending",
-          "mobile": "designed",
-          "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "InsuranceReports",
@@ -520,7 +576,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "InvoiceCreate",
@@ -528,7 +585,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "InvoiceDetail",
@@ -536,7 +594,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "InvoicePreview",
@@ -544,7 +603,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Invoices",
@@ -552,7 +612,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "JournalEntries",
@@ -560,7 +621,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "LoanReports",
@@ -568,7 +630,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "OperationalReports",
@@ -576,7 +639,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Payments",
@@ -584,7 +648,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Receipts",
@@ -592,7 +657,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Reports",
@@ -600,7 +666,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ReportsAnalytics",
@@ -608,7 +675,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SalesReports",
@@ -616,7 +684,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "TaxManagement",
@@ -624,7 +693,25 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
+        }
+      ]
+    },
+    {
+      "id": "hr",
+      "label": "HR & payroll",
+      "group": "G8",
+      "agent": "14",
+      "items": [
+        {
+          "name": "HRPayroll",
+          "route": "/hrpayroll",
+          "status": "pending",
+          "mobile": "designed",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -632,6 +719,7 @@
       "id": "ai",
       "label": "AI & automation",
       "group": "G9",
+      "agent": "15",
       "items": [
         {
           "name": "AgentDashboard",
@@ -639,7 +727,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "AgentRegistry",
@@ -647,7 +736,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "AIAnalytics",
@@ -655,7 +745,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "AIAssistant",
@@ -663,7 +754,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "AutomationRules",
@@ -671,7 +763,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ConversationHistory",
@@ -679,7 +772,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "KnowledgeBase",
@@ -687,7 +781,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ModelSettings",
@@ -695,7 +790,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "PromptLibrary",
@@ -703,7 +799,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkflowBuilder",
@@ -711,7 +808,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -719,6 +817,7 @@
       "id": "admin",
       "label": "Administration",
       "group": "G9",
+      "agent": "—",
       "items": [
         {
           "name": "AdvancedSettings",
@@ -726,7 +825,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "AuditLog",
@@ -734,7 +834,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Backup",
@@ -742,7 +843,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Branches",
@@ -750,7 +852,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "GlobalSearch",
@@ -758,7 +861,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Integrations",
@@ -766,7 +870,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "NotificationCenter",
@@ -774,7 +879,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "OEMIntegrations",
@@ -782,7 +888,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Organizations",
@@ -790,7 +897,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Profile",
@@ -798,7 +906,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "RolesPermissions",
@@ -806,7 +915,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Settings",
@@ -814,7 +924,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Subscription",
@@ -822,7 +933,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SuperAdmin",
@@ -830,7 +942,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SystemIntegrations",
@@ -838,7 +951,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Templates",
@@ -846,7 +960,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "UsersTeams",
@@ -854,7 +969,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -862,6 +978,7 @@
       "id": "auth",
       "label": "Auth & onboarding",
       "group": "G3",
+      "agent": "06",
       "items": [
         {
           "name": "AccountLocked",
@@ -869,7 +986,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "BiometricSetup",
@@ -877,7 +995,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CreatePIN",
@@ -885,7 +1004,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Error404",
@@ -893,7 +1013,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ForgotPassword",
@@ -901,7 +1022,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "InviteAcceptance",
@@ -909,7 +1031,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "LanguageSelection",
@@ -917,7 +1040,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Login",
@@ -925,7 +1049,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "LogoutConfirmation",
@@ -933,7 +1058,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Maintenance",
@@ -941,7 +1067,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Onboarding",
@@ -949,7 +1076,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "OrganizationSelection",
@@ -957,7 +1085,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "OTPVerification",
@@ -965,7 +1094,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "PrivacyPolicy",
@@ -973,7 +1103,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ProfileCompletion",
@@ -981,7 +1112,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "RegionSelection",
@@ -989,7 +1121,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Register",
@@ -997,7 +1130,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ResetPassword",
@@ -1005,7 +1139,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "RoleSelection",
@@ -1013,7 +1148,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SessionExpired",
@@ -1021,7 +1157,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SocialLogin",
@@ -1029,7 +1166,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Splash",
@@ -1037,7 +1175,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SSOLogin",
@@ -1045,7 +1184,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "TermsConditions",
@@ -1053,7 +1193,8 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "TwoFactorVerification",
@@ -1061,7 +1202,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Unauthorized",
@@ -1069,7 +1211,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "Welcome",
@@ -1077,7 +1220,8 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "WorkspaceSelection",
@@ -1085,14 +1229,16 @@
           "status": "pending",
           "mobile": "designed",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
     {
       "id": "portals",
-      "label": "Portals & kiosk",
+      "label": "Portals, call centre & kiosk",
       "group": "G10",
+      "agent": "16",
       "items": [
         {
           "name": "CallCenter",
@@ -1100,15 +1246,17 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CallCenter.Logs",
+          "name": "CallCenter · Logs",
           "route": "/call-center/logs",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "CustomerPortal",
@@ -1116,15 +1264,17 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerPortal.Booking",
+          "name": "CustomerPortal · Booking",
           "route": "/customer-portal/booking",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "KioskCheckIn",
@@ -1132,23 +1282,26 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "Native.Android",
+          "name": "Native · Android",
           "route": "/native/android",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "Native.iOS",
+          "name": "Native · iOS",
           "route": "/native/i-os",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "ProcurementPortal",
@@ -1156,15 +1309,17 @@
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "ProcurementPortal.Requisitions",
+          "name": "ProcurementPortal · Requisitions",
           "route": "/procurement-portal/requisitions",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "SupplierPortal",
@@ -1172,15 +1327,17 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "SupplierPortal.Orders",
+          "name": "SupplierPortal · Orders",
           "route": "/supplier-portal/orders",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
           "name": "TechnicianPortal",
@@ -1188,15 +1345,17 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "TechnicianPortal.JobDetail",
+          "name": "TechnicianPortal · JobDetail",
           "route": "/technician-portal/job-detail",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -1204,94 +1363,106 @@
       "id": "customerapp",
       "label": "Customer mobile app",
       "group": "G10",
+      "agent": "16",
       "items": [
         {
-          "name": "CustomerApp.Appointments",
+          "name": "CustomerApp · Appointments",
           "route": "/customer-app/appointments",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Garage",
+          "name": "CustomerApp · Garage",
           "route": "/customer-app/garage",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Home",
+          "name": "CustomerApp · Home",
           "route": "/customer-app/home",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Insurance",
+          "name": "CustomerApp · Insurance",
           "route": "/customer-app/insurance",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Loans",
+          "name": "CustomerApp · Loans",
           "route": "/customer-app/loans",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Marketplace",
+          "name": "CustomerApp · Marketplace",
           "route": "/customer-app/marketplace",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Notifications",
+          "name": "CustomerApp · Notifications",
           "route": "/customer-app/notifications",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Orders",
+          "name": "CustomerApp · Orders",
           "route": "/customer-app/orders",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Profile",
+          "name": "CustomerApp · Profile",
           "route": "/customer-app/profile",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.ServiceTracking",
+          "name": "CustomerApp · ServiceTracking",
           "route": "/customer-app/service-tracking",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "CustomerApp.Wallet",
+          "name": "CustomerApp · Wallet",
           "route": "/customer-app/wallet",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
@@ -1299,1995 +1470,105 @@
       "id": "website",
       "label": "Public website",
       "group": "G11",
+      "agent": "17",
       "items": [
         {
-          "name": "PublicPortal.About",
+          "name": "PublicPortal · About",
           "route": "/public-portal/about",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Blog",
+          "name": "PublicPortal · Blog",
           "route": "/public-portal/blog",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Contact",
+          "name": "PublicPortal · Contact",
           "route": "/public-portal/contact",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.FAQ",
+          "name": "PublicPortal · FAQ",
           "route": "/public-portal/faq",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Insurance",
+          "name": "PublicPortal · Insurance",
           "route": "/public-portal/insurance",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Landing",
+          "name": "PublicPortal · Landing",
           "route": "/public-portal/landing",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Loans",
+          "name": "PublicPortal · Loans",
           "route": "/public-portal/loans",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Marketplace",
+          "name": "PublicPortal · Marketplace",
           "route": "/public-portal/marketplace",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Services",
+          "name": "PublicPortal · Services",
           "route": "/public-portal/services",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal.Support",
+          "name": "PublicPortal · Support",
           "route": "/public-portal/support",
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "PRODUCT"
         }
       ]
     },
     {
       "id": "ui",
-      "label": "Shared UI system",
-      "group": "Part 2.3",
-      "items": [
-        {
-          "name": "UI.ActivityFeed",
-          "route": "/ui/activity-feed",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.AdvancedFilters",
-          "route": "/ui/advanced-filters",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Attachments",
-          "route": "/ui/attachments",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.CalendarView",
-          "route": "/ui/calendar-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.CardView",
-          "route": "/ui/card-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Charts",
-          "route": "/ui/charts",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Comments",
-          "route": "/ui/comments",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.EmptyStates",
-          "route": "/ui/empty-states",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.ExportCenter",
-          "route": "/ui/export-center",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.FormValidation",
-          "route": "/ui/form-validation",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.ImportCenter",
-          "route": "/ui/import-center",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.KanbanView",
-          "route": "/ui/kanban-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.ListView",
-          "route": "/ui/list-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.LoadingStates",
-          "route": "/ui/loading-states",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.MapView",
-          "route": "/ui/map-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.MediaGallery",
-          "route": "/ui/media-gallery",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Messages",
-          "route": "/ui/messages",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Modals.Actions",
-          "route": "/ui/modals/actions",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Modals.Capture",
-          "route": "/ui/modals/capture",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Modals.CRUD",
-          "route": "/ui/modals/crud",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Modals.Data",
-          "route": "/ui/modals/data",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Modals.Lifecycle",
-          "route": "/ui/modals/lifecycle",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.Modals.Status",
-          "route": "/ui/modals/status",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.TableView",
-          "route": "/ui/table-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        },
-        {
-          "name": "UI.TimelineView",
-          "route": "/ui/timeline-view",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design"
-        }
-      ]
-    },
-    {
-      "id": "featuremap",
-      "label": "Feature map (no design)",
-      "group": "G12",
-      "items": [
-        {
-          "name": "Dashboard Home",
-          "route": "/dashboard-home",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Welcome Page",
-          "route": "/welcome-page",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Dashboard Main",
-          "route": "/dashboard-main",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customers List",
-          "route": "/customers-list",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customer Loyalty",
-          "route": "/customer-loyalty",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customer Reviews Ratings",
-          "route": "/customer-reviews-ratings",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Referral Program",
-          "route": "/referral-program",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Loyalty Program",
-          "route": "/loyalty-program",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customer LTV Analysis",
-          "route": "/customer-ltv-analysis",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Appointment Reminders",
-          "route": "/appointment-reminders",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Calendar",
-          "route": "/calendar",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Workshop Calendar",
-          "route": "/workshop-calendar",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AI Scheduling",
-          "route": "/ai-scheduling",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Smart Assignment",
-          "route": "/smart-assignment",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Routing Optimizer",
-          "route": "/routing-optimizer",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicles List",
-          "route": "/vehicles-list",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicle Inspections",
-          "route": "/vehicle-inspections",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicle Checklist",
-          "route": "/vehicle-checklist",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicle History",
-          "route": "/vehicle-history",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicle Health Monitoring",
-          "route": "/vehicle-health-monitoring",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicle Tracking",
-          "route": "/vehicle-tracking",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vehicle Storage",
-          "route": "/vehicle-storage",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "VIN Decoder",
-          "route": "/vin-decoder",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Fleet Tracking",
-          "route": "/fleet-tracking",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Tire Management",
-          "route": "/tire-management",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Loaner Vehicles",
-          "route": "/loaner-vehicles",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Towing Assistance",
-          "route": "/towing-assistance",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Towing Services",
-          "route": "/towing-services",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Telematics Integration",
-          "route": "/telematics-integration",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Digital Vehicle Walkaround",
-          "route": "/digital-vehicle-walkaround",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "License Plate Recognition",
-          "route": "/license-plate-recognition",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Diagnostics OBD Hub",
-          "route": "/diagnostics-obd-hub",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Predictive Diagnostics",
-          "route": "/predictive-diagnostics",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Predictive Maintenance",
-          "route": "/predictive-maintenance",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "OEM Software Subscriptions",
-          "route": "/oem-software-subscriptions",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Service Templates",
-          "route": "/service-templates",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Service Bay Dashboard",
-          "route": "/service-bay-dashboard",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Live Service Tracking",
-          "route": "/live-service-tracking",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Quality Control",
-          "route": "/quality-control",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Computer Vision QC",
-          "route": "/computer-vision-qc",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Video Estimates",
-          "route": "/video-estimates",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Video Consultations",
-          "route": "/video-consultations",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Stripe Payment Processing",
-          "route": "/stripe-payment-processing",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Refund Management",
-          "route": "/refund-management",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Inventory Management",
-          "route": "/inventory-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Parts Availability",
-          "route": "/parts-availability",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Parts Auto Reorder",
-          "route": "/parts-auto-reorder",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Smart Parts Recommender",
-          "route": "/smart-parts-recommender",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Smart Parts Recommendations",
-          "route": "/smart-parts-recommendations",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Smart Inventory Forecasting",
-          "route": "/smart-inventory-forecasting",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Automated Reordering",
-          "route": "/automated-reordering",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Spare Parts",
-          "route": "/spare-parts",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Barcode Scanner",
-          "route": "/barcode-scanner",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Internal Warehouse",
-          "route": "/internal-warehouse",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Interactive 3D Parts",
-          "route": "/interactive-3-d-parts",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Parts Marketplace",
-          "route": "/parts-marketplace",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Dynamic Pricing",
-          "route": "/dynamic-pricing",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Intelligent Price Optimizer",
-          "route": "/intelligent-price-optimizer",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Suppliers",
-          "route": "/suppliers",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Orders",
-          "route": "/purchase-orders",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Vendor Supplier Portal",
-          "route": "/vendor-supplier-portal",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Parts Network Dashboard",
-          "route": "/parts-network-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Parts Network My Requests",
-          "route": "/parts-network-my-requests",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Parts Network Incoming Requests",
-          "route": "/parts-network-incoming-requests",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Dashboard",
-          "route": "/purchase-agent-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Tasks",
-          "route": "/purchase-agent-tasks",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Quotations",
-          "route": "/purchase-agent-quotations",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Payments",
-          "route": "/purchase-agent-payments",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Delivery",
-          "route": "/purchase-agent-delivery",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Orders",
-          "route": "/purchase-agent-orders",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Suppliers",
-          "route": "/purchase-agent-suppliers",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Inventory",
-          "route": "/purchase-agent-inventory",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Price Compare",
-          "route": "/purchase-agent-price-compare",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Tracking",
-          "route": "/purchase-agent-tracking",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Purchase Agent Reports",
-          "route": "/purchase-agent-reports",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Dashboard",
-          "route": "/technician-portal-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal My Jobs",
-          "route": "/technician-portal-my-jobs",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Time Clock",
-          "route": "/technician-portal-time-clock",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Parts",
-          "route": "/technician-portal-parts",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Documentation",
-          "route": "/technician-portal-documentation",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Profile",
-          "route": "/technician-portal-profile",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Attendance",
-          "route": "/technician-portal-attendance",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Guides",
-          "route": "/technician-portal-guides",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Portal Software",
-          "route": "/technician-portal-software",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Management",
-          "route": "/technician-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Leaderboards",
-          "route": "/technician-leaderboards",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Performance",
-          "route": "/technician-performance",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician Mobile",
-          "route": "/technician-mobile",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician App Home",
-          "route": "/technician-app-home",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician App Jobs",
-          "route": "/technician-app-jobs",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician App Clock",
-          "route": "/technician-app-clock",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician App Lookup",
-          "route": "/technician-app-lookup",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Technician App Profile",
-          "route": "/technician-app-profile",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Dashboard",
-          "route": "/client-portal-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Vehicles",
-          "route": "/client-portal-vehicles",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Appointments",
-          "route": "/client-portal-appointments",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Invoices",
-          "route": "/client-portal-invoices",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Profile",
-          "route": "/client-portal-profile",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Service History",
-          "route": "/client-portal-service-history",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Live Tracking",
-          "route": "/client-portal-live-tracking",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Reminders",
-          "route": "/client-portal-reminders",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Client Portal Review Chat",
-          "route": "/client-portal-review-chat",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customer App Booking",
-          "route": "/customer-app-booking",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customer App Vehicles",
-          "route": "/customer-app-vehicles",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Customer App Payments",
-          "route": "/customer-app-payments",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Portal Dashboard",
-          "route": "/portal-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Portal Appointments",
-          "route": "/portal-appointments",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Portal Invoices",
-          "route": "/portal-invoices",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Portal Vehicles",
-          "route": "/portal-vehicles",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Portal Communications",
-          "route": "/portal-communications",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Business Intelligence",
-          "route": "/business-intelligence",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Business Intelligence Dashboard",
-          "route": "/business-intelligence-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Business Heatmaps",
-          "route": "/business-heatmaps",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Profit Analysis",
-          "route": "/profit-analysis",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "KPI Dashboard",
-          "route": "/kpi-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Productivity Tracker",
-          "route": "/productivity-tracker",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "HR Management",
-          "route": "/hr-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Staff Directory",
-          "route": "/staff-directory",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Staff Scheduling",
-          "route": "/staff-scheduling",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Staff Performance Review",
-          "route": "/staff-performance-review",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Timesheet Management",
-          "route": "/timesheet-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Timeclock Payroll",
-          "route": "/timeclock-payroll",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Payroll Management",
-          "route": "/payroll-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Leave Requests",
-          "route": "/leave-requests",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Training LMS",
-          "route": "/training-lms",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Wearable Integration",
-          "route": "/wearable-integration",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "General Ledger",
-          "route": "/general-ledger",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Trial Balance",
-          "route": "/trial-balance",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Balance Sheet",
-          "route": "/balance-sheet",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Income Statement",
-          "route": "/income-statement",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Cash Flow Statement",
-          "route": "/cash-flow-statement",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Accounts Receivable",
-          "route": "/accounts-receivable",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Accounts Payable",
-          "route": "/accounts-payable",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Bank Account Management",
-          "route": "/bank-account-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Budget Management",
-          "route": "/budget-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Capital Management",
-          "route": "/capital-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Assets Management",
-          "route": "/assets-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Liabilities Management",
-          "route": "/liabilities-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Equity Management",
-          "route": "/equity-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Retained Earnings",
-          "route": "/retained-earnings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Cost Centers",
-          "route": "/cost-centers",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Loss Account",
-          "route": "/loss-account",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Partners Current Account",
-          "route": "/partners-current-account",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Expense Tracking",
-          "route": "/expense-tracking",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Expenses Management",
-          "route": "/expenses-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Sales Management",
-          "route": "/sales-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Accounting Integration",
-          "route": "/accounting-integration",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Financial Settings",
-          "route": "/financial-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Warranty Management",
-          "route": "/warranty-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Contract Management",
-          "route": "/contract-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Insurance Claims",
-          "route": "/insurance-claims",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Marketing Hub",
-          "route": "/marketing-hub",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Marketing Automation",
-          "route": "/marketing-automation",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Email Marketing Campaigns",
-          "route": "/email-marketing-campaigns",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Social Media Integration",
-          "route": "/social-media-integration",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Social Media Monitoring",
-          "route": "/social-media-monitoring",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Google My Business",
-          "route": "/google-my-business",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Chat",
-          "route": "/chat",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Support Chat Dashboard",
-          "route": "/support-chat-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Notifications",
-          "route": "/notifications",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Compliance Management",
-          "route": "/compliance-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "ZATCA Settings",
-          "route": "/zatca-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "VAT Settings",
-          "route": "/vat-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Zakat Settings",
-          "route": "/zakat-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Safety Incidents",
-          "route": "/safety-incidents",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Environmental Compliance",
-          "route": "/environmental-compliance",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "ISO Quality Management",
-          "route": "/iso-quality-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Equipment Calibration",
-          "route": "/equipment-calibration",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Franchise Management",
-          "route": "/franchise-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Globalization Layer",
-          "route": "/globalization-layer",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Multi Location Dashboard",
-          "route": "/multi-location-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AI Automation",
-          "route": "/ai-automation",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AI Chatbot",
-          "route": "/ai-chatbot",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AI Chatbot Assistant",
-          "route": "/ai-chatbot-assistant",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AI Service Advisor",
-          "route": "/ai-service-advisor",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Voice Commands",
-          "route": "/voice-commands",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Voice Command Interface",
-          "route": "/voice-command-interface",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Smart Damage Assessment",
-          "route": "/smart-damage-assessment",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "ML Fraud Detection",
-          "route": "/ml-fraud-detection",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Neural Network Prediction",
-          "route": "/neural-network-prediction",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Emerging Technologies",
-          "route": "/emerging-technologies",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "NextGen Technologies",
-          "route": "/next-gen-technologies",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "IoT Dashboard",
-          "route": "/io-t-dashboard",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Edge Computing",
-          "route": "/edge-computing",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Digital Twin Viewer",
-          "route": "/digital-twin-viewer",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Drone Inspection",
-          "route": "/drone-inspection",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AR Repair Guide",
-          "route": "/ar-repair-guide",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "AR Overlay",
-          "route": "/ar-overlay",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "VR Showroom",
-          "route": "/vr-showroom",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Blockchain Service History",
-          "route": "/blockchain-service-history",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Smart Contracts",
-          "route": "/smart-contracts",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Quantum Computing",
-          "route": "/quantum-computing",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Sustainable Energy Monitoring",
-          "route": "/sustainable-energy-monitoring",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Digital Signage",
-          "route": "/digital-signage",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Security Cameras",
-          "route": "/security-cameras",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Mobile Device Management",
-          "route": "/mobile-device-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Document Management",
-          "route": "/document-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Document OCR",
-          "route": "/document-ocr",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Data Import Export",
-          "route": "/data-import-export",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Data Backup",
-          "route": "/data-backup",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "User Profile",
-          "route": "/user-profile",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "System Settings",
-          "route": "/system-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "User Settings",
-          "route": "/user-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Security Settings",
-          "route": "/security-settings",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Role Management",
-          "route": "/role-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Tasks",
-          "route": "/tasks",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Task Management",
-          "route": "/task-management",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Tools",
-          "route": "/tools",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Dashboard Widgets",
-          "route": "/dashboard-widgets",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "SMS Integration",
-          "route": "/sms-integration",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        },
-        {
-          "name": "Sales Guide",
-          "route": "/sales-guide",
-          "status": "pending",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec"
-        }
-      ]
-    },
-    {
-      "id": "reference",
-      "label": "Reference artefacts",
-      "group": "Part 5.2",
+      "label": "Shared UI & reference",
+      "group": "G2",
+      "agent": "04",
       "items": [
         {
           "name": "FlowSpec",
@@ -3295,7 +1576,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "REFERENCE_ONLY"
         },
         {
           "name": "Index",
@@ -3303,7 +1585,8 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "REFERENCE_ONLY"
         },
         {
           "name": "RBACSpec",
@@ -3311,14 +1594,2147 @@
           "status": "pending",
           "mobile": "responsive",
           "mobileDone": false,
-          "source": "design"
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · ActivityFeed",
+          "route": "/ui/activity-feed",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · AdvancedFilters",
+          "route": "/ui/advanced-filters",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Attachments",
+          "route": "/ui/attachments",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · CalendarView",
+          "route": "/ui/calendar-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · CardView",
+          "route": "/ui/card-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Charts",
+          "route": "/ui/charts",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Comments",
+          "route": "/ui/comments",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · EmptyStates",
+          "route": "/ui/empty-states",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · ExportCenter",
+          "route": "/ui/export-center",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · FormValidation",
+          "route": "/ui/form-validation",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · ImportCenter",
+          "route": "/ui/import-center",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · KanbanView",
+          "route": "/ui/kanban-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · ListView",
+          "route": "/ui/list-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · LoadingStates",
+          "route": "/ui/loading-states",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · MapView",
+          "route": "/ui/map-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · MediaGallery",
+          "route": "/ui/media-gallery",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Messages",
+          "route": "/ui/messages",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Modals · Actions",
+          "route": "/ui/modals/actions",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Modals · Capture",
+          "route": "/ui/modals/capture",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Modals · CRUD",
+          "route": "/ui/modals/crud",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Modals · Data",
+          "route": "/ui/modals/data",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Modals · Lifecycle",
+          "route": "/ui/modals/lifecycle",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · Modals · Status",
+          "route": "/ui/modals/status",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · TableView",
+          "route": "/ui/table-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        },
+        {
+          "name": "UI · TimelineView",
+          "route": "/ui/timeline-view",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "REFERENCE_ONLY"
+        }
+      ]
+    },
+    {
+      "id": "featuremap",
+      "label": "Feature map (no design)",
+      "group": "G12",
+      "agent": "08–17",
+      "items": [
+        {
+          "name": "Dashboard Home",
+          "route": "/dashboard-home",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Welcome Page",
+          "route": "/welcome-page",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Dashboard Main",
+          "route": "/dashboard-main",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customers List",
+          "route": "/customers-list",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customer Loyalty",
+          "route": "/customer-loyalty",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customer Reviews Ratings",
+          "route": "/customer-reviews-ratings",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Referral Program",
+          "route": "/referral-program",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Loyalty Program",
+          "route": "/loyalty-program",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customer LTV Analysis",
+          "route": "/customer-ltv-analysis",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Appointment Reminders",
+          "route": "/appointment-reminders",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Calendar",
+          "route": "/calendar",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Workshop Calendar",
+          "route": "/workshop-calendar",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI Scheduling",
+          "route": "/ai-scheduling",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Smart Assignment",
+          "route": "/smart-assignment",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Routing Optimizer",
+          "route": "/routing-optimizer",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicles List",
+          "route": "/vehicles-list",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicle Inspections",
+          "route": "/vehicle-inspections",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicle Checklist",
+          "route": "/vehicle-checklist",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicle History",
+          "route": "/vehicle-history",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicle Health Monitoring",
+          "route": "/vehicle-health-monitoring",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicle Tracking",
+          "route": "/vehicle-tracking",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vehicle Storage",
+          "route": "/vehicle-storage",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "VIN Decoder",
+          "route": "/vin-decoder",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Fleet Tracking",
+          "route": "/fleet-tracking",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Tire Management",
+          "route": "/tire-management",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Loaner Vehicles",
+          "route": "/loaner-vehicles",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Towing Assistance",
+          "route": "/towing-assistance",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Towing Services",
+          "route": "/towing-services",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Telematics Integration",
+          "route": "/telematics-integration",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Digital Vehicle Walkaround",
+          "route": "/digital-vehicle-walkaround",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "License Plate Recognition",
+          "route": "/license-plate-recognition",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Diagnostics OBD Hub",
+          "route": "/diagnostics-obd-hub",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Predictive Diagnostics",
+          "route": "/predictive-diagnostics",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Predictive Maintenance",
+          "route": "/predictive-maintenance",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "OEM Software Subscriptions",
+          "route": "/oem-software-subscriptions",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Service Templates",
+          "route": "/service-templates",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Service Bay Dashboard",
+          "route": "/service-bay-dashboard",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Live Service Tracking",
+          "route": "/live-service-tracking",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Quality Control",
+          "route": "/quality-control",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Computer Vision QC",
+          "route": "/computer-vision-qc",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Video Estimates",
+          "route": "/video-estimates",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Video Consultations",
+          "route": "/video-consultations",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Stripe Payment Processing",
+          "route": "/stripe-payment-processing",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Refund Management",
+          "route": "/refund-management",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Inventory Management",
+          "route": "/inventory-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Parts Availability",
+          "route": "/parts-availability",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Parts Auto Reorder",
+          "route": "/parts-auto-reorder",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Smart Parts Recommender",
+          "route": "/smart-parts-recommender",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Smart Parts Recommendations",
+          "route": "/smart-parts-recommendations",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Smart Inventory Forecasting",
+          "route": "/smart-inventory-forecasting",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Automated Reordering",
+          "route": "/automated-reordering",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Spare Parts",
+          "route": "/spare-parts",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Barcode Scanner",
+          "route": "/barcode-scanner",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Internal Warehouse",
+          "route": "/internal-warehouse",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Interactive 3D Parts",
+          "route": "/interactive-3-d-parts",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Parts Marketplace",
+          "route": "/parts-marketplace",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Dynamic Pricing",
+          "route": "/dynamic-pricing",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Intelligent Price Optimizer",
+          "route": "/intelligent-price-optimizer",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Suppliers",
+          "route": "/suppliers",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Orders",
+          "route": "/purchase-orders",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Vendor Supplier Portal",
+          "route": "/vendor-supplier-portal",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Parts Network Dashboard",
+          "route": "/parts-network-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Parts Network My Requests",
+          "route": "/parts-network-my-requests",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Parts Network Incoming Requests",
+          "route": "/parts-network-incoming-requests",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Dashboard",
+          "route": "/purchase-agent-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Tasks",
+          "route": "/purchase-agent-tasks",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Quotations",
+          "route": "/purchase-agent-quotations",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Payments",
+          "route": "/purchase-agent-payments",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Delivery",
+          "route": "/purchase-agent-delivery",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Orders",
+          "route": "/purchase-agent-orders",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Suppliers",
+          "route": "/purchase-agent-suppliers",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Inventory",
+          "route": "/purchase-agent-inventory",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Price Compare",
+          "route": "/purchase-agent-price-compare",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Tracking",
+          "route": "/purchase-agent-tracking",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Purchase Agent Reports",
+          "route": "/purchase-agent-reports",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Dashboard",
+          "route": "/technician-portal-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal My Jobs",
+          "route": "/technician-portal-my-jobs",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Time Clock",
+          "route": "/technician-portal-time-clock",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Parts",
+          "route": "/technician-portal-parts",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Documentation",
+          "route": "/technician-portal-documentation",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Profile",
+          "route": "/technician-portal-profile",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Attendance",
+          "route": "/technician-portal-attendance",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Guides",
+          "route": "/technician-portal-guides",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Portal Software",
+          "route": "/technician-portal-software",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Management",
+          "route": "/technician-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Leaderboards",
+          "route": "/technician-leaderboards",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Performance",
+          "route": "/technician-performance",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician Mobile",
+          "route": "/technician-mobile",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician App Home",
+          "route": "/technician-app-home",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician App Jobs",
+          "route": "/technician-app-jobs",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician App Clock",
+          "route": "/technician-app-clock",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician App Lookup",
+          "route": "/technician-app-lookup",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Technician App Profile",
+          "route": "/technician-app-profile",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Dashboard",
+          "route": "/client-portal-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Vehicles",
+          "route": "/client-portal-vehicles",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Appointments",
+          "route": "/client-portal-appointments",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Invoices",
+          "route": "/client-portal-invoices",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Profile",
+          "route": "/client-portal-profile",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Service History",
+          "route": "/client-portal-service-history",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Live Tracking",
+          "route": "/client-portal-live-tracking",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Reminders",
+          "route": "/client-portal-reminders",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Client Portal Review Chat",
+          "route": "/client-portal-review-chat",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customer App Booking",
+          "route": "/customer-app-booking",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customer App Vehicles",
+          "route": "/customer-app-vehicles",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Customer App Payments",
+          "route": "/customer-app-payments",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Portal Dashboard",
+          "route": "/portal-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Portal Appointments",
+          "route": "/portal-appointments",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Portal Invoices",
+          "route": "/portal-invoices",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Portal Vehicles",
+          "route": "/portal-vehicles",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Portal Communications",
+          "route": "/portal-communications",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Business Intelligence",
+          "route": "/business-intelligence",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Business Intelligence Dashboard",
+          "route": "/business-intelligence-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Business Heatmaps",
+          "route": "/business-heatmaps",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Profit Analysis",
+          "route": "/profit-analysis",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "KPI Dashboard",
+          "route": "/kpi-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Productivity Tracker",
+          "route": "/productivity-tracker",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "HR Management",
+          "route": "/hr-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Staff Directory",
+          "route": "/staff-directory",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Staff Scheduling",
+          "route": "/staff-scheduling",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Staff Performance Review",
+          "route": "/staff-performance-review",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Timesheet Management",
+          "route": "/timesheet-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Timeclock Payroll",
+          "route": "/timeclock-payroll",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Payroll Management",
+          "route": "/payroll-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Leave Requests",
+          "route": "/leave-requests",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Training LMS",
+          "route": "/training-lms",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Wearable Integration",
+          "route": "/wearable-integration",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "General Ledger",
+          "route": "/general-ledger",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Trial Balance",
+          "route": "/trial-balance",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Balance Sheet",
+          "route": "/balance-sheet",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Income Statement",
+          "route": "/income-statement",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Cash Flow Statement",
+          "route": "/cash-flow-statement",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Accounts Receivable",
+          "route": "/accounts-receivable",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Accounts Payable",
+          "route": "/accounts-payable",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Bank Account Management",
+          "route": "/bank-account-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Budget Management",
+          "route": "/budget-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Capital Management",
+          "route": "/capital-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Assets Management",
+          "route": "/assets-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Liabilities Management",
+          "route": "/liabilities-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Equity Management",
+          "route": "/equity-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Retained Earnings",
+          "route": "/retained-earnings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Cost Centers",
+          "route": "/cost-centers",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Loss Account",
+          "route": "/loss-account",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Partners Current Account",
+          "route": "/partners-current-account",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Expense Tracking",
+          "route": "/expense-tracking",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Expenses Management",
+          "route": "/expenses-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Sales Management",
+          "route": "/sales-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Accounting Integration",
+          "route": "/accounting-integration",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Financial Settings",
+          "route": "/financial-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Warranty Management",
+          "route": "/warranty-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Contract Management",
+          "route": "/contract-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Insurance Claims",
+          "route": "/insurance-claims",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Marketing Hub",
+          "route": "/marketing-hub",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Marketing Automation",
+          "route": "/marketing-automation",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Email Marketing Campaigns",
+          "route": "/email-marketing-campaigns",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Social Media Integration",
+          "route": "/social-media-integration",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Social Media Monitoring",
+          "route": "/social-media-monitoring",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Google My Business",
+          "route": "/google-my-business",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Chat",
+          "route": "/chat",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Support Chat Dashboard",
+          "route": "/support-chat-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Notifications",
+          "route": "/notifications",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Compliance Management",
+          "route": "/compliance-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "ZATCA Settings",
+          "route": "/zatca-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "VAT Settings",
+          "route": "/vat-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Zakat Settings",
+          "route": "/zakat-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Safety Incidents",
+          "route": "/safety-incidents",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Environmental Compliance",
+          "route": "/environmental-compliance",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "ISO Quality Management",
+          "route": "/iso-quality-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Equipment Calibration",
+          "route": "/equipment-calibration",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Franchise Management",
+          "route": "/franchise-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Globalization Layer",
+          "route": "/globalization-layer",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Multi Location Dashboard",
+          "route": "/multi-location-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI Automation",
+          "route": "/ai-automation",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI Chatbot",
+          "route": "/ai-chatbot",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI Chatbot Assistant",
+          "route": "/ai-chatbot-assistant",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI Service Advisor",
+          "route": "/ai-service-advisor",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Voice Commands",
+          "route": "/voice-commands",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Voice Command Interface",
+          "route": "/voice-command-interface",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Smart Damage Assessment",
+          "route": "/smart-damage-assessment",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "ML Fraud Detection",
+          "route": "/ml-fraud-detection",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Neural Network Prediction",
+          "route": "/neural-network-prediction",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Emerging Technologies",
+          "route": "/emerging-technologies",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "NextGen Technologies",
+          "route": "/next-gen-technologies",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "IoT Dashboard",
+          "route": "/io-t-dashboard",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Edge Computing",
+          "route": "/edge-computing",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Digital Twin Viewer",
+          "route": "/digital-twin-viewer",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Drone Inspection",
+          "route": "/drone-inspection",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "AR Repair Guide",
+          "route": "/ar-repair-guide",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "AR Overlay",
+          "route": "/ar-overlay",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "VR Showroom",
+          "route": "/vr-showroom",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Blockchain Service History",
+          "route": "/blockchain-service-history",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Smart Contracts",
+          "route": "/smart-contracts",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Quantum Computing",
+          "route": "/quantum-computing",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Sustainable Energy Monitoring",
+          "route": "/sustainable-energy-monitoring",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Digital Signage",
+          "route": "/digital-signage",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Security Cameras",
+          "route": "/security-cameras",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Mobile Device Management",
+          "route": "/mobile-device-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Document Management",
+          "route": "/document-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Document OCR",
+          "route": "/document-ocr",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Data Import Export",
+          "route": "/data-import-export",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Data Backup",
+          "route": "/data-backup",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "User Profile",
+          "route": "/user-profile",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "System Settings",
+          "route": "/system-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "User Settings",
+          "route": "/user-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Security Settings",
+          "route": "/security-settings",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Role Management",
+          "route": "/role-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Tasks",
+          "route": "/tasks",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Task Management",
+          "route": "/task-management",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Tools",
+          "route": "/tools",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Dashboard Widgets",
+          "route": "/dashboard-widgets",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "SMS Integration",
+          "route": "/sms-integration",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Sales Guide",
+          "route": "/sales-guide",
+          "status": "pending",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
         }
       ]
     }
   ],
   "totals": {
     "total": 402,
-    "built": 113,
+    "built": 114,
     "designedMobile": 113
   }
 }
