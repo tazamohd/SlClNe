@@ -1,0 +1,62 @@
+{
+  "agents": 24,
+  "waves": [
+    { "id":"W0", "name":"Reconnaissance", "active": true, "days": 3,
+      "agents":"Agents 01 Orchestrator · 02 Registry Auditor",
+      "exit":"Control system, master registry, gap report, dependency graph and risk register exist. No mass implementation yet.",
+      "groups":[ {"id":"G0","name":"Repository audit","days":0,"done":true,"domains":[]},
+                 {"id":"G1","name":"Master registry, matrix and generated coverage gates","days":3,"domains":[]} ] },
+    { "id":"W1", "name":"Foundation — the critical path", "days": 42,
+      "agents":"Agents 04 UI · 05 Backend/Data · 06 Auth/Security · 07 Test Infrastructure",
+      "exit":"Contracts stable: primitives, repository + API + schema, authn/authz, test harness. Product agents idle until this lands.",
+      "groups":[ {"id":"G2","name":"UI foundation, modal, form, shells, 23 dead CTAs","days":18,"domains":["ui"]},
+                 {"id":"G3","name":"Server, schema, RLS, auth lifecycle, RBAC, audit, repository swap","days":24,"domains":["auth"]} ] },
+    { "id":"W2", "name":"Product parallelisation", "days": 146,
+      "agents":"Agents 08 Workshop · 09 CRM · 10 Inventory · 11 Procurement · 12 Accounting · 13 Insurance/Fleet/Loans · 14 HR · 15 AI · 16 Portals · 17 Website",
+      "exit":"Every domain capability implemented against real endpoints.",
+      "groups":[ {"id":"G4","name":"Customers and vehicles — CRUD and detail pages","days":12,"domains":["crm"]},
+                 {"id":"G5","name":"Workshop chain, estimates, invoices, payments","days":16,"domains":["workshop"]},
+                 {"id":"G6","name":"Inventory and procurement","days":12,"domains":["parts","procurement"]},
+                 {"id":"G7","name":"Accounting, tax, reconciliation, reports","days":12,"domains":["accounting"]},
+                 {"id":"G9","name":"AI hub and administration","days":14,"domains":["ai","admin"]},
+                 {"id":"G10","name":"Portals, kiosk, customer mobile app","days":20,"domains":["portals","customerapp"]},
+                 {"id":"G11","name":"Public website and landing system","days":14,"domains":["website"]},
+                 {"id":"G12","name":"Feature-map screens","days":28,"domains":["featuremap"]} ] },
+    { "id":"W3", "name":"Cross-cutting hardening — overlaps W2", "days": 44,
+      "agents":"Agents 18 Mobile/Tablet · 19 Arabic/RTL · 20 Accessibility · 21 Security · 22 Performance",
+      "exit":"Sweeps stay current with W2 rather than queueing behind it.",
+      "groups":[ {"id":"G13","name":"Integrations, files, notifications, search, print, security, a11y, performance","days":26,"domains":[]},
+                 {"id":"—","name":"Responsive, tablet and Arabic/RTL sweep (57 mobile backfills)","days":18,"domains":[]} ] },
+    { "id":"W4", "name":"System integration", "days": 18,
+      "agents":"Agents 03 Release Manager · 23 QA/E2E",
+      "exit":"Full regression green: typecheck, build, unit, integration, E2E, RBAC, security, visual, responsive, RTL, performance.",
+      "groups":[ {"id":"G14a","name":"Full suite, contract, integrity, concurrency, large dataset","days":18,"domains":[]} ] },
+    { "id":"W5", "name":"Certification", "days": 12,
+      "agents":"Agents 03 Release Manager · 24 Documentation",
+      "exit":"Registry fully verified, all gates pass, certification report generated.",
+      "groups":[ {"id":"G14b","name":"Backup/DR restore drill, CI/CD, staging, certification report","days":12,"domains":[]} ] }
+  ],
+  "goldenPaths": [
+    "New customer to paid invoice","Existing customer service","Mobile customer booking",
+    "Technician job completion","Customer estimate approval","Parts procurement",
+    "Inventory receiving","Inventory consumption","Supplier order","CRM lead conversion",
+    "Insurance claim","Fleet contract","Loan workflow","Employee onboarding",
+    "Organization / branch setup","User invitation + RBAC","Accounting reconciliation",
+    "Report generation","Customer portal","Technician portal","Supplier portal",
+    "Call center","Kiosk"
+  ],
+  "releaseCategories": [
+    "Architecture","UI/UX","Desktop","Tablet","Mobile","Arabic/RTL","Backend","Data",
+    "Mini ERP","ERP","Portals","Website","AI","Integrations","RBAC","Security",
+    "Accessibility","Performance","Testing","Observability","Recovery","Documentation"
+  ],
+  "releaseBlockers": [
+    "No P0 defect open","No P1 defect open","No critical golden-path failure",
+    "No cross-tenant access in the RBAC lab","No unauthorized financial operation",
+    "No financial calculation corruption","No inventory corruption",
+    "No authentication bypass","No critical security vulnerability",
+    "No exposed secret (three chat-exposed PATs rotated)","No major data loss path",
+    "Backup restore drill passed","No broken critical mobile workflow",
+    "Invoice and payment workflows intact"
+  ]
+}
