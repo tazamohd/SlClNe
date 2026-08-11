@@ -14,6 +14,7 @@ import { badRequest, conflict, forbidden, notFound, ruleViolated } from '../http
 import { metaOf, principalOf } from '../http/context'
 import { collectionByKey } from '../registry'
 import { requirePermission } from '../security/permissions'
+import { requireSodClear } from '../security/sod'
 import { presentRow, type RouteDeps } from './collections'
 
 function def() {
@@ -51,7 +52,16 @@ export function registerWorkshopRoutes(app: FastifyInstance, deps: RouteDeps): v
       if (failure) throw ruleViolated(failure.message, failure.field)
 
       /* Passing QC is an approval action, and the technician who did the work
-       * may not be the one who passes it. */
+       * may not be the one who passes it. Two checks, because they catch
+       * different things:
+       *
+       *  - the record check: the actor is the technician currently assigned;
+       *  - the trail check: the actor *performed* the repair, whoever is
+       *    assigned now. That is the control the SOD table actually declares —
+       *    four of its six pairs are held on both sides by one role, so no role
+       *    check can express any of them (F-004). A manager who moved the job
+       *    through repair and then signs off their own work passes the first
+       *    check and fails the second. */
       if (parsed.data.to === 'delivery' && before.stage === 'qc') {
         requirePermission(principal, 'jobcards', 'a')
         const conflictFound = checkQcIndependence({
@@ -59,6 +69,12 @@ export function registerWorkshopRoutes(app: FastifyInstance, deps: RouteDeps): v
           performedByUserId: before.assignedTechId,
         })
         if (conflictFound) throw forbidden(conflictFound.message)
+        await requireSodClear(deps.db, tx, principal, {
+          activity: 'Pass quality check',
+          entity: 'job_card',
+          entityId: before.id,
+          ...metaOf(request),
+        })
       }
 
       const [after] = await tx

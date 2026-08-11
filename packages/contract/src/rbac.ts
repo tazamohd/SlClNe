@@ -10,8 +10,21 @@
  *  request is re-checked here. */
 import { z } from 'zod'
 
-/** v=view · c=create · e=edit · x=delete · a=approve */
-export const action = z.enum(['v', 'c', 'e', 'x', 'a'])
+/** v=view · c=create · e=edit · d=delete · a=approve · x=export
+ *
+ *  Six letters, not five, and `x` is export rather than delete. `handoff/RBAC.md`
+ *  documents five and calls `x` delete; the matrix disagrees and the matrix is
+ *  what is enforced. `dashboard/owner`, `hr/manager` and `accounting/manager`
+ *  are all `vx` — nobody deletes a dashboard — while `d` appears as `vced` for
+ *  roles that may remove an appointment and `vcedax` for the full set.
+ *
+ *  This is not a naming quibble. `routes/collections.ts` checked `'x'` on
+ *  DELETE, which under the correct reading granted delete to every role holding
+ *  view-plus-export: accountant on the audit log, job cards, estimates and
+ *  inventory; technician and customer on their portals. Twenty-odd cells, live
+ *  until it was caught. Any caller still reading this enum as five letters is
+ *  asking the wrong question. */
+export const action = z.enum(['v', 'c', 'e', 'd', 'a', 'x'])
 export type Action = z.infer<typeof action>
 
 export const moduleId = z.enum([
@@ -169,9 +182,24 @@ export function approvalCeilingHalalas(role: RoleId): number | null {
  *  Derived, never stored: any role with a non-zero ceiling implicitly holds
  *  `approvals: 'va'`, which is why the matrix and the approval inbox cannot
  *  disagree. */
-export function canApprove(role: RoleId, amountHalalas?: number): boolean {
+export function canApprove(
+  role: RoleId,
+  amountHalalas?: number,
+  module: string = 'approvals'
+): boolean {
+  // Authority and ceiling answer different questions and both must hold. `qc`
+  // approves a job card with a ceiling of zero — it passes quality, it releases
+  // no money. `superadmin` has an unlimited ceiling and approve only on ai,
+  // admin and settings, because a platform administrator administers the
+  // platform rather than approving a tenant's purchase orders.
+  //
+  // Reading the ceiling alone said yes for superadmin on every business
+  // document — a tenant-boundary violation, and a disagreement with the
+  // Approval Inbox, which reads the matrix. The client engine was corrected
+  // first; this copy had regressed to ceiling-only and is now aligned.
+  if (!can(module as ModuleId, 'a', role)) return false
   const ceiling = approvalCeilingHalalas(role)
-  if (ceiling === 0) return false
+  if (ceiling === 0) return amountHalalas === undefined
   if (ceiling === null) return true
   return amountHalalas === undefined || amountHalalas <= ceiling
 }

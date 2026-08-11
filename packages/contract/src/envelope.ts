@@ -59,6 +59,11 @@ export const errorCode = z.enum([
   'rule_violated',
   'approval_required',
   'rate_limited',
+  // An integration exists as an adapter but has no credentials configured, so
+  // the route refuses rather than pretending. The auth work emits this for SSO,
+  // WebAuthn, social login and TOTP; without it in the enum, a client parsing
+  // with `errorEnvelope` rejects a response the server legitimately sends.
+  'external_dependency_unavailable',
   'internal',
 ])
 
@@ -88,6 +93,10 @@ export const HTTP_STATUS_FOR_CODE: Record<ErrorCode, number> = {
   rule_violated: 422,
   approval_required: 403,
   rate_limited: 429,
+  // 503, not 500: the service is fine, the integration is not configured. A
+  // client should tell the user the feature is unavailable, not that something
+  // broke.
+  external_dependency_unavailable: 503,
   internal: 500,
 }
 

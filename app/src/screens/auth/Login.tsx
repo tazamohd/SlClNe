@@ -12,19 +12,26 @@ import { ROLES, destinationFor } from '@/data/rbac'
 import type { Role, RoleId } from '@/data/types'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
-/** Sign-in with the 14 demo role cards.
+/** Sign-in.
  *
- *  Clicking a card fills the credentials; the user still presses Sign In. That
- *  two-step is deliberate — it proves the real form works rather than
- *  side-stepping it, and it's what the role-filtering demo depends on.
+ *  Two paths through the same form, chosen by whether this build has an API:
  *
- *  In production this posts to the auth endpoint and stores a JWT; the shared
- *  demo password and the role lookup below are the only parts that go away. */
+ *  - **Live** (`VITE_API_URL` set): the credentials go to `POST /auth/login`,
+ *    which decides. The role arrives in a signed token; nothing on this screen
+ *    picks one. The demo cards are hidden, because a card that filled a
+ *    password no server holds would only be a way to fail.
+ *  - **Demo** (every build until the API is deployed): the design's role
+ *    picker. Clicking a card fills the credentials and the user still presses
+ *    Sign In — the two-step is deliberate, it exercises the real form rather
+ *    than side-stepping it.
+ *
+ *  The demo password is a fixture, not a credential: no server accepts it, and
+ *  the seed deliberately ships no password hashes at all. */
 const DEMO_PASSWORD = 'Demo@1234'
 
 export function Login() {
   const { t, rtl } = usePreferences()
-  const { signIn } = useSession()
+  const { signIn, signInWithPassword, live } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
@@ -34,6 +41,7 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(true)
   const [picked, setPicked] = useState<RoleId | null>(null)
+  const [busy, setBusy] = useState(false)
 
   function fillFrom(role: Role) {
     setEmail(role.demo.email)
@@ -49,12 +57,26 @@ export function Login() {
     )
   }
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault()
     const normalized = email.trim().toLowerCase()
 
     if (!normalized || !password) {
       toast.show({ title: t('Error'), description: t('Please fill in all fields'), error: true })
+      return
+    }
+
+    if (live) {
+      setBusy(true)
+      const result = await signInWithPassword(normalized, password)
+      setBusy(false)
+      if (!result.ok) {
+        toast.show({ title: t('Sign in failed'), description: result.message, error: true })
+        return
+      }
+      /* Where they land follows from the role the server returned, never from
+       * anything typed into this form. */
+      navigate(destinationFor(result.role), { replace: true })
       return
     }
 
@@ -174,8 +196,8 @@ export function Login() {
               </Link>
             </div>
 
-            <Button type="submit" size="lg" className="w-full">
-              {t('Sign In')}
+            <Button type="submit" size="lg" className="w-full" disabled={busy}>
+              {busy ? t('Signing in…') : t('Sign In')}
             </Button>
 
             <p className="text-center font-action text-sm text-muted">
@@ -187,7 +209,13 @@ export function Login() {
           </form>
         </div>
 
-        {/* ── Demo roles ──────────────────────────────────────────────── */}
+        {/* ── Demo roles ──────────────────────────────────────────────────
+            Hidden once an API is configured: against a real server these cards
+            would fill a password nobody holds, and offering a role picker
+            beside a real sign-in form invites the reading that picking a role
+            grants it. It does not — the server decides — but the screen should
+            not suggest otherwise. */}
+        {live ? null : (
         <div className="flex flex-col gap-[13px] rounded-lg border border-border bg-[color-mix(in_srgb,var(--surface-card)_85%,transparent)] p-5 shadow-lg backdrop-blur-[24px]">
           <div>
             <div className="flex items-center gap-2">
@@ -224,6 +252,7 @@ export function Login() {
             </span>
           </p>
         </div>
+        )}
       </div>
     </AuthLayout>
   )

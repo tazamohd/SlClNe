@@ -22,6 +22,7 @@ import { metaOf, principalOf } from '../http/context'
 import { findReplay, hashBody, recordResult } from '../http/idempotency'
 import { collectionByKey } from '../registry'
 import { requirePermission } from '../security/permissions'
+import { requireSodClear } from '../security/sod'
 import { presentRow, type RouteDeps } from './collections'
 
 function def() {
@@ -70,6 +71,18 @@ export function registerInventoryRoutes(app: FastifyInstance, deps: RouteDeps): 
         .limit(1)
         .for('update')
       if (!part) throw notFound('Part')
+
+      /* "Issue stock" / "Adjust stock count" is the SOD pair the permission
+       * matrix cannot express at all — both duties are `inventory:e`, so no
+       * grant separates them. The audit log does: the movement type is on the
+       * row, so the person who issued stock from this part cannot also be the
+       * one who later adjusts its count to make the shortfall disappear. */
+      await requireSodClear(deps.db, tx, principal, {
+        activity: input.type === 'out' ? 'Issue stock' : 'Adjust stock count',
+        entity: 'part',
+        entityId: part.id,
+        ...metaOf(request),
+      })
 
       const failure = checkMovement({
         type: input.type,

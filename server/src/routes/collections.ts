@@ -33,11 +33,14 @@ export interface RouteDeps {
  *  never reaches the wire — hiding it in the client would have been too late. */
 export function presentRow(def: CollectionDef, principal: Principal, row: Record<string, unknown>) {
   const presented = def.present(row)
-  const rules = REDACTIONS[def.key]
-  if (!rules || presented === null || typeof presented !== 'object' || Array.isArray(presented)) {
+  if (presented === null || typeof presented !== 'object' || Array.isArray(presented)) {
     return presented
   }
-  return redact(principal, presented as Record<string, unknown>, rules)
+  /* `redact` is called even when this collection declares no rules of its own:
+   * it also applies `GLOBAL_REDACTIONS`, the module-independent sweep that makes
+   * the two otherwise-dead `FIELD_RULES` entries fire the day a payload starts
+   * carrying a salary or a branch P&L figure (F-005). */
+  return redact(principal, presented as Record<string, unknown>, REDACTIONS[def.key])
 }
 
 function tenantColumns(def: CollectionDef, principal: Principal) {
@@ -91,7 +94,9 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
     const principal = principalOf(request)
     requirePermission(principal, def.module, 'v')
     const query = parseListQuery(request.query)
-    if (query.includeDeleted) requirePermission(principal, def.module, 'x')
+    /* Soft-deleted rows are visible to whoever may delete, not to whoever may
+     * export — same six-letter correction as the DELETE route below. */
+    if (query.includeDeleted) requirePermission(principal, def.module, 'd')
 
     return withTenant(deps.db, principal, async (tx) => {
       const result = await listRows(tx, def, query)
@@ -182,7 +187,12 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
 
   app.delete(`${base}/:id`, async (request, reply) => {
     const principal = principalOf(request)
-    requirePermission(principal, def.module, 'x')
+    /* `d`, not `x`. The matrix uses six grant letters and `x` is **export**;
+     * `handoff/RBAC.md` documents five and mislabels it (F-001). Checking `x`
+     * here granted delete to every role holding view-and-export — accountant on
+     * job cards, estimates, inventory and the audit log, technician on the
+     * technician portal, customer on the customer portal. */
+    requirePermission(principal, def.module, 'd')
     const { id } = request.params as { id: string }
 
     await withTenant(deps.db, principal, async (tx) => {
@@ -238,7 +248,7 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
 
   app.post(`${base}/bulk-delete`, async (request) => {
     const principal = principalOf(request)
-    requirePermission(principal, def.module, 'x')
+    requirePermission(principal, def.module, 'd')
     const body = bulkDeleteBody.safeParse(request.body)
     if (!body.success) throw badRequest('Expected { ids: [...] }.')
 

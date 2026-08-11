@@ -513,9 +513,24 @@ describe('role metadata and destinations', () => {
     }
   })
 
-  it('falls back to the first role for an unknown id', () => {
-    // Documented behaviour, and the reason the ceiling above fails open.
-    expect(roleMeta('nobody').id).toBe('owner')
+  it('fails closed on an unknown id rather than inheriting the owner', () => {
+    // Was a characterization test pinning F-006: the fallback was `ROLES[0]` —
+    // the owner — so an unrecognised role inherited an unlimited approval
+    // ceiling and the owner's labels, while `can()` beside it failed closed.
+    // Unreachable only while the role came from `isRoleId`-guarded storage; it
+    // stopped being unreachable the moment SessionProvider began reading a role
+    // out of a JWT claim. `roleMeta` now returns a locked-down role, so the two
+    // halves agree instead of disagreeing in the dangerous direction.
+    const unknown = roleMeta('nobody')
+    expect(unknown.id).toBe('unknown')
+    expect(unknown.limit).toBe(0)
+    expect(unknown.scope).toBe('self')
+    expect(approvalLimit('nobody')).toBe(0)
+    // And nothing is granted to it, because `can()` finds no such column.
+    for (const action of ACTIONS) {
+      expect(can('jobcards', action, 'nobody')).toBe(false)
+      expect(can('audit', action, 'nobody')).toBe(false)
+    }
   })
 
   it('lands every role on a route that exists', () => {

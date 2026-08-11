@@ -46,6 +46,15 @@ export interface TokenOverrides {
 
 /** Drops and recreates the test database, applies the committed migrations and
  *  seeds it from the app's fixtures. */
+/** The role name out of a connection string, for the one grant the harness needs. */
+function adminRoleOf(url: string): string {
+  try {
+    return new URL(url).username || 'postgres'
+  } catch {
+    return 'postgres'
+  }
+}
+
 export async function resetDatabase(): Promise<Env> {
   loadDotEnvFile()
   const source = loadEnv()
@@ -53,6 +62,19 @@ export async function resetDatabase(): Promise<Env> {
 
   const maintenance = postgres(swapDatabase(adminUrl, 'postgres'), { max: 1, onnotice: () => {} })
   try {
+    // The admin role is not a superuser — deliberately, so RLS applies to it
+    // too — which means it cannot terminate a backend belonging to the app
+    // role without `pg_signal_backend`. Without the grant this raises
+    // "permission denied to terminate process" roughly one run in six: rare
+    // enough to look like a bad test, frequent enough to teach people to
+    // re-run. Granted here rather than in a migration because it is a property
+    // of the test harness, not of the schema.
+    await maintenance
+      .unsafe(`grant pg_signal_backend to ${adminRoleOf(adminUrl)}`)
+      .catch(() => {
+        // Already granted, or the role lacks permission to grant it. The
+        // terminate below then fails the way it always did, visibly.
+      })
     await maintenance.unsafe(
       `select pg_terminate_backend(pid) from pg_stat_activity where datname = '${TEST_DATABASE}' and pid <> pg_backend_pid()`,
     )

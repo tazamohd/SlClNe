@@ -19,11 +19,20 @@ import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
 import { registerWorkshopRoutes } from './routes/workshop'
 import { bearerToken, createVerifier } from './security/principal'
+import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
+import type { OtpTransport } from './auth'
 import type { Database } from './db/client'
 import type { Env } from './env'
 
-/** Paths served without an access token. Anything not listed is authenticated. */
+/** Paths served without an access token. Anything not listed is authenticated.
+ *
+ *  The authentication routes are the other entry: `isPublicAuthPath` keeps that
+ *  list beside the handlers it describes rather than duplicating it here, where
+ *  the two copies would drift. Everything else — including `/auth/me` and the
+ *  device list — is authenticated by default. */
 const PUBLIC_PATHS = new Set(['/health', '/ready'])
+
+const API_PREFIX = '/api/v1'
 
 interface ZodLike {
   name: string
@@ -42,6 +51,19 @@ function isZodError(error: unknown): error is ZodLike {
 export interface AppDeps {
   db: Database
   env: Env
+  /** Overrides the OTP transport. Only the test suite passes one; in every
+   *  other environment the transport comes from `OTP_TRANSPORT`, whose default
+   *  refuses rather than pretending a code was delivered. */
+  otpTransport?: OtpTransport
+}
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    /** The assembled authentication module, so an administrative caller or a
+     *  test can use the same service the routes use rather than a second one
+     *  built from different configuration. */
+    auth: AuthModule
+  }
 }
 
 export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
@@ -75,9 +97,13 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
     audience: deps.env.JWT_AUDIENCE,
   })
 
+  const auth = buildAuth({ db: deps.db, env: deps.env, transport: deps.otpTransport })
+  app.decorate('auth', auth)
+
   app.addHook('onRequest', async (request) => {
     const path = request.url.split('?')[0] ?? ''
     if (PUBLIC_PATHS.has(path)) return
+    if (isPublicAuthPath(path, API_PREFIX)) return
     request.principal = await verifier.verify(bearerToken(request.headers.authorization))
   })
 
@@ -165,6 +191,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
   registerHealthRoutes(app, { db: deps.db })
   await app.register(
     async (api) => {
+      registerAuth(api, auth)
       registerCollectionRoutes(api, { db: deps.db })
       registerInvoiceRoutes(api, { db: deps.db })
       registerEstimateRoutes(api, { db: deps.db })
