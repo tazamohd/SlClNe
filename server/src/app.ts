@@ -48,6 +48,44 @@ function isZodError(error: unknown): error is ZodLike {
   )
 }
 
+/** The colliding column out of a 23505's constraint name (F-018).
+ *
+ *  Every unique index in the schema is named `<table>_org_<column>_idx`, so
+ *  the middle segment is the field the form control is bound to: a duplicate
+ *  phone/plate/VIN/SKU can land on its own field instead of at form level.
+ *  The postgres driver reports it as `constraint_name`; `constraint` is read
+ *  too in case a wrapper renames it. An unrecognised name yields undefined
+ *  and the envelope stays field-less rather than guessing. */
+function uniqueViolationField(error: unknown): string | undefined {
+  const source = error as { constraint_name?: string; constraint?: string }
+  const constraint = source.constraint_name ?? source.constraint
+  if (typeof constraint !== 'string') return undefined
+  const match = /^[a-z0-9_]+_org_([a-z0-9_]+)_idx$/.exec(constraint)
+  if (!match?.[1]) return undefined
+  /* Column names are snake_case; row fields are camelCase. */
+  return match[1].replace(/_([a-z0-9])/g, (_, letter: string) => letter.toUpperCase())
+}
+
+/** The shared taxonomy's code for a framework-raised 4xx (F-018). */
+function errorCodeForStatus(status: number): string {
+  switch (status) {
+    case 401:
+      return 'unauthenticated'
+    case 403:
+      return 'forbidden'
+    case 404:
+      return 'not_found'
+    case 409:
+      return 'conflict'
+    case 422:
+      return 'validation_failed'
+    case 429:
+      return 'rate_limited'
+    default:
+      return 'bad_request'
+  }
+}
+
 export interface AppDeps {
   db: Database
   env: Env
@@ -142,11 +180,17 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
 
     const driverCode = (error as { code?: string }).code
     if (driverCode === '23505') {
+      /* F-018: the constraint name carries which column collided —
+       * `customers_org_phone_idx` means the phone. Without the field, a
+       * duplicate phone/plate/VIN lands at form level instead of on the
+       * control that caused it. */
+      const field = uniqueViolationField(error)
       reply.code(409)
       return reply.send({
         error: {
           code: 'conflict',
-          message: 'That value is already in use.',
+          message: field ? `That ${field} is already in use.` : 'That value is already in use.',
+          ...(field ? { field } : {}),
           requestId: request.id,
         },
       })
@@ -161,10 +205,26 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
         },
       })
     }
-    if ((error as { statusCode?: number }).statusCode === 429) {
-      reply.code(429)
+    /* F-018: Fastify itself raises 4xx errors — an empty or malformed JSON
+     * body, an oversized payload, an unsupported media type, the rate
+     * limiter's 429. Only 429 used to be honoured; everything else fell
+     * through to the 500 branch, so a client's malformed request read as a
+     * server fault. Any framework 4xx now passes through with its own status
+     * and a code from the shared taxonomy. Framework messages are template
+     * text ("Body cannot be empty…"), not stack traces, so they are safe to
+     * forward — and useful, because they say what to fix. */
+    const statusCode = (error as { statusCode?: number }).statusCode
+    if (typeof statusCode === 'number' && statusCode >= 400 && statusCode < 500) {
+      reply.code(statusCode)
       return reply.send({
-        error: { code: 'rate_limited', message: 'Too many requests.', requestId: request.id },
+        error: {
+          code: errorCodeForStatus(statusCode),
+          message:
+            statusCode === 429
+              ? 'Too many requests.'
+              : (error as { message?: string }).message || 'The request could not be processed.',
+          requestId: request.id,
+        },
       })
     }
 
