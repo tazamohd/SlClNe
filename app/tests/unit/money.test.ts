@@ -61,21 +61,23 @@ describe('formatSar', () => {
     expect(formatSar(12_450.75, {})).toBe('SAR 12,450.75')
   })
 
-  it('renders a rounding artefact as negative zero', () => {
-    // DEFECT (reported, not fixed): a residue of -0.004 — the kind a
-    // reconciliation difference produces — prints "SAR -0.00", which reads as a
-    // credit the ledger does not have. Rounding to zero should lose the sign.
-    expect(formatSar(-0.004)).toBe('SAR -0.00')
-    expect(formatSar(-0)).toBe('SAR -0.00')
+  it('loses the sign on a residue that rounds away to nothing (F-007)', () => {
+    // A residue of -0.004 is what a reconciliation difference produces. It used
+    // to print "SAR -0.00", which reads as a credit the ledger does not have.
+    expect(formatSar(-0.004)).toBe('SAR 0.00')
+    expect(formatSar(-0)).toBe('SAR 0.00')
+    // Narrow: an amount that genuinely rounds to a halala keeps its sign.
+    expect(formatSar(-0.005)).toBe('SAR -0.01')
   })
 
-  it('prints a non-finite amount instead of refusing it', () => {
-    // DEFECT (reported, not fixed): a division by an empty collection reaches
-    // the screen as "SAR NaN" / "SAR ∞" rather than an em dash or an error
-    // state. `Opportunities` guards its average deal by hand for this reason;
-    // nothing stops the next screen from forgetting.
-    expect(formatSar(Number.NaN)).toBe('SAR NaN')
-    expect(formatSar(Number.POSITIVE_INFINITY)).toBe('SAR ∞')
+  it('refuses a non-finite amount rather than printing one (F-007)', () => {
+    // A division by an empty collection used to reach the screen as "SAR NaN" /
+    // "SAR ∞". `Opportunities` guards its average deal by hand for this reason;
+    // nothing stopped the next screen from forgetting.
+    expect(formatSar(Number.NaN)).toBe('—')
+    expect(formatSar(Number.POSITIVE_INFINITY)).toBe('—')
+    expect(formatSar(Number.NEGATIVE_INFINITY)).toBe('—')
+    expect(formatSar(Number.NaN, { bare: true })).toBe('—')
   })
 })
 
@@ -122,11 +124,13 @@ describe('parseSar', () => {
     }
   })
 
-  it('loses the sign on an accounting-style negative in brackets', () => {
-    // DEFECT (reported, not fixed): "(1,200)" is how ledgers write -1,200, and
-    // this reads it as +1,200 — a 2,400 swing in any total that meets one. No
-    // seeded row uses the form today, which is why it has never bitten.
-    expect(parseSar('(1,200)')).toBe(1200)
+  it('reads an accounting-style negative in brackets as negative (F-007)', () => {
+    // "(1,200)" is how a ledger writes -1,200. Reading it as +1,200 was a 2,400
+    // swing in any total that met one. No seeded row uses the form today, which
+    // is why it never bit.
+    expect(parseSar('(1,200)')).toBe(-1200)
+    expect(parseSar('SAR (1,200.50)')).toBe(-1200.5)
+    expect(parseSar('(pending)')).toBe(0)
   })
 })
 
