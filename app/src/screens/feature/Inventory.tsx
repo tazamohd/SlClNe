@@ -512,7 +512,14 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
       emptyDescription="This part has never been transferred between branches."
     />
   ) : tab === 'pricing' ? (
-    <PricingTab parts={searched} loading={isLoading} hidePrice={hidePrice} hideCost={hideCost} />
+    <PricingTab
+      parts={searched}
+      loading={isLoading}
+      hidePrice={hidePrice}
+      hideCost={hideCost}
+      query={query}
+      onQuery={setQuery}
+    />
   ) : tab === 'audit' ? (
     <LedgerTab
       parts={parts}
@@ -562,7 +569,17 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
         />
       )}
 
-      {body}
+      {/* The tab bar is a `tablist` whose panel is rendered here, so the panel
+          says what it is and can be reached with a keyboard rather than being
+          an anonymous region that follows a set of buttons. */}
+      <div
+        role="tabpanel"
+        tabIndex={0}
+        aria-label={t(TABS.find((entry) => entry.id === tab)?.label ?? 'Overview')}
+        className="flex flex-col gap-6 focus-visible:outline-none"
+      >
+        {body}
+      </div>
 
       {creating ? <AddPartModal onClose={() => setCreating(false)} /> : null}
 
@@ -830,11 +847,15 @@ function PricingTab({
   loading,
   hidePrice,
   hideCost,
+  query,
+  onQuery,
 }: {
   parts: readonly Part[]
   loading: boolean
   hidePrice: boolean
   hideCost: boolean
+  query: string
+  onQuery: (next: string) => void
 }) {
   const { t } = usePreferences()
 
@@ -904,6 +925,17 @@ function PricingTab({
     <Section
       title={t('Pricing & Margin')}
       subtitle={t('Sell price against cost, and what the stock on hand is worth.')}
+      toolbar={
+        // The same search the Overview tab uses, over the same state — a filter
+        // that keeps applying while its box is nowhere on screen is how a table
+        // ends up "missing" rows nobody can explain.
+        <SearchField
+          value={query}
+          onChange={onQuery}
+          placeholder={t('Search parts...')}
+          className="w-full sm:w-[280px]"
+        />
+      }
     >
       {hideCost ? (
         <ReadOnlyNotice

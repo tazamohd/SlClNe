@@ -109,6 +109,30 @@ describe('Inventory tabs each show their own content', () => {
     for (const part of PARTS) expect(screen.queryByText(part.name)).not.toBeInTheDocument()
   })
 
+  it('names the panel the active tab controls, so it is reachable and announced', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Inventory api={null} />)
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+
+    expect(screen.getByRole('tabpanel', { name: /overview/i })).toBeInTheDocument()
+    await openTab(user, /alerts/i)
+    expect(screen.getByRole('tabpanel', { name: /alerts/i })).toBeInTheDocument()
+  })
+
+  it('keeps the search visible on every tab it still filters', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Inventory api={null} />)
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+
+    await user.type(screen.getByRole('searchbox'), PARTS[0]!.sku)
+    await waitFor(() => expect(screen.queryByText(PARTS[1]!.name)).not.toBeInTheDocument())
+
+    await openTab(user, /pricing/i)
+    // The filter still applies, so the box that set it has to still be there.
+    expect(screen.getByRole('searchbox')).toHaveValue(PARTS[0]!.sku)
+    expect(screen.queryByText(PARTS[1]!.name)).not.toBeInTheDocument()
+  })
+
   it('prices parts on Pricing, and explains a dataset that carries no cost', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Inventory api={null} />)
