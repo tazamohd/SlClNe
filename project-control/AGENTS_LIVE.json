@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T01:45:00Z",
+  "asOf": "2026-08-12T03:00:00Z",
   "wave": "W2",
   "waveName": "Product",
-  "waveNote": "Tranche 1 running: four agents on the Golden Path 01 chain — new customer through to paid invoice — because that is the release-blocking path and the one that proves the Mini ERP is a connected transaction rather than sixteen screens that render. Six more product agents wait for tranche 2 rather than launching now: concurrency is bounded by contention, not maximised.",
+  "waveNote": "Tranche 1 landed and verified: agents 08, 09, 10, 12 on the Golden Path 01 chain. The orchestrator re-verified each Definition of Done independently and, doing so, found and fixed two live server authorization holes the agents had reported (a QC/SOD PATCH bypass and a customer-PII leak), wired the shared session-token seam three agents were blocked on, fixed a barrel-parser undercount in its own registry generator, and applied the F-007 money fix. Six product agents remain for tranche 2.",
   "agents": [
     {
       "id": "03",
@@ -19,7 +19,7 @@
       "blocks": [
         "every merge to main — no agent merges its own branch"
       ],
-      "notes": "Before this wave opened, the router seam: ten agents were about to append to the same three screen maps in routes/index.tsx, which the dependency graph names as the worst contention point in the repository. Each domain now owns a barrel and composition throws on a double claim rather than silently overwriting. Verified behaviour-preserving — 114 of 402 still rendering, both gates at baseline, 402 smoke routes, 183 app tests."
+      "notes": "Integration pass after tranche 1: re-verified all four Definitions of Done independently rather than trusting the reports, which is how the two live security holes were confirmed over HTTP before and after the fix. Landed the two security fixes (F-012, F-013), the shared token seam (R1) three agents needed, a parser undercount in build-registry.mjs that the seam itself introduced, and F-007. Nine open items routed to their owners in FINDINGS (F-014 through F-021). Server 225->227, app 479->476 (F-007 retired three fails-scaffolds), gates at or below baseline."
     },
     {
       "id": "04",
@@ -98,7 +98,7 @@
       "id": "08",
       "name": "Workshop / Mini ERP",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T01:45:00Z",
       "scope": "The six-stage chain persisted through POST /jobs/:id/transition, the New Job Card CTA, JobCardDetail, and F-004 — feeding sodViolation the real audit history so QC blocks the person who did the repair rather than every technician",
       "owns": [
@@ -106,13 +106,13 @@
         "app/src/screens/domains/workshop.ts"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+      "notes": "JobCardDetail, the New Job Card CTA and the persisted six-stage chain landed (7b183bb, 85a9730, 706507e). Re-verification confirmed the SOD refusal over HTTP and, from the same reading, found the P0 bypass now closed as F-012 and the qc-role and assigned_tech_id defects logged as F-014/F-015. Stage persistence is correct and tested; live until R1, which now landed."
     },
     {
       "id": "09",
       "name": "Customers / CRM",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T01:45:00Z",
       "scope": "Customers and Vehicles CRUD through the modal and form systems, CustomerDetail and VehicleDetail, and the shared DetailPage frame that nine detail screens will consume",
       "owns": [
@@ -122,13 +122,13 @@
         "app/src/components/shell/DetailPage.tsx (W2 grant)"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+      "notes": "DetailPage frame, CustomerDetail, VehicleDetail and Customers/Vehicles CRUD landed (709b3f5, 4ea997a, f1f1800, bb9fd99, 57a332b). Its live probe of the API found the customer-PII leak, now closed as F-013. DetailPage contract documented for the four agents that will consume it."
     },
     {
       "id": "10",
       "name": "Parts / Inventory",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T01:45:00Z",
       "scope": "The six-tabs-one-table defect, stock movements through POST /inventory/:id/movement, and the §A11 On Hand invariant proven rather than assumed",
       "owns": [
@@ -137,13 +137,13 @@
         "app/src/screens/domains/parts.ts"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+      "notes": "The six-tabs-one-table defect, stock movements and the §A11 On Hand invariant landed (6b448c7, 4b5b7f5, 2f1cc14, 39d46e2, 31082c4). Refused to fake four prohibitions the server does not enforce, logging them as F-017 with a GAP test each — the right outcome."
     },
     {
       "id": "12",
       "name": "Accounting / Finance",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T01:45:00Z",
       "scope": "Invoice create/issue/edit and payment recording against the real endpoints with server-computed totals, the §A10 financial-integrity suite, and the F-007 money edge cases pinned as tests",
       "owns": [
@@ -152,7 +152,7 @@
         "app/src/screens/domains/accounting.ts"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+      "notes": "Invoice create/issue and payment recording against real endpoints, with server-computed totals, plus the §A10 financial-integrity suite (e1563ea, 1b6c48e, 881fe57). Prepared and verified the F-007 patch, now applied. Kept F-008 visible and pinned rather than papering over it."
     }
   ],
   "shared": {

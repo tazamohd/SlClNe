@@ -7,15 +7,15 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 114,
-    "placeholder": 248,
-    "designedMobileOwed": 57,
+    "rendered": 117,
+    "placeholder": 245,
+    "designedMobileOwed": 60,
     "untested": 0,
-    "mockOnly": 114,
+    "mockOnly": 117,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 35,
+    "renderedWithoutAssertion": 38,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -2558,12 +2558,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Customer 360 (contact, vehicles, jobs, invoices)",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -2573,7 +2573,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2593,12 +2593,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -5017,12 +5023,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Alias for JobDetail",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -5032,7 +5038,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -5052,12 +5058,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -12218,12 +12230,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Vehicle 360 (history, docs, insurance)",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12233,7 +12245,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12253,12 +12265,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {

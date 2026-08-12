@@ -1,6 +1,6 @@
 {
-  "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently \u2014 an agent's report is a claim, not a verification.",
-  "updatedAt": "2026-08-11",
+  "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently — an agent's report is a claim, not a verification.",
+  "updatedAt": "2026-08-12",
   "findings": [
     {
       "id": "F-001",
@@ -9,25 +9,25 @@
       "detail": "The type documents v/c/e/x/a with x = delete. The matrix actually contains a-c-d-e-v-x, and 36 grants carry both `d` and `x`, so one of the two is really export. Under the declared reading, accountant holds delete on audit, execreports and jobcards.",
       "why": "The server will implement whatever the letters say. Shipping the matrix before this is settled bakes an accidental delete grant on the audit log into production authorization.",
       "foundBy": "07",
-      "verified": "confirmed and resolved \u2014 orchestrator derived the meaning from the grant distribution rather than asking",
+      "verified": "confirmed and resolved — orchestrator derived the meaning from the grant distribution rather than asking",
       "owner": "01",
       "wave": "W1",
       "decision": "needed: which letter is delete and which is export",
       "status": "resolved by evidence, no decision needed",
-      "resolution": "x = export, d = delete. The matrix itself settles it: dashboard/owner, hr/manager and accounting/manager are all 'vx', and nobody deletes a dashboard \u2014 'vx' is view-plus-export, which is what those roles need. 'd' appears as 'vced' for roles that may remove an appointment and 'vcedax' for the complete set. handoff/RBAC.md documents five letters and mislabels x; the Action type has been corrected to six with the evidence recorded. No caller passed 'x', so nothing depended on the wrong reading."
+      "resolution": "x = export, d = delete. The matrix itself settles it: dashboard/owner, hr/manager and accounting/manager are all 'vx', and nobody deletes a dashboard — 'vx' is view-plus-export, which is what those roles need. 'd' appears as 'vced' for roles that may remove an appointment and 'vcedax' for the complete set. handoff/RBAC.md documents five letters and mislabels x; the Action type has been corrected to six with the evidence recorded. No caller passed 'x', so nothing depended on the wrong reading."
     },
     {
       "id": "F-002",
       "severity": "RESOLVED",
       "title": "canApprove and PERMS.approvals disagree for superadmin",
-      "detail": "superadmin carries an unlimited approval ceiling (limit: null) but no `a` grant on the approvals module (\"vx\"). Note: with x now known to be export, superadmin's 'vx' on approvals means view and export \u2014 it grants no approve at all, so the disagreement with an unlimited ceiling is real and sharper than first stated.",
+      "detail": "superadmin carries an unlimited approval ceiling (limit: null) but no `a` grant on the approvals module (\"vx\"). Note: with x now known to be export, superadmin's 'vx' on approvals means view and export — it grants no approve at all, so the disagreement with an unlimited ceiling is real and sharper than first stated.",
       "why": "The engine and the Approval Inbox would answer the same question differently, and which one wins depends on which code path a screen happens to use.",
       "foundBy": "07",
-      "verified": "confirmed \u2014 orchestrator read both values directly",
+      "verified": "confirmed — orchestrator read both values directly",
       "owner": "06",
       "wave": "W1",
       "status": "fixed",
-      "resolution": "The data was right and the function was wrong. Every role with a ceiling holds `a` on approvals except superadmin, whose approve grants are ai/admin/settings \u2014 a platform administrator administers the platform, it does not approve a tenant's purchase orders. And qc holds approve on jobcards with a ceiling of zero: it passes quality, it releases no money. Authority and ceiling are orthogonal; canApprove read only the ceiling. It now requires both, and takes the module (default 'approvals'), so the engine and the Approval Inbox cannot disagree."
+      "resolution": "The data was right and the function was wrong. Every role with a ceiling holds `a` on approvals except superadmin, whose approve grants are ai/admin/settings — a platform administrator administers the platform, it does not approve a tenant's purchase orders. And qc holds approve on jobcards with a ceiling of zero: it passes quality, it releases no money. Authority and ceiling are orthogonal; canApprove read only the ceiling. It now requires both, and takes the module (default 'approvals'), so the engine and the Approval Inbox cannot disagree."
     },
     {
       "id": "F-003",
@@ -36,11 +36,11 @@
       "detail": "RBACSpec, Index, FlowSpec, UI.EmptyStates, UI.LoadingStates and UI.FormValidation are RBAC-ungated and also present in NAV.",
       "why": "A signed-in customer or supplier sees the RBAC specification page in their menu. The ungated exemption belongs on the route, not the navigation.",
       "foundBy": "07",
-      "verified": "confirmed \u2014 orchestrator cross-referenced RBAC_UNGATED against NAV. Finding this also exposed a parse bug in build-registry.mjs that had silently emptied the same list.",
+      "verified": "confirmed — orchestrator cross-referenced RBAC_UNGATED against NAV. Finding this also exposed a parse bug in build-registry.mjs that had silently emptied the same list.",
       "owner": "04",
       "wave": "W2",
       "status": "fixed",
-      "resolution": "Reference pages are filtered out of NAV in port-design-data.mjs, dropping the 'Design Reference' group and the RBAC Specification entry. They stay routed and reachable by URL for the team \u2014 the menu entry was the defect, not the page. The characterization test that pinned the leak now asserts its absence."
+      "resolution": "Reference pages are filtered out of NAV in port-design-data.mjs, dropping the 'Design Reference' group and the RBAC Specification entry. They stay routed and reachable by URL for the team — the menu entry was the defect, not the page. The characterization test that pinned the leak now asserts its absence."
     },
     {
       "id": "F-004",
@@ -49,11 +49,11 @@
       "detail": "Purchase order raise + approve (owner, manager, procurement); supplier create + payment approve (owner, manager); journal post + approve (accountant); repair + QC (owner, manager, advisor). Only technician/QC is genuinely separated, and WorkshopQC enforces it with a literal role check rather than from the SOD table. A sixth pair (issue stock / adjust stock count) maps to the same permission and cannot be expressed at all.",
       "why": "The SOD table documents a control that exists in one screen and nowhere else. Enforcement must come from the table, server-side, or the table is decoration.",
       "foundBy": "07",
-      "verified": "confirmed, and the framing corrected. The finding said role checks cannot express four of six pairs; the sharper truth is that they cannot express any of them. The table pairs activities, so the control is 'this person must not do both on this record' \u2014 a question about a user and a record, which the role matrix cannot answer even when two roles differ.",
+      "verified": "confirmed, and the framing corrected. The finding said role checks cannot express four of six pairs; the sharper truth is that they cannot express any of them. The table pairs activities, so the control is 'this person must not do both on this record' — a question about a user and a record, which the role matrix cannot answer even when two roles differ.",
       "owner": "06",
       "wave": "W1",
       "status": "fixed",
-      "resolution": "sodRuleFor / sodCounterpart / sodViolation added to rbac.ts, so the table is load-bearing instead of documentation, and WorkshopQC names its activity rather than hardcoding `role === 'technician'`. The role proxy remains, and now says why: no job record carries a performer, so it over-blocks (every technician, including one who never touched the job) and under-blocks (a manager who did the repair passes their own QC). sodViolation implements the real check and is tested; it needs the audit trail agent 05 is building \u2014 actor, action, entity, entityId is exactly its input."
+      "resolution": "sodRuleFor / sodCounterpart / sodViolation added to rbac.ts, so the table is load-bearing instead of documentation, and WorkshopQC names its activity rather than hardcoding `role === 'technician'`. The role proxy remains, and now says why: no job record carries a performer, so it over-blocks (every technician, including one who never touched the job) and under-blocks (a manager who did the repair passes their own QC). sodViolation implements the real check and is tested; it needs the audit trail agent 05 is building — actor, action, entity, entityId is exactly its input."
     },
     {
       "id": "F-005",
@@ -62,7 +62,7 @@
       "detail": "\"Employee salary\" joins Branch P&L as a dead rule: every role in its hidden list is already denied hr view by the module gate. The other five rules are live, and the split is now pinned by a test.",
       "why": "A redaction rule that never fires looks like protection and provides none. Both are kept as defence in depth, but neither should be counted as working.",
       "foundBy": "07",
-      "verified": "reported \u2014 consistent with the Branch P&L finding the orchestrator confirmed earlier",
+      "verified": "reported — consistent with the Branch P&L finding the orchestrator confirmed earlier",
       "owner": "06",
       "wave": "W1",
       "status": "fixed"
@@ -71,7 +71,7 @@
       "id": "F-006",
       "severity": "RESOLVED",
       "title": "roleMeta fails open on an unknown role",
-      "detail": "An unrecognised role falls back to ROLES[0] \u2014 owner \u2014 inheriting an unlimited approval ceiling, while can() fails closed. Partially mitigated: canApprove now consults can() first, which fails closed, so an unknown role can no longer inherit an unlimited ceiling through that path. roleMeta's fallback is still wrong for its other callers.",
+      "detail": "An unrecognised role falls back to ROLES[0] — owner — inheriting an unlimited approval ceiling, while can() fails closed. Partially mitigated: canApprove now consults can() first, which fails closed, so an unknown role can no longer inherit an unlimited ceiling through that path. roleMeta's fallback is still wrong for its other callers.",
       "why": "Unreachable today because isRoleId guards the session. It stops being unreachable the moment the role arrives in a JWT claim, which is exactly what agent 05 is building.",
       "foundBy": "07",
       "verified": "reported",
@@ -81,14 +81,16 @@
     },
     {
       "id": "F-007",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "Money formatting edge cases",
       "detail": "formatSar(-0.004) renders \"SAR -0.00\", so a reconciliation residue reads as a credit; formatSar(NaN) renders \"SAR NaN\"; parseSar(\"(1,200)\") returns +1200, dropping the accounting-negative sign.",
       "why": "No seeded row hits the last case today. All three become reachable the moment real ledger data arrives.",
       "foundBy": "07",
-      "verified": "reported",
+      "verified": "confirmed and fixed by the orchestrator in the integration pass",
       "owner": "12",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "formatSar returns the design's em dash for any non-finite value and drops the sign only on an amount that rounds to zero; parseSar reads a bracketed negative before stripping punctuation. Agent 12 wrote the three as failing tests first; the fix flips them green. Money.tsx."
     },
     {
       "id": "F-008",
@@ -117,9 +119,9 @@
       "severity": "MEDIUM",
       "title": "23 icon names resolve to no glyph",
       "detail": "lucide renamed a family in v0.4xx (AlertTriangle to TriangleAlert, CheckCircle to CircleCheckBig, Home to House). The design bundle still asks for the old names and port-design-data.mjs intersects against lucide's current keys, dropping the misses silently. Its scanner also never collected single-letter names, so the close X on every toast rendered blank.",
-      "why": "User-visible in shipped screens \u2014 the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
+      "why": "User-visible in shipped screens — the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
       "foundBy": "04",
-      "verified": "confirmed \u2014 orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
+      "verified": "confirmed — orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
       "owner": "02",
       "wave": "W1",
       "status": "worked around, durable fix outstanding"
@@ -128,14 +130,128 @@
       "id": "F-011",
       "severity": "RESOLVED",
       "title": "DELETE routes checked the export permission, granting delete to view-plus-export roles",
-      "detail": "routes/collections.ts required 'x' for DELETE, bulk delete and includeDeleted. With x = export, that granted delete to roles holding 'vx' \u2014 accountant on audit, execreports, jobcards, estimates and inventory; technician and customer on their portals. Roughly 20 cells, live in the API.",
-      "why": "This is the concrete harm F-001 predicted. Settling the letters was not academic \u2014 the routes had already been written against the wrong reading.",
+      "detail": "routes/collections.ts required 'x' for DELETE, bulk delete and includeDeleted. With x = export, that granted delete to roles holding 'vx' — accountant on audit, execreports, jobcards, estimates and inventory; technician and customer on their portals. Roughly 20 cells, live in the API.",
+      "why": "This is the concrete harm F-001 predicted. Settling the letters was not academic — the routes had already been written against the wrong reading.",
       "foundBy": "06",
-      "verified": "confirmed \u2014 orchestrator read the routes directly before and after",
+      "verified": "confirmed — orchestrator read the routes directly before and after",
       "owner": "06",
       "wave": "W1",
       "status": "fixed",
       "resolution": "Changed to 'd' and proven over HTTP. The shared contract's five-letter enum and ceiling-only canApprove were corrected at the same time, since any other caller reading them got the wrong answer to both questions."
+    },
+    {
+      "id": "F-012",
+      "severity": "RESOLVED",
+      "title": "A generic PATCH moved a job card's stage around the QC and SOD gates",
+      "detail": "POST /jobs/:id/transition runs the stage machine, the QC approval check and segregation of duties; PATCH /jobs/:id ran none of them and still accepted stage/status, because jobCardUpdate was jobCardCreate.partial(). Any role with jobcards:e could send {stage:'delivery'} and move a car past QC into a completed status the transition route would have refused.",
+      "why": "This is the concrete harm the transition gates exist to prevent, reachable by not using the transition route. §36: the client stepper is not the boundary.",
+      "foundBy": "08",
+      "verified": "confirmed live by agent 08 (repair->delivery skipping qc) and re-proven over HTTP by the orchestrator before and after",
+      "owner": "05",
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "jobCardUpdate now omits stage and status, so a stage key on a generic PATCH is ignored. Not a global server-owned-key rejection, because status is legitimate on invoices and appointments. Regression test in api.test.ts."
+    },
+    {
+      "id": "F-013",
+      "severity": "RESOLVED",
+      "title": "Customer phone and email leaked to a technician on the wire",
+      "detail": "FIELD_RULES hides 'Customer contact details' from technician, qc and supplier and the client hid the column, but REDACTIONS had no customers entry, so GET /customers shipped phone and email in every row. A technician token read every customer's phone number.",
+      "why": "§36: the wire is the boundary, not the component. A redaction that lives only in CSS is not a redaction.",
+      "foundBy": "09",
+      "verified": "confirmed live by agent 09 and re-proven over HTTP by the orchestrator",
+      "owner": "06",
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Added the customers entry to REDACTIONS so the value is dropped on serialisation. Regression test: a technician's rows come back with phone and email null while an owner still sees them."
+    },
+    {
+      "id": "F-014",
+      "severity": "HIGH",
+      "title": "The qc role cannot operate the QC gate it is named for",
+      "detail": "server/src/routes/workshop.ts:41 requires jobcards:e before any transition; qc holds 'va', not 'e'. A qc user gets 403 'the qc role may not edit jobcards' on qc->delivery. Contradicts F-002's resolution, which says qc holds approve on jobcards — it passes quality, it releases no money.",
+      "why": "Either the transition route should accept approve-authority for the QC step, or the matrix should grant qc the edit it needs. Today the one role designed to pass quality cannot.",
+      "foundBy": "08",
+      "verified": "reported by agent 08; consistent with the F-002 resolution the orchestrator recorded",
+      "owner": "06",
+      "wave": "W2"
+    },
+    {
+      "id": "F-015",
+      "severity": "HIGH",
+      "title": "assigned_tech_id is compared to a user id, so a technician sees none of their own jobs",
+      "detail": "assigned_tech_id holds a technicians.id; technicians.user_id is what would be comparable to a principal. (a) checkQcIndependence (workshop.ts:69) can never match, so the record-level QC check is dead — the trail check is what works. (b) The r_own RLS policy (drizzle/0001_rls.sql:74-78) means a technician on 'assigned'/'own' scope sees no job card assigned to them.",
+      "why": "A functional break, not only a latent one: the technician portal's core list is empty for the exact user it is for. The SOD record-check being dead is masked because the audit-trail check covers it.",
+      "foundBy": "08",
+      "verified": "reported by agent 08",
+      "owner": "05",
+      "wave": "W2"
+    },
+    {
+      "id": "F-016",
+      "severity": "MEDIUM",
+      "title": "Seed relationships and balances are internally inconsistent",
+      "detail": "Three separate seed defects, all pinned by tests rather than hidden: job cards carry no jobCardId onto estimates or invoices (seed.ts:127-207), so every job's cost summary is legitimately empty; three of five receipts are orphans with no invoice (seed.ts:236); INV-2026-0142's header total implies SAR 150 of net revenue no line item accounts for (seed.ts:178-198).",
+      "why": "The seed becomes the database. The no-orphan and financial-integrity audits exist to catch exactly this, and they will keep failing until the seed is coherent.",
+      "foundBy": "08 and 12",
+      "verified": "reported by agents 08 and 12, each pinned to the exact rows",
+      "owner": "05",
+      "wave": "W2"
+    },
+    {
+      "id": "F-017",
+      "severity": "MEDIUM",
+      "title": "Inventory prohibitions are unenforced or unexpressible on the server",
+      "detail": "Agent 10 proved the On Hand equation over a 500-case sequence but could not prove four prohibitions, because the server does not implement them: no endpoint writes parts.reserved (checkReservation is dead code), transfer writes only a negative delta and never credits the destination branch (toBranchId is stored and never read, so stock leaves the org's books), adjust is positive-only, and movementType has no 'return'. Replay protection is keyed on a client-chosen header, so two identical unkeyed POSTs are two movements.",
+      "why": "The client keeps quantities consistent while the database can drift — worse than a visible failure. The screen now warns before a transfer commits, but the conservation law is not enforced where it must be.",
+      "foundBy": "10",
+      "verified": "reported by agent 10 with a GAP: test for each unenforced prohibition",
+      "owner": "05",
+      "wave": "W2"
+    },
+    {
+      "id": "F-018",
+      "severity": "LOW",
+      "title": "Server error mapping loses the field and downgrades 4xx to 500",
+      "detail": "app.ts:145 returns the 23505 unique-violation without a `field`, so a duplicate phone/plate/VIN lands at form level instead of on the control that caused it (error.constraint carries the mapping). app.ts:163 honours only statusCode 429; any other Fastify 4xx (e.g. FST_ERR_CTP_EMPTY_JSON_BODY, 400) becomes a 500.",
+      "why": "The CRUD forms the wave built cannot place a duplicate-value error on the right field, and a malformed request reads as a server fault.",
+      "foundBy": "09",
+      "verified": "reported by agent 09, both proven live",
+      "owner": "06",
+      "wave": "W2"
+    },
+    {
+      "id": "F-019",
+      "severity": "LOW",
+      "title": "Two UI-foundation primitives have correctness gaps the wave leaned on",
+      "detail": "Form.tsx errorsFromZod assigns every issue to fields[path[0]]; an issue whose path matches no rendered Field silently refuses submit with no message and no focus move (hit for real with a non-ULID customerId). DataTable.tsx:122-141 puts role=button+tabindex on the <tr> for onRowClick, so an Actions column nests buttons inside a button — valid keyboard, invalid ARIA.",
+      "why": "Both are in shared primitives every product screen uses, so the gap multiplies across the wave.",
+      "foundBy": "09",
+      "verified": "reported by agent 09",
+      "owner": "04",
+      "wave": "W3"
+    },
+    {
+      "id": "F-020",
+      "severity": "LOW",
+      "title": "The client Repository is typed against fixtures, not the contract",
+      "detail": "Repository row types come from data/generated/tables.ts, so contract fields the API really returns — email, type, vin, mileageKm, totalSpentHalalas, costHalalas, _createdAt — are invisible to TypeScript. Agents 09, 10 and 12 each widened the type by hand in their own files.",
+      "why": "Every action-endpoint and detail screen casts around the type system, so a real field-name mismatch would not be caught by the compiler.",
+      "foundBy": "09 and 10 and 12",
+      "verified": "reported independently by three agents",
+      "owner": "05",
+      "wave": "W2"
+    },
+    {
+      "id": "F-021",
+      "severity": "LOW",
+      "title": "Roughly 135 UI strings shipped this wave have no Arabic key",
+      "detail": "The four product agents added English source strings that fall back to English on an Arabic page: ~90 from inventory, ~31 from customers, 14 from workshop. t() never renders empty, so nothing is broken — but the Arabic UI shows English until the keys land in data/generated/ar.ts.",
+      "why": "Arabic and RTL are a first-class release target, not a late pass; the strings work the day they are translated.",
+      "foundBy": "08 and 09 and 10",
+      "verified": "reported with full string lists",
+      "owner": "19",
+      "wave": "W3"
     }
   ]
 }

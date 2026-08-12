@@ -877,9 +877,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "crm",
     "owner": "09",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/CustomerDetail.dc.html",
@@ -1672,9 +1678,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/JobCardDetail.dc.html",
@@ -4028,9 +4040,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "crm",
     "owner": "09",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/VehicleDetail.dc.html",

@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-402 capabilities · 114 rendering · 248 placeholder · 0 data-backed.
+402 capabilities · 117 rendering · 245 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -42,7 +42,7 @@
 | CustomerApp · ServiceTracking | `/customer-app/service-tracking` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Wallet | `/customer-app/wallet` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApproval | `/customer-approval` | app | estimates | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 9 roles | route | DISCOVERED |
-| CustomerDetail | `/customer-detail` | app | customers | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 8 roles | route | DISCOVERED |
+| CustomerDetail | `/customer-detail` | app | customers | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
 | CustomerFeedback | `/customer-feedback` | app | customers | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 8 roles | route | DISCOVERED |
 | CustomerPortal | `/customer-portal` | portal | portalcustomer | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 7 roles | route | DISCOVERED |
 | CustomerPortal · Booking | `/customer-portal/booking` | portal | portalcustomer | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 7 roles | route | DISCOVERED |
@@ -76,7 +76,7 @@
 | InvoiceDetail | `/invoice-detail` | app | invoices | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | InvoicePreview | `/invoice-preview` | app | invoices | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 7 roles | route | DISCOVERED |
 | Invoices | `/invoices` | app | invoices | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
-| JobCardDetail | `/job-card-detail` | app | jobcards | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 10 roles | route | DISCOVERED |
+| JobCardDetail | `/job-card-detail` | app | jobcards | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | JobCards | `/job-cards` | app | jobcards | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | JobDetail | `/job-detail` | app | jobcards | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | JournalEntries | `/journal-entries` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
@@ -184,7 +184,7 @@
 | UI · TimelineView | `/ui/timeline-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
 | Unauthorized | `/unauthorized` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | UsersTeams | `/users-teams` | app | admin | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
-| VehicleDetail | `/vehicle-detail` | app | vehicles | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 9 roles | route | DISCOVERED |
+| VehicleDetail | `/vehicle-detail` | app | vehicles | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | Vehicles | `/vehicles` | app | vehicles | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | Welcome | `/welcome` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | WhatsAppCampaigns | `/whats-app-campaigns` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |

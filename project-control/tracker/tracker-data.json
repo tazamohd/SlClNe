@@ -82,7 +82,7 @@
         {
           "name": "JobCardDetail",
           "route": "/job-card-detail",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -243,7 +243,7 @@
         {
           "name": "CustomerDetail",
           "route": "/customer-detail",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -342,7 +342,7 @@
         {
           "name": "VehicleDetail",
           "route": "/vehicle-detail",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 114,
+    "built": 117,
     "designedMobile": 113
   }
 }
