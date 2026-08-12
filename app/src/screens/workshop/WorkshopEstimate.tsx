@@ -8,6 +8,8 @@ import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { StageNotice, stageBusy, stageLabel } from './StageNotice'
+import { useJobStage } from './useJobStage'
 
 /** VAT rate for KSA (ZATCA). */
 const VAT_RATE = 0.15
@@ -39,6 +41,7 @@ export function WorkshopEstimate() {
   const { canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
+  const stage = useJobStage()
 
   const partsTotal = PARTS.reduce((sum, row) => sum + row.qty * row.unit, 0)
   const labourTotal = LABOUR.reduce((sum, row) => sum + row.hours * row.rate, 0)
@@ -49,18 +52,25 @@ export function WorkshopEstimate() {
   const mayApprove = canApprove(grandTotal)
   const limit = roleMeta.limit
 
-  function approve() {
+  async function approve() {
     if (!mayApprove) {
       toast.show({
         title: t('Above your approval limit'),
         description: t('Sent to the approval inbox for sign-off.'),
       })
-      setTimeout(() => navigate('/approval-inbox'), 900)
+      navigate('/approval-inbox')
       return
     }
-    toast.show({ title: t('Approved'), description: t('Estimate approved') })
-    setTimeout(() => navigate('/workshop-qc'), 700)
+    /* Approving the estimate is what releases the work, so the stage moves to
+     * `repair` — not to `qc`. The rail skips no gate: whoever moves the card
+     * out of repair is claiming to have done it, and that is the person the
+     * quality gate must not be (F-004). */
+    await stage.advance('repair', {
+      reason: `estimate approved by ${roleMeta.label}`,
+      then: '/workshop-qc',
+    })
   }
+
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
@@ -84,12 +94,14 @@ export function WorkshopEstimate() {
         <div>
           <h1 className="font-display text-[26px] font-black text-heading">{t('Cost Estimate')}</h1>
           <p className="mt-0.5 text-sm text-muted" dir="ltr">
-            JC-A3F8B2C1 · Toyota Camry 2022
+            {stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}
           </p>
         </div>
       </div>
 
-      <WorkflowStepper current="Estimate" />
+      <WorkflowStepper current={stage.stageLabel} />
+
+      <StageNotice stage={stage} />
 
       <Panel icon="Package" title={t('Parts')}>
         <LineTable
@@ -137,9 +149,13 @@ export function WorkshopEstimate() {
           <Icon name="Send" size={16} />
           {t('Send to Customer')}
         </Button>
-        <Button size="lg" onClick={approve}>
+        <Button
+          size="lg"
+          onClick={() => void approve()}
+          disabled={mayApprove && stageBusy(stage)}
+        >
           <Icon name="CheckCircle" size={18} />
-          {t('Approve Estimate')}
+          {t(stageLabel(stage, 'Approve Estimate'))}
         </Button>
       </div>
 

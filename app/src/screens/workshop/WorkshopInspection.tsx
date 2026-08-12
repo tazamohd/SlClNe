@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
@@ -7,6 +7,8 @@ import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { StageNotice, stageBusy, stageLabel } from './StageNotice'
+import { useJobStage } from './useJobStage'
 
 type Verdict = 'pass' | 'fail' | 'na'
 
@@ -41,7 +43,7 @@ const CATEGORIES = [
 export function WorkshopInspection() {
   const { t, rtl } = usePreferences()
   const toast = useToast()
-  const navigate = useNavigate()
+  const stage = useJobStage()
   const [results, setResults] = useState<Record<string, Verdict>>({})
 
   const { checked, total } = useMemo(() => {
@@ -51,7 +53,12 @@ export function WorkshopInspection() {
     return { checked: all.filter((key) => results[key]).length, total: all.length }
   }, [results])
 
-  function submit() {
+  const failures = useMemo(
+    () => Object.entries(results).filter(([, verdict]) => verdict === 'fail').length,
+    [results]
+  )
+
+  async function submit() {
     // The prototype let you submit an untouched checklist. An inspection that
     // recorded nothing is worse than none — the estimate would be built on it.
     if (checked < total) {
@@ -62,9 +69,16 @@ export function WorkshopInspection() {
       })
       return
     }
-    toast.show({ title: t('Inspection'), description: t('Inspection submitted') })
-    setTimeout(() => navigate('/workshop-estimate'), 700)
+    /* The verdicts themselves have no table yet — `diag_findings` belongs to
+     * the diagnostics flow and nothing links it to a job card — so the count of
+     * failures rides along as the transition's reason, which the audit log does
+     * keep. It is a summary, not a substitute for the findings record. */
+    await stage.advance('estimate', {
+      reason: `inspection ${checked}/${total}, ${failures} fail`,
+      then: '/workshop-estimate',
+    })
   }
+
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
@@ -91,7 +105,7 @@ export function WorkshopInspection() {
               {t('Vehicle Inspection')}
             </h1>
             <p className="mt-0.5 text-sm text-muted" dir="ltr">
-              JC-A3F8B2C1 · Toyota Camry 2022
+              {stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}
             </p>
           </div>
         </div>
@@ -100,7 +114,9 @@ export function WorkshopInspection() {
         </span>
       </div>
 
-      <WorkflowStepper current="Inspection" />
+      <WorkflowStepper current={stage.stageLabel} />
+
+      <StageNotice stage={stage} />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {CATEGORIES.map((category) => {
@@ -160,9 +176,14 @@ export function WorkshopInspection() {
         })}
       </div>
 
-      <Button size="lg" className="w-full max-w-[400px] self-end" onClick={submit}>
+      <Button
+        size="lg"
+        className="w-full max-w-[400px] self-end"
+        onClick={() => void submit()}
+        disabled={stageBusy(stage)}
+      >
         <Icon name="CheckCircle" size={18} />
-        {t('Submit Inspection')}
+        {t(stageLabel(stage, 'Submit Inspection'))}
       </Button>
     </div>
   )
