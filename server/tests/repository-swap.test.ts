@@ -15,6 +15,7 @@ import {
   type CollectionKey,
   type Repository,
 } from '../../app/src/data/repository'
+import { SEED_COHERENCE_EXTRAS } from '../scripts/seed'
 import { startHarness, type Harness } from './harness'
 
 let harness: Harness
@@ -47,10 +48,12 @@ describe('httpRepository serves what mockRepository serves', () => {
     it(`${key}`, async () => {
       const fromApi = await live[key].list({ pageSize: 200 })
       const fromMock = await mockRepository[key].list()
-      expect(fromApi.rows).toHaveLength(fromMock.rows.length)
+      /* The fixture rows come first and unchanged; the seed then adds exactly
+       * the declared coherence rows (F-015, F-016) and nothing else. */
+      expect(fromApi.rows).toHaveLength(fromMock.rows.length + (SEED_COHERENCE_EXTRAS[key] ?? 0))
 
-      fromApi.rows.forEach((row, index) => {
-        const expected = fromMock.rows[index] as unknown
+      fromMock.rows.forEach((expected: unknown, index) => {
+        const row = fromApi.rows[index] as Record<string, unknown>
         if (Array.isArray(expected)) {
           expect(row).toEqual(expected)
           return

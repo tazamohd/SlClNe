@@ -13,7 +13,7 @@ import { withTenant, type Tx } from '../db/tenant'
 import { badRequest, conflict, forbidden, notFound, ruleViolated } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
 import { collectionByKey } from '../registry'
-import { requirePermission } from '../security/permissions'
+import { hasPermission, requirePermission } from '../security/permissions'
 import { requireSodClear } from '../security/sod'
 import { presentRow, type RouteDeps } from './collections'
 
@@ -38,12 +38,23 @@ const STATUS_FOR_STAGE: Partial<Record<JobStage, string>> = {
 export function registerWorkshopRoutes(app: FastifyInstance, deps: RouteDeps): void {
   app.post('/jobs/:id/transition', async (request) => {
     const principal = principalOf(request)
-    requirePermission(principal, 'jobcards', 'e')
+    /* A caller with neither edit nor approve authority is refused before the
+     * body is even read, so an outsider probing this route still sees the
+     * plain 403 and learns nothing about the transition schema. */
+    if (!hasPermission(principal, 'jobcards', 'e') && !hasPermission(principal, 'jobcards', 'a')) {
+      requirePermission(principal, 'jobcards', 'e')
+    }
     const parsed = jobTransitionBody.safeParse(request.body)
     if (!parsed.success) {
       const issue = parsed.error.issues[0]
       throw badRequest(issue?.message ?? 'Invalid transition.', issue?.path.join('.'))
     }
+    /* F-014: passing QC is an *approval*, not an edit. The matrix gives qc
+     * `va` on jobcards — it passes quality, it releases no money (F-002) — so
+     * the one transition that *is* the QC gate, qc → delivery, is gated on
+     * `jobcards:a`. Every other transition moves the work itself and still
+     * requires `jobcards:e`. The matrix was right; this route was wrong. */
+    requirePermission(principal, 'jobcards', parsed.data.to === 'delivery' ? 'a' : 'e')
     const { id } = request.params as { id: string }
 
     return withTenant(deps.db, principal, async (tx) => {
@@ -64,9 +75,13 @@ export function registerWorkshopRoutes(app: FastifyInstance, deps: RouteDeps): v
        *    check and fails the second. */
       if (parsed.data.to === 'delivery' && before.stage === 'qc') {
         requirePermission(principal, 'jobcards', 'a')
+        /* F-015: `assigned_tech_id` holds a `technicians.id`, and the actor is
+         * a *user* id — comparing the two could never match, so this check was
+         * dead and only the audit-trail check below fired. The assignment is
+         * resolved through `technicians.user_id` before the comparison. */
         const conflictFound = checkQcIndependence({
           actorUserId: principal.userId,
-          performedByUserId: before.assignedTechId,
+          performedByUserId: await assignedTechUserId(tx, before.assignedTechId),
         })
         if (conflictFound) throw forbidden(conflictFound.message)
         await requireSodClear(deps.db, tx, principal, {
@@ -143,6 +158,19 @@ export function registerWorkshopRoutes(app: FastifyInstance, deps: RouteDeps): v
 }
 
 type JobRow = typeof jobCards.$inferSelect
+
+/** The user behind a technician assignment, or null when the job is
+ *  unassigned or the technician row carries no user mapping. Looked up under
+ *  the caller's RLS context, like everything else in this file. */
+async function assignedTechUserId(tx: Tx, assignedTechId: string | null): Promise<string | null> {
+  if (!assignedTechId) return null
+  const [tech] = await tx
+    .select({ userId: technicians.userId })
+    .from(technicians)
+    .where(and(eq(technicians.id, assignedTechId), isNull(technicians.deletedAt)))
+    .limit(1)
+  return tech?.userId ?? null
+}
 
 async function loadJob(
   tx: Tx,

@@ -33,10 +33,29 @@ export const SEED = {
   secondBranchId: '01JAAAAAAAAAAAAAAAAAAABR2',
   otherBranchId: '01JBBBBBBBBBBBBBBBBBBBBBR1',
   systemUserId: '01JAAAAAAAAAAAAAAAAAAAUSR1',
+  /** The demo technician user (tech@salisauto.sa, Saeed Al-Zahrani). Fixed so
+   *  tests can mint a token for the one user who maps to a technician row —
+   *  the mapping the own-scope RLS policy resolves through (F-015). */
+  techUserId: '01JAAAAAAAAAAAAAAAAAAAUSR2',
   /** The date the design's appointment board depicts. */
   appointmentDate: '2026-07-26',
   invoiceWithDetail: 'INV-2026-0142',
+  /** The job the design assigns to Saeed: his 9:00 appointment is Ahmed
+   *  Al-Rashid's Toyota Camry, which is job A3F8B2C1 on the board. */
+  assignedJobCode: 'A3F8B2C1',
 } as const
+
+/** Rows the seed adds beyond the design fixtures so the data is coherent
+ *  rather than merely identical to the mock (F-015, F-016). The fixture rows
+ *  are still served first and unchanged — `tests/seed-fidelity.test.ts` checks
+ *  them row by row and then allows exactly these additions, no others. */
+export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
+  /** Saeed Al-Zahrani — the demo technician user's own technician row. The
+   *  design's TECHS list omits him although its appointment board names him;
+   *  without the row, `technicians.user_id` maps the demo technician user to
+   *  nothing and the own-scope portal is empty for the user it is for. */
+  technicians: 1,
+}
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
  *  credentials belong to the authentication module, and a seeded password hash
@@ -272,6 +291,26 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       }),
     ),
   )
+
+  /* F-015. The demo technician user must map to a technician row, or the
+   * own-scope RLS policy — which resolves `assigned_tech_id` through
+   * `technicians.user_id` — shows that user nothing. Saeed Al-Zahrani is the
+   * design's own choice: he is the technician on the appointment board,
+   * including the 9:00 Toyota Camry slot that is job A3F8B2C1. Inserted after
+   * the fixture rows so they still list first, and counted in
+   * SEED_COHERENCE_EXTRAS. */
+  const saeed = row({
+    name: 'Saeed Al-Zahrani',
+    specialty: 'General Service',
+    activeJobs: 1,
+    rating: null,
+    userId: SEED.techUserId,
+  })
+  await tx.insert(s.technicians).values(saeed)
+  await tx
+    .update(s.jobCards)
+    .set({ assignedTechId: saeed.id })
+    .where(sql`${s.jobCards.code} = ${SEED.assignedJobCode} and ${s.jobCards.orgId} = ${orgId}`)
 
   await tx.insert(s.departments).values(
     T.DEPARTMENTS.map((d) =>
@@ -625,7 +664,9 @@ export async function seedAll(tx: Tx): Promise<void> {
       role: 'owner',
     },
     ...DEMO_USERS.map((u) => ({
-      id: ulid(),
+      /* The technician's id is fixed so the seeded technician row can carry a
+       * user mapping that tests and the demo login both resolve (F-015). */
+      id: u.role === 'technician' ? SEED.techUserId : ulid(),
       orgId: SEED.orgId,
       branchId: SEED.mainBranchId,
       email: u.email,

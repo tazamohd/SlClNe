@@ -8,6 +8,7 @@
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import * as T from '../../app/src/data/generated/tables'
+import { SEED_COHERENCE_EXTRAS } from '../scripts/seed'
 import { COLLECTIONS } from '../src/registry'
 import { startHarness, type Harness } from './harness'
 
@@ -92,11 +93,15 @@ describe('the seeded API serves exactly what the fixtures serve', () => {
       const body = response.json() as { rows: unknown[]; page: { total: number } }
       const fixture = FIXTURES[def.key]
 
-      expect(body.rows.length, `${def.key} row count`).toBe(fixture.length)
-      expect(body.page.total).toBe(fixture.length)
+      /* The fixtures come first and unchanged; the seed may then add exactly
+       * the declared coherence rows (F-015, F-016) — a linked technician, the
+       * historical invoices the receipts settle — and nothing else. */
+      const extras = SEED_COHERENCE_EXTRAS[def.key] ?? 0
+      expect(body.rows.length, `${def.key} row count`).toBe(fixture.length + extras)
+      expect(body.page.total).toBe(fixture.length + extras)
 
-      body.rows.forEach((row, index) => {
-        expect(pickLike(fixture[index], row), `${def.key}[${index}]`).toEqual(fixture[index])
+      fixture.forEach((expectedRow, index) => {
+        expect(pickLike(expectedRow, body.rows[index]), `${def.key}[${index}]`).toEqual(expectedRow)
       })
     })
   }
