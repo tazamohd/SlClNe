@@ -13,7 +13,7 @@ import { useSession } from '@/providers/SessionProvider'
 import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
 import { EstimateStatusBadge, VehicleStatusBadge } from './badges'
 import { VehicleFormModal } from './VehicleForm'
-import { rowId } from './writes'
+import { derived, rowId } from './writes'
 
 /** Vehicle 360 — `VehicleDetail.dc.html` and `.Mobile.dc.html`.
  *
@@ -98,24 +98,24 @@ export function VehicleDetail() {
       label: 'Odometer',
       value: (
         <span dir="ltr" className="font-mono">
-          {vehicle.mileage}
+          {derived(vehicle.mileage)}
         </span>
       ),
       on: 'desktop',
     },
     { label: 'Total Jobs', value: worked.length, on: 'desktop' },
-    { label: 'Last Service', value: t(vehicle.last), on: 'desktop' },
+    { label: 'Last Service', value: derived(vehicle.last && t(vehicle.last)), on: 'desktop' },
     // The phone design shows two.
     {
       label: 'Mileage',
       value: (
         <span dir="ltr" className="font-mono">
-          {vehicle.mileage}
+          {derived(vehicle.mileage)}
         </span>
       ),
       on: 'mobile',
     },
-    { label: 'Last Service', value: t(vehicle.last), on: 'mobile' },
+    { label: 'Last Service', value: derived(vehicle.last && t(vehicle.last)), on: 'mobile' },
   ]
 
   const jobRecords: DetailRecord[] = worked.map((job) => ({

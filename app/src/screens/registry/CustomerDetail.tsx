@@ -14,7 +14,7 @@ import { useToast } from '@/components/ui/Toast'
 import { CustomerFormModal } from './CustomerForm'
 import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
 import { InvoiceStatusBadge, VehicleStatusBadge } from './badges'
-import { rowId } from './writes'
+import { derived, rowId } from './writes'
 
 /** Customer 360 — `CustomerDetail.dc.html` and `.Mobile.dc.html`.
  *
@@ -109,11 +109,11 @@ export function CustomerDetail() {
     { label: 'Total Jobs', value: worked.length, icon: 'Wrench', on: 'desktop' },
     {
       label: 'Total Spent',
-      value: <Money sar={parseSar(customer.spent)} />,
+      value: <Money sar={parseSar(customer.spent ?? '')} />,
       icon: 'DollarSign',
       on: 'desktop',
     },
-    { label: 'Vehicles', value: customer.vehicles, icon: 'Car', on: 'desktop' },
+    { label: 'Vehicles', value: derived(customer.vehicles), icon: 'Car', on: 'desktop' },
     ...(memberSince
       ? [
           {
@@ -129,9 +129,9 @@ export function CustomerDetail() {
         ]
       : []),
     // The phone screen shows a different three.
-    { label: 'Vehicles Count', value: customer.vehicles, on: 'mobile' },
-    { label: 'Total Spent', value: <Money sar={parseSar(customer.spent)} />, on: 'mobile' },
-    { label: 'Last Visit', value: t(customer.last), on: 'mobile' },
+    { label: 'Vehicles Count', value: derived(customer.vehicles), on: 'mobile' },
+    { label: 'Total Spent', value: <Money sar={parseSar(customer.spent ?? '')} />, on: 'mobile' },
+    { label: 'Last Visit', value: derived(customer.last && t(customer.last)), on: 'mobile' },
   ]
 
   const vehicleRecords: DetailRecord[] = owned.map((vehicle) => ({

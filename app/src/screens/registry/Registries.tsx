@@ -20,7 +20,7 @@ import {
 import { CustomerFormModal } from './CustomerForm'
 import { VehicleFormModal } from './VehicleForm'
 import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
-import { rowId } from './writes'
+import { derived, rowId } from './writes'
 
 /** The designed registry screens: customers, vehicles, estimates, technicians
  *  and fleets. Each is a filtered table on desktop and the designed card list
@@ -79,17 +79,6 @@ function RowActions({
     </div>
   )
 }
-
-/** A column the server derives and a freshly-created row does not carry yet.
- *
- *  `useCreate` shows the submitted values immediately and replaces them with
- *  the server's answer a moment later, so between those two frames a customer
- *  has a name and a phone but no lifetime spend, no vehicle count and no last
- *  visit. Reading one of those straight through crashed the table on the first
- *  render after a save. An em dash is what the record actually knows. */
-const UNKNOWN = '—'
-const derived = (value: string | number | undefined | null): string =>
-  value === undefined || value === null || value === '' ? UNKNOWN : String(value)
 
 /** Small helper for the search-filter every registry uses. */
 function useSearch<TRow>(rows: readonly TRow[], fields: (row: TRow) => (string | number)[]) {

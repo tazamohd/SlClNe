@@ -46,6 +46,19 @@ export function serverFieldError(cause: unknown): ServerValidationError | undefi
   return new ServerValidationError({ [field]: cause.message })
 }
 
+/** A column the server derives and a freshly-created row does not carry yet.
+ *
+ *  `useCreate` shows the submitted values immediately and replaces them with
+ *  the server's answer a moment later, so between those two frames a customer
+ *  has a name and a phone but no lifetime spend, no vehicle count and no last
+ *  visit. Reading one of those straight through crashed the table on the first
+ *  render after a save. An em dash is what the record actually knows. */
+export const UNKNOWN = '—'
+
+export function derived(value: string | number | undefined | null): string {
+  return value === undefined || value === null || value === '' ? UNKNOWN : String(value)
+}
+
 /** Says so when this build has no API behind it.
  *
  *  `VITE_API_URL` unset means the fixture repository, which refuses writes by

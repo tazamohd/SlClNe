@@ -168,6 +168,21 @@ describe('Add Customer', () => {
     expect(await screen.findByRole('status')).toHaveTextContent('Noura Al-Qahtani')
   })
 
+  it('asks before throwing away edits, and keeps them when the answer is no', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Customers />, { role: 'owner' })
+    const dialog = await openAddCustomer(user)
+
+    await user.type(within(dialog).getByLabelText(/Full Name/), 'Noura')
+    await user.click(within(dialog).getByRole('button', { name: /Cancel/ }))
+
+    const guard = await screen.findByText('Discard your changes?')
+    expect(guard).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /Keep Editing/ }))
+
+    expect(within(screen.getByRole('dialog')).getByLabelText(/Full Name/)).toHaveValue('Noura')
+  })
+
   it('puts a server rejection on the field the server blamed, not in a toast', async () => {
     const user = userEvent.setup()
     h.state.rejectCreate = new RepositoryError(
