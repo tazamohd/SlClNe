@@ -530,3 +530,95 @@ describe('raising a receipt', () => {
     expect(screen.queryByRole('button', { name: /New Receipt/ })).not.toBeInTheDocument()
   })
 })
+
+// ── Issuing and cancelling from the register ────────────────────────────────
+
+describe('the lifecycle actions', () => {
+  it('asks before issuing, and issues the invoice the row named', async () => {
+    rows.invoices = [serverInvoice({ status: 'draft', paidHalalas: 0, balanceHalalas: 184_000 })]
+    spies.issueInvoice.mockResolvedValue({ id: 'INV-2026-0142', status: 'unpaid' })
+    const user = userEvent.setup()
+    const { Invoices } = await import('@/screens/finance/Invoices')
+    renderScreen(Invoices, { role: 'accountant' })
+
+    await user.click(screen.getByRole('button', { name: 'Issue' }))
+    const confirm = await screen.findByRole('dialog')
+    expect(confirm).toHaveTextContent('Issuing commits the amount to the customer')
+
+    await user.click(within(confirm).getByRole('button', { name: /Issue invoice/ }))
+    await waitFor(() => expect(spies.issueInvoice).toHaveBeenCalledWith('01JX0000000000000000000001'))
+  })
+
+  it('does nothing at all when the confirmation is declined', async () => {
+    rows.invoices = [serverInvoice({ status: 'draft', paidHalalas: 0, balanceHalalas: 184_000 })]
+    const user = userEvent.setup()
+    const { Invoices } = await import('@/screens/finance/Invoices')
+    renderScreen(Invoices, { role: 'accountant' })
+
+    await user.click(screen.getByRole('button', { name: 'Cancel invoice' }))
+    const confirm = await screen.findByRole('dialog')
+    await user.click(within(confirm).getByRole('button', { name: /Keep it/ }))
+
+    expect(spies.cancelInvoice).not.toHaveBeenCalled()
+  })
+
+  it('warns that the amount is above the role’s ceiling, and still lets the server decide', async () => {
+    // An accountant's ceiling is SAR 25,000; this draft is SAR 40,000.
+    rows.invoices = [
+      serverInvoice({ status: 'draft', totalHalalas: 4_000_000, paidHalalas: 0, balanceHalalas: 4_000_000 }),
+    ]
+    spies.issueInvoice.mockRejectedValue(new Error('Above your approval ceiling.'))
+    const user = userEvent.setup()
+    const { Invoices } = await import('@/screens/finance/Invoices')
+    renderScreen(Invoices, { role: 'accountant' })
+
+    await user.click(screen.getByRole('button', { name: 'Issue' }))
+    const confirm = await screen.findByRole('dialog')
+    expect(confirm).toHaveTextContent('above your approval ceiling')
+
+    // Frontend RBAC is not the boundary: the attempt is made and the server's
+    // refusal is what the user is told.
+    await user.click(within(confirm).getByRole('button', { name: /Issue invoice/ }))
+    await waitFor(() => expect(spies.issueInvoice).toHaveBeenCalledTimes(1))
+    expect(await screen.findByText('Above your approval ceiling.')).toBeInTheDocument()
+  })
+})
+
+// ── Collections ─────────────────────────────────────────────────────────────
+
+describe('the collections view', () => {
+  it('counts a part-paid invoice on both sides, not wholly on one', async () => {
+    rows.invoices = [
+      // 1,840 total, 500 already received.
+      serverInvoice({ status: 'partial' }),
+      serverInvoice({ id: 'INV-2026-0140', _id: 'B', status: 'paid', paidHalalas: 62_000, totalHalalas: 62_000, balanceHalalas: 0 }),
+    ]
+    const { Payments } = await import('@/screens/finance/Payments')
+    renderScreen(Payments, { role: 'accountant' })
+
+    // Outstanding is the balance, not the invoice; collected includes the part
+    // payment the old screen threw away.
+    expect(screen.getByText('SAR 1,340.00')).toBeInTheDocument()
+    expect(screen.getByText('SAR 1,120.00')).toBeInTheDocument()
+  })
+
+  it('leaves a cancelled invoice out of what is owed, keeping what was taken', async () => {
+    rows.invoices = [
+      serverInvoice({ status: 'cancelled', paidHalalas: 40_000, balanceHalalas: 144_000 }),
+    ]
+    const { Payments } = await import('@/screens/finance/Payments')
+    renderScreen(Payments, { role: 'accountant' })
+
+    expect(screen.getByText('SAR 0.00')).toBeInTheDocument()
+    expect(screen.getByText('SAR 400.00')).toBeInTheDocument()
+  })
+
+  it('renders the designed card list at 390px rather than a squeezed table', async () => {
+    setViewportWidth(390)
+    const { Payments } = await import('@/screens/finance/Payments')
+    const { container } = renderScreen(Payments, { role: 'accountant' })
+
+    expect(container.querySelector('table')).toBeNull()
+    expect(screen.getByText('INV-2026-0142')).toBeInTheDocument()
+  })
+})
