@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T03:00:00Z",
+  "asOf": "2026-08-12T03:40:00Z",
   "wave": "W2",
   "waveName": "Product",
-  "waveNote": "Tranche 1 landed and verified: agents 08, 09, 10, 12 on the Golden Path 01 chain. The orchestrator re-verified each Definition of Done independently and, doing so, found and fixed two live server authorization holes the agents had reported (a QC/SOD PATCH bypass and a customer-PII leak), wired the shared session-token seam three agents were blocked on, fixed a barrel-parser undercount in its own registry generator, and applied the F-007 money fix. Six product agents remain for tranche 2.",
+  "waveNote": "Tranche 2 running: server hardening on the tranche-1 findings (F-014 through F-018 — the qc role that cannot operate its own gate and the technician who cannot see their own jobs are both fixed here, plus the inventory prohibitions the server never enforced), and three product domains chosen for zero file contention with each other: procurement, portals, website. CRM/accounting/workshop continuations and insurance/HR/AI wait for tranche 3.",
   "agents": [
     {
       "id": "03",
@@ -45,9 +45,9 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "done",
-      "startedAt": "2026-08-11T15:52:00Z",
-      "scope": "Fastify + Drizzle schema + RLS + migrations, seed from the existing fixtures, core entity routes with server-side RBAC and audit, repository mutations and httpRepository",
+      "state": "running",
+      "startedAt": "2026-08-12T03:40:00Z",
+      "scope": "Tranche 2, jointly covering 05 and 06 ground: F-014 qc authority on the QC transition, F-015 assigned_tech_id resolved through technicians.user_id in RLS and checkQcIndependence, F-016 seed coherence (job links, orphan receipts, INV-2026-0142), F-017 server-side inventory enforcement (reservations, paired transfer credit, signed adjust, return type, idempotency), F-018 error envelope, plus a read-only branches collection",
       "owns": [
         "server/**",
         "packages/contract/**",
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "Landed as dcb4d54 — but the agent never reported. Its work was on disk when it went away, so nothing arrived with a claim attached and everything was verified from scratch: 146 server tests against a real PostgreSQL 16 started in this container, plus a direct RLS probe showing a tenant cannot read, update, delete or forge another tenant's rows, and that a missing context fails closed."
+      "notes": "W1 note preserved: landed as dcb4d54; verified from scratch after the agent went away without reporting."
     },
     {
       "id": "07",
@@ -153,6 +153,50 @@
       ],
       "blocks": [],
       "notes": "Invoice create/issue and payment recording against real endpoints, with server-computed totals, plus the §A10 financial-integrity suite (e1563ea, 1b6c48e, 881fe57). Prepared and verified the F-007 patch, now applied. Kept F-008 visible and pinned rather than papering over it."
+    },
+    {
+      "id": "11",
+      "name": "Procurement",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T03:40:00Z",
+      "scope": "Requisition lifecycle, purchase order raise/approve within the ceiling, receiving against the order, and the PurchaseOrder designed screen — reporting any server gap honestly instead of faking it client-side",
+      "owns": [
+        "app/src/screens/network/Procurement.tsx",
+        "app/src/screens/domains/procurement.ts"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam and the wired token seam in place."
+    },
+    {
+      "id": "16",
+      "name": "Portals",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T03:40:00Z",
+      "scope": "PortalShell (wave grant), TechnicianPortal and its JobDetail, CustomerPortal and its Booking — the first separate-audience surfaces, on the session model W1 built",
+      "owns": [
+        "app/src/screens/portals/**",
+        "app/src/screens/domains/portals.ts",
+        "app/src/components/shell/PortalShell.tsx (W2 grant)"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam and the wired token seam in place."
+    },
+    {
+      "id": "17",
+      "name": "Public Website & Landing",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T03:40:00Z",
+      "scope": "PublicShell and the ten design-authoritative public pages, ungated and rendered without a session, with SEO basics and no new dependencies",
+      "owns": [
+        "app/src/screens/public/**",
+        "app/src/components/shell/PublicShell.tsx",
+        "app/src/screens/domains/website.ts"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam and the wired token seam in place."
     }
   ],
   "shared": {
