@@ -93,8 +93,18 @@ function screensIn(src, tableName) {
   }
   const body = src.slice(brace + 1, end)
   const names = new Set()
-  for (const m of body.matchAll(/(?:^|\n)\s*'([^']+)':/g)) names.add(m[1])
-  for (const m of body.matchAll(/(?:^|\n)\s*([A-Z][\w]*)\s*(?:,|:)/g)) names.add(m[1])
+  // Quoted keys — `'CustomerApp.Home': X`. A quoted string followed by a colon
+  // is unambiguously a key, so no line anchor is needed; that anchor was the bug.
+  for (const m of body.matchAll(/'([^']+)'\s*:/g)) names.add(m[1])
+  // Shorthand or identifier keys — `JobCardDetail`. Neither a leading newline
+  // nor a trailing comma may be required: `= { JobCardDetail }` on one line, and
+  // a final entry with no trailing comma, must both count. Both forms are exactly
+  // what the barrel template and the agent briefs demonstrate, and dropping them
+  // miscounts a built screen as a placeholder — the §A1 failure this file exists
+  // to prevent. Over-matching a value identifier (the `X` in `Name: X`) is
+  // harmless: the set is only ever queried by real screen names, which a value is
+  // not, so a false member is inert.
+  for (const m of body.matchAll(/([A-Z][\w]*)\s*(?=[,:}\n]|$)/g)) names.add(m[1])
   return names
 }
 
