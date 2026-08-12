@@ -3,7 +3,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import {
   FeatureHeader,
-  ScopeSelect,
   SearchField,
   Section,
   StatRow,
@@ -372,8 +371,6 @@ function backorderableOf(part: Part): boolean {
 
 /* ═════════════════════════════════════════════════════════════════ the screen */
 
-const BRANCHES = ['AutoFix Garage', 'Riyadh Central', 'Jeddah North'] as const
-
 const TABS = [
   { id: 'overview', label: 'Overview', icon: 'Package' },
   { id: 'alerts', label: 'Alerts', icon: 'AlertTriangle' },
@@ -404,9 +401,8 @@ const TABS = [
  *  the real transport. */
 export function Inventory({ api }: { api?: MovementApi | null } = {}) {
   const { t } = usePreferences()
-  const { can, fieldHidden } = useSession()
+  const { can, fieldHidden, user } = useSession()
   const { data: parts = [], isLoading, isError, refetch } = useCollection('parts')
-  const [branch, setBranch] = useState<string>(BRANCHES[0])
   const [tab, setTab] = useState<string>(TABS[0].id)
   const [query, setQuery] = useState('')
   const [ledgerFor, setLedgerFor] = useState<Part | null>(null)
@@ -539,7 +535,7 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
         }
       />
 
-      <ScopeSelect value={branch} onChange={setBranch} options={BRANCHES} />
+      <BranchScope branchId={user?.branchId ?? null} />
       <TabBar tabs={TABS} value={tab} onChange={setTab} />
       <StatRow stats={stats} />
 
@@ -563,6 +559,33 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
         />
       ) : null}
     </>
+  )
+}
+
+/** Which stock these numbers are.
+ *
+ *  The design puts a branch dropdown here. It cannot be one: reads are scoped
+ *  by row-level security to the branch in the caller's token, so a client-side
+ *  picker could only ever re-label the same rows — and the three branch names
+ *  the prototype offered exist nowhere in the system. Nothing lists branches
+ *  either: `branches` is a table with no collection and no endpoint. So this
+ *  states the scope instead of pretending to change it. */
+function BranchScope({ branchId }: { branchId: string | null }) {
+  const { t } = usePreferences()
+  return (
+    <p className="flex flex-wrap items-center gap-2 rounded border border-border bg-inset px-3 py-2 text-[13px] text-body">
+      <Icon name="Warehouse" size={15} className="flex-shrink-0 text-muted" />
+      {branchId ? (
+        <>
+          {t('Stock for the branch this session belongs to.')}
+          <span dir="ltr" className="font-mono text-xs text-muted">
+            {branchId}
+          </span>
+        </>
+      ) : (
+        t('Stock for the branch this session belongs to. The server decides which — it is not chosen here.')
+      )}
+    </p>
   )
 }
 
@@ -1229,6 +1252,9 @@ interface MovementKind {
   needsBranch?: boolean
   /** Shown under the quantity field when the endpoint constrains this kind. */
   note?: string
+  /** A consequence of recording this movement that the operator has to know
+   *  before deciding, not after. Shown in the dialog, not buried in a hint. */
+  warning?: string
 }
 
 /** The movement kinds the API can record.
@@ -1273,6 +1299,8 @@ export const MOVEMENT_KINDS: readonly MovementKind[] = [
     quantityLabel: 'Quantity Transferred',
     needsBranch: true,
     reasonRequired: true,
+    warning:
+      'The API books the outgoing half only: the destination branch is not credited, so until the paired movement exists a transfer lowers the total stock held across branches. Record the receiving side at the destination.',
   },
   {
     id: 'adjust',
@@ -1319,8 +1347,18 @@ function movementSchema(kind: MovementKind) {
     reason: kind.reasonRequired
       ? z.string().trim().min(1, 'Say why this movement was made.').max(500)
       : z.string().trim().max(500, 'A reason can be at most 500 characters.'),
+    // The contract takes a branch ULID, and nothing in the client can list
+    // branches to choose from — so it is entered, and checked here exactly as
+    // `packages/contract/src/primitives.ts` checks it. A friendly branch name
+    // would be refused by the server, which is a worse experience than being
+    // told the shape up front.
     toBranchId: kind.needsBranch
-      ? z.string().trim().min(1, 'Choose the branch this stock is going to.')
+      ? z
+          .string()
+          .trim()
+          .min(1, 'Enter the destination branch id.')
+          .length(26, 'A branch id is 26 characters.')
+          .regex(/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/, 'That is not a branch id.')
       : z.string().trim(),
   })
 }
@@ -1422,6 +1460,16 @@ function MovementModal({
       <Form form={form}>
         <FormErrorSummary />
 
+        {kind.warning ? (
+          <p
+            role="note"
+            className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3.5 py-3 text-[13px] text-body"
+          >
+            <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+            {t(kind.warning)}
+          </p>
+        ) : null}
+
         <div className="flex flex-wrap gap-x-6 gap-y-2 rounded border border-border bg-inset px-3.5 py-2.5">
           <Figure label="On Hand" value={part.stock} />
           <Figure label="Reserved" value={reservedOf(part)} />
@@ -1441,11 +1489,10 @@ function MovementModal({
         {kind.needsBranch ? (
           <Field
             name="toBranchId"
-            label="Destination Branch"
-            kind="select"
+            label="Destination Branch Id"
             required
-            options={BRANCHES.map((option) => ({ value: option, label: option }))}
-            hint="Where the stock is going."
+            placeholder="01JB7KQ2M4N8P0R2T4V6X8Z0AB"
+            hint="Entered rather than chosen: no endpoint lists branches yet, and the API records the destination as a branch id."
           />
         ) : null}
         <Field name="ref" label={kind.refLabel} hint={kind.refHint} />

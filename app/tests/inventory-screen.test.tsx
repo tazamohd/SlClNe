@@ -123,6 +123,17 @@ describe('Inventory tabs each show their own content', () => {
     expect(screen.getByText(/carries no cost figures/i)).toBeInTheDocument()
   })
 
+  it('states which stock it is showing instead of offering a branch picker that cannot work', async () => {
+    renderWithProviders(<Inventory api={null} />)
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+
+    expect(screen.getByText(/branch this session belongs to/i)).toBeInTheDocument()
+    // The prototype's three invented branch names are gone: reads are scoped by
+    // the server, and nothing in the client can list branches.
+    expect(screen.queryByRole('combobox', { name: /branch/i })).not.toBeInTheDocument()
+    expect(screen.queryByText('Riyadh Central')).not.toBeInTheDocument()
+  })
+
   it('offers a part to inspect on Transfers and on Audit, not the parts table again', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Inventory api={fakeApi()} />)
@@ -338,6 +349,48 @@ describe('recording a movement', () => {
 
     expect(await within(dialog).findByText(/say why this movement was made/i)).toBeInTheDocument()
     expect(api.recorded).toHaveLength(0)
+  })
+
+  it('sends a branch id the contract accepts, and refuses a branch name', async () => {
+    const user = userEvent.setup()
+    const api = fakeApi()
+    renderWithProviders(<Inventory api={api} />, { role: 'parts' })
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+    await user.click(screen.getByText(PARTS[0]!.name))
+    const ledger = await screen.findByRole('dialog')
+    await user.click(within(ledger).getByRole('button', { name: /^transfer$/i }))
+
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    // The one-sided transfer is stated before the operator commits to it, not
+    // discovered afterwards in a stock count.
+    expect(within(dialog).getByText(/destination branch is not credited/i)).toBeInTheDocument()
+
+    await user.type(within(dialog).getByLabelText(/quantity transferred/i), '2')
+    await user.type(within(dialog).getByLabelText(/reason/i), 'Rebalancing')
+    await user.type(within(dialog).getByLabelText(/destination branch/i), 'Riyadh Central')
+    await user.click(within(dialog).getByRole('button', { name: /^transfer$/i }))
+
+    // A friendly branch name is what the prototype offered and what the API
+    // refuses: `toBranchId` is a ULID.
+    expect(await within(dialog).findByText(/branch id is 26 characters/i)).toBeInTheDocument()
+    expect(api.recorded).toHaveLength(0)
+
+    await user.clear(within(dialog).getByLabelText(/destination branch/i))
+    await user.type(
+      within(dialog).getByLabelText(/destination branch/i),
+      '01JB7KQ2M4N8P0R2T4V6X8Z0AB',
+    )
+    await user.click(within(dialog).getByRole('button', { name: /^transfer$/i }))
+
+    await waitFor(() => expect(api.recorded).toHaveLength(1))
+    expect(api.recorded[0]!.input).toEqual({
+      type: 'transfer',
+      qty: 2,
+      reason: 'Rebalancing',
+      toBranchId: '01JB7KQ2M4N8P0R2T4V6X8Z0AB',
+    })
   })
 
   it('says an adjustment can only ever increase the count', async () => {

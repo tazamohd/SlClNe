@@ -413,6 +413,19 @@ describe('no double consumption, no double receiving, no duplicate transfer', ()
     const ledger: MovementRow[] = []
     apply(source, ledger, { type: 'transfer', qty: 5, toBranchId: '01JBRANCHXXXXXXXXXXXXXXXXX' })
 
+    // The destination is a branch ULID, and no endpoint lists branches — which
+    // is why the form asks for an id rather than offering invented names.
+    expect(
+      movementCreate.safeParse({ type: 'transfer', qty: 5, toBranchId: 'Riyadh Central' }).success,
+    ).toBe(false)
+    expect(
+      movementCreate.safeParse({
+        type: 'transfer',
+        qty: 5,
+        toBranchId: '01JBRANCHXXXXXXXXXXXXXXXXX',
+      }).success,
+    ).toBe(true)
+
     const totals = ledgerTotals(ledger)
     expect(totals.transferOut).toBe(5)
     // The other half of the transfer does not exist anywhere in the system.
