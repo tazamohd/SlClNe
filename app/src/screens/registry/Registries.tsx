@@ -3,13 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
-import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
+import { ErrorState } from '@/components/ui/States'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
+import {
+  EstimateStatusBadge,
+  FleetContractBadge,
+  VehicleStatusBadge,
+} from './badges'
+import { CustomerFormModal } from './CustomerForm'
+import { VehicleFormModal } from './VehicleForm'
+import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
+import { rowId } from './writes'
 
 /** The designed registry screens: customers, vehicles, estimates, technicians
  *  and fleets. Each is a filtered table on desktop and the designed card list
@@ -17,6 +28,68 @@ import { useCollection, type RowOf } from '@/data/useCollection'
  *
  *  Column headers are the design's own (`Vehicles Count`, `Estimate #`,
  *  `Make & Model`), so the Arabic dictionary already carries translations. */
+
+/** The row-level actions column every writable registry carries.
+ *
+ *  Edit and delete are separate grants in the matrix (`e` and `d`), and only
+ *  the owner and the manager hold `d` on customers and vehicles — an advisor or
+ *  a front-desk user can add and correct records but not remove them. The
+ *  buttons follow that rather than showing a control the server would refuse. */
+function RowActions({
+  onEdit,
+  onDelete,
+  label,
+}: {
+  onEdit?: () => void
+  onDelete?: () => void
+  /** The record's own name, so the two icon buttons are distinguishable to a
+   *  screen reader in a table of twenty identical pairs. */
+  label: string
+}) {
+  const { t } = usePreferences()
+  if (!onEdit && !onDelete) return null
+  return (
+    <div className="flex items-center justify-end gap-1">
+      {onEdit ? (
+        <button
+          type="button"
+          aria-label={`${t('Edit')} ${label}`}
+          onClick={(event) => {
+            event.stopPropagation()
+            onEdit()
+          }}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:bg-inset hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+        >
+          <Icon name="Pencil" size={15} />
+        </button>
+      ) : null}
+      {onDelete ? (
+        <button
+          type="button"
+          aria-label={`${t('Delete')} ${label}`}
+          onClick={(event) => {
+            event.stopPropagation()
+            onDelete()
+          }}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:bg-inset hover:text-salis-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+        >
+          <Icon name="Trash2" size={15} />
+        </button>
+      ) : null}
+    </div>
+  )
+}
+
+/** A column the server derives and a freshly-created row does not carry yet.
+ *
+ *  `useCreate` shows the submitted values immediately and replaces them with
+ *  the server's answer a moment later, so between those two frames a customer
+ *  has a name and a phone but no lifetime spend, no vehicle count and no last
+ *  visit. Reading one of those straight through crashed the table on the first
+ *  render after a save. An em dash is what the record actually knows. */
+const UNKNOWN = '—'
+const derived = (value: string | number | undefined | null): string =>
+  value === undefined || value === null || value === '' ? UNKNOWN : String(value)
 
 /** Small helper for the search-filter every registry uses. */
 function useSearch<TRow>(rows: readonly TRow[], fields: (row: TRow) => (string | number)[]) {
@@ -31,11 +104,14 @@ function useSearch<TRow>(rows: readonly TRow[], fields: (row: TRow) => (string |
   return { query, setQuery, filtered }
 }
 
-function NoMatches({ query, icon, title, description }: {
+function NoMatches({ query, icon, title, description, action }: {
   query: string
   icon: string
   title: string
   description: string
+  /** Offered only when the list is genuinely empty — a search that matched
+   *  nothing is fixed by changing the search, not by creating a record. */
+  action?: ReactNode
 }) {
   const { t } = usePreferences()
   return query ? (
@@ -45,31 +121,57 @@ function NoMatches({ query, icon, title, description }: {
       description={t('Nothing matches the current filters.')}
     />
   ) : (
-    <EmptyState icon={icon} title={t(title)} description={t(description)} />
+    <EmptyState icon={icon} title={t(title)} description={t(description)} action={action} />
   )
 }
 
 // ── Customers ───────────────────────────────────────────────────────────────
-type Customer = RowOf<'customers'>
+type Customer = RowOf<'customers'> & { email?: string | null }
 
 export function Customers() {
   const { t } = usePreferences()
   const { can, fieldHidden } = useSession()
   const navigate = useNavigate()
-  const { data: customers = [], isLoading } = useCollection('customers')
+  const toast = useToast()
+  const { data: customers = [], isLoading, isError, error, refetch } = useCollection('customers')
   const { query, setQuery, filtered } = useSearch(customers, (c) => [c.name, c.phone])
+  const remove = useDelete('customers')
+
+  /** `undefined` is closed, `null` is "create", a row is "edit that row". The
+   *  three-way state is what lets one modal serve both, mounted only while it
+   *  is open so a second open starts from the record's values rather than from
+   *  whatever the last edit left behind. */
+  const [form, setForm] = useState<Customer | null | undefined>(undefined)
+  const [doomed, setDoomed] = useState<Customer | undefined>(undefined)
 
   // Technicians, QC and suppliers may not see customer contact details.
   const hideContact = fieldHidden('Customer contact details')
+  const mayEdit = can('customers', 'e')
+  const mayDelete = can('customers', 'd')
 
   const columns: Column<Customer>[] = [
     { header: 'Name', cell: (c) => c.name },
     ...(hideContact
       ? []
       : [{ header: 'Phone', cell: (c: Customer) => c.phone, code: true }]),
-    { header: 'Vehicles Count', cell: (c) => c.vehicles },
-    { header: 'Total Spent', cell: (c) => <Money sar={parseSar(c.spent)} className="font-semibold" /> },
-    { header: 'Last Visit', cell: (c) => c.last },
+    { header: 'Vehicles Count', cell: (c) => derived(c.vehicles) },
+    { header: 'Total Spent', cell: (c) => <Money sar={parseSar(c.spent ?? '')} className="font-semibold" /> },
+    { header: 'Last Visit', cell: (c) => derived(c.last && t(c.last)) },
+    ...(mayEdit || mayDelete
+      ? [
+          {
+            header: 'Actions',
+            className: 'text-end',
+            cell: (c: Customer) => (
+              <RowActions
+                label={c.name}
+                onEdit={mayEdit ? () => setForm(c) : undefined}
+                onDelete={mayDelete ? () => setDoomed(c) : undefined}
+              />
+            ),
+          },
+        ]
+      : []),
   ]
 
   return (
@@ -79,78 +181,141 @@ export function Customers() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('customers', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setForm(null)}>
               <Icon name="Plus" size={16} />
               {t('Add Customer')}
             </Button>
           ) : null
         }
       />
-      <DataTable
-        columns={columns}
-        rows={filtered}
-        rowKey={(c) => c.name}
-        loading={isLoading}
-        onRowClick={(c) => navigate(`/customer-detail?name=${encodeURIComponent(c.name)}`)}
-        mobileCard={(c) => (
-          <>
-            <MobileCardHeader title={c.name} />
-            {hideContact ? null : (
-              <MobileCardRow label={t('Phone')}>
-                <span className="font-mono" dir="ltr">{c.phone}</span>
+      {isError ? (
+        <Card className="p-6">
+          <ErrorState description={error?.message} onRetry={() => void refetch()} />
+        </Card>
+      ) : (
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          rowKey={(c) => rowId(c) ?? c.name}
+          loading={isLoading}
+          onRowClick={(c) =>
+            navigate(`/customer-detail?id=${encodeURIComponent(rowId(c) ?? c.name)}`)
+          }
+          mobileCard={(c) => (
+            <>
+              <MobileCardHeader
+                title={c.name}
+                trailing={
+                  <RowActions
+                    label={c.name}
+                    onEdit={mayEdit ? () => setForm(c) : undefined}
+                    onDelete={mayDelete ? () => setDoomed(c) : undefined}
+                  />
+                }
+              />
+              {hideContact ? null : (
+                <MobileCardRow label={t('Phone')}>
+                  <span className="font-mono" dir="ltr">{c.phone}</span>
+                </MobileCardRow>
+              )}
+              <MobileCardRow label={t('Vehicles Count')}>{derived(c.vehicles)}</MobileCardRow>
+              <MobileCardRow label={t('Total Spent')}>
+                <Money sar={parseSar(c.spent ?? '')} className="font-semibold text-heading" />
               </MobileCardRow>
-            )}
-            <MobileCardRow label={t('Vehicles Count')}>{c.vehicles}</MobileCardRow>
-            <MobileCardRow label={t('Total Spent')}>
-              <Money sar={parseSar(c.spent)} className="font-semibold text-heading" />
-            </MobileCardRow>
-            <MobileCardRow label={t('Last Visit')}>{c.last}</MobileCardRow>
-          </>
-        )}
-        empty={
-          <NoMatches
-            query={query}
-            icon="Users"
-            title="No customers yet"
-            description="Customers are created at check-in or from the portal."
-          />
-        }
-      />
+              <MobileCardRow label={t('Last Visit')}>{derived(c.last && t(c.last))}</MobileCardRow>
+            </>
+          )}
+          empty={
+            <NoMatches
+              query={query}
+              icon="Users"
+              title="No customers yet"
+              description="Customers are created at check-in or from the portal."
+              action={
+                can('customers', 'c') ? (
+                  <Button size="md" onClick={() => setForm(null)}>
+                    <Icon name="Plus" size={16} />
+                    {t('Add Customer')}
+                  </Button>
+                ) : null
+              }
+            />
+          }
+        />
+      )}
+
+      {form !== undefined ? (
+        <CustomerFormModal
+          open
+          onClose={() => setForm(undefined)}
+          customer={form ?? undefined}
+        />
+      ) : null}
+
+      {doomed ? (
+        <DeleteRecordModal
+          open
+          onClose={() => setDoomed(undefined)}
+          kind="Customer"
+          name={doomed.name}
+          consequences={
+            <>
+              <Consequence count={doomed.vehicles} label="vehicles stay in the registry" />
+              <Consequence label="Job cards and invoices keep their history" />
+            </>
+          }
+          onConfirm={async () => {
+            const id = rowId(doomed)
+            if (!id) throw new Error(t('This record has no id, so it cannot be deleted.'))
+            await remove.mutateAsync({ id })
+            toast.show({ title: t('Customer deleted'), description: doomed.name })
+          }}
+        />
+      ) : null}
     </>
   )
 }
 
 // ── Vehicles ────────────────────────────────────────────────────────────────
-type Vehicle = RowOf<'vehicles'>
-
-const VEHICLE_STATUS: Record<string, readonly [string, string]> = {
-  active: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  service: ['rgba(11,179,255,.1)', '#0BB3FF'],
-}
+type Vehicle = RowOf<'vehicles'> & { vin?: string | null; mileageKm?: number }
 
 export function Vehicles() {
   const { t } = usePreferences()
   const { can } = useSession()
   const navigate = useNavigate()
-  const { data: vehicles = [], isLoading } = useCollection('vehicles')
+  const toast = useToast()
+  const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
   const { query, setQuery, filtered } = useSearch(vehicles, (v) => [v.plate, v.make, v.owner])
+  const remove = useDelete('vehicles')
 
-  const statusBadge = (value: string) => {
-    const [bg, fg] = VEHICLE_STATUS[value] ?? VEHICLE_STATUS.active
-    return (
-      <Badge background={bg} color={fg}>
-        {t(value === 'service' ? 'In Service' : 'Active')}
-      </Badge>
-    )
-  }
+  const [form, setForm] = useState<Vehicle | null | undefined>(undefined)
+  const [doomed, setDoomed] = useState<Vehicle | undefined>(undefined)
+
+  const mayEdit = can('vehicles', 'e')
+  const mayDelete = can('vehicles', 'd')
 
   const columns: Column<Vehicle>[] = [
     { header: 'Plate', cell: (v) => v.plate, code: true },
     { header: 'Make & Model', cell: (v) => v.make },
-    { header: 'Owner', cell: (v) => v.owner },
-    { header: 'Mileage', cell: (v) => <span className="font-mono text-[13px]" dir="ltr">{v.mileage}</span> },
-    { header: 'Last Service', cell: (v) => v.last },
-    { header: 'Status', cell: (v) => statusBadge(v.status) },
+    { header: 'Owner', cell: (v) => derived(v.owner) },
+    { header: 'Mileage', cell: (v) => <span className="font-mono text-[13px]" dir="ltr">{derived(v.mileage)}</span> },
+    { header: 'Last Service', cell: (v) => derived(v.last && t(v.last)) },
+    { header: 'Status', cell: (v) => <VehicleStatusBadge value={v.status} /> },
+    ...(mayEdit || mayDelete
+      ? [
+          {
+            header: 'Actions',
+            className: 'text-end',
+            cell: (v: Vehicle) => (
+              <RowActions
+                label={v.plate}
+                onEdit={mayEdit ? () => setForm(v) : undefined}
+                onDelete={mayDelete ? () => setDoomed(v) : undefined}
+              />
+            ),
+          },
+        ]
+      : []),
   ]
 
   return (
@@ -160,51 +325,98 @@ export function Vehicles() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('vehicles', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setForm(null)}>
               <Icon name="Plus" size={16} />
               {t('Add New Vehicle')}
             </Button>
           ) : null
         }
       />
-      <DataTable
-        columns={columns}
-        rows={filtered}
-        rowKey={(v) => v.plate}
-        loading={isLoading}
-        onRowClick={(v) => navigate(`/vehicle-detail?plate=${encodeURIComponent(v.plate)}`)}
-        mobileCard={(v) => (
-          <>
-            <MobileCardHeader title={v.plate} code trailing={statusBadge(v.status)} />
-            <MobileCardRow>{v.make}</MobileCardRow>
-            <MobileCardRow label={t('Owner')}>{v.owner}</MobileCardRow>
-            <MobileCardRow label={t('Mileage')}>
-              <span className="font-mono" dir="ltr">{v.mileage}</span>
-            </MobileCardRow>
-            <MobileCardRow label={t('Last Service')}>{v.last}</MobileCardRow>
-          </>
-        )}
-        empty={
-          <NoMatches
-            query={query}
-            icon="Car"
-            title="No vehicles yet"
-            description="Vehicles are added at check-in."
-          />
-        }
-      />
+      {isError ? (
+        <Card className="p-6">
+          <ErrorState description={error?.message} onRetry={() => void refetch()} />
+        </Card>
+      ) : (
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          rowKey={(v) => rowId(v) ?? v.plate}
+          loading={isLoading}
+          onRowClick={(v) => navigate(`/vehicle-detail?id=${encodeURIComponent(rowId(v) ?? v.plate)}`)}
+          mobileCard={(v) => (
+            <>
+              <MobileCardHeader
+                title={v.plate}
+                code
+                trailing={
+                  <span className="flex items-center gap-1">
+                    <VehicleStatusBadge value={v.status} />
+                    <RowActions
+                      label={v.plate}
+                      onEdit={mayEdit ? () => setForm(v) : undefined}
+                      onDelete={mayDelete ? () => setDoomed(v) : undefined}
+                    />
+                  </span>
+                }
+              />
+              <MobileCardRow>{v.make}</MobileCardRow>
+              <MobileCardRow label={t('Owner')}>{v.owner}</MobileCardRow>
+              <MobileCardRow label={t('Mileage')}>
+                <span className="font-mono" dir="ltr">{derived(v.mileage)}</span>
+              </MobileCardRow>
+              <MobileCardRow label={t('Last Service')}>{derived(v.last && t(v.last))}</MobileCardRow>
+            </>
+          )}
+          empty={
+            <NoMatches
+              query={query}
+              icon="Car"
+              title="No vehicles yet"
+              description="Vehicles are added at check-in."
+              action={
+                can('vehicles', 'c') ? (
+                  <Button size="md" onClick={() => setForm(null)}>
+                    <Icon name="Plus" size={16} />
+                    {t('Add New Vehicle')}
+                  </Button>
+                ) : null
+              }
+            />
+          }
+        />
+      )}
+
+      {form !== undefined ? (
+        <VehicleFormModal open onClose={() => setForm(undefined)} vehicle={form ?? undefined} />
+      ) : null}
+
+      {doomed ? (
+        <DeleteRecordModal
+          open
+          onClose={() => setDoomed(undefined)}
+          kind="Vehicle"
+          name={doomed.plate}
+          code
+          consequences={
+            <>
+              <Consequence label="Job cards keep this vehicle's history" />
+              <Consequence label="The owner's customer record is not affected" />
+            </>
+          }
+          onConfirm={async () => {
+            const id = rowId(doomed)
+            if (!id) throw new Error(t('This record has no id, so it cannot be deleted.'))
+            await remove.mutateAsync({ id })
+            toast.show({ title: t('Vehicle deleted'), description: doomed.plate })
+          }}
+        />
+      ) : null}
     </>
   )
 }
 
 // ── Estimates ───────────────────────────────────────────────────────────────
 type Estimate = RowOf<'estimates'>
-
-const ESTIMATE_STATUS: Record<string, readonly [string, string]> = {
-  draft: ['rgba(100,116,139,.1)', '#64748B'],
-  sent: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  approved: ['rgba(10,94,215,.1)', '#0A5ED7'],
-}
 
 export function Estimates() {
   const { t } = usePreferences()
@@ -213,14 +425,7 @@ export function Estimates() {
   const { data: estimates = [], isLoading } = useCollection('estimates')
   const { query, setQuery, filtered } = useSearch(estimates, (e) => [e.id, e.cust, e.veh])
 
-  const statusBadge = (value: string) => {
-    const [bg, fg] = ESTIMATE_STATUS[value] ?? ESTIMATE_STATUS.draft
-    return (
-      <Badge background={bg} color={fg}>
-        {t(value[0].toUpperCase() + value.slice(1))}
-      </Badge>
-    )
-  }
+  const statusBadge = (value: string) => <EstimateStatusBadge value={value} />
 
   const columns: Column<Estimate>[] = [
     { header: 'Estimate #', cell: (e) => e.id, code: true },
@@ -345,16 +550,7 @@ export function FleetManagement() {
   const { data: fleets = [], isLoading } = useCollection('fleets')
   const { query, setQuery, filtered } = useSearch(fleets, (f) => [f.name])
 
-  const contractBadge = (value: string) =>
-    value === 'renewal' ? (
-      <Badge background="rgba(249,115,22,.1)" color="#F97316">
-        {t('Renewal Due')}
-      </Badge>
-    ) : (
-      <Badge background="rgba(10,94,215,.1)" color="#0A5ED7">
-        {t('Active')}
-      </Badge>
-    )
+  const contractBadge = (value: string) => <FleetContractBadge value={value} />
 
   const columns: Column<Fleet>[] = [
     { header: 'Name', cell: (f) => f.name },
