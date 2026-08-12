@@ -1,9 +1,9 @@
 {
-  "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling \u2014 a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T00:55:00Z",
-  "wave": "W1",
-  "waveName": "Foundation",
-  "waveNote": "Complete. All five foundation agents landed and verified; the product wave is unblocked.",
+  "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
+  "asOf": "2026-08-12T01:45:00Z",
+  "wave": "W2",
+  "waveName": "Product",
+  "waveNote": "Tranche 1 running: four agents on the Golden Path 01 chain — new customer through to paid invoice — because that is the release-blocking path and the one that proves the Mini ERP is a connected transaction rather than sixteen screens that render. Six more product agents wait for tranche 2 rather than launching now: concurrency is bounded by contention, not maximised.",
   "agents": [
     {
       "id": "03",
@@ -17,9 +17,9 @@
         "project-control/**"
       ],
       "blocks": [
-        "every merge to main \u2014 no agent merges its own branch"
+        "every merge to main — no agent merges its own branch"
       ],
-      "notes": "Re-verification caught, this wave: a mis-parse in my own generator, a wrongly-framed SOD finding, an agent that produced 68 files and no report, a claim I made twice that agent 06 was running when it had not been launched, and \u2014 on the first server test run \u2014 the exact harness flake agent 06 had flagged as open, which is now fixed rather than tolerated."
+      "notes": "Before this wave opened, the router seam: ten agents were about to append to the same three screen maps in routes/index.tsx, which the dependency graph names as the worst contention point in the repository. Each domain now owns a barrel and composition throws on a double claim rather than silently overwriting. Verified behaviour-preserving — 114 of 402 still rendering, both gates at baseline, 402 smoke routes, 183 app tests."
     },
     {
       "id": "04",
@@ -39,7 +39,7 @@
         "G10 portals",
         "G11 website"
       ],
-      "notes": "Landed as 2095896. Found 23 icon names resolving to nothing \u2014 lucide renamed a family in v0.4xx and the generator dropped the misses silently, so the close X on every toast rendered blank. Aliased in Icon.tsx; durable fix belongs in port-design-data.mjs."
+      "notes": "Landed as 2095896. Found 23 icon names resolving to nothing — lucide renamed a family in v0.4xx and the generator dropped the misses silently, so the close X on every toast rendered blank. Aliased in Icon.tsx; durable fix belongs in port-design-data.mjs."
     },
     {
       "id": "05",
@@ -55,9 +55,9 @@
         "app/src/data/useCollection.ts"
       ],
       "blocks": [
-        "every capability's Definition of Done \u2014 real data, persistence and audit are clauses in it"
+        "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "Landed as dcb4d54 \u2014 but the agent never reported. Its work was on disk when it went away, so nothing arrived with a claim attached and everything was verified from scratch: 146 server tests against a real PostgreSQL 16 started in this container, plus a direct RLS probe showing a tenant cannot read, update, delete or forge another tenant's rows, and that a missing context fails closed."
+      "notes": "Landed as dcb4d54 — but the agent never reported. Its work was on disk when it went away, so nothing arrived with a claim attached and everything was verified from scratch: 146 server tests against a real PostgreSQL 16 started in this container, plus a direct RLS probe showing a tenant cannot read, update, delete or forge another tenant's rows, and that a missing context fails closed."
     },
     {
       "id": "07",
@@ -65,7 +65,7 @@
       "team": "fnd",
       "state": "done",
       "startedAt": "2026-08-11T15:52:00Z",
-      "scope": "vitest + jsdom + testing-library, RBAC unit tests across 14 roles \u00d7 28 modules \u00d7 5 actions, FIELD_RULES reachability audit, component tests, registry-driven route coverage in smoke.mjs",
+      "scope": "vitest + jsdom + testing-library, RBAC unit tests across 14 roles × 28 modules × 5 actions, FIELD_RULES reachability audit, component tests, registry-driven route coverage in smoke.mjs",
       "owns": [
         "app/vitest.config.ts",
         "app/tests/**",
@@ -74,7 +74,7 @@
       "blocks": [
         "every later tranche's verification"
       ],
-      "notes": "Landed as a87fde5. 174 tests, route coverage now generated from the registry (402 checked). Nine defects found in existing code \u2014 see BLOCKERS.json BLK-013 to BLK-016."
+      "notes": "Landed as a87fde5. 174 tests, route coverage now generated from the registry (402 checked). Nine defects found in existing code — see BLOCKERS.json BLK-013 to BLK-016."
     },
     {
       "id": "06",
@@ -90,13 +90,73 @@
         "app/src/screens/auth/**"
       ],
       "blocks": [
-        "G10 portals \u2014 separate audiences need a session model"
+        "G10 portals — separate audiences need a session model"
       ],
-      "notes": "Landed as f4a5a52. Found and closed a live privilege escalation: routes/collections.ts checked 'x' for DELETE, and 'x' is export \u2014 that granted delete to every role holding view-plus-export, including accountant on the audit log. Closed F-002, F-004, F-005, F-006. 225 server tests pass against a real PostgreSQL, including 21 isolation tests at the HTTP boundary. Reported open items honestly rather than claiming completeness."
+      "notes": "Landed as f4a5a52. Found and closed a live privilege escalation: routes/collections.ts checked 'x' for DELETE, and 'x' is export — that granted delete to every role holding view-plus-export, including accountant on the audit log. Closed F-002, F-004, F-005, F-006. 225 server tests pass against a real PostgreSQL, including 21 isolation tests at the HTTP boundary. Reported open items honestly rather than claiming completeness."
+    },
+    {
+      "id": "08",
+      "name": "Workshop / Mini ERP",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T01:45:00Z",
+      "scope": "The six-stage chain persisted through POST /jobs/:id/transition, the New Job Card CTA, JobCardDetail, and F-004 — feeding sodViolation the real audit history so QC blocks the person who did the repair rather than every technician",
+      "owns": [
+        "app/src/screens/workshop/**",
+        "app/src/screens/domains/workshop.ts"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+    },
+    {
+      "id": "09",
+      "name": "Customers / CRM",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T01:45:00Z",
+      "scope": "Customers and Vehicles CRUD through the modal and form systems, CustomerDetail and VehicleDetail, and the shared DetailPage frame that nine detail screens will consume",
+      "owns": [
+        "app/src/screens/registry/**",
+        "app/src/screens/crm/**",
+        "app/src/screens/domains/crm.ts",
+        "app/src/components/shell/DetailPage.tsx (W2 grant)"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+    },
+    {
+      "id": "10",
+      "name": "Parts / Inventory",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T01:45:00Z",
+      "scope": "The six-tabs-one-table defect, stock movements through POST /inventory/:id/movement, and the §A11 On Hand invariant proven rather than assumed",
+      "owns": [
+        "app/src/screens/feature/Inventory.tsx",
+        "app/src/screens/network/PartsNetwork.tsx",
+        "app/src/screens/domains/parts.ts"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
+    },
+    {
+      "id": "12",
+      "name": "Accounting / Finance",
+      "team": "prd",
+      "state": "running",
+      "startedAt": "2026-08-12T01:45:00Z",
+      "scope": "Invoice create/issue/edit and payment recording against the real endpoints with server-computed totals, the §A10 financial-integrity suite, and the F-007 money edge cases pinned as tests",
+      "owns": [
+        "app/src/screens/accounting/**",
+        "app/src/screens/finance/**",
+        "app/src/screens/domains/accounting.ts"
+      ],
+      "blocks": [],
+      "notes": "Launched with the routing seam in place, so none of the four needs to edit routes/index.tsx."
     }
   ],
   "shared": {
     "arbiter": "01",
-    "note": "package.json was updated by the orchestrator before launch \u2014 vitest, testing-library, jsdom, msw and zod are installed, and the test scripts added \u2014 so no agent needs to touch it. That file is the top contention point in the plan."
+    "note": "package.json was updated by the orchestrator before launch — vitest, testing-library, jsdom, msw and zod are installed, and the test scripts added — so no agent needs to touch it. That file is the top contention point in the plan. As of W2, screen registration is no longer shared at all: each domain declares its screens in its own barrel under app/src/screens/domains/, and app/src/screens/registry.ts refuses to let two domains claim one name."
   }
 }

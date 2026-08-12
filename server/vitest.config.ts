@@ -15,6 +15,10 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    /** Fails the run with one sentence when PostgreSQL is unreachable, instead
+     *  of letting every suite's beforeAll throw and reporting the result as a
+     *  couple of hundred skips. See the file for what that looked like. */
+    globalSetup: ['tests/global-setup.ts'],
     /** The integration suites share one database; running them in parallel
      *  would have them resetting the schema underneath each other. */
     fileParallelism: false,
