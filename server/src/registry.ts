@@ -882,9 +882,18 @@ export function collectionByPath(path: string): CollectionDef | undefined {
   return BY_PATH.get(path)
 }
 
-/** Cost and margin are hidden from the roles named in `FIELD_RULES`. Declared
- *  here so the redaction happens on serialisation rather than in a component,
- *  which would leave the value on the wire. */
+/** Per-collection field redaction, keyed to the `FIELD_RULES` a role fails.
+ *  Declared here so the value is dropped on serialisation rather than hidden in
+ *  a component, which would leave it on the wire — and §36 is explicit that the
+ *  wire, not the component, is the boundary.
+ *
+ *  `customers` was missing, and the gap was live: `FIELD_RULES` hides "Customer
+ *  contact details" from technician, qc and supplier, the client dutifully hid
+ *  the column — and the API shipped `phone` and `email` in the row regardless,
+ *  because nothing here told it not to. A technician token reading
+ *  `GET /customers` got every customer's phone number. The redaction the
+ *  designers specified existed only in CSS until this line. */
 export const REDACTIONS: Readonly<Record<string, readonly { ruleField: string; rowKeys: readonly string[] }[]>> = {
   parts: [{ ruleField: 'Part cost / margin', rowKeys: ['costHalalas'] }],
+  customers: [{ ruleField: 'Customer contact details', rowKeys: ['phone', 'email'] }],
 }

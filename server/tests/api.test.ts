@@ -80,6 +80,37 @@ describe('authorization is re-checked on the server', () => {
     expect(response.json().error.code).toBe('forbidden')
   })
 
+  it('redacts customer contact details from a technician on the wire, not just in the client', async () => {
+    // A technician holds `v` on customers, so the read is allowed — but
+    // FIELD_RULES hides "Customer contact details" from that role. The client
+    // hid the column; the API used to ship phone and email in the row anyway.
+    // §36: the wire is the boundary, so the value must be gone here.
+    const [tech, owner] = await Promise.all([
+      harness.token('technician'),
+      harness.token('owner'),
+    ])
+    const asTech = await harness.app.inject({
+      method: 'GET',
+      url: '/api/v1/customers?pageSize=5',
+      headers: { authorization: `Bearer ${tech}` },
+    })
+    expect(asTech.statusCode, asTech.body).toBe(200)
+    const techRows = asTech.json().rows as Array<Record<string, unknown>>
+    expect(techRows.length).toBeGreaterThan(0)
+    for (const row of techRows) {
+      expect(row.phone, 'phone leaked to a technician').toBeNull()
+      expect(row.email, 'email leaked to a technician').toBeNull()
+    }
+    // The owner, who is not in the rule's hidden list, still sees the contact.
+    const asOwner = await harness.app.inject({
+      method: 'GET',
+      url: '/api/v1/customers?pageSize=5',
+      headers: { authorization: `Bearer ${owner}` },
+    })
+    const ownerRows = asOwner.json().rows as Array<Record<string, unknown>>
+    expect(ownerRows.some((r) => typeof r.phone === 'string' && r.phone.length > 0)).toBe(true)
+  })
+
   it('refuses a role with no view permission on the module', async () => {
     const token = await harness.token('technician')
     const response = await harness.app.inject({
@@ -624,6 +655,42 @@ describe('workshop stage machine', () => {
     })
     expect(legal.statusCode, legal.body).toBe(200)
     expect(legal.json().stage).toBe('inspection')
+  })
+
+  it('will not let a generic PATCH move the stage around the gate', async () => {
+    // The transition route above refuses checkin→delivery with a 422. The
+    // generic collection PATCH must not be a second door onto the same column:
+    // it runs neither the state machine nor the QC/SOD check, so if it can set
+    // `stage` at all, every gate the transition route enforces is optional.
+    const token = await harness.token('owner')
+    const created = await harness.app.inject({
+      method: 'POST',
+      url: '/api/v1/jobs',
+      ...json(token, {
+        customerName: 'Layla Haddad',
+        vehicleLabel: 'Nissan Patrol 2021',
+        service: 'maintenance',
+      }),
+    })
+    expect(created.statusCode, created.body).toBe(201)
+    const id = created.json()._id
+
+    const patched = await harness.app.inject({
+      method: 'PATCH',
+      url: `/api/v1/jobs/${id}`,
+      ...json(token, { stage: 'delivery', status: 'completed' }),
+    })
+    // The write itself may succeed — it edits nothing it is allowed to edit —
+    // but the stage and status must be exactly where the job started.
+    const reread = await harness.app.inject({
+      method: 'GET',
+      url: `/api/v1/jobs/${id}`,
+      headers: { authorization: `Bearer ${token}` },
+    })
+    expect(reread.statusCode, reread.body).toBe(200)
+    expect(reread.json().stage, patched.body).toBe('checkin')
+    // The jobs presenter exposes status under `st`.
+    expect(reread.json().st).toBe('pending')
   })
 })
 

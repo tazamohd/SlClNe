@@ -67,7 +67,16 @@ export const jobCardCreate = z.object({
   complaint: z.string().max(4000).optional(),
 })
 
-export const jobCardUpdate = jobCardCreate.partial()
+/** A general edit may change who and what the job is for — never where it is in
+ *  the workflow. `stage` and `status` move only through `POST /jobs/:id/transition`,
+ *  which runs the state machine, the QC approval gate and the segregation-of-duties
+ *  check. Leaving them on the generic PATCH was a live bypass: any role with
+ *  `jobcards:e` could send `{ stage: 'delivery' }` and walk a car past QC without
+ *  a repair, past the SOD control, and into a `completed` status the transition
+ *  route would have refused. Omitting them here is the fix — a `stage` key on a
+ *  PATCH is now ignored, not obeyed. `qcPassedBy` was never in this shape and
+ *  cannot be sent. */
+export const jobCardUpdate = jobCardCreate.partial().omit({ stage: true, status: true })
 
 export const jobTransitionBody = z.object({
   to: jobStage,
