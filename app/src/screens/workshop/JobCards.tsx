@@ -8,7 +8,9 @@ import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { ErrorState } from '@/components/ui/States'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { JobCardForm } from './JobCardForm'
 
 type Job = RowOf<'jobs'>
 
@@ -16,13 +18,15 @@ type Job = RowOf<'jobs'>
  *
  *  "New Job Card" is gated on `jobcards:c`: a technician or QC inspector can
  *  view the list but can't open one, so the button is hidden rather than
- *  shown-and-rejected. */
+ *  shown-and-rejected. The server re-checks the same grant on `POST /jobs`;
+ *  hiding the button is what the user sees, not what stops them (§36). */
 export function JobCards() {
   const { t } = usePreferences()
   const { can } = useSession()
   const navigate = useNavigate()
-  const { data: jobs = [], isLoading } = useCollection('jobs')
+  const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
   const [query, setQuery] = useState('')
+  const [creating, setCreating] = useState(false)
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase()
@@ -54,13 +58,23 @@ export function JobCards() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('jobcards', 'c') ? (
-            <Button size="md" onClick={() => navigate('/workshop-check-in')}>
+            <Button size="md" onClick={() => setCreating(true)}>
               <Icon name="Plus" size={16} />
               {t('New Job Card')}
             </Button>
           ) : null
         }
       />
+
+      {isError ? (
+        <ErrorState
+          title={t("Couldn't load this")}
+          description={error?.message}
+          onRetry={() => void refetch()}
+        />
+      ) : null}
+
+      <JobCardForm open={creating} onClose={() => setCreating(false)} />
 
       <DataTable
         columns={columns}
