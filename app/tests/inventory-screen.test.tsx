@@ -202,6 +202,44 @@ describe('the stock ledger for one part', () => {
     expect(within(dialog).getAllByText(String(part.stock)).length).toBeGreaterThan(0)
   })
 
+  it('follows the refreshed quantity after a movement instead of showing the one it opened with', async () => {
+    const user = userEvent.setup()
+    const part = PARTS[0]!
+    const repository = (await import('@/data/repository')).repository
+    let reads = 0
+    const spy = vi.spyOn(repository.parts, 'list').mockImplementation(async () => {
+      const rows = PARTS.map((row) =>
+        row.sku === part.sku && reads > 0 ? { ...row, stock: row.stock + 5 } : { ...row },
+      )
+      reads += 1
+      return {
+        rows,
+        page: { page: 1, pageSize: rows.length, total: rows.length, totalPages: 1 },
+      }
+    })
+
+    renderWithProviders(<Inventory api={fakeApi()} />, { role: 'parts' })
+    await waitFor(() => expect(screen.getByText(part.name)).toBeInTheDocument())
+    await user.click(screen.getByText(part.name))
+    const ledger = await screen.findByRole('dialog')
+    await user.click(within(ledger).getByRole('button', { name: /receive stock/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const form = dialogs[dialogs.length - 1] as HTMLElement
+    await user.type(within(form).getByLabelText(/quantity received/i), '5')
+    await user.click(within(form).getByRole('button', { name: /receive stock/i }))
+
+    // The server owns the resulting quantity; the dialog re-reads it rather
+    // than keeping the figure it was opened with, which every derived number
+    // in it depends on.
+    await waitFor(() => {
+      // The figures strip at the top of the dialog; the reconciliation strip
+      // carries the same label lower down and is asserted separately.
+      const onHand = within(ledger).getAllByText('On Hand')[0]!.parentElement as HTMLElement
+      expect(within(onHand).getByText(String(part.stock + 5))).toBeInTheDocument()
+    })
+    spy.mockRestore()
+  })
+
   it('explains why the ledger is unreachable when there is no transport', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Inventory api={null} />)

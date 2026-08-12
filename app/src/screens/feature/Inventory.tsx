@@ -405,7 +405,12 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
   const { data: parts = [], isLoading, isError, refetch } = useCollection('parts')
   const [tab, setTab] = useState<string>(TABS[0].id)
   const [query, setQuery] = useState('')
-  const [ledgerFor, setLedgerFor] = useState<Part | null>(null)
+  // The open dialog is remembered by SKU, not by row. Holding the row would
+  // pin the quantity it had when it was opened, and every figure in the dialog
+  // — the projection, the running balances, the reconciliation — is derived
+  // from the current quantity. After a movement lands, the list is refetched
+  // and the dialog has to move with it or it starts contradicting itself.
+  const [ledgerSku, setLedgerSku] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
 
   // `api === undefined` means "not injected", which is the production path.
@@ -439,6 +444,11 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
     )
   }, [parts, query])
 
+  // A dataset that carries no reservations says so. Summing it to zero would
+  // claim that nothing is committed, which is a different statement from
+  // not knowing.
+  const knowsReserved = parts.some((part) => reservedOf(part) !== null)
+
   const stats: Stat[] = [
     { label: 'Total Parts', value: parts.length, caption: 'Active items', highlight: true },
     {
@@ -449,21 +459,28 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
     },
     {
       label: 'Reserved Units',
-      value: parts.reduce((sum, part) => sum + (reservedOf(part) ?? 0), 0),
-      caption: 'Committed to open jobs',
+      value: knowsReserved ? parts.reduce((sum, part) => sum + (reservedOf(part) ?? 0), 0) : '—',
+      caption: knowsReserved ? 'Committed to open jobs' : 'Not recorded in this dataset',
       tone: 'info',
     },
-    {
-      label: 'Stock Value',
-      value: formatSar(
-        parts.reduce((sum, part) => sum + priceHalalasOf(part) * part.stock, 0) / 100,
-        { bare: true }
-      ),
-      caption: 'On hand at sell price',
-    },
+    hidePrice
+      ? {
+          label: 'Units On Hand',
+          value: parts.reduce((sum, part) => sum + part.stock, 0),
+          caption: 'Across every tracked part',
+        }
+      : {
+          label: 'Stock Value',
+          value: formatSar(
+            parts.reduce((sum, part) => sum + priceHalalasOf(part) * part.stock, 0) / 100,
+            { bare: true }
+          ),
+          caption: 'On hand at sell price',
+        },
   ]
 
-  const openLedger = useCallback((part: Part) => setLedgerFor(part), [])
+  const ledgerPart = parts.find((part) => part.sku === ledgerSku) ?? null
+  const openLedger = useCallback((part: Part) => setLedgerSku(part.sku), [])
 
   const body = isError ? (
     <Section title={t('Inventory Summary')}>
@@ -549,13 +566,13 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
 
       {creating ? <AddPartModal onClose={() => setCreating(false)} /> : null}
 
-      {ledgerFor ? (
+      {ledgerPart ? (
         <PartLedgerModal
-          part={ledgerFor}
+          part={ledgerPart}
           api={movements}
           unavailable={unavailable}
           mayEdit={mayEdit}
-          onClose={() => setLedgerFor(null)}
+          onClose={() => setLedgerSku(null)}
         />
       ) : null}
     </>
