@@ -79,27 +79,49 @@ const routesSrc = readApp('src/routes/index.tsx')
 const featureDefsSrc = readApp('src/screens/feature/definitions.ts')
 const smokeSrc = readApp('scripts/smoke.mjs')
 
-/** Which screens are wired to a real component, and in which shell. Read from
- *  the three lookup tables in routes/index.tsx rather than guessed from files. */
-function screensIn(tableName) {
-  const start = routesSrc.indexOf(`const ${tableName}`)
+/** Which screens are wired to a real component. Read from the lookup tables
+ *  rather than guessed from files, so a component that exists but reaches no
+ *  route is still counted as missing — which is what it is. */
+function screensIn(src, tableName) {
+  const start = src.indexOf(`const ${tableName}`)
   if (start < 0) return new Set()
-  const brace = routesSrc.indexOf('{', start)
+  const brace = src.indexOf('{', start)
   let depth = 0, end = brace
-  for (let i = brace; i < routesSrc.length; i++) {
-    if (routesSrc[i] === '{') depth++
-    else if (routesSrc[i] === '}' && --depth === 0) { end = i; break }
+  for (let i = brace; i < src.length; i++) {
+    if (src[i] === '{') depth++
+    else if (src[i] === '}' && --depth === 0) { end = i; break }
   }
-  const body = routesSrc.slice(brace + 1, end)
+  const body = src.slice(brace + 1, end)
   const names = new Set()
   for (const m of body.matchAll(/(?:^|\n)\s*'([^']+)':/g)) names.add(m[1])
   for (const m of body.matchAll(/(?:^|\n)\s*([A-Z][\w]*)\s*(?:,|:)/g)) names.add(m[1])
   return names
 }
+
+/** The per-domain barrels under `src/screens/domains/`.
+ *
+ *  W2 runs ten domain agents at once, and the three tables in routes/index.tsx
+ *  were the file all ten of them would have had to edit — the exact contention
+ *  DEPENDENCIES.json names as the worst failure mode. Each domain now declares
+ *  its screens in a barrel nobody else touches. This has to read them too, or
+ *  every screen the wave builds would be invisible here and the registry would
+ *  under-report the product for the whole wave. */
+function domainScreens() {
+  const dir = path.join(APP, 'src/screens/domains')
+  if (!fs.existsSync(dir)) return new Set()
+  const names = new Set()
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.ts') && !file.endsWith('.tsx')) continue
+    for (const n of screensIn(read(path.join(dir, file)), 'SCREENS')) names.add(n)
+  }
+  return names
+}
+
 const IMPL = {
-  public: screensIn('PUBLIC_SCREENS'),
-  app: screensIn('APP_SCREENS'),
-  customerApp: screensIn('CUSTOMER_APP_SCREENS'),
+  public: screensIn(routesSrc, 'PUBLIC_SCREENS'),
+  app: screensIn(routesSrc, 'APP_SCREENS'),
+  customerApp: screensIn(routesSrc, 'CUSTOMER_APP_SCREENS'),
+  domains: domainScreens(),
 }
 const KIT_ROUTES = new Set([...featureDefsSrc.matchAll(/route: '([^']+)'/g)].map((m) => m[1]))
 /** Route coverage moved into the smoke runner itself: it reads this registry and
@@ -215,7 +237,11 @@ const entries = []
 
 for (const s of SCREENS) {
   const { surface, shell, domain, owner } = classify(s.name)
-  const built = IMPL.public.has(s.name) || IMPL.app.has(s.name) || IMPL.customerApp.has(s.name)
+  const built =
+    IMPL.public.has(s.name) ||
+    IMPL.app.has(s.name) ||
+    IMPL.customerApp.has(s.name) ||
+    IMPL.domains.has(s.name)
   const isReference = surface === 'reference'
   const { module, permissions } = permissionsFor(s.name)
   const hasMobileDesign = s.hasMobile || designMobile.has(s.name)
@@ -267,6 +293,9 @@ for (const s of SCREENS) {
 for (const s of SPEC_SCREENS) {
   if (s.designScreen) continue // already covered by its design entry
   const kit = KIT_ROUTES.has(s.route)
+  // A domain barrel claiming this name means an agent built the real screen,
+  // which outranks the feature kit's generic rendering of the same spec.
+  const owned = IMPL.domains.has(s.name)
   const external = EXTERNAL[s.title]
   entries.push({
     screenId: `F-${s.id}`,
@@ -285,23 +314,23 @@ for (const s of SPEC_SCREENS) {
     featureMapSource: s.screenshot ? `project/${s.screenshot}` : null,
     mobileType: 'B-responsive',
     purpose: s.purpose,
-    desktop: kit ? 'PARTIAL' : 'MISSING',
+    desktop: owned ? 'DONE' : kit ? 'PARTIAL' : 'MISSING',
     tablet: 'MISSING',
-    mobile: kit ? 'PARTIAL' : 'MISSING',
-    responsive: kit ? 'PARTIAL' : 'MISSING',
-    arabic: kit ? 'PARTIAL' : 'MISSING',
-    rtl: kit ? 'PARTIAL' : 'MISSING',
+    mobile: owned || kit ? 'PARTIAL' : 'MISSING',
+    responsive: owned || kit ? 'PARTIAL' : 'MISSING',
+    arabic: owned || kit ? 'PARTIAL' : 'MISSING',
+    rtl: owned || kit ? 'PARTIAL' : 'MISSING',
     loadingState: 'MISSING', emptyState: 'MISSING', errorState: 'MISSING', successState: 'MISSING',
     accessibility: 'MISSING',
     dataBacked: false,
     dataSource: [],
-    crud: { create: false, read: kit, update: false, delete: false },
+    crud: { create: false, read: owned || kit, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
     e2eContent: SMOKE_CONTENT_ROUTES.has(s.route),
     visualTests: false, accessibilityTests: false, securityTests: false, performanceTest: false,
     inNav: false,
-    status: kit ? 'IMPLEMENTED' : 'DISCOVERED',
+    status: owned || kit ? 'IMPLEMENTED' : 'DISCOVERED',
     blockers: external ? [`EXTERNAL_DEPENDENCY: ${external}`] : [],
     dependencies: [],
     evidence: [],

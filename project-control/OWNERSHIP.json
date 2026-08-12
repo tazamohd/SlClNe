@@ -1,10 +1,11 @@
 {
   "note": "Path globs each agent owns. An agent does not edit another agent's paths; a needed change outside your boundary is a request to the owner or an orchestrator decision. Files listed under `shared` are serialised through Agent 01 — concurrent edits to those are the main way a parallel build corrupts itself.",
-  "updatedAt": "2026-08-11",
+  "updatedAt": "2026-08-12",
   "shared": {
     "arbiter": "01",
     "paths": [
       "app/src/routes/index.tsx",
+      "app/src/screens/registry.ts",
       "app/src/data/repository.ts",
       "app/src/data/useCollection.ts",
       "app/src/data/rbac.ts",
@@ -17,7 +18,7 @@
       "packages/contract/**",
       "project-control/**"
     ],
-    "rule": "Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches these so two agents never rewrite the router in the same hour."
+    "rule": "Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches these so two agents never rewrite the router in the same hour. As of W2 a product agent has no reason to touch routes/index.tsx at all: it declares its screens in its own barrel under app/src/screens/domains/, which the router composes and which nobody else edits. Adding a domain is one orchestrator edit, written once."
   },
   "agents": [
     { "id": "01", "name": "Chief Architect / Orchestrator", "team": "command",
@@ -45,26 +46,26 @@
       "responsibilities": ["runners", "fixtures", "harnesses", "generated route coverage", "CI wiring"] },
 
     { "id": "08", "name": "Workshop / Mini ERP", "team": "product", "domain": "workshop",
-      "owns": ["app/src/screens/workshop/**"], "responsibilities": ["the connected check-in → history chain"] },
+      "owns": ["app/src/screens/workshop/**", "app/src/screens/domains/workshop.ts"], "responsibilities": ["the connected check-in → history chain"] },
     { "id": "09", "name": "Customers / CRM", "team": "product", "domain": "crm",
-      "owns": ["app/src/screens/registry/**", "app/src/screens/crm/**"], "responsibilities": ["customers", "vehicles", "fleets", "leads", "campaigns"] },
+      "owns": ["app/src/screens/registry/**", "app/src/screens/crm/**", "app/src/screens/domains/crm.ts"], "responsibilities": ["customers", "vehicles", "fleets", "leads", "campaigns"] },
     { "id": "10", "name": "Parts / Inventory", "team": "product", "domain": "parts",
-      "owns": ["app/src/screens/feature/Inventory.tsx", "app/src/screens/network/PartsNetwork.tsx"], "responsibilities": ["stock invariants", "reservations", "movements"] },
+      "owns": ["app/src/screens/feature/Inventory.tsx", "app/src/screens/network/PartsNetwork.tsx", "app/src/screens/domains/parts.ts"], "responsibilities": ["stock invariants", "reservations", "movements"] },
     { "id": "11", "name": "Procurement", "team": "product", "domain": "procurement",
-      "owns": ["app/src/screens/network/Procurement.tsx"], "responsibilities": ["requisitions", "purchase orders", "receiving", "approval ceilings"] },
+      "owns": ["app/src/screens/network/Procurement.tsx", "app/src/screens/domains/procurement.ts"], "responsibilities": ["requisitions", "purchase orders", "receiving", "approval ceilings"] },
     { "id": "12", "name": "Accounting / Finance", "team": "product", "domain": "accounting",
-      "owns": ["app/src/screens/accounting/**", "app/src/screens/finance/**"], "responsibilities": ["ledger", "tax", "reconciliation", "financial integrity suite"] },
+      "owns": ["app/src/screens/accounting/**", "app/src/screens/finance/**", "app/src/screens/domains/accounting.ts"], "responsibilities": ["ledger", "tax", "reconciliation", "financial integrity suite"] },
     { "id": "13", "name": "Insurance / Fleet / Loans", "team": "product", "domain": "insurance",
-      "owns": ["app/src/screens/insurance/**"], "responsibilities": ["policies", "claims", "fleet contracts", "loan lifecycle"] },
+      "owns": ["app/src/screens/insurance/**", "app/src/screens/domains/insurance.ts"], "responsibilities": ["policies", "claims", "fleet contracts", "loan lifecycle"] },
     { "id": "14", "name": "HR", "team": "product", "domain": "hr",
-      "owns": ["app/src/screens/hr/**"], "responsibilities": ["employees", "payroll", "leave", "timesheets"] },
+      "owns": ["app/src/screens/hr/**", "app/src/screens/domains/hr.ts"], "responsibilities": ["employees", "payroll", "leave", "timesheets"] },
     { "id": "15", "name": "AI / Automation", "team": "product", "domain": "ai",
-      "owns": ["app/src/screens/ai/**", "app/src/screens/crm/Crm.tsx"], "responsibilities": ["AI hub", "grounding and permission boundaries", "human confirmation gate", "automation rules"] },
+      "owns": ["app/src/screens/ai/**", "app/src/screens/crm/Crm.tsx", "app/src/screens/domains/ai.ts"], "responsibilities": ["AI hub", "grounding and permission boundaries", "human confirmation gate", "automation rules"] },
     { "id": "16", "name": "Portals", "team": "product", "domain": "portals",
-      "owns": ["app/src/screens/portals/**", "app/src/screens/customer-app/**", "app/src/components/shell/CustomerAppShell.tsx"],
+      "owns": ["app/src/screens/portals/**", "app/src/screens/customer-app/**", "app/src/components/shell/CustomerAppShell.tsx", "app/src/screens/domains/portals.ts"],
       "responsibilities": ["customer, technician, supplier portals", "call centre", "kiosk", "native frames"] },
     { "id": "17", "name": "Public Website & Landing", "team": "product", "domain": "website",
-      "owns": ["app/src/screens/public/**", "app/src/components/shell/PublicShell.tsx", "app/public/robots.txt", "app/public/sitemap.xml"],
+      "owns": ["app/src/screens/public/**", "app/src/components/shell/PublicShell.tsx", "app/public/robots.txt", "app/public/sitemap.xml", "app/src/screens/domains/website.ts"],
       "responsibilities": ["33 public pages", "landing section system", "SEO", "marketing code-split"] },
 
     { "id": "18", "name": "Mobile / Tablet", "team": "cross-cutting",

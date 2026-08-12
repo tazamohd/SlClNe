@@ -1,8 +1,22 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import type { ComponentType } from 'react'
 import { SCREENS } from '@/data/generated/screens'
 import { SPEC_SCREENS } from '@/data/generated/spec-screens'
 import { RequireAccess } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
+import { composeScreens, type DomainScreens, type Shell } from '@/screens/registry'
+import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
+
+import { SCREENS as WORKSHOP_SCREENS } from '@/screens/domains/workshop'
+import { SCREENS as CRM_SCREENS } from '@/screens/domains/crm'
+import { SCREENS as PARTS_SCREENS } from '@/screens/domains/parts'
+import { SCREENS as PROCUREMENT_SCREENS } from '@/screens/domains/procurement'
+import { SCREENS as ACCOUNTING_SCREENS } from '@/screens/domains/accounting'
+import { SCREENS as INSURANCE_SCREENS } from '@/screens/domains/insurance'
+import { SCREENS as HR_SCREENS } from '@/screens/domains/hr'
+import { SCREENS as AI_SCREENS } from '@/screens/domains/ai'
+import { SCREENS as PORTALS_SCREENS } from '@/screens/domains/portals'
+import { SCREENS as WEBSITE_SCREENS } from '@/screens/domains/website'
 
 import { Splash } from '@/screens/auth/Splash'
 import { Welcome } from '@/screens/auth/Welcome'
@@ -195,39 +209,74 @@ const CUSTOMER_APP_SCREENS: Record<string, React.ComponentType> = {
   'CustomerApp.Profile': CustomerAppProfile,
 }
 
+/** The three maps above predate the domain barrels and stay where they are —
+ *  moving 80 working screens to prove a point is the kind of churn §57 warns
+ *  about. They are folded in as three more domains, so the same double-claim
+ *  check covers them: a W2 agent that re-declares `JobCards` in its own barrel
+ *  gets an error naming both sides, not a silent overwrite. */
+const asDomain = (
+  screens: Record<string, ComponentType>,
+  shell: Shell | null | undefined,
+  ungated = false
+): DomainScreens =>
+  Object.fromEntries(
+    Object.entries(screens).map(([name, component]) => [name, { component, shell, ungated }])
+  )
+
+const SCREEN_ENTRIES = composeScreens({
+  'legacy:auth': asDomain(PUBLIC_SCREENS, null, true),
+  'legacy:customer-app': asDomain(CUSTOMER_APP_SCREENS, CustomerAppShell),
+  'legacy:app': asDomain(APP_SCREENS, undefined),
+  workshop: WORKSHOP_SCREENS,
+  crm: CRM_SCREENS,
+  parts: PARTS_SCREENS,
+  procurement: PROCUREMENT_SCREENS,
+  accounting: ACCOUNTING_SCREENS,
+  insurance: INSURANCE_SCREENS,
+  hr: HR_SCREENS,
+  ai: AI_SCREENS,
+  portals: PORTALS_SCREENS,
+  website: WEBSITE_SCREENS,
+})
+
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/splash" replace />} />
 
       {SCREENS.map((screen) => {
-        const Public = PUBLIC_SCREENS[screen.name]
-        if (Public) {
-          return <Route key={screen.name} path={screen.route} element={<Public />} />
-        }
+        const entry = SCREEN_ENTRIES[screen.name]
 
-        const CustomerScreen = CUSTOMER_APP_SCREENS[screen.name]
-        if (CustomerScreen) {
+        // Ungated screens render outside RequireAccess entirely rather than
+        // passing a flag through it: the guard redirects anyone without a
+        // session to /login, and /login is one of these screens.
+        if (entry?.ungated) {
+          const Ungated = entry.component
+          const UngatedShell = entry.shell
           return (
             <Route
               key={screen.name}
               path={screen.route}
               element={
-                <RequireAccess screen={screen.name} shell="customer-app">
-                  <CustomerScreen />
-                </RequireAccess>
+                UngatedShell ? (
+                  <UngatedShell>
+                    <Ungated />
+                  </UngatedShell>
+                ) : (
+                  <Ungated />
+                )
               }
             />
           )
         }
 
-        const Implemented = APP_SCREENS[screen.name]
+        const Implemented = entry?.component
         return (
           <Route
             key={screen.name}
             path={screen.route}
             element={
-              <RequireAccess screen={screen.name}>
+              <RequireAccess screen={screen.name} shell={entry?.shell}>
                 {Implemented ? <Implemented /> : <PendingScreen screen={screen} />}
               </RequireAccess>
             }
@@ -241,13 +290,19 @@ export function AppRoutes() {
           do have a design are already routed above. */}
       {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
         const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
+        // A domain that has built the real screen outranks both the kit and the
+        // placeholder — that is how a feature-map route graduates.
+        const owned = SCREEN_ENTRIES[spec.name]
+        const Owned = owned?.component
         return (
           <Route
             key={spec.id}
             path={spec.route}
             element={
-              <RequireAccess screen={spec.name}>
-                {def ? (
+              <RequireAccess screen={spec.name} shell={owned?.shell}>
+                {Owned ? (
+                  <Owned />
+                ) : def ? (
                   <FeatureScreenView def={def} />
                 ) : (
                   <PendingScreen

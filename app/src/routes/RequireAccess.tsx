@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useSession } from '@/providers/SessionProvider'
 import { AppShell } from '@/components/shell/AppShell'
 import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
+import type { Shell } from '@/screens/registry'
 
 /** Guards an operational route.
  *
@@ -29,14 +30,22 @@ import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
 export function RequireAccess({
   screen,
   children,
-  shell = 'app',
+  shell,
 }: {
   /** Screen name as used in SCREEN_MODULE, e.g. "JobCards". */
   screen: string
   children: ReactNode
-  /** Which chrome to render inside. The customer app is a separate surface
-   *  with its own 430px frame and bottom tab bar, not the operational shell. */
-  shell?: 'app' | 'customer-app'
+  /** Which chrome to render inside.
+   *
+   *  Three meanings, and they are deliberately distinct: omitted is the
+   *  operational shell, `null` is no chrome at all, and a component is whatever
+   *  the owning domain supplies. The last one exists because `PortalShell`,
+   *  `PublicShell` and `KioskShell` are not built yet — a string union naming
+   *  them would be a file every portal and website agent had to edit at the
+   *  same moment to add its own case. The customer app keeps its string for the
+   *  same reason it always had one: it is a separate surface with its own 430px
+   *  frame and bottom tab bar, not the operational shell. */
+  shell?: 'app' | 'customer-app' | Shell | null
 }) {
   const { signedIn, canScreen, status, expired } = useSession()
   const location = useLocation()
@@ -55,6 +64,12 @@ export function RequireAccess({
   if (!canScreen(screen)) {
     return <Navigate to="/unauthorized" replace />
   }
-  const Shell = shell === 'customer-app' ? CustomerAppShell : AppShell
-  return <Shell>{children}</Shell>
+  const Chrome = resolveShell(shell)
+  return Chrome ? <Chrome>{children}</Chrome> : <>{children}</>
+}
+
+function resolveShell(shell: 'app' | 'customer-app' | Shell | null | undefined): Shell | null {
+  if (shell === undefined || shell === 'app') return AppShell
+  if (shell === 'customer-app') return CustomerAppShell
+  return shell
 }
