@@ -692,8 +692,19 @@ written.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
   OWNERSHIP.agents.map((a) => {
     const n = capsFor(a.id)
     const paths = (a.owns ?? []).length ? a.owns.map((p) => `\`${p}\``).join('<br>') : (a.sweeps ?? []).join('<br>') || '—'
-    return `| ${a.id} | ${a.name} | ${a.team} | ${n || '—'} | ${paths} |`
-  }).join('\n') + '\n'))
+    // A temporary grant is the one part of ownership most likely to be read
+    // wrongly — it says a file is editable by somebody the permanent table says
+    // it is not. Leaving it in the JSON and out of the document would make the
+    // document quietly wrong about the only entry anyone needs to check twice.
+    const granted = (a.grants ?? []).map((p) => `\`${p}\` *(granted)*`).join('<br>')
+    return `| ${a.id} | ${a.name} | ${a.team} | ${n || '—'} | ${[paths, granted].filter(Boolean).join('<br>')} |`
+  }).join('\n')
+  + (OWNERSHIP.agents.some((a) => a.grantNote)
+      ? '\n\n## Temporary grants\n\n' +
+        OWNERSHIP.agents.filter((a) => a.grantNote)
+          .map((a) => `**Agent ${a.id} — ${a.name}.** ${a.grantNote}`).join('\n\n')
+      : '')
+  + '\n'))
 
 written.push(write(path.join(DOCS, 'MASTER_DEPENDENCY_GRAPH.md'),
   genHeader('SALIS AUTO — Dependency Graph',

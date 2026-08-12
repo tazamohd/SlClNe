@@ -6,9 +6,10 @@ Who owns which paths. An agent does not edit another agent's files; a needed cha
 
 ## Serialised through Agent 01
 
-Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches these so two agents never rewrite the router in the same hour.
+Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches these so two agents never rewrite the router in the same hour. As of W2 a product agent has no reason to touch routes/index.tsx at all: it declares its screens in its own barrel under app/src/screens/domains/, which the router composes and which nobody else edits. Adding a domain is one orchestrator edit, written once.
 
 - `app/src/routes/index.tsx`
+- `app/src/screens/registry.ts`
 - `app/src/data/repository.ts`
 - `app/src/data/useCollection.ts`
 - `app/src/data/rbac.ts`
@@ -32,16 +33,16 @@ Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches t
 | 05 | Backend & Data | foundation | — | `server/**`<br>`packages/contract/**`<br>`app/src/data/repository.ts`<br>`app/src/data/useCollection.ts` |
 | 06 | Auth & Security Foundation | foundation | 28 | `server/src/auth/**`<br>`app/src/providers/SessionProvider.tsx`<br>`app/src/routes/RequireAccess.tsx`<br>`app/src/screens/auth/**` |
 | 07 | Test Infrastructure | foundation | — | `app/vitest.config.ts`<br>`app/tests/**`<br>`app/scripts/smoke.mjs`<br>`app/scripts/check-no-fake.mjs` |
-| 08 | Workshop / Mini ERP | product | 22 | `app/src/screens/workshop/**` |
-| 09 | Customers / CRM | product | 17 | `app/src/screens/registry/**`<br>`app/src/screens/crm/**` |
-| 10 | Parts / Inventory | product | 10 | `app/src/screens/feature/Inventory.tsx`<br>`app/src/screens/network/PartsNetwork.tsx` |
-| 11 | Procurement | product | 1 | `app/src/screens/network/Procurement.tsx` |
-| 12 | Accounting / Finance | product | 23 | `app/src/screens/accounting/**`<br>`app/src/screens/finance/**` |
-| 13 | Insurance / Fleet / Loans | product | — | `app/src/screens/insurance/**` |
-| 14 | HR | product | 1 | `app/src/screens/hr/**` |
-| 15 | AI / Automation | product | 10 | `app/src/screens/ai/**`<br>`app/src/screens/crm/Crm.tsx` |
-| 16 | Portals | product | 24 | `app/src/screens/portals/**`<br>`app/src/screens/customer-app/**`<br>`app/src/components/shell/CustomerAppShell.tsx` |
-| 17 | Public Website & Landing | product | 10 | `app/src/screens/public/**`<br>`app/src/components/shell/PublicShell.tsx`<br>`app/public/robots.txt`<br>`app/public/sitemap.xml` |
+| 08 | Workshop / Mini ERP | product | 22 | `app/src/screens/workshop/**`<br>`app/src/screens/domains/workshop.ts` |
+| 09 | Customers / CRM | product | 17 | `app/src/screens/registry/**`<br>`app/src/screens/crm/**`<br>`app/src/screens/domains/crm.ts`<br>`app/src/components/shell/DetailPage.tsx` *(granted)* |
+| 10 | Parts / Inventory | product | 10 | `app/src/screens/feature/Inventory.tsx`<br>`app/src/screens/network/PartsNetwork.tsx`<br>`app/src/screens/domains/parts.ts` |
+| 11 | Procurement | product | 1 | `app/src/screens/network/Procurement.tsx`<br>`app/src/screens/domains/procurement.ts` |
+| 12 | Accounting / Finance | product | 23 | `app/src/screens/accounting/**`<br>`app/src/screens/finance/**`<br>`app/src/screens/domains/accounting.ts` |
+| 13 | Insurance / Fleet / Loans | product | — | `app/src/screens/insurance/**`<br>`app/src/screens/domains/insurance.ts` |
+| 14 | HR | product | 1 | `app/src/screens/hr/**`<br>`app/src/screens/domains/hr.ts` |
+| 15 | AI / Automation | product | 10 | `app/src/screens/ai/**`<br>`app/src/screens/crm/Crm.tsx`<br>`app/src/screens/domains/ai.ts` |
+| 16 | Portals | product | 24 | `app/src/screens/portals/**`<br>`app/src/screens/customer-app/**`<br>`app/src/components/shell/CustomerAppShell.tsx`<br>`app/src/screens/domains/portals.ts` |
+| 17 | Public Website & Landing | product | 10 | `app/src/screens/public/**`<br>`app/src/components/shell/PublicShell.tsx`<br>`app/public/robots.txt`<br>`app/public/sitemap.xml`<br>`app/src/screens/domains/website.ts` |
 | 18 | Mobile / Tablet | cross-cutting | — | every capability at 390/430/768/820/834/1024/1280/1440/1536 |
 | 19 | Arabic / RTL | cross-cutting | — | `app/src/data/generated/ar.ts` |
 | 20 | Accessibility | cross-cutting | — | WCAG 2.2 AA<br>keyboard-only golden journeys<br>reduced motion |
@@ -49,3 +50,7 @@ Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches t
 | 22 | Performance | cross-cutting | — | `app/vite.config.ts` |
 | 23 | QA / E2E | cross-cutting | — | `app/tests/e2e/**` |
 | 24 | Documentation | cross-cutting | — | `docs/**` |
+
+## Temporary grants
+
+**Agent 09 — Customers / CRM.** W2 only. Nine detail screens need one page frame, and three product agents need it in the same wave — building it three times is how a design system forks. Agent 09 is the first consumer, so it builds the frame alongside CustomerDetail and VehicleDetail; agents 08, 12 and 13 consume it in tranche 2 and do not edit it. Reverts to agent 04 at the end of the wave.
