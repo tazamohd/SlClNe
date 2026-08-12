@@ -356,6 +356,20 @@ export function setAccessTokenProvider(provider: TokenProvider): void {
   accessToken = provider
 }
 
+/** Reads the current access token.
+ *
+ *  Exported for the handful of screens that call an *action* endpoint —
+ *  `POST /jobs/:id/transition`, `POST /invoices/:id/issue`,
+ *  `POST /inventory/:id/movement` — which have no collection shape and so make
+ *  the request themselves rather than through `createHttpRepository`. Without
+ *  this they defaulted to sending no token, so every such call was a 401 in a
+ *  live build (reported honestly as a failure, never faked). They register the
+ *  same token the session already gave this module, so there is one source of
+ *  truth for who the caller is, not four. */
+export function getAccessToken(): string | null | undefined {
+  return accessToken()
+}
+
 function buildUrl(base: string, path: string, query: Query = {}): string {
   const url = new URL(`${base.replace(/\/$/, '')}/${path}`)
   if (query.page !== undefined) url.searchParams.set('page', String(query.page))

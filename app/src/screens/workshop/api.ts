@@ -23,21 +23,19 @@
  *  for `/invoices/:id/payments` needs the last path segment to be a registered
  *  endpoint name, and neither of these is).
  *
- *  So this module makes the call itself and needs the bearer token, which is
- *  not exported. The fix is a small addition to a file this agent does not own
- *  and is recorded in the handover; until it lands
- *  `setWorkshopAccessTokenProvider` is unwired in production and a transition
- *  against a live API returns its 401, which the screen reports as the failure
- *  it is rather than the success it did not have. The tests wire it directly,
- *  so the request shape, the gating and the error mapping are proven either
- *  way.
+ *  So this module makes the call itself and needs the bearer token. It reads it
+ *  from `getAccessToken`, the same source `repository.ts` attaches to every
+ *  collection request, so a live transition now carries the caller's identity
+ *  instead of returning a 401. `setWorkshopAccessTokenProvider` remains for the
+ *  tests, which override the reader directly — so the request shape, the gating
+ *  and the error mapping are proven without a session.
  */
-import { API_URL, RepositoryError, isLive } from '@/data/repository'
+import { API_URL, RepositoryError, getAccessToken, isLive } from '@/data/repository'
 import type { JobStage } from './stages'
 
 type TokenReader = () => string | null | undefined
 
-let readAccessToken: TokenReader = () => null
+let readAccessToken: TokenReader = getAccessToken
 
 /** Supplies the bearer token to the calls that cannot go through the
  *  repository. See the module note. */

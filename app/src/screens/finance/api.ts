@@ -23,16 +23,17 @@
  *  handled.
  *
  *  `POST /invoices/:id/issue` has no such shape — it is an action, not a
- *  collection — and it is the one call this module has to make itself. It
- *  therefore needs the access token, which is not exported. The patch is two
- *  lines in a file this agent does not own and is recorded in the handover;
- *  until it lands, `setFinanceAccessTokenProvider` is unwired in production and
- *  issuing an invoice returns the API's 401, which the screen shows as the
- *  failure it is rather than a success it did not have.
+ *  collection — and it is the one call this module has to make itself. It reads
+ *  the token from `getAccessToken`, the same source `repository.ts` attaches to
+ *  every collection request, so issuing an invoice against a live API now
+ *  carries the caller's identity instead of returning a 401.
+ *  `setFinanceAccessTokenProvider` remains for the tests, which override the
+ *  reader directly.
  */
 import {
   API_URL,
   createHttpRepository,
+  getAccessToken,
   isLive,
   repository,
   RepositoryError,
@@ -151,7 +152,7 @@ export function newIdempotencyKey(prefix: string): string {
 
 type TokenReader = () => string | null | undefined
 
-let readAccessToken: TokenReader = () => null
+let readAccessToken: TokenReader = getAccessToken
 
 /** Supplies the bearer token to the one call that cannot go through the
  *  repository. See the module note: production wiring is a two-line change in

@@ -34,7 +34,7 @@ import {
   ReadOnlyNotice,
 } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
-import { API_URL, RepositoryError, type RepositoryErrorCode } from '@/data/repository'
+import { API_URL, RepositoryError, getAccessToken, type RepositoryErrorCode } from '@/data/repository'
 import { useCollection, useCreate, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -245,23 +245,21 @@ export function movementUnavailableReason(): string | null {
 
 type TokenReader = () => string | null | undefined
 
-let readAccessToken: TokenReader = () => null
+let readAccessToken: TokenReader = getAccessToken
 
 /** Supplies the bearer token to the movement endpoints.
  *
  *  `data/repository.ts` owns the one authenticated HTTP path in the app — the
  *  session registers a token provider there and every collection request reads
- *  it — and it exports the setter but not the getter. Both movement endpoints
- *  are actions on a part rather than collection CRUD, so neither can borrow
- *  that path: `createHttpRepository` can be pointed at a sub-collection, but
- *  `/inventory/:id/movement` is not one.
+ *  it. Both movement endpoints are actions on a part rather than collection
+ *  CRUD, so neither can borrow that path: `createHttpRepository` can be pointed
+ *  at a sub-collection, but `/inventory/:id/movement` is not one.
  *
- *  So the token arrives here instead. The production wiring is a two-line
- *  export in a file this agent does not own and is recorded in the handover;
- *  until it lands this stays unwired and the API answers 401, which the screen
- *  shows as the failure it is rather than a success it did not have. The tests
- *  wire it directly, so the request shape and the error mapping are proven
- *  either way. */
+ *  So the token arrives here instead, read from `getAccessToken` — the same
+ *  source the repository attaches to every collection request — so a movement
+ *  against a live API now carries the caller's identity instead of a 401. This
+ *  setter remains for the tests, which override the reader directly, so the
+ *  request shape and the error mapping are proven without a session. */
 export function setInventoryAccessTokenProvider(read: TokenReader): void {
   readAccessToken = read
 }
