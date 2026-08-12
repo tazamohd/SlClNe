@@ -10,5 +10,8 @@
  *  otherwise — `shell: null` for a screen with no chrome, or a shell component
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
+import { JobCardDetail } from '../workshop/JobCardDetail'
 
-export const SCREENS: DomainScreens = {}
+export const SCREENS: DomainScreens = {
+  JobCardDetail,
+}
