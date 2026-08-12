@@ -55,6 +55,13 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
    *  without the row, `technicians.user_id` maps the demo technician user to
    *  nothing and the own-scope portal is empty for the user it is for. */
   technicians: 1,
+  /** INV-2026-0124 / -0128 / -0131 — the invoices three design receipts
+   *  settle. The bundle's receipt history reaches further back than its
+   *  invoice list; money must not arrive against nothing (F-016). */
+  invoices: 3,
+  /** The SAR 150 consumables line that reconciles INV-2026-0142's lines with
+   *  its own header (F-016). */
+  invoiceLines: 1,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
@@ -143,19 +150,23 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     ),
   )
 
-  await tx.insert(s.jobCards).values(
-    T.JOBS.map((j) =>
-      row({
-        code: j.id,
-        customerName: j.cust,
-        vehicleLabel: j.veh,
-        service: j.svc,
-        status: j.st,
-        stage: STAGE_FOR_STATUS[j.st] ?? 'checkin',
-        priority: j.pr,
-      }),
-    ),
+  /* F-016: estimates and invoices must name the job they price, or every job's
+   * cost summary is legitimately empty. Each design customer has exactly one
+   * job on the board, so the customer name is the join key the bundle itself
+   * provides. */
+  const jobRows = T.JOBS.map((j) =>
+    row({
+      code: j.id,
+      customerName: j.cust,
+      vehicleLabel: j.veh,
+      service: j.svc,
+      status: j.st,
+      stage: STAGE_FOR_STATUS[j.st] ?? 'checkin',
+      priority: j.pr,
+    }),
   )
+  await tx.insert(s.jobCards).values(jobRows)
+  const jobIdByCustomer = new Map(jobRows.map((j) => [j.customerName, j.id]))
 
   await tx.insert(s.appointments).values(
     T.APPOINTMENTS.map((a) =>
@@ -181,6 +192,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       const { subtotal, tax } = splitVat(total)
       return row({
         code: e.id,
+        jobCardId: jobIdByCustomer.get(e.cust) ?? null,
         customerName: e.cust,
         vehicleLabel: e.veh,
         subtotalHalalas: subtotal,
@@ -204,6 +216,44 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         id,
         ...base,
         code: i.id,
+        jobCardId: jobIdByCustomer.get(i.cust) ?? null,
+        customerName: i.cust,
+        dueDate: parseDisplayDate(i.due) ?? SEED.appointmentDate,
+        status: i.status,
+        subtotalHalalas: subtotal,
+        taxHalalas: tax,
+        totalHalalas: total,
+        paidHalalas: i.status === 'paid' ? total : 0,
+        issuedAt: new Date(),
+      }
+    }),
+  )
+
+  /* F-016: three of the five design receipts settle invoices the bundle's
+   * invoice list no longer shows — its receipt history simply reaches further
+   * back than its invoice list. Money must not arrive against nothing, so the
+   * three historical invoices are seeded rather than the receipts dropped:
+   * dropping them would change what the Receipts screen renders, while these
+   * rows only extend the invoice history the design already implies. A cleared
+   * receipt means its invoice was paid in full; RCP-2026-0309 is still
+   * pending, so INV-2026-0131 stays unpaid until the money clears. No job
+   * links: the design carries no jobs that far back, and inventing them would
+   * be fabrication rather than coherence. Counted in SEED_COHERENCE_EXTRAS. */
+  const historicalInvoices = [
+    { code: 'INV-2026-0124', cust: 'Najd Fleet Services', amount: 'SAR 42,900', due: 'Jul 10, 2026', status: 'paid' },
+    { code: 'INV-2026-0128', cust: 'Mohammed Hassan', amount: 'SAR 2,310', due: 'Jul 14, 2026', status: 'paid' },
+    { code: 'INV-2026-0131', cust: 'Gulf Transport Co.', amount: 'SAR 18,400', due: 'Jul 19, 2026', status: 'unpaid' },
+  ]
+  await tx.insert(s.invoices).values(
+    historicalInvoices.map((i) => {
+      const total = parseSarToHalalas(i.amount)
+      const { subtotal, tax } = splitVat(total)
+      const id = ulid()
+      invoiceIds.set(i.code, id)
+      return {
+        id,
+        ...base,
+        code: i.code,
         customerName: i.cust,
         dueDate: parseDisplayDate(i.due) ?? SEED.appointmentDate,
         status: i.status,
@@ -231,6 +281,25 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
           sort: index,
         }),
       ),
+    )
+    /* F-016: the header says SAR 1,840 gross — SAR 1,600 net — while the five
+     * design lines total SAR 1,450 net, so the header claimed SAR 150 of net
+     * revenue no line accounted for. The header wins: it appears on two design
+     * surfaces (the invoice list and the receipt against it), while the detail
+     * page *derives* its totals from the lines — so one added consumables line
+     * of SAR 150 makes every surface agree without changing any figure the
+     * design shows. Counted in SEED_COHERENCE_EXTRAS. */
+    await tx.insert(s.invoiceLines).values(
+      row({
+        invoiceId: detailInvoiceId,
+        description: 'Workshop consumables',
+        descriptionAr: 'مستهلكات الورشة',
+        kind: 'part',
+        qty: 1,
+        unitPriceHalalas: sarToHalalas(150),
+        partSku: null,
+        sort: T.INVOICE_LINES.length,
+      }),
     )
     await tx.insert(s.payments).values(
       T.INVOICE_PAYMENTS.map((p) =>
