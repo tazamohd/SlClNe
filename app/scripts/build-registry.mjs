@@ -24,6 +24,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { execFileSync } from 'node:child_process'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
@@ -430,7 +431,26 @@ const byModule = Object.fromEntries(
 
 // ── emit ─────────────────────────────────────────────────────────────────────
 
-const stamp = process.env.SOURCE_DATE ?? new Date().toISOString().slice(0, 10)
+/** The date the *inputs* last changed, not the date this ran.
+ *
+ *  A wall-clock stamp makes every generated file differ on any later day, which
+ *  turns the "registry is current" CI check into a calendar check: it would have
+ *  failed every run dated after the commit, for a diff of twelve identical date
+ *  lines. Deriving it from the last commit keeps regeneration idempotent between
+ *  commits, so that check tests content drift, which is what it is for.
+ *
+ *  `SOURCE_DATE` still overrides, and a repository with no commits yet falls
+ *  back to today. */
+function inputDate() {
+  if (process.env.SOURCE_DATE) return process.env.SOURCE_DATE
+  try {
+    return execFileSync('git', ['log', '-1', '--format=%cs'], { cwd: REPO, encoding: 'utf8' }).trim()
+      || new Date().toISOString().slice(0, 10)
+  } catch {
+    return new Date().toISOString().slice(0, 10)
+  }
+}
+const stamp = inputDate()
 const written = []
 
 written.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
