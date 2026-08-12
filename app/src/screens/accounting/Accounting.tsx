@@ -9,6 +9,7 @@ import { Money, parseSar } from '@/components/ui/Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { RaiseReceiptModal } from '@/screens/finance/RaiseReceiptModal'
 
 /** The accounting ledger screens. Each pairs its title with the module name,
  *  as the design does ("Chart of Accounts" above "Accounting").
@@ -284,6 +285,7 @@ export function Receipts() {
   const { can } = useSession()
   const { data: receipts = [], isLoading } = useCollection('receipts')
   const { query, setQuery, filtered } = useFilter(receipts, (r) => [r.id, r.customer, r.invoice])
+  const [raising, setRaising] = useState(false)
 
   const columns: Column<Receipt>[] = [
     { header: 'Receipt #', cell: (r) => r.id, code: true },
@@ -303,7 +305,7 @@ export function Receipts() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('payments', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setRaising(true)}>
               <Icon name="Plus" size={16} />
               {t('New Receipt')}
             </Button>
@@ -331,6 +333,7 @@ export function Receipts() {
         )}
         empty={<EmptyState icon="Receipt" title={t('No receipts yet')} />}
       />
+      <RaiseReceiptModal open={raising} onClose={() => setRaising(false)} />
     </>
   )
 }
