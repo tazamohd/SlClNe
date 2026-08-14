@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-08-12",
+  "generatedAt": "2026-08-14",
   "totals": {
     "capabilities": 402,
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 117,
-    "placeholder": 245,
-    "designedMobileOwed": 60,
+    "rendered": 132,
+    "placeholder": 230,
+    "designedMobileOwed": 61,
     "untested": 0,
-    "mockOnly": 117,
+    "mockOnly": 132,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 38,
+    "renderedWithoutAssertion": 53,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -29,9 +29,9 @@
     },
     "app": {
       "total": 312,
-      "rendered": 89,
-      "placeholder": 211,
-      "mobileOwed": 45,
+      "rendered": 90,
+      "placeholder": 210,
+      "mobileOwed": 46,
       "e2e": 312,
       "dataBacked": 0
     },
@@ -53,8 +53,8 @@
     },
     "portal": {
       "total": 8,
-      "rendered": 2,
-      "placeholder": 6,
+      "rendered": 6,
+      "placeholder": 2,
       "mobileOwed": 0,
       "e2e": 8,
       "dataBacked": 0
@@ -85,8 +85,8 @@
     },
     "public": {
       "total": 10,
-      "rendered": 0,
-      "placeholder": 10,
+      "rendered": 10,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 10,
       "dataBacked": 0
@@ -135,8 +135,8 @@
     },
     "portals": {
       "total": 13,
-      "rendered": 2,
-      "placeholder": 11,
+      "rendered": 6,
+      "placeholder": 7,
       "mobileOwed": 0,
       "e2e": 13,
       "dataBacked": 0
@@ -183,17 +183,17 @@
     },
     "website": {
       "total": 10,
-      "rendered": 0,
-      "placeholder": 10,
+      "rendered": 10,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 10,
       "dataBacked": 0
     },
     "procurement": {
       "total": 1,
-      "rendered": 0,
-      "placeholder": 1,
-      "mobileOwed": 0,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 1,
       "e2e": 1,
       "dataBacked": 0
     },
@@ -313,8 +313,8 @@
     },
     "portalcustomer": {
       "total": 2,
-      "rendered": 0,
-      "placeholder": 2,
+      "rendered": 2,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 0
@@ -409,9 +409,9 @@
     },
     "procurement": {
       "total": 1,
-      "rendered": 0,
-      "placeholder": 1,
-      "mobileOwed": 0,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 1,
       "e2e": 1,
       "dataBacked": 0
     },
@@ -433,8 +433,8 @@
     },
     "portaltech": {
       "total": 2,
-      "rendered": 0,
-      "placeholder": 2,
+      "rendered": 2,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 0

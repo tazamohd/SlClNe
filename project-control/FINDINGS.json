@@ -112,7 +112,9 @@
       "foundBy": "07",
       "verified": "reported",
       "owner": "04",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "partially resolved",
+      "resolution": "PortalShell now exists (agent 16), so the shell the two procurement-portal screens should render is built. They still render AppShell until migrated onto it — that migration is an orchestrator integration step (a SURFACES entry plus declaring the screens with shell: PortalShell), tracked as F-024. The registry shell-mismatch for /procurement-portal and /procurement-portal/requisitions therefore persists one more tranche."
     },
     {
       "id": "F-010",
@@ -167,58 +169,68 @@
     },
     {
       "id": "F-014",
-      "severity": "HIGH",
+      "severity": "RESOLVED",
       "title": "The qc role cannot operate the QC gate it is named for",
       "detail": "server/src/routes/workshop.ts:41 requires jobcards:e before any transition; qc holds 'va', not 'e'. A qc user gets 403 'the qc role may not edit jobcards' on qc->delivery. Contradicts F-002's resolution, which says qc holds approve on jobcards — it passes quality, it releases no money.",
       "why": "Either the transition route should accept approve-authority for the QC step, or the matrix should grant qc the edit it needs. Today the one role designed to pass quality cannot.",
       "foundBy": "08",
-      "verified": "reported by agent 08; consistent with the F-002 resolution the orchestrator recorded",
+      "verified": "confirmed by the orchestrator on a freshly reset database; full server suite green (274)",
       "owner": "06",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "The QC transition now accepts approve-authority for qc→delivery (jobcards:a) while every other transition still requires edit; the matrix is unchanged. Proven by workshop-qc.test.ts: qc passes qc→delivery on a job it did not repair, qc is refused every non-gate transition, and a technician is still refused the gate."
     },
     {
       "id": "F-015",
-      "severity": "HIGH",
+      "severity": "RESOLVED",
       "title": "assigned_tech_id is compared to a user id, so a technician sees none of their own jobs",
       "detail": "assigned_tech_id holds a technicians.id; technicians.user_id is what would be comparable to a principal. (a) checkQcIndependence (workshop.ts:69) can never match, so the record-level QC check is dead — the trail check is what works. (b) The r_own RLS policy (drizzle/0001_rls.sql:74-78) means a technician on 'assigned'/'own' scope sees no job card assigned to them.",
       "why": "A functional break, not only a latent one: the technician portal's core list is empty for the exact user it is for. The SOD record-check being dead is masked because the audit-trail check covers it.",
       "foundBy": "08",
-      "verified": "reported by agent 08",
+      "verified": "confirmed by the orchestrator on a freshly reset database; full server suite green (274)",
       "owner": "05",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Migration 0002 rewrites the r_own RLS policy to resolve through technicians.user_id, and the transition route resolves the assignment to a user before checkQcIndependence. Proven by workshop-qc.test.ts: the demo technician user (Saeed, mapped to a technician row and assigned A3F8B2C1) lists exactly that job and reads it by id; an unrelated technician sees nothing; the record-level QC check fires for the assigned technician's own user. Orchestrator re-verified the semantics live: a generic unassigned technician correctly sees none, the assigned one sees exactly their job."
     },
     {
       "id": "F-016",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "Seed relationships and balances are internally inconsistent",
       "detail": "Three separate seed defects, all pinned by tests rather than hidden: job cards carry no jobCardId onto estimates or invoices (seed.ts:127-207), so every job's cost summary is legitimately empty; three of five receipts are orphans with no invoice (seed.ts:236); INV-2026-0142's header total implies SAR 150 of net revenue no line item accounts for (seed.ts:178-198).",
       "why": "The seed becomes the database. The no-orphan and financial-integrity audits exist to catch exactly this, and they will keep failing until the seed is coherent.",
       "foundBy": "08 and 12",
-      "verified": "reported by agents 08 and 12, each pinned to the exact rows",
+      "verified": "confirmed by the orchestrator on a freshly reset database; full server suite green (274)",
       "owner": "05",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Seed made coherent, F-008 left visible. Proven by seed-coherence.test.ts: every estimate and design invoice joins a job card by customer; no orphan receipts (the three missing invoices were seeded rather than the receipts deleted, preserving the Receipts fixture); INV-2026-0142's lines sum to its header (a SAR 150 consumables line added, since the header is the fixed figure on the list and receipt while the detail derives from lines); and F-008's imbalance is pinned as still-unbalanced."
     },
     {
       "id": "F-017",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "Inventory prohibitions are unenforced or unexpressible on the server",
       "detail": "Agent 10 proved the On Hand equation over a 500-case sequence but could not prove four prohibitions, because the server does not implement them: no endpoint writes parts.reserved (checkReservation is dead code), transfer writes only a negative delta and never credits the destination branch (toBranchId is stored and never read, so stock leaves the org's books), adjust is positive-only, and movementType has no 'return'. Replay protection is keyed on a client-chosen header, so two identical unkeyed POSTs are two movements.",
       "why": "The client keeps quantities consistent while the database can drift — worse than a visible failure. The screen now warns before a transfer commits, but the conservation law is not enforced where it must be.",
       "foundBy": "10",
-      "verified": "reported by agent 10 with a GAP: test for each unenforced prohibition",
+      "verified": "confirmed — 274 server tests green on a reset DB, including 21 inventory-enforcement tests over HTTP",
       "owner": "05",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Enforced server-side, migration 0003. A transfer writes the paired positive credit against the destination branch in the same transaction (toBranchId required); reservations write parts.reserved under the FOR UPDATE lock, guarded by checkReservation, and consumption may not exceed available except against a reservation; adjust_down is a distinct type (qty stays positive, the type carries the sign) with the negative-stock guard on the result; return has its own delta so it is not booked as receiving; the Idempotency-Key header is mandatory on movements (400 without). inventory-enforcement.test.ts proves each over HTTP; the client mirror in inventory-invariant.test.ts drives the same contract rules. NB the Inventory screen's MOVEMENT_KINDS UI still offers five kinds — wiring return/adjust_down/reservation into the modal is agent 10 product work (F-023)."
     },
     {
       "id": "F-018",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Server error mapping loses the field and downgrades 4xx to 500",
       "detail": "app.ts:145 returns the 23505 unique-violation without a `field`, so a duplicate phone/plate/VIN lands at form level instead of on the control that caused it (error.constraint carries the mapping). app.ts:163 honours only statusCode 429; any other Fastify 4xx (e.g. FST_ERR_CTP_EMPTY_JSON_BODY, 400) becomes a 500.",
       "why": "The CRUD forms the wave built cannot place a duplicate-value error on the right field, and a malformed request reads as a server fault.",
       "foundBy": "09",
-      "verified": "reported by agent 09, both proven live",
+      "verified": "confirmed by the orchestrator on a freshly reset database; full server suite green (274)",
       "owner": "06",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Proven by errors.test.ts: duplicate phone/plate/vin/sku each land on their own field via a constraint-name→field map; an empty body and malformed JSON are 400, text/csv 415, all carrying codes from the shared taxonomy — no framework 4xx is swallowed into a 500."
     },
     {
       "id": "F-019",
@@ -249,6 +261,61 @@
       "detail": "The four product agents added English source strings that fall back to English on an Arabic page: ~90 from inventory, ~31 from customers, 14 from workshop. t() never renders empty, so nothing is broken — but the Arabic UI shows English until the keys land in data/generated/ar.ts.",
       "why": "Arabic and RTL are a first-class release target, not a late pass; the strings work the day they are translated.",
       "foundBy": "08 and 09 and 10",
+      "verified": "reported with full string lists",
+      "owner": "19",
+      "wave": "W3"
+    },
+    {
+      "id": "F-022",
+      "severity": "MEDIUM",
+      "title": "No server collections for procurement — requisitions and purchase orders",
+      "detail": "server/src/registry.ts has no requisitions or purchase-orders collection, and no bespoke procurement router. Agent 11 built the requisition lifecycle and PurchaseOrder screen bounded to what the server supports and surfaced the rest as honest absent-capability states with GAP: tests. A requisition or PO cannot actually be persisted end to end yet.",
+      "why": "The procurement golden path (requisition → PO → receiving) cannot complete server-side. The UI is honest about it, but the capability is not real until the collections and approval-ceiling enforcement exist.",
+      "foundBy": "11",
+      "verified": "reported by agent 11 with GAP: tests naming each missing endpoint",
+      "owner": "05",
+      "wave": "W3"
+    },
+    {
+      "id": "F-023",
+      "severity": "LOW",
+      "title": "The Inventory screen does not offer the return / adjust_down / reservation movements the server now enforces",
+      "detail": "F-017 added return, adjust_down and reservation endpoints and contract types, but Inventory.tsx's MOVEMENT_KINDS array and modal still describe the original five kinds. The server enforces the new movements; no UI raises them.",
+      "why": "The enforcement is real but partially unreachable from the product until the screen wires the two new kinds and a reservation control. Purely additive UI work.",
+      "foundBy": "05",
+      "verified": "reported by the server-hardening agent, which stayed within its mirror grant",
+      "owner": "10",
+      "wave": "W3"
+    },
+    {
+      "id": "F-024",
+      "severity": "LOW",
+      "title": "Two procurement-portal screens still render AppShell instead of PortalShell",
+      "detail": "F-009's root cause is fixed (PortalShell exists), but /procurement-portal and /procurement-portal/requisitions are declared in the legacy app map and render AppShell. Migrating them needs a PortalShell SURFACES entry and a barrel declaration with shell: PortalShell.",
+      "why": "A registry shell-mismatch that the completion matrix will keep flagging until the migration lands. Cosmetic today; the screens work.",
+      "foundBy": "16",
+      "verified": "reported by agent 16 as the deferred integration step",
+      "owner": "01",
+      "wave": "W3"
+    },
+    {
+      "id": "F-025",
+      "severity": "LOW",
+      "title": "No public lead endpoint, so the marketing Contact form cannot submit",
+      "detail": "Nothing under server/ accepts an anonymous contact/lead POST. Agent 17's Contact form validates then shows a role=alert failure naming direct channels (mailto/tel); there is deliberately no success path. §A28 marketing analytics has no infrastructure either.",
+      "why": "A visitor cannot contact the business through the site. Surfaced honestly rather than faked, but the capability is absent.",
+      "foundBy": "17",
+      "verified": "reported by agent 17 with a GAP: test",
+      "owner": "05",
+      "wave": "W3"
+    },
+    {
+      "id": "F-026",
+      "severity": "LOW",
+      "title": "~172 new UI strings across portals and the public site have no Arabic key",
+      "detail": "Agent 16 added ~47 and agent 17 ~125 English source strings that fall back to English on an Arabic page via t(). Nothing is broken; the Arabic UI shows English until the keys land in ar.ts. Full lists are in the two agents' reports.",
+      "why": "Arabic/RTL is a first-class release target; these surfaces are not Arabic-complete until the keys are added.",
+      "foundBy": "16 and 17",
       "verified": "reported with full string lists",
       "owner": "19",
       "wave": "W3"

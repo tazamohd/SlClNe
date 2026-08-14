@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T03:40:00Z",
+  "asOf": "2026-08-12T06:30:00Z",
   "wave": "W2",
   "waveName": "Product",
-  "waveNote": "Tranche 2 running: server hardening on the tranche-1 findings (F-014 through F-018 — the qc role that cannot operate its own gate and the technician who cannot see their own jobs are both fixed here, plus the inventory prohibitions the server never enforced), and three product domains chosen for zero file contention with each other: procurement, portals, website. CRM/accounting/workshop continuations and insurance/HR/AI wait for tranche 3.",
+  "waveNote": "Tranche 2 complete and verified on a reset database: server hardening closed F-014 through F-018 (the qc gate, the technician who could not see their own jobs, the error envelope, seed coherence, and server-side inventory enforcement); procurement, portals and the public website all landed. App 476→594, server 227→274, both gates below baseline (245→230 placeholder routes). Five new gaps routed to owners as F-022 through F-026 for tranche 3. Remaining W2 product agents (13 Insurance, 14 HR) plus the CRM/accounting/AI continuations move to tranche 3.",
   "agents": [
     {
       "id": "03",
@@ -19,7 +19,7 @@
       "blocks": [
         "every merge to main — no agent merges its own branch"
       ],
-      "notes": "Integration pass after tranche 1: re-verified all four Definitions of Done independently rather than trusting the reports, which is how the two live security holes were confirmed over HTTP before and after the fix. Landed the two security fixes (F-012, F-013), the shared token seam (R1) three agents needed, a parser undercount in build-registry.mjs that the seam itself introduced, and F-007. Nine open items routed to their owners in FINDINGS (F-014 through F-021). Server 225->227, app 479->476 (F-007 retired three fails-scaffolds), gates at or below baseline."
+      "notes": "Integration pass after tranche 2: re-verified on a freshly reset database — app 594, server 274, typecheck and build green, both gates below baseline. Independently re-probed F-015 live and confirmed the semantics (assigned technician sees exactly their job; an unassigned one correctly sees none — my first probe used a generic technician and reproduced the stranger case, not a bug). F-014–F-018 resolved with proving tests; F-022–F-026 opened for tranche 3."
     },
     {
       "id": "04",
@@ -45,7 +45,7 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T03:40:00Z",
       "scope": "Tranche 2, jointly covering 05 and 06 ground: F-014 qc authority on the QC transition, F-015 assigned_tech_id resolved through technicians.user_id in RLS and checkQcIndependence, F-016 seed coherence (job links, orphan receipts, INV-2026-0142), F-017 server-side inventory enforcement (reservations, paired transfer credit, signed adjust, return type, idempotency), F-018 error envelope, plus a read-only branches collection",
       "owns": [
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "W1 note preserved: landed as dcb4d54; verified from scratch after the agent went away without reporting."
+      "notes": "Tranche 2: F-017 inventory enforcement (migration 0003, paired transfer credit, reservations, adjust_down, return, mandatory idempotency) on top of F-014/15/16/18. 274 server tests on a reset DB. Left the Inventory UI for agent 10 (F-023), staying within the mirror grant."
     },
     {
       "id": "07",
@@ -158,7 +158,7 @@
       "id": "11",
       "name": "Procurement",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T03:40:00Z",
       "scope": "Requisition lifecycle, purchase order raise/approve within the ceiling, receiving against the order, and the PurchaseOrder designed screen — reporting any server gap honestly instead of faking it client-side",
       "owns": [
@@ -166,13 +166,13 @@
         "app/src/screens/domains/procurement.ts"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam and the wired token seam in place."
+      "notes": "Requisition lifecycle and the PurchaseOrder screen, bounded honestly to what the server supports — which has no procurement collections yet (F-022), surfaced as absent-capability states with GAP: tests rather than faked."
     },
     {
       "id": "16",
       "name": "Portals",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T03:40:00Z",
       "scope": "PortalShell (wave grant), TechnicianPortal and its JobDetail, CustomerPortal and its Booking — the first separate-audience surfaces, on the session model W1 built",
       "owns": [
@@ -181,13 +181,13 @@
         "app/src/components/shell/PortalShell.tsx (W2 grant)"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam and the wired token seam in place."
+      "notes": "PortalShell plus the technician and customer portals, four routes graduated from placeholder. Proved customer booking persists live over HTTP, including the bay double-booking refusal. F-015 closed by agent 05, so the technician sees their own job on a reset DB."
     },
     {
       "id": "17",
       "name": "Public Website & Landing",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T03:40:00Z",
       "scope": "PublicShell and the ten design-authoritative public pages, ungated and rendered without a session, with SEO basics and no new dependencies",
       "owns": [
@@ -196,7 +196,7 @@
         "app/src/screens/domains/website.ts"
       ],
       "blocks": [],
-      "notes": "Launched with the routing seam and the wired token seam in place."
+      "notes": "PublicShell, the ten Tier A public pages, robots/sitemap, all ungated and rendering signed-out. Contact form states its missing endpoint honestly (F-025). ~125 strings await Arabic (F-026)."
     }
   ],
   "shared": {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12",
+  "generatedAt": "2026-08-14",
   "domains": [
     {
       "id": "workshop",
@@ -475,7 +475,7 @@
         {
           "name": "PurchaseOrder",
           "route": "/purchase-order",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -1261,7 +1261,7 @@
         {
           "name": "CustomerPortal",
           "route": "/customer-portal",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1270,7 +1270,7 @@
         {
           "name": "CustomerPortal · Booking",
           "route": "/customer-portal/booking",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1342,7 +1342,7 @@
         {
           "name": "TechnicianPortal",
           "route": "/technician-portal",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1351,7 +1351,7 @@
         {
           "name": "TechnicianPortal · JobDetail",
           "route": "/technician-portal/job-detail",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1475,7 +1475,7 @@
         {
           "name": "PublicPortal · About",
           "route": "/public-portal/about",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1484,7 +1484,7 @@
         {
           "name": "PublicPortal · Blog",
           "route": "/public-portal/blog",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1493,7 +1493,7 @@
         {
           "name": "PublicPortal · Contact",
           "route": "/public-portal/contact",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1502,7 +1502,7 @@
         {
           "name": "PublicPortal · FAQ",
           "route": "/public-portal/faq",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1511,7 +1511,7 @@
         {
           "name": "PublicPortal · Insurance",
           "route": "/public-portal/insurance",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1520,7 +1520,7 @@
         {
           "name": "PublicPortal · Landing",
           "route": "/public-portal/landing",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1529,7 +1529,7 @@
         {
           "name": "PublicPortal · Loans",
           "route": "/public-portal/loans",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1538,7 +1538,7 @@
         {
           "name": "PublicPortal · Marketplace",
           "route": "/public-portal/marketplace",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1547,7 +1547,7 @@
         {
           "name": "PublicPortal · Services",
           "route": "/public-portal/services",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1556,7 +1556,7 @@
         {
           "name": "PublicPortal · Support",
           "route": "/public-portal/support",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 117,
+    "built": 132,
     "designedMobile": 113
   }
 }

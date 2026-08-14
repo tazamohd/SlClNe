@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-08-12'
+export const REGISTRY_GENERATED_AT = '2026-08-14'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -925,9 +925,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CustomerPortal.dc.html",
@@ -946,9 +950,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/CustomerPortal.Booking.dc.html",
@@ -2618,9 +2626,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.About.dc.html",
@@ -2639,9 +2651,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Blog.dc.html",
@@ -2660,9 +2676,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Contact.dc.html",
@@ -2681,9 +2701,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.FAQ.dc.html",
@@ -2702,9 +2726,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Insurance.dc.html",
@@ -2723,9 +2751,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Landing.dc.html",
@@ -2744,9 +2776,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Loans.dc.html",
@@ -2765,9 +2801,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Marketplace.dc.html",
@@ -2786,9 +2826,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Services.dc.html",
@@ -2807,9 +2851,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "website",
     "owner": "17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Support.dc.html",
@@ -2828,9 +2876,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "procurement",
     "owner": "11",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PurchaseOrder.dc.html",
@@ -3361,9 +3415,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/TechnicianPortal.dc.html",
@@ -3382,9 +3440,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/TechnicianPortal.JobDetail.dc.html",

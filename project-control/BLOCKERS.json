@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-12",
+  "generatedAt": "2026-08-14",
   "open": 9,
   "blockers": [
     {
       "id": "BLK-001",
       "severity": "BLOCKER",
-      "title": "245 product routes render PendingScreen",
+      "title": "230 product routes render PendingScreen",
       "detail": "Violates the no-placeholder rule. Cleared only when every PRODUCT entry renders a real component.",
       "owner": "01",
       "wave": "W2"
@@ -29,7 +29,7 @@
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "117 rendered capabilities are mock-only",
+      "title": "132 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
@@ -37,7 +37,7 @@
     {
       "id": "BLK-012",
       "severity": "HIGH",
-      "title": "38 rendering capabilities are visited but assert nothing",
+      "title": "53 rendering capabilities are visited but assert nothing",
       "detail": "The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.",
       "owner": "07",
       "wave": "W2"
@@ -45,7 +45,7 @@
     {
       "id": "BLK-006",
       "severity": "HIGH",
-      "title": "60 built screens owe their designed mobile layout",
+      "title": "61 built screens owe their designed mobile layout",
       "detail": "A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.",
       "owner": "18",
       "wave": "W3"
