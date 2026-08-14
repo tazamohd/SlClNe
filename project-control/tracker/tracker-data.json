@@ -10,7 +10,7 @@
         {
           "name": "AppointmentCalendar",
           "route": "/appointment-calendar",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -28,7 +28,7 @@
         {
           "name": "ApprovalInbox",
           "route": "/approval-inbox",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -37,7 +37,7 @@
         {
           "name": "CustomerApproval",
           "route": "/customer-approval",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -55,7 +55,7 @@
         {
           "name": "DiagnosticReport",
           "route": "/diagnostic-report",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -64,7 +64,7 @@
         {
           "name": "EstimateDetail",
           "route": "/estimate-detail",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -109,7 +109,7 @@
         {
           "name": "OBDDiagnostics",
           "route": "/obddiagnostics",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -118,7 +118,7 @@
         {
           "name": "TechnicianKB",
           "route": "/technician-kb",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -136,7 +136,7 @@
         {
           "name": "TechnicianSchedule",
           "route": "/technician-schedule",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -190,7 +190,7 @@
         {
           "name": "WorkshopReports",
           "route": "/workshop-reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -225,7 +225,7 @@
         {
           "name": "CRMCalendar",
           "route": "/crmcalendar",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -252,7 +252,7 @@
         {
           "name": "CustomerFeedback",
           "route": "/customer-feedback",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -288,7 +288,7 @@
         {
           "name": "FleetContract",
           "route": "/fleet-contract",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -306,7 +306,7 @@
         {
           "name": "LeadDetail",
           "route": "/lead-detail",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -386,7 +386,7 @@
         {
           "name": "InventoryReports",
           "route": "/inventory-reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -492,7 +492,7 @@
         {
           "name": "BankReconciliation",
           "route": "/bank-reconciliation",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -519,7 +519,7 @@
         {
           "name": "CustomReports",
           "route": "/custom-reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -573,7 +573,7 @@
         {
           "name": "InsuranceReports",
           "route": "/insurance-reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -600,7 +600,7 @@
         {
           "name": "InvoicePreview",
           "route": "/invoice-preview",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -627,7 +627,7 @@
         {
           "name": "LoanReports",
           "route": "/loan-reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -663,7 +663,7 @@
         {
           "name": "Reports",
           "route": "/reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -672,7 +672,7 @@
         {
           "name": "ReportsAnalytics",
           "route": "/reports-analytics",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -681,7 +681,7 @@
         {
           "name": "SalesReports",
           "route": "/sales-reports",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -690,7 +690,7 @@
         {
           "name": "TaxManagement",
           "route": "/tax-management",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 132,
+    "built": 155,
     "designedMobile": 113
   }
 }

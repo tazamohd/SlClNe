@@ -7,15 +7,15 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 132,
-    "placeholder": 230,
-    "designedMobileOwed": 61,
+    "rendered": 155,
+    "placeholder": 207,
+    "designedMobileOwed": 79,
     "untested": 0,
-    "mockOnly": 132,
+    "mockOnly": 155,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 53,
+    "renderedWithoutAssertion": 76,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -473,12 +473,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Calendar view of bookings",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -488,7 +488,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -508,12 +508,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -621,12 +627,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Approve/reject items above your delegated limit",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -636,7 +642,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -656,12 +662,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -893,12 +903,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Bank feed reconciliation",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -908,7 +918,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -928,12 +938,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -1599,12 +1615,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "CRM calendar view",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -1614,7 +1630,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -1634,12 +1650,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -2486,12 +2508,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Customer signs off on estimate (e-signature, itemised)",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -2501,7 +2523,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2521,12 +2543,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -2636,12 +2662,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "CSAT / feedback",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -2651,7 +2677,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2671,12 +2697,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -3010,12 +3042,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "User-built report builder",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -3025,7 +3057,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3045,12 +3077,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -3239,12 +3277,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "OBD report generation + share to reception / customer / storekeeper / supervisor",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -3254,7 +3292,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3274,12 +3312,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -3449,12 +3491,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Full estimate — line items",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -3464,7 +3506,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3484,12 +3526,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -3892,12 +3940,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Fleet contract detail",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -3907,7 +3955,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3927,12 +3975,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -4373,12 +4427,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Insurance claim reports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -4388,7 +4442,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4408,12 +4462,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -4595,12 +4655,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Stock reports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -4610,7 +4670,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4630,12 +4690,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -4881,12 +4947,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "PDF-style invoice preview",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -4896,7 +4962,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4916,12 +4982,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -5544,12 +5616,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "CRM lead deep-dive",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -5559,7 +5631,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -5579,12 +5651,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -5686,12 +5764,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Auto-loan / financing reports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -5701,7 +5779,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -5721,12 +5799,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -6233,12 +6317,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Live vehicle sensor stream + DTC lookup",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -6248,7 +6332,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -6268,12 +6352,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -8840,12 +8928,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Standard operational reports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -8855,7 +8943,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8875,12 +8963,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -8913,12 +9007,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Analytics overview",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -8928,7 +9022,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8948,12 +9042,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -9179,12 +9279,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Revenue reports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -9194,7 +9294,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -9214,12 +9314,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -9992,12 +10098,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "VAT / tax config (15% Saudi)",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -10007,7 +10113,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -10027,12 +10133,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -10064,12 +10176,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Technician knowledge base (procedures, torque, DTCs)",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -10079,7 +10191,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -10099,12 +10211,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -10361,12 +10477,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Assign & schedule technicians",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -10376,7 +10492,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -10396,12 +10512,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -13055,12 +13177,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Workshop throughput reports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -13070,7 +13192,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -13090,12 +13212,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {

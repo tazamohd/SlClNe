@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T06:55:00Z",
+  "asOf": "2026-08-12T08:15:00Z",
   "wave": "W2",
   "waveName": "Product",
-  "waveNote": "Tranche 3 running: finishing the four domains whose backends already exist — workshop, CRM, parts, accounting — so every screen connects to real seeded data rather than a gap. Insurance, fleet, loans and HR are greenfield (no mock tables, no server collections) and wait for a backend-first tranche 4, alongside the procurement collections (F-022), the public lead endpoint (F-025) and the Arabic keys (F-026).",
+  "waveNote": "Tranche 3 complete and verified on a quiet tree: the four data-backed domains finished — 9 workshop screens, 4 CRM detail surfaces, the F-023 inventory movement UI, and 9 accounting surfaces. 155 of 402 rendering (was 132), 207 placeholder routes (was 230), both gates at the new baseline, app 697 tests. The agents surfaced the real backend gaps as tested GAP: states rather than faking them — consolidated into F-027 through F-030, which are the work orders for a backend-first tranche 4 (agent 05): CRM/fleet writes and conversion, financial aggregates and report-source collections, the workshop approval/diagnostics endpoints, the appointment↔technician seed link, and the greenfield insurance/fleet/loans/HR schema. Once those land, the product agents for 13 and 14 become worthwhile.",
   "agents": [
     {
       "id": "03",
@@ -19,7 +19,7 @@
       "blocks": [
         "every merge to main — no agent merges its own branch"
       ],
-      "notes": "Integration pass after tranche 2: re-verified on a freshly reset database — app 594, server 274, typecheck and build green, both gates below baseline. Independently re-probed F-015 live and confirmed the semantics (assigned technician sees exactly their job; an unassigned one correctly sees none — my first probe used a generic technician and reproduced the stranger case, not a bug). F-014–F-018 resolved with proving tests; F-022–F-026 opened for tranche 3."
+      "notes": "Integration pass after tranche 3, on a quiet tree (all four agents committed cleanly, 0 uncommitted): app 697 tests, typecheck and build green, gates at the new baseline (207 placeholder, 112 inline). Server untouched this tranche (274 still holds). F-023 resolved; F-027–F-030 opened as the backend-tranche work orders. Confirmed the agents faked nothing — every capability the server cannot yet serve renders a tested GAP: state."
     },
     {
       "id": "04",
@@ -98,7 +98,7 @@
       "id": "08",
       "name": "Workshop / Mini ERP",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T06:55:00Z",
       "scope": "Finishing workshop: ApprovalInbox, OBDDiagnostics, DiagnosticReport, TechnicianKB, TechnicianSchedule, WorkshopReports, CustomerApproval, AppointmentCalendar, EstimateDetail — against the real jobs/appointments/obd/dtc/kb/diag/approval collections",
       "owns": [
@@ -106,13 +106,13 @@
         "app/src/screens/domains/workshop.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
+      "notes": "Tranche 3: nine workshop/ERP screens on real data — ApprovalInbox, EstimateDetail, AppointmentCalendar, TechnicianSchedule, TechnicianKB, OBDDiagnostics, DiagnosticReport, WorkshopReports, CustomerApproval. Refused every client-side total (§5b), deferring to server figures, and pinned seven server gaps (F-029) plus the appointment↔technician seed defect (F-030)."
     },
     {
       "id": "09",
       "name": "Customers / CRM",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T06:55:00Z",
       "scope": "Finishing CRM: LeadDetail, CRMCalendar, CustomerFeedback, FleetContract — against the real leads/opportunities/campaigns/segments/tasks/fleets collections",
       "owns": [
@@ -122,13 +122,13 @@
         "app/src/components/shell/DetailPage.tsx (W2 grant)"
       ],
       "blocks": [],
-      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
+      "notes": "Tranche 3: LeadDetail, CRMCalendar, CustomerFeedback, FleetContract. Honest read/interactive surfaces over read-only collections; pinned the CRM/fleet write and endpoint gaps (F-027)."
     },
     {
       "id": "10",
       "name": "Parts / Inventory",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T06:55:00Z",
       "scope": "F-023: wire return / adjust_down / reservation into the Inventory movement UI now that the server enforces them, plus the InventoryReports screen",
       "owns": [
@@ -137,13 +137,13 @@
         "app/src/screens/domains/parts.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
+      "notes": "Tranche 3: F-023 (return/adjust_down/reservation wired into the Inventory modal with per-kind refusal tests) and InventoryReports. Own suite 82 green, zero hex/markers."
     },
     {
       "id": "12",
       "name": "Accounting / Finance",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T06:55:00Z",
       "scope": "Finishing accounting: BankReconciliation, TaxManagement, InvoicePreview, and the report set (Reports, ReportsAnalytics, SalesReports, CustomReports) against the real ledger/invoice/payment collections",
       "owns": [
@@ -152,7 +152,7 @@
         "app/src/screens/domains/accounting.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
+      "notes": "Tranche 3: BankReconciliation, TaxManagement, InvoicePreview and the report set. Held the §A10 line — computed no money aggregate the server does not, disclosing each as a gap (F-028). F-008 kept visible and untouched."
     },
     {
       "id": "11",

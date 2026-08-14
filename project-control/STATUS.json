@@ -5,15 +5,15 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 132,
-    "placeholder": 230,
-    "designedMobileOwed": 61,
+    "rendered": 155,
+    "placeholder": 207,
+    "designedMobileOwed": 79,
     "untested": 0,
-    "mockOnly": 132,
+    "mockOnly": 155,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 53,
+    "renderedWithoutAssertion": 76,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -29,9 +29,9 @@
     },
     "app": {
       "total": 312,
-      "rendered": 90,
-      "placeholder": 210,
-      "mobileOwed": 46,
+      "rendered": 113,
+      "placeholder": 187,
+      "mobileOwed": 64,
       "e2e": 312,
       "dataBacked": 0
     },
@@ -119,17 +119,17 @@
     },
     "workshop": {
       "total": 22,
-      "rendered": 13,
-      "placeholder": 9,
-      "mobileOwed": 13,
+      "rendered": 22,
+      "placeholder": 0,
+      "mobileOwed": 17,
       "e2e": 22,
       "dataBacked": 0
     },
     "accounting": {
       "total": 23,
-      "rendered": 14,
-      "placeholder": 9,
-      "mobileOwed": 14,
+      "rendered": 23,
+      "placeholder": 0,
+      "mobileOwed": 23,
       "e2e": 23,
       "dataBacked": 0
     },
@@ -143,9 +143,9 @@
     },
     "crm": {
       "total": 17,
-      "rendered": 13,
-      "placeholder": 4,
-      "mobileOwed": 13,
+      "rendered": 17,
+      "placeholder": 0,
+      "mobileOwed": 17,
       "e2e": 17,
       "dataBacked": 0
     },
@@ -175,9 +175,9 @@
     },
     "parts": {
       "total": 10,
-      "rendered": 9,
-      "placeholder": 1,
-      "mobileOwed": 1,
+      "rendered": 10,
+      "placeholder": 0,
+      "mobileOwed": 2,
       "e2e": 10,
       "dataBacked": 0
     },
@@ -233,16 +233,16 @@
     },
     "appointments": {
       "total": 2,
-      "rendered": 1,
-      "placeholder": 1,
-      "mobileOwed": 1,
+      "rendered": 2,
+      "placeholder": 0,
+      "mobileOwed": 2,
       "e2e": 2,
       "dataBacked": 0
     },
     "approvals": {
       "total": 1,
-      "rendered": 0,
-      "placeholder": 1,
+      "rendered": 1,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 1,
       "dataBacked": 0
@@ -257,17 +257,17 @@
     },
     "accounting": {
       "total": 7,
-      "rendered": 5,
-      "placeholder": 2,
-      "mobileOwed": 5,
+      "rendered": 7,
+      "placeholder": 0,
+      "mobileOwed": 7,
       "e2e": 7,
       "dataBacked": 0
     },
     "execreports": {
       "total": 5,
-      "rendered": 2,
-      "placeholder": 3,
-      "mobileOwed": 2,
+      "rendered": 5,
+      "placeholder": 0,
+      "mobileOwed": 5,
       "e2e": 5,
       "dataBacked": 0
     },
@@ -289,25 +289,25 @@
     },
     "crm": {
       "total": 10,
-      "rendered": 8,
-      "placeholder": 2,
-      "mobileOwed": 8,
+      "rendered": 10,
+      "placeholder": 0,
+      "mobileOwed": 10,
       "e2e": 10,
       "dataBacked": 0
     },
     "estimates": {
       "total": 4,
-      "rendered": 2,
-      "placeholder": 2,
-      "mobileOwed": 2,
+      "rendered": 4,
+      "placeholder": 0,
+      "mobileOwed": 3,
       "e2e": 4,
       "dataBacked": 0
     },
     "customers": {
       "total": 3,
-      "rendered": 2,
-      "placeholder": 1,
-      "mobileOwed": 2,
+      "rendered": 3,
+      "placeholder": 0,
+      "mobileOwed": 3,
       "e2e": 3,
       "dataBacked": 0
     },
@@ -321,9 +321,9 @@
     },
     "reports": {
       "total": 6,
-      "rendered": 1,
-      "placeholder": 5,
-      "mobileOwed": 1,
+      "rendered": 6,
+      "placeholder": 0,
+      "mobileOwed": 6,
       "e2e": 6,
       "dataBacked": 0
     },
@@ -345,17 +345,17 @@
     },
     "jobcards": {
       "total": 10,
-      "rendered": 8,
-      "placeholder": 2,
+      "rendered": 10,
+      "placeholder": 0,
       "mobileOwed": 8,
       "e2e": 10,
       "dataBacked": 0
     },
     "vehicles": {
       "total": 4,
-      "rendered": 3,
-      "placeholder": 1,
-      "mobileOwed": 3,
+      "rendered": 4,
+      "placeholder": 0,
+      "mobileOwed": 4,
       "e2e": 4,
       "dataBacked": 0
     },
@@ -369,9 +369,9 @@
     },
     "invoices": {
       "total": 4,
-      "rendered": 3,
-      "placeholder": 1,
-      "mobileOwed": 3,
+      "rendered": 4,
+      "placeholder": 0,
+      "mobileOwed": 4,
       "e2e": 4,
       "dataBacked": 0
     },
@@ -425,9 +425,9 @@
     },
     "technicians": {
       "total": 3,
-      "rendered": 1,
-      "placeholder": 2,
-      "mobileOwed": 1,
+      "rendered": 3,
+      "placeholder": 0,
+      "mobileOwed": 2,
       "e2e": 3,
       "dataBacked": 0
     },

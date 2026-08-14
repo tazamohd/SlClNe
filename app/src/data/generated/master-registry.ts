@@ -160,9 +160,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/AppointmentCalendar.dc.html",
@@ -207,9 +213,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/ApprovalInbox.dc.html",
@@ -291,9 +301,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/BankReconciliation.dc.html",
@@ -531,9 +547,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "crm",
     "owner": "09",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CRMCalendar.dc.html",
@@ -856,9 +878,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CustomerApproval.dc.html",
@@ -904,9 +930,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "crm",
     "owner": "09",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CustomerFeedback.dc.html",
@@ -1027,9 +1059,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CustomReports.dc.html",
@@ -1100,9 +1138,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/DiagnosticReport.dc.html",
@@ -1168,9 +1210,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/EstimateDetail.dc.html",
@@ -1319,9 +1367,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "crm",
     "owner": "09",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/FleetContract.dc.html",
@@ -1472,9 +1526,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/InsuranceReports.dc.html",
@@ -1545,9 +1605,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "parts",
     "owner": "10",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/InventoryReports.dc.html",
@@ -1639,9 +1705,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/InvoicePreview.dc.html",
@@ -1859,9 +1931,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "crm",
     "owner": "09",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/LeadDetail.dc.html",
@@ -1906,9 +1984,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/LoanReports.dc.html",
@@ -2087,9 +2171,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/OBDDiagnostics.dc.html",
@@ -2995,9 +3083,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Reports.dc.html",
@@ -3016,9 +3110,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/ReportsAnalytics.dc.html",
@@ -3105,9 +3205,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/SalesReports.dc.html",
@@ -3373,9 +3479,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "accounting",
     "owner": "12",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/TaxManagement.dc.html",
@@ -3394,9 +3506,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/TechnicianKB.dc.html",
@@ -3491,9 +3607,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/TechnicianSchedule.dc.html",
@@ -4359,9 +4481,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "workshop",
     "owner": "08",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/WorkshopReports.dc.html",

@@ -1,7 +1,7 @@
 {
   "note": "Ratchet for check-no-fake. These numbers may fall, never rise. Update only when lowering them, and never to accommodate a regression.",
   "updatedAt": "2026-08-14",
-  "placeholderRoutes": 230,
+  "placeholderRoutes": 207,
   "sourceMarkers": 0,
   "forbiddenColours": 2,
   "colourDrift": 16,

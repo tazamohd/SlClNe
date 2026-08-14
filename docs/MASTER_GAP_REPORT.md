@@ -8,12 +8,12 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-001 | BLOCKER | 230 product routes render PendingScreen | 01 | W2 |
+| BLK-001 | BLOCKER | 207 product routes render PendingScreen | 01 | W2 |
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 132 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 53 rendering capabilities are visited but assert nothing | 07 | W2 |
-| BLK-006 | HIGH | 61 built screens owe their designed mobile layout | 18 | W3 |
+| BLK-004 | CRITICAL | 155 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 76 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-006 | HIGH | 79 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
 | BLK-011 | MEDIUM | 2 hardcoded colours sit in a forbidden hue band | 04 | W1 |
@@ -22,15 +22,15 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | Flag | Count | Meaning |
 |---|---|---|
-| PLACEHOLDER | 230 | product route renders PendingScreen |
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
-| TABLET_MISSING | 132 | never verified at 768–1024 |
-| ARABIC_MISSING | 132 | Arabic not certified |
-| RTL_BROKEN | 132 | RTL not certified |
-| MOCK_ONLY | 132 | renders, but from fixtures rather than an API |
-| MOBILE_MISSING | 61 | a .Mobile design exists and is not built |
-| DESKTOP_ONLY | 61 | renders on desktop with no mobile treatment |
-| NO_CONTENT_ASSERTION | 53 | — |
+| PLACEHOLDER | 207 | product route renders PendingScreen |
+| TABLET_MISSING | 155 | never verified at 768–1024 |
+| ARABIC_MISSING | 155 | Arabic not certified |
+| RTL_BROKEN | 155 | RTL not certified |
+| MOCK_ONLY | 155 | renders, but from fixtures rather than an API |
+| MOBILE_MISSING | 79 | a .Mobile design exists and is not built |
+| DESKTOP_ONLY | 79 | renders on desktop with no mobile treatment |
+| NO_CONTENT_ASSERTION | 76 | — |
 
 ## Designs not in the registry
 
@@ -47,10 +47,6 @@ _None._
 | Feature map (no design) | 163 | 211 |
 | Administration | 16 | 17 |
 | Auth & onboarding | 13 | 28 |
-| Workshop & Mini ERP | 9 | 22 |
-| Accounting & reporting | 9 | 23 |
 | AI & automation | 7 | 10 |
 | Portals, call centre & kiosk | 7 | 13 |
-| Customers, vehicles & CRM | 4 | 17 |
 | HR & payroll | 1 | 1 |
-| Parts & inventory | 1 | 10 |

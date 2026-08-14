@@ -278,14 +278,16 @@
     },
     {
       "id": "F-023",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "The Inventory screen does not offer the return / adjust_down / reservation movements the server now enforces",
       "detail": "F-017 added return, adjust_down and reservation endpoints and contract types, but Inventory.tsx's MOVEMENT_KINDS array and modal still describe the original five kinds. The server enforces the new movements; no UI raises them.",
       "why": "The enforcement is real but partially unreachable from the product until the screen wires the two new kinds and a reservation control. Purely additive UI work.",
       "foundBy": "05",
-      "verified": "reported by the server-hardening agent, which stayed within its mirror grant",
+      "verified": "confirmed on the quiet tree — inventory suite 82 green, gates at baseline",
       "owner": "10",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Agent 10 wired all three into the Inventory modal: return books through its own delta (not receiving), adjust gained an explicit up/down (qty positive, type carries the sign), and reserve/release write parts.reserved with a 'draw from reservation' path on consume. Each kind has a test proving the UI maps the server's refusal to the right field; inventory-invariant.test.ts holds the On Hand equation across a sequence including the new kinds."
     },
     {
       "id": "F-024",
@@ -319,6 +321,50 @@
       "verified": "reported with full string lists",
       "owner": "19",
       "wave": "W3"
+    },
+    {
+      "id": "F-027",
+      "severity": "MEDIUM",
+      "title": "CRM and fleet collections are read-only, and several endpoints do not exist",
+      "detail": "Agent 09 built LeadDetail, CRMCalendar, CustomerFeedback and FleetContract but the backend cannot persist their writes: leads/opportunities/crmTasks/fleets are not writable; there is no lead→opportunity conversion route, no lead activity/notes collection, no feedback collection or POST /customer-feedback, and fleets carries no contract-term fields (type, value, dates, renewal) nor an exposed fleetId→vehicles join.",
+      "why": "Four rendered CRM surfaces are read/interactive only — honest, tested gap states rather than fake persistence, but the capabilities are not real until the collections and routes exist.",
+      "foundBy": "09",
+      "verified": "reported with a GAP: test per missing endpoint",
+      "owner": "05",
+      "wave": "W4"
+    },
+    {
+      "id": "F-028",
+      "severity": "MEDIUM",
+      "title": "No financial aggregate endpoints, and four report-source collections are missing",
+      "detail": "Agent 12 refused to compute any cross-record money total in the browser (§A10: the server computes, the client displays) — and the server exposes none: no GET /invoices/summary, /accounting/tax/return, or trial-balance. SalesReports, TaxManagement and ReportsAnalytics therefore show only per-row server figures and disclose the absent totals. Also missing as collections: bankStatements (BankReconciliation has nothing to match), savedReports (CustomReports cannot persist a definition), insuranceClaims and loanContracts (Insurance/Loan reports have no data source).",
+      "why": "The reporting surfaces are built and honest but cannot show a real total or reconcile until the server computes aggregates. This is the §A10 discipline working as intended — the gap is server-side.",
+      "foundBy": "12",
+      "verified": "reported with GAP: tests and the exact endpoint/collection names",
+      "owner": "05",
+      "wave": "W4"
+    },
+    {
+      "id": "F-029",
+      "severity": "MEDIUM",
+      "title": "Workshop approval and diagnostics surfaces exceed what the server exposes",
+      "detail": "Agent 08 built nine screens; several need server capabilities that do not exist: no unified GET /approvals (ApprovalInbox operates on estimates alone); estimates present() omits submittedBy and there is no GET /estimates/:id/history or /jobs/:id/history, so the SOD conflict cannot be flagged per row (the F-004 client half); estimates present() omits subtotalHalalas/taxHalalas though the schema has them, so no VAT breakdown; no server-computed diagnostic-report total; no GET /reports/workshop analytics; no OBD device commands or per-device DTC readings; no approval OTP/e-signature persistence and no approvalLines→estimate link.",
+      "why": "The screens render real data and defer honestly where the server is silent, but the approvals/diagnostics capabilities are partial until these endpoints exist.",
+      "foundBy": "08",
+      "verified": "reported with a GAP: test per capability",
+      "owner": "05",
+      "wave": "W4"
+    },
+    {
+      "id": "F-030",
+      "severity": "MEDIUM",
+      "title": "Seed appointments do not reconcile with the technician roster",
+      "detail": "app/src/data/generated/tables.ts: APPOINTMENTS[].tech names (Saeed Al-Zahrani, Majed Al-Otaibi, Yousef Al-Ghamdi) are not in TECHS (Yousef Al-Otaibi, Bandar Al-Qahtani, Faisal Al-Harbi, Nasser Al-Dosari), and there is no technicianId link. Grouping a schedule on the roster alone shows every technician idle.",
+      "why": "TechnicianSchedule and any technician-workload feature are wrong until fixed. Agent 08 worked around it by unioning both name sets; the durable fix is a seeded technicianId on appointments.",
+      "foundBy": "08",
+      "verified": "reported — orchestrator notes this is generated data, so the fix belongs in the port-design generator or a server seed override, not a hand-edit",
+      "owner": "05",
+      "wave": "W4"
     }
   ]
 }
