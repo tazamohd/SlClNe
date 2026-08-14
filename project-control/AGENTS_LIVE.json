@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T08:15:00Z",
+  "asOf": "2026-08-12T08:40:00Z",
   "wave": "W2",
-  "waveName": "Product",
-  "waveNote": "Tranche 3 complete and verified on a quiet tree: the four data-backed domains finished — 9 workshop screens, 4 CRM detail surfaces, the F-023 inventory movement UI, and 9 accounting surfaces. 155 of 402 rendering (was 132), 207 placeholder routes (was 230), both gates at the new baseline, app 697 tests. The agents surfaced the real backend gaps as tested GAP: states rather than faking them — consolidated into F-027 through F-030, which are the work orders for a backend-first tranche 4 (agent 05): CRM/fleet writes and conversion, financial aggregates and report-source collections, the workshop approval/diagnostics endpoints, the appointment↔technician seed link, and the greenfield insurance/fleet/loans/HR schema. Once those land, the product agents for 13 and 14 become worthwhile.",
+  "waveName": "Product → backend fill",
+  "waveNote": "Tranche 4 is backend-first and runs sequentially: the server registry, schema and seed are single shared files, so one backend agent works at a time and is verified before the next, rather than fanning out and corrupting them. First slice (agent 05-A): make the CRM and fleet data writable, add lead→opportunity conversion, a feedback endpoint, fleet contract fields, the public lead-capture endpoint (F-025) and the appointment↔technician seed link (F-030) — closing F-027 and lighting up the CRM screens agent 09 built read-only. F-028 (finance aggregates), F-029 (workshop endpoints), F-022 (procurement collections) and the greenfield insurance/fleet/loans/HR schema follow in later backend slices.",
   "agents": [
     {
       "id": "03",
@@ -45,9 +45,9 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "done",
-      "startedAt": "2026-08-12T03:40:00Z",
-      "scope": "Tranche 2, jointly covering 05 and 06 ground: F-014 qc authority on the QC transition, F-015 assigned_tech_id resolved through technicians.user_id in RLS and checkQcIndependence, F-016 seed coherence (job links, orphan receipts, INV-2026-0142), F-017 server-side inventory enforcement (reservations, paired transfer credit, signed adjust, return type, idempotency), F-018 error envelope, plus a read-only branches collection",
+      "state": "running",
+      "startedAt": "2026-08-12T08:40:00Z",
+      "scope": "Tranche 4-A: F-027 (leads/opportunities/crmTasks/fleets writable + lead conversion + feedback collection & endpoint + fleet contract fields + fleetId join), F-025 (public POST /public/leads, rate-limited and unauthenticated), F-030 (appointment↔technician seed reconciliation). Owns the database this tranche.",
       "owns": [
         "server/**",
         "packages/contract/**",
