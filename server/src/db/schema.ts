@@ -401,6 +401,9 @@ export const inventoryMovements = pgTable(
     ref: varchar('ref', { length: 64 }),
     reason: text('reason'),
     toBranchId: varchar('to_branch_id', { length: ULID_LENGTH }),
+    /** Shared by the debit and credit rows of one transfer, so the pairing is
+     *  provable from the ledger (F-017). Null on every other movement. */
+    transferId: varchar('transfer_id', { length: ULID_LENGTH }),
   },
   (t) => ({ byPart: index('inventory_movements_part_idx').on(t.orgId, t.partId) }),
 )

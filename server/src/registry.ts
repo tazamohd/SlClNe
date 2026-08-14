@@ -67,6 +67,33 @@ const define = <T extends PgTable>(
 ): CollectionDef => def as unknown as CollectionDef
 
 export const COLLECTIONS: readonly CollectionDef[] = [
+  /* ----------------------------------------------------------------- tenancy */
+  define({
+    /** Read-only directory of the organization's branches, so a transfer
+     *  destination is *picked* rather than typed as a raw ULID (F-017). Gated
+     *  on `dashboard:v` — the one module every operating role holds view on —
+     *  because a branch name is directory data, not a privilege; external
+     *  roles (supplier, customer) hold no dashboard grant and are refused.
+     *  Not `writable`: branches are created by administration flows that do
+     *  not exist yet, never through the generic router. */
+    key: 'branches',
+    path: 'branches',
+    table: s.branches,
+    module: 'dashboard',
+    entity: 'branch',
+    search: ['name', 'city'],
+    sortable: ['name', 'city', 'createdAt'],
+    filterable: ['isMain'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    present: (row) => ({
+      ...meta(row),
+      name: row.name,
+      nameAr: row.nameAr ?? '',
+      city: row.city ?? '',
+      isMain: row.isMain,
+    }),
+  }),
+
   /* ------------------------------------------------ customers and vehicles */
   define({
     key: 'customers',

@@ -96,7 +96,9 @@ const SIGNATURES: readonly Signature[] = [
     activity: 'Adjust stock count',
     entity: 'part',
     action: 'movement',
-    when: (fact) => movementType(fact) === 'adjust',
+    /* Both directions of a count correction are the same duty — the shortfall
+     * a thief hides is hidden by adjusting *down*. */
+    when: (fact) => movementType(fact) === 'adjust' || movementType(fact) === 'adjust_down',
   },
 ]
 

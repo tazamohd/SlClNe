@@ -29,8 +29,11 @@ const ulid = monotonicFactory()
 export const SEED = {
   orgId: '01JAAAAAAAAAAAAAAAAAAAAAA1',
   otherOrgId: '01JBBBBBBBBBBBBBBBBBBBBBB2',
-  mainBranchId: '01JAAAAAAAAAAAAAAAAAAABR1',
-  secondBranchId: '01JAAAAAAAAAAAAAAAAAAABR2',
+  /* 26 characters, like every other id: the contract validates branch
+   * references as exactly 26, and the previous 25-character values made the
+   * seeded branches unusable as a transfer destination. */
+  mainBranchId: '01JAAAAAAAAAAAAAAAAAAABR01',
+  secondBranchId: '01JAAAAAAAAAAAAAAAAAAABR02',
   otherBranchId: '01JBBBBBBBBBBBBBBBBBBBBBR1',
   systemUserId: '01JAAAAAAAAAAAAAAAAAAAUSR1',
   /** The demo technician user (tech@salisauto.sa, Saeed Al-Zahrani). Fixed so
@@ -62,6 +65,10 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   /** The SAR 150 consumables line that reconciles INV-2026-0142's lines with
    *  its own header (F-016). */
   invoiceLines: 1,
+  /** The design bundle carries no branches table at all; the two seeded
+   *  branches back the read-only directory a transfer destination is picked
+   *  from (F-017). */
+  branches: 2,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —

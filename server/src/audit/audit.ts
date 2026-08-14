@@ -24,6 +24,8 @@ export type AuditAction =
   | 'issue'
   | 'pay'
   | 'movement'
+  | 'reserve'
+  | 'release'
   | 'seed'
 
 export interface AuditInput {
