@@ -14,6 +14,8 @@ import {
 import {
   MOVEMENT_TYPES,
   checkMovement,
+  checkReservation as mirrorCheckReservation,
+  checkReservationRelease as mirrorCheckReservationRelease,
   ledgerTotals,
   movementDelta,
   onHandFrom,
@@ -164,6 +166,25 @@ describe('the client rule mirror agrees with the contract the server enforces', 
     }
     // A matrix in which nothing was ever refused would pass vacuously.
     expect(refusals).toBeGreaterThan(20)
+  })
+
+  it('mirrors the reservation and release bounds the contract enforces', () => {
+    for (const qty of [1, 4, 5, 6, 7]) {
+      for (const onHand of [0, 5, 10]) {
+        for (const reserved of [0, 3, 6]) {
+          expect(Boolean(mirrorCheckReservation({ qty, onHand, reserved }))).toBe(
+            Boolean(checkReservation({ qty, onHand, reserved })),
+          )
+          expect(Boolean(mirrorCheckReservationRelease({ qty, reserved }))).toBe(
+            Boolean(checkReservationRelease({ qty, reserved })),
+          )
+        }
+      }
+    }
+    // The client is stricter early on a fraction; it never accepts what the
+    // server refuses.
+    expect(mirrorCheckReservation({ qty: 1.5, onHand: 10, reserved: 0 })).not.toBeNull()
+    expect(reservationBody.safeParse({ qty: 1.5 }).success).toBe(false)
   })
 
   it('refuses a fractional quantity that the contract only rejects at the schema', () => {

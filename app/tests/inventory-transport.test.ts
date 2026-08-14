@@ -101,6 +101,44 @@ describe('the movement transport', () => {
     expect(rows).toEqual([MOVEMENT])
   })
 
+  it('posts a reservation and deletes it against the reservation endpoint', async () => {
+    const screen = await loadWithApi()
+    screen.setInventoryAccessTokenProvider(() => 'token-abc')
+    const calls = stubFetch(() => json({ ok: true }))
+
+    const api = screen.httpMovementApi()
+    await api!.reserve('OF-TY-118', { qty: 4, ref: 'JOB-1' })
+    await api!.release('OF-TY-118', { qty: 2 })
+
+    const post = calls[0]!
+    expect(post.url).toBe('https://api.test/inventory/OF-TY-118/reservation')
+    expect(post.init.method).toBe('POST')
+    expect(new Headers(post.init.headers).get('authorization')).toBe('Bearer token-abc')
+    expect(JSON.parse(String(post.init.body))).toEqual({ qty: 4, ref: 'JOB-1' })
+
+    const del = calls[1]!
+    expect(del.url).toBe('https://api.test/inventory/OF-TY-118/reservation')
+    expect(del.init.method).toBe('DELETE')
+    expect(JSON.parse(String(del.init.body))).toEqual({ qty: 2 })
+  })
+
+  it('maps a reservation refusal back to a RepositoryError the form can show', async () => {
+    const screen = await loadWithApi()
+    const { RepositoryError } = await import('@/data/repository')
+    stubFetch(() =>
+      json(
+        { error: { code: 'rule_violated', message: 'Cannot reserve more than is on hand.', field: 'qty' } },
+        422,
+      ),
+    )
+    await expect(
+      screen.httpMovementApi()!.reserve('SKU', { qty: 99 }),
+    ).rejects.toMatchObject({ code: 'rule_violated', field: 'qty' })
+    await expect(
+      screen.httpMovementApi()!.reserve('SKU', { qty: 99 }),
+    ).rejects.toBeInstanceOf(RepositoryError)
+  })
+
   it('escapes a part reference that would otherwise change the path', async () => {
     const screen = await loadWithApi()
     const calls = stubFetch(() => json({ rows: [] }))

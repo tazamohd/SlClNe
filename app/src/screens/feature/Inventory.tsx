@@ -120,6 +120,38 @@ export function checkMovement(args: MovementCheckArgs): { message: string; field
   return null
 }
 
+/** `Reserved ≤ On Hand`. A client-side mirror of the contract's
+ *  `checkReservation`, so the reservation dialog can refuse an over-hold on the
+ *  field before the round trip. The server holds the row lock and re-checks. */
+export function checkReservation(args: {
+  qty: number
+  onHand: number
+  reserved: number
+}): { message: string; field: string } | null {
+  if (!Number.isInteger(args.qty) || args.qty <= 0) {
+    return { message: 'A reservation quantity must be a positive whole number.', field: 'qty' }
+  }
+  if (args.reserved + args.qty > args.onHand) {
+    return { message: 'Cannot reserve more than is on hand.', field: 'qty' }
+  }
+  return null
+}
+
+/** A release cannot give back more than is held. Mirror of the contract's
+ *  `checkReservationRelease`. */
+export function checkReservationRelease(args: {
+  qty: number
+  reserved: number
+}): { message: string; field: string } | null {
+  if (!Number.isInteger(args.qty) || args.qty <= 0) {
+    return { message: 'A release quantity must be a positive whole number.', field: 'qty' }
+  }
+  if (args.qty > args.reserved) {
+    return { message: 'Cannot release more than is reserved.', field: 'qty' }
+  }
+  return null
+}
+
 /** One row of `GET /inventory/:id/movements`. */
 export interface MovementRow {
   id: string
@@ -252,12 +284,29 @@ export interface MovementInput {
   fromReservation?: boolean
 }
 
-/** The two stock-movement endpoints, as a seam a test can substitute. */
+/** The body `POST`/`DELETE /inventory/:id/reservation` takes (contract
+ *  `reservationBody`). A reservation is a hold on `parts.reserved`, not a ledger
+ *  entry — it never appears as a movement type, so it has its own endpoint and
+ *  its own input. */
+export interface ReservationInput {
+  qty: number
+  ref?: string
+  reason?: string
+}
+
+/** The stock-movement and reservation endpoints, as a seam a test can
+ *  substitute. */
 export interface MovementApi {
   list(partRef: string): Promise<MovementRow[]>
   /** `idempotencyKey` is what makes a retried receipt safe: the server replays
    *  the first result instead of receiving the stock twice. */
   record(partRef: string, input: MovementInput, idempotencyKey: string): Promise<MovementRow[]>
+  /** Hold stock against `parts.reserved`. The server takes the row lock and
+   *  refuses a hold larger than what is on hand (`checkReservation`). */
+  reserve(partRef: string, input: ReservationInput): Promise<void>
+  /** Give a held reservation back. The server refuses a release larger than the
+   *  hold (`checkReservationRelease`). */
+  release(partRef: string, input: ReservationInput): Promise<void>
 }
 
 /** Why the ledger cannot be reached, or null when it can.
@@ -348,6 +397,18 @@ export function httpMovementApi(): MovementApi | null {
         body: JSON.stringify(input),
       })
       return this.list(partRef)
+    },
+    async reserve(partRef, input) {
+      await movementFetch(`/inventory/${encodeURIComponent(partRef)}/reservation`, {
+        method: 'POST',
+        body: JSON.stringify(input),
+      })
+    },
+    async release(partRef, input) {
+      await movementFetch(`/inventory/${encodeURIComponent(partRef)}/reservation`, {
+        method: 'DELETE',
+        body: JSON.stringify(input),
+      })
     },
   }
 }
@@ -1096,7 +1157,9 @@ const TYPE_LABEL: Record<string, string> = {
   in: 'Received',
   out: 'Consumed',
   transfer: 'Transferred',
-  adjust: 'Adjusted',
+  adjust: 'Adjusted Up',
+  adjust_down: 'Adjusted Down',
+  return: 'Returned',
   damage: 'Damaged',
 }
 
@@ -1253,6 +1316,7 @@ function Reconciliation({
     ['Opening', opening],
     ['Received', totals.received],
     ['Transfer In', totals.transferIn],
+    ['Returned', totals.returned],
     ['Consumed', -totals.consumed],
     ['Transfer Out', -totals.transferOut],
     ['Adjustments', totals.adjustments],
@@ -1333,15 +1397,21 @@ interface MovementKind {
   /** A consequence of recording this movement that the operator has to know
    *  before deciding, not after. Shown in the dialog, not buried in a hint. */
   warning?: string
+  /** Whether this kind can draw its quantity down from a held reservation. Only
+   *  a consumption may (contract `movementCreate`), and the modal offers the
+   *  choice only when there is a reservation to draw on. */
+  allowFromReservation?: boolean
 }
 
 /** The movement kinds the API can record.
  *
- *  A sixth — a return to stock — is missing on purpose. `movementType` has no
- *  `return`, and recording one as a receipt would put it in the Received total,
- *  where it would break both the equation and the "no double receiving" check.
- *  It is a contract change, raised as a request, not something to approximate
- *  here. */
+ *  Seven of them, one per `movementType` (`packages/contract/src/entities/part.ts`).
+ *  `return` is its own kind so a customer or job return is booked as Returned,
+ *  never folded into Received; `adjust_down` is the signed counterpart to
+ *  `adjust`, its quantity kept positive with the type carrying the sign (the
+ *  server refuses a negative quantity). Both were added when the server closed
+ *  F-017; a reservation is not here because it is a hold, not a ledger entry —
+ *  it has its own endpoint and its own control on the ledger dialog. */
 export const MOVEMENT_KINDS: readonly MovementKind[] = [
   {
     id: 'receive',
@@ -1359,11 +1429,12 @@ export const MOVEMENT_KINDS: readonly MovementKind[] = [
     type: 'out',
     label: 'Consume',
     title: 'Consume Stock',
-    description: 'Issue stock to a job card. Only unreserved stock can be consumed.',
+    description: 'Issue stock to a job card. Only unreserved stock can be consumed, unless the consumption draws on a reservation.',
     icon: 'ArrowUp',
     refLabel: 'Job Card',
     refHint: 'The job this stock was issued to.',
     quantityLabel: 'Quantity Consumed',
+    allowFromReservation: true,
   },
   {
     id: 'transfer',
@@ -1381,17 +1452,41 @@ export const MOVEMENT_KINDS: readonly MovementKind[] = [
       'The API books the outgoing half only: the destination branch is not credited, so until the paired movement exists a transfer lowers the total stock held across branches. Record the receiving side at the destination.',
   },
   {
+    id: 'return',
+    type: 'return',
+    label: 'Return to Stock',
+    title: 'Return to Stock',
+    description: 'Book a part returned from a job or a customer back onto the shelf. Recorded as Returned, never as receiving, so the receiving total stays honest.',
+    icon: 'RotateCcw',
+    refLabel: 'Return Authorisation / Credit Note',
+    refHint: 'The return this stock came back against, so the credit can be traced.',
+    quantityLabel: 'Quantity Returned',
+    reasonRequired: true,
+  },
+  {
     id: 'adjust',
     type: 'adjust',
-    label: 'Adjust Count',
-    title: 'Adjust Stock Count',
-    description: 'Correct the recorded quantity after a physical count.',
+    label: 'Adjust Up',
+    title: 'Adjust Count Up',
+    description: 'Correct the recorded quantity upward after a physical count found more than the books show.',
     icon: 'SlidersHorizontal',
     refLabel: 'Count Sheet',
     refHint: 'The stock count this correction came from.',
     quantityLabel: 'Quantity To Add',
     reasonRequired: true,
-    note: 'The endpoint records an adjustment as an increase only. A downward correction has no movement type on the API yet, so it cannot be recorded from here.',
+  },
+  {
+    id: 'adjust_down',
+    type: 'adjust_down',
+    label: 'Adjust Down',
+    title: 'Adjust Count Down',
+    description: 'Correct the recorded quantity downward after a physical count found fewer than the books show.',
+    icon: 'Minus',
+    refLabel: 'Count Sheet',
+    refHint: 'The stock count this correction came from.',
+    quantityLabel: 'Quantity To Remove',
+    reasonRequired: true,
+    note: 'Quantity stays positive — the correction subtracts it. A count cannot take stock below zero.',
   },
   {
     id: 'damage',
@@ -1461,6 +1556,12 @@ function MovementModal({
   const reserved = reservedOf(part) ?? 0
   const backorderable = backorderableOf(part)
 
+  // A consumption may draw its quantity from a held reservation, which lifts the
+  // unreserved-balance bound and replaces it with the reservation's own — but
+  // only when there is a reservation to draw on, so it is offered only then.
+  const canDrawReservation = kind.allowFromReservation === true && reserved > 0
+  const [fromReservation, setFromReservation] = useState(false)
+
   const schema = useMemo(() => movementSchema(kind), [kind])
 
   const form = useZodForm({
@@ -1468,6 +1569,7 @@ function MovementModal({
     initial: { qty: '', ref: '', reason: '', toBranchId: '' },
     async onSubmit(values) {
       const qty = Number(values.qty)
+      const drawsReservation = canDrawReservation && fromReservation
       // The same rule the endpoint applies, run early so an impossible movement
       // is refused on the field rather than as a round trip. The server still
       // decides: it holds the row lock and the current quantity.
@@ -1477,6 +1579,7 @@ function MovementModal({
         onHand: part.stock,
         reserved,
         backorderable,
+        fromReservation: drawsReservation,
       })
       if (failure) throw new ServerValidationError({ [failure.field]: failure.message })
 
@@ -1489,6 +1592,7 @@ function MovementModal({
             ...(values.ref ? { ref: values.ref } : {}),
             ...(values.reason ? { reason: values.reason } : {}),
             ...(values.toBranchId ? { toBranchId: values.toBranchId } : {}),
+            ...(drawsReservation ? { fromReservation: true } : {}),
           },
           // One key per submission attempt, so the retry of a request that
           // timed out is replayed rather than received twice.
@@ -1564,6 +1668,23 @@ function MovementModal({
           placeholder="0"
           hint={kind.note ?? 'Whole units only.'}
         />
+        {canDrawReservation ? (
+          <label className="flex cursor-pointer items-start gap-2.5 rounded border border-border bg-inset px-3.5 py-2.5 text-[13px] text-body">
+            <input
+              type="checkbox"
+              checked={fromReservation}
+              onChange={(event) => setFromReservation(event.target.checked)}
+              className="mt-0.5 h-4 w-4 flex-shrink-0 accent-salis-blue"
+            />
+            <span>
+              {t('Draw this consumption from the held reservation.')}{' '}
+              <span dir="ltr" className="font-mono text-muted">
+                {reserved}
+              </span>{' '}
+              {t('units are reserved; a draw is bounded by that, and releases the hold as it goes.')}
+            </span>
+          </label>
+        ) : null}
         {kind.needsBranch ? (
           <Field
             name="toBranchId"
@@ -1636,6 +1757,10 @@ function PartLedgerModal({
 }) {
   const { t } = usePreferences()
   const [kind, setKind] = useState<MovementKind | null>(null)
+  // The reservation flow is a hold on `parts.reserved`, not a ledger entry, so
+  // it opens its own dialog rather than one of the movement kinds.
+  const [reservation, setReservation] = useState<ReservationAction | null>(null)
+  const reserved = reservedOf(part)
 
   return (
     <>
@@ -1666,18 +1791,44 @@ function PartLedgerModal({
 
         {mayEdit ? (
           api ? (
-            <div className="flex flex-wrap gap-2">
-              {MOVEMENT_KINDS.map((option) => (
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-wrap gap-2">
+                {MOVEMENT_KINDS.map((option) => (
+                  <Button
+                    key={option.id}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setKind(option)}
+                  >
+                    <Icon name={option.icon} size={14} />
+                    {t(option.label)}
+                  </Button>
+                ))}
+              </div>
+              {/* Reserved and Available, honestly: a reservation holds stock
+                  against open work without moving it, so consumption and
+                  transfer see less than is on hand until the hold is released
+                  or drawn down. */}
+              <div className="flex flex-wrap items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => setReservation('reserve')}>
+                  <Icon name="Lock" size={14} />
+                  {t('Reserve Stock')}
+                </Button>
                 <Button
-                  key={option.id}
                   variant="outline"
                   size="sm"
-                  onClick={() => setKind(option)}
+                  disabled={(reserved ?? 0) <= 0}
+                  onClick={() => setReservation('release')}
                 >
-                  <Icon name={option.icon} size={14} />
-                  {t(option.label)}
+                  <Icon name="RotateCcw" size={14} />
+                  {t('Release Reservation')}
                 </Button>
-              ))}
+                {(reserved ?? 0) <= 0 ? (
+                  <span className="text-[13px] text-muted">
+                    {t('No stock is reserved on this part.')}
+                  </span>
+                ) : null}
+              </div>
             </div>
           ) : (
             <ReadOnlyNotice
@@ -1709,7 +1860,170 @@ function PartLedgerModal({
           onRecorded={() => setKind(null)}
         />
       ) : null}
+
+      {reservation && api ? (
+        <ReservationModal
+          action={reservation}
+          part={part}
+          api={api}
+          onClose={() => setReservation(null)}
+          onDone={() => setReservation(null)}
+        />
+      ) : null}
     </>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────── reservations */
+
+type ReservationAction = 'reserve' | 'release'
+
+/** Hold stock against open work, or give a hold back.
+ *
+ *  A reservation is not a movement: it does not touch on-hand or the ledger, it
+ *  moves `parts.reserved` so that `Available = OnHand − Reserved` falls without
+ *  any stock leaving the shelf. The endpoints are their own
+ *  (`POST`/`DELETE /inventory/:id/reservation`), guarded by `checkReservation`
+ *  and its release counterpart — a hold may not exceed what is on hand, a
+ *  release may not exceed the hold — and the client mirrors both so an
+ *  impossible request is refused on the field before the round trip. */
+function ReservationModal({
+  action,
+  part,
+  api,
+  onClose,
+  onDone,
+}: {
+  action: ReservationAction
+  part: Part
+  api: MovementApi
+  onClose: () => void
+  onDone: () => void
+}) {
+  const { t } = usePreferences()
+  const toast = useToast()
+  const client = useQueryClient()
+  const ref = partRef(part)
+  const reserved = reservedOf(part) ?? 0
+  const available = availableOf(part) ?? part.stock - reserved
+  const reserving = action === 'reserve'
+
+  const form = useZodForm({
+    schema: z.object({
+      qty: quantitySchema,
+      ref: z.string().trim().max(64, 'A reference can be at most 64 characters.'),
+      reason: z.string().trim().max(500, 'A reason can be at most 500 characters.'),
+    }),
+    initial: { qty: '', ref: '', reason: '' },
+    async onSubmit(values) {
+      const qty = Number(values.qty)
+      // The contract rules the server enforces, run early against the current
+      // figures — the server still holds the row lock and decides.
+      const failure = reserving
+        ? checkReservation({ qty, onHand: part.stock, reserved })
+        : checkReservationRelease({ qty, reserved })
+      if (failure) throw new ServerValidationError({ [failure.field]: failure.message })
+
+      const input: ReservationInput = {
+        qty,
+        ...(values.ref ? { ref: values.ref } : {}),
+        ...(values.reason ? { reason: values.reason } : {}),
+      }
+      try {
+        if (reserving) await api.reserve(ref, input)
+        else await api.release(ref, input)
+      } catch (error) {
+        throw asFormError(error)
+      }
+
+      // A reservation changes `reserved`/`available` on the part row, not the
+      // ledger, so it is the parts list that is re-read.
+      await client.invalidateQueries({ queryKey: ['parts'] })
+      toast.show({
+        title: reserving ? t('Stock reserved') : t('Reservation released'),
+        description: `${part.name}`,
+      })
+      onDone()
+    },
+  })
+
+  const { confirmDiscard } = useUnsavedChangesGuard(form.dirty && !form.pending)
+  const close = useCallback(() => {
+    void confirmDiscard().then((ok) => {
+      if (ok) onClose()
+    })
+  }, [confirmDiscard, onClose])
+
+  const projected = /^\d+$/.test(form.values.qty)
+    ? reserved + (reserving ? Number(form.values.qty) : -Number(form.values.qty))
+    : null
+
+  return (
+    <Modal
+      open
+      onClose={close}
+      variant="lifecycle"
+      icon={reserving ? 'Lock' : 'RotateCcw'}
+      title={reserving ? 'Reserve Stock' : 'Release Reservation'}
+      description={t(
+        reserving
+          ? 'Hold stock for open work. It stays on the shelf but leaves the available balance until it is consumed or released.'
+          : 'Give a held reservation back to the available balance without moving any stock.'
+      )}
+      meta={
+        <span dir="ltr" className="font-mono">
+          {part.sku}
+        </span>
+      }
+    >
+      <Form form={form}>
+        <FormErrorSummary />
+
+        <div className="flex flex-wrap gap-x-6 gap-y-2 rounded border border-border bg-inset px-3.5 py-2.5">
+          <Figure label="On Hand" value={part.stock} />
+          <Figure label="Reserved" value={reservedOf(part)} />
+          <Figure label="Available" value={availableOf(part)} />
+          {projected === null ? null : (
+            <Figure label="Reserved After" value={projected} tone="blue" />
+          )}
+        </div>
+
+        <Field
+          name="qty"
+          label={reserving ? 'Quantity To Reserve' : 'Quantity To Release'}
+          required
+          placeholder="0"
+          hint={
+            reserving
+              ? `Whole units only. At most ${available} can be reserved.`
+              : `Whole units only. At most ${reserved} can be released.`
+          }
+        />
+        <Field
+          name="ref"
+          label={reserving ? 'Job Card / Order' : 'Reference'}
+          hint={
+            reserving
+              ? 'The open work this stock is being held for.'
+              : 'The hold being released, so it can be traced.'
+          }
+        />
+        <Field
+          name="reason"
+          label="Reason"
+          kind="textarea"
+          rows={2}
+          hint="Recorded on the reservation and in the audit log."
+        />
+
+        <FormActions>
+          <Button variant="subtle" size="lg" onClick={close} disabled={form.pending}>
+            {t('Cancel')}
+          </Button>
+          <SubmitButton label={reserving ? 'Reserve Stock' : 'Release Reservation'} />
+        </FormActions>
+      </Form>
+    </Modal>
   )
 }
 

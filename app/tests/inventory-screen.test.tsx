@@ -49,12 +49,17 @@ function movement(over: Partial<MovementRow> = {}): MovementRow {
 
 interface FakeApi extends MovementApi {
   recorded: { ref: string; input: MovementInput; key: string }[]
+  reservations: { ref: string; action: 'reserve' | 'release'; qty: number }[]
 }
 
-function fakeApi(options: { rows?: MovementRow[]; fail?: Error; hold?: boolean } = {}): FakeApi {
+function fakeApi(
+  options: { rows?: MovementRow[]; fail?: Error; hold?: boolean; reservationFail?: Error } = {}
+): FakeApi {
   const recorded: FakeApi['recorded'] = []
+  const reservations: FakeApi['reservations'] = []
   return {
     recorded,
+    reservations,
     async list() {
       return options.rows ?? []
     },
@@ -63,6 +68,14 @@ function fakeApi(options: { rows?: MovementRow[]; fail?: Error; hold?: boolean }
       if (options.fail) throw options.fail
       if (options.hold) await new Promise(() => {})
       return options.rows ?? []
+    },
+    async reserve(ref, input) {
+      reservations.push({ ref, action: 'reserve', qty: input.qty })
+      if (options.reservationFail) throw options.reservationFail
+    },
+    async release(ref, input) {
+      reservations.push({ ref, action: 'release', qty: input.qty })
+      if (options.reservationFail) throw options.reservationFail
     },
   }
 }
@@ -455,27 +468,197 @@ describe('recording a movement', () => {
     })
   })
 
-  it('says an adjustment can only ever increase the count', async () => {
+  it('offers adjustment in both directions, each carrying the sign in its type', async () => {
     const user = userEvent.setup()
-    renderWithProviders(<Inventory api={fakeApi()} />, { role: 'parts' })
+    const api = fakeApi()
+    renderWithProviders(<Inventory api={api} />, { role: 'parts' })
     await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
     await user.click(screen.getByText(PARTS[0]!.name))
     const ledger = await screen.findByRole('dialog')
-    await user.click(within(ledger).getByRole('button', { name: /adjust count/i }))
 
-    const dialogs = await screen.findAllByRole('dialog')
-    const dialog = dialogs[dialogs.length - 1] as HTMLElement
-    expect(within(dialog).getByText(/increase only/i)).toBeInTheDocument()
+    // Down: quantity stays positive, the type carries the minus — the rule the
+    // server enforces (it refuses a negative quantity outright).
+    await user.click(within(ledger).getByRole('button', { name: /adjust down/i }))
+    let dialogs = await screen.findAllByRole('dialog')
+    let dialog = dialogs[dialogs.length - 1] as HTMLElement
+    await user.type(within(dialog).getByLabelText(/quantity to remove/i), '3')
+    await user.type(within(dialog).getByLabelText(/reason/i), 'Miscount')
+    await user.click(within(dialog).getByRole('button', { name: /adjust down/i }))
+    await waitFor(() => expect(api.recorded).toHaveLength(1))
+    expect(api.recorded[0]!.input).toMatchObject({ type: 'adjust_down', qty: 3 })
+
+    // Up is still there and distinct.
+    await user.click(within(ledger).getByRole('button', { name: /adjust up/i }))
+    dialogs = await screen.findAllByRole('dialog')
+    dialog = dialogs[dialogs.length - 1] as HTMLElement
+    await user.type(within(dialog).getByLabelText(/quantity to add/i), '2')
+    await user.type(within(dialog).getByLabelText(/reason/i), 'Found more')
+    await user.click(within(dialog).getByRole('button', { name: /adjust up/i }))
+    await waitFor(() => expect(api.recorded).toHaveLength(2))
+    expect(api.recorded[1]!.input).toMatchObject({ type: 'adjust', qty: 2 })
   })
 
-  it('offers no return to stock, because the API has no movement type for one', async () => {
+  it('books a return through its own type, not as receiving', async () => {
     const user = userEvent.setup()
-    renderWithProviders(<Inventory api={fakeApi()} />, { role: 'parts' })
+    const api = fakeApi()
+    renderWithProviders(<Inventory api={api} />, { role: 'parts' })
     await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
     await user.click(screen.getByText(PARTS[0]!.name))
+    const ledger = await screen.findByRole('dialog')
 
-    const dialog = await screen.findByRole('dialog')
-    expect(within(dialog).queryByRole('button', { name: /return/i })).not.toBeInTheDocument()
+    await user.click(within(ledger).getByRole('button', { name: /return to stock/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+    await user.type(within(dialog).getByLabelText(/quantity returned/i), '4')
+    await user.type(within(dialog).getByLabelText(/reason/i), 'Customer return')
+    await user.click(within(dialog).getByRole('button', { name: /return to stock/i }))
+
+    await waitFor(() => expect(api.recorded).toHaveLength(1))
+    // The type is `return`, never `in` — the server keeps Returned out of the
+    // Received total, and the UI must not fold it back in.
+    expect(api.recorded[0]!.input).toMatchObject({ type: 'return', qty: 4 })
+  })
+
+  it('maps the server’s refusal of an over-large adjust_down onto the quantity field', async () => {
+    const { RepositoryError } = await import('@/data/repository')
+    const user = userEvent.setup()
+    // A shortfall the client's own mirror would pass (small qty) but the server
+    // refuses on its authoritative row — proven to land on the field it names.
+    const api = fakeApi({
+      fail: new RepositoryError(
+        'rule_violated',
+        'This movement would take stock negative and the part is not backorderable.',
+        { field: 'qty' }
+      ),
+    })
+    renderWithProviders(<Inventory api={api} />, { role: 'parts' })
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+    await user.click(screen.getByText(PARTS[0]!.name))
+    const ledger = await screen.findByRole('dialog')
+    await user.click(within(ledger).getByRole('button', { name: /adjust down/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    await user.type(within(dialog).getByLabelText(/quantity to remove/i), '1')
+    await user.type(within(dialog).getByLabelText(/reason/i), 'Miscount')
+    await user.click(within(dialog).getByRole('button', { name: /adjust down/i }))
+
+    expect(await within(dialog).findByText(/would take stock negative/i)).toBeInTheDocument()
+    expect(within(dialog).getByLabelText(/quantity to remove/i)).toHaveAttribute(
+      'aria-invalid',
+      'true'
+    )
+  })
+})
+
+describe('reservations hold stock without moving it', () => {
+  async function openLedger(user: ReturnType<typeof userEvent.setup>, api: MovementApi) {
+    renderWithProviders(<Inventory api={api} />, { role: 'parts' })
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+    await user.click(screen.getByText(PARTS[0]!.name))
+    return screen.findByRole('dialog')
+  }
+
+  /** A parts list where the first part already holds a reservation, so the
+   *  release and draw-down paths — which the fixtures cannot reach — have a hold
+   *  to act on. */
+  function withReserved(reserved: number) {
+    const load = import('@/data/repository').then(({ repository }) =>
+      vi.spyOn(repository.parts, 'list').mockImplementation(async () => {
+        const rows = PARTS.map((row, index) =>
+          index === 0
+            ? ({ ...row, reserved, available: row.stock - reserved } as unknown as (typeof PARTS)[number])
+            : { ...row }
+        )
+        return { rows, page: { page: 1, pageSize: rows.length, total: rows.length, totalPages: 1 } }
+      })
+    )
+    return load
+  }
+
+  it('refuses a hold larger than what is on hand, without asking the server', async () => {
+    const user = userEvent.setup()
+    const api = fakeApi()
+    const ledger = await openLedger(user, api)
+
+    await user.click(within(ledger).getByRole('button', { name: /reserve stock/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    await user.type(within(dialog).getByLabelText(/quantity to reserve/i), String(PARTS[0]!.stock + 1))
+    await user.click(within(dialog).getByRole('button', { name: /reserve stock/i }))
+
+    expect(await within(dialog).findByText(/cannot reserve more than is on hand/i)).toBeInTheDocument()
+    expect(api.reservations).toHaveLength(0)
+  })
+
+  it('reserves stock against the reservation endpoint, not a movement', async () => {
+    const user = userEvent.setup()
+    const api = fakeApi()
+    const ledger = await openLedger(user, api)
+
+    await user.click(within(ledger).getByRole('button', { name: /reserve stock/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    await user.type(within(dialog).getByLabelText(/quantity to reserve/i), '10')
+    await user.click(within(dialog).getByRole('button', { name: /reserve stock/i }))
+
+    await waitFor(() => expect(api.reservations).toHaveLength(1))
+    expect(api.reservations[0]).toMatchObject({ action: 'reserve', qty: 10 })
+    // A reservation is not a ledger entry, so it records no movement.
+    expect(api.recorded).toHaveLength(0)
+    await waitFor(() => expect(screen.getByText(/stock reserved/i)).toBeInTheDocument())
+  })
+
+  it('releases only up to what is held, and maps the over-release onto the field', async () => {
+    const user = userEvent.setup()
+    const spy = await withReserved(20)
+    const api = fakeApi()
+    const ledger = await openLedger(user, api)
+
+    await user.click(within(ledger).getByRole('button', { name: /release reservation/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    await user.type(within(dialog).getByLabelText(/quantity to release/i), '25')
+    await user.click(within(dialog).getByRole('button', { name: /release reservation/i }))
+    expect(await within(dialog).findByText(/cannot release more than is reserved/i)).toBeInTheDocument()
+    expect(api.reservations).toHaveLength(0)
+
+    await user.clear(within(dialog).getByLabelText(/quantity to release/i))
+    await user.type(within(dialog).getByLabelText(/quantity to release/i), '5')
+    await user.click(within(dialog).getByRole('button', { name: /release reservation/i }))
+    await waitFor(() => expect(api.reservations).toHaveLength(1))
+    expect(api.reservations[0]).toMatchObject({ action: 'release', qty: 5 })
+    spy.mockRestore()
+  })
+
+  it('lets a consumption draw on the reservation, bounded by the hold', async () => {
+    const user = userEvent.setup()
+    const spy = await withReserved(20)
+    const api = fakeApi()
+    const ledger = await openLedger(user, api)
+
+    await user.click(within(ledger).getByRole('button', { name: /^consume$/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    const draw = within(dialog).getByRole('checkbox', { name: /draw this consumption from the held reservation/i })
+    await user.click(draw)
+
+    // Bounded by the hold: 21 exceeds the 20 reserved.
+    await user.type(within(dialog).getByLabelText(/quantity consumed/i), '21')
+    await user.click(within(dialog).getByRole('button', { name: /^consume$/i }))
+    expect(await within(dialog).findByText(/cannot consume more than is reserved/i)).toBeInTheDocument()
+    expect(api.recorded).toHaveLength(0)
+
+    await user.clear(within(dialog).getByLabelText(/quantity consumed/i))
+    await user.type(within(dialog).getByLabelText(/quantity consumed/i), '10')
+    await user.click(within(dialog).getByRole('button', { name: /^consume$/i }))
+    await waitFor(() => expect(api.recorded).toHaveLength(1))
+    expect(api.recorded[0]!.input).toMatchObject({ type: 'out', qty: 10, fromReservation: true })
+    spy.mockRestore()
   })
 })
 
