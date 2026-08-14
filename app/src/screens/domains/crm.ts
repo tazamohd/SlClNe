@@ -12,8 +12,16 @@
 import type { DomainScreens } from '../registry'
 import { CustomerDetail } from '../registry/CustomerDetail'
 import { VehicleDetail } from '../registry/VehicleDetail'
+import { CustomerFeedback } from '../registry/CustomerFeedback'
+import { FleetContract } from '../registry/FleetContract'
+import { LeadDetail } from '../crm/LeadDetail'
+import { CRMCalendar } from '../crm/CRMCalendar'
 
 export const SCREENS: DomainScreens = {
   CustomerDetail,
   VehicleDetail,
+  CustomerFeedback,
+  FleetContract,
+  LeadDetail,
+  CRMCalendar,
 }
