@@ -41,7 +41,13 @@ function post(url: string, bearer: string, body: unknown) {
   return app.inject({
     method: 'POST',
     url: `/api/v1${url}`,
-    headers: { authorization: `Bearer ${bearer}`, 'content-type': 'application/json' },
+    headers: {
+      authorization: `Bearer ${bearer}`,
+      'content-type': 'application/json',
+      /* Movements now require replay protection (F-017); a fresh key per call
+       * keeps each POST a distinct business effect. Other routes ignore it. */
+      'idempotency-key': `sod-test-${crypto.randomUUID()}`,
+    },
     payload: JSON.stringify(body),
   })
 }

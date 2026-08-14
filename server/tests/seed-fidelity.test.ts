@@ -14,6 +14,9 @@ import { startHarness, type Harness } from './harness'
 
 /** Repository key → the fixture that key serves today. */
 const FIXTURES: Record<string, readonly unknown[]> = {
+  /** No branches fixture exists — the design bundle never listed them. The
+   *  collection serves the seeded branch directory (SEED_COHERENCE_EXTRAS). */
+  branches: [],
   vehicles: T.VEHICLES,
   invoices: T.INVOICES,
   invoiceLines: T.INVOICE_LINES,

@@ -705,10 +705,17 @@ describe('inventory', () => {
     const part = (list.json() as { rows: { _id: string; stock: number }[] }).rows[0]
     expect(part).toBeDefined()
 
+    const withKey = (body: unknown) => {
+      const base = json(token, body)
+      return {
+        ...base,
+        headers: { ...base.headers, 'idempotency-key': `api-test-${crypto.randomUUID()}` },
+      }
+    }
     const consume = await harness.app.inject({
       method: 'POST',
       url: `/api/v1/inventory/${part!._id}/movement`,
-      ...json(token, { type: 'out', qty: 2, ref: 'JOB-1' }),
+      ...withKey({ type: 'out', qty: 2, ref: 'JOB-1' }),
     })
     expect(consume.statusCode, consume.body).toBe(200)
     expect(consume.json().stock).toBe(part!.stock - 2)
@@ -716,7 +723,7 @@ describe('inventory', () => {
     const overdraw = await harness.app.inject({
       method: 'POST',
       url: `/api/v1/inventory/${part!._id}/movement`,
-      ...json(token, { type: 'out', qty: 10_000 }),
+      ...withKey({ type: 'out', qty: 10_000 }),
     })
     expect(overdraw.statusCode).toBe(422)
   })
