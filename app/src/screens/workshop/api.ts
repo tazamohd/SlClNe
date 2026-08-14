@@ -56,6 +56,17 @@ function errorFrom(body: unknown, status: number): RepositoryError {
   )
 }
 
+function authHeaders(withBody: boolean): Headers {
+  const headers = new Headers(
+    withBody
+      ? { accept: 'application/json', 'content-type': 'application/json' }
+      : { accept: 'application/json' }
+  )
+  const token = readAccessToken()
+  if (token) headers.set('authorization', `Bearer ${token}`)
+  return headers
+}
+
 async function post<TResult>(path: string, body: unknown): Promise<TResult> {
   if (!isLive) {
     throw new RepositoryError(
@@ -63,15 +74,11 @@ async function post<TResult>(path: string, body: unknown): Promise<TResult> {
       'The fixture repository cannot change a job card. Set VITE_API_URL to run against the API.'
     )
   }
-  const headers = new Headers({ accept: 'application/json', 'content-type': 'application/json' })
-  const token = readAccessToken()
-  if (token) headers.set('authorization', `Bearer ${token}`)
-
   let response: Response
   try {
     response = await fetch(`${API_URL.replace(/\/$/, '')}/${path}`, {
       method: 'POST',
-      headers,
+      headers: authHeaders(true),
       body: JSON.stringify(body),
       credentials: 'include',
     })
@@ -79,6 +86,32 @@ async function post<TResult>(path: string, body: unknown): Promise<TResult> {
     throw new RepositoryError('network', 'The server could not be reached.', { status: 0 })
   }
 
+  const text = await response.text()
+  const parsed: unknown = text ? JSON.parse(text) : null
+  if (!response.ok) throw errorFrom(parsed, response.status)
+  return parsed as TResult
+}
+
+/** A read that is a sub-resource action, not a registered collection. The
+ *  estimate lines live under `GET /estimates/:id/lines`, which the repository
+ *  seam does not model — only whole collections. */
+async function get<TResult>(path: string): Promise<TResult> {
+  if (!isLive) {
+    throw new RepositoryError(
+      'unsupported',
+      'The fixture repository does not serve estimate line items. Set VITE_API_URL to run against the API.'
+    )
+  }
+  let response: Response
+  try {
+    response = await fetch(`${API_URL.replace(/\/$/, '')}/${path}`, {
+      method: 'GET',
+      headers: authHeaders(false),
+      credentials: 'include',
+    })
+  } catch {
+    throw new RepositoryError('network', 'The server could not be reached.', { status: 0 })
+  }
   const text = await response.text()
   const parsed: unknown = text ? JSON.parse(text) : null
   if (!response.ok) throw errorFrom(parsed, response.status)
@@ -102,6 +135,40 @@ export function transitionJob(
  *  technician exists inside the caller's own tenant before it writes. */
 export function assignJob(ref: string, techId: string): Promise<Record<string, unknown>> {
   return post(`jobs/${encodeURIComponent(ref)}/assign`, { techId })
+}
+
+/** Approves an estimate.
+ *
+ *  `POST /estimates/:id/approve` — not a field update, an action that runs the
+ *  freshness check, the SAR ceiling and segregation of duties in that order
+ *  (server `routes/estimates.ts`). The client `canApprove` gate only mirrors
+ *  the ceiling and authority so the button reads honestly; the server is the
+ *  boundary and answers all three. `ref` is the ULID or the `EST-…` code. */
+export function approveEstimate(ref: string, reason?: string): Promise<Record<string, unknown>> {
+  return post(`estimates/${encodeURIComponent(ref)}/approve`, reason ? { reason } : {})
+}
+
+/** Rejects an estimate. The server requires a reason. */
+export function rejectEstimate(ref: string, reason: string): Promise<Record<string, unknown>> {
+  return post(`estimates/${encodeURIComponent(ref)}/reject`, { reason })
+}
+
+/** The estimate's line items, from `GET /estimates/:id/lines`. */
+export function fetchEstimateLines(ref: string): Promise<{ rows: EstimateLineRow[] }> {
+  return get(`estimates/${encodeURIComponent(ref)}/lines`)
+}
+
+/** The line shape the estimates router returns — the raw drizzle row, not a
+ *  presented one, so money is in halalas. */
+export interface EstimateLineRow {
+  id: string
+  description: string
+  descriptionAr?: string | null
+  kind: string
+  qty: number
+  unitPriceHalalas: number
+  partSku?: string | null
+  sort: number
 }
 
 /** What to put in front of the user when a stage change is refused.

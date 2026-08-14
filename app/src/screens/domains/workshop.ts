@@ -11,7 +11,25 @@
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
 import { JobCardDetail } from '../workshop/JobCardDetail'
+import { ApprovalInbox } from '../workshop/ApprovalInbox'
+import { EstimateDetail } from '../workshop/EstimateDetail'
+import { AppointmentCalendar } from '../workshop/AppointmentCalendar'
+import { TechnicianSchedule } from '../workshop/TechnicianSchedule'
+import { TechnicianKB } from '../workshop/TechnicianKB'
+import { OBDDiagnostics } from '../workshop/OBDDiagnostics'
+import { DiagnosticReport } from '../workshop/DiagnosticReport'
+import { WorkshopReports } from '../workshop/WorkshopReports'
+import { CustomerApproval } from '../workshop/CustomerApproval'
 
 export const SCREENS: DomainScreens = {
   JobCardDetail,
+  ApprovalInbox,
+  EstimateDetail,
+  AppointmentCalendar,
+  TechnicianSchedule,
+  TechnicianKB,
+  OBDDiagnostics,
+  DiagnosticReport,
+  WorkshopReports,
+  CustomerApproval,
 }

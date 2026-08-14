@@ -1,0 +1,203 @@
+import { useMemo } from 'react'
+import { Card } from '@/components/ui/Card'
+import { Icon } from '@/components/ui/Icon'
+import { ErrorState, Loading } from '@/components/ui/States'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollection, type RowOf } from '@/data/useCollection'
+
+type Job = RowOf<'jobs'>
+type Technician = RowOf<'technicians'> & { _id?: string }
+
+const BAR_COLORS = ['var(--salis-blue)', 'var(--salis-blue-bright)', 'var(--salis-orange)', 'var(--salis-navy)', 'var(--text-muted)']
+
+/** Workshop reports — the operational figures the workshop can prove from its
+ *  own records.
+ *
+ *  Job-card counts and the service mix are counted from the real `jobs`
+ *  collection; the technician table is the real `technicians` collection. These
+ *  are tallies, not money, so the client may compute them.
+ *
+ *  What the design also shows — a time-series trend, a period-over-period
+ *  delta, QC pass rate and average bay time — needs an aggregation/time-series
+ *  endpoint that does not exist (`GET /reports/workshop`). Rather than draw a
+ *  fabricated trend line, that panel states the gap. Recorded in
+ *  `workshop-approval-gaps.test.ts`. */
+export function WorkshopReports() {
+  const { t } = usePreferences()
+  const jobs = useCollection('jobs')
+  const technicians = useCollection('technicians')
+
+  const jobRows = (jobs.data ?? []) as readonly Job[]
+  const techRows = (technicians.data ?? []) as readonly Technician[]
+
+  const kpis = useMemo(() => {
+    const active = jobRows.filter((j) => j.st !== 'completed' && j.st !== 'delivered').length
+    const ratings = techRows
+      .map((tech) => Number(tech.rating))
+      .filter((value) => Number.isFinite(value))
+    const avgRating = ratings.length
+      ? (ratings.reduce((sum, value) => sum + value, 0) / ratings.length).toFixed(1)
+      : '—'
+    return [
+      { label: t('Job Cards'), value: String(jobRows.length), icon: 'ClipboardList' },
+      { label: t('Active'), value: String(active), icon: 'Wrench' },
+      { label: t('Technicians'), value: String(techRows.length), icon: 'Users' },
+      { label: t('Avg Rating'), value: avgRating, icon: 'Star' },
+    ]
+  }, [jobRows, techRows, t])
+
+  const breakdown = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const job of jobRows) {
+      const key = job.svc || 'other'
+      counts.set(key, (counts.get(key) ?? 0) + 1)
+    }
+    const entries = [...counts.entries()].sort((a, b) => b[1] - a[1])
+    const max = entries[0]?.[1] ?? 1
+    return entries.map(([label, count], index) => ({
+      label: t(label.replace(/_/g, ' ')),
+      count,
+      pct: Math.round((count / max) * 100),
+      color: BAR_COLORS[index % BAR_COLORS.length],
+    }))
+  }, [jobRows, t])
+
+  const isLoading = jobs.isLoading || technicians.isLoading
+  const isError = jobs.isError || technicians.isError
+
+  if (isError) {
+    return (
+      <ErrorState
+        title={t("Couldn't load this")}
+        description={jobs.error?.message ?? technicians.error?.message}
+        onRetry={() => {
+          void jobs.refetch()
+          void technicians.refetch()
+        }}
+      />
+    )
+  }
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <div className="flex items-center gap-3">
+        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-salis-gradient text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
+          <Icon name="Wrench" size={24} />
+        </span>
+        <div>
+          <h1 className="font-display text-2xl font-black text-heading">{t('Workshop Reports')}</h1>
+          <p className="mt-0.5 text-sm text-muted">{t('Reports & Analytics')}</p>
+        </div>
+      </div>
+
+      {isLoading ? (
+        <Card className="p-6">
+          <Loading label="Loading reports..." />
+        </Card>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {kpis.map((kpi) => (
+              <Card key={kpi.label} className="rounded-2xl p-5">
+                <div className="mb-2.5 flex items-center gap-2">
+                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+                    <Icon name={kpi.icon} size={18} />
+                  </span>
+                  <span className="text-[13px] font-medium text-muted">{kpi.label}</span>
+                </div>
+                <p className="font-display text-2xl font-black text-heading" dir="ltr">
+                  {kpi.value}
+                </p>
+              </Card>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <Card className="rounded-2xl p-6">
+              <h3 className="mb-5 text-[17px] font-bold text-heading">{t('Jobs by service')}</h3>
+              {breakdown.length === 0 ? (
+                <p className="text-[13px] text-muted">{t('No job cards to summarize yet.')}</p>
+              ) : (
+                <div className="flex flex-col gap-3.5">
+                  {breakdown.map((row) => (
+                    <div key={row.label}>
+                      <div className="mb-1 flex justify-between text-[13px]">
+                        <span className="text-body">{row.label}</span>
+                        <span className="font-mono font-semibold text-muted">
+                          {row.count} {t('jobs')}
+                        </span>
+                      </div>
+                      <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+                        <div
+                          className="h-full rounded-full"
+                          style={{ width: `${row.pct}%`, background: row.color }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+
+            <Card className="rounded-2xl p-6">
+              <h3 className="mb-2 text-[17px] font-bold text-heading">{t('Trend & analytics')}</h3>
+              <p className="text-[13px] leading-relaxed text-muted">
+                {t(
+                  'A time-series trend, period-over-period comparison, QC pass rate and average bay time need a workshop analytics endpoint that is not connected yet. Showing a chart here would be inventing the numbers.'
+                )}
+              </p>
+              <div className="mt-4 flex items-center gap-2 rounded-lg bg-inset p-3 text-[12px] text-muted">
+                <Icon name="LineChart" size={15} className="flex-shrink-0 text-salis-blue" />
+                {t('Awaiting GET /reports/workshop')}
+              </div>
+            </Card>
+          </div>
+
+          <Card className="overflow-hidden p-0">
+            <div className="border-0 border-b border-solid border-border p-4">
+              <h3 className="text-base font-bold text-heading">{t('Technician performance')}</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[420px] border-collapse text-sm">
+                <thead>
+                  <tr>
+                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                      {t('Technician')}
+                    </th>
+                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                      {t('Specialty')}
+                    </th>
+                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                      {t('Active Jobs')}
+                    </th>
+                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                      {t('Rating')}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {techRows.map((tech) => (
+                    <tr key={tech._id ?? tech.name}>
+                      <td className="border-0 border-b border-solid border-border px-5 py-3 font-medium text-heading">
+                        {tech.name}
+                      </td>
+                      <td className="border-0 border-b border-solid border-border px-5 py-3 text-body">
+                        {tech.specialty || '—'}
+                      </td>
+                      <td className="border-0 border-b border-solid border-border px-5 py-3 text-end font-mono text-body">
+                        {tech.jobs}
+                      </td>
+                      <td className="border-0 border-b border-solid border-border px-5 py-3 text-end font-mono font-semibold text-heading">
+                        {tech.rating || '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </>
+      )}
+    </div>
+  )
+}
