@@ -101,6 +101,63 @@ missing its portals is not 10/10. A complete app with untested recovery is not
 
 ---
 
+## Progress and remaining estimate — as of tranche 4-A (2026-08-12)
+
+**Where the build is.** 155 of 402 routes render real, connected screens (38%);
+app 697 tests, server 274, both ratchet gates at baseline. Done and verified:
+the registry and gate system; the foundation UI (modal, form, six shells, state
+kit); the backend — schema, RLS, JWT auth, server-side RBAC, audit, concurrency
+and idempotency; and the connected domains — the workshop check-in→delivery
+chain, customer/vehicle, invoicing/payments, inventory with server-enforced
+movements, the accounting surfaces, CRM detail, the technician and customer
+portals, and the public Tier-A site. In flight: the backend fill (4-A, CRM and
+fleet writes).
+
+**What remains**, estimated against the Part 10 day model (one senior
+full-stack engineer):
+
+| Bucket | ~Eng-days |
+|---|---|
+| Backend fill — F-022/27/28/29 + greenfield insurance/fleet/loans/HR schema, seed, RLS | 18 |
+| Wire the CRM/finance/workshop CTAs to the new endpoints | 5 |
+| HR, insurance, fleet, loans screens | 11 |
+| AI hub + Administration (~27 screens) | 14 |
+| Remaining portals — supplier, kiosk, call-centre | 9 |
+| Website Tier B/C + landing sections + SEO + analytics | 12 |
+| 175 feature-map screens (7 tranches) | 28 |
+| Integrations, files, notifications, search, print/PDF | 14 |
+| Security suite, accessibility, performance budgets | 12 |
+| Responsive / tablet / Arabic-RTL certification sweep | 18 |
+| Full test suites — contract, golden paths, visual regression, integrity | 16 |
+| Backup/DR drill, CI/CD, staging, certification report | 12 |
+| **Total remaining** | **≈ 169** |
+
+**Translations of that ≈169 engineer-days:**
+- **Solo senior full-stack engineer:** ~33 working weeks (~7.5 months).
+- **Three-person team** (2 frontend, 1 backend): ~16 weeks (~3.5–4 months) —
+  the Part 10 3× ratio.
+- **This multi-agent build:** ~20–25 more tranches. Product screens parallelise
+  at ~20/tranche across four non-contending domain agents; the **backend is
+  serial** (registry/schema/seed are single shared files, ~3–4 sequential
+  slices); hardening + certification add ~6–8 tranches. At the observed cadence
+  — roughly 1–3 tranches per working session, paced by usage limits and the
+  manual bundle handover — that is on the order of **10–20 more sessions** of
+  the size run so far.
+
+**Not counted in agent time — hard external dependencies.** The integrations
+(ZATCA, payment, SMS, WhatsApp, email, OIDC, maps, OBD) cannot reach *live*
+without credentials the user provisions; until then they ship complete —
+adapter, mocked contract, failure states — at registry status
+`EXTERNAL_DEPENDENCY`, never claimed live (§40). Certification also needs
+provisioned hosting and a real backup/restore drill. These set a floor the code
+cannot move on its own.
+
+The single biggest lever on elapsed time is the backend serial bottleneck: every
+product domain that needs new persistence waits behind one backend agent, which
+is why tranche 4 is backend-first.
+
+---
+
 ## Open items outside the code
 
 - **Rotate the three GitHub PATs** pasted in chat; add secret scanning to CI
