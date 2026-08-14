@@ -519,6 +519,31 @@ describe('recording a movement', () => {
     expect(api.recorded[0]!.input).toMatchObject({ type: 'return', qty: 4 })
   })
 
+  it('shows the server’s own words when it refuses a return, and records nothing', async () => {
+    const { RepositoryError } = await import('@/data/repository')
+    const user = userEvent.setup()
+    const api = fakeApi({
+      fail: new RepositoryError(
+        'forbidden',
+        'Segregation of duties: you performed "Issue stock" on this part.'
+      ),
+    })
+    renderWithProviders(<Inventory api={api} />, { role: 'parts' })
+    await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
+    await user.click(screen.getByText(PARTS[0]!.name))
+    const ledger = await screen.findByRole('dialog')
+    await user.click(within(ledger).getByRole('button', { name: /return to stock/i }))
+    const dialogs = await screen.findAllByRole('dialog')
+    const dialog = dialogs[dialogs.length - 1] as HTMLElement
+
+    await user.type(within(dialog).getByLabelText(/quantity returned/i), '3')
+    await user.type(within(dialog).getByLabelText(/reason/i), 'Wrong part')
+    await user.click(within(dialog).getByRole('button', { name: /return to stock/i }))
+
+    expect(await within(dialog).findByText(/segregation of duties/i)).toBeInTheDocument()
+    expect(screen.queryByText(/movement recorded/i)).not.toBeInTheDocument()
+  })
+
   it('maps the server’s refusal of an over-large adjust_down onto the quantity field', async () => {
     const { RepositoryError } = await import('@/data/repository')
     const user = userEvent.setup()
