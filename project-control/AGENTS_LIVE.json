@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T06:30:00Z",
+  "asOf": "2026-08-12T06:55:00Z",
   "wave": "W2",
   "waveName": "Product",
-  "waveNote": "Tranche 2 complete and verified on a reset database: server hardening closed F-014 through F-018 (the qc gate, the technician who could not see their own jobs, the error envelope, seed coherence, and server-side inventory enforcement); procurement, portals and the public website all landed. App 476→594, server 227→274, both gates below baseline (245→230 placeholder routes). Five new gaps routed to owners as F-022 through F-026 for tranche 3. Remaining W2 product agents (13 Insurance, 14 HR) plus the CRM/accounting/AI continuations move to tranche 3.",
+  "waveNote": "Tranche 3 running: finishing the four domains whose backends already exist — workshop, CRM, parts, accounting — so every screen connects to real seeded data rather than a gap. Insurance, fleet, loans and HR are greenfield (no mock tables, no server collections) and wait for a backend-first tranche 4, alongside the procurement collections (F-022), the public lead endpoint (F-025) and the Arabic keys (F-026).",
   "agents": [
     {
       "id": "03",
@@ -98,23 +98,23 @@
       "id": "08",
       "name": "Workshop / Mini ERP",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T01:45:00Z",
-      "scope": "The six-stage chain persisted through POST /jobs/:id/transition, the New Job Card CTA, JobCardDetail, and F-004 — feeding sodViolation the real audit history so QC blocks the person who did the repair rather than every technician",
+      "state": "running",
+      "startedAt": "2026-08-12T06:55:00Z",
+      "scope": "Finishing workshop: ApprovalInbox, OBDDiagnostics, DiagnosticReport, TechnicianKB, TechnicianSchedule, WorkshopReports, CustomerApproval, AppointmentCalendar, EstimateDetail — against the real jobs/appointments/obd/dtc/kb/diag/approval collections",
       "owns": [
         "app/src/screens/workshop/**",
         "app/src/screens/domains/workshop.ts"
       ],
       "blocks": [],
-      "notes": "JobCardDetail, the New Job Card CTA and the persisted six-stage chain landed (7b183bb, 85a9730, 706507e). Re-verification confirmed the SOD refusal over HTTP and, from the same reading, found the P0 bypass now closed as F-012 and the qc-role and assigned_tech_id defects logged as F-014/F-015. Stage persistence is correct and tested; live until R1, which now landed."
+      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
     },
     {
       "id": "09",
       "name": "Customers / CRM",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T01:45:00Z",
-      "scope": "Customers and Vehicles CRUD through the modal and form systems, CustomerDetail and VehicleDetail, and the shared DetailPage frame that nine detail screens will consume",
+      "state": "running",
+      "startedAt": "2026-08-12T06:55:00Z",
+      "scope": "Finishing CRM: LeadDetail, CRMCalendar, CustomerFeedback, FleetContract — against the real leads/opportunities/campaigns/segments/tasks/fleets collections",
       "owns": [
         "app/src/screens/registry/**",
         "app/src/screens/crm/**",
@@ -122,37 +122,37 @@
         "app/src/components/shell/DetailPage.tsx (W2 grant)"
       ],
       "blocks": [],
-      "notes": "DetailPage frame, CustomerDetail, VehicleDetail and Customers/Vehicles CRUD landed (709b3f5, 4ea997a, f1f1800, bb9fd99, 57a332b). Its live probe of the API found the customer-PII leak, now closed as F-013. DetailPage contract documented for the four agents that will consume it."
+      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
     },
     {
       "id": "10",
       "name": "Parts / Inventory",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T01:45:00Z",
-      "scope": "The six-tabs-one-table defect, stock movements through POST /inventory/:id/movement, and the §A11 On Hand invariant proven rather than assumed",
+      "state": "running",
+      "startedAt": "2026-08-12T06:55:00Z",
+      "scope": "F-023: wire return / adjust_down / reservation into the Inventory movement UI now that the server enforces them, plus the InventoryReports screen",
       "owns": [
         "app/src/screens/feature/Inventory.tsx",
         "app/src/screens/network/PartsNetwork.tsx",
         "app/src/screens/domains/parts.ts"
       ],
       "blocks": [],
-      "notes": "The six-tabs-one-table defect, stock movements and the §A11 On Hand invariant landed (6b448c7, 4b5b7f5, 2f1cc14, 39d46e2, 31082c4). Refused to fake four prohibitions the server does not enforce, logging them as F-017 with a GAP test each — the right outcome."
+      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
     },
     {
       "id": "12",
       "name": "Accounting / Finance",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T01:45:00Z",
-      "scope": "Invoice create/issue/edit and payment recording against the real endpoints with server-computed totals, the §A10 financial-integrity suite, and the F-007 money edge cases pinned as tests",
+      "state": "running",
+      "startedAt": "2026-08-12T06:55:00Z",
+      "scope": "Finishing accounting: BankReconciliation, TaxManagement, InvoicePreview, and the report set (Reports, ReportsAnalytics, SalesReports, CustomReports) against the real ledger/invoice/payment collections",
       "owns": [
         "app/src/screens/accounting/**",
         "app/src/screens/finance/**",
         "app/src/screens/domains/accounting.ts"
       ],
       "blocks": [],
-      "notes": "Invoice create/issue and payment recording against real endpoints, with server-computed totals, plus the §A10 financial-integrity suite (e1563ea, 1b6c48e, 881fe57). Prepared and verified the F-007 patch, now applied. Kept F-008 visible and pinned rather than papering over it."
+      "notes": "Tranche 3. Barrels + wired token seam + DetailPage frame all in place from earlier tranches."
     },
     {
       "id": "11",
