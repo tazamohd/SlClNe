@@ -10,5 +10,29 @@
  *  otherwise — `shell: null` for a screen with no chrome, or a shell component
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
+import { InvoicePreview } from '../finance/InvoicePreview'
+import { TaxManagement } from '../finance/TaxManagement'
+import { BankReconciliation } from '../finance/BankReconciliation'
+import {
+  CustomReports,
+  Reports,
+  ReportsAnalytics,
+  SalesReports,
+} from '../accounting/ReportSuite'
+import { InsuranceReports, LoanReports } from '../accounting/GapReports'
 
-export const SCREENS: DomainScreens = {}
+/** Screens this tranche adds. Every name here is NEW — the ledger, invoice and
+ *  report screens the legacy app map already claims (ChartOfAccounts,
+ *  FinancialReports, …) are declared there, and re-declaring one would throw at
+ *  composition. These are the designed screens that were still awaiting a build. */
+export const SCREENS: DomainScreens = {
+  InvoicePreview,
+  TaxManagement,
+  BankReconciliation,
+  Reports,
+  ReportsAnalytics,
+  SalesReports,
+  CustomReports,
+  InsuranceReports,
+  LoanReports,
+}
