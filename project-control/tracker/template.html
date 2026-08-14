@@ -1,902 +1,435 @@
-<title>SAHEL — SALIS AUTO Command Deck</title>
+<title>SAHEL Command Deck</title>
+<!--
+  The SAHEL Command Deck, v5 — the radial constellation design, wired to truth.
+
+  Three datasets are injected by build-deck.mjs (tokens live only in the
+  script below — naming them here verbatim would eat the replacement):
+    tracker-data.json   — per-domain capability status, generated from the registry
+    plan-structure.json — waves, golden paths, release categories, blockers
+    AGENTS_LIVE.json    — which agents are running/done/queued, stamped asOf
+
+  Two deliberate departures from the uploaded design, same as every revision:
+
+  1. Statuses are READ, not clicked. A capability shows done because the
+     repository renders it, not because somebody tapped it. Clicking only
+     layers in-progress / blocked on top of repo truth, and the next rebuild
+     clears anything the repository has since settled.
+  2. The original's voice-assistant theatre (random LISTENING/THINKING cycle,
+     random agent pulses) is replaced by the real thing: the core shows
+     ORCHESTRATING when agents are actually running per AGENTS_LIVE, each
+     running agent pulses, done agents sit solid, queued agents stay dim.
+     A deck that pretends activity is the same failure as a screen that
+     renders a total it did not compute.
+
+  Palette: the upload used green, purple and red, all three forbidden by
+  handoff/README.md §7. Done/success is blue, warnings and blocked are orange,
+  command amber, cross-cutting slate. This file lives outside app/ but must
+  never seed forbidden hues into it — not even in a comment, which is why the
+  original hex values are not named here.
+
+  Single committed dark look — a control-room screen — so every surface and
+  colour is painted explicitly; nothing borrows the host page's theme.
+-->
+<div id="deck"></div>
 <style>
-  /* A control room, deliberately single-theme: this reads as an instrument
-     panel, and a light variant would fight that. Every colour is painted
-     explicitly so the page holds on either host background. */
-  :root{
-    --void:#060810; --panel:#080b12; --card:#0a0d14; --sunk:#0c0f18; --line:#151a24;
-    --line-2:#1a1e28; --ink:#f5f5f7; --ink-2:#8a93a6; --ink-3:#4a5163; --ink-4:#282c36;
-    --cmd:#E8A838;   /* command team + the SAHEL core */
-    --fnd:#00D4FF;   /* foundation */
-    --prd:#4ECB71;   /* product */
-    --xct:#A98EE0;   /* cross-cutting */
-    --stop:#FF6B6B;
-    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #060810; }
+  #deck {
+    width: 100%; height: 100vh; background: #060810; color: #f5f5f7;
+    font-family: -apple-system, "Segoe UI", sans-serif;
+    display: flex; overflow: hidden;
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--void);color:var(--ink);font-family:var(--sans);overflow:hidden}
-  .deck{display:flex;width:100vw;height:100vh}
-  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-  :focus-visible{outline:1px solid var(--cmd);outline-offset:2px}
-
-  /* ── left rail ───────────────────────────────────────────── */
-  aside{width:340px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--line);
-        display:flex;flex-direction:column}
-  .rail-head{padding:10px 14px;border-bottom:1px solid var(--line);display:flex;
-             justify-content:space-between;align-items:center;gap:10px}
-  .clock{font-family:var(--mono);font-size:19px;font-weight:700;letter-spacing:.02em}
-  .rail-head .sub{font-size:8.5px;color:var(--ink-3);letter-spacing:.14em;margin-top:1px}
-  .pct{font-family:var(--mono);font-size:17px;font-weight:700;text-align:end}
-  .pct .lbl{font-size:7.5px;color:var(--ink-4);letter-spacing:.14em;font-weight:400}
-
-  .kpis{padding:6px 10px;border-bottom:1px solid var(--line);display:grid;
-        grid-template-columns:repeat(5,1fr);gap:3px}
-  .kpi{background:var(--sunk);border-radius:4px;padding:4px 2px;text-align:center}
-  .kpi .l{font-size:6.5px;color:var(--ink-4);letter-spacing:.1em}
-  .kpi .v{font-family:var(--mono);font-size:13px;font-weight:700;line-height:1.3}
-
-  nav{display:flex;border-bottom:1px solid var(--line)}
-  nav button{flex:1;padding:8px 0;border:none;background:none;cursor:pointer;
-    border-bottom:2px solid transparent;margin-bottom:-1px;
-    color:var(--ink-3);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-  nav button:hover{color:var(--ink-2)}
-  nav button[aria-selected="true"]{color:var(--cmd);border-bottom-color:var(--cmd)}
-
-  .scroll{flex:1;overflow-y:auto;padding:7px 9px}
-  .hint{font-size:9px;color:var(--ink-3);margin:0 0 7px;line-height:1.5}
-  .hint b{color:var(--ink-2);font-weight:600}
-
-  /* domain rows */
-  .dom{margin-bottom:4px}
-  .dom-head{padding:6px 8px;border-radius:5px;background:var(--card);border:1px solid var(--line);
-            cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;
-            width:100%;text-align:start;font:inherit;color:inherit}
-  .dom-head:hover{border-color:var(--line-2)}
-  .dom-head.open{border-color:color-mix(in srgb,var(--tint) 30%,transparent)}
-  .stripe{width:3px;height:22px;border-radius:2px;background:var(--tint);flex-shrink:0}
-  .dom-name{font-size:11px;font-weight:600}
-  .dom-name .sec{color:var(--ink-4);font-size:8px;margin-inline-start:4px}
-  .dom-sub{font-size:8px;color:var(--ink-3);margin-top:1px}
-  .ok{color:var(--prd)} .warn{color:var(--cmd)} .bad{color:var(--stop)}
-  .meter{width:42px;height:3px;background:var(--line);border-radius:2px;overflow:hidden;flex-shrink:0}
-  .meter i{display:block;height:100%;background:var(--tint);border-radius:2px}
-  .meter i.full{background:var(--prd)}
-  .dom-pct{font-family:var(--mono);font-size:10px;font-weight:700;min-width:26px;text-align:end;color:var(--tint)}
-  .items{padding:4px 4px 6px 14px;display:flex;flex-wrap:wrap;gap:3px}
-  .chip{padding:3px 6px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);
-        cursor:pointer;font-size:9px;color:var(--ink-2);display:flex;gap:4px;align-items:center;
-        font-family:inherit}
-  .chip:hover{border-color:var(--ink-3)}
-  .chip .g{font-weight:700;font-size:9px;color:var(--ink-4)}
-  .chip[data-s="built"]{color:var(--prd);border-color:color-mix(in srgb,var(--prd) 22%,transparent)}
-  .chip[data-s="built"] .g{color:var(--prd)}
-  .chip[data-s="kit"]{color:var(--cmd);border-color:color-mix(in srgb,var(--cmd) 22%,transparent)}
-  .chip[data-s="kit"] .g{color:var(--cmd)}
-  .chip[data-s="progress"]{color:var(--fnd);border-color:color-mix(in srgb,var(--fnd) 30%,transparent)}
-  .chip[data-s="progress"] .g{color:var(--fnd)}
-  .chip[data-s="blocked"]{color:var(--stop);border-color:color-mix(in srgb,var(--stop) 30%,transparent)}
-  .chip[data-s="blocked"] .g{color:var(--stop)}
-
-  /* generic list rows */
-  .row{padding:5px 8px;margin-bottom:2px;border-radius:4px;background:var(--card);
-       border:1px solid var(--line);cursor:pointer;display:flex;align-items:center;gap:7px;
-       font-size:10px;width:100%;text-align:start;font-family:inherit;color:var(--ink-2)}
-  .row:hover{border-color:var(--line-2)}
-  .row .n{font-family:var(--mono);font-size:9px;color:var(--ink-4);width:16px;flex-shrink:0}
-  .row .mk{font-weight:700;font-size:11px;flex-shrink:0}
-  .row[data-on="1"]{border-color:color-mix(in srgb,var(--prd) 20%,transparent)}
-  .row[data-on="1"] .t{color:var(--ink-3);text-decoration:line-through}
-  .row[data-on="1"] .mk{color:var(--prd)}
-  .row[data-on="0"] .mk{color:var(--stop)}
-  .row .t{flex:1}
-
-  /* score */
-  .score{padding:4px 8px;margin-bottom:2px;border-radius:4px;background:var(--card);
-         border:1px solid var(--line);display:flex;align-items:center;gap:7px}
-  .score .cat{font-size:9px;color:var(--ink-2);width:84px;flex-shrink:0}
-  .pips{flex:1;display:flex;gap:2px}
-  .pips button{flex:1;height:16px;border-radius:3px;border:1px solid var(--line-2);
-    background:var(--sunk);cursor:pointer;font-family:var(--mono);font-size:7px;color:var(--ink-4);padding:0}
-  .pips button[data-f="1"]{background:color-mix(in srgb,var(--tone) 20%,transparent);
-                           border-color:var(--tone);color:var(--ink)}
-  .score .v{font-family:var(--mono);font-size:11px;font-weight:700;width:18px;text-align:end}
-
-  /* notes */
-  .note-form{display:flex;gap:4px;margin-bottom:8px}
-  .note-form input{flex:1;padding:7px 8px;border-radius:5px;border:1px solid var(--line-2);
-    background:var(--card);color:var(--ink);font:inherit;font-size:11px;outline:none}
-  .note-form input:focus{border-color:var(--cmd)}
-  .note-form button{padding:7px 12px;border-radius:5px;border:none;background:var(--cmd);
-    color:var(--void);font-weight:700;cursor:pointer;font-size:11px}
-  .note{padding:5px 8px;margin-bottom:3px;border-radius:4px;background:var(--card);
-        border:1px solid var(--line);display:flex;justify-content:space-between;gap:6px}
-  .note .tx{font-size:10.5px;color:var(--ink-2);line-height:1.45}
-  .note time{font-family:var(--mono);font-size:7px;color:var(--ink-4);display:block;margin-top:2px}
-  .note button{background:none;border:none;color:var(--ink-4);cursor:pointer;font-size:13px;padding:0 2px}
-  .note button:hover{color:var(--stop)}
-  .empty{text-align:center;color:var(--ink-4);padding:22px;font-size:10px}
-
-  .rail-foot{border-top:1px solid var(--line);padding:6px 10px;display:flex;gap:5px}
-  .btn{flex:1;padding:5px 0;border-radius:4px;border:1px solid var(--line-2);background:var(--card);
-       color:var(--ink-3);font-family:var(--mono);font-size:8px;letter-spacing:.08em;
-       text-transform:uppercase;cursor:pointer;text-align:center}
-  .btn:hover{color:var(--cmd);border-color:var(--cmd)}
-
-  /* ── field ───────────────────────────────────────────────── */
-  main{flex:1;position:relative;min-width:0}
-  .field-top{position:absolute;inset-inline:0;top:0;z-index:10;padding:9px 16px;
-             display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
-  .wave-badge{border-radius:20px;padding:4px 13px;display:flex;align-items:center;gap:7px;
-              background:color-mix(in srgb,var(--tone) 12%,transparent);
-              border:1px solid color-mix(in srgb,var(--tone) 30%,transparent)}
-  .wave-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--tone)}
-  .wave-badge span{font-size:10px;color:var(--tone);letter-spacing:.16em;font-weight:600;
-                   text-transform:uppercase;font-family:var(--mono)}
-  .field-meta{font-family:var(--mono);font-size:8px;color:var(--ink-4);text-align:end;line-height:1.6}
-  svg.constellation{position:absolute;inset:0;width:100%;height:100%}
-  .node{cursor:pointer}
-  .node:hover circle.hit{stroke-width:2;opacity:1}
-
-  .bars{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-        display:flex;flex-direction:column;align-items:center;gap:5px;pointer-events:none}
-  .bar-strip{display:flex;align-items:flex-end;gap:2px;height:26px}
-  .bar{width:5px;border-radius:1px;min-height:2px}
-  .bar-cap{font-family:var(--mono);font-size:8px;color:var(--ink-4);letter-spacing:.2em}
-
-  .tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line-2);
-       border-radius:6px;padding:7px 10px;font-size:10px;color:var(--ink-2);z-index:20;
-       max-width:230px;line-height:1.5;opacity:0;transition:opacity .12s}
-  .tip.on{opacity:1}
-  .tip b{color:var(--ink);display:block;font-size:11px;margin-bottom:2px}
-  .tip .m{font-family:var(--mono);font-size:9px;color:var(--ink-3)}
-
-  /* agents panel */
-  .ag{padding:7px 9px;margin-bottom:4px;border-radius:5px;background:var(--card);
-      border:1px solid var(--line);border-inline-start:3px solid var(--tone)}
-  .ag-top{display:flex;align-items:center;gap:7px}
-  .ag-id{font-family:var(--mono);font-size:9px;color:var(--void);background:var(--tone);
-         border-radius:3px;padding:1px 5px;font-weight:700}
-  .ag-name{font-size:11px;font-weight:600;flex:1}
-  .ag-state{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
-            padding:2px 7px;border-radius:999px;border:1px solid currentColor}
-  .ag-state.running{color:var(--fnd)} .ag-state.queued{color:var(--ink-3)}
-  .ag-state.done{color:var(--prd)} .ag-state.blocked{color:var(--stop)}
-  .ag-scope{font-size:9.5px;color:var(--ink-2);line-height:1.5;margin-top:5px}
-  .ag-owns{font-family:var(--mono);font-size:8px;color:var(--ink-3);margin-top:4px;line-height:1.6}
-  .ag-blocks{font-size:9px;color:var(--cmd);margin-top:4px}
-  .ag-note{font-size:9px;color:var(--ink-3);margin-top:4px;line-height:1.5;font-style:italic}
-  .asof{font-family:var(--mono);font-size:8px;color:var(--ink-4);letter-spacing:.06em;
-        margin-bottom:7px;display:block}
-
-  /* run panel */
-  .cmd{margin-bottom:7px;border-radius:5px;background:var(--card);border:1px solid var(--line);overflow:hidden}
-  .cmd-h{padding:6px 9px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line)}
-  .cmd-h .t{font-size:10px;font-weight:600;flex:1}
-  .cmd-h .w{font-family:var(--mono);font-size:8px;color:var(--ink-4)}
-  .cmd-b{padding:7px 9px;font-family:var(--mono);font-size:9.5px;color:var(--fnd);
-         white-space:pre-wrap;word-break:break-all;line-height:1.6;background:var(--sunk)}
-  .cmd-f{padding:5px 9px;display:flex;gap:5px;align-items:center}
-  .cmd-f .why{flex:1;font-size:8.5px;color:var(--ink-3);line-height:1.5}
-  .copy{border:1px solid var(--line-2);background:var(--card);color:var(--ink-3);
-        font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;
-        border-radius:4px;padding:4px 9px;cursor:pointer;flex-shrink:0}
-  .copy:hover{color:var(--cmd);border-color:var(--cmd)}
-  .copy.done{color:var(--prd);border-color:var(--prd)}
-
-  ::-webkit-scrollbar{width:3px}
-  ::-webkit-scrollbar-track{background:transparent}
-  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
-
-  @media (prefers-reduced-motion:reduce){
-    animate,animateTransform{display:none}
-    *{transition:none!important}
+  .rail {
+    width: 340px; flex-shrink: 0; background: #080b12;
+    border-inline-end: 1px solid #151a24; display: flex; flex-direction: column;
   }
-  @media (max-width:900px){
-    .deck{flex-direction:column;overflow:auto;height:auto}
-    aside{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line)}
-    .scroll{max-height:52vh}
-    main{height:70vh;min-height:420px}
-    body{overflow:auto}
+  .stage { flex: 1; position: relative; min-width: 0; }
+  .hdr { padding: 10px 14px; border-bottom: 1px solid #151a24; display: flex; justify-content: space-between; align-items: center; }
+  .clock { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sub { font-size: 9px; color: #444; letter-spacing: 1px; }
+  .pct { font-size: 16px; font-weight: 700; color: #4A9EFF; text-align: end; }
+  .stats { padding: 5px 14px; border-bottom: 1px solid #151a24; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+  .stat { background: #0c0f18; border-radius: 4px; padding: 3px 0; text-align: center; }
+  .stat .l { font-size: 6.5px; color: #3a3e4a; letter-spacing: 1px; }
+  .stat .v { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tabs { display: flex; border-bottom: 1px solid #151a24; }
+  .tabs button {
+    flex: 1; padding: 8px 0; border: none; background: transparent; cursor: pointer;
+    color: #444; font-size: 9px; font-weight: 600; text-transform: capitalize;
+    border-bottom: 2px solid transparent; font-family: inherit;
+  }
+  .tabs button:focus-visible { outline: 1px solid #E8A838; outline-offset: -1px; }
+  .tabs button.on { color: #E8A838; border-bottom-color: #E8A838; }
+  .body { flex: 1; overflow-y: auto; padding: 6px 8px; }
+  .dom { margin-bottom: 4px; }
+  .domhead {
+    padding: 6px 8px; border-radius: 5px; background: #0a0d14; border: 1px solid #151a24;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 6px;
+  }
+  .domhead .bar { width: 3px; height: 20px; border-radius: 2px; flex-shrink: 0; }
+  .domhead .nm { font-size: 11px; font-weight: 600; }
+  .domhead .agid { color: #333; font-size: 8px; }
+  .domhead .counts { font-size: 8px; color: #444; }
+  .meter { width: 40px; height: 3px; background: #151a24; border-radius: 2px; overflow: hidden; }
+  .meter div { height: 100%; border-radius: 2px; }
+  .dompct { font-size: 10px; font-weight: 700; min-width: 26px; text-align: end; font-variant-numeric: tabular-nums; }
+  .items { padding: 4px 4px 4px 14px; display: flex; flex-wrap: wrap; gap: 3px; }
+  .chip {
+    padding: 3px 6px; border-radius: 3px; background: #0c0f18; font-size: 9px;
+    display: inline-flex; gap: 3px; align-items: center; border: 1px solid #282c36;
+    color: #777; cursor: default;
+  }
+  .chip.togglable { cursor: pointer; }
+  .chip .m { font-weight: 700; }
+  .row {
+    padding: 5px 8px; margin-bottom: 2px; border-radius: 4px; background: #0a0d14;
+    border: 1px solid #151a24; display: flex; align-items: center; gap: 6px; font-size: 10px; cursor: pointer;
+  }
+  .hint { font-size: 9px; color: #444; margin-bottom: 6px; line-height: 1.5; }
+  .scorerow { padding: 3px 8px; margin-bottom: 2px; border-radius: 4px; background: #0a0d14; border: 1px solid #151a24; display: flex; align-items: center; gap: 6px; }
+  .scorerow .cat { font-size: 9px; color: #ccc; min-width: 82px; }
+  .cells { flex: 1; display: flex; gap: 2px; }
+  .cell { width: 16px; height: 16px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 7px; cursor: pointer; background: #0e1119; border: 1px solid #1a1e28; color: #333; }
+  .wavecard { margin-bottom: 4px; }
+  .wavehead { padding: 7px 10px; border-radius: 5px; background: #0a0d14; border: 1px solid #151a24; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .agchips { padding: 4px 14px; display: flex; flex-wrap: wrap; gap: 3px; }
+  .notesin { display: flex; gap: 4px; margin-bottom: 8px; }
+  .notesin input { flex: 1; padding: 7px 8px; border-radius: 5px; border: 1px solid #1a1e28; background: #0a0d14; color: #f5f5f7; font-size: 11px; outline: none; font-family: inherit; }
+  .notesin input:focus-visible { border-color: #E8A838; }
+  .notesin button { padding: 7px 12px; border-radius: 5px; border: none; background: #E8A838; color: #060810; font-weight: 700; cursor: pointer; font-size: 10px; }
+  .note { padding: 5px 8px; margin-bottom: 3px; border-radius: 4px; background: #0a0d14; border: 1px solid #151a24; display: flex; justify-content: space-between; gap: 6px; }
+  .note .ts { font-size: 7px; color: #282c36; font-family: ui-monospace, monospace; margin-top: 2px; }
+  .note button { background: none; border: none; color: #444; cursor: pointer; font-size: 13px; }
+  .livecard { padding: 6px 8px; margin-bottom: 4px; border-radius: 5px; background: #0a0d14; border: 1px solid #151a24; }
+  .livecard .top { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+  .livecard .nm { font-size: 11px; font-weight: 600; }
+  .pill { font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 8px; letter-spacing: 1px; }
+  .livecard .scope { font-size: 9px; color: #667; margin-top: 3px; line-height: 1.5; }
+  .cmd { display: flex; align-items: center; gap: 5px; padding: 5px 8px; margin-bottom: 3px; border-radius: 4px; background: #0c0f18; border: 1px solid #151a24; }
+  .cmd code { flex: 1; font-size: 9px; color: #8fa3b8; font-family: ui-monospace, monospace; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+  .cmd button { border: 1px solid #E8A83855; background: #E8A83815; color: #E8A838; font-size: 8px; font-weight: 700; border-radius: 3px; padding: 3px 8px; cursor: pointer; flex-shrink: 0; }
+  .stagehdr { position: absolute; inset-block-start: 0; inset-inline: 0; z-index: 10; padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+  .status { border-radius: 20px; padding: 4px 14px; display: flex; align-items: center; gap: 6px; }
+  .status .dot { width: 5px; height: 5px; border-radius: 50%; animation: bl 1.2s infinite; }
+  .status .txt { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+  .stagefoot { position: absolute; inset-block-end: 14px; inset-inline-start: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .wavebar { display: flex; align-items: flex-end; gap: 2px; height: 24px; }
+  .wavebar i { display: block; width: 2px; border-radius: 2px; transition: height 0.12s; }
+  .footlbl { font-size: 9px; letter-spacing: 4px; font-weight: 600; font-family: ui-monospace, monospace; }
+  .agdetail {
+    position: absolute; inset-block-end: 14px; inset-inline-start: 14px; max-width: 300px; z-index: 11;
+    background: #0a0d14ee; border: 1px solid #1a1e28; border-radius: 8px; padding: 10px 12px; font-size: 10px;
+  }
+  .agdetail .nm { font-weight: 700; font-size: 12px; }
+  .agdetail .txt { color: #778; margin-top: 4px; line-height: 1.55; }
+  .agdetail button { position: absolute; inset-block-start: 4px; inset-inline-end: 8px; background: none; border: none; color: #445; cursor: pointer; font-size: 13px; }
+  svg text { user-select: none; }
+  .node { cursor: pointer; }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #151a24; border-radius: 3px; }
+  @keyframes bl { 0%,100% { opacity: 1; } 50% { opacity: .15; } }
+  @media (max-width: 900px) {
+    #deck { flex-direction: column; overflow-y: auto; }
+    .rail { width: 100%; border-inline-end: none; border-bottom: 1px solid #151a24; max-height: 55vh; }
+    .stage { min-height: 480px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .status .dot { animation: none; }
+    svg animate { display: none; }
   }
 </style>
-
-<div class="deck">
-  <aside>
-    <div class="rail-head">
-      <div>
-        <div class="clock" id="clock">--:--:--</div>
-        <div class="sub">SALIS AUTO · MASTER REBUILD</div>
-      </div>
-      <div class="pct" id="totalPct">—<div class="lbl">RENDERING</div></div>
-    </div>
-
-    <div class="kpis" id="kpis"></div>
-
-    <nav role="tablist" id="tabs"></nav>
-
-    <div class="scroll" id="panel"></div>
-
-    <div class="rail-foot">
-      <label class="btn" for="loadReg">Load data</label>
-      <input id="loadReg" type="file" accept="application/json,.json" hidden>
-      <button class="btn" id="exportBtn" type="button">Export</button>
-      <label class="btn" for="loadState">Import</label>
-      <input id="loadState" type="file" accept="application/json,.json" hidden>
-    </div>
-  </aside>
-
-  <main>
-    <div class="field-top">
-      <div class="wave-badge" id="waveBadge"><span class="dot"></span><span id="waveText">—</span></div>
-      <div class="field-meta" id="fieldMeta"></div>
-    </div>
-    <svg class="constellation" id="sky" viewBox="0 0 880 620" preserveAspectRatio="xMidYMid meet"
-         role="img" aria-label="Agent constellation: 24 agents around the registry core"></svg>
-    <div class="bars">
-      <div class="bar-strip" id="barStrip"></div>
-      <div class="bar-cap" id="barCap">DOMAIN COMPLETION</div>
-    </div>
-    <div class="tip" id="tip"></div>
-  </main>
-</div>
-
 <script>
-const DATA = __DATA__;
-const PLAN = __PLAN__;
-const LIVE = __LIVE__;
-</script>
-<script>
-(function(){
-  "use strict";
+'use strict'
+const DATA = __DATA__
+const PLAN = __PLAN__
+const LIVE = __LIVE__
 
-  /* ── agent roster ────────────────────────────────────────────────────────
-     Positions are the deck's designed layout: angle and radius around the core,
-     grouped by team. `domains` links each agent to the registry, so a node's
-     ring is real progress rather than decoration. */
-  var AGENTS = [
-    {id:"01",n:"Architect", t:"cmd",a:260,r:175,domains:[]},
-    {id:"02",n:"Auditor",   t:"cmd",a:270,r:190,domains:[]},
-    {id:"03",n:"Release",   t:"cmd",a:280,r:175,domains:[]},
-    {id:"04",n:"UI",        t:"fnd",a:310,r:205,domains:["ui"]},
-    {id:"05",n:"Backend",   t:"fnd",a:330,r:210,domains:[]},
-    {id:"06",n:"Auth",      t:"fnd",a:350,r:205,domains:["auth"]},
-    {id:"07",n:"Tests",     t:"fnd",a:10, r:210,domains:[]},
-    {id:"08",n:"Workshop",  t:"prd",a:30, r:220,domains:["workshop"]},
-    {id:"09",n:"CRM",       t:"prd",a:50, r:215,domains:["crm"]},
-    {id:"10",n:"Parts",     t:"prd",a:70, r:220,domains:["parts"]},
-    {id:"11",n:"Procure",   t:"prd",a:90, r:215,domains:["procurement"]},
-    {id:"12",n:"Finance",   t:"prd",a:110,r:220,domains:["accounting"]},
-    {id:"13",n:"Insurance", t:"prd",a:130,r:215,domains:[]},
-    {id:"14",n:"HR",        t:"prd",a:145,r:220,domains:["hr"]},
-    {id:"15",n:"AI",        t:"prd",a:160,r:215,domains:["ai"]},
-    {id:"16",n:"Portals",   t:"prd",a:175,r:220,domains:["portals","customerapp"]},
-    {id:"17",n:"Website",   t:"prd",a:190,r:215,domains:["website"]},
-    {id:"18",n:"Mobile",    t:"xct",a:208,r:205,domains:[]},
-    {id:"19",n:"RTL",       t:"xct",a:220,r:210,domains:[]},
-    {id:"20",n:"A11y",      t:"xct",a:232,r:205,domains:[]},
-    {id:"21",n:"SecAudit",  t:"xct",a:244,r:210,domains:[]},
-    {id:"22",n:"Perf",      t:"xct",a:295,r:190,domains:[]},
-    {id:"23",n:"QA",        t:"xct",a:240,r:185,domains:[]},
-    {id:"24",n:"Docs",      t:"xct",a:252,r:195,domains:[]}
-  ];
-  var TEAM = { cmd:"#E8A838", fnd:"#00D4FF", prd:"#4ECB71", xct:"#A98EE0" };
-  var TEAM_NAME = { cmd:"Command", fnd:"Foundation", prd:"Product", xct:"Cross-cutting" };
-  var CX = 440, CY = 310;
+/* Presentation geometry from the uploaded design: 24 agents on the ring.
+ * State comes from AGENTS_LIVE by id; an agent absent there is queued. */
+const RING = [
+  { id: '01', n: 'Architect', t: 'cmd', a: 260, r: 175 }, { id: '02', n: 'Auditor', t: 'cmd', a: 270, r: 190 },
+  { id: '03', n: 'Release', t: 'cmd', a: 280, r: 175 },   { id: '04', n: 'UI', t: 'fnd', a: 310, r: 205 },
+  { id: '05', n: 'Backend', t: 'fnd', a: 330, r: 210 },   { id: '06', n: 'Auth', t: 'fnd', a: 350, r: 205 },
+  { id: '07', n: 'Tests', t: 'fnd', a: 10, r: 210 },      { id: '08', n: 'Workshop', t: 'prd', a: 30, r: 220 },
+  { id: '09', n: 'CRM', t: 'prd', a: 50, r: 215 },        { id: '10', n: 'Parts', t: 'prd', a: 70, r: 220 },
+  { id: '11', n: 'Procure', t: 'prd', a: 90, r: 215 },    { id: '12', n: 'Finance', t: 'prd', a: 110, r: 220 },
+  { id: '13', n: 'Insurance', t: 'prd', a: 130, r: 215 }, { id: '14', n: 'HR', t: 'prd', a: 145, r: 220 },
+  { id: '15', n: 'AI', t: 'prd', a: 160, r: 215 },        { id: '16', n: 'Portals', t: 'prd', a: 175, r: 220 },
+  { id: '17', n: 'Website', t: 'prd', a: 190, r: 215 },   { id: '18', n: 'Mobile', t: 'xc', a: 208, r: 205 },
+  { id: '19', n: 'RTL', t: 'xc', a: 220, r: 210 },        { id: '20', n: 'A11y', t: 'xc', a: 232, r: 205 },
+  { id: '21', n: 'SecAudit', t: 'xc', a: 244, r: 210 },   { id: '22', n: 'Perf', t: 'xc', a: 295, r: 190 },
+  { id: '23', n: 'QA', t: 'xc', a: 240, r: 185 },         { id: '24', n: 'Docs', t: 'xc', a: 252, r: 195 },
+]
+/* Brand-corrected: blue is done/success, amber pending/command, orange blocked/warning, slate cross-cutting. */
+const TEAM = { cmd: '#E8A838', fnd: '#5AB0FF', prd: '#4A9EFF', xc: '#94A3B8' }
+const C = { done: '#4A9EFF', prog: '#E8A838', blocked: '#FF8C42', dim: '#282c36', ink: '#f5f5f7', mut: '#444' }
+const DOMCOL = { workshop: '#4A9EFF', crm: '#94A3B8', parts: '#5AB0FF', procurement: '#5AB0FF',
+  accounting: '#6BA4D9', insurance: '#6BA4D9', hr: '#FF8C6B', ai: '#E8A838', admin: '#FF8C6B',
+  portals: '#94A3B8', auth: '#FF8C6B', website: '#E8A838', featuremap: '#6BA4D9', legacy: '#6BA4D9' }
+const CMDS = [
+  { l: 'Rebuild registry + both gates', c: 'cd app && npm run gates' },
+  { l: 'Full app verification', c: 'cd app && npm run typecheck && npm run test && npm run build' },
+  { l: 'Server suite (real PostgreSQL)', c: 'cd server && npm run test' },
+  { l: 'Refresh this deck', c: 'npm --prefix app run registry && node project-control/tracker/build-deck.mjs' },
+  { l: 'Publish the branch', c: 'git push -u origin plan/control-system-tracker' },
+]
 
-  /* ── state ─────────────────────────────────────────────────────────────
-     Only the overlay lives here. Capability status comes from the registry;
-     clicking a chip layers "in progress" or "blocked" on top of it and the
-     next repo read clears it. */
-  var LS = "sahel-deck-v1";
-  var state = { items:{}, golden:{}, waves:{}, score:{}, notes:[] };
-  try { var raw = localStorage.getItem(LS); if (raw) state = Object.assign(state, JSON.parse(raw)); } catch(e){}
-  var save = function(){ try { localStorage.setItem(LS, JSON.stringify(state)); } catch(e){} };
+/* Overlay state — the only hand-written layer. Repo truth always outranks it. */
+const KEY = 'sahel-v5'
+let ov = { items: {}, gp: {}, score: {}, notes: [] }
+try { const s = localStorage.getItem(KEY); if (s) ov = Object.assign(ov, JSON.parse(s)) } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(ov)) } catch (e) {} }
 
-  var data = DATA;
-  var tab = "domains";
+let panel = 'track', expDom = null, expWave = null, selAgent = null
 
-  var el = function(t,c,x){ var n=document.createElement(t); if(c) n.className=c;
-    if(x!==undefined&&x!==null) n.textContent=x; return n; };
-  var svgEl = function(t,attrs){ var n=document.createElementNS("http://www.w3.org/2000/svg",t);
-    for (var k in attrs) n.setAttribute(k, attrs[k]); return n; };
-  var pct = function(a,b){ return b ? Math.round(a/b*100) : 0; };
-  var statusOf = function(it){ return state.items[it.route] || it.status; };
-  var isDone = function(s){ return s === "built" || s === "kit"; };
+const liveById = {}
+for (const a of (LIVE.agents || [])) liveById[a.id] = a
+const running = RING.filter(g => (liveById[g.id] || {}).state === 'running')
+const doneAgents = RING.filter(g => (liveById[g.id] || {}).state === 'done')
 
-  function domainStats(d){
-    var s = {total:d.items.length, done:0, prog:0, blocked:0, mobileOwed:0};
-    d.items.forEach(function(it){
-      var st = statusOf(it);
-      if (isDone(st)) { s.done++; if (it.mobile === "designed" && !it.mobileDone) s.mobileOwed++; }
-      else if (st === "progress") s.prog++;
-      else if (st === "blocked") s.blocked++;
-    });
-    s.pct = pct(s.done, s.total);
-    return s;
+function domStat(d) {
+  let done = 0, prog = 0, blocked = 0
+  for (const it of d.items) {
+    if (it.status === 'built' || it.status === 'kit') done++
+    else { const o = ov.items[d.id + ':' + it.name]; if (o === 'prog') prog++; else if (o === 'blocked') blocked++ }
   }
-  function totals(){
-    return data.domains.reduce(function(a,d){
-      var s = domainStats(d);
-      a.done+=s.done; a.total+=s.total; a.prog+=s.prog; a.blocked+=s.blocked; a.mobileOwed+=s.mobileOwed;
-      return a;
-    }, {done:0,total:0,prog:0,blocked:0,mobileOwed:0});
-  }
-  function agentStats(ag){
-    var t = {done:0,total:0};
-    ag.domains.forEach(function(id){
-      var d = data.domains.filter(function(x){ return x.id === id; })[0];
-      if (!d) return;
-      var s = domainStats(d); t.done += s.done; t.total += s.total;
-    });
-    t.pct = pct(t.done, t.total);
-    return t;
-  }
-  /** Which wave is live: the first whose checklist is not fully ticked. */
-  function currentWave(){
-    for (var i = 0; i < PLAN.waves.length; i++) {
-      var w = PLAN.waves[i];
-      var n = w.groups.length;
-      var done = w.groups.filter(function(_, gi){ return state.waves[i + ":" + gi]; }).length;
-      if (done < n) return { wave:w, index:i, done:done, of:n };
-    }
-    var last = PLAN.waves[PLAN.waves.length-1];
-    return { wave:last, index:PLAN.waves.length-1, done:last.groups.length, of:last.groups.length };
-  }
+  return { done, prog, blocked, total: d.items.length, pct: d.items.length ? Math.round(done / d.items.length * 100) : 0 }
+}
+const totals = DATA.domains.reduce((acc, d) => { const s = domStat(d)
+  acc.done += s.done; acc.total += s.total; acc.blocked += s.blocked; return acc }, { done: 0, total: 0, blocked: 0 })
+const gpDone = () => Object.values(ov.gp).filter(Boolean).length
+const avgScore = () => { const cats = PLAN.releaseCategories
+  const sum = cats.reduce((s, c) => s + (ov.score[c] || 0), 0); return sum / cats.length }
 
-  /* ── header, KPIs ──────────────────────────────────────────────────── */
-  function renderHead(){
-    var t = totals();
-    var gp = PLAN.goldenPaths.filter(function(_,i){ return state.golden[i]; }).length;
-    var avg = PLAN.releaseCategories.reduce(function(s,c){ return s + (state.score[c]||0); },0)
-              / PLAN.releaseCategories.length;
-    var openGates = PLAN.releaseBlockers.length -
-      PLAN.releaseBlockers.filter(function(_,i){ return state.golden["g"+i]; }).length;
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
+const el = (id) => document.getElementById(id)
 
-    var p = document.getElementById("totalPct");
-    p.firstChild.nodeValue = pct(t.done, t.total) + "%";
-    p.style.color = t.done === t.total ? "var(--prd)" : "var(--fnd)";
+function render() {
+  const pct = totals.total ? Math.round(totals.done / totals.total * 100) : 0
+  const avg = avgScore()
+  const orches = running.length > 0
+  const coreCol = orches ? '#E8A838' : '#333'
+  document.getElementById('deck').innerHTML = `
+  <div class="rail">
+    <div class="hdr">
+      <div><div class="clock" id="clock"></div><div class="sub">SALIS AUTO · MASTER REBUILD · ${esc(LIVE.wave || '')} ${esc(LIVE.waveName || '')}</div></div>
+      <div><div class="pct">${pct}%</div><div class="sub" style="text-align:end">RENDERING</div></div>
+    </div>
+    <div class="stats">
+      ${[['DONE', totals.done, C.done], ['TOTAL', totals.total, '#888'],
+         ['BLOCK', totals.blocked, totals.blocked ? C.blocked : '#333'],
+         ['GP', gpDone() + '/' + PLAN.goldenPaths.length, gpDone() === PLAN.goldenPaths.length ? C.done : C.prog],
+         ['SCORE', avg > 0 ? avg.toFixed(1) : '—', avg >= 9.5 ? C.done : avg > 0 ? C.prog : '#333']]
+        .map(k => `<div class="stat"><div class="l">${k[0]}</div><div class="v" style="color:${k[2]}">${k[1]}</div></div>`).join('')}
+    </div>
+    <div class="tabs">${['track', 'golden', 'waves', 'score', 'live', 'notes']
+      .map(t => `<button class="${panel === t ? 'on' : ''}" data-tab="${t}">${t}</button>`).join('')}</div>
+    <div class="body" id="tabbody">${renderPanel()}</div>
+  </div>
+  <div class="stage">
+    <div class="stagehdr">
+      ${orches ? `<div class="status" style="background:${coreCol}18;border:1px solid ${coreCol}33">
+        <div class="dot" style="background:${coreCol}"></div>
+        <span class="txt" style="color:${coreCol}">ORCHESTRATING · ${running.length}</span></div>` : '<div></div>'}
+      <div style="font-size:8px;color:#1a1e28;font-family:ui-monospace,monospace">24 AGENTS · ${totals.done}/${totals.total} · as of ${esc(LIVE.asOf || '')}</div>
+    </div>
+    ${renderConstellation(orches)}
+    <div class="stagefoot">
+      <div class="wavebar" id="wavebar"></div>
+      <div class="footlbl" style="color:${coreCol}">${orches ? 'ORCHESTRATING' : 'STANDBY'}</div>
+    </div>
+    ${selAgent ? renderAgentDetail() : ''}
+  </div>`
+  bind()
+  tickClock()
+  drawWave(orches)
+}
 
-    var tiles = [
-      { l:"BUILT",  v:String(t.done),  c:"var(--prd)" },
-      { l:"TOTAL",  v:String(t.total), c:"var(--ink-2)" },
-      { l:"MOBILE", v:String(t.mobileOwed), c:t.mobileOwed ? "var(--cmd)" : "var(--ink-4)" },
-      { l:"BLOCK",  v:String(t.blocked),    c:t.blocked ? "var(--stop)" : "var(--ink-4)" },
-      { l:"GP",     v:gp + "/" + PLAN.goldenPaths.length, c:gp === PLAN.goldenPaths.length ? "var(--prd)" : "var(--cmd)" }
-    ];
-    var host = document.getElementById("kpis"); host.textContent = "";
-    tiles.forEach(function(k){
-      var b = el("div","kpi");
-      b.appendChild(el("div","l", k.l));
-      var v = el("div","v", k.v); v.style.color = k.c;
-      b.appendChild(v); host.appendChild(b);
-    });
+function renderConstellation(orches) {
+  const cx = 440, cy = 310
+  const pos = (g) => { const rad = g.a * Math.PI / 180
+    return { x: cx + Math.cos(rad) * g.r, y: cy + Math.sin(rad) * g.r } }
+  const rays = [0, 45, 90, 135, 180, 225, 270, 315].map((ang, i) => { const rad = ang * Math.PI / 180
+    return `<line x1="${cx}" y1="${cy}" x2="${cx + Math.cos(rad) * 300}" y2="${cy + Math.sin(rad) * 300}"
+      stroke="#5AB0FF" stroke-width="0.25" opacity="0.05" stroke-dasharray="2 16">
+      <animate attributeName="stroke-dashoffset" from="0" to="-36" dur="${3 + i * 0.3}s" repeatCount="indefinite"/></line>` }).join('')
+  const links = RING.map(g => { const p = pos(g); const st = (liveById[g.id] || {}).state
+    const on = st === 'running'
+    return `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="${TEAM[g.t]}"
+      stroke-width="${on ? 2.2 : 0.4}" opacity="${on ? 0.85 : st === 'done' ? 0.22 : 0.08}" ${on ? '' : 'stroke-dasharray="3 10"'}>
+      ${on ? '<animate attributeName="opacity" values="0.45;0.95;0.45" dur="1.6s" repeatCount="indefinite"/>' : ''}</line>` }).join('')
+  const nodes = RING.map(g => { const p = pos(g); const live = liveById[g.id]
+    const st = live ? live.state : 'queued'
+    const on = st === 'running', done = st === 'done'
+    const col = TEAM[g.t]
+    return `<g class="node" data-ag="${g.id}" tabindex="0" role="button" aria-label="Agent ${g.id} ${esc(g.n)}: ${st}">
+      ${on ? `<circle cx="${p.x}" cy="${p.y}" r="22" fill="${col}" opacity="0.08">
+        <animate attributeName="r" values="16;24;16" dur="1.4s" repeatCount="indefinite"/></circle>` : ''}
+      <circle cx="${p.x}" cy="${p.y}" r="${on ? 11 : done ? 7 : 6}" fill="${on ? col + '22' : done ? col : '#0a0d14'}"
+        stroke="${col}" stroke-width="${on ? 2 : done ? 1.2 : 0.6}" opacity="${on || done ? 1 : 0.35}"/>
+      ${done ? `<text x="${p.x}" y="${p.y + 2.6}" text-anchor="middle" fill="#060810" font-size="7" font-weight="800">✓</text>` : ''}
+      <text x="${p.x + (p.x > cx ? 15 : -15)}" y="${p.y + 3}" text-anchor="${p.x > cx ? 'start' : 'end'}"
+        fill="${on ? '#f5f5f7' : done ? '#9ab' : '#445'}" font-size="${on ? 10 : 9}" font-weight="${on ? 700 : 400}">${esc(g.n)}</text>
+    </g>` }).join('')
+  const sparks = Array.from({ length: 30 }).map((_, i) => { const ang = i / 30 * Math.PI * 2
+    const rd = 8 + (i * 37 % 32)
+    return `<circle cx="${cx + Math.cos(ang) * rd}" cy="${cy + Math.sin(ang) * rd}" r="${0.6 + (i % 3) * 0.5}" fill="#5AB0FF" opacity="0.3">
+      <animate attributeName="opacity" values="0.1;0.7;0.1" dur="${1.5 + (i % 5) * 0.6}s" begin="${(i % 7) * 0.3}s" repeatCount="indefinite"/></circle>` }).join('')
+  return `<svg viewBox="0 0 880 620" style="width:100%;height:100%;position:absolute;inset:0" aria-label="Agent constellation">
+    <defs><radialGradient id="cg"><stop offset="0%" stop-color="#5AB0FF" stop-opacity="0.1"/><stop offset="100%" stop-color="#5AB0FF" stop-opacity="0"/></radialGradient>
+    <filter id="gl"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    ${rays}${links}
+    <circle cx="${cx}" cy="${cy}" r="120" fill="url(#cg)"><animate attributeName="r" values="110;130;110" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="${cx}" cy="${cy}" r="55" fill="none" stroke="#E8A838" stroke-width="2.5">
+      <animate attributeName="r" values="52;58;52" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0.35;0.8" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="${cx}" cy="${cy}" r="45" fill="#060810" stroke="#5AB0FF" stroke-width="0.4" opacity="0.25"/>
+    ${sparks}
+    ${nodes}
+    <text x="${cx}" y="${cy + 75}" text-anchor="middle" fill="#E8A838" font-size="12" font-weight="700" font-family="ui-monospace,monospace" letter-spacing="5">SAHEL</text>
+    <text x="${cx}" y="${cy + 90}" text-anchor="middle" fill="#334" font-size="8">${totals.done}/${totals.total} · ${gpDone()}/${PLAN.goldenPaths.length} GP · ${running.length} running · ${doneAgents.length} landed</text>
+  </svg>`
+}
 
-    var cw = currentWave();
-    var badge = document.getElementById("waveBadge");
-    badge.style.setProperty("--tone", TEAM[["cmd","fnd","prd","xct","cmd","cmd"][cw.index] || "cmd"]);
-    document.getElementById("waveText").textContent =
-      cw.wave.id + " · " + cw.wave.name.split("—")[0].trim() + " · " + cw.done + "/" + cw.of;
-    document.getElementById("fieldMeta").textContent =
-      "24 AGENTS · " + t.done + "/" + t.total + " RENDERING · " + openGates + " GATES OPEN\n" +
-      "REGISTRY " + (data.generatedAt || "—");
-  }
+function renderAgentDetail() {
+  const g = RING.find(x => x.id === selAgent); if (!g) return ''
+  const live = liveById[g.id]
+  const st = live ? live.state : 'queued'
+  const col = st === 'running' ? C.prog : st === 'done' ? C.done : '#556'
+  return `<div class="agdetail">
+    <button data-close="1" aria-label="Close">×</button>
+    <div class="nm" style="color:${TEAM[g.t]}">${g.id} · ${esc(live ? live.name : g.n)}
+      <span class="pill" style="background:${col}22;color:${col};margin-inline-start:6px">${st.toUpperCase()}</span></div>
+    <div class="txt">${esc(live ? live.scope : 'Not yet launched. Scope defined in OWNERSHIP.json; joins its wave when the orchestrator opens it.')}</div>
+    ${live && live.notes ? `<div class="txt" style="color:#556;border-top:1px solid #151a24;margin-top:6px;padding-top:6px">${esc(live.notes)}</div>` : ''}
+  </div>`
+}
 
-  /* ── constellation ─────────────────────────────────────────────────── */
-  var sky = document.getElementById("sky");
-  var tip = document.getElementById("tip");
-  function pos(ag){ var r = ag.a * Math.PI/180; return { x: CX + Math.cos(r)*ag.r, y: CY + Math.sin(r)*ag.r }; }
+function renderPanel() {
+  if (panel === 'track') return DATA.domains.map(d => {
+    const s = domStat(d); const col = DOMCOL[d.id] || '#5AB0FF'; const open = expDom === d.id
+    return `<div class="dom"><div class="domhead" data-dom="${d.id}" style="${open ? 'border-color:' + col + '44' : ''}">
+      <div style="display:flex;align-items:center;gap:6px"><div class="bar" style="background:${col}"></div>
+        <div><div class="nm">${esc(d.label)} <span class="agid">· agent ${esc(d.agent)}</span></div>
+        <div class="counts"><span style="color:${C.done}">${s.done}✓</span>${s.prog ? ` <span style="color:${C.prog}">${s.prog}◷</span>` : ''}${s.blocked ? ` <span style="color:${C.blocked}">${s.blocked}✕</span>` : ''}</div></div></div>
+      <div style="display:flex;align-items:center;gap:6px"><div class="meter"><div style="width:${s.pct}%;background:${s.pct === 100 ? C.done : col}"></div></div>
+        <span class="dompct" style="color:${s.pct === 100 ? C.done : col}">${s.pct}%</span></div></div>
+      ${open ? `<div class="items">${d.items.map(it => {
+        const built = it.status === 'built' || it.status === 'kit'
+        const o = ov.items[d.id + ':' + it.name]
+        const mark = built ? '✓' : o === 'prog' ? '◷' : o === 'blocked' ? '✕' : '○'
+        const mcol = built ? C.done : o === 'prog' ? C.prog : o === 'blocked' ? C.blocked : C.dim
+        const kit = it.status === 'kit'
+        return `<span class="chip ${built ? '' : 'togglable'}" ${built ? '' : `data-it="${d.id}:${esc(it.name)}"`}
+          style="border-color:${mcol}44;color:${built ? C.done : o === 'blocked' ? C.blocked : '#778'}"
+          title="${esc(it.route)}${built ? ' — rendering (from the registry)' : ' — pending'}${kit ? ' · feature-kit rendering' : ''}">
+          <span class="m" style="color:${mcol}">${mark}</span>${esc(it.name)}${kit ? '<span style="color:#556">·kit</span>' : ''}</span>` }).join('')}</div>` : ''}
+    </div>` }).join('') +
+    `<div class="hint" style="margin-top:8px">✓ is read from the registry — the repository renders it, nobody clicked it.
+     Clicking a pending chip cycles in-progress ◷ → blocked ✕ → clear; the overlay never outranks the repo.</div>`
 
-  function renderSky(){
-    sky.textContent = "";
-    var t = totals();
+  if (panel === 'golden') return `<div class="hint">Release blockers · ${gpDone()}/${PLAN.goldenPaths.length} · marked by you from CI evidence, never from an agent's claim</div>` +
+    PLAN.goldenPaths.map((g, i) => `<div class="row" data-gp="${i}" style="${ov.gp[i] ? 'border-color:' + C.done + '22' : ''}">
+      <span style="color:${ov.gp[i] ? C.done : C.blocked};font-weight:700;font-size:12px">${ov.gp[i] ? '✓' : '✕'}</span>
+      <span style="color:${ov.gp[i] ? '#555' : '#bbb'};${ov.gp[i] ? 'text-decoration:line-through' : ''}">${esc(g)}</span></div>`).join('')
 
-    var defs = svgEl("defs");
-    var grad = svgEl("radialGradient",{id:"core"});
-    grad.appendChild(svgEl("stop",{offset:"0%","stop-color":"#00D4FF","stop-opacity":"0.1"}));
-    grad.appendChild(svgEl("stop",{offset:"100%","stop-color":"#00D4FF","stop-opacity":"0"}));
-    defs.appendChild(grad);
-    var f = svgEl("filter",{id:"glow"});
-    f.appendChild(svgEl("feGaussianBlur",{stdDeviation:"3",result:"b"}));
-    var merge = svgEl("feMerge");
-    merge.appendChild(svgEl("feMergeNode",{in:"b"}));
-    merge.appendChild(svgEl("feMergeNode",{in:"SourceGraphic"}));
-    f.appendChild(merge); defs.appendChild(f);
-    sky.appendChild(defs);
-
-    // ambient radials — decoration, and the only thing here that is
-    [0,45,90,135,180,225,270,315].forEach(function(deg,i){
-      var r = deg*Math.PI/180;
-      var ln = svgEl("line",{x1:CX,y1:CY,x2:CX+Math.cos(r)*300,y2:CY+Math.sin(r)*300,
-        stroke:"#00D4FF","stroke-width":"0.25",opacity:"0.05","stroke-dasharray":"2 16"});
-      ln.appendChild(svgEl("animate",{attributeName:"stroke-dashoffset",from:"0",to:"-36",
-        dur:(3+i*0.3)+"s",repeatCount:"indefinite"}));
-      sky.appendChild(ln);
-    });
-
-    // spokes: brightness = that agent's share of its capabilities that render
-    AGENTS.forEach(function(ag){
-      var p = pos(ag), s = agentStats(ag);
-      var live = s.total > 0;
-      sky.appendChild(svgEl("line",{x1:CX,y1:CY,x2:p.x,y2:p.y,stroke:TEAM[ag.t],
-        "stroke-width": live ? (0.4 + (s.pct/100)*1.8) : 0.4,
-        opacity: live ? (0.12 + (s.pct/100)*0.5) : 0.08,
-        "stroke-dasharray": live && s.pct > 0 ? "none" : "3 10"}));
-    });
-
-    var halo = svgEl("circle",{cx:CX,cy:CY,r:120,fill:"url(#core)"});
-    halo.appendChild(svgEl("animate",{attributeName:"r",values:"110;130;110",dur:"4s",repeatCount:"indefinite"}));
-    sky.appendChild(halo);
-
-    // core ring = overall rendering share, drawn as an arc rather than a pulse
-    var R = 55, C = 2*Math.PI*R, frac = t.total ? t.done/t.total : 0;
-    sky.appendChild(svgEl("circle",{cx:CX,cy:CY,r:R,fill:"none",stroke:"#1a1e28","stroke-width":"2.5"}));
-    sky.appendChild(svgEl("circle",{cx:CX,cy:CY,r:R,fill:"none",stroke:"#E8A838","stroke-width":"2.5",
-      "stroke-linecap":"round","stroke-dasharray":(C*frac)+" "+C,
-      transform:"rotate(-90 "+CX+" "+CY+")"}));
-    sky.appendChild(svgEl("circle",{cx:CX,cy:CY,r:45,fill:"#060810",stroke:"#00D4FF",
-      "stroke-width":"0.4",opacity:"0.25"}));
-
-    // core readout
-    var big = svgEl("text",{x:CX,y:CY+4,"text-anchor":"middle",fill:"#f5f5f7","font-size":"25",
-      "font-weight":"700","font-family":"ui-monospace,monospace"});
-    big.textContent = pct(t.done,t.total) + "%";
-    sky.appendChild(big);
-    var small = svgEl("text",{x:CX,y:CY+20,"text-anchor":"middle",fill:"#4a5163","font-size":"9",
-      "font-family":"ui-monospace,monospace"});
-    small.textContent = t.done + " / " + t.total;
-    sky.appendChild(small);
-    var name = svgEl("text",{x:CX,y:CY+76,"text-anchor":"middle",fill:"#E8A838","font-size":"12",
-      "font-weight":"700","font-family":"ui-monospace,monospace","letter-spacing":"5"});
-    name.textContent = "SAHEL";
-    sky.appendChild(name);
-    var sub = svgEl("text",{x:CX,y:CY+91,"text-anchor":"middle",fill:"#282c36","font-size":"8",
-      "font-family":"ui-monospace,monospace"});
-    sub.textContent = t.blocked ? (t.blocked + " BLOCKED") : (t.mobileOwed + " MOBILE OWED");
-    sky.appendChild(sub);
-
-    // nodes
-    AGENTS.forEach(function(ag){
-      var p = pos(ag), s = agentStats(ag), live = s.total > 0;
-      var g = svgEl("g",{class:"node",tabindex:"0",role:"button"});
-      g.setAttribute("aria-label", "Agent " + ag.id + " " + ag.n + ", " +
-        (live ? s.done + " of " + s.total + " capabilities rendering" : "no capabilities in the registry"));
-
-      // A running agent gets a pulse. It is driven by AGENTS_LIVE.json, so it
-      // means "was running as of that stamp" — not a heartbeat this page can see.
-      var liveAg = (LIVE.agents || []).filter(function(x){ return x.id === ag.id; })[0];
-      if (liveAg && liveAg.state === "running") {
-        var pulse = svgEl("circle",{cx:p.x,cy:p.y,r:16,fill:"none",
-          stroke:TEAM[ag.t],"stroke-width":"1",opacity:"0.5"});
-        pulse.appendChild(svgEl("animate",{attributeName:"r",values:"12;22;12",dur:"2.2s",repeatCount:"indefinite"}));
-        pulse.appendChild(svgEl("animate",{attributeName:"opacity",values:"0.55;0.05;0.55",dur:"2.2s",repeatCount:"indefinite"}));
-        g.appendChild(pulse);
-      }
-      if (live && s.pct === 100) {
-        var ring = svgEl("circle",{cx:p.x,cy:p.y,r:18,fill:TEAM[ag.t],opacity:"0.08"});
-        g.appendChild(ring);
-      }
-      var rad = live ? 6 + (s.total/120)*7 : 5;
-      g.appendChild(svgEl("circle",{class:"hit",cx:p.x,cy:p.y,r:Math.min(rad,13),
-        fill: live && s.pct>0 ? TEAM[ag.t]+"22" : "#0a0d14",
-        stroke:TEAM[ag.t],"stroke-width":live?1.2:0.6,opacity:live?0.85:0.35,
-        filter: s.pct===100 ? "url(#glow)" : "none"}));
-
-      var right = p.x > CX;
-      var label = svgEl("text",{x:p.x+(right?15:-15),y:p.y+3,"text-anchor":right?"start":"end",
-        fill: live ? "#8a93a6" : "#3a4152","font-size":"9",
-        "font-family":"-apple-system,sans-serif"});
-      label.textContent = ag.n;
-      g.appendChild(label);
-
-      if (live) {
-        var num = svgEl("text",{x:p.x+(right?15:-15),y:p.y+13,"text-anchor":right?"start":"end",
-          fill:"#3a4152","font-size":"7.5","font-family":"ui-monospace,monospace"});
-        num.textContent = s.done + "/" + s.total;
-        g.appendChild(num);
-      }
-
-      var show = function(ev){
-        var r = sky.getBoundingClientRect();
-        tip.textContent = "";
-        var b = el("b", null, ag.id + " · " + ag.n);
-        tip.appendChild(b);
-        tip.appendChild(document.createTextNode(TEAM_NAME[ag.t] + " team"));
-        var m = el("div","m", live
-          ? s.done + " of " + s.total + " capabilities rendering (" + s.pct + "%)"
-          : "owns no registry capabilities — sweeps or infrastructure");
-        tip.appendChild(m);
-        tip.classList.add("on");
-        var x = (ev.clientX || (r.left + p.x)) - r.left;
-        var y = (ev.clientY || (r.top + p.y)) - r.top;
-        tip.style.left = Math.min(x + 14, r.width - 244) + "px";
-        tip.style.top  = Math.max(y - 10, 8) + "px";
-      };
-      g.addEventListener("mouseenter", show);
-      g.addEventListener("focus", show);
-      g.addEventListener("mouseleave", function(){ tip.classList.remove("on"); });
-      g.addEventListener("blur", function(){ tip.classList.remove("on"); });
-      sky.appendChild(g);
-    });
+  if (panel === 'waves') {
+    const order = ['W0', 'W1', 'W2', 'W3', 'W4', 'W5']
+    const cur = order.indexOf(LIVE.wave || 'W2')
+    return PLAN.waves.map((w, i) => {
+      const state = i < cur ? 'done' : i === cur ? 'active' : 'queued'
+      const col = state === 'done' ? C.done : state === 'active' ? C.prog : '#445'
+      const open = expWave === i
+      const chips = state === 'active' ? (LIVE.agents || []).map(a =>
+        `<span class="chip" style="border-color:${a.state === 'running' ? C.prog : C.done}44;color:${a.state === 'running' ? C.prog : C.done}">
+         ${a.state === 'running' ? '◷' : '✓'} ${esc(a.id)} ${esc(a.name)}</span>`).join('') : ''
+      return `<div class="wavecard"><div class="wavehead" data-wave="${i}" style="${open ? 'border-color:' + col + '44' : ''}">
+        <div><div style="font-size:11px;font-weight:700;color:${col}">${esc(w.id)} — ${esc(w.name)}</div>
+        <div style="font-size:8px;color:#444">${esc(w.agents)}</div></div>
+        <span class="pill" style="background:${col}22;color:${col}">${state.toUpperCase()}</span></div>
+        ${open ? `<div class="agchips">${chips}<div class="hint" style="margin:4px 0 0">${esc(w.exit)}</div></div>` : ''}</div>` }).join('') +
+      `<div class="hint" style="margin-top:6px">${esc(LIVE.waveNote || '')}</div>`
   }
 
-  /* ── bottom strip: one bar per domain, height = completion ─────────── */
-  function renderBars(){
-    var host = document.getElementById("barStrip"); host.textContent = "";
-    data.domains.forEach(function(d){
-      var s = domainStats(d);
-      var b = el("div","bar");
-      b.style.height = Math.max(2, Math.round(s.pct * 0.26)) + "px";
-      b.style.background = s.pct === 100 ? "var(--prd)" : s.pct > 0 ? "var(--fnd)" : "var(--line-2)";
-      b.title = d.label + " — " + s.done + "/" + s.total + " (" + s.pct + "%)";
-      host.appendChild(b);
-    });
-    document.getElementById("barCap").textContent =
-      data.domains.length + " DOMAINS · COMPLETION";
+  if (panel === 'score') { const avg = avgScore()
+    return `<div class="hint">Category gate: every one ≥ 9.5 before release · avg
+      <b style="color:${avg >= 9.5 ? C.done : C.prog}">${avg > 0 ? avg.toFixed(1) : '—'}</b> · scored by you from CI artefacts</div>` +
+      PLAN.releaseCategories.map(cat => { const v = ov.score[cat] || 0
+        const vcol = v >= 9.5 ? C.done : v >= 7 ? C.prog : C.blocked
+        return `<div class="scorerow"><span class="cat">${esc(cat)}</span><div class="cells">
+          ${[1,2,3,4,5,6,7,8,9,10].map(n => `<span class="cell" data-score="${esc(cat)}" data-v="${n}"
+            style="${n <= v ? `background:${vcol}33;border-color:${vcol};color:#f5f5f7` : ''}">${n}</span>`).join('')}</div>
+          <span style="font-size:11px;font-weight:700;min-width:18px;text-align:end;color:${v ? vcol : '#282c36'}">${v || '—'}</span></div>` }).join('')
   }
 
-  /* ── panels ────────────────────────────────────────────────────────── */
-  var TABS = [["domains","Track"],["agents","Agents"],["waves","Waves"],["golden","Golden"],
-              ["score","Score"],["gates","Gates"],["run","Run"],["notes","Notes"]];
-  function renderTabs(){
-    var host = document.getElementById("tabs"); host.textContent = "";
-    TABS.forEach(function(t){
-      var b = el("button", null, t[1]); b.type="button"; b.setAttribute("role","tab");
-      b.setAttribute("aria-selected", String(tab === t[0]));
-      b.addEventListener("click", function(){ tab = t[0]; renderTabs(); renderPanel(); });
-      host.appendChild(b);
-    });
-  }
+  if (panel === 'live') return `<div class="hint">State as of <b>${esc(LIVE.asOf || '')}</b> — written by the orchestrator when agents launch and land.
+      A published page cannot see the session; this stamp is the honesty line.</div>` +
+    (LIVE.agents || []).map(a => { const col = a.state === 'running' ? C.prog : a.state === 'done' ? C.done : '#556'
+      return `<div class="livecard"><div class="top"><span class="nm">${esc(a.id)} · ${esc(a.name)}</span>
+        <span class="pill" style="background:${col}22;color:${col}">${esc(a.state).toUpperCase()}</span></div>
+        <div class="scope">${esc(a.scope)}</div></div>` }).join('') +
+    `<div class="hint" style="margin-top:10px">Suggested commands — copy, run in the repo root:</div>` +
+    CMDS.map((c, i) => `<div class="cmd"><code>${esc(c.c)}</code><button data-copy="${i}" title="${esc(c.l)}">COPY</button></div>`).join('')
 
-  var openDomain = null;
-  function renderPanel(){
-    var host = document.getElementById("panel");
-    host.textContent = "";
-    host.scrollTop = 0;
+  if (panel === 'notes') return `<div class="notesin"><input id="notein" placeholder="Blocker, follow-up…" maxlength="500">
+      <button id="noteadd">+</button></div>` +
+    (ov.notes.length ? ov.notes.map(n => `<div class="note"><div>
+      <div style="font-size:11px;color:#aaa;line-height:1.4">${esc(n.text)}</div>
+      <div class="ts">${esc(new Date(n.ts).toLocaleString())}</div></div>
+      <button data-note="${n.id}" aria-label="Delete note">×</button></div>`).join('')
+      : '<div style="text-align:center;color:#1a1e28;padding:20px;font-size:10px">No notes yet</div>')
+  return ''
+}
 
-    if (tab === "domains") {
-      var h = el("p","hint");
-      h.appendChild(document.createTextNode("Status is read from the repository. Click a capability to layer "));
-      h.appendChild(el("b",null,"in progress")); h.appendChild(document.createTextNode(" or "));
-      h.appendChild(el("b",null,"blocked")); h.appendChild(document.createTextNode(" while an agent works — the next registry load clears it."));
-      host.appendChild(h);
+function bind() {
+  document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { panel = b.dataset.tab; render() })
+  document.querySelectorAll('[data-dom]').forEach(b => b.onclick = () => { expDom = expDom === b.dataset.dom ? null : b.dataset.dom; render() })
+  document.querySelectorAll('[data-wave]').forEach(b => b.onclick = () => { const i = +b.dataset.wave; expWave = expWave === i ? null : i; render() })
+  document.querySelectorAll('[data-it]').forEach(b => b.onclick = () => { const k = b.dataset.it
+    const cur = ov.items[k]
+    if (!cur) ov.items[k] = 'prog'; else if (cur === 'prog') ov.items[k] = 'blocked'; else delete ov.items[k]
+    save(); render() })
+  document.querySelectorAll('[data-gp]').forEach(b => b.onclick = () => { const i = +b.dataset.gp; ov.gp[i] = !ov.gp[i]; save(); render() })
+  document.querySelectorAll('[data-score]').forEach(b => b.onclick = () => { ov.score[b.dataset.score] = +b.dataset.v; save(); render() })
+  document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => {
+    navigator.clipboard.writeText(CMDS[+b.dataset.copy].c).then(() => { b.textContent = 'COPIED'; setTimeout(() => { b.textContent = 'COPY' }, 1200) }, () => { b.textContent = 'FAILED' }) })
+  document.querySelectorAll('.node').forEach(n => {
+    const act = () => { selAgent = selAgent === n.dataset.ag ? null : n.dataset.ag; render() }
+    n.onclick = act
+    n.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); act() } } })
+  const close = document.querySelector('[data-close]'); if (close) close.onclick = () => { selAgent = null; render() }
+  const na = el('noteadd'); if (na) na.onclick = addNote
+  const ni = el('notein'); if (ni) ni.onkeydown = (e) => { if (e.key === 'Enter') addNote() }
+}
+function addNote() { const inp = el('notein'); if (!inp || !inp.value.trim()) return
+  ov.notes = [{ text: inp.value.trim(), ts: new Date().toISOString(), id: Date.now() }].concat(ov.notes)
+  save(); render()
+  const again = el('notein'); if (again) again.focus() }
+document.addEventListener('click', (e) => { const del = e.target.closest('[data-note]')
+  if (del) { ov.notes = ov.notes.filter(n => n.id !== +del.dataset.note); save(); render() } })
 
-      data.domains.forEach(function(d){
-        var s = domainStats(d);
-        var tint = "var(--fnd)";
-        AGENTS.forEach(function(a){ if (a.domains.indexOf(d.id) > -1) tint = TEAM[a.t]; });
-        var wrap = el("div","dom"); wrap.style.setProperty("--tint", tint);
+let clockTimer = null
+function tickClock() { const c = el('clock'); if (!c) return
+  c.textContent = new Date().toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+  if (!clockTimer) clockTimer = setInterval(tickClock, 1000) }
 
-        var head = el("button","dom-head" + (openDomain === d.id ? " open" : ""));
-        head.type = "button";
-        head.appendChild(el("span","stripe"));
-        var mid = el("div"); mid.style.flex="1"; mid.style.minWidth="0";
-        var nm = el("div","dom-name", d.label);
-        nm.appendChild(el("span","sec", d.group));
-        mid.appendChild(nm);
-        var sub = el("div","dom-sub");
-        sub.appendChild(el("span","ok", s.done + "✓"));
-        if (s.prog)      { sub.appendChild(document.createTextNode(" ")); sub.appendChild(el("span","warn", s.prog + "◷")); }
-        if (s.blocked)   { sub.appendChild(document.createTextNode(" ")); sub.appendChild(el("span","bad", s.blocked + "✕")); }
-        sub.appendChild(document.createTextNode(" " + (s.total - s.done - s.prog - s.blocked) + "○"));
-        if (s.mobileOwed){ sub.appendChild(document.createTextNode(" · " + s.mobileOwed + " mob")); }
-        mid.appendChild(sub);
-        head.appendChild(mid);
-        var m = el("div","meter"); var fi = el("i");
-        fi.style.width = s.pct + "%"; if (s.pct === 100) fi.className = "full";
-        m.appendChild(fi); head.appendChild(m);
-        head.appendChild(el("span","dom-pct", s.pct + "%"));
-        head.addEventListener("click", function(){
-          openDomain = openDomain === d.id ? null : d.id; renderPanel();
-        });
-        wrap.appendChild(head);
+let waveTimer = null
+function drawWave(orches) {
+  const bar = el('wavebar'); if (!bar) return
+  const coreCol = orches ? '#E8A838' : '#333'
+  const paint = () => { if (!document.getElementById('wavebar')) return
+    let html = ''
+    for (let i = 0; i < 20; i++) html += `<i style="height:${orches ? 3 + Math.random() * 18 : 3}px;background:${coreCol};opacity:${orches ? 0.8 : 0.12}"></i>`
+    html += `<span style="width:24px;height:24px;border-radius:50%;border:2px solid ${coreCol};display:flex;align-items:center;justify-content:center;margin:0 4px;background:${coreCol}15"><i style="width:4px;height:4px;border-radius:50%;background:${coreCol}"></i></span>`
+    for (let i = 0; i < 20; i++) html += `<i style="height:${orches ? 3 + Math.random() * 18 : 3}px;background:${coreCol};opacity:${orches ? 0.8 : 0.12}"></i>`
+    document.getElementById('wavebar').innerHTML = html }
+  if (waveTimer) { clearInterval(waveTimer); waveTimer = null }
+  paint()
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (orches && !reduce) waveTimer = setInterval(paint, 140)
+}
 
-        if (openDomain === d.id) {
-          var items = el("div","items");
-          d.items.forEach(function(it){
-            var st = statusOf(it);
-            var c = el("button","chip"); c.type = "button"; c.dataset.s = st;
-            c.appendChild(el("span","g", st === "built" ? "✓" : st === "kit" ? "◆"
-              : st === "progress" ? "◷" : st === "blocked" ? "✕" : "○"));
-            c.appendChild(document.createTextNode(it.name));
-            c.title = it.route + (it.mobile === "designed" ? "  ·  has a designed mobile layout" : "");
-            c.addEventListener("click", function(){
-              var cur = statusOf(it);
-              var next = cur === "progress" ? "blocked" : cur === "blocked" ? null : "progress";
-              if (next) state.items[it.route] = next; else delete state.items[it.route];
-              save(); renderPanel(); renderHead(); renderSky(); renderBars();
-            });
-            items.appendChild(c);
-          });
-          wrap.appendChild(items);
-        }
-        host.appendChild(wrap);
-      });
-      return;
-    }
-
-    if (tab === "golden" || tab === "gates") {
-      var isGates = tab === "gates";
-      var labels = isGates ? PLAN.releaseBlockers : PLAN.goldenPaths;
-      var store = isGates ? (state.golden) : state.golden;
-      var keyFor = function(i){ return isGates ? "g"+i : i; };
-      host.appendChild(el("p","hint", isGates
-        ? "Absolute release blockers. Tick a line only when there is evidence behind it."
-        : "The 23 named Golden Paths, each run desktop + 390 px + Arabic. A failing critical path blocks release."));
-      labels.forEach(function(lbl,i){
-        var on = !!store[keyFor(i)];
-        var b = el("button","row"); b.type="button"; b.dataset.on = on ? "1" : "0";
-        b.appendChild(el("span","n", String(i+1).padStart(2,"0")));
-        b.appendChild(el("span","mk", on ? "✓" : isGates ? "!" : "✕"));
-        b.appendChild(el("span","t", lbl));
-        b.addEventListener("click", function(){
-          if (store[keyFor(i)]) delete store[keyFor(i)]; else store[keyFor(i)] = true;
-          save(); renderPanel(); renderHead();
-        });
-        host.appendChild(b);
-      });
-      return;
-    }
-
-    if (tab === "waves") {
-      host.appendChild(el("p","hint", "Wave order is dependency order. W1 is the bottleneck — ten product agents idle behind four foundation agents."));
-      PLAN.waves.forEach(function(w, wi){
-        var done = w.groups.filter(function(_,gi){ return state.waves[wi+":"+gi]; }).length;
-        var head = el("button","dom-head");
-        head.type = "button";
-        head.style.setProperty("--tint", TEAM[["cmd","fnd","prd","xct","cmd","cmd"][wi] || "cmd"]);
-        head.appendChild(el("span","stripe"));
-        var mid = el("div"); mid.style.flex="1";
-        mid.appendChild(el("div","dom-name", w.id + " · " + w.name));
-        mid.appendChild(el("div","dom-sub", w.agents));
-        head.appendChild(mid);
-        var m = el("div","meter"); var fi = el("i");
-        fi.style.width = pct(done, w.groups.length) + "%";
-        if (done === w.groups.length) fi.className = "full";
-        m.appendChild(fi); head.appendChild(m);
-        head.appendChild(el("span","dom-pct", done + "/" + w.groups.length));
-        host.appendChild(head);
-
-        var box = el("div","items"); box.style.flexDirection = "column"; box.style.gap = "2px";
-        w.groups.forEach(function(g, gi){
-          var on = !!state.waves[wi+":"+gi];
-          var r = el("button","row"); r.type="button"; r.dataset.on = on ? "1" : "0";
-          r.appendChild(el("span","n", g.id));
-          r.appendChild(el("span","mk", on ? "✓" : "○"));
-          r.appendChild(el("span","t", g.name));
-          r.addEventListener("click", function(){
-            if (state.waves[wi+":"+gi]) delete state.waves[wi+":"+gi]; else state.waves[wi+":"+gi] = true;
-            save(); renderPanel(); renderHead();
-          });
-          box.appendChild(r);
-        });
-        host.appendChild(box);
-      });
-      return;
-    }
-
-    if (tab === "score") {
-      var avg = PLAN.releaseCategories.reduce(function(s,c){ return s+(state.score[c]||0); },0)
-                / PLAN.releaseCategories.length;
-      var h2 = el("p","hint");
-      h2.appendChild(document.createTextNode("Every category needs ≥ 9.5. Average "));
-      h2.appendChild(el("b",null, avg > 0 ? avg.toFixed(1) : "—"));
-      h2.appendChild(document.createTextNode(". A strong category never compensates for a weak one."));
-      host.appendChild(h2);
-      PLAN.releaseCategories.forEach(function(cat){
-        var v = state.score[cat] || 0;
-        var row = el("div","score");
-        row.style.setProperty("--tone", v >= 9.5 ? "var(--prd)" : v >= 7 ? "var(--cmd)" : "var(--stop)");
-        row.appendChild(el("span","cat", cat));
-        var pips = el("div","pips");
-        for (var i=1;i<=10;i++) (function(n){
-          var b = el("button",null,String(n)); b.type="button";
-          b.setAttribute("aria-label", cat + " " + n + " of 10");
-          if (n <= v) b.dataset.f = "1";
-          b.addEventListener("click", function(){
-            if (state.score[cat] === n) delete state.score[cat]; else state.score[cat] = n;
-            save(); renderPanel(); renderHead();
-          });
-          pips.appendChild(b);
-        })(i);
-        row.appendChild(pips);
-        var val = el("span","v", v ? String(v) : "—");
-        val.style.color = v >= 9.5 ? "var(--prd)" : v >= 7 ? "var(--cmd)" : v ? "var(--stop)" : "var(--ink-4)";
-        row.appendChild(val);
-        host.appendChild(row);
-      });
-      return;
-    }
-
-    if (tab === "agents") {
-      var stamp = el("span","asof",
-        "WAVE " + (LIVE.wave || "—") + " · " + (LIVE.waveName || "") +
-        " · AS OF " + new Date(LIVE.asOf).toLocaleString());
-      host.appendChild(stamp);
-      host.appendChild(el("p","hint", LIVE.waveNote || ""));
-      (LIVE.agents || []).forEach(function(a){
-        var box = el("div","ag");
-        box.style.setProperty("--tone", TEAM[a.team] || "var(--ink-3)");
-        var top = el("div","ag-top");
-        top.appendChild(el("span","ag-id", a.id));
-        top.appendChild(el("span","ag-name", a.name));
-        top.appendChild(el("span","ag-state " + a.state, a.state));
-        box.appendChild(top);
-        box.appendChild(el("div","ag-scope", a.scope));
-        if (a.owns && a.owns.length) box.appendChild(el("div","ag-owns", a.owns.join("  ")));
-        if (a.blocks && a.blocks.length)
-          box.appendChild(el("div","ag-blocks", "blocks: " + a.blocks.join(" · ")));
-        if (a.notes) box.appendChild(el("div","ag-note", a.notes));
-        host.appendChild(box);
-      });
-      if (LIVE.shared && LIVE.shared.note) {
-        var sh = el("div","ag"); sh.style.setProperty("--tone","var(--cmd)");
-        var t = el("div","ag-top");
-        t.appendChild(el("span","ag-id", LIVE.shared.arbiter));
-        t.appendChild(el("span","ag-name","Shared files"));
-        sh.appendChild(t);
-        sh.appendChild(el("div","ag-scope", LIVE.shared.note));
-        host.appendChild(sh);
-      }
-      return;
-    }
-
-    if (tab === "run") {
-      host.appendChild(el("p","hint",
-        "This page cannot run anything on your machine — it is a sandboxed document. " +
-        "Copy a command, or use the runner script so there is nothing to transcribe."));
-      COMMANDS.forEach(function(c){
-        var box = el("div","cmd");
-        var h = el("div","cmd-h");
-        h.appendChild(el("span","t", c.title));
-        h.appendChild(el("span","w", c.where));
-        box.appendChild(h);
-        var body = el("div","cmd-b", c.cmd);
-        box.appendChild(body);
-        var f = el("div","cmd-f");
-        f.appendChild(el("span","why", c.why));
-        var btn = el("button","copy","copy"); btn.type = "button";
-        btn.addEventListener("click", function(){ copyText(c.cmd, btn); });
-        f.appendChild(btn);
-        box.appendChild(f);
-        host.appendChild(box);
-      });
-      return;
-    }
-
-    if (tab === "notes") {
-      var form = el("form","note-form");
-      var inp = el("input"); inp.placeholder = "Blocker, decision, follow-up…";
-      inp.setAttribute("aria-label","New note");
-      var add = el("button",null,"+"); add.type = "submit";
-      form.appendChild(inp); form.appendChild(add);
-      form.addEventListener("submit", function(e){
-        e.preventDefault();
-        var v = inp.value.trim(); if (!v) return;
-        state.notes.unshift({ text:v, ts:new Date().toISOString(), id:Date.now() });
-        save(); renderPanel();
-      });
-      host.appendChild(form);
-      if (!state.notes.length) { host.appendChild(el("div","empty","No notes yet.")); return; }
-      state.notes.forEach(function(n){
-        var box = el("div","note");
-        var t = el("div");
-        t.appendChild(el("div","tx", n.text));
-        var time = el("time", null, new Date(n.ts).toLocaleString()); time.dateTime = n.ts;
-        t.appendChild(time); box.appendChild(t);
-        var x = el("button",null,"×"); x.type="button"; x.setAttribute("aria-label","Delete note");
-        x.addEventListener("click", function(){
-          state.notes = state.notes.filter(function(m){ return m.id !== n.id; });
-          save(); renderPanel();
-        });
-        box.appendChild(x); host.appendChild(box);
-      });
-    }
-  }
-
-  /* ── runnable commands ─────────────────────────────────────────────── */
-  var COMMANDS = [
-    { title:"Apply a patch and push", where:"repo root",
-      cmd:'.\\project-control\\run.ps1 apply "C:\\Users\\Salisco\\Desktop\\<patch-file>"',
-      why:"git am, shows the log, then pushes. Aborts cleanly and tells you how to recover if the patch does not apply." },
-    { title:"Gates — after every tranche", where:"repo root",
-      cmd:".\\project-control\\run.ps1 gates",
-      why:"Rebuilds the registry and re-runs the placeholder and design-token ratchets. This is what keeps this deck honest." },
-    { title:"Full per-tranche chain", where:"repo root",
-      cmd:".\\project-control\\run.ps1 all",
-      why:"gates → test → build → smoke, with the preview server started and stopped for you." },
-    { title:"Where am I?", where:"repo root",
-      cmd:".\\project-control\\run.ps1 status",
-      why:"Branch, unpushed commits and the current registry totals." },
-    { title:"Refresh this deck's data", where:"repo root",
-      cmd:".\\project-control\\run.ps1 deck",
-      why:"Regenerates tracker-data.json. Then use Load below to read it in." },
-    { title:"Gates — without the runner", where:"app/",
-      cmd:"npm run gates",
-      why:"The same checks if you prefer running npm directly." },
-    { title:"Tests", where:"app/", cmd:"npm run test",
-      why:"vitest: unit, component and integration." },
-    { title:"Typecheck and build", where:"app/", cmd:"npm run typecheck && npm run build",
-      why:"Must both pass before any tranche is submitted." },
-    { title:"Certification gates (W5)", where:"app/", cmd:"npm run certify",
-      why:"The same ratchets with --strict, where the only acceptable number is zero." },
-    { title:"First-time setup", where:"app/", cmd:"npm install",
-      why:"Only needed once, or after new dependencies land." }
-  ];
-
-  function copyText(text, btn){
-    var done = function(){
-      var was = btn.textContent;
-      btn.textContent = "copied"; btn.classList.add("done");
-      setTimeout(function(){ btn.textContent = was; btn.classList.remove("done"); }, 1400);
-    };
-    // The clipboard API is often unavailable in a sandboxed frame, so fall back
-    // to a selection rather than failing silently.
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, function(){ legacy(); });
-    } else { legacy(); }
-    function legacy(){
-      var ta = document.createElement("textarea");
-      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select();
-      var ok = false;
-      try { ok = document.execCommand("copy"); } catch(e){}
-      document.body.removeChild(ta);
-      if (ok) done();
-      else { btn.textContent = "select it"; setTimeout(function(){ btn.textContent = "copy"; }, 1600); }
-    }
-  }
-
-  /* ── import / export ───────────────────────────────────────────────── */
-  document.getElementById("loadReg").addEventListener("change", function(e){
-    var f = e.target.files && e.target.files[0]; if (!f) return;
-    f.text().then(function(txt){
-      try {
-        var next = JSON.parse(txt);
-        if (next.domains) {
-          data = next; state.items = {};  // a fresh repo read supersedes the overlay
-        } else if (next.agents) {
-          LIVE.wave = next.wave; LIVE.waveName = next.waveName; LIVE.waveNote = next.waveNote;
-          LIVE.agents = next.agents; LIVE.asOf = next.asOf; LIVE.shared = next.shared;
-        } else {
-          throw new Error("not a tracker dataset or a wave status file");
-        }
-        save(); renderAll();
-      } catch(err){
-        document.getElementById("fieldMeta").textContent = "LOAD FAILED · " + err.message;
-      }
-    });
-    e.target.value = "";
-  });
-  document.getElementById("exportBtn").addEventListener("click", function(){
-    var payload = JSON.stringify({ savedAt:new Date().toISOString(), state:state }, null, 2);
-    if (window.claude && window.claude.downloads) {
-      window.claude.downloads.save({ filename:"sahel-deck-state.json", data:payload }).catch(function(){});
-    } else {
-      var a = document.createElement("a");
-      a.href = "data:application/json;charset=utf-8," + encodeURIComponent(payload);
-      a.download = "sahel-deck-state.json"; a.click();
-    }
-  });
-  document.getElementById("loadState").addEventListener("change", function(e){
-    var f = e.target.files && e.target.files[0]; if (!f) return;
-    f.text().then(function(txt){
-      try {
-        var p = JSON.parse(txt);
-        if (p.state) { state = Object.assign({items:{},golden:{},waves:{},score:{},notes:[]}, p.state); save(); renderAll(); }
-      } catch(err){}
-    });
-    e.target.value = "";
-  });
-
-  /* ── boot ──────────────────────────────────────────────────────────── */
-  function tick(){
-    document.getElementById("clock").textContent =
-      new Date().toLocaleTimeString("en-GB", {hour12:false});
-  }
-  function renderAll(){ renderHead(); renderSky(); renderBars(); renderTabs(); renderPanel(); }
-  tick(); setInterval(tick, 1000);
-  renderAll();
-  window.addEventListener("resize", function(){ tip.classList.remove("on"); });
-})();
+render()
 </script>
