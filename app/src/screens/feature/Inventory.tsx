@@ -45,10 +45,18 @@ type Part = RowOf<'parts'>
 
 /** The movement types the API accepts (`packages/contract/src/entities/part.ts`).
  *
- *  `return` is deliberately absent: the contract has no movement type for a
- *  return, and recording one as a receipt would make "no double receiving"
- *  unprovable from the ledger. The gap is reported rather than papered over. */
-export const MOVEMENT_TYPES = ['in', 'out', 'transfer', 'adjust', 'damage'] as const
+ *  `return` is its own type so a customer return is never booked as receiving,
+ *  and `adjust_down` records a shortfall without inflating consumption or
+ *  damage — both added when the server closed F-017. */
+export const MOVEMENT_TYPES = [
+  'in',
+  'out',
+  'transfer',
+  'adjust',
+  'adjust_down',
+  'return',
+  'damage',
+] as const
 export type MovementType = (typeof MOVEMENT_TYPES)[number]
 
 /** The sign a movement type applies to on-hand quantity.
@@ -62,10 +70,12 @@ export type MovementType = (typeof MOVEMENT_TYPES)[number]
 export function movementDelta(type: MovementType, qty: number): number {
   switch (type) {
     case 'in':
+    case 'return':
       return qty
     case 'out':
     case 'damage':
     case 'transfer':
+    case 'adjust_down':
       return -qty
     case 'adjust':
       return qty
@@ -78,13 +88,21 @@ export interface MovementCheckArgs {
   onHand: number
   reserved: number
   backorderable: boolean
+  /** A consumption that draws down a reservation instead of competing with
+   *  it: bounded by the reservation, not by the unreserved balance. */
+  fromReservation?: boolean
 }
 
 /** No negative stock unless the part is backorderable, and never a consumption
- *  or transfer larger than the unreserved balance. Mirror of `checkMovement`. */
+ *  or transfer larger than the unreserved balance — unless the consumption
+ *  draws on a reservation, whose quantity is then the bound. Mirror of
+ *  `checkMovement`. */
 export function checkMovement(args: MovementCheckArgs): { message: string; field: string } | null {
   if (!Number.isInteger(args.qty) || args.qty <= 0) {
     return { message: 'A movement quantity must be a positive whole number.', field: 'qty' }
+  }
+  if (args.type === 'out' && args.fromReservation && args.qty > args.reserved) {
+    return { message: 'Cannot consume more than is reserved.', field: 'qty' }
   }
   const next = args.onHand + movementDelta(args.type, args.qty)
   if (next < 0 && !args.backorderable) {
@@ -93,7 +111,7 @@ export function checkMovement(args: MovementCheckArgs): { message: string; field
       field: 'qty',
     }
   }
-  if (args.type === 'out' || args.type === 'transfer') {
+  if ((args.type === 'out' && !args.fromReservation) || args.type === 'transfer') {
     const available = args.onHand - args.reserved
     if (args.qty > available && !args.backorderable) {
       return { message: 'Only unreserved stock can be consumed or transferred.', field: 'qty' }
@@ -124,6 +142,7 @@ export interface LedgerTotals {
   consumed: number
   transferOut: number
   adjustments: number
+  returned: number
   damaged: number
   /** Rows whose recorded delta disagrees with their own type and quantity.
    *  Reported, never hidden: a ledger that does not add up is the one thing
@@ -138,6 +157,7 @@ export function ledgerTotals(rows: readonly MovementRow[]): LedgerTotals {
     consumed: 0,
     transferOut: 0,
     adjustments: 0,
+    returned: 0,
     damaged: 0,
     inconsistent: [],
   }
@@ -145,6 +165,9 @@ export function ledgerTotals(rows: readonly MovementRow[]): LedgerTotals {
     switch (row.type) {
       case 'in':
         totals.received += row.qty
+        break
+      case 'return':
+        totals.returned += row.qty
         break
       case 'out':
         totals.consumed += row.qty
@@ -154,6 +177,9 @@ export function ledgerTotals(rows: readonly MovementRow[]): LedgerTotals {
         break
       case 'adjust':
         totals.adjustments += row.delta
+        break
+      case 'adjust_down':
+        totals.adjustments -= row.qty
         break
       case 'transfer':
         // A transfer is signed: out of this branch, or into it.
@@ -179,13 +205,16 @@ export function ledgerTotals(rows: readonly MovementRow[]): LedgerTotals {
   return totals
 }
 
-/** `OnHand = Opening + Received + TransferIn − Consumed − TransferOut
- *  ± Adjustments − Damaged`, as a function rather than as a comment. */
+/** `OnHand = Opening + Received + TransferIn + Returned − Consumed
+ *  − TransferOut ± Adjustments − Damaged`, as a function rather than as a
+ *  comment. §A11 tracks Returned as its own quantity, which is why `return`
+ *  is a movement type and not a receipt. */
 export function onHandFrom(opening: number, totals: LedgerTotals): number {
   return (
     opening +
     totals.received +
-    totals.transferIn -
+    totals.transferIn +
+    totals.returned -
     totals.consumed -
     totals.transferOut +
     totals.adjustments -
@@ -219,6 +248,8 @@ export interface MovementInput {
   ref?: string
   reason?: string
   toBranchId?: string
+  /** Draw a consumption down against a held reservation (contract `movementCreate`). */
+  fromReservation?: boolean
 }
 
 /** The two stock-movement endpoints, as a seam a test can substitute. */

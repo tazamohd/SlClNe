@@ -115,7 +115,20 @@ export interface Collection<TRow> {
   bulkDelete(ids: readonly string[]): Promise<void>
 }
 
+/** A branch of the organization, as `GET /branches` presents it. There is no
+ *  design fixture for branches — the bundle never listed them — so the shape
+ *  is declared here rather than inferred from `generated/tables.ts`. The
+ *  collection is read-only on the server; it exists so a transfer destination
+ *  can be picked from a directory instead of typed as a raw ULID (F-017). */
+export interface BranchRow extends EntityMeta {
+  name: string
+  nameAr: string
+  city: string
+  isMain: boolean
+}
+
 export interface Repository {
+  branches: Collection<BranchRow>
   vehicles: Collection<(typeof T.VEHICLES)[number]>
   invoices: Collection<(typeof T.INVOICES)[number]>
   invoiceLines: Collection<(typeof T.INVOICE_LINES)[number]>
@@ -159,6 +172,7 @@ export type CollectionKey = keyof Repository
  *  the seed-fidelity suite fetches every one of these paths, so a name that
  *  drifts fails a test rather than a screen. */
 export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
+  branches: 'branches',
   customers: 'customers',
   vehicles: 'vehicles',
   fleets: 'fleets',
@@ -306,6 +320,10 @@ function fixture<TRow>(rows: readonly TRow[]): Collection<TRow> {
  *  original without accounting for different content — and the same rows
  *  `server/scripts/seed.ts` loads, so the API serves them identically. */
 export const mockRepository: Repository = {
+  /* The bundle carries no branches. An empty read-only collection is the
+   * honest mock: the fixture repository never invents rows, and the transfer
+   * form already explains that a live API is needed for stock operations. */
+  branches: fixture<BranchRow>([]),
   vehicles: fixture(T.VEHICLES),
   invoices: fixture(T.INVOICES),
   invoiceLines: fixture(T.INVOICE_LINES),

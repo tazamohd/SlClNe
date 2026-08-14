@@ -3,9 +3,14 @@ import {
   checkMovement as contractCheckMovement,
   checkReceipt,
   checkReservation,
+  checkReservationRelease,
   movementDelta as contractMovementDelta,
 } from '../../packages/contract/src/rules/inventory'
-import { movementCreate, movementType } from '../../packages/contract/src/entities/part'
+import {
+  movementCreate,
+  movementType,
+  reservationBody,
+} from '../../packages/contract/src/entities/part'
 import {
   MOVEMENT_TYPES,
   checkMovement,
@@ -38,12 +43,12 @@ import {
  *  case by case.
  *
  *  It does **not** exercise PostgreSQL. Row locking, RLS, the idempotency table
- *  and the audit row live behind an HTTP call to a database, and the only
- *  harness that can start one is `server/tests/harness.ts` — outside this
- *  agent's boundary. Every claim below that would need the database is written
- *  as a `GAP:` test that proves what *is* reachable and names precisely what
- *  the server must change. None of them is skipped, and none of them asserts a
- *  guarantee the code does not have.
+ *  and the audit row live behind an HTTP call to a database; those halves are
+ *  proven in `server/tests/inventory-enforcement.test.ts`. The `GAP:` tests
+ *  this file used to carry — no reservations, uncredited transfers,
+ *  increase-only adjustments, no return type, optional idempotency — were
+ *  closed when the server implemented F-017, and each is now asserted as the
+ *  real rule rather than documented as a hole.
  */
 
 /* ═════════════════════════════════════ the ledger, applied the way the API does */
@@ -62,12 +67,21 @@ interface Applied {
 let rowId = 0
 
 /** One movement, applied exactly as `POST /inventory/:id/movement` applies it:
- *  check the rule against the current row, then write `onHand + delta` and
- *  append a ledger row carrying that same delta. */
+ *  check the rule against the current row, then write the delta and append the
+ *  ledger row(s). A transfer appends *two* rows — the debit and the paired
+ *  credit against the destination — and leaves the organization's on-hand
+ *  unchanged, which is how the route conserves the books (F-017). A
+ *  consumption drawing on a reservation releases it as it goes. */
 function apply(
   part: Part,
   ledger: MovementRow[],
-  input: { type: MovementType; qty: number; toBranchId?: string; ref?: string },
+  input: {
+    type: MovementType
+    qty: number
+    toBranchId?: string
+    ref?: string
+    fromReservation?: boolean
+  },
 ): Applied {
   const failure = contractCheckMovement({
     type: input.type,
@@ -75,22 +89,28 @@ function apply(
     onHand: part.onHand,
     reserved: part.reserved,
     backorderable: part.backorderable,
+    fromReservation: input.fromReservation,
   })
   if (failure) return { ok: false, reason: failure.message }
 
   const delta = contractMovementDelta(input.type, input.qty)
-  part.onHand += delta
-  ledger.push({
-    id: `MV${(rowId += 1)}`,
-    type: input.type,
-    qty: input.qty,
-    delta,
-    ref: input.ref ?? null,
-    reason: null,
-    toBranchId: input.toBranchId ?? null,
-    createdAt: new Date(1_700_000_000_000 + rowId * 1000).toISOString(),
-    createdBy: 'tester',
-  })
+  const isTransfer = input.type === 'transfer'
+  part.onHand += isTransfer ? 0 : delta
+  if (input.type === 'out' && input.fromReservation) part.reserved -= input.qty
+  const pushRow = (rowDelta: number) =>
+    ledger.push({
+      id: `MV${(rowId += 1)}`,
+      type: input.type,
+      qty: input.qty,
+      delta: rowDelta,
+      ref: input.ref ?? null,
+      reason: null,
+      toBranchId: input.toBranchId ?? null,
+      createdAt: new Date(1_700_000_000_000 + rowId * 1000).toISOString(),
+      createdBy: 'tester',
+    })
+  pushRow(delta)
+  if (isTransfer) pushRow(input.qty)
   return { ok: true }
 }
 
@@ -165,12 +185,14 @@ describe('OnHand = Opening + Received + TransferIn − Consumed − TransferOut 
     const part: Part = { onHand: opening, reserved: 0, backorderable: false }
     const ledger: MovementRow[] = []
 
-    const sequence: { type: MovementType; qty: number }[] = [
+    const sequence: { type: MovementType; qty: number; toBranchId?: string }[] = [
       { type: 'in', qty: 40 },
       { type: 'out', qty: 15 },
       { type: 'adjust', qty: 3 },
       { type: 'damage', qty: 7 },
-      { type: 'transfer', qty: 20 },
+      { type: 'transfer', qty: 20, toBranchId: '01JBRANCHDESTINATION000001' },
+      { type: 'return', qty: 2 },
+      { type: 'adjust_down', qty: 1 },
       { type: 'in', qty: 1 },
       { type: 'out', qty: 1 },
     ]
@@ -179,7 +201,11 @@ describe('OnHand = Opening + Received + TransferIn − Consumed − TransferOut 
       const before = part.onHand
       const result = apply(part, ledger, step)
       expect(result.ok).toBe(true)
-      expect(part.onHand).toBe(before + contractMovementDelta(step.type, step.qty))
+      // A transfer relocates rather than consumes: its paired rows sum to
+      // zero, so the organization's on-hand does not move.
+      const expectedDelta =
+        step.type === 'transfer' ? 0 : contractMovementDelta(step.type, step.qty)
+      expect(part.onHand).toBe(before + expectedDelta)
       // The assertion the suite exists for, made after *every* operation.
       expect(invariantHolds(opening, part, ledger)).toBe(true)
     }
@@ -189,11 +215,12 @@ describe('OnHand = Opening + Received + TransferIn − Consumed − TransferOut 
       received: 41,
       consumed: 16,
       transferOut: 20,
-      transferIn: 0,
-      adjustments: 3,
+      transferIn: 20,
+      adjustments: 2,
+      returned: 2,
       damaged: 7,
     })
-    expect(part.onHand).toBe(100 + 41 + 0 - 16 - 20 + 3 - 7)
+    expect(part.onHand).toBe(100 + 41 + 20 + 2 - 16 - 20 + 2 - 7)
     expect(totals.inconsistent).toEqual([])
   })
 
@@ -325,28 +352,52 @@ describe('Reserved ≤ Available, and consumption never eats a reservation', () 
     expect(apply(part, [], { type: 'transfer', qty: 5 }).ok).toBe(false)
   })
 
-  it('GAP: nothing can create a reservation, so `reserved` is always zero in practice', () => {
-    /* `checkReservation` is written and correct, and `parts.reserved` exists as
-     * a column — but no route ever sets it. `server/src/routes/` has no reserve
-     * or release endpoint, `WRITERS.parts` sets `reserved: 0` on create and
-     * never again, and the movement types cannot express a reservation:      */
-    expect(movementType.options).toEqual(['in', 'out', 'transfer', 'adjust', 'damage'])
+  it('reservations are real: the contract carries the body, the bound and the release rule', () => {
+    /* The gap this test used to document is closed: the server now exposes
+     * POST /inventory/:id/reservation and its DELETE, writing `parts.reserved`
+     * under the movement row lock, guarded by `checkReservation` — proven over
+     * HTTP in `server/tests/inventory-enforcement.test.ts`. What is provable
+     * here is the shared contract those routes parse and enforce with. */
+    expect(reservationBody.safeParse({ qty: 4, ref: 'JOB-1' }).success).toBe(true)
+    expect(reservationBody.safeParse({ qty: 0 }).success).toBe(false)
+    expect(reservationBody.safeParse({ qty: -3 }).success).toBe(false)
+
+    // Reserved ≤ on hand, and a release never exceeds the hold.
+    expect(checkReservation({ qty: 5, onHand: 10, reserved: 6 })).not.toBeNull()
+    expect(checkReservation({ qty: 4, onHand: 10, reserved: 6 })).toBeNull()
+    expect(checkReservationRelease({ qty: 7, reserved: 6 })).not.toBeNull()
+    expect(checkReservationRelease({ qty: 6, reserved: 6 })).toBeNull()
+
+    // A reservation still is not a movement type — it is a hold, not a ledger
+    // entry, so it cannot masquerade as receiving or consumption.
     expect(movementCreate.safeParse({ type: 'reserve', qty: 1 }).success).toBe(false)
     expect(movementCreate.safeParse({ type: 'release', qty: 1 }).success).toBe(false)
+  })
 
-    /* Consequences, none of which this client may paper over:
-     *   - "no duplicate reservation" cannot be violated, because no reservation
-     *     can be made — the prohibition holds vacuously, not by enforcement.
-     *   - "consumption never exceeding the reservation" is unreachable: the
-     *     implemented rule is the *opposite* direction (a consumption may not
-     *     touch reserved stock at all), so consuming *against* a reservation is
-     *     impossible rather than bounded.
-     *   - Every `Available` figure this screen shows equals `OnHand` on live
-     *     data, and it says "—" rather than 0 when the dataset is silent.
-     * Server change required: POST /inventory/:id/reservation and DELETE of
-     * the same, writing `parts.reserved` under the existing row lock and
-     * guarded by `checkReservation`, plus a consumption path that draws down a
-     * named reservation instead of only avoiding it. */
+  it('a consumption can draw down its own reservation, bounded by the hold', () => {
+    const part: Part = { onHand: 10, reserved: 6, backorderable: false }
+    const ledger: MovementRow[] = []
+
+    // Bounded: seven exceeds the six held.
+    expect(
+      apply(part, ledger, { type: 'out', qty: 7, fromReservation: true }).reason,
+    ).toMatch(/more than is reserved/)
+    expect(part.onHand).toBe(10)
+    expect(part.reserved).toBe(6)
+
+    // Within the hold: on-hand and the hold fall together.
+    expect(apply(part, ledger, { type: 'out', qty: 5, fromReservation: true }).ok).toBe(true)
+    expect(part.onHand).toBe(5)
+    expect(part.reserved).toBe(1)
+    expect(invariantHolds(10, part, ledger)).toBe(true)
+
+    // And the schema refuses the flag on anything that is not a consumption.
+    expect(movementCreate.safeParse({ type: 'in', qty: 1, fromReservation: true }).success).toBe(
+      false,
+    )
+    expect(movementCreate.safeParse({ type: 'out', qty: 1, fromReservation: true }).success).toBe(
+      true,
+    )
   })
 })
 
@@ -378,43 +429,39 @@ describe('no double consumption, no double receiving, no duplicate transfer', ()
     expect(invariantHolds(0, part, ledger)).toBe(true)
   })
 
-  it('GAP: a movement sent without an idempotency key is applied twice', () => {
-    /* `movementCreate` carries no natural dedupe key — no job-card line, no
-     * receipt line, no goods-received note id — so two identical unkeyed POSTs
-     * are two legitimate movements as far as the server can tell. A second UI,
-     * an integration or a retry outside this screen therefore *can* double-
-     * receive or double-consume. */
+  it('the ledger arithmetic alone cannot catch a double booking — the mandatory key does', () => {
+    /* `movementCreate` still carries no natural dedupe key — no job-card line,
+     * no goods-received-note id — which is exactly why the server now refuses
+     * a movement without an `Idempotency-Key` header outright (400) and
+     * replays the first result for a repeated key. Both halves are proven over
+     * HTTP in `server/tests/inventory-enforcement.test.ts`; what this shows is
+     * why no client-side arithmetic could substitute for that rule. */
     expect(movementCreate.safeParse({ type: 'in', qty: 10 }).success).toBe(true)
 
     const part: Part = { onHand: 0, reserved: 0, backorderable: false }
     const ledger: MovementRow[] = []
     apply(part, ledger, { type: 'in', qty: 10 })
     apply(part, ledger, { type: 'in', qty: 10 })
-    // Both applied. The invariant still holds — the ledger is consistent with
-    // itself — which is exactly why this needs a server rule rather than a
-    // client one: the arithmetic cannot tell you the second receipt was a
-    // mistake.
+    // Both applied and the invariant still holds — the ledger is consistent
+    // with itself. The arithmetic cannot tell you the second receipt was a
+    // retry, so the enforcement has to live at the request boundary.
     expect(part.onHand).toBe(20)
     expect(invariantHolds(0, part, ledger)).toBe(true)
-
-    /* Server change required: make `Idempotency-Key` mandatory on
-     * POST /inventory/:id/movement (400 without it), or add a unique index on
-     * (org_id, part_id, type, ref) for movements that carry a document
-     * reference, so the same delivery note or job line cannot be booked twice. */
   })
 
-  it('GAP: a transfer debits the source branch and credits nothing', () => {
-    /* `movementDelta('transfer')` is always negative and the route writes one
-     * row against one part. `toBranchId` is recorded and then never read, so no
-     * destination on-hand ever rises. */
+  it('a transfer books the paired credit, so the organization’s sum is conserved', () => {
+    // The debit row's sign is still negative — that is the row the caller
+    // requests — but the route writes the matching credit in the same
+    // transaction (proven over HTTP in inventory-enforcement.test.ts).
     expect(contractMovementDelta('transfer', 5)).toBe(-5)
 
     const source: Part = { onHand: 30, reserved: 0, backorderable: false }
     const ledger: MovementRow[] = []
-    apply(source, ledger, { type: 'transfer', qty: 5, toBranchId: '01JBRANCHXXXXXXXXXXXXXXXXX' })
+    apply(source, ledger, { type: 'transfer', qty: 5, toBranchId: '01JBRANCHDESTINATION000001' })
 
-    // The destination is a branch ULID, and no endpoint lists branches — which
-    // is why the form asks for an id rather than offering invented names.
+    // A destination is mandatory and must be a branch id, not a name; the
+    // branches directory (`GET /branches`) is what a picker lists.
+    expect(movementCreate.safeParse({ type: 'transfer', qty: 5 }).success).toBe(false)
     expect(
       movementCreate.safeParse({ type: 'transfer', qty: 5, toBranchId: 'Riyadh Central' }).success,
     ).toBe(false)
@@ -422,52 +469,65 @@ describe('no double consumption, no double receiving, no duplicate transfer', ()
       movementCreate.safeParse({
         type: 'transfer',
         qty: 5,
-        toBranchId: '01JBRANCHXXXXXXXXXXXXXXXXX',
+        toBranchId: '01JBRANCHDESTINATION000001',
       }).success,
     ).toBe(true)
 
     const totals = ledgerTotals(ledger)
+    expect(ledger).toHaveLength(2)
     expect(totals.transferOut).toBe(5)
-    // The other half of the transfer does not exist anywhere in the system.
-    expect(totals.transferIn).toBe(0)
-    // Per part the invariant holds; across branches, five units left the
-    // organization's books entirely.
+    expect(totals.transferIn).toBe(5)
+    // Five units moved; none left the organization's books.
+    expect(source.onHand).toBe(30)
     expect(invariantHolds(30, source, ledger)).toBe(true)
-
-    /* Server change required: `POST /inventory/:id/movement` with
-     * `type: 'transfer'` must write the paired credit — a second movement row
-     * against the destination branch's part, with a positive delta and a shared
-     * transfer id — inside the same transaction as the debit. Until it does,
-     * `TransferIn` is structurally zero and the multi-branch sum is not
-     * conserved. */
   })
 })
 
-describe('the movement types the API can and cannot record', () => {
-  it('GAP: a return to stock has no movement type', () => {
-    expect(movementType.options).not.toContain('return')
-    expect(movementCreate.safeParse({ type: 'return', qty: 2 }).success).toBe(false)
-    /* §A11 tracks `Returned` as its own quantity. Recording a return as `in`
-     * would put it in `Received`, where it would corrupt the receiving total
-     * and make "no double receiving" unprovable from the ledger — so the screen
-     * offers five movement kinds, not six, and this is a contract change:
-     * add `'return'` to `movementType`, `case 'return': return qty` to
-     * `movementDelta`, and a `Returned` term to the reconciliation. */
+describe('the movement types the API records', () => {
+  it('books a return as Returned, never as Received', () => {
+    /* §A11 tracks `Returned` as its own quantity; folding it into `in` would
+     * corrupt the receiving total and make "no double receiving" unprovable
+     * from the ledger. `return` is now its own type with its own term. */
+    expect(movementType.options).toContain('return')
+    expect(movementCreate.safeParse({ type: 'return', qty: 2 }).success).toBe(true)
+    expect(contractMovementDelta('return', 2)).toBe(2)
+
+    const part: Part = { onHand: 5, reserved: 0, backorderable: false }
+    const ledger: MovementRow[] = []
+    apply(part, ledger, { type: 'return', qty: 2 })
+    const totals = ledgerTotals(ledger)
+    expect(totals.returned).toBe(2)
+    expect(totals.received).toBe(0)
+    expect(part.onHand).toBe(7)
+    expect(invariantHolds(5, part, ledger)).toBe(true)
   })
 
-  it('GAP: an adjustment can only ever increase the recorded quantity', () => {
-    /* §A11's equation carries `± Adjustments`. The implementation carries `+`:
-     * `movementDelta('adjust', qty)` returns `+qty`, and `movementCreate`
-     * refuses a negative quantity, so a physical count that comes up *short*
-     * cannot be recorded as an adjustment at all. */
+  it('records a shortfall as adjust_down, with the negative-stock guard on the result', () => {
+    /* §A11's equation carries `± Adjustments`. The minus direction is its own
+     * type rather than a signed quantity, because "qty is always positive and
+     * the type decides the sign" is the rule that stops a caller turning a
+     * receipt into a consumption — a signed adjust would be its one exception. */
+    expect(movementType.options).toContain('adjust_down')
     expect(contractMovementDelta('adjust', 6)).toBe(6)
+    expect(contractMovementDelta('adjust_down', 6)).toBe(-6)
     expect(movementCreate.safeParse({ type: 'adjust', qty: -6 }).success).toBe(false)
+    expect(movementCreate.safeParse({ type: 'adjust_down', qty: 6 }).success).toBe(true)
 
-    /* The practical consequence is worse than the missing feature: the only way
-     * to record a shortfall today is `out` or `damage`, which books a count
-     * correction as consumption or as a write-off and silently inflates both
-     * totals. Server change required: accept a signed quantity for `adjust`
-     * (or add `adjust_down`), and keep the negative-stock guard on the result. */
+    const part: Part = { onHand: 10, reserved: 0, backorderable: false }
+    const ledger: MovementRow[] = []
+    expect(apply(part, ledger, { type: 'adjust_down', qty: 3 }).ok).toBe(true)
+    expect(part.onHand).toBe(7)
+    const totals = ledgerTotals(ledger)
+    // A count correction is an adjustment — it inflates neither consumption
+    // nor damage, the misbookings the old gap forced.
+    expect(totals.adjustments).toBe(-3)
+    expect(totals.consumed).toBe(0)
+    expect(totals.damaged).toBe(0)
+    expect(invariantHolds(10, part, ledger)).toBe(true)
+
+    // The guard is on the result: a count cannot take stock below zero.
+    expect(apply(part, ledger, { type: 'adjust_down', qty: 8 }).ok).toBe(false)
+    expect(part.onHand).toBe(7)
   })
 })
 
