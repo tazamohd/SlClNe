@@ -2,14 +2,22 @@
 import type { MovementType } from '../entities/part'
 import type { RuleFailure } from './money'
 
-/** The sign a movement type applies to on-hand quantity. */
+/** The sign a movement type applies to on-hand quantity.
+ *
+ *  For a transfer this is the sign of the *debit* row. The route writes the
+ *  paired credit row (+qty against the destination branch) in the same
+ *  transaction, so the org's books conserve; this function answers "what does
+ *  the requested row do", which is also the feasibility question the guard
+ *  below asks. */
 export function movementDelta(type: MovementType, qty: number): number {
   switch (type) {
     case 'in':
+    case 'return':
       return qty
     case 'out':
     case 'damage':
     case 'transfer':
+    case 'adjust_down':
       return -qty
     case 'adjust':
       return qty
@@ -17,16 +25,28 @@ export function movementDelta(type: MovementType, qty: number): number {
 }
 
 /** No negative stock unless the part is explicitly backorderable, and never a
- *  consumption larger than what is unreserved. */
+ *  consumption larger than what is unreserved — unless it consumes a
+ *  reservation, in which case the reservation is the bound. */
 export function checkMovement(args: {
   type: MovementType
   qty: number
   onHand: number
   reserved: number
   backorderable: boolean
+  fromReservation?: boolean
 }): RuleFailure | null {
   if (args.qty <= 0) {
     return { code: 'rule_violated', message: 'A movement quantity must be positive.', field: 'qty' }
+  }
+  /* The reservation is the bound the caller chose, so it is the message they
+   * get — checked before the generic negative-stock guard, which would name
+   * the symptom rather than the limit. */
+  if (args.type === 'out' && args.fromReservation && args.qty > args.reserved) {
+    return {
+      code: 'rule_violated',
+      message: 'Cannot consume more than is reserved.',
+      field: 'qty',
+    }
   }
   const next = args.onHand + movementDelta(args.type, args.qty)
   if (next < 0 && !args.backorderable) {
@@ -36,7 +56,7 @@ export function checkMovement(args: {
       field: 'qty',
     }
   }
-  if (args.type === 'out' || args.type === 'transfer') {
+  if ((args.type === 'out' && !args.fromReservation) || args.type === 'transfer') {
     const available = args.onHand - args.reserved
     if (args.qty > available && !args.backorderable) {
       return {
@@ -59,6 +79,21 @@ export function checkReservation(args: {
     return {
       code: 'rule_violated',
       message: 'Cannot reserve more than is on hand.',
+      field: 'qty',
+    }
+  }
+  return null
+}
+
+/** A release cannot give back more than is held. */
+export function checkReservationRelease(args: {
+  qty: number
+  reserved: number
+}): RuleFailure | null {
+  if (args.qty > args.reserved) {
+    return {
+      code: 'rule_violated',
+      message: 'Cannot release more than is reserved.',
       field: 'qty',
     }
   }
