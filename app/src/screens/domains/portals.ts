@@ -10,5 +10,15 @@
  *  otherwise — `shell: null` for a screen with no chrome, or a shell component
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
+import { PortalShell } from '@/components/shell/PortalShell'
+import { TechnicianPortal } from '../portals/TechnicianPortal'
+import { TechnicianPortalJobDetail } from '../portals/TechnicianPortalJobDetail'
+import { CustomerPortal } from '../portals/CustomerPortal'
+import { CustomerPortalBooking } from '../portals/CustomerPortalBooking'
 
-export const SCREENS: DomainScreens = {}
+export const SCREENS: DomainScreens = {
+  TechnicianPortal: { component: TechnicianPortal, shell: PortalShell },
+  'TechnicianPortal.JobDetail': { component: TechnicianPortalJobDetail, shell: PortalShell },
+  CustomerPortal: { component: CustomerPortal, shell: PortalShell },
+  'CustomerPortal.Booking': { component: CustomerPortalBooking, shell: PortalShell },
+}
