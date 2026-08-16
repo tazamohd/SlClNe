@@ -776,6 +776,120 @@ export const loanRepayments = pgTable(
   }),
 )
 
+/* ------------------------------------------------------------------- HR */
+
+/** Employees — a member of staff who belongs to a department (the existing
+ *  `departments` collection) and a branch. **Salary is sensitive**: the
+ *  `Employee salary` field rule hides `salaryHalalas` from the roles it names,
+ *  and the server nulls it on the way out (`GLOBAL_REDACTIONS`). Money is integer
+ *  halalas. Gated on `hr`. */
+export const employees = pgTable(
+  'employees',
+  {
+    ...tenant,
+    employeeNumber: varchar('employee_number', { length: 40 }).notNull(),
+    name: varchar('name', { length: 200 }).notNull(),
+    nameAr: varchar('name_ar', { length: 200 }),
+    title: varchar('title', { length: 160 }),
+    departmentId: varchar('department_id', { length: ULID_LENGTH }),
+    hireDate: date('hire_date'),
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    salaryHalalas: money('salary_halalas').notNull().default(0),
+  },
+  (t) => ({
+    numberPerOrg: uniqueIndex('employees_org_number_idx').on(t.orgId, t.employeeNumber),
+    byOrg: index('employees_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Payroll runs — one calendar month. The totals (gross, allowances,
+ *  deductions, net) are the column sums of the run's lines, computed by the
+ *  server and **frozen when the run is posted**. A posted run cannot be reopened
+ *  or edited (§5b invariant); the transition is the bespoke `/payroll/runs/:id/
+ *  post` route. Money is integer halalas. Gated on `hr`. */
+export const payrollRuns = pgTable(
+  'payroll_runs',
+  {
+    ...tenant,
+    /** `YYYY-MM`. */
+    period: varchar('period', { length: 7 }).notNull(),
+    status: varchar('status', { length: 16 }).notNull().default('draft'),
+    grossHalalas: money('gross_halalas').notNull().default(0),
+    allowancesHalalas: money('allowances_halalas').notNull().default(0),
+    deductionsHalalas: money('deductions_halalas').notNull().default(0),
+    netHalalas: money('net_halalas').notNull().default(0),
+    postedAt: timestamp('posted_at', { withTimezone: true }),
+    postedBy: varchar('posted_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    periodPerOrg: uniqueIndex('payroll_runs_org_period_idx').on(t.orgId, t.period),
+    byOrg: index('payroll_runs_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Payroll lines — one employee's pay within a run. The net is computed by the
+ *  server as `gross + allowances − deductions`, never sent by the client. Money
+ *  is integer halalas; the run's totals are these summed. Gated on `hr`. */
+export const payrollLines = pgTable(
+  'payroll_lines',
+  {
+    ...tenant,
+    payrollRunId: varchar('payroll_run_id', { length: ULID_LENGTH }).notNull(),
+    employeeId: varchar('employee_id', { length: ULID_LENGTH }).notNull(),
+    employeeName: varchar('employee_name', { length: 200 }).notNull(),
+    grossHalalas: money('gross_halalas').notNull().default(0),
+    allowancesHalalas: money('allowances_halalas').notNull().default(0),
+    deductionsHalalas: money('deductions_halalas').notNull().default(0),
+    netHalalas: money('net_halalas').notNull().default(0),
+  },
+  (t) => ({
+    byRun: index('payroll_lines_run_idx').on(t.orgId, t.payrollRunId),
+  }),
+)
+
+/** Timesheets — a day's clock-in/out or worked minutes for one employee. Worked
+ *  minutes are stored as an integer, so no fractional-hour float. Gated on
+ *  `hr`. */
+export const timesheets = pgTable(
+  'timesheets',
+  {
+    ...tenant,
+    employeeId: varchar('employee_id', { length: ULID_LENGTH }).notNull(),
+    employeeName: varchar('employee_name', { length: 200 }).notNull(),
+    workDate: date('work_date').notNull(),
+    clockIn: varchar('clock_in', { length: 5 }),
+    clockOut: varchar('clock_out', { length: 5 }),
+    minutes: integer('minutes').notNull().default(0),
+    status: varchar('status', { length: 16 }).notNull().default('submitted'),
+  },
+  (t) => ({
+    byEmployee: index('timesheets_employee_idx').on(t.orgId, t.employeeId, t.workDate),
+  }),
+)
+
+/** Leave requests — a range of days an employee asks off. The approval (approve
+ *  / reject) is the bespoke router, gated on the `hr` `a` grant and audited; the
+ *  approver is recorded for segregation of duties. Gated on `hr`. */
+export const leaveRequests = pgTable(
+  'leave_requests',
+  {
+    ...tenant,
+    employeeId: varchar('employee_id', { length: ULID_LENGTH }).notNull(),
+    employeeName: varchar('employee_name', { length: 200 }).notNull(),
+    type: varchar('type', { length: 24 }).notNull().default('annual'),
+    startDate: date('start_date').notNull(),
+    endDate: date('end_date').notNull(),
+    days: integer('days').notNull().default(1),
+    status: varchar('status', { length: 16 }).notNull().default('submitted'),
+    reason: text('reason'),
+    approverId: varchar('approver_id', { length: ULID_LENGTH }),
+    decidedAt: timestamp('decided_at', { withTimezone: true }),
+  },
+  (t) => ({
+    byEmployee: index('leave_requests_employee_idx').on(t.orgId, t.employeeId, t.status),
+  }),
+)
+
 /* -------------------------------------------------- diagnostics & knowledge */
 
 export const obdDevices = pgTable('obd_devices', {

@@ -64,6 +64,13 @@
       "when": 1786465096900,
       "tag": "0008_loans",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1786465097900,
+      "tag": "0009_hr",
+      "breakpoints": true
     }
   ]
 }
