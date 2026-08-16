@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-402 capabilities · 158 rendering · 204 placeholder · 0 data-backed.
+402 capabilities · 167 rendering · 195 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -65,7 +65,7 @@
 | FlowSpec | `/flow-spec` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
 | ForgotPassword | `/forgot-password` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | GlobalSearch | `/global-search` | app | dashboard | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 12 roles | route | DISCOVERED |
-| HRPayroll | `/hrpayroll` | app | hr | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
+| HRPayroll | `/hrpayroll` | app | hr | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | Index | `/index` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
 | InsuranceReports | `/insurance-reports` | app | execreports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | Integrations | `/integrations` | app | admin | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
@@ -313,14 +313,14 @@
 | Profit Analysis | `/profit-analysis` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
 | KPI Dashboard | `/kpi-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
 | Productivity Tracker | `/productivity-tracker` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| HR Management | `/hr-management` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Staff Directory | `/staff-directory` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Staff Scheduling | `/staff-scheduling` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Staff Performance Review | `/staff-performance-review` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Timesheet Management | `/timesheet-management` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Timeclock Payroll | `/timeclock-payroll` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Payroll Management | `/payroll-management` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Leave Requests | `/leave-requests` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| HR Management | `/hr-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Staff Directory | `/staff-directory` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Staff Scheduling | `/staff-scheduling` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Staff Performance Review | `/staff-performance-review` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Timesheet Management | `/timesheet-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Timeclock Payroll | `/timeclock-payroll` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Payroll Management | `/payroll-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Leave Requests | `/leave-requests` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Training LMS | `/training-lms` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
 | Wearable Integration | `/wearable-integration` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | General Ledger | `/general-ledger` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |

@@ -12,15 +12,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | product | 362 |
 | reference only | 28 |
 | external dependency | 12 |
-| rendered | 158 |
-| placeholder | 204 |
-| designed mobile owed | 81 |
+| rendered | 167 |
+| placeholder | 195 |
+| designed mobile owed | 82 |
 | untested | 0 |
-| mock only | 158 |
+| mock only | 167 |
 | data backed | 0 |
 | e2e covered | 402 |
 | content asserted | 79 |
-| rendered without assertion | 79 |
+| rendered without assertion | 88 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |
@@ -30,7 +30,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 17 | 11 | 17 | 28 |
-| app | 312 | 114 | 186 | 64 | 312 |
+| app | 312 | 123 | 177 | 65 | 312 |
 | call-center | 2 | 0 | 2 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 6 | 2 | 0 | 8 |
@@ -52,11 +52,11 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Customers, vehicles & CRM | 09 | G4/G8 | `████████████████████` 100% | 17 | 17 |
 | Customer mobile app | 16 | G10 | `████████████████████` 100% | 11 | 11 |
 | Shared UI & reference | 04 | G2 | `░░░░░░░░░░░░░░░░░░░░` 0% | 0 | 28 |
-| HR & payroll | 14 | G8 | `░░░░░░░░░░░░░░░░░░░░` 0% | 0 | 1 |
+| HR & payroll | 14 | G8 | `████████████████████` 100% | 1 | 1 |
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
 | Public website | 17 | G11 | `████████████████████` 100% | 10 | 10 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
-| Feature map (no design) | 08–17 | G12 | `████░░░░░░░░░░░░░░░░` 18% | 37 | 211 |
+| Feature map (no design) | 08–17 | G12 | `████░░░░░░░░░░░░░░░░` 21% | 45 | 211 |
 
 ## By RBAC module
 
@@ -74,7 +74,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | dashboard | 4 | 1 |
 | estimates | 4 | 4 |
 | execreports | 5 | 5 |
-| hr | 2 | 1 |
+| hr | 2 | 2 |
 | inventory | 1 | 1 |
 | invoices | 4 | 4 |
 | jobcards | 10 | 10 |

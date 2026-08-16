@@ -422,14 +422,16 @@
     },
     {
       "id": "F-035",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "InsuranceReports/LoanReports still render the stale gap though their data now exists",
       "detail": "GapReports.tsx (agent 12's boundary) still shows 'no data source yet' for insuranceClaims/loanContracts, but those collections and the productReports aggregates now exist. The two reports should graduate against them.",
       "why": "A small wiring follow-up: F-028 deferred these to the greenfield schema, which has now landed.",
       "foundBy": "13",
-      "verified": "reported by agent 13",
+      "verified": "fixed by the orchestrator; app 813 tests, gates at baseline",
       "owner": "12",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "InsuranceReports and LoanReports read productReports.insuranceClaimsSummary/loansSummary on the live path and keep the honest gap on the fixture build. No client-side aggregate."
     }
   ]
 }

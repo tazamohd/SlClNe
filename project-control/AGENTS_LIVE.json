@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T14:15:00Z",
+  "asOf": "2026-08-12T14:45:00Z",
   "wave": "W2",
   "waveName": "Insurance/Loans/HR vertical",
-  "waveNote": "Insurance/loans/HR vertical — backend complete and the insurance screen landed. Verified on a reset DB: server 342→389 (insurance policies/claims + lifecycle, loans + amortised schedule, HR employees/payroll/timeclock/leave with proven salary redaction and the payroll-posting invariant), app 754→778, gates at the new baseline (204 placeholder). The parallel run of the HR backend and the insurance screen was clean (explicit staging, no churn). Remaining: agent 14 builds the HR screens against the new backend, and agent 12 graduates the two insurance/loan reports (F-035). RBAC follow-ups F-033/F-034 logged.",
+  "waveNote": "Insurance/loans/HR vertical complete. Backend (insurance, loans, HR) + the Insurance-Claims workspace + nine HR screens (HRPayroll, Staff-Directory/HR-Management, Payroll-Management with the posting invariant reflected in the UI, Leave-Requests, timesheets; Staff-Scheduling/Performance-Review gapped honestly) + the two insurance/loan reports graduated (F-035). Verified on a reset DB: server 389, app 813, gates at the new baseline (195 placeholder, 167/402 rendering). Salary redaction respected end to end. RBAC follow-ups F-033/F-034 remain (feature-map screen-module mappings; a real insurance module) — low severity, not blockers. Next major gap: procurement backend (F-022), then the cross-cutting hardening and certification.",
   "agents": [
     {
       "id": "03",
@@ -152,7 +152,7 @@
         "app/src/screens/domains/accounting.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 5 wiring: all five report screens to the finance aggregates + bank-match + saved-reports, F-008 banner kept visible, no client money aggregate introduced."
+      "notes": "Tranche 5 wiring: all five report screens to the finance aggregates + bank-match + saved-reports, F-008 banner kept visible, no client money aggregate introduced. · F-035: the orchestrator graduated InsuranceReports/LoanReports to the productReports aggregates."
     },
     {
       "id": "11",

@@ -5,15 +5,15 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 158,
-    "placeholder": 204,
-    "designedMobileOwed": 81,
+    "rendered": 167,
+    "placeholder": 195,
+    "designedMobileOwed": 82,
     "untested": 0,
-    "mockOnly": 158,
+    "mockOnly": 167,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 79,
+    "renderedWithoutAssertion": 88,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -29,9 +29,9 @@
     },
     "app": {
       "total": 312,
-      "rendered": 114,
-      "placeholder": 186,
-      "mobileOwed": 64,
+      "rendered": 123,
+      "placeholder": 177,
+      "mobileOwed": 65,
       "e2e": 312,
       "dataBacked": 0
     },
@@ -167,9 +167,9 @@
     },
     "hr": {
       "total": 1,
-      "rendered": 0,
-      "placeholder": 1,
-      "mobileOwed": 0,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 1,
       "e2e": 1,
       "dataBacked": 0
     },
@@ -199,8 +199,8 @@
     },
     "featuremap": {
       "total": 211,
-      "rendered": 37,
-      "placeholder": 162,
+      "rendered": 45,
+      "placeholder": 154,
       "mobileOwed": 0,
       "e2e": 211,
       "dataBacked": 0
@@ -337,9 +337,9 @@
     },
     "hr": {
       "total": 2,
-      "rendered": 1,
-      "placeholder": 1,
-      "mobileOwed": 1,
+      "rendered": 2,
+      "placeholder": 0,
+      "mobileOwed": 2,
       "e2e": 2,
       "dataBacked": 0
     },
