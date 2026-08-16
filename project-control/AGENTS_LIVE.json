@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T10:45:00Z",
+  "asOf": "2026-08-12T11:10:00Z",
   "wave": "W2",
-  "waveName": "Product → backend fill",
-  "waveNote": "Backend fill through tranche 4-C: F-025, F-027, F-028, F-029 and F-030 are closed, so the CRM, fleet, finance and workshop screens now have real endpoints (server 342 tests, app 697, gates at baseline). Still open on the backend: F-022 — procurement has no server collections yet (requisitions/POs), so agent 11s screens stay honest gaps — and the greenfield insurance/fleet/loans/HR schema, whose screens do not exist either. Next highest-ROI move is the client wiring pass: agents 08/09/12 connecting the report and approval CTAs to the endpoints 4-A/B/C just built, turning ~15 built-but-gapped screens fully functional with no backend contention.",
+  "waveName": "Client wiring",
+  "waveNote": "Tranche 5 (client wiring) running: agents 08, 09, 12, 17 connect the screens they built to the endpoints the 4-A/B/C backend slices shipped, turning honest gap states into live data. This adds depth, not new routes — the rendering count stays 155. Live only when VITE_API_URL is set; the fixture build keeps its honest gap so the two paths are both tested. Procurement (F-022) and the greenfield insurance/HR schema are still backend work for later.",
   "agents": [
     {
       "id": "03",
@@ -98,23 +98,23 @@
       "id": "08",
       "name": "Workshop / Mini ERP",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T06:55:00Z",
-      "scope": "Finishing workshop: ApprovalInbox, OBDDiagnostics, DiagnosticReport, TechnicianKB, TechnicianSchedule, WorkshopReports, CustomerApproval, AppointmentCalendar, EstimateDetail — against the real jobs/appointments/obd/dtc/kb/diag/approval collections",
+      "state": "running",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: ApprovalInbox→GET /approvals, EstimateDetail/DiagnosticReport→estimate VAT fields + diagnostic total, WorkshopQC/EstimateDetail→history + sodConflicts, a workshop-analytics view→GET /reports/workshop, the OBD/OTP screen→adapter with the 503 gap state.",
       "owns": [
         "app/src/screens/workshop/**",
         "app/src/screens/domains/workshop.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 3: nine workshop/ERP screens on real data — ApprovalInbox, EstimateDetail, AppointmentCalendar, TechnicianSchedule, TechnicianKB, OBDDiagnostics, DiagnosticReport, WorkshopReports, CustomerApproval. Refused every client-side total (§5b), deferring to server figures, and pinned seven server gaps (F-029) plus the appointment↔technician seed defect (F-030)."
+      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
     },
     {
       "id": "09",
       "name": "Customers / CRM",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T06:55:00Z",
-      "scope": "Finishing CRM: LeadDetail, CRMCalendar, CustomerFeedback, FleetContract — against the real leads/opportunities/campaigns/segments/tasks/fleets collections",
+      "state": "running",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: Customers/Vehicles edit + the four CRM detail screens (LeadDetail conversion, FleetContract terms/renew/vehicles, CustomerFeedback submit, CRMCalendar task create) to the now-writable CRM/fleet collections and the feedback/conversion endpoints.",
       "owns": [
         "app/src/screens/registry/**",
         "app/src/screens/crm/**",
@@ -122,7 +122,7 @@
         "app/src/components/shell/DetailPage.tsx (W2 grant)"
       ],
       "blocks": [],
-      "notes": "Tranche 3: LeadDetail, CRMCalendar, CustomerFeedback, FleetContract. Honest read/interactive surfaces over read-only collections; pinned the CRM/fleet write and endpoint gaps (F-027)."
+      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
     },
     {
       "id": "10",
@@ -143,16 +143,16 @@
       "id": "12",
       "name": "Accounting / Finance",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T06:55:00Z",
-      "scope": "Finishing accounting: BankReconciliation, TaxManagement, InvoicePreview, and the report set (Reports, ReportsAnalytics, SalesReports, CustomReports) against the real ledger/invoice/payment collections",
+      "state": "running",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: SalesReports→invoicesSummary, TaxManagement→taxReturn, FinancialReports/ReportsAnalytics→trialBalance, BankReconciliation→bankStatements + match, CustomReports→savedReports. Replace each AGGREGATE_GAP notice with the server figure.",
       "owns": [
         "app/src/screens/accounting/**",
         "app/src/screens/finance/**",
         "app/src/screens/domains/accounting.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 3: BankReconciliation, TaxManagement, InvoicePreview and the report set. Held the §A10 line — computed no money aggregate the server does not, disclosing each as a gap (F-028). F-008 kept visible and untouched."
+      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
     },
     {
       "id": "11",
@@ -187,16 +187,16 @@
       "id": "17",
       "name": "Public Website & Landing",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T03:40:00Z",
-      "scope": "PublicShell and the ten design-authoritative public pages, ungated and rendered without a session, with SEO basics and no new dependencies",
+      "state": "running",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: the Contact form→POST /public/leads (F-025) with a real success state; plus the SEO/sitemap follow-ups it flagged, and the Tier C content pages (Pricing, Request Demo, Careers, Privacy, Terms) if time allows.",
       "owns": [
         "app/src/screens/public/**",
         "app/src/components/shell/PublicShell.tsx",
         "app/src/screens/domains/website.ts"
       ],
       "blocks": [],
-      "notes": "PublicShell, the ten Tier A public pages, robots/sitemap, all ungated and rendering signed-out. Contact form states its missing endpoint honestly (F-025). ~125 strings await Arabic (F-026)."
+      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
     }
   ],
   "shared": {
