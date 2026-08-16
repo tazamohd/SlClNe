@@ -8000,9 +8000,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

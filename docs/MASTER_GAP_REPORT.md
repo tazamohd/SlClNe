@@ -8,11 +8,11 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-001 | BLOCKER | 205 product routes render PendingScreen | 01 | W2 |
+| BLK-001 | BLOCKER | 204 product routes render PendingScreen | 01 | W2 |
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 157 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 78 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-004 | CRITICAL | 158 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 79 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-006 | HIGH | 81 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
@@ -23,14 +23,14 @@ Computed from the registry. Every line is a query, not an opinion.
 | Flag | Count | Meaning |
 |---|---|---|
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
-| PLACEHOLDER | 205 | product route renders PendingScreen |
-| TABLET_MISSING | 157 | never verified at 768–1024 |
-| ARABIC_MISSING | 157 | Arabic not certified |
-| RTL_BROKEN | 157 | RTL not certified |
-| MOCK_ONLY | 157 | renders, but from fixtures rather than an API |
+| PLACEHOLDER | 204 | product route renders PendingScreen |
+| TABLET_MISSING | 158 | never verified at 768–1024 |
+| ARABIC_MISSING | 158 | Arabic not certified |
+| RTL_BROKEN | 158 | RTL not certified |
+| MOCK_ONLY | 158 | renders, but from fixtures rather than an API |
 | MOBILE_MISSING | 81 | a .Mobile design exists and is not built |
 | DESKTOP_ONLY | 81 | renders on desktop with no mobile treatment |
-| NO_CONTENT_ASSERTION | 78 | — |
+| NO_CONTENT_ASSERTION | 79 | — |
 
 ## Designs not in the registry
 
@@ -44,7 +44,7 @@ _None._
 
 | Domain | Placeholder | Total |
 |---|---|---|
-| Feature map (no design) | 163 | 211 |
+| Feature map (no design) | 162 | 211 |
 | Administration | 16 | 17 |
 | Auth & onboarding | 11 | 28 |
 | AI & automation | 7 | 10 |

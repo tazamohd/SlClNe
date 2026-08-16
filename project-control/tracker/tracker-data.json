@@ -3183,7 +3183,7 @@
         {
           "name": "Insurance Claims",
           "route": "/insurance-claims",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 157,
+    "built": 158,
     "designedMobile": 113
   }
 }

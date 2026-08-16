@@ -5,15 +5,15 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 157,
-    "placeholder": 205,
+    "rendered": 158,
+    "placeholder": 204,
     "designedMobileOwed": 81,
     "untested": 0,
-    "mockOnly": 157,
+    "mockOnly": 158,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 78,
+    "renderedWithoutAssertion": 79,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -29,8 +29,8 @@
     },
     "app": {
       "total": 312,
-      "rendered": 113,
-      "placeholder": 187,
+      "rendered": 114,
+      "placeholder": 186,
       "mobileOwed": 64,
       "e2e": 312,
       "dataBacked": 0
@@ -199,8 +199,8 @@
     },
     "featuremap": {
       "total": 211,
-      "rendered": 36,
-      "placeholder": 163,
+      "rendered": 37,
+      "placeholder": 162,
       "mobileOwed": 0,
       "e2e": 211,
       "dataBacked": 0
