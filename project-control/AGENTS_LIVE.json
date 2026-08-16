@@ -3,7 +3,7 @@
   "asOf": "2026-08-12T10:45:00Z",
   "wave": "W2",
   "waveName": "Product → backend fill",
-  "waveNote": "Tranche 4-C landed and verified on a reset database (F-029 closed): estimate VAT breakdown, the audit-history reads that close the F-004 client half, a unified approvals queue, server-computed workshop analytics, and OBD/OTP as honest adapter-plus-mock. Server 312→342, app 697, gates at baseline. The backend fill is now complete for every domain that already had a screen — F-022/25/27/28/29/30 all closed. Two things remain before the product surfaces are whole: the greenfield insurance/fleet/loans/HR schema (their screens do not exist yet either), and a client pass wiring the CRM/finance/workshop CTAs to all the new endpoints.",
+  "waveNote": "Backend fill through tranche 4-C: F-025, F-027, F-028, F-029 and F-030 are closed, so the CRM, fleet, finance and workshop screens now have real endpoints (server 342 tests, app 697, gates at baseline). Still open on the backend: F-022 — procurement has no server collections yet (requisitions/POs), so agent 11s screens stay honest gaps — and the greenfield insurance/fleet/loans/HR schema, whose screens do not exist either. Next highest-ROI move is the client wiring pass: agents 08/09/12 connecting the report and approval CTAs to the endpoints 4-A/B/C just built, turning ~15 built-but-gapped screens fully functional with no backend contention.",
   "agents": [
     {
       "id": "03",
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "Tranche 4-C: F-029 workshop approvals/diagnostics — 5 server-computed endpoints, the F-004 audit-history read, OBD/OTP as adapter-plus-mock at EXTERNAL_DEPENDENCY, migration 0006, 342 server tests. Completed cleanly. This closes the backend fill for the existing screens; greenfield insurance/HR schema and the client wiring pass remain."
+      "notes": "Tranche 4-C: F-029 workshop approvals/diagnostics — 5 server-computed endpoints, the F-004 audit-history read, OBD/OTP as adapter-plus-mock at EXTERNAL_DEPENDENCY, migration 0006, 342 server tests. Completed cleanly. Closes the CRM/finance/workshop backend fill; procurement collections (F-022), the greenfield insurance/HR schema, and the client wiring pass remain."
     },
     {
       "id": "07",
