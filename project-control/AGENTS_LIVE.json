@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T12:30:00Z",
+  "asOf": "2026-08-12T13:00:00Z",
   "wave": "W2",
   "waveName": "Insurance/Loans/HR vertical",
-  "waveNote": "Starting the greenfield insurance/loans/HR vertical, backend first (sequential, shared server files). Slice A (agent 05): the insurance and loans data model — policies, claims, loan contracts and repayment records — with collections, seed, RLS and client wiring, which also unblocks the InsuranceReports/LoanReports screens agent 12 left gapped and F-028s deferred insuranceClaims/loanContracts. Slice B is HR (employees, payroll, timeclock, leave). Then the screen agents (13 insurance/loans, 14 HR) build against real data.",
+  "waveNote": "Insurance/loans/HR vertical, backend phase. Slice A (insurance + loans) landed and verified on a reset DB — policies, claims with a ceiling/SOD-gated lifecycle, loan contracts with an integer-safe amortised schedule, aggregate endpoints, migrations 0007/0008, server 342→367. Slice B (agent 05) now: HR — employees, payroll runs, timeclock/timesheets, leave. Then the screen agents (13 insurance/loans, 14 HR) build against real data. Note: the RBAC matrix has no insurance/loans/hr module, so these are gated on the nearest existing module and flagged; adding real modules is an RBAC-owner decision for later.",
   "agents": [
     {
       "id": "03",
@@ -46,8 +46,8 @@
       "name": "Backend & Data",
       "team": "fnd",
       "state": "running",
-      "startedAt": "2026-08-12T12:30:00Z",
-      "scope": "Vertical slice A: insurance (policies, claims) + loans (contracts, repayment records) — schema, seed, RLS, collections, migration 0007, client repository wiring. No screens. Owns the database.",
+      "startedAt": "2026-08-12T13:00:00Z",
+      "scope": "Vertical slice B: HR — employees/staff, payroll runs (+ lines), timeclock/timesheets, leave requests. Schema, seed, RLS, collections, migration 0009 onward, client wiring. No screens. Owns the DB.",
       "owns": [
         "server/**",
         "packages/contract/**",
