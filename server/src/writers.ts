@@ -7,7 +7,7 @@
  *  the write cannot be separated by another writer.
  */
 import { randomBytes } from 'node:crypto'
-import { and, eq, isNull, ne } from 'drizzle-orm'
+import { and, eq, isNull, ne, sql } from 'drizzle-orm'
 import { z } from 'zod'
 import {
   appointmentCreate,
@@ -16,6 +16,8 @@ import {
   crmTaskUpdate,
   customerCreate,
   customerUpdate,
+  employeeCreate,
+  employeeUpdate,
   feedbackCreate,
   feedbackUpdate,
   fleetCreate,
@@ -24,19 +26,27 @@ import {
   jobCardUpdate,
   leadCreate,
   leadUpdate,
+  leaveRequestCreate,
+  leaveRequestUpdate,
   minuteOfDay,
   opportunityCreate,
   opportunityUpdate,
   partCreate,
   partUpdate,
+  payrollLineCreate,
+  payrollLineUpdate,
+  payrollRunCreate,
+  payrollRunUpdate,
   savedReportCreate,
   savedReportUpdate,
+  timesheetCreate,
+  timesheetUpdate,
   vehicleCreate,
   vehicleUpdate,
 } from '@salis/contract'
-import { checkBayFree } from '@salis/contract/rules'
-import { appointments } from './db/schema'
-import { ruleViolated } from './http/errors'
+import { checkBayFree, payrollLineNetHalalas } from '@salis/contract/rules'
+import { appointments, employees, payrollRuns } from './db/schema'
+import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
 import type { Principal, Tx } from './db/tenant'
 
 export interface WriteContext {
@@ -189,6 +199,134 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       return value
     },
   },
+
+  /* HR (vertical B). RBAC (`hr:c/e/d`), tenant RLS, audit and optimistic
+   * concurrency all come from the generic router; each writer only names its
+   * own columns and the one rule specific to it. */
+  employees: {
+    create: employeeCreate,
+    update: employeeUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      /* The server assigns the employee number when one is not supplied, so a
+       * screen never invents it — `EMP-0001`, sequential within the tenant. */
+      if (!existing && !value.employeeNumber) {
+        value.employeeNumber = await nextEmployeeNumber(ctx.tx)
+      }
+      return value
+    },
+  },
+
+  /* Payroll. A run is created draft with zero totals; the totals are frozen
+   * from the lines by the bespoke `/payroll/runs/:id/post` route. A posted run
+   * is immutable (§5b): the writer refuses any edit once it is posted, and the
+   * status never moves through a generic patch. */
+  payrollRuns: {
+    create: payrollRunCreate,
+    update: payrollRunUpdate,
+    async toColumns(input, _ctx, existing) {
+      if (existing) {
+        if (existing.status === 'posted') {
+          throw conflict('A posted payroll run cannot be edited.')
+        }
+        return { ...input }
+      }
+      return { ...input, status: 'draft' }
+    },
+  },
+
+  /* A payroll line's net is computed on the server as gross + allowances −
+   * deductions — never sent by the client — and no line may be added to or
+   * edited on a posted run (§5b). The employee's name is denormalised for
+   * display, resolved within the request's transaction. */
+  payrollLines: {
+    create: payrollLineCreate,
+    update: payrollLineUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+
+      if (!existing) {
+        const run = await loadRunForWrite(ctx.tx, String(value.payrollRunId))
+        const employee = await loadEmployee(ctx.tx, String(value.employeeId))
+        value.employeeName = employee.name
+        const gross = Number(value.grossHalalas ?? 0)
+        const allowances = Number(value.allowancesHalalas ?? 0)
+        const deductions = Number(value.deductionsHalalas ?? 0)
+        value.allowancesHalalas = allowances
+        value.deductionsHalalas = deductions
+        value.netHalalas = payrollLineNetHalalas(gross, allowances, deductions)
+        void run
+        return value
+      }
+
+      await loadRunForWrite(ctx.tx, String(existing.payrollRunId))
+      /* Recompute the net from the merged figures so it always ties to the three
+       * inputs, whether one, two or all three were sent. */
+      const gross = Number(value.grossHalalas ?? existing.grossHalalas ?? 0)
+      const allowances = Number(value.allowancesHalalas ?? existing.allowancesHalalas ?? 0)
+      const deductions = Number(value.deductionsHalalas ?? existing.deductionsHalalas ?? 0)
+      value.netHalalas = payrollLineNetHalalas(gross, allowances, deductions)
+      return value
+    },
+  },
+
+  timesheets: {
+    create: timesheetCreate,
+    update: timesheetUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing && value.employeeId) {
+        value.employeeName = (await loadEmployee(ctx.tx, String(value.employeeId))).name
+      }
+      return value
+    },
+  },
+
+  leaveRequests: {
+    create: leaveRequestCreate,
+    update: leaveRequestUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) {
+        value.employeeName = (await loadEmployee(ctx.tx, String(value.employeeId))).name
+        value.status = 'submitted'
+      }
+      return value
+    },
+  },
+}
+
+/** The next `EMP-0001` within the tenant. Counted, not a placeholder, so two
+ *  employees never collide on the unique `(org_id, employee_number)` index. */
+async function nextEmployeeNumber(tx: Tx): Promise<string> {
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(employees)
+  return `EMP-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** Loads a payroll run the caller may see and refuses a line write against one
+ *  that is already posted (§5b). A run outside the tenant is invisible under RLS
+ *  and 404s rather than leaking. */
+async function loadRunForWrite(tx: Tx, runId: string): Promise<{ id: string; status: string }> {
+  const [run] = await tx
+    .select({ id: payrollRuns.id, status: payrollRuns.status })
+    .from(payrollRuns)
+    .where(and(eq(payrollRuns.id, runId), isNull(payrollRuns.deletedAt)))
+    .limit(1)
+  if (!run) throw notFound('Payroll run')
+  if (run.status === 'posted') {
+    throw conflict('A posted payroll run cannot have its lines changed.')
+  }
+  return run
+}
+
+async function loadEmployee(tx: Tx, employeeId: string): Promise<{ id: string; name: string }> {
+  const [employee] = await tx
+    .select({ id: employees.id, name: employees.name })
+    .from(employees)
+    .where(and(eq(employees.id, employeeId), isNull(employees.deletedAt)))
+    .limit(1)
+  if (!employee) throw badRequest('That employee does not exist.', 'employeeId')
+  return employee
 }
 
 /** The eight-character code the job board shows. Random rather than sequential

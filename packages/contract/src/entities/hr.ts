@@ -100,7 +100,6 @@ export const payrollRunRow = appRow({
   deductionsHalalas: z.number().int().min(0).nullable(),
   netPay: z.string().nullable(),
   netPayHalalas: z.number().int().min(0).nullable(),
-  lineCount: z.number().int().min(0),
   postedAt: z.string().nullable(),
 })
 export type PayrollRunRow = z.infer<typeof payrollRunRow>

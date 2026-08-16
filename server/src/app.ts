@@ -26,6 +26,8 @@ import { registerHistoryRoutes } from './routes/history'
 import { registerInsuranceClaimRoutes } from './routes/insurance-claims'
 import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
+import { registerLeaveRoutes } from './routes/leave'
+import { registerPayrollRoutes } from './routes/payroll'
 import { registerProductReportRoutes } from './routes/product-reports'
 import { registerPublicRoutes } from './routes/public'
 import { registerWorkshopRoutes } from './routes/workshop'
@@ -291,6 +293,8 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerBankRoutes(api, { db: deps.db })
       registerFleetRoutes(api, { db: deps.db })
       registerInsuranceClaimRoutes(api, { db: deps.db })
+      registerPayrollRoutes(api, { db: deps.db })
+      registerLeaveRoutes(api, { db: deps.db })
       registerProductReportRoutes(api, { db: deps.db })
       registerPublicRoutes(api, { db: deps.db, env: deps.env })
     },

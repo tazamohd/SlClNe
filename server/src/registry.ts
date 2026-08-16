@@ -840,6 +840,171 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* ------------------------------------------------------------------- HR */
+  define({
+    /** Employees (vertical B) — staff who belong to a department (the existing
+     *  `departments` collection) and a branch. Writable through the generic
+     *  router; gated on `hr`, the dedicated HR module in the RBAC matrix (its
+     *  viewers are owner, superadmin, manager, accountant and hr).
+     *
+     *  **Salary is sensitive.** `salaryHalalas` is presented under the exact key
+     *  the `Employee salary` GLOBAL_REDACTIONS sweep nulls, and the formatted
+     *  `salary` string is nulled by this collection's REDACTIONS entry, so a role
+     *  the field rule hides pay from never receives either on the wire. (No
+     *  role that passes the `hr` view-gate is itself in that hidden list, so on
+     *  the live route this is defence in depth like F-005 — but the mechanism is
+     *  proven by `tests/hr.test.ts` and fires the instant a hidden role reads a
+     *  row, e.g. if employees are ever exposed under a broader module.) */
+    key: 'employees',
+    path: 'employees',
+    table: s.employees,
+    module: 'hr',
+    entity: 'employee',
+    search: ['employeeNumber', 'name', 'nameAr', 'title'],
+    sortable: ['employeeNumber', 'name', 'status', 'hireDate', 'createdAt'],
+    filterable: ['status', 'departmentId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'employeeNumber',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      employeeNumber: row.employeeNumber,
+      name: row.name,
+      nameAr: row.nameAr ?? '',
+      title: row.title ?? '',
+      departmentId: row.departmentId,
+      hireDate: row.hireDate ? dateUS(row.hireDate) : '',
+      status: row.status,
+      salary: sarString(row.salaryHalalas),
+      salaryHalalas: count(row.salaryHalalas),
+    }),
+  }),
+
+  define({
+    /** Payroll runs (vertical B) — one calendar month. Writable through the
+     *  generic router for create/edit of a *draft*; the totals are frozen from
+     *  the lines by the bespoke `POST /payroll/runs/:id/post` route, and a posted
+     *  run cannot be reopened or edited (§5b, enforced in the payroll writer).
+     *  Gated on `hr`. Pay figures carry both the formatted string and raw
+     *  halalas; both are nulled for a role the `Employee salary` rule hides pay
+     *  from (halalas by GLOBAL_REDACTIONS, strings by this collection's
+     *  REDACTIONS entry). */
+    key: 'payrollRuns',
+    path: 'payroll/runs',
+    table: s.payrollRuns,
+    module: 'hr',
+    entity: 'payroll_run',
+    search: ['period', 'status'],
+    sortable: ['period', 'status', 'netHalalas', 'createdAt'],
+    filterable: ['status', 'period'],
+    defaultSort: { column: 'period', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      period: row.period,
+      status: row.status,
+      grossPay: sarString(row.grossHalalas),
+      grossPayHalalas: count(row.grossHalalas),
+      allowances: sarString(row.allowancesHalalas),
+      allowancesHalalas: count(row.allowancesHalalas),
+      deductions: sarString(row.deductionsHalalas),
+      deductionsHalalas: count(row.deductionsHalalas),
+      netPay: sarString(row.netHalalas),
+      netPayHalalas: count(row.netHalalas),
+      postedAt: row.postedAt ? new Date(row.postedAt).toISOString() : null,
+    }),
+  }),
+
+  define({
+    /** Payroll lines (vertical B) — one employee's pay within a run. Writable
+     *  through the generic router while the run is a draft (the writer refuses a
+     *  line write against a posted run); the net is computed on the server as
+     *  `gross + allowances − deductions`, never sent. Gated on `hr`. Pay figures
+     *  are redacted exactly as the run's are. Filter by `payrollRunId`. */
+    key: 'payrollLines',
+    path: 'payroll/lines',
+    table: s.payrollLines,
+    module: 'hr',
+    entity: 'payroll_line',
+    search: ['employeeName'],
+    sortable: ['employeeName', 'netHalalas', 'createdAt'],
+    filterable: ['payrollRunId', 'employeeId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      payrollRunId: row.payrollRunId,
+      employeeId: row.employeeId,
+      employeeName: row.employeeName,
+      grossPay: sarString(row.grossHalalas),
+      grossPayHalalas: count(row.grossHalalas),
+      allowances: sarString(row.allowancesHalalas),
+      allowancesHalalas: count(row.allowancesHalalas),
+      deductions: sarString(row.deductionsHalalas),
+      deductionsHalalas: count(row.deductionsHalalas),
+      netPay: sarString(row.netHalalas),
+      netPayHalalas: count(row.netHalalas),
+    }),
+  }),
+
+  define({
+    /** Timesheets (vertical B) — a day's clock-in/out or worked minutes for one
+     *  employee. Writable through the generic router; gated on `hr`. Worked
+     *  minutes are an integer (no fractional-hour float); `hours` is the decimal
+     *  presentation. Filter by `employeeId`. */
+    key: 'timesheets',
+    path: 'timesheets',
+    table: s.timesheets,
+    module: 'hr',
+    entity: 'timesheet',
+    search: ['employeeName'],
+    sortable: ['workDate', 'employeeName', 'minutes', 'createdAt'],
+    filterable: ['employeeId', 'status'],
+    defaultSort: { column: 'workDate', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      employeeId: row.employeeId,
+      employeeName: row.employeeName,
+      workDate: dateUS(row.workDate),
+      clockIn: row.clockIn ?? null,
+      clockOut: row.clockOut ?? null,
+      minutes: count(row.minutes),
+      hours: Math.round((row.minutes / 60) * 100) / 100,
+      status: row.status,
+    }),
+  }),
+
+  define({
+    /** Leave requests (vertical B) — a range of days an employee asks off.
+     *  Writable through the generic router for submission; the approve/reject
+     *  decision is the bespoke `routes/leave.ts` router, gated on the `hr` `a`
+     *  grant and audited, with the approver recorded for segregation of duties.
+     *  Gated on `hr`. Filter by `employeeId`. */
+    key: 'leaveRequests',
+    path: 'leave-requests',
+    table: s.leaveRequests,
+    module: 'hr',
+    entity: 'leave_request',
+    search: ['employeeName', 'type'],
+    sortable: ['startDate', 'employeeName', 'status', 'createdAt'],
+    filterable: ['employeeId', 'status', 'type'],
+    defaultSort: { column: 'startDate', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      employeeId: row.employeeId,
+      employeeName: row.employeeName,
+      type: row.type,
+      startDate: dateUS(row.startDate),
+      endDate: dateUS(row.endDate),
+      days: count(row.days),
+      status: row.status,
+      reason: row.reason ?? null,
+      approverId: row.approverId ?? null,
+    }),
+  }),
+
   /* --------------------------------------------------------------------- AI */
   define({
     key: 'aiAgents',
@@ -1193,4 +1358,16 @@ export function collectionByPath(path: string): CollectionDef | undefined {
 export const REDACTIONS: Readonly<Record<string, readonly { ruleField: string; rowKeys: readonly string[] }[]>> = {
   parts: [{ ruleField: 'Part cost / margin', rowKeys: ['costHalalas'] }],
   customers: [{ ruleField: 'Customer contact details', rowKeys: ['phone', 'email'] }],
+  /* Salary and pay (vertical B). The raw `*Halalas` keys are already swept by
+   * `GLOBAL_REDACTIONS` for the `Employee salary` rule; these entries add the
+   * *formatted* strings the presenter emits beside them, so a role the rule
+   * hides pay from receives neither the number nor `"SAR 8,500"` on the wire —
+   * redacting one without the other would leak the value in the string. */
+  employees: [{ ruleField: 'Employee salary', rowKeys: ['salary'] }],
+  payrollRuns: [
+    { ruleField: 'Employee salary', rowKeys: ['grossPay', 'allowances', 'deductions', 'netPay'] },
+  ],
+  payrollLines: [
+    { ruleField: 'Employee salary', rowKeys: ['grossPay', 'allowances', 'deductions', 'netPay'] },
+  ],
 }
