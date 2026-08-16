@@ -10,5 +10,12 @@
  *  otherwise — `shell: null` for a screen with no chrome, or a shell component
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
+import { InsuranceClaims } from '../insurance/InsuranceClaims'
 
-export const SCREENS: DomainScreens = {}
+/** The `Insurance-Claims` feature-map screen (route `/insurance-claims`),
+ *  graduated from the placeholder to the real workspace. Keyed by the exact
+ *  registry name so the router's spec-screen branch renders it in place of the
+ *  kit. A bare component, so it renders in the operational shell. */
+export const SCREENS: DomainScreens = {
+  'Insurance-Claims': InsuranceClaims,
+}
