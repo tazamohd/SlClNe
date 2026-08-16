@@ -568,6 +568,61 @@ export function createHttpRepository(baseUrl: string): Repository {
   return Object.fromEntries(entries) as Repository
 }
 
+/* --------------------------------------------------------- audit history */
+
+/** One entry in a record's audit trail, as `GET /:collection/:id/history`
+ *  presents it (F-029, the F-004 client half). The `activities` a row evidences
+ *  and the `sodConflicts` an actor holding both sides of a pair would create are
+ *  computed server-side, so a screen flags a segregation-of-duties conflict per
+ *  row rather than re-deriving the control. Read-only. */
+export interface HistoryEntry extends EntityMeta {
+  id: string
+  actorId: string | null
+  actorRole: string | null
+  action: string
+  at: string | null
+  reason: string | null
+  before: unknown
+  after: unknown
+  /** SOD activities this row evidences, e.g. `['Perform repair']`. */
+  activities: string[]
+}
+
+export interface SodConflict {
+  actorId: string
+  a: string
+  b: string
+  risk: string
+}
+
+export interface EntityHistory {
+  entityId: string
+  entries: HistoryEntry[]
+  sodConflicts: SodConflict[]
+}
+
+/** The audit-trail reads WorkshopQC and EstimateDetail use to show who did what
+ *  and flag a segregation-of-duties conflict. Live only: the trail is a server
+ *  computation over the audit log, so there is no fixture — a mock that invented
+ *  a history would be exactly the fake-completion this seam refuses. `id` is the
+ *  record's ULID or its human code. */
+export interface HistoryApi {
+  estimate(id: string): Promise<EntityHistory>
+  job(id: string): Promise<EntityHistory>
+}
+
+export function createHistoryApi(baseUrl: string): HistoryApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async estimate(id) {
+      return request<EntityHistory>(`${root}/estimates/${encodeURIComponent(id)}/history`)
+    },
+    async job(id) {
+      return request<EntityHistory>(`${root}/jobs/${encodeURIComponent(id)}/history`)
+    },
+  }
+}
+
 /* ------------------------------------------------- financial aggregates */
 
 export interface ReportRange {
@@ -715,6 +770,12 @@ export const repository: Repository = httpRepository ?? mockRepository
 export const financeReports: FinanceReportsApi | null = API_URL
   ? createFinanceReports(API_URL)
   : null
+
+/** The audit-trail reads (F-029), live only against the API. Null on the
+ *  fixtures: a record's history is a server computation over the append-only
+ *  audit log, and a mock that fabricated one would be fake completion. A screen
+ *  reads it when `isLive` and shows the honest gap otherwise. */
+export const history: HistoryApi | null = API_URL ? createHistoryApi(API_URL) : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */
