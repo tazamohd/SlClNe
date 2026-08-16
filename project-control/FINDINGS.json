@@ -339,14 +339,16 @@
     },
     {
       "id": "F-028",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "No financial aggregate endpoints, and four report-source collections are missing",
       "detail": "Agent 12 refused to compute any cross-record money total in the browser (§A10: the server computes, the client displays) — and the server exposes none: no GET /invoices/summary, /accounting/tax/return, or trial-balance. SalesReports, TaxManagement and ReportsAnalytics therefore show only per-row server figures and disclose the absent totals. Also missing as collections: bankStatements (BankReconciliation has nothing to match), savedReports (CustomReports cannot persist a definition), insuranceClaims and loanContracts (Insurance/Loan reports have no data source).",
       "why": "The reporting surfaces are built and honest but cannot show a real total or reconcile until the server computes aggregates. This is the §A10 discipline working as intended — the gap is server-side.",
       "foundBy": "12",
-      "verified": "reported with GAP: tests and the exact endpoint/collection names",
+      "verified": "confirmed on a reset database — 312 server tests, app 697, gates at baseline; the aggregate numbers and tenant-isolation both pinned",
       "owner": "05",
-      "wave": "W4"
+      "wave": "W4",
+      "status": "fixed",
+      "resolution": "Three server-computed aggregate endpoints (§A10 — every total summed in SQL inside the RLS transaction, never handed to the client): GET /invoices/summary (invoiced/paid/outstanding/VAT with a byStatus breakdown), GET /accounting/tax/return (output VAT at the configurable VAT_RATE_BPS, input VAT declared not-modelled rather than faked), and GET /accounting/reports/trial-balance — which surfaces F-008 honestly: assets 2,683,500 vs liabilities+equity 2,940,550, differenceHalalas -25,705,000, balanced:false, the books not forced to tie. Plus bankStatements (with an idempotent audited POST /bank-statements/:id/match) and savedReports collections, migration 0005, both RLS-scoped. Client repository wired with a typed financeReports accessor. insuranceClaims/loanContracts were deliberately deferred to the greenfield insurance/loans schema rather than stubbed. Screen wiring (SalesReports, TaxManagement, ReportsAnalytics, BankReconciliation, CustomReports) is agent 12s follow-up — the AGGREGATE_GAP endpoint strings already match the paths shipped."
     },
     {
       "id": "F-029",

@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T09:25:00Z",
+  "asOf": "2026-08-12T09:55:00Z",
   "wave": "W2",
   "waveName": "Product → backend fill",
-  "waveNote": "Tranche 4-B running: the finance backend slice (F-028) — server-computed aggregate endpoints (invoice summary, VAT return, trial balance) so the accounting reports show real totals instead of honest gaps, plus bankStatements (for BankReconciliation) and savedReports (for CustomReports). insuranceClaims/loanContracts are held for the greenfield insurance/loans schema rather than stubbed here. F-029 (workshop endpoints) is 4-C.",
+  "waveNote": "Tranche 4-B landed and verified on a reset database: the finance aggregate endpoints (invoice summary, VAT return, trial balance) plus bankStatements and savedReports collections (F-028 closed). Server 292→312, app 697, gates at baseline. The trial balance surfaces F-008 honestly rather than forcing the books to tie. Next: 4-C (F-029 workshop approvals/diagnostics endpoints), then the greenfield insurance/fleet/loans/HR schema, then a client pass wiring the CRM/finance/workshop report CTAs to these endpoints.",
   "agents": [
     {
       "id": "03",
@@ -45,7 +45,7 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T09:25:00Z",
       "scope": "Tranche 4-B: F-028 finance aggregates — GET /invoices/summary, /accounting/tax/return, a trial-balance endpoint (all server-computed, the client only displays), plus bankStatements and savedReports collections. Owns the database this tranche.",
       "owns": [
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "Tranche 4-A: F-027 (CRM/fleet writable + feedback + fleet contract terms + lead conversion + fleetId join), F-025 (secure public lead endpoint — no tenant escalation, rate-limited, no PII in logs), F-030 (appointment↔technician seed). Migration 0004, 292 server tests. Died at the final verify on a session limit; orchestrator verified on a reset DB and committed. Client repository wired; screen CTAs are a follow-up."
+      "notes": "Tranche 4-B: F-028 finance aggregates — three server-computed endpoints (§A10), bankStatements + savedReports, migration 0005, 312 server tests. Trial balance shows F-008s -SAR 257,050 imbalance rather than hiding it. Completed cleanly (no session-limit death this time). Client repository wired; report screens are agent 12s follow-up."
     },
     {
       "id": "07",
