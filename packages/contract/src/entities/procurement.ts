@@ -120,7 +120,6 @@ export const requisitionRow = appRow({
   /** `"SAR 1,250"` — formatted from `estimatedTotalHalalas` at the boundary. */
   amount: z.string(),
   estimatedTotalHalalas: z.number().int().min(0),
-  lineCount: z.number().int().min(0),
   notes: z.string().nullable(),
   /** Who raised the requisition and who decided it — the pair the SOD row check
    *  reads. `approvedBy` is null until a decision has been recorded. */
