@@ -97,6 +97,9 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   /** Saved report definitions CustomReports can list — no design fixture, the
    *  builder could not persist in the prototype (F-028). */
   savedReports: 2,
+  /** Per-device DTC readings — the device↔dtc link is new (F-029); a couple of
+   *  seeded readings give the read-back a coherent history. */
+  obdReadings: 2,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
@@ -699,23 +702,22 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     ),
   )
 
-  await tx.insert(s.obdDevices).values(
-    T.OBD_DEVICES.map((d) =>
-      row({
-        code: d.id,
-        bay: d.bay,
-        vehicleLabel: d.vehicle,
-        plate: d.plate,
-        status: d.status,
-        vin: d.vin,
-        rpm: d.rpm,
-        coolant: d.coolant,
-        voltage: d.voltage,
-        load: d.load,
-        dtcCount: d.dtc,
-      }),
-    ),
+  const obdDeviceRows = T.OBD_DEVICES.map((d) =>
+    row({
+      code: d.id,
+      bay: d.bay,
+      vehicleLabel: d.vehicle,
+      plate: d.plate,
+      status: d.status,
+      vin: d.vin,
+      rpm: d.rpm,
+      coolant: d.coolant,
+      voltage: d.voltage,
+      load: d.load,
+      dtcCount: d.dtc,
+    }),
   )
+  await tx.insert(s.obdDevices).values(obdDeviceRows)
 
   await tx.insert(s.dtcCodes).values(
     T.DTC_CODES.map((d) =>
@@ -729,6 +731,33 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       }),
     ),
   )
+
+  /* F-029: a couple of per-device DTC readings so the device↔dtc link has a
+   * coherent history to read back. The design bundle carries none — the link is
+   * new — so these are declared coherence extras (SEED_COHERENCE_EXTRAS), served
+   * after the (empty) fixture like the branch directory and the feedback rows.
+   * `source: 'manual'` and `mock: false`: seeded facts, not a mock scan. */
+  const firstDevice = obdDeviceRows[0]
+  const readingSeeds = [
+    { dtcCode: 'P0301', description: 'Cylinder 1 Misfire Detected', severity: 'high' },
+    { dtcCode: 'P0420', description: 'Catalyst System Efficiency Below Threshold', severity: 'medium' },
+  ]
+  if (firstDevice) {
+    await tx.insert(s.obdDtcReadings).values(
+      readingSeeds.map((r) =>
+        row({
+          deviceId: firstDevice.id,
+          deviceCode: firstDevice.code,
+          dtcCode: r.dtcCode,
+          description: r.description,
+          severity: r.severity,
+          source: 'manual',
+          cleared: false,
+          mock: false,
+        }),
+      ),
+    )
+  }
 
   await tx.insert(s.oemTools).values(
     T.OEM_TOOLS.map((t) =>

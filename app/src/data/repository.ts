@@ -156,6 +156,23 @@ export interface BankStatementRow extends EntityMeta {
   matchedReceiptId: string | null
 }
 
+/** A per-device DTC reading, as `GET /diagnostics/readings` presents it
+ *  (F-029). No design fixture — the device↔dtc link is new — so the shape is
+ *  declared here, like `BranchRow`. Read-only through the collection; the writes
+ *  are the OBD command routes, which touch the external bridge. `mock` is true
+ *  when the reading came from the mock bridge rather than a live scan. */
+export interface ObdReadingRow extends EntityMeta {
+  deviceId: string
+  deviceCode: string
+  dtc: string
+  desc: string
+  severity: string
+  source: string
+  cleared: boolean
+  at: string | null
+  mock: boolean
+}
+
 /** A saved report definition, as `GET /saved-reports` presents it (F-028). No
  *  design fixture — the builder could not persist in the prototype — so the
  *  shape is declared here. Writable through the collection. */
@@ -196,6 +213,7 @@ export interface Repository {
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
   conversations: Collection<(typeof T.CONVERSATIONS)[number]>
   obdDevices: Collection<(typeof T.OBD_DEVICES)[number]>
+  obdReadings: Collection<ObdReadingRow>
   dtcCodes: Collection<(typeof T.DTC_CODES)[number]>
   oemTools: Collection<(typeof T.OEM_TOOLS)[number]>
   integrations: Collection<(typeof T.SYS_INTEGRATIONS)[number]>
@@ -243,6 +261,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
+  obdReadings: 'diagnostics/readings',
   dtcCodes: 'kb/dtc',
   oemTools: 'integrations/oem-tools',
   integrations: 'integrations',
@@ -403,6 +422,10 @@ export const mockRepository: Repository = {
   aiAgents: fixture(T.AI_AGENTS),
   conversations: fixture(T.CONVERSATIONS),
   obdDevices: fixture(T.OBD_DEVICES),
+  /* No design fixture — the device↔dtc readings link is new (F-029). An empty
+   * read-only collection is the honest mock; the live API serves recorded
+   * readings, and the commands that write them refuse without a bridge. */
+  obdReadings: fixture<ObdReadingRow>([]),
   dtcCodes: fixture(T.DTC_CODES),
   oemTools: fixture(T.OEM_TOOLS),
   integrations: fixture(T.SYS_INTEGRATIONS),
@@ -797,6 +820,94 @@ export function createFinanceReports(baseUrl: string): FinanceReportsApi {
   }
 }
 
+/* ------------------------------------------ external integrations (§40) */
+
+/** The status of one external-integration adapter, as `GET
+ *  /diagnostics/integrations` reports it (F-029). `configured` is the honest
+ *  answer — false for the OBD bridge and the SMS transport in every deployment
+ *  this code has run in — and `dependency`/`requires` name what is missing. A
+ *  screen shows the EXTERNAL_DEPENDENCY state from this rather than assuming a
+ *  command will work. */
+export interface IntegrationStatus {
+  id: string
+  configured: boolean
+  requires: string[]
+  state: string
+  dependency: string
+}
+
+/** The outcome of an OBD command. `mock` is true when the reading came from the
+ *  mock bridge, never a live device — a screen showing the result must be able
+ *  to say the scan was not real. */
+export interface ObdCommandResult {
+  command: string
+  deviceId: string
+  status: string
+  found?: number
+  cleared?: number
+  dtcs?: { code: string; description: string; severity: string }[]
+  mock: boolean
+}
+
+/** The OBD device commands and the integration-status read (F-029). Live only:
+ *  a command touches an external bridge, so there is no fixture — a mock that
+ *  returned a scan result would be the faked-live integration §40 forbids. The
+ *  command itself still refuses with a 503 (RepositoryError code
+ *  `external_dependency_unavailable`) until a bridge is deployed. */
+export interface DiagnosticsApi {
+  rescan(deviceId: string): Promise<ObdCommandResult>
+  clearCodes(deviceId: string): Promise<ObdCommandResult>
+  readings(deviceId: string): Promise<{ rows: ObdReadingRow[] }>
+  integrations(): Promise<{ integrations: IntegrationStatus[] }>
+}
+
+export function createDiagnosticsApi(baseUrl: string): DiagnosticsApi {
+  const root = baseUrl.replace(/\/$/, '')
+  const device = (id: string) => `${root}/diagnostics/devices/${encodeURIComponent(id)}`
+  return {
+    async rescan(deviceId) {
+      return request<ObdCommandResult>(`${device(deviceId)}/rescan`, { method: 'POST', body: '{}' })
+    },
+    async clearCodes(deviceId) {
+      return request<ObdCommandResult>(`${device(deviceId)}/clear-codes`, { method: 'POST', body: '{}' })
+    },
+    async readings(deviceId) {
+      return request<{ rows: ObdReadingRow[] }>(`${device(deviceId)}/readings`)
+    },
+    async integrations() {
+      return request<{ integrations: IntegrationStatus[] }>(`${root}/diagnostics/integrations`)
+    },
+  }
+}
+
+/** The customer-approval OTP e-signature over an estimate (F-029). Live only,
+ *  and SMS is an external dependency: `request` refuses with a 503
+ *  (`external_dependency_unavailable`) until a messaging provider is set — it
+ *  never reports a code as sent that was not. `destination` comes back masked. */
+export interface EstimateOtpApi {
+  request(estimateId: string): Promise<{ challengeId: string; expiresAt: string; destination: string }>
+  verify(
+    estimateId: string,
+    code: string,
+  ): Promise<{ verified: boolean; challengeId?: string; reason?: string; attemptsLeft?: number }>
+}
+
+export function createEstimateOtpApi(baseUrl: string): EstimateOtpApi {
+  const root = baseUrl.replace(/\/$/, '')
+  const estimate = (id: string) => `${root}/estimates/${encodeURIComponent(id)}`
+  return {
+    async request(estimateId) {
+      return request(`${estimate(estimateId)}/request-approval-otp`, { method: 'POST', body: '{}' })
+    },
+    async verify(estimateId, code) {
+      return request(`${estimate(estimateId)}/verify-approval-otp`, {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+      })
+    },
+  }
+}
+
 /* --------------------------------------------------- workshop analytics */
 
 /** The server-computed workshop analytics `GET /reports/workshop` returns
@@ -892,6 +1003,16 @@ export const approvals: ApprovalsApi | null = API_URL ? createApprovalsApi(API_U
 export const workshopReports: WorkshopReportsApi | null = API_URL
   ? createWorkshopReports(API_URL)
   : null
+
+/** The OBD device commands and integration status (F-029), live only. Null on
+ *  the fixtures: a device command touches an external bridge, and even live it
+ *  refuses with a 503 until a bridge is deployed (§40) — the mock never fakes a
+ *  scan. */
+export const diagnostics: DiagnosticsApi | null = API_URL ? createDiagnosticsApi(API_URL) : null
+
+/** The customer-approval OTP e-signature (F-029), live only. SMS is an external
+ *  dependency; the request refuses with a 503 until a provider is configured. */
+export const estimateOtp: EstimateOtpApi | null = API_URL ? createEstimateOtpApi(API_URL) : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */

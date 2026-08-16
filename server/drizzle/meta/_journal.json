@@ -43,6 +43,13 @@
       "when": 1786465093900,
       "tag": "0005_bank_statements_saved_reports",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786465094900,
+      "tag": "0006_obd_dtc_readings",
+      "breakpoints": true
     }
   ]
 }

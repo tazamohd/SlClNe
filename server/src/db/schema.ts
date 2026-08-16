@@ -679,6 +679,31 @@ export const obdDevices = pgTable('obd_devices', {
   dtcCount: integer('dtc_count').notNull().default(0),
 })
 
+/** Per-device DTC readings (F-029). The device↔dtc link a re-scan or a
+ *  clear-codes command records: which trouble codes a specific OBD device read,
+ *  when, and whether the reading was a mock rather than a live scan. Real
+ *  persisted data — the *command* is the external part, but the reading it
+ *  produced is booked here so a diagnostic report can show a device's history
+ *  even while the live bridge is an EXTERNAL_DEPENDENCY. */
+export const obdDtcReadings = pgTable(
+  'obd_dtc_readings',
+  {
+    ...tenant,
+    deviceId: varchar('device_id', { length: ULID_LENGTH }).notNull(),
+    deviceCode: varchar('device_code', { length: 32 }),
+    dtcCode: varchar('dtc_code', { length: 16 }).notNull(),
+    description: varchar('description', { length: 300 }),
+    severity: varchar('severity', { length: 16 }),
+    /** `rescan` · `clear` · `manual` — how the reading arrived. */
+    source: varchar('source', { length: 16 }).notNull(),
+    cleared: boolean('cleared').notNull().default(false),
+    readAt: timestamp('read_at', { withTimezone: true }).notNull().defaultNow(),
+    /** True when the reading came from the mock bridge, never a live device. */
+    mock: boolean('mock').notNull().default(false),
+  },
+  (t) => ({ byDevice: index('obd_dtc_readings_device_idx').on(t.orgId, t.deviceId) }),
+)
+
 export const dtcCodes = pgTable('dtc_codes', {
   ...tenant,
   code: varchar('code', { length: 16 }).notNull(),
@@ -1020,6 +1045,7 @@ export const TENANT_TABLES = [
   'bank_statements',
   'saved_reports',
   'obd_devices',
+  'obd_dtc_readings',
   'dtc_codes',
   'oem_tools',
   'integrations',

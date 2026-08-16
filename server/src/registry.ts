@@ -777,6 +777,35 @@ export const COLLECTIONS: readonly CollectionDef[] = [
   }),
 
   define({
+    /** Per-device DTC readings (F-029) — the device↔dtc link an OBD re-scan or
+     *  clear-codes command records. Read-only through the generic router (filter
+     *  by `deviceId`); the writes are the command routes in `routes/obd.ts`,
+     *  which are the ones that touch the external bridge. Gated on `jobcards`,
+     *  the module the diagnostics surfaces live under. */
+    key: 'obdReadings',
+    path: 'diagnostics/readings',
+    table: s.obdDtcReadings,
+    module: 'jobcards',
+    entity: 'obd_dtc_reading',
+    search: ['dtcCode', 'description'],
+    sortable: ['readAt', 'createdAt', 'severity'],
+    filterable: ['deviceId', 'source', 'cleared', 'severity'],
+    defaultSort: { column: 'readAt', dir: 'desc' },
+    present: (row) => ({
+      ...meta(row),
+      deviceId: row.deviceId,
+      deviceCode: row.deviceCode ?? '',
+      dtc: row.dtcCode,
+      desc: row.description ?? '',
+      severity: row.severity ?? '',
+      source: row.source,
+      cleared: row.cleared,
+      at: row.readAt ? new Date(row.readAt).toISOString() : null,
+      mock: row.mock,
+    }),
+  }),
+
+  define({
     key: 'dtcCodes',
     path: 'kb/dtc',
     table: s.dtcCodes,

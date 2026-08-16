@@ -17,6 +17,8 @@ import { registerBankRoutes } from './routes/bank'
 import { registerCollectionRoutes } from './routes/collections'
 import { registerCrmRoutes } from './routes/crm'
 import { registerEstimateRoutes } from './routes/estimates'
+import { registerEstimateOtpRoutes } from './routes/estimate-otp'
+import { registerObdRoutes } from './routes/obd'
 import { registerFinanceReportRoutes } from './routes/finance-reports'
 import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
@@ -29,6 +31,8 @@ import { registerWorkshopReportRoutes } from './routes/workshop-reports'
 import { bearerToken, createVerifier } from './security/principal'
 import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
 import type { OtpTransport } from './auth'
+import { loadIntegrationConfig } from './integrations/config'
+import { obdBridgeFor, type ObdBridge } from './integrations/obd'
 import type { Database } from './db/client'
 import type { Env } from './env'
 
@@ -101,6 +105,10 @@ export interface AppDeps {
    *  other environment the transport comes from `OTP_TRANSPORT`, whose default
    *  refuses rather than pretending a code was delivered. */
   otpTransport?: OtpTransport
+  /** Overrides the OBD bridge. Only the test suite passes one; otherwise the
+   *  bridge comes from `OBD_TRANSPORT`, whose default refuses rather than
+   *  faking a device scan (§40). */
+  obdBridge?: ObdBridge
 }
 
 declare module 'fastify' {
@@ -145,6 +153,12 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
 
   const auth = buildAuth({ db: deps.db, env: deps.env, transport: deps.otpTransport })
   app.decorate('auth', auth)
+
+  /* The external-integration adapters. Both default to refusing (§40): the OBD
+   * bridge and the SMS transport are EXTERNAL_DEPENDENCY, and a test overrides
+   * them with a mock rather than the app pretending they are live. */
+  const integrationConfig = loadIntegrationConfig()
+  const obdBridge = deps.obdBridge ?? obdBridgeFor(integrationConfig)
 
   app.addHook('onRequest', async (request) => {
     const path = request.url.split('?')[0] ?? ''
@@ -268,6 +282,8 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerHistoryRoutes(api, { db: deps.db })
       registerApprovalRoutes(api, { db: deps.db })
       registerWorkshopReportRoutes(api, { db: deps.db, env: deps.env })
+      registerObdRoutes(api, { db: deps.db, bridge: obdBridge, config: integrationConfig })
+      registerEstimateOtpRoutes(api, { db: deps.db })
       registerInventoryRoutes(api, { db: deps.db })
       registerCrmRoutes(api, { db: deps.db })
       registerBankRoutes(api, { db: deps.db })

@@ -50,6 +50,9 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   aiAgents: T.AI_AGENTS,
   conversations: T.CONVERSATIONS,
   obdDevices: T.OBD_DEVICES,
+  /** No design fixture — the device↔dtc readings link is new (F-029). Nothing
+   *  is seeded into it, so the collection serves an empty set. */
+  obdReadings: [],
   dtcCodes: T.DTC_CODES,
   oemTools: T.OEM_TOOLS,
   integrations: T.SYS_INTEGRATIONS,
