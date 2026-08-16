@@ -417,21 +417,93 @@ export const inventoryMovements = pgTable(
   (t) => ({ byPart: index('inventory_movements_part_idx').on(t.orgId, t.partId) }),
 )
 
+/** A tenant-owned vendor directory. The parts network carried only free-text
+ *  supplier names; a purchase order references a supplier row by id (F-022). */
+export const suppliers = pgTable(
+  'suppliers',
+  {
+    ...tenant,
+    code: varchar('code', { length: 32 }).notNull(),
+    name: varchar('name', { length: 200 }).notNull(),
+    nameAr: varchar('name_ar', { length: 200 }),
+    contactName: varchar('contact_name', { length: 200 }),
+    contactPhone: varchar('contact_phone', { length: 32 }),
+    contactEmail: varchar('contact_email', { length: 254 }),
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('suppliers_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('suppliers_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** A request to buy, raised into a purchase order once approved (F-022). The
+ *  estimated total is summed from the lines by the server, never sent. */
+export const requisitions = pgTable(
+  'requisitions',
+  {
+    ...tenant,
+    code: varchar('code', { length: 32 }).notNull(),
+    requesterName: varchar('requester_name', { length: 200 }).notNull(),
+    department: varchar('department', { length: 160 }),
+    priority: varchar('priority', { length: 16 }).notNull().default('normal'),
+    status: varchar('status', { length: 16 }).notNull().default('draft'),
+    neededBy: date('needed_by'),
+    estimatedTotalHalalas: money('estimated_total_halalas').notNull().default(0),
+    notes: text('notes'),
+    /** Segregation of duties: the submitter may not also approve. */
+    submittedBy: varchar('submitted_by', { length: ULID_LENGTH }),
+    approvedBy: varchar('approved_by', { length: ULID_LENGTH }),
+    approvedAt: timestamp('approved_at', { withTimezone: true }),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('requisitions_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('requisitions_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+export const requisitionLines = pgTable(
+  'requisition_lines',
+  {
+    ...tenant,
+    requisitionId: varchar('requisition_id', { length: ULID_LENGTH }).notNull(),
+    partSku: varchar('part_sku', { length: 64 }),
+    description: varchar('description', { length: 300 }).notNull(),
+    descriptionAr: varchar('description_ar', { length: 300 }),
+    qty: integer('qty').notNull(),
+    estUnitPriceHalalas: money('est_unit_price_halalas').notNull(),
+    sort: integer('sort').notNull().default(0),
+  },
+  (t) => ({ byReq: index('requisition_lines_req_idx').on(t.orgId, t.requisitionId) }),
+)
+
 export const purchaseOrders = pgTable(
   'purchase_orders',
   {
     ...tenant,
     code: varchar('code', { length: 32 }).notNull(),
+    /** Points at a `suppliers` row when one is chosen; the name is always
+     *  carried for display, denormalised like `estimates.customerName`. */
+    supplierId: varchar('supplier_id', { length: ULID_LENGTH }),
     supplierName: varchar('supplier_name', { length: 200 }).notNull(),
+    /** The approved requisition this order was raised from, when any. */
+    requisitionId: varchar('requisition_id', { length: ULID_LENGTH }),
     status: varchar('status', { length: 24 }).notNull().default('draft'),
+    subtotalHalalas: money('subtotal_halalas').notNull().default(0),
+    taxHalalas: money('tax_halalas').notNull().default(0),
     totalHalalas: money('total_halalas').notNull().default(0),
+    notes: text('notes'),
     orderedAt: timestamp('ordered_at', { withTimezone: true }),
     expectedAt: timestamp('expected_at', { withTimezone: true }),
     submittedBy: varchar('submitted_by', { length: ULID_LENGTH }),
     approvedBy: varchar('approved_by', { length: ULID_LENGTH }),
     approvedAt: timestamp('approved_at', { withTimezone: true }),
   },
-  (t) => ({ codePerOrg: uniqueIndex('purchase_orders_org_code_idx').on(t.orgId, t.code) }),
+  (t) => ({
+    codePerOrg: uniqueIndex('purchase_orders_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('purchase_orders_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
 )
 
 export const purchaseOrderLines = pgTable(
@@ -441,9 +513,13 @@ export const purchaseOrderLines = pgTable(
     purchaseOrderId: varchar('purchase_order_id', { length: ULID_LENGTH }).notNull(),
     partSku: varchar('part_sku', { length: 64 }),
     description: varchar('description', { length: 300 }).notNull(),
+    descriptionAr: varchar('description_ar', { length: 300 }),
     qty: integer('qty').notNull(),
+    /** Running total of quantity received, updated by the receiving route under
+     *  the invariant `received ≤ ordered` (§5b). */
     receivedQty: integer('received_qty').notNull().default(0),
     unitPriceHalalas: money('unit_price_halalas').notNull(),
+    sort: integer('sort').notNull().default(0),
   },
   (t) => ({ byPo: index('po_lines_po_idx').on(t.orgId, t.purchaseOrderId) }),
 )
@@ -1231,6 +1307,14 @@ export const estimateRelations = relations(estimates, ({ many }) => ({
   lines: many(estimateLines),
 }))
 
+export const requisitionRelations = relations(requisitions, ({ many }) => ({
+  lines: many(requisitionLines),
+}))
+
+export const purchaseOrderRelations = relations(purchaseOrders, ({ many }) => ({
+  lines: many(purchaseOrderLines),
+}))
+
 export const customerRelations = relations(customers, ({ many }) => ({
   vehicles: many(vehicles),
 }))
@@ -1256,6 +1340,9 @@ export const TENANT_TABLES = [
   'receipts',
   'parts',
   'inventory_movements',
+  'suppliers',
+  'requisitions',
+  'requisition_lines',
   'purchase_orders',
   'purchase_order_lines',
   'technicians',
