@@ -43,12 +43,25 @@ function componentOf(name: string): ComponentType {
   return entryOf(entry).component
 }
 
+/** Tier C legal pages — no `.dc.html`, design-system pages, registered under
+ *  their generated (auth-surface) registry names, not a PublicPortal.* name. */
+const LEGAL_SCREENS = ['PrivacyPolicy', 'TermsConditions'] as const
+
 describe('website domain barrel', () => {
-  it('declares exactly the ten generated PublicPortal screens', () => {
-    const generated = GENERATED_SCREENS.filter((s) => s.name.startsWith('PublicPortal.'))
+  it('declares the ten Tier A PublicPortal screens plus the two Tier C legal pages', () => {
+    const publicPortal = GENERATED_SCREENS.filter((s) => s.name.startsWith('PublicPortal.'))
       .map((s) => s.name)
       .sort()
-    expect(Object.keys(WEBSITE_SCREENS).sort()).toEqual(generated)
+    expect(publicPortal).toHaveLength(10)
+    const expected = [...publicPortal, ...LEGAL_SCREENS].sort()
+    expect(Object.keys(WEBSITE_SCREENS).sort()).toEqual(expected)
+  })
+
+  it('every declared screen is a real name in the generated registry', () => {
+    const known = new Set(GENERATED_SCREENS.map((s) => s.name))
+    for (const name of Object.keys(WEBSITE_SCREENS)) {
+      expect(known, `${name} is not a generated screen — it would never route`).toContain(name)
+    }
   })
 
   it('marks every page ungated and shelled in PublicShell — outside RequireAccess', () => {

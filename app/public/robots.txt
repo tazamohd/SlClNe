@@ -1,9 +1,14 @@
 # SALIS AUTO — public marketing site.
-# Only the public-portal pages are worth crawling; everything else in this SPA
-# sits behind authentication and renders nothing useful to a crawler.
+# Only the public pages are worth crawling; everything else in this SPA sits
+# behind authentication and renders nothing useful to a crawler. The public
+# set is the ten public-portal pages plus the two legal pages, which live at
+# top-level paths rather than under /public-portal/, so each is allowed
+# explicitly before the catch-all disallow.
 # Authenticated-route noindex is an app-level concern tracked with agent 06.
 User-agent: *
 Allow: /public-portal/
+Allow: /privacy-policy
+Allow: /terms-conditions
 Disallow: /
 
 Sitemap: https://salisauto.sa/sitemap.xml

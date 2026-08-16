@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Hand-written for the ten Tier A PublicPortal routes; regenerate from the
-     screen registry once the Tier B/C pages land (tracked in agent 17's
-     report). Base origin https://salisauto.sa is provisional: no public
-     origin is configured anywhere in the repository yet. -->
+<!-- The public, crawlable routes: the ten Tier A PublicPortal pages plus the
+     two Tier C legal pages (Privacy Policy, Terms & Conditions), all rendered
+     ungated with no session. Kept in step with the website barrel — the SEO
+     test asserts every ungated public route appears here and that no
+     authenticated URL leaks in. Base origin https://salisauto.sa is
+     provisional: no public origin is configured anywhere in the repository
+     yet, so Open Graph / canonical URLs wait on that same later pass. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://salisauto.sa/public-portal/landing</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/about</loc><lastmod>2026-08-12</lastmod></url>
@@ -14,4 +17,6 @@
   <url><loc>https://salisauto.sa/public-portal/faq</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/contact</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/support</loc><lastmod>2026-08-12</lastmod></url>
+  <url><loc>https://salisauto.sa/privacy-policy</loc><lastmod>2026-08-16</lastmod></url>
+  <url><loc>https://salisauto.sa/terms-conditions</loc><lastmod>2026-08-16</lastmod></url>
 </urlset>

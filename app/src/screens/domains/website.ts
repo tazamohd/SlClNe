@@ -8,10 +8,18 @@
  *
  *  Every entry here is `ungated`: these pages must render for a visitor with
  *  no session, so they mount entirely outside `RequireAccess` — the guard
- *  would bounce an anonymous reader to /login. All ten are Tier A,
- *  design-authoritative from `project/PublicPortal.*.dc.html` (§A25 provenance:
- *  the design handoff, with the deviations each screen's header comment
- *  records). */
+ *  would bounce an anonymous reader to /login.
+ *
+ *  The ten `PublicPortal.*` pages are Tier A, design-authoritative from
+ *  `project/PublicPortal.*.dc.html` (§A25 provenance: the design handoff, with
+ *  the deviations each screen's header comment records).
+ *
+ *  `PrivacyPolicy` and `TermsConditions` are Tier C content pages with **no**
+ *  `.dc.html` in the handoff — design-system pages composed from the approved
+ *  public section system, never presented as design-authoritative. The registry
+ *  classifies them under the `auth` surface (they predate this barrel and once
+ *  rendered a gated placeholder); declaring them here makes them real, ungated
+ *  public pages and takes them off the placeholder ledger. */
 import type { ComponentType } from 'react'
 import type { DomainScreens, ScreenEntry } from '../registry'
 import { PublicShell } from '@/components/shell/PublicShell'
@@ -25,6 +33,8 @@ import { PublicBlog } from '../public/Blog'
 import { PublicFaq } from '../public/Faq'
 import { PublicContact } from '../public/Contact'
 import { PublicSupport } from '../public/Support'
+import { PublicPrivacyPolicy } from '../public/PrivacyPolicy'
+import { PublicTerms } from '../public/Terms'
 
 const pub = (component: ComponentType): ScreenEntry => ({
   component,
@@ -43,4 +53,6 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.FAQ': pub(PublicFaq),
   'PublicPortal.Contact': pub(PublicContact),
   'PublicPortal.Support': pub(PublicSupport),
+  PrivacyPolicy: pub(PublicPrivacyPolicy),
+  TermsConditions: pub(PublicTerms),
 }

@@ -45,6 +45,13 @@ const GROUPS: readonly FooterGroup[] = [
       { label: 'FAQ', to: '/public-portal/faq' },
     ],
   },
+  {
+    heading: 'Legal',
+    links: [
+      { label: 'Privacy Policy', to: '/privacy-policy' },
+      { label: 'Terms & Conditions', to: '/terms-conditions' },
+    ],
+  },
 ]
 
 export function Footer() {

@@ -3,6 +3,7 @@ import { render } from '@testing-library/react'
 import fs from 'node:fs'
 import path from 'node:path'
 import { SCREENS } from '@/data/generated/screens'
+import { SCREENS as WEBSITE_SCREENS } from '@/screens/domains/website'
 import { usePageMeta } from '@/screens/public/usePageMeta'
 
 // Vitest runs with `app/` as cwd (jsdom's import.meta.url is not a file URL).
@@ -10,30 +11,37 @@ const publicDir = path.resolve(process.cwd(), 'public')
 const sitemap = fs.readFileSync(path.join(publicDir, 'sitemap.xml'), 'utf8')
 const robots = fs.readFileSync(path.join(publicDir, 'robots.txt'), 'utf8')
 
-const PUBLIC_ROUTES = SCREENS.filter((s) => s.name.startsWith('PublicPortal.')).map(
-  (s) => s.route
-)
+const ROUTE_OF = new Map(SCREENS.map((s) => [s.name, s.route]))
+/** The ungated public route set is exactly what the website barrel declares —
+ *  ten PublicPortal pages plus the two legal pages. Deriving it from the barrel
+ *  keeps the sitemap honest as pages are added, rather than hard-coding a count. */
+const PUBLIC_ROUTES = Object.keys(WEBSITE_SCREENS).map((name) => {
+  const route = ROUTE_OF.get(name)
+  if (!route) throw new Error(`${name} is in the website barrel but not the generated registry`)
+  return route
+})
 
 describe('sitemap.xml', () => {
-  it('lists every PublicPortal route the registry knows', () => {
-    expect(PUBLIC_ROUTES).toHaveLength(10)
+  it('lists every ungated public route the website barrel declares', () => {
+    expect(PUBLIC_ROUTES).toHaveLength(12)
     for (const route of PUBLIC_ROUTES) {
       expect(sitemap).toContain(`<loc>https://salisauto.sa${route}</loc>`)
     }
   })
 
-  it('lists nothing but PublicPortal routes — no authenticated URL leaks in', () => {
+  it('lists nothing but those public routes — no authenticated URL leaks in', () => {
     const locs = Array.from(sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) => m[1])
-    expect(locs).toHaveLength(10)
-    for (const loc of locs) {
-      expect(loc).toMatch(/^https:\/\/salisauto\.sa\/public-portal\//)
-    }
+    const expected = PUBLIC_ROUTES.map((r) => `https://salisauto.sa${r}`).sort()
+    expect(locs.sort()).toEqual(expected)
   })
 })
 
 describe('robots.txt', () => {
-  it('allows the public portal, disallows the rest, and names the sitemap', () => {
+  it('allows the public routes, disallows the rest, and names the sitemap', () => {
     expect(robots).toContain('Allow: /public-portal/')
+    // The two legal pages sit at top-level paths, so each is allowed explicitly.
+    expect(robots).toContain('Allow: /privacy-policy')
+    expect(robots).toContain('Allow: /terms-conditions')
     expect(robots).toContain('Disallow: /')
     expect(robots).toContain('Sitemap: https://salisauto.sa/sitemap.xml')
   })
