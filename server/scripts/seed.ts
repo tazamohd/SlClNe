@@ -16,7 +16,12 @@
 import { sql } from 'drizzle-orm'
 import { monotonicFactory } from 'ulid'
 import { parseSarToHalalas, sarToHalalas, minuteOfDay } from '@salis/contract'
-import { amortisedInstalmentHalalas, buildRepaymentPlan } from '@salis/contract/rules'
+import {
+  amortisedInstalmentHalalas,
+  buildRepaymentPlan,
+  payrollLineNetHalalas,
+  sumPayrollLines,
+} from '@salis/contract/rules'
 import * as T from '../../app/src/data/generated/tables'
 import { createDb } from '../src/db/client'
 import * as s from '../src/db/schema'
@@ -109,6 +114,15 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   insuranceClaims: 2,
   loanContracts: 2,
   loanRepayments: 36,
+  /** HR (vertical B) — no design fixture; each row is coherent. Five employees
+   *  in real departments; one posted payroll run whose five lines' column sums
+   *  equal its frozen totals; a few timesheets; three leave requests (one
+   *  approved, which is why its employee is on leave). */
+  employees: 5,
+  payrollRuns: 1,
+  payrollLines: 5,
+  timesheets: 3,
+  leaveRequests: 3,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
@@ -485,18 +499,20 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       and t.name = a.technician_name
   `)
 
-  await tx.insert(s.departments).values(
-    T.DEPARTMENTS.map((d) =>
-      row({
-        name: d.name,
-        head: d.head,
-        headcount: d.headcount,
-        costCenter: d.costCenter,
-        branchLabel: d.branch,
-        icon: d.icon,
-      }),
-    ),
+  const departmentRows = T.DEPARTMENTS.map((d) =>
+    row({
+      name: d.name,
+      head: d.head,
+      headcount: d.headcount,
+      costCenter: d.costCenter,
+      branchLabel: d.branch,
+      icon: d.icon,
+    }),
   )
+  await tx.insert(s.departments).values(departmentRows)
+  /* Name → id, so the HR employees below belong to a real department rather
+   * than a free-standing string (vertical B coherence). */
+  const deptIdByName = new Map(departmentRows.map((d) => [d.name, d.id]))
 
   await tx.insert(s.leads).values(
     T.LEADS.map((l) =>
@@ -810,6 +826,134 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       }),
     )
   }
+
+  /* ------------------------------------------------------------------- HR (vertical B)
+   * Employees, one posted payroll run with its lines, timesheets and leave
+   * requests. No design fixture — the HR surfaces were mock in the prototype —
+   * so every row here is a declared coherence extra (SEED_COHERENCE_EXTRAS),
+   * served after the (empty) fixture. Coherent, not merely present: each
+   * employee belongs to a real department; the payroll run's frozen totals are
+   * the exact column sums of its lines (computed with the shared payroll rule,
+   * so a wrong total would fail the coherence test); and Saeed's `on_leave`
+   * status matches his approved annual-leave request. Money is integer halalas
+   * and every line's net is gross + allowances − deductions. */
+  const employeeDefs = [
+    { name: 'Ahmed Al-Rashid', nameAr: 'أحمد الراشد', title: 'Workshop Supervisor', dept: 'Workshop Operations', hire: '2021-03-01', salary: 950000, status: 'active' },
+    { name: 'Fatima Al-Zahrani', nameAr: 'فاطمة الزهراني', title: 'Service Advisor', dept: 'Front Desk & Service', hire: '2022-06-15', salary: 680000, status: 'active' },
+    { name: 'Nasser Al-Dosari', nameAr: 'ناصر الدوسري', title: 'Storekeeper', dept: 'Parts & Inventory', hire: '2020-11-02', salary: 560000, status: 'active' },
+    { name: 'Omar Al-Ghamdi', nameAr: 'عمر الغامدي', title: 'Accountant', dept: 'Finance & Accounting', hire: '2019-02-20', salary: 880000, status: 'active' },
+    { name: 'Saeed Al-Zahrani', nameAr: 'سعيد الزهراني', title: 'Technician', dept: 'Workshop Operations', hire: '2023-09-10', salary: 610000, status: 'on_leave' },
+  ]
+  const employeeRows = employeeDefs.map((e, i) =>
+    row({
+      employeeNumber: `EMP-${String(i + 1).padStart(4, '0')}`,
+      name: e.name,
+      nameAr: e.nameAr,
+      title: e.title,
+      departmentId: deptIdByName.get(e.dept) ?? null,
+      hireDate: e.hire,
+      status: e.status,
+      salaryHalalas: e.salary,
+    }),
+  )
+  await tx.insert(s.employees).values(employeeRows)
+  const employeeByName = new Map(employeeRows.map((e) => [e.name, e]))
+
+  /* One posted payroll run for 2026-07. Each line: gross is the base salary, a
+   * housing allowance of 25%, a GOSI deduction of 10%; the net follows from the
+   * shared rule. The run's totals are the column sums of these lines, frozen —
+   * exactly what posting computes, so the seed and a real post agree. */
+  const runId = ulid()
+  const lineRows = employeeRows.map((e) => {
+    const gross = e.salaryHalalas
+    const allowances = Math.round(gross * 0.25)
+    const deductions = Math.round(gross * 0.1)
+    return row({
+      payrollRunId: runId,
+      employeeId: e.id,
+      employeeName: e.name,
+      grossHalalas: gross,
+      allowancesHalalas: allowances,
+      deductionsHalalas: deductions,
+      netHalalas: payrollLineNetHalalas(gross, allowances, deductions),
+    })
+  })
+  const totals = sumPayrollLines(lineRows)
+  await tx.insert(s.payrollRuns).values({
+    ...row({
+      period: '2026-07',
+      status: 'posted',
+      grossHalalas: totals.grossHalalas,
+      allowancesHalalas: totals.allowancesHalalas,
+      deductionsHalalas: totals.deductionsHalalas,
+      netHalalas: totals.netHalalas,
+      postedAt: new Date('2026-07-28T09:00:00Z'),
+      postedBy: SEED.systemUserId,
+    }),
+    id: runId,
+  })
+  await tx.insert(s.payrollLines).values(lineRows)
+
+  /* A few timesheets for the last working day of the period. Minutes are the
+   * stored figure; hours are derived at the boundary. */
+  const timesheetDefs = [
+    { name: 'Ahmed Al-Rashid', in: '08:00', out: '16:30', minutes: 510 },
+    { name: 'Fatima Al-Zahrani', in: '08:00', out: '16:00', minutes: 480 },
+    { name: 'Nasser Al-Dosari', in: '09:00', out: '17:00', minutes: 480 },
+  ]
+  await tx.insert(s.timesheets).values(
+    timesheetDefs.map((tsheet) =>
+      row({
+        employeeId: employeeByName.get(tsheet.name)!.id,
+        employeeName: tsheet.name,
+        workDate: '2026-07-27',
+        clockIn: tsheet.in,
+        clockOut: tsheet.out,
+        minutes: tsheet.minutes,
+        status: 'approved',
+      }),
+    ),
+  )
+
+  /* Three leave requests spanning the lifecycle: Saeed's approved annual leave
+   * (why his employee status is on_leave), a submitted sick request awaiting a
+   * decision, and a rejected unpaid request. Approved/rejected rows carry the
+   * approver and decision time, like the leave-decision route writes. */
+  await tx.insert(s.leaveRequests).values([
+    row({
+      employeeId: employeeByName.get('Saeed Al-Zahrani')!.id,
+      employeeName: 'Saeed Al-Zahrani',
+      type: 'annual',
+      startDate: '2026-07-20',
+      endDate: '2026-07-27',
+      days: 7,
+      status: 'approved',
+      reason: 'Family visit',
+      approverId: SEED.systemUserId,
+      decidedAt: new Date('2026-07-15T10:00:00Z'),
+    }),
+    row({
+      employeeId: employeeByName.get('Fatima Al-Zahrani')!.id,
+      employeeName: 'Fatima Al-Zahrani',
+      type: 'sick',
+      startDate: '2026-08-03',
+      endDate: '2026-08-04',
+      days: 2,
+      status: 'submitted',
+    }),
+    row({
+      employeeId: employeeByName.get('Nasser Al-Dosari')!.id,
+      employeeName: 'Nasser Al-Dosari',
+      type: 'unpaid',
+      startDate: '2026-08-10',
+      endDate: '2026-08-12',
+      days: 3,
+      status: 'rejected',
+      reason: 'Coverage unavailable that week',
+      approverId: SEED.systemUserId,
+      decidedAt: new Date('2026-08-01T08:30:00Z'),
+    }),
+  ])
 
   await tx.insert(s.aiAgents).values(
     T.AI_AGENTS.map((a) =>

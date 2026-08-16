@@ -259,6 +259,85 @@ export interface LoanRepaymentRow extends EntityMeta {
   status: 'due' | 'paid' | 'overdue'
 }
 
+/** An employee, as `GET /employees` presents it (vertical B). No design fixture,
+ *  so declared here. **Salary is sensitive**: both `salary` and `salaryHalalas`
+ *  arrive null for a role the `Employee salary` field rule hides pay from, so
+ *  each is nullable. Writable through the collection; gated on `hr`. */
+export interface EmployeeRow extends EntityMeta {
+  employeeNumber: string
+  name: string
+  nameAr: string
+  title: string
+  departmentId: string | null
+  hireDate: string
+  status: 'active' | 'on_leave' | 'terminated'
+  salary: string | null
+  salaryHalalas: number | null
+}
+
+/** A payroll run, as `GET /payroll/runs` presents it (vertical B). The totals
+ *  are frozen from the lines when the run is posted (`POST /payroll/runs/:id/
+ *  post`); a posted run cannot be reopened or edited. Pay figures arrive null
+ *  for a role the salary rule hides pay from. */
+export interface PayrollRunRow extends EntityMeta {
+  period: string
+  status: 'draft' | 'posted'
+  grossPay: string | null
+  grossPayHalalas: number | null
+  allowances: string | null
+  allowancesHalalas: number | null
+  deductions: string | null
+  deductionsHalalas: number | null
+  netPay: string | null
+  netPayHalalas: number | null
+  postedAt: string | null
+}
+
+/** A payroll line, as `GET /payroll/lines` presents it (vertical B). The net is
+ *  computed on the server as gross + allowances − deductions. Pay figures are
+ *  redacted exactly as the run's are. */
+export interface PayrollLineRow extends EntityMeta {
+  payrollRunId: string
+  employeeId: string
+  employeeName: string
+  grossPay: string | null
+  grossPayHalalas: number | null
+  allowances: string | null
+  allowancesHalalas: number | null
+  deductions: string | null
+  deductionsHalalas: number | null
+  netPay: string | null
+  netPayHalalas: number | null
+}
+
+/** A timesheet, as `GET /timesheets` presents it (vertical B). Worked minutes
+ *  are the stored integer; `hours` is the decimal presentation. */
+export interface TimesheetRow extends EntityMeta {
+  employeeId: string
+  employeeName: string
+  workDate: string
+  clockIn: string | null
+  clockOut: string | null
+  minutes: number
+  hours: number
+  status: 'submitted' | 'approved' | 'rejected'
+}
+
+/** A leave request, as `GET /leave-requests` presents it (vertical B). The
+ *  approve/reject decision is the bespoke leave-request API; the approver is
+ *  recorded for segregation of duties. */
+export interface LeaveRequestRow extends EntityMeta {
+  employeeId: string
+  employeeName: string
+  type: 'annual' | 'sick' | 'unpaid' | 'other'
+  startDate: string
+  endDate: string
+  days: number
+  status: 'submitted' | 'approved' | 'rejected'
+  reason: string | null
+  approverId: string | null
+}
+
 export interface Repository {
   branches: Collection<BranchRow>
   vehicles: Collection<(typeof T.VEHICLES)[number]>
@@ -288,6 +367,11 @@ export interface Repository {
   insuranceClaims: Collection<InsuranceClaimRow>
   loanContracts: Collection<LoanContractRow>
   loanRepayments: Collection<LoanRepaymentRow>
+  employees: Collection<EmployeeRow>
+  payrollRuns: Collection<PayrollRunRow>
+  payrollLines: Collection<PayrollLineRow>
+  timesheets: Collection<TimesheetRow>
+  leaveRequests: Collection<LeaveRequestRow>
   receipts: Collection<(typeof T.RECEIPTS)[number]>
   departments: Collection<(typeof T.DEPARTMENTS)[number]>
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
@@ -342,6 +426,11 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   insuranceClaims: 'insurance-claims',
   loanContracts: 'loan-contracts',
   loanRepayments: 'loan-repayments',
+  employees: 'employees',
+  payrollRuns: 'payroll/runs',
+  payrollLines: 'payroll/lines',
+  timesheets: 'timesheets',
+  leaveRequests: 'leave-requests',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -508,6 +597,14 @@ export const mockRepository: Repository = {
   insuranceClaims: fixture<InsuranceClaimRow>([]),
   loanContracts: fixture<LoanContractRow>([]),
   loanRepayments: fixture<LoanRepaymentRow>([]),
+  /* No design fixture for any HR table (vertical B) — they were mock in the
+   * prototype. An empty read-only collection is the honest mock; the live API
+   * serves the seeded coherent rows, and writes need a server. */
+  employees: fixture<EmployeeRow>([]),
+  payrollRuns: fixture<PayrollRunRow>([]),
+  payrollLines: fixture<PayrollLineRow>([]),
+  timesheets: fixture<TimesheetRow>([]),
+  leaveRequests: fixture<LeaveRequestRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),

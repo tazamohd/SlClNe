@@ -51,6 +51,13 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   insuranceClaims: [],
   loanContracts: [],
   loanRepayments: [],
+  /** No design fixture for any HR table (vertical B). The collections serve the
+   *  seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  employees: [],
+  payrollRuns: [],
+  payrollLines: [],
+  timesheets: [],
+  leaveRequests: [],
   receipts: T.RECEIPTS,
   departments: T.DEPARTMENTS,
   aiAgents: T.AI_AGENTS,
