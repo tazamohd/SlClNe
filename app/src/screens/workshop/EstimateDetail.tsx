@@ -13,6 +13,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, queryKeys, type RowOf } from '@/data/useCollection'
 import { canApprove } from '@/data/rbac'
+import { history, type EntityHistory } from '@/data/repository'
 import {
   approveEstimate,
   rejectEstimate,
@@ -22,7 +23,19 @@ import {
   type EstimateLineRow,
 } from './api'
 
-type Estimate = RowOf<'estimates'> & { _id?: string; totalHalalas?: number }
+/** The live estimate row carries the VAT split and the raise/approve identities
+ *  the server now exposes (F-029); the fixture row carries only the pre-formatted
+ *  `amount`, so every added field is optional and the screen degrades to the
+ *  grand total alone. */
+type Estimate = RowOf<'estimates'> & {
+  _id?: string
+  totalHalalas?: number
+  subtotalHalalas?: number
+  taxHalalas?: number
+  discountHalalas?: number
+  submittedBy?: string | null
+  approvedBy?: string | null
+}
 
 /** A single estimate: its line items, its total, and the approve/reject
  *  decision — rendered in the shared `DetailPage` frame agent 09 built.
@@ -65,6 +78,17 @@ export function EstimateDetail() {
     queryKey: ['estimate-lines', ref],
     queryFn: () => fetchEstimateLines(ref as string),
     enabled: Boolean(ref),
+    retry: false,
+  })
+
+  /* The audit trail — who raised the estimate versus who approved it, and the
+   * server-computed segregation-of-duties conflicts (F-004 / F-029). Live only:
+   * the accessor is null on the fixtures, the query never runs, and the section
+   * shows the honest note that the trail needs the API. */
+  const trail = useQuery<EntityHistory, RepositoryError>({
+    queryKey: ['estimate-history', ref],
+    queryFn: () => history!.estimate(ref as string),
+    enabled: Boolean(ref) && Boolean(history),
     retry: false,
   })
 
@@ -197,6 +221,27 @@ export function EstimateDetail() {
       span: 'half',
       children: (
         <div className="flex flex-col gap-2">
+          {/* When the server exposes the split (live), each figure is its own —
+              subtotal, discount and VAT are displayed, never summed here. The
+              fixture row carries only the grand total, so that alone is shown. */}
+          {estimate.subtotalHalalas != null ? (
+            <>
+              <div className="flex items-baseline justify-between text-[13px] text-body">
+                <span>{t('Subtotal')}</span>
+                <Money sar={estimate.subtotalHalalas / 100} className="text-body" />
+              </div>
+              {estimate.discountHalalas ? (
+                <div className="flex items-baseline justify-between text-[13px] text-body">
+                  <span>{t('Discount')}</span>
+                  <Money sar={-(estimate.discountHalalas / 100)} className="text-body" />
+                </div>
+              ) : null}
+              <div className="flex items-baseline justify-between text-[13px] text-body">
+                <span>{t('VAT')}</span>
+                <Money sar={(estimate.taxHalalas ?? 0) / 100} className="text-body" />
+              </div>
+            </>
+          ) : null}
           <div className="flex items-baseline justify-between border-t border-border pt-2 text-base font-bold text-heading first:border-t-0 first:pt-0">
             <span>{t('Grand total')}</span>
             <Money sar={amount} className="font-bold" />
@@ -205,6 +250,105 @@ export function EstimateDetail() {
             {t('VAT is included and computed server-side at the ZATCA rate.')}
           </p>
         </div>
+      ),
+    },
+    {
+      id: 'audit',
+      title: 'Who raised, who approved',
+      icon: 'ShieldCheck',
+      span: 'half',
+      children: history ? (
+        trail.isLoading ? (
+          <Loading inline label="Loading audit trail..." />
+        ) : trail.isError ? (
+          <EmptyState
+            icon="ShieldAlert"
+            title={t("Couldn't load the audit trail")}
+            description={trail.error?.message}
+          />
+        ) : (
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5 text-[13px]">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-muted">{t('Raised by')}</span>
+                <span className="font-semibold text-heading">{estimate.submittedBy || '—'}</span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-muted">{t('Approved by')}</span>
+                <span className="font-semibold text-heading">{estimate.approvedBy || '—'}</span>
+              </div>
+            </div>
+
+            {(trail.data?.sodConflicts.length ?? 0) > 0 ? (
+              <div
+                role="note"
+                className="flex items-start gap-2.5 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5"
+              >
+                <Icon name="AlertTriangle" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+                <div className="min-w-0">
+                  <p className="text-[12px] font-bold text-salis-orange">
+                    {t('Segregation-of-duties conflict')}
+                  </p>
+                  {trail.data?.sodConflicts.map((c, i) => (
+                    <p key={i} className="mt-0.5 text-[11.5px] text-body">
+                      {t(c.a)} + {t(c.b)} — {c.risk}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {trail.data?.entries.length ? (
+              <ul className="m-0 flex list-none flex-col gap-2 p-0">
+                {trail.data.entries.map((entry) => {
+                  const conflicted = (trail.data?.sodConflicts ?? []).some(
+                    (c) => c.actorId === entry.actorId
+                  )
+                  return (
+                    <li
+                      key={entry.id}
+                      className={
+                        'flex items-start gap-2.5 rounded-lg p-2 ' +
+                        (conflicted ? 'bg-[rgba(249,115,22,.07)]' : '')
+                      }
+                    >
+                      <Icon
+                        name={conflicted ? 'AlertTriangle' : 'CircleDot'}
+                        size={14}
+                        className={
+                          'mt-0.5 flex-shrink-0 ' +
+                          (conflicted ? 'text-salis-orange' : 'text-muted')
+                        }
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[12.5px] font-semibold text-heading">
+                          {t(entry.action)}
+                          {entry.activities.length ? (
+                            <span className="ms-1.5 font-normal text-muted">
+                              · {entry.activities.map((a) => t(a)).join(', ')}
+                            </span>
+                          ) : null}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-muted">
+                          {entry.actorRole || t('unknown role')}
+                          {entry.at ? ` · ${entry.at}` : ''}
+                        </p>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            ) : (
+              <p className="text-[12px] text-muted">{t('No trail entries recorded yet.')}</p>
+            )}
+          </div>
+        )
+      ) : (
+        <p className="text-[12px] leading-relaxed text-muted">
+          {t(
+            'Who raised versus who approved — and any segregation-of-duties conflict — comes from the audit trail. Connect a live server to read it.'
+          )}
+        </p>
       ),
     },
   ]

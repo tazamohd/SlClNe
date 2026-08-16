@@ -196,4 +196,18 @@ export function isRefusal(error: unknown): boolean {
   )
 }
 
+/** The OBD bridge and the SMS provider are external dependencies (§40): the
+ *  server ships them as adapter-plus-mock and refuses the live command with a
+ *  503 `external_dependency_unavailable` until a bridge is deployed. A screen
+ *  meets that as the honest "not connected yet" state — never a failure toast and
+ *  never a faked success. The server carries the status, and older transports may
+ *  land it as the code, so both are checked. */
+export function isExternalDependency(error: unknown): boolean {
+  return (
+    error instanceof RepositoryError &&
+    (error.status === 503 ||
+      (error.code as string) === 'external_dependency_unavailable')
+  )
+}
+
 export { RepositoryError }

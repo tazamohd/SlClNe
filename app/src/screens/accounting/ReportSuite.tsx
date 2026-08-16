@@ -2,15 +2,23 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { ErrorState } from '@/components/ui/States'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Icon } from '@/components/ui/Icon'
-import { Money } from '@/components/ui/Money'
+import { Money, formatSar } from '@/components/ui/Money'
 import { BarList, CHART_COLORS } from '@/components/ui/Charts'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, usePagedCollection, type RowOf } from '@/data/useCollection'
-import type { CollectionKey } from '@/data/repository'
+import {
+  useCollection,
+  useCreate,
+  useDelete,
+  usePagedCollection,
+  type RowOf,
+} from '@/data/useCollection'
+import { useToast } from '@/components/ui/Toast'
+import { Button } from '@/components/ui/Button'
+import { isLive, type CollectionKey } from '@/data/repository'
 import { InvoiceStatusBadge } from '@/screens/finance/Invoices'
 import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
 import {
@@ -18,8 +26,10 @@ import {
   DateRangeFilter,
   ExportPrintActions,
   ServerScopeNote,
+  ServerTotalsNote,
 } from './ReportControls'
 import { AGGREGATE_GAP, downloadCsv, inDateRange, rowDateIso, toCsv } from './reporting'
+import { useInvoicesSummary, useTrialBalance } from './useFinanceReports'
 
 /** The reporting suite: a hub, an analytics overview, a revenue report, and a
  *  report builder. They share one discipline, stated once here.
@@ -111,7 +121,7 @@ function ReportCard({ link }: { link: ReportLink }) {
       <div className="min-w-0 flex-1">
         <p className="flex items-center gap-2 text-sm font-bold text-heading">
           {t(link.name)}
-          {link.gapped ? (
+          {link.gapped && !isLive ? (
             <span className="rounded bg-[rgba(249,115,22,.12)] px-1.5 py-0.5 text-[10px] font-semibold text-salis-orange">
               {t('Partial data')}
             </span>
@@ -249,7 +259,11 @@ export function SalesReports() {
         actions={<ExportPrintActions onExport={exportRows} exportDisabled={rows.length === 0} />}
       />
 
-      <AggregateGapNotice endpoint={AGGREGATE_GAP.sales} />
+      {isLive ? (
+        <SalesSummaryPanel from={from} to={to} status={status === 'all' ? undefined : status} />
+      ) : (
+        <AggregateGapNotice endpoint={AGGREGATE_GAP.sales} />
+      )}
 
       <Section
         title={t('Invoices')}
@@ -327,6 +341,74 @@ export function SalesReports() {
   )
 }
 
+/** The period totals, live only. On a build with an API this replaces the gap
+ *  notice with the figures `GET /invoices/summary` computed for the selected
+ *  range — invoiced, paid, outstanding and output VAT, each an integer-halala
+ *  sum the server produced. The client renders them; it never adds up the rows.
+ *  `financeReports` is null on the fixtures, so this never mounts there. */
+function SalesSummaryPanel({
+  from,
+  to,
+  status,
+}: {
+  from: string
+  to: string
+  status?: string
+}) {
+  const { t } = usePreferences()
+  const query = useInvoicesSummary({ from: from || undefined, to: to || undefined, status })
+
+  if (query.isLoading) {
+    return (
+      <Section title={t('Period totals')}>
+        <Loading label={t('Summing the period…')} />
+      </Section>
+    )
+  }
+  if (query.error || !query.data) {
+    return (
+      <Section title={t('Period totals')}>
+        <ErrorState description={query.error?.message} onRetry={() => void query.refetch()} />
+      </Section>
+    )
+  }
+
+  const s = query.data
+  const stats: Stat[] = [
+    {
+      label: 'Invoiced',
+      value: formatSar(fromHalalas(s.invoicedHalalas)),
+      caption: `${s.count} ${t('invoices in range')}`,
+      highlight: true,
+    },
+    { label: 'Paid', value: formatSar(fromHalalas(s.paidHalalas)), caption: 'Received', tone: 'info' },
+    {
+      label: 'Outstanding',
+      value: formatSar(fromHalalas(s.outstandingHalalas)),
+      caption: 'Still receivable',
+      tone: 'warning',
+    },
+    { label: 'Output VAT', value: formatSar(fromHalalas(s.vatHalalas)), caption: 'On the period' },
+  ]
+
+  return (
+    <>
+      <ServerTotalsNote endpoint="GET /invoices/summary" />
+      <StatRow stats={stats} />
+      {s.byStatus.length ? (
+        <Section title={t('Invoiced by status')} subtitle={t('The server’s total for each state')}>
+          <BarList
+            rows={s.byStatus.map((row) => ({
+              label: `${row.status} (${row.count})`,
+              value: fromHalalas(row.invoicedHalalas),
+            }))}
+          />
+        </Section>
+      ) : null}
+    </>
+  )
+}
+
 function MoneyCell({
   invoice,
   field,
@@ -392,7 +474,11 @@ export function ReportsAnalytics() {
 
       <StatRow stats={stats} />
 
-      <AggregateGapNotice endpoint={AGGREGATE_GAP.ledger} />
+      {isLive ? (
+        <TrialBalancePanel />
+      ) : (
+        <AggregateGapNotice endpoint={AGGREGATE_GAP.ledger} />
+      )}
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <Section title={t('Invoices by status')} subtitle={t('Count of invoices in each state')}>
@@ -425,6 +511,125 @@ export function ReportsAnalytics() {
       </div>
       <ServerScopeNote />
     </>
+  )
+}
+
+/** The trial balance and balance sheet, live only. Replaces the ledger gap
+ *  notice with what `GET /accounting/reports/trial-balance` computed: the P&L
+ *  roll-up, the debit/credit totals, and the balance-sheet identity block —
+ *  which carries F-008's real imbalance (assets ≠ liabilities + equity,
+ *  `balanced:false`). The imbalance is rendered honestly, not tied off: a books
+ *  that do not balance are shown as not balancing. `financeReports` is null on
+ *  the fixtures, so this never mounts there. */
+function TrialBalancePanel() {
+  const { t } = usePreferences()
+  const query = useTrialBalance()
+
+  if (query.isLoading) {
+    return (
+      <Section title={t('Trial balance')}>
+        <Loading label={t('Loading the ledger roll-up…')} />
+      </Section>
+    )
+  }
+  if (query.error || !query.data) {
+    return (
+      <Section title={t('Trial balance')}>
+        <ErrorState description={query.error?.message} onRetry={() => void query.refetch()} />
+      </Section>
+    )
+  }
+
+  const tb = query.data
+  const bs = tb.balanceSheet
+  const pnlStats: Stat[] = [
+    { label: 'Revenue', value: formatSar(fromHalalas(tb.profitAndLoss.revenueHalalas)), caption: 'Posted', highlight: true },
+    { label: 'Expense', value: formatSar(fromHalalas(tb.profitAndLoss.expenseHalalas)), caption: 'Posted', tone: 'warning' },
+    { label: 'Net', value: formatSar(fromHalalas(tb.profitAndLoss.netHalalas)), caption: 'Revenue less expense', tone: 'info' },
+    { label: 'Journal', value: `${tb.journal.postedCount}`, caption: `${tb.journal.draftCount} ${t('draft')}` },
+  ]
+
+  return (
+    <>
+      <ServerTotalsNote endpoint="GET /accounting/reports/trial-balance" />
+      <StatRow stats={pnlStats} />
+
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <Section title={t('Trial balance')} subtitle={t('Posted debits against posted credits')}>
+          <div className="flex flex-col">
+            <LedgerRow label={t('Total debits')} halalas={tb.totals.debitHalalas} />
+            <LedgerRow label={t('Total credits')} halalas={tb.totals.creditHalalas} />
+            <LedgerRow
+              label={t('Difference')}
+              halalas={tb.totals.differenceHalalas}
+              tone={tb.balanced ? undefined : 'warning'}
+              strong
+            />
+          </div>
+          {tb.balanced ? null : (
+            <ImbalanceNotice text={t('The posted ledger does not balance: debits do not equal credits.')} />
+          )}
+        </Section>
+
+        <Section title={t('Balance sheet')} subtitle={t('Assets against liabilities and equity')}>
+          <div className="flex flex-col">
+            <LedgerRow label={t('Assets')} halalas={bs.assetsHalalas} />
+            <LedgerRow label={t('Liabilities + equity')} halalas={bs.liabilitiesPlusEquityHalalas} />
+            <LedgerRow
+              label={t('Difference')}
+              halalas={bs.differenceHalalas}
+              tone={bs.balanced ? undefined : 'warning'}
+              strong
+            />
+          </div>
+          {bs.balanced ? null : (
+            <ImbalanceNotice
+              text={t('Assets do not equal liabilities plus equity in the seeded ledger.')}
+            />
+          )}
+        </Section>
+      </div>
+    </>
+  )
+}
+
+/** One label/amount row of a ledger roll-up. The amount is the server's integer
+ *  halalas, shown as money; nothing here is summed. */
+function LedgerRow({
+  label,
+  halalas,
+  tone,
+  strong,
+}: {
+  label: string
+  halalas: number
+  tone?: 'warning'
+  strong?: boolean
+}) {
+  return (
+    <div
+      className={
+        'flex items-center justify-between border-0 border-b border-solid border-border py-3 last:border-b-0 ' +
+        (strong ? 'text-base font-bold text-heading' : 'text-[13px] text-body')
+      }
+    >
+      <span>{label}</span>
+      <Money
+        sar={fromHalalas(halalas)}
+        className={tone === 'warning' ? 'font-semibold text-salis-orange' : strong ? 'font-bold' : ''}
+      />
+    </div>
+  )
+}
+
+/** The honest imbalance banner — orange (a condition needing attention), never
+ *  red. F-008 is surfaced, not tied off. */
+function ImbalanceNotice({ text }: { text: string }) {
+  return (
+    <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body">
+      <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
+      {text}
+    </p>
   )
 }
 
@@ -580,6 +785,38 @@ export function CustomReports() {
 
   const activeFields = source.fields.filter((field) => selected[field.key])
 
+  /** The builder's current definition, as a JSON object the server persists and
+   *  hands back — no money, just the source, the chosen columns and the range. */
+  const definition = useMemo(
+    () => ({
+      source: sourceKey,
+      columns: activeFields.map((field) => field.key),
+      query: query || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    }),
+    [sourceKey, activeFields, query, from, to],
+  )
+
+  /** Applies a saved definition back onto the builder. */
+  const loadDefinition = (row: RowOf<'savedReports'>) => {
+    const def = (row.definition ?? {}) as {
+      source?: string
+      columns?: string[]
+      query?: string
+      from?: string
+      to?: string
+    }
+    const nextKey = (def.source as CollectionKey) ?? sourceKey
+    const nextSource = SOURCES.find((s) => s.key === nextKey) ?? SOURCES[0]
+    setSourceKey(nextSource.key)
+    const cols = new Set(def.columns ?? nextSource.fields.map((f) => f.key))
+    setSelected(Object.fromEntries(nextSource.fields.map((field) => [field.key, cols.has(field.key)])))
+    setQuery(def.query ?? '')
+    setFrom(def.from ?? '')
+    setTo(def.to ?? '')
+  }
+
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase()
     return (rows as unknown as Record<string, unknown>[])
@@ -711,15 +948,138 @@ export function CustomReports() {
             }
           />
         )}
-        <p className="flex items-start gap-1.5 text-[11px] text-muted">
-          <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
-          {t(
-            'Saving a report definition to reuse later needs a savedReports collection on the server, which does not exist yet — build and export a report per session for now.',
-          )}
-        </p>
+        {!isLive ? (
+          <p className="flex items-start gap-1.5 text-[11px] text-muted">
+            <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+            {t(
+              'Saving a report definition to reuse later needs a savedReports collection on the server, which does not exist yet — build and export a report per session for now.',
+            )}
+          </p>
+        ) : null}
         <ServerScopeNote />
       </Section>
+
+      {isLive ? <SavedReportsPanel definition={definition} onLoad={loadDefinition} /> : null}
     </>
+  )
+}
+
+/** Persisted report definitions, live only. On a build with an API the builder
+ *  can save its current definition to the `savedReports` collection, list what
+ *  was saved, load one back onto the builder, and delete it — the persistence
+ *  F-028 added. The definition is a plain JSON object (source, columns, range);
+ *  no money is stored or computed. `savedReports` is an empty read-only fixture
+ *  on a no-API build and its writes are refused, so this never mounts there. */
+function SavedReportsPanel({
+  definition,
+  onLoad,
+}: {
+  definition: Record<string, unknown>
+  onLoad: (row: RowOf<'savedReports'>) => void
+}) {
+  const { t } = usePreferences()
+  const toast = useToast()
+  const { data: saved = [], isLoading } = useCollection('savedReports')
+  const create = useCreate('savedReports')
+  const remove = useDelete('savedReports')
+  const [name, setName] = useState('')
+
+  const save = () => {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    create.mutate(
+      { input: { name: trimmed, source: String(definition.source ?? ''), definition } as Partial<RowOf<'savedReports'>> },
+      {
+        onSuccess: () => {
+          setName('')
+          toast.show({ title: t('Report saved'), description: t('The definition is stored for reuse.') })
+        },
+        onError: (error) =>
+          toast.show({
+            title: t('Could not save'),
+            description: error.message || t('The report definition was not saved.'),
+            error: true,
+          }),
+      },
+    )
+  }
+
+  return (
+    <Section title={t('Saved reports')} subtitle={t('Persist this definition and reuse it later')}>
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="flex flex-col gap-1">
+          <span className="text-[11px] font-medium text-muted">{t('Report name')}</span>
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder={t('e.g. Overdue invoices')}
+            aria-label={t('Report name')}
+            className="h-10 min-w-[220px] rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+          />
+        </label>
+        <Button variant="primary" size="md" onClick={save} disabled={!name.trim() || create.isPending}>
+          <Icon name="Save" size={15} />
+          {create.isPending ? t('Saving…') : t('Save definition')}
+        </Button>
+      </div>
+
+      {isLoading ? (
+        <p className="text-[13px] text-muted">{t('Loading saved reports…')}</p>
+      ) : saved.length === 0 ? (
+        <EmptyState icon="Table" title={t('No saved reports yet')} description={t('Save the current definition to reuse it.')} />
+      ) : (
+        <div className="flex flex-col gap-2">
+          {saved.map((row) => {
+            const id = String((row as { _id?: string })._id ?? row.name)
+            return (
+              <div
+                key={id}
+                className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3"
+              >
+                <div className="min-w-0">
+                  <p className="text-[13px] font-semibold text-heading">{row.name}</p>
+                  <p className="text-[11px] text-muted">
+                    <span dir="ltr" className="font-mono">
+                      {row.source || '—'}
+                    </span>
+                    {row.owner ? ` · ${row.owner}` : ''}
+                  </p>
+                </div>
+                <div className="flex flex-shrink-0 items-center gap-2">
+                  <Button variant="subtle" size="sm" onClick={() => onLoad(row)}>
+                    <Icon name="FolderOpen" size={14} />
+                    {t('Load')}
+                  </Button>
+                  <Button
+                    variant="subtle"
+                    size="sm"
+                    disabled={remove.isPending}
+                    onClick={() =>
+                      remove.mutate(
+                        { id },
+                        {
+                          onError: (error) =>
+                            toast.show({
+                              title: t('Could not delete'),
+                              description: error.message || t('The report was not deleted.'),
+                              error: true,
+                            }),
+                        },
+                      )
+                    }
+                  >
+                    <Icon name="Trash2" size={14} />
+                    {t('Delete')}
+                  </Button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+      <ServerScopeNote />
+    </Section>
   )
 }
 

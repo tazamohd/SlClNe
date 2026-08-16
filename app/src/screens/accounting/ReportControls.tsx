@@ -125,6 +125,32 @@ export function AggregateGapNotice({ endpoint }: { endpoint: string }) {
   )
 }
 
+/** The live counterpart to `AggregateGapNotice`: the server aggregate is now
+ *  connected, so this confirms the totals beside it were summed server-side over
+ *  the selected range — not in the browser — and names the endpoint that did it.
+ *  Blue and informational, the same tone as the gap it replaces. */
+export function ServerTotalsNote({ endpoint }: { endpoint: string }) {
+  const { t } = usePreferences()
+  return (
+    <div className="flex items-start gap-3 rounded-lg border border-border bg-[rgba(10,94,215,.05)] px-4 py-3">
+      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+        <Icon name="Sigma" size={16} />
+      </span>
+      <div className="min-w-0 text-[13px]">
+        <p className="font-semibold text-heading">{t('Totals computed by the server')}</p>
+        <p className="mt-0.5 text-muted">
+          {t(
+            'Each total below is summed by the server over your whole organization for the selected range, not from the page of rows shown here:',
+          )}{' '}
+          <span dir="ltr" className="font-mono text-[11px] text-body">
+            {endpoint}
+          </span>
+        </p>
+      </div>
+    </div>
+  )
+}
+
 /* ------------------------------------------------------------- server scope */
 
 /** Branch and organization scoping is applied on the server by row-level

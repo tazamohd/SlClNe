@@ -295,6 +295,42 @@ export async function createReceipt(input: {
   )
 }
 
+/** Reconciles a bank-statement line to a book entry.
+ *
+ *  `POST /bank-statements/:id/match` is an action, not a collection write — the
+ *  server marks the line matched, stamps the receipt it was matched to, and
+ *  audits it, all idempotently: a replay of a line already reconciled settles to
+ *  the same state rather than toggling or double-auditing. Like `issueInvoice`,
+ *  it carries the caller's token itself. `receiptId` is optional — a line can be
+ *  marked reconciled without pinning a specific receipt. */
+export async function matchStatementLine(
+  lineId: string,
+  receiptId?: string,
+): Promise<unknown> {
+  requireLive('reconcile bank statement lines')
+  const url = `${API_URL.replace(/\/$/, '')}/bank-statements/${encodeURIComponent(lineId)}/match`
+  const headers = new Headers({ accept: 'application/json', 'content-type': 'application/json' })
+  const token = readAccessToken()
+  if (token) headers.set('authorization', `Bearer ${token}`)
+
+  let response: Response
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(receiptId ? { receiptId } : {}),
+      credentials: 'include',
+    })
+  } catch {
+    throw new RepositoryError('network', 'The server could not be reached.', { status: 0 })
+  }
+
+  const text = await response.text()
+  const body: unknown = text ? JSON.parse(text) : null
+  if (!response.ok) throw errorFrom(body, response.status)
+  return body
+}
+
 /* ---------------------------------------------------------------- errors */
 
 interface ErrorBody {

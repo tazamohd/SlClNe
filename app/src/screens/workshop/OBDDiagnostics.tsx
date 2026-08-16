@@ -1,14 +1,34 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import {
+  diagnostics,
+  type IntegrationStatus,
+  type ObdCommandResult,
+  type RepositoryError,
+} from '@/data/repository'
+import { isExternalDependency, transitionFailureMessage } from './api'
 
 type Device = RowOf<'obdDevices'> & { _id?: string }
 type Dtc = RowOf<'dtcCodes'> & { _id?: string }
+
+/** What a device command surfaced, kept per screen so a re-scan on one tool does
+ *  not colour another. `unavailable` is the honest §40 state: the OBD bridge is
+ *  an external dependency and the live command refuses with a 503 until it is
+ *  deployed — never a failure and never a faked scan. */
+type CommandState =
+  | { kind: 'idle' }
+  | { kind: 'pending' }
+  | { kind: 'unavailable'; message: string }
+  | { kind: 'error'; message: string }
+  | { kind: 'done'; result: ObdCommandResult }
 
 const STATUS_TINT: Record<string, { bg: string; fg: string; label: string }> = {
   live: { bg: 'rgba(10,94,215,.12)', fg: 'var(--salis-blue)', label: 'Live' },
@@ -41,12 +61,59 @@ export function OBDDiagnostics() {
   const devices = useCollection('obdDevices')
   const dtc = useCollection('dtcCodes')
   const [picked, setPicked] = useState(0)
+  const [command, setCommand] = useState<CommandState>({ kind: 'idle' })
 
   const deviceRows = (devices.data ?? []) as readonly Device[]
   const dtcRows = (dtc.data ?? []) as readonly Dtc[]
   const selected = deviceRows[picked] ?? deviceRows[0]
+  const deviceRef = selected?._id ?? selected?.id
 
   const liveCount = useMemo(() => deviceRows.filter((d) => d.status === 'live').length, [deviceRows])
+
+  /* The integration-status read (F-029): the honest EXTERNAL_DEPENDENCY state of
+   * the OBD bridge. Live only — null on the fixtures, where the static note below
+   * remains the honest fallback. */
+  const integrations = useQuery<{ integrations: IntegrationStatus[] }, RepositoryError>({
+    queryKey: ['diagnostics', 'integrations'],
+    queryFn: () => diagnostics!.integrations(),
+    enabled: Boolean(diagnostics),
+    retry: false,
+  })
+  const obdBridge = integrations.data?.integrations.find(
+    (i) => i.dependency?.toLowerCase().includes('obd') || i.id?.toLowerCase().includes('obd')
+  )
+
+  /* The per-device DTC readings the device↔dtc link now persists (F-029,
+   * migration 0006). Live only: null on the fixtures, where the DTC catalog
+   * below stays the honest "reference, not this device's codes" fallback. */
+  const readings = useQuery({
+    queryKey: ['diagnostics', 'readings', deviceRef],
+    queryFn: () => diagnostics!.readings(deviceRef as string),
+    enabled: Boolean(diagnostics) && Boolean(deviceRef),
+    retry: false,
+  })
+  const readingRows = readings.data?.rows ?? []
+
+  async function runCommand(action: 'rescan' | 'clearCodes') {
+    if (!diagnostics || !deviceRef) return
+    setCommand({ kind: 'pending' })
+    try {
+      const result = await diagnostics[action](deviceRef)
+      setCommand({ kind: 'done', result })
+    } catch (cause) {
+      if (isExternalDependency(cause)) {
+        setCommand({
+          kind: 'unavailable',
+          message: (cause as RepositoryError).message,
+        })
+      } else {
+        setCommand({
+          kind: 'error',
+          message: transitionFailureMessage(cause, t('Something went wrong. Nothing was saved.')),
+        })
+      }
+    }
+  }
 
   if (devices.isError) {
     return (
@@ -205,9 +272,77 @@ export function OBDDiagnostics() {
                   </div>
                 ))}
               </div>
-              <p className="mt-3 rounded-lg bg-inset p-2.5 text-[11px] leading-relaxed text-muted">
-                {t('Re-scan, clear codes and add-to-job are device commands the API does not expose yet.')}
-              </p>
+              {diagnostics ? (
+                <div className="mt-3.5 flex flex-col gap-2.5">
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => void runCommand('rescan')}
+                      disabled={command.kind === 'pending'}
+                    >
+                      <Icon name="RefreshCw" size={13} />
+                      {t(command.kind === 'pending' ? 'Working...' : 'Re-scan')}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => void runCommand('clearCodes')}
+                      disabled={command.kind === 'pending'}
+                    >
+                      <Icon name="Eraser" size={13} />
+                      {t('Clear codes')}
+                    </Button>
+                  </div>
+
+                  {/* The bridge is an external dependency (§40): show its state
+                      honestly, never a faked scan. */}
+                  {command.kind === 'unavailable' ? (
+                    <div
+                      role="note"
+                      className="flex items-start gap-2.5 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5"
+                    >
+                      <Icon name="Plug" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+                      <div className="min-w-0">
+                        <p className="text-[12px] font-bold text-salis-orange">
+                          {t('OBD bridge not connected')}
+                        </p>
+                        <p className="mt-0.5 text-[11.5px] text-body">{command.message}</p>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {command.kind === 'error' ? (
+                    <div
+                      role="alert"
+                      className="rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5 text-[11.5px] text-body"
+                    >
+                      {command.message}
+                    </div>
+                  ) : null}
+
+                  {command.kind === 'done' ? (
+                    <div className="rounded-lg bg-[rgba(10,94,215,.06)] p-2.5 text-[11.5px] text-body">
+                      {t('Command completed')}: {command.result.command}
+                      {command.result.mock ? (
+                        <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
+                          {t('Mock bridge — not a live scan')}
+                        </Badge>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  {obdBridge && !obdBridge.configured ? (
+                    <p className="rounded-lg bg-inset p-2.5 text-[11px] leading-relaxed text-muted">
+                      {t('The OBD bridge is not configured in this deployment')} — {obdBridge.dependency}.{' '}
+                      {t('Commands refuse until it is connected; nothing is faked.')}
+                    </p>
+                  ) : null}
+                </div>
+              ) : (
+                <p className="mt-3 rounded-lg bg-inset p-2.5 text-[11px] leading-relaxed text-muted">
+                  {t('Re-scan, clear codes and add-to-job are device commands the API does not expose yet.')}
+                </p>
+              )}
             </Card>
 
             <Card className="overflow-hidden p-0">
@@ -217,11 +352,56 @@ export function OBDDiagnostics() {
                     {t('Trouble code reference')}
                   </p>
                   <p className="mt-0.5 text-[11.5px] text-muted">
-                    {selected.dtc} {t('faults on this tool · codes below are the reference catalog')}
+                    {diagnostics && readingRows.length
+                      ? `${readingRows.length} ${t('codes recorded on this device')}`
+                      : `${selected.dtc} ${t('faults on this tool · codes below are the reference catalog')}`}
                   </p>
                 </div>
               </div>
-              {dtc.isLoading ? (
+              {diagnostics && (readings.isLoading || readingRows.length) ? (
+                readings.isLoading ? (
+                  <div className="p-4">
+                    <Loading inline label="Loading device codes..." />
+                  </div>
+                ) : (
+                  <ul className="m-0 flex list-none flex-col p-0">
+                    {readingRows.map((reading, index) => (
+                      <li
+                        key={reading._id ?? `${reading.dtc}-${index}`}
+                        className={
+                          'flex items-start gap-3 p-3.5 ' +
+                          (index ? 'border-0 border-t border-solid border-border' : '')
+                        }
+                      >
+                        <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+                          <Icon name="AlertCircle" size={14} />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-mono text-[13.5px] font-extrabold text-heading">
+                              {reading.dtc}
+                            </span>
+                            <span className="rounded-full bg-inset px-1.5 py-0.5 font-action text-[10px] font-semibold text-muted">
+                              {reading.severity}
+                            </span>
+                            {reading.cleared ? (
+                              <Badge background="rgba(10,94,215,.11)" color="var(--salis-blue)">
+                                {t('Cleared')}
+                              </Badge>
+                            ) : null}
+                            {reading.mock ? (
+                              <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
+                                {t('Mock')}
+                              </Badge>
+                            ) : null}
+                          </div>
+                          <p className="mt-1 text-[12.5px] text-body">{reading.desc}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )
+              ) : dtc.isLoading ? (
                 <div className="p-4">
                   <Loading inline label="Loading codes..." />
                 </div>

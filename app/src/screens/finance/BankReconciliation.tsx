@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { ErrorState } from '@/components/ui/States'
@@ -7,14 +8,17 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { useCollection, queryKeys, type RowOf } from '@/data/useCollection'
+import { isLive } from '@/data/repository'
 import {
   DateRangeFilter,
   ExportPrintActions,
   ServerScopeNote,
 } from '@/screens/accounting/ReportControls'
 import { downloadCsv, inDateRange, rowDateIso, toCsv } from '@/screens/accounting/reporting'
+import { matchStatementLine, writeFailureMessage } from './api'
 import { fromHalalas, toHalalas } from './money'
 
 /** Bank reconciliation.
@@ -22,15 +26,16 @@ import { fromHalalas, toHalalas } from './money'
  *  Reconciliation is a two-sided match: the cash the system recorded (its
  *  receipts) against the lines a bank statement reports. This screen shows the
  *  book side in full from real server data — every receipt, its amount the
- *  figure the API holds — and is honest that the other side is missing: there is
- *  no bank-statement collection on the server, so there is nothing to match
- *  against. It therefore does **not** fake a match. A "cleared" receipt is the
- *  system's own status, not a confirmation the bank cleared it, and the screen
- *  says as much rather than dressing a status up as a reconciliation.
+ *  figure the API holds. A "cleared" receipt is the system's own status, not a
+ *  confirmation the bank cleared it, and the screen says as much rather than
+ *  dressing a status up as a reconciliation.
  *
- *  Server gap: a `bankStatements` collection (imported statement lines, with a
- *  matching endpoint) is what turns this from a one-sided ledger into a real
- *  reconciliation. `GAP:` test names it. */
+ *  The statement side is now real on a live build (F-028): `bankStatements` is a
+ *  server collection of imported lines, and an unmatched line is reconciled to a
+ *  receipt through `POST /bank-statements/:id/match` — an idempotent, audited,
+ *  server-side action. On the fixtures the collection is empty and the accessor
+ *  serves nothing, so the honest "no source connected" state stays, and the
+ *  `GAP:` test still pins that fixture behaviour. */
 
 type Receipt = RowOf<'receipts'>
 
@@ -56,6 +61,8 @@ function ReceiptStatus({ value }: { value: string }) {
 export function BankReconciliation() {
   const { t } = usePreferences()
   const { data: receipts = [], isLoading, error, refetch } = useCollection('receipts')
+  const statements = useCollection('bankStatements')
+  const statementRows = statements.data ?? []
 
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
@@ -70,12 +77,20 @@ export function BankReconciliation() {
 
   const cleared = rows.filter((r) => r.status === 'cleared').length
   const pending = rows.filter((r) => r.status !== 'cleared').length
+  const unmatched = statementRows.filter((line) => !line.matched).length
 
   const stats: Stat[] = [
     { label: 'Receipts in view', value: rows.length, caption: 'Recorded cash items', icon: 'Receipt' },
     { label: 'Marked cleared', value: cleared, caption: 'System status, not a bank match', tone: 'info' },
     { label: 'Awaiting clearance', value: pending, caption: 'Not yet cleared', tone: 'warning' },
-    { label: 'Statement lines', value: '—', caption: 'No bank feed connected' },
+    isLive
+      ? {
+          label: 'Statement lines',
+          value: statementRows.length,
+          caption: `${unmatched} ${t('unreconciled')}`,
+          tone: unmatched > 0 ? 'warning' : 'info',
+        }
+      : { label: 'Statement lines', value: '—', caption: 'No bank feed connected' },
   ]
 
   const exportRows = () => {
@@ -118,33 +133,40 @@ export function BankReconciliation() {
 
       <StatRow stats={stats} />
 
-      <Section
-        title={t('Bank statement')}
-        subtitle={t('The other side of the match')}
-      >
-        <EmptyState
-          icon="Landmark"
-          title={t('No bank statement source connected')}
-          description={t(
-            'Reconciliation needs statement lines to match receipts against. The server has no bank-statement collection yet, so no automated match can run. Nothing here is matched or unmatched — it is unreconciled.',
-          )}
+      {isLive ? (
+        <StatementSection
+          lines={statementRows}
+          receipts={rows}
+          loading={statements.isLoading}
+          error={statements.error}
+          onRetry={() => void statements.refetch()}
         />
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <Button
-            variant="subtle"
-            size="md"
-            disabled
-            title={t('Importing a statement needs the bank-statement service, which is not built yet.')}
-          >
-            <Icon name="Upload" size={15} />
-            {t('Import statement')}
-          </Button>
-        </div>
-        <p className="flex items-start gap-1.5 text-[11px] text-muted">
-          <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
-          {t('Missing server collection: bankStatements (imported statement lines and a matching endpoint).')}
-        </p>
-      </Section>
+      ) : (
+        <Section title={t('Bank statement')} subtitle={t('The other side of the match')}>
+          <EmptyState
+            icon="Landmark"
+            title={t('No bank statement source connected')}
+            description={t(
+              'Reconciliation needs statement lines to match receipts against. The server has no bank-statement collection yet, so no automated match can run. Nothing here is matched or unmatched — it is unreconciled.',
+            )}
+          />
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              variant="subtle"
+              size="md"
+              disabled
+              title={t('Importing a statement needs the bank-statement service, which is not built yet.')}
+            >
+              <Icon name="Upload" size={15} />
+              {t('Import statement')}
+            </Button>
+          </div>
+          <p className="flex items-start gap-1.5 text-[11px] text-muted">
+            <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+            {t('Missing server collection: bankStatements (imported statement lines and a matching endpoint).')}
+          </p>
+        </Section>
+      )}
 
       <Section
         title={t('Recorded cash (book side)')}
@@ -185,6 +207,182 @@ export function BankReconciliation() {
         <ServerScopeNote />
       </Section>
     </>
+  )
+}
+
+type Statement = RowOf<'bankStatements'> & { _id?: string }
+
+/** The bank statement side, live only. Renders the imported statement lines the
+ *  server holds and lets an accountant reconcile an unmatched line to a receipt
+ *  via `POST /bank-statements/:id/match`. The action is server-side and audited;
+ *  the client sends the line and the receipt, never a computed balance. On the
+ *  fixtures this never mounts — `bankStatements` is empty and the honest
+ *  "no source connected" state shows instead. */
+function StatementSection({
+  lines,
+  receipts,
+  loading,
+  error,
+  onRetry,
+}: {
+  lines: readonly Statement[]
+  receipts: readonly (Receipt & { _id?: string })[]
+  loading: boolean
+  error: Error | null
+  onRetry: () => void
+}) {
+  const { t } = usePreferences()
+  const toast = useToast()
+  const client = useQueryClient()
+  const [picked, setPicked] = useState<Record<string, string>>({})
+
+  const match = useMutation({
+    mutationFn: ({ lineId, receiptId }: { lineId: string; receiptId?: string }) =>
+      matchStatementLine(lineId, receiptId),
+    onSuccess: () => {
+      void client.invalidateQueries({ queryKey: queryKeys.all('bankStatements') })
+      toast.show({ title: t('Reconciled'), description: t('The statement line is matched to a receipt.') })
+    },
+    onError: (err) => {
+      toast.show({
+        title: t('Could not reconcile'),
+        description: writeFailureMessage(err, t('The line could not be matched. Nothing was saved.')),
+        error: true,
+      })
+    },
+  })
+
+  const columns: Column<Statement>[] = [
+    { header: 'Date', cell: (l) => l.date },
+    { header: 'Description', cell: (l) => l.description },
+    { header: 'Reference', cell: (l) => l.reference, code: true },
+    {
+      header: 'Amount',
+      cell: (l) => (
+        <Money
+          sar={fromHalalas(l.amountHalalas)}
+          className={l.direction === 'debit' ? 'font-semibold text-salis-orange' : 'font-semibold text-salis-blue'}
+        />
+      ),
+    },
+    {
+      header: 'Status',
+      cell: (l) =>
+        l.matched ? (
+          <Badge background="rgba(10,94,215,.1)" color="rgb(10,94,215)">
+            {t('Matched')}
+          </Badge>
+        ) : (
+          <Badge background="rgba(249,115,22,.1)" color="rgb(249,115,22)">
+            {t('Unreconciled')}
+          </Badge>
+        ),
+    },
+    {
+      header: 'Reconcile',
+      cell: (l) => {
+        const lineId = String(l._id ?? '')
+        if (l.matched) {
+          return (
+            <span className="text-[11px] text-muted" dir="ltr">
+              {l.matchedReceiptId ? `→ ${l.matchedReceiptId}` : t('cleared')}
+            </span>
+          )
+        }
+        const busy = match.isPending && match.variables?.lineId === lineId
+        return (
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              value={picked[lineId] ?? ''}
+              onChange={(event) => setPicked((prev) => ({ ...prev, [lineId]: event.target.value }))}
+              aria-label={t('Receipt to match')}
+              className="h-9 cursor-pointer rounded border border-border bg-card px-2 text-[12px] text-heading outline-none focus:border-salis-blue"
+            >
+              <option value="">{t('No receipt')}</option>
+              {receipts.map((receipt) => (
+                <option key={String(receipt._id ?? receipt.id)} value={String(receipt._id ?? receipt.id)}>
+                  {receipt.id}
+                </option>
+              ))}
+            </select>
+            <Button
+              variant="subtle"
+              size="sm"
+              disabled={busy}
+              onClick={() => match.mutate({ lineId, receiptId: picked[lineId] || undefined })}
+            >
+              <Icon name="Link2" size={14} />
+              {busy ? t('Matching…') : t('Reconcile')}
+            </Button>
+          </div>
+        )
+      },
+    },
+  ]
+
+  return (
+    <Section
+      title={t('Bank statement')}
+      subtitle={t('Imported statement lines — reconcile each to a recorded receipt')}
+    >
+      {error ? (
+        <ErrorState description={error.message} onRetry={onRetry} />
+      ) : (
+        <DataTable
+          columns={columns}
+          rows={lines}
+          rowKey={(l) => String(l._id ?? l.reference)}
+          loading={loading}
+          mobileCard={(l) => (
+            <>
+              <MobileCardHeader
+                title={l.description}
+                trailing={
+                  l.matched ? (
+                    <Badge background="rgba(10,94,215,.1)" color="rgb(10,94,215)">
+                      {t('Matched')}
+                    </Badge>
+                  ) : (
+                    <Badge background="rgba(249,115,22,.1)" color="rgb(249,115,22)">
+                      {t('Unreconciled')}
+                    </Badge>
+                  )
+                }
+              />
+              <MobileCardRow label={t('Reference')}>
+                <span className="font-mono" dir="ltr">
+                  {l.reference}
+                </span>
+              </MobileCardRow>
+              <MobileCardRow label={t('Amount')}>
+                <Money sar={fromHalalas(l.amountHalalas)} className="font-semibold text-heading" />
+              </MobileCardRow>
+              {l.matched ? null : (
+                <MobileCardRow label={t('Reconcile')}>
+                  <Button
+                    variant="subtle"
+                    size="sm"
+                    disabled={match.isPending}
+                    onClick={() => match.mutate({ lineId: String(l._id ?? ''), receiptId: undefined })}
+                  >
+                    <Icon name="Link2" size={14} />
+                    {t('Reconcile')}
+                  </Button>
+                </MobileCardRow>
+              )}
+            </>
+          )}
+          empty={
+            <EmptyState
+              icon="Landmark"
+              title={t('No statement lines')}
+              description={t('No bank-statement lines have been imported for your organization yet.')}
+            />
+          }
+        />
+      )}
+      <ServerScopeNote />
+    </Section>
   )
 }
 

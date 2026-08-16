@@ -1,12 +1,31 @@
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 import { Money } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { estimateOtp, type RepositoryError } from '@/data/repository'
+import { isExternalDependency, transitionFailureMessage } from './api'
 
 type Line = RowOf<'approvalLines'> & { _id?: string }
+
+/** The one-time-code step's state. `unavailable` is the honest §40 state: SMS is
+ *  an external dependency and `request-approval-otp` refuses with a 503 until a
+ *  provider is configured — the screen says so rather than reporting a code as
+ *  sent that was not. */
+type OtpState =
+  | { kind: 'idle' }
+  | { kind: 'requesting' }
+  | { kind: 'sent'; destination: string }
+  | { kind: 'verifying' }
+  | { kind: 'verified' }
+  | { kind: 'rejected'; reason: string }
+  | { kind: 'unavailable'; message: string }
+  | { kind: 'error'; message: string }
 
 const URGENCY_TINT: Record<string, { bg: string; fg: string; label: string }> = {
   critical: { bg: 'rgba(249,115,22,.13)', fg: 'var(--salis-orange)', label: 'Critical' },
@@ -32,9 +51,53 @@ const URGENCY_TINT: Record<string, { bg: string; fg: string; label: string }> = 
  *  silently does nothing would be worse than saying so. */
 export function CustomerApproval() {
   const { t, rtl } = usePreferences()
+  const [params] = useSearchParams()
   const lines = useCollection('approvalLines')
 
   const rows = (lines.data ?? []) as readonly Line[]
+
+  /* The OTP e-signature can only run when the SMS accessor is live AND the work
+   * is linked to an estimate to sign — the `approvalLines→estimate` FK is still
+   * absent (F-029, deferred), so the id comes from the route for now. Without
+   * both, the honest "Not connected" gap below stays. */
+  const estimateId = params.get('estimate')
+  const otpReady = Boolean(estimateOtp) && Boolean(estimateId)
+  const [otp, setOtp] = useState<OtpState>({ kind: 'idle' })
+  const [code, setCode] = useState('')
+
+  async function requestCode() {
+    if (!estimateOtp || !estimateId) return
+    setOtp({ kind: 'requesting' })
+    try {
+      const res = await estimateOtp.request(estimateId)
+      setOtp({ kind: 'sent', destination: res.destination })
+    } catch (cause) {
+      if (isExternalDependency(cause)) {
+        setOtp({ kind: 'unavailable', message: (cause as RepositoryError).message })
+      } else {
+        setOtp({ kind: 'error', message: transitionFailureMessage(cause, t('Something went wrong.')) })
+      }
+    }
+  }
+
+  async function verifyCode() {
+    if (!estimateOtp || !estimateId) return
+    setOtp({ kind: 'verifying' })
+    try {
+      const res = await estimateOtp.verify(estimateId, code)
+      setOtp(
+        res.verified
+          ? { kind: 'verified' }
+          : { kind: 'rejected', reason: res.reason ?? t('The code did not match.') }
+      )
+    } catch (cause) {
+      if (isExternalDependency(cause)) {
+        setOtp({ kind: 'unavailable', message: (cause as RepositoryError).message })
+      } else {
+        setOtp({ kind: 'error', message: transitionFailureMessage(cause, t('Something went wrong.')) })
+      }
+    }
+  }
 
   if (lines.isError) {
     return (
@@ -135,31 +198,106 @@ export function CustomerApproval() {
             </p>
           </Card>
 
-          {/* Approval — honest about the missing capabilities. */}
+          {/* Approval — the live OTP e-signature when the SMS accessor and an
+              estimate link are both present, else the honest gap. */}
           <Card className="p-4">
             <p className="mb-1 font-display text-[13.5px] font-bold text-heading">{t('Authorise the work')}</p>
-            <p className="text-[11.5px] leading-relaxed text-muted">
-              {t(
-                'Approving requires a one-time code, a captured e-signature and the linked estimate. None of those endpoints are connected yet, so approval happens on the estimate itself for now.'
-              )}
-            </p>
-            <ul className="mt-3 flex list-none flex-col gap-2 p-0">
-              {[
-                { icon: 'Smartphone', label: t('One-time code verification') },
-                { icon: 'PenTool', label: t('Captured e-signature') },
-                { icon: 'FileCheck', label: t('Linked estimate approval') },
-              ].map((item) => (
-                <li key={item.label} className="flex items-center gap-2.5 text-[12px] text-body">
-                  <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-inset text-muted">
-                    <Icon name={item.icon} size={13} />
-                  </span>
-                  {item.label}
-                  <span className="ms-auto font-action text-[10px] font-semibold text-muted">
-                    {t('Not connected')}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {otpReady ? (
+              <div className="flex flex-col gap-2.5">
+                <p className="text-[11.5px] leading-relaxed text-muted">
+                  {t('Enter the one-time code we send you to sign off this estimate.')}
+                </p>
+
+                {otp.kind === 'idle' || otp.kind === 'requesting' || otp.kind === 'unavailable' || otp.kind === 'error' ? (
+                  <Button
+                    size="sm"
+                    onClick={() => void requestCode()}
+                    disabled={otp.kind === 'requesting'}
+                  >
+                    <Icon name="Smartphone" size={13} />
+                    {t(otp.kind === 'requesting' ? 'Sending...' : 'Send one-time code')}
+                  </Button>
+                ) : null}
+
+                {otp.kind === 'sent' || otp.kind === 'verifying' || otp.kind === 'rejected' ? (
+                  <>
+                    {otp.kind === 'sent' ? (
+                      <p className="text-[11.5px] text-muted">
+                        {t('Code sent to')} <span dir="ltr">{otp.destination}</span>
+                      </p>
+                    ) : null}
+                    <input
+                      value={code}
+                      onChange={(e) => setCode(e.target.value)}
+                      inputMode="numeric"
+                      placeholder={t('One-time code')}
+                      className="h-9 rounded-lg border border-border bg-card px-3 font-mono text-[13px] text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+                      dir="ltr"
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => void verifyCode()}
+                      disabled={otp.kind === 'verifying' || code.length === 0}
+                    >
+                      <Icon name="Check" size={13} />
+                      {t(otp.kind === 'verifying' ? 'Verifying...' : 'Verify and sign')}
+                    </Button>
+                    {otp.kind === 'rejected' ? (
+                      <p className="text-[11.5px] text-salis-orange">{otp.reason}</p>
+                    ) : null}
+                  </>
+                ) : null}
+
+                {otp.kind === 'verified' ? (
+                  <div className="flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.08)] p-2.5 text-[12px] font-semibold text-salis-blue">
+                    <Icon name="CheckCircle" size={14} />
+                    {t('Signed and authorised')}
+                  </div>
+                ) : null}
+
+                {otp.kind === 'unavailable' ? (
+                  <div
+                    role="note"
+                    className="flex items-start gap-2.5 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5"
+                  >
+                    <Icon name="MessageSquare" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+                    <div className="min-w-0">
+                      <p className="text-[12px] font-bold text-salis-orange">{t('SMS not connected')}</p>
+                      <p className="mt-0.5 text-[11.5px] text-body">{otp.message}</p>
+                    </div>
+                  </div>
+                ) : null}
+
+                {otp.kind === 'error' ? (
+                  <p role="alert" className="text-[11.5px] text-salis-orange">{otp.message}</p>
+                ) : null}
+              </div>
+            ) : (
+              <>
+                <p className="text-[11.5px] leading-relaxed text-muted">
+                  {t(
+                    'Approving requires a one-time code, a captured e-signature and the linked estimate. None of those endpoints are connected yet, so approval happens on the estimate itself for now.'
+                  )}
+                </p>
+                <ul className="mt-3 flex list-none flex-col gap-2 p-0">
+                  {[
+                    { icon: 'Smartphone', label: t('One-time code verification') },
+                    { icon: 'PenTool', label: t('Captured e-signature') },
+                    { icon: 'FileCheck', label: t('Linked estimate approval') },
+                  ].map((item) => (
+                    <li key={item.label} className="flex items-center gap-2.5 text-[12px] text-body">
+                      <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-inset text-muted">
+                        <Icon name={item.icon} size={13} />
+                      </span>
+                      {item.label}
+                      <span className="ms-auto font-action text-[10px] font-semibold text-muted">
+                        {t('Not connected')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </Card>
         </div>
       </div>

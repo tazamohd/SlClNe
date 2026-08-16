@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/Button'
 import { BarList, CHART_COLORS, Donut } from '@/components/ui/Charts'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
+import { isLive } from '@/data/repository'
+import { fromHalalas } from '@/screens/finance/money'
+import { useTrialBalance } from './useFinanceReports'
 
 /** The reporting screens.
  *
@@ -137,7 +141,84 @@ export function FinancialReports() {
           </p>
         ) : null}
       </Section>
+
+      {isLive ? <ServerLedgerSummary /> : null}
     </>
+  )
+}
+
+/** The server-computed trial balance and balance sheet, live only (F-028).
+ *
+ *  The charts above derive from the chart-of-accounts rows the client holds;
+ *  this section shows what `GET /accounting/reports/trial-balance` summed in
+ *  SQL over the whole tenant scope — the P&L roll-up, the debit/credit totals,
+ *  and the balance-sheet identity, which carries F-008's real imbalance
+ *  (`balanced:false`). It is rendered honestly, not tied off; the imbalance
+ *  banner above stays visible either way. `financeReports` is null on the
+ *  fixtures, so this never mounts there. */
+function ServerLedgerSummary() {
+  const { t } = usePreferences()
+  const query = useTrialBalance()
+
+  if (query.isLoading) {
+    return (
+      <Section title={t('Trial balance (server-computed)')}>
+        <Loading label={t('Loading the ledger roll-up…')} />
+      </Section>
+    )
+  }
+  if (query.error || !query.data) {
+    return (
+      <Section title={t('Trial balance (server-computed)')}>
+        <ErrorState description={query.error?.message} onRetry={() => void query.refetch()} />
+      </Section>
+    )
+  }
+
+  const tb = query.data
+  const bs = tb.balanceSheet
+  const rows: readonly { label: string; halalas: number; strong?: boolean; warn?: boolean }[] = [
+    { label: t('Total debits'), halalas: tb.totals.debitHalalas },
+    { label: t('Total credits'), halalas: tb.totals.creditHalalas },
+    { label: t('Assets'), halalas: bs.assetsHalalas },
+    { label: t('Liabilities + equity'), halalas: bs.liabilitiesPlusEquityHalalas },
+    {
+      label: t('Balance-sheet difference'),
+      halalas: bs.differenceHalalas,
+      strong: true,
+      warn: !bs.balanced,
+    },
+  ]
+
+  return (
+    <Section
+      title={t('Trial balance (server-computed)')}
+      subtitle={t('Summed by the server over your organization, not in the browser')}
+    >
+      <div className="flex flex-col">
+        {rows.map((row) => (
+          <div
+            key={row.label}
+            className={
+              'flex items-center justify-between border-0 border-b border-solid border-border py-3 last:border-b-0 ' +
+              (row.strong ? 'text-base font-bold text-heading' : 'text-[13px] text-body')
+            }
+          >
+            <span>{row.label}</span>
+            <Money
+              sar={fromHalalas(row.halalas)}
+              className={row.warn ? 'font-semibold text-salis-orange' : row.strong ? 'font-bold' : ''}
+            />
+          </div>
+        ))}
+      </div>
+      {bs.balanced ? null : (
+        <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body">
+          <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
+          {t('The server confirms assets do not equal liabilities plus equity — the books are not tied off.')}
+        </p>
+      )}
+    </Section>
   )
 }
 

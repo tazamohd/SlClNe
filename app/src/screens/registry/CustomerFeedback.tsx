@@ -4,26 +4,31 @@ import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { RepositoryError, useCollection, useCreate, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
+import { NoWritesNotice, asPatch } from './writes'
 
 /** Customer Feedback — `CustomerFeedback.dc.html` and `.Mobile.dc.html`.
  *
  *  A post-service rating form: the service summary, an overall star rating, four
  *  category ratings, a comment, and a submit.
  *
- *  **Server gap.** There is no feedback collection, table or endpoint anywhere —
- *  nothing to store a rating in and nothing to read one back from. So the form
- *  is built and fully interactive (choosing stars is local UI state, not
- *  persistence), but **it cannot be submitted**: the submit is disabled and a
- *  banner says why, rather than reporting a save the next reload would contradict
- *  (§60, no fake persistence). `crm-gaps` pins the missing `POST /customer-feedback`.
+ *  **Persistence (F-027).** A `feedback` collection now exists and
+ *  `POST /customer-feedback` backs it, so the form submits for real through
+ *  `useCreate('feedback')` and shows a success state. The server stores one
+ *  overall `rating` and a free-text `comment`; the four category ratings have no
+ *  column of their own, so rather than drop what the user entered they are
+ *  folded into the comment — everything shown as submitted is actually stored,
+ *  which is the §60 line. `jobCardId` is sent only when the anchoring job's ULID
+ *  is known. Against the fixtures the submit refuses honestly with the "set
+ *  VITE_API_URL" state.
  *
  *  The service summary is real, not the prototype's invented Camry: it is the
  *  completed job named by `?job=<code>`, or the most recent completed/delivered
  *  job. A job card carries no amount, so the design's SAR figure is omitted
  *  rather than guessed. */
-type Job = RowOf<'jobs'>
+type Job = RowOf<'jobs'> & { _id?: string }
 
 const RATING_LABELS = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'] as const
 
@@ -38,14 +43,18 @@ const DONE = new Set(['completed', 'delivered'])
 
 export function CustomerFeedback() {
   const { t, rtl } = usePreferences()
+  const { can } = useSession()
   const [params] = useSearchParams()
   const jobRef = params.get('job') ?? ''
 
   const jobs = useCollection('jobs')
+  const submit = useCreate('feedback')
 
   const [rating, setRating] = useState(0)
   const [categories, setCategories] = useState<Record<string, number>>({})
   const [comment, setComment] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const rows = (jobs.data ?? []) as readonly Job[]
   const job = jobRef
@@ -87,6 +96,53 @@ export function CustomerFeedback() {
   }
 
   const ratingLabel = rating > 0 ? t(RATING_LABELS[rating - 1]) : ''
+  const canSubmit = can('crm', 'c')
+
+  if (submitted) {
+    return shell(
+      <Card className="flex flex-col items-center gap-3 p-8 text-center">
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(10,94,215,.1)] text-salis-blue">
+          <Icon name="CheckCircle" size={28} />
+        </span>
+        <h3 className="text-base font-bold text-heading">{t('Thank you for your feedback')}</h3>
+        <p className="m-0 text-[13px] text-muted">
+          {t('Your rating has been recorded and will help us improve our service.')}
+        </p>
+      </Card>,
+    )
+  }
+
+  // The server stores one overall rating and a free-text comment. Rather than
+  // silently drop the four category ratings the design collects, they are
+  // folded into the comment, so everything shown as submitted is really stored.
+  async function onSubmit() {
+    if (!job) return
+    setError(null)
+    const detail = CATEGORIES.map((cat) =>
+      categories[cat.key] ? `${t(cat.label)} ${categories[cat.key]}/5` : null,
+    )
+      .filter(Boolean)
+      .join(', ')
+    const body = comment.trim()
+    const parts = [body, detail ? `(${detail})` : ''].filter(Boolean)
+    try {
+      await submit.mutateAsync({
+        input: asPatch<RowOf<'feedback'>>({
+          rating,
+          ...(parts.length ? { comment: parts.join('\n\n') } : {}),
+          ...(job._id ? { jobCardId: job._id } : {}),
+          ...(job.cust ? { customerName: job.cust } : {}),
+        }),
+      })
+      setSubmitted(true)
+    } catch (cause) {
+      setError(
+        cause instanceof RepositoryError
+          ? cause.message
+          : t('Your feedback could not be submitted.'),
+      )
+    }
+  }
 
   return shell(
     <>
@@ -178,21 +234,48 @@ export function CustomerFeedback() {
         />
       </Card>
 
-      {/* Persistence gap — honest, not a save that does not happen. */}
-      <p className="flex items-start gap-2 rounded-lg border border-border bg-inset px-3 py-2.5 text-[13px] text-body">
-        <Icon name="Info" size={15} className="mt-0.5 flex-shrink-0 text-muted" />
-        {t('Submitting feedback needs the feedback service, which is not available yet.')}
-      </p>
+      {/* Honest "no API" notice on the fixtures; nothing on a live build. */}
+      <NoWritesNotice />
 
-      <button
-        type="button"
-        disabled
-        aria-disabled
-        className="flex h-[50px] w-full flex-shrink-0 cursor-not-allowed items-center justify-center gap-2 rounded-lg border-none bg-salis-gradient font-action text-[15px] font-semibold text-white opacity-50"
-      >
-        <Icon name="Send" size={16} />
-        {t('Submit Feedback')}
-      </button>
+      {canSubmit ? (
+        <>
+          {error ? (
+            <p
+              role="alert"
+              className="flex items-start gap-2 rounded-lg border border-salis-orange bg-[rgba(249,115,22,.08)] px-3 py-2.5 text-[13px] text-body"
+            >
+              <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+              {error}
+            </p>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={() => void onSubmit()}
+            disabled={rating === 0 || submit.isPending}
+            aria-disabled={rating === 0 || submit.isPending}
+            className={cn(
+              'flex h-[50px] w-full flex-shrink-0 items-center justify-center gap-2 rounded-lg border-none bg-salis-gradient font-action text-[15px] font-semibold text-white',
+              rating === 0 || submit.isPending
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer',
+            )}
+          >
+            <Icon name="Send" size={16} />
+            {submit.isPending ? t('Submitting...') : t('Submit Feedback')}
+          </button>
+          {rating === 0 ? (
+            <p className="m-0 text-center text-[11px] text-muted">
+              {t('Choose an overall rating to submit.')}
+            </p>
+          ) : null}
+        </>
+      ) : (
+        <p className="flex items-start gap-2 rounded-lg border border-border bg-inset px-3 py-2.5 text-[13px] text-body">
+          <Icon name="Info" size={15} className="mt-0.5 flex-shrink-0 text-muted" />
+          {t('Your role can view this feedback form but not submit it.')}
+        </p>
+      )}
     </>
   )
 }

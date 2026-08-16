@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { workshopReports, type WorkshopReport, type RepositoryError } from '@/data/repository'
 
 type Job = RowOf<'jobs'>
 type Technician = RowOf<'technicians'> & { _id?: string }
@@ -26,6 +28,18 @@ export function WorkshopReports() {
   const { t } = usePreferences()
   const jobs = useCollection('jobs')
   const technicians = useCollection('technicians')
+
+  /* The server-computed analytics (F-029): QC pass rate from the audit trail,
+   * bay time and technician hours, each summed in SQL over the whole tenant
+   * scope. Live only — the accessor is null on the fixtures, the query never
+   * runs, and the panel keeps its honest "not connected" state below. */
+  const report = useQuery<WorkshopReport, RepositoryError>({
+    queryKey: ['reports', 'workshop'],
+    queryFn: () => workshopReports!.workshop(),
+    enabled: Boolean(workshopReports),
+    retry: false,
+  })
+  const analytics = report.data
 
   const jobRows = (jobs.data ?? []) as readonly Job[]
   const techRows = (technicians.data ?? []) as readonly Technician[]
@@ -141,15 +155,69 @@ export function WorkshopReports() {
 
             <Card className="rounded-2xl p-6">
               <h3 className="mb-2 text-[17px] font-bold text-heading">{t('Trend & analytics')}</h3>
-              <p className="text-[13px] leading-relaxed text-muted">
-                {t(
-                  'A time-series trend, period-over-period comparison, QC pass rate and average bay time need a workshop analytics endpoint that is not connected yet. Showing a chart here would be inventing the numbers.'
-                )}
-              </p>
-              <div className="mt-4 flex items-center gap-2 rounded-lg bg-inset p-3 text-[12px] text-muted">
-                <Icon name="LineChart" size={15} className="flex-shrink-0 text-salis-blue" />
-                {t('Awaiting GET /reports/workshop')}
-              </div>
+              {workshopReports ? (
+                report.isLoading ? (
+                  <Loading inline label="Loading analytics..." />
+                ) : report.isError ? (
+                  <p className="text-[13px] leading-relaxed text-muted">{report.error?.message}</p>
+                ) : (
+                  <>
+                    <p className="mb-4 text-[13px] leading-relaxed text-muted">
+                      {t('Server-computed over the whole tenant scope — not a page this screen added up.')}
+                    </p>
+                    <div className="flex flex-col gap-2.5">
+                      {(
+                        [
+                          [
+                            t('QC pass rate'),
+                            analytics?.qc.passRatePct == null
+                              ? t('Not yet measured')
+                              : `${analytics.qc.passRatePct.toFixed(1)}%`,
+                            'ShieldCheck',
+                          ],
+                          [
+                            t('Average bay time'),
+                            `${Math.round(analytics?.bay.averageBayMinutes ?? 0)} ${t('min')}`,
+                            'Timer',
+                          ],
+                          [
+                            t('Technician hours'),
+                            `${(analytics?.technicians ?? [])
+                              .reduce((sum, tech) => sum + tech.hours, 0)
+                              .toFixed(1)} ${t('hr')}`,
+                            'Clock',
+                          ],
+                        ] as const
+                      ).map(([label, value, icon]) => (
+                        <div
+                          key={label}
+                          className="flex items-center justify-between gap-2 rounded-lg bg-inset p-3"
+                        >
+                          <span className="inline-flex items-center gap-2 text-[13px] text-body">
+                            <Icon name={icon} size={15} className="flex-shrink-0 text-salis-blue" />
+                            {label}
+                          </span>
+                          <span className="font-mono text-[15px] font-bold text-heading" dir="ltr">
+                            {value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )
+              ) : (
+                <>
+                  <p className="text-[13px] leading-relaxed text-muted">
+                    {t(
+                      'A time-series trend, period-over-period comparison, QC pass rate and average bay time need a workshop analytics endpoint that is not connected yet. Showing a chart here would be inventing the numbers.'
+                    )}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2 rounded-lg bg-inset p-3 text-[12px] text-muted">
+                    <Icon name="LineChart" size={15} className="flex-shrink-0 text-salis-blue" />
+                    {t('Awaiting GET /reports/workshop')}
+                  </div>
+                </>
+              )}
             </Card>
           </div>
 

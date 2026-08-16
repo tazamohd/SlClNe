@@ -1,20 +1,23 @@
 import { useMemo, useState } from 'react'
 import { FeatureHeader, Section } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { ErrorState } from '@/components/ui/States'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { Money } from '@/components/ui/Money'
+import { Money, formatSar } from '@/components/ui/Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { isLive } from '@/data/repository'
 import {
   AggregateGapNotice,
   DateRangeFilter,
   ExportPrintActions,
   ServerScopeNote,
+  ServerTotalsNote,
 } from '@/screens/accounting/ReportControls'
 import { AGGREGATE_GAP, downloadCsv, inDateRange, rowDateIso, toCsv } from '@/screens/accounting/reporting'
+import { useTaxReturn } from '@/screens/accounting/useFinanceReports'
 import { VAT_RATE_BPS } from './money'
 import { fromHalalas, invoiceMoney } from './money'
 
@@ -164,7 +167,11 @@ export function TaxManagement() {
           </div>
         }
       >
-        <AggregateGapNotice endpoint={AGGREGATE_GAP.tax} />
+        {isLive ? (
+          <TaxReturnPanel from={from} to={to} />
+        ) : (
+          <AggregateGapNotice endpoint={AGGREGATE_GAP.tax} />
+        )}
 
         {error ? (
           <ErrorState description={error.message} onRetry={() => void refetch()} />
@@ -201,6 +208,64 @@ export function TaxManagement() {
         <ServerScopeNote />
       </Section>
     </>
+  )
+}
+
+/** The VAT return figure, live only. On a build with an API this replaces the
+ *  gap notice with what `GET /accounting/tax/return` computed: output VAT for
+ *  the period at the configured rate. Input VAT arrives `inputVatModelled:false`
+ *  — expense-side VAT is not tracked yet — so this deliberately shows **no net
+ *  payable**: a net that subtracts an input VAT of nothing would read as
+ *  reconciled when it is simply not modelled. `financeReports` is null on the
+ *  fixtures, so this never mounts there. */
+function TaxReturnPanel({ from, to }: { from: string; to: string }) {
+  const { t } = usePreferences()
+  const query = useTaxReturn({ from: from || undefined, to: to || undefined })
+
+  if (query.isLoading) return <Loading label={t('Computing the return…')} />
+  if (query.error || !query.data) {
+    return <ErrorState description={query.error?.message} onRetry={() => void query.refetch()} />
+  }
+
+  const r = query.data
+  const ratePercent = (r.rateBps / 100).toFixed(2)
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ServerTotalsNote endpoint="GET /accounting/tax/return" />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <Card className="flex flex-col gap-1 rounded-lg p-4">
+          <p className="text-[11px] font-medium text-muted">
+            {t('Output VAT')} ({ratePercent}%)
+          </p>
+          <p className="font-display text-[24px] font-black leading-tight text-salis-blue" dir="ltr">
+            {formatSar(fromHalalas(r.outputVatHalalas))}
+          </p>
+          <p className="text-[11px] text-muted">
+            {r.invoiceCount} {t('issued invoices in range')}
+          </p>
+        </Card>
+        <Card className="flex flex-col gap-1 rounded-lg p-4">
+          <p className="text-[11px] font-medium text-muted">{t('Taxable sales')}</p>
+          <p className="mt-1 text-[18px] font-bold text-heading" dir="ltr">
+            {formatSar(fromHalalas(r.taxableSalesHalalas))}
+          </p>
+          <p className="text-[11px] text-muted">{t('Net of discount, the VAT base')}</p>
+        </Card>
+        <Card className="flex flex-col gap-1 rounded-lg p-4">
+          <p className="text-[11px] font-medium text-muted">{t('Input VAT')}</p>
+          <p className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-heading">
+            <Icon name="MinusCircle" size={15} className="text-salis-orange" />
+            {t('Not modelled')}
+          </p>
+          <p className="text-[11px] text-muted">
+            {t(
+              'Expense-side VAT is not tracked yet, so no net payable is shown — output VAT is not a filing figure on its own.',
+            )}
+          </p>
+        </Card>
+      </div>
+    </div>
   )
 }
 

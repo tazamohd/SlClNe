@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -8,6 +9,7 @@ import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { EmptyState, Loading } from '@/components/ui/States'
 import { sodRuleFor } from '@/data/rbac'
+import { history, type EntityHistory, type RepositoryError } from '@/data/repository'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -79,6 +81,20 @@ export function WorkshopQC() {
   // exists the proxy stays, because a screen that showed no warning at all
   // would be a worse lie than one that over-warns.
   const sodConflict = role === 'technician'
+
+  // The real segregation-of-duties surface (F-004). The server computes this
+  // job card's audit trail and names any conflict — whoever performed the repair
+  // must not also pass its quality check — so the screen highlights it per row
+  // rather than standing on the role proxy above. Live only: null on the
+  // fixtures, where the proxy note remains the honest fallback.
+  const jobRef = job?._id ?? job?.id
+  const trail = useQuery<EntityHistory, RepositoryError>({
+    queryKey: ['job-history', jobRef],
+    queryFn: () => history!.job(jobRef as string),
+    enabled: Boolean(jobRef) && Boolean(history),
+    retry: false,
+  })
+  const conflictActorIds = new Set((trail.data?.sodConflicts ?? []).map((c) => c.actorId))
 
   const atRepair = job?.stage === 'repair'
   const atQc = job?.stage === 'qc'
@@ -168,6 +184,96 @@ export function WorkshopQC() {
               {t('Ask a QC inspector or the branch manager to sign off.')}
             </p>
           </div>
+        </Card>
+      ) : null}
+
+      {/* The segregation-of-duties surface, from the server-computed trail. */}
+      {history ? (
+        <Card className="overflow-hidden p-0">
+          <div className="flex items-center gap-2.5 border-0 border-b border-solid border-border p-3.5">
+            <Icon name="History" size={16} className="flex-shrink-0 text-salis-blue" />
+            <div className="min-w-0">
+              <p className="font-action text-sm font-semibold text-heading">{t('Audit trail')}</p>
+              <p className="mt-0.5 text-[12px] text-muted">
+                {t('Who did what on this job card, and any duties held by one person.')}
+              </p>
+            </div>
+          </div>
+          {trail.isLoading ? (
+            <div className="p-4">
+              <Loading inline label="Loading trail..." />
+            </div>
+          ) : trail.isError ? (
+            <div className="p-4">
+              <EmptyState
+                icon="ShieldAlert"
+                title={t("Couldn't load the audit trail")}
+                description={trail.error?.message}
+              />
+            </div>
+          ) : (
+            <>
+              {conflictActorIds.size > 0 ? (
+                <div
+                  role="note"
+                  className="flex items-start gap-2.5 border-0 border-b border-solid border-border bg-[rgba(249,115,22,.07)] p-3.5"
+                >
+                  <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+                  <div className="min-w-0">
+                    <p className="text-[12.5px] font-bold text-salis-orange">
+                      {t('Segregation-of-duties conflict')}
+                    </p>
+                    {trail.data?.sodConflicts.map((c, i) => (
+                      <p key={i} className="mt-0.5 text-[11.5px] text-body">
+                        {t(c.a)} + {t(c.b)} — {c.risk}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {trail.data?.entries.length ? (
+                <ul className="m-0 flex list-none flex-col p-0">
+                  {trail.data.entries.map((entry, index) => {
+                    const conflicted = entry.actorId != null && conflictActorIds.has(entry.actorId)
+                    return (
+                      <li
+                        key={entry.id}
+                        className={
+                          'flex items-start gap-3 p-3.5 ' +
+                          (index ? 'border-0 border-t border-solid border-border ' : '') +
+                          (conflicted ? 'bg-[rgba(249,115,22,.06)]' : '')
+                        }
+                      >
+                        <Icon
+                          name={conflicted ? 'AlertTriangle' : 'CircleDot'}
+                          size={14}
+                          className={'mt-0.5 flex-shrink-0 ' + (conflicted ? 'text-salis-orange' : 'text-muted')}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[12.5px] font-semibold text-heading">
+                            {t(entry.action)}
+                            {entry.activities.length ? (
+                              <span className="ms-1.5 font-normal text-muted">
+                                · {entry.activities.map((a) => t(a)).join(', ')}
+                              </span>
+                            ) : null}
+                          </p>
+                          <p className="mt-0.5 text-[11px] text-muted">
+                            {entry.actorRole || t('unknown role')}
+                            {entry.at ? ` · ${entry.at}` : ''}
+                          </p>
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ul>
+              ) : (
+                <div className="p-4">
+                  <EmptyState icon="History" title={t('No trail entries recorded yet.')} />
+                </div>
+              )}
+            </>
+          )}
         </Card>
       ) : null}
 

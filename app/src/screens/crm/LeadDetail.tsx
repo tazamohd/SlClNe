@@ -1,13 +1,18 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { DetailPage, type DetailSection, type DetailStat } from '@/components/shell/DetailPage'
+import { Button } from '@/components/ui/Button'
+import { Icon } from '@/components/ui/Icon'
 import { EmptyState } from '@/components/ui/States'
 import { Money, parseSar } from '@/components/ui/Money'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
 import { rowId } from '../registry/writes'
 import { LeadStageBadge } from './crm-badges'
+import { LeadFormModal } from './LeadForm'
+import { ConvertLeadModal } from './ConvertLeadModal'
 
 /** Lead 360 — `LeadDetail.dc.html` and `.Mobile.dc.html`, on the shared
  *  `DetailPage` frame.
@@ -30,12 +35,23 @@ import { LeadStageBadge } from './crm-badges'
  *    rail and says so.
  *  - **Activity timeline** and **notes** have no server source — there is no
  *    lead-activity or lead-note collection, endpoint or table — so each renders
- *    an honest empty state. `crm-gaps` pins the four missing endpoints.
+ *    an honest empty state. `crm-gaps` still pins those two missing endpoints.
  *
- *  The prototype's Edit, Convert and Send-note buttons are not rendered: the
- *  `leads` collection is read-only server-side (no `writable: true`, no convert
- *  route), so wiring them would be a control that cannot do what it says. The
- *  gap is reported, not papered over with a dead CTA. */
+ *  **Writes (F-027).** `leads` is now writable and a lead→opportunity conversion
+ *  route exists, so Edit and Convert to Opportunity are real controls, gated on
+ *  the caller's `crm` grants:
+ *
+ *  - **Edit** patches the lead through `useUpdate('leads')` (`LeadFormModal`).
+ *  - **Convert to Opportunity** posts `POST /crm/leads/:id/convert`
+ *    (`ConvertLeadModal`), which creates the opportunity and moves the lead to
+ *    `converted` in one server transaction. A lead already `converted` shows the
+ *    converted state instead of the action — the route is idempotent, but
+ *    offering "convert" on a converted lead would misdescribe what it does.
+ *
+ *  The Send-note button is still absent: notes have no server home, so a note
+ *  control would be a write that cannot land. Against the fixtures both real
+ *  controls refuse honestly with the "set VITE_API_URL" state rather than
+ *  faking a save. */
 type Lead = RowOf<'leads'> & { _id?: string; _createdAt?: string }
 
 const PIPELINE = ['New', 'Qualified', 'Proposal', 'Negotiation', 'Won'] as const
@@ -49,7 +65,10 @@ function titleCase(stage: string): string {
 
 export function LeadDetail() {
   const { t } = usePreferences()
+  const { can } = useSession()
   const [params] = useSearchParams()
+  const [editing, setEditing] = useState(false)
+  const [converting, setConverting] = useState(false)
   const ref = params.get('id') ?? params.get('name') ?? ''
 
   const leads = useCollection('leads')
@@ -84,8 +103,32 @@ export function LeadDetail() {
 
   const stage = lead.stage.toLowerCase()
   const isLost = stage === 'lost'
+  const isConverted = stage === 'converted'
   const score = Number(lead.score ?? 0)
   const memberSince = lead._createdAt ? lead._createdAt.slice(0, 10) : undefined
+  const leadRef = rowId(lead) ?? lead.name
+  // Convert needs both grants because the server does: it creates an
+  // opportunity and edits the lead. A converted lead is past the action.
+  const canConvert = can('crm', 'c') && can('crm', 'e') && !isConverted
+  const canEdit = can('crm', 'e')
+
+  const actions =
+    canEdit || canConvert ? (
+      <>
+        {canConvert ? (
+          <Button onClick={() => setConverting(true)}>
+            <Icon name="GitBranch" size={14} />
+            {t('Convert to Opportunity')}
+          </Button>
+        ) : null}
+        {canEdit ? (
+          <Button variant="subtle" onClick={() => setEditing(true)}>
+            <Icon name="Pencil" size={14} />
+            {t('Edit')}
+          </Button>
+        ) : null}
+      </>
+    ) : undefined
 
   const summary: DetailStat[] = [
     { label: 'Deal Value', value: <Money sar={parseSar(lead.value ?? '')} />, icon: 'DollarSign' },
@@ -174,7 +217,13 @@ export function LeadDetail() {
       title: 'Conversion Path',
       icon: 'GitBranch',
       span: 'full',
-      children: isLost ? (
+      children: isConverted ? (
+        <EmptyState
+          icon="CheckCircle"
+          title={t('Lead converted')}
+          description={t('This lead became an opportunity and has left the active pipeline.')}
+        />
+      ) : isLost ? (
         <EmptyState
           icon="XCircle"
           title={t('Lead lost')}
@@ -213,15 +262,29 @@ export function LeadDetail() {
   ]
 
   return (
-    <DetailPage
-      back={{ to: '/lead-pipeline', label: 'Lead Pipeline' }}
-      title={lead.name}
-      avatar={{ initial: lead.name.trim()[0] ?? '?' }}
-      subtitle={lead.company || undefined}
-      status={<LeadStageBadge value={stage} />}
-      summary={summary}
-      sections={sections}
-    />
+    <>
+      <DetailPage
+        back={{ to: '/lead-pipeline', label: 'Lead Pipeline' }}
+        title={lead.name}
+        avatar={{ initial: lead.name.trim()[0] ?? '?' }}
+        subtitle={lead.company || undefined}
+        status={<LeadStageBadge value={stage} />}
+        actions={actions}
+        summary={summary}
+        sections={sections}
+      />
+
+      {editing ? <LeadFormModal open onClose={() => setEditing(false)} lead={lead} /> : null}
+
+      {converting ? (
+        <ConvertLeadModal
+          open
+          onClose={() => setConverting(false)}
+          leadRef={leadRef}
+          leadName={lead.name}
+        />
+      ) : null}
+    </>
   )
 }
 

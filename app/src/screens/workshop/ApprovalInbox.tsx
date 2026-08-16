@@ -11,10 +11,31 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, queryKeys, type RowOf } from '@/data/useCollection'
 import { canApprove, approvalLimit } from '@/data/rbac'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { approvals, type ApprovalQueue } from '@/data/repository'
 import { approveEstimate, rejectEstimate, transitionFailureMessage } from './api'
 
 type Estimate = RowOf<'estimates'> & { _id?: string; totalHalalas?: number }
+
+/** The one shape the list renders, whichever backend fed it. The live queue
+ *  carries the server's own standing (`canApprove`, `withinCeiling`,
+ *  `isSubmitter`) so the inbox and the approval engine cannot disagree; the
+ *  fixture build fills the same fields from the client `canApprove` proxy, and
+ *  cannot know `isSubmitter` because the fixture estimate does not record who
+ *  raised it. */
+interface InboxItem {
+  key: string
+  ref: string
+  reference: string
+  cust: string
+  veh: string
+  status: string
+  amountSar: number
+  canApprove: boolean
+  withinCeiling: boolean
+  isSubmitter: boolean
+  ceilingHalalas: number | null
+}
 
 /** The approval inbox — everything waiting on the signer's authority.
  *
@@ -45,38 +66,86 @@ export function ApprovalInbox() {
   const toast = useToast()
   const { confirm } = useModal()
   const client = useQueryClient()
-  const estimates = useCollection('estimates')
   const [filter, setFilter] = useState<'all' | 'overLimit'>('all')
   const [busy, setBusy] = useState<string | null>(null)
 
-  const ceiling = approvalLimit(role)
+  const clientCeiling = approvalLimit(role)
 
-  const rows = (estimates.data ?? []) as readonly Estimate[]
+  /* Live: the unified queue the server computes, whose rows carry the caller's
+   * standing so this inbox and the approval engine cannot disagree (F-029).
+   * Fixture: the accessor is null, the query never runs, and the estimates
+   * collection below is the honest fallback. */
+  const live = useQuery<ApprovalQueue>({
+    queryKey: ['approvals', 'queue'],
+    queryFn: () => approvals!.list(),
+    enabled: Boolean(approvals),
+    retry: false,
+  })
+  const estimates = useCollection('estimates')
 
-  /** The queue is every estimate not already decided. `draft` and `sent` are
-   *  awaiting a decision; `approved`/`rejected` are done. */
-  const queue = useMemo(
-    () => rows.filter((e) => e.status !== 'approved' && e.status !== 'rejected'),
-    [rows]
-  )
-
-  const amountOf = (e: Estimate): number =>
-    e.totalHalalas != null ? e.totalHalalas / 100 : parseSar(e.amount)
-
-  const overLimit = (e: Estimate): boolean => ceiling !== null && amountOf(e) > ceiling
+  const queue = useMemo<InboxItem[]>(() => {
+    if (approvals) {
+      return (live.data?.rows ?? []).map((row) => ({
+        key: row.entityId,
+        ref: row.entityId,
+        reference: row.reference,
+        cust: row.customerName,
+        veh: row.vehicleLabel,
+        status: row.status,
+        amountSar: row.amountHalalas / 100,
+        canApprove: row.approval.canApprove,
+        withinCeiling: row.approval.withinCeiling,
+        isSubmitter: row.approval.isSubmitter,
+        ceilingHalalas: row.approval.ceilingHalalas,
+      }))
+    }
+    const rows = (estimates.data ?? []) as readonly Estimate[]
+    return rows
+      .filter((e) => e.status !== 'approved' && e.status !== 'rejected')
+      .map((e) => {
+        const amountSar = e.totalHalalas != null ? e.totalHalalas / 100 : parseSar(e.amount)
+        const withinCeiling = clientCeiling === null || amountSar <= clientCeiling
+        return {
+          key: e._id ?? e.id,
+          ref: e._id ?? e.id,
+          reference: e.id,
+          cust: e.cust,
+          veh: e.veh,
+          status: e.status,
+          amountSar,
+          // The client proxy answers authority + ceiling; the server re-checks,
+          // and re-checks the segregation of duties the fixture cannot know.
+          canApprove: canApprove(role, amountSar, 'estimates'),
+          withinCeiling,
+          isSubmitter: false,
+          ceilingHalalas: clientCeiling === null ? null : clientCeiling * 100,
+        }
+      })
+  }, [live.data, estimates.data, clientCeiling, role])
 
   const shown = useMemo(
-    () => (filter === 'overLimit' ? queue.filter(overLimit) : queue),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [queue, filter, ceiling]
+    () => (filter === 'overLimit' ? queue.filter((row) => !row.withinCeiling) : queue),
+    [queue, filter]
   )
 
-  async function decide(e: Estimate, action: 'approve' | 'reject') {
-    const ref = e._id ?? e.id
+  const isLoading = approvals ? live.isLoading : estimates.isLoading
+  const isError = approvals ? live.isError : estimates.isError
+  const errorMessage = approvals ? live.error?.message : estimates.error?.message
+  const retry = () => void (approvals ? live.refetch() : estimates.refetch())
+
+  /* Ceiling to display: the server's standing when live (identical across rows
+   * for one caller), else the client limit. */
+  const ceiling =
+    approvals && queue[0]?.ceilingHalalas != null
+      ? queue[0].ceilingHalalas / 100
+      : clientCeiling
+
+  async function decide(item: InboxItem, action: 'approve' | 'reject') {
+    const { ref } = item
     if (action === 'reject') {
       const reason = await confirm({
         title: 'Reject estimate?',
-        description: `${e.id} — ${e.cust}. The raiser is notified. This cannot be undone.`,
+        description: `${item.reference} — ${item.cust}. The raiser is notified. This cannot be undone.`,
         icon: 'X',
         confirmLabel: 'Reject',
         destructive: true,
@@ -88,15 +157,16 @@ export function ApprovalInbox() {
     try {
       if (action === 'approve') {
         await approveEstimate(ref)
-        toast.show({ title: t('Approved'), description: `${e.id} · ${formatSar(amountOf(e))}` })
+        toast.show({ title: t('Approved'), description: `${item.reference} · ${formatSar(item.amountSar)}` })
       } else {
         // The server requires a reason; the confirmation is the intent, and the
         // reason is recorded server-side. A dedicated reason field is a future
         // refinement — noted in the gaps test.
         await rejectEstimate(ref, 'Rejected from the approval inbox.')
-        toast.show({ title: t('Rejected'), description: `${e.id}`, error: true })
+        toast.show({ title: t('Rejected'), description: `${item.reference}`, error: true })
       }
       void client.invalidateQueries({ queryKey: queryKeys.all('estimates') })
+      if (approvals) void client.invalidateQueries({ queryKey: ['approvals', 'queue'] })
     } catch (cause) {
       toast.show({
         title: action === 'approve' ? t('Approval failed') : t('Rejection failed'),
@@ -108,18 +178,18 @@ export function ApprovalInbox() {
     }
   }
 
-  const overCount = queue.filter(overLimit).length
+  const overCount = queue.filter((row) => !row.withinCeiling).length
 
-  if (estimates.isLoading) {
+  if (isLoading) {
     return <Loading label="Loading approvals..." />
   }
 
-  if (estimates.isError) {
+  if (isError) {
     return (
       <ErrorState
         title={t("Couldn't load this")}
-        description={estimates.error?.message}
-        onRetry={() => void estimates.refetch()}
+        description={errorMessage}
+        onRetry={retry}
       />
     )
   }
@@ -166,9 +236,13 @@ export function ApprovalInbox() {
         <div className="min-w-0">
           <p className="text-[13px] font-bold text-heading">{t('Segregation of duties')}</p>
           <p className="mt-0.5 text-xs leading-relaxed text-body">
-            {t(
-              'An estimate raised by you cannot be approved by you. The server refuses that on submit — this inbox cannot show it in advance, because the estimate does not carry who raised it.'
-            )}
+            {approvals
+              ? t(
+                  'An estimate raised by you cannot be approved by you. The queue flags one you raised from the server standing, and the server refuses it on submit either way.'
+                )
+              : t(
+                  'An estimate raised by you cannot be approved by you. The server refuses that on submit — this inbox cannot show it in advance, because the estimate does not carry who raised it.'
+                )}
           </p>
         </div>
       </div>
@@ -209,15 +283,21 @@ export function ApprovalInbox() {
       ) : (
         <Card className="overflow-hidden p-0">
           <ul className="m-0 flex list-none flex-col p-0">
-            {shown.map((e, index) => {
-              const amount = amountOf(e)
-              const blocked = overLimit(e)
-              const allowed = canApprove(role, amount, 'estimates')
-              const ref = e._id ?? e.id
-              const isBusy = busy === ref
+            {shown.map((item, index) => {
+              const blocked = !item.withinCeiling
+              const allowed = item.canApprove
+              const isBusy = busy === item.ref
+              /* Why the approve button is unavailable, in the row's own terms:
+               * an over-ceiling item escalates; the raiser cannot approve their
+               * own; otherwise the role simply lacks the authority. */
+              const refusal = item.isSubmitter
+                ? t('You raised this — it needs a different approver.')
+                : blocked
+                  ? `${t('Above your approval limit')} (${formatSar(ceiling ?? 0)}) — ${t('escalate to a manager')}`
+                  : t('Your role cannot approve estimates')
               return (
                 <li
-                  key={ref}
+                  key={item.key}
                   className={
                     'flex flex-wrap items-start gap-3 p-3.5 sm:flex-nowrap ' +
                     (index ? 'border-0 border-t border-solid border-border' : '')
@@ -229,41 +309,38 @@ export function ApprovalInbox() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-mono text-[13px] font-bold text-heading" dir="ltr">
-                        {e.id}
+                        {item.reference}
                       </span>
-                      <StatusBadge value={e.status} label={t(e.status)} />
+                      <StatusBadge value={item.status} label={t(item.status)} />
                       {blocked ? (
                         <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
                           <Icon name="ArrowUp" size={9} />
                           {t('Above limit')}
                         </Badge>
                       ) : null}
+                      {item.isSubmitter ? (
+                        <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
+                          <Icon name="User" size={9} />
+                          {t('You raised this')}
+                        </Badge>
+                      ) : null}
                     </div>
-                    <p className="mt-1 text-[13px] font-semibold text-heading">{e.cust}</p>
-                    <p className="mt-0.5 text-[11px] text-muted">{e.veh}</p>
+                    <p className="mt-1 text-[13px] font-semibold text-heading">{item.cust}</p>
+                    <p className="mt-0.5 text-[11px] text-muted">{item.veh}</p>
                   </div>
                   <div className="min-w-[96px] flex-shrink-0 text-end">
-                    <Money sar={amount} className="text-sm font-extrabold text-heading" />
+                    <Money sar={item.amountSar} className="text-sm font-extrabold text-heading" />
                   </div>
                   <div className="flex flex-shrink-0 gap-1.5">
-                    {blocked || !allowed ? (
-                      <Button
-                        variant="subtle"
-                        size="sm"
-                        disabled
-                        title={
-                          blocked
-                            ? `${t('Above your approval limit')} (${formatSar(ceiling ?? 0)}) — ${t('escalate to a manager')}`
-                            : t('Your role cannot approve estimates')
-                        }
-                      >
-                        <Icon name="Lock" size={13} />
-                        {blocked ? t('Escalate') : t('Approve')}
-                      </Button>
-                    ) : (
-                      <Button size="sm" onClick={() => void decide(e, 'approve')} disabled={isBusy}>
+                    {allowed ? (
+                      <Button size="sm" onClick={() => void decide(item, 'approve')} disabled={isBusy}>
                         <Icon name="Check" size={13} />
                         {t(isBusy ? 'Saving...' : 'Approve')}
+                      </Button>
+                    ) : (
+                      <Button variant="subtle" size="sm" disabled title={refusal}>
+                        <Icon name="Lock" size={13} />
+                        {blocked && !item.isSubmitter ? t('Escalate') : t('Approve')}
                       </Button>
                     )}
                     {allowed ? (
@@ -271,7 +348,7 @@ export function ApprovalInbox() {
                         variant="outline"
                         size="sm"
                         className="border-[rgba(249,115,22,.4)] text-salis-orange hover:bg-[rgba(249,115,22,.07)]"
-                        onClick={() => void decide(e, 'reject')}
+                        onClick={() => void decide(item, 'reject')}
                         disabled={isBusy}
                       >
                         {t('Reject')}
