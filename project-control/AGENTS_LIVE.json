@@ -1,6 +1,6 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T13:00:00Z",
+  "asOf": "2026-08-12T13:20:00Z",
   "wave": "W2",
   "waveName": "Insurance/Loans/HR vertical",
   "waveNote": "Insurance/loans/HR vertical, backend phase. Slice A (insurance + loans) landed and verified on a reset DB — policies, claims with a ceiling/SOD-gated lifecycle, loan contracts with an integer-safe amortised schedule, aggregate endpoints, migrations 0007/0008, server 342→367. Slice B (agent 05) now: HR — employees, payroll runs, timeclock/timesheets, leave. Then the screen agents (13 insurance/loans, 14 HR) build against real data. Note: the RBAC matrix has no insurance/loans/hr module, so these are gated on the nearest existing module and flagged; adding real modules is an RBAC-owner decision for later.",
