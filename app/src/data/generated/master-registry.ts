@@ -2582,9 +2582,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PrivacyPolicy.dc.html",
@@ -3655,9 +3661,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/TermsConditions.dc.html",

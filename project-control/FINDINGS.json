@@ -375,6 +375,28 @@
       "wave": "W4",
       "status": "fixed",
       "resolution": "server/scripts/seed.ts now maps appointments to real technician rows, so grouping a schedule by the roster is correct rather than showing every technician idle. Fixed in the seed layer, not the generated tables (which are off-limits)."
+    },
+    {
+      "id": "F-031",
+      "severity": "LOW",
+      "title": "Four Tier C public pages have no registry route to build against",
+      "detail": "Agent 17 built Privacy and Terms, but Pricing, Request/Book Demo, Careers and Cookie Policy do not exist in the generated screen registry, and AppRoutes only renders registry entries. A website agent cannot add them from within its boundary — the screen names/routes must be added to the generator source first.",
+      "why": "Part 5.3 lists these as Tier C, but the design bundle never carried them as routes; the registry reflects the bundle. Building them needs an orchestrator/generator change, then a website agent declares them like Privacy/Terms.",
+      "foundBy": "17",
+      "verified": "reported by agent 17",
+      "owner": "02",
+      "wave": "W3"
+    },
+    {
+      "id": "F-032",
+      "severity": "LOW",
+      "title": "external_dependency_unavailable is not in the client RepositoryErrorCode union",
+      "detail": "The server sends error code external_dependency_unavailable with status 503 for an unconfigured integration (OBD bridge, SMS). repository.ts's RepositoryErrorCode union does not list it, so agent 08's handler keys on the 503 status and casts the code. Works at runtime; the string is untyped.",
+      "why": "A minor type gap: the honest EXTERNAL_DEPENDENCY handling works, but the code is not in the shared taxonomy the client types against.",
+      "foundBy": "08",
+      "verified": "reported by agent 08",
+      "owner": "05",
+      "wave": "W3"
     }
   ]
 }

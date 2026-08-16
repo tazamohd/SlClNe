@@ -12,15 +12,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | product | 362 |
 | reference only | 28 |
 | external dependency | 12 |
-| rendered | 155 |
-| placeholder | 207 |
-| designed mobile owed | 79 |
+| rendered | 157 |
+| placeholder | 205 |
+| designed mobile owed | 81 |
 | untested | 0 |
-| mock only | 155 |
+| mock only | 157 |
 | data backed | 0 |
 | e2e covered | 402 |
 | content asserted | 79 |
-| rendered without assertion | 76 |
+| rendered without assertion | 78 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |
@@ -29,7 +29,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
-| auth | 28 | 15 | 13 | 15 | 28 |
+| auth | 28 | 17 | 11 | 17 | 28 |
 | app | 312 | 113 | 187 | 64 | 312 |
 | call-center | 2 | 0 | 2 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
@@ -43,7 +43,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
-| Auth & onboarding | 06 | G3 | `███████████░░░░░░░░░` 54% | 15 | 28 |
+| Auth & onboarding | 06 | G3 | `████████████░░░░░░░░` 61% | 17 | 28 |
 | Administration | — | G9 | `█░░░░░░░░░░░░░░░░░░░` 6% | 1 | 17 |
 | AI & automation | 15 | G9 | `██████░░░░░░░░░░░░░░` 30% | 3 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
@@ -89,5 +89,5 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | reports | 6 | 6 |
 | settings | 7 | 0 |
 | technicians | 3 | 3 |
-| ungated | 16 | 6 |
+| ungated | 16 | 8 |
 | vehicles | 4 | 4 |

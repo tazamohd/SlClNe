@@ -1100,7 +1100,7 @@
         {
           "name": "PrivacyPolicy",
           "route": "/privacy-policy",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -1190,7 +1190,7 @@
         {
           "name": "TermsConditions",
           "route": "/terms-conditions",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 155,
+    "built": 157,
     "designedMobile": 113
   }
 }

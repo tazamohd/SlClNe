@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T11:10:00Z",
+  "asOf": "2026-08-12T12:05:00Z",
   "wave": "W2",
   "waveName": "Client wiring",
-  "waveNote": "Tranche 5 (client wiring) running: agents 08, 09, 12, 17 connect the screens they built to the endpoints the 4-A/B/C backend slices shipped, turning honest gap states into live data. This adds depth, not new routes — the rendering count stays 155. Live only when VITE_API_URL is set; the fixture build keeps its honest gap so the two paths are both tested. Procurement (F-022) and the greenfield insurance/HR schema are still backend work for later.",
+  "waveNote": "Tranche 5 (client wiring) landed and verified on the committed tree: the CRM, fleet, finance and workshop screens are wired to the 4-A/B/C endpoints, and the Contact form to the public lead endpoint — each on both the live and the honest fixture-gap path. Agent 17 also built Privacy and Terms (207→205 placeholder). App 697→754 tests, gates at the new baseline, server unchanged (342). A same-tree git-churn hazard (peer git stash / commit -a) scrambled some commit boundaries and threw transient typecheck failures, all resolved in the final committed state — noted so future concurrent tranches forbid those git verbs. Still open: F-022 procurement backend, the greenfield insurance/fleet/loans/HR schema, and smaller follow-ups (F-031, F-032, Arabic keys).",
   "agents": [
     {
       "id": "03",
@@ -98,7 +98,7 @@
       "id": "08",
       "name": "Workshop / Mini ERP",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T11:10:00Z",
       "scope": "Wiring: ApprovalInbox→GET /approvals, EstimateDetail/DiagnosticReport→estimate VAT fields + diagnostic total, WorkshopQC/EstimateDetail→history + sodConflicts, a workshop-analytics view→GET /reports/workshop, the OBD/OTP screen→adapter with the 503 gap state.",
       "owns": [
@@ -106,13 +106,13 @@
         "app/src/screens/domains/workshop.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
+      "notes": "Tranche 5 wiring: ApprovalInbox, EstimateDetail, WorkshopQC, WorkshopReports, OBD/OTP — six screens, live + gap; §40 503s render as \"not connected\", never faked. Its source was swept into a peer commit by a git-churn artifact; code correct, 86 workshop tests green."
     },
     {
       "id": "09",
       "name": "Customers / CRM",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T11:10:00Z",
       "scope": "Wiring: Customers/Vehicles edit + the four CRM detail screens (LeadDetail conversion, FleetContract terms/renew/vehicles, CustomerFeedback submit, CRMCalendar task create) to the now-writable CRM/fleet collections and the feedback/conversion endpoints.",
       "owns": [
@@ -122,7 +122,7 @@
         "app/src/components/shell/DetailPage.tsx (W2 grant)"
       ],
       "blocks": [],
-      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
+      "notes": "Tranche 5 wiring: LeadDetail Edit/Convert, FleetContract terms/renew/vehicle-join, CustomerFeedback submit, CRMCalendar New Task — live + gap. Category ratings folded into the stored comment so nothing shown is unstored. 84 CRM tests green."
     },
     {
       "id": "10",
@@ -143,7 +143,7 @@
       "id": "12",
       "name": "Accounting / Finance",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T11:10:00Z",
       "scope": "Wiring: SalesReports→invoicesSummary, TaxManagement→taxReturn, FinancialReports/ReportsAnalytics→trialBalance, BankReconciliation→bankStatements + match, CustomReports→savedReports. Replace each AGGREGATE_GAP notice with the server figure.",
       "owns": [
@@ -152,7 +152,7 @@
         "app/src/screens/domains/accounting.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
+      "notes": "Tranche 5 wiring: all five report screens to the finance aggregates + bank-match + saved-reports, F-008 banner kept visible, no client money aggregate introduced."
     },
     {
       "id": "11",
@@ -187,7 +187,7 @@
       "id": "17",
       "name": "Public Website & Landing",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T11:10:00Z",
       "scope": "Wiring: the Contact form→POST /public/leads (F-025) with a real success state; plus the SEO/sitemap follow-ups it flagged, and the Tier C content pages (Pricing, Request Demo, Careers, Privacy, Terms) if time allows.",
       "owns": [
@@ -196,7 +196,7 @@
         "app/src/screens/domains/website.ts"
       ],
       "blocks": [],
-      "notes": "Tranche 5 client wiring — consumes the new endpoints, edits no server code."
+      "notes": "Tranche 5: Contact wired to POST /public/leads (202/429/400/transport mapped) with the fixture gap kept; Privacy and Terms pages; sitemap regenerated. Four other Tier C pages have no registry route (F-031)."
     }
   ],
   "shared": {

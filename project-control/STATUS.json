@@ -5,15 +5,15 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 155,
-    "placeholder": 207,
-    "designedMobileOwed": 79,
+    "rendered": 157,
+    "placeholder": 205,
+    "designedMobileOwed": 81,
     "untested": 0,
-    "mockOnly": 155,
+    "mockOnly": 157,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 76,
+    "renderedWithoutAssertion": 78,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -21,9 +21,9 @@
   "bySurface": {
     "auth": {
       "total": 28,
-      "rendered": 15,
-      "placeholder": 13,
-      "mobileOwed": 15,
+      "rendered": 17,
+      "placeholder": 11,
+      "mobileOwed": 17,
       "e2e": 28,
       "dataBacked": 0
     },
@@ -95,9 +95,9 @@
   "byDomain": {
     "auth": {
       "total": 28,
-      "rendered": 15,
-      "placeholder": 13,
-      "mobileOwed": 15,
+      "rendered": 17,
+      "placeholder": 11,
+      "mobileOwed": 17,
       "e2e": 28,
       "dataBacked": 0
     },
@@ -209,9 +209,9 @@
   "byModule": {
     "ungated": {
       "total": 16,
-      "rendered": 6,
-      "placeholder": 4,
-      "mobileOwed": 6,
+      "rendered": 8,
+      "placeholder": 2,
+      "mobileOwed": 8,
       "e2e": 16,
       "dataBacked": 0
     },

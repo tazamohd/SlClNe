@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-402 capabilities · 155 rendering · 207 placeholder · 0 data-backed.
+402 capabilities · 157 rendering · 205 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -110,7 +110,7 @@
 | PartsNetwork · SendRequest | `/parts-network/send-request` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PartsSupplyNetwork | `/parts-supply-network` | app | network | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Payments | `/payments` | app | payments | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
-| PrivacyPolicy | `/privacy-policy` | auth | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| PrivacyPolicy | `/privacy-policy` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ProcurementPortal | `/procurement-portal` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | ProcurementPortal · Requisitions | `/procurement-portal/requisitions` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Profile | `/profile` | app | dashboard | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 12 roles | route | DISCOVERED |
@@ -155,7 +155,7 @@
 | Technicians | `/technicians` | app | technicians | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
 | TechnicianSchedule | `/technician-schedule` | app | technicians | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
 | Templates | `/templates` | app | admin | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
-| TermsConditions | `/terms-conditions` | auth | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| TermsConditions | `/terms-conditions` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | TwoFactorVerification | `/two-factor-verification` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | UI · ActivityFeed | `/ui/activity-feed` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
 | UI · AdvancedFilters | `/ui/advanced-filters` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
