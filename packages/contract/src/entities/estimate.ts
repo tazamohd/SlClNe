@@ -51,8 +51,17 @@ export const estimateRow = appRow({
   /** `"SAR 1,250"` — formatted from `totalHalalas` at the boundary. */
   amount: z.string(),
   status: estimateStatus,
+  /** The VAT breakdown (F-029). `subtotal + tax - discount = total`, all summed
+   *  from the lines by the server so a screen shows a split it never computed. */
+  subtotalHalalas: z.number().int().min(0),
+  taxHalalas: z.number().int().min(0),
+  discountHalalas: z.number().int().min(0),
   totalHalalas: z.number().int().min(0),
   jobCardId: ulid.nullable(),
+  /** Who raised the estimate, and who approved it once one has — the pair the
+   *  segregation-of-duties row check reads (F-004 client half). */
+  submittedBy: ulid.nullable(),
+  approvedBy: ulid.nullable(),
 })
 
 export type EstimateRow = z.infer<typeof estimateRow>

@@ -248,6 +248,12 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         taxHalalas: tax,
         totalHalalas: total,
         status: e.status,
+        /* The submitter, so the SOD row check and the approvals queue have a
+         * raiser to test the different-approver control against (F-029). The
+         * seed user raised every fixture estimate; a real create captures the
+         * acting principal. Additive — the fixture rows carry no `submittedBy`,
+         * so seed-fidelity's `pickLike` never compares it. */
+        submittedBy: SEED.systemUserId,
       })
     }),
   )

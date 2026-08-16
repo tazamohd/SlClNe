@@ -264,8 +264,21 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       veh: row.vehicleLabel,
       amount: sarString(row.totalHalalas),
       status: row.status,
+      /* The VAT breakdown EstimateDetail / DiagnosticReport need (F-029). The
+       * schema has carried these since the estimate router summed them from the
+       * lines; `present()` omitted all but the total, so no screen could show a
+       * subtotal-plus-VAT split without recomputing it client-side — which §5b
+       * forbids. */
+      subtotalHalalas: count(row.subtotalHalalas),
+      taxHalalas: count(row.taxHalalas),
+      discountHalalas: count(row.discountHalalas),
       totalHalalas: count(row.totalHalalas),
       jobCardId: row.jobCardId,
+      /* The submitter, for the SOD row check: whoever raised the estimate may
+       * not also approve it (F-004 client half). `approvedBy` is exposed beside
+       * it so a screen can show who did approve, once one has. */
+      submittedBy: row.submittedBy ?? null,
+      approvedBy: row.approvedBy ?? null,
     }),
   }),
 
