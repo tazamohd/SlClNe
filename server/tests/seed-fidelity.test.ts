@@ -45,6 +45,12 @@ const FIXTURES: Record<string, readonly unknown[]> = {
    *  The collections serve the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
   bankStatements: [],
   savedReports: [],
+  /** No design fixture for any financial-products table (vertical A). The
+   *  collections serve the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  insurancePolicies: [],
+  insuranceClaims: [],
+  loanContracts: [],
+  loanRepayments: [],
   receipts: T.RECEIPTS,
   departments: T.DEPARTMENTS,
   aiAgents: T.AI_AGENTS,
