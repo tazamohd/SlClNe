@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T12:05:00Z",
+  "asOf": "2026-08-12T12:30:00Z",
   "wave": "W2",
-  "waveName": "Client wiring",
-  "waveNote": "Tranche 5 (client wiring) landed and verified on the committed tree: the CRM, fleet, finance and workshop screens are wired to the 4-A/B/C endpoints, and the Contact form to the public lead endpoint — each on both the live and the honest fixture-gap path. Agent 17 also built Privacy and Terms (207→205 placeholder). App 697→754 tests, gates at the new baseline, server unchanged (342). A same-tree git-churn hazard (peer git stash / commit -a) scrambled some commit boundaries and threw transient typecheck failures, all resolved in the final committed state — noted so future concurrent tranches forbid those git verbs. Still open: F-022 procurement backend, the greenfield insurance/fleet/loans/HR schema, and smaller follow-ups (F-031, F-032, Arabic keys).",
+  "waveName": "Insurance/Loans/HR vertical",
+  "waveNote": "Starting the greenfield insurance/loans/HR vertical, backend first (sequential, shared server files). Slice A (agent 05): the insurance and loans data model — policies, claims, loan contracts and repayment records — with collections, seed, RLS and client wiring, which also unblocks the InsuranceReports/LoanReports screens agent 12 left gapped and F-028s deferred insuranceClaims/loanContracts. Slice B is HR (employees, payroll, timeclock, leave). Then the screen agents (13 insurance/loans, 14 HR) build against real data.",
   "agents": [
     {
       "id": "03",
@@ -45,9 +45,9 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "done",
-      "startedAt": "2026-08-12T10:10:00Z",
-      "scope": "Tranche 4-C: F-029 — estimate money fields + submittedBy in present(), GET /estimates/:id/history and /jobs/:id/history (F-004 client half), unified GET /approvals, GET /reports/workshop, a server-computed diagnostic-report total; OBD commands + approval OTP as adapter-plus-mock. Owns the database.",
+      "state": "running",
+      "startedAt": "2026-08-12T12:30:00Z",
+      "scope": "Vertical slice A: insurance (policies, claims) + loans (contracts, repayment records) — schema, seed, RLS, collections, migration 0007, client repository wiring. No screens. Owns the database.",
       "owns": [
         "server/**",
         "packages/contract/**",
