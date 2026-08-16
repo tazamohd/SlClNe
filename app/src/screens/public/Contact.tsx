@@ -1,5 +1,6 @@
 import { useId, useState, type FormEvent } from 'react'
 import { Icon } from '@/components/ui/Icon'
+import { API_URL } from '@/data/repository'
 import { useT } from '@/providers/PreferencesProvider'
 import { cn } from '@/lib/cn'
 import { usePageMeta } from './usePageMeta'
@@ -8,14 +9,30 @@ import { TINT_CHIP, type Tint } from './sections/tints'
 
 /** PublicPortal.Contact — `project/PublicPortal.Contact.dc.html`.
  *
- *  Form on the start side, contact channels on the end side. The form
- *  validates for real; what it cannot do is deliver, because no public lead
- *  endpoint exists anywhere in `server/` or `packages/contract/` yet. So a
- *  valid submission gets an honest failure state naming the working channels
- *  (email and phone, both live links) — never a success toast for a message
- *  that went nowhere. `tests/public-contact-form.test.tsx` carries the `GAP:`
- *  test naming the missing endpoint; when it lands, `submit()` is the one
- *  place to wire it. */
+ *  Form on the start side, contact channels on the end side. The form validates
+ *  for real, then submits to `POST /public/leads` — the one public write in the
+ *  product (F-025): unauthenticated, rate-limited, landing in a single
+ *  server-configured org. It is called directly with `fetch` and no token,
+ *  mirroring the auth screens' transport but without the Authorization header,
+ *  because this is the only surface a signed-out visitor writes from.
+ *
+ *  Two honest outcomes flank the success path:
+ *  - **Fixture build** (`VITE_API_URL` unset): there is no server to accept the
+ *    lead, so a valid submission says so and hands over the channels that do
+ *    work (email and phone, both live links). No success is faked for a message
+ *    that went nowhere.
+ *  - **Live error** (429 rate-limit, 400 validation, unreachable server): the
+ *    mapped message from the server, or a transport fallback, with the same
+ *    working channels.
+ *
+ *  `tests/public-contact-form.test.tsx` covers the fixture + validation paths;
+ *  `tests/public-contact-live.test.tsx` mocks the endpoint and asserts the real
+ *  202 success and the 429/400 mappings. */
+
+/** The fixture build ships no backend; a set `VITE_API_URL` is the live API. */
+const LIVE = API_URL !== ''
+
+type Status = 'idle' | 'sending' | 'sent' | 'unavailable' | 'error'
 interface Channel {
   icon: string
   tint: Tint
@@ -85,16 +102,67 @@ export function PublicContact() {
   const messageId = useId()
   const [values, setValues] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<FieldErrors>({})
-  const [undeliverable, setUndeliverable] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault()
     const found = validateContact(values)
     setErrors(found)
-    // A valid message has nowhere to go: there is no public lead endpoint in
-    // the contract yet. Saying so — with the channels that do work — is the
-    // only honest outcome. No success state exists in this component at all.
-    setUndeliverable(Object.keys(found).length === 0)
+    if (Object.keys(found).length > 0) {
+      setStatus('idle')
+      return
+    }
+
+    // No backend in the fixture build: a valid message has nowhere to go, and
+    // the only honest outcome is to say so and name the channels that work.
+    if (!LIVE) {
+      setStatus('unavailable')
+      return
+    }
+
+    setStatus('sending')
+    try {
+      const response = await fetch(`${API_URL.replace(/\/$/, '')}/public/leads`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          message: values.message.trim(),
+          source: 'Website',
+        }),
+      })
+
+      // 202 Accepted `{status:'accepted'}` — a bare acknowledgement, nothing to
+      // read back. Clear the form so a second submit is a deliberate act.
+      if (response.status === 202) {
+        setValues({ name: '', email: '', message: '' })
+        setStatus('sent')
+        return
+      }
+
+      if (response.status === 429) {
+        // The rate-limit plugin answers with its own envelope, not the API's,
+        // so map the status rather than trusting a `error.message` shape here.
+        setErrorMessage(
+          t('Too many messages from this address. Please wait a minute and try again.')
+        )
+      } else {
+        const body = (await response.json().catch(() => null)) as {
+          error?: { message?: string }
+        } | null
+        setErrorMessage(
+          body?.error?.message ?? t('We could not send your message. Please try again.')
+        )
+      }
+      setStatus('error')
+    } catch {
+      setErrorMessage(
+        t('We could not reach the server. Please try again, or contact us directly.')
+      )
+      setStatus('error')
+    }
   }
 
   const field = (
@@ -167,14 +235,34 @@ export function PublicContact() {
               />
             ))}
 
-            {undeliverable ? (
+            {status === 'sent' ? (
+              <div
+                role="status"
+                className="rounded-[14px] border border-salis-blue bg-[rgba(10,94,215,.06)] p-4 text-[13px] leading-relaxed text-heading"
+              >
+                <p className="m-0 font-semibold">{t('Message sent.')}</p>
+                <p className="mb-0 mt-1">
+                  {t(
+                    'Thank you — we have received your message and a member of our team will be in touch shortly.'
+                  )}
+                </p>
+              </div>
+            ) : null}
+
+            {status === 'unavailable' || status === 'error' ? (
               <div
                 role="alert"
                 className="rounded-[14px] border border-salis-orange bg-[rgba(249,115,22,.06)] p-4 text-[13px] leading-relaxed text-heading"
               >
-                <p className="m-0 font-semibold">{t('We could not send your message.')}</p>
+                <p className="m-0 font-semibold">
+                  {status === 'unavailable'
+                    ? t('We could not send your message.')
+                    : t('Your message did not go through.')}
+                </p>
                 <p className="mb-0 mt-1">
-                  {t('Online messaging has not launched for this site yet. Reach us directly at')}{' '}
+                  {status === 'unavailable'
+                    ? t('Online messaging has not launched for this site yet. Reach us directly at')
+                    : `${errorMessage} ${t('You can also reach us directly at')}`}{' '}
                   <a href="mailto:info@salisauto.sa" dir="ltr">
                     info@salisauto.sa
                   </a>{' '}
@@ -190,9 +278,10 @@ export function PublicContact() {
 
             <button
               type="submit"
-              className="h-11 cursor-pointer rounded-lg border-none bg-salis-gradient font-action text-sm font-semibold text-white"
+              disabled={status === 'sending'}
+              className="h-11 cursor-pointer rounded-lg border-none bg-salis-gradient font-action text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {t('Send Message')}
+              {status === 'sending' ? t('Sending…') : t('Send Message')}
             </button>
           </div>
         </form>

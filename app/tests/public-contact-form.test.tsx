@@ -51,8 +51,13 @@ describe('contact form validation', () => {
   })
 })
 
-describe('contact form delivery', () => {
-  it('GAP: no public lead endpoint exists (nothing under server/ accepts an anonymous contact/lead POST) — a valid submission must state that, with working fallback channels', async () => {
+describe('contact form delivery — fixture build (no VITE_API_URL)', () => {
+  // The public lead endpoint now exists (F-025), but this test build ships no
+  // backend (API_URL is ''), so there is genuinely nowhere to deliver. The
+  // honest outcome is the "not launched here" state with working channels — no
+  // success is faked. The live 202/429/400 paths are covered in
+  // public-contact-live.test.tsx, which mocks the endpoint.
+  it('a valid submission states messaging is not live in this build, with working fallback channels', async () => {
     const user = userEvent.setup()
     renderContact()
     await fillValid(user)
@@ -60,16 +65,17 @@ describe('contact form delivery', () => {
 
     const alert = screen.getByRole('alert')
     expect(alert).toHaveTextContent('We could not send your message.')
+    expect(alert).toHaveTextContent('Online messaging has not launched for this site yet.')
     // The failure state hands the visitor channels that actually work.
     expect(alert.querySelector('a[href="mailto:info@salisauto.sa"]')).toBeTruthy()
     expect(alert.querySelector('a[href="tel:+966112345678"]')).toBeTruthy()
   })
 
-  it('never shows a success state — the component has none to show', async () => {
+  it('never fakes a success state on the fixture build', async () => {
     const user = userEvent.setup()
     const { container } = renderContact()
     await fillValid(user)
     await user.click(screen.getByRole('button', { name: 'Send Message' }))
-    expect(container.textContent).not.toMatch(/message sent|thank you|success/i)
+    expect(container.textContent).not.toMatch(/message sent|thank you/i)
   })
 })
