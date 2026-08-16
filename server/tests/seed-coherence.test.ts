@@ -168,6 +168,41 @@ describe('INV-2026-0142 agrees with itself', () => {
   })
 })
 
+describe('F-030 — appointments reconcile with the technician roster', () => {
+  it('gives every appointment a technician_id that resolves to a real technician row', async () => {
+    const rows = await query<{ time: string; tech: string; tid: string | null }>(sql`
+      select a.time_label as time, a.technician_name as tech, t.id as tid
+      from appointments a
+      left join technicians t
+        on t.id = a.technician_id and t.org_id = a.org_id and t.deleted_at is null
+      where a.org_id = ${SEED.orgId}
+    `)
+    expect(rows.length).toBeGreaterThan(0)
+    for (const row of rows) {
+      expect(row.tid, `appointment ${row.time} (${row.tech}) has no roster technician`).toBeTruthy()
+    }
+  })
+
+  it('links each appointment to the technician whose name it shows', async () => {
+    const mismatches = await query<{ time: string; tech: string; roster: string }>(sql`
+      select a.time_label as time, a.technician_name as tech, t.name as roster
+      from appointments a
+      join technicians t on t.id = a.technician_id and t.org_id = a.org_id
+      where a.org_id = ${SEED.orgId} and a.technician_name is distinct from t.name
+    `)
+    expect(mismatches).toEqual([])
+  })
+
+  it('groups the whole schedule under the roster, leaving no appointment unassigned', async () => {
+    const [counts] = await query<{ total: string; assigned: string }>(sql`
+      select count(*)::text as total,
+             count(technician_id)::text as assigned
+      from appointments where org_id = ${SEED.orgId}
+    `)
+    expect(counts!.assigned).toBe(counts!.total)
+  })
+})
+
 describe('F-008 stays visible', () => {
   it('does not balance the chart of accounts on the sly', async () => {
     const rows = await query<{ type: string; balance: string }>(sql`

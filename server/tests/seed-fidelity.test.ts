@@ -34,6 +34,10 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   campaigns: T.CAMPAIGNS,
   segments: T.SEGMENTS,
   crmTasks: T.CRM_TASKS,
+  /** No feedback fixture exists — the capture form was write-only in the
+   *  prototype. The collection serves the seeded feedback rows
+   *  (SEED_COHERENCE_EXTRAS). */
+  feedback: [],
   chartOfAccounts: T.ACCOUNTS_COA,
   journalEntries: T.JOURNAL_ENTRIES,
   expenses: T.EXPENSES_DATA,

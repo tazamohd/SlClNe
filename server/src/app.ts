@@ -13,10 +13,13 @@ import Fastify, { type FastifyInstance } from 'fastify'
 import { ApiError } from './http/errors'
 import { loggerOptions } from './logger'
 import { registerCollectionRoutes } from './routes/collections'
+import { registerCrmRoutes } from './routes/crm'
 import { registerEstimateRoutes } from './routes/estimates'
+import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
 import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
+import { registerPublicRoutes } from './routes/public'
 import { registerWorkshopRoutes } from './routes/workshop'
 import { bearerToken, createVerifier } from './security/principal'
 import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
@@ -30,7 +33,7 @@ import type { Env } from './env'
  *  list beside the handlers it describes rather than duplicating it here, where
  *  the two copies would drift. Everything else — including `/auth/me` and the
  *  device list — is authenticated by default. */
-const PUBLIC_PATHS = new Set(['/health', '/ready'])
+const PUBLIC_PATHS = new Set(['/health', '/ready', '/api/v1/public/leads'])
 
 const API_PREFIX = '/api/v1'
 
@@ -257,6 +260,9 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
       registerInventoryRoutes(api, { db: deps.db })
+      registerCrmRoutes(api, { db: deps.db })
+      registerFleetRoutes(api, { db: deps.db })
+      registerPublicRoutes(api, { db: deps.db, env: deps.env })
     },
     { prefix: '/api/v1' },
   )

@@ -12,11 +12,21 @@ import { z } from 'zod'
 import {
   appointmentCreate,
   appointmentUpdate,
+  crmTaskCreate,
+  crmTaskUpdate,
   customerCreate,
   customerUpdate,
+  feedbackCreate,
+  feedbackUpdate,
+  fleetCreate,
+  fleetUpdate,
   jobCardCreate,
   jobCardUpdate,
+  leadCreate,
+  leadUpdate,
   minuteOfDay,
+  opportunityCreate,
+  opportunityUpdate,
   partCreate,
   partUpdate,
   vehicleCreate,
@@ -127,6 +137,40 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       if (existing) return passthrough(rest)
       return { ...rest, onHand: openingStock ?? 0, reserved: 0 }
     },
+  },
+
+  /* CRM (F-027). RBAC (`crm:c/e/d`), tenant RLS, audit and optimistic
+   * concurrency all come from the generic router; each writer only names its
+   * own columns. `vehicleCount`/`activeCount` on fleets are derived, so the
+   * contract never accepts them and they are absent here. */
+  leads: {
+    create: leadCreate,
+    update: leadUpdate,
+    toColumns: passthrough,
+  },
+
+  opportunities: {
+    create: opportunityCreate,
+    update: opportunityUpdate,
+    toColumns: passthrough,
+  },
+
+  crmTasks: {
+    create: crmTaskCreate,
+    update: crmTaskUpdate,
+    toColumns: passthrough,
+  },
+
+  fleets: {
+    create: fleetCreate,
+    update: fleetUpdate,
+    toColumns: passthrough,
+  },
+
+  feedback: {
+    create: feedbackCreate,
+    update: feedbackUpdate,
+    toColumns: passthrough,
   },
 }
 

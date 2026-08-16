@@ -116,6 +116,9 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       type: row.type,
       email: row.email,
       totalSpentHalalas: count(row.totalSpentHalalas),
+      /* F-027: exposed so the `customers.fleetId → vehicles.customerId` join a
+       * fleet needs to list its vehicles is reachable client-side. */
+      fleetId: row.fleetId,
     }),
   }),
 
@@ -150,16 +153,26 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     table: s.fleets,
     module: 'customers',
     entity: 'fleet',
-    search: ['name'],
-    sortable: ['name', 'vehicleCount', 'createdAt'],
-    filterable: ['contractStatus'],
+    search: ['name', 'contactName'],
+    sortable: ['name', 'vehicleCount', 'contractValueHalalas', 'renewalDate', 'createdAt'],
+    filterable: ['contractStatus', 'contractType'],
     defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
     present: (row) => ({
       ...meta(row),
       name: row.name,
       vehicles: count(row.vehicleCount),
       active: count(row.activeCount),
       contract: row.contractStatus,
+      /* F-027 contract terms. */
+      contractType: row.contractType ?? '',
+      contractValue: sarString(row.contractValueHalalas),
+      contractValueHalalas: count(row.contractValueHalalas),
+      start: dateUS(row.contractStartDate),
+      end: dateUS(row.contractEndDate),
+      renewal: dateUS(row.renewalDate),
+      contact: row.contactName ?? '',
+      contactPhone: row.contactPhone ?? '',
     }),
   }),
 
@@ -434,6 +447,7 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     sortable: ['name', 'valueHalalas', 'score', 'stage', 'createdAt'],
     filterable: ['stage', 'source'],
     defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
     present: (row) => ({
       ...meta(row),
       name: row.name,
@@ -456,6 +470,7 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     sortable: ['name', 'valueHalalas', 'stage', 'closeDate', 'createdAt'],
     filterable: ['stage'],
     defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
     present: (row) => ({
       ...meta(row),
       name: row.name,
@@ -521,6 +536,7 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     sortable: ['title', 'dueDate', 'priority', 'status', 'createdAt'],
     filterable: ['status', 'priority', 'type'],
     defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
     present: (row) => ({
       ...meta(row),
       title: row.title,
@@ -529,6 +545,30 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       priority: row.priority,
       status: row.status,
       type: row.type ?? '',
+    }),
+  }),
+
+  define({
+    /** Customer feedback (F-027). Gated on `crm` — the module the customer
+     *  success surfaces live under. Writable, so the capture form persists;
+     *  read-back is tenant-scoped by RLS like everything else. */
+    key: 'feedback',
+    path: 'customer-feedback',
+    table: s.customerFeedback,
+    module: 'crm',
+    entity: 'customer_feedback',
+    search: ['comment', 'customerName'],
+    sortable: ['rating', 'createdAt'],
+    filterable: ['rating', 'jobCardId', 'customerId'],
+    defaultSort: { column: 'createdAt', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      rating: count(row.rating),
+      comment: row.comment ?? '',
+      customer: row.customerName ?? '',
+      jobCardId: row.jobCardId,
+      customerId: row.customerId,
     }),
   }),
 

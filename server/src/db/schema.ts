@@ -134,6 +134,15 @@ export const fleets = pgTable(
     vehicleCount: integer('vehicle_count').notNull().default(0),
     activeCount: integer('active_count').notNull().default(0),
     contractStatus: varchar('contract_status', { length: 32 }).notNull().default('active'),
+    /* Contract terms (F-027). Money is integer halalas like everywhere else. */
+    contractType: varchar('contract_type', { length: 32 }),
+    contractValueHalalas: money('contract_value_halalas'),
+    contractStartDate: date('contract_start_date'),
+    contractEndDate: date('contract_end_date'),
+    renewalDate: date('renewal_date'),
+    contactName: varchar('contact_name', { length: 200 }),
+    contactPhone: varchar('contact_phone', { length: 32 }),
+    contactEmail: varchar('contact_email', { length: 254 }),
   },
   (t) => ({ byOrg: index('fleets_org_idx').on(t.orgId) }),
 )
@@ -477,6 +486,10 @@ export const leads = pgTable(
     stage: varchar('stage', { length: 32 }).notNull().default('new'),
     leadDate: date('lead_date'),
     score: integer('score'),
+    /** Set once the lead is converted (F-027). Its presence makes the convert
+     *  action idempotent: a replay returns this opportunity rather than
+     *  creating a second one. */
+    convertedOpportunityId: varchar('converted_opportunity_id', { length: ULID_LENGTH }),
   },
   (t) => ({ byStage: index('leads_stage_idx').on(t.orgId, t.stage) }),
 )
@@ -522,6 +535,43 @@ export const crmTasks = pgTable('crm_tasks', {
   status: varchar('status', { length: 16 }).notNull().default('todo'),
   type: varchar('type', { length: 24 }),
 })
+
+/** Public marketing intake (F-025). A raw, unauthenticated web submission —
+ *  it carries a contact channel and a message and has earned no score or
+ *  pipeline stage, which is why it is its own table rather than a row in the
+ *  qualified `leads` pipeline. Every submission lands in one configured org
+ *  (`PUBLIC_LEAD_ORG_ID`); the caller never chooses tenancy. */
+export const publicLeads = pgTable(
+  'public_leads',
+  {
+    ...tenant,
+    name: varchar('name', { length: 200 }).notNull(),
+    email: varchar('email', { length: 254 }),
+    phone: varchar('phone', { length: 32 }),
+    company: varchar('company', { length: 200 }),
+    message: text('message'),
+    source: varchar('source', { length: 64 }),
+    /** Intake triage status; a later tranche promotes an accepted one into the
+     *  CRM `leads` pipeline. */
+    status: varchar('status', { length: 16 }).notNull().default('new'),
+  },
+  (t) => ({ byOrg: index('public_leads_org_idx').on(t.orgId, t.status) }),
+)
+
+/** Customer feedback (F-027). A rating and optional comment against a job card
+ *  / customer, tenant-scoped like everything else. */
+export const customerFeedback = pgTable(
+  'customer_feedback',
+  {
+    ...tenant,
+    rating: integer('rating').notNull(),
+    comment: text('comment'),
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }),
+    customerId: varchar('customer_id', { length: ULID_LENGTH }),
+    customerName: varchar('customer_name', { length: 200 }),
+  },
+  (t) => ({ byOrg: index('customer_feedback_org_idx').on(t.orgId, t.branchId) }),
+)
 
 /* --------------------------------------------------------------- accounting */
 
@@ -918,6 +968,8 @@ export const TENANT_TABLES = [
   'campaigns',
   'segments',
   'crm_tasks',
+  'public_leads',
+  'customer_feedback',
   'chart_of_accounts',
   'journal_entries',
   'expenses',

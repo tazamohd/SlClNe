@@ -44,6 +44,18 @@ const schema = z.object({
 
   CORS_ORIGINS: z.string().default(''),
   RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(300),
+
+  /** The organization a public, unauthenticated marketing lead lands in
+   *  (F-025). The caller never chooses an org; every public lead is written to
+   *  exactly this one, so a public POST can never escalate into another
+   *  tenant. Defaults to the primary demo org so the endpoint works out of the
+   *  box in development and test; a real deployment sets this to its marketing
+   *  organization's id. */
+  PUBLIC_LEAD_ORG_ID: z.string().default('01JAAAAAAAAAAAAAAAAAAAAAA1'),
+  /** Tight per-IP ceiling for the public lead form, independent of the
+   *  authenticated API's budget. A contact form does not get 300 requests a
+   *  minute from one address without being abuse. */
+  PUBLIC_LEAD_RATE_LIMIT: z.coerce.number().int().min(1).default(5),
 })
 
 export type Env = z.infer<typeof schema> & { corsOrigins: string[] }

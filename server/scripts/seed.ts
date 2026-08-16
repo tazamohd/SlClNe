@@ -52,12 +52,34 @@ export const SEED = {
  *  rather than merely identical to the mock (F-015, F-016). The fixture rows
  *  are still served first and unchanged — `tests/seed-fidelity.test.ts` checks
  *  them row by row and then allows exactly these additions, no others. */
+/** Roster names the design's TECHS list carries. */
+const ROSTER_TECH_NAMES = new Set(T.TECHS.map((t) => t.name))
+
+/** F-030: the appointment board names technicians that are not in the roster
+ *  (Saeed Al-Zahrani, Majed Al-Otaibi, Yousef Al-Ghamdi). Grouping a schedule
+ *  by the roster showed every technician idle because the appointments carried
+ *  no `technician_id` and named people who did not exist as rows. The durable
+ *  fix (agent 08's own recommendation) is to seed those names as technician
+ *  rows and set a real `technician_id` on each appointment, so the schedule
+ *  reconciles against the roster deterministically. Saeed is seeded separately
+ *  because he also carries the demo user mapping (F-015); the rest are plain. */
+const UNROSTERED_APPOINTMENT_TECHS = [...new Set(T.APPOINTMENTS.map((a) => a.tech))].filter(
+  (name) => !ROSTER_TECH_NAMES.has(name),
+)
+const EXTRA_APPOINTMENT_TECHS = UNROSTERED_APPOINTMENT_TECHS.filter(
+  (name) => name !== 'Saeed Al-Zahrani',
+)
+
 export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
-  /** Saeed Al-Zahrani — the demo technician user's own technician row. The
-   *  design's TECHS list omits him although its appointment board names him;
-   *  without the row, `technicians.user_id` maps the demo technician user to
-   *  nothing and the own-scope portal is empty for the user it is for. */
-  technicians: 1,
+  /** The technician rows the appointment board names but the roster omits:
+   *  Saeed Al-Zahrani (also the demo user's own row, F-015) plus every other
+   *  unrostered name the board uses, so `technician_id` on every appointment
+   *  resolves to a real roster row and the schedule groups correctly (F-030). */
+  technicians: UNROSTERED_APPOINTMENT_TECHS.length,
+  /** Customer feedback the design's capture form implies but never seeded —
+   *  a handful of rated comments so the read-back has something coherent to
+   *  return under tenant scope (F-027). */
+  feedback: 3,
   /** INV-2026-0124 / -0128 / -0131 — the invoices three design receipts
    *  settle. The bundle's receipt history reaches further back than its
    *  invoice list; money must not arrive against nothing (F-016). */
@@ -146,13 +168,27 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     ),
   )
 
+  /* F-027: the fixtures carry only name/counts/status; coherent contract terms
+   * are added here so FleetContract has type, value, dates and a contact to
+   * render. Additive — seed-fidelity checks only the fixture keys, which are
+   * unchanged. Values are deterministic per fleet: SAR 5,000 per vehicle a
+   * year, a one-year term from the seed date, renewal 30 days before it ends. */
+  const CONTRACT_TYPES = ['standard', 'premium', 'enterprise'] as const
   await tx.insert(s.fleets).values(
-    T.FLEETS.map((f) =>
+    T.FLEETS.map((f, index) =>
       row({
         name: f.name,
         vehicleCount: f.vehicles,
         activeCount: f.active,
         contractStatus: f.contract,
+        contractType: CONTRACT_TYPES[index % CONTRACT_TYPES.length],
+        contractValueHalalas: sarToHalalas(f.vehicles * 5000),
+        contractStartDate: '2026-01-01',
+        contractEndDate: '2026-12-31',
+        renewalDate: '2026-12-01',
+        contactName: `${f.name.split(' ')[0]} Fleet Manager`,
+        contactPhone: `+966 55 ${String(100 + index)} ${String(1000 + index)}`,
+        contactEmail: `fleet${index + 1}@example.sa`,
       }),
     ),
   )
@@ -388,6 +424,30 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     .set({ assignedTechId: saeed.id })
     .where(sql`${s.jobCards.code} = ${SEED.assignedJobCode} and ${s.jobCards.orgId} = ${orgId}`)
 
+  /* F-030: seed the remaining unrostered technicians the appointment board
+   * names (Majed Al-Otaibi, Yousef Al-Ghamdi), then set a real technician_id on
+   * every appointment by joining on the display name — which now always
+   * resolves, so grouping the schedule by the roster is correct. The join is
+   * the deterministic reconciliation rule; the technician_name the fixtures
+   * carry is untouched, so seed-fidelity still proves the appointment rows
+   * intact. */
+  if (EXTRA_APPOINTMENT_TECHS.length > 0) {
+    await tx.insert(s.technicians).values(
+      EXTRA_APPOINTMENT_TECHS.map((name) =>
+        row({ name, specialty: 'General Service', activeJobs: 0, rating: null }),
+      ),
+    )
+  }
+  await tx.execute(sql`
+    update appointments a
+    set technician_id = t.id
+    from technicians t
+    where t.org_id = ${orgId}
+      and a.org_id = ${orgId}
+      and t.deleted_at is null
+      and t.name = a.technician_name
+  `)
+
   await tx.insert(s.departments).values(
     T.DEPARTMENTS.map((d) =>
       row({
@@ -468,6 +528,27 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       }),
     ),
   )
+
+  /* F-027: a few customer feedback rows so the read-back the capture form's
+   * screen lists has coherent tenant-scoped data. Counted in
+   * SEED_COHERENCE_EXTRAS (the design bundle carries no feedback fixture). */
+  await tx.insert(s.customerFeedback).values([
+    row({
+      rating: 5,
+      comment: 'Excellent service, my car was ready ahead of schedule.',
+      customerName: 'Ahmed Al-Rashid',
+    }),
+    row({
+      rating: 4,
+      comment: 'Friendly staff and clear pricing. Waiting area could be better.',
+      customerName: 'Layla Al-Sulaiman',
+    }),
+    row({
+      rating: 5,
+      comment: 'Diagnostics were thorough and the estimate was honest.',
+      customerName: 'Fahad Al-Qahtani',
+    }),
+  ])
 
   await tx.insert(s.chartOfAccounts).values(
     T.ACCOUNTS_COA.map((a) =>
