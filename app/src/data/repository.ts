@@ -127,6 +127,18 @@ export interface BranchRow extends EntityMeta {
   isMain: boolean
 }
 
+/** Customer feedback, as `GET /customer-feedback` presents it (F-027). The
+ *  design bundle carries no feedback fixture — the capture form was write-only
+ *  in the prototype — so the shape is declared here rather than inferred from
+ *  `generated/tables.ts`, like `BranchRow`. */
+export interface FeedbackRow extends EntityMeta {
+  rating: number
+  comment: string
+  customer: string
+  jobCardId: string | null
+  customerId: string | null
+}
+
 export interface Repository {
   branches: Collection<BranchRow>
   vehicles: Collection<(typeof T.VEHICLES)[number]>
@@ -146,6 +158,7 @@ export interface Repository {
   campaigns: Collection<(typeof T.CAMPAIGNS)[number]>
   segments: Collection<(typeof T.SEGMENTS)[number]>
   crmTasks: Collection<(typeof T.CRM_TASKS)[number]>
+  feedback: Collection<FeedbackRow>
   chartOfAccounts: Collection<(typeof T.ACCOUNTS_COA)[number]>
   journalEntries: Collection<(typeof T.JOURNAL_ENTRIES)[number]>
   expenses: Collection<(typeof T.EXPENSES_DATA)[number]>
@@ -192,6 +205,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   campaigns: 'crm/campaigns',
   segments: 'crm/segments',
   crmTasks: 'crm/tasks',
+  feedback: 'customer-feedback',
   chartOfAccounts: 'accounting/coa',
   journalEntries: 'accounting/journal-entries',
   expenses: 'accounting/expenses',
@@ -341,6 +355,10 @@ export const mockRepository: Repository = {
   campaigns: fixture(T.CAMPAIGNS),
   segments: fixture(T.SEGMENTS),
   crmTasks: fixture(T.CRM_TASKS),
+  /* The bundle carries no feedback fixture — the capture form was write-only in
+   * the prototype. An empty read-only collection is the honest mock; the live
+   * API serves the seeded feedback rows. */
+  feedback: fixture<FeedbackRow>([]),
   chartOfAccounts: fixture(T.ACCOUNTS_COA),
   journalEntries: fixture(T.JOURNAL_ENTRIES),
   expenses: fixture(T.EXPENSES_DATA),

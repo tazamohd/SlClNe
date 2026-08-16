@@ -38,19 +38,18 @@ function defineBlock(key: string): string {
   return registry.slice(from, end < 0 ? undefined : end)
 }
 
-describe('GAP: CRM collections are read-only server-side', () => {
-  it('GAP: `leads` is not writable — POST/PATCH /crm/leads (create, edit) are missing, so LeadDetail cannot offer Edit', () => {
-    expect(defineBlock('leads')).not.toMatch(/writable:\s*true/)
+describe('CRM collections are writable server-side (F-027 landed)', () => {
+  it('LANDED: `leads` is writable — POST/PATCH /crm/leads back LeadDetail Edit', () => {
+    expect(defineBlock('leads')).toMatch(/writable:\s*true/)
   })
 
-  it('GAP: `opportunities` is not writable and there is no lead→opportunity conversion route — LeadDetail cannot offer Convert to Opportunity', () => {
-    expect(defineBlock('opportunities')).not.toMatch(/writable:\s*true/)
-    expect(registry).not.toMatch(/convert/i)
-    expect(routeFiles).not.toMatch(/convert/i)
+  it('LANDED: `opportunities` is writable and a lead→opportunity conversion route exists — LeadDetail can offer Convert to Opportunity', () => {
+    expect(defineBlock('opportunities')).toMatch(/writable:\s*true/)
+    expect(routeFiles).toMatch(/convert/i)
   })
 
-  it('GAP: `crmTasks` is not writable — POST /crm/tasks is missing, so CRMCalendar cannot offer New Task', () => {
-    expect(defineBlock('crmTasks')).not.toMatch(/writable:\s*true/)
+  it('LANDED: `crmTasks` is writable — POST /crm/tasks backs CRMCalendar New Task', () => {
+    expect(defineBlock('crmTasks')).toMatch(/writable:\s*true/)
   })
 
   it('GAP: there is no lead activity or lead notes collection — GET/POST /crm/leads/:id/activity and /crm/leads/:id/notes are all missing, so LeadDetail shows honest empty rails', () => {
@@ -59,36 +58,35 @@ describe('GAP: CRM collections are read-only server-side', () => {
   })
 })
 
-describe('GAP: customer feedback has no home server-side', () => {
-  it('GAP: no `feedback` collection is registered — GET/POST /customer-feedback is missing, so the form cannot submit', () => {
-    expect(registry).not.toMatch(/key:\s*'(customerF|f)eedback'/i)
-    expect(registry).not.toMatch(/path:\s*'[^']*feedback/i)
-    expect(routeFiles).not.toMatch(/feedback/i)
+describe('customer feedback has a home server-side (F-027 landed)', () => {
+  it('LANDED: a `feedback` collection is registered at customer-feedback — POST /customer-feedback backs the capture form', () => {
+    expect(registry).toMatch(/key:\s*'feedback'/)
+    expect(registry).toMatch(/path:\s*'customer-feedback'/)
   })
 
-  it('GAP: there is not even a feedback table in the schema — storage and endpoint are both owed', () => {
-    expect(schema).not.toMatch(/pgTable\(\s*'(customer_)?feedback'/)
+  it('LANDED: the schema carries a customer_feedback table — storage and endpoint both exist', () => {
+    expect(schema).toMatch(/pgTable\(\s*'customer_feedback'/)
   })
 })
 
-describe('GAP: fleet contracts are minimal and unjoinable', () => {
-  it('GAP: the fleets table has no contract-term columns — type, value, dates and contact are all owed, so FleetContract cannot render them', () => {
-    expect(schema).not.toMatch(/contract_value|contract_type|start_date.*fleet|renewal_date/)
-    // The one contract field that exists is the status, which the screen does show.
+describe('fleet contracts carry terms and are joinable (F-027 landed)', () => {
+  it('LANDED: the fleets table has contract-term columns — type, value, dates and contact, so FleetContract can render them', () => {
+    expect(schema).toMatch(/contract_value_halalas/)
+    expect(schema).toMatch(/contract_type/)
+    expect(schema).toMatch(/renewal_date/)
+    // The status field the screen already showed is still present.
     expect(defineBlock('fleets')).toMatch(/contract:\s*row\.contractStatus/)
   })
 
-  it('GAP: `fleets` is not writable — there is no renew-contract route, so FleetContract cannot offer Renew', () => {
-    expect(defineBlock('fleets')).not.toMatch(/writable:\s*true/)
-    expect(routeFiles).not.toMatch(/renew/i)
+  it('LANDED: `fleets` is writable and a renew-contract route exists — FleetContract can offer Renew', () => {
+    expect(defineBlock('fleets')).toMatch(/writable:\s*true/)
+    expect(routeFiles).toMatch(/renew/i)
   })
 
-  it('GAP: customers do not present `fleetId`, so a fleet cannot be joined to its vehicles client-side — FleetContract lists no assigned vehicles', () => {
-    // `fleetId` exists only as a filter key, never in the presented row, so the
-    // customers→vehicles hop a fleet would need is not available to the client.
-    expect(registry).not.toMatch(/fleetId:\s*row\.fleetId/)
-    // It appears solely in the filter list, not in any `present` body.
+  it('LANDED: customers present `fleetId`, so a fleet can be joined to its vehicles client-side — FleetContract can list assigned vehicles', () => {
+    expect(registry).toMatch(/fleetId:\s*row\.fleetId/)
+    // Still a filter key too, so the join can also be driven server-side.
     expect(defineBlock('customers')).toMatch(/filterable:\s*\[[^\]]*fleetId/)
-    expect(defineBlock('customers')).not.toMatch(/present[\s\S]*fleetId/)
+    expect(defineBlock('customers')).toMatch(/present[\s\S]*fleetId/)
   })
 })
