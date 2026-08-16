@@ -50,6 +50,20 @@
       "when": 1786465094900,
       "tag": "0006_obd_dtc_readings",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786465095900,
+      "tag": "0007_insurance",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1786465096900,
+      "tag": "0008_loans",
+      "breakpoints": true
     }
   ]
 }

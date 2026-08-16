@@ -662,6 +662,120 @@ export const savedReports = pgTable(
   (t) => ({ byOrg: index('saved_reports_org_idx').on(t.orgId, t.createdBy) }),
 )
 
+/* ------------------------------------------------------- financial products */
+
+/** Insurance policies — the cover a customer holds on a vehicle. Money is
+ *  integer halalas (premium, coverage). Read-only through the generic router;
+ *  gated on `accounting` (there is no dedicated `insurance` module in the RBAC
+ *  matrix — see registry.ts). */
+export const insurancePolicies = pgTable(
+  'insurance_policies',
+  {
+    ...tenant,
+    policyNumber: varchar('policy_number', { length: 40 }).notNull(),
+    insurer: varchar('insurer', { length: 160 }).notNull(),
+    /** The policyholder. */
+    customerId: varchar('customer_id', { length: ULID_LENGTH }),
+    holderName: varchar('holder_name', { length: 200 }).notNull(),
+    vehicleId: varchar('vehicle_id', { length: ULID_LENGTH }),
+    vehicleLabel: varchar('vehicle_label', { length: 160 }).notNull(),
+    /** `comprehensive` · `third_party` · `own_damage`. */
+    type: varchar('type', { length: 24 }).notNull().default('comprehensive'),
+    premiumHalalas: money('premium_halalas').notNull().default(0),
+    coverageHalalas: money('coverage_halalas').notNull().default(0),
+    startDate: date('start_date').notNull(),
+    endDate: date('end_date').notNull(),
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+  },
+  (t) => ({
+    numberPerOrg: uniqueIndex('insurance_policies_org_number_idx').on(t.orgId, t.policyNumber),
+    byOrg: index('insurance_policies_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Insurance claims — a request against a policy, which may relate to a repair.
+ *  Read-only through the generic router; the lifecycle (submit, approve, reject,
+ *  pay) is the bespoke router in `routes/insurance-claims.ts`, with approval
+ *  gated on the ceiling and segregation of duties like the estimate. */
+export const insuranceClaims = pgTable(
+  'insurance_claims',
+  {
+    ...tenant,
+    claimNumber: varchar('claim_number', { length: 40 }).notNull(),
+    policyId: varchar('policy_id', { length: ULID_LENGTH }),
+    policyNumber: varchar('policy_number', { length: 40 }).notNull(),
+    vehicleId: varchar('vehicle_id', { length: ULID_LENGTH }),
+    vehicleLabel: varchar('vehicle_label', { length: 160 }).notNull(),
+    /** Null when the claim relates to no workshop job. */
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }),
+    amountClaimedHalalas: money('amount_claimed_halalas').notNull().default(0),
+    /** Null until the claim is approved. */
+    amountApprovedHalalas: money('amount_approved_halalas'),
+    status: varchar('status', { length: 16 }).notNull().default('submitted'),
+    incidentDate: date('incident_date').notNull(),
+    description: text('description').notNull(),
+    /** Segregation of duties: the submitter may not also approve. */
+    submittedBy: varchar('submitted_by', { length: ULID_LENGTH }),
+    approvedBy: varchar('approved_by', { length: ULID_LENGTH }),
+    approvedAt: timestamp('approved_at', { withTimezone: true }),
+    paidAt: timestamp('paid_at', { withTimezone: true }),
+  },
+  (t) => ({
+    numberPerOrg: uniqueIndex('insurance_claims_org_number_idx').on(t.orgId, t.claimNumber),
+    byPolicy: index('insurance_claims_policy_idx').on(t.orgId, t.policyId),
+    byOrg: index('insurance_claims_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Auto-loan contracts — a financed principal at a rate over a term. The
+ *  monthly instalment is a real amortised figure the server computes at
+ *  origination (`rules/loans.ts`), stored as integer halalas. Read-only through
+ *  the generic router; gated on `accounting`. */
+export const loanContracts = pgTable(
+  'loan_contracts',
+  {
+    ...tenant,
+    contractNumber: varchar('contract_number', { length: 40 }).notNull(),
+    /** The borrower. */
+    customerId: varchar('customer_id', { length: ULID_LENGTH }),
+    borrowerName: varchar('borrower_name', { length: 200 }).notNull(),
+    principalHalalas: money('principal_halalas').notNull().default(0),
+    /** Annual interest rate in basis points (600 = 6.00%). */
+    rateBps: integer('rate_bps').notNull().default(0),
+    termMonths: integer('term_months').notNull(),
+    startDate: date('start_date').notNull(),
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    /** Amortised at origination — never a placeholder. */
+    monthlyInstalmentHalalas: money('monthly_instalment_halalas').notNull().default(0),
+  },
+  (t) => ({
+    numberPerOrg: uniqueIndex('loan_contracts_org_number_idx').on(t.orgId, t.contractNumber),
+    byOrg: index('loan_contracts_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Loan repayments — the month-by-month schedule a contract's instalment
+ *  implies. Money is integer halalas; the amounts sum to principal + interest
+ *  across the schedule. Read-only through the generic router. */
+export const loanRepayments = pgTable(
+  'loan_repayments',
+  {
+    ...tenant,
+    loanContractId: varchar('loan_contract_id', { length: ULID_LENGTH }).notNull(),
+    contractNumber: varchar('contract_number', { length: 40 }).notNull(),
+    /** 1-based instalment number within the contract. */
+    sequence: integer('sequence').notNull(),
+    dueDate: date('due_date').notNull(),
+    amountDueHalalas: money('amount_due_halalas').notNull().default(0),
+    amountPaidHalalas: money('amount_paid_halalas').notNull().default(0),
+    paidDate: date('paid_date'),
+    status: varchar('status', { length: 16 }).notNull().default('due'),
+  },
+  (t) => ({
+    byContract: index('loan_repayments_contract_idx').on(t.orgId, t.loanContractId, t.sequence),
+  }),
+)
+
 /* -------------------------------------------------- diagnostics & knowledge */
 
 export const obdDevices = pgTable('obd_devices', {
@@ -1044,6 +1158,10 @@ export const TENANT_TABLES = [
   'expenses',
   'bank_statements',
   'saved_reports',
+  'insurance_policies',
+  'insurance_claims',
+  'loan_contracts',
+  'loan_repayments',
   'obd_devices',
   'obd_dtc_readings',
   'dtc_codes',

@@ -23,8 +23,10 @@ import { registerFinanceReportRoutes } from './routes/finance-reports'
 import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
 import { registerHistoryRoutes } from './routes/history'
+import { registerInsuranceClaimRoutes } from './routes/insurance-claims'
 import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
+import { registerProductReportRoutes } from './routes/product-reports'
 import { registerPublicRoutes } from './routes/public'
 import { registerWorkshopRoutes } from './routes/workshop'
 import { registerWorkshopReportRoutes } from './routes/workshop-reports'
@@ -288,6 +290,8 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerCrmRoutes(api, { db: deps.db })
       registerBankRoutes(api, { db: deps.db })
       registerFleetRoutes(api, { db: deps.db })
+      registerInsuranceClaimRoutes(api, { db: deps.db })
+      registerProductReportRoutes(api, { db: deps.db })
       registerPublicRoutes(api, { db: deps.db, env: deps.env })
     },
     { prefix: '/api/v1' },

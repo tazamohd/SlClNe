@@ -705,6 +705,141 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* ------------------------------------------------------ financial products */
+  define({
+    /** Insurance policies — the cover a customer holds on a vehicle (vertical A).
+     *  Read-only through the generic router. Gated on `accounting`: the RBAC
+     *  matrix has no `insurance` module, so the nearest existing one is used —
+     *  `accounting` is the back-office financial-products module whose consumers
+     *  (accountant, owner, manager) are exactly the Insurance-report audience,
+     *  and whose accountant role carries the `a` grant the claim approval needs.
+     *  Money is integer halalas; premium and coverage carry both the formatted
+     *  string and the raw halalas. */
+    key: 'insurancePolicies',
+    path: 'insurance-policies',
+    table: s.insurancePolicies,
+    module: 'accounting',
+    entity: 'insurance_policy',
+    search: ['policyNumber', 'insurer', 'holderName', 'vehicleLabel'],
+    sortable: ['policyNumber', 'insurer', 'premiumHalalas', 'endDate', 'status', 'createdAt'],
+    filterable: ['status', 'type', 'customerId', 'vehicleId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'policyNumber',
+    present: (row) => ({
+      ...meta(row),
+      policyNumber: row.policyNumber,
+      insurer: row.insurer,
+      type: row.type,
+      holder: row.holderName,
+      customerId: row.customerId,
+      vehicleId: row.vehicleId,
+      vehicleLabel: row.vehicleLabel,
+      premium: sarString(row.premiumHalalas),
+      premiumHalalas: count(row.premiumHalalas),
+      coverage: sarString(row.coverageHalalas),
+      coverageHalalas: count(row.coverageHalalas),
+      start: dateUS(row.startDate),
+      end: dateUS(row.endDate),
+      status: row.status,
+    }),
+  }),
+
+  define({
+    /** Insurance claims — a request against a policy (vertical A). Read-only
+     *  through the generic router; the lifecycle (submit/approve/reject/pay) is
+     *  the bespoke router in `routes/insurance-claims.ts`, gated on the ceiling
+     *  and segregation of duties like the estimate. Gated on `accounting` for
+     *  the same reason as policies. `amountApproved` is null until approval. */
+    key: 'insuranceClaims',
+    path: 'insurance-claims',
+    table: s.insuranceClaims,
+    module: 'accounting',
+    entity: 'insurance_claim',
+    search: ['claimNumber', 'policyNumber', 'vehicleLabel', 'description'],
+    sortable: ['claimNumber', 'amountClaimedHalalas', 'status', 'incidentDate', 'createdAt'],
+    filterable: ['status', 'policyId', 'vehicleId', 'jobCardId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'claimNumber',
+    present: (row) => ({
+      ...meta(row),
+      claimNumber: row.claimNumber,
+      policyId: row.policyId,
+      policyNumber: row.policyNumber,
+      vehicleId: row.vehicleId,
+      vehicleLabel: row.vehicleLabel,
+      jobCardId: row.jobCardId,
+      amountClaimed: sarString(row.amountClaimedHalalas),
+      amountClaimedHalalas: count(row.amountClaimedHalalas),
+      amountApproved: row.amountApprovedHalalas == null ? null : sarString(row.amountApprovedHalalas),
+      amountApprovedHalalas: row.amountApprovedHalalas == null ? null : count(row.amountApprovedHalalas),
+      status: row.status,
+      incidentDate: dateUS(row.incidentDate),
+      description: row.description,
+      submittedBy: row.submittedBy ?? null,
+      approvedBy: row.approvedBy ?? null,
+    }),
+  }),
+
+  define({
+    /** Auto-loan contracts (vertical A). Read-only through the generic router;
+     *  the monthly instalment is amortised by the server at origination
+     *  (`rules/loans.ts`) and served as both a formatted string and raw halalas.
+     *  Gated on `accounting`. */
+    key: 'loanContracts',
+    path: 'loan-contracts',
+    table: s.loanContracts,
+    module: 'accounting',
+    entity: 'loan_contract',
+    search: ['contractNumber', 'borrowerName'],
+    sortable: ['contractNumber', 'principalHalalas', 'status', 'startDate', 'createdAt'],
+    filterable: ['status', 'customerId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'contractNumber',
+    present: (row) => ({
+      ...meta(row),
+      contractNumber: row.contractNumber,
+      borrower: row.borrowerName,
+      customerId: row.customerId,
+      principal: sarString(row.principalHalalas),
+      principalHalalas: count(row.principalHalalas),
+      rateBps: count(row.rateBps),
+      termMonths: count(row.termMonths),
+      start: dateUS(row.startDate),
+      status: row.status,
+      monthlyInstalment: sarString(row.monthlyInstalmentHalalas),
+      monthlyInstalmentHalalas: count(row.monthlyInstalmentHalalas),
+    }),
+  }),
+
+  define({
+    /** Loan repayments — the amortised schedule a contract implies (vertical A).
+     *  Read-only through the generic router; filter by `loanContractId`. Money is
+     *  integer halalas and the schedule's amounts sum to principal + interest.
+     *  Gated on `accounting`. */
+    key: 'loanRepayments',
+    path: 'loan-repayments',
+    table: s.loanRepayments,
+    module: 'accounting',
+    entity: 'loan_repayment',
+    search: ['contractNumber'],
+    sortable: ['sequence', 'dueDate', 'amountDueHalalas', 'status', 'createdAt'],
+    filterable: ['status', 'loanContractId'],
+    defaultSort: { column: 'sequence', dir: 'asc' },
+    present: (row) => ({
+      ...meta(row),
+      contractId: row.loanContractId,
+      contractNumber: row.contractNumber,
+      sequence: count(row.sequence),
+      dueDate: dateUS(row.dueDate),
+      amountDue: sarString(row.amountDueHalalas),
+      amountDueHalalas: count(row.amountDueHalalas),
+      amountPaid: sarString(row.amountPaidHalalas),
+      amountPaidHalalas: count(row.amountPaidHalalas),
+      paidDate: row.paidDate ? dateUS(row.paidDate) : null,
+      status: row.status,
+    }),
+  }),
+
   /* --------------------------------------------------------------------- AI */
   define({
     key: 'aiAgents',

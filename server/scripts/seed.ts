@@ -16,6 +16,7 @@
 import { sql } from 'drizzle-orm'
 import { monotonicFactory } from 'ulid'
 import { parseSarToHalalas, sarToHalalas, minuteOfDay } from '@salis/contract'
+import { amortisedInstalmentHalalas, buildRepaymentPlan } from '@salis/contract/rules'
 import * as T from '../../app/src/data/generated/tables'
 import { createDb } from '../src/db/client'
 import * as s from '../src/db/schema'
@@ -100,6 +101,14 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   /** Per-device DTC readings — the device↔dtc link is new (F-029); a couple of
    *  seeded readings give the read-back a coherent history. */
   obdReadings: 2,
+  /** Insurance and loan products (vertical A) — no design fixture; each row is
+   *  coherent (a claim points at a real policy, a contract's repayments amortise
+   *  its principal). Three policies, two claims; two contracts whose 12- and
+   *  24-month schedules make 36 repayments. */
+  insurancePolicies: 3,
+  insuranceClaims: 2,
+  loanContracts: 2,
+  loanRepayments: 36,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
@@ -129,6 +138,17 @@ function splitVat(totalHalalas: number): { subtotal: number; tax: number } {
   return { subtotal, tax: totalHalalas - subtotal }
 }
 
+/** `('2026-01-01', 3)` → `'2026-04-01'`. Used to space a loan's repayment due
+ *  dates a month apart from the contract start. Clamps to the last day of the
+ *  target month so a 31st never rolls into the next month. */
+function addMonths(iso: string, months: number): string {
+  const [y, m, d] = iso.split('-').map(Number) as [number, number, number]
+  const base = new Date(Date.UTC(y, m - 1 + months, 1))
+  const lastDay = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth() + 1, 0)).getUTCDate()
+  base.setUTCDate(Math.min(d, lastDay))
+  return base.toISOString().slice(0, 10)
+}
+
 const STAGE_FOR_STATUS: Record<string, string> = {
   pending: 'checkin',
   in_progress: 'repair',
@@ -151,31 +171,33 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     T.SERVICES.map(([icon, label]) => row({ icon: String(icon), label: String(label) })),
   )
 
-  await tx.insert(s.customers).values(
-    T.CUSTOMERS.map((c) =>
-      row({
-        name: c.name,
-        phone: c.phone,
-        type: 'individual',
-        vehicleCount: c.vehicles,
-        totalSpentHalalas: parseSarToHalalas(c.spent),
-        lastVisitLabel: c.last,
-      }),
-    ),
+  const customerRows = T.CUSTOMERS.map((c) =>
+    row({
+      name: c.name,
+      phone: c.phone,
+      type: 'individual',
+      vehicleCount: c.vehicles,
+      totalSpentHalalas: parseSarToHalalas(c.spent),
+      lastVisitLabel: c.last,
+    }),
   )
+  await tx.insert(s.customers).values(customerRows)
+  /* Name → id, so the insurance policies and loan contracts below reference a
+   * real customer rather than a free-standing string (F-016 coherence). */
+  const customerIdByName = new Map(customerRows.map((c) => [c.name, c.id]))
 
-  await tx.insert(s.vehicles).values(
-    T.VEHICLES.map((v) =>
-      row({
-        plate: v.plate,
-        makeModel: v.make,
-        ownerName: v.owner,
-        mileageKm: parseKilometres(v.mileage),
-        lastServiceLabel: v.last,
-        status: v.status,
-      }),
-    ),
+  const vehicleRows = T.VEHICLES.map((v) =>
+    row({
+      plate: v.plate,
+      makeModel: v.make,
+      ownerName: v.owner,
+      mileageKm: parseKilometres(v.mileage),
+      lastServiceLabel: v.last,
+      status: v.status,
+    }),
   )
+  await tx.insert(s.vehicles).values(vehicleRows)
+  const vehicleByPlate = new Map(vehicleRows.map((v) => [v.plate, v]))
 
   /* F-027: the fixtures carry only name/counts/status; coherent contract terms
    * are added here so FleetContract has type, value, dates and a contact to
@@ -675,6 +697,119 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       definition: { range: 'quarter', columns: ['taxableSales', 'outputVat'] },
     }),
   ])
+
+  /* --------------------------------------------------- financial products (vertical A)
+   * Insurance policies + claims and loan contracts + repayment schedules. The
+   * design bundle carries no fixtures for any of these — the financial-products
+   * surfaces were mock in the prototype — so every row here is a declared
+   * coherence extra (SEED_COHERENCE_EXTRAS), served after the (empty) fixture
+   * like the branch directory and the feedback rows. Coherent, not merely
+   * present: each policy names a real customer and vehicle, each claim points at
+   * a real policy, and each loan's repayment schedule is the amortised schedule
+   * its server-computed instalment implies. */
+  const policyDefs = [
+    { number: 'INS-POL-0001', insurer: 'Tawuniya', type: 'comprehensive', holder: 'Ahmed Al-Rashid', plate: 'RUH 4821', premium: 320000, coverage: 12000000, start: '2026-01-01', end: '2026-12-31', status: 'active' },
+    { number: 'INS-POL-0002', insurer: 'Al Rajhi Takaful', type: 'comprehensive', holder: 'Fatima Al-Zahrani', plate: 'JED 9012', premium: 450000, coverage: 20000000, start: '2026-03-01', end: '2027-02-28', status: 'active' },
+    { number: 'INS-POL-0003', insurer: 'Tawuniya', type: 'third_party', holder: 'Omar Al-Ghamdi', plate: 'DMM 3357', premium: 110000, coverage: 1000000, start: '2025-06-01', end: '2026-05-31', status: 'expired' },
+  ]
+  const policyRows = policyDefs.map((p) => {
+    const vehicle = vehicleByPlate.get(p.plate)
+    return row({
+      policyNumber: p.number,
+      insurer: p.insurer,
+      customerId: customerIdByName.get(p.holder) ?? null,
+      holderName: p.holder,
+      vehicleId: vehicle?.id ?? null,
+      vehicleLabel: vehicle?.makeModel ?? p.plate,
+      type: p.type,
+      premiumHalalas: p.premium,
+      coverageHalalas: p.coverage,
+      startDate: p.start,
+      endDate: p.end,
+      status: p.status,
+    })
+  })
+  await tx.insert(s.insurancePolicies).values(policyRows)
+  const policyByNumber = new Map(policyRows.map((p) => [p.policyNumber, p]))
+
+  const p1 = policyByNumber.get('INS-POL-0001')!
+  const p2 = policyByNumber.get('INS-POL-0002')!
+  await tx.insert(s.insuranceClaims).values([
+    row({
+      claimNumber: 'INS-CLM-0001',
+      policyId: p1.id,
+      policyNumber: p1.policyNumber,
+      vehicleId: p1.vehicleId,
+      vehicleLabel: p1.vehicleLabel,
+      /* A claim may relate to a repair: Ahmed's job on the board (A3F8B2C1). */
+      jobCardId: jobIdByCustomer.get('Ahmed Al-Rashid') ?? null,
+      amountClaimedHalalas: 500000,
+      amountApprovedHalalas: null,
+      status: 'submitted',
+      incidentDate: '2026-07-10',
+      description: 'Front bumper and headlamp damage from a car-park collision.',
+      submittedBy: SEED.systemUserId,
+    }),
+    row({
+      claimNumber: 'INS-CLM-0002',
+      policyId: p2.id,
+      policyNumber: p2.policyNumber,
+      vehicleId: p2.vehicleId,
+      vehicleLabel: p2.vehicleLabel,
+      jobCardId: null,
+      amountClaimedHalalas: 1200000,
+      amountApprovedHalalas: 1000000,
+      status: 'approved',
+      incidentDate: '2026-06-15',
+      description: 'Windscreen replacement and door panel respray after hail damage.',
+      submittedBy: SEED.systemUserId,
+      approvedBy: SEED.systemUserId,
+      approvedAt: new Date('2026-06-20T10:00:00Z'),
+    }),
+  ])
+
+  /* Loans. The monthly instalment is the real amortised figure the server
+   * computes at origination (rules/loans.ts), and each contract's repayments are
+   * the schedule that instalment implies — the amounts sum to principal +
+   * interest. A couple of early instalments are marked paid so the outstanding
+   * the Loan report shows is coherent. */
+  const loanDefs = [
+    { number: 'LN-2026-0001', borrower: 'Ahmed Al-Rashid', principal: 6000000, rateBps: 600, term: 12, start: '2026-01-01', paid: 2 },
+    { number: 'LN-2026-0002', borrower: 'Omar Al-Ghamdi', principal: 12000000, rateBps: 720, term: 24, start: '2026-02-01', paid: 3 },
+  ]
+  for (const l of loanDefs) {
+    const instalment = amortisedInstalmentHalalas(l.principal, l.rateBps, l.term)
+    const contract = row({
+      contractNumber: l.number,
+      customerId: customerIdByName.get(l.borrower) ?? null,
+      borrowerName: l.borrower,
+      principalHalalas: l.principal,
+      rateBps: l.rateBps,
+      termMonths: l.term,
+      startDate: l.start,
+      status: 'active',
+      monthlyInstalmentHalalas: instalment,
+    })
+    await tx.insert(s.loanContracts).values(contract)
+
+    const plan = buildRepaymentPlan(l.principal, l.rateBps, l.term, instalment)
+    await tx.insert(s.loanRepayments).values(
+      plan.map((entry) => {
+        const isPaid = entry.sequence <= l.paid
+        const dueDate = addMonths(l.start, entry.sequence)
+        return row({
+          loanContractId: contract.id,
+          contractNumber: l.number,
+          sequence: entry.sequence,
+          dueDate,
+          amountDueHalalas: entry.amountDueHalalas,
+          amountPaidHalalas: isPaid ? entry.amountDueHalalas : 0,
+          paidDate: isPaid ? dueDate : null,
+          status: isPaid ? 'paid' : 'due',
+        })
+      }),
+    )
+  }
 
   await tx.insert(s.aiAgents).values(
     T.AI_AGENTS.map((a) =>
