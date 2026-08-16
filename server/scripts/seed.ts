@@ -20,6 +20,8 @@ import {
   amortisedInstalmentHalalas,
   buildRepaymentPlan,
   payrollLineNetHalalas,
+  purchaseOrderTotals,
+  requisitionEstimatedTotalHalalas,
   sumPayrollLines,
 } from '@salis/contract/rules'
 import * as T from '../../app/src/data/generated/tables'
@@ -123,6 +125,15 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   payrollLines: 5,
   timesheets: 3,
   leaveRequests: 3,
+  /** Procurement (F-022) — no design fixture; the procurement server did not
+   *  exist in the prototype. The golden path made concrete: two suppliers, one
+   *  approved (now `ordered`) requisition, and the one purchase order raised from
+   *  it — whose partial receipt leaves it in `receiving`. Lines are served under
+   *  the `/lines` sub-routes, not as their own collections, so they are not
+   *  counted here. */
+  suppliers: 2,
+  requisitions: 1,
+  purchaseOrders: 1,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
@@ -1164,6 +1175,94 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         state: d.state,
       }),
     ),
+  )
+
+  /* ------------------------------------------------------------ procurement (F-022)
+   * The golden path made concrete: a supplier directory, an approved
+   * requisition, the purchase order raised from it, and a partial receipt
+   * against one of its lines. No design bundle fixture carries any of these —
+   * the procurement server did not exist in the prototype — so every row here is
+   * a declared coherence extra (SEED_COHERENCE_EXTRAS), served after the (empty)
+   * fixture like the branch directory. Coherent, not merely present: the PO
+   * references a real supplier and the approved requisition, its total is the
+   * server's subtotal + VAT of its lines, and the requisition it came from is
+   * marked `ordered`. */
+  const supplierRows = [
+    row({
+      code: 'SUP-0001',
+      name: 'Al Jazira Auto Parts',
+      nameAr: 'الجزيرة لقطع الغيار',
+      contactName: 'Faisal Al-Harbi',
+      contactPhone: '+966 11 234 5678',
+      contactEmail: 'sales@aljazira-parts.sa',
+      status: 'active',
+    }),
+    row({
+      code: 'SUP-0002',
+      name: 'Gulf Spare Co.',
+      nameAr: 'شركة الخليج لقطع الغيار',
+      contactName: 'Noura Al-Qahtani',
+      contactPhone: '+966 13 876 5432',
+      contactEmail: 'orders@gulfspare.sa',
+      status: 'active',
+    }),
+  ]
+  await tx.insert(s.suppliers).values(supplierRows)
+  const aljazira = supplierRows[0]!
+
+  /* The requisition and the lines it carries. Estimated unit prices are the
+   * budget figures at request time; the PO sets the agreed price. */
+  const reqLineDefs = [
+    { partSku: 'BP-FR-220', description: 'Brake Pads (Front) — genuine', qty: 40, estUnitPriceHalalas: 8500 },
+    { partSku: 'OF-TY-118', description: 'Oil Filter (Toyota)', qty: 60, estUnitPriceHalalas: 4500 },
+  ]
+  const requisition = row({
+    code: 'REQ-0001',
+    requesterName: 'Storekeeper',
+    department: 'Workshop',
+    priority: 'high',
+    /* Ordered, because the purchase order below was raised from it. */
+    status: 'ordered',
+    neededBy: '2026-08-25',
+    estimatedTotalHalalas: requisitionEstimatedTotalHalalas(reqLineDefs),
+    notes: 'Front brake pads below reorder; routine oil-filter top-up.',
+    submittedBy: SEED.systemUserId,
+    approvedBy: SEED.systemUserId,
+    approvedAt: new Date('2026-08-12T09:00:00Z'),
+  })
+  await tx.insert(s.requisitions).values(requisition)
+  await tx.insert(s.requisitionLines).values(
+    reqLineDefs.map((line, index) => row({ requisitionId: requisition.id, sort: index, ...line })),
+  )
+
+  /* The purchase order raised from the approved requisition, approved, and part
+   * received: the pads have arrived in full, the filters not yet — a partial
+   * receipt, so the order sits in `receiving`. The total is the server's
+   * subtotal + VAT of the lines. */
+  const poLineDefs = [
+    { partSku: 'BP-FR-220', description: 'Brake Pads (Front) — genuine', qty: 40, unitPriceHalalas: 8500, receivedQty: 40 },
+    { partSku: 'OF-TY-118', description: 'Oil Filter (Toyota)', qty: 60, unitPriceHalalas: 4200, receivedQty: 0 },
+  ]
+  const poTotals = purchaseOrderTotals(poLineDefs)
+  const purchaseOrder = row({
+    code: 'PO-0001',
+    supplierId: aljazira.id,
+    supplierName: aljazira.name,
+    requisitionId: requisition.id,
+    status: 'receiving',
+    subtotalHalalas: poTotals.subtotalHalalas,
+    taxHalalas: poTotals.taxHalalas,
+    totalHalalas: poTotals.totalHalalas,
+    notes: 'Raised from REQ-0001.',
+    orderedAt: new Date('2026-08-12T10:00:00Z'),
+    expectedAt: new Date('2026-08-20T00:00:00Z'),
+    submittedBy: SEED.systemUserId,
+    approvedBy: SEED.systemUserId,
+    approvedAt: new Date('2026-08-12T11:00:00Z'),
+  })
+  await tx.insert(s.purchaseOrders).values(purchaseOrder)
+  await tx.insert(s.purchaseOrderLines).values(
+    poLineDefs.map((line, index) => row({ purchaseOrderId: purchaseOrder.id, sort: index, ...line })),
   )
 }
 

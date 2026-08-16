@@ -25,6 +25,7 @@ export type AuditAction =
   | 'issue'
   | 'pay'
   | 'movement'
+  | 'receive'
   | 'reserve'
   | 'release'
   | 'command'

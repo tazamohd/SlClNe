@@ -39,13 +39,15 @@ import {
   payrollRunUpdate,
   savedReportCreate,
   savedReportUpdate,
+  supplierCreate,
+  supplierUpdate,
   timesheetCreate,
   timesheetUpdate,
   vehicleCreate,
   vehicleUpdate,
 } from '@salis/contract'
 import { checkBayFree, payrollLineNetHalalas } from '@salis/contract/rules'
-import { appointments, employees, payrollRuns } from './db/schema'
+import { appointments, employees, payrollRuns, suppliers } from './db/schema'
 import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
 import type { Principal, Tx } from './db/tenant'
 
@@ -294,6 +296,30 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       return value
     },
   },
+
+  /* Suppliers (F-022). A tenant-owned vendor directory, writable through the
+   * generic router — RBAC (`procurement:c/e/d`), tenant RLS, audit and
+   * optimistic concurrency all come from it. The server assigns `SUP-0001`
+   * within the tenant when a code is not supplied, so two suppliers never
+   * collide on the unique `(org_id, code)` index. */
+  suppliers: {
+    create: supplierCreate,
+    update: supplierUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing && !value.code) {
+        value.code = await nextSupplierCode(ctx.tx)
+      }
+      return value
+    },
+  },
+}
+
+/** The next `SUP-0001` within the tenant. Counted, not a placeholder, so two
+ *  suppliers never collide on the unique `(org_id, code)` index. */
+async function nextSupplierCode(tx: Tx): Promise<string> {
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(suppliers)
+  return `SUP-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
 }
 
 /** The next `EMP-0001` within the tenant. Counted, not a placeholder, so two

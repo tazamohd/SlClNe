@@ -340,16 +340,19 @@ describe('segregation of duties over the audit trail (F-004)', () => {
   it('reports honestly which pairs it enforces and which it cannot', () => {
     const status = pairStatus()
     expect(status.enforced.sort()).toEqual([
+      // Procurement joined once its routes began writing audit rows (F-022): the
+      // raise writes a `create` and the approval an `approve` on
+      // `purchase_order`, so the pair is observable in the trail.
       'Issue stock + Adjust stock count',
       'Perform repair + Pass quality check',
+      'Raise purchase order + Approve purchase order',
     ])
-    // The other four have no audit signature because no route performs them
-    // yet, and each says why rather than being quietly absent.
+    // The rest have no audit signature because no route performs one side yet,
+    // and each says why rather than being quietly absent.
     expect(status.unenforced.map((entry) => entry.pair).sort()).toEqual([
       'Create employee + Approve payroll run',
       'Create supplier + Approve supplier payment',
       'Post journal entry + Approve journal entry',
-      'Raise purchase order + Approve purchase order',
     ])
     for (const entry of status.unenforced) expect(entry.why.length).toBeGreaterThan(10)
   })

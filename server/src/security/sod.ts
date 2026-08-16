@@ -100,15 +100,30 @@ const SIGNATURES: readonly Signature[] = [
      * a thief hides is hidden by adjusting *down*. */
     when: (fact) => movementType(fact) === 'adjust' || movementType(fact) === 'adjust_down',
   },
+
+  /* Procurement (F-022). Raising a purchase order writes a `create` on
+   * `purchase_order`; approving it writes an `approve`. The submitter column is
+   * the primary guard (the raiser may not approve — `requireDifferentApprover`),
+   * and these signatures make the same pair observable in the audit trail, so
+   * the history endpoint flags a purchase order whose raiser also approved it. */
+  {
+    activity: 'Raise purchase order',
+    entity: 'purchase_order',
+    action: 'create',
+  },
+  {
+    activity: 'Approve purchase order',
+    entity: 'purchase_order',
+    action: 'approve',
+  },
 ]
 
 /** Activities the table names but the server cannot yet observe, with the
  *  reason. Reported rather than silently absent — a control nobody can see is
  *  not a control. */
 export const UNOBSERVABLE: Readonly<Record<string, string>> = {
-  'Raise purchase order': 'no purchase-order route writes an audit row yet',
-  'Approve purchase order': 'no purchase-order approval route exists yet',
-  'Create supplier': 'suppliers are not a server-side entity yet',
+  'Create supplier':
+    'supplier rows are created through the generic collection route (F-022), but the counterpart "Approve supplier payment" has no route, so wiring one half would enforce nothing',
   'Approve supplier payment': 'no supplier-payment approval route exists yet',
   'Post journal entry': 'journal entries are created through the generic collection route, which records `create` on `journal_entry`; the *posting* step has no route yet',
   'Approve journal entry': 'no journal approval route exists yet',

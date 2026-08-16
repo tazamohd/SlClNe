@@ -58,6 +58,12 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   payrollLines: [],
   timesheets: [],
   leaveRequests: [],
+  /** No design fixture for any procurement table (F-022) — the procurement
+   *  server did not exist in the prototype. The collections serve the seeded
+   *  coherence rows (SEED_COHERENCE_EXTRAS). */
+  suppliers: [],
+  requisitions: [],
+  purchaseOrders: [],
   receipts: T.RECEIPTS,
   departments: T.DEPARTMENTS,
   aiAgents: T.AI_AGENTS,

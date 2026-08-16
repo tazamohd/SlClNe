@@ -1331,6 +1331,95 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       state: row.state ?? '',
     }),
   }),
+
+  /* --------------------------------------------------------- procurement (F-022)
+   * Suppliers are a writable directory; requisitions and purchase orders are
+   * read-only through the generic router — their line items, derived money and
+   * lifecycle (submit / approve / raise / receive) live in the bespoke
+   * `routes/procurement.ts`, like estimates and invoices. All three gate on the
+   * `procurement` module and are RLS-scoped, so another tenant's rows 404. */
+  define({
+    key: 'suppliers',
+    path: 'procurement/suppliers',
+    table: s.suppliers,
+    module: 'procurement',
+    entity: 'supplier',
+    search: ['code', 'name', 'nameAr', 'contactName'],
+    sortable: ['code', 'name', 'status', 'createdAt'],
+    filterable: ['status'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      name: row.name,
+      nameAr: row.nameAr ?? null,
+      contact: row.contactName ?? null,
+      contactPhone: row.contactPhone ?? null,
+      contactEmail: row.contactEmail ?? null,
+      status: row.status,
+    }),
+  }),
+
+  define({
+    key: 'requisitions',
+    path: 'procurement/requisitions',
+    table: s.requisitions,
+    module: 'procurement',
+    entity: 'requisition',
+    search: ['code', 'requesterName', 'department'],
+    sortable: ['code', 'requesterName', 'estimatedTotalHalalas', 'status', 'neededBy', 'createdAt'],
+    filterable: ['status', 'priority'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'code',
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      requester: row.requesterName,
+      department: row.department ?? null,
+      priority: row.priority,
+      status: row.status,
+      neededBy: row.neededBy ? dateUS(row.neededBy) : null,
+      amount: sarString(row.estimatedTotalHalalas),
+      estimatedTotalHalalas: count(row.estimatedTotalHalalas),
+      notes: row.notes ?? null,
+      submittedBy: row.submittedBy ?? null,
+      approvedBy: row.approvedBy ?? null,
+    }),
+  }),
+
+  define({
+    key: 'purchaseOrders',
+    path: 'procurement/purchase-orders',
+    table: s.purchaseOrders,
+    module: 'procurement',
+    entity: 'purchase_order',
+    search: ['code', 'supplierName'],
+    sortable: ['code', 'supplierName', 'totalHalalas', 'status', 'expectedAt', 'createdAt'],
+    filterable: ['status', 'supplierId', 'requisitionId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    codeColumn: 'code',
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      supplierId: row.supplierId ?? null,
+      supplierName: row.supplierName,
+      requisitionId: row.requisitionId ?? null,
+      status: row.status,
+      amount: sarString(row.totalHalalas),
+      subtotalHalalas: count(row.subtotalHalalas),
+      taxHalalas: count(row.taxHalalas),
+      totalHalalas: count(row.totalHalalas),
+      orderedAt: row.orderedAt ? new Date(row.orderedAt as Date).toISOString() : null,
+      expectedAt: row.expectedAt ? new Date(row.expectedAt as Date).toISOString() : null,
+      submittedBy: row.submittedBy ?? null,
+      approvedBy: row.approvedBy ?? null,
+    }),
+  }),
 ]
 
 const BY_KEY = new Map(COLLECTIONS.map((c) => [c.key, c]))
