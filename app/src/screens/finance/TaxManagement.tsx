@@ -255,7 +255,7 @@ function TaxReturnPanel({ from, to }: { from: string; to: string }) {
         <Card className="flex flex-col gap-1 rounded-lg p-4">
           <p className="text-[11px] font-medium text-muted">{t('Input VAT')}</p>
           <p className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-heading">
-            <Icon name="MinusCircle" size={15} className="text-salis-orange" />
+            <Icon name="Info" size={15} className="text-salis-orange" />
             {t('Not modelled')}
           </p>
           <p className="text-[11px] text-muted">

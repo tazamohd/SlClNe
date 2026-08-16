@@ -311,7 +311,7 @@ function StatementSection({
               disabled={busy}
               onClick={() => match.mutate({ lineId, receiptId: picked[lineId] || undefined })}
             >
-              <Icon name="Link2" size={14} />
+              <Icon name="ArrowLeftRight" size={14} />
               {busy ? t('Matching…') : t('Reconcile')}
             </Button>
           </div>
@@ -365,7 +365,7 @@ function StatementSection({
                     disabled={match.isPending}
                     onClick={() => match.mutate({ lineId: String(l._id ?? ''), receiptId: undefined })}
                   >
-                    <Icon name="Link2" size={14} />
+                    <Icon name="ArrowLeftRight" size={14} />
                     {t('Reconcile')}
                   </Button>
                 </MobileCardRow>

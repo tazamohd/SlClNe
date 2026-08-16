@@ -1048,7 +1048,7 @@ function SavedReportsPanel({
                 </div>
                 <div className="flex flex-shrink-0 items-center gap-2">
                   <Button variant="subtle" size="sm" onClick={() => onLoad(row)}>
-                    <Icon name="FolderOpen" size={14} />
+                    <Icon name="FileText" size={14} />
                     {t('Load')}
                   </Button>
                   <Button

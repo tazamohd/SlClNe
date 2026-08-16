@@ -134,7 +134,7 @@ export function ServerTotalsNote({ endpoint }: { endpoint: string }) {
   return (
     <div className="flex items-start gap-3 rounded-lg border border-border bg-[rgba(10,94,215,.05)] px-4 py-3">
       <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
-        <Icon name="Sigma" size={16} />
+        <Icon name="Calculator" size={16} />
       </span>
       <div className="min-w-0 text-[13px]">
         <p className="font-semibold text-heading">{t('Totals computed by the server')}</p>
