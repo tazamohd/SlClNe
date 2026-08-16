@@ -15,6 +15,7 @@ import { loggerOptions } from './logger'
 import { registerCollectionRoutes } from './routes/collections'
 import { registerCrmRoutes } from './routes/crm'
 import { registerEstimateRoutes } from './routes/estimates'
+import { registerFinanceReportRoutes } from './routes/finance-reports'
 import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
 import { registerInventoryRoutes } from './routes/inventory'
@@ -257,6 +258,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerAuth(api, auth)
       registerCollectionRoutes(api, { db: deps.db })
       registerInvoiceRoutes(api, { db: deps.db })
+      registerFinanceReportRoutes(api, { db: deps.db, env: deps.env })
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
       registerInventoryRoutes(api, { db: deps.db })

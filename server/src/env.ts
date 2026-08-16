@@ -56,6 +56,13 @@ const schema = z.object({
    *  authenticated API's budget. A contact form does not get 300 requests a
    *  minute from one address without being abuse. */
   PUBLIC_LEAD_RATE_LIMIT: z.coerce.number().int().min(1).default(5),
+
+  /** The ZATCA VAT rate, in basis points, as the tax-return endpoint reports it
+   *  (§A37). Configuration, not a literal in a handler: a Saudi rate change is a
+   *  deployment setting, and the figure the return endpoint echoes always names
+   *  the rate it was computed under. Defaults to the contract's standard rate
+   *  (1500 bps = 15%), the same constant `computeInvoiceTotals` charges at. */
+  VAT_RATE_BPS: z.coerce.number().int().min(0).max(10_000).default(1500),
 })
 
 export type Env = z.infer<typeof schema> & { corsOrigins: string[] }
