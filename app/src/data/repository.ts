@@ -797,6 +797,56 @@ export function createFinanceReports(baseUrl: string): FinanceReportsApi {
   }
 }
 
+/* --------------------------------------------------- workshop analytics */
+
+/** The server-computed workshop analytics `GET /reports/workshop` returns
+ *  (F-029). Every figure is summed in SQL over the whole tenant scope — job
+ *  counts, the QC pass rate from the audit trail, bay time, technician hours and
+ *  the diagnostic-report total (VAT at the configured rate, §5b). The client
+ *  displays; it never re-derives one of these from a page of rows. */
+export interface WorkshopReport {
+  jobs: {
+    total: number
+    byStatus: { status: string; count: number }[]
+    byStage: { stage: string; count: number }[]
+    serviceMix: { service: string; count: number }[]
+  }
+  qc: {
+    decisions: number
+    passes: number
+    reworks: number
+    /** Null when nothing has been through QC — undefined, not zero. */
+    passRatePct: number | null
+  }
+  bay: { appointments: number; totalBayMinutes: number; averageBayMinutes: number }
+  technicians: {
+    technicianId: string
+    name: string
+    appointments: number
+    bayMinutes: number
+    hours: number
+  }[]
+  diagnostics: {
+    rateBps: number
+    subtotalHalalas: number
+    taxHalalas: number
+    totalHalalas: number
+  }
+}
+
+export interface WorkshopReportsApi {
+  workshop(): Promise<WorkshopReport>
+}
+
+export function createWorkshopReports(baseUrl: string): WorkshopReportsApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async workshop() {
+      return request<WorkshopReport>(`${root}/reports/workshop`)
+    },
+  }
+}
+
 /* ------------------------------------------------------------- the choice */
 
 /** `VITE_API_URL` selects the backend. Unset — which is every build until the
@@ -834,6 +884,14 @@ export const history: HistoryApi | null = API_URL ? createHistoryApi(API_URL) : 
  *  fixtures: a per-caller approval standing is a server computation, and a mock
  *  that invented one would misinform the gate it drives. */
 export const approvals: ApprovalsApi | null = API_URL ? createApprovalsApi(API_URL) : null
+
+/** The server-computed workshop analytics (F-029), live only against the API.
+ *  Null on the fixtures: a QC pass rate or an average bay time is a server
+ *  computation over the whole tenant scope, and a mock that averaged the pages
+ *  it holds would be the §A10-style fabrication this seam refuses. */
+export const workshopReports: WorkshopReportsApi | null = API_URL
+  ? createWorkshopReports(API_URL)
+  : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */
