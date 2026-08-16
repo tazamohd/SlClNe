@@ -8,7 +8,9 @@ import { Icon } from '@/components/ui/Icon'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
 import { TASK_TINT } from './crm-badges'
+import { CrmTaskFormModal } from './CrmTaskFormModal'
 
 /** CRM Calendar — `CRMCalendar.dc.html` and `.Mobile.dc.html`.
  *
@@ -20,10 +22,12 @@ import { TASK_TINT } from './crm-badges'
  *  This is the CRM-task view, distinct from any `appointments` calendar agent 08
  *  builds — a different collection, a different surface, in its own file.
  *
- *  The prototype's "New Task" button is not rendered: `crmTasks` is read-only
- *  server-side (no `writable: true`, no create route), so a create control would
- *  not do what it says. The header links to the task list instead — a real
- *  destination — and the gap is reported. */
+ *  **New Task (F-027).** `crmTasks` is now writable, so the design's "New Task"
+ *  control is real: it opens `CrmTaskFormModal`, which creates the task through
+ *  `useCreate('crmTasks')` with the selected day pre-filled as the due date, so
+ *  the task lands on the cell the user was looking at. Gated on `crm:c`. Against
+ *  the fixtures it refuses honestly with the "set VITE_API_URL" state. The header
+ *  still links to the full task list too. */
 type Task = RowOf<'crmTasks'> & { _id?: string }
 
 const DAY_KEYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
@@ -78,7 +82,9 @@ const toneOf = (task: Task) => TASK_TINT[(task.type ?? '').toLowerCase()] ?? 'sl
 
 export function CRMCalendar() {
   const { t, rtl } = usePreferences()
+  const { can } = useSession()
   const navigate = useNavigate()
+  const [creating, setCreating] = useState(false)
   const tasks = useCollection('crmTasks')
 
   const rows = (tasks.data ?? []) as readonly Task[]
@@ -169,6 +175,16 @@ export function CRMCalendar() {
 
   const monthLabel = `${t(MONTHS[view.m])} ${view.y}`
   const hasAnyTasks = byDay.size > 0
+  const canCreate = can('crm', 'c')
+
+  // The day a new task defaults to: the one in view (selected, or the first
+  // with tasks). `y-m-d` with a zero-based month → an ISO `YYYY-MM-DD`.
+  const defaultDue = agendaKey
+    ? (() => {
+        const [y, m, d] = agendaKey.split('-').map(Number)
+        return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+      })()
+    : ''
 
   return (
     <div className="flex flex-col gap-6">
@@ -177,10 +193,18 @@ export function CRMCalendar() {
         title={t('CRM Calendar')}
         subtitle={t('CRM & Marketing')}
         actions={
-          <Button variant="subtle" onClick={() => navigate('/crmtasks')}>
-            <Icon name="ListChecks" size={16} />
-            {t('All Tasks')}
-          </Button>
+          <>
+            {canCreate ? (
+              <Button onClick={() => setCreating(true)}>
+                <Icon name="Plus" size={16} />
+                {t('New Task')}
+              </Button>
+            ) : null}
+            <Button variant="subtle" onClick={() => navigate('/crmtasks')}>
+              <Icon name="ListChecks" size={16} />
+              {t('All Tasks')}
+            </Button>
+          </>
         }
       />
 
@@ -326,6 +350,10 @@ export function CRMCalendar() {
           </div>
         </div>
       )}
+
+      {creating ? (
+        <CrmTaskFormModal open onClose={() => setCreating(false)} defaultDueDate={defaultDue} />
+      ) : null}
     </div>
   )
 }
