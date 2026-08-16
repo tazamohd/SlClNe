@@ -352,14 +352,16 @@
     },
     {
       "id": "F-029",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "Workshop approval and diagnostics surfaces exceed what the server exposes",
       "detail": "Agent 08 built nine screens; several need server capabilities that do not exist: no unified GET /approvals (ApprovalInbox operates on estimates alone); estimates present() omits submittedBy and there is no GET /estimates/:id/history or /jobs/:id/history, so the SOD conflict cannot be flagged per row (the F-004 client half); estimates present() omits subtotalHalalas/taxHalalas though the schema has them, so no VAT breakdown; no server-computed diagnostic-report total; no GET /reports/workshop analytics; no OBD device commands or per-device DTC readings; no approval OTP/e-signature persistence and no approvalLines→estimate link.",
       "why": "The screens render real data and defer honestly where the server is silent, but the approvals/diagnostics capabilities are partial until these endpoints exist.",
       "foundBy": "08",
-      "verified": "reported with a GAP: test per capability",
+      "verified": "confirmed on a reset database — 342 server tests, app 697, gates at baseline; each endpoint pinned by a numbers test and a tenant-isolation test",
       "owner": "05",
-      "wave": "W4"
+      "wave": "W4",
+      "status": "fixed",
+      "resolution": "Five endpoints, all server-computed and tenant-scoped: estimate present() exposes subtotal/tax/discount + submittedBy/approvedBy; GET /estimates/:id/history and /jobs/:id/history return the audit trail with SOD activities annotated and conflicts named — closing the F-004 client half, tenant-scoped twice (record resolution under RLS + audit_log RLS) and permission-gated; a unified GET /approvals whose rows carry canApprove/withinCeiling/isSubmitter so the inbox and engine cannot disagree; GET /reports/workshop with QC pass rate, bay time and technician hours summed in SQL, plus the server diagnostic total. OBD device commands and approval OTP ship as adapter-plus-mock (§40) refusing with a 503 external_dependency_unavailable that names the OBD bridge / SMS provider — never faked live; the obd_dtc_readings device↔dtc link is real persisted data (migration 0006). approvalLines→estimate FK deferred as gold-plating (no consumer this tranche). Screen wiring is agent 08s follow-up."
     },
     {
       "id": "F-030",

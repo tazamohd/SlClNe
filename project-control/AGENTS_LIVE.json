@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T10:10:00Z",
+  "asOf": "2026-08-12T10:45:00Z",
   "wave": "W2",
   "waveName": "Product → backend fill",
-  "waveNote": "Tranche 4-C running: the workshop approvals/diagnostics backend (F-029) — expose estimate subtotal/VAT + submittedBy, the estimate/job audit-history read that closes the F-004 client half, a unified approvals queue, server-computed workshop analytics and diagnostic-report totals. The OBD device commands and customer-approval OTP touch external services (OBD bridge, SMS), so they ship as adapter-plus-mock at EXTERNAL_DEPENDENCY, never faked live. Then the greenfield insurance/fleet/loans/HR schema, then the client wiring pass.",
+  "waveNote": "Tranche 4-C landed and verified on a reset database (F-029 closed): estimate VAT breakdown, the audit-history reads that close the F-004 client half, a unified approvals queue, server-computed workshop analytics, and OBD/OTP as honest adapter-plus-mock. Server 312→342, app 697, gates at baseline. The backend fill is now complete for every domain that already had a screen — F-022/25/27/28/29/30 all closed. Two things remain before the product surfaces are whole: the greenfield insurance/fleet/loans/HR schema (their screens do not exist yet either), and a client pass wiring the CRM/finance/workshop CTAs to all the new endpoints.",
   "agents": [
     {
       "id": "03",
@@ -45,7 +45,7 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T10:10:00Z",
       "scope": "Tranche 4-C: F-029 — estimate money fields + submittedBy in present(), GET /estimates/:id/history and /jobs/:id/history (F-004 client half), unified GET /approvals, GET /reports/workshop, a server-computed diagnostic-report total; OBD commands + approval OTP as adapter-plus-mock. Owns the database.",
       "owns": [
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "Tranche 4-B: F-028 finance aggregates — three server-computed endpoints (§A10), bankStatements + savedReports, migration 0005, 312 server tests. Trial balance shows F-008s -SAR 257,050 imbalance rather than hiding it. Completed cleanly (no session-limit death this time). Client repository wired; report screens are agent 12s follow-up."
+      "notes": "Tranche 4-C: F-029 workshop approvals/diagnostics — 5 server-computed endpoints, the F-004 audit-history read, OBD/OTP as adapter-plus-mock at EXTERNAL_DEPENDENCY, migration 0006, 342 server tests. Completed cleanly. This closes the backend fill for the existing screens; greenfield insurance/HR schema and the client wiring pass remain."
     },
     {
       "id": "07",
