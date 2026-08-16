@@ -183,6 +183,82 @@ export interface SavedReportRow extends EntityMeta {
   definition: Record<string, unknown>
 }
 
+/** An insurance policy, as `GET /insurance-policies` presents it (vertical A).
+ *  No design fixture — the financial-products surfaces were mock in the
+ *  prototype — so the shape is declared here, like `BranchRow`. Read-only through
+ *  the collection. Money crosses formatted, with the raw halalas beside it. */
+export interface InsurancePolicyRow extends EntityMeta {
+  policyNumber: string
+  insurer: string
+  type: 'comprehensive' | 'third_party' | 'own_damage'
+  holder: string
+  customerId: string | null
+  vehicleId: string | null
+  vehicleLabel: string
+  premium: string
+  premiumHalalas: number
+  coverage: string
+  coverageHalalas: number
+  start: string
+  end: string
+  status: 'active' | 'expired' | 'cancelled'
+}
+
+/** An insurance claim, as `GET /insurance-claims` presents it (vertical A). No
+ *  design fixture, so declared here. Read-only through the collection; the
+ *  lifecycle (submit/approve/reject/pay) is the bespoke `insuranceClaims` API
+ *  below. `amountApproved` is null until the claim is approved. */
+export interface InsuranceClaimRow extends EntityMeta {
+  claimNumber: string
+  policyId: string | null
+  policyNumber: string
+  vehicleId: string | null
+  vehicleLabel: string
+  jobCardId: string | null
+  amountClaimed: string
+  amountClaimedHalalas: number
+  amountApproved: string | null
+  amountApprovedHalalas: number | null
+  status: 'submitted' | 'under_review' | 'approved' | 'rejected' | 'paid'
+  incidentDate: string
+  description: string
+  submittedBy: string | null
+  approvedBy: string | null
+}
+
+/** An auto-loan contract, as `GET /loan-contracts` presents it (vertical A). No
+ *  design fixture, so declared here. Read-only; the monthly instalment is the
+ *  amortised figure the server computes at origination. */
+export interface LoanContractRow extends EntityMeta {
+  contractNumber: string
+  borrower: string
+  customerId: string | null
+  principal: string
+  principalHalalas: number
+  rateBps: number
+  termMonths: number
+  start: string
+  status: 'active' | 'settled' | 'defaulted' | 'cancelled'
+  monthlyInstalment: string
+  monthlyInstalmentHalalas: number
+}
+
+/** A loan repayment, as `GET /loan-repayments` presents it (vertical A). No
+ *  design fixture, so declared here. Read-only; the schedule's amounts sum to
+ *  principal + interest across the contract. */
+export interface LoanRepaymentRow extends EntityMeta {
+  contractId: string | null
+  contractNumber: string
+  sequence: number
+  dueDate: string
+  amountDue: string
+  amountDueHalalas: number
+  amountPaid: string
+  amountPaidHalalas: number
+  paidDate: string | null
+  status: 'due' | 'paid' | 'overdue'
+}
+
 export interface Repository {
   branches: Collection<BranchRow>
   vehicles: Collection<(typeof T.VEHICLES)[number]>
@@ -208,6 +284,10 @@ export interface Repository {
   expenses: Collection<(typeof T.EXPENSES_DATA)[number]>
   bankStatements: Collection<BankStatementRow>
   savedReports: Collection<SavedReportRow>
+  insurancePolicies: Collection<InsurancePolicyRow>
+  insuranceClaims: Collection<InsuranceClaimRow>
+  loanContracts: Collection<LoanContractRow>
+  loanRepayments: Collection<LoanRepaymentRow>
   receipts: Collection<(typeof T.RECEIPTS)[number]>
   departments: Collection<(typeof T.DEPARTMENTS)[number]>
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
@@ -258,6 +338,10 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   expenses: 'accounting/expenses',
   bankStatements: 'bank-statements',
   savedReports: 'saved-reports',
+  insurancePolicies: 'insurance-policies',
+  insuranceClaims: 'insurance-claims',
+  loanContracts: 'loan-contracts',
+  loanRepayments: 'loan-repayments',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -417,6 +501,13 @@ export const mockRepository: Repository = {
    * rows. Writes to `savedReports` need a server and are refused by the mock. */
   bankStatements: fixture<BankStatementRow>([]),
   savedReports: fixture<SavedReportRow>([]),
+  /* No design fixture for any financial-products table (vertical A) — they were
+   * mock in the prototype. An empty read-only collection is the honest mock; the
+   * live API serves the seeded coherent rows. */
+  insurancePolicies: fixture<InsurancePolicyRow>([]),
+  insuranceClaims: fixture<InsuranceClaimRow>([]),
+  loanContracts: fixture<LoanContractRow>([]),
+  loanRepayments: fixture<LoanRepaymentRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),
@@ -958,6 +1049,111 @@ export function createWorkshopReports(baseUrl: string): WorkshopReportsApi {
   }
 }
 
+/* --------------------------------------------- insurance claim lifecycle */
+
+/** The insurance-claim lifecycle actions (vertical A). Live only: each action
+ *  transitions a claim server-side under the ceiling and segregation-of-duties
+ *  controls, so there is no fixture — a mock that faked an approval would be the
+ *  fake-completion this seam refuses. `submit` records a new claim against a
+ *  policy; `approve` may approve less than was claimed; `reject` needs a reason;
+ *  `pay` settles an approved claim. All return the updated `InsuranceClaimRow`. */
+export interface InsuranceClaimSubmit {
+  policyId: string
+  vehicleId?: string
+  vehicleLabel?: string
+  jobCardId?: string
+  amountClaimedHalalas: number
+  incidentDate: string
+  description: string
+}
+
+export interface InsuranceClaimsApi {
+  submit(input: InsuranceClaimSubmit, options?: MutationOptions): Promise<InsuranceClaimRow>
+  approve(
+    id: string,
+    body?: { approvedAmountHalalas?: number; reason?: string },
+  ): Promise<InsuranceClaimRow>
+  reject(id: string, reason: string): Promise<InsuranceClaimRow>
+  pay(id: string): Promise<InsuranceClaimRow>
+}
+
+export function createInsuranceClaimsApi(baseUrl: string): InsuranceClaimsApi {
+  const root = baseUrl.replace(/\/$/, '')
+  const claim = (id: string) => `${root}/insurance-claims/${encodeURIComponent(id)}`
+  return {
+    async submit(input, options = {}) {
+      return request<InsuranceClaimRow>(`${root}/insurance-claims`, {
+        method: 'POST',
+        body: JSON.stringify(input),
+        idempotencyKey: options.idempotencyKey,
+      })
+    },
+    async approve(id, body = {}) {
+      return request<InsuranceClaimRow>(`${claim(id)}/approve`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+    },
+    async reject(id, reason) {
+      return request<InsuranceClaimRow>(`${claim(id)}/reject`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      })
+    },
+    async pay(id) {
+      return request<InsuranceClaimRow>(`${claim(id)}/pay`, { method: 'POST', body: '{}' })
+    },
+  }
+}
+
+/* ------------------------------------------ financial-product aggregates */
+
+/** The insurance-claim totals `GET /insurance/claims/summary` computes — what
+ *  the Insurance report displays. Every figure is integer halalas the server
+ *  summed over the whole tenant scope, never a page the client added up. */
+export interface InsuranceClaimsSummary {
+  count: number
+  claimedHalalas: number
+  approvedHalalas: number
+  paidHalalas: number
+  byStatus: { status: string; count: number; claimedHalalas: number; approvedHalalas: number }[]
+}
+
+/** The loan-portfolio totals `GET /loans/summary` computes — what the Loan
+ *  report displays. `outstandingHalalas` is the unpaid portion of every
+ *  scheduled repayment, summed in SQL. */
+export interface LoansSummary {
+  contractCount: number
+  principalHalalas: number
+  monthlyInstalmentHalalas: number
+  scheduledHalalas: number
+  collectedHalalas: number
+  outstandingHalalas: number
+  overdueHalalas: number
+  byStatus: { status: string; count: number; principalHalalas: number }[]
+}
+
+/** The financial-product aggregates the server computes and the client only
+ *  displays (§A10). Not a `Collection` — an aggregate has no row identity — and
+ *  there is no mock: a cross-record total is a server computation the client
+ *  must not fabricate. */
+export interface ProductReportsApi {
+  insuranceClaimsSummary(): Promise<InsuranceClaimsSummary>
+  loansSummary(): Promise<LoansSummary>
+}
+
+export function createProductReports(baseUrl: string): ProductReportsApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async insuranceClaimsSummary() {
+      return request<InsuranceClaimsSummary>(`${root}/insurance/claims/summary`)
+    },
+    async loansSummary() {
+      return request<LoansSummary>(`${root}/loans/summary`)
+    },
+  }
+}
+
 /* ------------------------------------------------------------- the choice */
 
 /** `VITE_API_URL` selects the backend. Unset — which is every build until the
@@ -1013,6 +1209,22 @@ export const diagnostics: DiagnosticsApi | null = API_URL ? createDiagnosticsApi
 /** The customer-approval OTP e-signature (F-029), live only. SMS is an external
  *  dependency; the request refuses with a 503 until a provider is configured. */
 export const estimateOtp: EstimateOtpApi | null = API_URL ? createEstimateOtpApi(API_URL) : null
+
+/** The insurance-claim lifecycle actions (vertical A), live only. Null on the
+ *  fixtures: a claim approval is a server transition under the ceiling and SOD
+ *  controls, and a mock that faked one would be the fake-completion this seam
+ *  refuses. */
+export const insuranceClaimsApi: InsuranceClaimsApi | null = API_URL
+  ? createInsuranceClaimsApi(API_URL)
+  : null
+
+/** The financial-product aggregates (vertical A), live only. Null on the
+ *  fixtures: a claim total or a loan-outstanding figure is a server computation
+ *  over the whole tenant scope, and a mock that summed the pages it holds would
+ *  be the §A10-style fabrication this seam refuses. */
+export const productReports: ProductReportsApi | null = API_URL
+  ? createProductReports(API_URL)
+  : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */
