@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T09:10:00Z",
+  "asOf": "2026-08-12T09:25:00Z",
   "wave": "W2",
   "waveName": "Product → backend fill",
-  "waveNote": "Tranche 4-A landed and verified on a reset database: the CRM and fleet data is writable, lead capture (public + conversion) and feedback exist, and the appointment↔technician seed is reconciled (F-027, F-025, F-030 closed). Server 274→292, app 697, gates at baseline. Agent 05 built it; a session limit stopped it at the final verify, so the orchestrator ran the verification and committed. Next backend slices: 4-B (F-028 finance aggregates + report-source collections, F-029 workshop approvals/diagnostics endpoints), then 4-C (F-022 procurement collections) and the greenfield insurance/fleet/loans/HR schema. Then a client pass wires the CRM/finance/workshop CTAs to these endpoints.",
+  "waveNote": "Tranche 4-B running: the finance backend slice (F-028) — server-computed aggregate endpoints (invoice summary, VAT return, trial balance) so the accounting reports show real totals instead of honest gaps, plus bankStatements (for BankReconciliation) and savedReports (for CustomReports). insuranceClaims/loanContracts are held for the greenfield insurance/loans schema rather than stubbed here. F-029 (workshop endpoints) is 4-C.",
   "agents": [
     {
       "id": "03",
@@ -45,9 +45,9 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "done",
-      "startedAt": "2026-08-12T08:40:00Z",
-      "scope": "Tranche 4-A: F-027 (leads/opportunities/crmTasks/fleets writable + lead conversion + feedback collection & endpoint + fleet contract fields + fleetId join), F-025 (public POST /public/leads, rate-limited and unauthenticated), F-030 (appointment↔technician seed reconciliation). Owns the database this tranche.",
+      "state": "running",
+      "startedAt": "2026-08-12T09:25:00Z",
+      "scope": "Tranche 4-B: F-028 finance aggregates — GET /invoices/summary, /accounting/tax/return, a trial-balance endpoint (all server-computed, the client only displays), plus bankStatements and savedReports collections. Owns the database this tranche.",
       "owns": [
         "server/**",
         "packages/contract/**",
