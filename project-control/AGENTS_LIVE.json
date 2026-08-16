@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T15:05:00Z",
+  "asOf": "2026-08-12T15:40:00Z",
   "wave": "W2",
   "waveName": "Procurement backend (F-022)",
-  "waveNote": "Closing the last server-side gap: the procurement backend (F-022). Agent 05 builds requisitions, purchase orders and receiving — with the approval ceiling on a PO and the receiving-quantity-not-over-ordered invariant enforced and tested — so agent 11s honest-gap procurement screens can wire up next. Sequential (shared server files). After this: the ~175 feature-map screens, cross-cutting hardening, and certification.",
+  "waveNote": "Procurement backend (F-022) landed and verified — suppliers, requisitions, purchase orders with the ceiling and over-receipt invariants proven over HTTP (server 389→406). That closes the last server-side domain gap. Agent 11 now wires its honest-gap procurement screens (requisitions, PO raise/approve, receiving) to the new endpoints. After procurement: the ~175 feature-map screens, cross-cutting hardening (mobile/tablet/RTL/a11y/security/perf), and certification.",
   "agents": [
     {
       "id": "03",
@@ -45,7 +45,7 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T15:05:00Z",
       "scope": "Procurement backend (F-022): requisitions (+lines, submit/approve), purchase orders (+lines, raise-from-requisition, approve within ceiling, SOD), receiving against PO lines (qty ≤ ordered, over-receipt needs approval), suppliers if absent. Migration 0010, seed, RLS, client wiring. Owns the DB.",
       "owns": [
@@ -57,7 +57,7 @@
       "blocks": [
         "every capability's Definition of Done — real data, persistence and audit are clauses in it"
       ],
-      "notes": "Insurance/loans + HR backends: 4 domains, migrations 0007-0009, 389 server tests. Claim lifecycle with ceiling+SOD, integer-safe loan amortisation, payroll-posting invariant, salary redaction proven at the serialization boundary. Gated on accounting (insurance/loans) and hr."
+      "notes": "Procurement backend (F-022): suppliers + requisitions + purchase orders, migration 0010, 406 server tests. PO-over-ceiling and over-receipt invariants proven over HTTP; SOD raise/approve made audit-observable; receiving idempotent, stock-movement deferred honestly."
     },
     {
       "id": "07",
@@ -158,15 +158,15 @@
       "id": "11",
       "name": "Procurement",
       "team": "prd",
-      "state": "done",
-      "startedAt": "2026-08-12T03:40:00Z",
-      "scope": "Requisition lifecycle, purchase order raise/approve within the ceiling, receiving against the order, and the PurchaseOrder designed screen — reporting any server gap honestly instead of faking it client-side",
+      "state": "running",
+      "startedAt": "2026-08-12T15:40:00Z",
+      "scope": "Wire the procurement screens to the F-022 backend: requisitions (create with lines, submit, approve/reject), purchase orders (raise from requisition, approve within ceiling, statuses), receiving (qty ≤ ordered, over-receipt approval), suppliers directory. Live + fixture-gap paths.",
       "owns": [
         "app/src/screens/network/Procurement.tsx",
         "app/src/screens/domains/procurement.ts"
       ],
       "blocks": [],
-      "notes": "Requisition lifecycle and the PurchaseOrder screen, bounded honestly to what the server supports — which has no procurement collections yet (F-022), surfaced as absent-capability states with GAP: tests rather than faked."
+      "notes": "Client screens only; consumes the procurement collections + procurement action API."
     },
     {
       "id": "16",

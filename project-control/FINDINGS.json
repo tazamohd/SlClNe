@@ -267,14 +267,16 @@
     },
     {
       "id": "F-022",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "No server collections for procurement — requisitions and purchase orders",
       "detail": "server/src/registry.ts has no requisitions or purchase-orders collection, and no bespoke procurement router. Agent 11 built the requisition lifecycle and PurchaseOrder screen bounded to what the server supports and surfaced the rest as honest absent-capability states with GAP: tests. A requisition or PO cannot actually be persisted end to end yet.",
       "why": "The procurement golden path (requisition → PO → receiving) cannot complete server-side. The UI is honest about it, but the capability is not real until the collections and approval-ceiling enforcement exist.",
       "foundBy": "11",
-      "verified": "reported by agent 11 with GAP: tests naming each missing endpoint",
+      "verified": "confirmed on a reset DB — 406 server tests, the ceiling and over-receipt invariants proven over HTTP",
       "owner": "05",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Procurement backend built (migration 0010): a suppliers master, requisitions (+lines, submit/approve/reject) and purchase orders (+lines, raise-from-requisition, approve within ceiling with SOD, receive). The PO total is server-computed and cannot exceed the approvers ceiling (requireApproval); over-receipt is refused unless approval-gated; receiving is idempotent. Stock movement on receipt is deferred deliberately (a PO line part reference is optional free text). Client repository wired; agent 11 wires the screens next."
     },
     {
       "id": "F-023",
