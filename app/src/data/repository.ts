@@ -338,6 +338,88 @@ export interface LeaveRequestRow extends EntityMeta {
   approverId: string | null
 }
 
+/** A supplier, as `GET /procurement/suppliers` presents it (F-022). No design
+ *  fixture — the parts network carried only free-text supplier names — so the
+ *  shape is declared here, like `BranchRow`. Writable through the collection;
+ *  gated on `procurement`. */
+export interface SupplierRow extends EntityMeta {
+  id: string
+  code: string
+  name: string
+  nameAr: string | null
+  contact: string | null
+  contactPhone: string | null
+  contactEmail: string | null
+  status: 'active' | 'inactive'
+}
+
+/** A requisition, as `GET /procurement/requisitions` presents it (F-022). No
+ *  design fixture, so declared here. Read-only through the collection; the
+ *  lifecycle (create/submit/approve/reject) is the bespoke `procurement` API
+ *  below. The estimated total is summed from the lines by the server. */
+export interface RequisitionRow extends EntityMeta {
+  id: string
+  code: string
+  requester: string
+  department: string | null
+  priority: 'low' | 'normal' | 'high' | 'urgent'
+  status: 'draft' | 'submitted' | 'approved' | 'rejected' | 'ordered'
+  neededBy: string | null
+  amount: string
+  estimatedTotalHalalas: number
+  notes: string | null
+  submittedBy: string | null
+  approvedBy: string | null
+}
+
+/** A purchase order, as `GET /procurement/purchase-orders` presents it (F-022).
+ *  No design fixture, so declared here. Read-only through the collection; the
+ *  lifecycle (raise/approve/receive) is the bespoke `procurement` API below. The
+ *  total is the server's subtotal + VAT of the lines, never client-computed. */
+export interface PurchaseOrderRow extends EntityMeta {
+  id: string
+  code: string
+  supplierId: string | null
+  supplierName: string
+  requisitionId: string | null
+  status: 'draft' | 'approved' | 'sent' | 'receiving' | 'received' | 'closed'
+  amount: string
+  subtotalHalalas: number
+  taxHalalas: number
+  totalHalalas: number
+  orderedAt: string | null
+  expectedAt: string | null
+  submittedBy: string | null
+  approvedBy: string | null
+}
+
+/** A purchase-order line, as `GET /procurement/purchase-orders/:id/lines`
+ *  presents it (F-022). `receivedQty` is the running total the receiving route
+ *  maintains under `received ≤ ordered`. */
+export interface PurchaseOrderLineRow {
+  _id: string
+  partSku: string | null
+  description: string
+  descriptionAr: string | null
+  qty: number
+  receivedQty: number
+  unitPriceHalalas: number
+  lineTotalHalalas: number
+  sort: number
+}
+
+/** A requisition line, as `GET /procurement/requisitions/:id/lines` presents it
+ *  (F-022). The estimated unit price is the budget figure at request time. */
+export interface RequisitionLineRow {
+  _id: string
+  partSku: string | null
+  description: string
+  descriptionAr: string | null
+  qty: number
+  estUnitPriceHalalas: number
+  sort: number
+}
+
 export interface Repository {
   branches: Collection<BranchRow>
   vehicles: Collection<(typeof T.VEHICLES)[number]>
@@ -372,6 +454,9 @@ export interface Repository {
   payrollLines: Collection<PayrollLineRow>
   timesheets: Collection<TimesheetRow>
   leaveRequests: Collection<LeaveRequestRow>
+  suppliers: Collection<SupplierRow>
+  requisitions: Collection<RequisitionRow>
+  purchaseOrders: Collection<PurchaseOrderRow>
   receipts: Collection<(typeof T.RECEIPTS)[number]>
   departments: Collection<(typeof T.DEPARTMENTS)[number]>
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
@@ -431,6 +516,9 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   payrollLines: 'payroll/lines',
   timesheets: 'timesheets',
   leaveRequests: 'leave-requests',
+  suppliers: 'procurement/suppliers',
+  requisitions: 'procurement/requisitions',
+  purchaseOrders: 'procurement/purchase-orders',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -605,6 +693,13 @@ export const mockRepository: Repository = {
   payrollLines: fixture<PayrollLineRow>([]),
   timesheets: fixture<TimesheetRow>([]),
   leaveRequests: fixture<LeaveRequestRow>([]),
+  /* No design fixture for any procurement table (F-022) — the procurement
+   * server did not exist in the prototype. An empty read-only collection is the
+   * honest mock; the live API serves the seeded coherent rows, and the writes
+   * (raise/approve/receive) need a server. */
+  suppliers: fixture<SupplierRow>([]),
+  requisitions: fixture<RequisitionRow>([]),
+  purchaseOrders: fixture<PurchaseOrderRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),
@@ -1203,6 +1298,155 @@ export function createInsuranceClaimsApi(baseUrl: string): InsuranceClaimsApi {
   }
 }
 
+/* ------------------------------------------------ procurement lifecycle */
+
+/** A requisition line a create or edit sends. Money crosses as integer halalas. */
+export interface RequisitionLineInput {
+  partSku?: string
+  description: string
+  descriptionAr?: string
+  qty: number
+  estUnitPriceHalalas: number
+}
+
+export interface RequisitionInput {
+  requesterName: string
+  department?: string
+  priority?: 'low' | 'normal' | 'high' | 'urgent'
+  neededBy?: string
+  notes?: string
+  lines: readonly RequisitionLineInput[]
+}
+
+export interface PurchaseOrderLineInput {
+  partSku?: string
+  description: string
+  descriptionAr?: string
+  qty: number
+  unitPriceHalalas: number
+}
+
+export interface PurchaseOrderInput {
+  supplierId?: string
+  supplierName?: string
+  requisitionId?: string
+  expectedDate?: string
+  /** `true` stamps the order date on raise; approval remains a separate action. */
+  place?: boolean
+  notes?: string
+  lines: readonly PurchaseOrderLineInput[]
+}
+
+/** One line's incoming quantity, addressed by the line's ULID (`_id`). */
+export interface PurchaseOrderReceipt {
+  lineId: string
+  qty: number
+}
+
+/** The procurement lifecycle actions (F-022). Live only: each transitions a
+ *  record server-side under the ceiling, segregation-of-duties and
+ *  received-≤-ordered controls, so there is no fixture — a mock that faked an
+ *  approval or a receipt would be the fake-completion this seam refuses.
+ *  `raisePurchaseOrder` optionally converts an approved requisition; `approve`
+ *  is refused above the caller's procurement ceiling and to the raiser; `receive`
+ *  refuses an over-receipt unless `overReceiptApproved` is set by a caller with
+ *  approval authority, and needs an idempotency key so a retry cannot double-book. */
+export interface ProcurementApi {
+  createRequisition(input: RequisitionInput, options?: MutationOptions): Promise<RequisitionRow>
+  updateRequisition(
+    id: string,
+    patch: Partial<RequisitionInput>,
+    options?: MutationOptions,
+  ): Promise<RequisitionRow>
+  submitRequisition(id: string): Promise<RequisitionRow>
+  approveRequisition(id: string, reason?: string): Promise<RequisitionRow>
+  rejectRequisition(id: string, reason: string): Promise<RequisitionRow>
+  requisitionLines(id: string): Promise<{ rows: RequisitionLineRow[] }>
+  raisePurchaseOrder(input: PurchaseOrderInput, options?: MutationOptions): Promise<PurchaseOrderRow>
+  updatePurchaseOrder(
+    id: string,
+    patch: Partial<PurchaseOrderInput>,
+    options?: MutationOptions,
+  ): Promise<PurchaseOrderRow>
+  approvePurchaseOrder(id: string, reason?: string): Promise<PurchaseOrderRow>
+  receivePurchaseOrder(
+    id: string,
+    body: { lines: readonly PurchaseOrderReceipt[]; overReceiptApproved?: boolean; reason?: string },
+    options: MutationOptions & { idempotencyKey: string },
+  ): Promise<PurchaseOrderRow>
+  purchaseOrderLines(id: string): Promise<{ rows: PurchaseOrderLineRow[] }>
+}
+
+export function createProcurementApi(baseUrl: string): ProcurementApi {
+  const root = baseUrl.replace(/\/$/, '')
+  const req = (id: string) => `${root}/procurement/requisitions/${encodeURIComponent(id)}`
+  const po = (id: string) => `${root}/procurement/purchase-orders/${encodeURIComponent(id)}`
+  return {
+    async createRequisition(input, options = {}) {
+      return request<RequisitionRow>(`${root}/procurement/requisitions`, {
+        method: 'POST',
+        body: JSON.stringify(input),
+        idempotencyKey: options.idempotencyKey,
+      })
+    },
+    async updateRequisition(id, patch, options = {}) {
+      return request<RequisitionRow>(req(id), {
+        method: 'PATCH',
+        body: JSON.stringify(patch),
+        version: options.version,
+      })
+    },
+    async submitRequisition(id) {
+      return request<RequisitionRow>(`${req(id)}/submit`, { method: 'POST', body: '{}' })
+    },
+    async approveRequisition(id, reason) {
+      return request<RequisitionRow>(`${req(id)}/approve`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      })
+    },
+    async rejectRequisition(id, reason) {
+      return request<RequisitionRow>(`${req(id)}/reject`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      })
+    },
+    async requisitionLines(id) {
+      return request<{ rows: RequisitionLineRow[] }>(`${req(id)}/lines`)
+    },
+    async raisePurchaseOrder(input, options = {}) {
+      return request<PurchaseOrderRow>(`${root}/procurement/purchase-orders`, {
+        method: 'POST',
+        body: JSON.stringify(input),
+        idempotencyKey: options.idempotencyKey,
+      })
+    },
+    async updatePurchaseOrder(id, patch, options = {}) {
+      return request<PurchaseOrderRow>(po(id), {
+        method: 'PATCH',
+        body: JSON.stringify(patch),
+        version: options.version,
+      })
+    },
+    async approvePurchaseOrder(id, reason) {
+      return request<PurchaseOrderRow>(`${po(id)}/approve`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      })
+    },
+    async receivePurchaseOrder(id, body, options) {
+      return request<PurchaseOrderRow>(`${po(id)}/receive`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        idempotencyKey: options.idempotencyKey,
+      })
+    },
+    async purchaseOrderLines(id) {
+      return request<{ rows: PurchaseOrderLineRow[] }>(`${po(id)}/lines`)
+    },
+  }
+}
+
 /* ------------------------------------------ financial-product aggregates */
 
 /** The insurance-claim totals `GET /insurance/claims/summary` computes — what
@@ -1322,6 +1566,13 @@ export const insuranceClaimsApi: InsuranceClaimsApi | null = API_URL
 export const productReports: ProductReportsApi | null = API_URL
   ? createProductReports(API_URL)
   : null
+
+/** The procurement lifecycle actions (F-022), live only. Null on the fixtures:
+ *  a requisition approval, a purchase-order approval under the ceiling, or a
+ *  receipt under `received ≤ ordered` is a server transition, and a mock that
+ *  faked one would be the fake-completion this seam refuses. Agent 11's
+ *  Procurement screens read this when `isLive` and show the honest gap otherwise. */
+export const procurement: ProcurementApi | null = API_URL ? createProcurementApi(API_URL) : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */
