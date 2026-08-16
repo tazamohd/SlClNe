@@ -30,17 +30,17 @@ async function neighbourToken(): Promise<string> {
 
 /** Every invoice the caller can see, as the list endpoint presents it. Used to
  *  reconstruct the aggregate the summary endpoint is supposed to have computed. */
-async function allInvoices(token: string): Promise<Record<string, number>[]> {
+async function allInvoices(token: string): Promise<Record<string, unknown>[]> {
   const res = await harness.app.inject({
     method: 'GET',
     url: '/api/v1/invoices?pageSize=200',
     ...auth(token),
   })
   expect(res.statusCode, res.body).toBe(200)
-  return (res.json() as { rows: Record<string, number>[] }).rows
+  return (res.json() as { rows: Record<string, unknown>[] }).rows
 }
 
-const sumBy = (rows: Record<string, number>[], key: string): number =>
+const sumBy = (rows: Record<string, unknown>[], key: string): number =>
   rows.reduce((total, row) => total + (Number(row[key]) || 0), 0)
 
 describe('GET /invoices/summary', () => {
@@ -144,7 +144,7 @@ describe('GET /accounting/tax/return', () => {
      * `taxHalalas` for everything not draft or cancelled. */
     const expected = rows
       .filter((r) => r.status !== 'draft' && r.status !== 'cancelled')
-      .reduce((t, r) => t + (Number(r.taxHalalas) || 0), 0)
+      .reduce((t, r) => t + (Number((r as Record<string, unknown>).taxHalalas) || 0), 0)
     expect(ret.outputVatHalalas).toBe(expected)
 
     /* The rate is configuration (§A37), echoed so the figure names the rate it
