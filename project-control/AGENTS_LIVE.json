@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T14:45:00Z",
+  "asOf": "2026-08-12T15:05:00Z",
   "wave": "W2",
-  "waveName": "Insurance/Loans/HR vertical",
-  "waveNote": "Insurance/loans/HR vertical complete. Backend (insurance, loans, HR) + the Insurance-Claims workspace + nine HR screens (HRPayroll, Staff-Directory/HR-Management, Payroll-Management with the posting invariant reflected in the UI, Leave-Requests, timesheets; Staff-Scheduling/Performance-Review gapped honestly) + the two insurance/loan reports graduated (F-035). Verified on a reset DB: server 389, app 813, gates at the new baseline (195 placeholder, 167/402 rendering). Salary redaction respected end to end. RBAC follow-ups F-033/F-034 remain (feature-map screen-module mappings; a real insurance module) — low severity, not blockers. Next major gap: procurement backend (F-022), then the cross-cutting hardening and certification.",
+  "waveName": "Procurement backend (F-022)",
+  "waveNote": "Closing the last server-side gap: the procurement backend (F-022). Agent 05 builds requisitions, purchase orders and receiving — with the approval ceiling on a PO and the receiving-quantity-not-over-ordered invariant enforced and tested — so agent 11s honest-gap procurement screens can wire up next. Sequential (shared server files). After this: the ~175 feature-map screens, cross-cutting hardening, and certification.",
   "agents": [
     {
       "id": "03",
@@ -45,9 +45,9 @@
       "id": "05",
       "name": "Backend & Data",
       "team": "fnd",
-      "state": "done",
-      "startedAt": "2026-08-12T13:00:00Z",
-      "scope": "Vertical slice B: HR — employees/staff, payroll runs (+ lines), timeclock/timesheets, leave requests. Schema, seed, RLS, collections, migration 0009 onward, client wiring. No screens. Owns the DB.",
+      "state": "running",
+      "startedAt": "2026-08-12T15:05:00Z",
+      "scope": "Procurement backend (F-022): requisitions (+lines, submit/approve), purchase orders (+lines, raise-from-requisition, approve within ceiling, SOD), receiving against PO lines (qty ≤ ordered, over-receipt needs approval), suppliers if absent. Migration 0010, seed, RLS, client wiring. Owns the DB.",
       "owns": [
         "server/**",
         "packages/contract/**",
