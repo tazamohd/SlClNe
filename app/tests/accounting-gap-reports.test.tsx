@@ -2,25 +2,31 @@ import { describe, expect, it } from 'vitest'
 import { screen } from '@testing-library/react'
 import { renderScreen } from './helpers/render'
 
-/** Insurance and loan reports have no server data source. These pin that the
- *  screens say so and name the collection that is missing, rather than rendering
- *  a fabricated claim or a made-up loan. When the collection lands, the GAP:
- *  test fails and forces the placeholder to be replaced with the real report. */
+/** The insurance and loan reports graduated (F-035): their data now exists as a
+ *  server-computed aggregate. On a build with no API (`productReports` is null)
+ *  they keep the honest gap — they name the server aggregate and show no figure,
+ *  never a fabricated claim or loan. The live path (real figures from the
+ *  summary endpoints) is a server computation with no fixture, exercised by the
+ *  server suite; here we pin the fixture-gap behaviour, which is what this build
+ *  renders. */
 
-describe('insurance reports', () => {
-  it('GAP: names the missing insuranceClaims collection and invents no rows', async () => {
+describe('insurance report — fixture gap', () => {
+  it('keeps the honest gap and names the server aggregate, inventing no rows', async () => {
     const { InsuranceReports } = await import('@/screens/accounting/GapReports')
     renderScreen(InsuranceReports, { role: 'accountant' })
-    expect(screen.getByText('No data source yet')).toBeInTheDocument()
-    expect(screen.getByText(/insuranceClaims/)).toBeInTheDocument()
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.getByText(/insurance\/claims\/summary/)).toBeInTheDocument()
+    // No fabricated money figure.
+    expect(screen.queryByText(/SAR/)).not.toBeInTheDocument()
   })
 })
 
-describe('loan reports', () => {
-  it('GAP: names the missing loanContracts collection and invents no rows', async () => {
+describe('loan report — fixture gap', () => {
+  it('keeps the honest gap and names the server aggregate, inventing no rows', async () => {
     const { LoanReports } = await import('@/screens/accounting/GapReports')
     renderScreen(LoanReports, { role: 'accountant' })
-    expect(screen.getByText('No data source yet')).toBeInTheDocument()
-    expect(screen.getByText(/loanContracts/)).toBeInTheDocument()
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.getByText(/loans\/summary/)).toBeInTheDocument()
+    expect(screen.queryByText(/SAR/)).not.toBeInTheDocument()
   })
 })

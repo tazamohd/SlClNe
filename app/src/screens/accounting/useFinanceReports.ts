@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import {
   financeReports,
+  productReports,
+  type InsuranceClaimsSummary,
   type InvoiceSummary,
+  type LoansSummary,
   type ReportRange,
   type TaxReturn,
   type TrialBalance,
@@ -45,5 +48,26 @@ export function useTrialBalance() {
     queryKey: ['finance-report', 'trial-balance'],
     queryFn: () => financeReports!.trialBalance(),
     enabled: financeReports !== null,
+  })
+}
+
+/** `GET /insurance/claims/summary` — claim totals by status (F-035). Feeds the
+ *  Insurance report. Null accessor on a fixture build, so the report keeps its
+ *  honest gap; the figures are the server's, never a page the client summed. */
+export function useInsuranceClaimsSummary() {
+  return useQuery<InsuranceClaimsSummary>({
+    queryKey: ['product-report', 'insurance-claims-summary'],
+    queryFn: () => productReports!.insuranceClaimsSummary(),
+    enabled: productReports !== null,
+  })
+}
+
+/** `GET /loans/summary` — loan portfolio outstanding/overdue (F-035). Feeds the
+ *  Loan report; same disabled-on-fixture discipline. */
+export function useLoansSummary() {
+  return useQuery<LoansSummary>({
+    queryKey: ['product-report', 'loans-summary'],
+    queryFn: () => productReports!.loansSummary(),
+    enabled: productReports !== null,
   })
 }
