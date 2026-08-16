@@ -139,6 +139,33 @@ export interface FeedbackRow extends EntityMeta {
   customerId: string | null
 }
 
+/** A bank statement line, as `GET /bank-statements` presents it (F-028). The
+ *  design bundle carries no bank-statement fixture — the reconciliation screen
+ *  was gapped in the prototype — so the shape is declared here rather than
+ *  inferred from `generated/tables.ts`, like `BranchRow`. Read-only through the
+ *  collection; the reconciling write is `POST /bank-statements/:id/match`. */
+export interface BankStatementRow extends EntityMeta {
+  date: string
+  description: string
+  reference: string
+  account: string
+  amount: string
+  amountHalalas: number
+  direction: 'credit' | 'debit'
+  matched: boolean
+  matchedReceiptId: string | null
+}
+
+/** A saved report definition, as `GET /saved-reports` presents it (F-028). No
+ *  design fixture — the builder could not persist in the prototype — so the
+ *  shape is declared here. Writable through the collection. */
+export interface SavedReportRow extends EntityMeta {
+  name: string
+  source: string
+  owner: string
+  definition: Record<string, unknown>
+}
+
 export interface Repository {
   branches: Collection<BranchRow>
   vehicles: Collection<(typeof T.VEHICLES)[number]>
@@ -162,6 +189,8 @@ export interface Repository {
   chartOfAccounts: Collection<(typeof T.ACCOUNTS_COA)[number]>
   journalEntries: Collection<(typeof T.JOURNAL_ENTRIES)[number]>
   expenses: Collection<(typeof T.EXPENSES_DATA)[number]>
+  bankStatements: Collection<BankStatementRow>
+  savedReports: Collection<SavedReportRow>
   receipts: Collection<(typeof T.RECEIPTS)[number]>
   departments: Collection<(typeof T.DEPARTMENTS)[number]>
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
@@ -209,6 +238,8 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   chartOfAccounts: 'accounting/coa',
   journalEntries: 'accounting/journal-entries',
   expenses: 'accounting/expenses',
+  bankStatements: 'bank-statements',
+  savedReports: 'saved-reports',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -362,6 +393,11 @@ export const mockRepository: Repository = {
   chartOfAccounts: fixture(T.ACCOUNTS_COA),
   journalEntries: fixture(T.JOURNAL_ENTRIES),
   expenses: fixture(T.EXPENSES_DATA),
+  /* No design fixture for either report-source table (F-028). An empty
+   * read-only collection is the honest mock; the live API serves the seeded
+   * rows. Writes to `savedReports` need a server and are refused by the mock. */
+  bankStatements: fixture<BankStatementRow>([]),
+  savedReports: fixture<SavedReportRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),
@@ -532,6 +568,127 @@ export function createHttpRepository(baseUrl: string): Repository {
   return Object.fromEntries(entries) as Repository
 }
 
+/* ------------------------------------------------- financial aggregates */
+
+export interface ReportRange {
+  /** `YYYY-MM-DD`, inclusive. Omit for an open bound. */
+  from?: string
+  to?: string
+}
+
+/** The period totals `GET /invoices/summary` computes — what SalesReports and
+ *  the invoice dashboards display. Every figure is integer halalas the server
+ *  summed over the whole tenant scope, never a page the client added up. */
+export interface InvoiceSummary {
+  range: { from: string | null; to: string | null }
+  count: number
+  invoicedHalalas: number
+  subtotalHalalas: number
+  vatHalalas: number
+  discountHalalas: number
+  paidHalalas: number
+  outstandingHalalas: number
+  byStatus: {
+    status: string
+    count: number
+    invoicedHalalas: number
+    outstandingHalalas: number
+  }[]
+}
+
+/** `GET /accounting/tax/return` — TaxManagement's figure. `rateBps` is the
+ *  configured ZATCA rate the return is reported under (§A37); `inputVatModelled`
+ *  is false because expense-side VAT is not tracked yet, so its zero reads as
+ *  "not tracked" rather than "reconciled". */
+export interface TaxReturn {
+  range: { from: string | null; to: string | null }
+  rateBps: number
+  invoiceCount: number
+  taxableSalesHalalas: number
+  grossSalesHalalas: number
+  outputVatHalalas: number
+  inputVatModelled: boolean
+  inputVatHalalas: number
+  netVatPayableHalalas: number
+}
+
+export interface TrialBalanceAccount {
+  code: string
+  name: string
+  type: string
+  debitHalalas: number
+  creditHalalas: number
+}
+
+/** `GET /accounting/reports/trial-balance`. Reports reality: `balanced` and
+ *  `balanceSheet.differenceHalalas` surface F-008's SAR 257,050 imbalance rather
+ *  than forcing the books to tie. */
+export interface TrialBalance {
+  accounts: TrialBalanceAccount[]
+  totals: { debitHalalas: number; creditHalalas: number; differenceHalalas: number }
+  balanced: boolean
+  balanceSheet: {
+    assetsHalalas: number
+    liabilitiesHalalas: number
+    equityHalalas: number
+    liabilitiesPlusEquityHalalas: number
+    differenceHalalas: number
+    balanced: boolean
+  }
+  profitAndLoss: { revenueHalalas: number; expenseHalalas: number; netHalalas: number }
+  journal: {
+    postedDebitHalalas: number
+    postedCreditHalalas: number
+    postedCount: number
+    draftCount: number
+  }
+}
+
+/** The financial aggregates the server computes and the client only displays
+ *  (§A10). Not a `Collection` — an aggregate has no row identity and no writes —
+ *  so it lives beside the repository rather than inside it, and there is no mock
+ *  implementation: a cross-record total is a server computation the client must
+ *  not fabricate. */
+export interface FinanceReportsApi {
+  invoicesSummary(query?: ReportRange & { status?: string }): Promise<InvoiceSummary>
+  taxReturn(query?: ReportRange): Promise<TaxReturn>
+  trialBalance(): Promise<TrialBalance>
+}
+
+function reportUrl(
+  base: string,
+  path: string,
+  query: Record<string, string | undefined> = {},
+): string {
+  const url = new URL(`${base.replace(/\/$/, '')}/${path}`)
+  for (const [key, value] of Object.entries(query)) {
+    if (value !== undefined && value !== '') url.searchParams.set(key, value)
+  }
+  return url.toString()
+}
+
+export function createFinanceReports(baseUrl: string): FinanceReportsApi {
+  return {
+    async invoicesSummary(query = {}) {
+      return request<InvoiceSummary>(
+        reportUrl(baseUrl, 'invoices/summary', {
+          from: query.from,
+          to: query.to,
+          'filter[status]': query.status,
+        }),
+      )
+    },
+    async taxReturn(query = {}) {
+      return request<TaxReturn>(
+        reportUrl(baseUrl, 'accounting/tax/return', { from: query.from, to: query.to }),
+      )
+    },
+    async trialBalance() {
+      return request<TrialBalance>(reportUrl(baseUrl, 'accounting/reports/trial-balance'))
+    },
+  }
+}
+
 /* ------------------------------------------------------------- the choice */
 
 /** `VITE_API_URL` selects the backend. Unset — which is every build until the
@@ -550,6 +707,14 @@ export const httpRepository: Repository | null = API_URL
   : null
 
 export const repository: Repository = httpRepository ?? mockRepository
+
+/** The financial aggregates (§A10), live only against the API. Null on the
+ *  fixtures: a period total or a trial balance is a server computation, and a
+ *  mock that invented one would be the fake-completion this seam refuses. A
+ *  screen reads it when `isLive`, and shows the §A10 gap notice otherwise. */
+export const financeReports: FinanceReportsApi | null = API_URL
+  ? createFinanceReports(API_URL)
+  : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */

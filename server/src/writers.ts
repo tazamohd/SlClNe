@@ -29,6 +29,8 @@ import {
   opportunityUpdate,
   partCreate,
   partUpdate,
+  savedReportCreate,
+  savedReportUpdate,
   vehicleCreate,
   vehicleUpdate,
 } from '@salis/contract'
@@ -171,6 +173,21 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
     create: feedbackCreate,
     update: feedbackUpdate,
     toColumns: passthrough,
+  },
+
+  /* Saved report definitions (F-028). `ownerName` defaults to the caller's
+   * display name on create so a saved report always records who saved it,
+   * without the client having to send it. RBAC, RLS, audit and optimistic
+   * concurrency come from the generic router. */
+  savedReports: {
+    create: savedReportCreate,
+    update: savedReportUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (value.definition === undefined && !existing) value.definition = {}
+      if (!value.ownerName && !existing) value.ownerName = ctx.principal.name ?? null
+      return value
+    },
   },
 }
 

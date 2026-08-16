@@ -41,6 +41,10 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   chartOfAccounts: T.ACCOUNTS_COA,
   journalEntries: T.JOURNAL_ENTRIES,
   expenses: T.EXPENSES_DATA,
+  /** No design fixture for either — both report-source tables are new (F-028).
+   *  The collections serve the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  bankStatements: [],
+  savedReports: [],
   receipts: T.RECEIPTS,
   departments: T.DEPARTMENTS,
   aiAgents: T.AI_AGENTS,

@@ -91,6 +91,12 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
    *  branches back the read-only directory a transfer destination is picked
    *  from (F-017). */
   branches: 2,
+  /** Bank statement lines the design's reconciliation screen had nothing to
+   *  match against — the bank side is new (F-028). */
+  bankStatements: 5,
+  /** Saved report definitions CustomReports can list — no design fixture, the
+   *  builder could not persist in the prototype (F-028). */
+  savedReports: 2,
 }
 
 /** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
@@ -588,6 +594,78 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       }),
     ),
   )
+
+  /* F-028: bank statement lines so BankReconciliation has a bank side to match
+   * against. Some already reconciled, some open; credits (deposits) and debits
+   * (withdrawals). The design bundle carries no bank-statement fixture — the
+   * reconciliation screen was gapped in the prototype — so these are seed
+   * coherence rows, counted by SEED_COHERENCE_EXTRAS. */
+  await tx.insert(s.bankStatements).values([
+    row({
+      statementDate: '2026-07-21',
+      description: 'Deposit — INV-2026-0142 settlement',
+      reference: 'DEP-88213',
+      bankAccount: 'SNB Current 1000',
+      amountHalalas: parseSarToHalalas('SAR 2,116'),
+      direction: 'credit',
+      matched: true,
+      matchedAt: new Date('2026-07-22T09:00:00Z'),
+    }),
+    row({
+      statementDate: '2026-07-20',
+      description: 'Card settlement batch',
+      reference: 'CRD-55190',
+      bankAccount: 'SNB Current 1000',
+      amountHalalas: parseSarToHalalas('SAR 8,940'),
+      direction: 'credit',
+      matched: false,
+    }),
+    row({
+      statementDate: '2026-07-20',
+      description: 'Salary run — July 2026',
+      reference: 'PAY-0034',
+      bankAccount: 'SNB Current 1000',
+      amountHalalas: parseSarToHalalas('SAR 45,000'),
+      direction: 'debit',
+      matched: true,
+      matchedAt: new Date('2026-07-20T14:30:00Z'),
+    }),
+    row({
+      statementDate: '2026-07-19',
+      description: 'Supplier transfer — Al Jazira Supplies',
+      reference: 'PO-0012',
+      bankAccount: 'SNB Current 1000',
+      amountHalalas: parseSarToHalalas('SAR 12,800'),
+      direction: 'debit',
+      matched: false,
+    }),
+    row({
+      statementDate: '2026-07-18',
+      description: 'Bank charges',
+      reference: 'FEE-0071',
+      bankAccount: 'SNB Current 1000',
+      amountHalalas: parseSarToHalalas('SAR 120'),
+      direction: 'debit',
+      matched: false,
+    }),
+  ])
+
+  /* F-028: a couple of saved report definitions so CustomReports has persisted
+   * definitions to list. Also seed coherence rows — no design fixture. */
+  await tx.insert(s.savedReports).values([
+    row({
+      name: 'Monthly revenue by status',
+      source: 'invoices',
+      ownerName: 'Accountant',
+      definition: { groupBy: 'status', range: 'month', columns: ['status', 'invoiced', 'outstanding'] },
+    }),
+    row({
+      name: 'Output VAT — current quarter',
+      source: 'tax',
+      ownerName: 'Accountant',
+      definition: { range: 'quarter', columns: ['taxableSales', 'outputVat'] },
+    }),
+  ])
 
   await tx.insert(s.aiAgents).values(
     T.AI_AGENTS.map((a) =>

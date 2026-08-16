@@ -36,6 +36,13 @@
       "when": 1786465092900,
       "tag": "0004_crm_fleet_feedback",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786465093900,
+      "tag": "0005_bank_statements_saved_reports",
+      "breakpoints": true
     }
   ]
 }

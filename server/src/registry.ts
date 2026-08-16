@@ -639,6 +639,59 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  define({
+    /** Bank statement lines (F-028) — the bank side BankReconciliation matches
+     *  the recorded receipts against. Gated on `accounting`, the module the
+     *  reconciliation surface declares (ReportSuite). Read-only through the
+     *  generic router; the reconciling write is `POST /bank-statements/:id/match`
+     *  (routes/bank.ts), gated on `accounting:e`. */
+    key: 'bankStatements',
+    path: 'bank-statements',
+    table: s.bankStatements,
+    module: 'accounting',
+    entity: 'bank_statement',
+    search: ['description', 'reference'],
+    sortable: ['statementDate', 'amountHalalas', 'createdAt'],
+    filterable: ['matched', 'direction'],
+    defaultSort: { column: 'statementDate', dir: 'desc' },
+    present: (row) => ({
+      ...meta(row),
+      date: dateUS(row.statementDate),
+      description: row.description,
+      reference: row.reference ?? '',
+      account: row.bankAccount ?? '',
+      amount: sarString(row.amountHalalas),
+      amountHalalas: count(row.amountHalalas),
+      direction: row.direction,
+      matched: row.matched,
+      matchedReceiptId: row.matchedReceiptId,
+    }),
+  }),
+
+  define({
+    /** Saved report definitions (F-028) so CustomReports can persist a report.
+     *  Gated on `accounting`, the module the Custom Reports surface declares;
+     *  writable through the generic router, and tenant-scoped by RLS so a user
+     *  sees their organization's saved reports. */
+    key: 'savedReports',
+    path: 'saved-reports',
+    table: s.savedReports,
+    module: 'accounting',
+    entity: 'saved_report',
+    search: ['name', 'source'],
+    sortable: ['name', 'createdAt'],
+    filterable: ['source'],
+    defaultSort: { column: 'createdAt', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      name: row.name,
+      source: row.source ?? '',
+      owner: row.ownerName ?? '',
+      definition: row.definition ?? {},
+    }),
+  }),
+
   /* --------------------------------------------------------------------- AI */
   define({
     key: 'aiAgents',

@@ -618,6 +618,50 @@ export const expenses = pgTable(
   (t) => ({ codePerOrg: uniqueIndex('expenses_org_code_idx').on(t.orgId, t.code) }),
 )
 
+/** Bank statement lines (F-028). The *bank* side of a reconciliation — one row
+ *  per line on an imported statement — so BankReconciliation has something to
+ *  match the recorded receipts against. `direction` is 'credit' (money into the
+ *  account) or 'debit' (money out); `matched` and the match columns record a
+ *  line reconciled to a book entry. Money is integer halalas like everything
+ *  else. Read-only through the generic router; the `match` action is the only
+ *  write. */
+export const bankStatements = pgTable(
+  'bank_statements',
+  {
+    ...tenant,
+    statementDate: date('statement_date').notNull(),
+    description: varchar('description', { length: 300 }).notNull(),
+    reference: varchar('reference', { length: 64 }),
+    bankAccount: varchar('bank_account', { length: 120 }),
+    amountHalalas: money('amount_halalas').notNull().default(0),
+    /** 'credit' = deposit into the account, 'debit' = withdrawal. */
+    direction: varchar('direction', { length: 8 }).notNull(),
+    matched: boolean('matched').notNull().default(false),
+    /** The book entry (receipt) this line was reconciled to, once matched. */
+    matchedReceiptId: varchar('matched_receipt_id', { length: ULID_LENGTH }),
+    matchedAt: timestamp('matched_at', { withTimezone: true }),
+  },
+  (t) => ({ byOrg: index('bank_statements_org_idx').on(t.orgId, t.matched) }),
+)
+
+/** Saved report definitions (F-028). Lets CustomReports persist a report — its
+ *  name, the source it runs over, and the filter/column selection as JSON — so
+ *  a user can rebuild it later. Scoped to the tenant by RLS; `ownerName` records
+ *  who saved it. Writable through the generic router. */
+export const savedReports = pgTable(
+  'saved_reports',
+  {
+    ...tenant,
+    name: varchar('name', { length: 200 }).notNull(),
+    /** Which ledger source the report runs over (e.g. `invoices`, `journal`). */
+    source: varchar('source', { length: 64 }),
+    ownerName: varchar('owner_name', { length: 200 }),
+    /** The filter/column selection the builder produced. */
+    definition: jsonb('definition').notNull().default({}),
+  },
+  (t) => ({ byOrg: index('saved_reports_org_idx').on(t.orgId, t.createdBy) }),
+)
+
 /* -------------------------------------------------- diagnostics & knowledge */
 
 export const obdDevices = pgTable('obd_devices', {
@@ -973,6 +1017,8 @@ export const TENANT_TABLES = [
   'chart_of_accounts',
   'journal_entries',
   'expenses',
+  'bank_statements',
+  'saved_reports',
   'obd_devices',
   'dtc_codes',
   'oem_tools',
