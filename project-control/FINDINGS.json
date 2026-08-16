@@ -302,14 +302,16 @@
     },
     {
       "id": "F-025",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "No public lead endpoint, so the marketing Contact form cannot submit",
       "detail": "Nothing under server/ accepts an anonymous contact/lead POST. Agent 17's Contact form validates then shows a role=alert failure naming direct channels (mailto/tel); there is deliberately no success path. §A28 marketing analytics has no infrastructure either.",
       "why": "A visitor cannot contact the business through the site. Surfaced honestly rather than faked, but the capability is absent.",
       "foundBy": "17",
-      "verified": "reported by agent 17 with a GAP: test",
+      "verified": "confirmed — the route, its rate-limit registration, env defaults and no-escalation properties read directly by the orchestrator",
       "owner": "05",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "POST /public/leads, unauthenticated: a .strict() body with no orgId, a synthetic principal pinned to a configured PUBLIC_LEAD_ORG_ID so no other tenant is reachable, a per-IP rate limit (@fastify/rate-limit, default 5/min), a dedicated public_leads intake table, a 202 bare acknowledgement, and no PII in logs — the contact lives in the audit ledger for triage, never a log line. Agent 17s Contact form can now submit; wiring it is agent 17s follow-up."
     },
     {
       "id": "F-026",
@@ -324,14 +326,16 @@
     },
     {
       "id": "F-027",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "CRM and fleet collections are read-only, and several endpoints do not exist",
       "detail": "Agent 09 built LeadDetail, CRMCalendar, CustomerFeedback and FleetContract but the backend cannot persist their writes: leads/opportunities/crmTasks/fleets are not writable; there is no lead→opportunity conversion route, no lead activity/notes collection, no feedback collection or POST /customer-feedback, and fleets carries no contract-term fields (type, value, dates, renewal) nor an exposed fleetId→vehicles join.",
       "why": "Four rendered CRM surfaces are read/interactive only — honest, tested gap states rather than fake persistence, but the capabilities are not real until the collections and routes exist.",
       "foundBy": "09",
-      "verified": "reported with a GAP: test per missing endpoint",
+      "verified": "confirmed on a reset database — 292 server tests, app 697, gates at baseline",
       "owner": "05",
-      "wave": "W4"
+      "wave": "W4",
+      "status": "fixed",
+      "resolution": "leads/opportunities/crmTasks/fleets are writable through the generic router (RBAC, RLS, audit and optimistic concurrency come with it); customer_feedback table + collection + POST /customer-feedback; fleet contract terms on the schema + POST /fleets/:id/renew; lead→opportunity conversion in one transaction; and customers now present fleetId. Migration 0004. The client repository is wired (interface, ENDPOINTS, FeedbackRow) and the crm-gaps assertions flipped from GAP to real. Screens are not yet wired to the writes — that is agent 09s follow-up."
     },
     {
       "id": "F-028",
@@ -357,14 +361,16 @@
     },
     {
       "id": "F-030",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "Seed appointments do not reconcile with the technician roster",
       "detail": "app/src/data/generated/tables.ts: APPOINTMENTS[].tech names (Saeed Al-Zahrani, Majed Al-Otaibi, Yousef Al-Ghamdi) are not in TECHS (Yousef Al-Otaibi, Bandar Al-Qahtani, Faisal Al-Harbi, Nasser Al-Dosari), and there is no technicianId link. Grouping a schedule on the roster alone shows every technician idle.",
       "why": "TechnicianSchedule and any technician-workload feature are wrong until fixed. Agent 08 worked around it by unioning both name sets; the durable fix is a seeded technicianId on appointments.",
       "foundBy": "08",
-      "verified": "reported — orchestrator notes this is generated data, so the fix belongs in the port-design generator or a server seed override, not a hand-edit",
+      "verified": "confirmed — seed-fidelity and seed-coherence green on reset",
       "owner": "05",
-      "wave": "W4"
+      "wave": "W4",
+      "status": "fixed",
+      "resolution": "server/scripts/seed.ts now maps appointments to real technician rows, so grouping a schedule by the roster is correct rather than showing every technician idle. Fixed in the seed layer, not the generated tables (which are off-limits)."
     }
   ]
 }
