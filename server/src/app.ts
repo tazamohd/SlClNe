@@ -12,6 +12,7 @@ import rateLimit from '@fastify/rate-limit'
 import Fastify, { type FastifyInstance } from 'fastify'
 import { ApiError } from './http/errors'
 import { loggerOptions } from './logger'
+import { registerApprovalRoutes } from './routes/approvals'
 import { registerBankRoutes } from './routes/bank'
 import { registerCollectionRoutes } from './routes/collections'
 import { registerCrmRoutes } from './routes/crm'
@@ -264,6 +265,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
       registerHistoryRoutes(api, { db: deps.db })
+      registerApprovalRoutes(api, { db: deps.db })
       registerInventoryRoutes(api, { db: deps.db })
       registerCrmRoutes(api, { db: deps.db })
       registerBankRoutes(api, { db: deps.db })

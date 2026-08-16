@@ -26,7 +26,7 @@ let env: Env
 const MANAGER = '01JHISTMANAGER00000000001'
 const OWNER = '01JHISTOWNER000000000001X'
 
-async function token(role: RoleId, sub: string, orgId = SEED.orgId): Promise<string> {
+async function token(role: RoleId, sub: string, orgId: string = SEED.orgId): Promise<string> {
   const key = new TextEncoder().encode(env.JWT_SECRET as string)
   return new SignJWT({ role, org_id: orgId, branch_id: SEED.mainBranchId })
     .setProtectedHeader({ alg: 'HS256' })

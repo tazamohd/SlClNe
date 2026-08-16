@@ -568,6 +568,59 @@ export function createHttpRepository(baseUrl: string): Repository {
   return Object.fromEntries(entries) as Repository
 }
 
+/* --------------------------------------------------------- approval queue */
+
+/** One pending decision in the unified queue, as `GET /approvals` presents it
+ *  (F-029). Uniform across sources: a `kind` discriminates estimate / purchase
+ *  order / journal / payroll, but the fields a screen renders are the same. The
+ *  row carries `amountHalalas` and `module` so the client's own `canApprove`
+ *  reads honestly, plus the server's standing so the two cannot disagree. */
+export interface ApprovalItem extends EntityMeta {
+  kind: 'estimate'
+  module: string
+  entityId: string
+  reference: string
+  title: string
+  customerName: string
+  vehicleLabel: string
+  amountHalalas: number
+  amount: string
+  submittedBy: string | null
+  status: string
+  submittedAt: string
+  approval: {
+    canApprove: boolean
+    ceilingHalalas: number | null
+    withinCeiling: boolean
+    isSubmitter: boolean
+  }
+}
+
+export interface ApprovalQueue {
+  rows: ApprovalItem[]
+  summary: {
+    count: number
+    pendingHalalas: number
+    byModule: Record<string, { count: number; totalHalalas: number }>
+  }
+}
+
+/** The unified approval queue the ApprovalInbox reads. Live only: it aggregates
+ *  pending records across modules under the caller's scope, which the fixtures
+ *  cannot reproduce without inventing an approval standing. */
+export interface ApprovalsApi {
+  list(): Promise<ApprovalQueue>
+}
+
+export function createApprovalsApi(baseUrl: string): ApprovalsApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async list() {
+      return request<ApprovalQueue>(`${root}/approvals`)
+    },
+  }
+}
+
 /* --------------------------------------------------------- audit history */
 
 /** One entry in a record's audit trail, as `GET /:collection/:id/history`
@@ -776,6 +829,11 @@ export const financeReports: FinanceReportsApi | null = API_URL
  *  audit log, and a mock that fabricated one would be fake completion. A screen
  *  reads it when `isLive` and shows the honest gap otherwise. */
 export const history: HistoryApi | null = API_URL ? createHistoryApi(API_URL) : null
+
+/** The unified approval queue (F-029), live only against the API. Null on the
+ *  fixtures: a per-caller approval standing is a server computation, and a mock
+ *  that invented one would misinform the gate it drives. */
+export const approvals: ApprovalsApi | null = API_URL ? createApprovalsApi(API_URL) : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */
