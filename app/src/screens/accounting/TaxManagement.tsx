@@ -126,8 +126,8 @@ export function TaxManagement() {
   }
 
   const columns: Column<ReturnRow>[] = [
-    { header: 'Period', cell: (r) => r.period },
-    { header: 'Filing Date', cell: (r) => r.filing },
+    { header: 'Period', cell: (r) => r.period, code: true },
+    { header: 'Filing Date', cell: (r) => r.filing, code: true },
     {
       header: 'Amount',
       cell: (r) => (
@@ -176,8 +176,14 @@ export function TaxManagement() {
           loading={invoicesLoading || expensesLoading}
           mobileCard={(r) => (
             <>
-              <MobileCardHeader title={r.period} trailing={<ReturnStatusBadge value={r.status} />} />
-              <MobileCardRow label={t('Filing Date')}>{r.filing}</MobileCardRow>
+              <MobileCardHeader
+                title={r.period}
+                code
+                trailing={<ReturnStatusBadge value={r.status} />}
+              />
+              <MobileCardRow label={t('Filing Date')}>
+                <span dir="ltr">{r.filing}</span>
+              </MobileCardRow>
               <MobileCardRow label={t('Amount')}>
                 <span className="inline-flex items-baseline gap-1.5">
                   <Money sar={r.amountSar} className="text-heading" />
