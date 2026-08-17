@@ -74,6 +74,12 @@ const ROUTES = [
   { path: '/agent-dashboard', expect: 'Tasks Handled' },
   { path: '/conversation-history', expect: 'Conversation History' },
   { path: '/integrations', expect: 'Connected' },
+  // Reference pages. Also nav entries, so these expect body text, not titles.
+  { path: '/flow-spec', expect: 'the gate that guards it' },
+  { path: '/rbacspec', expect: 'which fields it may never see' },
+  { path: '/index', expect: 'Every screen in the product, wired to its live route.' },
+  { path: '/native/android', expect: 'Material You status bar' },
+  { path: '/native/i-os', expect: 'Dynamic Island' },
   { path: '/customer-app/home', expect: 'My Vehicles' },
   { path: '/customer-app/garage', expect: 'My Garage' },
   { path: '/customer-app/wallet', expect: 'Transactions' },
@@ -104,7 +110,11 @@ for (const route of ROUTES) {
   const isExternal = (text) => /fonts\.googleapis|fonts\.gstatic|ERR_CERT_AUTHORITY_INVALID/.test(text)
 
   page.on('console', (msg) => {
-    if (msg.type() === 'error' && !isExternal(msg.text())) problems.push(`console: ${msg.text()}`)
+    // Chromium's failed-resource console text omits the URL ("Failed to load
+    // resource: net::ERR_CONNECTION_RESET") — the host is only in location().
+    const where = msg.location()?.url ?? ''
+    if (msg.type() === 'error' && !isExternal(msg.text()) && !isExternal(where))
+      problems.push(`console: ${msg.text()}`)
   })
   page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`))
 

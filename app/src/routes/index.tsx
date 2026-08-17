@@ -98,6 +98,8 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { FlowSpec, IndexPage, RBACSpec } from '@/screens/meta/Specs'
+import { NativeAndroid, NativeIOS } from '@/screens/meta/Native'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -178,6 +180,13 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  // The project's own reference pages: flow spec, RBAC matrix, screen index,
+  // and the native-shell mockups.
+  FlowSpec,
+  RBACSpec,
+  Index: IndexPage,
+  'Native.Android': NativeAndroid,
+  'Native.iOS': NativeIOS,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
