@@ -1,6 +1,6 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-17T09:40:00Z",
+  "asOf": "2026-08-17T10:05:00Z",
   "wave": "W3",
   "waveName": "Hardening",
   "waveNote": "Every ERP domain is functional against a real backend; hardening begins (W3). First, the two most self-contained, non-colliding pieces: performance (route-level code-splitting so the app no longer ships one 500kB+ chunk, plus bundle budgets) and the §50 security/RBAC persona lab (14 roles × modules × actions over the real app, reporting ALLOWED/DENIED/UNEXPECTED, plus IDOR/isolation). Then Arabic completeness (needs a supplementary-overrides mechanism, since ar.ts is generated) and the mobile/tablet/a11y screen sweeps.",
