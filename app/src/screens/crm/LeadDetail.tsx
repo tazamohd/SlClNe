@@ -44,7 +44,7 @@ export function LeadDetail() {
     return (
       <Card className="p-6">
         <EmptyState
-          icon="UserSearch"
+          icon="SearchX"
           title={t('Lead not found')}
           description={t('It may have been deleted, or the link is out of date.')}
           action={
@@ -85,7 +85,7 @@ export function LeadDetail() {
         </Badge>
         <div className="flex gap-2">
           <Button variant="outline" size="md">
-            <Icon name="Edit" size={14} />
+            <Icon name="Pencil" size={14} />
             {t('Edit')}
           </Button>
           <Button size="md">
@@ -179,7 +179,7 @@ export function LeadDetail() {
         <div className="mt-3 flex gap-2">
           <input
             placeholder={t('Add a note...')}
-            className="h-10 flex-1 rounded-lg border border-border bg-inset px-3 text-[13px] text-primary outline-none"
+            className="h-10 flex-1 rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none"
           />
           <Button size="md">
             <Icon name="Send" size={14} />
