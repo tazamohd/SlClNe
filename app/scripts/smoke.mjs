@@ -104,7 +104,11 @@ for (const route of ROUTES) {
   const isExternal = (text) => /fonts\.googleapis|fonts\.gstatic|ERR_CERT_AUTHORITY_INVALID/.test(text)
 
   page.on('console', (msg) => {
-    if (msg.type() === 'error' && !isExternal(msg.text())) problems.push(`console: ${msg.text()}`)
+    // Chromium's failed-resource console text omits the URL ("Failed to load
+    // resource: net::ERR_CONNECTION_RESET") — the host is only in location().
+    const where = msg.location()?.url ?? ''
+    if (msg.type() === 'error' && !isExternal(msg.text()) && !isExternal(where))
+      problems.push(`console: ${msg.text()}`)
   })
   page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`))
 
