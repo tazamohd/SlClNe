@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/Badge'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { ROLES, PERMS, FIELD_RULES, SOD } from '@/data/generated/rbac'
-import { SCREENS, SCREEN_MODULE } from '@/data/generated/screens'
+import { SCREENS } from '@/data/generated/screens'
+import { NAV } from '@/data/generated/nav'
 import type { ModuleId } from '@/data/types'
 
 /** Design-reference screens: Flow Spec, RBAC Spec, Screen Index — ungated
@@ -404,10 +405,18 @@ export function IndexPage() {
   const { t } = usePreferences()
   const [query, setQuery] = useState('')
 
+  /** Screen → sidebar group, read off NAV so this index groups screens the way
+   *  the app's own navigation does. Screens NAV doesn't list — detail pages,
+   *  the auth chain, these reference pages — collect under "Other Screens". */
   const groups = useMemo(() => {
+    const groupOf = new Map<string, string>()
+    for (const group of NAV) {
+      // Nav items can be section headers with no screen behind them.
+      for (const item of group.items) if (item.screen) groupOf.set(item.screen, group.label)
+    }
     const buckets = new Map<string, Array<(typeof SCREENS)[number]>>()
     for (const screen of SCREENS) {
-      const key = SCREEN_MODULE[screen.name] ?? 'other'
+      const key = groupOf.get(screen.name) ?? 'other'
       const bucket = buckets.get(key)
       if (bucket) bucket.push(screen)
       else buckets.set(key, [screen])
@@ -416,7 +425,10 @@ export function IndexPage() {
   }, [])
 
   const sections = useMemo(() => {
-    const ordered = MODULES.filter(([id]) => groups.has(id)).map(([id, label]) => ({ id, label, items: groups.get(id) ?? [] }))
+    const ordered: Array<{ id: string; label: string; items: Array<(typeof SCREENS)[number]> }> = []
+    for (const [id, items] of groups) {
+      if (id !== 'other') ordered.push({ id, label: id, items })
+    }
     const other = groups.get('other')
     if (other?.length) ordered.push({ id: 'other', label: 'Other Screens', items: other })
     if (!query.trim()) return ordered
