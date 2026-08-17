@@ -49,11 +49,9 @@ const ENTITY_META: Record<EntityType, { label: string; icon: string; tint: reado
   technicians: { label: 'Technicians', icon: 'UserCog', tint: BLUE },
 }
 const ENTITY_ORDER = Object.keys(ENTITY_META) as EntityType[]
-
 const VEHICLE_STATUS: Record<string, readonly [string, string]> = { active: BLUE, service: CYAN }
 const ESTIMATE_STATUS: Record<string, readonly [string, string]> = { draft: SLATE, sent: CYAN, approved: BLUE }
 const APPT_STATUS: Record<string, readonly [string, string]> = { confirmed: BLUE, awaiting: CYAN, 'no-show': ORANGE }
-
 const RECENT_KEY = 'salis-global-search-recent'
 const MAX_RECENT = 5
 
@@ -126,7 +124,6 @@ export function GlobalSearch() {
   const { fieldHidden } = useSession()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
-
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [activeTab, setActiveTab] = useState<'all' | EntityType>('all')
@@ -140,11 +137,9 @@ export function GlobalSearch() {
   const estimates = useCollection('estimates')
   const parts = useCollection('parts')
   const technicians = useCollection('technicians')
-
   const isLoading =
     customers.isLoading || vehicles.isLoading || jobs.isLoading || invoices.isLoading ||
     appointments.isLoading || estimates.isLoading || parts.isLoading || technicians.isLoading
-
   // Contact details are hidden from some roles app-wide (Customers screen
   // applies the same rule) — a search result can't leak what the list can't.
   const hideContact = fieldHidden('Customer contact details')
@@ -190,7 +185,7 @@ export function GlobalSearch() {
         type: 'invoices',
         key: `invoices-${inv.id}`,
         title: <Code>{inv.id}</Code>,
-        subtitle: `${inv.cust} · ${inv.amount}`,
+        subtitle: <>{inv.cust} · <Code>{inv.amount}</Code></>,
         badge: <InvoiceStatusBadge status={inv.status} />,
         href: `/invoice-detail?id=${encodeURIComponent(inv.id)}`,
         search: [inv.id, inv.cust].join(' ').toLowerCase(),
@@ -226,7 +221,7 @@ export function GlobalSearch() {
         type: 'parts',
         key: `parts-${p.sku}`,
         title: p.name,
-        subtitle: <><Code>{p.sku}</Code> · {p.price}</>,
+        subtitle: <><Code>{p.sku}</Code> · <Code>{p.price}</Code></>,
         badge: low ? tone(ORANGE[0], ORANGE[1], t('Low Stock')) : tone(BLUE[0], BLUE[1], t('In Stock')),
         href: '/inventory',
         search: [p.name, p.sku].join(' ').toLowerCase(),
@@ -260,7 +255,6 @@ export function GlobalSearch() {
     () => (needle ? hits.filter((hit) => hit.search.includes(needle)) : []),
     [hits, needle]
   )
-
   const groups = useMemo(
     () =>
       ENTITY_ORDER.map((type) => ({
@@ -272,13 +266,11 @@ export function GlobalSearch() {
       })).filter((group) => group.items.length > 0),
     [matched, t]
   )
-
   const effectiveTab: 'all' | EntityType =
     activeTab !== 'all' && groups.some((g) => g.type === activeTab) ? activeTab : 'all'
   const visibleGroups = effectiveTab === 'all' ? groups : groups.filter((g) => g.type === effectiveTab)
   const flat = useMemo(() => visibleGroups.flatMap((g) => g.items), [visibleGroups])
   const clampedIndex = Math.min(activeIndex, Math.max(flat.length - 1, 0))
-
   const hasQuery = needle.length > 0
   const hasResults = hasQuery && flat.length > 0
   const noResults = hasQuery && !isLoading && flat.length === 0
@@ -316,7 +308,6 @@ export function GlobalSearch() {
     setQuery(value)
     setActiveIndex(0)
   }
-
   let flatCursor = -1
 
   if (isMobile) {

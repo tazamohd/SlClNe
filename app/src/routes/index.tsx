@@ -98,6 +98,22 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { AdvancedSettings } from '@/screens/admin/AdvancedSettings'
+import { AuditLog } from '@/screens/admin/AuditLog'
+import { Backup } from '@/screens/admin/Backup'
+import { Branches } from '@/screens/admin/Branches'
+import { GlobalSearch } from '@/screens/admin/GlobalSearch'
+import { NotificationCenter } from '@/screens/admin/NotificationCenter'
+import { OEMIntegrations } from '@/screens/admin/OEMIntegrations'
+import { Organizations } from '@/screens/admin/Organizations'
+import { Profile } from '@/screens/admin/Profile'
+import { RolesPermissions } from '@/screens/admin/RolesPermissions'
+import { Settings } from '@/screens/admin/Settings'
+import { Subscription } from '@/screens/admin/Subscription'
+import { SuperAdmin } from '@/screens/admin/SuperAdmin'
+import { SystemIntegrations } from '@/screens/admin/SystemIntegrations'
+import { Templates } from '@/screens/admin/Templates'
+import { UsersTeams } from '@/screens/admin/UsersTeams'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -178,6 +194,22 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  AdvancedSettings,
+  AuditLog,
+  Backup,
+  Branches,
+  GlobalSearch,
+  NotificationCenter,
+  OEMIntegrations,
+  Organizations,
+  Profile,
+  RolesPermissions,
+  Settings,
+  Subscription,
+  SuperAdmin,
+  SystemIntegrations,
+  Templates,
+  UsersTeams,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
