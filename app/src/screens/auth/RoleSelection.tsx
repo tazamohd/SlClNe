@@ -61,7 +61,7 @@ const ROLE_OPTIONS: readonly RoleOption[] = [
  *  `salis-role` storage key `SessionProvider` reads, it does not sign anyone
  *  in — that still needs a password on the Login screen. */
 export function RoleSelection() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const [picked, setPicked] = useState<RoleId>('owner')
 
   function select(id: RoleId) {
