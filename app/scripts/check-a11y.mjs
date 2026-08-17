@@ -41,7 +41,7 @@ import { fileURLToPath } from 'node:url'
  *  file, in docs/A11Y_AUDIT.md. The gate fails when the count rises above this,
  *  so new screens cannot quietly reintroduce a pattern the primitives solved.
  *  Ratchet it downward — never up — as screens are fixed. */
-const BASELINE = 2
+const BASELINE = 0
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const SRC = path.join(APP, 'src')

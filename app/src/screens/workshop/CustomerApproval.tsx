@@ -230,6 +230,7 @@ export function CustomerApproval() {
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
                       inputMode="numeric"
+                      aria-label={t('One-time code')}
                       placeholder={t('One-time code')}
                       className="h-9 rounded-lg border border-border bg-card px-3 font-mono text-[13px] text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
                       dir="ltr"

@@ -20,6 +20,7 @@ export function Topbar() {
           className="pointer-events-none absolute z-[1] text-muted start-2.5"
         />
         <input
+          aria-label={t('Search customers, vehicles, parts...')}
           placeholder={t('Search customers, vehicles, parts...')}
           onFocus={() => navigate('/global-search')}
           className="h-9 w-[260px] rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
