@@ -88,6 +88,13 @@ const ROUTES = [
   { path: '/two-factor-verification', expect: 'Two-Factor Verification' },
   { path: '/create-pin', expect: 'Create PIN' },
   { path: '/biometric-setup', expect: 'Biometric Setup' },
+  { path: '/customer-portal', expect: 'JC-A3F8B2C1' },
+  { path: '/customer-portal/booking', expect: 'Confirm Booking' },
+  { path: '/supplier-portal', expect: 'AutoParts KSA' },
+  { path: '/supplier-portal/orders', expect: 'PO-2026-0412' },
+  { path: '/technician-portal', expect: 'Current Job' },
+  { path: '/technician-portal/job-detail', expect: 'Time Tracking' },
+  { path: '/kiosk-check-in', expect: 'Scan your QR code or enter vehicle details' },
 ]
 
 const browser = await chromium.launch({ executablePath:
