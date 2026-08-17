@@ -531,8 +531,8 @@ export function UIModalsCapture() {
             {[CHIP.blue, CHIP.orange, CHIP.navy].map(([bg, fg], i) => (
               <div key={i} className="relative flex aspect-square flex-1 items-center justify-center rounded-lg border border-border" style={{ background: bg }}>
                 <Icon name="Image" size={18} style={{ color: fg }} className="opacity-40" />
-                <span className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[rgba(11,31,59,.7)] text-white end-1">
-                  <Icon name="X" size={9} />
+                <span aria-hidden className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[rgba(11,31,59,.7)] text-[10px] leading-none text-white end-1">
+                  &times;
                 </span>
               </div>
             ))}
