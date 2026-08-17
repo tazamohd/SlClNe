@@ -22,6 +22,16 @@ import {
   OTPVerification,
   TwoFactorVerification,
 } from '@/screens/auth/VerificationScreens'
+import { PublicPortalLanding } from '@/screens/website/Landing'
+import { PublicPortalAbout } from '@/screens/website/About'
+import { PublicPortalServices } from '@/screens/website/Services'
+import { PublicPortalMarketplace } from '@/screens/website/Marketplace'
+import { PublicPortalInsurance } from '@/screens/website/Insurance'
+import { PublicPortalLoans } from '@/screens/website/Loans'
+import { PublicPortalBlog } from '@/screens/website/Blog'
+import { PublicPortalFAQ } from '@/screens/website/FAQ'
+import { PublicPortalContact } from '@/screens/website/Contact'
+import { PublicPortalSupport } from '@/screens/website/Support'
 import { Dashboard } from '@/screens/Dashboard'
 import { JobCards } from '@/screens/workshop/JobCards'
 import { JobDetail } from '@/screens/workshop/JobDetail'
@@ -120,6 +130,17 @@ const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
   TwoFactorVerification,
   CreatePIN,
   BiometricSetup,
+  // Public marketing site: each page ships its own site header/nav/footer.
+  'PublicPortal.Landing': PublicPortalLanding,
+  'PublicPortal.About': PublicPortalAbout,
+  'PublicPortal.Services': PublicPortalServices,
+  'PublicPortal.Marketplace': PublicPortalMarketplace,
+  'PublicPortal.Insurance': PublicPortalInsurance,
+  'PublicPortal.Loans': PublicPortalLoans,
+  'PublicPortal.Blog': PublicPortalBlog,
+  'PublicPortal.FAQ': PublicPortalFAQ,
+  'PublicPortal.Contact': PublicPortalContact,
+  'PublicPortal.Support': PublicPortalSupport,
 }
 
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a
