@@ -98,6 +98,15 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { UICardView, UIListView, UITableView } from '@/screens/ui/Views'
+import { UICalendarView, UIKanbanView, UITimelineView } from '@/screens/ui/ViewsAlt'
+import { UIAttachments, UIMapView, UIMediaGallery } from '@/screens/ui/Media'
+import { UIAdvancedFilters, UICharts } from '@/screens/ui/Insights'
+import { UIExportCenter, UIImportCenter } from '@/screens/ui/Transfer'
+import { UIEmptyStates, UIFormValidation, UILoadingStates } from '@/screens/ui/States'
+import { UIActivityFeed, UIComments, UIMessages } from '@/screens/ui/Collaboration'
+import { UIModalsActions, UIModalsCRUD, UIModalsStatus } from '@/screens/ui/ModalsCore'
+import { UIModalsCapture, UIModalsData, UIModalsLifecycle } from '@/screens/ui/ModalsFlow'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -178,6 +187,32 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  // Internal pattern library — reference galleries for the design system.
+  'UI.ListView': UIListView,
+  'UI.TableView': UITableView,
+  'UI.CardView': UICardView,
+  'UI.KanbanView': UIKanbanView,
+  'UI.CalendarView': UICalendarView,
+  'UI.TimelineView': UITimelineView,
+  'UI.MapView': UIMapView,
+  'UI.MediaGallery': UIMediaGallery,
+  'UI.Attachments': UIAttachments,
+  'UI.Charts': UICharts,
+  'UI.AdvancedFilters': UIAdvancedFilters,
+  'UI.ExportCenter': UIExportCenter,
+  'UI.ImportCenter': UIImportCenter,
+  'UI.EmptyStates': UIEmptyStates,
+  'UI.LoadingStates': UILoadingStates,
+  'UI.FormValidation': UIFormValidation,
+  'UI.ActivityFeed': UIActivityFeed,
+  'UI.Comments': UIComments,
+  'UI.Messages': UIMessages,
+  'UI.Modals.CRUD': UIModalsCRUD,
+  'UI.Modals.Actions': UIModalsActions,
+  'UI.Modals.Status': UIModalsStatus,
+  'UI.Modals.Data': UIModalsData,
+  'UI.Modals.Capture': UIModalsCapture,
+  'UI.Modals.Lifecycle': UIModalsLifecycle,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
