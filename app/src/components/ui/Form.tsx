@@ -659,6 +659,23 @@ function FileField({
 
   return (
     <div className="flex flex-col gap-2">
+      {/* The input leads the label in source, not just for the `htmlFor` pairing
+          but so the drop zone can be its `peer`: the native control is visually
+          hidden, so its focus ring has to be borrowed by the label a keyboard
+          user actually sees. Order is invisible here — the input is `sr-only`. */}
+      <input
+        id={id}
+        name={name}
+        type="file"
+        accept={accept}
+        multiple={multiple}
+        disabled={disabled}
+        onBlur={onBlur}
+        aria-describedby={describedBy}
+        aria-invalid={invalid || undefined}
+        onChange={(event) => add(event.target.files)}
+        className="peer sr-only"
+      />
       <label
         htmlFor={id}
         onDragOver={(event) => {
@@ -674,6 +691,7 @@ function FileField({
         className={cn(
           'flex cursor-pointer flex-col items-center gap-1.5 rounded-lg border-2 border-dashed px-4 py-7 text-center',
           'transition-colors duration-150',
+          'peer-focus-visible:border-salis-blue peer-focus-visible:ring-2 peer-focus-visible:ring-salis-blue peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-card',
           disabled && 'cursor-not-allowed opacity-60',
           invalid
             ? 'border-salis-orange'
@@ -688,19 +706,6 @@ function FileField({
         </span>
         <span className="text-[11px] text-muted">{t('or click to browse')}</span>
       </label>
-      <input
-        id={id}
-        name={name}
-        type="file"
-        accept={accept}
-        multiple={multiple}
-        disabled={disabled}
-        onBlur={onBlur}
-        aria-describedby={describedBy}
-        aria-invalid={invalid || undefined}
-        onChange={(event) => add(event.target.files)}
-        className="sr-only"
-      />
       {files.length ? (
         <ul className="flex flex-col gap-1.5">
           {files.map((file, index) => (

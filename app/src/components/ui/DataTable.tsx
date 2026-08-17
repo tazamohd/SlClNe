@@ -44,6 +44,7 @@ export function DataTable<TRow>({
   footer,
   className,
   mobileCard,
+  caption,
 }: {
   columns: readonly Column<TRow>[]
   rows: readonly TRow[]
@@ -56,6 +57,11 @@ export function DataTable<TRow>({
   className?: string
   /** Row body for the mobile card layout. */
   mobileCard?: (row: TRow) => ReactNode
+  /** Names the table for assistive tech — announced when focus enters it and
+   *  listed in a screen reader's table index, which is how a non-visual user
+   *  tells two tables on a screen apart. An English source string, translated
+   *  here; rendered visually hidden, so the visible layout is untouched. */
+  caption?: string
 }) {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -95,6 +101,7 @@ export function DataTable<TRow>({
     <Card className={cn('overflow-hidden', className)}>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse font-ui text-sm text-heading">
+          {caption ? <caption className="sr-only">{t(caption)}</caption> : null}
           <thead>
             <tr>
               {columns.map((column) => (

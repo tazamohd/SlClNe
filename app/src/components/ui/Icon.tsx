@@ -29,5 +29,19 @@ export function Icon({ name, size = 16, strokeWidth = 2, ...props }: IconProps) 
     if (import.meta.env.DEV) console.warn(`[Icon] unknown lucide icon: ${name}`)
     return null
   }
-  return <Glyph size={size} strokeWidth={strokeWidth} aria-hidden {...props} />
+  // An icon is decorative by default: the label beside it carries the meaning,
+  // so the glyph is hidden from the accessibility tree to spare a screen reader
+  // announcing the same thing twice. When the glyph *is* the meaning — an icon-
+  // only control, a status dot with no text — the caller passes `aria-label`
+  // (or `aria-labelledby`), which opts it back in as a named `img` and stands
+  // the default `aria-hidden` down. Both come after nothing else can override.
+  const meaningful = props['aria-label'] != null || props['aria-labelledby'] != null
+  return (
+    <Glyph
+      size={size}
+      strokeWidth={strokeWidth}
+      {...(meaningful ? { role: 'img' } : { 'aria-hidden': true })}
+      {...props}
+    />
+  )
 }

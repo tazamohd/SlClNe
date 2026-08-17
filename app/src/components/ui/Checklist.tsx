@@ -38,12 +38,15 @@ export function Checklist({
               type="checkbox"
               checked={on}
               onChange={() => onToggle(item.label)}
-              className="sr-only"
+              className="peer sr-only"
             />
             <span
               aria-hidden
               className={cn(
                 'flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-[4px] transition-all duration-150',
+                // The real checkbox is visually hidden, so the tick box has to
+                // wear the focus ring for a keyboard user to see where they are.
+                'peer-focus-visible:ring-2 peer-focus-visible:ring-salis-blue peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-card',
                 on
                   ? 'border-none bg-salis-gradient text-white'
                   : 'border-[1.5px] border-border-strong bg-inset text-transparent'
