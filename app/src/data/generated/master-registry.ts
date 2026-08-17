@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-08-16'
+export const REGISTRY_GENERATED_AT = '2026-08-17'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {

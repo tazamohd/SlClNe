@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-12T15:40:00Z",
+  "asOf": "2026-08-17T09:00:00Z",
   "wave": "W2",
   "waveName": "Procurement backend (F-022)",
-  "waveNote": "Procurement backend (F-022) landed and verified — suppliers, requisitions, purchase orders with the ceiling and over-receipt invariants proven over HTTP (server 389→406). That closes the last server-side domain gap. Agent 11 now wires its honest-gap procurement screens (requisitions, PO raise/approve, receiving) to the new endpoints. After procurement: the ~175 feature-map screens, cross-cutting hardening (mobile/tablet/RTL/a11y/security/perf), and certification.",
+  "waveNote": "Procurement complete end-to-end (F-022): the backend (suppliers, requisitions, purchase orders, receiving with ceiling + over-receipt invariants) and agent 11s screens wired to it — requisition create-with-lines/submit/approve, PO raise/approve (ceiling + SOD surfaced, server-enforced), receiving by line id, supplier directory. Server 406, app 816, gates at baseline (195 placeholder, 167/402 rendering). Every ERP domain now has a real backend and functional screens. Remaining: the ~175 feature-map screens, cross-cutting hardening (mobile/tablet/RTL/a11y/security/perf), and certification.",
   "agents": [
     {
       "id": "03",
@@ -158,7 +158,7 @@
       "id": "11",
       "name": "Procurement",
       "team": "prd",
-      "state": "running",
+      "state": "done",
       "startedAt": "2026-08-12T15:40:00Z",
       "scope": "Wire the procurement screens to the F-022 backend: requisitions (create with lines, submit, approve/reject), purchase orders (raise from requisition, approve within ceiling, statuses), receiving (qty ≤ ordered, over-receipt approval), suppliers directory. Live + fixture-gap paths.",
       "owns": [
@@ -166,7 +166,7 @@
         "app/src/screens/domains/procurement.ts"
       ],
       "blocks": [],
-      "notes": "Client screens only; consumes the procurement collections + procurement action API."
+      "notes": "Procurement screens wired to the F-022 backend: requisitions, PO raise/approve (ceiling + SOD surfaced, server-enforced), receiving by line id with the over-receipt guard, supplier directory. Died on a session limit at test reconciliation; resumed to finish — 816 tests, gates at baseline. Flagged that no role can receive-but-not-approve (unreachable defence-in-depth)."
     },
     {
       "id": "16",
