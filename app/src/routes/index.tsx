@@ -98,6 +98,13 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { AIAnalytics } from '@/screens/ai/AIAnalytics'
+import { AIAssistant } from '@/screens/ai/AIAssistant'
+import { AutomationRules } from '@/screens/ai/AutomationRules'
+import { KnowledgeBase } from '@/screens/ai/KnowledgeBase'
+import { ModelSettings } from '@/screens/ai/ModelSettings'
+import { PromptLibrary } from '@/screens/ai/PromptLibrary'
+import { WorkflowBuilder } from '@/screens/ai/WorkflowBuilder'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -178,6 +185,13 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  AIAnalytics,
+  AIAssistant,
+  AutomationRules,
+  KnowledgeBase,
+  ModelSettings,
+  PromptLibrary,
+  WorkflowBuilder,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
