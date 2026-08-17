@@ -77,8 +77,8 @@ function Specimen({
         </span>
         <h3 className="min-w-0 truncate text-[15px] font-bold text-heading">{t(title)}</h3>
         <span className="flex-1" />
-        <span aria-hidden className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-muted">
-          <Icon name="X" size={15} />
+        <span aria-hidden className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-lg leading-none text-muted">
+          &times;
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-3.5 px-5 py-4">{children}</div>
@@ -251,7 +251,7 @@ export function UIModalsData() {
                 <Icon name={s.icon} size={12} />
                 {s.dir}
               </span>
-              <Icon name="X" size={13} className="flex-shrink-0 text-salis-orange" />
+              <span aria-hidden className="flex-shrink-0 text-base leading-none text-salis-orange">&times;</span>
             </div>
           ))}
           <button
@@ -300,7 +300,7 @@ export function UIModalsData() {
               <span className="flex-1 truncate rounded-md border border-border bg-card px-2 py-1 text-[11px] text-heading" dir="ltr">
                 {f.value}
               </span>
-              <Icon name="X" size={12} className="flex-shrink-0 text-salis-orange" />
+              <span aria-hidden className="flex-shrink-0 text-sm leading-none text-salis-orange">&times;</span>
             </div>
           ))}
           <button
@@ -367,7 +367,7 @@ export function UIModalsData() {
               <p className="truncate text-[13px] font-medium text-heading" dir="ltr">customers_july.csv</p>
               <p className="text-[11px] text-muted">248 {t('rows')} · 84 KB</p>
             </div>
-            <Icon name="CheckCircle" size={16} className="flex-shrink-0 text-salis-blue" />
+            <Icon name="BadgeCheck" size={16} className="flex-shrink-0 text-salis-blue" />
           </div>
           <Field label="Column mapping">
             <div className="flex flex-col gap-1.5">
@@ -380,7 +380,7 @@ export function UIModalsData() {
               ))}
             </div>
           </Field>
-          <InsetNote icon="AlertTriangle" tone="orange">
+          <InsetNote icon="ShieldAlert" tone="orange">
             6 {t('rows have duplicate phone numbers and will be skipped.')}
           </InsetNote>
         </Specimen>
@@ -621,7 +621,7 @@ export function UIModalsLifecycle() {
               </span>
             </div>
           ))}
-          <InsetNote icon="AlertTriangle" tone="orange">
+          <InsetNote icon="ShieldAlert" tone="orange">
             {t('3 vehicles and 12 invoices will move to the primary record.')}
           </InsetNote>
         </Specimen>
