@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { cn } from '@/lib/cn'
 import { FeatureHeader, Section } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
