@@ -22,6 +22,19 @@ import {
   OTPVerification,
   TwoFactorVerification,
 } from '@/screens/auth/VerificationScreens'
+import { Register } from '@/screens/auth/Register'
+import { RoleSelection } from '@/screens/auth/RoleSelection'
+import { SocialLogin } from '@/screens/auth/SocialLogin'
+import { SSOLogin } from '@/screens/auth/SSOLogin'
+import { OrganizationSelection } from '@/screens/auth/OrganizationSelection'
+import { WorkspaceSelection } from '@/screens/auth/WorkspaceSelection'
+import { ProfileCompletion } from '@/screens/auth/ProfileCompletion'
+import { Onboarding } from '@/screens/auth/Onboarding'
+import { InviteAcceptance } from '@/screens/auth/InviteAcceptance'
+import { Error404 } from '@/screens/auth/Error404'
+import { Maintenance } from '@/screens/auth/Maintenance'
+import { PrivacyPolicy } from '@/screens/auth/PrivacyPolicy'
+import { TermsConditions } from '@/screens/auth/TermsConditions'
 import { Dashboard } from '@/screens/Dashboard'
 import { JobCards } from '@/screens/workshop/JobCards'
 import { JobDetail } from '@/screens/workshop/JobDetail'
@@ -120,6 +133,19 @@ const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
   TwoFactorVerification,
   CreatePIN,
   BiometricSetup,
+  Register,
+  RoleSelection,
+  SocialLogin,
+  SSOLogin,
+  OrganizationSelection,
+  WorkspaceSelection,
+  ProfileCompletion,
+  Onboarding,
+  InviteAcceptance,
+  Error404,
+  Maintenance,
+  PrivacyPolicy,
+  TermsConditions,
 }
 
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a

@@ -88,6 +88,19 @@ const ROUTES = [
   { path: '/two-factor-verification', expect: 'Two-Factor Verification' },
   { path: '/create-pin', expect: 'Create PIN' },
   { path: '/biometric-setup', expect: 'Biometric Setup' },
+  { path: '/register', expect: "Don't have an account?" },
+  { path: '/role-selection', expect: 'Select Your Role' },
+  { path: '/social-login', expect: 'Choose how to sign in' },
+  { path: '/ssologin', expect: 'Continue with SSO' },
+  { path: '/organization-selection', expect: 'Al-Amri Auto Group' },
+  { path: '/workspace-selection', expect: 'Al-Amri Auto Center' },
+  { path: '/profile-completion', expect: 'Tell us a bit about yourself' },
+  { path: '/onboarding', expect: 'Workshop Name' },
+  { path: '/invite-acceptance', expect: 'Al-Amri Auto Center' },
+  { path: '/error404', expect: "doesn't exist or has been moved" },
+  { path: '/maintenance', expect: 'System Under Maintenance' },
+  { path: '/privacy-policy', expect: 'Privacy Policy' },
+  { path: '/terms-conditions', expect: 'I have read and agree to the' },
 ]
 
 const browser = await chromium.launch({ executablePath:
