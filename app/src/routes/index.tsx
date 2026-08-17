@@ -98,6 +98,12 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { CRMCalendar } from '@/screens/crm/CRMCalendar'
+import { CustomerFeedback } from '@/screens/crm/CustomerFeedback'
+import { LeadDetail } from '@/screens/crm/LeadDetail'
+import { FleetContract } from '@/screens/registry/FleetContract'
+import { InventoryReports } from '@/screens/accounting/InventoryReports'
+import { HRPayroll } from '@/screens/admin/HRPayroll'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -178,6 +184,12 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  CRMCalendar,
+  CustomerFeedback,
+  LeadDetail,
+  FleetContract,
+  InventoryReports,
+  HRPayroll,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
