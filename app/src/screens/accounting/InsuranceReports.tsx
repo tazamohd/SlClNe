@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { FeatureHeader, Section, StatRow, TabBar, type Stat } from '@/components/shell/FeatureScreen'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -78,7 +78,7 @@ function BarRow({
   value: number
   max: number
   color: string
-  display: React.ReactNode
+  display: ReactNode
 }) {
   return (
     <div className="flex flex-col gap-1.5">

@@ -161,6 +161,14 @@ export function TaxManagement() {
           ) : null
         }
       >
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[13px] text-muted">
+          <span>
+            {t('Output VAT')} <Money sar={outputVat} className="font-semibold text-body" />
+          </span>
+          <span>
+            {t('Input VAT')} <Money sar={inputVat} className="font-semibold text-body" />
+          </span>
+        </div>
         <DataTable
           columns={columns}
           rows={returns}
