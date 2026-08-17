@@ -8,8 +8,14 @@ import {
   type ReactNode,
 } from 'react'
 import { AR } from '@/data/generated/ar'
+import { AR_OVERRIDES } from '@/data/ar-overrides'
 import type { Language, Theme } from '@/data/types'
 import { readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
+
+// Generated dictionary first, hand-maintained supplement last: overrides win,
+// so a gap the generator missed is filled and a bad generated string can be
+// corrected without editing the generated file. See src/data/ar-overrides.ts.
+const AR_LOOKUP: Record<string, string> = { ...AR, ...AR_OVERRIDES }
 
 /** Theme + language, persisted and applied to <html>.
  *
@@ -101,7 +107,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       setLanguage,
       toggleLanguage: () => setLanguage(rtl ? 'en' : 'ar'),
       setNotifications,
-      t: (source: string) => (rtl ? (AR[source] ?? source) : source),
+      t: (source: string) => (rtl ? (AR_LOOKUP[source] ?? source) : source),
     }
   }, [theme, language, notifications, setTheme, setLanguage, setNotifications])
 

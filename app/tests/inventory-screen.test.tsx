@@ -8,6 +8,7 @@ import {
   type MovementRow,
 } from '@/screens/feature/Inventory'
 import { AR } from '@/data/generated/ar'
+import { AR_OVERRIDES } from '@/data/ar-overrides'
 import { PARTS } from '@/data/generated/tables'
 import { setViewportWidth } from '@/test-setup'
 import { renderWithProviders } from './helpers/render'
@@ -780,8 +781,14 @@ describe('Arabic', () => {
 
     expect(screen.getByRole('tab', { name: AR['Overview'] })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: AR['Alerts'] })).toBeInTheDocument()
-    expect(screen.getByText(AR['Inventory & Parts Management'] ?? 'Inventory & Parts Management'))
-      .toBeInTheDocument()
+    // The heading translates through the same merged lookup the app uses
+    // ({ ...AR, ...AR_OVERRIDES }); this key's Arabic now lives in the overrides
+    // supplement, so read it there rather than the generated dictionary alone.
+    const arHeading =
+      AR_OVERRIDES['Inventory & Parts Management'] ??
+      AR['Inventory & Parts Management'] ??
+      'Inventory & Parts Management'
+    expect(screen.getByText(arHeading)).toBeInTheDocument()
   })
 
   it('keeps quantities and SKUs pinned LTR so the digits are not reordered', async () => {
