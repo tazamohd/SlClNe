@@ -98,6 +98,10 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { CallCenter, CallCenterLogs } from '@/screens/callcenter/CallCenter'
+import { CustomerDetail } from '@/screens/registry/CustomerDetail'
+import { VehicleDetail } from '@/screens/registry/VehicleDetail'
+import { PurchaseOrder } from '@/screens/network/PurchaseOrder'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -178,6 +182,11 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  CallCenter,
+  'CallCenter.Logs': CallCenterLogs,
+  CustomerDetail,
+  VehicleDetail,
+  PurchaseOrder,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
