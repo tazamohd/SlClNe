@@ -23,7 +23,8 @@ import { ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { useCollection, type RowOf } from '@/data/useCollection'
-import { approvalLimit, canApprove as roleCanApprove, sodViolation } from '@/data/rbac'
+import { RepositoryError, type PurchaseOrderRow, type PurchaseOrderLineRow } from '@/data/repository'
+import { approvalLimit, canApprove as roleCanApprove } from '@/data/rbac'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import {
@@ -31,9 +32,10 @@ import {
   procurementApi,
   procurementIdempotencyKey,
   procurementUnavailableReason,
+  type NewPurchaseOrderInput,
+  type NewSupplierInput,
   type ProcurementApi,
-  type PurchaseOrderLineInput,
-  type PurchaseOrderRecord,
+  type PurchaseOrderLineDraft,
 } from './Procurement'
 
 type Part = RowOf<'parts'>
@@ -52,8 +54,9 @@ export interface DraftLine {
   unitPriceHalalas: number
 }
 
-/** VAT at the KSA standard rate the design shows. The server recomputes —
- *  a client total is display, never a value the API accepts back. */
+/** VAT at the KSA standard rate the design shows. This is a **display preview**
+ *  only: the server recomputes subtotal + VAT from the lines and the purchase
+ *  order's total is read back from its row, never computed here for the wire. */
 export const VAT_RATE = 0.15
 
 export function poTotals(lines: readonly { qty: number; unitPriceHalalas: number }[]): {
@@ -68,7 +71,8 @@ export function poTotals(lines: readonly { qty: number; unitPriceHalalas: number
 
 /** The receiving invariant: received quantity never exceeds ordered quantity
  *  silently. `over` is not a refusal — it is the explicit route to approval,
- *  and the caller decides whether an approver is present to take it. */
+ *  and the caller decides whether an approver is present to take it. The server
+ *  runs the same check and owns the boundary. */
 export type ReceiveOutcome =
   | { kind: 'invalid'; message: string }
   | { kind: 'ok' }
@@ -257,6 +261,87 @@ function LineModal({
   )
 }
 
+/* ═══════════════════════════════════════════════════════ add a supplier */
+
+const supplierSchema = z.object({
+  name: z.string().trim().min(1, 'Name the supplier.').max(200),
+  contactName: z.string().trim().max(200),
+  contactPhone: z.string().trim().max(32),
+  contactEmail: z.string().trim().max(254),
+})
+
+/** Adds a supplier to the directory so a purchase order picks one instead of
+ *  typing a name that matches nothing. The suppliers collection is writable
+ *  (F-022); the create is gated on `procurement` and audited server-side. */
+function SupplierModal({
+  api,
+  onClose,
+  onCreated,
+}: {
+  api: ProcurementApi
+  onClose: () => void
+  onCreated: (supplierId: string, name: string) => void
+}) {
+  const { t } = usePreferences()
+  const toast = useToast()
+
+  const form = useZodForm({
+    schema: supplierSchema,
+    initial: { name: '', contactName: '', contactPhone: '', contactEmail: '' },
+    async onSubmit(values) {
+      const input: NewSupplierInput = {
+        name: values.name,
+        ...(values.contactName ? { contactName: values.contactName } : {}),
+        ...(values.contactPhone ? { contactPhone: values.contactPhone } : {}),
+        ...(values.contactEmail ? { contactEmail: values.contactEmail } : {}),
+      }
+      let created
+      try {
+        created = await api.createSupplier(input)
+      } catch (error) {
+        throw asProcurementFormError(error)
+      }
+      toast.show({ title: t('Supplier added'), description: created.name })
+      const ref = (created as { _id?: string })._id ?? created.id
+      onCreated(ref, created.name)
+    },
+  })
+
+  const { confirmDiscard } = useUnsavedChangesGuard(form.dirty && !form.pending)
+  const close = useCallback(() => {
+    void confirmDiscard().then((ok) => {
+      if (ok) onClose()
+    })
+  }, [confirmDiscard, onClose])
+
+  return (
+    <Modal
+      open
+      onClose={close}
+      variant="crud"
+      icon="Building2"
+      title="Add Supplier"
+      description={t('A supplier joins the directory so purchase orders reference it, not a free-typed name.')}
+    >
+      <Form form={form}>
+        <FormErrorSummary />
+        <Field name="name" label="Supplier Name" required placeholder="United Auto Parts Co." />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field name="contactName" label="Contact Person" placeholder="Fahad Al-Qahtani" />
+          <Field name="contactPhone" label="Phone" placeholder="+966 5X XXX XXXX" />
+        </div>
+        <Field name="contactEmail" label="Email" placeholder="orders@supplier.com" />
+        <FormActions note>
+          <Button variant="subtle" size="lg" onClick={close} disabled={form.pending}>
+            {t('Cancel')}
+          </Button>
+          <SubmitButton label="Add Supplier" />
+        </FormActions>
+      </Form>
+    </Modal>
+  )
+}
+
 /* ═══════════════════════════════════════════════════ receiving against a PO */
 
 const receiveSchema = z.object({
@@ -267,21 +352,23 @@ const receiveSchema = z.object({
     .regex(/^\d+$/, 'Quantity must be a whole number of units.'),
 })
 
-/** Books received stock against one order line.
+/** Books received stock against one order line, addressed by the line's `_id`.
  *
  *  The invariant is surfaced here: receiving beyond the ordered quantity is
  *  never accepted silently — it is refused outright for a role without approve
  *  authority on procurement, and routed through an explicit confirmation for a
- *  role with it. The server owns the final check the day the endpoint exists. */
+ *  role with it, which sets `overReceiptApproved`. An idempotency key is
+ *  generated per user-attempt so a retry cannot double-book. The server owns
+ *  the final check. */
 export function ReceiveLineModal({
   order,
-  lineIndex,
+  line,
   api,
   onClose,
   onReceived,
 }: {
-  order: PurchaseOrderRecord
-  lineIndex: number
+  order: PurchaseOrderRow
+  line: PurchaseOrderLineRow
   api: ProcurementApi
   onClose: () => void
   onReceived: () => void
@@ -291,15 +378,17 @@ export function ReceiveLineModal({
   const { confirm } = useModal()
   const toast = useToast()
 
-  const line = order.lines[lineIndex]
-  const remaining = line ? Math.max(0, line.qty - line.receivedQty) : 0
+  // One key per attempt: created when the modal opens, so a transient retry of
+  // the same receipt reuses it rather than booking a second one.
+  const idempotencyKey = useRef(procurementIdempotencyKey())
+
+  const remaining = Math.max(0, line.qty - line.receivedQty)
   const mayApproveOver = roleCanApprove(role, undefined, 'procurement')
 
   const form = useZodForm({
     schema: receiveSchema,
     initial: { qty: '' },
     async onSubmit(values) {
-      if (!line) return
       const qty = Number(values.qty)
       const outcome = checkReceive({ ordered: line.qty, received: line.receivedQty, qty })
       if (outcome.kind === 'invalid') {
@@ -327,7 +416,12 @@ export function ReceiveLineModal({
       }
 
       try {
-        await api.receiveLine(order.id, lineIndex, qty, overApproved, procurementIdempotencyKey())
+        await api.receivePurchaseOrder(
+          order.id,
+          [{ lineId: line._id, qty }],
+          overApproved,
+          idempotencyKey.current
+        )
       } catch (error) {
         throw asProcurementFormError(error)
       }
@@ -338,8 +432,6 @@ export function ReceiveLineModal({
       onReceived()
     },
   })
-
-  if (!line) return null
 
   return (
     <Modal
@@ -401,31 +493,196 @@ export function ReceiveLineModal({
 
 /* ═══════════════════════════════════════════ orders awaiting approval/receipt */
 
-const PO_STATUS_BADGE: Record<PurchaseOrderRecord['status'], readonly [string, string]> = {
+type PoStatus = PurchaseOrderRow['status']
+
+/** Status tone — blue for active/approved states, orange while receiving, muted
+ *  for draft and closed. No green, no red (README §7). */
+const PO_STATUS_TONE: Record<PoStatus, readonly [string, string]> = {
   draft: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
-  placed: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
   approved: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  sent: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  receiving: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  received: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  closed: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
 }
 
-/** Placed orders: approve within the ceiling, then receive line by line.
+const RECEIVABLE: readonly PoStatus[] = ['approved', 'sent', 'receiving', 'received']
+
+/** One purchase order: approve within the ceiling (server-enforced), then
+ *  receive line by line once approved.
  *
- *  The segregation-of-duties check here is the real record-level one — the
- *  order carries who raised it, so the raiser is refused approval of their own
- *  order by identity, not by role proxy (F-004: the table pairs activities on
- *  a record, which a role check cannot express). */
-function OrdersPanel({
+ *  The ceiling and segregation of duties are the server's to enforce — the
+ *  raiser may not approve their own order, and a total above the role's ceiling
+ *  escalates rather than passes. `canApprove` is surfaced here so the button
+ *  reads honestly, but the approve call always goes to the server and its
+ *  refusal (`approval_required` / `forbidden`) is shown in the server's own
+ *  words. */
+function OrderCard({
+  order,
   api,
-  actor,
+  mayApprove,
+  mayReceive,
 }: {
+  order: PurchaseOrderRow
   api: ProcurementApi
-  actor: string
+  mayApprove: boolean
+  mayReceive: boolean
 }) {
   const { t } = usePreferences()
   const { role } = useSession()
   const { confirm } = useModal()
   const toast = useToast()
   const client = useQueryClient()
-  const [receiving, setReceiving] = useState<{ orderId: string; lineIndex: number } | null>(null)
+  const [receivingLineId, setReceivingLineId] = useState<string | null>(null)
+
+  const receivable = RECEIVABLE.includes(order.status)
+
+  const linesQuery = useQuery({
+    queryKey: ['purchase-order-lines', order.id],
+    queryFn: () => api.purchaseOrderLines(order.id),
+    enabled: receivable,
+  })
+  const lines = linesQuery.data ?? []
+
+  const [bg, fg] = PO_STATUS_TONE[order.status]
+  const totalSar = order.totalHalalas / 100
+  const withinCeiling = roleCanApprove(role, totalSar, 'procurement')
+  const ceiling = approvalLimit(role)
+
+  const refreshLines = useCallback(
+    () => void client.invalidateQueries({ queryKey: ['purchase-order-lines', order.id] }),
+    [client, order.id]
+  )
+  const refreshOrders = useCallback(
+    () => void client.invalidateQueries({ queryKey: ['procurement-purchase-orders'] }),
+    [client]
+  )
+
+  async function approve() {
+    const ok = await confirm({
+      title: 'Approve this purchase order?',
+      description: 'Approval commits the order total against the budget and releases it to the supplier.',
+      icon: 'CheckCircle2',
+      confirmLabel: 'Approve',
+    })
+    if (!ok) return
+    try {
+      await api.approvePurchaseOrder(order.id)
+      toast.show({ title: t('Purchase order approved'), description: order.code })
+      refreshOrders()
+    } catch (error) {
+      // The server names which rule refused — the ceiling, or self-approval.
+      // Surface its words rather than a generic failure.
+      const refusal = error instanceof RepositoryError
+      const title =
+        error instanceof RepositoryError && error.code === 'approval_required'
+          ? 'Above the approval ceiling'
+          : error instanceof RepositoryError && error.code === 'forbidden'
+            ? 'Approval refused'
+            : 'Error'
+      toast.show({
+        title: t(title),
+        description: refusal
+          ? (error as RepositoryError).message
+          : error instanceof Error
+            ? error.message
+            : t('The request failed.'),
+        error: true,
+      })
+    }
+  }
+
+  const receivingLine = receivingLineId
+    ? lines.find((line) => line._id === receivingLineId) ?? null
+    : null
+
+  return (
+    <div className="flex flex-col gap-2.5 rounded-lg border border-border bg-inset p-3.5">
+      <div className="flex flex-wrap items-center gap-3">
+        <span dir="ltr" className="font-mono text-[13px] font-semibold text-salis-blue">
+          {order.code}
+        </span>
+        <span className="text-[13px] text-heading">{order.supplierName}</span>
+        <Badge background={bg} color={fg}>
+          {t(order.status[0].toUpperCase() + order.status.slice(1))}
+        </Badge>
+        <span className="flex-1" />
+        <Money sar={totalSar} className="font-semibold text-heading" />
+        {order.status === 'draft' && mayApprove ? (
+          <Button size="sm" onClick={() => void approve()}>
+            <Icon name="CheckCircle2" size={14} />
+            {t('Approve')}
+          </Button>
+        ) : null}
+      </div>
+
+      {order.status === 'draft' && mayApprove && !withinCeiling ? (
+        <p className="flex items-start gap-2 text-[11px] text-body">
+          <Icon name="AlertTriangle" size={13} className="mt-0.5 flex-shrink-0 text-salis-orange" />
+          <span>
+            {t('This total is above your approval ceiling')}
+            {' ('}
+            <span dir="ltr" className="font-mono">
+              {ceiling === null ? '∞' : formatSar(ceiling)}
+            </span>
+            {'). '}
+            {t('The server will escalate it; approving here will be refused.')}
+          </span>
+        </p>
+      ) : null}
+
+      {receivable ? (
+        linesQuery.isLoading ? (
+          <Loading />
+        ) : (
+          <ul className="flex flex-col gap-1.5">
+            {lines.map((line) => (
+              <li
+                key={line._id}
+                className="flex flex-wrap items-center gap-3 rounded border border-border bg-card px-3 py-2"
+              >
+                <span className="min-w-0 flex-1 text-[13px] text-body">{line.description}</span>
+                <span dir="ltr" className="font-mono text-[12px] text-muted">
+                  {line.receivedQty} / {line.qty}
+                </span>
+                {line.receivedQty >= line.qty ? (
+                  <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+                    {t('Fully received')}
+                  </Badge>
+                ) : mayReceive ? (
+                  <Button variant="outline" size="sm" onClick={() => setReceivingLineId(line._id)}>
+                    <Icon name="PackageCheck" size={14} />
+                    {t('Receive')}
+                  </Button>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )
+      ) : null}
+
+      {receivingLine ? (
+        <ReceiveLineModal
+          order={order}
+          line={receivingLine}
+          api={api}
+          onClose={() => setReceivingLineId(null)}
+          onReceived={() => {
+            setReceivingLineId(null)
+            refreshLines()
+            refreshOrders()
+          }}
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function OrdersPanel({ api }: { api: ProcurementApi }) {
+  const { t } = usePreferences()
+  const { can } = useSession()
+  const mayApprove = can('procurement', 'a')
+  const mayReceive = can('procurement', 'e')
 
   const {
     data: orders = [],
@@ -437,55 +694,6 @@ function OrdersPanel({
     queryFn: () => api.listPurchaseOrders(),
   })
 
-  const refresh = useCallback(
-    () => void client.invalidateQueries({ queryKey: ['procurement-purchase-orders'] }),
-    [client]
-  )
-
-  async function approve(order: PurchaseOrderRecord) {
-    const rule = sodViolation('Approve purchase order', actor, [
-      { activity: 'Raise purchase order', actor: order.raisedBy },
-    ])
-    if (rule) {
-      toast.show({
-        title: t('Segregation of duties'),
-        description: `${t(rule.a)} / ${t(rule.b)} — ${t('the person who raised an order cannot also approve it.')}`,
-        error: true,
-      })
-      return
-    }
-    const totalSar = order.totalHalalas / 100
-    if (!roleCanApprove(role, totalSar, 'procurement')) {
-      const limit = approvalLimit(role)
-      toast.show({
-        title: t('Above your approval limit'),
-        description: `${formatSar(totalSar)} — ${t('Limit')}: ${
-          limit === null ? '∞' : formatSar(limit)
-        }`,
-        error: true,
-      })
-      return
-    }
-    const ok = await confirm({
-      title: 'Approve this purchase order?',
-      description: 'Approval commits the order total against the budget and releases it to the supplier.',
-      icon: 'CheckCircle2',
-      confirmLabel: 'Approve',
-    })
-    if (!ok) return
-    try {
-      await api.approvePurchaseOrder(order.id, procurementIdempotencyKey())
-      toast.show({ title: t('Purchase order approved'), description: order.code })
-      refresh()
-    } catch (error) {
-      toast.show({
-        title: t('Error'),
-        description: error instanceof Error ? error.message : t('The request failed.'),
-        error: true,
-      })
-    }
-  }
-
   if (isLoading) return <Loading />
   if (isError) return <ErrorState title={t("Couldn't load purchase orders")} onRetry={() => void refetch()} />
   if (!orders.length) {
@@ -493,81 +701,22 @@ function OrdersPanel({
       <EmptyState
         icon="ShoppingCart"
         title={t('No purchase orders yet')}
-        description={t('Orders you place appear here for approval and receiving.')}
+        description={t('Orders you raise appear here for approval and receiving.')}
       />
     )
   }
 
-  const receivingOrder = receiving ? orders.find((o) => o.id === receiving.orderId) ?? null : null
-
   return (
     <div className="flex flex-col gap-3">
-      {orders.map((order) => {
-        const [bg, fg] = PO_STATUS_BADGE[order.status]
-        return (
-          <div key={order.id} className="flex flex-col gap-2.5 rounded-lg border border-border bg-inset p-3.5">
-            <div className="flex flex-wrap items-center gap-3">
-              <span dir="ltr" className="font-mono text-[13px] font-semibold text-salis-blue">
-                {order.code}
-              </span>
-              <span className="text-[13px] text-heading">{order.supplierName}</span>
-              <Badge background={bg} color={fg}>
-                {t(order.status[0].toUpperCase() + order.status.slice(1))}
-              </Badge>
-              <span className="flex-1" />
-              <Money sar={order.totalHalalas / 100} className="font-semibold text-heading" />
-              {order.status === 'placed' ? (
-                <Button size="sm" onClick={() => void approve(order)}>
-                  <Icon name="CheckCircle2" size={14} />
-                  {t('Approve')}
-                </Button>
-              ) : null}
-            </div>
-            {order.status === 'approved' ? (
-              <ul className="flex flex-col gap-1.5">
-                {order.lines.map((line, index) => (
-                  <li
-                    key={`${order.id}-${index}`}
-                    className="flex flex-wrap items-center gap-3 rounded border border-border bg-card px-3 py-2"
-                  >
-                    <span className="min-w-0 flex-1 text-[13px] text-body">{line.description}</span>
-                    <span dir="ltr" className="font-mono text-[12px] text-muted">
-                      {line.receivedQty} / {line.qty}
-                    </span>
-                    {line.receivedQty >= line.qty ? (
-                      <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
-                        {t('Fully received')}
-                      </Badge>
-                    ) : (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setReceiving({ orderId: order.id, lineIndex: index })}
-                      >
-                        <Icon name="PackageCheck" size={14} />
-                        {t('Receive')}
-                      </Button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        )
-      })}
-
-      {receiving && receivingOrder ? (
-        <ReceiveLineModal
-          order={receivingOrder}
-          lineIndex={receiving.lineIndex}
+      {orders.map((order) => (
+        <OrderCard
+          key={order.id}
+          order={order}
           api={api}
-          onClose={() => setReceiving(null)}
-          onReceived={() => {
-            setReceiving(null)
-            refresh()
-          }}
+          mayApprove={mayApprove}
+          mayReceive={mayReceive}
         />
-      ) : null}
+      ))}
     </div>
   )
 }
@@ -575,8 +724,7 @@ function OrdersPanel({
 /* ═══════════════════════════════════════════════════════════════ the screen */
 
 const orderSchema = z.object({
-  supplierName: z.string().trim().min(1, 'Name the supplier.').max(200),
-  contactPerson: z.string().trim().max(200),
+  supplierId: z.string().trim().min(1, 'Choose a supplier from the directory.'),
   expectedDate: z.string().trim().min(1, 'Set the expected delivery date.'),
 })
 
@@ -584,10 +732,10 @@ const orderSchema = z.object({
  *  `.Mobile` variant.
  *
  *  Reads are live: the low-stock rail and the item picker come from the parts
- *  collection. Writes go through the procurement seam, which today has no
- *  transport because the server has no purchase-order endpoints — the actions
- *  say so instead of pretending (§60), and `tests/procurement-gaps.test.ts`
- *  pins the exact missing routes.
+ *  collection, and the supplier picker from `repository.suppliers` (F-022).
+ *  Writes go through the procurement seam — raise (optionally from an approved
+ *  requisition), approve within the ceiling, receive against the order — and a
+ *  fixture build says so where the actions would be instead of pretending.
  *
  *  The design shows a fixed number (PO-2026-0087). Numbers are assigned by the
  *  server on save; showing an invented one would claim a record that does not
@@ -596,13 +744,12 @@ const orderSchema = z.object({
  *  `api` is injected only by tests. */
 export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null } = {}) {
   const { t } = usePreferences()
-  const { role, user, can, fieldHidden } = useSession()
+  const { role, can, fieldHidden } = useSession()
   const toast = useToast()
   const client = useQueryClient()
 
   const api = injected === undefined ? procurementApi() : injected
   const unavailable = api ? null : procurementUnavailableReason()
-  const actor = user?.id ?? `demo:${role}`
 
   const { data: parts = [], isLoading, isError, refetch } = useCollection('parts')
   const lowStock = useMemo(() => parts.filter(isLowStock), [parts])
@@ -610,9 +757,17 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
 
   const mayCreate = can('procurement', 'c')
 
+  const suppliersQuery = useQuery({
+    queryKey: ['procurement-suppliers'],
+    queryFn: () => api!.listSuppliers(),
+    enabled: !!api,
+  })
+  const suppliers = suppliersQuery.data ?? []
+
   const [lines, setLines] = useState<readonly DraftLine[]>([])
   const [editingLine, setEditingLine] = useState<number | 'new' | null>(null)
-  const intent = useRef<'draft' | 'placed'>('placed')
+  const [addingSupplier, setAddingSupplier] = useState(false)
+  const intent = useRef<boolean>(true)
 
   const totals = poTotals(lines)
   const totalSar = totals.totalHalalas / 100
@@ -623,42 +778,43 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
 
   const form = useZodForm({
     schema: orderSchema,
-    initial: { supplierName: '', contactPerson: '', expectedDate: '' },
+    initial: { supplierId: '', expectedDate: '' },
     async onSubmit(values) {
       if (!api) return
       if (!lines.length) {
         throw new ServerValidationError({}, 'Add at least one item before saving the order.')
       }
-      const input = {
-        supplierName: values.supplierName,
-        ...(values.contactPerson ? { contactPerson: values.contactPerson } : {}),
+      const supplier = suppliers.find((s) => ((s as { _id?: string })._id ?? s.id) === values.supplierId)
+      const input: NewPurchaseOrderInput = {
+        supplierId: values.supplierId,
+        supplierName: supplier?.name ?? values.supplierId,
         expectedDate: values.expectedDate,
-        status: intent.current,
-        lines: lines.map<PurchaseOrderLineInput>((line) => ({
-          sku: line.sku,
+        place: intent.current,
+        lines: lines.map<PurchaseOrderLineDraft>((line) => ({
+          partSku: line.sku,
           description: line.description,
           qty: line.qty,
           unitPriceHalalas: line.unitPriceHalalas,
         })),
       }
-      let saved: PurchaseOrderRecord
+      let saved
       try {
-        saved = await api.placePurchaseOrder(input, procurementIdempotencyKey())
+        saved = await api.raisePurchaseOrder(input)
       } catch (error) {
         throw asProcurementFormError(error)
       }
       toast.show({
-        title: t(intent.current === 'draft' ? 'Draft saved' : 'Order placed'),
+        title: t(intent.current ? 'Order raised' : 'Draft saved'),
         description: `${saved.code} · ${formatSar(saved.totalHalalas / 100)}`,
       })
       setLines([])
-      form.reset({ supplierName: '', contactPerson: '', expectedDate: '' })
+      form.reset({ supplierId: '', expectedDate: '' })
       void client.invalidateQueries({ queryKey: ['procurement-purchase-orders'] })
     },
   })
 
-  const submitAs = (status: 'draft' | 'placed') => {
-    intent.current = status
+  const submitAs = (place: boolean) => {
+    intent.current = place
     form.submit()
   }
 
@@ -814,9 +970,44 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                     <h3 className="text-sm font-bold text-heading">{t('Supplier')}</h3>
                   </div>
                   <FormErrorSummary />
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <Field name="supplierName" label="Supplier Name" required placeholder="United Auto Parts Co." />
-                    <Field name="contactPerson" label="Contact Person" placeholder="Fahad Al-Qahtani" />
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor={`${form.id}-supplierId`}
+                        className="font-action text-xs font-medium text-heading"
+                      >
+                        {t('Supplier')}
+                        <span className="text-salis-orange"> *</span>
+                      </label>
+                      {api ? (
+                        <Button variant="outline" size="sm" onClick={() => setAddingSupplier(true)}>
+                          <Icon name="Plus" size={12} />
+                          {t('Add')}
+                        </Button>
+                      ) : null}
+                    </div>
+                    <select
+                      id={`${form.id}-supplierId`}
+                      value={typeof form.values.supplierId === 'string' ? form.values.supplierId : ''}
+                      onChange={(event) => form.setValue('supplierId', event.target.value)}
+                      disabled={!api}
+                      className="h-12 w-full rounded border border-border bg-inset px-3 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:opacity-60"
+                    >
+                      <option value="">{t('Choose a supplier...')}</option>
+                      {suppliers.map((supplier) => {
+                        const value = (supplier as { _id?: string })._id ?? supplier.id
+                        return (
+                          <option key={value} value={value}>
+                            {supplier.name}
+                          </option>
+                        )
+                      })}
+                    </select>
+                    {api && !suppliers.length && !suppliersQuery.isLoading ? (
+                      <span className="text-[11px] text-muted">
+                        {t('No suppliers yet — add one to reference it on the order.')}
+                      </span>
+                    ) : null}
                   </div>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <div className="flex flex-col gap-1">
@@ -949,6 +1140,9 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                     <span>{t('Total')}</span>
                     <Money sar={totalSar} />
                   </div>
+                  <p className="text-[11px] text-muted">
+                    {t('A preview — the server computes the order total and re-checks it against the ceiling.')}
+                  </p>
 
                   {lines.length && !withinCeiling ? (
                     <p
@@ -967,14 +1161,14 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                           {ceiling === null ? '∞' : formatSar(ceiling)}
                         </span>
                         {'). '}
-                        {t('The order escalates to a role with a higher ceiling; the server re-checks the same limit.')}
+                        {t('The order can still be raised; approval escalates to a role with a higher ceiling, and the server re-checks the same limit.')}
                       </span>
                     </p>
                   ) : null}
 
                   <p className="flex items-start gap-2 text-[11px] text-muted">
                     <Icon name="ShieldCheck" size={13} className="mt-0.5 flex-shrink-0" />
-                    {t('Raising and approving are a segregation-of-duties pair — whoever places this order cannot also approve it.')}
+                    {t('Raising and approving are a segregation-of-duties pair — whoever raises this order cannot also approve it. The server enforces both.')}
                   </p>
 
                   <div className="mt-1 flex gap-2.5">
@@ -983,7 +1177,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                       size="lg"
                       className="flex-1"
                       disabled={form.pending || !api}
-                      onClick={() => submitAs('draft')}
+                      onClick={() => submitAs(false)}
                     >
                       <Icon name="Save" size={14} />
                       {t('Save Draft')}
@@ -992,15 +1186,15 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                       size="lg"
                       className="flex-1"
                       disabled={form.pending || !api}
-                      onClick={() => submitAs('placed')}
+                      onClick={() => submitAs(true)}
                     >
                       <Icon name="Send" size={14} />
-                      {form.pending ? t('Saving...') : t('Place Order')}
+                      {form.pending ? t('Saving...') : t('Raise Order')}
                     </Button>
                   </div>
                   {!api ? (
                     <p className="text-[11px] text-muted">
-                      {t('Saving is disabled: the server has no purchase-order endpoint yet.')}
+                      {t('Saving is disabled: this build has no API to carry the order.')}
                     </p>
                   ) : null}
                 </Card>
@@ -1014,10 +1208,10 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
               <h3 className="text-sm font-bold text-heading">{t('Approval & Receiving')}</h3>
             </div>
             {api ? (
-              <OrdersPanel api={api} actor={actor} />
+              <OrdersPanel api={api} />
             ) : (
               <ReadOnlyNotice
-                message={t('Approving and receiving need purchase orders on the server, and it has none: there is no purchase-order collection or receive endpoint. The inventory movement endpoint cannot stand in — it carries no ordered quantity, so it cannot refuse an over-receipt.')}
+                message={t('Approving and receiving need purchase orders on the server. This build is reading design fixtures, which hold none — so there is nothing to approve or receive against here.')}
               />
             )}
           </Card>
@@ -1037,6 +1231,18 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                 : current.map((existing, at) => (at === editingLine ? line : existing))
             )
             setEditingLine(null)
+          }}
+        />
+      ) : null}
+
+      {addingSupplier && api ? (
+        <SupplierModal
+          api={api}
+          onClose={() => setAddingSupplier(false)}
+          onCreated={(supplierId) => {
+            setAddingSupplier(false)
+            form.setValue('supplierId', supplierId)
+            void client.invalidateQueries({ queryKey: ['procurement-suppliers'] })
           }}
         />
       ) : null}

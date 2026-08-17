@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
-import { Money, parseSar } from '@/components/ui/Money'
+import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Field as AuthField } from '@/components/shell/AuthCard'
 import { DataTable, EmptyState, TableFooter, type Column } from '@/components/ui/DataTable'
@@ -29,7 +29,16 @@ import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { API_URL, RepositoryError } from '@/data/repository'
+import {
+  procurement as procurementActions,
+  repository,
+  RepositoryError,
+  type RequisitionRow,
+  type PurchaseOrderRow,
+  type SupplierRow,
+  type RequisitionLineRow,
+  type PurchaseOrderLineRow,
+} from '@/data/repository'
 import { approvalLimit, canApprove as roleCanApprove, sodCounterpart } from '@/data/rbac'
 import { NETWORK_STATUS, PRIORITY_TONE, type Requisition } from '@/data/network'
 
@@ -316,111 +325,180 @@ export function PartsNetworkQuotations() {
   )
 }
 
-/* ═══════════════════════════════ procurement: what the server supports today */
+/* ═══════════════════════════════ procurement: the live transport (F-022) */
 
-/** The requisition fields a create or edit sends. Money crosses as integer
- *  halalas, formatted only at the boundary. */
-export interface RequisitionInput {
-  what: string
-  from: string
-  priority: Requisition['priority']
-  amountHalalas: number
-  notes?: string
+/** A requisition line the create / edit form sends. Money is integer halalas,
+ *  formatted only at the boundary; the estimated total is summed by the server,
+ *  never posted from here. */
+export interface RequisitionLineDraft {
+  partSku: string | null
+  description: string
+  qty: number
+  estUnitPriceHalalas: number
 }
 
-export interface PurchaseOrderLineInput {
-  sku: string | null
+export interface NewRequisitionInput {
+  requesterName: string
+  department?: string
+  priority: RequisitionRow['priority']
+  neededBy?: string
+  notes?: string
+  lines: readonly RequisitionLineDraft[]
+}
+
+export interface NewSupplierInput {
+  name: string
+  nameAr?: string
+  contactName?: string
+  contactPhone?: string
+  contactEmail?: string
+}
+
+export interface PurchaseOrderLineDraft {
+  partSku: string | null
   description: string
   qty: number
   unitPriceHalalas: number
 }
 
-export interface PurchaseOrderInput {
+export interface NewPurchaseOrderInput {
+  /** The supplier's ULID (`_id`) when picked from the directory. */
+  supplierId?: string
   supplierName: string
-  contactPerson?: string
-  expectedDate?: string
-  status: 'draft' | 'placed'
-  /** The requisition this order converts, when raised from one. */
+  /** The requisition's ULID (`_id`) when raised from an approved requisition. */
   requisitionId?: string
-  lines: readonly PurchaseOrderLineInput[]
+  expectedDate?: string
+  /** Stamps the order date on raise; approval stays a separate, ceiling-gated
+   *  action either way. */
+  place: boolean
+  lines: readonly PurchaseOrderLineDraft[]
 }
 
-export interface PurchaseOrderRecord {
-  id: string
-  code: string
-  status: 'draft' | 'placed' | 'approved'
-  supplierName: string
-  totalHalalas: number
-  raisedBy: string
-  approvedBy?: string
-  lines: readonly (PurchaseOrderLineInput & { receivedQty: number })[]
-}
-
-/** Every procurement write, as a seam a test can substitute.
+/** The screen-facing procurement seam.
  *
- *  There is deliberately **no HTTP implementation behind this interface yet**,
- *  because there is nothing to point one at: `server/src/registry.ts` registers
- *  no `requisitions` or `purchaseOrders` collection and no route under
- *  `/procurement` exists. The `purchase_orders` and `purchase_order_lines`
- *  tables are in the schema and the RLS list, unexposed. When agent 05 lands
- *  the endpoints, the transport is written here and the `GAP:` tests in
- *  `app/tests/procurement-gaps.test.ts` — which pin the absence — fail loudly
- *  to say so. */
+ *  It maps the screen's drafts onto the server shapes (F-022) and the server's
+ *  rows back — the statuses, the `/lines` sub-routes and the money boundary all
+ *  cross here, never in a component. The purchase-order total is the server's
+ *  and is read from the row, never summed for the wire.
+ *
+ *  Live only: `procurementApi()` is null on a fixture build, which routes every
+ *  screen to its honest absent-capability state instead of a write that cannot
+ *  land — the mock holds no procurement records and a faked approval or receipt
+ *  would be the fake-completion the seam refuses. Tests inject it to prove the
+ *  lifecycle without a server. */
 export interface ProcurementApi {
-  listRequisitions(): Promise<readonly Requisition[]>
-  createRequisition(input: RequisitionInput, idempotencyKey: string): Promise<Requisition>
-  updateRequisition(
+  listRequisitions(): Promise<readonly RequisitionRow[]>
+  createRequisition(input: NewRequisitionInput): Promise<RequisitionRow>
+  updateRequisition(id: string, input: NewRequisitionInput): Promise<RequisitionRow>
+  submitRequisition(id: string): Promise<RequisitionRow>
+  approveRequisition(id: string): Promise<RequisitionRow>
+  rejectRequisition(id: string, reason: string): Promise<RequisitionRow>
+  requisitionLines(id: string): Promise<readonly RequisitionLineRow[]>
+  listSuppliers(): Promise<readonly SupplierRow[]>
+  createSupplier(input: NewSupplierInput): Promise<SupplierRow>
+  listPurchaseOrders(): Promise<readonly PurchaseOrderRow[]>
+  raisePurchaseOrder(input: NewPurchaseOrderInput): Promise<PurchaseOrderRow>
+  approvePurchaseOrder(id: string): Promise<PurchaseOrderRow>
+  /** `idempotencyKey` is generated per user-attempt so a retry cannot book the
+   *  receipt twice; the line is addressed by its `_id`, not its index. */
+  receivePurchaseOrder(
     id: string,
-    patch: Partial<RequisitionInput>,
-    idempotencyKey: string
-  ): Promise<Requisition>
-  decideRequisition(
-    id: string,
-    decision: 'approve' | 'reject',
-    idempotencyKey: string
-  ): Promise<Requisition>
-  listPurchaseOrders(): Promise<readonly PurchaseOrderRecord[]>
-  placePurchaseOrder(input: PurchaseOrderInput, idempotencyKey: string): Promise<PurchaseOrderRecord>
-  approvePurchaseOrder(id: string, idempotencyKey: string): Promise<PurchaseOrderRecord>
-  receiveLine(
-    orderId: string,
-    lineIndex: number,
-    qty: number,
+    lines: readonly { lineId: string; qty: number }[],
     overReceiptApproved: boolean,
-    idempotencyKey: string
-  ): Promise<PurchaseOrderRecord>
+    idempotencyKey: string,
+  ): Promise<PurchaseOrderRow>
+  purchaseOrderLines(id: string): Promise<readonly PurchaseOrderLineRow[]>
 }
 
-/** Why procurement writes cannot happen from this build. Never null today —
- *  the honest state is the state. */
-export function procurementUnavailableReason(): string {
-  if (!API_URL) {
-    return 'Requisition and purchase-order writes need the API. This build is reading design fixtures, which hold no procurement records and refuse writes rather than pretending.'
-  }
-  return 'The API has no procurement endpoints yet: the server registers no requisitions or purchase-orders collection, so nothing can create, approve, convert or receive. The purchase-order tables exist in the database schema, unexposed.'
-}
-
-/** The live transport — none exists. See the interface note: returning null
- *  here is what routes every screen to the honest absent-capability state
- *  instead of a request that cannot land. */
-export function procurementApi(): ProcurementApi | null {
-  return null
-}
-
+/** A fresh idempotency key, 8–128 chars as the contract requires. */
 export function procurementIdempotencyKey(): string {
   const globalCrypto = globalThis.crypto as Crypto | undefined
-  if (globalCrypto?.randomUUID) return globalCrypto.randomUUID()
+  if (globalCrypto?.randomUUID) return `pr-${globalCrypto.randomUUID()}`
   return `pr-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`
 }
 
-/** Turns a rejected write into what the form system can show: a named field
- *  keeps its message on the control, a refusal becomes the form-level line. */
+function liveProcurementApi(actions: NonNullable<typeof procurementActions>): ProcurementApi {
+  const toReq = (input: NewRequisitionInput) => ({
+    requesterName: input.requesterName,
+    ...(input.department ? { department: input.department } : {}),
+    ...(input.priority ? { priority: input.priority } : {}),
+    ...(input.neededBy ? { neededBy: input.neededBy } : {}),
+    ...(input.notes ? { notes: input.notes } : {}),
+    lines: input.lines.map((line) => ({
+      ...(line.partSku ? { partSku: line.partSku } : {}),
+      description: line.description,
+      qty: line.qty,
+      estUnitPriceHalalas: line.estUnitPriceHalalas,
+    })),
+  })
+  return {
+    listRequisitions: async () => (await repository.requisitions.list({ pageSize: 200 })).rows,
+    createRequisition: (input) =>
+      actions.createRequisition(toReq(input), { idempotencyKey: procurementIdempotencyKey() }),
+    updateRequisition: (id, input) => actions.updateRequisition(id, toReq(input)),
+    submitRequisition: (id) => actions.submitRequisition(id),
+    approveRequisition: (id) => actions.approveRequisition(id),
+    rejectRequisition: (id, reason) => actions.rejectRequisition(id, reason),
+    requisitionLines: async (id) => (await actions.requisitionLines(id)).rows,
+    listSuppliers: async () => (await repository.suppliers.list({ pageSize: 200 })).rows,
+    createSupplier: (input) =>
+      repository.suppliers.create({ status: 'active', ...input } as unknown as Partial<SupplierRow>, {
+        idempotencyKey: procurementIdempotencyKey(),
+      }),
+    listPurchaseOrders: async () => (await repository.purchaseOrders.list({ pageSize: 200 })).rows,
+    raisePurchaseOrder: (input) =>
+      actions.raisePurchaseOrder(
+        {
+          ...(input.supplierId ? { supplierId: input.supplierId } : {}),
+          supplierName: input.supplierName,
+          ...(input.requisitionId ? { requisitionId: input.requisitionId } : {}),
+          ...(input.expectedDate ? { expectedDate: input.expectedDate } : {}),
+          place: input.place,
+          lines: input.lines.map((line) => ({
+            ...(line.partSku ? { partSku: line.partSku } : {}),
+            description: line.description,
+            qty: line.qty,
+            unitPriceHalalas: line.unitPriceHalalas,
+          })),
+        },
+        { idempotencyKey: procurementIdempotencyKey() },
+      ),
+    approvePurchaseOrder: (id) => actions.approvePurchaseOrder(id),
+    receivePurchaseOrder: (id, lines, overReceiptApproved, idempotencyKey) =>
+      actions.receivePurchaseOrder(
+        id,
+        { lines: lines.map((line) => ({ lineId: line.lineId, qty: line.qty })), overReceiptApproved },
+        { idempotencyKey },
+      ),
+    purchaseOrderLines: async (id) => (await actions.purchaseOrderLines(id)).rows,
+  }
+}
+
+/** The live transport, or null on a fixture build. Never invents a record. */
+export function procurementApi(): ProcurementApi | null {
+  return procurementActions ? liveProcurementApi(procurementActions) : null
+}
+
+/** Why procurement writes cannot happen from this build: a fixture build has no
+ *  API to carry them, and the mock repository holds no procurement records. */
+export function procurementUnavailableReason(): string {
+  return 'This build is reading design fixtures, which hold no procurement records and refuse writes rather than pretending. Set the API URL to run requisitions and purchase orders against the server.'
+}
+
+/** Turns a rejected write into what the form system shows: a named field keeps
+ *  its message on the control; a refusal — the ceiling (`approval_required`),
+ *  segregation of duties or a broken rule (`forbidden` / `rule_violated`) —
+ *  becomes the form-level line, in the server's own words. */
 export function asProcurementFormError(error: unknown): Error {
   if (!(error instanceof RepositoryError)) {
     return error instanceof Error ? error : new Error('The request failed.')
   }
   if (error.field) return new ServerValidationError({ [error.field]: error.message })
-  if (error.code === 'forbidden' || error.code === 'rule_violated') {
+  if (
+    error.code === 'forbidden' ||
+    error.code === 'rule_violated' ||
+    error.code === 'approval_required'
+  ) {
     return new ServerValidationError({}, error.message)
   }
   return new Error(error.message)
@@ -430,7 +508,11 @@ export function asProcurementFormError(error: unknown): Error {
  *  all seven rows. The transcription in `data/network.ts` carries only five,
  *  which left the "PO Raised" and "Rejected" tabs empty against the design;
  *  `data/**` is outside this agent's boundary, so the full set lives here and
- *  the short one is reported. Amounts in SAR to match the `Requisition` type. */
+ *  the short one is reported. Amounts in SAR to match the `Requisition` type.
+ *
+ *  This is the read-only design view a fixture build shows: the mock holds no
+ *  procurement rows, so a build with no API renders these against the honest
+ *  "no writes" notice, and a live build reads the server's own requisitions. */
 export const REQUISITION_ROWS: readonly Requisition[] = [
   {
     status: 'pending',
@@ -497,91 +579,220 @@ export const REQUISITION_ROWS: readonly Requisition[] = [
   },
 ]
 
-const REQ_TABS = ['pending', 'approved', 'converted', 'rejected', 'all'] as const
+/* ─────────────────────────────────────────────── a requisition, one shape */
 
-function statusLabel(status: Requisition['status']): string {
-  return status === 'converted' ? 'PO Raised' : status[0].toUpperCase() + status.slice(1)
+/** The server statuses `draft/submitted/approved/rejected/ordered`. The design
+ *  fixture's `pending`/`converted` map onto `submitted`/`ordered` on ingest, so
+ *  the screen speaks one vocabulary whichever source it read. */
+type ReqStatus = RequisitionRow['status']
+
+/** The row both sources normalise into. `ref` is the code the action routes
+ *  accept (they take the code or the ULID); the rest is display. */
+interface ReqView {
+  ref: string
+  code: string
+  status: ReqStatus
+  priority: string
+  requester: string
+  department: string
+  when: string
+  notes: string
+  amountHalalas: number
 }
 
-/* ─────────────────────────────────────────────── creating / editing / viewing */
+const REQ_TABS: readonly (ReqStatus | 'all')[] = [
+  'draft',
+  'submitted',
+  'approved',
+  'ordered',
+  'rejected',
+  'all',
+]
 
-const requisitionSchema = z.object({
-  what: z
-    .string()
-    .trim()
-    .min(1, 'Describe what is being requested.')
-    .max(300, 'Keep the description under 300 characters.'),
-  from: z
-    .string()
-    .trim()
-    .min(1, 'Name the branch and department raising this.')
-    .max(120),
-  priority: z.enum(['urgent', 'high', 'medium', 'low'], {
+function reqStatusLabel(status: ReqStatus): string {
+  if (status === 'submitted') return 'Pending'
+  if (status === 'ordered') return 'PO Raised'
+  return status[0].toUpperCase() + status.slice(1)
+}
+
+/** Status tone, borrowed from the shared network palette so procurement and the
+ *  parts network never disagree on what "pending" looks like. */
+const REQ_TONE_KEY: Record<ReqStatus, string> = {
+  draft: 'reviewing',
+  submitted: 'pending',
+  approved: 'approved',
+  ordered: 'converted',
+  rejected: 'rejected',
+}
+
+function reqTone(status: ReqStatus): readonly [string, string] {
+  return NETWORK_STATUS[REQ_TONE_KEY[status]] ?? NETWORK_STATUS.pending
+}
+
+function priorityTone(priority: string): readonly [string, string] {
+  return PRIORITY_TONE[priority] ?? PRIORITY_TONE.normal
+}
+
+function reqFromRow(row: RequisitionRow): ReqView {
+  return {
+    ref: row.id,
+    code: row.code,
+    status: row.status,
+    priority: row.priority,
+    requester: row.requester,
+    department: row.department ?? '',
+    when: row.neededBy ? `Needed ${row.neededBy}` : '',
+    notes: row.notes ?? '',
+    amountHalalas: row.estimatedTotalHalalas,
+  }
+}
+
+function reqFromDesign(row: Requisition): ReqView {
+  const status: ReqStatus =
+    row.status === 'pending' ? 'submitted' : row.status === 'converted' ? 'ordered' : row.status
+  const [requester, department = ''] = row.from.split(' · ')
+  return {
+    ref: row.id,
+    code: row.id,
+    status,
+    priority: row.priority,
+    requester: requester ?? row.from,
+    department,
+    when: row.age,
+    notes: row.what,
+    amountHalalas: Math.round(row.amount * 100),
+  }
+}
+
+/* ─────────────────────────────────────────────── creating / editing a requisition */
+
+const requisitionHeaderSchema = z.object({
+  requesterName: z.string().trim().min(1, 'Name the branch and department raising this.').max(200),
+  department: z.string().trim().max(160),
+  priority: z.enum(['low', 'normal', 'high', 'urgent'], {
     errorMap: () => ({ message: 'Pick a priority.' }),
   }),
-  amount: z
-    .string()
-    .trim()
-    .min(1, 'Enter the estimated amount.')
-    .refine((value) => parseSar(value) > 0, 'The amount must be above zero.'),
-  notes: z.string().trim().max(500, 'Keep notes under 500 characters.'),
+  neededBy: z.string().trim(),
+  notes: z.string().trim().max(2000, 'Keep notes under 2000 characters.'),
 })
 
 const PRIORITY_OPTIONS = [
   { value: 'urgent', label: 'Urgent' },
   { value: 'high', label: 'High' },
-  { value: 'medium', label: 'Medium' },
+  { value: 'normal', label: 'Normal' },
   { value: 'low', label: 'Low' },
 ] as const
 
-/** Create or edit a requisition — one form, two callers. Rendered only when a
- *  transport exists; the caller shows the dependency notice otherwise, so this
- *  form can never pretend a submit landed. */
+interface LineDraftState {
+  partSku: string | null
+  description: string
+  qty: string
+  price: string
+}
+
+const emptyLineDraft = (): LineDraftState => ({ partSku: null, description: '', qty: '1', price: '' })
+
+/** Create or edit a requisition — one form, two callers. A requisition is a
+ *  **line array** (part / description, qty, estimated unit price), never a
+ *  single amount: the server sums the estimated total from the lines, so the
+ *  form carries them and shows the running total as a courtesy only. Rendered
+ *  only when a transport exists; the caller shows the dependency notice
+ *  otherwise, so this form can never pretend a submit landed. */
 function RequisitionFormModal({
   api,
   initial,
+  initialLines,
   onClose,
   onSaved,
 }: {
   api: ProcurementApi
-  initial?: Requisition
+  initial?: ReqView
+  initialLines?: readonly RequisitionLineRow[]
   onClose: () => void
   onSaved: () => void
 }) {
   const { t } = usePreferences()
   const toast = useToast()
 
+  const [lines, setLines] = useState<LineDraftState[]>(() =>
+    initialLines && initialLines.length
+      ? initialLines.map((line) => ({
+          partSku: line.partSku ?? null,
+          description: line.description,
+          qty: String(line.qty),
+          price: (line.estUnitPriceHalalas / 100).toFixed(2),
+        }))
+      : [emptyLineDraft()]
+  )
+
+  const estTotalHalalas = lines.reduce((sum, line) => {
+    const qty = Number(line.qty)
+    const price = parseSar(line.price)
+    if (!Number.isFinite(qty) || !Number.isFinite(price)) return sum
+    return sum + Math.max(0, Math.round(price * 100)) * Math.max(0, qty)
+  }, 0)
+
   const form = useZodForm({
-    schema: requisitionSchema,
+    schema: requisitionHeaderSchema,
     initial: initial
       ? {
-          what: initial.what,
-          from: initial.from,
-          priority: initial.priority,
-          amount: String(initial.amount),
-          notes: '',
+          requesterName: initial.requester,
+          department: initial.department,
+          priority: (['low', 'normal', 'high', 'urgent'].includes(initial.priority)
+            ? initial.priority
+            : 'normal') as RequisitionRow['priority'],
+          neededBy: '',
+          notes: initial.notes,
         }
-      : { what: '', from: '', priority: '' as unknown as Requisition['priority'], amount: '', notes: '' },
+      : {
+          requesterName: '',
+          department: '',
+          priority: '' as unknown as RequisitionRow['priority'],
+          neededBy: '',
+          notes: '',
+        },
     async onSubmit(values) {
-      const input: RequisitionInput = {
-        what: values.what,
-        from: values.from,
+      const parsed: RequisitionLineDraft[] = []
+      for (const line of lines) {
+        if (!line.description.trim()) {
+          throw new ServerValidationError({}, 'Every line needs a description.')
+        }
+        if (!/^\d+$/.test(line.qty.trim()) || Number(line.qty) < 1) {
+          throw new ServerValidationError({}, 'Every line needs a whole quantity of at least one.')
+        }
+        if (!(parseSar(line.price) > 0)) {
+          throw new ServerValidationError({}, 'Every line needs an estimated unit price above zero.')
+        }
+        parsed.push({
+          partSku: line.partSku,
+          description: line.description.trim(),
+          qty: Number(line.qty),
+          estUnitPriceHalalas: Math.round(parseSar(line.price) * 100),
+        })
+      }
+      if (!parsed.length) {
+        throw new ServerValidationError({}, 'Add at least one line to the requisition.')
+      }
+      const input: NewRequisitionInput = {
+        requesterName: values.requesterName,
+        ...(values.department ? { department: values.department } : {}),
         priority: values.priority,
-        amountHalalas: Math.round(parseSar(values.amount) * 100),
+        ...(values.neededBy ? { neededBy: values.neededBy } : {}),
         ...(values.notes ? { notes: values.notes } : {}),
+        lines: parsed,
       }
       try {
         if (initial) {
-          await api.updateRequisition(initial.id, input, procurementIdempotencyKey())
+          await api.updateRequisition(initial.ref, input)
         } else {
-          await api.createRequisition(input, procurementIdempotencyKey())
+          await api.createRequisition(input)
         }
       } catch (error) {
         throw asProcurementFormError(error)
       }
       toast.show({
-        title: t(initial ? 'Requisition updated' : 'Requisition submitted'),
-        description: values.what,
+        title: t(initial ? 'Requisition updated' : 'Requisition drafted'),
+        description: values.requesterName,
       })
       onSaved()
     },
@@ -594,6 +805,9 @@ function RequisitionFormModal({
     })
   }, [confirmDiscard, onClose])
 
+  const setLine = (index: number, patch: Partial<LineDraftState>) =>
+    setLines((current) => current.map((line, at) => (at === index ? { ...line, ...patch } : line)))
+
   return (
     <Modal
       open
@@ -601,52 +815,168 @@ function RequisitionFormModal({
       variant="crud"
       icon={initial ? 'Pencil' : 'Plus'}
       title={initial ? 'Edit Requisition' : 'New Requisition'}
-      description={t('A requisition asks procurement to buy. Approval and conversion to a purchase order happen after it is raised.')}
+      description={t('A requisition asks procurement to buy. It is drafted from its line items, then submitted for approval and, once approved, converted to a purchase order.')}
       meta={
         initial ? (
           <span dir="ltr" className="font-mono">
-            {initial.id}
+            {initial.code}
           </span>
         ) : undefined
       }
     >
       <Form form={form}>
         <FormErrorSummary />
-        <Field
-          name="what"
-          label="Request"
-          required
-          placeholder="Brake Pads (Front) ×40 — stock below reorder"
-        />
-        <Field
-          name="from"
-          label="From (branch · department)"
-          required
-          placeholder="Riyadh Main · Inventory"
-        />
-        <Field name="priority" label="Priority" kind="select" required options={PRIORITY_OPTIONS} />
-        <Field
-          name="amount"
-          label="Estimated Amount"
-          kind="currency"
-          required
-          hint="Approval routes by this amount: above the approver's ceiling it escalates."
-        />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field
+            name="requesterName"
+            label="Requested by (branch · department)"
+            required
+            placeholder="Riyadh Main · Inventory"
+          />
+          <Field name="department" label="Department" placeholder="Inventory" />
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Field name="priority" label="Priority" kind="select" required options={PRIORITY_OPTIONS} />
+          <Field name="neededBy" label="Needed By" kind="date" />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="font-action text-xs font-medium text-heading">{t('Line Items')}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setLines((current) => [...current, emptyLineDraft()])}
+            >
+              <Icon name="Plus" size={13} />
+              {t('Add Line')}
+            </Button>
+          </div>
+          <div className="flex flex-col gap-2">
+            {lines.map((line, index) => (
+              <div
+                key={index}
+                className="flex flex-wrap items-end gap-2 rounded-lg border border-border bg-inset p-2.5"
+              >
+                <label className="flex min-w-[150px] flex-1 flex-col gap-1">
+                  <span className="text-[11px] text-muted">{t('Description')}</span>
+                  <input
+                    value={line.description}
+                    onChange={(event) => setLine(index, { description: event.target.value })}
+                    placeholder={t('Brake Pads (Front)')}
+                    className="h-9 w-full rounded border border-border bg-card px-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                  />
+                </label>
+                <label className="flex w-[76px] flex-col gap-1">
+                  <span className="text-[11px] text-muted">{t('Qty')}</span>
+                  <input
+                    value={line.qty}
+                    onChange={(event) => setLine(index, { qty: event.target.value })}
+                    inputMode="numeric"
+                    dir="ltr"
+                    className="h-9 w-full rounded border border-border bg-card px-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                  />
+                </label>
+                <label className="flex w-[110px] flex-col gap-1">
+                  <span className="text-[11px] text-muted">{t('Est. Unit SAR')}</span>
+                  <input
+                    value={line.price}
+                    onChange={(event) => setLine(index, { price: event.target.value })}
+                    inputMode="decimal"
+                    dir="ltr"
+                    placeholder="0.00"
+                    className="h-9 w-full rounded border border-border bg-card px-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                  />
+                </label>
+                {lines.length > 1 ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setLines((current) => current.filter((_, at) => at !== index))}
+                    aria-label={t('Remove line')}
+                  >
+                    <Icon name="X" size={13} />
+                  </Button>
+                ) : null}
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between rounded-lg border border-border bg-inset px-3 py-2 text-[13px]">
+            <span className="text-muted">{t('Estimated total')}</span>
+            <Money sar={estTotalHalalas / 100} className="font-semibold text-heading" />
+          </div>
+          <p className="text-[11px] text-muted">
+            {t('The server sums the estimated total from the lines; this figure is a preview.')}
+          </p>
+        </div>
+
         <Field name="notes" label="Notes" kind="textarea" rows={2} />
         <FormActions note>
           <Button variant="subtle" size="lg" onClick={close} disabled={form.pending}>
             {t('Cancel')}
           </Button>
-          <SubmitButton label={initial ? 'Save Changes' : 'Submit Requisition'} />
+          <SubmitButton label={initial ? 'Save Changes' : 'Create Requisition'} />
         </FormActions>
       </Form>
     </Modal>
   )
 }
 
-/** One requisition, with the lifecycle actions the role and the transport
- *  allow. Approval is bounded by the role's SAR ceiling on the procurement
- *  module — authority and ceiling are separate questions (F-002). */
+/* ─────────────────────────────────────────────── collect a rejection reason */
+
+const reasonSchema = z.object({
+  reason: z.string().trim().min(1, 'Give a reason — the requesting branch is told why.').max(500),
+})
+
+function RejectReasonModal({
+  onClose,
+  onReject,
+}: {
+  onClose: () => void
+  onReject: (reason: string) => Promise<void>
+}) {
+  const { t } = usePreferences()
+  const form = useZodForm({
+    schema: reasonSchema,
+    initial: { reason: '' },
+    async onSubmit(values) {
+      try {
+        await onReject(values.reason)
+      } catch (error) {
+        throw asProcurementFormError(error)
+      }
+    },
+  })
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      variant="lifecycle"
+      icon="AlertTriangle"
+      title="Reject Requisition"
+      description={t('The requesting branch is notified with this reason. This cannot be undone from here.')}
+    >
+      <Form form={form}>
+        <FormErrorSummary />
+        <Field name="reason" label="Reason" kind="textarea" rows={3} required placeholder={t('Duplicate of REQ-0509; ordering under that requisition instead.')} />
+        <FormActions>
+          <Button variant="subtle" size="lg" onClick={onClose} disabled={form.pending}>
+            {t('Cancel')}
+          </Button>
+          <SubmitButton label="Reject" />
+        </FormActions>
+      </Form>
+    </Modal>
+  )
+}
+
+/* ─────────────────────────────────────────────── one requisition, its lifecycle */
+
+/** One requisition, with the lifecycle actions the role, the status and the
+ *  transport allow. A draft can be edited or submitted; a submitted requisition
+ *  can be approved (bounded by the role's SAR ceiling on procurement — authority
+ *  and ceiling are separate questions, F-002) or rejected with a reason. */
 function RequisitionDetailModal({
   row,
   api,
@@ -654,7 +984,7 @@ function RequisitionDetailModal({
   onClose,
   onChanged,
 }: {
-  row: Requisition
+  row: ReqView
   api: ProcurementApi | null
   unavailable: string | null
   onClose: () => void
@@ -665,40 +995,60 @@ function RequisitionDetailModal({
   const { confirm } = useModal()
   const toast = useToast()
   const [editing, setEditing] = useState(false)
+  const [rejecting, setRejecting] = useState(false)
   const [busy, setBusy] = useState(false)
 
   const mayDecide = can('procurement', 'a')
-  const withinCeiling = roleCanApprove(role, row.amount, 'procurement')
+  const withinCeiling = roleCanApprove(role, row.amountHalalas / 100, 'procurement')
   const limit = approvalLimit(role)
-  const [prBg, prFg] = PRIORITY_TONE[row.priority] ?? PRIORITY_TONE.medium
-  const [stBg, stFg] = NETWORK_STATUS[row.status] ?? NETWORK_STATUS.pending
+  const [prBg, prFg] = priorityTone(row.priority)
+  const [stBg, stFg] = reqTone(row.status)
 
-  async function decide(decision: 'approve' | 'reject') {
+  const { data: lines = [] } = useQuery({
+    queryKey: ['requisition-lines', row.ref],
+    queryFn: () => api!.requisitionLines(row.ref),
+    enabled: !!api,
+  })
+
+  async function submit() {
     if (!api) return
-    const ok = await confirm(
-      decision === 'approve'
-        ? {
-            title: 'Approve this requisition?',
-            description: 'Approval releases it for conversion to a purchase order.',
-            icon: 'CheckCircle2',
-            confirmLabel: 'Approve',
-          }
-        : {
-            title: 'Reject this requisition?',
-            description: 'The requesting branch is notified. This cannot be undone from here.',
-            icon: 'AlertTriangle',
-            confirmLabel: 'Reject',
-            destructive: true,
-          }
-    )
+    const ok = await confirm({
+      title: 'Submit for approval?',
+      description: 'The requisition enters the approval queue and can no longer be edited.',
+      icon: 'Send',
+      confirmLabel: 'Submit',
+    })
     if (!ok) return
     setBusy(true)
     try {
-      await api.decideRequisition(row.id, decision, procurementIdempotencyKey())
+      await api.submitRequisition(row.ref)
+      toast.show({ title: t('Requisition submitted'), description: row.code })
+      onChanged()
+      onClose()
+    } catch (error) {
       toast.show({
-        title: t(decision === 'approve' ? 'Requisition approved' : 'Requisition rejected'),
-        description: `${row.id} · ${t(row.what)}`,
+        title: t('Error'),
+        description: error instanceof Error ? error.message : t('The request failed.'),
+        error: true,
       })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function approve() {
+    if (!api) return
+    const ok = await confirm({
+      title: 'Approve this requisition?',
+      description: 'Approval releases it for conversion to a purchase order.',
+      icon: 'CheckCircle2',
+      confirmLabel: 'Approve',
+    })
+    if (!ok) return
+    setBusy(true)
+    try {
+      await api.approveRequisition(row.ref)
+      toast.show({ title: t('Requisition approved'), description: `${row.code} · ${t(row.requester)}` })
       onChanged()
       onClose()
     } catch (error) {
@@ -717,6 +1067,7 @@ function RequisitionDetailModal({
       <RequisitionFormModal
         api={api}
         initial={row}
+        initialLines={lines}
         onClose={() => setEditing(false)}
         onSaved={() => {
           setEditing(false)
@@ -727,6 +1078,26 @@ function RequisitionDetailModal({
     )
   }
 
+  if (rejecting && api) {
+    return (
+      <RejectReasonModal
+        onClose={() => setRejecting(false)}
+        onReject={async (reason) => {
+          await api.rejectRequisition(row.ref, reason)
+          toast.show({ title: t('Requisition rejected'), description: row.code })
+          setRejecting(false)
+          onChanged()
+          onClose()
+        }}
+      />
+    )
+  }
+
+  const canEdit = row.status === 'draft'
+  const canSubmit = row.status === 'draft'
+  const canReject = row.status === 'draft' || row.status === 'submitted'
+  const canApproveHere = row.status === 'submitted'
+
   return (
     <Modal
       open
@@ -736,7 +1107,7 @@ function RequisitionDetailModal({
       title="Requisition"
       meta={
         <span dir="ltr" className="font-mono">
-          {row.id}
+          {row.code}
         </span>
       }
       footer={
@@ -744,24 +1115,32 @@ function RequisitionDetailModal({
           <Button variant="subtle" size="lg" onClick={onClose} disabled={busy}>
             {t('Close')}
           </Button>
-          {row.status === 'pending' && api ? (
+          {api ? (
             <>
-              <Button variant="outline" size="lg" onClick={() => setEditing(true)} disabled={busy}>
-                <Icon name="Pencil" size={15} />
-                {t('Edit')}
-              </Button>
-              {mayDecide ? (
+              {canEdit ? (
+                <Button variant="outline" size="lg" onClick={() => setEditing(true)} disabled={busy}>
+                  <Icon name="Pencil" size={15} />
+                  {t('Edit')}
+                </Button>
+              ) : null}
+              {canReject && mayDecide ? (
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => void decide('reject')}
+                  onClick={() => setRejecting(true)}
                   disabled={busy}
                 >
                   {t('Reject')}
                 </Button>
               ) : null}
-              {mayDecide && withinCeiling ? (
-                <Button size="lg" onClick={() => void decide('approve')} disabled={busy}>
+              {canSubmit ? (
+                <Button size="lg" onClick={() => void submit()} disabled={busy}>
+                  <Icon name="Send" size={15} />
+                  {t('Submit')}
+                </Button>
+              ) : null}
+              {canApproveHere && mayDecide && withinCeiling ? (
+                <Button size="lg" onClick={() => void approve()} disabled={busy}>
                   <Icon name="CheckCircle2" size={15} />
                   {t('Approve')}
                 </Button>
@@ -772,31 +1151,56 @@ function RequisitionDetailModal({
       }
     >
       <div className="flex flex-col gap-3">
-        <p className="text-sm font-semibold text-heading">{t(row.what)}</p>
         <div className="flex flex-wrap items-center gap-2">
           <Badge background={prBg} color={prFg}>
             {t(row.priority[0].toUpperCase() + row.priority.slice(1))}
           </Badge>
           <Badge background={stBg} color={stFg}>
-            {t(statusLabel(row.status))}
+            {t(reqStatusLabel(row.status))}
           </Badge>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 rounded border border-border bg-inset px-3.5 py-2.5 text-[13px]">
           <span className="flex flex-col">
-            <span className="text-[11px] text-muted">{t('From')}</span>
-            <span className="text-heading">{t(row.from)}</span>
+            <span className="text-[11px] text-muted">{t('Requested by')}</span>
+            <span className="text-heading">{t(row.requester)}</span>
           </span>
+          {row.department ? (
+            <span className="flex flex-col">
+              <span className="text-[11px] text-muted">{t('Department')}</span>
+              <span className="text-heading">{t(row.department)}</span>
+            </span>
+          ) : null}
+          {row.when ? (
+            <span className="flex flex-col">
+              <span className="text-[11px] text-muted">{t('When')}</span>
+              <span className="text-heading">{t(row.when)}</span>
+            </span>
+          ) : null}
           <span className="flex flex-col">
-            <span className="text-[11px] text-muted">{t('Raised')}</span>
-            <span className="text-heading">{t(row.age)}</span>
-          </span>
-          <span className="flex flex-col">
-            <span className="text-[11px] text-muted">{t('Amount')}</span>
-            <Money sar={row.amount} className="font-semibold text-heading" />
+            <span className="text-[11px] text-muted">{t('Estimated')}</span>
+            <Money sar={row.amountHalalas / 100} className="font-semibold text-heading" />
           </span>
         </div>
 
-        {row.status === 'pending' && api && mayDecide && !withinCeiling ? (
+        {api && lines.length ? (
+          <ul className="flex flex-col gap-1.5">
+            {lines.map((line, index) => (
+              <li
+                key={index}
+                className="flex flex-wrap items-center gap-3 rounded border border-border bg-card px-3 py-2 text-[13px]"
+              >
+                <span className="min-w-0 flex-1 text-body">{line.description}</span>
+                <span dir="ltr" className="font-mono text-[12px] text-muted">
+                  {line.qty} × <Money sar={line.estUnitPriceHalalas / 100} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : row.notes ? (
+          <p className="text-sm text-body">{t(row.notes)}</p>
+        ) : null}
+
+        {canApproveHere && api && mayDecide && !withinCeiling ? (
           <p
             role="note"
             className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3.5 py-3 text-[13px] text-body"
@@ -814,7 +1218,7 @@ function RequisitionDetailModal({
           </p>
         ) : null}
 
-        {row.status === 'pending' && !api ? (
+        {!api ? (
           <ReadOnlyNotice message={t(unavailable ?? procurementUnavailableReason())} />
         ) : null}
       </div>
@@ -826,13 +1230,14 @@ function RequisitionDetailModal({
 
 /** Requisitions — list, lifecycle and conversion queue.
  *
- *  Reads come from the transport when one exists and from the design fixture
- *  otherwise. Writes exist exactly as far as the server supports them, which
- *  today is not at all — `procurementApi()` documents why, the screen says it
- *  where the actions would be, and nothing here "approves" into local state.
+ *  Reads come from the transport when one exists (`repository.requisitions`) and
+ *  from the design fixture otherwise. Writes exist exactly as far as the server
+ *  supports them — draft, submit, approve within the ceiling, reject — and the
+ *  fixture build says so where the actions would be, so nothing here "approves"
+ *  into local state.
  *
- *  `api` is injected only by tests. Production passes nothing and gets the
- *  honest state. */
+ *  `api` is injected only by tests. Production passes nothing and gets the live
+ *  transport, or the honest state on a fixture build. */
 export function ProcurementRequisitions({ api: injected }: { api?: ProcurementApi | null } = {}) {
   const { t } = usePreferences()
   const { role, can } = useSession()
@@ -843,37 +1248,45 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
   const api = injected === undefined ? procurementApi() : injected
   const unavailable = api ? null : procurementUnavailableReason()
 
-  const [tab, setTab] = useState<string>('pending')
+  const [tab, setTab] = useState<ReqStatus | 'all'>('submitted')
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<Record<string, boolean>>({})
   const [creating, setCreating] = useState(false)
-  const [openId, setOpenId] = useState<string | null>(null)
+  const [openRef, setOpenRef] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
-  const {
-    data: requisitions = [],
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
+  const liveQuery = useQuery({
     queryKey: ['procurement-requisitions'],
-    queryFn: () => (api ? api.listRequisitions() : Promise.resolve(REQUISITION_ROWS)),
+    queryFn: () => api!.listRequisitions(),
+    enabled: !!api,
   })
 
+  const requisitions: ReqView[] = useMemo(
+    () =>
+      api
+        ? (liveQuery.data ?? []).map(reqFromRow)
+        : REQUISITION_ROWS.map(reqFromDesign),
+    [api, liveQuery.data]
+  )
+
+  const isLoading = api ? liveQuery.isLoading : false
+  const isError = api ? liveQuery.isError : false
+
   const rows = useMemo(() => {
-    const inTab =
-      tab === 'all' ? requisitions : requisitions.filter((r) => r.status === tab)
+    const inTab = tab === 'all' ? requisitions : requisitions.filter((r) => r.status === tab)
     if (!search.trim()) return inTab
     const needle = search.trim().toLowerCase()
     return inTab.filter((r) =>
-      [r.id, r.what, r.from].some((value) => value.toLowerCase().includes(needle))
+      [r.code, r.requester, r.department, r.notes].some((value) =>
+        value.toLowerCase().includes(needle)
+      )
     )
   }, [requisitions, tab, search])
 
-  const selectedRows = rows.filter((r) => selected[r.id])
+  const selectedRows = rows.filter((r) => selected[r.ref])
   const mayCreate = can('procurement', 'c')
   const mayDecide = can('procurement', 'a')
-  const openRow = openId ? requisitions.find((r) => r.id === openId) ?? null : null
+  const openRow = openRef ? requisitions.find((r) => r.ref === openRef) ?? null : null
 
   const refresh = useCallback(() => {
     void client.invalidateQueries({ queryKey: ['procurement-requisitions'] })
@@ -882,10 +1295,18 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
 
   /** CSV of the rows currently in view — the design's Export does real work. */
   const exportCsv = useCallback(() => {
-    const header = 'Reference,Request,From,Priority,Raised,Amount SAR,Status'
+    const header = 'Reference,Requested By,Department,Priority,When,Estimated SAR,Status'
     const body = rows.map((r) =>
-      [r.id, r.what, r.from, r.priority, r.age, String(r.amount), r.status]
-        .map((cell) => `"${cell.replace(/"/g, '""')}"`)
+      [
+        r.code,
+        r.requester,
+        r.department,
+        r.priority,
+        r.when,
+        (r.amountHalalas / 100).toFixed(2),
+        r.status,
+      ]
+        .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
         .join(',')
     )
     const csv = [header, ...body].join('\n')
@@ -899,57 +1320,42 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
     toast.show({ title: t('Exported'), description: t('requisitions.csv — rows currently in view.') })
   }, [rows, t, toast])
 
-  async function decideSelected(decision: 'approve' | 'reject') {
+  async function approveSelected() {
     if (!api || !selectedRows.length) return
-    const pending = selectedRows.filter((r) => r.status === 'pending')
-    if (!pending.length) {
+    const submittable = selectedRows.filter((r) => r.status === 'submitted')
+    if (!submittable.length) {
       toast.show({
-        title: t('Nothing to decide'),
-        description: t('Only pending requisitions can be approved or rejected.'),
+        title: t('Nothing to approve'),
+        description: t('Only submitted requisitions can be approved.'),
         error: true,
       })
       return
     }
-    if (decision === 'approve') {
-      const over = pending.find((r) => !roleCanApprove(role, r.amount, 'procurement'))
-      if (over) {
-        const limit = approvalLimit(role)
-        toast.show({
-          title: t('Above your approval limit'),
-          description: `${over.id} · SAR ${over.amount.toLocaleString('en-US')} — ${t('Limit')}: ${
-            limit === null ? '∞' : `SAR ${limit.toLocaleString('en-US')}`
-          }`,
-          error: true,
-        })
-        return
-      }
+    const over = submittable.find((r) => !roleCanApprove(role, r.amountHalalas / 100, 'procurement'))
+    if (over) {
+      const limit = approvalLimit(role)
+      toast.show({
+        title: t('Above your approval limit'),
+        description: `${over.code} · ${formatSar(over.amountHalalas / 100)} — ${t('Limit')}: ${
+          limit === null ? '∞' : formatSar(limit)
+        }`,
+        error: true,
+      })
+      return
     }
-    const ok = await confirm(
-      decision === 'approve'
-        ? {
-            title: 'Approve selected requisitions?',
-            description: 'Each approval releases the request for conversion to a purchase order.',
-            icon: 'CheckCircle2',
-            confirmLabel: 'Approve',
-          }
-        : {
-            title: 'Reject selected requisitions?',
-            description: 'The requesting branches are notified. This cannot be undone from here.',
-            icon: 'AlertTriangle',
-            confirmLabel: 'Reject',
-            destructive: true,
-          }
-    )
+    const ok = await confirm({
+      title: 'Approve selected requisitions?',
+      description: 'Each approval releases the request for conversion to a purchase order.',
+      icon: 'CheckCircle2',
+      confirmLabel: 'Approve',
+    })
     if (!ok) return
     setBusy(true)
     try {
-      for (const row of pending) {
-        await api.decideRequisition(row.id, decision, procurementIdempotencyKey())
+      for (const row of submittable) {
+        await api.approveRequisition(row.ref)
       }
-      toast.show({
-        title: t(decision === 'approve' ? 'Approved' : 'Rejected'),
-        description: `${pending.length} ${t('requisitions')}`,
-      })
+      toast.show({ title: t('Approved'), description: `${submittable.length} ${t('requisitions')}` })
       refresh()
     } catch (error) {
       toast.show({
@@ -962,15 +1368,15 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
     }
   }
 
-  const columns: Column<Requisition>[] = [
+  const columns: Column<ReqView>[] = [
     {
       header: 'Select',
       cell: (r) => (
         <input
           type="checkbox"
-          aria-label={`${t('Select')} ${r.id}`}
-          checked={!!selected[r.id]}
-          onChange={() => setSelected((s) => ({ ...s, [r.id]: !s[r.id] }))}
+          aria-label={`${t('Select')} ${r.code}`}
+          checked={!!selected[r.ref]}
+          onChange={() => setSelected((s) => ({ ...s, [r.ref]: !s[r.ref] }))}
           onClick={(event) => event.stopPropagation()}
           className="h-[15px] w-[15px] cursor-pointer accent-[var(--salis-blue)]"
         />
@@ -979,22 +1385,24 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
     },
     {
       header: 'Req #',
-      cell: (r) => <span className="font-semibold text-salis-blue">{r.id}</span>,
+      cell: (r) => <span className="font-semibold text-salis-blue">{r.code}</span>,
       code: true,
     },
     {
-      header: 'Request',
+      header: 'Requested By',
       cell: (r) => (
         <span className="flex flex-col">
-          <span className="text-[13px] text-body">{t(r.what)}</span>
-          <span className="mt-0.5 text-[11px] text-muted">{t(r.from)}</span>
+          <span className="text-[13px] text-body">{t(r.requester)}</span>
+          {r.department ? (
+            <span className="mt-0.5 text-[11px] text-muted">{t(r.department)}</span>
+          ) : null}
         </span>
       ),
     },
     {
       header: 'Priority',
       cell: (r) => {
-        const [bg, fg] = PRIORITY_TONE[r.priority] ?? PRIORITY_TONE.medium
+        const [bg, fg] = priorityTone(r.priority)
         return (
           <Badge background={bg} color={fg}>
             {t(r.priority[0].toUpperCase() + r.priority.slice(1))}
@@ -1002,19 +1410,19 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
         )
       },
     },
-    { header: 'Raised', cell: (r) => <span className="text-[13px] text-muted">{t(r.age)}</span> },
+    { header: 'When', cell: (r) => <span className="text-[13px] text-muted">{t(r.when)}</span> },
     {
-      header: 'Amount',
-      cell: (r) => <Money sar={r.amount} className="font-semibold" />,
+      header: 'Estimated',
+      cell: (r) => <Money sar={r.amountHalalas / 100} className="font-semibold" />,
       className: 'text-end',
     },
     {
       header: 'Status',
       cell: (r) => {
-        const [bg, fg] = NETWORK_STATUS[r.status] ?? NETWORK_STATUS.pending
+        const [bg, fg] = reqTone(r.status)
         return (
           <Badge background={bg} color={fg}>
-            {t(statusLabel(r.status))}
+            {t(reqStatusLabel(r.status))}
           </Badge>
         )
       },
@@ -1070,7 +1478,11 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
                     : 'border-border bg-card text-muted hover:border-border-strong'
                 )}
               >
-                {t(option === 'converted' ? 'PO Raised' : option[0].toUpperCase() + option.slice(1))}
+                {t(
+                  option === 'all'
+                    ? 'All'
+                    : reqStatusLabel(option as ReqStatus)
+                )}
                 <span className="font-mono text-[11px] opacity-70" dir="ltr">
                   {count}
                 </span>
@@ -1088,19 +1500,9 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
               {t('selected')}
             </span>
             {mayDecide ? (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!api || busy}
-                  onClick={() => void decideSelected('reject')}
-                >
-                  {t('Reject')}
-                </Button>
-                <Button size="sm" disabled={!api || busy} onClick={() => void decideSelected('approve')}>
-                  {t('Approve')}
-                </Button>
-              </>
+              <Button size="sm" disabled={!api || busy} onClick={() => void approveSelected()}>
+                {t('Approve')}
+              </Button>
             ) : null}
           </div>
         ) : null}
@@ -1121,38 +1523,37 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
       </div>
 
       {isError ? (
-        <ErrorState
-          title={t("Couldn't load requisitions")}
-          onRetry={() => void refetch()}
-        />
+        <ErrorState title={t("Couldn't load requisitions")} onRetry={() => void liveQuery.refetch()} />
       ) : (
         <DataTable
           columns={columns}
           rows={rows}
-          rowKey={(r) => r.id}
+          rowKey={(r) => r.ref}
           loading={isLoading}
-          onRowClick={(r) => setOpenId(r.id)}
-          mobileCard={(r) => (
-            <>
-              <MobileCardHeader
-                title={r.id}
-                code
-                trailing={
-                  <Badge
-                    background={(NETWORK_STATUS[r.status] ?? NETWORK_STATUS.pending)[0]}
-                    color={(NETWORK_STATUS[r.status] ?? NETWORK_STATUS.pending)[1]}
-                  >
-                    {t(statusLabel(r.status))}
-                  </Badge>
-                }
-              />
-              <MobileCardRow>{t(r.what)}</MobileCardRow>
-              <MobileCardRow label={t('From')}>{t(r.from)}</MobileCardRow>
-              <MobileCardRow label={t('Amount')}>
-                <Money sar={r.amount} className="font-semibold text-heading" />
-              </MobileCardRow>
-            </>
-          )}
+          onRowClick={(r) => setOpenRef(r.ref)}
+          mobileCard={(r) => {
+            const [bg, fg] = reqTone(r.status)
+            return (
+              <>
+                <MobileCardHeader
+                  title={r.code}
+                  code
+                  trailing={
+                    <Badge background={bg} color={fg}>
+                      {t(reqStatusLabel(r.status))}
+                    </Badge>
+                  }
+                />
+                <MobileCardRow>{t(r.requester)}</MobileCardRow>
+                {r.department ? (
+                  <MobileCardRow label={t('Department')}>{t(r.department)}</MobileCardRow>
+                ) : null}
+                <MobileCardRow label={t('Estimated')}>
+                  <Money sar={r.amountHalalas / 100} className="font-semibold text-heading" />
+                </MobileCardRow>
+              </>
+            )
+          }}
           footer={
             rows.length ? (
               <TableFooter
@@ -1214,7 +1615,7 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
           row={openRow}
           api={api}
           unavailable={unavailable}
-          onClose={() => setOpenId(null)}
+          onClose={() => setOpenRef(null)}
           onChanged={refresh}
         />
       ) : null}
