@@ -66,7 +66,8 @@ const ROUTES = [
   { path: '/bank-reconciliation', expect: 'Unmatched' },
   { path: '/custom-reports', expect: 'Create Report' },
   { path: '/insurance-reports', expect: 'Active Policies' },
-  { path: '/invoice-preview', expect: 'Bill To' },
+  // 'Bill To' is CSS-uppercased, and innerText reflects text-transform.
+  { path: '/invoice-preview', expect: 'Tax Invoice' },
   { path: '/loan-reports', expect: 'Applications' },
   { path: '/reports', expect: 'Report Categories' },
   { path: '/reports-analytics', expect: 'Avg Job Value' },
