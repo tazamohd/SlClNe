@@ -12,11 +12,9 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Standalone supplier extranet — SupplierPortal.dc.html / .Orders.dc.html.
- *
- *  Unlike the operator screens this renders for a supplier account, not a
- *  SALIS AUTO employee: no `useSession`/RBAC, and its own fixed nav rather
- *  than the role-filtered internal `Sidebar`. `PortalChrome` below is that
- *  chrome, shared by both routes so the sidebar/header markup lives once. */
+ *  Renders for a supplier account, not a SALIS AUTO employee: no
+ *  `useSession`/RBAC, and its own fixed nav rather than the internal
+ *  `Sidebar`. `PortalChrome` is that chrome, shared by both routes. */
 
 const SUPPLIER_NAME = 'AutoParts KSA'
 
@@ -40,18 +38,9 @@ const STATUS_TONE: Record<OrderStatus, readonly [string, string]> = {
   transit: ['rgba(10,94,215,.1)', '#0A5ED7'],
   delivered: ['rgba(11,31,59,.1)', '#0B1F3B'],
 }
-const STATUS_LABEL: Record<OrderStatus, string> = {
-  new: 'New',
-  ack: 'Acknowledged',
-  transit: 'In Transit',
-  delivered: 'Delivered',
-}
-const STATUS_ICON: Record<OrderStatus, string> = {
-  new: 'FileText',
-  ack: 'PackageCheck',
-  transit: 'Truck',
-  delivered: 'CheckCircle',
-}
+const STATUS_LABEL: Record<OrderStatus, string> = { new: 'New', ack: 'Acknowledged', transit: 'In Transit', delivered: 'Delivered' }
+const STATUS_ICON: Record<OrderStatus, string> = { new: 'FileText', ack: 'PackageCheck', transit: 'Truck', delivered: 'CheckCircle' }
+const NEEDS_ACTION: Record<OrderStatus, string> = { new: 'Acknowledge', ack: 'Ship', transit: '', delivered: '' }
 
 interface SupplierOrder {
   id: string
@@ -74,8 +63,6 @@ const SUPPLIER_ORDERS: readonly SupplierOrder[] = [
   { id: 'PO-2026-0377', items: 'Brake Pads (Rear)', lines: 1, branch: 'Jeddah Branch', due: 'Jul 09', dueUrgent: false, total: 11200, status: 'delivered' },
 ]
 
-const NEEDS_ACTION: Record<OrderStatus, string> = { new: 'Acknowledge', ack: 'Ship', transit: '', delivered: '' }
-
 // ── Portal chrome (sidebar + header), shared by both routes ────────────────
 function PortalChrome({ children }: { children: ReactNode }) {
   const { t, rtl, theme, toggleTheme, toggleLanguage } = usePreferences()
@@ -91,12 +78,9 @@ function PortalChrome({ children }: { children: ReactNode }) {
         </div>
         <div className="min-w-0">
           <p className="truncate font-display text-[13px] font-extrabold text-heading">SALIS AUTO</p>
-          <p className="truncate text-[10px] font-semibold uppercase tracking-[.06em] text-salis-blue">
-            {t('Supplier')}
-          </p>
+          <p className="truncate text-[10px] font-semibold uppercase tracking-[.06em] text-salis-blue">{t('Supplier')}</p>
         </div>
       </div>
-
       <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3">
         {NAV_ITEMS.map((item) => {
           const active = item.route ? pathname === item.route : false
@@ -111,17 +95,12 @@ function PortalChrome({ children }: { children: ReactNode }) {
             active ? 'bg-salis-gradient-r text-white shadow' : 'text-heading hover:bg-[rgba(10,94,215,.08)]'
           )
           return item.route ? (
-            <Link key={item.label} to={item.route} onClick={() => setDrawerOpen(false)} className={className}>
-              {body}
-            </Link>
+            <Link key={item.label} to={item.route} onClick={() => setDrawerOpen(false)} className={className}>{body}</Link>
           ) : (
-            <span key={item.label} aria-disabled className={cn(className, 'cursor-default opacity-70')}>
-              {body}
-            </span>
+            <span key={item.label} aria-disabled className={cn(className, 'cursor-default opacity-70')}>{body}</span>
           )
         })}
       </nav>
-
       <div className="flex flex-col gap-2 border-t border-border p-3">
         <div className="flex items-center gap-2.5 rounded-[9px] border border-border bg-inset p-2.5">
           <span className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
@@ -129,9 +108,7 @@ function PortalChrome({ children }: { children: ReactNode }) {
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-semibold text-heading">{SUPPLIER_NAME}</p>
-            <p className="truncate text-[10px] text-muted">
-              {t('Approved Supplier')} · SUP-0114
-            </p>
+            <p className="truncate text-[10px] text-muted">{t('Approved Supplier')} · SUP-0114</p>
           </div>
         </div>
         <button
@@ -175,11 +152,8 @@ function PortalChrome({ children }: { children: ReactNode }) {
           </div>
         </>
       ) : (
-        <aside className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">
-          {nav}
-        </aside>
+        <aside className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">{nav}</aside>
       )}
-
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 flex-shrink-0 items-center gap-3 border-b border-border bg-sidebar px-4 shadow-sm md:px-6">
           {isMobile ? (
@@ -226,7 +200,7 @@ function PortalChrome({ children }: { children: ReactNode }) {
   )
 }
 
-/** Reusable page title row: gradient icon tile, heading and right-aligned actions. */
+/** Page title row: gradient icon tile, heading and right-aligned actions. */
 function PortalHeader({ icon, title, subtitle, actions }: { icon: string; title: string; subtitle: string; actions?: ReactNode }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
@@ -254,13 +228,11 @@ export function SupplierPortal() {
     { icon: 'Banknote', label: 'Outstanding', value: formatSar(40300), sub: t('2 invoices awaiting payment'), warn: false },
     { icon: 'TrendingUp', label: 'MTD Revenue', value: formatSar(61200), sub: `+14% ${t('vs Last Period')}`, warn: false },
   ]
-
   const rfqs = [
     { id: 'RFQ-0231', part: 'Timing Belt Kit — Toyota Camry', qty: '25', branch: 'Riyadh Main', due: 'Due in 4h', urgent: true },
     { id: 'RFQ-0228', part: 'Alternator — Nissan Patrol', qty: '8', branch: 'Jeddah Branch', due: 'Due tomorrow', urgent: false },
     { id: 'RFQ-0224', part: 'Suspension Bushing Set', qty: '40', branch: 'Riyadh North', due: 'Due in 2 days', urgent: false },
   ]
-
   const scorecard = [
     { label: 'On-Time Delivery', display: '96.4%', pct: 96, warn: false },
     { label: 'Order Accuracy', display: '99.1%', pct: 99, warn: false },
@@ -287,38 +259,27 @@ export function SupplierPortal() {
           </>
         }
       />
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((kpi) => (
           <Card key={kpi.label} className="p-[17px]">
             <div className="flex items-center gap-2">
-              <span
-                className="flex rounded-[10px] p-2"
-                style={{ background: 'rgba(10,94,215,.09)', color: '#0A5ED7' }}
-              >
+              <span className="flex rounded-[10px] p-2" style={{ background: 'rgba(10,94,215,.09)', color: '#0A5ED7' }}>
                 <Icon name={kpi.icon} size={16} />
               </span>
               <span className="text-xs font-medium text-muted">{t(kpi.label)}</span>
             </div>
-            <h4 dir="ltr" className="mt-2.5 font-display text-2xl font-black text-heading">
-              {kpi.value}
-            </h4>
+            <h4 dir="ltr" className="mt-2.5 font-display text-2xl font-black text-heading">{kpi.value}</h4>
             <p className={cn('mt-1 text-[11px]', kpi.warn ? 'text-salis-orange' : 'text-muted')}>{kpi.sub}</p>
           </Card>
         ))}
       </div>
-
       <div className="grid grid-cols-1 items-start gap-[22px] lg:grid-cols-[1.35fr_1fr]">
         <Card className="overflow-hidden">
           <div className="flex items-center gap-2.5 border-b border-border px-5 py-3.5">
             <h3 className="text-[15px] font-bold text-heading">{t('Purchase Orders')}</h3>
-            <Badge background="rgba(249,115,22,.1)" color="#F97316">
-              2 {t('need action')}
-            </Badge>
+            <Badge background="rgba(249,115,22,.1)" color="#F97316">2 {t('need action')}</Badge>
             <span className="flex-1" />
-            <Link to="/supplier-portal/orders" className="font-action text-xs font-medium text-salis-blue">
-              {t('View All')} →
-            </Link>
+            <Link to="/supplier-portal/orders" className="font-action text-xs font-medium text-salis-blue">{t('View All')} →</Link>
           </div>
           {SUPPLIER_ORDERS.slice(0, 5).map((order) => {
             const [bg, fg] = STATUS_TONE[order.status]
@@ -328,36 +289,25 @@ export function SupplierPortal() {
                 key={order.id}
                 className="flex items-center gap-3.5 border-b border-border px-5 py-3.5 transition-colors duration-150 last:border-b-0 hover:bg-[rgba(10,94,215,.03)]"
               >
-                <span className="flex flex-shrink-0 rounded-[10px] p-2" style={{ background: `${bg}`, color: fg }}>
+                <span className="flex flex-shrink-0 rounded-[10px] p-2" style={{ background: bg, color: fg }}>
                   <Icon name={STATUS_ICON[order.status]} size={15} />
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span dir="ltr" className="font-mono text-xs font-semibold text-salis-blue">
-                      {order.id}
-                    </span>
-                    <Badge background={bg} color={fg}>
-                      {t(STATUS_LABEL[order.status])}
-                    </Badge>
+                    <span dir="ltr" className="font-mono text-xs font-semibold text-salis-blue">{order.id}</span>
+                    <Badge background={bg} color={fg}>{t(STATUS_LABEL[order.status])}</Badge>
                   </div>
                   <p className="mt-0.5 truncate text-[13px] text-body">{t(order.items)}</p>
-                  <p className="mt-0.5 text-[11px] text-muted">
-                    {t(order.branch)} · {t('Due')} {order.due}
-                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted">{t(order.branch)} · {t('Due')} {order.due}</p>
                 </div>
                 <div className="flex-shrink-0 text-end">
                   <Money sar={order.total} className="font-display text-sm font-bold text-heading" />
-                  {action ? (
-                    <Button size="sm" className="mt-1.5 h-7 px-2.5 text-[11px]">
-                      {t(action)}
-                    </Button>
-                  ) : null}
+                  {action ? <Button size="sm" className="mt-1.5 h-7 px-2.5 text-[11px]">{t(action)}</Button> : null}
                 </div>
               </div>
             )
           })}
         </Card>
-
         <div className="flex flex-col gap-[22px]">
           <Card className="p-5">
             <h3 className="mb-3.5 text-[15px] font-bold text-heading">{t('Quote Requests')}</h3>
@@ -365,26 +315,17 @@ export function SupplierPortal() {
               {rfqs.map((rfq) => (
                 <div key={rfq.id} className="rounded-[11px] border border-border bg-inset p-3">
                   <div className="mb-1 flex items-center gap-2">
-                    <span dir="ltr" className="font-mono text-[11px] text-muted">
-                      {rfq.id}
-                    </span>
+                    <span dir="ltr" className="font-mono text-[11px] text-muted">{rfq.id}</span>
                     <span className="flex-1" />
-                    <span className={cn('text-[11px] font-semibold', rfq.urgent ? 'text-salis-orange' : 'text-muted')}>
-                      {t(rfq.due)}
-                    </span>
+                    <span className={cn('text-[11px] font-semibold', rfq.urgent ? 'text-salis-orange' : 'text-muted')}>{t(rfq.due)}</span>
                   </div>
                   <p className="text-[13px] font-medium text-heading">{t(rfq.part)}</p>
-                  <p className="mb-2 mt-0.5 text-[11px] text-muted">
-                    {t('Qty')} {rfq.qty} · {t(rfq.branch)}
-                  </p>
-                  <Button variant="outline" size="sm" className="w-full">
-                    {t('Submit Quote')}
-                  </Button>
+                  <p className="mb-2 mt-0.5 text-[11px] text-muted">{t('Qty')} {rfq.qty} · {t(rfq.branch)}</p>
+                  <Button variant="outline" size="sm" className="w-full">{t('Submit Quote')}</Button>
                 </div>
               ))}
             </div>
           </Card>
-
           <Card className="p-5">
             <h3 className="mb-3.5 text-[15px] font-bold text-heading">{t('Supplier Scorecard')}</h3>
             <div className="flex flex-col gap-3">
@@ -392,18 +333,10 @@ export function SupplierPortal() {
                 <div key={row.label}>
                   <div className="mb-1 flex justify-between text-xs">
                     <span className="text-body">{t(row.label)}</span>
-                    <span
-                      dir="ltr"
-                      className={cn('font-mono font-semibold', row.warn ? 'text-salis-orange' : 'text-salis-blue')}
-                    >
-                      {row.display}
-                    </span>
+                    <span dir="ltr" className={cn('font-mono font-semibold', row.warn ? 'text-salis-orange' : 'text-salis-blue')}>{row.display}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
-                    <div
-                      className={cn('h-full rounded-full', row.warn ? 'bg-salis-orange' : 'bg-salis-gradient-r')}
-                      style={{ width: `${row.pct}%` }}
-                    />
+                    <div className={cn('h-full rounded-full', row.warn ? 'bg-salis-orange' : 'bg-salis-gradient-r')} style={{ width: `${row.pct}%` }} />
                   </div>
                 </div>
               ))}
@@ -449,35 +382,18 @@ export function SupplierPortalOrders() {
       cell: (o) => (
         <div>
           <p className="text-[13px] text-body">{t(o.items)}</p>
-          <p className="mt-0.5 text-[11px] text-muted">
-            {o.lines} {t('line items')}
-          </p>
+          <p className="mt-0.5 text-[11px] text-muted">{o.lines} {t('line items')}</p>
         </div>
       ),
     },
     { header: 'Branch', cell: (o) => t(o.branch), className: 'text-muted' },
-    {
-      header: 'Due',
-      cell: (o) => (
-        <span dir="ltr" className={cn(o.dueUrgent ? 'text-salis-orange' : 'text-body')}>
-          {o.due}
-        </span>
-      ),
-    },
-    {
-      header: 'Total',
-      cell: (o) => <Money sar={o.total} className="font-semibold" />,
-      className: 'text-end',
-    },
+    { header: 'Due', cell: (o) => <span dir="ltr" className={cn(o.dueUrgent ? 'text-salis-orange' : 'text-body')}>{o.due}</span> },
+    { header: 'Total', cell: (o) => <Money sar={o.total} className="font-semibold" />, className: 'text-end' },
     {
       header: 'Status',
       cell: (o) => {
         const [bg, fg] = STATUS_TONE[o.status]
-        return (
-          <Badge background={bg} color={fg}>
-            {t(STATUS_LABEL[o.status])}
-          </Badge>
-        )
+        return <Badge background={bg} color={fg}>{t(STATUS_LABEL[o.status])}</Badge>
       },
     },
   ]
@@ -495,7 +411,6 @@ export function SupplierPortalOrders() {
           </Button>
         }
       />
-
       <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
         {ORDER_TABS.map((tab) => {
           const count = tab.id === 'all' ? SUPPLIER_ORDERS.length : SUPPLIER_ORDERS.filter((o) => o.status === tab.id).length
@@ -508,22 +423,16 @@ export function SupplierPortalOrders() {
               aria-selected={active}
               onClick={() => setFilter(tab.id)}
               className={cn(
-                'flex h-[34px] cursor-pointer items-center gap-1.5 rounded-lg px-3.5',
-                'font-action text-xs font-medium transition-all duration-150',
-                active
-                  ? 'bg-salis-gradient text-white'
-                  : 'border border-border bg-card text-body hover:border-border-strong'
+                'flex h-[34px] cursor-pointer items-center gap-1.5 rounded-lg px-3.5 font-action text-xs font-medium transition-all duration-150',
+                active ? 'bg-salis-gradient text-white' : 'border border-border bg-card text-body hover:border-border-strong'
               )}
             >
               {t(tab.label)}
-              <span dir="ltr" className="font-mono opacity-75">
-                {count}
-              </span>
+              <span dir="ltr" className="font-mono opacity-75">{count}</span>
             </button>
           )
         })}
       </div>
-
       <DataTable
         columns={columns}
         rows={rows}
@@ -532,21 +441,11 @@ export function SupplierPortalOrders() {
           const [bg, fg] = STATUS_TONE[o.status]
           return (
             <>
-              <MobileCardHeader
-                title={o.id}
-                code
-                trailing={
-                  <Badge background={bg} color={fg}>
-                    {t(STATUS_LABEL[o.status])}
-                  </Badge>
-                }
-              />
+              <MobileCardHeader title={o.id} code trailing={<Badge background={bg} color={fg}>{t(STATUS_LABEL[o.status])}</Badge>} />
               <MobileCardRow>{t(o.items)}</MobileCardRow>
               <MobileCardRow label={t('Branch')}>{t(o.branch)}</MobileCardRow>
               <MobileCardRow label={t('Due')}>
-                <span dir="ltr" className={o.dueUrgent ? 'text-salis-orange' : undefined}>
-                  {o.due}
-                </span>
+                <span dir="ltr" className={o.dueUrgent ? 'text-salis-orange' : undefined}>{o.due}</span>
               </MobileCardRow>
               <MobileCardRow label={t('Total')}>
                 <Money sar={o.total} className="font-semibold text-heading" />
