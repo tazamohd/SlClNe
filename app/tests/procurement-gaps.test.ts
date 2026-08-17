@@ -4,16 +4,18 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { procurementApi, procurementUnavailableReason } from '@/screens/network/Procurement'
 
-/** Procurement server support — landed (F-022).
+/** Procurement server support — landed (F-022), and now wired.
  *
  *  Wave W2 tranche 2 asked for the requisition lifecycle, purchase-order raise
  *  and approve within the ceiling, and receiving against the order. Agent 05
- *  built all of it, so the assertions below now pin the *presence* of each
- *  endpoint rather than its absence — the reverse ratchet has flipped. What
- *  stays a gap is the last mile the boundary owns: `Procurement.tsx`'s
- *  `procurementApi()` still returns null until agent 11 wires the transport in
- *  `app/src/data/repository.ts` (`createProcurementApi`) to these screens, so
- *  the screens keep rendering the honest absent-capability state until then.
+ *  built all of it and agent 11 wired the screens to `repository.procurement`
+ *  (`createProcurementApi`), so the assertions below pin the *presence* of each
+ *  endpoint. The one remaining absence is not a gap in the wiring but the honest
+ *  shape of a fixture build: with no API URL there is no transport to carry a
+ *  write and the mock holds no procurement records, so `procurementApi()` is
+ *  null and every screen shows its absent-capability state rather than faking a
+ *  requisition or a receipt. A live build (an API URL set) gets the real
+ *  transport instead.
  */
 
 const HERE = path.dirname(fileURLToPath(new URL(import.meta.url)))
@@ -95,8 +97,11 @@ describe('the inventory movement endpoint still cannot stand in for receiving', 
   })
 })
 
-describe('the client still awaits its transport wiring', () => {
-  it('procurementApi() is null — agent 11 wires the screen to createProcurementApi next', () => {
+describe('the transport is wired — null only on a fixture build', () => {
+  it('procurementApi() is null without an API URL: no transport to carry a write, no faked record', () => {
+    // This test build sets no VITE_API_URL, so `repository.procurement` is null
+    // and the factory returns null — the honest fixture state. A live build
+    // gets the real `createProcurementApi` transport instead.
     expect(procurementApi()).toBeNull()
   })
 
