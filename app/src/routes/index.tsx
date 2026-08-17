@@ -71,6 +71,15 @@ import {
   FinancialStatements,
   OperationalReports,
 } from '@/screens/accounting/Reports'
+import { BankReconciliation } from '@/screens/accounting/BankReconciliation'
+import { CustomReports } from '@/screens/accounting/CustomReports'
+import { InsuranceReports } from '@/screens/accounting/InsuranceReports'
+import { InvoicePreview } from '@/screens/accounting/InvoicePreview'
+import { LoanReports } from '@/screens/accounting/LoanReports'
+import { Reports } from '@/screens/accounting/ReportsHub'
+import { ReportsAnalytics } from '@/screens/accounting/ReportsAnalytics'
+import { SalesReports } from '@/screens/accounting/SalesReports'
+import { TaxManagement } from '@/screens/accounting/TaxManagement'
 import {
   AgentDashboard,
   AgentRegistry,
@@ -166,6 +175,15 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   ExecutiveReports,
   OperationalReports,
   BIDashboard,
+  BankReconciliation,
+  CustomReports,
+  InsuranceReports,
+  InvoicePreview,
+  LoanReports,
+  Reports,
+  ReportsAnalytics,
+  SalesReports,
+  TaxManagement,
   LeadPipeline,
   Opportunities,
   Campaigns,
