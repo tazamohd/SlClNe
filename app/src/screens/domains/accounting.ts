@@ -25,6 +25,17 @@ import { InsuranceReports, LoanReports } from '../accounting/GapReports'
  *  report screens the legacy app map already claims (ChartOfAccounts,
  *  FinancialReports, …) are declared there, and re-declaring one would throw at
  *  composition. These are the designed screens that were still awaiting a build. */
+import { GeneralLedger } from '../accounting/GeneralLedger'
+import { TrialBalance } from '../accounting/TrialBalance'
+import { BalanceSheet } from '../accounting/BalanceSheet'
+import { IncomeStatement } from '../accounting/IncomeStatement'
+import { CashFlowStatement } from '../accounting/CashFlowStatement'
+import { AccountsReceivable } from '../accounting/AccountsReceivable'
+import { AccountsPayable } from '../accounting/AccountsPayable'
+import { BankAccountManagement } from '../accounting/BankAccountManagement'
+import { BudgetManagement } from '../accounting/BudgetManagement'
+import { CapitalManagement } from '../accounting/CapitalManagement'
+
 export const SCREENS: DomainScreens = {
   InvoicePreview,
   TaxManagement,
@@ -35,4 +46,14 @@ export const SCREENS: DomainScreens = {
   CustomReports,
   InsuranceReports,
   LoanReports,
+  'General-Ledger': GeneralLedger,
+  'Trial-Balance': TrialBalance,
+  'Balance-Sheet': BalanceSheet,
+  'Income-Statement': IncomeStatement,
+  'Cash-Flow-Statement': CashFlowStatement,
+  'Accounts-Receivable': AccountsReceivable,
+  'Accounts-Payable': AccountsPayable,
+  'Bank-Account-Management': BankAccountManagement,
+  'Budget-Management': BudgetManagement,
+  'Capital-Management': CapitalManagement,
 }

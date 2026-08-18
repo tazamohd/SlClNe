@@ -192,6 +192,16 @@ const SCREEN_ENTRIES = composeScreens({
   'legacy:auth': asDomain(PUBLIC_SCREENS, null, true),
   'legacy:customer-app': asDomain(CUSTOMER_APP_SCREENS, CustomerAppShell),
   'legacy:app': asDomain(APP_SCREENS, undefined),
+  'auth-extra': lazyBarrel(
+    () => import('@/screens/domains/auth-extra'),
+    ['Register', 'SSOLogin', 'SocialLogin', 'RoleSelection', 'WorkspaceSelection', 'OrganizationSelection', 'ProfileCompletion', 'InviteAcceptance', 'Onboarding'],
+    { ungated: true }
+  ),
+  dashboard: lazyBarrel(() => import('@/screens/domains/dashboard'), [
+    'Dashboard-Home',
+    'Dashboard-Main',
+    'Calendar',
+  ]),
   workshop: lazyBarrel(() => import('@/screens/domains/workshop'), [
     'JobCardDetail',
     'ApprovalInbox',
@@ -203,6 +213,12 @@ const SCREEN_ENTRIES = composeScreens({
     'DiagnosticReport',
     'WorkshopReports',
     'CustomerApproval',
+    'Workshop-Calendar',
+    'Vehicles-List',
+    'Vehicle-History',
+    'Vehicle-Inspections',
+    'Fleet-Tracking',
+    'Towing-Assistance',
   ]),
   crm: lazyBarrel(() => import('@/screens/domains/crm'), [
     'CustomerDetail',
@@ -211,6 +227,7 @@ const SCREEN_ENTRIES = composeScreens({
     'FleetContract',
     'LeadDetail',
     'CRMCalendar',
+    'Customers-List',
   ]),
   parts: lazyBarrel(() => import('@/screens/domains/parts'), ['InventoryReports']),
   procurement: lazyBarrel(() => import('@/screens/domains/procurement'), ['PurchaseOrder']),
@@ -224,6 +241,16 @@ const SCREEN_ENTRIES = composeScreens({
     'CustomReports',
     'InsuranceReports',
     'LoanReports',
+    'General-Ledger',
+    'Trial-Balance',
+    'Balance-Sheet',
+    'Income-Statement',
+    'Cash-Flow-Statement',
+    'Accounts-Receivable',
+    'Accounts-Payable',
+    'Bank-Account-Management',
+    'Budget-Management',
+    'Capital-Management',
   ]),
   insurance: lazyBarrel(() => import('@/screens/domains/insurance'), ['Insurance-Claims']),
   ai: lazyBarrel(() => import('@/screens/domains/ai'), [
@@ -241,6 +268,7 @@ const SCREEN_ENTRIES = composeScreens({
     'Branches',
     'Organizations',
     'Subscription',
+    'SuperAdmin',
     'Templates',
     'UsersTeams',
     'WorkflowBuilder',
@@ -258,7 +286,7 @@ const SCREEN_ENTRIES = composeScreens({
   ]),
   portals: lazyBarrel(
     () => import('@/screens/domains/portals'),
-    ['TechnicianPortal', 'TechnicianPortal.JobDetail', 'CustomerPortal', 'CustomerPortal.Booking'],
+    ['TechnicianPortal', 'TechnicianPortal.JobDetail', 'CustomerPortal', 'CustomerPortal.Booking', 'SupplierPortal', 'SupplierPortal.Orders', 'Kiosk-Check-In'],
     { shell: PortalShell }
   ),
   website: lazyBarrel(

@@ -1700,9 +1700,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/InviteAcceptance.dc.html",
@@ -1931,9 +1937,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/KioskCheckIn.dc.html",
@@ -2309,9 +2319,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Onboarding.dc.html",
@@ -2409,9 +2425,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/OrganizationSelection.dc.html",
@@ -2782,9 +2804,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/ProfileCompletion.dc.html",
@@ -3178,9 +3206,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Register.dc.html",
@@ -3279,9 +3313,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/RoleSelection.dc.html",
@@ -3434,9 +3474,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/SocialLogin.dc.html",
@@ -3481,9 +3527,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/SSOLogin.dc.html",
@@ -3529,9 +3581,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/SuperAdmin.dc.html",
@@ -3550,9 +3606,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/SupplierPortal.dc.html",
@@ -3571,9 +3631,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/SupplierPortal.Orders.dc.html",
@@ -4692,9 +4756,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/WorkspaceSelection.dc.html",
@@ -4713,9 +4783,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4757,9 +4831,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4779,9 +4857,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4953,9 +5035,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -4975,9 +5061,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5075,9 +5165,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5097,9 +5191,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5145,9 +5243,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5270,9 +5372,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5342,9 +5448,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7650,9 +7760,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7672,9 +7786,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7694,9 +7812,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7716,9 +7838,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7738,9 +7864,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7760,9 +7890,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7782,9 +7916,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7804,9 +7942,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7826,9 +7968,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7848,9 +7994,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

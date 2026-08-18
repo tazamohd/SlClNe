@@ -20,6 +20,12 @@ import { OBDDiagnostics } from '../workshop/OBDDiagnostics'
 import { DiagnosticReport } from '../workshop/DiagnosticReport'
 import { WorkshopReports } from '../workshop/WorkshopReports'
 import { CustomerApproval } from '../workshop/CustomerApproval'
+import { WorkshopCalendar } from '../workshop/WorkshopCalendar'
+import { VehiclesList } from '../workshop/VehiclesList'
+import { VehicleHistory } from '../workshop/VehicleHistory'
+import { VehicleInspections } from '../workshop/VehicleInspections'
+import { FleetTracking } from '../workshop/FleetTracking'
+import { TowingAssistance } from '../workshop/TowingAssistance'
 
 export const SCREENS: DomainScreens = {
   JobCardDetail,
@@ -32,4 +38,10 @@ export const SCREENS: DomainScreens = {
   DiagnosticReport,
   WorkshopReports,
   CustomerApproval,
+  'Workshop-Calendar': WorkshopCalendar,
+  'Vehicles-List': VehiclesList,
+  'Vehicle-History': VehicleHistory,
+  'Vehicle-Inspections': VehicleInspections,
+  'Fleet-Tracking': FleetTracking,
+  'Towing-Assistance': TowingAssistance,
 }

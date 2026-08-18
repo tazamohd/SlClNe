@@ -8,6 +8,7 @@ import { Backup } from '../admin/Backup'
 import { Subscription } from '../admin/Subscription'
 import { Templates } from '../admin/Templates'
 import { WorkflowBuilder } from '../admin/WorkflowBuilder'
+import { SuperAdmin } from '../admin/SuperAdmin'
 
 export const SCREENS: DomainScreens = {
   AdvancedSettings,
@@ -16,6 +17,7 @@ export const SCREENS: DomainScreens = {
   Branches,
   Organizations,
   Subscription,
+  SuperAdmin,
   Templates,
   UsersTeams,
   WorkflowBuilder,

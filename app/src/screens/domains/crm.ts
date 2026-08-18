@@ -16,6 +16,7 @@ import { CustomerFeedback } from '../registry/CustomerFeedback'
 import { FleetContract } from '../registry/FleetContract'
 import { LeadDetail } from '../crm/LeadDetail'
 import { CRMCalendar } from '../crm/CRMCalendar'
+import { CustomersList } from '../crm/CustomersList'
 
 export const SCREENS: DomainScreens = {
   CustomerDetail,
@@ -24,4 +25,5 @@ export const SCREENS: DomainScreens = {
   FleetContract,
   LeadDetail,
   CRMCalendar,
+  'Customers-List': CustomersList,
 }
