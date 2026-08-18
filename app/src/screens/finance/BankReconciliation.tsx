@@ -177,6 +177,7 @@ export function BankReconciliation() {
           <ErrorState description={error.message} onRetry={() => void refetch()} />
         ) : (
           <DataTable
+            caption="Recorded cash receipts (book side)"
             columns={columns}
             rows={rows}
             rowKey={(r) => String(r.id)}
@@ -329,6 +330,7 @@ function StatementSection({
         <ErrorState description={error.message} onRetry={onRetry} />
       ) : (
         <DataTable
+          caption="Imported bank statement lines"
           columns={columns}
           rows={lines}
           rowKey={(l) => String(l._id ?? l.reference)}

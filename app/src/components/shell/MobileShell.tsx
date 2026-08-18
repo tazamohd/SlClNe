@@ -31,14 +31,14 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
         type="button"
         onClick={toggleTheme}
         aria-label="Toggle theme"
-        className="inline-flex h-[34px] w-[34px] flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
+        className="inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
       >
         <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
       </button>
       <button
         type="button"
         aria-label="Notifications"
-        className="relative inline-flex h-[34px] w-[34px] flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
+        className="relative inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
       >
         <Icon name="Bell" size={16} />
         <span className="absolute top-1.5 h-[7px] w-[7px] rounded-full border-2 border-sidebar bg-salis-orange end-[7px]" />

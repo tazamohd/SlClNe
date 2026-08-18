@@ -300,7 +300,7 @@ function MobileStageStrip({ current }: { current: string }) {
                       : 'border border-border bg-inset text-muted'
                 )}
               >
-                {isDone ? <Icon name="Check" size={9} strokeWidth={3} /> : index + 1}
+                {isDone ? <Icon name="Check" size={9} strokeWidth={3} aria-label={t('Completed')} /> : index + 1}
               </span>
               <span
                 className={cn(

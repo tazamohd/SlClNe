@@ -66,6 +66,7 @@ export function PoliciesPanel() {
 
   return (
     <DataTable
+      caption="Insurance policies"
       columns={columns}
       rows={rows}
       rowKey={(r, i) => r._id ?? `${r.policyNumber}-${i}`}
@@ -181,6 +182,7 @@ export function LoansPanel() {
       ) : null}
 
       <DataTable
+        caption="Auto-loan contracts"
         columns={columns}
         rows={rows}
         rowKey={(r, i) => r._id ?? `${r.contractNumber}-${i}`}
@@ -244,6 +246,7 @@ export function LoansPanel() {
             />
           ) : (
             <DataTable
+              caption="Repayment schedule"
               columns={
                 [
                   { header: '#', code: true, cell: (r) => String(r.sequence) },

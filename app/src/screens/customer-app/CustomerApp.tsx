@@ -382,7 +382,7 @@ export function CustomerAppMarketplace() {
                 <button
                   type="button"
                   aria-label={`${t('Add')}: ${t(product.name)}`}
-                  className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white"
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white"
                 >
                   <Icon name="Plus" size={13} />
                 </button>

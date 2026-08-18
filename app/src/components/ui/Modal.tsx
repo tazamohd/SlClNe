@@ -223,7 +223,7 @@ export function Modal({
       type="button"
       onClick={onClose}
       aria-label={t('Close')}
-      className="flex h-7 w-7 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+      className="flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-card"
     >
       <Icon name="X" size={16} />
     </button>

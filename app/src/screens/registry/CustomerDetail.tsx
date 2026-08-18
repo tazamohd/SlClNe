@@ -252,6 +252,7 @@ export function CustomerDetail() {
             on: 'desktop',
             children: (
               <DataTable
+                caption="Service history for this customer"
                 columns={historyColumns}
                 rows={worked}
                 rowKey={(job) => job.id}

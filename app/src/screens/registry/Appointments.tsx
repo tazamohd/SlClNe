@@ -125,6 +125,7 @@ export function Appointments() {
       </div>
 
       <DataTable
+        caption="Appointments"
         columns={columns}
         rows={filtered}
         rowKey={(a, index) => `${a.plate}-${index}`}

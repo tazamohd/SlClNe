@@ -342,7 +342,7 @@ function ActiveServiceCard({ job }: { job: JobRow }) {
                         : 'flex h-5 w-5 items-center justify-center rounded-full bg-white/15 text-[9px] opacity-60'
                   }
                 >
-                  {done ? <Icon name="Check" size={10} strokeWidth={3} /> : index + 1}
+                  {done ? <Icon name="Check" size={10} strokeWidth={3} aria-label={t('Completed')} /> : index + 1}
                 </span>
                 <span className={currentStep ? 'text-[8px] font-bold' : 'text-[8px] opacity-70'}>
                   {t(label)}

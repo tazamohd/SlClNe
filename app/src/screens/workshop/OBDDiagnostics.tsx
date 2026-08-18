@@ -36,10 +36,10 @@ const STATUS_TINT: Record<string, { bg: string; fg: string; label: string }> = {
   offline: { bg: 'rgba(100,116,139,.13)', fg: 'var(--text-muted)', label: 'Offline' },
 }
 
-const SEVERITY_TINT: Record<string, { bg: string; fg: string; icon: string }> = {
-  high: { bg: 'rgba(249,115,22,.13)', fg: 'var(--salis-orange)', icon: 'AlertTriangle' },
-  medium: { bg: 'rgba(11,179,255,.13)', fg: 'var(--salis-blue-bright)', icon: 'AlertCircle' },
-  low: { bg: 'rgba(100,116,139,.13)', fg: 'var(--text-muted)', icon: 'Info' },
+const SEVERITY_TINT: Record<string, { bg: string; fg: string; icon: string; label: string }> = {
+  high: { bg: 'rgba(249,115,22,.13)', fg: 'var(--salis-orange)', icon: 'AlertTriangle', label: 'High severity' },
+  medium: { bg: 'rgba(11,179,255,.13)', fg: 'var(--salis-blue-bright)', icon: 'AlertCircle', label: 'Medium severity' },
+  low: { bg: 'rgba(100,116,139,.13)', fg: 'var(--text-muted)', icon: 'Info', label: 'Low severity' },
 }
 
 /** OBD-II diagnostics — the connected scan tools and their last telemetry.
@@ -429,7 +429,7 @@ export function OBDDiagnostics() {
                           className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg"
                           style={{ background: sev.bg, color: sev.fg }}
                         >
-                          <Icon name={sev.icon} size={14} />
+                          <Icon name={sev.icon} size={14} aria-label={t(sev.label)} />
                         </span>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">

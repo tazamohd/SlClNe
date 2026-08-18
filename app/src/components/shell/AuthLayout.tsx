@@ -55,7 +55,7 @@ export function AuthControls() {
         type="button"
         onClick={toggleTheme}
         aria-label="Toggle theme"
-        className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-border bg-card text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
+        className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
       >
         <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
       </button>

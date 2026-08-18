@@ -201,7 +201,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted transition-colors hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted transition-colors hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>

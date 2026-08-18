@@ -1078,6 +1078,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                   </Button>
                 </div>
                 <DataTable
+                  caption="Purchase order line items"
                   columns={columns}
                   rows={indexedLines}
                   rowKey={(line) => `${line.index}`}

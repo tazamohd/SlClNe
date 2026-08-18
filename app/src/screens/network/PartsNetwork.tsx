@@ -169,6 +169,7 @@ export function PartsNetworkRequests() {
         }
       />
       <DataTable
+        caption="Part requests"
         columns={columns}
         rows={PART_REQUESTS}
         rowKey={(r) => r.reference}
@@ -221,6 +222,7 @@ export function PartsNetworkOrders() {
         subtitle={t('Parts ordered through the network')}
       />
       <DataTable
+        caption="Part orders"
         columns={columns}
         rows={PART_ORDERS}
         rowKey={(o) => o.reference}

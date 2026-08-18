@@ -304,6 +304,7 @@ export function SalesReports() {
           <ErrorState description={error.message} onRetry={() => void refetch()} />
         ) : (
           <DataTable
+            caption="Invoices in this sales report"
             columns={columns}
             rows={rows}
             rowKey={(i) => String(i.id)}
@@ -922,6 +923,7 @@ export function CustomReports() {
           <EmptyState icon="Columns3" title={t('No columns selected')} />
         ) : (
           <DataTable
+            caption="Custom report results"
             columns={columns}
             rows={filtered}
             rowKey={(row, index) => String(row._id ?? row.id ?? row.code ?? index)}

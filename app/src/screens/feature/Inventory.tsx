@@ -767,6 +767,7 @@ function OverviewTab({
       }
     >
       <DataTable
+        caption="Current stock levels by part"
         className="border-0 shadow-none"
         columns={columns}
         rows={parts}
@@ -860,6 +861,7 @@ function AlertsTab({
       subtitle={t('Parts at or below their reorder point, worst shortfall first.')}
     >
       <DataTable
+        caption="Low stock alerts"
         className="border-0 shadow-none"
         columns={columns}
         rows={parts}
@@ -1037,6 +1039,7 @@ function PricingTab({
         />
       )}
       <DataTable
+        caption="Part pricing and margin"
         className="border-0 shadow-none"
         columns={columns}
         rows={parts}
@@ -1258,6 +1261,7 @@ function MovementHistory({
         />
       ) : null}
       <DataTable
+        caption="Stock movements"
         className="border-0 shadow-none"
         columns={columns}
         rows={shown}

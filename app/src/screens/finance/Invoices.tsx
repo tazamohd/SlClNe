@@ -119,6 +119,7 @@ export function Invoices() {
         </Card>
       ) : (
         <DataTable
+          caption="Invoices"
           columns={columns}
           rows={filtered}
           rowKey={(invoice) => invoice.id}

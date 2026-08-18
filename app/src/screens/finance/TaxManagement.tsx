@@ -177,6 +177,7 @@ export function TaxManagement() {
           <ErrorState description={error.message} onRetry={() => void refetch()} />
         ) : (
           <DataTable
+            caption="Output VAT by invoice"
             columns={columns}
             rows={rows}
             rowKey={(i) => String(i.id)}

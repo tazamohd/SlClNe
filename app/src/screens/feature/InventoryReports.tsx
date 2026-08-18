@@ -642,6 +642,7 @@ function DetailsTable({
 
   return (
     <DataTable
+      caption="Per-part stock levels and valuation"
       className="border-0 shadow-none"
       columns={columns}
       rows={parts}

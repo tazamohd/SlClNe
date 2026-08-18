@@ -315,6 +315,7 @@ export function WorkshopQC() {
                       name={item.kind === 'labour' ? 'Wrench' : 'Package'}
                       size={14}
                       className="text-muted"
+                      aria-label={t(item.kind === 'labour' ? 'Labour' : 'Parts')}
                     />
                     <span className="min-w-0 flex-1 truncate text-body">{item.desc}</span>
                     <Money sar={item.unit} className="font-semibold text-heading" />

@@ -130,6 +130,7 @@ export function Payments() {
         </Card>
       ) : (
         <DataTable
+          caption="Payments"
           columns={columns}
           rows={invoices}
           rowKey={(invoice) => invoice.id}

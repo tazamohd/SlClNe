@@ -77,6 +77,7 @@ export function JobCards() {
       <JobCardForm open={creating} onClose={() => setCreating(false)} />
 
       <DataTable
+        caption="Job cards"
         columns={columns}
         rows={filtered}
         rowKey={(job) => job.id}

@@ -81,7 +81,7 @@ export function AppointmentCalendar() {
             type="button"
             aria-label={t('Previous')}
             onClick={() => shift(-1)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue"
           >
             <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={16} />
           </button>
@@ -92,7 +92,7 @@ export function AppointmentCalendar() {
             type="button"
             aria-label={t('Next')}
             onClick={() => shift(1)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue"
           >
             <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={16} />
           </button>

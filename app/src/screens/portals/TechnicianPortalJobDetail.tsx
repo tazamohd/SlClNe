@@ -203,6 +203,7 @@ export function TechnicianPortalJobDetail() {
                 >
                   {done ? <Icon name="Check" size={10} strokeWidth={3} /> : null}
                 </span>
+                {done ? <span className="sr-only">{t('Completed')}</span> : null}
                 <span
                   className={
                     done

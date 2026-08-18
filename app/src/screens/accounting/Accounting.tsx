@@ -105,6 +105,7 @@ export function ChartOfAccounts() {
         }
       />
       <DataTable
+        caption="Chart of accounts"
         columns={columns}
         rows={filtered}
         rowKey={(a) => a.code}
@@ -196,6 +197,7 @@ export function JournalEntries() {
       </div>
 
       <DataTable
+        caption="Journal entries"
         columns={columns}
         rows={filtered}
         rowKey={(e) => e.id}
@@ -257,6 +259,7 @@ export function Expenses() {
         }
       />
       <DataTable
+        caption="Expenses"
         columns={columns}
         rows={filtered}
         rowKey={(e) => e.id}
@@ -313,6 +316,7 @@ export function Receipts() {
         }
       />
       <DataTable
+        caption="Cash receipts"
         columns={columns}
         rows={filtered}
         rowKey={(r) => r.id}
@@ -379,6 +383,7 @@ export function Departments() {
         }
       />
       <DataTable
+        caption="Departments and cost centres"
         columns={columns}
         rows={filtered}
         rowKey={(d) => d.costCenter}

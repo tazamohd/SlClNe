@@ -170,7 +170,7 @@ export function CustomerPortalBooking() {
                       : 'border-[1.5px] border-border bg-inset text-muted'
                 )}
               >
-                {step.done ? <Icon name="Check" size={11} strokeWidth={3} /> : index + 1}
+                {step.done ? <Icon name="Check" size={11} strokeWidth={3} aria-label={t('Completed')} /> : index + 1}
               </span>
               <span
                 className={cn(
@@ -252,7 +252,7 @@ export function CustomerPortalBooking() {
                         {vehicle.plate}
                       </span>
                     </span>
-                    {picked ? <Icon name="CheckCircle" size={16} /> : null}
+                    {picked ? <Icon name="CheckCircle" size={16} aria-label={t('Selected')} /> : null}
                   </button>
                 )
               })}

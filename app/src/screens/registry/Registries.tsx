@@ -58,7 +58,7 @@ function RowActions({
             event.stopPropagation()
             onEdit()
           }}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:bg-inset hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:bg-inset hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
         >
           <Icon name="Pencil" size={15} />
         </button>
@@ -71,7 +71,7 @@ function RowActions({
             event.stopPropagation()
             onDelete()
           }}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:bg-inset hover:text-salis-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors duration-150 hover:bg-inset hover:text-salis-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
         >
           <Icon name="Trash2" size={15} />
         </button>

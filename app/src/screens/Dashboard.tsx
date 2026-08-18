@@ -277,7 +277,7 @@ export function Dashboard() {
             <PageButton label="Previous page" icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
             <button
               type="button"
-              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
+              className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
             >
               1
             </button>
@@ -285,7 +285,7 @@ export function Dashboard() {
               <button
                 key={page}
                 type="button"
-                className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
+                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
               >
                 {page}
               </button>
@@ -385,7 +385,7 @@ function PageButton({ label, icon }: { label: string; icon: string }) {
     <button
       type="button"
       aria-label={label}
-      className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-border bg-card text-body hover:border-salis-blue hover:text-salis-blue"
+      className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-body hover:border-salis-blue hover:text-salis-blue"
     >
       <Icon name={icon} size={14} />
     </button>
