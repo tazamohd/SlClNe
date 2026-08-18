@@ -10,5 +10,16 @@
  *  otherwise — `shell: null` for a screen with no chrome, or a shell component
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
+import { AIAssistant } from '../ai/AIAssistant'
+import { AIAnalytics } from '../ai/AIAnalytics'
+import { PromptLibrary } from '../ai/PromptLibrary'
+import { ModelSettings } from '../ai/ModelSettings'
+import { KnowledgeBase } from '../ai/KnowledgeBase'
 
-export const SCREENS: DomainScreens = {}
+export const SCREENS: DomainScreens = {
+  AIAssistant,
+  AIAnalytics,
+  PromptLibrary,
+  ModelSettings,
+  KnowledgeBase,
+}

@@ -45,9 +45,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/AdvancedSettings.dc.html",
@@ -118,9 +124,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/AIAnalytics.dc.html",
@@ -139,9 +151,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/AIAssistant.dc.html",
@@ -265,9 +283,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/AutomationRules.dc.html",
@@ -286,9 +310,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Backup.dc.html",
@@ -413,9 +443,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CallCenter.dc.html",
@@ -434,9 +468,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "portals",
     "owner": "16",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/CallCenter.Logs.dc.html",
@@ -1201,9 +1239,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Error404.dc.html",
@@ -1908,9 +1952,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/KnowledgeBase.dc.html",
@@ -2088,9 +2138,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "auth",
     "owner": "06",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Maintenance.dc.html",
@@ -2109,9 +2165,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/ModelSettings.dc.html",
@@ -2741,9 +2803,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/PromptLibrary.dc.html",
@@ -3434,9 +3502,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Subscription.dc.html",
@@ -3694,9 +3768,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Templates.dc.html",
@@ -4402,9 +4482,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ai",
     "owner": "15",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/WorkflowBuilder.dc.html",

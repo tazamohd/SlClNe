@@ -77,7 +77,11 @@ export default {
         'salis-gradient-r': 'var(--salis-gradient-r)',
       },
       transitionTimingFunction: { salis: 'var(--ease)' },
-      animation: { 'fade-up': 'fadeUp 0.3s ease' },
+      animation: {
+        'fade-up': 'fadeUp 0.3s ease',
+        float: 'float 4s ease-in-out infinite',
+        'spin-slow': 'spin 8s linear infinite',
+      },
     },
   },
   plugins: [],

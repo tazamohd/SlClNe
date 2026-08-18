@@ -7,17 +7,17 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 176,
-    "placeholder": 186,
-    "designedMobileOwed": 91,
+    "rendered": 191,
+    "placeholder": 171,
+    "designedMobileOwed": 104,
     "untested": 0,
-    "mockOnly": 176,
+    "mockOnly": 191,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 97,
+    "renderedWithoutAssertion": 112,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 137,
+    "orphanScreenFiles": 153,
     "productionReady": 0
   },
   "unregisteredDesigns": [],
@@ -30,7 +30,10 @@
     "src/screens/accounting/Reports.tsx",
     "src/screens/accounting/reporting.ts",
     "src/screens/accounting/useFinanceReports.ts",
+    "src/screens/admin/AdvancedSettings.tsx",
     "src/screens/admin/AuditLog.tsx",
+    "src/screens/admin/AutomationRules.tsx",
+    "src/screens/admin/Backup.tsx",
     "src/screens/admin/Branches.tsx",
     "src/screens/admin/GlobalSearch.tsx",
     "src/screens/admin/NotificationCenter.tsx",
@@ -38,15 +41,27 @@
     "src/screens/admin/Profile.tsx",
     "src/screens/admin/RolesPermissions.tsx",
     "src/screens/admin/Settings.tsx",
+    "src/screens/admin/Subscription.tsx",
+    "src/screens/admin/Templates.tsx",
     "src/screens/admin/UsersTeams.tsx",
+    "src/screens/admin/WorkflowBuilder.tsx",
+    "src/screens/ai/AIAnalytics.tsx",
+    "src/screens/ai/AIAssistant.tsx",
+    "src/screens/ai/KnowledgeBase.tsx",
+    "src/screens/ai/ModelSettings.tsx",
+    "src/screens/ai/PromptLibrary.tsx",
+    "src/screens/auth/Error404.tsx",
     "src/screens/auth/LanguageSelection.tsx",
     "src/screens/auth/Login.tsx",
+    "src/screens/auth/Maintenance.tsx",
     "src/screens/auth/PasswordScreens.tsx",
     "src/screens/auth/RegionSelection.tsx",
     "src/screens/auth/Splash.tsx",
     "src/screens/auth/StatusScreens.tsx",
     "src/screens/auth/VerificationScreens.tsx",
     "src/screens/auth/Welcome.tsx",
+    "src/screens/call-center/CallCenter.tsx",
+    "src/screens/call-center/CallCenterLogs.tsx",
     "src/screens/crm/CRMCalendar.tsx",
     "src/screens/crm/ConvertLeadModal.tsx",
     "src/screens/crm/Crm.tsx",
@@ -59,6 +74,7 @@
     "src/screens/domains/accounting.ts",
     "src/screens/domains/admin.ts",
     "src/screens/domains/ai.ts",
+    "src/screens/domains/call-center.ts",
     "src/screens/domains/crm.ts",
     "src/screens/domains/hr.ts",
     "src/screens/domains/insurance.ts",
@@ -254,12 +270,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Power-user settings",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -269,7 +285,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -289,12 +305,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -471,12 +493,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "AI usage & cost analytics",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -486,7 +508,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -506,12 +528,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -540,12 +568,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Conversational AI helper",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -555,7 +583,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -575,12 +603,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -912,12 +946,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Trigger-based automations",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -927,7 +961,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -947,12 +981,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -979,12 +1019,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Backups & exports",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -994,7 +1034,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -1014,12 +1054,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -1337,12 +1383,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Contact-centre queue + call logs",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -1352,7 +1398,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -1372,12 +1418,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -1407,12 +1457,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -1422,7 +1472,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -1442,12 +1492,16 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -3568,12 +3622,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "404 — page not found",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -3583,7 +3637,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3603,12 +3657,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -5641,12 +5701,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Knowledge base articles",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -5656,7 +5716,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -5676,12 +5736,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -6132,12 +6198,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "System maintenance banner",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -6147,7 +6213,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -6167,12 +6233,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -6201,12 +6273,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "AI model config",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -6216,7 +6288,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -6236,12 +6308,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -8027,12 +8105,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Curated prompts",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -8042,7 +8120,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8062,12 +8140,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -9954,12 +10038,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Tenant subscription & billing",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -9969,7 +10053,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -9989,12 +10073,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -10748,12 +10838,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Reusable message/document templates",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -10763,7 +10853,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -10783,12 +10873,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -12920,12 +13016,12 @@
       "featureMapSource": null,
       "mobileType": "A-designed",
       "purpose": "Visual workflow designer",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "MISSING",
       "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12935,7 +13031,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12955,12 +13051,18 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": true,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "PLACEHOLDER"
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY"
       ]
     },
     {

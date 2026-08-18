@@ -2,28 +2,28 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-402 capabilities · 176 rendering · 186 placeholder · 0 data-backed.
+402 capabilities · 191 rendering · 171 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | AccountLocked | `/account-locked` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| AdvancedSettings | `/advanced-settings` | app | settings | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
+| AdvancedSettings | `/advanced-settings` | app | settings | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | AgentDashboard | `/agent-dashboard` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | AgentRegistry | `/agent-registry` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| AIAnalytics | `/aianalytics` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
-| AIAssistant | `/aiassistant` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
+| AIAnalytics | `/aianalytics` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
+| AIAssistant | `/aiassistant` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | AppointmentCalendar | `/appointment-calendar` | app | appointments | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | Appointments | `/appointments` | app | appointments | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | ApprovalInbox | `/approval-inbox` | app | approvals | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
 | AuditLog | `/audit-log` | app | audit | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
-| AutomationRules | `/automation-rules` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
-| Backup | `/backup` | app | settings | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
+| AutomationRules | `/automation-rules` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
+| Backup | `/backup` | app | settings | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | BankReconciliation | `/bank-reconciliation` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | BIDashboard | `/bidashboard` | app | execreports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | BiometricSetup | `/biometric-setup` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Branches | `/branches` | app | admin | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
-| CallCenter | `/call-center` | call-center | callcenter | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 6 roles | route | DISCOVERED |
-| CallCenter · Logs | `/call-center/logs` | call-center | callcenter | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 6 roles | route | DISCOVERED |
+| CallCenter | `/call-center` | call-center | callcenter | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| CallCenter · Logs | `/call-center/logs` | call-center | callcenter | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Campaigns | `/campaigns` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | ChartOfAccounts | `/chart-of-accounts` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | ConversationHistory | `/conversation-history` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
@@ -53,7 +53,7 @@
 | Departments | `/departments` | app | hr | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | DiagnosticReport | `/diagnostic-report` | app | jobcards | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | EmailMarketing | `/email-marketing` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| Error404 | `/error404` | auth | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Error404 | `/error404` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | EstimateDetail | `/estimate-detail` | app | estimates | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | Estimates | `/estimates` | app | estimates | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | ExecutiveReports | `/executive-reports` | app | execreports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
@@ -81,15 +81,15 @@
 | JobDetail | `/job-detail` | app | jobcards | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | JournalEntries | `/journal-entries` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | KioskCheckIn | `/kiosk-check-in` | kiosk | kiosk | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 6 roles | route | DISCOVERED |
-| KnowledgeBase | `/knowledge-base` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
+| KnowledgeBase | `/knowledge-base` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | LanguageSelection | `/language-selection` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | LeadDetail | `/lead-detail` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | LeadPipeline | `/lead-pipeline` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | LoanReports | `/loan-reports` | app | execreports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | Login | `/login` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | LogoutConfirmation | `/logout-confirmation` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Maintenance | `/maintenance` | auth | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| ModelSettings | `/model-settings` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
+| Maintenance | `/maintenance` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| ModelSettings | `/model-settings` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | Native · Android | `/native/android` | native | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
 | Native · iOS | `/native/i-os` | native | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
 | NotificationCenter | `/notification-center` | app | dashboard | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 12 roles | route | IMPLEMENTED |
@@ -115,7 +115,7 @@
 | ProcurementPortal · Requisitions | `/procurement-portal/requisitions` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Profile | `/profile` | app | dashboard | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 12 roles | route | IMPLEMENTED |
 | ProfileCompletion | `/profile-completion` | auth | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| PromptLibrary | `/prompt-library` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
+| PromptLibrary | `/prompt-library` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | PublicPortal · About | `/public-portal/about` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Blog | `/public-portal/blog` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Contact | `/public-portal/contact` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -143,7 +143,7 @@
 | SocialLogin | `/social-login` | auth | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
 | Splash | `/splash` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | SSOLogin | `/ssologin` | auth | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Subscription | `/subscription` | app | settings | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
+| Subscription | `/subscription` | app | settings | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | SuperAdmin | `/super-admin` | app | settings | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
 | SupplierPortal | `/supplier-portal` | portal | portalsupplier | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 6 roles | route | DISCOVERED |
 | SupplierPortal · Orders | `/supplier-portal/orders` | portal | portalsupplier | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 6 roles | route | DISCOVERED |
@@ -154,7 +154,7 @@
 | TechnicianPortal · JobDetail | `/technician-portal/job-detail` | portal | portaltech | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Technicians | `/technicians` | app | technicians | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
 | TechnicianSchedule | `/technician-schedule` | app | technicians | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
-| Templates | `/templates` | app | admin | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
+| Templates | `/templates` | app | admin | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | TermsConditions | `/terms-conditions` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | TwoFactorVerification | `/two-factor-verification` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | UI · ActivityFeed | `/ui/activity-feed` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
@@ -188,7 +188,7 @@
 | Vehicles | `/vehicles` | app | vehicles | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | Welcome | `/welcome` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | WhatsAppCampaigns | `/whats-app-campaigns` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| WorkflowBuilder | `/workflow-builder` | app | ai | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 5 roles | route | DISCOVERED |
+| WorkflowBuilder | `/workflow-builder` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | WorkshopCheckIn | `/workshop-check-in` | app | jobcards | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | WorkshopDelivery | `/workshop-delivery` | app | jobcards | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | WorkshopEstimate | `/workshop-estimate` | app | estimates | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |

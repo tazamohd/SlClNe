@@ -1,0 +1,163 @@
+import { useMemo, useState } from 'react'
+import { Card } from '@/components/ui/Card'
+import { Icon } from '@/components/ui/Icon'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Badge } from '@/components/ui/Badge'
+import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { useToast } from '@/components/ui/Toast'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { isLive } from '@/data/repository'
+
+interface Prompt {
+  id: number
+  name: string
+  category: string
+  catBg: string
+  catFg: string
+  preview: string
+  uses: string
+  favorited: boolean
+}
+
+function usePrompts(t: (s: string) => string): Prompt[] {
+  return useMemo(() => [
+    { id: 1, name: t('Monthly Revenue Summary'), category: t('Finance'), catBg: 'rgba(10,94,215,.1)', catFg: 'var(--salis-blue)', preview: 'Generate a comprehensive revenue breakdown by service type, branch, and customer segment for the current month.', uses: '124', favorited: true },
+    { id: 2, name: t('Inventory Reorder Check'), category: t('Inventory'), catBg: 'rgba(249,115,22,.1)', catFg: 'var(--salis-orange)', preview: 'List all parts below reorder level with supplier info and estimated delivery times.', uses: '89', favorited: true },
+    { id: 3, name: t('Customer Follow-up Draft'), category: t('CRM'), catBg: 'rgba(11,179,255,.1)', catFg: 'var(--salis-blue-bright, #0BB3FF)', preview: 'Draft a follow-up email for customers who haven\'t visited in 60+ days.', uses: '67', favorited: false },
+    { id: 4, name: t('Technician Schedule Optimizer'), category: t('Operations'), catBg: 'rgba(11,31,59,.1)', catFg: 'var(--text-heading)', preview: 'Analyze current job assignments and suggest optimal technician allocation.', uses: '52', favorited: false },
+    { id: 5, name: t('Tax Filing Checklist'), category: t('Accounting'), catBg: 'rgba(100,116,139,.1)', catFg: 'var(--text-muted)', preview: 'Generate a ZATCA VAT filing checklist with all required documents and calculations.', uses: '41', favorited: true },
+    { id: 6, name: t('Job Card Summary'), category: t('Workshop'), catBg: 'rgba(10,94,215,.1)', catFg: 'var(--salis-blue)', preview: 'Summarize all active job cards with status, assigned technician, and ETA.', uses: '156', favorited: true },
+    { id: 7, name: t('Performance Review'), category: t('HR'), catBg: 'rgba(11,179,255,.1)', catFg: 'var(--salis-blue-bright, #0BB3FF)', preview: 'Generate a performance review summary for a technician based on their metrics.', uses: '38', favorited: false },
+    { id: 8, name: t('Fleet Report'), category: t('Fleet'), catBg: 'rgba(249,115,22,.1)', catFg: 'var(--salis-orange)', preview: 'Create a detailed fleet maintenance report for a specific account.', uses: '45', favorited: false },
+    { id: 9, name: t('Appointment Optimizer'), category: t('Scheduling'), catBg: 'rgba(11,31,59,.1)', catFg: 'var(--text-heading)', preview: 'Analyze appointment patterns and suggest optimal time slots for next week.', uses: '33', favorited: false },
+  ], [t])
+}
+
+export function PromptLibrary() {
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
+  const toast = useToast()
+  const allPrompts = usePrompts(t)
+
+  const [search, setSearch] = useState('')
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return allPrompts
+    const q = search.toLowerCase()
+    return allPrompts.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.preview.toLowerCase().includes(q)
+    )
+  }, [allPrompts, search])
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader
+          icon="BookMarked"
+          title={t('Prompt Library')}
+          subtitle={t('AI Platform')}
+        />
+
+        <div className="flex gap-2">
+          <Input
+            inputSize="sm"
+            placeholder={t('Search prompts...')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1"
+          />
+          <Button size="sm" disabled={!isLive}
+            onClick={() => toast.show({ title: t('Connect the API') })}>
+            <Icon name="Plus" size={14} />
+            {t('Add Prompt')}
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {filtered.map((p) => (
+            <MobileCard key={p.id}>
+              <MobileCardHeader
+                leading={
+                  <div className="flex items-center gap-2">
+                    <Badge background={p.catBg} color={p.catFg}>{p.category}</Badge>
+                    {p.favorited && <Icon name="Star" size={12} className="text-salis-orange" />}
+                  </div>
+                }
+              />
+              <h4 className="text-[13px] font-semibold text-heading">{p.name}</h4>
+              <p className="line-clamp-2 text-xs text-muted">{p.preview}</p>
+              <span className="inline-flex items-center gap-1 text-[11px] text-muted">
+                <Icon name="Zap" size={10} />
+                {p.uses} {t('uses')}
+              </span>
+            </MobileCard>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
+            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
+              <Icon name="BookMarked" size={28} />
+            </div>
+          </div>
+          <div>
+            <h1 className="font-display text-[30px] font-black text-heading">{t('Prompt Library')}</h1>
+            <p className="mt-0.5 text-[13px] text-muted">{t('AI Platform')}</p>
+          </div>
+        </div>
+        <div className="flex gap-2.5">
+          <div className="relative flex items-center">
+            <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
+            <Input
+              inputSize="sm"
+              placeholder={t('Search prompts...')}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-[220px] !ps-8"
+            />
+          </div>
+          <Button size="sm" disabled={!isLive}
+            onClick={() => toast.show({ title: t('Connect the API') })}>
+            <Icon name="Plus" size={16} />
+            {t('Add Prompt')}
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        {filtered.map((p) => (
+          <Card
+            key={p.id}
+            className="flex cursor-pointer flex-col gap-2.5 rounded-[14px] p-[18px] shadow-sm transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+          >
+            <div className="flex items-center gap-2">
+              <Badge background={p.catBg} color={p.catFg}>{p.category}</Badge>
+              <span className="flex-1" />
+              <span className={p.favorited ? 'text-salis-orange' : 'text-muted'}>
+                <Icon name="Star" size={14} />
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-heading">{p.name}</h3>
+            <p className="line-clamp-2 text-xs text-muted">{p.preview}</p>
+            <span className="inline-flex items-center gap-1 text-[11px] text-muted">
+              <Icon name="Zap" size={10} />
+              {p.uses} {t('uses')}
+            </span>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}

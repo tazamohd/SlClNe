@@ -742,7 +742,7 @@
         {
           "name": "AIAnalytics",
           "route": "/aianalytics",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -751,7 +751,7 @@
         {
           "name": "AIAssistant",
           "route": "/aiassistant",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -760,7 +760,7 @@
         {
           "name": "AutomationRules",
           "route": "/automation-rules",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -778,7 +778,7 @@
         {
           "name": "KnowledgeBase",
           "route": "/knowledge-base",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -787,7 +787,7 @@
         {
           "name": "ModelSettings",
           "route": "/model-settings",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -796,7 +796,7 @@
         {
           "name": "PromptLibrary",
           "route": "/prompt-library",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -805,7 +805,7 @@
         {
           "name": "WorkflowBuilder",
           "route": "/workflow-builder",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -822,7 +822,7 @@
         {
           "name": "AdvancedSettings",
           "route": "/advanced-settings",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -840,7 +840,7 @@
         {
           "name": "Backup",
           "route": "/backup",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -930,7 +930,7 @@
         {
           "name": "Subscription",
           "route": "/subscription",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -957,7 +957,7 @@
         {
           "name": "Templates",
           "route": "/templates",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -1010,7 +1010,7 @@
         {
           "name": "Error404",
           "route": "/error404",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -1064,7 +1064,7 @@
         {
           "name": "Maintenance",
           "route": "/maintenance",
-          "status": "pending",
+          "status": "built",
           "mobile": "designed",
           "mobileDone": false,
           "source": "design",
@@ -1243,7 +1243,7 @@
         {
           "name": "CallCenter",
           "route": "/call-center",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1252,7 +1252,7 @@
         {
           "name": "CallCenter · Logs",
           "route": "/call-center/logs",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 176,
+    "built": 191,
     "designedMobile": 113
   }
 }

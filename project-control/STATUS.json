@@ -5,40 +5,40 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 176,
-    "placeholder": 186,
-    "designedMobileOwed": 91,
+    "rendered": 191,
+    "placeholder": 171,
+    "designedMobileOwed": 104,
     "untested": 0,
-    "mockOnly": 176,
+    "mockOnly": 191,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 97,
+    "renderedWithoutAssertion": 112,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 137,
+    "orphanScreenFiles": 153,
     "productionReady": 0
   },
   "bySurface": {
     "auth": {
       "total": 28,
-      "rendered": 17,
-      "placeholder": 11,
-      "mobileOwed": 17,
+      "rendered": 19,
+      "placeholder": 9,
+      "mobileOwed": 19,
       "e2e": 28,
       "dataBacked": 0
     },
     "app": {
       "total": 312,
-      "rendered": 132,
-      "placeholder": 168,
-      "mobileOwed": 74,
+      "rendered": 143,
+      "placeholder": 157,
+      "mobileOwed": 85,
       "e2e": 312,
       "dataBacked": 0
     },
     "call-center": {
       "total": 2,
-      "rendered": 0,
-      "placeholder": 2,
+      "rendered": 2,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 0
@@ -95,25 +95,25 @@
   "byDomain": {
     "auth": {
       "total": 28,
-      "rendered": 17,
-      "placeholder": 11,
-      "mobileOwed": 17,
+      "rendered": 19,
+      "placeholder": 9,
+      "mobileOwed": 19,
       "e2e": 28,
       "dataBacked": 0
     },
     "admin": {
       "total": 17,
-      "rendered": 10,
-      "placeholder": 7,
-      "mobileOwed": 10,
+      "rendered": 14,
+      "placeholder": 3,
+      "mobileOwed": 14,
       "e2e": 17,
       "dataBacked": 0
     },
     "ai": {
       "total": 10,
-      "rendered": 3,
-      "placeholder": 7,
-      "mobileOwed": 3,
+      "rendered": 10,
+      "placeholder": 0,
+      "mobileOwed": 10,
       "e2e": 10,
       "dataBacked": 0
     },
@@ -135,8 +135,8 @@
     },
     "portals": {
       "total": 13,
-      "rendered": 6,
-      "placeholder": 7,
+      "rendered": 8,
+      "placeholder": 5,
       "mobileOwed": 0,
       "e2e": 13,
       "dataBacked": 0
@@ -209,25 +209,25 @@
   "byModule": {
     "ungated": {
       "total": 16,
-      "rendered": 8,
-      "placeholder": 2,
-      "mobileOwed": 8,
+      "rendered": 10,
+      "placeholder": 0,
+      "mobileOwed": 10,
       "e2e": 16,
       "dataBacked": 0
     },
     "settings": {
       "total": 7,
-      "rendered": 1,
-      "placeholder": 6,
-      "mobileOwed": 1,
+      "rendered": 4,
+      "placeholder": 3,
+      "mobileOwed": 4,
       "e2e": 7,
       "dataBacked": 0
     },
     "ai": {
       "total": 10,
-      "rendered": 3,
-      "placeholder": 7,
-      "mobileOwed": 3,
+      "rendered": 10,
+      "placeholder": 0,
+      "mobileOwed": 10,
       "e2e": 10,
       "dataBacked": 0
     },
@@ -273,16 +273,16 @@
     },
     "admin": {
       "total": 6,
-      "rendered": 5,
-      "placeholder": 1,
-      "mobileOwed": 5,
+      "rendered": 6,
+      "placeholder": 0,
+      "mobileOwed": 6,
       "e2e": 6,
       "dataBacked": 0
     },
     "callcenter": {
       "total": 2,
-      "rendered": 0,
-      "placeholder": 2,
+      "rendered": 2,
+      "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 0

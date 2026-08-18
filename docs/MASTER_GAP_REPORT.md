@@ -8,30 +8,29 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-001 | BLOCKER | 186 product routes render PendingScreen | 01 | W2 |
+| BLK-001 | BLOCKER | 171 product routes render PendingScreen | 01 | W2 |
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 176 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 97 rendering capabilities are visited but assert nothing | 07 | W2 |
-| BLK-006 | HIGH | 91 built screens owe their designed mobile layout | 18 | W3 |
+| BLK-004 | CRITICAL | 191 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 112 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-006 | HIGH | 104 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 137 screen files are unreachable from any route | 02 | W0 |
-| BLK-011 | MEDIUM | 2 hardcoded colours sit in a forbidden hue band | 04 | W1 |
+| BLK-010 | MEDIUM | 153 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
-| PLACEHOLDER | 186 | product route renders PendingScreen |
-| TABLET_MISSING | 176 | never verified at 768–1024 |
-| ARABIC_MISSING | 176 | Arabic not certified |
-| RTL_BROKEN | 176 | RTL not certified |
-| MOCK_ONLY | 176 | renders, but from fixtures rather than an API |
-| NO_CONTENT_ASSERTION | 97 | — |
-| MOBILE_MISSING | 91 | a .Mobile design exists and is not built |
-| DESKTOP_ONLY | 91 | renders on desktop with no mobile treatment |
+| TABLET_MISSING | 191 | never verified at 768–1024 |
+| ARABIC_MISSING | 191 | Arabic not certified |
+| RTL_BROKEN | 191 | RTL not certified |
+| MOCK_ONLY | 191 | renders, but from fixtures rather than an API |
+| PLACEHOLDER | 171 | product route renders PendingScreen |
+| NO_CONTENT_ASSERTION | 112 | — |
+| MOBILE_MISSING | 104 | a .Mobile design exists and is not built |
+| DESKTOP_ONLY | 104 | renders on desktop with no mobile treatment |
 
 ## Designs not in the registry
 
@@ -47,7 +46,10 @@ _None — the registry covers every design file._
 - `app/src/screens/accounting/Reports.tsx`
 - `app/src/screens/accounting/reporting.ts`
 - `app/src/screens/accounting/useFinanceReports.ts`
+- `app/src/screens/admin/AdvancedSettings.tsx`
 - `app/src/screens/admin/AuditLog.tsx`
+- `app/src/screens/admin/AutomationRules.tsx`
+- `app/src/screens/admin/Backup.tsx`
 - `app/src/screens/admin/Branches.tsx`
 - `app/src/screens/admin/GlobalSearch.tsx`
 - `app/src/screens/admin/NotificationCenter.tsx`
@@ -55,15 +57,27 @@ _None — the registry covers every design file._
 - `app/src/screens/admin/Profile.tsx`
 - `app/src/screens/admin/RolesPermissions.tsx`
 - `app/src/screens/admin/Settings.tsx`
+- `app/src/screens/admin/Subscription.tsx`
+- `app/src/screens/admin/Templates.tsx`
 - `app/src/screens/admin/UsersTeams.tsx`
+- `app/src/screens/admin/WorkflowBuilder.tsx`
+- `app/src/screens/ai/AIAnalytics.tsx`
+- `app/src/screens/ai/AIAssistant.tsx`
+- `app/src/screens/ai/KnowledgeBase.tsx`
+- `app/src/screens/ai/ModelSettings.tsx`
+- `app/src/screens/ai/PromptLibrary.tsx`
+- `app/src/screens/auth/Error404.tsx`
 - `app/src/screens/auth/LanguageSelection.tsx`
 - `app/src/screens/auth/Login.tsx`
+- `app/src/screens/auth/Maintenance.tsx`
 - `app/src/screens/auth/PasswordScreens.tsx`
 - `app/src/screens/auth/RegionSelection.tsx`
 - `app/src/screens/auth/Splash.tsx`
 - `app/src/screens/auth/StatusScreens.tsx`
 - `app/src/screens/auth/VerificationScreens.tsx`
 - `app/src/screens/auth/Welcome.tsx`
+- `app/src/screens/call-center/CallCenter.tsx`
+- `app/src/screens/call-center/CallCenterLogs.tsx`
 - `app/src/screens/crm/CRMCalendar.tsx`
 - `app/src/screens/crm/ConvertLeadModal.tsx`
 - `app/src/screens/crm/Crm.tsx`
@@ -76,6 +90,7 @@ _None — the registry covers every design file._
 - `app/src/screens/domains/accounting.ts`
 - `app/src/screens/domains/admin.ts`
 - `app/src/screens/domains/ai.ts`
+- `app/src/screens/domains/call-center.ts`
 - `app/src/screens/domains/crm.ts`
 - `app/src/screens/domains/hr.ts`
 - `app/src/screens/domains/insurance.ts`
@@ -182,7 +197,6 @@ _None — the registry covers every design file._
 | Domain | Placeholder | Total |
 |---|---|---|
 | Feature map (no design) | 154 | 211 |
-| Auth & onboarding | 11 | 28 |
-| Administration | 7 | 17 |
-| AI & automation | 7 | 10 |
-| Portals, call centre & kiosk | 7 | 13 |
+| Auth & onboarding | 9 | 28 |
+| Portals, call centre & kiosk | 5 | 13 |
+| Administration | 3 | 17 |

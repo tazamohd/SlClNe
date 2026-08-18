@@ -91,6 +91,8 @@ const PUBLIC_SCREENS: Record<string, ComponentType> = {
   TwoFactorVerification: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'TwoFactorVerification'),
   CreatePIN: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'CreatePIN'),
   BiometricSetup: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'BiometricSetup'),
+  Error404: lazyNamed(() => import('@/screens/auth/Error404'), 'Error404'),
+  Maintenance: lazyNamed(() => import('@/screens/auth/Maintenance'), 'Maintenance'),
 }
 
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a
@@ -224,10 +226,24 @@ const SCREEN_ENTRIES = composeScreens({
     'LoanReports',
   ]),
   insurance: lazyBarrel(() => import('@/screens/domains/insurance'), ['Insurance-Claims']),
+  ai: lazyBarrel(() => import('@/screens/domains/ai'), [
+    'AIAssistant',
+    'AIAnalytics',
+    'PromptLibrary',
+    'ModelSettings',
+    'KnowledgeBase',
+  ]),
+  'call-center': lazyBarrel(() => import('@/screens/domains/call-center'), ['CallCenter', 'CallCenter.Logs']),
   admin: lazyBarrel(() => import('@/screens/domains/admin'), [
-    'UsersTeams',
+    'AdvancedSettings',
+    'AutomationRules',
+    'Backup',
     'Branches',
     'Organizations',
+    'Subscription',
+    'Templates',
+    'UsersTeams',
+    'WorkflowBuilder',
   ]),
   hr: lazyBarrel(() => import('@/screens/domains/hr'), [
     'HRPayroll',
