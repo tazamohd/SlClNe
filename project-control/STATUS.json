@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17",
+  "generatedAt": "2026-08-18",
   "totals": {
     "capabilities": 402,
     "product": 362,
@@ -15,7 +15,7 @@
     "contentAsserted": 79,
     "renderedWithoutAssertion": 88,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 0,
+    "orphanScreenFiles": 127,
     "productionReady": 0
   },
   "bySurface": {
