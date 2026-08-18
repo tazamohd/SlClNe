@@ -110,6 +110,12 @@ const ROUTES = [
   { path: '/agent-dashboard', expect: 'Tasks Handled' },
   { path: '/conversation-history', expect: 'Conversation History' },
   { path: '/integrations', expect: 'Connected' },
+  // Reference pages. Also nav entries, so these expect body text, not titles.
+  { path: '/flow-spec', expect: 'the gate that guards it' },
+  { path: '/rbacspec', expect: 'which fields it may never see' },
+  { path: '/index', expect: 'Every screen in the product, wired to its live route.' },
+  { path: '/native/android', expect: 'Material You status bar' },
+  { path: '/native/i-os', expect: 'Dynamic Island' },
   // Pattern library. These screens are in the nav, so the expectations below are
   // body-only text — a title would match the sidebar even on a blank page.
   { path: '/ui/list-view', expect: 'INV-2026-0142' },

@@ -144,6 +144,8 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { FlowSpec, IndexPage, RBACSpec } from '@/screens/meta/Specs'
+import { NativeAndroid, NativeIOS } from '@/screens/meta/Native'
 import { UICardView, UIListView, UITableView } from '@/screens/ui/Views'
 import { UICalendarView, UIKanbanView, UITimelineView } from '@/screens/ui/ViewsAlt'
 import { UIAttachments, UIMapView, UIMediaGallery } from '@/screens/ui/Media'
@@ -318,6 +320,13 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  // The project's own reference pages: flow spec, RBAC matrix, screen index,
+  // and the native-shell mockups.
+  FlowSpec,
+  RBACSpec,
+  Index: IndexPage,
+  'Native.Android': NativeAndroid,
+  'Native.iOS': NativeIOS,
   // Internal pattern library — reference galleries for the design system.
   'UI.ListView': UIListView,
   'UI.TableView': UITableView,
