@@ -12,17 +12,17 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | product | 362 |
 | reference only | 28 |
 | external dependency | 12 |
-| rendered | 167 |
-| placeholder | 195 |
-| designed mobile owed | 82 |
+| rendered | 176 |
+| placeholder | 186 |
+| designed mobile owed | 91 |
 | untested | 0 |
-| mock only | 167 |
+| mock only | 176 |
 | data backed | 0 |
 | e2e covered | 402 |
 | content asserted | 79 |
-| rendered without assertion | 88 |
+| rendered without assertion | 97 |
 | unregistered designs | 0 |
-| orphan screen files | 127 |
+| orphan screen files | 137 |
 | production ready | 0 |
 
 ## By surface
@@ -30,7 +30,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 17 | 11 | 17 | 28 |
-| app | 312 | 123 | 177 | 65 | 312 |
+| app | 312 | 132 | 168 | 74 | 312 |
 | call-center | 2 | 0 | 2 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 6 | 2 | 0 | 8 |
@@ -44,7 +44,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████░░░░░░░░` 61% | 17 | 28 |
-| Administration | — | G9 | `█░░░░░░░░░░░░░░░░░░░` 6% | 1 | 17 |
+| Administration | — | G9 | `████████████░░░░░░░░` 59% | 10 | 17 |
 | AI & automation | 15 | G9 | `██████░░░░░░░░░░░░░░` 30% | 3 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
@@ -63,15 +63,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Module | Capabilities | Rendering |
 |---|---|---|
 | accounting | 7 | 7 |
-| admin | 6 | 1 |
+| admin | 6 | 5 |
 | ai | 10 | 3 |
 | appointments | 2 | 2 |
 | approvals | 1 | 1 |
-| audit | 1 | 0 |
+| audit | 1 | 1 |
 | callcenter | 2 | 0 |
 | crm | 10 | 10 |
 | customers | 3 | 3 |
-| dashboard | 4 | 1 |
+| dashboard | 4 | 4 |
 | estimates | 4 | 4 |
 | execreports | 5 | 5 |
 | hr | 2 | 2 |
@@ -87,7 +87,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | portaltech | 2 | 2 |
 | procurement | 1 | 1 |
 | reports | 6 | 6 |
-| settings | 7 | 0 |
+| settings | 7 | 1 |
 | technicians | 3 | 3 |
 | ungated | 16 | 8 |
 | vehicles | 4 | 4 |

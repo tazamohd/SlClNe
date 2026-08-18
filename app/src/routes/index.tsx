@@ -149,6 +149,12 @@ const APP_SCREENS: Record<string, ComponentType> = {
   AgentDashboard: lazyNamed(() => import('@/screens/crm/Crm'), 'AgentDashboard'),
   ConversationHistory: lazyNamed(() => import('@/screens/crm/Crm'), 'ConversationHistory'),
   Integrations: lazyNamed(() => import('@/screens/crm/Crm'), 'Integrations'),
+  Settings: lazyNamed(() => import('@/screens/admin/Settings'), 'Settings'),
+  RolesPermissions: lazyNamed(() => import('@/screens/admin/RolesPermissions'), 'RolesPermissions'),
+  Profile: lazyNamed(() => import('@/screens/admin/Profile'), 'Profile'),
+  NotificationCenter: lazyNamed(() => import('@/screens/admin/NotificationCenter'), 'NotificationCenter'),
+  GlobalSearch: lazyNamed(() => import('@/screens/admin/GlobalSearch'), 'GlobalSearch'),
+  AuditLog: lazyNamed(() => import('@/screens/admin/AuditLog'), 'AuditLog'),
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
@@ -218,6 +224,11 @@ const SCREEN_ENTRIES = composeScreens({
     'LoanReports',
   ]),
   insurance: lazyBarrel(() => import('@/screens/domains/insurance'), ['Insurance-Claims']),
+  admin: lazyBarrel(() => import('@/screens/domains/admin'), [
+    'UsersTeams',
+    'Branches',
+    'Organizations',
+  ]),
   hr: lazyBarrel(() => import('@/screens/domains/hr'), [
     'HRPayroll',
     'Staff-Directory',

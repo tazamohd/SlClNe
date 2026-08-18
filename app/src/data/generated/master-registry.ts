@@ -238,9 +238,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/AuditLog.dc.html",
@@ -380,9 +386,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Branches.dc.html",
@@ -1465,9 +1477,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/GlobalSearch.dc.html",
@@ -2156,9 +2174,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/NotificationCenter.dc.html",
@@ -2296,9 +2320,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Organizations.dc.html",
@@ -2663,9 +2693,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Profile.dc.html",
@@ -3196,9 +3232,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/RolesPermissions.dc.html",
@@ -3271,9 +3313,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/Settings.dc.html",
@@ -4221,9 +4269,15 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "admin",
     "owner": "—",
     "mobileType": "A-designed",
-    "status": "DISCOVERED",
+    "status": "IMPLEMENTED",
     "flags": [
-      "PLACEHOLDER"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY"
     ],
     "inNav": true,
     "designSource": "project/UsersTeams.dc.html",

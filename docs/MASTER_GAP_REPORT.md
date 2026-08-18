@@ -8,15 +8,15 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-001 | BLOCKER | 195 product routes render PendingScreen | 01 | W2 |
+| BLK-001 | BLOCKER | 186 product routes render PendingScreen | 01 | W2 |
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 167 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 88 rendering capabilities are visited but assert nothing | 07 | W2 |
-| BLK-006 | HIGH | 82 built screens owe their designed mobile layout | 18 | W3 |
+| BLK-004 | CRITICAL | 176 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 97 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-006 | HIGH | 91 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 127 screen files are unreachable from any route | 02 | W0 |
+| BLK-010 | MEDIUM | 137 screen files are unreachable from any route | 02 | W0 |
 | BLK-011 | MEDIUM | 2 hardcoded colours sit in a forbidden hue band | 04 | W1 |
 
 ## Flags across the inventory
@@ -24,14 +24,14 @@ Computed from the registry. Every line is a query, not an opinion.
 | Flag | Count | Meaning |
 |---|---|---|
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
-| PLACEHOLDER | 195 | product route renders PendingScreen |
-| TABLET_MISSING | 167 | never verified at 768–1024 |
-| ARABIC_MISSING | 167 | Arabic not certified |
-| RTL_BROKEN | 167 | RTL not certified |
-| MOCK_ONLY | 167 | renders, but from fixtures rather than an API |
-| NO_CONTENT_ASSERTION | 88 | — |
-| MOBILE_MISSING | 82 | a .Mobile design exists and is not built |
-| DESKTOP_ONLY | 82 | renders on desktop with no mobile treatment |
+| PLACEHOLDER | 186 | product route renders PendingScreen |
+| TABLET_MISSING | 176 | never verified at 768–1024 |
+| ARABIC_MISSING | 176 | Arabic not certified |
+| RTL_BROKEN | 176 | RTL not certified |
+| MOCK_ONLY | 176 | renders, but from fixtures rather than an API |
+| NO_CONTENT_ASSERTION | 97 | — |
+| MOBILE_MISSING | 91 | a .Mobile design exists and is not built |
+| DESKTOP_ONLY | 91 | renders on desktop with no mobile treatment |
 
 ## Designs not in the registry
 
@@ -47,6 +47,15 @@ _None — the registry covers every design file._
 - `app/src/screens/accounting/Reports.tsx`
 - `app/src/screens/accounting/reporting.ts`
 - `app/src/screens/accounting/useFinanceReports.ts`
+- `app/src/screens/admin/AuditLog.tsx`
+- `app/src/screens/admin/Branches.tsx`
+- `app/src/screens/admin/GlobalSearch.tsx`
+- `app/src/screens/admin/NotificationCenter.tsx`
+- `app/src/screens/admin/Organizations.tsx`
+- `app/src/screens/admin/Profile.tsx`
+- `app/src/screens/admin/RolesPermissions.tsx`
+- `app/src/screens/admin/Settings.tsx`
+- `app/src/screens/admin/UsersTeams.tsx`
 - `app/src/screens/auth/LanguageSelection.tsx`
 - `app/src/screens/auth/Login.tsx`
 - `app/src/screens/auth/PasswordScreens.tsx`
@@ -65,6 +74,7 @@ _None — the registry covers every design file._
 - `app/src/screens/crm/crm-badges.tsx`
 - `app/src/screens/customer-app/CustomerApp.tsx`
 - `app/src/screens/domains/accounting.ts`
+- `app/src/screens/domains/admin.ts`
 - `app/src/screens/domains/ai.ts`
 - `app/src/screens/domains/crm.ts`
 - `app/src/screens/domains/hr.ts`
@@ -172,7 +182,7 @@ _None — the registry covers every design file._
 | Domain | Placeholder | Total |
 |---|---|---|
 | Feature map (no design) | 154 | 211 |
-| Administration | 16 | 17 |
 | Auth & onboarding | 11 | 28 |
+| Administration | 7 | 17 |
 | AI & automation | 7 | 10 |
 | Portals, call centre & kiosk | 7 | 13 |

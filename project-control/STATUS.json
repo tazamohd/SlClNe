@@ -5,17 +5,17 @@
     "product": 362,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 167,
-    "placeholder": 195,
-    "designedMobileOwed": 82,
+    "rendered": 176,
+    "placeholder": 186,
+    "designedMobileOwed": 91,
     "untested": 0,
-    "mockOnly": 167,
+    "mockOnly": 176,
     "dataBacked": 0,
     "e2eCovered": 402,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 88,
+    "renderedWithoutAssertion": 97,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 127,
+    "orphanScreenFiles": 137,
     "productionReady": 0
   },
   "bySurface": {
@@ -29,9 +29,9 @@
     },
     "app": {
       "total": 312,
-      "rendered": 123,
-      "placeholder": 177,
-      "mobileOwed": 65,
+      "rendered": 132,
+      "placeholder": 168,
+      "mobileOwed": 74,
       "e2e": 312,
       "dataBacked": 0
     },
@@ -103,9 +103,9 @@
     },
     "admin": {
       "total": 17,
-      "rendered": 1,
-      "placeholder": 16,
-      "mobileOwed": 1,
+      "rendered": 10,
+      "placeholder": 7,
+      "mobileOwed": 10,
       "e2e": 17,
       "dataBacked": 0
     },
@@ -217,9 +217,9 @@
     },
     "settings": {
       "total": 7,
-      "rendered": 0,
-      "placeholder": 7,
-      "mobileOwed": 0,
+      "rendered": 1,
+      "placeholder": 6,
+      "mobileOwed": 1,
       "e2e": 7,
       "dataBacked": 0
     },
@@ -249,9 +249,9 @@
     },
     "audit": {
       "total": 1,
-      "rendered": 0,
-      "placeholder": 1,
-      "mobileOwed": 0,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 1,
       "e2e": 1,
       "dataBacked": 0
     },
@@ -273,9 +273,9 @@
     },
     "admin": {
       "total": 6,
-      "rendered": 1,
-      "placeholder": 5,
-      "mobileOwed": 1,
+      "rendered": 5,
+      "placeholder": 1,
+      "mobileOwed": 5,
       "e2e": 6,
       "dataBacked": 0
     },
@@ -329,9 +329,9 @@
     },
     "dashboard": {
       "total": 4,
-      "rendered": 1,
-      "placeholder": 3,
-      "mobileOwed": 1,
+      "rendered": 4,
+      "placeholder": 0,
+      "mobileOwed": 4,
       "e2e": 4,
       "dataBacked": 0
     },
