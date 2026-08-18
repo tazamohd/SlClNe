@@ -25,6 +25,16 @@ import {
 import { Dashboard } from '@/screens/Dashboard'
 import { JobCards } from '@/screens/workshop/JobCards'
 import { JobDetail } from '@/screens/workshop/JobDetail'
+import { JobCardDetail } from '@/screens/workshop/JobCardDetail'
+import { AppointmentCalendar } from '@/screens/workshop/AppointmentCalendar'
+import { ApprovalInbox } from '@/screens/workshop/ApprovalInbox'
+import { CustomerApproval } from '@/screens/workshop/CustomerApproval'
+import { DiagnosticReport } from '@/screens/workshop/DiagnosticReport'
+import { EstimateDetail } from '@/screens/workshop/EstimateDetail'
+import { OBDDiagnostics } from '@/screens/workshop/OBDDiagnostics'
+import { TechnicianKB } from '@/screens/workshop/TechnicianKB'
+import { TechnicianSchedule } from '@/screens/workshop/TechnicianSchedule'
+import { WorkshopReports } from '@/screens/workshop/WorkshopReports'
 import { WorkshopCheckIn } from '@/screens/workshop/WorkshopCheckIn'
 import { WorkshopInspection } from '@/screens/workshop/WorkshopInspection'
 import { WorkshopEstimate } from '@/screens/workshop/WorkshopEstimate'
@@ -128,6 +138,16 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   Dashboard,
   JobCards,
   JobDetail,
+  JobCardDetail,
+  AppointmentCalendar,
+  ApprovalInbox,
+  CustomerApproval,
+  DiagnosticReport,
+  EstimateDetail,
+  OBDDiagnostics,
+  TechnicianKB,
+  TechnicianSchedule,
+  WorkshopReports,
   WorkshopCheckIn,
   WorkshopInspection,
   WorkshopEstimate,
