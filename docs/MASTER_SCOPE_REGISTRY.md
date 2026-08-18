@@ -12,17 +12,17 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | product | 362 |
 | reference only | 28 |
 | external dependency | 12 |
-| rendered | 224 |
-| placeholder | 138 |
+| rendered | 275 |
+| placeholder | 87 |
 | designed mobile owed | 113 |
 | untested | 0 |
-| mock only | 224 |
+| mock only | 275 |
 | data backed | 0 |
 | e2e covered | 402 |
 | content asserted | 79 |
-| rendered without assertion | 145 |
+| rendered without assertion | 196 |
 | unregistered designs | 0 |
-| orphan screen files | 189 |
+| orphan screen files | 246 |
 | production ready | 0 |
 
 ## By surface
@@ -30,7 +30,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 28 | 0 | 28 | 28 |
-| app | 312 | 164 | 136 | 85 | 312 |
+| app | 312 | 215 | 85 | 85 | 312 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |
@@ -56,7 +56,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
 | Public website | 17 | G11 | `████████████████████` 100% | 10 | 10 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
-| Feature map (no design) | 08–17 | G12 | `██████░░░░░░░░░░░░░░` 31% | 65 | 211 |
+| Feature map (no design) | 08–17 | G12 | `███████████░░░░░░░░░` 55% | 116 | 211 |
 
 ## By RBAC module
 

@@ -11,7 +11,19 @@
  *  this domain owns and imports here. */
 import type { DomainScreens } from '../registry'
 import { InventoryReports } from '../feature/InventoryReports'
+import { InventoryManagement } from '../inventory/InventoryManagement'
+import { InternalWarehouse } from '../inventory/InternalWarehouse'
+import { SparePartsList } from '../parts/SparePartsList'
+import { PartsMarketplace } from '../parts/PartsMarketplace'
+import { DynamicPricing } from '../parts/DynamicPricing'
+import { SuppliersList } from '../parts/SuppliersList'
 
 export const SCREENS: DomainScreens = {
   InventoryReports,
+  'Inventory-Management': InventoryManagement,
+  'Internal-Warehouse': InternalWarehouse,
+  'Spare-Parts': SparePartsList,
+  'Parts-Marketplace': PartsMarketplace,
+  'Dynamic-Pricing': DynamicPricing,
+  Suppliers: SuppliersList,
 }

@@ -9,6 +9,8 @@ import { Subscription } from '../admin/Subscription'
 import { Templates } from '../admin/Templates'
 import { WorkflowBuilder } from '../admin/WorkflowBuilder'
 import { SuperAdmin } from '../admin/SuperAdmin'
+import { DataImportExport } from '../admin/DataImportExport'
+import { DocumentManagement } from '../admin/DocumentManagement'
 
 export const SCREENS: DomainScreens = {
   AdvancedSettings,
@@ -21,4 +23,6 @@ export const SCREENS: DomainScreens = {
   Templates,
   UsersTeams,
   WorkflowBuilder,
+  'Data-Import-Export': DataImportExport,
+  'Document-Management': DocumentManagement,
 }

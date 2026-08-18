@@ -8,29 +8,29 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-001 | BLOCKER | 138 product routes render PendingScreen | 01 | W2 |
+| BLK-001 | BLOCKER | 87 product routes render PendingScreen | 01 | W2 |
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 224 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 145 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-004 | CRITICAL | 275 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 196 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-006 | HIGH | 113 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 189 screen files are unreachable from any route | 02 | W0 |
+| BLK-010 | MEDIUM | 246 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
-| TABLET_MISSING | 224 | never verified at 768–1024 |
-| ARABIC_MISSING | 224 | Arabic not certified |
-| RTL_BROKEN | 224 | RTL not certified |
-| MOCK_ONLY | 224 | renders, but from fixtures rather than an API |
+| TABLET_MISSING | 275 | never verified at 768–1024 |
+| ARABIC_MISSING | 275 | Arabic not certified |
+| RTL_BROKEN | 275 | RTL not certified |
+| MOCK_ONLY | 275 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
-| NO_CONTENT_ASSERTION | 145 | — |
-| PLACEHOLDER | 138 | product route renders PendingScreen |
+| NO_CONTENT_ASSERTION | 196 | — |
 | MOBILE_MISSING | 113 | a .Mobile design exists and is not built |
 | DESKTOP_ONLY | 113 | renders on desktop with no mobile treatment |
+| PLACEHOLDER | 87 | product route renders PendingScreen |
 
 ## Designs not in the registry
 
@@ -40,20 +40,34 @@ _None — the registry covers every design file._
 
 - `app/src/screens/Dashboard.tsx`
 - `app/src/screens/accounting/Accounting.tsx`
+- `app/src/screens/accounting/AccountingConfig.tsx`
+- `app/src/screens/accounting/AccountingIntegration.tsx`
 - `app/src/screens/accounting/AccountsPayable.tsx`
 - `app/src/screens/accounting/AccountsReceivable.tsx`
+- `app/src/screens/accounting/AssetsManagement.tsx`
 - `app/src/screens/accounting/BalanceSheet.tsx`
 - `app/src/screens/accounting/BankAccountManagement.tsx`
 - `app/src/screens/accounting/BudgetManagement.tsx`
 - `app/src/screens/accounting/CapitalManagement.tsx`
 - `app/src/screens/accounting/CashFlowStatement.tsx`
+- `app/src/screens/accounting/ContractManagement.tsx`
+- `app/src/screens/accounting/CostCenters.tsx`
+- `app/src/screens/accounting/EquityManagement.tsx`
+- `app/src/screens/accounting/ExpenseTracking.tsx`
+- `app/src/screens/accounting/ExpensesManagement.tsx`
 - `app/src/screens/accounting/GapReports.tsx`
 - `app/src/screens/accounting/GeneralLedger.tsx`
 - `app/src/screens/accounting/IncomeStatement.tsx`
+- `app/src/screens/accounting/LiabilitiesManagement.tsx`
+- `app/src/screens/accounting/LossAccount.tsx`
+- `app/src/screens/accounting/PartnersCurrentAccount.tsx`
 - `app/src/screens/accounting/ReportControls.tsx`
 - `app/src/screens/accounting/ReportSuite.tsx`
 - `app/src/screens/accounting/Reports.tsx`
+- `app/src/screens/accounting/RetainedEarnings.tsx`
+- `app/src/screens/accounting/SalesManagement.tsx`
 - `app/src/screens/accounting/TrialBalance.tsx`
+- `app/src/screens/accounting/WarrantyManagement.tsx`
 - `app/src/screens/accounting/reporting.ts`
 - `app/src/screens/accounting/useFinanceReports.ts`
 - `app/src/screens/admin/AdvancedSettings.tsx`
@@ -61,6 +75,8 @@ _None — the registry covers every design file._
 - `app/src/screens/admin/AutomationRules.tsx`
 - `app/src/screens/admin/Backup.tsx`
 - `app/src/screens/admin/Branches.tsx`
+- `app/src/screens/admin/DataImportExport.tsx`
+- `app/src/screens/admin/DocumentManagement.tsx`
 - `app/src/screens/admin/GlobalSearch.tsx`
 - `app/src/screens/admin/NotificationCenter.tsx`
 - `app/src/screens/admin/Organizations.tsx`
@@ -99,6 +115,14 @@ _None — the registry covers every design file._
 - `app/src/screens/auth/auth-extra-ar.ts`
 - `app/src/screens/call-center/CallCenter.tsx`
 - `app/src/screens/call-center/CallCenterLogs.tsx`
+- `app/src/screens/compliance/ComplianceManagement.tsx`
+- `app/src/screens/compliance/EnvironmentalCompliance.tsx`
+- `app/src/screens/compliance/EquipmentCalibration.tsx`
+- `app/src/screens/compliance/ISOQualityManagement.tsx`
+- `app/src/screens/compliance/SafetyIncidents.tsx`
+- `app/src/screens/compliance/VATSettings.tsx`
+- `app/src/screens/compliance/ZATCASettings.tsx`
+- `app/src/screens/compliance/ZakatSettings.tsx`
 - `app/src/screens/crm/CRMCalendar.tsx`
 - `app/src/screens/crm/ConvertLeadModal.tsx`
 - `app/src/screens/crm/Crm.tsx`
@@ -112,18 +136,24 @@ _None — the registry covers every design file._
 - `app/src/screens/dashboard/Calendar.tsx`
 - `app/src/screens/dashboard/DashboardHome.tsx`
 - `app/src/screens/dashboard/DashboardMain.tsx`
+- `app/src/screens/dashboard/WelcomePage.tsx`
 - `app/src/screens/domains/accounting.ts`
 - `app/src/screens/domains/admin.ts`
 - `app/src/screens/domains/ai.ts`
 - `app/src/screens/domains/auth-extra.ts`
 - `app/src/screens/domains/call-center.ts`
+- `app/src/screens/domains/compliance.ts`
 - `app/src/screens/domains/crm.ts`
 - `app/src/screens/domains/dashboard.ts`
 - `app/src/screens/domains/hr.ts`
 - `app/src/screens/domains/insurance.ts`
+- `app/src/screens/domains/marketing.ts`
+- `app/src/screens/domains/notifications.ts`
 - `app/src/screens/domains/parts.ts`
 - `app/src/screens/domains/portals.ts`
 - `app/src/screens/domains/procurement.ts`
+- `app/src/screens/domains/settings.ts`
+- `app/src/screens/domains/tasks.ts`
 - `app/src/screens/domains/website.ts`
 - `app/src/screens/domains/workshop.ts`
 - `app/src/screens/feature/Inventory.tsx`
@@ -143,18 +173,37 @@ _None — the registry covers every design file._
 - `app/src/screens/hr/HRPayroll.tsx`
 - `app/src/screens/hr/LeaveRequests.tsx`
 - `app/src/screens/hr/PayrollManagement.tsx`
+- `app/src/screens/hr/ProductivityTracker.tsx`
 - `app/src/screens/hr/StaffDirectory.tsx`
 - `app/src/screens/hr/StaffGap.tsx`
+- `app/src/screens/hr/TechnicianLeaderboards.tsx`
+- `app/src/screens/hr/TechnicianManagement.tsx`
+- `app/src/screens/hr/TechnicianPerformance.tsx`
 - `app/src/screens/hr/Timesheets.tsx`
+- `app/src/screens/hr/TrainingLMS.tsx`
 - `app/src/screens/hr/api.ts`
 - `app/src/screens/hr/bits.tsx`
 - `app/src/screens/insurance/InsuranceClaims.tsx`
 - `app/src/screens/insurance/ProductBrowsing.tsx`
 - `app/src/screens/insurance/api.ts`
 - `app/src/screens/insurance/bits.tsx`
+- `app/src/screens/inventory/InternalWarehouse.tsx`
+- `app/src/screens/inventory/InventoryManagement.tsx`
+- `app/src/screens/marketing/EmailMarketingCampaigns.tsx`
+- `app/src/screens/marketing/GoogleMyBusiness.tsx`
+- `app/src/screens/marketing/LoyaltyProgram.tsx`
+- `app/src/screens/marketing/MarketingAutomation.tsx`
+- `app/src/screens/marketing/MarketingHub.tsx`
+- `app/src/screens/marketing/SocialMediaIntegration.tsx`
+- `app/src/screens/marketing/SocialMediaMonitoring.tsx`
 - `app/src/screens/network/PartsNetwork.tsx`
 - `app/src/screens/network/Procurement.tsx`
 - `app/src/screens/network/ProcurementPurchaseOrder.tsx`
+- `app/src/screens/notifications/NotificationsList.tsx`
+- `app/src/screens/parts/DynamicPricing.tsx`
+- `app/src/screens/parts/PartsMarketplace.tsx`
+- `app/src/screens/parts/SparePartsList.tsx`
+- `app/src/screens/parts/SuppliersList.tsx`
 - `app/src/screens/portals/CustomerPortal.tsx`
 - `app/src/screens/portals/CustomerPortalBooking.tsx`
 - `app/src/screens/portals/KioskCheckIn.tsx`
@@ -195,6 +244,14 @@ _None — the registry covers every design file._
 - `app/src/screens/registry/VehicleForm.tsx`
 - `app/src/screens/registry/badges.tsx`
 - `app/src/screens/registry/writes.tsx`
+- `app/src/screens/settings/FinancialSettings.tsx`
+- `app/src/screens/settings/RoleManagement.tsx`
+- `app/src/screens/settings/SecuritySettings.tsx`
+- `app/src/screens/settings/SystemSettings.tsx`
+- `app/src/screens/settings/UserProfile.tsx`
+- `app/src/screens/settings/UserSettings.tsx`
+- `app/src/screens/tasks/TaskManagement.tsx`
+- `app/src/screens/tasks/TasksList.tsx`
 - `app/src/screens/workshop/AppointmentCalendar.tsx`
 - `app/src/screens/workshop/AppointmentForm.tsx`
 - `app/src/screens/workshop/ApprovalInbox.tsx`
@@ -232,6 +289,6 @@ _None — the registry covers every design file._
 
 | Domain | Placeholder | Total |
 |---|---|---|
-| Feature map (no design) | 134 | 211 |
+| Feature map (no design) | 83 | 211 |
 | Administration | 2 | 17 |
 | Portals, call centre & kiosk | 2 | 13 |

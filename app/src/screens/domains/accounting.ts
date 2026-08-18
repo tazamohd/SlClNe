@@ -35,6 +35,20 @@ import { AccountsPayable } from '../accounting/AccountsPayable'
 import { BankAccountManagement } from '../accounting/BankAccountManagement'
 import { BudgetManagement } from '../accounting/BudgetManagement'
 import { CapitalManagement } from '../accounting/CapitalManagement'
+import { AssetsManagement } from '../accounting/AssetsManagement'
+import { LiabilitiesManagement } from '../accounting/LiabilitiesManagement'
+import { EquityManagement } from '../accounting/EquityManagement'
+import { RetainedEarnings } from '../accounting/RetainedEarnings'
+import { CostCenters } from '../accounting/CostCenters'
+import { LossAccount } from '../accounting/LossAccount'
+import { PartnersCurrentAccount } from '../accounting/PartnersCurrentAccount'
+import { ExpenseTracking } from '../accounting/ExpenseTracking'
+import { ExpensesManagement } from '../accounting/ExpensesManagement'
+import { SalesManagement } from '../accounting/SalesManagement'
+import { AccountingIntegration } from '../accounting/AccountingIntegration'
+import { WarrantyManagement } from '../accounting/WarrantyManagement'
+import { ContractManagement } from '../accounting/ContractManagement'
+import { AccountingConfig } from '../accounting/AccountingConfig'
 
 export const SCREENS: DomainScreens = {
   InvoicePreview,
@@ -56,4 +70,18 @@ export const SCREENS: DomainScreens = {
   'Bank-Account-Management': BankAccountManagement,
   'Budget-Management': BudgetManagement,
   'Capital-Management': CapitalManagement,
+  'Assets-Management': AssetsManagement,
+  'Liabilities-Management': LiabilitiesManagement,
+  'Equity-Management': EquityManagement,
+  'Retained-Earnings': RetainedEarnings,
+  'Cost-Centers': CostCenters,
+  'Loss-Account': LossAccount,
+  'Partners-Current-Account': PartnersCurrentAccount,
+  'Expense-Tracking': ExpenseTracking,
+  'Expenses-Management': ExpensesManagement,
+  'Sales-Management': SalesManagement,
+  'Accounting-Integration': AccountingIntegration,
+  'Warranty-Management': WarrantyManagement,
+  'Contract-Management': ContractManagement,
+  'Accounting-Config': AccountingConfig,
 }

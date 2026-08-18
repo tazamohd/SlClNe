@@ -1842,7 +1842,7 @@
         {
           "name": "Welcome Page",
           "route": "/welcome-page",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -1896,7 +1896,7 @@
         {
           "name": "Loyalty Program",
           "route": "/loyalty-program",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2229,7 +2229,7 @@
         {
           "name": "Inventory Management",
           "route": "/inventory-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2292,7 +2292,7 @@
         {
           "name": "Spare Parts",
           "route": "/spare-parts",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2310,7 +2310,7 @@
         {
           "name": "Internal Warehouse",
           "route": "/internal-warehouse",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2328,7 +2328,7 @@
         {
           "name": "Parts Marketplace",
           "route": "/parts-marketplace",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2337,7 +2337,7 @@
         {
           "name": "Dynamic Pricing",
           "route": "/dynamic-pricing",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2355,7 +2355,7 @@
         {
           "name": "Suppliers",
           "route": "/suppliers",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2589,7 +2589,7 @@
         {
           "name": "Technician Management",
           "route": "/technician-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2598,7 +2598,7 @@
         {
           "name": "Technician Leaderboards",
           "route": "/technician-leaderboards",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2607,7 +2607,7 @@
         {
           "name": "Technician Performance",
           "route": "/technician-performance",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2868,7 +2868,7 @@
         {
           "name": "Productivity Tracker",
           "route": "/productivity-tracker",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2949,7 +2949,7 @@
         {
           "name": "Training LMS",
           "route": "/training-lms",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3057,7 +3057,7 @@
         {
           "name": "Assets Management",
           "route": "/assets-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3066,7 +3066,7 @@
         {
           "name": "Liabilities Management",
           "route": "/liabilities-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3075,7 +3075,7 @@
         {
           "name": "Equity Management",
           "route": "/equity-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3084,7 +3084,7 @@
         {
           "name": "Retained Earnings",
           "route": "/retained-earnings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3093,7 +3093,7 @@
         {
           "name": "Cost Centers",
           "route": "/cost-centers",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3102,7 +3102,7 @@
         {
           "name": "Loss Account",
           "route": "/loss-account",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3111,7 +3111,7 @@
         {
           "name": "Partners Current Account",
           "route": "/partners-current-account",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3120,7 +3120,7 @@
         {
           "name": "Expense Tracking",
           "route": "/expense-tracking",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3129,7 +3129,7 @@
         {
           "name": "Expenses Management",
           "route": "/expenses-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3138,7 +3138,7 @@
         {
           "name": "Sales Management",
           "route": "/sales-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3147,7 +3147,7 @@
         {
           "name": "Accounting Integration",
           "route": "/accounting-integration",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3156,7 +3156,7 @@
         {
           "name": "Financial Settings",
           "route": "/financial-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3165,7 +3165,7 @@
         {
           "name": "Warranty Management",
           "route": "/warranty-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3174,7 +3174,7 @@
         {
           "name": "Contract Management",
           "route": "/contract-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3192,7 +3192,7 @@
         {
           "name": "Marketing Hub",
           "route": "/marketing-hub",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3201,7 +3201,7 @@
         {
           "name": "Marketing Automation",
           "route": "/marketing-automation",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3210,7 +3210,7 @@
         {
           "name": "Email Marketing Campaigns",
           "route": "/email-marketing-campaigns",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3219,7 +3219,7 @@
         {
           "name": "Social Media Integration",
           "route": "/social-media-integration",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3228,7 +3228,7 @@
         {
           "name": "Social Media Monitoring",
           "route": "/social-media-monitoring",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3237,7 +3237,7 @@
         {
           "name": "Google My Business",
           "route": "/google-my-business",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3264,7 +3264,7 @@
         {
           "name": "Notifications",
           "route": "/notifications",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3273,7 +3273,7 @@
         {
           "name": "Compliance Management",
           "route": "/compliance-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3282,7 +3282,7 @@
         {
           "name": "ZATCA Settings",
           "route": "/zatca-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3291,7 +3291,7 @@
         {
           "name": "VAT Settings",
           "route": "/vat-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3300,7 +3300,7 @@
         {
           "name": "Zakat Settings",
           "route": "/zakat-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3309,7 +3309,7 @@
         {
           "name": "Safety Incidents",
           "route": "/safety-incidents",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3318,7 +3318,7 @@
         {
           "name": "Environmental Compliance",
           "route": "/environmental-compliance",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3327,7 +3327,7 @@
         {
           "name": "ISO Quality Management",
           "route": "/iso-quality-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3336,7 +3336,7 @@
         {
           "name": "Equipment Calibration",
           "route": "/equipment-calibration",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3597,7 +3597,7 @@
         {
           "name": "Document Management",
           "route": "/document-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3615,7 +3615,7 @@
         {
           "name": "Data Import Export",
           "route": "/data-import-export",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3633,7 +3633,7 @@
         {
           "name": "User Profile",
           "route": "/user-profile",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3642,7 +3642,7 @@
         {
           "name": "System Settings",
           "route": "/system-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3651,7 +3651,7 @@
         {
           "name": "User Settings",
           "route": "/user-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3660,7 +3660,7 @@
         {
           "name": "Security Settings",
           "route": "/security-settings",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3669,7 +3669,7 @@
         {
           "name": "Role Management",
           "route": "/role-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3678,7 +3678,7 @@
         {
           "name": "Tasks",
           "route": "/tasks",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3687,7 +3687,7 @@
         {
           "name": "Task Management",
           "route": "/task-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 224,
+    "built": 275,
     "designedMobile": 113
   }
 }

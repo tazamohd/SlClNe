@@ -24,6 +24,11 @@ import { PayrollManagement } from '../hr/PayrollManagement'
 import { LeaveRequests } from '../hr/LeaveRequests'
 import { Timesheets } from '../hr/Timesheets'
 import { StaffScheduling, StaffPerformanceReview } from '../hr/StaffGap'
+import { TechnicianManagement } from '../hr/TechnicianManagement'
+import { TechnicianLeaderboards } from '../hr/TechnicianLeaderboards'
+import { TechnicianPerformance } from '../hr/TechnicianPerformance'
+import { TrainingLMS } from '../hr/TrainingLMS'
+import { ProductivityTracker } from '../hr/ProductivityTracker'
 
 export const SCREENS: DomainScreens = {
   HRPayroll,
@@ -35,4 +40,9 @@ export const SCREENS: DomainScreens = {
   'Leave-Requests': LeaveRequests,
   'Staff-Scheduling': StaffScheduling,
   'Staff-Performance-Review': StaffPerformanceReview,
+  'Technician-Management': TechnicianManagement,
+  'Technician-Leaderboards': TechnicianLeaderboards,
+  'Technician-Performance': TechnicianPerformance,
+  'Training-LMS': TrainingLMS,
+  'Productivity-Tracker': ProductivityTracker,
 }
