@@ -96,3 +96,25 @@ export const mockRepository: Repository = {
   diagLabour: fixture(T.DIAG_LABOUR),
   diagCopies: fixture(T.DIAG_COPIES),
 }
+
+/** Chooses the backing implementation.
+ *
+ *  The mock stays the default so `npm run dev` and the smoke suite work with no
+ *  server running. Set `VITE_API_BASE_URL` to point the same screens at a real
+ *  API — this is the one-line swap the seam exists for.
+ *
+ *  Imported lazily so the HTTP layer is not pulled into the bundle (or
+ *  evaluated in tests) when no base URL is configured. */
+export async function createRepository(): Promise<Repository> {
+  const baseUrl = import.meta.env?.VITE_API_BASE_URL
+  if (!baseUrl) return mockRepository
+
+  const [{ ApiClient }, { createHttpRepository }] = await Promise.all([
+    import('./http/client'),
+    import('./http/repository'),
+  ])
+  const { readStored } = await import('../lib/storage')
+  return createHttpRepository(
+    new ApiClient({ baseUrl, getToken: () => readStored('salis-token') }),
+  )
+}
