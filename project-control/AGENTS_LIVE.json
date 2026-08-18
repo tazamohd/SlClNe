@@ -1,9 +1,9 @@
 {
   "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
-  "asOf": "2026-08-17T10:20:00Z",
+  "asOf": "2026-08-17T10:45:00Z",
   "wave": "W3",
   "waveName": "Hardening",
-  "waveNote": "W3 hardening: performance, security/RBAC lab, Arabic completeness and a11y/responsive all landed and integrated (typecheck + 816 tests + check-i18n + check-a11y all green; a11y+i18n now in the gates chain). Remaining W3 candidates: runtime axe/Playwright once a browser exists in CI, the export(x)-grant enforcement gap the RBAC lab found, and per-screen a11y backlog.",
+  "waveNote": "W3 hardening complete: performance, RBAC lab, Arabic, a11y, and the gated CSV export that closes the export(x) gap all landed and integrated. RBAC lab now sweeps 2394 cells (incl. 728 export cells), 0 UNEXPECTED, gate re-verified independently. Remaining candidates: per-screen a11y backlog and dynamic-t() coverage (both quantified in their audits), and runtime axe/Playwright once CI has a browser.",
   "agents": [
     {
       "id": "03",
@@ -225,7 +225,7 @@
         "server/scripts/rbac-lab.ts",
         "server/tests/rbac-lab.test.ts"
       ],
-      "notes": "Commit cf01334. 1,666 cells vs real Postgres: 0 UNEXPECTED, 0 IDOR/isolation breaches. Server authz matches @salis/contract everywhere enforced. FINDING: export(x) grant unenforced on all 13 modules carrying it (no endpoint gates x) — open for reports/export owner. Fixed a rate-limit false-green in the harness."
+      "notes": "Commit cf01334. 1,666 cells vs real Postgres: 0 UNEXPECTED, 0 IDOR/isolation breaches. Server authz matches @salis/contract everywhere enforced. FINDING (now RESOLVED by agent 23, commit afb4c70): export(x) was unenforced; a gated CSV export route now consumes x and the lab verifies all 728 x-cells. Fixed a rate-limit false-green in the harness."
     },
     {
       "id": "20",
@@ -256,6 +256,21 @@
         "app/src/components/ui/**"
       ],
       "notes": "Commit a5aef19. Browser-free check-a11y.mjs + docs/A11Y_AUDIT.md; focus-visible, meaningful-icon aria escape hatch, DataTable caption fixed at the primitive level. Integration fixed the 2 residual unlabelled inputs (Topbar search, CustomerApproval OTP); gate ratcheted 2->0 and added to gates chain. Mobile/tablet strong; residual backlog (tap targets, per-screen captions, runtime axe) in the doc."
+    },
+    {
+      "id": "23",
+      "name": "Export / Data Egress",
+      "team": "hardening",
+      "state": "done",
+      "startedAt": "2026-08-17T10:25:00Z",
+      "finishedAt": "2026-08-17T10:45:00Z",
+      "scope": "Permission-gated CSV export per collection (x grant) + extend the RBAC lab to verify x",
+      "owns": [
+        "server/src/routes/collections.ts (export route)",
+        "server/scripts/rbac-lab.ts",
+        "server/tests/export.test.ts"
+      ],
+      "notes": "Commit afb4c70. Closes the export(x) gap agent 21 found: GET /{path}/export on all 52 collections, gated on requirePermission(module,'x') — a STRICTER gate than view (v-but-not-x -> 403). Reuses presentRow so field redaction + RLS hold on the CSV; OWASP CSV-injection neutralization (=,+,-,@); no silent truncation (50k cap emits X-Export-Truncated). RBAC lab now probes x: 728 export cells (156 ALLOWED/572 DENIED), total sweep 2394 cells, 0 UNEXPECTED, GATE PASS (re-verified independently). Residual (labeled SKIPPED, no data surface): reports, kiosk, execreports, portals, audit, network."
     }
   ],
   "shared": {
