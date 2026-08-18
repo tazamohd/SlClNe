@@ -265,8 +265,8 @@ export function UIModalsData() {
 
 const BARCODE_BARS = [[4, 3], [11, 2], [17, 5], [26, 2], [32, 4], [40, 2], [46, 6], [56, 2], [62, 3], [69, 5], [78, 2], [84, 4]] as const
 const PRINT_LINES = [[6, 62], [5, 44], [5, 80], [5, 72], [5, 56], [5, 68]] as const
-const QR_CORNERS = ['top-4 start-4 border-t-[3px] border-s-[3px] rounded-tl-md', 'top-4 end-4 border-t-[3px] border-e-[3px] rounded-tr-md',
-  'bottom-4 start-4 border-b-[3px] border-s-[3px] rounded-bl-md', 'bottom-4 end-4 border-b-[3px] border-e-[3px] rounded-br-md'] as const
+const QR_CORNERS = ['top-4 start-4 border-t-[3px] border-s-[3px] rounded-ss-md', 'top-4 end-4 border-t-[3px] border-e-[3px] rounded-se-md',
+  'bottom-4 start-4 border-b-[3px] border-s-[3px] rounded-es-md', 'bottom-4 end-4 border-b-[3px] border-e-[3px] rounded-ee-md'] as const
 
 /** Route /ui/modals/capture — camera, barcode/QR scan, signature, print and
  *  upload dialog variants. Every capture surface is a static placeholder
