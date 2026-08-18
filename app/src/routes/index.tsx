@@ -144,6 +144,10 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { CallCenter, CallCenterLogs } from '@/screens/callcenter/CallCenter'
+import { CustomerDetail } from '@/screens/registry/CustomerDetail'
+import { VehicleDetail } from '@/screens/registry/VehicleDetail'
+import { PurchaseOrder } from '@/screens/network/PurchaseOrder'
 import { CRMCalendar } from '@/screens/crm/CRMCalendar'
 import { CustomerFeedback } from '@/screens/crm/CustomerFeedback'
 import { LeadDetail } from '@/screens/crm/LeadDetail'
@@ -305,6 +309,11 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  CallCenter,
+  'CallCenter.Logs': CallCenterLogs,
+  CustomerDetail,
+  VehicleDetail,
+  PurchaseOrder,
   CRMCalendar,
   CustomerFeedback,
   LeadDetail,
