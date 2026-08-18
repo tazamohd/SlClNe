@@ -22,6 +22,32 @@ const ROUTES = [
   { path: '/workshop-qc', expect: 'Quality Check' },
   { path: '/workshop-signature', expect: 'Customer Signature' },
   { path: '/workshop-delivery', expect: 'Vehicle Delivery' },
+  { path: '/advanced-settings', expect: 'Configure your system' },
+  { path: '/audit-log', expect: 'Audit Log' },
+  { path: '/backup', expect: 'Backup & Export' },
+  { path: '/branches', expect: 'Monthly Revenue' },
+  { path: '/global-search', expect: 'invoices and more' },
+  { path: '/notification-center', expect: 'Mark All Read' },
+  { path: '/oemintegrations', expect: 'OEM Diagnostic Software' },
+  { path: '/organizations', expect: 'Organizations' },
+  { path: '/profile', expect: 'Change Password' },
+  { path: '/roles-permissions', expect: 'Permission Matrix' },
+  { path: '/settings', expect: 'Workshop Profile' },
+  { path: '/subscription', expect: 'Next Billing Date' },
+  { path: '/super-admin', expect: 'Platform Overview' },
+  { path: '/system-integrations', expect: 'System Integrations' },
+  { path: '/templates', expect: 'Templates' },
+  { path: '/users-teams', expect: 'Users & Teams' },
+  { path: '/appointment-calendar', expect: 'Today' },
+  { path: '/approval-inbox', expect: 'Approval Inbox' },
+  { path: '/customer-approval', expect: 'Customer Approval' },
+  { path: '/diagnostic-report', expect: 'Diagnostic Report' },
+  { path: '/estimate-detail', expect: 'EST-0231' },
+  { path: '/job-card-detail', expect: 'JC-A3F8B2C1' },
+  { path: '/obddiagnostics', expect: 'OBD-II Live Diagnostics' },
+  { path: '/technician-kb', expect: 'Technician Knowledge Base' },
+  { path: '/technician-schedule', expect: 'Technician Schedule' },
+  { path: '/workshop-reports', expect: 'Workshop Reports' },
   { path: '/invoices', expect: 'Invoices' },
   { path: '/invoice-detail', expect: 'Line items' },
   { path: '/invoice-create', expect: 'Create Invoice' },
@@ -104,7 +130,11 @@ for (const route of ROUTES) {
   const isExternal = (text) => /fonts\.googleapis|fonts\.gstatic|ERR_CERT_AUTHORITY_INVALID/.test(text)
 
   page.on('console', (msg) => {
-    if (msg.type() === 'error' && !isExternal(msg.text())) problems.push(`console: ${msg.text()}`)
+    // Chromium's failed-resource console text omits the URL ("Failed to load
+    // resource: net::ERR_CONNECTION_RESET") — the host is only in location().
+    const where = msg.location()?.url ?? ''
+    if (msg.type() === 'error' && !isExternal(msg.text()) && !isExternal(where))
+      problems.push(`console: ${msg.text()}`)
   })
   page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`))
 
