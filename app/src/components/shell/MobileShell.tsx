@@ -86,44 +86,52 @@ export function MobileCard({
   )
 }
 
-/** Title line of a MobileCard: a monospaced identifier and a trailing badge. */
+/** Title line of a MobileCard: a monospaced identifier and a trailing badge.
+ *  Pass `title` for a plain string heading, or `leading` for rich ReactNode content. */
 export function MobileCardHeader({
   title,
+  leading,
   code,
   trailing,
 }: {
-  title: string
+  title?: string
+  leading?: ReactNode
   /** Render the title as a Latin identifier (job id, invoice number). */
   code?: boolean
   trailing?: ReactNode
 }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <span
-        dir={code ? 'ltr' : undefined}
-        className={
-          'font-semibold text-heading ' + (code ? 'font-mono text-[13px]' : 'text-sm')
-        }
-      >
-        {title}
-      </span>
+      {leading ?? (
+        <span
+          dir={code ? 'ltr' : undefined}
+          className={
+            'font-semibold text-heading ' + (code ? 'font-mono text-[13px]' : 'text-sm')
+          }
+        >
+          {title}
+        </span>
+      )}
       {trailing}
     </div>
   )
 }
 
-/** A labelled detail line inside a MobileCard. */
+/** A labelled detail line inside a MobileCard.
+ *  Pass content as `children` or as `value` — whichever reads better at the call site. */
 export function MobileCardRow({
   label,
+  value,
   children,
 }: {
   label?: string
-  children: ReactNode
+  value?: ReactNode
+  children?: ReactNode
 }) {
   return (
     <div className="flex items-center justify-between gap-2 text-[13px] text-body">
       {label ? <span className="text-muted">{label}</span> : null}
-      <span className="min-w-0 truncate">{children}</span>
+      <span className="min-w-0 truncate">{value ?? children}</span>
     </div>
   )
 }

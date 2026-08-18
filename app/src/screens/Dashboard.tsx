@@ -3,10 +3,12 @@ import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/shell/AppShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Role-adaptive KPI home. The reference implementation every other
  *  operational screen follows: PageHeader → metric row → pipeline strip →
@@ -15,6 +17,7 @@ export function Dashboard() {
   const { t, rtl } = usePreferences()
   const { userName } = useSession()
   const { data: jobs = [] } = useCollection('jobs')
+  const isMobile = useIsMobile()
 
   return (
     <>
@@ -233,66 +236,88 @@ export function Dashboard() {
             </Link>
           }
         />
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse font-ui text-sm text-heading">
-            <thead>
-              <tr>
-                {['Job Card', 'Customer', 'Vehicle', 'Service', 'Priority', 'Status'].map((head) => (
-                  <th
-                    key={head}
-                    className="h-11 whitespace-nowrap border-b border-border px-6 text-start text-xs font-semibold uppercase tracking-[.05em] text-muted"
-                  >
-                    {t(head)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {jobs.map((job) => (
-                <tr key={job.id} className="transition-colors duration-150 hover:bg-[rgba(10,94,215,.04)]">
-                  {/* Job ids are Latin in an Arabic page — pinned LTR so the
-                      bidi algorithm doesn't reorder the characters. */}
-                  <td className="border-b border-border px-6 py-3 align-middle font-mono text-[13px]" dir="ltr">
-                    {job.id}
-                  </td>
-                  <td className="border-b border-border px-6 py-3 align-middle">{job.cust}</td>
-                  <td className="border-b border-border px-6 py-3 align-middle">{job.veh}</td>
-                  <td className="border-b border-border px-6 py-3 align-middle">
-                    <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
-                  </td>
-                  <td className="border-b border-border px-6 py-3 align-middle">
-                    <PriorityBadge value={job.pr} label={t(job.pr)} />
-                  </td>
-                  <td className="border-b border-border px-6 py-3 align-middle">
-                    <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="flex items-center justify-between px-6 pb-5 pt-4">
-          <span className="text-[13px] text-muted">{t('Showing 1–5 of 27')}</span>
-          <div className="flex gap-1.5">
-            <PageButton label="Previous page" icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
-            <button
-              type="button"
-              className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
-            >
-              1
-            </button>
-            {[2, 3].map((page) => (
-              <button
-                key={page}
-                type="button"
-                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
-              >
-                {page}
-              </button>
+        {isMobile ? (
+          <div className="flex flex-col divide-y divide-border px-4 pb-4">
+            {jobs.map((job) => (
+              <div key={job.id} className="py-3 first:pt-0">
+                <MobileCardHeader
+                  title={job.id}
+                  code
+                  trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+                />
+                <MobileCardRow>{job.cust}</MobileCardRow>
+                <MobileCardRow>{job.veh}</MobileCardRow>
+                <MobileCardRow label={t('Service')}>
+                  <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+                </MobileCardRow>
+                <MobileCardRow label={t('Priority')}>
+                  <PriorityBadge value={job.pr} label={t(job.pr)} />
+                </MobileCardRow>
+              </div>
             ))}
-            <PageButton label="Next page" icon={rtl ? 'ChevronLeft' : 'ChevronRight'} />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse font-ui text-sm text-heading">
+                <thead>
+                  <tr>
+                    {['Job Card', 'Customer', 'Vehicle', 'Service', 'Priority', 'Status'].map((head) => (
+                      <th
+                        key={head}
+                        className="h-11 whitespace-nowrap border-b border-border px-6 text-start text-xs font-semibold uppercase tracking-[.05em] text-muted"
+                      >
+                        {t(head)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {jobs.map((job) => (
+                    <tr key={job.id} className="transition-colors duration-150 hover:bg-[rgba(10,94,215,.04)]">
+                      <td className="border-b border-border px-6 py-3 align-middle font-mono text-[13px]" dir="ltr">
+                        {job.id}
+                      </td>
+                      <td className="border-b border-border px-6 py-3 align-middle">{job.cust}</td>
+                      <td className="border-b border-border px-6 py-3 align-middle">{job.veh}</td>
+                      <td className="border-b border-border px-6 py-3 align-middle">
+                        <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+                      </td>
+                      <td className="border-b border-border px-6 py-3 align-middle">
+                        <PriorityBadge value={job.pr} label={t(job.pr)} />
+                      </td>
+                      <td className="border-b border-border px-6 py-3 align-middle">
+                        <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex items-center justify-between px-6 pb-5 pt-4">
+              <span className="text-[13px] text-muted">{t('Showing 1–5 of 27')}</span>
+              <div className="flex gap-1.5">
+                <PageButton label="Previous page" icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
+                <button
+                  type="button"
+                  className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
+                >
+                  1
+                </button>
+                {[2, 3].map((page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
+                  >
+                    {page}
+                  </button>
+                ))}
+                <PageButton label="Next page" icon={rtl ? 'ChevronLeft' : 'ChevronRight'} />
+              </div>
+            </div>
+          </>
+        )}
       </Card>
     </>
   )

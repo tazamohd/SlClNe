@@ -3,7 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection } from '@/data/useCollection'
 import { isLive, type TimesheetRow } from '@/data/repository'
 import { ConnectApi, ProvenanceNote, StatCard, StatusPill } from './bits'
@@ -25,6 +27,7 @@ const STATUSES: readonly TimesheetRow['status'][] = ['submitted', 'approved', 'r
 
 export function Timesheets() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState<'all' | TimesheetRow['status']>('all')
 
@@ -137,49 +140,82 @@ export function Timesheets() {
                       {records.length} {t(records.length === 1 ? 'record' : 'records')}
                     </span>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
-                      <thead>
-                        <tr>
-                          {['Date', 'Clock in', 'Clock out', 'Hours', 'Status'].map((h) => (
-                            <th
-                              key={h}
-                              className={
-                                'whitespace-nowrap border-0 border-b border-solid border-border px-4 py-2 font-action text-[11px] font-semibold uppercase text-muted ' +
-                                (h === 'Hours' || h === 'Status' ? 'text-end' : 'text-start')
-                              }
-                            >
-                              {t(h)}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {records.map((r, index) => (
-                          <tr
-                            key={r._id ?? `${r.workDate}-${index}`}
-                            className={index ? 'border-0 border-t border-solid border-border' : ''}
-                          >
-                            <td className="whitespace-nowrap px-4 py-2 font-mono text-[12px] text-body" dir="ltr">
-                              {r.workDate}
-                            </td>
-                            <td className="px-4 py-2 font-mono text-[12px] text-body" dir="ltr">
-                              {r.clockIn ?? '—'}
-                            </td>
-                            <td className="px-4 py-2 font-mono text-[12px] text-body" dir="ltr">
-                              {r.clockOut ?? '—'}
-                            </td>
-                            <td className="px-4 py-2 text-end font-mono text-[13px] font-semibold text-heading" dir="ltr">
-                              {r.hours.toFixed(2)}
-                            </td>
-                            <td className="px-4 py-2 text-end">
-                              <StatusPill value={r.status} />
-                            </td>
+                  {isMobile ? (
+                    <div className="divide-y divide-border">
+                      {records.map((r, index) => (
+                        <div key={r._id ?? `${r.workDate}-${index}`} className="px-4 py-2.5">
+                          <MobileCardHeader
+                            leading={
+                              <span className="font-mono text-[12px] font-semibold text-heading" dir="ltr">
+                                {r.workDate}
+                              </span>
+                            }
+                            trailing={<StatusPill value={r.status} />}
+                          />
+                          <MobileCardRow
+                            label={t('Clock in')}
+                            value={<span className="font-mono" dir="ltr">{r.clockIn ?? '—'}</span>}
+                          />
+                          <MobileCardRow
+                            label={t('Clock out')}
+                            value={<span className="font-mono" dir="ltr">{r.clockOut ?? '—'}</span>}
+                          />
+                          <MobileCardRow
+                            label={t('Hours')}
+                            value={
+                              <span className="font-mono font-semibold" dir="ltr">
+                                {r.hours.toFixed(2)}
+                              </span>
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr>
+                            {['Date', 'Clock in', 'Clock out', 'Hours', 'Status'].map((h) => (
+                              <th
+                                key={h}
+                                className={
+                                  'whitespace-nowrap border-0 border-b border-solid border-border px-4 py-2 font-action text-[11px] font-semibold uppercase text-muted ' +
+                                  (h === 'Hours' || h === 'Status' ? 'text-end' : 'text-start')
+                                }
+                              >
+                                {t(h)}
+                              </th>
+                            ))}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {records.map((r, index) => (
+                            <tr
+                              key={r._id ?? `${r.workDate}-${index}`}
+                              className={index ? 'border-0 border-t border-solid border-border' : ''}
+                            >
+                              <td className="whitespace-nowrap px-4 py-2 font-mono text-[12px] text-body" dir="ltr">
+                                {r.workDate}
+                              </td>
+                              <td className="px-4 py-2 font-mono text-[12px] text-body" dir="ltr">
+                                {r.clockIn ?? '—'}
+                              </td>
+                              <td className="px-4 py-2 font-mono text-[12px] text-body" dir="ltr">
+                                {r.clockOut ?? '—'}
+                              </td>
+                              <td className="px-4 py-2 text-end font-mono text-[13px] font-semibold text-heading" dir="ltr">
+                                {r.hours.toFixed(2)}
+                              </td>
+                              <td className="px-4 py-2 text-end">
+                                <StatusPill value={r.status} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </Card>
               ))}
             </div>

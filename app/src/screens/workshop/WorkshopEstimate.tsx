@@ -5,9 +5,11 @@ import { Card } from '@/components/ui/Card'
 import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { StageNotice, stageBusy, stageLabel } from './StageNotice'
 import { useJobStage } from './useJobStage'
 
@@ -38,6 +40,7 @@ const LABOUR = [
  *  role's ceiling routes to the Approval Inbox instead (README §4). */
 export function WorkshopEstimate() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const { canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
@@ -105,6 +108,7 @@ export function WorkshopEstimate() {
 
       <Panel icon="Package" title={t('Parts')}>
         <LineTable
+          isMobile={isMobile}
           headers={[t('Description'), t('Quantity'), t('Unit Price'), t('Total')]}
           rows={PARTS.map((row) => ({
             key: row.desc,
@@ -120,6 +124,7 @@ export function WorkshopEstimate() {
 
       <Panel icon="Wrench" title={t('Labor')}>
         <LineTable
+          isMobile={isMobile}
           headers={[t('Description'), t('Hours'), t('Rate'), t('Total')]}
           rows={LABOUR.map((row) => ({
             key: row.desc,
@@ -186,10 +191,30 @@ function TotalRow({ label, sar }: { label: string; sar: number }) {
 function LineTable({
   headers,
   rows,
+  isMobile,
 }: {
   headers: readonly string[]
   rows: readonly { key: string; cells: readonly React.ReactNode[] }[]
+  isMobile: boolean
 }) {
+  if (isMobile) {
+    return (
+      <div className="divide-y divide-border">
+        {rows.map((row) => (
+          <div key={row.key} className="py-2.5">
+            <MobileCardHeader
+              leading={<span className="text-[13px] text-body">{row.cells[0]}</span>}
+              trailing={<span className="text-[13px] font-semibold text-heading">{row.cells[row.cells.length - 1]}</span>}
+            />
+            {row.cells.slice(1, -1).map((cell, i) => (
+              <MobileCardRow key={i} label={headers[i + 1]} value={cell} />
+            ))}
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-sm text-heading">

@@ -3,7 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { ErrorState, Loading } from '@/components/ui/States'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { workshopReports, type WorkshopReport, type RepositoryError } from '@/data/repository'
 
@@ -26,6 +28,7 @@ const BAR_COLORS = ['var(--salis-blue)', 'var(--salis-blue-bright)', 'var(--sali
  *  `workshop-approval-gaps.test.ts`. */
 export function WorkshopReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const jobs = useCollection('jobs')
   const technicians = useCollection('technicians')
 
@@ -225,44 +228,66 @@ export function WorkshopReports() {
             <div className="border-0 border-b border-solid border-border p-4">
               <h3 className="text-base font-bold text-heading">{t('Technician performance')}</h3>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[420px] border-collapse text-sm">
-                <thead>
-                  <tr>
-                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Technician')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Specialty')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Active Jobs')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-5 py-3 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Rating')}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {techRows.map((tech) => (
-                    <tr key={tech._id ?? tech.name}>
-                      <td className="border-0 border-b border-solid border-border px-5 py-3 font-medium text-heading">
-                        {tech.name}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-5 py-3 text-body">
-                        {tech.specialty || '—'}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-5 py-3 text-end font-mono text-body">
-                        {tech.jobs}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-5 py-3 text-end font-mono font-semibold text-heading">
-                        {tech.rating || '—'}
-                      </td>
+            {isMobile ? (
+              <div className="divide-y divide-border">
+                {techRows.map((tech) => (
+                  <div key={tech._id ?? tech.name} className="px-4 py-3">
+                    <MobileCardHeader
+                      leading={<span className="text-[13px] font-semibold text-heading">{tech.name}</span>}
+                      trailing={
+                        <span className="font-mono text-[13px] font-bold text-heading">
+                          {tech.rating || '—'}
+                        </span>
+                      }
+                    />
+                    <MobileCardRow label={t('Specialty')} value={tech.specialty || '—'} />
+                    <MobileCardRow
+                      label={t('Active Jobs')}
+                      value={<span className="font-mono">{tech.jobs}</span>}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[420px] border-collapse text-sm">
+                  <thead>
+                    <tr>
+                      <th className="border-0 border-b border-solid border-border px-5 py-3 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                        {t('Technician')}
+                      </th>
+                      <th className="border-0 border-b border-solid border-border px-5 py-3 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                        {t('Specialty')}
+                      </th>
+                      <th className="border-0 border-b border-solid border-border px-5 py-3 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                        {t('Active Jobs')}
+                      </th>
+                      <th className="border-0 border-b border-solid border-border px-5 py-3 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
+                        {t('Rating')}
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {techRows.map((tech) => (
+                      <tr key={tech._id ?? tech.name}>
+                        <td className="border-0 border-b border-solid border-border px-5 py-3 font-medium text-heading">
+                          {tech.name}
+                        </td>
+                        <td className="border-0 border-b border-solid border-border px-5 py-3 text-body">
+                          {tech.specialty || '—'}
+                        </td>
+                        <td className="border-0 border-b border-solid border-border px-5 py-3 text-end font-mono text-body">
+                          {tech.jobs}
+                        </td>
+                        <td className="border-0 border-b border-solid border-border px-5 py-3 text-end font-mono font-semibold text-heading">
+                          {tech.rating || '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </Card>
         </>
       )}

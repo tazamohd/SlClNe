@@ -8,8 +8,10 @@ import { Modal } from '@/components/ui/Modal'
 import { parseSar } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, useCreate, queryKeys } from '@/data/useCollection'
 import { can } from '@/data/rbac'
 import { isLive, type EmployeeRow, type PayrollLineRow, type PayrollRunRow } from '@/data/repository'
@@ -146,6 +148,7 @@ export function PayrollManagement() {
 
 function RunDetail({ run, onClose }: { run: PayrollRunRow; onClose: () => void }) {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { role } = useSession()
   const toast = useToast()
   const client = useQueryClient()
@@ -208,49 +211,77 @@ function RunDetail({ run, onClose }: { run: PayrollRunRow; onClose: () => void }
               description={posted ? t('This run was posted with no lines.') : t('Add a line per employee, then post.')}
             />
           </Card>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr>
-                  {['Employee', 'Gross', 'Allowances', 'Deductions', 'Net'].map((h) => (
-                    <th
-                      key={h}
-                      className={
-                        'whitespace-nowrap border-0 border-b border-solid border-border px-3 py-2 font-action text-[11px] font-semibold uppercase text-muted ' +
-                        (h === 'Employee' ? 'text-start' : 'text-end')
-                      }
-                    >
-                      {t(h)}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {lineRows.map((line, index) => (
-                  <tr
-                    key={line._id ?? `${line.employeeId}-${index}`}
-                    className={index ? 'border-0 border-t border-solid border-border' : ''}
-                  >
-                    <td className="px-3 py-2 text-[13px] font-medium text-body">{line.employeeName}</td>
-                    <td className="px-3 py-2 text-end font-mono text-[12px] text-body">
-                      <Pay halalas={line.grossPayHalalas} bare />
-                    </td>
-                    <td className="px-3 py-2 text-end font-mono text-[12px] text-salis-blue">
-                      <Pay halalas={line.allowancesHalalas} bare />
-                    </td>
-                    <td className="px-3 py-2 text-end font-mono text-[12px] text-salis-orange">
-                      <Pay halalas={line.deductionsHalalas} bare />
-                    </td>
-                    <td className="px-3 py-2 text-end font-mono text-[13px] font-bold text-heading">
-                      <Pay halalas={line.netPayHalalas} bare />
-                    </td>
+        ) : isMobile ? (
+            <div className="divide-y divide-border">
+              {lineRows.map((line, index) => (
+                <div key={line._id ?? `${line.employeeId}-${index}`} className="px-3 py-2.5">
+                  <MobileCardHeader
+                    leading={<span className="text-[13px] font-medium text-body">{line.employeeName}</span>}
+                    trailing={
+                      <span className="font-mono text-[13px] font-bold text-heading">
+                        <Pay halalas={line.netPayHalalas} bare />
+                      </span>
+                    }
+                  />
+                  <MobileCardRow
+                    label={t('Gross')}
+                    value={<span className="font-mono"><Pay halalas={line.grossPayHalalas} bare /></span>}
+                  />
+                  <MobileCardRow
+                    label={t('Allowances')}
+                    value={<span className="font-mono text-salis-blue"><Pay halalas={line.allowancesHalalas} bare /></span>}
+                  />
+                  <MobileCardRow
+                    label={t('Deductions')}
+                    value={<span className="font-mono text-salis-orange"><Pay halalas={line.deductionsHalalas} bare /></span>}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr>
+                    {['Employee', 'Gross', 'Allowances', 'Deductions', 'Net'].map((h) => (
+                      <th
+                        key={h}
+                        className={
+                          'whitespace-nowrap border-0 border-b border-solid border-border px-3 py-2 font-action text-[11px] font-semibold uppercase text-muted ' +
+                          (h === 'Employee' ? 'text-start' : 'text-end')
+                        }
+                      >
+                        {t(h)}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {lineRows.map((line, index) => (
+                    <tr
+                      key={line._id ?? `${line.employeeId}-${index}`}
+                      className={index ? 'border-0 border-t border-solid border-border' : ''}
+                    >
+                      <td className="px-3 py-2 text-[13px] font-medium text-body">{line.employeeName}</td>
+                      <td className="px-3 py-2 text-end font-mono text-[12px] text-body">
+                        <Pay halalas={line.grossPayHalalas} bare />
+                      </td>
+                      <td className="px-3 py-2 text-end font-mono text-[12px] text-salis-blue">
+                        <Pay halalas={line.allowancesHalalas} bare />
+                      </td>
+                      <td className="px-3 py-2 text-end font-mono text-[12px] text-salis-orange">
+                        <Pay halalas={line.deductionsHalalas} bare />
+                      </td>
+                      <td className="px-3 py-2 text-end font-mono text-[13px] font-bold text-heading">
+                        <Pay halalas={line.netPayHalalas} bare />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
 
         {/* Frozen run totals — the server's figures, shown after posting. */}
         {posted ? (

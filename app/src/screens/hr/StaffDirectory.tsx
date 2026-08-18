@@ -8,8 +8,10 @@ import { Modal } from '@/components/ui/Modal'
 import { parseSar } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, usePagedCollection, useCreate, queryKeys } from '@/data/useCollection'
 import { can } from '@/data/rbac'
 import { isLive, type EmployeeRow } from '@/data/repository'
@@ -41,6 +43,7 @@ type Dept = RowOf<'departments'> & { _id?: string }
 export function StaffDirectory() {
   const { t } = usePreferences()
   const { role } = useSession()
+  const isMobile = useIsMobile()
   const [q, setQ] = useState('')
   const [filter, setFilter] = useState<'all' | EmployeeRow['status']>('all')
   const [selected, setSelected] = useState<EmployeeRow | null>(null)
@@ -173,66 +176,110 @@ export function StaffDirectory() {
             </Card>
           ) : (
             <Card className="overflow-hidden p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-start">
-                  <thead>
-                    <tr className="text-start">
-                      {['Number', 'Name', 'Title', 'Department', 'Status', 'Salary'].map((h, i) => (
-                        <th
-                          key={h}
-                          className={
-                            'whitespace-nowrap border-0 border-b border-solid border-border px-4 py-3 font-action text-[11px] font-semibold uppercase tracking-[.03em] text-muted ' +
-                            (h === 'Salary' || h === 'Status' ? 'text-end' : 'text-start') +
-                            (i === 0 ? '' : '')
-                          }
-                        >
-                          {t(h)}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((e, index) => (
-                      <tr
-                        key={e._id ?? `${e.employeeNumber}-${index}`}
-                        tabIndex={0}
-                        role="button"
-                        onClick={() => setSelected(e)}
-                        onKeyDown={(ev) => {
-                          if (ev.key === 'Enter' || ev.key === ' ') {
-                            ev.preventDefault()
-                            setSelected(e)
-                          }
-                        }}
-                        className={
-                          'cursor-pointer transition-colors hover:bg-[rgba(10,94,215,.04)] focus-visible:outline-none focus-visible:bg-[rgba(10,94,215,.06)] ' +
-                          (index ? 'border-0 border-t border-solid border-border' : '')
+              {isMobile ? (
+                <div className="divide-y divide-border">
+                  {rows.map((e, index) => (
+                    <div
+                      key={e._id ?? `${e.employeeNumber}-${index}`}
+                      tabIndex={0}
+                      role="button"
+                      onClick={() => setSelected(e)}
+                      onKeyDown={(ev) => {
+                        if (ev.key === 'Enter' || ev.key === ' ') {
+                          ev.preventDefault()
+                          setSelected(e)
                         }
-                      >
-                        <td className="whitespace-nowrap px-4 py-3 font-mono text-[13px] font-bold text-heading" dir="ltr">
-                          {e.employeeNumber}
-                        </td>
-                        <td className="px-4 py-3">
+                      }}
+                      className="cursor-pointer px-4 py-3 transition-colors hover:bg-[rgba(10,94,215,.04)] focus-visible:outline-none focus-visible:bg-[rgba(10,94,215,.06)]"
+                    >
+                      <MobileCardHeader
+                        leading={
                           <div className="flex items-center gap-2.5">
                             <Avatar name={e.name} />
-                            <span className="text-[13px] font-semibold text-heading">{e.name}</span>
+                            <div className="min-w-0">
+                              <span className="text-[13px] font-semibold text-heading">{e.name}</span>
+                              <span className="block font-mono text-[11px] text-muted" dir="ltr">
+                                {e.employeeNumber}
+                              </span>
+                            </div>
                           </div>
-                        </td>
-                        <td className="px-4 py-3 text-[13px] text-body">{e.title || '—'}</td>
-                        <td className="px-4 py-3 text-[13px] text-body">
-                          {(e.departmentId && deptName.get(e.departmentId)) || '—'}
-                        </td>
-                        <td className="px-4 py-3 text-end">
-                          <StatusPill value={e.status} />
-                        </td>
-                        <td className="px-4 py-3 text-end font-mono text-[13px] font-semibold text-heading">
-                          <Pay halalas={e.salaryHalalas} bare />
-                        </td>
+                        }
+                        trailing={<StatusPill value={e.status} />}
+                      />
+                      {e.title ? <MobileCardRow label={t('Title')} value={e.title} /> : null}
+                      <MobileCardRow
+                        label={t('Department')}
+                        value={(e.departmentId && deptName.get(e.departmentId)) || '—'}
+                      />
+                      <MobileCardRow
+                        label={t('Salary')}
+                        value={<Pay halalas={e.salaryHalalas} bare />}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse text-start">
+                    <thead>
+                      <tr className="text-start">
+                        {['Number', 'Name', 'Title', 'Department', 'Status', 'Salary'].map((h, i) => (
+                          <th
+                            key={h}
+                            className={
+                              'whitespace-nowrap border-0 border-b border-solid border-border px-4 py-3 font-action text-[11px] font-semibold uppercase tracking-[.03em] text-muted ' +
+                              (h === 'Salary' || h === 'Status' ? 'text-end' : 'text-start') +
+                              (i === 0 ? '' : '')
+                            }
+                          >
+                            {t(h)}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {rows.map((e, index) => (
+                        <tr
+                          key={e._id ?? `${e.employeeNumber}-${index}`}
+                          tabIndex={0}
+                          role="button"
+                          onClick={() => setSelected(e)}
+                          onKeyDown={(ev) => {
+                            if (ev.key === 'Enter' || ev.key === ' ') {
+                              ev.preventDefault()
+                              setSelected(e)
+                            }
+                          }}
+                          className={
+                            'cursor-pointer transition-colors hover:bg-[rgba(10,94,215,.04)] focus-visible:outline-none focus-visible:bg-[rgba(10,94,215,.06)] ' +
+                            (index ? 'border-0 border-t border-solid border-border' : '')
+                          }
+                        >
+                          <td className="whitespace-nowrap px-4 py-3 font-mono text-[13px] font-bold text-heading" dir="ltr">
+                            {e.employeeNumber}
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-2.5">
+                              <Avatar name={e.name} />
+                              <span className="text-[13px] font-semibold text-heading">{e.name}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-[13px] text-body">{e.title || '—'}</td>
+                          <td className="px-4 py-3 text-[13px] text-body">
+                            {(e.departmentId && deptName.get(e.departmentId)) || '—'}
+                          </td>
+                          <td className="px-4 py-3 text-end">
+                            <StatusPill value={e.status} />
+                          </td>
+                          <td className="px-4 py-3 text-end font-mono text-[13px] font-semibold text-heading">
+                            <Pay halalas={e.salaryHalalas} bare />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </Card>
           )}
         </>

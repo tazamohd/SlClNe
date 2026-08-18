@@ -3,7 +3,9 @@ import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Money } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, type RowOf } from '@/data/useCollection'
 
 type Stage = RowOf<'diagStages'> & { _id?: string }
@@ -31,6 +33,7 @@ const SEVERITY_TINT: Record<string, { bg: string; fg: string; icon: string; labe
  *  endpoint yet. Both gaps are pinned in `workshop-approval-gaps.test.ts`. */
 export function DiagnosticReport() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const stages = useCollection('diagStages')
   const findings = useCollection('diagFindings')
   const parts = useCollection('diagParts')
@@ -192,54 +195,86 @@ export function DiagnosticReport() {
               <div className="p-4">
                 <EmptyState icon="Package" title={t('No parts listed')} />
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[480px] border-collapse">
-                  <thead>
-                    <tr className="bg-inset">
-                      <th className="px-4 py-2.5 text-start font-action text-[10px] font-bold uppercase tracking-wide text-muted">
-                        {t('Part')}
-                      </th>
-                      <th className="px-2 py-2.5 text-start font-action text-[10px] font-bold uppercase tracking-wide text-muted">
-                        {t('Stock')}
-                      </th>
-                      <th className="px-2 py-2.5 text-end font-action text-[10px] font-bold uppercase tracking-wide text-muted">
-                        {t('Qty')}
-                      </th>
-                      <th className="px-4 py-2.5 text-end font-action text-[10px] font-bold uppercase tracking-wide text-muted">
-                        {t('Unit price')}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {partRows.map((part, index) => (
-                      <tr key={part._id ?? `${part.part}-${index}`} className="border-0 border-t border-solid border-border">
-                        <td className="px-4 py-2.5">
-                          <p className="text-[12.5px] font-semibold text-heading">
-                            {rtl ? part.ar || part.desc : part.desc}
-                          </p>
-                          <p className="mt-px font-mono text-[10.5px] text-muted" dir="ltr">
-                            {part.part}
-                          </p>
-                        </td>
-                        <td className="px-2 py-2.5">
+            ) : isMobile ? (
+                <div className="divide-y divide-border">
+                  {partRows.map((part, index) => (
+                    <div key={part._id ?? `${part.part}-${index}`} className="px-4 py-2.5">
+                      <MobileCardHeader
+                        leading={
+                          <div className="min-w-0">
+                            <span className="text-[12.5px] font-semibold text-heading">
+                              {rtl ? part.ar || part.desc : part.desc}
+                            </span>
+                            <span className="block font-mono text-[10.5px] text-muted" dir="ltr">
+                              {part.part}
+                            </span>
+                          </div>
+                        }
+                        trailing={
                           <Badge
                             background={part.stock === 'order' ? 'rgba(249,115,22,.13)' : 'rgba(10,94,215,.11)'}
                             color={part.stock === 'order' ? 'var(--salis-orange)' : 'var(--salis-blue)'}
                           >
                             {part.stock === 'order' ? t('On order') : t('In stock')}
                           </Badge>
-                        </td>
-                        <td className="px-2 py-2.5 text-end font-mono text-[12.5px] text-body">{part.qty}</td>
-                        <td className="px-4 py-2.5 text-end">
-                          <Money sar={part.price} className="text-[12.5px] text-heading" />
-                        </td>
+                        }
+                      />
+                      <MobileCardRow label={t('Qty')} value={<span className="font-mono">{part.qty}</span>} />
+                      <MobileCardRow
+                        label={t('Unit price')}
+                        value={<Money sar={part.price} className="text-[12.5px] text-heading" />}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[480px] border-collapse">
+                    <thead>
+                      <tr className="bg-inset">
+                        <th className="px-4 py-2.5 text-start font-action text-[10px] font-bold uppercase tracking-wide text-muted">
+                          {t('Part')}
+                        </th>
+                        <th className="px-2 py-2.5 text-start font-action text-[10px] font-bold uppercase tracking-wide text-muted">
+                          {t('Stock')}
+                        </th>
+                        <th className="px-2 py-2.5 text-end font-action text-[10px] font-bold uppercase tracking-wide text-muted">
+                          {t('Qty')}
+                        </th>
+                        <th className="px-4 py-2.5 text-end font-action text-[10px] font-bold uppercase tracking-wide text-muted">
+                          {t('Unit price')}
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </thead>
+                    <tbody>
+                      {partRows.map((part, index) => (
+                        <tr key={part._id ?? `${part.part}-${index}`} className="border-0 border-t border-solid border-border">
+                          <td className="px-4 py-2.5">
+                            <p className="text-[12.5px] font-semibold text-heading">
+                              {rtl ? part.ar || part.desc : part.desc}
+                            </p>
+                            <p className="mt-px font-mono text-[10.5px] text-muted" dir="ltr">
+                              {part.part}
+                            </p>
+                          </td>
+                          <td className="px-2 py-2.5">
+                            <Badge
+                              background={part.stock === 'order' ? 'rgba(249,115,22,.13)' : 'rgba(10,94,215,.11)'}
+                              color={part.stock === 'order' ? 'var(--salis-orange)' : 'var(--salis-blue)'}
+                            >
+                              {part.stock === 'order' ? t('On order') : t('In stock')}
+                            </Badge>
+                          </td>
+                          <td className="px-2 py-2.5 text-end font-mono text-[12.5px] text-body">{part.qty}</td>
+                          <td className="px-4 py-2.5 text-end">
+                            <Money sar={part.price} className="text-[12.5px] text-heading" />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
           </Card>
 
           {/* Labour */}
