@@ -22,9 +22,46 @@ import {
   OTPVerification,
   TwoFactorVerification,
 } from '@/screens/auth/VerificationScreens'
+import { PublicPortalLanding } from '@/screens/website/Landing'
+import { PublicPortalAbout } from '@/screens/website/About'
+import { PublicPortalServices } from '@/screens/website/Services'
+import { PublicPortalMarketplace } from '@/screens/website/Marketplace'
+import { PublicPortalInsurance } from '@/screens/website/Insurance'
+import { PublicPortalLoans } from '@/screens/website/Loans'
+import { PublicPortalBlog } from '@/screens/website/Blog'
+import { PublicPortalFAQ } from '@/screens/website/FAQ'
+import { PublicPortalContact } from '@/screens/website/Contact'
+import { PublicPortalSupport } from '@/screens/website/Support'
+import { CustomerPortal, CustomerPortalBooking } from '@/screens/portals/CustomerPortal'
+import { SupplierPortal, SupplierPortalOrders } from '@/screens/portals/SupplierPortal'
+import { TechnicianPortal, TechnicianPortalJobDetail } from '@/screens/portals/TechnicianPortal'
+import { KioskCheckIn } from '@/screens/portals/KioskCheckIn'
+import { Register } from '@/screens/auth/Register'
+import { RoleSelection } from '@/screens/auth/RoleSelection'
+import { SocialLogin } from '@/screens/auth/SocialLogin'
+import { SSOLogin } from '@/screens/auth/SSOLogin'
+import { OrganizationSelection } from '@/screens/auth/OrganizationSelection'
+import { WorkspaceSelection } from '@/screens/auth/WorkspaceSelection'
+import { ProfileCompletion } from '@/screens/auth/ProfileCompletion'
+import { Onboarding } from '@/screens/auth/Onboarding'
+import { InviteAcceptance } from '@/screens/auth/InviteAcceptance'
+import { Error404 } from '@/screens/auth/Error404'
+import { Maintenance } from '@/screens/auth/Maintenance'
+import { PrivacyPolicy } from '@/screens/auth/PrivacyPolicy'
+import { TermsConditions } from '@/screens/auth/TermsConditions'
 import { Dashboard } from '@/screens/Dashboard'
 import { JobCards } from '@/screens/workshop/JobCards'
 import { JobDetail } from '@/screens/workshop/JobDetail'
+import { JobCardDetail } from '@/screens/workshop/JobCardDetail'
+import { AppointmentCalendar } from '@/screens/workshop/AppointmentCalendar'
+import { ApprovalInbox } from '@/screens/workshop/ApprovalInbox'
+import { CustomerApproval } from '@/screens/workshop/CustomerApproval'
+import { DiagnosticReport } from '@/screens/workshop/DiagnosticReport'
+import { EstimateDetail } from '@/screens/workshop/EstimateDetail'
+import { OBDDiagnostics } from '@/screens/workshop/OBDDiagnostics'
+import { TechnicianKB } from '@/screens/workshop/TechnicianKB'
+import { TechnicianSchedule } from '@/screens/workshop/TechnicianSchedule'
+import { WorkshopReports } from '@/screens/workshop/WorkshopReports'
 import { WorkshopCheckIn } from '@/screens/workshop/WorkshopCheckIn'
 import { WorkshopInspection } from '@/screens/workshop/WorkshopInspection'
 import { WorkshopEstimate } from '@/screens/workshop/WorkshopEstimate'
@@ -71,6 +108,15 @@ import {
   FinancialStatements,
   OperationalReports,
 } from '@/screens/accounting/Reports'
+import { BankReconciliation } from '@/screens/accounting/BankReconciliation'
+import { CustomReports } from '@/screens/accounting/CustomReports'
+import { InsuranceReports } from '@/screens/accounting/InsuranceReports'
+import { InvoicePreview } from '@/screens/accounting/InvoicePreview'
+import { LoanReports } from '@/screens/accounting/LoanReports'
+import { Reports } from '@/screens/accounting/ReportsHub'
+import { ReportsAnalytics } from '@/screens/accounting/ReportsAnalytics'
+import { SalesReports } from '@/screens/accounting/SalesReports'
+import { TaxManagement } from '@/screens/accounting/TaxManagement'
 import {
   AgentDashboard,
   AgentRegistry,
@@ -102,6 +148,35 @@ import { CallCenter, CallCenterLogs } from '@/screens/callcenter/CallCenter'
 import { CustomerDetail } from '@/screens/registry/CustomerDetail'
 import { VehicleDetail } from '@/screens/registry/VehicleDetail'
 import { PurchaseOrder } from '@/screens/network/PurchaseOrder'
+import { CRMCalendar } from '@/screens/crm/CRMCalendar'
+import { CustomerFeedback } from '@/screens/crm/CustomerFeedback'
+import { LeadDetail } from '@/screens/crm/LeadDetail'
+import { FleetContract } from '@/screens/registry/FleetContract'
+import { InventoryReports } from '@/screens/accounting/InventoryReports'
+import { HRPayroll } from '@/screens/admin/HRPayroll'
+import { AIAnalytics } from '@/screens/ai/AIAnalytics'
+import { AIAssistant } from '@/screens/ai/AIAssistant'
+import { AutomationRules } from '@/screens/ai/AutomationRules'
+import { KnowledgeBase } from '@/screens/ai/KnowledgeBase'
+import { ModelSettings } from '@/screens/ai/ModelSettings'
+import { PromptLibrary } from '@/screens/ai/PromptLibrary'
+import { WorkflowBuilder } from '@/screens/ai/WorkflowBuilder'
+import { AdvancedSettings } from '@/screens/admin/AdvancedSettings'
+import { AuditLog } from '@/screens/admin/AuditLog'
+import { Backup } from '@/screens/admin/Backup'
+import { Branches } from '@/screens/admin/Branches'
+import { GlobalSearch } from '@/screens/admin/GlobalSearch'
+import { NotificationCenter } from '@/screens/admin/NotificationCenter'
+import { OEMIntegrations } from '@/screens/admin/OEMIntegrations'
+import { Organizations } from '@/screens/admin/Organizations'
+import { Profile } from '@/screens/admin/Profile'
+import { RolesPermissions } from '@/screens/admin/RolesPermissions'
+import { Settings } from '@/screens/admin/Settings'
+import { Subscription } from '@/screens/admin/Subscription'
+import { SuperAdmin } from '@/screens/admin/SuperAdmin'
+import { SystemIntegrations } from '@/screens/admin/SystemIntegrations'
+import { Templates } from '@/screens/admin/Templates'
+import { UsersTeams } from '@/screens/admin/UsersTeams'
 import { Inventory } from '@/screens/feature/Inventory'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
@@ -124,6 +199,39 @@ const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
   TwoFactorVerification,
   CreatePIN,
   BiometricSetup,
+  // Public marketing site: each page ships its own site header/nav/footer.
+  'PublicPortal.Landing': PublicPortalLanding,
+  'PublicPortal.About': PublicPortalAbout,
+  'PublicPortal.Services': PublicPortalServices,
+  'PublicPortal.Marketplace': PublicPortalMarketplace,
+  'PublicPortal.Insurance': PublicPortalInsurance,
+  'PublicPortal.Loans': PublicPortalLoans,
+  'PublicPortal.Blog': PublicPortalBlog,
+  'PublicPortal.FAQ': PublicPortalFAQ,
+  'PublicPortal.Contact': PublicPortalContact,
+  'PublicPortal.Support': PublicPortalSupport,
+  // Standalone portals: the designs ship their own chrome (sidebar/header or
+  // phone frame), so they render outside AppShell like the auth chain does.
+  CustomerPortal,
+  'CustomerPortal.Booking': CustomerPortalBooking,
+  SupplierPortal,
+  'SupplierPortal.Orders': SupplierPortalOrders,
+  TechnicianPortal,
+  'TechnicianPortal.JobDetail': TechnicianPortalJobDetail,
+  KioskCheckIn,
+  Register,
+  RoleSelection,
+  SocialLogin,
+  SSOLogin,
+  OrganizationSelection,
+  WorkspaceSelection,
+  ProfileCompletion,
+  Onboarding,
+  InviteAcceptance,
+  Error404,
+  Maintenance,
+  PrivacyPolicy,
+  TermsConditions,
 }
 
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a
@@ -132,6 +240,16 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   Dashboard,
   JobCards,
   JobDetail,
+  JobCardDetail,
+  AppointmentCalendar,
+  ApprovalInbox,
+  CustomerApproval,
+  DiagnosticReport,
+  EstimateDetail,
+  OBDDiagnostics,
+  TechnicianKB,
+  TechnicianSchedule,
+  WorkshopReports,
   WorkshopCheckIn,
   WorkshopInspection,
   WorkshopEstimate,
@@ -170,6 +288,15 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   ExecutiveReports,
   OperationalReports,
   BIDashboard,
+  BankReconciliation,
+  CustomReports,
+  InsuranceReports,
+  InvoicePreview,
+  LoanReports,
+  Reports,
+  ReportsAnalytics,
+  SalesReports,
+  TaxManagement,
   LeadPipeline,
   Opportunities,
   Campaigns,
@@ -187,6 +314,35 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   CustomerDetail,
   VehicleDetail,
   PurchaseOrder,
+  CRMCalendar,
+  CustomerFeedback,
+  LeadDetail,
+  FleetContract,
+  InventoryReports,
+  HRPayroll,
+  AIAnalytics,
+  AIAssistant,
+  AutomationRules,
+  KnowledgeBase,
+  ModelSettings,
+  PromptLibrary,
+  WorkflowBuilder,
+  AdvancedSettings,
+  AuditLog,
+  Backup,
+  Branches,
+  GlobalSearch,
+  NotificationCenter,
+  OEMIntegrations,
+  Organizations,
+  Profile,
+  RolesPermissions,
+  Settings,
+  Subscription,
+  SuperAdmin,
+  SystemIntegrations,
+  Templates,
+  UsersTeams,
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
