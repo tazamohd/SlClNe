@@ -137,7 +137,7 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    aria-label="Toggle password visibility"
+                    aria-label={t("Toggle password visibility")}
                     className="flex cursor-pointer border-none bg-transparent p-0 text-muted"
                   >
                     <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />

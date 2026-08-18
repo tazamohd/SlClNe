@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react'
 import { Icon } from './Icon'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
 /** Corner toast, matching the design's card treatment.
  *
@@ -29,6 +30,7 @@ interface ToastValue {
 const ToastContext = createContext<ToastValue | null>(null)
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { t } = usePreferences()
   const [toast, setToast] = useState<Toast | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout>>()
 
@@ -78,7 +80,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <button
             type="button"
             onClick={dismiss}
-            aria-label="Dismiss"
+            aria-label={t("Dismiss")}
             className="flex cursor-pointer border-none bg-transparent p-0 text-muted"
           >
             <Icon name="X" size={14} />

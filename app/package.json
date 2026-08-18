@@ -10,7 +10,8 @@
     "typecheck": "tsc -b --noEmit",
     "port-design": "node scripts/port-design-data.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "lint:css": "node scripts/check-logical-css.mjs"
+    "lint:css": "node scripts/check-logical-css.mjs",
+    "lint:a11y": "node scripts/check-a11y-copy.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",

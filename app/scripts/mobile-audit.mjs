@@ -44,10 +44,12 @@ await context.addInitScript(() => window.localStorage.setItem('salis-role', 'own
 const findings = []
 let checked = 0
 
+let done = 0
+const total = ROUTES.length
 for (const route of ROUTES) {
   const page = await context.newPage()
   try {
-    await page.goto(BASE + route, { waitUntil: 'networkidle', timeout: 20_000 })
+    await page.goto(BASE + route, { waitUntil: 'load', timeout: 10_000 })
     const result = await page.evaluate((viewport) => {
       const doc = document.documentElement
       // 1px of slack: sub-pixel layout rounding is not a horizontal scrollbar.
@@ -74,6 +76,8 @@ for (const route of ROUTES) {
     findings.push({ route, error: String(error).split('\n')[0] })
   } finally {
     await page.close()
+    done += 1
+    if (done % 25 === 0 || done === total) process.stdout.write(`  ${done}/${total}\n`)
   }
 }
 

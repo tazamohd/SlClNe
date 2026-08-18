@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { Icon } from '@/components/ui/Icon'
+import { usePreferences } from '@/providers/PreferencesProvider'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { MobileHeader } from './MobileShell'
@@ -14,6 +15,7 @@ import { MobileHeader } from './MobileShell'
  *  Below 860px the sidebar becomes an overlay drawer, which is what the
  *  `.Mobile.dc.html` variants did. */
 export function AppShell({ children }: { children: ReactNode }) {
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { pathname } = useLocation()
@@ -36,7 +38,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {drawerOpen ? (
             <button
               type="button"
-              aria-label="Close navigation"
+              aria-label={t("Close navigation")}
               onClick={() => setDrawerOpen(false)}
               className="fixed inset-0 z-40 cursor-default border-none bg-black/50"
             />
