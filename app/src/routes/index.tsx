@@ -22,6 +22,10 @@ import {
   OTPVerification,
   TwoFactorVerification,
 } from '@/screens/auth/VerificationScreens'
+import { CustomerPortal, CustomerPortalBooking } from '@/screens/portals/CustomerPortal'
+import { SupplierPortal, SupplierPortalOrders } from '@/screens/portals/SupplierPortal'
+import { TechnicianPortal, TechnicianPortalJobDetail } from '@/screens/portals/TechnicianPortal'
+import { KioskCheckIn } from '@/screens/portals/KioskCheckIn'
 import { Register } from '@/screens/auth/Register'
 import { RoleSelection } from '@/screens/auth/RoleSelection'
 import { SocialLogin } from '@/screens/auth/SocialLogin'
@@ -181,6 +185,15 @@ const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
   TwoFactorVerification,
   CreatePIN,
   BiometricSetup,
+  // Standalone portals: the designs ship their own chrome (sidebar/header or
+  // phone frame), so they render outside AppShell like the auth chain does.
+  CustomerPortal,
+  'CustomerPortal.Booking': CustomerPortalBooking,
+  SupplierPortal,
+  'SupplierPortal.Orders': SupplierPortalOrders,
+  TechnicianPortal,
+  'TechnicianPortal.JobDetail': TechnicianPortalJobDetail,
+  KioskCheckIn,
   Register,
   RoleSelection,
   SocialLogin,
