@@ -117,6 +117,13 @@ import {
   CustomerAppServiceTracking,
   CustomerAppWallet,
 } from '@/screens/customer-app/CustomerApp'
+import { AIAnalytics } from '@/screens/ai/AIAnalytics'
+import { AIAssistant } from '@/screens/ai/AIAssistant'
+import { AutomationRules } from '@/screens/ai/AutomationRules'
+import { KnowledgeBase } from '@/screens/ai/KnowledgeBase'
+import { ModelSettings } from '@/screens/ai/ModelSettings'
+import { PromptLibrary } from '@/screens/ai/PromptLibrary'
+import { WorkflowBuilder } from '@/screens/ai/WorkflowBuilder'
 import { AdvancedSettings } from '@/screens/admin/AdvancedSettings'
 import { AuditLog } from '@/screens/admin/AuditLog'
 import { Backup } from '@/screens/admin/Backup'
@@ -232,6 +239,13 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   AgentDashboard,
   ConversationHistory,
   Integrations,
+  AIAnalytics,
+  AIAssistant,
+  AutomationRules,
+  KnowledgeBase,
+  ModelSettings,
+  PromptLibrary,
+  WorkflowBuilder,
   AdvancedSettings,
   AuditLog,
   Backup,
