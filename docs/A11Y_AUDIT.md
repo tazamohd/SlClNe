@@ -31,10 +31,10 @@ Run: `node scripts/check-a11y.mjs --list`
 | `img-alt` | image-alt | 0 | — every `<img>` carries `alt` |
 | `noninteractive-role` | interactive-role | 0 | — handlers live on `<button>`, or on `div`/`span` given `role` + `tabIndex` |
 | `control-name` | button-name | 0 | — icon-only buttons carry `aria-label` |
-| `field-label` | label | **2** | `shell/Topbar.tsx:22`, `screens/workshop/CustomerApproval.tsx:229` |
+| `field-label` | label | 0 | — all inputs carry `aria-label` (Topbar search + CustomerApproval OTP fixed) |
 | `link-name` | link-name | 0 | — anchors have text (incl. numeric phone links) |
 | `svg-hidden` | svg-img-alt | 0 | — raw `<svg>` is `aria-hidden` or a labelled `role="img"` |
-| **Total** | | **2** | baseline = 2 |
+| **Total** | | **0** | baseline = 0 |
 
 ### Before / after
 
@@ -45,8 +45,7 @@ whether a table is *named*. Against those rules the primitive layer scored clean
 neither of the two is in a primitive. What changed is the class of issue the
 rules can't count, addressed in [§3](#3-primitive-fixes-and-what-each-buys). So:
 
-- **Structural rule total:** 2 → 2 (no regression; both residuals are
-  screen/shell, tracked below).
+- **Structural rule total:** 2 → 0 (both residuals fixed; baseline ratcheted to 0).
 - **Focus-visibility / semantics gaps in primitives:** 6 fixed (see §3) — these
   propagate to every screen that composes the primitive, and are exactly what an
   axe *runtime* sweep would have raised as `focus-visible` / `aria-*` findings.
@@ -57,24 +56,17 @@ primitives, and a missing gate. Both are now closed.
 
 ---
 
-## 2. What the two residuals are
+## 2. Former residuals (now fixed)
 
-Both are **outside this agent's edit scope** (shell + screens are owned
-elsewhere), so they are reported, not fixed:
+Both were fixed in the W3 a11y hardening pass:
 
-1. **`shell/Topbar.tsx:22`** — the desktop global-search `<input>` has a
-   `placeholder` but no accessible name. A placeholder is not a label (it
-   vanishes on input and is skipped by some screen readers). Fix: add
-   `aria-label={t('Search')}`. One line; deliberately left to the shell owner.
-   *Note:* this input is `hidden sm:flex`, so it never renders on the mobile
-   header — a desktop-only defect.
+1. **`shell/Topbar.tsx:22`** — the desktop global-search `<input>` now carries
+   `aria-label={t('Search customers, vehicles, parts...')}`.
 
 2. **`screens/workshop/CustomerApproval.tsx:229`** — the one-time-code `<input>`
-   has only a `placeholder="One-time code"`. Fix: add `aria-label`, or route it
-   through the shared `CodeInput`, which already labels each digit box.
+   now carries `aria-label={t('One-time code')}`.
 
-Neither trips over anything a keyboard user cannot work around today; both are
-name-only omissions that a screen-reader user would feel immediately.
+No structural violations remain. The gate baseline is **0**.
 
 ---
 
@@ -120,16 +112,11 @@ desktop grid squeezed narrow:
 
 **Findings (all minor, none blocking):**
 
-1. **Sub-44px icon-button tap targets.** Several icon-only controls are below
-   the 44px comfort guideline (WCAG 2.5.5, AAA), though all meet the 24px
-   **minimum** (WCAG 2.5.8, AA, 2.2):
-   - `Modal` close — 28px (`h-7 w-7`)
-   - `Topbar` / `PortalShell` / `CustomerAppShell` icon buttons — 32px (`h-8 w-8`)
-   - `MobileShell` header buttons — 34px (`h-[34px]`)
-
-   These pass AA but would be more comfortable on a touch screen at ≥40px. A
-   larger hit area can be added with padding without changing the visual size.
-   *Recommendation, not a defect.*
+1. ~~**Sub-44px icon-button tap targets.**~~ **FIXED in W3 tranche 4.** All
+   icon-only controls enlarged to 40px (`h-10 w-10`): Modal close, Topbar,
+   PortalShell, CustomerAppShell, MobileShell, AuthLayout buttons, plus
+   screen-level buttons in Registries, Dashboard, AppointmentCalendar and
+   CustomerApp.
 2. **A couple of fixed-width search inputs in the shell.** `Topbar` search is
    `w-[260px]` and `ListPage` search is `w-[220px]`. Both are gated behind
    `sm:`/desktop composition, so they don't overflow a phone — but on a narrow
@@ -146,26 +133,25 @@ content (tables) is already wrapped in `overflow-x-auto`.
 
 ---
 
-## 5. Screen-level backlog (deliberately NOT done here)
+## 5. Screen-level backlog
 
-Editing all ~106 screens is out of scope for this agent and would collide with
-concurrent owners. The following are the recommended follow-ups, in priority
-order, with the concrete work named so there is no silent gap:
+Items 1–4 were completed in W3 tranche 4. Item 5 remains deferred until a
+browser is available in CI.
 
-1. **[P1] Name the two unlabelled inputs** (§2): `shell/Topbar.tsx:22` and
-   `screens/workshop/CustomerApproval.tsx:229`. One `aria-label` each. These are
-   the *only* two structural violations in the whole tree; clearing them lets
-   the gate baseline drop from 2 → 0.
-2. **[P2] Adopt `DataTable`'s new `caption` prop** on list screens with more than
-   one table, or where the table's subject isn't obvious from a screen-reader's
-   flat table index. Additive; no layout change. Suggested starting points: the
-   accounting report screens and any detail page that stacks multiple tables.
-3. **[P2] Expose meaningful status icons** now that `Icon` supports it. Audit
-   screens where an icon alone conveys state (a coloured status dot, a
-   pass/fail glyph with no adjacent text) and pass `aria-label`. Where the icon
-   merely decorates text beside it, leave it decorative — the default is correct.
-4. **[P3] Enlarge touch targets** on the icon-button family (§4.1) to ≥40px via
-   padding, for the mobile shells especially.
+1. ~~**[P1] Name the two unlabelled inputs**~~ — **DONE.** Both inputs now carry
+   `aria-label`. Gate baseline ratcheted from 2 → 0.
+2. ~~**[P2] Adopt `DataTable`'s new `caption` prop**~~ — **DONE.** All 26
+   `DataTable` instances across 14 screen files now carry a visually-hidden
+   `<caption>` (Arabic translations included in `ar-overrides.ts`).
+3. ~~**[P2] Expose meaningful status icons**~~ — **DONE.** `aria-label` added to
+   severity icons (OBDDiagnostics), labour/parts icons (WorkshopQC),
+   step-completion Check icons (JobCardDetail, CustomerPortal,
+   CustomerPortalBooking, TechnicianPortalJobDetail), and selected-vehicle
+   CheckCircle (CustomerPortalBooking). Arabic translations included.
+4. ~~**[P3] Enlarge touch targets**~~ — **DONE.** All interactive icon buttons
+   across shared components (Modal close, Topbar, MobileShell,
+   CustomerAppShell, PortalShell, AuthLayout) and screens (Registries,
+   Dashboard, AppointmentCalendar, CustomerApp) enlarged to h-10 w-10 (40px).
 5. **[P3] Per-screen keyboard order / landmark review.** A static scan cannot
    verify tab order, focus management on route change, or heading hierarchy
    (`h1→h2→h3`). These need the runtime axe sweep + manual keyboard passes once a
@@ -177,10 +163,9 @@ order, with the concrete work named so there is no silent gap:
 ## The gate
 
 `app/scripts/check-a11y.mjs` exits non-zero when the total rises above a
-`BASELINE` recorded in the script (currently **2**). This fails the build on any
-*new* violation while tolerating the known screen-level residue, so a new screen
-cannot quietly reintroduce a pattern the primitives already solve. Ratchet
-`BASELINE` **downward** as the backlog above is burned down — never up.
+`BASELINE` recorded in the script (currently **0**). This fails the build on any
+*new* violation, so a new screen cannot quietly reintroduce a pattern the
+primitives already solve. Never raise the baseline — fix the violation instead.
 
 Add this line to `app/package.json` `"scripts"` (this agent must not edit
 `package.json`):
