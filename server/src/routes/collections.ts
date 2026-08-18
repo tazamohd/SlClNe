@@ -29,6 +29,83 @@ export interface RouteDeps {
   db: Database
 }
 
+/** The bulk-egress ceiling. An export larger than this is served truncated —
+ *  with `X-Export-Truncated: true` and a logged warning — rather than quietly
+ *  cut off. The number is a memory/latency guard, not a permission: whoever
+ *  holds `x` may pull the whole table, but one request materialising millions of
+ *  rows into a string would take the process down, and a spreadsheet silently
+ *  missing its tail is worse than one that admits it is incomplete. */
+const MAX_EXPORT_ROWS = 50_000
+/** Gather the export in full pages at the contract's list ceiling. */
+const EXPORT_PAGE_SIZE = 200
+
+/* A field must be CSV-quoted when it carries the delimiter, a quote or a line
+ * break; a field is a spreadsheet-formula risk when it *starts* with one of the
+ * trigger characters. The two are different problems and are handled in that
+ * order below. */
+const CSV_NEEDS_QUOTING = /[",\n\r]/
+const CSV_FORMULA_LEAD = /^[=+\-@\t\r]/
+
+/** One CSV cell, hardened against both delimiter corruption and formula
+ *  injection.
+ *
+ *  Two escaping problems are routinely conflated; this keeps them apart:
+ *
+ *  1. **RFC 4180 quoting.** A value containing a comma, a double quote or a
+ *     newline is wrapped in double quotes and its own quotes doubled, so the
+ *     column structure survives a round-trip through any conforming parser.
+ *
+ *  2. **Formula injection (OWASP).** A cell whose first character is `=`, `+`,
+ *     `-`, `@`, a tab or a carriage return is executed as a formula the instant
+ *     Excel / Google Sheets / LibreOffice opens the file — `=cmd|'/c calc'!A1`,
+ *     `=HYPERLINK(...)`, `@SUM(...)`. An export of customer names, notes and
+ *     phone numbers is precisely a channel for attacker-controlled text, so the
+ *     value is neutralised by prefixing a single quote, which those apps strip
+ *     on display but never evaluate. This is deliberately conservative: a
+ *     legitimate negative number or a `+966…` phone becomes `'-5` / `'+966…`,
+ *     which the guidance accepts as the price of not shipping live formulas.
+ *
+ *  The formula guard runs on the *logical* value first, so the quote lands
+ *  inside any RFC-4180 quoting rather than outside it where a parser could peel
+ *  it back off. */
+function csvCell(value: unknown): string {
+  if (value === null || value === undefined) return ''
+  let text = typeof value === 'object' ? JSON.stringify(value) : String(value)
+  if (CSV_FORMULA_LEAD.test(text)) text = `'${text}`
+  if (CSV_NEEDS_QUOTING.test(text)) text = `"${text.replace(/"/g, '""')}"`
+  return text
+}
+
+/** Serialise presented rows to a CSV document (CRLF line endings, per RFC 4180).
+ *
+ *  The header is the **stable union** of every presented row's keys in
+ *  first-seen order: a column that only some rows carry (a redacted field nulled
+ *  for one row, an optional attribute) still gets a heading and every row lines
+ *  up under it. The rows are already through `presentRow`, so a field a role may
+ *  not see arrives as `null` and serialises to an empty cell — the redaction is
+ *  honoured here for free rather than re-implemented. Rows that present as an
+ *  array (the `services` tuple) fall back to their positional keys. */
+export function toCsv(rows: readonly unknown[]): string {
+  const keys: string[] = []
+  const seen = new Set<string>()
+  for (const row of rows) {
+    if (!row || typeof row !== 'object') continue
+    for (const key of Object.keys(row)) {
+      if (!seen.has(key)) {
+        seen.add(key)
+        keys.push(key)
+      }
+    }
+  }
+
+  const lines: string[] = [keys.map(csvCell).join(',')]
+  for (const row of rows) {
+    const record = row && typeof row === 'object' ? (row as Record<string, unknown>) : {}
+    lines.push(keys.map((key) => csvCell(record[key])).join(','))
+  }
+  return `${lines.join('\r\n')}\r\n`
+}
+
 /** Applies field-level redaction on the way out, so a value a role may not see
  *  never reaches the wire — hiding it in the client would have been too late. */
 export function presentRow(def: CollectionDef, principal: Principal, row: Record<string, unknown>) {
@@ -105,6 +182,82 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
         page: result.page,
       }
     })
+  })
+
+  /* The gated bulk-egress path.
+   *
+   *  Registered before `/:id` so the literal segment `export` is never read as a
+   *  record id. find-my-way (Fastify's router) already prefers a static segment
+   *  over a parametric one regardless of registration order, so `GET
+   *  /inventory/export` resolves here and not into the detail route — but placing
+   *  it first states the intent and survives a future router swap that might not
+   *  make the same guarantee.
+   *
+   *  Export is a **stricter** gate than view: it checks `x`, not `v`. A role may
+   *  hold `v` and read a screenful on `GET /{path}` yet be refused the whole
+   *  table as a downloadable file, because bulk egress is exactly what the
+   *  matrix's export column exists to control — the accountant who may read a
+   *  job card is not thereby entitled to walk out with every job card as a
+   *  spreadsheet. That `v`-but-not-`x` 403 is the whole point of this route.
+   *
+   *  The rows travel through the *same* RLS transaction, the *same* `listRows`
+   *  query (so `?q=`, `?sort=`, `?filter[]=` narrow the export just as they
+   *  narrow the list) and the *same* `presentRow` as the list route. Field-level
+   *  redaction and tenant scoping therefore hold on the CSV byte-for-byte: an
+   *  exporter never receives a column their role cannot see on screen, nor a row
+   *  belonging to another org. */
+  app.get(`${base}/export`, async (request, reply) => {
+    const principal = principalOf(request)
+    requirePermission(principal, def.module, 'x')
+    const query = parseListQuery(request.query)
+    /* Soft-deleted rows in an export need the delete grant too, mirroring the
+     * list route — an export is not a back door around that check. */
+    if (query.includeDeleted) requirePermission(principal, def.module, 'd')
+
+    const { rows, truncated, total } = await withTenant(deps.db, principal, async (tx) => {
+      /* Gather the *whole* scoped set, not a single page. `listRows` is paged
+       * (its ceiling is the contract's 200), so an export that took only page
+       * one would silently ship the first 200 rows and drop the rest — the kind
+       * of quiet truncation §5 forbids. Walk the pages until the set is complete
+       * or the egress cap is reached, and report the cap rather than hide it. */
+      const gathered: Record<string, unknown>[] = []
+      let page = 1
+      let total = 0
+      for (;;) {
+        const result = await listRows(tx, def, { ...query, page, pageSize: EXPORT_PAGE_SIZE })
+        total = result.page.total
+        for (const row of result.rows) gathered.push(row)
+        if (gathered.length >= MAX_EXPORT_ROWS) {
+          gathered.length = MAX_EXPORT_ROWS
+          break
+        }
+        if (result.rows.length === 0 || page >= result.page.totalPages) break
+        page += 1
+      }
+      return { rows: gathered, truncated: total > gathered.length, total }
+    })
+
+    const presented = rows.map((row) => presentRow(def, principal, row))
+    const csv = toCsv(presented)
+
+    /* Date from the request clock, never hardcoded, so the filename reflects
+     * when the export was actually pulled. */
+    const date = new Date().toISOString().slice(0, 10)
+    reply
+      .header('content-type', 'text/csv; charset=utf-8')
+      .header('content-disposition', `attachment; filename="${def.entity}-${date}.csv"`)
+
+    if (truncated) {
+      /* No silent cut: the caller is told on the wire and the operator is told
+       * in the log, so a report that stops at 50,000 rows is a visible fact and
+       * not a data-integrity mystery three weeks later. */
+      reply.header('x-export-truncated', 'true')
+      request.log.warn(
+        { collection: def.key, cap: MAX_EXPORT_ROWS, total },
+        'export truncated at the egress row cap',
+      )
+    }
+    return csv
   })
 
   app.get(`${base}/:id`, async (request) => {

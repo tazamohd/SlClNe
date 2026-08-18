@@ -97,9 +97,13 @@ export interface LabReport {
 /* ─────────────────────────────────────────────────────── surface enumeration */
 
 /** The generic collection router (`routes/collections.ts`) gives every
- *  collection a `v` (list) surface and, where the collection is `writable`, the
- *  `c`/`e`/`d` triple. `x` (export) and `a` (approve) are never generic — they
- *  live on the bespoke routers enumerated below. */
+ *  collection a `v` (list) surface, an `x` (export) surface — `GET
+ *  /{path}/export`, the gated CSV egress — and, where the collection is
+ *  `writable`, the `c`/`e`/`d` triple. Export used to be the one grant no
+ *  endpoint consumed, so the lab skipped every `x` cell; the generic export
+ *  route closed that hole, and the probe below now exercises it exactly like
+ *  the others. `a` (approve) is still never generic — it lives on the bespoke
+ *  routers enumerated further down. */
 function collectionSurfaces(): Surface[] {
   const surfaces: Surface[] = []
   for (const c of COLLECTIONS) {
@@ -110,6 +114,20 @@ function collectionSurfaces(): Surface[] {
       method: 'GET',
       url: `/${c.path}`,
     })
+    /* The export route is registered for every collection, but it is only worth
+     * probing where the matrix actually grants `x` to someone on this module —
+     * a module with no export grant has nothing to disagree about. Every
+     * collection's module does carry `x` today, so this covers them all; the
+     * guard keeps the probe honest if a future module drops the grant. */
+    if (ROLE_IDS.some((role) => granted(c.module, 'x', role))) {
+      surfaces.push({
+        module: c.module,
+        action: 'x',
+        label: `GET /${c.path}/export`,
+        method: 'GET',
+        url: `/${c.path}/export`,
+      })
+    }
     if (!c.writable) continue
     surfaces.push({
       module: c.module,
@@ -573,7 +591,7 @@ export async function runRbacLab(harness: Harness): Promise<LabReport> {
         action,
         reason:
           action === 'x'
-            ? 'no server endpoint gates export (x); the matrix carries it but nothing enforces it yet'
+            ? 'module grants export (x) but exposes no collection to export from — the generic CSV route covers every collection, so what is left here are modules (reports, kiosk, execreports, the portals, audit, network) with no collection surface at all'
             : 'no gated server surface exists for this module/action',
       })
     }
