@@ -126,6 +126,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Accounting — chart of accounts"
   },
   {
+    "name": "ControlTracker",
+    "route": "/control-tracker",
+    "hasMobile": false,
+    "purpose": "Live operations control center — jobs, bays, team & parts"
+  },
+  {
     "name": "ConversationHistory",
     "route": "/conversation-history",
     "hasMobile": true,

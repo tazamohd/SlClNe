@@ -98,6 +98,7 @@ const PUBLIC_SCREENS: Record<string, ComponentType> = {
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a
  *  PendingScreen, so the nav never dead-ends while the port is in progress. */
 const APP_SCREENS: Record<string, ComponentType> = {
+  ControlTracker: lazyNamed(() => import('@/screens/workshop/ControlTracker'), 'ControlTracker'),
   Dashboard: lazyNamed(() => import('@/screens/Dashboard'), 'Dashboard'),
   JobCards: lazyNamed(() => import('@/screens/workshop/JobCards'), 'JobCards'),
   JobDetail: lazyNamed(() => import('@/screens/workshop/JobDetail'), 'JobDetail'),
