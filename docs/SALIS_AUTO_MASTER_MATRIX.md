@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-402 capabilities · 362 rendering · 0 placeholder · 0 data-backed.
+403 capabilities · 403 rendering · 0 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -26,6 +26,7 @@
 | CallCenter · Logs | `/call-center/logs` | call-center | callcenter | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Campaigns | `/campaigns` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | ChartOfAccounts | `/chart-of-accounts` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
+| ControlTracker | `/control-tracker` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ConversationHistory | `/conversation-history` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | CreatePIN | `/create-pin` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CRMCalendar | `/crmcalendar` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
@@ -62,11 +63,11 @@
 | FinancialStatements | `/financial-statements` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | FleetContract | `/fleet-contract` | app | vehicles | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | FleetManagement | `/fleet-management` | app | vehicles | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
-| FlowSpec | `/flow-spec` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
+| FlowSpec | `/flow-spec` | reference | ungated | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | ForgotPassword | `/forgot-password` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | GlobalSearch | `/global-search` | app | dashboard | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 12 roles | route | IMPLEMENTED |
 | HRPayroll | `/hrpayroll` | app | hr | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| Index | `/index` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
+| Index | `/index` | reference | ungated | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | InsuranceReports | `/insurance-reports` | app | execreports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | Integrations | `/integrations` | app | admin | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | Inventory | `/inventory` | app | inventory | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
@@ -127,7 +128,7 @@
 | PublicPortal · Services | `/public-portal/services` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Support | `/public-portal/support` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PurchaseOrder | `/purchase-order` | app | procurement | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
-| RBACSpec | `/rbacspec` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
+| RBACSpec | `/rbacspec` | reference | ungated | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | Receipts | `/receipts` | app | payments | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | RegionSelection | `/region-selection` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Register | `/register` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -157,31 +158,31 @@
 | Templates | `/templates` | app | admin | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | TermsConditions | `/terms-conditions` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | TwoFactorVerification | `/two-factor-verification` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| UI · ActivityFeed | `/ui/activity-feed` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · AdvancedFilters | `/ui/advanced-filters` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Attachments | `/ui/attachments` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · CalendarView | `/ui/calendar-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · CardView | `/ui/card-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Charts | `/ui/charts` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Comments | `/ui/comments` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · EmptyStates | `/ui/empty-states` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · ExportCenter | `/ui/export-center` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · FormValidation | `/ui/form-validation` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · ImportCenter | `/ui/import-center` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · KanbanView | `/ui/kanban-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · ListView | `/ui/list-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · LoadingStates | `/ui/loading-states` | reference | ungated | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · MapView | `/ui/map-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · MediaGallery | `/ui/media-gallery` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Messages | `/ui/messages` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Modals · Actions | `/ui/modals/actions` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Modals · Capture | `/ui/modals/capture` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Modals · CRUD | `/ui/modals/crud` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Modals · Data | `/ui/modals/data` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Modals · Lifecycle | `/ui/modals/lifecycle` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · Modals · Status | `/ui/modals/status` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · TableView | `/ui/table-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
-| UI · TimelineView | `/ui/timeline-view` | reference | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | REFERENCE_ONLY |
+| UI · ActivityFeed | `/ui/activity-feed` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · AdvancedFilters | `/ui/advanced-filters` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Attachments | `/ui/attachments` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · CalendarView | `/ui/calendar-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · CardView | `/ui/card-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Charts | `/ui/charts` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Comments | `/ui/comments` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · EmptyStates | `/ui/empty-states` | reference | ungated | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · ExportCenter | `/ui/export-center` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · FormValidation | `/ui/form-validation` | reference | ungated | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · ImportCenter | `/ui/import-center` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · KanbanView | `/ui/kanban-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · ListView | `/ui/list-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · LoadingStates | `/ui/loading-states` | reference | ungated | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · MapView | `/ui/map-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · MediaGallery | `/ui/media-gallery` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Messages | `/ui/messages` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Modals · Actions | `/ui/modals/actions` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Modals · Capture | `/ui/modals/capture` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Modals · CRUD | `/ui/modals/crud` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Modals · Data | `/ui/modals/data` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Modals · Lifecycle | `/ui/modals/lifecycle` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · Modals · Status | `/ui/modals/status` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · TableView | `/ui/table-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
+| UI · TimelineView | `/ui/timeline-view` | reference | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | Unauthorized | `/unauthorized` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | UsersTeams | `/users-teams` | app | admin | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | VehicleDetail | `/vehicle-detail` | app | vehicles | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
@@ -322,7 +323,7 @@
 | Payroll Management | `/payroll-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Leave Requests | `/leave-requests` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Training LMS | `/training-lms` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Wearable Integration | `/wearable-integration` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Wearable Integration | `/wearable-integration` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | General Ledger | `/general-ledger` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Trial Balance | `/trial-balance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Balance Sheet | `/balance-sheet` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -372,8 +373,8 @@
 | AI Chatbot | `/ai-chatbot` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | AI Chatbot Assistant | `/ai-chatbot-assistant` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | AI Service Advisor | `/ai-service-advisor` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Voice Commands | `/voice-commands` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Voice Command Interface | `/voice-command-interface` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Voice Commands | `/voice-commands` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Voice Command Interface | `/voice-command-interface` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Smart Damage Assessment | `/smart-damage-assessment` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ML Fraud Detection | `/ml-fraud-detection` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Neural Network Prediction | `/neural-network-prediction` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -382,16 +383,16 @@
 | IoT Dashboard | `/io-t-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Edge Computing | `/edge-computing` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Digital Twin Viewer | `/digital-twin-viewer` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Drone Inspection | `/drone-inspection` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| AR Repair Guide | `/ar-repair-guide` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| AR Overlay | `/ar-overlay` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| VR Showroom | `/vr-showroom` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Blockchain Service History | `/blockchain-service-history` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Smart Contracts | `/smart-contracts` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Quantum Computing | `/quantum-computing` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Drone Inspection | `/drone-inspection` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| AR Repair Guide | `/ar-repair-guide` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| AR Overlay | `/ar-overlay` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| VR Showroom | `/vr-showroom` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Blockchain Service History | `/blockchain-service-history` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Smart Contracts | `/smart-contracts` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Quantum Computing | `/quantum-computing` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Sustainable Energy Monitoring | `/sustainable-energy-monitoring` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Digital Signage | `/digital-signage` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Security Cameras | `/security-cameras` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Digital Signage | `/digital-signage` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| Security Cameras | `/security-cameras` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Mobile Device Management | `/mobile-device-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Document Management | `/document-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Document OCR | `/document-ocr` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

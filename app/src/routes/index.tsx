@@ -432,6 +432,16 @@ const SCREEN_ENTRIES = composeScreens({
     'Multi-Location-Dashboard',
   ]),
   native: lazyBarrel(() => import('@/screens/domains/native'), ['Native.iOS', 'Native.Android']),
+  reference: lazyBarrel(() => import('@/screens/domains/reference'), [
+    'UI.ListView', 'UI.TableView', 'UI.CardView', 'UI.TimelineView',
+    'UI.CalendarView', 'UI.KanbanView', 'UI.MapView', 'UI.Charts',
+    'UI.ActivityFeed', 'UI.Comments', 'UI.Attachments', 'UI.MediaGallery',
+    'UI.Messages', 'UI.AdvancedFilters', 'UI.ImportCenter', 'UI.ExportCenter',
+    'UI.FormValidation', 'UI.EmptyStates', 'UI.LoadingStates',
+    'UI.Modals.CRUD', 'UI.Modals.Lifecycle', 'UI.Modals.Status',
+    'UI.Modals.Actions', 'UI.Modals.Data', 'UI.Modals.Capture',
+    'FlowSpec', 'Index', 'RBACSpec',
+  ]),
 })
 
 export function AppRoutes() {

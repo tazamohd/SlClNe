@@ -856,6 +856,15 @@
           "category": "PRODUCT"
         },
         {
+          "name": "ControlTracker",
+          "route": "/control-tracker",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "GlobalSearch",
           "route": "/global-search",
           "status": "built",
@@ -1573,7 +1582,7 @@
         {
           "name": "FlowSpec",
           "route": "/flow-spec",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1582,7 +1591,7 @@
         {
           "name": "Index",
           "route": "/index",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1591,7 +1600,7 @@
         {
           "name": "RBACSpec",
           "route": "/rbacspec",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1600,7 +1609,7 @@
         {
           "name": "UI · ActivityFeed",
           "route": "/ui/activity-feed",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1609,7 +1618,7 @@
         {
           "name": "UI · AdvancedFilters",
           "route": "/ui/advanced-filters",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1618,7 +1627,7 @@
         {
           "name": "UI · Attachments",
           "route": "/ui/attachments",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1627,7 +1636,7 @@
         {
           "name": "UI · CalendarView",
           "route": "/ui/calendar-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1636,7 +1645,7 @@
         {
           "name": "UI · CardView",
           "route": "/ui/card-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1645,7 +1654,7 @@
         {
           "name": "UI · Charts",
           "route": "/ui/charts",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1654,7 +1663,7 @@
         {
           "name": "UI · Comments",
           "route": "/ui/comments",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1663,7 +1672,7 @@
         {
           "name": "UI · EmptyStates",
           "route": "/ui/empty-states",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1672,7 +1681,7 @@
         {
           "name": "UI · ExportCenter",
           "route": "/ui/export-center",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1681,7 +1690,7 @@
         {
           "name": "UI · FormValidation",
           "route": "/ui/form-validation",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1690,7 +1699,7 @@
         {
           "name": "UI · ImportCenter",
           "route": "/ui/import-center",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1699,7 +1708,7 @@
         {
           "name": "UI · KanbanView",
           "route": "/ui/kanban-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1708,7 +1717,7 @@
         {
           "name": "UI · ListView",
           "route": "/ui/list-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1717,7 +1726,7 @@
         {
           "name": "UI · LoadingStates",
           "route": "/ui/loading-states",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1726,7 +1735,7 @@
         {
           "name": "UI · MapView",
           "route": "/ui/map-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1735,7 +1744,7 @@
         {
           "name": "UI · MediaGallery",
           "route": "/ui/media-gallery",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1744,7 +1753,7 @@
         {
           "name": "UI · Messages",
           "route": "/ui/messages",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1753,7 +1762,7 @@
         {
           "name": "UI · Modals · Actions",
           "route": "/ui/modals/actions",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1762,7 +1771,7 @@
         {
           "name": "UI · Modals · Capture",
           "route": "/ui/modals/capture",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1771,7 +1780,7 @@
         {
           "name": "UI · Modals · CRUD",
           "route": "/ui/modals/crud",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1780,7 +1789,7 @@
         {
           "name": "UI · Modals · Data",
           "route": "/ui/modals/data",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1789,7 +1798,7 @@
         {
           "name": "UI · Modals · Lifecycle",
           "route": "/ui/modals/lifecycle",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1798,7 +1807,7 @@
         {
           "name": "UI · Modals · Status",
           "route": "/ui/modals/status",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1807,7 +1816,7 @@
         {
           "name": "UI · TableView",
           "route": "/ui/table-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1816,7 +1825,7 @@
         {
           "name": "UI · TimelineView",
           "route": "/ui/timeline-view",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -2958,7 +2967,7 @@
         {
           "name": "Wearable Integration",
           "route": "/wearable-integration",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3408,7 +3417,7 @@
         {
           "name": "Voice Commands",
           "route": "/voice-commands",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3417,7 +3426,7 @@
         {
           "name": "Voice Command Interface",
           "route": "/voice-command-interface",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3498,7 +3507,7 @@
         {
           "name": "Drone Inspection",
           "route": "/drone-inspection",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3507,7 +3516,7 @@
         {
           "name": "AR Repair Guide",
           "route": "/ar-repair-guide",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3516,7 +3525,7 @@
         {
           "name": "AR Overlay",
           "route": "/ar-overlay",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3525,7 +3534,7 @@
         {
           "name": "VR Showroom",
           "route": "/vr-showroom",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3534,7 +3543,7 @@
         {
           "name": "Blockchain Service History",
           "route": "/blockchain-service-history",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3543,7 +3552,7 @@
         {
           "name": "Smart Contracts",
           "route": "/smart-contracts",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3552,7 +3561,7 @@
         {
           "name": "Quantum Computing",
           "route": "/quantum-computing",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3570,7 +3579,7 @@
         {
           "name": "Digital Signage",
           "route": "/digital-signage",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3579,7 +3588,7 @@
         {
           "name": "Security Cameras",
           "route": "/security-cameras",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3733,8 +3742,8 @@
     }
   ],
   "totals": {
-    "total": 402,
-    "built": 362,
+    "total": 403,
+    "built": 403,
     "designedMobile": 113
   }
 }

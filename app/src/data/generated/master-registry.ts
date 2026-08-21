@@ -534,6 +534,32 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-ControlTracker",
+    "name": "ControlTracker",
+    "title": "ControlTracker",
+    "route": "/control-tracker",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN",
+      "NO_CONTENT_ASSERTION",
+      "MOCK_ONLY",
+      "NO_RBAC_MODULE"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-ConversationHistory",
     "name": "ConversationHistory",
     "title": "ConversationHistory",
@@ -1476,8 +1502,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "02",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/FlowSpec.dc.html",
     "designMobileSource": null,
@@ -1575,8 +1605,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "02",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/Index.dc.html",
     "designMobileSource": null,
@@ -3147,8 +3181,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "02",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/RBACSpec.dc.html",
     "designMobileSource": null,
@@ -3928,8 +3966,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.ActivityFeed.dc.html",
     "designMobileSource": null,
@@ -3947,8 +3989,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.AdvancedFilters.dc.html",
     "designMobileSource": null,
@@ -3966,8 +4012,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Attachments.dc.html",
     "designMobileSource": null,
@@ -3985,8 +4035,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.CalendarView.dc.html",
     "designMobileSource": null,
@@ -4004,8 +4058,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.CardView.dc.html",
     "designMobileSource": null,
@@ -4023,8 +4081,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Charts.dc.html",
     "designMobileSource": null,
@@ -4042,8 +4104,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Comments.dc.html",
     "designMobileSource": null,
@@ -4061,8 +4127,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.EmptyStates.dc.html",
     "designMobileSource": null,
@@ -4080,8 +4150,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.ExportCenter.dc.html",
     "designMobileSource": null,
@@ -4099,8 +4173,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.FormValidation.dc.html",
     "designMobileSource": null,
@@ -4118,8 +4196,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.ImportCenter.dc.html",
     "designMobileSource": null,
@@ -4137,8 +4219,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.KanbanView.dc.html",
     "designMobileSource": null,
@@ -4156,8 +4242,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.ListView.dc.html",
     "designMobileSource": null,
@@ -4175,8 +4265,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.LoadingStates.dc.html",
     "designMobileSource": null,
@@ -4194,8 +4288,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.MapView.dc.html",
     "designMobileSource": null,
@@ -4213,8 +4311,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.MediaGallery.dc.html",
     "designMobileSource": null,
@@ -4232,8 +4334,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Messages.dc.html",
     "designMobileSource": null,
@@ -4251,8 +4357,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Modals.Actions.dc.html",
     "designMobileSource": null,
@@ -4270,8 +4380,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Modals.Capture.dc.html",
     "designMobileSource": null,
@@ -4289,8 +4403,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Modals.CRUD.dc.html",
     "designMobileSource": null,
@@ -4308,8 +4426,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Modals.Data.dc.html",
     "designMobileSource": null,
@@ -4327,8 +4449,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Modals.Lifecycle.dc.html",
     "designMobileSource": null,
@@ -4346,8 +4472,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.Modals.Status.dc.html",
     "designMobileSource": null,
@@ -4365,8 +4495,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.TableView.dc.html",
     "designMobileSource": null,
@@ -4384,8 +4518,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "ui",
     "owner": "04",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": "project/UI.TimelineView.dc.html",
     "designMobileSource": null,
@@ -8041,8 +8179,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9334,8 +9476,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9353,8 +9499,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9580,8 +9730,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9599,8 +9753,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9618,8 +9776,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9637,8 +9799,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9656,8 +9822,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9675,8 +9845,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9694,8 +9868,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9739,8 +9917,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -9758,8 +9940,12 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
-    "status": "DISCOVERED",
-    "flags": [],
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "RTL_BROKEN"
+    ],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,

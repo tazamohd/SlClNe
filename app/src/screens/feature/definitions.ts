@@ -517,6 +517,300 @@ export const FEATURE_DEFS: readonly FeatureDef[] = [
     ],
   },
   {
+    id: '144',
+    route: '/wearable-integration',
+    title: 'Wearable Integration',
+    subtitle: 'Smartwatch and wearable device connectivity for technicians',
+    icon: 'Watch',
+    stats: [
+      { label: 'Paired Devices', value: 0, caption: 'Connected', highlight: true },
+      { label: 'Active Now', value: 0, caption: 'Online', tone: 'info' },
+      { label: 'Alerts Sent', value: 0, caption: 'Today' },
+      { label: 'Disconnected', value: 0, caption: 'Needs pairing', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Paired Wearables',
+        columns: ['Device', 'Type', 'Technician', 'Last Sync', 'Status'],
+        empty: {
+          icon: 'Watch',
+          title: 'No wearable devices paired',
+          description: 'Pair a smartwatch or wearable to push job alerts to technicians.',
+        },
+      },
+    ],
+  },
+  {
+    id: '197',
+    route: '/voice-commands',
+    title: 'Voice Commands',
+    subtitle: 'Voice-activated controls for hands-free workshop operations',
+    icon: 'Mic',
+    stats: [
+      { label: 'Commands Today', value: 0, caption: 'Processed', highlight: true },
+      { label: 'Recognised', value: 0, caption: 'Successful', tone: 'info' },
+      { label: 'Failed', value: 0, caption: 'Not understood', tone: 'warning' },
+      { label: 'Active Stations', value: 0, caption: 'Listening' },
+    ],
+    sections: [
+      {
+        title: 'Command History',
+        columns: ['Command', 'User', 'Confidence', 'Action Taken', 'Time'],
+        empty: {
+          icon: 'Mic',
+          title: 'No voice commands recorded',
+          description: 'Connect a microphone device to enable voice control.',
+        },
+      },
+    ],
+  },
+  {
+    id: '198',
+    route: '/voice-command-interface',
+    title: 'Voice Command Interface',
+    subtitle: 'Configuration and training for the voice recognition system',
+    icon: 'MicVocal',
+    stats: [
+      { label: 'Custom Commands', value: 0, caption: 'Defined', highlight: true },
+      { label: 'Recognition Rate', value: '0%', caption: 'Accuracy', tone: 'info' },
+      { label: 'Pending Training', value: 0, caption: 'Unconfirmed samples', tone: 'warning' },
+      { label: 'Languages', value: 0, caption: 'Configured' },
+    ],
+    sections: [
+      {
+        title: 'Command Definitions',
+        searchable: true,
+        columns: ['Command Phrase', 'Action', 'Language', 'Accuracy', 'Status'],
+        empty: {
+          icon: 'MicVocal',
+          title: 'No voice commands configured',
+          description: 'Define command phrases and map them to workshop actions.',
+        },
+      },
+    ],
+  },
+  {
+    id: '207',
+    route: '/drone-inspection',
+    title: 'Drone Inspection',
+    subtitle: 'Aerial vehicle and roof inspections via connected drones',
+    icon: 'Plane',
+    stats: [
+      { label: 'Inspections', value: 0, caption: 'Completed', highlight: true },
+      { label: 'Drones Online', value: 0, caption: 'Available', tone: 'info' },
+      { label: 'In Flight', value: 0, caption: 'Active missions' },
+      { label: 'Maintenance Due', value: 0, caption: 'Drone service', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Inspection Missions',
+        columns: ['Mission', 'Vehicle / Area', 'Drone', 'Operator', 'Status'],
+        empty: {
+          icon: 'Plane',
+          title: 'No drone inspections recorded',
+          description: 'Register a drone and operator to schedule aerial inspections.',
+        },
+      },
+    ],
+  },
+  {
+    id: '208',
+    route: '/ar-repair-guide',
+    title: 'AR Repair Guide',
+    subtitle: 'Augmented reality overlays guiding technicians through repairs',
+    icon: 'Glasses',
+    stats: [
+      { label: 'Guides Available', value: 0, caption: 'Published', highlight: true },
+      { label: 'Sessions Today', value: 0, caption: 'AR sessions', tone: 'info' },
+      { label: 'Avg Completion', value: '0%', caption: 'Steps finished' },
+      { label: 'Devices Offline', value: 0, caption: 'Needs connection', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Repair Guides',
+        searchable: true,
+        columns: ['Guide', 'Vehicle Model', 'Steps', 'Uses', 'Status'],
+        empty: {
+          icon: 'Glasses',
+          title: 'No AR repair guides available',
+          description: 'Connect an AR headset and upload repair guides to get started.',
+        },
+      },
+    ],
+  },
+  {
+    id: '209',
+    route: '/ar-overlay',
+    title: 'AR Overlay',
+    subtitle: 'Real-time augmented reality data overlaid on the workshop view',
+    icon: 'ScanLine',
+    stats: [
+      { label: 'Active Overlays', value: 0, caption: 'Running', highlight: true },
+      { label: 'Connected Devices', value: 0, caption: 'AR headsets', tone: 'info' },
+      { label: 'Data Feeds', value: 0, caption: 'Streaming' },
+      { label: 'Errors', value: 0, caption: 'Feed failures', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Overlay Sessions',
+        columns: ['Session', 'Technician', 'Device', 'Data Feed', 'Status'],
+        empty: {
+          icon: 'ScanLine',
+          title: 'No AR overlay sessions',
+          description: 'Pair an AR-capable device to project live data onto the workshop view.',
+        },
+      },
+    ],
+  },
+  {
+    id: '210',
+    route: '/vr-showroom',
+    title: 'VR Showroom',
+    subtitle: 'Virtual reality experience for vehicle and service presentation',
+    icon: 'Monitor',
+    stats: [
+      { label: 'VR Sessions', value: 0, caption: 'This month', highlight: true },
+      { label: 'Showroom Assets', value: 0, caption: 'Published', tone: 'info' },
+      { label: 'Avg Duration', value: '0m', caption: 'Per session' },
+      { label: 'Headsets Offline', value: 0, caption: 'Not connected', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Showroom Experiences',
+        searchable: true,
+        columns: ['Experience', 'Category', 'Views', 'Rating', 'Status'],
+        empty: {
+          icon: 'Monitor',
+          title: 'No VR showroom experiences configured',
+          description: 'Connect a VR headset and publish showroom content to begin.',
+        },
+      },
+    ],
+  },
+  {
+    id: '211',
+    route: '/blockchain-service-history',
+    title: 'Blockchain Service History',
+    subtitle: 'Tamper-proof service records stored on a distributed ledger',
+    icon: 'Link',
+    stats: [
+      { label: 'Records On-Chain', value: 0, caption: 'Verified', highlight: true },
+      { label: 'Pending Write', value: 0, caption: 'Awaiting confirmation', tone: 'info' },
+      { label: 'Failed Writes', value: 0, caption: 'Needs retry', tone: 'warning' },
+      { label: 'Verifications', value: 0, caption: 'Third-party lookups' },
+    ],
+    sections: [
+      {
+        title: 'On-Chain Records',
+        searchable: true,
+        columns: ['Vehicle', 'Service', 'Block', 'Timestamp', 'Status'],
+        empty: {
+          icon: 'Link',
+          title: 'No service records on the blockchain',
+          description: 'Configure a blockchain node connection to start writing records.',
+        },
+      },
+    ],
+  },
+  {
+    id: '212',
+    route: '/smart-contracts',
+    title: 'Smart Contracts',
+    subtitle: 'Automated service agreements executed on the blockchain',
+    icon: 'FileCheck',
+    stats: [
+      { label: 'Active Contracts', value: 0, caption: 'Deployed', highlight: true },
+      { label: 'Executed', value: 0, caption: 'This month', tone: 'info' },
+      { label: 'Pending Approval', value: 0, caption: 'Awaiting sign-off', tone: 'warning' },
+      { label: 'Total Value', value: 'SAR 0.00', caption: 'Under contract' },
+    ],
+    sections: [
+      {
+        title: 'Contracts',
+        searchable: true,
+        columns: ['Contract', 'Customer', 'Vehicle', 'Value', 'Status'],
+        empty: {
+          icon: 'FileCheck',
+          title: 'No smart contracts deployed',
+          description: 'A blockchain node connection is required to deploy contracts.',
+        },
+      },
+    ],
+  },
+  {
+    id: '213',
+    route: '/quantum-computing',
+    title: 'Quantum Computing',
+    subtitle: 'Quantum-accelerated optimisation for scheduling and logistics',
+    icon: 'Atom',
+    stats: [
+      { label: 'Jobs Submitted', value: 0, caption: 'To quantum backend', highlight: true },
+      { label: 'Completed', value: 0, caption: 'Results returned', tone: 'info' },
+      { label: 'Queued', value: 0, caption: 'Waiting for QPU' },
+      { label: 'Errors', value: 0, caption: 'Failed runs', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Quantum Jobs',
+        columns: ['Job', 'Problem Type', 'Qubits', 'Runtime', 'Status'],
+        empty: {
+          icon: 'Atom',
+          title: 'No quantum computing jobs submitted',
+          description: 'Connect to a quantum computing service to submit optimisation jobs.',
+        },
+      },
+    ],
+  },
+  {
+    id: '215',
+    route: '/digital-signage',
+    title: 'Digital Signage',
+    subtitle: 'Lobby and workshop display screens showing queue and status',
+    icon: 'MonitorPlay',
+    stats: [
+      { label: 'Displays', value: 0, caption: 'Registered', highlight: true },
+      { label: 'Online', value: 0, caption: 'Broadcasting', tone: 'info' },
+      { label: 'Content Items', value: 0, caption: 'In playlist' },
+      { label: 'Offline', value: 0, caption: 'No signal', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Display Devices',
+        columns: ['Display', 'Location', 'Content', 'Last Heartbeat', 'Status'],
+        empty: {
+          icon: 'MonitorPlay',
+          title: 'No digital signage displays registered',
+          description: 'Register a display device and assign content playlists.',
+        },
+      },
+    ],
+  },
+  {
+    id: '217',
+    route: '/security-cameras',
+    title: 'Security Cameras',
+    subtitle: 'CCTV feeds and motion alerts across the workshop and yard',
+    icon: 'Cctv',
+    stats: [
+      { label: 'Cameras', value: 0, caption: 'Installed', highlight: true },
+      { label: 'Online', value: 0, caption: 'Streaming', tone: 'info' },
+      { label: 'Alerts Today', value: 0, caption: 'Motion events' },
+      { label: 'Offline', value: 0, caption: 'No feed', tone: 'warning' },
+    ],
+    sections: [
+      {
+        title: 'Camera Feeds',
+        columns: ['Camera', 'Location', 'Resolution', 'Last Frame', 'Status'],
+        empty: {
+          icon: 'Cctv',
+          title: 'No security cameras connected',
+          description: 'Connect CCTV cameras via RTSP or ONVIF to monitor the premises.',
+        },
+      },
+    ],
+  },
+
+  {
     id: '034',
     route: '/telematics-integration',
     title: 'Telematics Integration',

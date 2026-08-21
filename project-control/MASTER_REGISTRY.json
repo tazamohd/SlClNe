@@ -3,21 +3,21 @@
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
-    "capabilities": 402,
-    "product": 362,
+    "capabilities": 403,
+    "product": 363,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 362,
+    "rendered": 403,
     "placeholder": 0,
     "designedMobileOwed": 113,
     "untested": 0,
-    "mockOnly": 362,
+    "mockOnly": 363,
     "dataBacked": 0,
-    "e2eCovered": 402,
+    "e2eCovered": 403,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 283,
+    "renderedWithoutAssertion": 324,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 338,
+    "orphanScreenFiles": 341,
     "productionReady": 0
   },
   "unregisteredDesigns": [],
@@ -164,6 +164,7 @@
     "src/screens/domains/parts.ts",
     "src/screens/domains/portals.ts",
     "src/screens/domains/procurement.ts",
+    "src/screens/domains/reference.ts",
     "src/screens/domains/settings.ts",
     "src/screens/domains/support.ts",
     "src/screens/domains/tasks.ts",
@@ -306,6 +307,7 @@
     "src/screens/public/sections/StatBand.tsx",
     "src/screens/public/sections/tints.ts",
     "src/screens/public/usePageMeta.ts",
+    "src/screens/reference/index.tsx",
     "src/screens/registry/Appointments.tsx",
     "src/screens/registry/CustomerDetail.tsx",
     "src/screens/registry/CustomerFeedback.tsx",
@@ -332,6 +334,7 @@
     "src/screens/workshop/AppointmentForm.tsx",
     "src/screens/workshop/ApprovalInbox.tsx",
     "src/screens/workshop/CalendarGrid.tsx",
+    "src/screens/workshop/ControlTracker.tsx",
     "src/screens/workshop/CustomerApproval.tsx",
     "src/screens/workshop/DiagnosticReport.tsx",
     "src/screens/workshop/EstimateDetail.tsx",
@@ -1834,6 +1837,74 @@
         "ARABIC_MISSING",
         "RTL_BROKEN",
         "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-ControlTracker",
+      "name": "ControlTracker",
+      "title": "ControlTracker",
+      "route": "/control-tracker",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Live operations control center — jobs, bays, team & parts",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": true,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": false,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN",
+        "NO_CONTENT_ASSERTION",
+        "MOCK_ONLY",
+        "NO_RBAC_MODULE"
       ]
     },
     {
@@ -4482,12 +4553,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Cross-screen workflow specification (approvals, notifications)",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -4497,7 +4568,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4517,11 +4588,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-ForgotPassword",
@@ -4768,12 +4843,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Full screen index for internal navigation",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -4783,7 +4858,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4803,11 +4878,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-InsuranceReports",
@@ -9146,12 +9225,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Reference specification for the RBAC engine",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -9161,7 +9240,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -9181,11 +9260,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-Receipts",
@@ -11309,12 +11392,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ActivityFeed",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11324,7 +11407,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11344,11 +11427,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.AdvancedFilters",
@@ -11370,12 +11457,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — AdvancedFilters",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11385,7 +11472,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11405,11 +11492,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Attachments",
@@ -11431,12 +11522,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Attachments",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11446,7 +11537,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11466,11 +11557,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.CalendarView",
@@ -11492,12 +11587,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — CalendarView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11507,7 +11602,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11527,11 +11622,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.CardView",
@@ -11553,12 +11652,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — CardView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11568,7 +11667,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11588,11 +11687,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Charts",
@@ -11614,12 +11717,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Charts",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11629,7 +11732,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11649,11 +11752,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Comments",
@@ -11675,12 +11782,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Comments",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11690,7 +11797,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11710,11 +11817,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.EmptyStates",
@@ -11736,12 +11847,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — EmptyStates",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11751,7 +11862,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11771,11 +11882,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.ExportCenter",
@@ -11797,12 +11912,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ExportCenter",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11812,7 +11927,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11832,11 +11947,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.FormValidation",
@@ -11858,12 +11977,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — FormValidation",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11873,7 +11992,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11893,11 +12012,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.ImportCenter",
@@ -11919,12 +12042,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ImportCenter",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11934,7 +12057,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -11954,11 +12077,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.KanbanView",
@@ -11980,12 +12107,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — KanbanView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -11995,7 +12122,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12015,11 +12142,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.ListView",
@@ -12041,12 +12172,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ListView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12056,7 +12187,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12076,11 +12207,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.LoadingStates",
@@ -12102,12 +12237,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — LoadingStates",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12117,7 +12252,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12137,11 +12272,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.MapView",
@@ -12163,12 +12302,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — MapView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12178,7 +12317,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12198,11 +12337,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.MediaGallery",
@@ -12224,12 +12367,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — MediaGallery",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12239,7 +12382,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12259,11 +12402,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Messages",
@@ -12285,12 +12432,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Messages",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12300,7 +12447,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12320,11 +12467,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Modals.Actions",
@@ -12346,12 +12497,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Actions",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12361,7 +12512,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12381,11 +12532,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Modals.Capture",
@@ -12407,12 +12562,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Capture",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12422,7 +12577,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12442,11 +12597,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Modals.CRUD",
@@ -12468,12 +12627,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — CRUD",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12483,7 +12642,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12503,11 +12662,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Modals.Data",
@@ -12529,12 +12692,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Data",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12544,7 +12707,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12564,11 +12727,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Modals.Lifecycle",
@@ -12590,12 +12757,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Lifecycle",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12605,7 +12772,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12625,11 +12792,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.Modals.Status",
@@ -12651,12 +12822,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Status",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12666,7 +12837,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12686,11 +12857,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.TableView",
@@ -12712,12 +12887,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — TableView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12727,7 +12902,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12747,11 +12922,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-UI.TimelineView",
@@ -12773,12 +12952,12 @@
       "featureMapSource": null,
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — TimelineView",
-      "desktop": "MISSING",
+      "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -12788,7 +12967,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -12808,11 +12987,15 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "D-Unauthorized",
@@ -22463,12 +22646,12 @@
       "featureMapSource": "project/spec-shots/144-Wearable-Integration.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -22478,7 +22661,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -22498,13 +22681,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: wearable device SDK"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-146",
@@ -25858,12 +26045,12 @@
       "featureMapSource": "project/spec-shots/197-Voice-Commands.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -25873,7 +26060,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -25893,13 +26080,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: speech provider credential"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-198",
@@ -25921,12 +26112,12 @@
       "featureMapSource": "project/spec-shots/198-Voice-Command-Interface.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -25936,7 +26127,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -25956,13 +26147,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: speech provider credential"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-199",
@@ -26528,12 +26723,12 @@
       "featureMapSource": "project/spec-shots/207-Drone-Inspection.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26543,7 +26738,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26563,13 +26758,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: drone hardware + flight service"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-208",
@@ -26591,12 +26790,12 @@
       "featureMapSource": "project/spec-shots/208-AR-Repair-Guide.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26606,7 +26805,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26626,13 +26825,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: AR device + tracked models"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-209",
@@ -26654,12 +26857,12 @@
       "featureMapSource": "project/spec-shots/209-AR-Overlay.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26669,7 +26872,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26689,13 +26892,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: AR device + tracked models"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-210",
@@ -26717,12 +26924,12 @@
       "featureMapSource": "project/spec-shots/210-VR-Showroom.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26732,7 +26939,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26752,13 +26959,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: VR headset + 3D asset pipeline"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-211",
@@ -26780,12 +26991,12 @@
       "featureMapSource": "project/spec-shots/211-Blockchain-Service-History.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26795,7 +27006,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26815,13 +27026,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: chain endpoint + wallet"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-212",
@@ -26843,12 +27058,12 @@
       "featureMapSource": "project/spec-shots/212-Smart-Contracts.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26858,7 +27073,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26878,13 +27093,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: chain endpoint + wallet"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-213",
@@ -26906,12 +27125,12 @@
       "featureMapSource": "project/spec-shots/213-Quantum-Computing.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -26921,7 +27140,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -26941,13 +27160,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: no available quantum backend"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-214",
@@ -27037,12 +27260,12 @@
       "featureMapSource": "project/spec-shots/215-Digital-Signage.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -27052,7 +27275,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -27072,13 +27295,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: signage player hardware"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-217",
@@ -27100,12 +27327,12 @@
       "featureMapSource": "project/spec-shots/217-Security-Cameras.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "MISSING",
+      "desktop": "PARTIAL",
       "tablet": "MISSING",
-      "mobile": "MISSING",
-      "responsive": "MISSING",
-      "arabic": "MISSING",
-      "rtl": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -27115,7 +27342,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -27135,13 +27362,17 @@
       "securityTests": false,
       "performanceTest": false,
       "inNav": false,
-      "status": "DISCOVERED",
+      "status": "IMPLEMENTED",
       "blockers": [
         "EXTERNAL_DEPENDENCY: on-site NVR/RTSP feed"
       ],
       "dependencies": [],
       "evidence": [],
-      "flags": []
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "RTL_BROKEN"
+      ]
     },
     {
       "screenId": "F-218",

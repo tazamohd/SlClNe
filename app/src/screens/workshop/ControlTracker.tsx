@@ -117,8 +117,11 @@ export function ControlTracker() {
           {APPROVAL_QUEUE.map((item) => (
             <div
               key={item.id}
+              role="button"
+              tabIndex={0}
               className="flex cursor-pointer items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:border-salis-blue/30 hover:bg-[rgba(10,94,215,.03)]"
               onClick={() => navigate('/customer-approval')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/customer-approval') }}
             >
               <span className="font-mono text-[13px] font-semibold text-salis-blue">{item.id}</span>
               <span className="flex-1 text-[13px] text-body">{item.customer} — {item.vehicle}</span>
@@ -170,8 +173,11 @@ function PipelineView({
                   stageJobs.map((job) => (
                     <div
                       key={job.id}
+                      role="button"
+                      tabIndex={0}
                       className="cursor-pointer rounded-lg border border-border bg-inset p-2.5 transition-colors hover:border-salis-blue/30"
                       onClick={() => navigate(`/job-detail?id=${job.id}`)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate(`/job-detail?id=${job.id}`) }}
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-mono text-[11px] font-semibold text-salis-blue">{job.id.slice(0, 8)}</span>

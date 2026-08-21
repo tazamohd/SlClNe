@@ -10,23 +10,23 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|---|---|
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 362 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 283 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-004 | CRITICAL | 363 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 324 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-006 | HIGH | 113 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 338 screen files are unreachable from any route | 02 | W0 |
+| BLK-010 | MEDIUM | 341 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
-| TABLET_MISSING | 362 | never verified at 768–1024 |
-| ARABIC_MISSING | 362 | Arabic not certified |
-| RTL_BROKEN | 362 | RTL not certified |
-| MOCK_ONLY | 362 | renders, but from fixtures rather than an API |
-| NO_CONTENT_ASSERTION | 283 | — |
-| NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
+| TABLET_MISSING | 403 | never verified at 768–1024 |
+| ARABIC_MISSING | 403 | Arabic not certified |
+| RTL_BROKEN | 403 | RTL not certified |
+| MOCK_ONLY | 363 | renders, but from fixtures rather than an API |
+| NO_CONTENT_ASSERTION | 284 | — |
+| NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
 | MOBILE_MISSING | 113 | a .Mobile design exists and is not built |
 | DESKTOP_ONLY | 113 | renders on desktop with no mobile treatment |
 
@@ -178,6 +178,7 @@ _None — the registry covers every design file._
 - `app/src/screens/domains/parts.ts`
 - `app/src/screens/domains/portals.ts`
 - `app/src/screens/domains/procurement.ts`
+- `app/src/screens/domains/reference.ts`
 - `app/src/screens/domains/settings.ts`
 - `app/src/screens/domains/support.ts`
 - `app/src/screens/domains/tasks.ts`
@@ -320,6 +321,7 @@ _None — the registry covers every design file._
 - `app/src/screens/public/sections/StatBand.tsx`
 - `app/src/screens/public/sections/tints.ts`
 - `app/src/screens/public/usePageMeta.ts`
+- `app/src/screens/reference/index.tsx`
 - `app/src/screens/registry/Appointments.tsx`
 - `app/src/screens/registry/CustomerDetail.tsx`
 - `app/src/screens/registry/CustomerFeedback.tsx`
@@ -346,6 +348,7 @@ _None — the registry covers every design file._
 - `app/src/screens/workshop/AppointmentForm.tsx`
 - `app/src/screens/workshop/ApprovalInbox.tsx`
 - `app/src/screens/workshop/CalendarGrid.tsx`
+- `app/src/screens/workshop/ControlTracker.tsx`
 - `app/src/screens/workshop/CustomerApproval.tsx`
 - `app/src/screens/workshop/DiagnosticReport.tsx`
 - `app/src/screens/workshop/EstimateDetail.tsx`

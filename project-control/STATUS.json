@@ -1,21 +1,21 @@
 {
   "generatedAt": "2026-08-21",
   "totals": {
-    "capabilities": 402,
-    "product": 362,
+    "capabilities": 403,
+    "product": 363,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 362,
+    "rendered": 403,
     "placeholder": 0,
     "designedMobileOwed": 113,
     "untested": 0,
-    "mockOnly": 362,
+    "mockOnly": 363,
     "dataBacked": 0,
-    "e2eCovered": 402,
+    "e2eCovered": 403,
     "contentAsserted": 79,
-    "renderedWithoutAssertion": 283,
+    "renderedWithoutAssertion": 324,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 338,
+    "orphanScreenFiles": 341,
     "productionReady": 0
   },
   "bySurface": {
@@ -28,11 +28,11 @@
       "dataBacked": 0
     },
     "app": {
-      "total": 312,
-      "rendered": 300,
+      "total": 313,
+      "rendered": 313,
       "placeholder": 0,
       "mobileOwed": 85,
-      "e2e": 312,
+      "e2e": 313,
       "dataBacked": 0
     },
     "call-center": {
@@ -61,7 +61,7 @@
     },
     "reference": {
       "total": 28,
-      "rendered": 0,
+      "rendered": 28,
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 28,
@@ -102,11 +102,11 @@
       "dataBacked": 0
     },
     "admin": {
-      "total": 17,
-      "rendered": 17,
+      "total": 18,
+      "rendered": 18,
       "placeholder": 0,
       "mobileOwed": 14,
-      "e2e": 17,
+      "e2e": 18,
       "dataBacked": 0
     },
     "ai": {
@@ -159,7 +159,7 @@
     },
     "ui": {
       "total": 28,
-      "rendered": 0,
+      "rendered": 28,
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 28,
@@ -199,7 +199,7 @@
     },
     "featuremap": {
       "total": 211,
-      "rendered": 199,
+      "rendered": 211,
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
@@ -209,7 +209,7 @@
   "byModule": {
     "ungated": {
       "total": 16,
-      "rendered": 10,
+      "rendered": 16,
       "placeholder": 0,
       "mobileOwed": 10,
       "e2e": 16,
