@@ -48,7 +48,7 @@
           "route": "/dashboard",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -57,7 +57,7 @@
           "route": "/diagnostic-report",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -84,7 +84,7 @@
           "route": "/job-card-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -165,7 +165,7 @@
           "route": "/workshop-estimate",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -192,7 +192,7 @@
           "route": "/workshop-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -245,7 +245,7 @@
           "route": "/customer-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -344,7 +344,7 @@
           "route": "/vehicle-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -744,7 +744,7 @@
           "route": "/aianalytics",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -753,7 +753,7 @@
           "route": "/aiassistant",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -762,7 +762,7 @@
           "route": "/automation-rules",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -780,7 +780,7 @@
           "route": "/knowledge-base",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -789,7 +789,7 @@
           "route": "/model-settings",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -798,7 +798,7 @@
           "route": "/prompt-library",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -807,7 +807,7 @@
           "route": "/workflow-builder",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -833,7 +833,7 @@
           "route": "/audit-log",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -842,7 +842,7 @@
           "route": "/backup",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -851,7 +851,7 @@
           "route": "/branches",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -869,7 +869,7 @@
           "route": "/global-search",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -887,7 +887,7 @@
           "route": "/notification-center",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -896,7 +896,7 @@
           "route": "/oemintegrations",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -905,7 +905,7 @@
           "route": "/organizations",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -914,7 +914,7 @@
           "route": "/profile",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -923,7 +923,7 @@
           "route": "/roles-permissions",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -932,7 +932,7 @@
           "route": "/settings",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -941,7 +941,7 @@
           "route": "/subscription",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -950,7 +950,7 @@
           "route": "/super-admin",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -959,7 +959,7 @@
           "route": "/system-integrations",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -968,7 +968,7 @@
           "route": "/templates",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -977,7 +977,7 @@
           "route": "/users-teams",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -1057,7 +1057,7 @@
           "route": "/login",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1084,7 +1084,7 @@
           "route": "/onboarding",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1254,7 +1254,7 @@
           "route": "/call-center",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1335,7 +1335,7 @@
           "route": "/supplier-portal",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1584,7 +1584,7 @@
           "route": "/flow-spec",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1602,7 +1602,7 @@
           "route": "/rbacspec",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },

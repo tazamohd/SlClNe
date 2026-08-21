@@ -155,6 +155,31 @@ const designFiles = fs.existsSync(PROJECT)
 const designDesktop = new Set(designFiles.filter((f) => !f.includes('.Mobile.')).map((f) => f.replace('.dc.html', '')))
 const designMobile = new Set(designFiles.filter((f) => f.includes('.Mobile.')).map((f) => f.replace('.Mobile.dc.html', '')))
 
+/** Screens whose source file already contains a useIsMobile / isMobile branch.
+ *  This is how the builder upgrades a designed-mobile screen from MISSING → DONE
+ *  once an agent has actually wired up the mobile layout. */
+const mobileImplemented = (() => {
+  const names = new Set()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return names
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const src = fs.readFileSync(full, 'utf8')
+        if (!src.includes('useIsMobile') && !src.includes('isMobile')) continue
+        for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
+          names.add(m[1])
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+  return names
+})()
+
 // ── classification ───────────────────────────────────────────────────────────
 
 /** Surface, shell and owning agent, in priority order. First match wins. */
@@ -278,8 +303,8 @@ for (const s of SCREENS) {
     // floor, not the Definition of Done, so nothing above DONE is claimed here.
     desktop: built ? 'DONE' : 'MISSING',
     tablet: 'MISSING',
-    mobile: built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
-    responsive: built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
+    mobile: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
+    responsive: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
     arabic: built ? 'PARTIAL' : 'MISSING',
     rtl: built ? 'PARTIAL' : 'MISSING',
     loadingState: 'MISSING', emptyState: 'MISSING', errorState: 'MISSING', successState: 'MISSING',

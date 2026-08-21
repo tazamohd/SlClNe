@@ -7,7 +7,7 @@
     "externalDependency": 12,
     "rendered": 403,
     "placeholder": 0,
-    "designedMobileOwed": 113,
+    "designedMobileOwed": 86,
     "untested": 0,
     "mockOnly": 363,
     "dataBacked": 0,
@@ -23,7 +23,7 @@
       "total": 28,
       "rendered": 28,
       "placeholder": 0,
-      "mobileOwed": 28,
+      "mobileOwed": 26,
       "e2e": 28,
       "dataBacked": 0
     },
@@ -31,7 +31,7 @@
       "total": 313,
       "rendered": 313,
       "placeholder": 0,
-      "mobileOwed": 85,
+      "mobileOwed": 60,
       "e2e": 313,
       "dataBacked": 0
     },
@@ -97,7 +97,7 @@
       "total": 28,
       "rendered": 28,
       "placeholder": 0,
-      "mobileOwed": 28,
+      "mobileOwed": 26,
       "e2e": 28,
       "dataBacked": 0
     },
@@ -105,7 +105,7 @@
       "total": 18,
       "rendered": 18,
       "placeholder": 0,
-      "mobileOwed": 14,
+      "mobileOwed": 2,
       "e2e": 18,
       "dataBacked": 0
     },
@@ -113,7 +113,7 @@
       "total": 10,
       "rendered": 10,
       "placeholder": 0,
-      "mobileOwed": 10,
+      "mobileOwed": 3,
       "e2e": 10,
       "dataBacked": 0
     },
@@ -121,7 +121,7 @@
       "total": 22,
       "rendered": 22,
       "placeholder": 0,
-      "mobileOwed": 17,
+      "mobileOwed": 13,
       "e2e": 22,
       "dataBacked": 0
     },
@@ -145,7 +145,7 @@
       "total": 17,
       "rendered": 17,
       "placeholder": 0,
-      "mobileOwed": 17,
+      "mobileOwed": 15,
       "e2e": 17,
       "dataBacked": 0
     },
@@ -211,7 +211,7 @@
       "total": 16,
       "rendered": 16,
       "placeholder": 0,
-      "mobileOwed": 10,
+      "mobileOwed": 9,
       "e2e": 16,
       "dataBacked": 0
     },
@@ -219,7 +219,7 @@
       "total": 7,
       "rendered": 7,
       "placeholder": 0,
-      "mobileOwed": 4,
+      "mobileOwed": 1,
       "e2e": 7,
       "dataBacked": 0
     },
@@ -227,7 +227,7 @@
       "total": 10,
       "rendered": 10,
       "placeholder": 0,
-      "mobileOwed": 10,
+      "mobileOwed": 3,
       "e2e": 10,
       "dataBacked": 0
     },
@@ -251,7 +251,7 @@
       "total": 1,
       "rendered": 1,
       "placeholder": 0,
-      "mobileOwed": 1,
+      "mobileOwed": 0,
       "e2e": 1,
       "dataBacked": 0
     },
@@ -275,7 +275,7 @@
       "total": 6,
       "rendered": 6,
       "placeholder": 0,
-      "mobileOwed": 6,
+      "mobileOwed": 1,
       "e2e": 6,
       "dataBacked": 0
     },
@@ -299,7 +299,7 @@
       "total": 4,
       "rendered": 4,
       "placeholder": 0,
-      "mobileOwed": 3,
+      "mobileOwed": 2,
       "e2e": 4,
       "dataBacked": 0
     },
@@ -307,7 +307,7 @@
       "total": 3,
       "rendered": 3,
       "placeholder": 0,
-      "mobileOwed": 3,
+      "mobileOwed": 2,
       "e2e": 3,
       "dataBacked": 0
     },
@@ -323,7 +323,7 @@
       "total": 6,
       "rendered": 6,
       "placeholder": 0,
-      "mobileOwed": 6,
+      "mobileOwed": 5,
       "e2e": 6,
       "dataBacked": 0
     },
@@ -331,7 +331,7 @@
       "total": 4,
       "rendered": 4,
       "placeholder": 0,
-      "mobileOwed": 4,
+      "mobileOwed": 0,
       "e2e": 4,
       "dataBacked": 0
     },
@@ -347,7 +347,7 @@
       "total": 10,
       "rendered": 10,
       "placeholder": 0,
-      "mobileOwed": 8,
+      "mobileOwed": 7,
       "e2e": 10,
       "dataBacked": 0
     },
@@ -355,7 +355,7 @@
       "total": 4,
       "rendered": 4,
       "placeholder": 0,
-      "mobileOwed": 4,
+      "mobileOwed": 3,
       "e2e": 4,
       "dataBacked": 0
     },
