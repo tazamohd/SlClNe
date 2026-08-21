@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
+import { useToast } from '@/components/ui/Toast'
 import { EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -112,6 +113,7 @@ export function CustomerAppHome() {
 // ── Garage ──────────────────────────────────────────────────────────────────
 export function CustomerAppGarage() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
   const { data: vehicles = [] } = useCollection('vehicles')
 
   return (
@@ -146,7 +148,7 @@ export function CustomerAppGarage() {
           </div>
         </div>
       ))}
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/garage')}>
         <Icon name="Plus" size={16} />
         {t('Add Vehicle')}
       </Button>
@@ -157,6 +159,7 @@ export function CustomerAppGarage() {
 // ── Appointments ────────────────────────────────────────────────────────────
 export function CustomerAppAppointments() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
   const { data: appointments = [] } = useCollection('appointments')
 
   return (
@@ -180,7 +183,7 @@ export function CustomerAppAppointments() {
           }
         />
       ))}
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/appointments')}>
         <Icon name="CalendarPlus" size={16} />
         {t('Book Service')}
       </Button>
@@ -248,7 +251,8 @@ export function CustomerAppWallet() {
       <AppHeroCard icon="Wallet" label={t('Balance')} value={`SAR ${balance.toLocaleString('en-US')}.00`}>
         <button
           type="button"
-          className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white"
+          disabled
+          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white opacity-50"
         >
           <Icon name="Plus" size={13} />
           {t('Top Up')}
@@ -332,6 +336,7 @@ const PRODUCTS = [
 
 export function CustomerAppMarketplace() {
   const { t } = usePreferences()
+  const toast = useToast()
   const [category, setCategory] = useState<string>('All')
 
   // The design's category chips were decorative; filtering is the point of a
@@ -381,6 +386,7 @@ export function CustomerAppMarketplace() {
                 <Money sar={product.price} className="text-xs font-bold text-heading" />
                 <button
                   type="button"
+                  onClick={() => toast.show({ title: t('Added to cart'), description: product.name })}
                   aria-label={`${t('Add')}: ${t(product.name)}`}
                   className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white"
                 >
@@ -423,6 +429,7 @@ export function CustomerAppNotifications() {
 // ── Insurance / loans ───────────────────────────────────────────────────────
 export function CustomerAppInsurance() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
   return (
     <>
       <AppSection title={t('Insurance')} />
@@ -432,14 +439,15 @@ export function CustomerAppInsurance() {
         </p>
       </AppHeroCard>
       <AppListRow icon="Car" title="Toyota Camry 2022" subtitle="RUH 4821" />
-      <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} />
-      <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} />
+      <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} onClick={() => navigate('/customer-app/insurance')} />
+      <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} onClick={() => navigate('/customer-app/insurance')} />
     </>
   )
 }
 
 export function CustomerAppLoans() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
   return (
     <>
       <AppSection title={t('Loans')} />
@@ -448,7 +456,7 @@ export function CustomerAppLoans() {
         title={t('No active finance')}
         description={t('Vehicle finance and instalment plans appear here.')}
       />
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/loans')}>
         <Icon name="Plus" size={16} />
         {t('Apply for Finance')}
       </Button>

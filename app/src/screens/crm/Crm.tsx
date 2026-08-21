@@ -14,6 +14,11 @@ import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { LeadFormModal } from './LeadFormModal'
+import { OpportunityFormModal } from './OpportunityFormModal'
+import { CampaignFormModal } from './CampaignFormModal'
+import { SegmentFormModal } from './SegmentFormModal'
+import { CrmTaskFormModal } from './CrmTaskFormModal'
 
 /** CRM: pipeline, opportunities, campaigns, segments and tasks.
  *
@@ -82,6 +87,7 @@ export function LeadPipeline() {
   const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: leads = [], isLoading } = useCollection('leads')
+  const [creating, setCreating] = useState(false)
 
   const byStage = useMemo(() => {
     const map = new Map<string, Lead[]>()
@@ -129,7 +135,7 @@ export function LeadPipeline() {
           title={t('Lead Pipeline')}
           actions={
             can('crm', 'c') ? (
-              <Button size="md">
+              <Button size="md" onClick={() => setCreating(true)}>
                 <Icon name="Plus" size={16} />
                 {t('New Lead')}
               </Button>
@@ -137,6 +143,7 @@ export function LeadPipeline() {
           }
         />
         {pipelineStats}
+        <LeadFormModal open={creating} onClose={() => setCreating(false)} />
         <div className="flex flex-col gap-4">
           {PIPELINE_STAGES.map((stage) => {
             const column = byStage.get(stage) ?? []
@@ -190,7 +197,7 @@ export function LeadPipeline() {
         subtitle={t('CRM')}
         actions={
           can('crm', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreating(true)}>
               <Icon name="Plus" size={16} />
               {t('New Lead')}
             </Button>
@@ -199,6 +206,7 @@ export function LeadPipeline() {
       />
 
       {pipelineStats}
+      <LeadFormModal open={creating} onClose={() => setCreating(false)} />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {PIPELINE_STAGES.map((stage) => {
@@ -254,6 +262,7 @@ export function Opportunities() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const { data: opportunities = [] } = useCollection('opportunities')
+  const [creating, setCreating] = useState(false)
 
   // Weighted pipeline: value × probability. The unweighted total flatters the
   // forecast, which is what a sales review actually argues about.
@@ -309,7 +318,7 @@ export function Opportunities() {
           title={t('Opportunities')}
           actions={
             can('crm', 'c') ? (
-              <Button size="md">
+              <Button size="md" onClick={() => setCreating(true)}>
                 <Icon name="Plus" size={16} />
                 {t('New Opportunity')}
               </Button>
@@ -317,6 +326,7 @@ export function Opportunities() {
           }
         />
         {oppStats}
+        <OpportunityFormModal open={creating} onClose={() => setCreating(false)} />
         <DataTable
           columns={columns}
           rows={opportunities}
@@ -348,7 +358,7 @@ export function Opportunities() {
         subtitle={t('CRM')}
         actions={
           can('crm', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreating(true)}>
               <Icon name="Plus" size={16} />
               {t('New Opportunity')}
             </Button>
@@ -356,6 +366,7 @@ export function Opportunities() {
         }
       />
       {oppStats}
+      <OpportunityFormModal open={creating} onClose={() => setCreating(false)} />
       <DataTable
         columns={columns}
         rows={opportunities}
@@ -396,6 +407,7 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
   const { can } = useSession()
   const isMobile = useIsMobile()
   const { data: all = [], isLoading } = useCollection('campaigns')
+  const [creating, setCreating] = useState(false)
 
   const campaigns = useMemo(
     () => (channel ? all.filter((c) => c.type === channel) : all),
@@ -488,13 +500,14 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
         subtitle={t('Marketing')}
         actions={
           can('crm', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreating(true)}>
               <Icon name="Plus" size={16} />
               {t('New Campaign')}
             </Button>
           ) : null
         }
       />
+      <CampaignFormModal open={creating} onClose={() => setCreating(false)} />
       <StatRow
         stats={[
           { label: 'Reach', value: totals.reach.toLocaleString('en-US'), caption: 'Recipients', highlight: true },
@@ -555,6 +568,7 @@ export function CustomerSegments() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const { data: segments = [], isLoading } = useCollection('segments')
+  const [creating, setCreating] = useState(false)
 
   const columns: Column<Segment>[] = [
     { header: 'Name', cell: (s) => t(s.name) },
@@ -594,13 +608,14 @@ export function CustomerSegments() {
         subtitle={t('CRM')}
         actions={
           can('crm', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreating(true)}>
               <Icon name="Plus" size={16} />
               {t('New Segment')}
             </Button>
           ) : null
         }
       />
+      <SegmentFormModal open={creating} onClose={() => setCreating(false)} />
       <DataTable
         columns={columns}
         rows={segments}
@@ -637,6 +652,7 @@ export function CRMTasks() {
   const isMobile = useIsMobile()
   const { data: tasks = [], isLoading } = useCollection('crmTasks')
   const [status, setStatus] = useState<string>('all')
+  const [creating, setCreating] = useState(false)
 
   const filtered = useMemo(
     () => (status === 'all' ? tasks : tasks.filter((task) => task.status === status)),
@@ -713,13 +729,14 @@ export function CRMTasks() {
         subtitle={t('CRM')}
         actions={
           can('crm', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreating(true)}>
               <Icon name="Plus" size={16} />
               {t('New Task')}
             </Button>
           ) : null
         }
       />
+      <CrmTaskFormModal open={creating} onClose={() => setCreating(false)} />
 
       <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
         {(['all', 'todo', 'in_progress', 'done'] as const).map((option) => {

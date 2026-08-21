@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FeatureHeader, StatRow, Section } from '@/components/shell/FeatureScreen'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -20,6 +21,7 @@ export function DashboardHome() {
   const { t, rtl } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
+  const navigate = useNavigate()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: appointments = [] } = useCollection('appointments')
   const { data: customers = [] } = useCollection('customers')
@@ -52,15 +54,15 @@ export function DashboardHome() {
         actions={
           isLive && can('jobcards', 'c') ? (
             <div className="flex flex-wrap gap-2.5">
-              <Button size="md">
+              <Button size="md" onClick={() => navigate('/job-cards')}>
                 <Icon name="Plus" size={16} />
                 {t('New Job')}
               </Button>
-              <Button size="md" variant="outline">
+              <Button size="md" variant="outline" onClick={() => navigate('/customers')}>
                 <Icon name="UserPlus" size={16} />
                 {t('New Customer')}
               </Button>
-              <Button size="md" variant="outline">
+              <Button size="md" variant="outline" onClick={() => navigate('/appointment-calendar')}>
                 <Icon name="CalendarPlus" size={16} />
                 {t('New Appointment')}
               </Button>

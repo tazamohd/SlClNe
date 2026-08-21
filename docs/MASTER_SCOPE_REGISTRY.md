@@ -22,7 +22,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | content asserted | 79 |
 | rendered without assertion | 324 |
 | unregistered designs | 0 |
-| orphan screen files | 341 |
+| orphan screen files | 351 |
 | production ready | 0 |
 
 ## By surface

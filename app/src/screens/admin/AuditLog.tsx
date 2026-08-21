@@ -106,7 +106,7 @@ export function AuditLog() {
             <p className="mt-0.5 text-sm text-muted">{t('Track all system actions')}</p>
           </div>
         </div>
-        <Button variant="subtle">
+        <Button variant="subtle" disabled={!isLive}>
           <Icon name="Download" size={14} />
           {t('Export')}
         </Button>

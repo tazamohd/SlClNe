@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -20,15 +21,16 @@ const QUICK_STATS = [
 ]
 
 const QUICK_ACTIONS = [
-  { label: 'New Appointment', icon: 'CalendarPlus' },
-  { label: 'Create Job Card', icon: 'ClipboardPlus' },
-  { label: 'New Invoice', icon: 'FilePlus' },
-  { label: 'View Reports', icon: 'BarChart3' },
+  { label: 'New Appointment', icon: 'CalendarPlus', route: '/appointment-calendar' },
+  { label: 'Create Job Card', icon: 'ClipboardPlus', route: '/job-cards' },
+  { label: 'New Invoice', icon: 'FilePlus', route: '/invoice-create' },
+  { label: 'View Reports', icon: 'BarChart3', route: '/reports' },
 ]
 
 export function WelcomePage() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const navigate = useNavigate()
 
   const greeting = getGreeting(t)
 
@@ -49,7 +51,7 @@ export function WelcomePage() {
         </div>
         <h3 className="text-sm font-bold text-heading">{t('Quick Actions')}</h3>
         {QUICK_ACTIONS.map((a) => (
-          <MobileCard key={a.label}>
+          <MobileCard key={a.label} onClick={() => navigate(a.route)}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -99,6 +101,7 @@ export function WelcomePage() {
             <Card
               key={a.label}
               className={`flex flex-col items-center gap-3 rounded-2xl p-6 shadow-sm transition-shadow ${isLive ? 'cursor-pointer hover:shadow-md' : 'opacity-60'}`}
+              onClick={() => navigate(a.route)}
             >
               <span className="flex rounded-xl bg-[rgba(10,94,215,.1)] p-3 text-salis-blue" aria-hidden>
                 <Icon name={a.icon} size={24} />

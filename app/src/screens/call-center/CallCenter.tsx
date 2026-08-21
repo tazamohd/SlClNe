@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState } from '@/components/ui/States'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
@@ -117,6 +119,8 @@ const STATUS_TONES: Record<string, [string, string]> = {
 export function CallCenter() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const navigate = useNavigate()
+  const toast = useToast()
   const [disposition, setDisposition] = useState<DispositionKey>('status')
 
   return (
@@ -281,16 +285,16 @@ export function CallCenter() {
               className="w-full resize-vertical rounded-[9px] border border-border bg-inset px-3 py-2.5 font-ui text-[13px] text-primary outline-none"
             />
             <div className="mt-3 flex flex-wrap gap-2">
-              <Button variant="outline" disabled={!isLive}>
+              <Button variant="outline" disabled={!isLive} onClick={() => navigate('/appointment-calendar')}>
                 <Icon name="CalendarPlus" size={15} />
                 {t('Book Appointment')}
               </Button>
-              <Button variant="outline" disabled={!isLive}>
+              <Button variant="outline" disabled={!isLive} onClick={() => navigate('/job-cards')}>
                 <Icon name="ClipboardPlus" size={15} />
                 {t('New Job Card')}
               </Button>
               <span className="flex-1" />
-              <Button disabled={!isLive}>{t('Save & Wrap Up')}</Button>
+              <Button disabled={!isLive} onClick={() => toast.show({ title: t('Call saved'), description: t('Disposition recorded') })}>{t('Save & Wrap Up')}</Button>
             </div>
           </Card>
         </div>

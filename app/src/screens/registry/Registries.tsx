@@ -19,6 +19,8 @@ import {
   VehicleStatusBadge,
 } from './badges'
 import { CustomerFormModal } from './CustomerForm'
+import { FleetAccountFormModal } from './FleetAccountFormModal'
+import { TechnicianFormModal } from './TechnicianFormModal'
 import { VehicleFormModal } from './VehicleForm'
 import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
 import { derived, rowId } from './writes'
@@ -639,6 +641,7 @@ export function Technicians() {
   const isMobile = useIsMobile()
   const { data: techs = [], isLoading } = useCollection('technicians')
   const { query, setQuery, filtered } = useSearch(techs, (x) => [x.name, x.specialty])
+  const [techForm, setTechForm] = useState(false)
 
   const rating = (value: string): ReactNode => (
     <span className="inline-flex items-center gap-1">
@@ -662,7 +665,7 @@ export function Technicians() {
           title={t('Technicians')}
           actions={
             can('technicians', 'c') ? (
-              <Button size="md">
+              <Button size="md" onClick={() => setTechForm(true)}>
                 <Icon name="Plus" size={16} />
                 {t('Add Technician')}
               </Button>
@@ -698,6 +701,9 @@ export function Technicians() {
             />
           }
         />
+        {techForm ? (
+          <TechnicianFormModal open onClose={() => setTechForm(false)} />
+        ) : null}
       </>
     )
   }
@@ -709,7 +715,7 @@ export function Technicians() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('technicians', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setTechForm(true)}>
               <Icon name="Plus" size={16} />
               {t('Add Technician')}
             </Button>
@@ -737,6 +743,10 @@ export function Technicians() {
           />
         }
       />
+
+      {techForm ? (
+        <TechnicianFormModal open onClose={() => setTechForm(false)} />
+      ) : null}
     </>
   )
 }
@@ -751,6 +761,7 @@ export function FleetManagement() {
   const navigate = useNavigate()
   const { data: fleets = [], isLoading } = useCollection('fleets')
   const { query, setQuery, filtered } = useSearch(fleets, (f) => [f.name])
+  const [fleetForm, setFleetForm] = useState(false)
 
   const contractBadge = (value: string) => <FleetContractBadge value={value} />
 
@@ -791,7 +802,7 @@ export function FleetManagement() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('vehicles', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setFleetForm(true)}>
               <Icon name="Plus" size={16} />
               {t('Add Fleet Account')}
             </Button>
@@ -820,6 +831,10 @@ export function FleetManagement() {
           />
         }
       />
+
+      {fleetForm ? (
+        <FleetAccountFormModal open onClose={() => setFleetForm(false)} />
+      ) : null}
     </>
   )
 }

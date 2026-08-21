@@ -11,6 +11,10 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { RaiseReceiptModal } from '@/screens/finance/RaiseReceiptModal'
+import { AccountFormModal } from './AccountFormModal'
+import { JournalEntryFormModal } from './JournalEntryFormModal'
+import { ExpenseFormModal } from './ExpenseFormModal'
+import { DepartmentFormModal } from './DepartmentFormModal'
 
 /** The accounting ledger screens. Each pairs its title with the module name,
  *  as the design does ("Chart of Accounts" above "Accounting").
@@ -73,6 +77,7 @@ export function ChartOfAccounts() {
   const isMobile = useIsMobile()
   const { data: accounts = [], isLoading } = useCollection('chartOfAccounts')
   const { query, setQuery, filtered } = useFilter(accounts, (a) => [a.code, a.name, a.type])
+  const [addingAccount, setAddingAccount] = useState(false)
 
   const typeBadge = (value: string) => {
     const [bg, fg] = ACCOUNT_TYPE[value] ?? ACCOUNT_TYPE.Expense
@@ -125,13 +130,14 @@ export function ChartOfAccounts() {
         search={{ value: query, onChange: setQuery, placeholder: t('Search accounts...') }}
         actions={
           can('accounting', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setAddingAccount(true)}>
               <Icon name="Plus" size={16} />
               {t('Add Account')}
             </Button>
           ) : null
         }
       />
+      <AccountFormModal open={addingAccount} onClose={() => setAddingAccount(false)} />
       <DataTable
         caption="Chart of accounts"
         columns={columns}
@@ -163,6 +169,7 @@ export function JournalEntries() {
   const isMobile = useIsMobile()
   const { data: entries = [], isLoading } = useCollection('journalEntries')
   const { query, setQuery, filtered } = useFilter(entries, (e) => [e.id, e.ref, e.narration])
+  const [creatingEntry, setCreatingEntry] = useState(false)
 
   // Double entry: debits must equal credits. Showing the totals makes an
   // unbalanced batch obvious instead of leaving it to be found at close.
@@ -219,13 +226,14 @@ export function JournalEntries() {
           title={t('Journal Entries')}
           actions={
             can('accounting', 'c') ? (
-              <Button size="md">
+              <Button size="md" onClick={() => setCreatingEntry(true)}>
                 <Icon name="Plus" size={16} />
                 {t('New Journal Entry')}
               </Button>
             ) : null
           }
         />
+        <JournalEntryFormModal open={creatingEntry} onClose={() => setCreatingEntry(false)} />
         <input
           type="search"
           value={query}
@@ -272,13 +280,14 @@ export function JournalEntries() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('accounting', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreatingEntry(true)}>
               <Icon name="Plus" size={16} />
               {t('New Journal Entry')}
             </Button>
           ) : null
         }
       />
+      <JournalEntryFormModal open={creatingEntry} onClose={() => setCreatingEntry(false)} />
 
       {balanceNotice}
 
@@ -320,6 +329,7 @@ export function Expenses() {
   const isMobile = useIsMobile()
   const { data: expenses = [], isLoading } = useCollection('expenses')
   const { query, setQuery, filtered } = useFilter(expenses, (e) => [e.id, e.category, e.vendor])
+  const [creatingExpense, setCreatingExpense] = useState(false)
 
   const columns: Column<Expense>[] = [
     { header: 'Expense #', cell: (e) => e.id, code: true },
@@ -364,13 +374,14 @@ export function Expenses() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('accounting', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setCreatingExpense(true)}>
               <Icon name="Plus" size={16} />
               {t('New Expense')}
             </Button>
           ) : null
         }
       />
+      <ExpenseFormModal open={creatingExpense} onClose={() => setCreatingExpense(false)} />
       <DataTable
         caption="Expenses"
         columns={columns}
@@ -515,6 +526,7 @@ export function Departments() {
   const isMobile = useIsMobile()
   const { data: departments = [], isLoading } = useCollection('departments')
   const { query, setQuery, filtered } = useFilter(departments, (d) => [d.name, d.head, d.branch])
+  const [addingDepartment, setAddingDepartment] = useState(false)
 
   const columns: Column<Department>[] = [
     {
@@ -568,13 +580,14 @@ export function Departments() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('hr', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setAddingDepartment(true)}>
               <Icon name="Plus" size={16} />
               {t('Add Department')}
             </Button>
           ) : null
         }
       />
+      <DepartmentFormModal open={addingDepartment} onClose={() => setAddingDepartment(false)} />
       <DataTable
         caption="Departments and cost centres"
         columns={columns}

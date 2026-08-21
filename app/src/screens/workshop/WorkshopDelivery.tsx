@@ -136,7 +136,7 @@ export function WorkshopDelivery() {
       </div>
 
       <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="outline" size="lg" className="border-border-strong text-body">
+        <Button variant="outline" size="lg" className="border-border-strong text-body" onClick={() => window.print()}>
           <Icon name="Printer" size={16} />
           {t('Print Delivery Note')}
         </Button>

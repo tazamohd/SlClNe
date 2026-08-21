@@ -14,7 +14,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | BLK-012 | HIGH | 324 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 341 screen files are unreachable from any route | 02 | W0 |
+| BLK-010 | MEDIUM | 351 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
@@ -34,6 +34,7 @@ _None — the registry covers every design file._
 ## Screen files no route reaches
 
 - `app/src/screens/Dashboard.tsx`
+- `app/src/screens/accounting/AccountFormModal.tsx`
 - `app/src/screens/accounting/Accounting.tsx`
 - `app/src/screens/accounting/AccountingConfig.tsx`
 - `app/src/screens/accounting/AccountingIntegration.tsx`
@@ -47,12 +48,15 @@ _None — the registry covers every design file._
 - `app/src/screens/accounting/CashFlowStatement.tsx`
 - `app/src/screens/accounting/ContractManagement.tsx`
 - `app/src/screens/accounting/CostCenters.tsx`
+- `app/src/screens/accounting/DepartmentFormModal.tsx`
 - `app/src/screens/accounting/EquityManagement.tsx`
+- `app/src/screens/accounting/ExpenseFormModal.tsx`
 - `app/src/screens/accounting/ExpenseTracking.tsx`
 - `app/src/screens/accounting/ExpensesManagement.tsx`
 - `app/src/screens/accounting/GapReports.tsx`
 - `app/src/screens/accounting/GeneralLedger.tsx`
 - `app/src/screens/accounting/IncomeStatement.tsx`
+- `app/src/screens/accounting/JournalEntryFormModal.tsx`
 - `app/src/screens/accounting/LiabilitiesManagement.tsx`
 - `app/src/screens/accounting/LossAccount.tsx`
 - `app/src/screens/accounting/PartnersCurrentAccount.tsx`
@@ -140,12 +144,16 @@ _None — the registry covers every design file._
 - `app/src/screens/compliance/ZATCASettings.tsx`
 - `app/src/screens/compliance/ZakatSettings.tsx`
 - `app/src/screens/crm/CRMCalendar.tsx`
+- `app/src/screens/crm/CampaignFormModal.tsx`
 - `app/src/screens/crm/ConvertLeadModal.tsx`
 - `app/src/screens/crm/Crm.tsx`
 - `app/src/screens/crm/CrmTaskFormModal.tsx`
 - `app/src/screens/crm/CustomersList.tsx`
 - `app/src/screens/crm/LeadDetail.tsx`
 - `app/src/screens/crm/LeadForm.tsx`
+- `app/src/screens/crm/LeadFormModal.tsx`
+- `app/src/screens/crm/OpportunityFormModal.tsx`
+- `app/src/screens/crm/SegmentFormModal.tsx`
 - `app/src/screens/crm/api.ts`
 - `app/src/screens/crm/crm-badges.tsx`
 - `app/src/screens/customer-app/CustomerApp.tsx`
@@ -324,9 +332,11 @@ _None — the registry covers every design file._
 - `app/src/screens/registry/CustomerFeedback.tsx`
 - `app/src/screens/registry/CustomerForm.tsx`
 - `app/src/screens/registry/DeleteRecordModal.tsx`
+- `app/src/screens/registry/FleetAccountFormModal.tsx`
 - `app/src/screens/registry/FleetContract.tsx`
 - `app/src/screens/registry/FleetRenewModal.tsx`
 - `app/src/screens/registry/Registries.tsx`
+- `app/src/screens/registry/TechnicianFormModal.tsx`
 - `app/src/screens/registry/VehicleDetail.tsx`
 - `app/src/screens/registry/VehicleForm.tsx`
 - `app/src/screens/registry/badges.tsx`

@@ -24,11 +24,11 @@ function ExportButtons() {
   const { t } = usePreferences()
   return (
     <>
-      <Button variant="subtle" size="md">
+      <Button variant="subtle" size="md" disabled={!isLive}>
         <Icon name="FileDown" size={15} />
         {t('Export')}
       </Button>
-      <Button variant="subtle" size="md">
+      <Button variant="subtle" size="md" onClick={() => window.print()}>
         <Icon name="Printer" size={15} />
         {t('Print')}
       </Button>
