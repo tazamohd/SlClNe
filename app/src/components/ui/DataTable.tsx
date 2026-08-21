@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from './Card'
 import { EmptyState, Skeleton } from './States'
+import { Pagination, type PaginationProps } from './Pagination'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCard, MobileList } from '@/components/shell/MobileShell'
@@ -45,6 +46,7 @@ export function DataTable<TRow>({
   className,
   mobileCard,
   caption,
+  pagination,
 }: {
   columns: readonly Column<TRow>[]
   rows: readonly TRow[]
@@ -62,6 +64,8 @@ export function DataTable<TRow>({
    *  tells two tables on a screen apart. An English source string, translated
    *  here; rendered visually hidden, so the visible layout is untouched. */
   caption?: string
+  /** When set, renders a Pagination bar in the footer. */
+  pagination?: PaginationProps
 }) {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -92,6 +96,7 @@ export function DataTable<TRow>({
             {mobileCard(row)}
           </MobileCard>
         ))}
+        {pagination ? <Pagination {...pagination} className="px-4 py-3" /> : null}
         {footer}
       </MobileList>
     )
@@ -166,6 +171,7 @@ export function DataTable<TRow>({
           </tbody>
         </table>
       </div>
+      {pagination ? <Pagination {...pagination} className="px-6 py-4" /> : null}
       {footer}
     </Card>
   )
