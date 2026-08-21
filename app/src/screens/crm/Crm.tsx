@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { cn } from '@/lib/cn'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { FeatureHeader, Section, StatRow } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -679,30 +679,19 @@ export function CRMTasks() {
     return (
       <>
         <MobilePageHeader icon="CheckSquare" title={t('CRM Tasks')} subtitle={t('CRM')} />
-        <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+        <ChipGroup label={t('Status')}>
           {(['all', 'todo', 'in_progress', 'done'] as const).map((option) => {
             const count = option === 'all' ? tasks.length : tasks.filter((x) => x.status === option).length
             return (
-              <button
+              <Chip
                 key={option}
-                type="button"
-                role="tab"
-                aria-selected={status === option}
-                onClick={() => setStatus(option)}
-                className={cn(
-                  'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
-                  'font-action text-[13px] font-medium capitalize transition-all duration-150',
-                  status === option
-                    ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                    : 'border-border bg-card text-muted hover:border-border-strong'
-                )}
-              >
-                {t(option.replace(/_/g, ' '))}
-                <span className="font-mono text-[11px] opacity-70" dir="ltr">{count}</span>
-              </button>
+                label={`${t(option.replace(/_/g, ' '))} ${count}`}
+                selected={status === option}
+                onToggle={() => setStatus(option)}
+              />
             )
           })}
-        </div>
+        </ChipGroup>
         <DataTable
           columns={columns}
           rows={filtered}
@@ -738,32 +727,19 @@ export function CRMTasks() {
       />
       <CrmTaskFormModal open={creating} onClose={() => setCreating(false)} />
 
-      <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+      <ChipGroup label={t('Status')}>
         {(['all', 'todo', 'in_progress', 'done'] as const).map((option) => {
           const count = option === 'all' ? tasks.length : tasks.filter((x) => x.status === option).length
           return (
-            <button
+            <Chip
               key={option}
-              type="button"
-              role="tab"
-              aria-selected={status === option}
-              onClick={() => setStatus(option)}
-              className={cn(
-                'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
-                'font-action text-[13px] font-medium capitalize transition-all duration-150',
-                status === option
-                  ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                  : 'border-border bg-card text-muted hover:border-border-strong'
-              )}
-            >
-              {t(option.replace(/_/g, ' '))}
-              <span className="font-mono text-[11px] opacity-70" dir="ltr">
-                {count}
-              </span>
-            </button>
+              label={`${t(option.replace(/_/g, ' '))} ${count}`}
+              selected={status === option}
+              onToggle={() => setStatus(option)}
+            />
           )
         })}
-      </div>
+      </ChipGroup>
 
       <DataTable
         columns={columns}
@@ -1116,25 +1092,16 @@ export function Integrations() {
         ]}
       />
 
-      <div role="tablist" aria-label={t('Category')} className="flex flex-wrap gap-2">
+      <ChipGroup label={t('Category')}>
         {categories.map((option) => (
-          <button
+          <Chip
             key={option}
-            type="button"
-            role="tab"
-            aria-selected={category === option}
-            onClick={() => setCategory(option)}
-            className={cn(
-              'cursor-pointer rounded-full border px-3.5 py-1.5 font-action text-[13px] font-medium transition-all duration-150',
-              category === option
-                ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                : 'border-border bg-card text-muted hover:border-border-strong'
-            )}
-          >
-            {t(option === 'all' ? 'All' : option)}
-          </button>
+            label={t(option === 'all' ? 'All' : option)}
+            selected={category === option}
+            onToggle={() => setCategory(option)}
+          />
         ))}
-      </div>
+      </ChipGroup>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((integration: Integration) => {

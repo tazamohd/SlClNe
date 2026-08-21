@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
@@ -67,16 +68,12 @@ export function WorkshopCalendar() {
             </MobileCard>
           ))}
         </div>
-        <div className="flex gap-2 overflow-x-auto">
-          <button type="button" onClick={() => setSelectedBay(null)} className={'flex-shrink-0 rounded-full border px-3 py-1 text-xs font-medium ' + (!selectedBay ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border text-muted')}>
-            {t('All Bays')}
-          </button>
+        <ChipGroup label={t('Bay')}>
+          <Chip label={t('All Bays')} selected={!selectedBay} onToggle={() => setSelectedBay(null)} />
           {BAYS.map((b) => (
-            <button key={b} type="button" onClick={() => setSelectedBay(b)} className={'flex-shrink-0 rounded-full border px-3 py-1 text-xs font-medium ' + (selectedBay === b ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border text-muted')}>
-              {t(b)}
-            </button>
+            <Chip key={b} label={t(b)} selected={selectedBay === b} onToggle={() => setSelectedBay(b)} />
           ))}
-        </div>
+        </ChipGroup>
         {filteredSlots.filter((s) => s.status === 'occupied').map((s, i) => (
           <MobileCard key={i}>
             <MobileCardHeader

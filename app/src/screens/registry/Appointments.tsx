@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { cn } from '@/lib/cn'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { useCollection, type RowOf } from '@/data/useCollection'
 
 type Appointment = RowOf<'appointments'>
@@ -69,24 +69,20 @@ export function Appointments() {
     return (
       <>
         <MobilePageHeader icon="Calendar" title={t('Appointments')} />
-        <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+        <ChipGroup label={t('Status')}>
           {FILTERS.map((option) => {
-            const on = filter === option
             const count = option === 'all' ? appointments.length : appointments.filter((a) => a.status === option).length
+            const label = option === 'all' ? 'All' : option === 'no-show' ? 'No Show' : option[0].toUpperCase() + option.slice(1)
             return (
-              <button key={option} type="button" role="tab" aria-selected={on}
-                onClick={() => setFilter(option)}
-                className={cn(
-                  'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
-                  'font-action text-[13px] font-medium transition-all duration-150',
-                  on ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border bg-card text-muted hover:border-border-strong'
-                )}>
-                <span>{t(option === 'all' ? 'All' : option === 'no-show' ? 'No Show' : option[0].toUpperCase() + option.slice(1))}</span>
-                <span className="font-mono text-[11px] opacity-70" dir="ltr">{count}</span>
-              </button>
+              <Chip
+                key={option}
+                label={`${t(label)} ${count}`}
+                selected={filter === option}
+                onToggle={() => setFilter(option)}
+              />
             )
           })}
-        </div>
+        </ChipGroup>
         <DataTable
           caption="Appointments"
           columns={columns}
@@ -128,46 +124,23 @@ export function Appointments() {
         }
       />
 
-      {/* Status filter. The design shipped these as static chips; here they
-          actually filter, and the count makes the current view legible. */}
-      <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+      <ChipGroup label={t('Status')}>
         {FILTERS.map((option) => {
-          const on = filter === option
           const count =
             option === 'all'
               ? appointments.length
               : appointments.filter((a) => a.status === option).length
+          const label = option === 'all' ? 'All' : option === 'no-show' ? 'No Show' : option[0].toUpperCase() + option.slice(1)
           return (
-            <button
+            <Chip
               key={option}
-              type="button"
-              role="tab"
-              aria-selected={on}
-              onClick={() => setFilter(option)}
-              className={cn(
-                'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
-                'font-action text-[13px] font-medium transition-all duration-150',
-                on
-                  ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                  : 'border-border bg-card text-muted hover:border-border-strong'
-              )}
-            >
-              <span>
-                {t(
-                  option === 'all'
-                    ? 'All'
-                    : option === 'no-show'
-                      ? 'No Show'
-                      : option[0].toUpperCase() + option.slice(1)
-                )}
-              </span>
-              <span className="font-mono text-[11px] opacity-70" dir="ltr">
-                {count}
-              </span>
-            </button>
+              label={`${t(label)} ${count}`}
+              selected={filter === option}
+              onToggle={() => setFilter(option)}
+            />
           )
         })}
-      </div>
+      </ChipGroup>
 
       <DataTable
         caption="Appointments"

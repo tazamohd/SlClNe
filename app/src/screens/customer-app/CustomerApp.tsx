@@ -8,6 +8,7 @@ import {
 } from '@/components/shell/CustomerAppShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
@@ -347,25 +348,16 @@ export function CustomerAppMarketplace() {
   return (
     <>
       <AppSection title={t('Marketplace')} />
-      <div role="tablist" aria-label={t('Category')} className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+      <ChipGroup label={t('Category')}>
         {CATEGORIES.map((option) => (
-          <button
+          <Chip
             key={option}
-            type="button"
-            role="tab"
-            aria-selected={category === option}
-            onClick={() => setCategory(option)}
-            className={cn(
-              'cursor-pointer whitespace-nowrap rounded-full border px-3 py-1.5 font-action text-[11px] font-semibold',
-              category === option
-                ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                : 'border-border bg-card text-muted'
-            )}
-          >
-            {t(option)}
-          </button>
+            label={t(option)}
+            selected={category === option}
+            onToggle={() => setCategory(option)}
+          />
         ))}
-      </div>
+      </ChipGroup>
 
       {products.length === 0 ? (
         <EmptyState icon="ShoppingBag" title={t('Nothing in this category')} />

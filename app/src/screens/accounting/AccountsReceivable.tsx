@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -67,19 +68,16 @@ export function AccountsReceivable() {
             </MobileCard>
           ))}
         </div>
-        <div className="flex gap-2">
-          {['all', 'current', 'overdue'].map((f) => (
-            <button
+        <ChipGroup label={t('Status')}>
+          {(['all', 'current', 'overdue'] as const).map((f) => (
+            <Chip
               key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              className={'rounded-full border px-3 py-1 text-xs font-medium transition-colors ' +
-                (filter === f ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border text-muted')}
-            >
-              {t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
-            </button>
+              label={t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
+              selected={filter === f}
+              onToggle={() => setFilter(f)}
+            />
           ))}
-        </div>
+        </ChipGroup>
         {filtered.map((r) => (
           <MobileCard key={r.invoice}>
             <MobileCardHeader
@@ -138,19 +136,16 @@ export function AccountsReceivable() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-base font-bold text-heading">{t('Outstanding Invoices')}</h3>
-          <div className="flex gap-2">
-            {['all', 'current', 'overdue'].map((f) => (
-              <button
+          <ChipGroup label={t('Status')}>
+            {(['all', 'current', 'overdue'] as const).map((f) => (
+              <Chip
                 key={f}
-                type="button"
-                onClick={() => setFilter(f)}
-                className={'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ' +
-                  (filter === f ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border text-muted')}
-              >
-                {t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
-              </button>
+                label={t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
+                selected={filter === f}
+                onToggle={() => setFilter(f)}
+              />
             ))}
-          </div>
+          </ChipGroup>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
