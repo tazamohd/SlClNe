@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-402 capabilities · 275 rendering · 87 placeholder · 0 data-backed.
+402 capabilities · 362 rendering · 0 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -90,11 +90,11 @@
 | LogoutConfirmation | `/logout-confirmation` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Maintenance | `/maintenance` | auth | ungated | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ModelSettings | `/model-settings` | app | ai | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| Native · Android | `/native/android` | native | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Native · iOS | `/native/i-os` | native | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Native · Android | `/native/android` | native | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Native · iOS | `/native/i-os` | native | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | NotificationCenter | `/notification-center` | app | dashboard | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 12 roles | route | IMPLEMENTED |
 | OBDDiagnostics | `/obddiagnostics` | app | jobcards | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
-| OEMIntegrations | `/oemintegrations` | app | settings | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
+| OEMIntegrations | `/oemintegrations` | app | settings | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | Onboarding | `/onboarding` | auth | — | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | OperationalReports | `/operational-reports` | app | reports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | Opportunities | `/opportunities` | app | crm | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
@@ -147,7 +147,7 @@
 | SuperAdmin | `/super-admin` | app | settings | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | SupplierPortal | `/supplier-portal` | portal | portalsupplier | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | SupplierPortal · Orders | `/supplier-portal/orders` | portal | portalsupplier | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
-| SystemIntegrations | `/system-integrations` | app | settings | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | 3 roles | route | DISCOVERED |
+| SystemIntegrations | `/system-integrations` | app | settings | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | TaxManagement | `/tax-management` | app | accounting | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | TechnicianKB | `/technician-kb` | app | technicians | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 8 roles | route | IMPLEMENTED |
 | TechnicianPortal | `/technician-portal` | portal | portaltech | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
@@ -245,73 +245,73 @@
 | Parts Availability | `/parts-availability` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Parts Auto Reorder | `/parts-auto-reorder` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Smart Parts Recommender | `/smart-parts-recommender` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Smart Parts Recommendations | `/smart-parts-recommendations` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Smart Parts Recommendations | `/smart-parts-recommendations` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Smart Inventory Forecasting | `/smart-inventory-forecasting` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Automated Reordering | `/automated-reordering` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Automated Reordering | `/automated-reordering` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Spare Parts | `/spare-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Barcode Scanner | `/barcode-scanner` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Barcode Scanner | `/barcode-scanner` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Internal Warehouse | `/internal-warehouse` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Interactive 3D Parts | `/interactive-3-d-parts` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Interactive 3D Parts | `/interactive-3-d-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Parts Marketplace | `/parts-marketplace` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Dynamic Pricing | `/dynamic-pricing` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Intelligent Price Optimizer | `/intelligent-price-optimizer` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Intelligent Price Optimizer | `/intelligent-price-optimizer` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Suppliers | `/suppliers` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Purchase Orders | `/purchase-orders` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Vendor Supplier Portal | `/vendor-supplier-portal` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Parts Network Dashboard | `/parts-network-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Parts Network My Requests | `/parts-network-my-requests` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Parts Network Incoming Requests | `/parts-network-incoming-requests` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Dashboard | `/purchase-agent-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Tasks | `/purchase-agent-tasks` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Quotations | `/purchase-agent-quotations` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Payments | `/purchase-agent-payments` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Delivery | `/purchase-agent-delivery` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Orders | `/purchase-agent-orders` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Suppliers | `/purchase-agent-suppliers` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Inventory | `/purchase-agent-inventory` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Price Compare | `/purchase-agent-price-compare` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Tracking | `/purchase-agent-tracking` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Purchase Agent Reports | `/purchase-agent-reports` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Dashboard | `/technician-portal-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal My Jobs | `/technician-portal-my-jobs` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Time Clock | `/technician-portal-time-clock` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Parts | `/technician-portal-parts` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Documentation | `/technician-portal-documentation` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Profile | `/technician-portal-profile` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Attendance | `/technician-portal-attendance` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Guides | `/technician-portal-guides` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician Portal Software | `/technician-portal-software` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Purchase Orders | `/purchase-orders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Vendor Supplier Portal | `/vendor-supplier-portal` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Parts Network Dashboard | `/parts-network-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Parts Network My Requests | `/parts-network-my-requests` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Parts Network Incoming Requests | `/parts-network-incoming-requests` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Dashboard | `/purchase-agent-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Tasks | `/purchase-agent-tasks` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Quotations | `/purchase-agent-quotations` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Payments | `/purchase-agent-payments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Delivery | `/purchase-agent-delivery` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Orders | `/purchase-agent-orders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Suppliers | `/purchase-agent-suppliers` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Inventory | `/purchase-agent-inventory` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Price Compare | `/purchase-agent-price-compare` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Tracking | `/purchase-agent-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Reports | `/purchase-agent-reports` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Dashboard | `/technician-portal-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal My Jobs | `/technician-portal-my-jobs` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Time Clock | `/technician-portal-time-clock` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Parts | `/technician-portal-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Documentation | `/technician-portal-documentation` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Profile | `/technician-portal-profile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Attendance | `/technician-portal-attendance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Guides | `/technician-portal-guides` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Portal Software | `/technician-portal-software` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Management | `/technician-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Leaderboards | `/technician-leaderboards` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Performance | `/technician-performance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Technician Mobile | `/technician-mobile` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician App Home | `/technician-app-home` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician App Jobs | `/technician-app-jobs` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician App Clock | `/technician-app-clock` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician App Lookup | `/technician-app-lookup` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Technician App Profile | `/technician-app-profile` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Dashboard | `/client-portal-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Vehicles | `/client-portal-vehicles` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Appointments | `/client-portal-appointments` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Invoices | `/client-portal-invoices` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Profile | `/client-portal-profile` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Service History | `/client-portal-service-history` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Live Tracking | `/client-portal-live-tracking` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Reminders | `/client-portal-reminders` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Client Portal Review Chat | `/client-portal-review-chat` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Customer App Booking | `/customer-app-booking` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Customer App Vehicles | `/customer-app-vehicles` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Customer App Payments | `/customer-app-payments` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Portal Dashboard | `/portal-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Portal Appointments | `/portal-appointments` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Portal Invoices | `/portal-invoices` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Portal Vehicles | `/portal-vehicles` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Portal Communications | `/portal-communications` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Business Intelligence | `/business-intelligence` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Business Intelligence Dashboard | `/business-intelligence-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Business Heatmaps | `/business-heatmaps` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Profit Analysis | `/profit-analysis` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| KPI Dashboard | `/kpi-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Technician Mobile | `/technician-mobile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician App Home | `/technician-app-home` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician App Jobs | `/technician-app-jobs` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician App Clock | `/technician-app-clock` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician App Lookup | `/technician-app-lookup` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician App Profile | `/technician-app-profile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Dashboard | `/client-portal-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Vehicles | `/client-portal-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Appointments | `/client-portal-appointments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Invoices | `/client-portal-invoices` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Profile | `/client-portal-profile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Service History | `/client-portal-service-history` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Live Tracking | `/client-portal-live-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Reminders | `/client-portal-reminders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Review Chat | `/client-portal-review-chat` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Customer App Booking | `/customer-app-booking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Customer App Vehicles | `/customer-app-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Customer App Payments | `/customer-app-payments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Portal Dashboard | `/portal-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Portal Appointments | `/portal-appointments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Portal Invoices | `/portal-invoices` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Portal Vehicles | `/portal-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Portal Communications | `/portal-communications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Business Intelligence | `/business-intelligence` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Business Intelligence Dashboard | `/business-intelligence-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Business Heatmaps | `/business-heatmaps` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Profit Analysis | `/profit-analysis` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| KPI Dashboard | `/kpi-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Productivity Tracker | `/productivity-tracker` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | HR Management | `/hr-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Staff Directory | `/staff-directory` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -354,8 +354,8 @@
 | Social Media Integration | `/social-media-integration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Social Media Monitoring | `/social-media-monitoring` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Google My Business | `/google-my-business` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Chat | `/chat` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Support Chat Dashboard | `/support-chat-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Chat | `/chat` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Support Chat Dashboard | `/support-chat-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Notifications | `/notifications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Compliance Management | `/compliance-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ZATCA Settings | `/zatca-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -365,23 +365,23 @@
 | Environmental Compliance | `/environmental-compliance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ISO Quality Management | `/iso-quality-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Equipment Calibration | `/equipment-calibration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Franchise Management | `/franchise-management` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Globalization Layer | `/globalization-layer` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Multi Location Dashboard | `/multi-location-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| AI Automation | `/ai-automation` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| AI Chatbot | `/ai-chatbot` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| AI Chatbot Assistant | `/ai-chatbot-assistant` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| AI Service Advisor | `/ai-service-advisor` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Franchise Management | `/franchise-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Globalization Layer | `/globalization-layer` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Multi Location Dashboard | `/multi-location-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| AI Automation | `/ai-automation` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| AI Chatbot | `/ai-chatbot` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| AI Chatbot Assistant | `/ai-chatbot-assistant` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| AI Service Advisor | `/ai-service-advisor` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Voice Commands | `/voice-commands` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Voice Command Interface | `/voice-command-interface` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Smart Damage Assessment | `/smart-damage-assessment` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| ML Fraud Detection | `/ml-fraud-detection` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Neural Network Prediction | `/neural-network-prediction` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Emerging Technologies | `/emerging-technologies` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| NextGen Technologies | `/next-gen-technologies` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| IoT Dashboard | `/io-t-dashboard` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Edge Computing | `/edge-computing` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Digital Twin Viewer | `/digital-twin-viewer` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Smart Damage Assessment | `/smart-damage-assessment` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| ML Fraud Detection | `/ml-fraud-detection` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Neural Network Prediction | `/neural-network-prediction` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Emerging Technologies | `/emerging-technologies` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| NextGen Technologies | `/next-gen-technologies` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| IoT Dashboard | `/io-t-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Edge Computing | `/edge-computing` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Digital Twin Viewer | `/digital-twin-viewer` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Drone Inspection | `/drone-inspection` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | AR Repair Guide | `/ar-repair-guide` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | AR Overlay | `/ar-overlay` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
@@ -389,14 +389,14 @@
 | Blockchain Service History | `/blockchain-service-history` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Smart Contracts | `/smart-contracts` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Quantum Computing | `/quantum-computing` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Sustainable Energy Monitoring | `/sustainable-energy-monitoring` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Sustainable Energy Monitoring | `/sustainable-energy-monitoring` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Digital Signage | `/digital-signage` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Security Cameras | `/security-cameras` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Mobile Device Management | `/mobile-device-management` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Mobile Device Management | `/mobile-device-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Document Management | `/document-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Document OCR | `/document-ocr` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Document OCR | `/document-ocr` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Data Import Export | `/data-import-export` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Data Backup | `/data-backup` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Data Backup | `/data-backup` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | User Profile | `/user-profile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | System Settings | `/system-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | User Settings | `/user-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -404,7 +404,7 @@
 | Role Management | `/role-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Tasks | `/tasks` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Task Management | `/task-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Tools | `/tools` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Dashboard Widgets | `/dashboard-widgets` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| SMS Integration | `/sms-integration` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
-| Sales Guide | `/sales-guide` | app | — | MISSING | MISSING | MISSING | MISSING | MISSING | MISSING | — | route | DISCOVERED |
+| Tools | `/tools` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Dashboard Widgets | `/dashboard-widgets` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| SMS Integration | `/sms-integration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Sales Guide | `/sales-guide` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

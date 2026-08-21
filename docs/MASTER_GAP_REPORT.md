@@ -8,29 +8,27 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-001 | BLOCKER | 87 product routes render PendingScreen | 01 | W2 |
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 275 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 196 rendering capabilities are visited but assert nothing | 07 | W2 |
+| BLK-004 | CRITICAL | 362 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 283 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-006 | HIGH | 113 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 246 screen files are unreachable from any route | 02 | W0 |
+| BLK-010 | MEDIUM | 338 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
-| TABLET_MISSING | 275 | never verified at 768–1024 |
-| ARABIC_MISSING | 275 | Arabic not certified |
-| RTL_BROKEN | 275 | RTL not certified |
-| MOCK_ONLY | 275 | renders, but from fixtures rather than an API |
+| TABLET_MISSING | 362 | never verified at 768–1024 |
+| ARABIC_MISSING | 362 | Arabic not certified |
+| RTL_BROKEN | 362 | RTL not certified |
+| MOCK_ONLY | 362 | renders, but from fixtures rather than an API |
+| NO_CONTENT_ASSERTION | 283 | — |
 | NO_RBAC_MODULE | 218 | no RBAC module maps to this screen |
-| NO_CONTENT_ASSERTION | 196 | — |
 | MOBILE_MISSING | 113 | a .Mobile design exists and is not built |
 | DESKTOP_ONLY | 113 | renders on desktop with no mobile treatment |
-| PLACEHOLDER | 87 | product route renders PendingScreen |
 
 ## Designs not in the registry
 
@@ -75,24 +73,40 @@ _None — the registry covers every design file._
 - `app/src/screens/admin/AutomationRules.tsx`
 - `app/src/screens/admin/Backup.tsx`
 - `app/src/screens/admin/Branches.tsx`
+- `app/src/screens/admin/DashboardWidgets.tsx`
+- `app/src/screens/admin/DataBackup.tsx`
 - `app/src/screens/admin/DataImportExport.tsx`
 - `app/src/screens/admin/DocumentManagement.tsx`
+- `app/src/screens/admin/DocumentOCR.tsx`
 - `app/src/screens/admin/GlobalSearch.tsx`
+- `app/src/screens/admin/MobileDeviceManagement.tsx`
 - `app/src/screens/admin/NotificationCenter.tsx`
+- `app/src/screens/admin/OEMIntegrations.tsx`
 - `app/src/screens/admin/Organizations.tsx`
 - `app/src/screens/admin/Profile.tsx`
 - `app/src/screens/admin/RolesPermissions.tsx`
 - `app/src/screens/admin/Settings.tsx`
 - `app/src/screens/admin/Subscription.tsx`
 - `app/src/screens/admin/SuperAdmin.tsx`
+- `app/src/screens/admin/SystemIntegrations.tsx`
 - `app/src/screens/admin/Templates.tsx`
+- `app/src/screens/admin/Tools.tsx`
 - `app/src/screens/admin/UsersTeams.tsx`
 - `app/src/screens/admin/WorkflowBuilder.tsx`
 - `app/src/screens/ai/AIAnalytics.tsx`
 - `app/src/screens/ai/AIAssistant.tsx`
+- `app/src/screens/ai/AIAutomation.tsx`
+- `app/src/screens/ai/AIChatbot.tsx`
+- `app/src/screens/ai/AIChatbotAssistant.tsx`
+- `app/src/screens/ai/AIServiceAdvisor.tsx`
+- `app/src/screens/ai/IntelligentPriceOptimizer.tsx`
 - `app/src/screens/ai/KnowledgeBase.tsx`
+- `app/src/screens/ai/MLFraudDetection.tsx`
 - `app/src/screens/ai/ModelSettings.tsx`
+- `app/src/screens/ai/NeuralNetworkPrediction.tsx`
 - `app/src/screens/ai/PromptLibrary.tsx`
+- `app/src/screens/ai/SmartDamageAssessment.tsx`
+- `app/src/screens/ai/SmartPartsRecommendations.tsx`
 - `app/src/screens/auth/Error404.tsx`
 - `app/src/screens/auth/InviteAcceptance.tsx`
 - `app/src/screens/auth/LanguageSelection.tsx`
@@ -113,6 +127,11 @@ _None — the registry covers every design file._
 - `app/src/screens/auth/Welcome.tsx`
 - `app/src/screens/auth/WorkspaceSelection.tsx`
 - `app/src/screens/auth/auth-extra-ar.ts`
+- `app/src/screens/bi/BusinessHeatmaps.tsx`
+- `app/src/screens/bi/BusinessIntelligence.tsx`
+- `app/src/screens/bi/BusinessIntelligenceDashboard.tsx`
+- `app/src/screens/bi/KPIDashboard.tsx`
+- `app/src/screens/bi/ProfitAnalysis.tsx`
 - `app/src/screens/call-center/CallCenter.tsx`
 - `app/src/screens/call-center/CallCenterLogs.tsx`
 - `app/src/screens/compliance/ComplianceManagement.tsx`
@@ -133,6 +152,9 @@ _None — the registry covers every design file._
 - `app/src/screens/crm/api.ts`
 - `app/src/screens/crm/crm-badges.tsx`
 - `app/src/screens/customer-app/CustomerApp.tsx`
+- `app/src/screens/customer-app/CustomerAppBooking.tsx`
+- `app/src/screens/customer-app/CustomerAppPayments.tsx`
+- `app/src/screens/customer-app/CustomerAppVehicles.tsx`
 - `app/src/screens/dashboard/Calendar.tsx`
 - `app/src/screens/dashboard/DashboardHome.tsx`
 - `app/src/screens/dashboard/DashboardMain.tsx`
@@ -141,21 +163,35 @@ _None — the registry covers every design file._
 - `app/src/screens/domains/admin.ts`
 - `app/src/screens/domains/ai.ts`
 - `app/src/screens/domains/auth-extra.ts`
+- `app/src/screens/domains/bi.ts`
 - `app/src/screens/domains/call-center.ts`
 - `app/src/screens/domains/compliance.ts`
 - `app/src/screens/domains/crm.ts`
 - `app/src/screens/domains/dashboard.ts`
+- `app/src/screens/domains/emerging.ts`
+- `app/src/screens/domains/enterprise.ts`
 - `app/src/screens/domains/hr.ts`
 - `app/src/screens/domains/insurance.ts`
 - `app/src/screens/domains/marketing.ts`
+- `app/src/screens/domains/native.ts`
 - `app/src/screens/domains/notifications.ts`
 - `app/src/screens/domains/parts.ts`
 - `app/src/screens/domains/portals.ts`
 - `app/src/screens/domains/procurement.ts`
 - `app/src/screens/domains/settings.ts`
+- `app/src/screens/domains/support.ts`
 - `app/src/screens/domains/tasks.ts`
 - `app/src/screens/domains/website.ts`
 - `app/src/screens/domains/workshop.ts`
+- `app/src/screens/emerging/DigitalTwinViewer.tsx`
+- `app/src/screens/emerging/EdgeComputing.tsx`
+- `app/src/screens/emerging/EmergingTechnologies.tsx`
+- `app/src/screens/emerging/IoTDashboard.tsx`
+- `app/src/screens/emerging/NextGenTechnologies.tsx`
+- `app/src/screens/emerging/SustainableEnergyMonitoring.tsx`
+- `app/src/screens/enterprise/FranchiseManagement.tsx`
+- `app/src/screens/enterprise/GlobalizationLayer.tsx`
+- `app/src/screens/enterprise/MultiLocationDashboard.tsx`
 - `app/src/screens/feature/Inventory.tsx`
 - `app/src/screens/feature/InventoryReports.tsx`
 - `app/src/screens/finance/BankReconciliation.tsx`
@@ -187,6 +223,8 @@ _None — the registry covers every design file._
 - `app/src/screens/insurance/ProductBrowsing.tsx`
 - `app/src/screens/insurance/api.ts`
 - `app/src/screens/insurance/bits.tsx`
+- `app/src/screens/integrations/SMSIntegration.tsx`
+- `app/src/screens/integrations/SalesGuide.tsx`
 - `app/src/screens/inventory/InternalWarehouse.tsx`
 - `app/src/screens/inventory/InventoryManagement.tsx`
 - `app/src/screens/marketing/EmailMarketingCampaigns.tsx`
@@ -196,12 +234,21 @@ _None — the registry covers every design file._
 - `app/src/screens/marketing/MarketingHub.tsx`
 - `app/src/screens/marketing/SocialMediaIntegration.tsx`
 - `app/src/screens/marketing/SocialMediaMonitoring.tsx`
+- `app/src/screens/native/NativeAndroid.tsx`
+- `app/src/screens/native/NativeIOS.tsx`
 - `app/src/screens/network/PartsNetwork.tsx`
 - `app/src/screens/network/Procurement.tsx`
 - `app/src/screens/network/ProcurementPurchaseOrder.tsx`
 - `app/src/screens/notifications/NotificationsList.tsx`
+- `app/src/screens/parts/AutomatedReordering.tsx`
+- `app/src/screens/parts/BarcodeScanner.tsx`
 - `app/src/screens/parts/DynamicPricing.tsx`
+- `app/src/screens/parts/Interactive3DParts.tsx`
 - `app/src/screens/parts/PartsMarketplace.tsx`
+- `app/src/screens/parts/PartsNetworkDashboardSpec.tsx`
+- `app/src/screens/parts/PartsNetworkIncomingRequests.tsx`
+- `app/src/screens/parts/PartsNetworkMyRequests.tsx`
+- `app/src/screens/parts/PurchaseOrdersList.tsx`
 - `app/src/screens/parts/SparePartsList.tsx`
 - `app/src/screens/parts/SuppliersList.tsx`
 - `app/src/screens/portals/CustomerPortal.tsx`
@@ -211,7 +258,48 @@ _None — the registry covers every design file._
 - `app/src/screens/portals/SupplierPortalOrders.tsx`
 - `app/src/screens/portals/TechnicianPortal.tsx`
 - `app/src/screens/portals/TechnicianPortalJobDetail.tsx`
+- `app/src/screens/portals/client/ClientPortalAppointments.tsx`
+- `app/src/screens/portals/client/ClientPortalDashboard.tsx`
+- `app/src/screens/portals/client/ClientPortalInvoices.tsx`
+- `app/src/screens/portals/client/ClientPortalLiveTracking.tsx`
+- `app/src/screens/portals/client/ClientPortalProfile.tsx`
+- `app/src/screens/portals/client/ClientPortalReminders.tsx`
+- `app/src/screens/portals/client/ClientPortalReviewChat.tsx`
+- `app/src/screens/portals/client/ClientPortalServiceHistory.tsx`
+- `app/src/screens/portals/client/ClientPortalVehicles.tsx`
+- `app/src/screens/portals/misc/PortalAppointments.tsx`
+- `app/src/screens/portals/misc/PortalCommunications.tsx`
+- `app/src/screens/portals/misc/PortalDashboard.tsx`
+- `app/src/screens/portals/misc/PortalInvoices.tsx`
+- `app/src/screens/portals/misc/PortalVehicles.tsx`
 - `app/src/screens/portals/portal-data.ts`
+- `app/src/screens/portals/purchase/PurchaseAgentDashboard.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentDelivery.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentInventory.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentOrders.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentPayments.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentPriceCompare.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentQuotations.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentReports.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentSuppliers.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentTasks.tsx`
+- `app/src/screens/portals/purchase/PurchaseAgentTracking.tsx`
+- `app/src/screens/portals/technician/TechnicianAppClock.tsx`
+- `app/src/screens/portals/technician/TechnicianAppHome.tsx`
+- `app/src/screens/portals/technician/TechnicianAppJobs.tsx`
+- `app/src/screens/portals/technician/TechnicianAppLookup.tsx`
+- `app/src/screens/portals/technician/TechnicianAppProfile.tsx`
+- `app/src/screens/portals/technician/TechnicianMobile.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalAttendance.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalDashboard.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalDocumentation.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalGuides.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalMyJobs.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalParts.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalProfile.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalSoftware.tsx`
+- `app/src/screens/portals/technician/TechnicianPortalTimeClock.tsx`
+- `app/src/screens/portals/vendor/VendorSupplierPortal.tsx`
 - `app/src/screens/public/About.tsx`
 - `app/src/screens/public/Blog.tsx`
 - `app/src/screens/public/Contact.tsx`
@@ -250,6 +338,8 @@ _None — the registry covers every design file._
 - `app/src/screens/settings/SystemSettings.tsx`
 - `app/src/screens/settings/UserProfile.tsx`
 - `app/src/screens/settings/UserSettings.tsx`
+- `app/src/screens/support/Chat.tsx`
+- `app/src/screens/support/SupportChatDashboard.tsx`
 - `app/src/screens/tasks/TaskManagement.tsx`
 - `app/src/screens/tasks/TasksList.tsx`
 - `app/src/screens/workshop/AppointmentCalendar.tsx`
@@ -289,6 +379,4 @@ _None — the registry covers every design file._
 
 | Domain | Placeholder | Total |
 |---|---|---|
-| Feature map (no design) | 83 | 211 |
-| Administration | 2 | 17 |
-| Portals, call centre & kiosk | 2 | 13 |
+

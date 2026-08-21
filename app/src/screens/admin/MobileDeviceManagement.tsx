@@ -1,0 +1,155 @@
+import { Card } from '@/components/ui/Card'
+import { Icon } from '@/components/ui/Icon'
+import { Badge } from '@/components/ui/Badge'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+
+interface ManagedDevice {
+  name: string
+  user: string
+  platform: 'iOS' | 'Android'
+  model: string
+  lastSeen: string
+  status: 'Active' | 'Inactive' | 'Lost'
+  battery: number
+  appVersion: string
+}
+
+const DEVICES: ManagedDevice[] = [
+  { name: 'SA-TABLET-01', user: 'Yusuf Ibrahim', platform: 'Android', model: 'Samsung Galaxy Tab S9', lastSeen: '2 min ago', status: 'Active', battery: 82, appVersion: '3.2.1' },
+  { name: 'SA-PHONE-03', user: 'Sara Al-Mutairi', platform: 'iOS', model: 'iPhone 15 Pro', lastSeen: '5 min ago', status: 'Active', battery: 64, appVersion: '3.2.1' },
+  { name: 'SA-TABLET-02', user: 'Omar Hassan', platform: 'Android', model: 'Samsung Galaxy Tab A9', lastSeen: '1 hour ago', status: 'Active', battery: 45, appVersion: '3.1.8' },
+  { name: 'SA-PHONE-07', user: 'Khalid Mohammed', platform: 'iOS', model: 'iPhone 14', lastSeen: '3 hours ago', status: 'Inactive', battery: 12, appVersion: '3.2.0' },
+  { name: 'SA-TABLET-04', user: 'Tariq Al-Dosari', platform: 'Android', model: 'Lenovo Tab P12', lastSeen: '2 days ago', status: 'Lost', battery: 0, appVersion: '3.1.5' },
+  { name: 'SA-PHONE-09', user: 'Nora Al-Fahad', platform: 'iOS', model: 'iPhone 15', lastSeen: '10 min ago', status: 'Active', battery: 91, appVersion: '3.2.1' },
+]
+
+const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Inactive: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Lost: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+}
+
+export function MobileDeviceManagement() {
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
+
+  const activeCount = DEVICES.filter((d) => d.status === 'Active').length
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Smartphone" title={t('MDM')} subtitle={t('Device management')} />
+        <div className="flex items-center gap-2">
+          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{activeCount} {t('active')}</Badge>
+          <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{DEVICES.length} {t('total')}</Badge>
+        </div>
+        {DEVICES.map((device, i) => (
+          <MobileCard key={i}>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                    <Icon name={device.platform === 'iOS' ? 'Tablet' : 'Smartphone'} size={14} />
+                  </span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{device.name}</p>
+                    <p className="text-xs text-muted">{device.model}</p>
+                  </div>
+                </div>
+              }
+              trailing={<Badge background={STATUS_STYLES[device.status].bg} color={STATUS_STYLES[device.status].fg}>{t(device.status)}</Badge>}
+            />
+            <MobileCardRow label={t('User')} value={device.user} />
+            <MobileCardRow label={t('Battery')} value={`${device.battery}%`} />
+            <MobileCardRow label={t('Last Seen')} value={device.lastSeen} />
+          </MobileCard>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <div className="flex items-center gap-3">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
+          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
+            <Icon name="Smartphone" size={28} />
+          </div>
+        </div>
+        <div>
+          <h1 className="font-display text-[30px] font-black text-heading">{t('Mobile Device Management')}</h1>
+          <p className="mt-0.5 text-[13px] text-muted">{t('Monitor and manage enrolled devices')}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: 'Total Devices', value: DEVICES.length.toString(), icon: 'Smartphone' },
+          { label: 'Active Devices', value: activeCount.toString(), icon: 'CheckCircle' },
+          { label: 'Needs Attention', value: DEVICES.filter((d) => d.status !== 'Active').length.toString(), icon: 'CircleAlert' },
+        ].map((stat) => (
+          <Card key={stat.label} className="rounded-2xl p-5 shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                <Icon name={stat.icon} size={20} />
+              </span>
+              <div>
+                <p className="text-xs text-muted">{t(stat.label)}</p>
+                <p className="text-xl font-bold text-heading">{stat.value}</p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <Card className="rounded-2xl p-6 shadow-sm">
+        <p className="mb-4 text-sm font-bold text-heading">{t('Enrolled Devices')}</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left text-xs text-muted">
+                <th className="pb-3 font-medium">{t('Device')}</th>
+                <th className="pb-3 font-medium">{t('User')}</th>
+                <th className="pb-3 font-medium">{t('Platform')}</th>
+                <th className="pb-3 font-medium">{t('Battery')}</th>
+                <th className="pb-3 font-medium">{t('App Version')}</th>
+                <th className="pb-3 font-medium">{t('Last Seen')}</th>
+                <th className="pb-3 font-medium">{t('Status')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DEVICES.map((device, i) => (
+                <tr key={i} className="border-b border-border last:border-0">
+                  <td className="py-3">
+                    <div>
+                      <p className="font-semibold text-heading">{device.name}</p>
+                      <p className="text-xs text-muted">{device.model}</p>
+                    </div>
+                  </td>
+                  <td className="py-3 text-body">{device.user}</td>
+                  <td className="py-3">
+                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{device.platform}</Badge>
+                  </td>
+                  <td className="py-3">
+                    <div className="flex items-center gap-2">
+                      <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'rgb(239,68,68)' : 'var(--salis-blue)' }} />
+                      <span className="text-body">{device.battery}%</span>
+                    </div>
+                  </td>
+                  <td className="py-3 font-mono text-xs text-muted">{device.appVersion}</td>
+                  <td className="py-3 text-muted">{device.lastSeen}</td>
+                  <td className="py-3">
+                    <Badge background={STATUS_STYLES[device.status].bg} color={STATUS_STYLES[device.status].fg}>{t(device.status)}</Badge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  )
+}

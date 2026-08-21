@@ -885,7 +885,7 @@
         {
           "name": "OEMIntegrations",
           "route": "/oemintegrations",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -948,7 +948,7 @@
         {
           "name": "SystemIntegrations",
           "route": "/system-integrations",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1288,7 +1288,7 @@
         {
           "name": "Native · Android",
           "route": "/native/android",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -1297,7 +1297,7 @@
         {
           "name": "Native · iOS",
           "route": "/native/i-os",
-          "status": "pending",
+          "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "design",
@@ -2265,7 +2265,7 @@
         {
           "name": "Smart Parts Recommendations",
           "route": "/smart-parts-recommendations",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2283,7 +2283,7 @@
         {
           "name": "Automated Reordering",
           "route": "/automated-reordering",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2301,7 +2301,7 @@
         {
           "name": "Barcode Scanner",
           "route": "/barcode-scanner",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2319,7 +2319,7 @@
         {
           "name": "Interactive 3D Parts",
           "route": "/interactive-3-d-parts",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2346,7 +2346,7 @@
         {
           "name": "Intelligent Price Optimizer",
           "route": "/intelligent-price-optimizer",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2364,7 +2364,7 @@
         {
           "name": "Purchase Orders",
           "route": "/purchase-orders",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2373,7 +2373,7 @@
         {
           "name": "Vendor Supplier Portal",
           "route": "/vendor-supplier-portal",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2382,7 +2382,7 @@
         {
           "name": "Parts Network Dashboard",
           "route": "/parts-network-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2391,7 +2391,7 @@
         {
           "name": "Parts Network My Requests",
           "route": "/parts-network-my-requests",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2400,7 +2400,7 @@
         {
           "name": "Parts Network Incoming Requests",
           "route": "/parts-network-incoming-requests",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2409,7 +2409,7 @@
         {
           "name": "Purchase Agent Dashboard",
           "route": "/purchase-agent-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2418,7 +2418,7 @@
         {
           "name": "Purchase Agent Tasks",
           "route": "/purchase-agent-tasks",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2427,7 +2427,7 @@
         {
           "name": "Purchase Agent Quotations",
           "route": "/purchase-agent-quotations",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2436,7 +2436,7 @@
         {
           "name": "Purchase Agent Payments",
           "route": "/purchase-agent-payments",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2445,7 +2445,7 @@
         {
           "name": "Purchase Agent Delivery",
           "route": "/purchase-agent-delivery",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2454,7 +2454,7 @@
         {
           "name": "Purchase Agent Orders",
           "route": "/purchase-agent-orders",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2463,7 +2463,7 @@
         {
           "name": "Purchase Agent Suppliers",
           "route": "/purchase-agent-suppliers",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2472,7 +2472,7 @@
         {
           "name": "Purchase Agent Inventory",
           "route": "/purchase-agent-inventory",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2481,7 +2481,7 @@
         {
           "name": "Purchase Agent Price Compare",
           "route": "/purchase-agent-price-compare",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2490,7 +2490,7 @@
         {
           "name": "Purchase Agent Tracking",
           "route": "/purchase-agent-tracking",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2499,7 +2499,7 @@
         {
           "name": "Purchase Agent Reports",
           "route": "/purchase-agent-reports",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2508,7 +2508,7 @@
         {
           "name": "Technician Portal Dashboard",
           "route": "/technician-portal-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2517,7 +2517,7 @@
         {
           "name": "Technician Portal My Jobs",
           "route": "/technician-portal-my-jobs",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2526,7 +2526,7 @@
         {
           "name": "Technician Portal Time Clock",
           "route": "/technician-portal-time-clock",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2535,7 +2535,7 @@
         {
           "name": "Technician Portal Parts",
           "route": "/technician-portal-parts",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2544,7 +2544,7 @@
         {
           "name": "Technician Portal Documentation",
           "route": "/technician-portal-documentation",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2553,7 +2553,7 @@
         {
           "name": "Technician Portal Profile",
           "route": "/technician-portal-profile",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2562,7 +2562,7 @@
         {
           "name": "Technician Portal Attendance",
           "route": "/technician-portal-attendance",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2571,7 +2571,7 @@
         {
           "name": "Technician Portal Guides",
           "route": "/technician-portal-guides",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2580,7 +2580,7 @@
         {
           "name": "Technician Portal Software",
           "route": "/technician-portal-software",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2616,7 +2616,7 @@
         {
           "name": "Technician Mobile",
           "route": "/technician-mobile",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2625,7 +2625,7 @@
         {
           "name": "Technician App Home",
           "route": "/technician-app-home",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2634,7 +2634,7 @@
         {
           "name": "Technician App Jobs",
           "route": "/technician-app-jobs",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2643,7 +2643,7 @@
         {
           "name": "Technician App Clock",
           "route": "/technician-app-clock",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2652,7 +2652,7 @@
         {
           "name": "Technician App Lookup",
           "route": "/technician-app-lookup",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2661,7 +2661,7 @@
         {
           "name": "Technician App Profile",
           "route": "/technician-app-profile",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2670,7 +2670,7 @@
         {
           "name": "Client Portal Dashboard",
           "route": "/client-portal-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2679,7 +2679,7 @@
         {
           "name": "Client Portal Vehicles",
           "route": "/client-portal-vehicles",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2688,7 +2688,7 @@
         {
           "name": "Client Portal Appointments",
           "route": "/client-portal-appointments",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2697,7 +2697,7 @@
         {
           "name": "Client Portal Invoices",
           "route": "/client-portal-invoices",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2706,7 +2706,7 @@
         {
           "name": "Client Portal Profile",
           "route": "/client-portal-profile",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2715,7 +2715,7 @@
         {
           "name": "Client Portal Service History",
           "route": "/client-portal-service-history",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2724,7 +2724,7 @@
         {
           "name": "Client Portal Live Tracking",
           "route": "/client-portal-live-tracking",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2733,7 +2733,7 @@
         {
           "name": "Client Portal Reminders",
           "route": "/client-portal-reminders",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2742,7 +2742,7 @@
         {
           "name": "Client Portal Review Chat",
           "route": "/client-portal-review-chat",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2751,7 +2751,7 @@
         {
           "name": "Customer App Booking",
           "route": "/customer-app-booking",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2760,7 +2760,7 @@
         {
           "name": "Customer App Vehicles",
           "route": "/customer-app-vehicles",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2769,7 +2769,7 @@
         {
           "name": "Customer App Payments",
           "route": "/customer-app-payments",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2778,7 +2778,7 @@
         {
           "name": "Portal Dashboard",
           "route": "/portal-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2787,7 +2787,7 @@
         {
           "name": "Portal Appointments",
           "route": "/portal-appointments",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2796,7 +2796,7 @@
         {
           "name": "Portal Invoices",
           "route": "/portal-invoices",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2805,7 +2805,7 @@
         {
           "name": "Portal Vehicles",
           "route": "/portal-vehicles",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2814,7 +2814,7 @@
         {
           "name": "Portal Communications",
           "route": "/portal-communications",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2823,7 +2823,7 @@
         {
           "name": "Business Intelligence",
           "route": "/business-intelligence",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2832,7 +2832,7 @@
         {
           "name": "Business Intelligence Dashboard",
           "route": "/business-intelligence-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2841,7 +2841,7 @@
         {
           "name": "Business Heatmaps",
           "route": "/business-heatmaps",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2850,7 +2850,7 @@
         {
           "name": "Profit Analysis",
           "route": "/profit-analysis",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -2859,7 +2859,7 @@
         {
           "name": "KPI Dashboard",
           "route": "/kpi-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3246,7 +3246,7 @@
         {
           "name": "Chat",
           "route": "/chat",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3255,7 +3255,7 @@
         {
           "name": "Support Chat Dashboard",
           "route": "/support-chat-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3345,7 +3345,7 @@
         {
           "name": "Franchise Management",
           "route": "/franchise-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3354,7 +3354,7 @@
         {
           "name": "Globalization Layer",
           "route": "/globalization-layer",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3363,7 +3363,7 @@
         {
           "name": "Multi Location Dashboard",
           "route": "/multi-location-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3372,7 +3372,7 @@
         {
           "name": "AI Automation",
           "route": "/ai-automation",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3381,7 +3381,7 @@
         {
           "name": "AI Chatbot",
           "route": "/ai-chatbot",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3390,7 +3390,7 @@
         {
           "name": "AI Chatbot Assistant",
           "route": "/ai-chatbot-assistant",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3399,7 +3399,7 @@
         {
           "name": "AI Service Advisor",
           "route": "/ai-service-advisor",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3426,7 +3426,7 @@
         {
           "name": "Smart Damage Assessment",
           "route": "/smart-damage-assessment",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3435,7 +3435,7 @@
         {
           "name": "ML Fraud Detection",
           "route": "/ml-fraud-detection",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3444,7 +3444,7 @@
         {
           "name": "Neural Network Prediction",
           "route": "/neural-network-prediction",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3453,7 +3453,7 @@
         {
           "name": "Emerging Technologies",
           "route": "/emerging-technologies",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3462,7 +3462,7 @@
         {
           "name": "NextGen Technologies",
           "route": "/next-gen-technologies",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3471,7 +3471,7 @@
         {
           "name": "IoT Dashboard",
           "route": "/io-t-dashboard",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3480,7 +3480,7 @@
         {
           "name": "Edge Computing",
           "route": "/edge-computing",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3489,7 +3489,7 @@
         {
           "name": "Digital Twin Viewer",
           "route": "/digital-twin-viewer",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3561,7 +3561,7 @@
         {
           "name": "Sustainable Energy Monitoring",
           "route": "/sustainable-energy-monitoring",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3588,7 +3588,7 @@
         {
           "name": "Mobile Device Management",
           "route": "/mobile-device-management",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3606,7 +3606,7 @@
         {
           "name": "Document OCR",
           "route": "/document-ocr",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3624,7 +3624,7 @@
         {
           "name": "Data Backup",
           "route": "/data-backup",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3696,7 +3696,7 @@
         {
           "name": "Tools",
           "route": "/tools",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3705,7 +3705,7 @@
         {
           "name": "Dashboard Widgets",
           "route": "/dashboard-widgets",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3714,7 +3714,7 @@
         {
           "name": "SMS Integration",
           "route": "/sms-integration",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3723,7 +3723,7 @@
         {
           "name": "Sales Guide",
           "route": "/sales-guide",
-          "status": "pending",
+          "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
@@ -3734,7 +3734,7 @@
   ],
   "totals": {
     "total": 402,
-    "built": 275,
+    "built": 362,
     "designedMobile": 113
   }
 }

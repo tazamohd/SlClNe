@@ -17,6 +17,13 @@ import { SparePartsList } from '../parts/SparePartsList'
 import { PartsMarketplace } from '../parts/PartsMarketplace'
 import { DynamicPricing } from '../parts/DynamicPricing'
 import { SuppliersList } from '../parts/SuppliersList'
+import { AutomatedReordering } from '../parts/AutomatedReordering'
+import { BarcodeScanner } from '../parts/BarcodeScanner'
+import { Interactive3DParts } from '../parts/Interactive3DParts'
+import { PurchaseOrdersList } from '../parts/PurchaseOrdersList'
+import { PartsNetworkDashboardSpec } from '../parts/PartsNetworkDashboardSpec'
+import { PartsNetworkMyRequests } from '../parts/PartsNetworkMyRequests'
+import { PartsNetworkIncomingRequests } from '../parts/PartsNetworkIncomingRequests'
 
 export const SCREENS: DomainScreens = {
   InventoryReports,
@@ -26,4 +33,11 @@ export const SCREENS: DomainScreens = {
   'Parts-Marketplace': PartsMarketplace,
   'Dynamic-Pricing': DynamicPricing,
   Suppliers: SuppliersList,
+  'Automated-Reordering': AutomatedReordering,
+  'Barcode-Scanner': BarcodeScanner,
+  'Interactive-3D-Parts': Interactive3DParts,
+  'Purchase-Orders': PurchaseOrdersList,
+  'Parts-Network-Dashboard': PartsNetworkDashboardSpec,
+  'Parts-Network-My-Requests': PartsNetworkMyRequests,
+  'Parts-Network-Incoming-Requests': PartsNetworkIncomingRequests,
 }

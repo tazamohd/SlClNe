@@ -15,6 +15,15 @@ import { AIAnalytics } from '../ai/AIAnalytics'
 import { PromptLibrary } from '../ai/PromptLibrary'
 import { ModelSettings } from '../ai/ModelSettings'
 import { KnowledgeBase } from '../ai/KnowledgeBase'
+import { AIAutomation } from '../ai/AIAutomation'
+import { AIChatbot } from '../ai/AIChatbot'
+import { AIChatbotAssistant } from '../ai/AIChatbotAssistant'
+import { AIServiceAdvisor } from '../ai/AIServiceAdvisor'
+import { SmartDamageAssessment } from '../ai/SmartDamageAssessment'
+import { MLFraudDetection } from '../ai/MLFraudDetection'
+import { NeuralNetworkPrediction } from '../ai/NeuralNetworkPrediction'
+import { SmartPartsRecommendations } from '../ai/SmartPartsRecommendations'
+import { IntelligentPriceOptimizer } from '../ai/IntelligentPriceOptimizer'
 
 export const SCREENS: DomainScreens = {
   AIAssistant,
@@ -22,4 +31,13 @@ export const SCREENS: DomainScreens = {
   PromptLibrary,
   ModelSettings,
   KnowledgeBase,
+  'AI-Automation': AIAutomation,
+  'AI-Chatbot': AIChatbot,
+  'AI-Chatbot-Assistant': AIChatbotAssistant,
+  'AI-Service-Advisor': AIServiceAdvisor,
+  'Smart-Damage-Assessment': SmartDamageAssessment,
+  'ML-Fraud-Detection': MLFraudDetection,
+  'Neural-Network-Prediction': NeuralNetworkPrediction,
+  'Smart-Parts-Recommendations': SmartPartsRecommendations,
+  'Intelligent-Price-Optimizer': IntelligentPriceOptimizer,
 }

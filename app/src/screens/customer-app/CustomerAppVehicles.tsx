@@ -1,0 +1,152 @@
+import { Card } from '@/components/ui/Card'
+import { Icon } from '@/components/ui/Icon'
+import { Badge } from '@/components/ui/Badge'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+
+interface CustomerVehicle {
+  make: string
+  model: string
+  year: number
+  plate: string
+  color: string
+  mileage: string
+  lastService: string
+  nextService: string
+  insurance: string
+  status: 'Active' | 'In Service' | 'Needs Attention'
+}
+
+const VEHICLES: CustomerVehicle[] = [
+  { make: 'Toyota', model: 'Camry', year: 2022, plate: 'RUH 4821', color: 'Pearl White', mileage: '45,200 km', lastService: 'Aug 15, 2026', nextService: 'Nov 15, 2026', insurance: 'Tawuniya Comprehensive', status: 'Active' },
+  { make: 'Hyundai', model: 'Tucson', year: 2024, plate: 'RUH 6633', color: 'Phantom Black', mileage: '8,400 km', lastService: 'Jul 20, 2026', nextService: 'Jan 20, 2027', insurance: 'Al-Rajhi Takaful', status: 'Active' },
+  { make: 'Nissan', model: 'Patrol', year: 2023, plate: 'RUH 1155', color: 'Moonlight Silver', mileage: '28,400 km', lastService: 'Jul 28, 2026', nextService: 'Oct 28, 2026', insurance: 'Tawuniya Comprehensive', status: 'In Service' },
+  { make: 'Toyota', model: 'Land Cruiser', year: 2021, plate: 'RUH 7790', color: 'Attitude Black', mileage: '62,100 km', lastService: 'May 10, 2026', nextService: 'Aug 10, 2026', insurance: 'Medgulf', status: 'Needs Attention' },
+]
+
+const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'In Service': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'Needs Attention': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+}
+
+export function CustomerAppVehicles() {
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
+
+  const kpis = [
+    { label: t('My Vehicles'), value: String(VEHICLES.length), icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('In Service'), value: String(VEHICLES.filter((v) => v.status === 'In Service').length), icon: 'Wrench', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Needs Attention'), value: String(VEHICLES.filter((v) => v.status === 'Needs Attention').length), icon: 'AlertTriangle', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Total Mileage'), value: '144K', icon: 'Gauge', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  ]
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Car" title={t('My Vehicles')} subtitle={t('Vehicle management')} />
+        <div className="grid grid-cols-2 gap-3">
+          {kpis.map((k) => (
+            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
+                <span className="text-[11px] font-medium text-muted">{k.label}</span>
+              </div>
+              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
+            </Card>
+          ))}
+        </div>
+        {VEHICLES.map((v) => (
+          <MobileCard key={v.plate}>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{v.make} {v.model} {v.year}</p>
+                    <p className="text-xs text-muted" dir="ltr">{v.plate}</p>
+                  </div>
+                </div>
+              }
+              trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>}
+            />
+            <MobileCardRow label={t('Color')} value={t(v.color)} />
+            <MobileCardRow label={t('Mileage')} value={v.mileage} />
+            <MobileCardRow label={t('Last Service')} value={v.lastService} />
+            <MobileCardRow label={t('Next Service')} value={v.nextService} />
+            <MobileCardRow label={t('Insurance')} value={v.insurance} />
+          </MobileCard>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <div className="flex items-center gap-3">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
+          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
+            <Icon name="Car" size={28} />
+          </div>
+        </div>
+        <div>
+          <h1 className="font-display text-[30px] font-black text-heading">{t('My Vehicles')}</h1>
+          <p className="mt-0.5 text-[13px] text-muted">{t('View and manage your registered vehicles')}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-4 gap-4">
+        {kpis.map((k) => (
+          <Card key={k.label} className="rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-2">
+              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={16} /></span>
+              <span className="text-xs font-medium text-muted">{k.label}</span>
+            </div>
+            <h4 className="mt-2 font-display text-2xl font-black text-heading">{k.value}</h4>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {VEHICLES.map((v) => (
+          <Card key={v.plate} className="flex flex-col gap-4 rounded-2xl p-5 shadow-sm">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex rounded-xl bg-[rgba(10,94,215,.1)] p-2.5 text-salis-blue" aria-hidden><Icon name="Car" size={22} /></span>
+                <div>
+                  <h3 className="font-display text-base font-bold text-heading">{v.make} {v.model} {v.year}</h3>
+                  <p className="font-mono text-xs text-muted" dir="ltr">{v.plate}</p>
+                </div>
+              </div>
+              <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>
+            </div>
+            <div className="grid grid-cols-2 gap-3 border-t border-border pt-3 text-[13px]">
+              <div>
+                <p className="text-xs text-muted">{t('Color')}</p>
+                <p className="mt-0.5 font-medium text-heading">{t(v.color)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted">{t('Mileage')}</p>
+                <p className="mt-0.5 font-mono font-medium text-heading" dir="ltr">{v.mileage}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted">{t('Last Service')}</p>
+                <p className="mt-0.5 text-body">{v.lastService}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted">{t('Next Service')}</p>
+                <p className="mt-0.5 text-body">{v.nextService}</p>
+              </div>
+              <div className="col-span-2">
+                <p className="text-xs text-muted">{t('Insurance')}</p>
+                <p className="mt-0.5 text-body">{v.insurance}</p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}

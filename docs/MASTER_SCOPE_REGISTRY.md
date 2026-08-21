@@ -12,17 +12,17 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | product | 362 |
 | reference only | 28 |
 | external dependency | 12 |
-| rendered | 275 |
-| placeholder | 87 |
+| rendered | 362 |
+| placeholder | 0 |
 | designed mobile owed | 113 |
 | untested | 0 |
-| mock only | 275 |
+| mock only | 362 |
 | data backed | 0 |
 | e2e covered | 402 |
 | content asserted | 79 |
-| rendered without assertion | 196 |
+| rendered without assertion | 283 |
 | unregistered designs | 0 |
-| orphan screen files | 246 |
+| orphan screen files | 338 |
 | production ready | 0 |
 
 ## By surface
@@ -30,13 +30,13 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 28 | 0 | 28 | 28 |
-| app | 312 | 215 | 85 | 85 | 312 |
+| app | 312 | 300 | 0 | 85 | 312 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |
 | reference | 28 | 0 | 0 | 0 | 28 |
 | kiosk | 1 | 1 | 0 | 0 | 1 |
-| native | 2 | 0 | 2 | 0 | 2 |
+| native | 2 | 2 | 0 | 0 | 2 |
 | public | 10 | 10 | 0 | 0 | 10 |
 
 ## By domain
@@ -44,11 +44,11 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | — | G9 | `██████████████████░░` 88% | 15 | 17 |
+| Administration | — | G9 | `████████████████████` 100% | 17 | 17 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
-| Portals, call centre & kiosk | 16 | G10 | `█████████████████░░░` 85% | 11 | 13 |
+| Portals, call centre & kiosk | 16 | G10 | `████████████████████` 100% | 13 | 13 |
 | Customers, vehicles & CRM | 09 | G4/G8 | `████████████████████` 100% | 17 | 17 |
 | Customer mobile app | 16 | G10 | `████████████████████` 100% | 11 | 11 |
 | Shared UI & reference | 04 | G2 | `░░░░░░░░░░░░░░░░░░░░` 0% | 0 | 28 |
@@ -56,7 +56,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
 | Public website | 17 | G11 | `████████████████████` 100% | 10 | 10 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
-| Feature map (no design) | 08–17 | G12 | `███████████░░░░░░░░░` 55% | 116 | 211 |
+| Feature map (no design) | 08–17 | G12 | `███████████████████░` 94% | 199 | 211 |
 
 ## By RBAC module
 
@@ -87,7 +87,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | portaltech | 2 | 2 |
 | procurement | 1 | 1 |
 | reports | 6 | 6 |
-| settings | 7 | 5 |
+| settings | 7 | 7 |
 | technicians | 3 | 3 |
 | ungated | 16 | 10 |
 | vehicles | 4 | 4 |
