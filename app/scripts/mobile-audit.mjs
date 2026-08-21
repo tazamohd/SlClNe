@@ -49,7 +49,7 @@ const total = ROUTES.length
 for (const route of ROUTES) {
   const page = await context.newPage()
   try {
-    await page.goto(BASE + route, { waitUntil: 'load', timeout: 10_000 })
+    await page.goto(BASE + route, { waitUntil: 'load', timeout: 20_000 })
     const result = await page.evaluate((viewport) => {
       const doc = document.documentElement
       // 1px of slack: sub-pixel layout rounding is not a horizontal scrollbar.
