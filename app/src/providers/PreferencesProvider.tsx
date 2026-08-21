@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import { AR } from '@/data/generated/ar'
+import { AR_OVERRIDES } from '@/data/ar-overrides'
 import type { Language, Theme } from '@/data/types'
 import { readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
 
@@ -101,7 +102,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       setLanguage,
       toggleLanguage: () => setLanguage(rtl ? 'en' : 'ar'),
       setNotifications,
-      t: (source: string) => (rtl ? (AR[source] ?? source) : source),
+      // Overrides first: they cover copy this rebuild introduced, which the
+      // generated dictionary (built from the design bundle) cannot know about.
+      t: (source: string) => (rtl ? (AR_OVERRIDES[source] ?? AR[source] ?? source) : source),
     }
   }, [theme, language, notifications, setTheme, setLanguage, setNotifications])
 
