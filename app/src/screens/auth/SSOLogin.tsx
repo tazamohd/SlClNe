@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** SSO / enterprise login — enter company domain and redirect. */
 export function SSOLogin() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const [domain, setDomain] = useState('')
 
   function submit(event: FormEvent) {
@@ -17,12 +19,12 @@ export function SSOLogin() {
   }
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
-      <div className="rounded-2xl border border-border bg-[color-mix(in_srgb,var(--surface-card)_85%,transparent)] p-6 text-center shadow-lg backdrop-blur-[24px]">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
+      <div className={`rounded-2xl border border-border bg-[color-mix(in_srgb,var(--surface-card)_85%,transparent)] text-center shadow-lg backdrop-blur-[24px] ${isMobile ? 'p-4' : 'p-6'}`}>
         <div className="mb-3 flex justify-center">
-          <BrandMark width={110} />
+          <BrandMark width={isMobile ? 90 : 110} />
         </div>
-        <h2 className="font-display text-xl font-bold text-heading">{t('SSO Login')}</h2>
+        <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('SSO Login')}</h2>
         <p className="mt-2 mb-5 font-action text-[13px] text-muted">
           {t('Enter your company domain to sign in via SSO')}
         </p>

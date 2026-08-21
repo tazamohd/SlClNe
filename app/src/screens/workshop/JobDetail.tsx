@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { StatusBadge } from '@/components/ui/Badge'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
 import { Money } from '@/components/ui/Money'
@@ -34,6 +35,7 @@ import { railIndexFor, type JobRow } from './stages'
 export function JobDetail() {
   const { t, rtl } = usePreferences()
   const { fieldHidden, can } = useSession()
+  const isMobile = useIsMobile()
   const { confirm } = useModal()
   const toast = useToast()
   const navigate = useNavigate()
@@ -131,7 +133,7 @@ export function JobDetail() {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading" dir="ltr">
+          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'} dir="ltr">
             {job.id}
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -173,7 +175,7 @@ export function JobDetail() {
 
       <JobCardForm open={editing} onClose={() => setEditing(false)} job={job} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+      <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]'}>
         <Card className="p-6">
           <h3 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h3>
           <Timeline steps={timelineFor(job.stage)} />

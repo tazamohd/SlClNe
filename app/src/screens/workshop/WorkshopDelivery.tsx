@@ -6,6 +6,7 @@ import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -29,6 +30,7 @@ const VAT_RATE = 0.15
  *  customer queries. */
 export function WorkshopDelivery() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
   const [checked, setChecked] = useState<Record<string, boolean>>({})
@@ -68,11 +70,11 @@ export function WorkshopDelivery() {
         <div className="relative">
           <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
           <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Car" size={28} />
+            <Icon name="Car" size={isMobile ? 20 : 28} />
           </div>
         </div>
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading">
+          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
             {t('Vehicle Delivery')}
           </h1>
           <p className="mt-0.5 text-sm text-muted" dir="ltr">

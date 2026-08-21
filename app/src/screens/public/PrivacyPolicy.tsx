@@ -1,4 +1,5 @@
 import { useT } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePageMeta } from './usePageMeta'
 import { LegalDocument, type LegalClause } from './sections/LegalDocument'
 
@@ -64,6 +65,7 @@ const CLAUSES: readonly LegalClause[] = [
 
 export function PublicPrivacyPolicy() {
   const t = useT()
+  const isMobile = useIsMobile()
   usePageMeta({
     title: t('Privacy Policy — SALIS AUTO'),
     description: t(
@@ -72,11 +74,13 @@ export function PublicPrivacyPolicy() {
   })
 
   return (
-    <LegalDocument
-      title="Privacy Policy"
-      updated="16 August 2026"
-      intro="This Privacy Policy explains how SALIS AUTO handles personal information when you visit our website, contact us, or use our workshop management platform. We are committed to protecting your privacy and handling your data responsibly."
-      clauses={CLAUSES}
-    />
+    <div className={isMobile ? 'px-1' : ''}>
+      <LegalDocument
+        title="Privacy Policy"
+        updated="16 August 2026"
+        intro="This Privacy Policy explains how SALIS AUTO handles personal information when you visit our website, contact us, or use our workshop management platform. We are committed to protecting your privacy and handling your data responsibly."
+        clauses={CLAUSES}
+      />
+    </div>
   )
 }

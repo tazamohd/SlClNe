@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 interface Workspace {
   id: string
@@ -23,15 +24,16 @@ const WORKSPACES: Workspace[] = [
 /** Workspace / branch selection after login. */
 export function WorkspaceSelection() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const [picked, setPicked] = useState('w1')
 
   return (
-    <AuthLayout className="mx-auto max-w-[460px]">
-      <div className="flex flex-col gap-6">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[460px]'}>
+      <div className={`flex flex-col ${isMobile ? 'gap-4' : 'gap-6'}`}>
         {/* Header */}
         <div className="text-center">
-          <BrandMark width={90} />
-          <h1 className="mt-3 font-display text-[22px] font-black text-heading">
+          <BrandMark width={isMobile ? 70 : 90} />
+          <h1 className={`mt-3 font-display font-black text-heading ${isMobile ? 'text-lg' : 'text-[22px]'}`}>
             {t('Workspace Selection')}
           </h1>
           <p className="mt-1.5 text-[13px] text-muted">

@@ -4,6 +4,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 interface SocialProvider {
   icon: string
@@ -40,15 +41,16 @@ const PROVIDERS: SocialProvider[] = [
 /** Social login — Google, Apple, Microsoft buttons. */
 export function SocialLogin() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const chevron = rtl ? 'ChevronLeft' : 'ChevronRight'
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
-      <div className="flex flex-col gap-5 rounded-2xl border border-border bg-[color-mix(in_srgb,var(--surface-card)_95%,transparent)] p-7 shadow-lg backdrop-blur-[24px]">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
+      <div className={`flex flex-col gap-5 rounded-2xl border border-border bg-[color-mix(in_srgb,var(--surface-card)_95%,transparent)] shadow-lg backdrop-blur-[24px] ${isMobile ? 'p-4' : 'p-7'}`}>
         {/* Header */}
         <div className="flex flex-col items-center gap-2.5">
-          <BrandMark width={110} />
-          <h2 className="font-display text-xl font-bold text-heading">{t('Sign In')}</h2>
+          <BrandMark width={isMobile ? 90 : 110} />
+          <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('Sign In')}</h2>
           <p className="text-[13px] text-muted">{t('Choose how to sign in')}</p>
         </div>
 

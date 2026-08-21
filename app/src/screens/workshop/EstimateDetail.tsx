@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { DetailPage, type DetailSection } from '@/components/shell/DetailPage'
 import { Button } from '@/components/ui/Button'
@@ -57,6 +58,7 @@ type Estimate = RowOf<'estimates'> & {
  *  line items instead. See `workshop-approval-gaps.test.ts`. */
 export function EstimateDetail() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { role, can } = useSession()
   const toast = useToast()
   const { confirm } = useModal()
@@ -381,10 +383,12 @@ export function EstimateDetail() {
               </Button>
             </>
           ) : null}
-          <Button variant="subtle" size="md" onClick={() => window.print()}>
-            <Icon name="Printer" size={15} />
-            {t('Print')}
-          </Button>
+          {!isMobile && (
+            <Button variant="subtle" size="md" onClick={() => window.print()}>
+              <Icon name="Printer" size={15} />
+              {t('Print')}
+            </Button>
+          )}
         </>
       }
       readOnly={decided ? `${t('This estimate is')} ${t(estimate.status)}.` : undefined}

@@ -1,5 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -43,6 +45,7 @@ const DONE = new Set(['completed', 'delivered'])
 
 export function CustomerFeedback() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const { can } = useSession()
   const [params] = useSearchParams()
   const jobRef = params.get('job') ?? ''
@@ -63,12 +66,16 @@ export function CustomerFeedback() {
 
   const shell = (children: ReactNode) => (
     <div className="mx-auto flex w-full max-w-[460px] flex-col gap-4">
-      <div className="flex items-center gap-2.5">
-        <Link to="/customers" aria-label={t('Back')} className="flex text-muted no-underline hover:no-underline">
-          <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={20} />
-        </Link>
-        <h1 className="font-display text-lg font-extrabold text-heading">{t('Service Feedback')}</h1>
-      </div>
+      {isMobile ? (
+        <MobilePageHeader icon="MessageSquare" title={t('Service Feedback')} />
+      ) : (
+        <div className="flex items-center gap-2.5">
+          <Link to="/customers" aria-label={t('Back')} className="flex text-muted no-underline hover:no-underline">
+            <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={20} />
+          </Link>
+          <h1 className="font-display text-lg font-extrabold text-heading">{t('Service Feedback')}</h1>
+        </div>
+      )}
       {children}
     </div>
   )

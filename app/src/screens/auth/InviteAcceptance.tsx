@@ -4,24 +4,26 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Accept (or decline) an invitation to join a workspace. */
 export function InviteAcceptance() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
 
   /** In a real flow the invite token would carry the org name; this is a
    *  placeholder that matches the design prototype. */
   const orgName = 'Al-Amri Auto Center'
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
-      <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-lg">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
+      <div className={`rounded-2xl border border-border bg-card text-center shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}>
         {/* Inviter avatar */}
-        <span className="mx-auto mb-3.5 flex h-14 w-14 items-center justify-center rounded-full bg-salis-gradient text-xl font-bold text-white">
-          <Icon name="UserPlus" size={22} />
+        <span className={`mx-auto mb-3.5 flex items-center justify-center rounded-full bg-salis-gradient font-bold text-white ${isMobile ? 'h-12 w-12 text-lg' : 'h-14 w-14 text-xl'}`}>
+          <Icon name="UserPlus" size={isMobile ? 18 : 22} />
         </span>
 
-        <h2 className="font-display text-lg font-bold text-heading">
+        <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-base' : 'text-lg'}`}>
           {t('Invitation')}
         </h2>
         <p className="mt-2 mb-5 font-action text-sm text-muted">

@@ -20,6 +20,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Modal, useModal } from '@/components/ui/Modal'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { useCollection, type RowOf } from '@/data/useCollection'
@@ -745,6 +746,7 @@ const orderSchema = z.object({
 export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null } = {}) {
   const { t } = usePreferences()
   const { role, can, fieldHidden } = useSession()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const client = useQueryClient()
 
@@ -924,10 +926,10 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="flex flex-shrink-0 rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="ShoppingCart" size={28} />
+            <Icon name="ShoppingCart" size={isMobile ? 20 : 28} />
           </div>
           <div>
-            <h1 className="font-display text-[26px] font-black text-heading">
+            <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
               {t('Create Purchase Order')}
             </h1>
             <p className="mt-0.5 text-sm text-muted">
@@ -963,7 +965,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
         <>
           {mayCreate ? (
             <Form form={form}>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 md:grid-cols-2'}>
                 <Card className="flex flex-col gap-3.5 rounded-xl p-5">
                   <div className="flex items-center gap-2">
                     <Icon name="Building2" size={16} className="text-salis-blue" />

@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { cn } from '@/lib/cn'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -26,6 +27,7 @@ const FILTERS = ['all', 'confirmed', 'awaiting', 'no-show'] as const
 export function Appointments() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: appointments = [], isLoading } = useCollection('appointments')
   const [filter, setFilter] = useState<string>('all')
@@ -62,6 +64,49 @@ export function Appointments() {
     },
     { header: 'Status', cell: (a) => statusBadge(a.status) },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Calendar" title={t('Appointments')} />
+        <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+          {FILTERS.map((option) => {
+            const on = filter === option
+            const count = option === 'all' ? appointments.length : appointments.filter((a) => a.status === option).length
+            return (
+              <button key={option} type="button" role="tab" aria-selected={on}
+                onClick={() => setFilter(option)}
+                className={cn(
+                  'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
+                  'font-action text-[13px] font-medium transition-all duration-150',
+                  on ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border bg-card text-muted hover:border-border-strong'
+                )}>
+                <span>{t(option === 'all' ? 'All' : option === 'no-show' ? 'No Show' : option[0].toUpperCase() + option.slice(1))}</span>
+                <span className="font-mono text-[11px] opacity-70" dir="ltr">{count}</span>
+              </button>
+            )
+          })}
+        </div>
+        <DataTable
+          caption="Appointments"
+          columns={columns}
+          rows={filtered}
+          rowKey={(a, index) => `${a.plate}-${index}`}
+          loading={isLoading}
+          mobileCard={(a) => (
+            <>
+              <MobileCardHeader title={a.time} code trailing={statusBadge(a.status)} />
+              <MobileCardRow>{a.cust}</MobileCardRow>
+              <MobileCardRow>{a.veh} · <span className="font-mono" dir="ltr">{a.plate}</span></MobileCardRow>
+              <MobileCardRow label={t('Service')}>{t(a.svc)}</MobileCardRow>
+              <MobileCardRow label={t('Bay')}>{a.bay} · {a.tech}</MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="CalendarX" title={t('No appointments in this view')} description={t('Try another status filter, or add a booking.')} />}
+        />
+      </>
+    )
+  }
 
   return (
     <>

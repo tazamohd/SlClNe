@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import {
   DetailPage,
   type DetailRecord,
@@ -63,6 +64,7 @@ const TYPE_LABEL: Record<string, string> = {
 
 export function FleetContract() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { can } = useSession()
   const [params] = useSearchParams()
   const [renewing, setRenewing] = useState(false)
@@ -112,10 +114,12 @@ export function FleetContract() {
     (v) => (v.customerId != null && custIds.has(v.customerId)) || custNames.has(v.owner),
   )
 
-  const summary: DetailStat[] = [
-    { label: 'Vehicles', value: fleet.vehicles ?? '—', icon: 'Car' },
-    { label: 'Active Jobs', value: fleet.active ?? '—', icon: 'Wrench' },
-  ]
+  const summary: DetailStat[] = isMobile
+    ? [{ label: 'Vehicles', value: fleet.vehicles ?? '—', icon: 'Car' }]
+    : [
+        { label: 'Vehicles', value: fleet.vehicles ?? '—', icon: 'Car' },
+        { label: 'Active Jobs', value: fleet.active ?? '—', icon: 'Wrench' },
+      ]
 
   // The contract terms the row actually carries. The presenter sends '' for a
   // term that is not on record, so an empty string is dropped rather than shown

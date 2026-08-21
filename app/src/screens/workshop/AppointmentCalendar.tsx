@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -22,6 +24,7 @@ import type { Appointment } from './schedule'
 export function AppointmentCalendar() {
   const { t, rtl } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const appointments = useCollection('appointments')
   const [view, setView] = useState<'day' | 'week'>('week')
   const [cursor, setCursor] = useState(() => new Date())
@@ -42,6 +45,47 @@ export function AppointmentCalendar() {
     day: 'numeric',
     year: 'numeric',
   }).format(cursor)
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Calendar" title={t('Calendar')} subtitle={t('Appointments')} />
+        <div className="flex items-center justify-between gap-2">
+          <button type="button" aria-label={t('Previous')} onClick={() => shift(-1)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted">
+            <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={16} />
+          </button>
+          <span className="text-center font-display text-[14px] font-bold text-heading">{dateLabel}</span>
+          <button type="button" aria-label={t('Next')} onClick={() => shift(1)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted">
+            <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={16} />
+          </button>
+        </div>
+        <div className="flex gap-2">
+          <div className="flex overflow-hidden rounded-lg border border-border" role="tablist" aria-label={t('View')}>
+            {(['day', 'week'] as const).map((option) => (
+              <button key={option} type="button" role="tab" aria-selected={view === option}
+                onClick={() => setView(option)}
+                className={'h-8 cursor-pointer px-3 font-action text-xs font-semibold ' +
+                  (view === option ? 'border-none bg-salis-gradient text-white' : 'bg-card text-body')}>
+                {t(option === 'day' ? 'Day' : 'Week')}
+              </button>
+            ))}
+          </div>
+          <Button variant="subtle" size="sm" onClick={() => setCursor(new Date())}>{t('Today')}</Button>
+        </div>
+        {appointments.isError ? (
+          <ErrorState title={t("Couldn't load this")} description={appointments.error?.message}
+            onRetry={() => void appointments.refetch()} />
+        ) : appointments.isLoading ? (
+          <Card className="p-6"><Loading label="Loading appointments..." /></Card>
+        ) : (
+          <CalendarGrid appointments={rows} date={cursor} view={view} />
+        )}
+        <AppointmentForm open={booking} onClose={() => setBooking(false)} />
+      </div>
+    )
+  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-5 motion-reduce:animate-none">

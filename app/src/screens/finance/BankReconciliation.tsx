@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { ErrorState } from '@/components/ui/States'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -60,6 +61,7 @@ function ReceiptStatus({ value }: { value: string }) {
 
 export function BankReconciliation() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { data: receipts = [], isLoading, error, refetch } = useCollection('receipts')
   const statements = useCollection('bankStatements')
   const statementRows = statements.data ?? []
@@ -121,6 +123,46 @@ export function BankReconciliation() {
     },
     { header: 'Status', cell: (r) => <ReceiptStatus value={r.status} /> },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Landmark" title={t('Bank Reconciliation')} />
+        <StatRow stats={stats} />
+        <Section
+          title={t('Recorded cash (book side)')}
+          subtitle={t('Every receipt the system holds')}
+        >
+          {error ? (
+            <ErrorState description={error.message} onRetry={() => void refetch()} />
+          ) : (
+            <DataTable
+              caption="Recorded cash receipts (book side)"
+              columns={columns}
+              rows={rows}
+              rowKey={(r) => String(r.id)}
+              loading={isLoading}
+              mobileCard={(r) => (
+                <>
+                  <MobileCardHeader title={String(r.id)} code trailing={<ReceiptStatus value={r.status} />} />
+                  <MobileCardRow>{r.customer}</MobileCardRow>
+                  <MobileCardRow label={t('Invoice')}>
+                    <span className="font-mono" dir="ltr">{r.invoice}</span>
+                  </MobileCardRow>
+                  <MobileCardRow label={t('Amount')}>
+                    <Money sar={fromHalalas(receiptHalalas(r))} className="font-semibold text-heading" />
+                  </MobileCardRow>
+                </>
+              )}
+              empty={
+                <EmptyState icon="Receipt" title={t('No receipts in range')} description={t('No recorded cash matches these dates.')} />
+              }
+            />
+          )}
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>

@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { cn } from '@/lib/cn'
 import { FeatureHeader } from '@/components/shell/FeatureScreen'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -83,6 +85,7 @@ const toneOf = (task: Task) => TASK_TINT[(task.type ?? '').toLowerCase()] ?? 'sl
 export function CRMCalendar() {
   const { t, rtl } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const [creating, setCreating] = useState(false)
   const tasks = useCollection('crmTasks')
@@ -185,6 +188,56 @@ export function CRMCalendar() {
         return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
       })()
     : ''
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col gap-4">
+        <MobilePageHeader icon="CalendarDays" title={t('CRM Calendar')} subtitle={t('CRM & Marketing')} />
+        <div className="flex items-center justify-between gap-2">
+          <MonthButton icon={rtl ? 'ChevronRight' : 'ChevronLeft'} label={t('Previous month')} onClick={() => step(-1)} />
+          <h3 className="text-[14px] font-bold text-heading">{monthLabel}</h3>
+          <MonthButton icon={rtl ? 'ChevronLeft' : 'ChevronRight'} label={t('Next month')} onClick={() => step(1)} />
+        </div>
+        {!hasAnyTasks ? (
+          <Card className="p-5">
+            <EmptyState icon="CalendarDays" title={t('No scheduled tasks')}
+              description={t('CRM tasks with a due date will appear on the calendar.')} />
+          </Card>
+        ) : (
+          <>
+            <Card className="flex flex-col gap-3 p-4">
+              <h3 className="text-[14px] font-bold text-heading">
+                {agendaDay ? `${agendaDay} ${monthLabel.split(' ')[0]}` : t("Day's Tasks")}
+              </h3>
+              {agendaTasks.length === 0 ? (
+                <p className="text-[13px] text-muted">{t('No tasks on this day.')}</p>
+              ) : (
+                <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+                  {agendaTasks.map((task) => (
+                    <li key={task._id ?? task.title} className="flex gap-2.5 rounded-lg border border-border bg-inset p-2.5">
+                      <span aria-hidden className={cn('w-[3px] flex-shrink-0 rounded-full', DOT_TONE[toneOf(task)])} />
+                      <div className="min-w-0 flex-1">
+                        <p className="m-0 truncate text-xs font-semibold text-heading">{task.title}</p>
+                        <p className="m-0 mt-0.5 truncate text-[11px] text-muted">
+                          {[task.assigned, task.type ? t(task.type) : null].filter(Boolean).join(' · ')}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+            <div className="flex justify-center">
+              <Button variant="subtle" size="sm" onClick={() => navigate('/crmtasks')}>
+                <Icon name="ListChecks" size={14} /> {t('All Tasks')}
+              </Button>
+            </div>
+          </>
+        )}
+        {creating ? <CrmTaskFormModal open onClose={() => setCreating(false)} defaultDueDate={defaultDue} /> : null}
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col gap-6">

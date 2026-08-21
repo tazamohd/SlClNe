@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -19,6 +20,7 @@ const TOTAL_SAR = 1546.75
  *  serialised and stored once file storage exists (README §10). */
 export function WorkshopSignature() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -96,11 +98,11 @@ export function WorkshopSignature() {
         <div className="relative">
           <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
           <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="PenTool" size={28} />
+            <Icon name="PenTool" size={isMobile ? 20 : 28} />
           </div>
         </div>
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading">
+          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
             {t('Customer Signature')}
           </h1>
           <p className="mt-0.5 text-sm text-muted" dir="ltr">
@@ -137,14 +139,14 @@ export function WorkshopSignature() {
         <div className="relative">
           <canvas
             ref={canvasRef}
-            width={800}
-            height={220}
+            width={isMobile ? 400 : 800}
+            height={isMobile ? 160 : 220}
             onPointerDown={start}
             onPointerMove={move}
             onPointerUp={end}
             onPointerLeave={end}
             aria-label={t('Sign Below')}
-            className="h-[220px] w-full touch-none rounded border-[1.5px] border-dashed border-border-strong bg-inset"
+            className={`${isMobile ? 'h-[160px]' : 'h-[220px]'} w-full touch-none rounded border-[1.5px] border-dashed border-border-strong bg-inset`}
           />
           {hasSignature ? null : (
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-muted">

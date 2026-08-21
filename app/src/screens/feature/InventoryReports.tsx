@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
@@ -42,6 +43,7 @@ type Part = RowOf<'parts'>
 export function InventoryReports({ api }: { api?: MovementApi | null } = {}) {
   const { t } = usePreferences()
   const { fieldHidden } = useSession()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const { data: parts = [], isLoading, isError, refetch } = useCollection('parts')
 
@@ -183,7 +185,7 @@ export function InventoryReports({ api }: { api?: MovementApi | null } = {}) {
 
       <StatRow stats={stats} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+      <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]'}>
         <MovementTrend
           rows={periodRows}
           period={period}

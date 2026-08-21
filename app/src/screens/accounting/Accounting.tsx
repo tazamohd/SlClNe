@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -69,6 +70,7 @@ type Account = RowOf<'chartOfAccounts'>
 export function ChartOfAccounts() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const { data: accounts = [], isLoading } = useCollection('chartOfAccounts')
   const { query, setQuery, filtered } = useFilter(accounts, (a) => [a.code, a.name, a.type])
 
@@ -88,6 +90,32 @@ export function ChartOfAccounts() {
     { header: 'Sub-Accounts', cell: (a) => a.children },
     { header: 'Balance', cell: (a) => <Money sar={parseSar(a.balance)} className="font-semibold" /> },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="BookOpen" title={t('Chart of Accounts')} subtitle={t(ACCOUNTING)} />
+        <DataTable
+          caption="Chart of accounts"
+          columns={columns}
+          rows={filtered}
+          rowKey={(a) => a.code}
+          loading={isLoading}
+          mobileCard={(a) => (
+            <>
+              <MobileCardHeader title={a.code} code trailing={typeBadge(a.type)} />
+              <MobileCardRow>{t(a.name)}</MobileCardRow>
+              <MobileCardRow label={t('Balance')}>
+                <Money sar={parseSar(a.balance)} className="font-semibold text-heading" />
+              </MobileCardRow>
+              <MobileCardRow label={t('Sub-Accounts')}>{a.children}</MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="BookOpen" title={t('No accounts yet')} />}
+        />
+      </>
+    )
+  }
 
   return (
     <>
@@ -132,6 +160,7 @@ type JournalEntry = RowOf<'journalEntries'>
 export function JournalEntries() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const { data: entries = [], isLoading } = useCollection('journalEntries')
   const { query, setQuery, filtered } = useFilter(entries, (e) => [e.id, e.ref, e.narration])
 
@@ -158,6 +187,83 @@ export function JournalEntries() {
     { header: 'Status', cell: (e) => <LedgerStatus value={e.status} /> },
   ]
 
+  const balanceNotice = (
+    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-4">
+      <span
+        className={
+          'flex rounded p-2 ' +
+          (balanced
+            ? 'bg-[rgba(10,94,215,.1)] text-salis-blue'
+            : 'bg-[rgba(249,115,22,.12)] text-salis-orange')
+        }
+      >
+        <Icon name={balanced ? 'Scale' : 'AlertTriangle'} size={18} />
+      </span>
+      <div className="flex-1">
+        <p className="text-[13px] font-semibold text-heading">
+          {balanced ? t('Ledger is balanced') : t('Ledger is out of balance')}
+        </p>
+        <p className="mt-0.5 text-xs text-muted">
+          {t('Total Debit')} <Money sar={debit} className="text-body" /> · {t('Total Credit')}{' '}
+          <Money sar={credit} className="text-body" />
+        </p>
+      </div>
+    </div>
+  )
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader
+          icon="BookOpen"
+          title={t('Journal Entries')}
+          actions={
+            can('accounting', 'c') ? (
+              <Button size="md">
+                <Icon name="Plus" size={16} />
+                {t('New Journal Entry')}
+              </Button>
+            ) : null
+          }
+        />
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('Search entries...')}
+          aria-label={t('Search entries')}
+          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+        />
+        {balanceNotice}
+        <DataTable
+          caption="Journal entries"
+          columns={columns}
+          rows={filtered}
+          rowKey={(e) => e.id}
+          loading={isLoading}
+          mobileCard={(e) => (
+            <>
+              <MobileCardHeader title={e.id} code trailing={<LedgerStatus value={e.status} />} />
+              <MobileCardRow>{t(e.narration)}</MobileCardRow>
+              <MobileCardRow label={t('Reference')}>
+                <span className="font-mono" dir="ltr">
+                  {e.ref}
+                </span>
+              </MobileCardRow>
+              <MobileCardRow label={t('Debit')}>
+                <Money sar={parseSar(e.debit)} className="text-heading" />
+              </MobileCardRow>
+              <MobileCardRow label={t('Credit')}>
+                <Money sar={parseSar(e.credit)} className="text-heading" />
+              </MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="BookOpen" title={t('No journal entries yet')} />}
+        />
+      </>
+    )
+  }
+
   return (
     <>
       <ListPageHeader
@@ -174,27 +280,7 @@ export function JournalEntries() {
         }
       />
 
-      <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-4">
-        <span
-          className={
-            'flex rounded p-2 ' +
-            (balanced
-              ? 'bg-[rgba(10,94,215,.1)] text-salis-blue'
-              : 'bg-[rgba(249,115,22,.12)] text-salis-orange')
-          }
-        >
-          <Icon name={balanced ? 'Scale' : 'AlertTriangle'} size={18} />
-        </span>
-        <div className="flex-1">
-          <p className="text-[13px] font-semibold text-heading">
-            {balanced ? t('Ledger is balanced') : t('Ledger is out of balance')}
-          </p>
-          <p className="mt-0.5 text-xs text-muted">
-            {t('Total Debit')} <Money sar={debit} className="text-body" /> · {t('Total Credit')}{' '}
-            <Money sar={credit} className="text-body" />
-          </p>
-        </div>
-      </div>
+      {balanceNotice}
 
       <DataTable
         caption="Journal entries"
@@ -231,6 +317,7 @@ type Expense = RowOf<'expenses'>
 export function Expenses() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const { data: expenses = [], isLoading } = useCollection('expenses')
   const { query, setQuery, filtered } = useFilter(expenses, (e) => [e.id, e.category, e.vendor])
 
@@ -242,6 +329,32 @@ export function Expenses() {
     { header: 'Amount', cell: (e) => <Money sar={parseSar(e.amount)} className="font-semibold" /> },
     { header: 'Status', cell: (e) => <LedgerStatus value={e.status} /> },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Receipt" title={t('Expenses')} subtitle={t(ACCOUNTING)} />
+        <DataTable
+          caption="Expenses"
+          columns={columns}
+          rows={filtered}
+          rowKey={(e) => e.id}
+          loading={isLoading}
+          mobileCard={(e) => (
+            <>
+              <MobileCardHeader title={e.id} code trailing={<LedgerStatus value={e.status} />} />
+              <MobileCardRow>{e.vendor}</MobileCardRow>
+              <MobileCardRow label={t('Category')}>{t(e.category)}</MobileCardRow>
+              <MobileCardRow label={t('Amount')}>
+                <Money sar={parseSar(e.amount)} className="font-semibold text-heading" />
+              </MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="Receipt" title={t('No expenses recorded')} />}
+        />
+      </>
+    )
+  }
 
   return (
     <>
@@ -286,6 +399,7 @@ type Receipt = RowOf<'receipts'>
 export function Receipts() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const { data: receipts = [], isLoading } = useCollection('receipts')
   const { query, setQuery, filtered } = useFilter(receipts, (r) => [r.id, r.customer, r.invoice])
   const [raising, setRaising] = useState(false)
@@ -299,6 +413,56 @@ export function Receipts() {
     { header: 'Amount', cell: (r) => <Money sar={parseSar(r.amount)} className="font-semibold" /> },
     { header: 'Status', cell: (r) => <LedgerStatus value={r.status} /> },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader
+          icon="Receipt"
+          title={t('Receipts')}
+          actions={
+            can('payments', 'c') ? (
+              <Button size="md" onClick={() => setRaising(true)}>
+                <Icon name="Plus" size={16} />
+                {t('New Receipt')}
+              </Button>
+            ) : null
+          }
+        />
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('Search receipts...')}
+          aria-label={t('Search receipts')}
+          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+        />
+        <DataTable
+          caption="Cash receipts"
+          columns={columns}
+          rows={filtered}
+          rowKey={(r) => r.id}
+          loading={isLoading}
+          mobileCard={(r) => (
+            <>
+              <MobileCardHeader title={r.id} code trailing={<LedgerStatus value={r.status} />} />
+              <MobileCardRow>{r.customer}</MobileCardRow>
+              <MobileCardRow label={t('Invoice')}>
+                <span className="font-mono" dir="ltr">
+                  {r.invoice}
+                </span>
+              </MobileCardRow>
+              <MobileCardRow label={t('Amount')}>
+                <Money sar={parseSar(r.amount)} className="font-semibold text-heading" />
+              </MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="Receipt" title={t('No receipts yet')} />}
+        />
+        <RaiseReceiptModal open={raising} onClose={() => setRaising(false)} />
+      </>
+    )
+  }
 
   return (
     <>
@@ -348,6 +512,7 @@ type Department = RowOf<'departments'>
 export function Departments() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const { data: departments = [], isLoading } = useCollection('departments')
   const { query, setQuery, filtered } = useFilter(departments, (d) => [d.name, d.head, d.branch])
 
@@ -366,6 +531,34 @@ export function Departments() {
     { header: 'Cost Center', cell: (d) => d.costCenter, code: true },
     { header: 'Branch', cell: (d) => t(d.branch) },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Building2" title={t('Departments')} subtitle={t('Administration')} />
+        <DataTable
+          caption="Departments and cost centres"
+          columns={columns}
+          rows={filtered}
+          rowKey={(d) => d.costCenter}
+          loading={isLoading}
+          mobileCard={(d) => (
+            <>
+              <MobileCardHeader title={t(d.name)} />
+              <MobileCardRow label={t('Department Head')}>{d.head}</MobileCardRow>
+              <MobileCardRow label={t('Headcount')}>{d.headcount}</MobileCardRow>
+              <MobileCardRow label={t('Cost Center')}>
+                <span className="font-mono" dir="ltr">
+                  {d.costCenter}
+                </span>
+              </MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="Building2" title={t('No departments yet')} />}
+        />
+      </>
+    )
+  }
 
   return (
     <>

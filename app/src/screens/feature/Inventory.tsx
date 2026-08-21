@@ -9,7 +9,8 @@ import {
   TabBar,
   type Stat,
 } from '@/components/shell/FeatureScreen'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { DataTable, type Column } from '@/components/ui/DataTable'
@@ -491,6 +492,7 @@ const TABS = [
  *  the real transport. */
 export function Inventory({ api }: { api?: MovementApi | null } = {}) {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { can, fieldHidden, user } = useSession()
   const { data: parts = [], isLoading, isError, refetch } = useCollection('parts')
   const [tab, setTab] = useState<string>(TABS[0].id)
@@ -632,6 +634,26 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
       onOpen={openLedger}
     />
   )
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Package" title={t('Inventory & Parts')} />
+        <TabBar tabs={TABS} value={tab} onChange={setTab} />
+        <StatRow stats={stats} />
+        <div role="tabpanel" tabIndex={0}
+          aria-label={t(TABS.find((entry) => entry.id === tab)?.label ?? 'Overview')}
+          className="flex flex-col gap-4 focus-visible:outline-none">
+          {body}
+        </div>
+        {creating ? <AddPartModal onClose={() => setCreating(false)} /> : null}
+        {ledgerPart ? (
+          <PartLedgerModal part={ledgerPart} api={movements} unavailable={unavailable}
+            mayEdit={mayEdit} onClose={() => setLedgerSku(null)} />
+        ) : null}
+      </>
+    )
+  }
 
   return (
     <>

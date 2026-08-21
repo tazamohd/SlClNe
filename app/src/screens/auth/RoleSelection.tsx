@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 interface RoleOption {
   id: string
@@ -58,15 +59,16 @@ const ROLE_OPTIONS: RoleOption[] = [
 /** Role selection — pick your role after signup. */
 export function RoleSelection() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const [picked, setPicked] = useState<string>('owner')
 
   return (
-    <AuthLayout className="mx-auto max-w-[560px]">
-      <div className="flex flex-col gap-6">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[560px]'}>
+      <div className={`flex flex-col ${isMobile ? 'gap-4' : 'gap-6'}`}>
         {/* Header */}
         <div className="text-center">
-          <BrandMark width={90} />
-          <h1 className="mt-3 font-display text-[22px] font-black text-heading">
+          <BrandMark width={isMobile ? 70 : 90} />
+          <h1 className={`mt-3 font-display font-black text-heading ${isMobile ? 'text-lg' : 'text-[22px]'}`}>
             {t('Select Your Role')}
           </h1>
           <p className="mt-1.5 text-[13px] text-muted">
@@ -75,7 +77,7 @@ export function RoleSelection() {
         </div>
 
         {/* Role grid */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className={`grid gap-3 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
           {ROLE_OPTIONS.map((role) => {
             const selected = picked === role.id
             return (

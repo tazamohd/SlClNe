@@ -12,7 +12,7 @@
           "route": "/appointment-calendar",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -21,7 +21,7 @@
           "route": "/appointments",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -66,7 +66,7 @@
           "route": "/estimate-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -75,7 +75,7 @@
           "route": "/estimates",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -93,7 +93,7 @@
           "route": "/job-cards",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -102,7 +102,7 @@
           "route": "/job-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -129,7 +129,7 @@
           "route": "/technicians",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -138,7 +138,7 @@
           "route": "/technician-schedule",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -147,7 +147,7 @@
           "route": "/workshop-check-in",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -156,7 +156,7 @@
           "route": "/workshop-delivery",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -174,7 +174,7 @@
           "route": "/workshop-inspection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -183,7 +183,7 @@
           "route": "/workshop-qc",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -201,7 +201,7 @@
           "route": "/workshop-signature",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -218,7 +218,7 @@
           "route": "/campaigns",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -227,7 +227,7 @@
           "route": "/crmcalendar",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -236,7 +236,7 @@
           "route": "/crmtasks",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -254,7 +254,7 @@
           "route": "/customer-feedback",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -263,7 +263,7 @@
           "route": "/customers",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -272,7 +272,7 @@
           "route": "/customer-segments",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -281,7 +281,7 @@
           "route": "/email-marketing",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -290,7 +290,7 @@
           "route": "/fleet-contract",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -299,7 +299,7 @@
           "route": "/fleet-management",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -308,7 +308,7 @@
           "route": "/lead-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -317,7 +317,7 @@
           "route": "/lead-pipeline",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -326,7 +326,7 @@
           "route": "/opportunities",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -335,7 +335,7 @@
           "route": "/smscampaigns",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -353,7 +353,7 @@
           "route": "/vehicles",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -362,7 +362,7 @@
           "route": "/whats-app-campaigns",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -379,7 +379,7 @@
           "route": "/inventory",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -388,7 +388,7 @@
           "route": "/inventory-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -477,7 +477,7 @@
           "route": "/purchase-order",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -494,7 +494,7 @@
           "route": "/bank-reconciliation",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -503,7 +503,7 @@
           "route": "/bidashboard",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -512,7 +512,7 @@
           "route": "/chart-of-accounts",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -521,7 +521,7 @@
           "route": "/custom-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -530,7 +530,7 @@
           "route": "/departments",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -539,7 +539,7 @@
           "route": "/executive-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -548,7 +548,7 @@
           "route": "/expenses",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -557,7 +557,7 @@
           "route": "/financial-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -566,7 +566,7 @@
           "route": "/financial-statements",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -575,7 +575,7 @@
           "route": "/insurance-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -584,7 +584,7 @@
           "route": "/invoice-create",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -593,7 +593,7 @@
           "route": "/invoice-detail",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -602,7 +602,7 @@
           "route": "/invoice-preview",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -611,7 +611,7 @@
           "route": "/invoices",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -620,7 +620,7 @@
           "route": "/journal-entries",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -629,7 +629,7 @@
           "route": "/loan-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -638,7 +638,7 @@
           "route": "/operational-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -647,7 +647,7 @@
           "route": "/payments",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -656,7 +656,7 @@
           "route": "/receipts",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -665,7 +665,7 @@
           "route": "/reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -674,7 +674,7 @@
           "route": "/reports-analytics",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -683,7 +683,7 @@
           "route": "/sales-reports",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -692,7 +692,7 @@
           "route": "/tax-management",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -709,7 +709,7 @@
           "route": "/hrpayroll",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -726,7 +726,7 @@
           "route": "/agent-dashboard",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -735,7 +735,7 @@
           "route": "/agent-registry",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -771,7 +771,7 @@
           "route": "/conversation-history",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -824,7 +824,7 @@
           "route": "/advanced-settings",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -878,7 +878,7 @@
           "route": "/integrations",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -994,7 +994,7 @@
           "route": "/account-locked",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1003,7 +1003,7 @@
           "route": "/biometric-setup",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1012,7 +1012,7 @@
           "route": "/create-pin",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1021,7 +1021,7 @@
           "route": "/error404",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1030,7 +1030,7 @@
           "route": "/forgot-password",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1039,7 +1039,7 @@
           "route": "/invite-acceptance",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1048,7 +1048,7 @@
           "route": "/language-selection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1066,7 +1066,7 @@
           "route": "/logout-confirmation",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1075,7 +1075,7 @@
           "route": "/maintenance",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1093,7 +1093,7 @@
           "route": "/organization-selection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1102,7 +1102,7 @@
           "route": "/otpverification",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1111,7 +1111,7 @@
           "route": "/privacy-policy",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1120,7 +1120,7 @@
           "route": "/profile-completion",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1129,7 +1129,7 @@
           "route": "/region-selection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1138,7 +1138,7 @@
           "route": "/register",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1147,7 +1147,7 @@
           "route": "/reset-password",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1156,7 +1156,7 @@
           "route": "/role-selection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1165,7 +1165,7 @@
           "route": "/session-expired",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1174,7 +1174,7 @@
           "route": "/social-login",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1183,7 +1183,7 @@
           "route": "/splash",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1192,7 +1192,7 @@
           "route": "/ssologin",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1201,7 +1201,7 @@
           "route": "/terms-conditions",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1210,7 +1210,7 @@
           "route": "/two-factor-verification",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1219,7 +1219,7 @@
           "route": "/unauthorized",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1228,7 +1228,7 @@
           "route": "/welcome",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1237,7 +1237,7 @@
           "route": "/workspace-selection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -1263,7 +1263,7 @@
           "route": "/call-center/logs",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1299,7 +1299,7 @@
           "route": "/native/android",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1308,7 +1308,7 @@
           "route": "/native/i-os",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1593,7 +1593,7 @@
           "route": "/index",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1611,7 +1611,7 @@
           "route": "/ui/activity-feed",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1620,7 +1620,7 @@
           "route": "/ui/advanced-filters",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1629,7 +1629,7 @@
           "route": "/ui/attachments",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1638,7 +1638,7 @@
           "route": "/ui/calendar-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1647,7 +1647,7 @@
           "route": "/ui/card-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1656,7 +1656,7 @@
           "route": "/ui/charts",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1665,7 +1665,7 @@
           "route": "/ui/comments",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1674,7 +1674,7 @@
           "route": "/ui/empty-states",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1683,7 +1683,7 @@
           "route": "/ui/export-center",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1692,7 +1692,7 @@
           "route": "/ui/form-validation",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1701,7 +1701,7 @@
           "route": "/ui/import-center",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1710,7 +1710,7 @@
           "route": "/ui/kanban-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1719,7 +1719,7 @@
           "route": "/ui/list-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1728,7 +1728,7 @@
           "route": "/ui/loading-states",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1737,7 +1737,7 @@
           "route": "/ui/map-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1746,7 +1746,7 @@
           "route": "/ui/media-gallery",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1755,7 +1755,7 @@
           "route": "/ui/messages",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1764,7 +1764,7 @@
           "route": "/ui/modals/actions",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1773,7 +1773,7 @@
           "route": "/ui/modals/capture",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1782,7 +1782,7 @@
           "route": "/ui/modals/crud",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1791,7 +1791,7 @@
           "route": "/ui/modals/data",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1800,7 +1800,7 @@
           "route": "/ui/modals/lifecycle",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1809,7 +1809,7 @@
           "route": "/ui/modals/status",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1818,7 +1818,7 @@
           "route": "/ui/table-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         },
@@ -1827,7 +1827,7 @@
           "route": "/ui/timeline-view",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "REFERENCE_ONLY"
         }

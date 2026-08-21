@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -12,6 +12,7 @@ import { InvoiceStatusBadge } from './Invoices'
 import { InvoiceRowActions } from './InvoiceActions'
 import { RecordPaymentModal, type PayableInvoice } from './RecordPaymentModal'
 import { fromHalalas, invoiceMoney } from './money'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
@@ -41,6 +42,7 @@ type Invoice = RowOf<'invoices'>
 export function Payments() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: invoices = [], isLoading, error, refetch } = useCollection('invoices')
   const [paying, setPaying] = useState<PayableInvoice | null>(null)
@@ -92,6 +94,99 @@ export function Payments() {
     },
   ]
 
+  const statCards = (
+    <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-1 gap-6 sm:grid-cols-2'}>
+      <StatCard
+        label={t('Outstanding')}
+        value={formatSar(fromHalalas(outstandingHalalas))}
+        tone="warning"
+        note={derived ? t('Invoice totals — this build has no API to give balances.') : undefined}
+      />
+      <StatCard
+        label={t('Collected')}
+        value={formatSar(fromHalalas(collectedHalalas))}
+        note={derived ? t('Paid invoices only — part payments need the API.') : undefined}
+      />
+    </div>
+  )
+
+  const mobileCard = (invoice: Invoice) => (
+    <>
+      <MobileCardHeader
+        title={invoice.id}
+        code
+        trailing={<InvoiceStatusBadge status={invoice.status} />}
+      />
+      <MobileCardRow>{invoice.cust}</MobileCardRow>
+      <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
+      <MobileCardRow label={t('Amount')}>
+        <Money
+          sar={fromHalalas(invoiceMoney(invoice).totalHalalas)}
+          className="font-semibold text-heading"
+        />
+      </MobileCardRow>
+      <div className="border-t border-border pt-2.5">
+        <InvoiceRowActions
+          invoice={invoice as unknown as PayableInvoice}
+          onRecordPayment={setPaying}
+          labelled
+        />
+      </div>
+    </>
+  )
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader
+          icon="Wallet"
+          title={t('Payments')}
+          actions={
+            can('invoices', 'c') ? (
+              <Button size="md" onClick={() => navigate('/invoice-create')}>
+                <Icon name="Plus" size={16} />
+                {t('New Invoice')}
+              </Button>
+            ) : undefined
+          }
+        />
+
+        {statCards}
+
+        {error ? (
+          <Card className="p-6">
+            <ErrorState
+              title={t("Couldn't load the invoices")}
+              description={error.message}
+              onRetry={() => void refetch()}
+            />
+          </Card>
+        ) : (
+          <DataTable
+            caption="Payments"
+            columns={columns}
+            rows={invoices}
+            rowKey={(invoice) => invoice.id}
+            loading={isLoading}
+            onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
+            mobileCard={mobileCard}
+            empty={
+              <EmptyState
+                icon="Wallet"
+                title={t('No payments yet')}
+                description={t('Payments appear here once invoices are raised.')}
+              />
+            }
+          />
+        )}
+
+        {paying ? (
+          <RecordPaymentModal invoice={paying} open onClose={() => setPaying(null)} />
+        ) : null}
+      </>
+    )
+  }
+
   return (
     <>
       <ListPageHeader
@@ -106,19 +201,7 @@ export function Payments() {
         }
       />
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <StatCard
-          label={t('Outstanding')}
-          value={formatSar(fromHalalas(outstandingHalalas))}
-          tone="warning"
-          note={derived ? t('Invoice totals — this build has no API to give balances.') : undefined}
-        />
-        <StatCard
-          label={t('Collected')}
-          value={formatSar(fromHalalas(collectedHalalas))}
-          note={derived ? t('Paid invoices only — part payments need the API.') : undefined}
-        />
-      </div>
+      {statCards}
 
       {error ? (
         <Card className="p-6">
@@ -136,30 +219,7 @@ export function Payments() {
           rowKey={(invoice) => invoice.id}
           loading={isLoading}
           onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
-          mobileCard={(invoice) => (
-            <>
-              <MobileCardHeader
-                title={invoice.id}
-                code
-                trailing={<InvoiceStatusBadge status={invoice.status} />}
-              />
-              <MobileCardRow>{invoice.cust}</MobileCardRow>
-              <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
-              <MobileCardRow label={t('Amount')}>
-                <Money
-                  sar={fromHalalas(invoiceMoney(invoice).totalHalalas)}
-                  className="font-semibold text-heading"
-                />
-              </MobileCardRow>
-              <div className="border-t border-border pt-2.5">
-                <InvoiceRowActions
-                  invoice={invoice as unknown as PayableInvoice}
-                  onRecordPayment={setPaying}
-                  labelled
-                />
-              </div>
-            </>
-          )}
+          mobileCard={mobileCard}
           empty={
             <EmptyState
               icon="Wallet"

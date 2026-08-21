@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Registration form — name, email, phone, password. */
 export function Register() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -26,14 +28,14 @@ export function Register() {
   }
 
   return (
-    <AuthLayout className="mx-auto max-w-[460px]">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[460px]'}>
       <div className="rounded-2xl border border-border bg-[color-mix(in_srgb,var(--surface-card)_85%,transparent)] shadow-lg backdrop-blur-[24px]">
-        <div className="flex flex-col items-center gap-2 p-6 pb-0">
-          <BrandMark width={110} />
-          <h2 className="font-display text-xl font-bold text-heading">{t('Create Account')}</h2>
+        <div className={`flex flex-col items-center gap-2 pb-0 ${isMobile ? 'p-4' : 'p-6'}`}>
+          <BrandMark width={isMobile ? 90 : 110} />
+          <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('Create Account')}</h2>
         </div>
 
-        <form onSubmit={submit} className="flex flex-col gap-3.5 p-6">
+        <form onSubmit={submit} className={`flex flex-col gap-3.5 ${isMobile ? 'p-4' : 'p-6'}`}>
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="reg-name"

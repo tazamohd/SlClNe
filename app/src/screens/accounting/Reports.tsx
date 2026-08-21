@@ -1,4 +1,6 @@
 import { useMemo } from 'react'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Button } from '@/components/ui/Button'
 import { BarList, CHART_COLORS, Donut } from '@/components/ui/Charts'
@@ -73,6 +75,7 @@ function useLedgerTotals() {
 // ── Financial reports ───────────────────────────────────────────────────────
 export function FinancialReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const totals = useLedgerTotals()
 
   const stats: Stat[] = [
@@ -91,6 +94,43 @@ export function FinancialReports() {
       .map(([label, value]) => ({ label, value }))
       .sort((a, b) => b.value - a.value)
   }, [totals.expenses])
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="TrendingUp" title={t('Financial Reports')} />
+        <StatRow stats={stats} />
+        <Section title={t('Profit & Loss')} subtitle={t('Derived from the chart of accounts')}>
+          <BarList
+            rows={[
+              { label: 'Revenue', value: totals.revenue },
+              { label: 'Expense', value: totals.expenseAccounts },
+              { label: 'Net Profit', value: Math.max(0, totals.profit) },
+            ]}
+          />
+        </Section>
+        <Section title={t('Expenses by Category')} subtitle={t('Approved and pending claims')}>
+          {byCategory.length ? (
+            <BarList rows={byCategory} />
+          ) : (
+            <p className="text-[13px] text-muted">{t('No expenses recorded')}</p>
+          )}
+        </Section>
+        <Section title={t('Balance Sheet')} subtitle={t('Assets against liabilities and equity')}>
+          <Donut
+            segments={[
+              { label: 'Assets', value: totals.assets },
+              { label: 'Liabilities', value: totals.liabilities },
+              { label: 'Equity', value: totals.equity },
+            ]}
+            centerValue={formatSar(totals.assets).replace('SAR ', '')}
+            centerLabel="Assets"
+          />
+        </Section>
+        {isLive ? <ServerLedgerSummary /> : null}
+      </>
+    )
+  }
 
   return (
     <>
@@ -225,6 +265,7 @@ function ServerLedgerSummary() {
 // ── Financial statements ────────────────────────────────────────────────────
 export function FinancialStatements() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const totals = useLedgerTotals()
 
   const rows: readonly { label: string; value: number; strong?: boolean }[] = [
@@ -235,6 +276,30 @@ export function FinancialStatements() {
     { label: 'Liabilities', value: totals.liabilities },
     { label: 'Equity', value: totals.equity, strong: true },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="FileText" title={t('Financial Statements')} />
+        <Section title={t('Statement Summary')} subtitle={t('Figures derive from the chart of accounts')}>
+          <div className="flex flex-col">
+            {rows.map((row) => (
+              <div
+                key={row.label}
+                className={
+                  'flex items-center justify-between border-b border-border py-3 last:border-b-0 ' +
+                  (row.strong ? 'text-base font-bold text-heading' : 'text-[13px] text-body')
+                }
+              >
+                <span>{t(row.label)}</span>
+                <Money sar={row.value} className={row.strong ? 'font-bold' : ''} />
+              </div>
+            ))}
+          </div>
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>
@@ -268,6 +333,7 @@ export function FinancialStatements() {
 export function ExecutiveReports() {
   const { t } = usePreferences()
   const { fieldHidden } = useSession()
+  const isMobile = useIsMobile()
   const totals = useLedgerTotals()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: customers = [] } = useCollection('customers')
@@ -279,6 +345,33 @@ export function ExecutiveReports() {
   // this screen. Kept so that widening execreports in PERMS can't silently
   // expose P&L figures — the field rule would then start applying here.
   const hidePnl = fieldHidden('Branch P&L')
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="BarChart3" title={t('Executive Reports')} />
+        <StatRow stats={[
+          { label: 'Revenue', value: hidePnl ? '---' : formatSar(totals.revenue), caption: 'Period to date', highlight: true },
+          { label: 'Net Profit', value: hidePnl ? '---' : formatSar(totals.profit), caption: 'Revenue less expenses', tone: 'info' },
+        ]} />
+        {hidePnl ? (
+          <Section title={t('Branch P&L')}>
+            <p className="flex items-center gap-2 text-[13px] text-muted">
+              <Icon name="Lock" size={15} className="text-salis-blue" />
+              {t('Branch P&L is not visible to your role.')}
+            </p>
+          </Section>
+        ) : (
+          <Section title={t('Revenue vs Expense')} subtitle={t('Across the reporting period')}>
+            <BarList rows={[
+              { label: 'Revenue', value: totals.revenue },
+              { label: 'Expense', value: totals.expenseAccounts },
+            ]} />
+          </Section>
+        )}
+      </>
+    )
+  }
 
   return (
     <>
@@ -330,6 +423,7 @@ export function ExecutiveReports() {
 
 export function OperationalReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: appointments = [] } = useCollection('appointments')
   const { data: technicians = [] } = useCollection('technicians')
@@ -342,6 +436,67 @@ export function OperationalReports() {
       value,
     }))
   }, [jobs])
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="ClipboardList" title={t('Operational Reports')} />
+        <StatRow
+          stats={[
+            { label: 'Job Cards', value: jobs.length, caption: 'In this period', highlight: true },
+            { label: 'Appointments', value: appointments.length, caption: 'Booked', tone: 'info' },
+            { label: 'Technicians', value: technicians.length, caption: 'On strength' },
+          ]}
+        />
+        <Section title={t('Jobs by Status')}>
+          <div className="flex flex-col gap-3">
+            {byStatus.map((row, index) => (
+              <div key={row.label} className="flex flex-col gap-1.5">
+                <div className="flex items-baseline justify-between gap-3 text-[13px]">
+                  <span className="capitalize text-body">{t(row.label)}</span>
+                  <span className="font-mono font-semibold text-heading" dir="ltr">
+                    {row.value}
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-inset">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${(row.value / Math.max(1, jobs.length)) * 100}%`,
+                      background: CHART_COLORS[index % CHART_COLORS.length],
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+        <Section title={t('Technician Load')}>
+          <div className="flex flex-col gap-3">
+            {technicians.map((tech, index) => (
+              <div key={tech.name} className="flex flex-col gap-1.5">
+                <div className="flex items-baseline justify-between gap-3 text-[13px]">
+                  <span className="text-body">{tech.name}</span>
+                  <span className="font-mono font-semibold text-heading" dir="ltr">
+                    {tech.jobs}
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-inset">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${(tech.jobs / Math.max(...technicians.map((x) => x.jobs), 1)) * 100}%`,
+                      background: CHART_COLORS[index % CHART_COLORS.length],
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>
@@ -418,6 +573,7 @@ export function OperationalReports() {
 // ── BI dashboard ────────────────────────────────────────────────────────────
 export function BIDashboard() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const totals = useLedgerTotals()
   const { data: jobs = [] } = useCollection('jobs')
 
@@ -426,6 +582,30 @@ export function BIDashboard() {
     for (const job of jobs) map.set(job.svc.replace(/_/g, ' '), (map.get(job.svc.replace(/_/g, ' ')) ?? 0) + 1)
     return [...map.entries()].map(([label, value]) => ({ label, value }))
   }, [jobs])
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="PieChart" title={t('BI Dashboard')} />
+        <StatRow stats={[
+          { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
+          { label: 'Receivable', value: formatSar(totals.receivable), caption: 'Outstanding', tone: 'warning' },
+        ]} />
+        <Section title={t('Jobs by Service')}>
+          <Donut segments={bySvc} centerValue={String(jobs.length)} centerLabel="jobs" />
+        </Section>
+        <Section title={t('Ledger Composition')}>
+          <BarList rows={[
+            { label: 'Assets', value: totals.assets },
+            { label: 'Liabilities', value: totals.liabilities },
+            { label: 'Equity', value: totals.equity },
+            { label: 'Revenue', value: totals.revenue },
+            { label: 'Expense', value: totals.expenseAccounts },
+          ]} />
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>

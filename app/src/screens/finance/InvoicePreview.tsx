@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { Money } from '@/components/ui/Money'
 import { DetailPage, type DetailStat } from '@/components/shell/DetailPage'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -30,6 +31,7 @@ import { fromHalalas, invoiceMoney, lineUnitHalalas, roundHalfUp } from './money
  */
 export function InvoicePreview() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const { can } = useSession()
   const [params] = useSearchParams()
 
@@ -131,7 +133,7 @@ export function InvoicePreview() {
       subtitle={t('Tax invoice')}
       status={<InvoiceStatusBadge status={invoice.status} />}
       actions={
-        <Button size="md" onClick={() => window.print()}>
+        <Button size={isMobile ? 'sm' : 'md'} onClick={() => window.print()}>
           <Icon name="Printer" size={15} />
           {t('Print')}
         </Button>

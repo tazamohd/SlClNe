@@ -2,7 +2,8 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -120,6 +121,7 @@ type Customer = RowOf<'customers'> & { email?: string | null }
 export function Customers() {
   const { t } = usePreferences()
   const { can, fieldHidden } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const toast = useToast()
   const { data: customers = [], isLoading, isError, error, refetch } = useCollection('customers')
@@ -162,6 +164,49 @@ export function Customers() {
         ]
       : []),
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Users" title={t('Customers')} />
+        {isError ? (
+          <Card className="p-6">
+            <ErrorState description={error?.message} onRetry={() => void refetch()} />
+          </Card>
+        ) : (
+          <DataTable
+            columns={columns}
+            rows={filtered}
+            rowKey={(c) => rowId(c) ?? c.name}
+            loading={isLoading}
+            onRowClick={(c) => navigate(`/customer-detail?id=${encodeURIComponent(rowId(c) ?? c.name)}`)}
+            mobileCard={(c) => (
+              <>
+                <MobileCardHeader title={c.name} />
+                {hideContact ? null : (
+                  <MobileCardRow label={t('Phone')}>
+                    <span className="font-mono" dir="ltr">{c.phone}</span>
+                  </MobileCardRow>
+                )}
+                <MobileCardRow label={t('Total Spent')}>
+                  <Money sar={parseSar(c.spent ?? '')} className="font-semibold text-heading" />
+                </MobileCardRow>
+              </>
+            )}
+            empty={<EmptyState icon="Users" title={t('No customers yet')} />}
+          />
+        )}
+        {form !== undefined ? (
+          <CustomerFormModal open onClose={() => setForm(undefined)} customer={form ?? undefined} />
+        ) : null}
+        {doomed ? (
+          <DeleteRecordModal open onClose={() => setDoomed(undefined)} kind="Customer" name={doomed.name}
+            consequences={<Consequence label="Job cards and invoices keep their history" />}
+            onConfirm={() => remove.mutateAsync({ id: rowId(doomed)! }).then(() => { setDoomed(undefined); toast.show({ title: t('Customer deleted') }) })} />
+        ) : null}
+      </>
+    )
+  }
 
   return (
     <>
@@ -271,6 +316,7 @@ type Vehicle = RowOf<'vehicles'> & { vin?: string | null; mileageKm?: number }
 export function Vehicles() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const toast = useToast()
   const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
@@ -306,6 +352,96 @@ export function Vehicles() {
         ]
       : []),
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader
+          icon="Car"
+          title={t('All Vehicles')}
+          actions={
+            can('vehicles', 'c') ? (
+              <Button size="md" onClick={() => setForm(null)}>
+                <Icon name="Plus" size={16} />
+                {t('Add New Vehicle')}
+              </Button>
+            ) : null
+          }
+        />
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('Search vehicles...')}
+          aria-label={t('Search vehicles')}
+          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+        />
+        {isError ? (
+          <Card className="p-6">
+            <ErrorState description={error?.message} onRetry={() => void refetch()} />
+          </Card>
+        ) : (
+          <DataTable
+            columns={columns}
+            rows={filtered}
+            rowKey={(v) => rowId(v) ?? v.plate}
+            loading={isLoading}
+            onRowClick={(v) => navigate(`/vehicle-detail?id=${encodeURIComponent(rowId(v) ?? v.plate)}`)}
+            mobileCard={(v) => (
+              <>
+                <MobileCardHeader
+                  title={v.plate}
+                  code
+                  trailing={
+                    <span className="flex items-center gap-1">
+                      <VehicleStatusBadge value={v.status} />
+                    </span>
+                  }
+                />
+                <MobileCardRow>{v.make}</MobileCardRow>
+                <MobileCardRow label={t('Owner')}>{v.owner}</MobileCardRow>
+                <MobileCardRow label={t('Mileage')}>
+                  <span className="font-mono" dir="ltr">{derived(v.mileage)}</span>
+                </MobileCardRow>
+              </>
+            )}
+            empty={
+              <NoMatches
+                query={query}
+                icon="Car"
+                title="No vehicles yet"
+                description="Vehicles are added at check-in."
+              />
+            }
+          />
+        )}
+        {form !== undefined ? (
+          <VehicleFormModal open onClose={() => setForm(undefined)} vehicle={form ?? undefined} />
+        ) : null}
+        {doomed ? (
+          <DeleteRecordModal
+            open
+            onClose={() => setDoomed(undefined)}
+            kind="Vehicle"
+            name={doomed.plate}
+            code
+            consequences={
+              <>
+                <Consequence label="Job cards keep this vehicle's history" />
+                <Consequence label="The owner's customer record is not affected" />
+              </>
+            }
+            onConfirm={async () => {
+              const id = rowId(doomed)
+              if (!id) throw new Error(t('This record has no id, so it cannot be deleted.'))
+              await remove.mutateAsync({ id })
+              toast.show({ title: t('Vehicle deleted'), description: doomed.plate })
+            }}
+          />
+        ) : null}
+      </>
+    )
+  }
 
   return (
     <>
@@ -410,6 +546,7 @@ type Estimate = RowOf<'estimates'>
 export function Estimates() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: estimates = [], isLoading } = useCollection('estimates')
   const { query, setQuery, filtered } = useSearch(estimates, (e) => [e.id, e.cust, e.veh])
@@ -423,6 +560,32 @@ export function Estimates() {
     { header: 'Amount', cell: (e) => <Money sar={parseSar(e.amount)} className="font-semibold" /> },
     { header: 'Status', cell: (e) => statusBadge(e.status) },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="FileText" title={t('Estimates')} />
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          rowKey={(e) => e.id}
+          loading={isLoading}
+          onRowClick={(e) => navigate(`/estimate-detail?id=${encodeURIComponent(e.id)}`)}
+          mobileCard={(e) => (
+            <>
+              <MobileCardHeader title={e.id} code trailing={statusBadge(e.status)} />
+              <MobileCardRow>{e.cust}</MobileCardRow>
+              <MobileCardRow>{e.veh}</MobileCardRow>
+              <MobileCardRow label={t('Amount')}>
+                <Money sar={parseSar(e.amount)} className="font-semibold text-heading" />
+              </MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="FileText" title={t('No estimates yet')} />}
+        />
+      </>
+    )
+  }
 
   return (
     <>
@@ -473,6 +636,7 @@ type Tech = RowOf<'technicians'>
 export function Technicians() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const { data: techs = [], isLoading } = useCollection('technicians')
   const { query, setQuery, filtered } = useSearch(techs, (x) => [x.name, x.specialty])
 
@@ -489,6 +653,54 @@ export function Technicians() {
     { header: 'Active Jobs', cell: (x) => x.jobs },
     { header: 'Rating', cell: (x) => rating(x.rating) },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader
+          icon="Wrench"
+          title={t('Technicians')}
+          actions={
+            can('technicians', 'c') ? (
+              <Button size="md">
+                <Icon name="Plus" size={16} />
+                {t('Add Technician')}
+              </Button>
+            ) : null
+          }
+        />
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('Search technicians...')}
+          aria-label={t('Search technicians')}
+          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+        />
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          rowKey={(x) => x.name}
+          loading={isLoading}
+          mobileCard={(x) => (
+            <>
+              <MobileCardHeader title={x.name} trailing={rating(x.rating)} />
+              <MobileCardRow>{t(x.specialty)}</MobileCardRow>
+              <MobileCardRow label={t('Active Jobs')}>{x.jobs}</MobileCardRow>
+            </>
+          )}
+          empty={
+            <NoMatches
+              query={query}
+              icon="Wrench"
+              title="No technicians yet"
+              description="Add technicians to assign work."
+            />
+          }
+        />
+      </>
+    )
+  }
 
   return (
     <>
@@ -535,6 +747,7 @@ type Fleet = RowOf<'fleets'>
 export function FleetManagement() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: fleets = [], isLoading } = useCollection('fleets')
   const { query, setQuery, filtered } = useSearch(fleets, (f) => [f.name])
@@ -547,6 +760,29 @@ export function FleetManagement() {
     { header: 'Active Jobs', cell: (f) => f.active },
     { header: 'Status', cell: (f) => contractBadge(f.contract) },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Truck" title={t('Fleet Management')} />
+        <DataTable
+          columns={columns}
+          rows={filtered}
+          rowKey={(f) => f.name}
+          loading={isLoading}
+          onRowClick={(f) => navigate(`/fleet-contract?name=${encodeURIComponent(f.name)}`)}
+          mobileCard={(f) => (
+            <>
+              <MobileCardHeader title={f.name} trailing={contractBadge(f.contract)} />
+              <MobileCardRow label={t('Vehicles Count')}>{f.vehicles}</MobileCardRow>
+              <MobileCardRow label={t('Active Jobs')}>{f.active}</MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="Truck" title={t('No fleet accounts yet')} />}
+        />
+      </>
+    )
+  }
 
   return (
     <>

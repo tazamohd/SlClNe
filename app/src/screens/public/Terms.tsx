@@ -1,4 +1,5 @@
 import { useT } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePageMeta } from './usePageMeta'
 import { LegalDocument, type LegalClause } from './sections/LegalDocument'
 
@@ -70,6 +71,7 @@ const CLAUSES: readonly LegalClause[] = [
 
 export function PublicTerms() {
   const t = useT()
+  const isMobile = useIsMobile()
   usePageMeta({
     title: t('Terms & Conditions — SALIS AUTO'),
     description: t(
@@ -78,11 +80,13 @@ export function PublicTerms() {
   })
 
   return (
-    <LegalDocument
-      title="Terms & Conditions"
-      updated="16 August 2026"
-      intro="These Terms & Conditions govern your access to and use of the SALIS AUTO website and platform. Please read them carefully before using the service."
-      clauses={CLAUSES}
-    />
+    <div className={isMobile ? 'px-1' : ''}>
+      <LegalDocument
+        title="Terms & Conditions"
+        updated="16 August 2026"
+        intro="These Terms & Conditions govern your access to and use of the SALIS AUTO website and platform. Please read them carefully before using the service."
+        clauses={CLAUSES}
+      />
+    </div>
   )
 }

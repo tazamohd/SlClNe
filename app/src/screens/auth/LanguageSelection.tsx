@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import type { Language } from '@/data/types'
 
 /** Language picker + notification opt-in — the first screen of the signup
@@ -12,6 +13,7 @@ import type { Language } from '@/data/types'
  *  committing to it. */
 export function LanguageSelection() {
   const { t, language, setLanguage, notifications, setNotifications, rtl } = usePreferences()
+  const isMobile = useIsMobile()
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
@@ -21,9 +23,9 @@ export function LanguageSelection() {
         <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.1),transparent_65%)] blur-[64px]" />
       </div>
 
-      <div className="relative z-[1] flex max-w-[440px] animate-fade-up flex-col items-center gap-[22px] px-4 py-6">
-        <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" className="h-auto w-28" />
-        <h1 className="text-center font-display text-[22px] font-extrabold text-heading">
+      <div className={`relative z-[1] flex animate-fade-up flex-col items-center ${isMobile ? 'max-w-full gap-4 px-3 py-4' : 'max-w-[440px] gap-[22px] px-4 py-6'}`}>
+        <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" className={`h-auto ${isMobile ? 'w-20' : 'w-28'}`} />
+        <h1 className={`text-center font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-[22px]'}`}>
           {t('Choose your language')}
         </h1>
 
@@ -44,7 +46,7 @@ export function LanguageSelection() {
           />
         </div>
 
-        <div className="flex w-full flex-col gap-3.5 rounded-lg border border-border bg-card p-4">
+        <div className={`flex w-full flex-col gap-3.5 rounded-lg border border-border bg-card ${isMobile ? 'p-3' : 'p-4'}`}>
           <div className="flex items-center gap-3">
             <span className="flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-[10px] bg-salis-gradient text-white shadow-[0_4px_10px_rgba(10,94,215,.25)]">
               <Icon name="Bell" size={18} />

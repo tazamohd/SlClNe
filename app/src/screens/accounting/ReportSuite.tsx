@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { ErrorState, Loading } from '@/components/ui/States'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar } from '@/components/ui/Money'
 import { BarList, CHART_COLORS } from '@/components/ui/Charts'
@@ -151,7 +152,32 @@ function ReportCard({ link }: { link: ReportLink }) {
 export function Reports() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const visible = REPORT_LINKS.filter((link) => can(link.module, 'v'))
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="FileText" title={t('Reports')} />
+        <Section title={t('Available reports')}>
+          {visible.length === 0 ? (
+            <EmptyState
+              icon="Lock"
+              title={t('No reports available to your role')}
+              description={t('Your role does not have view access to any reporting module.')}
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              {visible.map((link) => (
+                <ReportCard key={link.route} link={link} />
+              ))}
+            </div>
+          )}
+          <ServerScopeNote />
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>
@@ -191,6 +217,7 @@ const SALES_STATUSES = ['all', 'draft', 'unpaid', 'partial', 'paid', 'overdue', 
 
 export function SalesReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { data: invoices = [], isLoading, error, refetch } = useCollection('invoices')
 
   const [query, setQuery] = useState('')
@@ -250,6 +277,84 @@ export function SalesReports() {
     { header: 'Balance', cell: (i) => <MoneyCell invoice={i} field="balanceHalalas" tone /> },
   ]
 
+  const salesToolbar = (
+    <div className={isMobile ? 'flex flex-col gap-3' : 'flex flex-wrap items-end gap-3'}>
+      <label className="flex flex-col gap-1">
+        <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('Invoice or customer')}
+          aria-label={t('Search invoices')}
+          className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span className="text-[11px] font-medium text-muted">{t('Status')}</span>
+        <select
+          value={status}
+          onChange={(event) => setStatus(event.target.value as (typeof SALES_STATUSES)[number])}
+          aria-label={t('Filter by status')}
+          className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+        >
+          {SALES_STATUSES.map((value) => (
+            <option key={value} value={value}>
+              {value === 'all' ? t('All statuses') : t(value[0].toUpperCase() + value.slice(1))}
+            </option>
+          ))}
+        </select>
+      </label>
+      <DateRangeFilter from={from} to={to} onFrom={setFrom} onTo={setTo} />
+    </div>
+  )
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="TrendingUp" title={t('Sales Reports')} />
+        {isLive ? (
+          <SalesSummaryPanel from={from} to={to} status={status === 'all' ? undefined : status} />
+        ) : (
+          <AggregateGapNotice endpoint={AGGREGATE_GAP.sales} />
+        )}
+        <Section title={t('Invoices')} toolbar={salesToolbar}>
+          {error ? (
+            <ErrorState description={error.message} onRetry={() => void refetch()} />
+          ) : (
+            <DataTable
+              caption="Invoices in this sales report"
+              columns={columns}
+              rows={rows}
+              rowKey={(i) => String(i.id)}
+              loading={isLoading}
+              mobileCard={(i) => (
+                <>
+                  <MobileCardHeader title={String(i.id)} code trailing={<InvoiceStatusBadge status={i.status} />} />
+                  <MobileCardRow>{i.cust}</MobileCardRow>
+                  <MobileCardRow label={t('Total')}>
+                    <Money sar={fromHalalas(invoiceMoney(i).totalHalalas)} className="font-semibold text-heading" />
+                  </MobileCardRow>
+                  <MobileCardRow label={t('Balance')}>
+                    <MoneyCell invoice={i} field="balanceHalalas" tone />
+                  </MobileCardRow>
+                </>
+              )}
+              empty={
+                <EmptyState
+                  icon="TrendingUp"
+                  title={t('No invoices in range')}
+                  description={t('No invoices match these filters.')}
+                />
+              }
+            />
+          )}
+          <ServerScopeNote />
+        </Section>
+      </>
+    )
+  }
+
   return (
     <>
       <FeatureHeader
@@ -268,37 +373,7 @@ export function SalesReports() {
       <Section
         title={t('Invoices')}
         subtitle={t('Every figure is the amount the server computed for that invoice')}
-        toolbar={
-          <div className="flex flex-wrap items-end gap-3">
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-              <input
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={t('Invoice or customer')}
-                aria-label={t('Search invoices')}
-                className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-muted">{t('Status')}</span>
-              <select
-                value={status}
-                onChange={(event) => setStatus(event.target.value as (typeof SALES_STATUSES)[number])}
-                aria-label={t('Filter by status')}
-                className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
-              >
-                {SALES_STATUSES.map((value) => (
-                  <option key={value} value={value}>
-                    {value === 'all' ? t('All statuses') : t(value[0].toUpperCase() + value.slice(1))}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <DateRangeFilter from={from} to={to} onFrom={setFrom} onTo={setTo} />
-          </div>
-        }
+        toolbar={salesToolbar}
       >
         {error ? (
           <ErrorState description={error.message} onRetry={() => void refetch()} />
@@ -434,6 +509,7 @@ function MoneyCell({
 
 export function ReportsAnalytics() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const invoices = useCollection('invoices')
   const expenses = useCollection('expenses')
   const accounts = useCollection('chartOfAccounts')
@@ -463,6 +539,33 @@ export function ReportsAnalytics() {
     { label: 'Accounts', value: loading ? '—' : accountRows.length, caption: 'In the ledger', icon: 'BookOpen', tone: 'info' },
     { label: 'Account types', value: loading ? '—' : byType.length, caption: 'Distinct', icon: 'Layers' },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="BarChart3" title={t('Analytics Overview')} />
+        <StatRow stats={stats} />
+        {isLive ? (
+          <TrialBalancePanel />
+        ) : (
+          <AggregateGapNotice endpoint={AGGREGATE_GAP.ledger} />
+        )}
+        <Section title={t('Invoices by status')}>
+          {byStatus.length ? <CountBars rows={byStatus} /> : <EmptyState icon="FileText" title={t('No invoices')} />}
+        </Section>
+        <Section title={t('Expenses by category')}>
+          {byCategory.length ? <CountBars rows={byCategory} /> : <EmptyState icon="Receipt" title={t('No expenses')} />}
+        </Section>
+        <Section title={t('Accounts by type')}>
+          {byType.length ? <CountBars rows={byType} /> : <EmptyState icon="BookOpen" title={t('No accounts')} />}
+        </Section>
+        <Section title={t('Largest invoices')}>
+          {largest.length ? <BarList rows={largest} /> : <EmptyState icon="TrendingUp" title={t('No invoices')} />}
+        </Section>
+        <ServerScopeNote />
+      </>
+    )
+  }
 
   return (
     <>
@@ -765,6 +868,7 @@ const SOURCES: readonly ReportSource[] = [
 
 export function CustomReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const [sourceKey, setSourceKey] = useState<CollectionKey>('invoices')
   const source = SOURCES.find((s) => s.key === sourceKey) ?? SOURCES[0]
 
@@ -840,6 +944,44 @@ export function CustomReports() {
     code: field.code,
     cell: (row) => renderCell(row[field.key], field.code),
   }))
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Table" title={t('Custom Reports')} />
+        <Section title={t('Report definition')} subtitle={t('Pick a source, the columns, and a range')}>
+          <label className="flex flex-col gap-1">
+            <span className="text-[11px] font-medium text-muted">{t('Data source')}</span>
+            <select value={sourceKey} onChange={(event) => chooseSource(event.target.value as CollectionKey)}
+              className="h-9 rounded border border-border bg-card px-2 text-[13px] text-heading outline-none focus:border-salis-blue">
+              {SOURCES.map((s) => <option key={s.key} value={s.key}>{t(s.label)}</option>)}
+            </select>
+          </label>
+        </Section>
+        {error ? (
+          <ErrorState description={error.message} onRetry={() => void refetch()} />
+        ) : (
+          <DataTable
+            caption={`Custom report: ${source.label}`}
+            columns={columns}
+            rows={filtered as Record<string, unknown>[]}
+            rowKey={(row, index) => String(row.id ?? index)}
+            loading={isLoading}
+            mobileCard={(row) => (
+              <>
+                <MobileCardHeader title={String(row[source.fields[0]?.key] ?? '')} />
+                {activeFields.slice(1, 4).map((field) => (
+                  <MobileCardRow key={field.key} label={t(field.label)}>
+                    {String(row[field.key] ?? '')}
+                  </MobileCardRow>
+                ))}
+              </>
+            )}
+          />
+        )}
+      </>
+    )
+  }
 
   return (
     <>

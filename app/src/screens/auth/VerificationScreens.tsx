@@ -10,6 +10,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { API_URL } from '@/data/repository'
 import { cn } from '@/lib/cn'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 const CODE_LENGTH = 6
 /** Resend throttle from README §6b — the server enforces the same 60 seconds
@@ -54,6 +55,7 @@ export function OTPVerification() {
   const navigate = useNavigate()
   const location = useLocation()
   const { live } = useSession()
+  const isMobile = useIsMobile()
 
   const destination = destinationFrom(location.state)
   const [code, setCode] = useState('')
@@ -155,7 +157,7 @@ export function OTPVerification() {
   }, [destination, live, t, toast])
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
       <AuthCard
         center
         icon="MessageSquareText"
@@ -170,6 +172,7 @@ export function OTPVerification() {
             </span>
           </>
         }
+        className={isMobile ? 'p-4' : undefined}
       >
         <CodeInput value={code} onChange={setCode} length={CODE_LENGTH} autoFocus />
         <Button size="lg" className="w-full" onClick={() => void verify()} disabled={busy}>
@@ -220,6 +223,7 @@ export function TwoFactorVerification() {
   const toast = useToast()
   const navigate = useNavigate()
   const { live } = useSession()
+  const isMobile = useIsMobile()
   const [code, setCode] = useState('')
   const [localCode, setLocalCode] = useState(() => (live ? null : issueLocalCode()))
 
@@ -247,12 +251,13 @@ export function TwoFactorVerification() {
   }
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
       <AuthCard
         center
         icon="ShieldCheck"
         title={t('Two-Factor Verification')}
         description={t('Enter the code from your authenticator app')}
+        className={isMobile ? 'p-4' : undefined}
       >
         <CodeInput value={code} onChange={setCode} length={CODE_LENGTH} autoFocus />
         <Button size="lg" className="w-full" onClick={verify}>
@@ -285,6 +290,7 @@ export function TwoFactorVerification() {
 export function CreatePIN() {
   const { t } = usePreferences()
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
   const [pin, setPin] = useState('')
 
   // Four digits in and the PIN is set — advance to biometric enrolment.
@@ -300,9 +306,9 @@ export function CreatePIN() {
   }
 
   return (
-    <AuthLayout controls={false} className="mx-auto max-w-[340px]">
+    <AuthLayout controls={false} className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[340px]'}>
       <div className="flex flex-col items-center gap-5">
-        <h2 className="font-display text-xl font-bold text-heading">{t('Create PIN')}</h2>
+        <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('Create PIN')}</h2>
 
         <div className="flex gap-3" dir="ltr" role="status" aria-label={`${pin.length} of 4 digits entered`}>
           {Array.from({ length: 4 }, (_, i) => (
@@ -316,7 +322,7 @@ export function CreatePIN() {
           ))}
         </div>
 
-        <div className="grid grid-cols-[repeat(3,64px)] gap-3">
+        <div className={`grid gap-3 ${isMobile ? 'grid-cols-[repeat(3,56px)]' : 'grid-cols-[repeat(3,64px)]'}`}>
           {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'].map((key, index) =>
             key ? (
               <button
@@ -324,7 +330,7 @@ export function CreatePIN() {
                 type="button"
                 onClick={() => press(key)}
                 aria-label={key === '⌫' ? 'Delete' : key}
-                className="h-16 w-16 cursor-pointer rounded-full border border-border bg-card font-display text-xl font-bold text-heading transition-colors duration-150 hover:bg-inset"
+                className={`cursor-pointer rounded-full border border-border bg-card font-display font-bold text-heading transition-colors duration-150 hover:bg-inset ${isMobile ? 'h-14 w-14 text-lg' : 'h-16 w-16 text-xl'}`}
               >
                 {key}
               </button>
@@ -341,14 +347,15 @@ export function CreatePIN() {
 /** Optional biometric enrolment. Skippable — the design offers both paths. */
 export function BiometricSetup() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
 
   return (
-    <AuthLayout controls={false} className="mx-auto max-w-[360px]">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="inline-flex animate-pulse rounded-full bg-[rgba(10,94,215,.1)] p-[22px] text-salis-blue">
-          <Icon name="Fingerprint" size={40} />
+    <AuthLayout controls={false} className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[360px]'}>
+      <div className={`flex flex-col items-center text-center ${isMobile ? 'gap-3' : 'gap-4'}`}>
+        <span className={`inline-flex animate-pulse rounded-full bg-[rgba(10,94,215,.1)] text-salis-blue ${isMobile ? 'p-4' : 'p-[22px]'}`}>
+          <Icon name="Fingerprint" size={isMobile ? 32 : 40} />
         </span>
-        <h1 className="font-display text-xl font-extrabold text-heading">{t('Biometric Setup')}</h1>
+        <h1 className={`font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('Biometric Setup')}</h1>
         <p className="font-action text-sm text-muted">
           {t('Use your fingerprint or face to sign in faster')}
         </p>

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -30,6 +31,7 @@ const WORKDAY_MINUTES = 8 * 60
 export function TechnicianSchedule() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const technicians = useCollection('technicians')
   const appointments = useCollection('appointments')
   const [assigning, setAssigning] = useState(false)
@@ -75,11 +77,11 @@ export function TechnicianSchedule() {
     <div className="flex max-w-[1200px] animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-salis-gradient text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
-            <Icon name="CalendarClock" size={24} />
+          <span className={`flex ${isMobile ? 'h-9 w-9 rounded-xl' : 'h-11 w-11 rounded-2xl'} items-center justify-center bg-salis-gradient text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]`}>
+            <Icon name="CalendarClock" size={isMobile ? 18 : 24} />
           </span>
           <div>
-            <h1 className="font-display text-2xl font-black text-heading">
+            <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-2xl font-black text-heading'}>
               {t('Technician Schedule')}
             </h1>
             <p className="mt-0.5 text-sm text-muted">{t("Today's assignments and utilization")}</p>
@@ -116,7 +118,7 @@ export function TechnicianSchedule() {
           />
         </Card>
       ) : (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className={isMobile ? 'flex flex-col gap-4' : 'grid grid-cols-1 gap-5 md:grid-cols-2'}>
           {roster.map((tech) => {
             const jobs = byTech.get(tech.name.trim()) ?? []
             const bookedMinutes = jobs.reduce((sum, appt) => sum + durationOf(appt), 0)

@@ -177,6 +177,26 @@ const mobileImplemented = (() => {
     }
   }
   walk(screensDir)
+
+  // Also resolve domain barrel aliases: a barrel maps ScreenName → ImportedComponent,
+  // so if the ImportedComponent is in our set, the ScreenName should be too.
+  const domainsDir = path.join(screensDir, 'domains')
+  if (fs.existsSync(domainsDir)) {
+    for (const f of fs.readdirSync(domainsDir).filter(n => n.endsWith('.ts'))) {
+      try {
+        const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
+        // Match patterns like:  ScreenName: wrapper(ImportedName)  or  ScreenName: ImportedName,
+        for (const m of src.matchAll(/['"]?(\w[\w.]*?)['"]?\s*:\s*(?:\w+\()?\s*(\w+)\s*\)?\s*[,}]/g)) {
+          const screenName = m[1]
+          const componentName = m[2]
+          if (names.has(componentName) && !names.has(screenName)) {
+            names.add(screenName)
+          }
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+
   return names
 })()
 

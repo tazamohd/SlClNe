@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { EmptyState, ErrorState } from '@/components/ui/States'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
@@ -58,6 +59,7 @@ function payable(invoice: Invoice): PayableInvoice {
 export function Invoices() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: invoices = [], isLoading, error, refetch } = useCollection('invoices')
   const [query, setQuery] = useState('')
@@ -93,6 +95,81 @@ export function Invoices() {
       ),
     },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+          <MobilePageHeader
+            icon="Receipt"
+            title={t('Invoices')}
+            actions={
+              can('invoices', 'c') ? (
+                <Button size="md" onClick={() => navigate('/invoice-create')}>
+                  <Icon name="Plus" size={16} />
+                </Button>
+              ) : null
+            }
+          />
+          <input
+            type="search"
+            aria-label={t('Search invoices...')}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('Search invoices...')}
+            className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          />
+          {error ? (
+            <Card className="p-4">
+              <ErrorState
+                title={t("Couldn't load the invoices")}
+                description={error.message}
+                onRetry={() => void refetch()}
+              />
+            </Card>
+          ) : isLoading ? (
+            <p className="py-6 text-center text-sm text-muted">{t('Loading...')}</p>
+          ) : filtered.length === 0 ? (
+            <EmptyState
+              icon={query ? 'SearchX' : 'Receipt'}
+              title={query ? t('No matching invoices') : t('No invoices yet')}
+              description={
+                query
+                  ? t('Try a different customer or invoice number.')
+                  : t('Invoices are raised when a job card is delivered.')
+              }
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              {filtered.map((invoice) => (
+                <MobileCard key={invoice.id} onClick={() => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}>
+                  <MobileCardHeader
+                    title={invoice.id}
+                    code
+                    trailing={<InvoiceStatusBadge status={invoice.status} />}
+                  />
+                  <MobileCardRow>{invoice.cust}</MobileCardRow>
+                  <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
+                  <MobileCardRow label={t('Amount')}>
+                    <Money
+                      sar={fromHalalas(invoiceMoney(invoice).totalHalalas)}
+                      className="font-semibold text-heading"
+                    />
+                  </MobileCardRow>
+                  <MobileCardRow label={t('Balance')}>
+                    <BalanceCell invoice={invoice} />
+                  </MobileCardRow>
+                </MobileCard>
+              ))}
+            </div>
+          )}
+        </div>
+        {paying ? (
+          <RecordPaymentModal invoice={paying} open onClose={() => setPaying(null)} />
+        ) : null}
+      </>
+    )
+  }
 
   return (
     <>

@@ -2,10 +2,12 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { ErrorState } from '@/components/ui/States'
@@ -23,6 +25,7 @@ type Job = RowOf<'jobs'>
 export function JobCards() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
   const [query, setQuery] = useState('')
@@ -50,6 +53,74 @@ export function JobCards() {
       cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />,
     },
   ]
+
+  if (isMobile) {
+    return (
+      <>
+        <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+          <MobilePageHeader
+            icon="ClipboardList"
+            title={t('Job Cards')}
+            actions={
+              can('jobcards', 'c') ? (
+                <Button size="md" onClick={() => setCreating(true)}>
+                  <Icon name="Plus" size={16} />
+                </Button>
+              ) : null
+            }
+          />
+          <input
+            type="search"
+            aria-label={t('Search job cards...')}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('Search job cards...')}
+            className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          />
+          {isError ? (
+            <Card className="p-4">
+              <ErrorState
+                title={t("Couldn't load this")}
+                description={error?.message}
+                onRetry={() => void refetch()}
+              />
+            </Card>
+          ) : isLoading ? (
+            <p className="py-6 text-center text-sm text-muted">{t('Loading...')}</p>
+          ) : filtered.length === 0 ? (
+            <EmptyState
+              icon={query ? 'SearchX' : 'ClipboardList'}
+              title={query ? t('No matching job cards') : t('No job cards yet')}
+              description={
+                query
+                  ? t('Try a different customer, vehicle or job number.')
+                  : t('Check a vehicle in to open the first job card.')
+              }
+            />
+          ) : (
+            <div className="flex flex-col gap-3">
+              {filtered.map((job) => (
+                <MobileCard key={job.id} onClick={() => navigate(`/job-detail?id=${job.id}`)}>
+                  <MobileCardHeader
+                    title={job.id}
+                    code
+                    trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+                  />
+                  <MobileCardRow>{job.cust}</MobileCardRow>
+                  <MobileCardRow>{job.veh}</MobileCardRow>
+                  <div className="flex items-center gap-2">
+                    <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+                    <PriorityBadge value={job.pr} label={t(job.pr)} />
+                  </div>
+                </MobileCard>
+              ))}
+            </div>
+          )}
+        </div>
+        <JobCardForm open={creating} onClose={() => setCreating(false)} />
+      </>
+    )
+  }
 
   return (
     <>

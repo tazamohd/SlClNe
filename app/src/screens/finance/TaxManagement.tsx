@@ -6,6 +6,7 @@ import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar } from '@/components/ui/Money'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { isLive } from '@/data/repository'
@@ -49,6 +50,7 @@ function carriesOutputVat(status: string): boolean {
 
 export function TaxManagement() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { data: invoices = [], isLoading, error, refetch } = useCollection('invoices')
 
   const [query, setQuery] = useState('')
@@ -112,7 +114,7 @@ export function TaxManagement() {
         title={t('VAT configuration')}
         subtitle={t('The rate the server applies to every invoice it prices')}
       >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-1 gap-4 sm:grid-cols-3'}>
           <Card className="flex flex-col gap-1 rounded-lg p-4">
             <p className="text-[11px] font-medium text-muted">{t('Standard rate (ZATCA)')}</p>
             <p className="font-display text-[28px] font-black leading-none text-salis-blue" dir="ltr">
@@ -221,6 +223,7 @@ export function TaxManagement() {
  *  fixtures, so this never mounts there. */
 function TaxReturnPanel({ from, to }: { from: string; to: string }) {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const query = useTaxReturn({ from: from || undefined, to: to || undefined })
 
   if (query.isLoading) return <Loading label={t('Computing the return…')} />
@@ -234,7 +237,7 @@ function TaxReturnPanel({ from, to }: { from: string; to: string }) {
   return (
     <div className="flex flex-col gap-3">
       <ServerTotalsNote endpoint="GET /accounting/tax/return" />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-1 gap-4 sm:grid-cols-3'}>
         <Card className="flex flex-col gap-1 rounded-lg p-4">
           <p className="text-[11px] font-medium text-muted">
             {t('Output VAT')} ({ratePercent}%)

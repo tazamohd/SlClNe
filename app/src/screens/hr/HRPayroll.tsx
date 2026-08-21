@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { ErrorState, Loading } from '@/components/ui/States'
@@ -29,6 +31,7 @@ const LINKS: readonly [string, string, string, string][] = [
 
 export function HRPayroll() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
 
   const headcount = usePagedCollection('employees', { pageSize: 1 })
   const onLeave = usePagedCollection('employees', { pageSize: 1, filter: { status: 'on_leave' } })
@@ -50,6 +53,47 @@ export function HRPayroll() {
       </div>
     </div>
   )
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Users" title={t('HR & Payroll')} subtitle={t('People, payroll and leave at a glance')} />
+        {!isLive ? (
+          <ConnectApi icon="Users" title="Nothing to summarise yet"
+            description="The HR overview counts employees, payroll runs and leave the server holds. The fixture build has none."
+            collection="employees" />
+        ) : headcount.isError ? (
+          <ErrorState description={headcount.error?.message} onRetry={() => void headcount.refetch()} />
+        ) : headcount.isLoading ? (
+          <Loading label="Loading the overview..." />
+        ) : (
+          <div className="grid grid-cols-2 gap-2.5">
+            <StatCard icon="Users" value={String(headcount.data?.page.total ?? 0)} label="Headcount" />
+            <StatCard icon="Clock" value={String(onLeave.data?.page.total ?? 0)} label="On leave" />
+            <StatCard icon="CalendarClock" value={String(pendingLeave.data?.page.total ?? 0)} label="Pending leave" />
+            <StatCard icon="CreditCard"
+              value={latestRun ? <span className="font-mono text-sm" dir="ltr">{latestRun.period}</span> : <span className="text-sm">{t('None')}</span>}
+              label="Latest run" />
+          </div>
+        )}
+        <div className="flex flex-col gap-2.5">
+          {LINKS.map(([to, icon, title, sub]) => (
+            <Link key={to} to={to}
+              className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 no-underline transition-colors hover:bg-[rgba(10,94,215,.05)]">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+                <Icon name={icon} size={16} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[13px] font-bold text-heading">{t(title)}</p>
+                <p className="mt-0.5 truncate text-[11px] text-muted">{t(sub)}</p>
+              </div>
+              <Icon name="ArrowRight" size={14} className="flex-shrink-0 text-muted" />
+            </Link>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex max-w-[1100px] animate-fade-up flex-col gap-4 motion-reduce:animate-none">

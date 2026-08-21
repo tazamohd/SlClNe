@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { DetailPage, type DetailSection, type DetailStat } from '@/components/shell/DetailPage'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { EmptyState } from '@/components/ui/States'
 import { Money, parseSar } from '@/components/ui/Money'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
@@ -66,6 +67,7 @@ function titleCase(stage: string): string {
 export function LeadDetail() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const [params] = useSearchParams()
   const [editing, setEditing] = useState(false)
   const [converting, setConverting] = useState(false)
@@ -114,7 +116,7 @@ export function LeadDetail() {
 
   const actions =
     canEdit || canConvert ? (
-      <>
+      <div className={isMobile ? 'flex flex-wrap gap-2' : 'flex gap-2'}>
         {canConvert ? (
           <Button onClick={() => setConverting(true)}>
             <Icon name="GitBranch" size={14} />
@@ -127,7 +129,7 @@ export function LeadDetail() {
             {t('Edit')}
           </Button>
         ) : null}
-      </>
+      </div>
     ) : undefined
 
   const summary: DetailStat[] = [

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Boot screen. Auto-advances to Welcome after 2.2s, matching the design.
  *
@@ -11,6 +12,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 export function Splash() {
   const { t } = usePreferences()
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const timer = setTimeout(() => navigate('/welcome', { replace: true }), 2200)
@@ -29,7 +31,7 @@ export function Splash() {
         <div className="absolute bottom-0 start-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(11,179,255,.1),transparent_65%)] blur-[64px]" />
       </div>
 
-      <div className="relative z-[1] flex animate-fade-up flex-col items-center gap-6">
+      <div className={`relative z-[1] flex animate-fade-up flex-col items-center ${isMobile ? 'gap-4' : 'gap-6'}`}>
         <div className="relative">
           <div
             className="absolute -inset-5 animate-pulse rounded-[20px] bg-salis-gradient opacity-25 blur-[28px]"
@@ -38,10 +40,10 @@ export function Splash() {
           <img
             src="/assets/logo-blue-orange.png"
             alt="SALIS AUTO"
-            className="relative h-auto w-[180px]"
+            className={`relative h-auto ${isMobile ? 'w-[140px]' : 'w-[180px]'}`}
           />
         </div>
-        <div className="h-1 w-40 overflow-hidden rounded-full bg-[rgba(10,94,215,.12)]">
+        <div className={`h-1 overflow-hidden rounded-full bg-[rgba(10,94,215,.12)] ${isMobile ? 'w-32' : 'w-40'}`}>
           <div className="h-full w-3/5 rounded-full bg-salis-gradient-r" />
         </div>
         <p role="status" className="font-action text-[13px] text-muted">

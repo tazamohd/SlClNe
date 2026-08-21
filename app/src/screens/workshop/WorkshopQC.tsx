@@ -8,6 +8,7 @@ import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { EmptyState, Loading } from '@/components/ui/States'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { sodRuleFor } from '@/data/rbac'
 import { history, type EntityHistory, type RepositoryError } from '@/data/repository'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
@@ -42,6 +43,7 @@ const QC_ACTIVITY = 'Pass quality check'
 export function WorkshopQC() {
   const { t, rtl } = usePreferences()
   const { role, roleMeta, can } = useSession()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const stage = useJobStage()
   const [checked, setChecked] = useState<Record<string, boolean>>({})
@@ -155,11 +157,11 @@ export function WorkshopQC() {
         <div className="relative">
           <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
           <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="ShieldCheck" size={28} />
+            <Icon name="ShieldCheck" size={isMobile ? 20 : 28} />
           </div>
         </div>
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading">{t('Quality Check')}</h1>
+          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>{t('Quality Check')}</h1>
           <p className="mt-0.5 text-sm text-muted" dir="ltr">
             {job ? `${job.id} · ${job.veh}` : '—'}
           </p>

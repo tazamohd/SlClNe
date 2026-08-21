@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Complete your profile after signup — avatar, name, phone. */
 export function ProfileCompletion() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
 
@@ -20,14 +22,14 @@ export function ProfileCompletion() {
   const initial = name.trim() ? name.trim()[0].toUpperCase() : null
 
   return (
-    <AuthLayout className="mx-auto max-w-[440px]">
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-lg">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[440px]'}>
+      <div className={`rounded-2xl border border-border bg-card shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}>
         {/* Avatar */}
         <div className="mb-4 flex flex-col items-center gap-2">
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-salis-gradient text-[22px] font-bold text-white">
-            {initial ?? <Icon name="User" size={24} />}
+          <span className={`flex items-center justify-center rounded-full bg-salis-gradient font-bold text-white ${isMobile ? 'h-14 w-14 text-[18px]' : 'h-16 w-16 text-[22px]'}`}>
+            {initial ?? <Icon name="User" size={isMobile ? 20 : 24} />}
           </span>
-          <h2 className="font-display text-lg font-bold text-heading">
+          <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-base' : 'text-lg'}`}>
             {t('Complete Your Profile')}
           </h2>
           <p className="text-[13px] text-muted">{t('Tell us a bit about yourself')}</p>

@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -62,6 +64,7 @@ interface SettingSection {
 
 export function AdvancedSettings() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
 
   const [toggles, setToggles] = useState<Record<string, boolean>>({
@@ -120,6 +123,50 @@ export function AdvancedSettings() {
       ],
     },
   ]
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Settings" title={t('Advanced Settings')} subtitle={t('Configure your system')} />
+        {sections.map((sec) => (
+          <Card key={sec.title} className="flex flex-col gap-3 rounded-xl p-4">
+            <div className="flex items-center gap-2.5">
+              <span className="flex rounded-[10px] bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+                <Icon name={sec.icon} size={16} />
+              </span>
+              <h3 className="text-[14px] font-bold text-heading">{sec.title}</h3>
+            </div>
+            {sec.items.map((item) => (
+              <div
+                key={item.label}
+                className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="m-0 text-[13px] font-medium text-body">{item.label}</p>
+                  <p className="m-0 mt-0.5 text-[11px] text-muted">{item.desc}</p>
+                </div>
+                {item.kind === 'toggle' && item.toggleKey && (
+                  <Toggle on={toggles[item.toggleKey]} onToggle={() => flip(item.toggleKey!)} rtl={rtl} label={item.label} />
+                )}
+                {item.kind === 'value' && (
+                  <span className="flex-shrink-0 rounded-md border border-border bg-inset px-2 py-1 text-[12px] font-medium text-heading">{item.value}</span>
+                )}
+                {item.kind === 'badge' && (
+                  <Badge background={item.badgeBg!} color={item.badgeColor!}>{item.badgeLabel}</Badge>
+                )}
+              </div>
+            ))}
+          </Card>
+        ))}
+        <div className="flex justify-end">
+          <Button onClick={() => toast.show({ title: t('Settings saved') })} disabled={!isLive}>
+            <Icon name="Save" size={16} />
+            {t('Save Changes')}
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex max-w-[900px] animate-fade-up flex-col gap-6 motion-reduce:animate-none">

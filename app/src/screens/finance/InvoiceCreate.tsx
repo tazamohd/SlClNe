@@ -15,6 +15,7 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { PermissionDenied } from '@/components/ui/States'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -101,6 +102,7 @@ const lineSchema = z
  *  drifted from the server's, which is exactly the thing worth hearing about. */
 export function InvoiceCreate() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
   const { can } = useSession()
@@ -272,11 +274,11 @@ export function InvoiceCreate() {
           <div className="relative">
             <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
             <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="FilePlus" size={28} />
+              <Icon name="FilePlus" size={isMobile ? 20 : 28} />
             </div>
           </div>
           <div>
-            <h1 className="font-display text-[26px] font-black text-heading">
+            <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
               {t('Create Invoice')}
             </h1>
             {/* The invoice number is assigned by the API, per tenant and in
@@ -296,7 +298,7 @@ export function InvoiceCreate() {
       </div>
 
       <Form form={form} className="gap-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
+        <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]'}>
           <div className="flex flex-col gap-5">
             <FormErrorSummary />
 

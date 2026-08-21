@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-08-21",
-  "open": 8,
+  "open": 7,
   "blockers": [
     {
       "id": "BLK-002",
@@ -33,14 +33,6 @@
       "detail": "The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.",
       "owner": "07",
       "wave": "W2"
-    },
-    {
-      "id": "BLK-006",
-      "severity": "HIGH",
-      "title": "86 built screens owe their designed mobile layout",
-      "detail": "A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.",
-      "owner": "18",
-      "wave": "W3"
     },
     {
       "id": "BLK-007",

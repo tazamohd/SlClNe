@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -28,6 +29,7 @@ import { useCollection, useEntity } from '@/data/useCollection'
  *  seeded data has exactly that disagreement today. */
 export function InvoiceDetail() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const [params] = useSearchParams()
   const [paying, setPaying] = useState<PayableInvoice | null>(null)
 
@@ -114,7 +116,7 @@ export function InvoiceDetail() {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading" dir="ltr">
+          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'} dir="ltr">
             {invoice.id}
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -147,7 +149,7 @@ export function InvoiceDetail() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-2 gap-4 lg:grid-cols-4'}>
         <MetaCard label={t('Customer')} value={invoice.cust} sub={t('Bill to')} />
         <MetaCard
           label={t('Due date')}
@@ -251,7 +253,7 @@ export function InvoiceDetail() {
         </Notice>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
+      <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]'}>
         <Card>
           <div className="border-b border-border px-[18px] py-[13px]">
             <p className="font-display text-sm font-bold text-heading">{t('Payments received')}</p>

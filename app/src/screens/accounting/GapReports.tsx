@@ -1,3 +1,5 @@
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { FeatureHeader, Section } from '@/components/shell/FeatureScreen'
 import { EmptyState } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
@@ -58,7 +60,35 @@ function Figure({ label, halalas, accent }: { label: string; halalas: number; ac
 
 export function InsuranceReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const summary = useInsuranceClaimsSummary()
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="ShieldCheck" title={t('Insurance Reports')} />
+        {productReports === null ? (
+          <ReportGap icon="ShieldCheck" title={t('Insurance Reports')}
+            collection="GET /insurance/claims/summary"
+            detail={t('Claim totals are computed by the server over your whole organization. Connect the API to see them.')} />
+        ) : summary.isPending ? (
+          <Loading label={t('Summing the claims...')} />
+        ) : summary.isError || !summary.data ? (
+          <ReportGap icon="ShieldCheck" title={t('Insurance Reports')}
+            collection="GET /insurance/claims/summary"
+            detail={t('The claim summary could not be loaded.')} />
+        ) : (
+          <Section title={t('Claim totals')}>
+            <div className="grid grid-cols-1 gap-2">
+              <Figure label={t('Claimed')} halalas={summary.data.claimedHalalas} />
+              <Figure label={t('Approved')} halalas={summary.data.approvedHalalas} />
+              <Figure label={t('Paid')} halalas={summary.data.paidHalalas} accent />
+            </div>
+          </Section>
+        )}
+      </>
+    )
+  }
 
   return (
     <>
@@ -126,7 +156,61 @@ export function InsuranceReports() {
 
 export function LoanReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const summary = useLoansSummary()
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Banknote" title={t('Loan Reports')} />
+        {productReports === null ? (
+          <ReportGap icon="Banknote" title={t('Loan Reports')}
+            collection="GET /loans/summary"
+            detail={t('Portfolio totals are computed by the server. Connect the API to see them.')} />
+        ) : summary.isPending ? (
+          <Loading label={t('Summing the portfolio...')} />
+        ) : summary.isError || !summary.data ? (
+          <ReportGap icon="Banknote" title={t('Loan Reports')}
+            collection="GET /loans/summary"
+            detail={t('The loan summary could not be loaded.')} />
+        ) : (
+          <Section title={t('Financing portfolio')}>
+            <p className="mb-3 text-[11px] text-muted">
+              {summary.data.contractCount} {t('contracts')}
+            </p>
+            <div className="grid grid-cols-1 gap-2">
+              <Figure label={t('Principal')} halalas={summary.data.principalHalalas} />
+              <Figure label={t('Collected')} halalas={summary.data.collectedHalalas} />
+              <Figure label={t('Outstanding')} halalas={summary.data.outstandingHalalas} />
+              <Figure label={t('Overdue')} halalas={summary.data.overdueHalalas} accent />
+            </div>
+            {summary.data.byStatus.length > 0 && (
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-line text-start text-[11px] uppercase tracking-wide text-muted">
+                      <th className="py-2 text-start font-medium">{t('Status')}</th>
+                      <th className="py-2 text-end font-medium">{t('Count')}</th>
+                      <th className="py-2 text-end font-medium">{t('Principal')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {summary.data.byStatus.map((row) => (
+                      <tr key={row.status} className="border-b border-line/50">
+                        <td className="py-2">{t(row.status.replace(/_/g, ' '))}</td>
+                        <td dir="ltr" className="py-2 text-end font-mono">{row.count}</td>
+                        <td dir="ltr" className="py-2 text-end font-mono">{formatSar(row.principalHalalas / 100)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </Section>
+        )}
+      </>
+    )
+  }
 
   return (
     <>

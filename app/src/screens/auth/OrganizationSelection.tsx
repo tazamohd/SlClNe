@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 interface Organization {
   id: string
@@ -22,6 +23,7 @@ const ORGANIZATIONS: Organization[] = [
 /** Select or create an organization. */
 export function OrganizationSelection() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const [picked, setPicked] = useState('o1')
   const [query, setQuery] = useState('')
 
@@ -30,12 +32,12 @@ export function OrganizationSelection() {
   )
 
   return (
-    <AuthLayout className="mx-auto max-w-[440px]">
-      <div className="flex flex-col gap-5">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[440px]'}>
+      <div className={`flex flex-col ${isMobile ? 'gap-3.5' : 'gap-5'}`}>
         {/* Header */}
         <div className="text-center">
-          <BrandMark width={100} />
-          <h1 className="mt-3 font-display text-xl font-extrabold text-heading">
+          <BrandMark width={isMobile ? 80 : 100} />
+          <h1 className={`mt-3 font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>
             {t('Organization Selection')}
           </h1>
           <p className="mt-1.5 text-[13px] text-muted">

@@ -8,6 +8,7 @@ import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { API_URL } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Password recovery. Both screens share the same bordered-card shape.
  *
@@ -49,6 +50,7 @@ async function postAuth(path: string, body: unknown): Promise<{ ok: boolean; mes
 export function ForgotPassword() {
   const { t } = usePreferences()
   const { live } = useSession()
+  const isMobile = useIsMobile()
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -79,7 +81,7 @@ export function ForgotPassword() {
   }
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
       <AuthCard
         logo
         title={sent ? t('Check your email') : t('Reset Password')}
@@ -96,6 +98,7 @@ export function ForgotPassword() {
             {t('Back to Sign In')}
           </Link>
         }
+        className={isMobile ? 'p-4' : undefined}
       >
         {sent ? null : (
           <form onSubmit={(event) => void submit(event)} className="flex flex-col gap-4">
@@ -132,6 +135,7 @@ export function ResetPassword() {
   const toast = useToast()
   const navigate = useNavigate()
   const { live } = useSession()
+  const isMobile = useIsMobile()
   const [params] = useSearchParams()
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -184,8 +188,8 @@ export function ResetPassword() {
   }
 
   return (
-    <AuthLayout className="mx-auto max-w-[420px]">
-      <AuthCard logo title={t('Create New Password')}>
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
+      <AuthCard logo title={t('Create New Password')} className={isMobile ? 'p-4' : undefined}>
         <form onSubmit={(event) => void submit(event)} noValidate className="flex flex-col gap-4">
           <Field
             label={t('New Password')}
