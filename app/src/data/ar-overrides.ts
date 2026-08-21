@@ -2396,4 +2396,11 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Frequently Asked Questions": "الأسئلة الشائعة",
   "Guides, tutorials, webinars and case studies to help you succeed with SALIS AUTO": "أدلّة ودروس وندوات ودراسات حالة لمساعدتك على النجاح مع SALIS AUTO",
   "Resources — SALIS AUTO": "الموارد — SALIS AUTO",
+  "Remove filter": "إزالة الفلتر",
+  "Download": "تحميل",
+  "PDF, JPG, PNG up to": "PDF، JPG، PNG بحد أقصى",
+  "Upload files": "رفع الملفات",
+  "Add a comment": "أضف تعليقًا",
+  "Add a comment...": "أضف تعليقًا...",
+  "Pagination": "التصفّح",
 }
