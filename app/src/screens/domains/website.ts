@@ -15,7 +15,9 @@ import { PublicLanding } from '../public/Landing'
 import { PublicAbout } from '../public/About'
 import { PublicAccounting } from '../public/Accounting'
 import { PublicAI } from '../public/AI'
+import { PublicAutomation } from '../public/Automation'
 import { PublicBlog } from '../public/Blog'
+import { PublicBookDemo } from '../public/BookDemo'
 import { PublicCareers } from '../public/Careers'
 import { PublicContact } from '../public/Contact'
 import { PublicCookiePolicy } from '../public/CookiePolicy'
@@ -33,6 +35,7 @@ import { PublicMiniERP } from '../public/MiniERP'
 import { PublicPricing } from '../public/Pricing'
 import { PublicProducts } from '../public/Products'
 import { PublicRequestDemo } from '../public/RequestDemo'
+import { PublicResources } from '../public/Resources'
 import { PublicServices } from '../public/Services'
 import { PublicSolutions } from '../public/Solutions'
 import { PublicSpareParts } from '../public/SpareParts'
@@ -54,7 +57,9 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.About': pub(PublicAbout),
   'PublicPortal.Accounting': pub(PublicAccounting),
   'PublicPortal.AI': pub(PublicAI),
+  'PublicPortal.Automation': pub(PublicAutomation),
   'PublicPortal.Blog': pub(PublicBlog),
+  'PublicPortal.BookDemo': pub(PublicBookDemo),
   'PublicPortal.Careers': pub(PublicCareers),
   'PublicPortal.Contact': pub(PublicContact),
   'PublicPortal.CRM': pub(PublicCRM),
@@ -71,6 +76,7 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.Pricing': pub(PublicPricing),
   'PublicPortal.Products': pub(PublicProducts),
   'PublicPortal.RequestDemo': pub(PublicRequestDemo),
+  'PublicPortal.Resources': pub(PublicResources),
   'PublicPortal.Services': pub(PublicServices),
   'PublicPortal.Solutions': pub(PublicSolutions),
   'PublicPortal.SpareParts': pub(PublicSpareParts),

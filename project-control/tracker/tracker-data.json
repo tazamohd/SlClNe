@@ -1509,8 +1509,26 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · Automation",
+          "route": "/public-portal/automation",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Blog",
           "route": "/public-portal/blog",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · BookDemo",
+          "route": "/public-portal/book-demo",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1664,6 +1682,15 @@
         {
           "name": "PublicPortal · RequestDemo",
           "route": "/public-portal/request-demo",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Resources",
+          "route": "/public-portal/resources",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -3904,8 +3931,8 @@
     }
   ],
   "totals": {
-    "total": 421,
-    "built": 421,
+    "total": 424,
+    "built": 424,
     "designedMobile": 113
   }
 }

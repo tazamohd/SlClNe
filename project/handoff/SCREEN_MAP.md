@@ -158,13 +158,15 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **CustomerApp.ServiceTracking** | `/customer-app/service-tracking` | 🖥 `CustomerApp.ServiceTracking.dc.html` | Customer mobile app — ServiceTracking |
 | **CustomerApp.Wallet** | `/customer-app/wallet` | 🖥 `CustomerApp.Wallet.dc.html` | Customer mobile app — Wallet |
 
-## PublicPortal (31 screens)
+## PublicPortal (34 screens)
 
 | Screen | Route | Files | Purpose |
 |---|---|---|---|
 | **PublicPortal.About** | `/public-portal/about` | 🖥 `PublicPortal.About.dc.html` | Public website — About |
 | **PublicPortal.Accounting** | `/public-portal/accounting` | 🖥 | Public website — Accounting product page |
 | **PublicPortal.AI** | `/public-portal/ai` | 🖥 | Public website — AI & Automation product page |
+| **PublicPortal.Automation** | `/public-portal/automation` | 🖥 | Public website — Automation & Workflows |
+| **PublicPortal.BookDemo** | `/public-portal/book-demo` | 🖥 | Public website — Book a demo form |
 | **PublicPortal.Blog** | `/public-portal/blog` | 🖥 `PublicPortal.Blog.dc.html` | Public website — Blog |
 | **PublicPortal.Careers** | `/public-portal/careers` | 🖥 | Public website — Careers |
 | **PublicPortal.Contact** | `/public-portal/contact` | 🖥 `PublicPortal.Contact.dc.html` | Public website — Contact |
@@ -183,6 +185,7 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **PublicPortal.Pricing** | `/public-portal/pricing` | 🖥 | Public website — Pricing plans |
 | **PublicPortal.Products** | `/public-portal/products` | 🖥 | Public website — Product suite overview |
 | **PublicPortal.RequestDemo** | `/public-portal/request-demo` | 🖥 | Public website — Request a demo form |
+| **PublicPortal.Resources** | `/public-portal/resources` | 🖥 | Public website — Resources & learning hub |
 | **PublicPortal.Services** | `/public-portal/services` | 🖥 `PublicPortal.Services.dc.html` | Public website — Services |
 | **PublicPortal.Solutions** | `/public-portal/solutions` | 🖥 | Public website — Solutions overview |
 | **PublicPortal.SpareParts** | `/public-portal/spare-parts` | 🖥 | Public website — Spare Parts product page |

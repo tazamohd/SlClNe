@@ -38,6 +38,7 @@ const GROUPS: readonly FooterGroup[] = [
       { label: 'Help Center', to: '/public-portal/support' },
       { label: 'FAQ', to: '/public-portal/faq' },
       { label: 'Request Demo', to: '/public-portal/request-demo' },
+      { label: 'Resources', to: '/public-portal/resources' },
     ],
   },
   {
