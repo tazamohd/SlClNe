@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { PreferencesProvider } from '@/providers/PreferencesProvider'
 import { SessionProvider } from '@/providers/SessionProvider'
 import { ToastProvider } from '@/components/ui/Toast'
+import { RepositoryProvider } from '@/providers/RepositoryProvider'
 import { AppRoutes } from '@/routes'
 
 // Mock data never goes stale, and won't once it's real either — the screens
@@ -16,11 +17,13 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <PreferencesProvider>
         <SessionProvider>
-          <ToastProvider>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </ToastProvider>
+          <RepositoryProvider>
+            <ToastProvider>
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </ToastProvider>
+          </RepositoryProvider>
         </SessionProvider>
       </PreferencesProvider>
     </QueryClientProvider>
