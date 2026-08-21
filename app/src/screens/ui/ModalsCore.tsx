@@ -57,6 +57,7 @@ function SpecimenBar({
   title: string
   badge?: ReactNode
 }) {
+  const { t } = usePreferences()
   return (
     <div className="flex items-center gap-2.5 border-b border-border px-5 py-4">
       {icon && tone ? (
@@ -69,7 +70,7 @@ function SpecimenBar({
       <span className="flex-1" />
       <button
         type="button"
-        aria-label="Close"
+        aria-label={t("Close")}
         className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-muted transition-colors hover:bg-inset"
       >
         <X size={16} strokeWidth={2} aria-hidden />

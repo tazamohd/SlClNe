@@ -47,7 +47,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
           >
             <Icon name="Bell" size={16} />
             {pathname !== '/customer-app/notifications' ? (
-              <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-salis-orange" />
+              <span className="absolute end-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-salis-orange" />
             ) : null}
           </NavLink>
         </header>
