@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { DetailPage, type DetailRecord, type DetailStat } from '@/components/shell/DetailPage'
 import { Button } from '@/components/ui/Button'
@@ -6,6 +6,8 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
 import { StatusBadge } from '@/components/ui/Badge'
+import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
+import { Comments, type Comment } from '@/components/ui/Comments'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -156,6 +158,30 @@ export function CustomerDetail() {
     badge: <InvoiceStatusBadge value={invoice.status} />,
   }))
 
+  const activities: ActivityItem[] = useMemo(
+    () =>
+      worked.slice(0, 5).map((job, i) => ({
+        id: `act-${job.id}`,
+        icon: i % 2 === 0 ? 'Wrench' : 'CheckCircle',
+        user: customer.name,
+        action: job.st === 'completed' ? 'completed' : 'started',
+        target: job.id,
+        time: t(job.st.replace(/_/g, ' ')),
+      })),
+    [worked, customer.name, t]
+  )
+
+  const comments: Comment[] = useMemo(
+    () =>
+      worked.slice(0, 3).map((job) => ({
+        id: `cmt-${job.id}`,
+        author: customer.name,
+        text: `${t(job.svc.replace(/_/g, ' '))} — ${t(job.st.replace(/_/g, ' '))}`,
+        time: t(job.pr),
+      })),
+    [worked, customer.name, t]
+  )
+
   const historyColumns: Column<Job>[] = [
     { header: 'Job Card', cell: (job) => job.id, code: true },
     { header: 'Vehicle', cell: (job) => job.veh },
@@ -215,6 +241,16 @@ export function CustomerDetail() {
         summary={summary}
         summaryAlign="center"
         readOnly={can('customers', 'e') ? false : 'Read-only — your role can view this customer but not change it.'}
+        timeline={
+          activities.length > 0 && !isMobile ? (
+            <ActivityFeed items={activities} title="Recent Activity" />
+          ) : undefined
+        }
+        comments={
+          comments.length > 0 && !isMobile ? (
+            <Comments items={comments} title="Notes" />
+          ) : undefined
+        }
         related={[
           {
             id: 'vehicles',

@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { DetailPage, type DetailRecord, type DetailStat } from '@/components/shell/DetailPage'
 import { StatusBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
+import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
 import { useToast } from '@/components/ui/Toast'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
@@ -126,6 +127,19 @@ export function VehicleDetail() {
     badge: <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />,
   }))
 
+  const activities: ActivityItem[] = useMemo(
+    () =>
+      worked.slice(0, 5).map((job) => ({
+        id: `act-${job.id}`,
+        icon: job.st === 'completed' ? 'CheckCircle' : 'Wrench',
+        user: vehicle.owner,
+        action: t(job.svc.replace(/_/g, ' ')),
+        target: job.id,
+        time: t(job.st.replace(/_/g, ' ')),
+      })),
+    [worked, vehicle.owner, t]
+  )
+
   const estimateRecords: DetailRecord[] = quoted.map((estimate) => ({
     id: estimate.id,
     to: `/estimate-detail?id=${encodeURIComponent(estimate.id)}`,
@@ -182,6 +196,11 @@ export function VehicleDetail() {
           can('vehicles', 'e')
             ? false
             : 'Read-only — your role can view this vehicle but not change it.'
+        }
+        timeline={
+          activities.length > 0 && !isMobile ? (
+            <ActivityFeed items={activities} title="Service History" />
+          ) : undefined
         }
         related={[
           {
