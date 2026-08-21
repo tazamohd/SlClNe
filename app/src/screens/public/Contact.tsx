@@ -95,6 +95,26 @@ export function PublicContact() {
   usePageMeta({
     title: t('Contact — SALIS AUTO'),
     description: t('Get in touch with our team'),
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'AutoRepair',
+      name: 'SALIS AUTO',
+      url: 'https://salisauto.sa',
+      telephone: '+966112345678',
+      email: 'info@salisauto.sa',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Al-Olaya District',
+        addressLocality: 'Riyadh',
+        addressCountry: 'SA',
+      },
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+        opens: '08:00',
+        closes: '20:00',
+      },
+    },
   })
 
   const nameId = useId()

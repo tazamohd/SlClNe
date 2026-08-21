@@ -36,6 +36,15 @@ export function PublicFaq() {
   usePageMeta({
     title: t('FAQ — SALIS AUTO'),
     description: t('Frequently asked questions'),
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQS.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
+    },
   })
 
   return (

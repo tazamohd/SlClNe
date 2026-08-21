@@ -65,6 +65,20 @@ export function PublicServices() {
   usePageMeta({
     title: t('Services — SALIS AUTO'),
     description: t('Everything your workshop needs to deliver exceptional service'),
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'AutoRepair',
+      name: 'SALIS AUTO',
+      url: 'https://salisauto.sa/public-portal/services',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Workshop Services',
+        itemListElement: SERVICES.map((s) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: s.title, description: s.description },
+        })),
+      },
+    },
   })
 
   return (

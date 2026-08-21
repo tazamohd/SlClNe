@@ -140,6 +140,15 @@ export function PublicLanding() {
     description: t(
       'SALIS AUTO is the all-in-one garage management system built for Saudi workshops — from single bays to franchise networks.'
     ),
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'SALIS AUTO',
+      url: 'https://salisauto.sa',
+      description: 'All-in-one garage management system built for Saudi automotive workshops.',
+      contactPoint: { '@type': 'ContactPoint', email: 'info@salisauto.sa', contactType: 'sales' },
+      areaServed: { '@type': 'Country', name: 'Saudi Arabia' },
+    },
   })
 
   return (

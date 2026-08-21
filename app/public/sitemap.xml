@@ -1,22 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- The public, crawlable routes: the ten Tier A PublicPortal pages plus the
-     two Tier C legal pages (Privacy Policy, Terms & Conditions), all rendered
-     ungated with no session. Kept in step with the website barrel — the SEO
-     test asserts every ungated public route appears here and that no
-     authenticated URL leaks in. Base origin https://salisauto.sa is
+<!-- All public, crawlable routes: Tier A (10 design-authoritative), Tier B (17
+     design-system), and Tier C (7 content/SEO) pages, rendered ungated with no
+     session. Kept in step with the website barrel — the SEO test asserts every
+     ungated public route appears here. Base origin https://salisauto.sa is
      provisional: no public origin is configured anywhere in the repository
-     yet, so Open Graph / canonical URLs wait on that same later pass. -->
+     yet. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://salisauto.sa/public-portal/landing</loc><lastmod>2026-08-12</lastmod></url>
-  <url><loc>https://salisauto.sa/public-portal/about</loc><lastmod>2026-08-12</lastmod></url>
+  <!-- Tier A — design-authoritative -->
+  <url><loc>https://salisauto.sa/public-portal/landing</loc><lastmod>2026-08-21</lastmod><priority>1.0</priority></url>
+  <url><loc>https://salisauto.sa/public-portal/about</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/services</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/marketplace</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/insurance</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/loans</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/blog</loc><lastmod>2026-08-12</lastmod></url>
-  <url><loc>https://salisauto.sa/public-portal/faq</loc><lastmod>2026-08-12</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/faq</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/contact</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/support</loc><lastmod>2026-08-12</lastmod></url>
+  <!-- Tier B — design-system pages -->
+  <url><loc>https://salisauto.sa/public-portal/solutions</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/products</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/features</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/workshop</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/mini-erp</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/spare-parts</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/crm</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/accounting</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/ai</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/automation</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/fleet</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/customer-portal</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/technician-portal</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/supplier-portal</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/integrations</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/industries</loc><lastmod>2026-08-21</lastmod></url>
+  <!-- Tier C — content/SEO pages -->
+  <url><loc>https://salisauto.sa/public-portal/pricing</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/request-demo</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/book-demo</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/careers</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/resources</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/privacy-policy</loc><lastmod>2026-08-16</lastmod></url>
   <url><loc>https://salisauto.sa/terms-conditions</loc><lastmod>2026-08-16</lastmod></url>
+  <url><loc>https://salisauto.sa/cookie-policy</loc><lastmod>2026-08-21</lastmod></url>
 </urlset>
