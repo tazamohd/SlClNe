@@ -2,14 +2,6 @@ import { Link } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { useT } from '@/providers/PreferencesProvider'
 
-/** The marketing footer every PublicPortal design repeats: brand block plus
- *  Product / Company / Support link columns.
- *
- *  The design's column entries include Features, Pricing and Terms — Tier B/C
- *  pages that do not exist yet. A footer link with no destination is a dead
- *  CTA, so the columns here carry only routes that exist this tranche
- *  (Services, Marketplace, Insurance, Financing, About, Contact, Blog, Help
- *  Center, FAQ); Features/Pricing/Terms join when their pages land. */
 interface FooterLink {
   label: string
   to: string
@@ -24,18 +16,20 @@ const GROUPS: readonly FooterGroup[] = [
   {
     heading: 'Product',
     links: [
-      { label: 'Services', to: '/public-portal/services' },
+      { label: 'Features', to: '/public-portal/features' },
+      { label: 'Solutions', to: '/public-portal/solutions' },
+      { label: 'Pricing', to: '/public-portal/pricing' },
       { label: 'Marketplace', to: '/public-portal/marketplace' },
-      { label: 'Insurance', to: '/public-portal/insurance' },
-      { label: 'Financing', to: '/public-portal/loans' },
+      { label: 'Integrations', to: '/public-portal/integrations' },
     ],
   },
   {
     heading: 'Company',
     links: [
       { label: 'About', to: '/public-portal/about' },
-      { label: 'Contact', to: '/public-portal/contact' },
+      { label: 'Careers', to: '/public-portal/careers' },
       { label: 'Blog', to: '/public-portal/blog' },
+      { label: 'Contact', to: '/public-portal/contact' },
     ],
   },
   {
@@ -43,6 +37,7 @@ const GROUPS: readonly FooterGroup[] = [
     links: [
       { label: 'Help Center', to: '/public-portal/support' },
       { label: 'FAQ', to: '/public-portal/faq' },
+      { label: 'Request Demo', to: '/public-portal/request-demo' },
     ],
   },
   {
@@ -50,6 +45,7 @@ const GROUPS: readonly FooterGroup[] = [
     links: [
       { label: 'Privacy Policy', to: '/privacy-policy' },
       { label: 'Terms & Conditions', to: '/terms-conditions' },
+      { label: 'Cookie Policy', to: '/cookie-policy' },
     ],
   },
 ]

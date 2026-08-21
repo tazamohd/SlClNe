@@ -21,11 +21,11 @@ import { Footer } from '@/screens/public/sections/Footer'
  */
 const NAV_LINKS = [
   { label: 'Home', to: '/public-portal/landing' },
+  { label: 'Solutions', to: '/public-portal/solutions' },
+  { label: 'Features', to: '/public-portal/features' },
+  { label: 'Pricing', to: '/public-portal/pricing' },
   { label: 'About', to: '/public-portal/about' },
-  { label: 'Services', to: '/public-portal/services' },
-  { label: 'Marketplace', to: '/public-portal/marketplace' },
   { label: 'Contact', to: '/public-portal/contact' },
-  { label: 'Blog', to: '/public-portal/blog' },
 ] as const
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {

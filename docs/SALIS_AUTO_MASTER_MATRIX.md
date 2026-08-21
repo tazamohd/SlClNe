@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-403 capabilities · 403 rendering · 0 placeholder · 0 data-backed.
+421 capabilities · 421 rendering · 0 placeholder · 0 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -26,8 +26,8 @@
 | CallCenter · Logs | `/call-center/logs` | call-center | callcenter | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Campaigns | `/campaigns` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | ChartOfAccounts | `/chart-of-accounts` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
-| ControlTracker | `/control-tracker` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ConversationHistory | `/conversation-history` | app | ai | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
+| CookiePolicy | `/cookie-policy` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CreatePIN | `/create-pin` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CRMCalendar | `/crmcalendar` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | CRMTasks | `/crmtasks` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
@@ -118,15 +118,33 @@
 | ProfileCompletion | `/profile-completion` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PromptLibrary | `/prompt-library` | app | ai | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | PublicPortal · About | `/public-portal/about` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Accounting | `/public-portal/accounting` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · AI | `/public-portal/ai` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Blog | `/public-portal/blog` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Careers | `/public-portal/careers` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Contact | `/public-portal/contact` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · CRM | `/public-portal/crm` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · CustomerPortal | `/public-portal/customer-portal` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · FAQ | `/public-portal/faq` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Features | `/public-portal/features` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Fleet | `/public-portal/fleet` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Industries | `/public-portal/industries` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Insurance | `/public-portal/insurance` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Integrations | `/public-portal/integrations` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Landing | `/public-portal/landing` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Loans | `/public-portal/loans` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Marketplace | `/public-portal/marketplace` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · MiniERP | `/public-portal/mini-erp` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Pricing | `/public-portal/pricing` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Products | `/public-portal/products` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · RequestDemo | `/public-portal/request-demo` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Services | `/public-portal/services` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Solutions | `/public-portal/solutions` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · SpareParts | `/public-portal/spare-parts` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · SupplierPortal | `/public-portal/supplier-portal` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Support | `/public-portal/support` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · TechnicianPortal | `/public-portal/technician-portal` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Workshop | `/public-portal/workshop` | public | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PurchaseOrder | `/purchase-order` | app | procurement | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | RBACSpec | `/rbacspec` | reference | ungated | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | Receipts | `/receipts` | app | payments | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |

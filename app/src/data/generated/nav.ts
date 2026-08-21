@@ -21,12 +21,6 @@ export const NAV: readonly NavGroup[] = [
     "icon": "Wrench",
     "items": [
       {
-        "label": "Control Tracker",
-        "key": "control-tracker",
-        "screen": "ControlTracker",
-        "route": "/control-tracker"
-      },
-      {
         "label": "Job Cards",
         "key": "job-cards",
         "screen": "JobCards",

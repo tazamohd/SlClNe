@@ -5,21 +5,21 @@
       "runner": "vitest",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W1 — Agent 07"
     },
     "component": {
       "runner": "vitest+RTL",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W1 — Agent 07"
     },
     "integration": {
       "runner": "vitest+MSW",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W1 — Agent 07"
     },
     "api": {
@@ -32,8 +32,8 @@
     "routeSmoke": {
       "runner": "playwright",
       "present": true,
-      "covered": 403,
-      "of": 403,
+      "covered": 421,
+      "of": 421,
       "note": "scripts/smoke.mjs — route checks parsed from the spec"
     },
     "goldenPaths": {
@@ -47,35 +47,35 @@
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W3 — Agent 18"
     },
     "tablet": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W3 — Agent 18"
     },
     "rtl": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W3 — Agent 19"
     },
     "a11y": {
       "runner": "axe",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W3 — Agent 20"
     },
     "visual": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 403,
+      "of": 421,
       "note": "W3 — Agent 23"
     },
     "security": {

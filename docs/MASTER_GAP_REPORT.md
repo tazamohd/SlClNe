@@ -10,21 +10,20 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|---|---|
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 363 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 324 rendering capabilities are visited but assert nothing | 07 | W2 |
-| BLK-007 | CRITICAL | No modal system, so 23 CTAs do nothing | 04 | W1 |
+| BLK-004 | CRITICAL | 381 rendered capabilities are mock-only | 05 | W2 |
+| BLK-012 | HIGH | 342 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 351 screen files are unreachable from any route | 02 | W0 |
+| BLK-010 | MEDIUM | 370 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
-| TABLET_MISSING | 403 | never verified at 768–1024 |
-| ARABIC_MISSING | 403 | Arabic not certified |
-| RTL_BROKEN | 403 | RTL not certified |
-| MOCK_ONLY | 363 | renders, but from fixtures rather than an API |
-| NO_CONTENT_ASSERTION | 284 | — |
+| TABLET_MISSING | 421 | never verified at 768–1024 |
+| ARABIC_MISSING | 421 | Arabic not certified |
+| RTL_BROKEN | 421 | RTL not certified |
+| MOCK_ONLY | 381 | renders, but from fixtures rather than an API |
+| NO_CONTENT_ASSERTION | 302 | — |
 | NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
 
 ## Designs not in the registry
@@ -306,18 +305,37 @@ _None — the registry covers every design file._
 - `app/src/screens/portals/technician/TechnicianPortalSoftware.tsx`
 - `app/src/screens/portals/technician/TechnicianPortalTimeClock.tsx`
 - `app/src/screens/portals/vendor/VendorSupplierPortal.tsx`
+- `app/src/screens/public/AI.tsx`
 - `app/src/screens/public/About.tsx`
+- `app/src/screens/public/Accounting.tsx`
 - `app/src/screens/public/Blog.tsx`
+- `app/src/screens/public/CRM.tsx`
+- `app/src/screens/public/Careers.tsx`
 - `app/src/screens/public/Contact.tsx`
+- `app/src/screens/public/CookiePolicy.tsx`
+- `app/src/screens/public/CustomerPortalPage.tsx`
 - `app/src/screens/public/Faq.tsx`
+- `app/src/screens/public/Features.tsx`
+- `app/src/screens/public/Fleet.tsx`
+- `app/src/screens/public/Industries.tsx`
 - `app/src/screens/public/Insurance.tsx`
+- `app/src/screens/public/Integrations.tsx`
 - `app/src/screens/public/Landing.tsx`
 - `app/src/screens/public/Loans.tsx`
 - `app/src/screens/public/Marketplace.tsx`
+- `app/src/screens/public/MiniERP.tsx`
+- `app/src/screens/public/Pricing.tsx`
 - `app/src/screens/public/PrivacyPolicy.tsx`
+- `app/src/screens/public/Products.tsx`
+- `app/src/screens/public/RequestDemo.tsx`
 - `app/src/screens/public/Services.tsx`
+- `app/src/screens/public/Solutions.tsx`
+- `app/src/screens/public/SpareParts.tsx`
+- `app/src/screens/public/SupplierPortalPage.tsx`
 - `app/src/screens/public/Support.tsx`
+- `app/src/screens/public/TechnicianPortalPage.tsx`
 - `app/src/screens/public/Terms.tsx`
+- `app/src/screens/public/Workshop.tsx`
 - `app/src/screens/public/sections/FaqList.tsx`
 - `app/src/screens/public/sections/Hero.tsx`
 - `app/src/screens/public/sections/IconCardGrid.tsx`

@@ -856,8 +856,8 @@
           "category": "PRODUCT"
         },
         {
-          "name": "ControlTracker",
-          "route": "/control-tracker",
+          "name": "CookiePolicy",
+          "route": "/cookie-policy",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1491,8 +1491,35 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · Accounting",
+          "route": "/public-portal/accounting",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · AI",
+          "route": "/public-portal/ai",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Blog",
           "route": "/public-portal/blog",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Careers",
+          "route": "/public-portal/careers",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1509,6 +1536,24 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · CRM",
+          "route": "/public-portal/crm",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · CustomerPortal",
+          "route": "/public-portal/customer-portal",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · FAQ",
           "route": "/public-portal/faq",
           "status": "built",
@@ -1518,8 +1563,44 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · Features",
+          "route": "/public-portal/features",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Fleet",
+          "route": "/public-portal/fleet",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Industries",
+          "route": "/public-portal/industries",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Insurance",
           "route": "/public-portal/insurance",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Integrations",
+          "route": "/public-portal/integrations",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1554,6 +1635,42 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · MiniERP",
+          "route": "/public-portal/mini-erp",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Pricing",
+          "route": "/public-portal/pricing",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Products",
+          "route": "/public-portal/products",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · RequestDemo",
+          "route": "/public-portal/request-demo",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Services",
           "route": "/public-portal/services",
           "status": "built",
@@ -1563,8 +1680,53 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · Solutions",
+          "route": "/public-portal/solutions",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · SpareParts",
+          "route": "/public-portal/spare-parts",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · SupplierPortal",
+          "route": "/public-portal/supplier-portal",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Support",
           "route": "/public-portal/support",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · TechnicianPortal",
+          "route": "/public-portal/technician-portal",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Workshop",
+          "route": "/public-portal/workshop",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -3742,8 +3904,8 @@
     }
   ],
   "totals": {
-    "total": 403,
-    "built": 403,
+    "total": 421,
+    "built": 421,
     "designedMobile": 113
   }
 }

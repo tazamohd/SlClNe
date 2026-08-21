@@ -42,7 +42,7 @@ Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches t
 | 14 | HR | product | 1 | `app/src/screens/hr/**`<br>`app/src/screens/domains/hr.ts` |
 | 15 | AI / Automation | product | 10 | `app/src/screens/ai/**`<br>`app/src/screens/crm/Crm.tsx`<br>`app/src/screens/domains/ai.ts` |
 | 16 | Portals | product | 24 | `app/src/screens/portals/**`<br>`app/src/screens/customer-app/**`<br>`app/src/components/shell/CustomerAppShell.tsx`<br>`app/src/screens/domains/portals.ts` |
-| 17 | Public Website & Landing | product | 10 | `app/src/screens/public/**`<br>`app/src/components/shell/PublicShell.tsx`<br>`app/public/robots.txt`<br>`app/public/sitemap.xml`<br>`app/src/screens/domains/website.ts` |
+| 17 | Public Website & Landing | product | 28 | `app/src/screens/public/**`<br>`app/src/components/shell/PublicShell.tsx`<br>`app/public/robots.txt`<br>`app/public/sitemap.xml`<br>`app/src/screens/domains/website.ts` |
 | 18 | Mobile / Tablet | cross-cutting | — | every capability at 390/430/768/820/834/1024/1280/1440/1536 |
 | 19 | Arabic / RTL | cross-cutting | — | `app/src/data/generated/ar.ts` |
 | 20 | Accessibility | cross-cutting | — | WCAG 2.2 AA<br>keyboard-only golden journeys<br>reduced motion |

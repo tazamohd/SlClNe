@@ -1,38 +1,45 @@
 /** Screens owned by agent 17 — Public Website & Landing.
  *
- *  The public marketing site and landing pages, rendered in PublicShell with no session at all.
+ *  The public marketing site and landing pages, rendered in PublicShell with no
+ *  session at all. Every entry here is `ungated`: these pages must render for a
+ *  visitor with no session, so they mount entirely outside `RequireAccess`.
  *
- *  Nobody else edits this file. `screens/registry.ts` composes it with the other
- *  domains and refuses to let two of them claim the same screen name, which is
- *  why ten agents can add routes at once without meeting in `routes/index.tsx`.
- *
- *  Every entry here is `ungated`: these pages must render for a visitor with
- *  no session, so they mount entirely outside `RequireAccess` — the guard
- *  would bounce an anonymous reader to /login.
- *
- *  The ten `PublicPortal.*` pages are Tier A, design-authoritative from
- *  `project/PublicPortal.*.dc.html` (§A25 provenance: the design handoff, with
- *  the deviations each screen's header comment records).
- *
- *  `PrivacyPolicy` and `TermsConditions` are Tier C content pages with **no**
- *  `.dc.html` in the handoff — design-system pages composed from the approved
- *  public section system, never presented as design-authoritative. The registry
- *  classifies them under the `auth` surface (they predate this barrel and once
- *  rendered a gated placeholder); declaring them here makes them real, ungated
- *  public pages and takes them off the placeholder ledger. */
+ *  Tier A (10): design-authoritative from `project/PublicPortal.*.dc.html`.
+ *  Tier B (16): design-system pages composed from the approved section system.
+ *  Tier C (3): content/SEO legal pages. */
 import type { ComponentType } from 'react'
 import type { DomainScreens, ScreenEntry } from '../registry'
 import { PublicShell } from '@/components/shell/PublicShell'
+
 import { PublicLanding } from '../public/Landing'
 import { PublicAbout } from '../public/About'
-import { PublicServices } from '../public/Services'
-import { PublicMarketplace } from '../public/Marketplace'
-import { PublicInsurance } from '../public/Insurance'
-import { PublicLoans } from '../public/Loans'
+import { PublicAccounting } from '../public/Accounting'
+import { PublicAI } from '../public/AI'
 import { PublicBlog } from '../public/Blog'
-import { PublicFaq } from '../public/Faq'
+import { PublicCareers } from '../public/Careers'
 import { PublicContact } from '../public/Contact'
+import { PublicCookiePolicy } from '../public/CookiePolicy'
+import { PublicCRM } from '../public/CRM'
+import { PublicCustomerPortal } from '../public/CustomerPortalPage'
+import { PublicFaq } from '../public/Faq'
+import { PublicFeatures } from '../public/Features'
+import { PublicFleet } from '../public/Fleet'
+import { PublicIndustries } from '../public/Industries'
+import { PublicInsurance } from '../public/Insurance'
+import { PublicIntegrations } from '../public/Integrations'
+import { PublicLoans } from '../public/Loans'
+import { PublicMarketplace } from '../public/Marketplace'
+import { PublicMiniERP } from '../public/MiniERP'
+import { PublicPricing } from '../public/Pricing'
+import { PublicProducts } from '../public/Products'
+import { PublicRequestDemo } from '../public/RequestDemo'
+import { PublicServices } from '../public/Services'
+import { PublicSolutions } from '../public/Solutions'
+import { PublicSpareParts } from '../public/SpareParts'
+import { PublicSupplierPortal } from '../public/SupplierPortalPage'
 import { PublicSupport } from '../public/Support'
+import { PublicTechnicianPortal } from '../public/TechnicianPortalPage'
+import { PublicWorkshop } from '../public/Workshop'
 import { PublicPrivacyPolicy } from '../public/PrivacyPolicy'
 import { PublicTerms } from '../public/Terms'
 
@@ -45,14 +52,33 @@ const pub = (component: ComponentType): ScreenEntry => ({
 export const SCREENS: DomainScreens = {
   'PublicPortal.Landing': pub(PublicLanding),
   'PublicPortal.About': pub(PublicAbout),
-  'PublicPortal.Services': pub(PublicServices),
-  'PublicPortal.Marketplace': pub(PublicMarketplace),
-  'PublicPortal.Insurance': pub(PublicInsurance),
-  'PublicPortal.Loans': pub(PublicLoans),
+  'PublicPortal.Accounting': pub(PublicAccounting),
+  'PublicPortal.AI': pub(PublicAI),
   'PublicPortal.Blog': pub(PublicBlog),
-  'PublicPortal.FAQ': pub(PublicFaq),
+  'PublicPortal.Careers': pub(PublicCareers),
   'PublicPortal.Contact': pub(PublicContact),
+  'PublicPortal.CRM': pub(PublicCRM),
+  'PublicPortal.CustomerPortal': pub(PublicCustomerPortal),
+  'PublicPortal.FAQ': pub(PublicFaq),
+  'PublicPortal.Features': pub(PublicFeatures),
+  'PublicPortal.Fleet': pub(PublicFleet),
+  'PublicPortal.Industries': pub(PublicIndustries),
+  'PublicPortal.Insurance': pub(PublicInsurance),
+  'PublicPortal.Integrations': pub(PublicIntegrations),
+  'PublicPortal.Loans': pub(PublicLoans),
+  'PublicPortal.Marketplace': pub(PublicMarketplace),
+  'PublicPortal.MiniERP': pub(PublicMiniERP),
+  'PublicPortal.Pricing': pub(PublicPricing),
+  'PublicPortal.Products': pub(PublicProducts),
+  'PublicPortal.RequestDemo': pub(PublicRequestDemo),
+  'PublicPortal.Services': pub(PublicServices),
+  'PublicPortal.Solutions': pub(PublicSolutions),
+  'PublicPortal.SpareParts': pub(PublicSpareParts),
+  'PublicPortal.SupplierPortal': pub(PublicSupplierPortal),
   'PublicPortal.Support': pub(PublicSupport),
+  'PublicPortal.TechnicianPortal': pub(PublicTechnicianPortal),
+  'PublicPortal.Workshop': pub(PublicWorkshop),
   PrivacyPolicy: pub(PublicPrivacyPolicy),
   TermsConditions: pub(PublicTerms),
+  CookiePolicy: pub(PublicCookiePolicy),
 }
