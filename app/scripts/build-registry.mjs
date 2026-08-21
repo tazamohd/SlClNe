@@ -439,7 +439,13 @@ function reachableScreenFiles() {
 
   // Both alias and relative imports — a helper module pulled in as './types'
   // is reached just as surely as one imported as '@/screens/...'.
-  const importsOf = (src) => [...src.matchAll(/from '([^']+)'/g)].map((m) => m[1])
+  // Dynamic imports — `import('@/screens/domains/workshop')` — must be walked
+  // too, otherwise every screen loaded through `lazyBarrel()` or `lazyNamed()`
+  // appears orphaned.
+  const importsOf = (src) => [
+    ...src.matchAll(/from '([^']+)'/g),
+    ...src.matchAll(/import\('([^']+)'\)/g),
+  ].map((m) => m[1])
   const resolve = (spec, fromFile) => {
     const base = spec.startsWith('@/') ? path.join(APP, 'src', spec.slice(2))
       : spec.startsWith('.') ? path.resolve(path.dirname(fromFile), spec)
