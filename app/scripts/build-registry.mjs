@@ -595,7 +595,7 @@ const blockers = [
     owner: '07', wave: 'W2' },
   totals.designedMobileOwed && { id: 'BLK-006', severity: 'HIGH', title: `${totals.designedMobileOwed} built screens owe their designed mobile layout`,
     detail: 'A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.', owner: '18', wave: 'W3' },
-  { id: 'BLK-007', severity: 'CRITICAL', title: 'No modal system, so 23 CTAs do nothing',
+  !fs.existsSync(path.join(APP, 'src/components/ui/Modal.tsx')) && { id: 'BLK-007', severity: 'CRITICAL', title: 'No modal system, so 23 CTAs do nothing',
     detail: 'Blocks every create/edit/delete flow in the ERP.', owner: '04', wave: 'W1' },
   { id: 'BLK-008', severity: 'HIGH', title: 'No tablet verification anywhere',
     detail: '768/820/834/1024, portrait and landscape, has never been checked.', owner: '18', wave: 'W3' },
