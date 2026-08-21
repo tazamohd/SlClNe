@@ -91,6 +91,18 @@ emit(
 )
 
 // ── Screen registry (from SCREEN_MAP.md) ─────────────────────────────────────
+
+/** Every .ts/.tsx under a directory, recursively. */
+function sourceFiles(dir) {
+  const out = []
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = resolve(dir, entry.name)
+    if (entry.isDirectory()) out.push(...sourceFiles(full))
+    else if (/\.tsx?$/.test(entry.name)) out.push(full)
+  }
+  return out
+}
+
 function parseScreenMap() {
   const md = readFileSync(resolve(designDir, 'handoff/SCREEN_MAP.md'), 'utf8')
   const rows = new Map()
@@ -158,8 +170,15 @@ emit(
 await emitIconRegistry()
 
 async function emitIconRegistry() {
-  const { icons } = await import('lucide-react')
-  const known = new Set(Object.keys(icons))
+  const lucide = await import('lucide-react')
+  // `lucide.icons` holds only canonical names. Deprecated aliases — CheckCircle,
+  // AlertTriangle, Home — are still exported as components but are absent from
+  // that map, so gating on it silently dropped them: `<Icon name="CheckCircle">`
+  // looked up undefined and rendered nothing at all. Gate on the exported
+  // components instead, which is what an explicit import actually needs.
+  const known = new Set(
+    Object.keys(lucide).filter((name) => /^[A-Z][A-Za-z0-9]*$/.test(name)),
+  )
   const used = new Set()
 
   const files = readdirSync(designDir).filter(
@@ -176,6 +195,17 @@ async function emitIconRegistry() {
   // Icons this rebuild introduces that no prototype referenced.
   for (const extra of ['Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight']) {
     if (known.has(extra)) used.add(extra)
+  }
+
+  // Names the rebuilt screens ask for by string literal. Scanning only the
+  // design bundle missed these: `<Icon name="CheckCircle">` resolved to
+  // undefined and rendered nothing at all, silently, on eight screens. The
+  // registry has to follow the call sites, not just the prototypes.
+  for (const file of sourceFiles(resolve(here, '../src'))) {
+    const text = readFileSync(file, 'utf8')
+    for (const [, token] of text.matchAll(/\bname="([A-Z][A-Za-z0-9]{2,})"/g)) {
+      if (known.has(token)) used.add(token)
+    }
   }
 
   const names = [...used].sort()
