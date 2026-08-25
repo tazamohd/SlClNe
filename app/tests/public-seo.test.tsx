@@ -13,8 +13,9 @@ const robots = fs.readFileSync(path.join(publicDir, 'robots.txt'), 'utf8')
 
 const ROUTE_OF = new Map(SCREENS.map((s) => [s.name, s.route]))
 /** The ungated public route set is exactly what the website barrel declares —
- *  ten PublicPortal pages plus the two legal pages. Deriving it from the barrel
- *  keeps the sitemap honest as pages are added, rather than hard-coding a count. */
+ *  every PublicPortal screen in the generated registry plus the top-level legal
+ *  pages. Deriving it from the barrel keeps the sitemap honest as pages are
+ *  added, rather than hard-coding a count. */
 const PUBLIC_ROUTES = Object.keys(WEBSITE_SCREENS).map((name) => {
   const route = ROUTE_OF.get(name)
   if (!route) throw new Error(`${name} is in the website barrel but not the generated registry`)
@@ -23,7 +24,7 @@ const PUBLIC_ROUTES = Object.keys(WEBSITE_SCREENS).map((name) => {
 
 describe('sitemap.xml', () => {
   it('lists every ungated public route the website barrel declares', () => {
-    expect(PUBLIC_ROUTES).toHaveLength(12)
+    expect(PUBLIC_ROUTES.length).toBe(Object.keys(WEBSITE_SCREENS).length)
     for (const route of PUBLIC_ROUTES) {
       expect(sitemap).toContain(`<loc>https://salisauto.sa${route}</loc>`)
     }
@@ -39,9 +40,10 @@ describe('sitemap.xml', () => {
 describe('robots.txt', () => {
   it('allows the public routes, disallows the rest, and names the sitemap', () => {
     expect(robots).toContain('Allow: /public-portal/')
-    // The two legal pages sit at top-level paths, so each is allowed explicitly.
+    // The legal pages sit at top-level paths, so each is allowed explicitly.
     expect(robots).toContain('Allow: /privacy-policy')
     expect(robots).toContain('Allow: /terms-conditions')
+    expect(robots).toContain('Allow: /cookie-policy')
     expect(robots).toContain('Disallow: /')
     expect(robots).toContain('Sitemap: https://salisauto.sa/sitemap.xml')
   })

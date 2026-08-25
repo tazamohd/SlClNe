@@ -105,8 +105,13 @@ export function Invoices() {
             title={t('Invoices')}
             actions={
               can('invoices', 'c') ? (
-                <Button size="md" onClick={() => navigate('/invoice-create')}>
+                <Button
+                  size="md"
+                  onClick={() => navigate('/invoice-create')}
+                  aria-label={t('New Invoice')}
+                >
                   <Icon name="Plus" size={16} />
+                  <span className="sr-only">{t('New Invoice')}</span>
                 </Button>
               ) : null
             }
@@ -159,6 +164,9 @@ export function Invoices() {
                   <MobileCardRow label={t('Balance')}>
                     <BalanceCell invoice={invoice} />
                   </MobileCardRow>
+                  <div className="border-t border-border pt-2.5">
+                    <InvoiceRowActions invoice={payable(invoice)} onRecordPayment={setPaying} labelled />
+                  </div>
                 </MobileCard>
               ))}
             </div>

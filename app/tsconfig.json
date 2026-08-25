@@ -20,7 +20,10 @@
     "noFallthroughCasesInSwitch": true,
 
     "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./src/*"],
+      "zod": ["./node_modules/zod"]
+    }
   },
   "include": ["src", "vite.config.ts"]
 }

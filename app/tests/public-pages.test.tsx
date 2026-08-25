@@ -45,14 +45,13 @@ function componentOf(name: string): ComponentType {
 
 /** Tier C legal pages — no `.dc.html`, design-system pages, registered under
  *  their generated (auth-surface) registry names, not a PublicPortal.* name. */
-const LEGAL_SCREENS = ['PrivacyPolicy', 'TermsConditions'] as const
+const LEGAL_SCREENS = ['PrivacyPolicy', 'TermsConditions', 'CookiePolicy'] as const
 
 describe('website domain barrel', () => {
-  it('declares the ten Tier A PublicPortal screens plus the two Tier C legal pages', () => {
+  it('declares every PublicPortal screen plus the top-level legal pages', () => {
     const publicPortal = GENERATED_SCREENS.filter((s) => s.name.startsWith('PublicPortal.'))
       .map((s) => s.name)
       .sort()
-    expect(publicPortal).toHaveLength(10)
     const expected = [...publicPortal, ...LEGAL_SCREENS].sort()
     expect(Object.keys(WEBSITE_SCREENS).sort()).toEqual(expected)
   })

@@ -63,8 +63,13 @@ export function JobCards() {
             title={t('Job Cards')}
             actions={
               can('jobcards', 'c') ? (
-                <Button size="md" onClick={() => setCreating(true)}>
+                <Button
+                  size="md"
+                  onClick={() => setCreating(true)}
+                  aria-label={t('New Job Card')}
+                >
                   <Icon name="Plus" size={16} />
+                  <span className="sr-only">{t('New Job Card')}</span>
                 </Button>
               ) : null
             }

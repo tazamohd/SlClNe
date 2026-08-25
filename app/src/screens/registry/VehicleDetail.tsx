@@ -64,6 +64,25 @@ export function VehicleDetail() {
 
   const rows = (vehicles.data ?? []) as readonly Vehicle[]
   const vehicle = ref ? rows.find((row) => rowId(row) === ref || row.plate === ref) : rows[0]
+  const vehicleMake = vehicle?.make ?? ''
+  const vehicleOwner = vehicle?.owner ?? ''
+  const worked = (jobs.data ?? []).filter((row: Job) => vehicleMake && row.veh === vehicleMake)
+  const quoted = (estimates.data ?? []).filter((row) => vehicleMake && row.veh === vehicleMake)
+
+  const activities: ActivityItem[] = useMemo(
+    () =>
+      vehicleMake
+        ? worked.slice(0, 5).map((job) => ({
+            id: `act-${job.id}`,
+            icon: job.st === 'completed' ? 'CheckCircle' : 'Wrench',
+            user: vehicleOwner,
+            action: t(job.svc.replace(/_/g, ' ')),
+            target: job.id,
+            time: t(job.st.replace(/_/g, ' ')),
+          }))
+        : [],
+    [worked, vehicleOwner, vehicleMake, t]
+  )
 
   if (vehicles.isLoading) return <DetailPage title={t('All Vehicles')} loading />
 
@@ -91,8 +110,6 @@ export function VehicleDetail() {
   }
 
   const id = rowId(vehicle)
-  const worked = (jobs.data ?? []).filter((row: Job) => row.veh === vehicle.make)
-  const quoted = (estimates.data ?? []).filter((row) => row.veh === vehicle.make)
 
   const summary: DetailStat[] = [
     {
@@ -126,19 +143,6 @@ export function VehicleDetail() {
     secondary: t(job.svc.replace(/_/g, ' ')),
     badge: <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />,
   }))
-
-  const activities: ActivityItem[] = useMemo(
-    () =>
-      worked.slice(0, 5).map((job) => ({
-        id: `act-${job.id}`,
-        icon: job.st === 'completed' ? 'CheckCircle' : 'Wrench',
-        user: vehicle.owner,
-        action: t(job.svc.replace(/_/g, ' ')),
-        target: job.id,
-        time: t(job.st.replace(/_/g, ' ')),
-      })),
-    [worked, vehicle.owner, t]
-  )
 
   const estimateRecords: DetailRecord[] = quoted.map((estimate) => ({
     id: estimate.id,

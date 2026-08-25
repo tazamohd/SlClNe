@@ -158,7 +158,7 @@ export function PublicLanding() {
         title="Manage Your Workshop with Confidence"
         description="SALIS AUTO is the all-in-one garage management system built for Saudi workshops — from single bays to franchise networks."
         primaryCta={{ label: 'Get Started', to: '/register' }}
-        secondaryCta={{ label: 'Book a Demo', to: '/public-portal/book-demo' }}
+        secondaryCta={{ label: 'Book a Demo', to: '/public-portal/contact' }}
       />
 
       <TrustBand
@@ -173,6 +173,7 @@ export function PublicLanding() {
         className="mx-auto max-w-[1100px] px-5 py-10 md:px-10 md:py-[60px]"
       >
         <SectionIntro
+          as="h2"
           centered
           title="Everything Your Workshop Needs"
           subtitle="A complete platform covering operations, finance, CRM, and more"
@@ -205,7 +206,7 @@ export function PublicLanding() {
         title="Ready to Transform Your Workshop?"
         description="Join hundreds of Saudi workshops already running smarter with SALIS AUTO."
         primaryCta={{ label: 'Get Started Free', to: '/register' }}
-        secondaryCta={{ label: 'Book a Demo', to: '/public-portal/book-demo' }}
+        secondaryCta={{ label: 'Schedule a Demo', to: '/public-portal/contact' }}
       />
     </>
   )

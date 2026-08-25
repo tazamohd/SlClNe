@@ -103,9 +103,9 @@ describe('PublicShell', () => {
     expect(links.length).toBeGreaterThan(0)
     for (const link of links) {
       // Every footer link is a real public route: a PublicPortal page or one of
-      // the two top-level legal pages. No dead CTAs, no authenticated URLs.
+      // the top-level legal pages. No dead CTAs, no authenticated URLs.
       expect(link.getAttribute('href')).toMatch(
-        /^(\/public-portal\/|\/privacy-policy$|\/terms-conditions$)/
+        /^(\/public-portal\/|\/privacy-policy$|\/terms-conditions$|\/cookie-policy$)/
       )
     }
   })

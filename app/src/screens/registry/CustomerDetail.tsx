@@ -74,6 +74,38 @@ export function CustomerDetail() {
   // The design's own screens fall back to the first record when the query
   // string names nobody, and the route is reachable that way.
   const customer = ref ? rows.find((row) => rowId(row) === ref || row.name === ref) : rows[0]
+  const customerName = customer?.name ?? ''
+  const owned = (vehicles.data ?? []).filter((v: Vehicle) => customerName && v.owner === customerName)
+  const billed = (invoices.data ?? []).filter((row) => customerName && row.cust === customerName)
+  const worked = (jobs.data ?? []).filter((row: Job) => customerName && row.cust === customerName)
+
+  const activities: ActivityItem[] = useMemo(
+    () =>
+      customerName
+        ? worked.slice(0, 5).map((job, i) => ({
+            id: `act-${job.id}`,
+            icon: i % 2 === 0 ? 'Wrench' : 'CheckCircle',
+            user: customerName,
+            action: job.st === 'completed' ? 'completed' : 'started',
+            target: job.id,
+            time: t(job.st.replace(/_/g, ' ')),
+          }))
+        : [],
+    [worked, customerName, t]
+  )
+
+  const comments: Comment[] = useMemo(
+    () =>
+      customerName
+        ? worked.slice(0, 3).map((job) => ({
+            id: `cmt-${job.id}`,
+            author: customerName,
+            text: `${t(job.svc.replace(/_/g, ' '))} — ${t(job.st.replace(/_/g, ' '))}`,
+            time: t(job.pr),
+          }))
+        : [],
+    [worked, customerName, t]
+  )
 
   if (customers.isLoading) return <DetailPage title={t('Customers')} loading />
 
@@ -102,9 +134,6 @@ export function CustomerDetail() {
 
   const hideContact = fieldHidden('Customer contact details')
   const id = rowId(customer)
-  const owned = (vehicles.data ?? []).filter((v: Vehicle) => v.owner === customer.name)
-  const billed = (invoices.data ?? []).filter((row) => row.cust === customer.name)
-  const worked = (jobs.data ?? []).filter((row: Job) => row.cust === customer.name)
   const memberSince = customer._createdAt ? customer._createdAt.slice(0, 4) : undefined
 
   const summary: DetailStat[] = [
@@ -157,30 +186,6 @@ export function CustomerDetail() {
     meta: <Money sar={parseSar(invoice.amount)} className="text-[13px] font-semibold text-heading" />,
     badge: <InvoiceStatusBadge value={invoice.status} />,
   }))
-
-  const activities: ActivityItem[] = useMemo(
-    () =>
-      worked.slice(0, 5).map((job, i) => ({
-        id: `act-${job.id}`,
-        icon: i % 2 === 0 ? 'Wrench' : 'CheckCircle',
-        user: customer.name,
-        action: job.st === 'completed' ? 'completed' : 'started',
-        target: job.id,
-        time: t(job.st.replace(/_/g, ' ')),
-      })),
-    [worked, customer.name, t]
-  )
-
-  const comments: Comment[] = useMemo(
-    () =>
-      worked.slice(0, 3).map((job) => ({
-        id: `cmt-${job.id}`,
-        author: customer.name,
-        text: `${t(job.svc.replace(/_/g, ' '))} — ${t(job.st.replace(/_/g, ' '))}`,
-        time: t(job.pr),
-      })),
-    [worked, customer.name, t]
-  )
 
   const historyColumns: Column<Job>[] = [
     { header: 'Job Card', cell: (job) => job.id, code: true },

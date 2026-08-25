@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      zod: fileURLToPath(new URL('./node_modules/zod', import.meta.url)),
     },
   },
   server: { port: 5173, host: true },

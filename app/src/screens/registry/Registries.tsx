@@ -184,7 +184,16 @@ export function Customers() {
             onRowClick={(c) => navigate(`/customer-detail?id=${encodeURIComponent(rowId(c) ?? c.name)}`)}
             mobileCard={(c) => (
               <>
-                <MobileCardHeader title={c.name} />
+                <MobileCardHeader
+                  title={c.name}
+                  trailing={
+                    <RowActions
+                      label={c.name}
+                      onEdit={mayEdit ? () => setForm(c) : undefined}
+                      onDelete={mayDelete ? () => setDoomed(c) : undefined}
+                    />
+                  }
+                />
                 {hideContact ? null : (
                   <MobileCardRow label={t('Phone')}>
                     <span className="font-mono" dir="ltr">{c.phone}</span>
