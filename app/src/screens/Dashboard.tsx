@@ -229,7 +229,7 @@ export function Dashboard() {
           action={
             <Link
               to="/job-cards"
-              className="inline-flex h-8 items-center gap-1.5 rounded px-3 font-action text-[13px] font-medium text-salis-blue no-underline transition-colors duration-150 hover:bg-[rgba(10,94,215,.08)] hover:no-underline"
+              className="inline-flex h-9 items-center gap-1.5 rounded px-3 font-action text-[13px] font-medium text-salis-blue no-underline transition-colors duration-150 hover:bg-[rgba(10,94,215,.08)] hover:no-underline"
             >
               {t('View All')}
               <Icon name="ArrowUpRight" size={14} />

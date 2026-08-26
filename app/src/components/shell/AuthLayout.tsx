@@ -46,7 +46,7 @@ export function AuthControls() {
         type="button"
         onClick={toggleLanguage}
         aria-label="Toggle language"
-        className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded border border-border bg-card px-2.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
+        className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded border border-border bg-card px-2.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
       >
         <Icon name="Globe" size={14} />
         <span>{rtl ? 'English' : 'عربي'}</span>

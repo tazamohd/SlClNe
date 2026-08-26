@@ -133,7 +133,7 @@ export function RolesPermissions() {
                 type="button"
                 onClick={() => setSelectedRoleId(role.id)}
                 className={
-                  'inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full px-3 font-action text-xs font-semibold transition-all ' +
+                  'inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full px-3 font-action text-xs font-semibold transition-all ' +
                   (active
                     ? 'border-none bg-salis-gradient text-white'
                     : 'border border-border bg-card text-body')
