@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-08-21'
+export const REGISTRY_GENERATED_AT = '2026-08-26'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -443,7 +443,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -639,7 +638,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -715,7 +713,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -741,7 +738,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -942,7 +938,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1017,7 +1012,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1212,7 +1206,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1237,7 +1230,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1503,7 +1495,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1771,7 +1762,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2242,7 +2232,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4002,7 +3991,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -4251,7 +4239,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,

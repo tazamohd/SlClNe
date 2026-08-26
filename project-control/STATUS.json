@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21",
+  "generatedAt": "2026-08-26",
   "totals": {
     "capabilities": 424,
     "product": 384,
@@ -12,8 +12,8 @@
     "mockOnly": 384,
     "dataBacked": 0,
     "e2eCovered": 424,
-    "contentAsserted": 79,
-    "renderedWithoutAssertion": 345,
+    "contentAsserted": 92,
+    "renderedWithoutAssertion": 332,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
