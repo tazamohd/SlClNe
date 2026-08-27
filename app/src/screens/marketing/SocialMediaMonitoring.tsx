@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Mention {
   platform: string
@@ -49,6 +50,57 @@ export function SocialMediaMonitoring() {
     { label: t('Avg Response Time'), value: '2.4h', icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const columns: Column<Mention>[] = [
+    {
+      header: 'Platform',
+      cell: (m) => (
+        <div className="flex items-center gap-1.5">
+          <Icon name={PLATFORM_ICONS[m.platform]} size={14} className="text-muted" />
+          <span className="text-body">{m.platform}</span>
+        </div>
+      ),
+    },
+    { header: 'Author', cell: (m) => <span className="font-medium text-heading">{m.author}</span> },
+    { header: 'Mention', cell: (m) => <span className="max-w-[240px] truncate text-body">{m.text}</span> },
+    { header: 'Sentiment', cell: (m) => <Badge background={SENTIMENT_STYLES[m.sentiment].bg} color={SENTIMENT_STYLES[m.sentiment].fg}>{t(m.sentiment)}</Badge> },
+    { header: 'Date', cell: (m) => <span className="text-muted">{m.date}</span> },
+    {
+      header: 'Responded',
+      cell: (m) =>
+        m.responded
+          ? <span className="flex items-center gap-1 text-salis-blue"><Icon name="Check" size={14} />{t('Yes')}</span>
+          : <span className="text-muted">{t('No')}</span>,
+    },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Social media mentions"
+      columns={columns}
+      rows={MENTIONS}
+      rowKey={(_, i) => `mention-${i}`}
+      mobileCard={(m) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={PLATFORM_ICONS[m.platform]} size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{m.author}</p>
+                  <p className="text-xs text-muted">{m.platform}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={SENTIMENT_STYLES[m.sentiment].bg} color={SENTIMENT_STYLES[m.sentiment].fg}>{t(m.sentiment)}</Badge>}
+          />
+          <p className="mt-1 text-xs text-body">{m.text}</p>
+          <MobileCardRow label={t('Date')} value={m.date} />
+          <MobileCardRow label={t('Responded')} value={m.responded ? t('Yes') : t('No')} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -64,25 +116,7 @@ export function SocialMediaMonitoring() {
             </Card>
           ))}
         </div>
-        {MENTIONS.map((m, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={PLATFORM_ICONS[m.platform]} size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{m.author}</p>
-                    <p className="text-xs text-muted">{m.platform}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={SENTIMENT_STYLES[m.sentiment].bg} color={SENTIMENT_STYLES[m.sentiment].fg}>{t(m.sentiment)}</Badge>}
-            />
-            <p className="mt-1 text-xs text-body">{m.text}</p>
-            <MobileCardRow label={t('Date')} value={m.date} />
-            <MobileCardRow label={t('Responded')} value={m.responded ? t('Yes') : t('No')} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -114,45 +148,7 @@ export function SocialMediaMonitoring() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Platform')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Author')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Mention')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Sentiment')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 text-start font-medium">{t('Responded')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MENTIONS.map((m, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-1.5">
-                      <Icon name={PLATFORM_ICONS[m.platform]} size={14} className="text-muted" />
-                      <span className="text-body">{m.platform}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 font-medium text-heading">{m.author}</td>
-                  <td className="max-w-[240px] truncate py-3 pe-4 text-body">{m.text}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={SENTIMENT_STYLES[m.sentiment].bg} color={SENTIMENT_STYLES[m.sentiment].fg}>{t(m.sentiment)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-muted">{m.date}</td>
-                  <td className="py-3">
-                    {m.responded
-                      ? <span className="flex items-center gap-1 text-salis-blue"><Icon name="Check" size={14} />{t('Yes')}</span>
-                      : <span className="text-muted">{t('No')}</span>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

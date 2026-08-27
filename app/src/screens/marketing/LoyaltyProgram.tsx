@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface LoyaltyMember {
   name: string
@@ -43,6 +44,51 @@ export function LoyaltyProgram() {
     { label: t('Redemption Rate'), value: '34.2%', icon: 'Gift', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const columns: Column<LoyaltyMember>[] = [
+    { header: 'Member', cell: (m) => <span className="font-medium text-heading">{m.name}</span> },
+    { header: 'Tier', cell: (m) => <Badge background={TIER_STYLES[m.tier].bg} color={TIER_STYLES[m.tier].fg}>{t(m.tier)}</Badge> },
+    { header: 'Points', cell: (m) => <span className="font-mono text-heading">{m.points.toLocaleString()}</span> },
+    { header: 'Visits', cell: (m) => <span className="font-mono text-heading">{m.visits}</span> },
+    { header: 'Last Visit', cell: (m) => m.lastVisit },
+    {
+      header: 'Status',
+      cell: (m) => (
+        <Badge
+          background={m.status === 'Active' ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+          color={m.status === 'Active' ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+        >{t(m.status)}</Badge>
+      ),
+    },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Loyalty members"
+      columns={columns}
+      rows={MEMBERS}
+      rowKey={(m) => m.name}
+      mobileCard={(m) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{m.name}</p>
+                  <p className="text-xs text-muted">{t(m.lastVisit)}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={TIER_STYLES[m.tier].bg} color={TIER_STYLES[m.tier].fg}>{t(m.tier)}</Badge>}
+          />
+          <MobileCardRow label={t('Points')} value={m.points.toLocaleString()} />
+          <MobileCardRow label={t('Visits')} value={String(m.visits)} />
+          <MobileCardRow label={t('Status')} value={t(m.status)} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -58,25 +104,7 @@ export function LoyaltyProgram() {
             </Card>
           ))}
         </div>
-        {MEMBERS.map((m) => (
-          <MobileCard key={m.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{m.name}</p>
-                    <p className="text-xs text-muted">{t(m.lastVisit)}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={TIER_STYLES[m.tier].bg} color={TIER_STYLES[m.tier].fg}>{t(m.tier)}</Badge>}
-            />
-            <MobileCardRow label={t('Points')} value={m.points.toLocaleString()} />
-            <MobileCardRow label={t('Visits')} value={String(m.visits)} />
-            <MobileCardRow label={t('Status')} value={t(m.status)} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -108,41 +136,7 @@ export function LoyaltyProgram() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Member')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Tier')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Points')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Visits')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Last Visit')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MEMBERS.map((m) => (
-                <tr key={m.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{m.name}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={TIER_STYLES[m.tier].bg} color={TIER_STYLES[m.tier].fg}>{t(m.tier)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{m.points.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{m.visits}</td>
-                  <td className="py-3 pe-4 text-body">{m.lastVisit}</td>
-                  <td className="py-3">
-                    <Badge
-                      background={m.status === 'Active' ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
-                      color={m.status === 'Active' ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
-                    >{t(m.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

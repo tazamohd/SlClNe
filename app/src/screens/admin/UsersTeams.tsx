@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { EmptyState } from '@/components/ui/States'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -76,6 +77,47 @@ export function UsersTeams() {
         u.role.toLowerCase().includes(lower),
     )
   }, [q])
+
+  const userColumns: Column<User>[] = [
+    {
+      header: 'User',
+      cell: (u) => (
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
+            {u.name.trim()[0]}
+          </span>
+          <div className="min-w-0">
+            <p className="m-0 text-[13px] font-medium text-heading">{u.name}</p>
+            <p className="m-0 text-[11px] text-muted">{u.email}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: 'Role',
+      cell: (u) => (
+        <Badge
+          background={ROLE_TONES[u.roleTone][0]}
+          color={ROLE_TONES[u.roleTone][1]}
+        >
+          {t(u.role)}
+        </Badge>
+      ),
+    },
+    { header: 'Team', cell: (u) => <span className="text-[13px] text-muted">{t(u.team)}</span> },
+    { header: 'Last Login', cell: (u) => <span className="text-[13px] text-muted">{u.lastLogin}</span> },
+    {
+      header: 'Status',
+      cell: (u) => (
+        <Badge
+          background={STATUS_STYLES[u.status][0]}
+          color={STATUS_STYLES[u.status][1]}
+        >
+          {t(u.status)}
+        </Badge>
+      ),
+    },
+  ]
 
   return (
     <div className="flex max-w-[1240px] animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -169,63 +211,12 @@ export function UsersTeams() {
             ))}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-start">
-              <thead>
-                <tr className="text-start">
-                  {['User', 'Role', 'Team', 'Last Login', 'Status'].map((h) => (
-                    <th
-                      key={h}
-                      className="whitespace-nowrap border-0 border-b border-solid border-border px-4 py-3 font-action text-[11px] font-semibold uppercase tracking-[.03em] text-muted text-start"
-                    >
-                      {t(h)}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((u, i) => (
-                  <tr
-                    key={u.email}
-                    className={
-                      'transition-colors hover:bg-[rgba(10,94,215,.04)] ' +
-                      (i ? 'border-0 border-t border-solid border-border' : '')
-                    }
-                  >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
-                          {u.name.trim()[0]}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="m-0 text-[13px] font-medium text-heading">{u.name}</p>
-                          <p className="m-0 text-[11px] text-muted">{u.email}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <Badge
-                        background={ROLE_TONES[u.roleTone][0]}
-                        color={ROLE_TONES[u.roleTone][1]}
-                      >
-                        {t(u.role)}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3 text-[13px] text-muted">{t(u.team)}</td>
-                    <td className="px-4 py-3 text-[13px] text-muted">{u.lastLogin}</td>
-                    <td className="px-4 py-3">
-                      <Badge
-                        background={STATUS_STYLES[u.status][0]}
-                        color={STATUS_STYLES[u.status][1]}
-                      >
-                        {t(u.status)}
-                      </Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            caption="Users list"
+            columns={userColumns}
+            rows={users}
+            rowKey={(u) => u.email}
+          />
         )}
       </Card>
 

@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 const MOCK_CAMPAIGNS = [
   { id: 'EC-001', name: 'Summer Service Special', subject: '20% Off All AC Services', recipients: 2450, sent: 2380, opened: 1428, clicked: 356, status: 'Completed', date: '2026-07-15' },
@@ -16,6 +17,8 @@ const MOCK_CAMPAIGNS = [
   { id: 'EC-008', name: 'Eid Service Offer', subject: 'Prepare Your Car for Eid', recipients: 5200, sent: 0, opened: 0, clicked: 0, status: 'Scheduled', date: '2026-09-15' },
 ] as const
 
+type Campaign = (typeof MOCK_CAMPAIGNS)[number]
+
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
   Completed: ['rgba(100,116,139,.1)', '#64748B'],
@@ -26,7 +29,6 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
 export function EmailMarketingCampaigns() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const filtered = MOCK_CAMPAIGNS
 
   const totalSent = MOCK_CAMPAIGNS.reduce((a, c) => a + c.sent, 0)
   const totalOpened = MOCK_CAMPAIGNS.reduce((a, c) => a + c.opened, 0)
@@ -41,6 +43,52 @@ export function EmailMarketingCampaigns() {
     { label: t('Click Rate'), value: `${clickRate}%`, icon: 'MousePointerClick', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
+  const columns: Column<Campaign>[] = [
+    { header: 'Campaign', cell: (c) => <span className="font-medium text-heading">{c.name}</span> },
+    { header: 'Subject', cell: (c) => <span className="text-[13px] text-muted">{c.subject}</span> },
+    { header: 'Recipients', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.recipients.toLocaleString()}</span> },
+    { header: 'Sent', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.sent.toLocaleString()}</span> },
+    { header: 'Open Rate', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.sent > 0 ? `${Math.round((c.opened / c.sent) * 100)}%` : '--'}</span> },
+    { header: 'Click Rate', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.opened > 0 ? `${Math.round((c.clicked / c.opened) * 100)}%` : '--'}</span> },
+    {
+      header: 'Status',
+      cell: (c) => {
+        const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Draft
+        return <Badge background={bg} color={fg}>{t(c.status)}</Badge>
+      },
+    },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Email campaigns"
+      columns={columns}
+      rows={MOCK_CAMPAIGNS as unknown as Campaign[]}
+      rowKey={(c) => c.id}
+      mobileCard={(c) => {
+        const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Draft
+        return (
+          <>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Mail" size={14} /></span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{c.name}</p>
+                    <p className="text-xs text-muted">{c.subject}</p>
+                  </div>
+                </div>
+              }
+              trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>}
+            />
+            <MobileCardRow label={t('Recipients')}>{c.recipients.toLocaleString()}</MobileCardRow>
+            <MobileCardRow label={t('Opened')}>{c.sent > 0 ? `${Math.round((c.opened / c.sent) * 100)}%` : '--'}</MobileCardRow>
+          </>
+        )
+      }}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -53,27 +101,7 @@ export function EmailMarketingCampaigns() {
             </Card>
           ))}
         </div>
-        {filtered.map(c => {
-          const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Draft
-          return (
-            <MobileCard key={c.id}>
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Mail" size={14} /></span>
-                    <div>
-                      <p className="text-[13px] font-semibold text-heading">{c.name}</p>
-                      <p className="text-xs text-muted">{c.subject}</p>
-                    </div>
-                  </div>
-                }
-                trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>}
-              />
-              <MobileCardRow label={t('Recipients')}>{c.recipients.toLocaleString()}</MobileCardRow>
-              <MobileCardRow label={t('Opened')}>{c.sent > 0 ? `${Math.round((c.opened / c.sent) * 100)}%` : '—'}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
+        {table}
       </div>
     )
   }
@@ -107,41 +135,7 @@ export function EmailMarketingCampaigns() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Campaign')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Subject')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Recipients')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Sent')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Open Rate')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Click Rate')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(c => {
-                const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Draft
-                const or = c.sent > 0 ? `${Math.round((c.opened / c.sent) * 100)}%` : '—'
-                const cr = c.opened > 0 ? `${Math.round((c.clicked / c.opened) * 100)}%` : '—'
-                return (
-                  <tr key={c.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-medium text-heading">{c.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{c.subject}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{c.recipients.toLocaleString()}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{c.sent.toLocaleString()}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{or}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{cr}</td>
-                    <td className="py-3"><Badge background={bg} color={fg}>{t(c.status)}</Badge></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

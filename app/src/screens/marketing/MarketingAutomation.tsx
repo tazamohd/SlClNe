@@ -1,9 +1,9 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Workflow {
   name: string
@@ -33,29 +33,48 @@ export function MarketingAutomation() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<Workflow>[] = [
+    { header: 'Workflow', cell: (w) => <span className="font-medium text-heading">{w.name}</span> },
+    { header: 'Trigger', cell: (w) => t(w.trigger) },
+    { header: 'Actions', cell: (w) => <span className="font-mono text-heading">{w.actions}</span> },
+    { header: 'Status', cell: (w) => <Badge background={STATUS_STYLES[w.status].bg} color={STATUS_STYLES[w.status].fg}>{t(w.status)}</Badge> },
+    { header: 'Runs', cell: (w) => <span className="font-mono text-heading">{w.runs.toLocaleString()}</span> },
+    { header: 'Success Rate', cell: (w) => <span className="font-mono text-heading">{w.successRate > 0 ? `${w.successRate}%` : '--'}</span> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Marketing workflows"
+      columns={columns}
+      rows={WORKFLOWS}
+      rowKey={(w) => w.name}
+      mobileCard={(w) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Zap" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{w.name}</p>
+                  <p className="text-xs text-muted">{t(w.trigger)}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[w.status].bg} color={STATUS_STYLES[w.status].fg}>{t(w.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Actions')} value={String(w.actions)} />
+          <MobileCardRow label={t('Runs')} value={w.runs.toLocaleString()} />
+          <MobileCardRow label={t('Success Rate')} value={w.successRate > 0 ? `${w.successRate}%` : '--'} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Zap" title={t('Automation')} subtitle={t('Marketing workflows')} />
-        {WORKFLOWS.map((w) => (
-          <MobileCard key={w.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Zap" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{w.name}</p>
-                    <p className="text-xs text-muted">{t(w.trigger)}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[w.status].bg} color={STATUS_STYLES[w.status].fg}>{t(w.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Actions')} value={String(w.actions)} />
-            <MobileCardRow label={t('Runs')} value={w.runs.toLocaleString()} />
-            <MobileCardRow label={t('Success Rate')} value={w.successRate > 0 ? `${w.successRate}%` : '—'} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -75,36 +94,7 @@ export function MarketingAutomation() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Workflow')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Trigger')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Actions')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Runs')}</th>
-                <th className="pb-3 text-end font-medium">{t('Success Rate')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {WORKFLOWS.map((w) => (
-                <tr key={w.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{w.name}</td>
-                  <td className="py-3 pe-4 text-body">{t(w.trigger)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{w.actions}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={STATUS_STYLES[w.status].bg} color={STATUS_STYLES[w.status].fg}>{t(w.status)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{w.runs.toLocaleString()}</td>
-                  <td className="py-3 text-end font-mono text-heading">{w.successRate > 0 ? `${w.successRate}%` : '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Input } from '@/components/ui/Input'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface Course {
   title: string
@@ -42,7 +42,6 @@ const CATEGORY_COLORS: Record<Course['category'], { bg: string; fg: string }> = 
 
 export function TrainingLMS() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
@@ -66,57 +65,14 @@ export function TrainingLMS() {
     { label: t('Total Enrolled'), value: String(totalEnrolled), icon: 'Users', bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="BookOpen" title={t('Training')} subtitle={t('Learning Management')} />
-        <Input inputSize="sm" placeholder={t('Search courses...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-1.5">
-                <span className="flex rounded-lg p-1" style={{ background: k.bg, color: k.fg }} aria-hidden>
-                  <Icon name={k.icon} size={14} />
-                </span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1 font-display text-lg font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {filtered.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden>
-                    <Icon name="BookOpen" size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.title}</p>
-                    <p className="text-xs text-muted">{r.duration}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>
-                  {t(r.status)}
-                </Badge>
-              }
-            />
-            <MobileCardRow label={t('Category')}>
-              <Badge background={CATEGORY_COLORS[r.category].bg} color={CATEGORY_COLORS[r.category].fg}>
-                {t(r.category)}
-              </Badge>
-            </MobileCardRow>
-            <MobileCardRow label={t('Enrolled')} value={String(r.enrolled)} />
-            <MobileCardRow label={t('Completion')} value={`${r.completion}%`} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No courses found')}</p>}
-      </div>
-    )
-  }
+  const columns: Column<Course>[] = [
+    { header: 'Course', cell: (r) => r.title },
+    { header: 'Category', cell: (r) => <Badge background={CATEGORY_COLORS[r.category].bg} color={CATEGORY_COLORS[r.category].fg}>{t(r.category)}</Badge> },
+    { header: 'Duration', cell: (r) => r.duration },
+    { header: 'Enrolled', cell: (r) => r.enrolled, code: true },
+    { header: 'Completion', cell: (r) => `${r.completion}%`, code: true },
+    { header: 'Status', cell: (r) => <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>{t(r.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -153,42 +109,32 @@ export function TrainingLMS() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Course')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Duration')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Enrolled')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Completion')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.title}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={CATEGORY_COLORS[r.category].bg} color={CATEGORY_COLORS[r.category].fg}>
-                      {t(r.category)}
-                    </Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{r.duration}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.enrolled}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.completion}%</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>
-                      {t(r.status)}
-                    </Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Training courses"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader
+              title={r.title}
+              trailing={
+                <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>
+                  {t(r.status)}
+                </Badge>
+              }
+            />
+            <MobileCardRow label={t('Category')}>
+              <Badge background={CATEGORY_COLORS[r.category].bg} color={CATEGORY_COLORS[r.category].fg}>
+                {t(r.category)}
+              </Badge>
+            </MobileCardRow>
+            <MobileCardRow label={t('Duration')}>{r.duration}</MobileCardRow>
+            <MobileCardRow label={t('Enrolled')}>{String(r.enrolled)}</MobileCardRow>
+            <MobileCardRow label={t('Completion')}>{r.completion}%</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

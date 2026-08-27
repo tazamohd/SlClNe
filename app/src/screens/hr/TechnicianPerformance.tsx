@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Input } from '@/components/ui/Input'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface TechPerformance {
   name: string
@@ -33,7 +33,6 @@ const SUMMARY = {
 
 export function TechnicianPerformance() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
@@ -55,50 +54,13 @@ export function TechnicianPerformance() {
     return { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' }
   }
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="BarChart3" title={t('Performance')} subtitle={t('Technician Performance')} />
-        <Input inputSize="sm" placeholder={t('Search technicians...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-1.5">
-                <span className="flex rounded-lg p-1" style={{ background: k.bg, color: k.fg }} aria-hidden>
-                  <Icon name={k.icon} size={14} />
-                </span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1 font-display text-lg font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {filtered.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden>
-                    <Icon name="User" size={14} />
-                  </span>
-                  <p className="text-[13px] font-semibold text-heading">{r.name}</p>
-                </div>
-              }
-              trailing={
-                <Badge background={ratingBadge(r.completionRate).bg} color={ratingBadge(r.completionRate).fg}>
-                  {r.completionRate}%
-                </Badge>
-              }
-            />
-            <MobileCardRow label={t('Quality Score')} value={`${r.qualityScore}/10`} />
-            <MobileCardRow label={t('Customer Rating')} value={`${r.customerRating}/5`} />
-            <MobileCardRow label={t('Jobs This Month')} value={String(r.jobsThisMonth)} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No technicians found')}</p>}
-      </div>
-    )
-  }
+  const columns: Column<TechPerformance>[] = [
+    { header: 'Technician', cell: (r) => r.name },
+    { header: 'Completion Rate', cell: (r) => <Badge background={ratingBadge(r.completionRate).bg} color={ratingBadge(r.completionRate).fg}>{r.completionRate}%</Badge> },
+    { header: 'Quality Score', cell: (r) => `${r.qualityScore}/10`, code: true },
+    { header: 'Customer Rating', cell: (r) => `${r.customerRating}/5`, code: true },
+    { header: 'Jobs This Month', cell: (r) => r.jobsThisMonth, code: true },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -135,36 +97,27 @@ export function TechnicianPerformance() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Technician')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Completion Rate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Quality Score')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Customer Rating')}</th>
-                <th className="pb-3 text-start font-medium">{t('Jobs This Month')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.name}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={ratingBadge(r.completionRate).bg} color={ratingBadge(r.completionRate).fg}>
-                      {r.completionRate}%
-                    </Badge>
-                  </td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.qualityScore}/10</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.customerRating}/5</td>
-                  <td className="py-3 font-mono text-heading" dir="ltr">{r.jobsThisMonth}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Technician performance metrics"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader
+              title={r.name}
+              trailing={
+                <Badge background={ratingBadge(r.completionRate).bg} color={ratingBadge(r.completionRate).fg}>
+                  {r.completionRate}%
+                </Badge>
+              }
+            />
+            <MobileCardRow label={t('Quality Score')}>{r.qualityScore}/10</MobileCardRow>
+            <MobileCardRow label={t('Customer Rating')}>{r.customerRating}/5</MobileCardRow>
+            <MobileCardRow label={t('Jobs This Month')}>{String(r.jobsThisMonth)}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

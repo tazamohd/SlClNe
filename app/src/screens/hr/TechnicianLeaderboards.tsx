@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react'
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Money } from '@/components/ui/Money'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Input } from '@/components/ui/Input'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface LeaderboardEntry {
   rank: number
@@ -51,7 +50,6 @@ function RankBadge({ rank }: { rank: number }) {
 
 export function TechnicianLeaderboards() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
@@ -60,36 +58,14 @@ export function TechnicianLeaderboards() {
     return MOCK_LEADERBOARD.filter((r) => r.name.toLowerCase().includes(q))
   }, [search])
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Trophy" title={t('Leaderboards')} subtitle={t('Technician Rankings')} />
-        <Input inputSize="sm" placeholder={t('Search technicians...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        {filtered.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[rgba(10,94,215,.1)] font-mono text-xs font-bold text-salis-blue">
-                    {r.rank}
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.name}</p>
-                  </div>
-                </div>
-              }
-              trailing={<RankBadge rank={r.rank} />}
-            />
-            <MobileCardRow label={t('Jobs Completed')} value={String(r.jobsCompleted)} />
-            <MobileCardRow label={t('Avg Rating')} value={r.avgRating.toFixed(1)} />
-            <MobileCardRow label={t('Efficiency')} value={`${r.efficiency}%`} />
-            <MobileCardRow label={t('Revenue')} value={<Money sar={r.revenue} />} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No technicians found')}</p>}
-      </div>
-    )
-  }
+  const columns: Column<LeaderboardEntry>[] = [
+    { header: 'Rank', cell: (r) => <RankBadge rank={r.rank} /> },
+    { header: 'Technician', cell: (r) => r.name },
+    { header: 'Jobs Completed', cell: (r) => r.jobsCompleted, code: true },
+    { header: 'Avg Rating', cell: (r) => r.avgRating.toFixed(1), code: true },
+    { header: 'Efficiency', cell: (r) => `${r.efficiency}%`, code: true },
+    { header: 'Revenue', cell: (r) => <Money sar={r.revenue} />, code: true },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -112,38 +88,24 @@ export function TechnicianLeaderboards() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Rank')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Technician')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Jobs Completed')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Avg Rating')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Efficiency')}</th>
-                <th className="pb-3 text-start font-medium">{t('Revenue')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4">
-                    <RankBadge rank={r.rank} />
-                  </td>
-                  <td className="py-3 pe-4 font-medium text-heading">{r.name}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.jobsCompleted}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.avgRating.toFixed(1)}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.efficiency}%</td>
-                  <td className="py-3 font-mono text-heading">
-                    <Money sar={r.revenue} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Technician leaderboard"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(r) => String(r.rank)}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader
+              title={r.name}
+              trailing={<RankBadge rank={r.rank} />}
+            />
+            <MobileCardRow label={t('Jobs Completed')}>{String(r.jobsCompleted)}</MobileCardRow>
+            <MobileCardRow label={t('Avg Rating')}>{r.avgRating.toFixed(1)}</MobileCardRow>
+            <MobileCardRow label={t('Efficiency')}>{r.efficiency}%</MobileCardRow>
+            <MobileCardRow label={t('Revenue')}><Money sar={r.revenue} /></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

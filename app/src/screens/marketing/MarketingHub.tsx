@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Money, formatSar } from '@/components/ui/Money'
 
 interface Campaign {
@@ -51,6 +52,51 @@ export function MarketingHub() {
     { label: t('Monthly Budget'), value: formatSar(25000), icon: 'Wallet', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const columns: Column<Campaign>[] = [
+    { header: 'Campaign', cell: (c) => <span className="font-medium text-heading">{c.name}</span> },
+    {
+      header: 'Channel',
+      cell: (c) => (
+        <div className="flex items-center gap-1.5">
+          <Icon name={CHANNEL_ICONS[c.channel]} size={14} className="text-muted" />
+          <span className="text-body">{t(c.channel)}</span>
+        </div>
+      ),
+    },
+    { header: 'Status', cell: (c) => <Badge background={STATUS_STYLES[c.status].bg} color={STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge> },
+    { header: 'Reach', cell: (c) => <span className="font-mono text-heading">{c.reach.toLocaleString()}</span> },
+    { header: 'Conversions', cell: (c) => <span className="font-mono text-heading">{c.conversions.toLocaleString()}</span> },
+    { header: 'Budget', cell: (c) => <Money sar={c.budget} /> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Marketing campaigns"
+      columns={columns}
+      rows={CAMPAIGNS}
+      rowKey={(c) => c.name}
+      mobileCard={(c) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={CHANNEL_ICONS[c.channel]} size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{c.name}</p>
+                  <p className="text-xs text-muted">{t(c.channel)}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[c.status].bg} color={STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Reach')} value={c.reach.toLocaleString()} />
+          <MobileCardRow label={t('Conversions')} value={String(c.conversions)} />
+          <MobileCardRow label={t('Budget')} value={<Money sar={c.budget} />} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -66,25 +112,7 @@ export function MarketingHub() {
             </Card>
           ))}
         </div>
-        {CAMPAIGNS.map((c) => (
-          <MobileCard key={c.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={CHANNEL_ICONS[c.channel]} size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{c.name}</p>
-                    <p className="text-xs text-muted">{t(c.channel)}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[c.status].bg} color={STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Reach')} value={c.reach.toLocaleString()} />
-            <MobileCardRow label={t('Conversions')} value={String(c.conversions)} />
-            <MobileCardRow label={t('Budget')} value={<Money sar={c.budget} />} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -116,41 +144,7 @@ export function MarketingHub() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Campaign')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Channel')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Reach')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Conversions')}</th>
-                <th className="pb-3 text-end font-medium">{t('Budget')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {CAMPAIGNS.map((c) => (
-                <tr key={c.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{c.name}</td>
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-1.5">
-                      <Icon name={CHANNEL_ICONS[c.channel]} size={14} className="text-muted" />
-                      <span className="text-body">{t(c.channel)}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4">
-                    <Badge background={STATUS_STYLES[c.status].bg} color={STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{c.reach.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{c.conversions.toLocaleString()}</td>
-                  <td className="py-3 text-end"><Money sar={c.budget} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Input } from '@/components/ui/Input'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface Technician {
   name: string
@@ -34,7 +34,6 @@ const STATUS_COLORS: Record<Technician['status'], { bg: string; fg: string }> = 
 
 export function TechnicianManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
@@ -58,39 +57,13 @@ export function TechnicianManagement() {
     { label: t('Certified'), value: String(totalCerts), icon: 'Award', bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Wrench" title={t('Technicians')} subtitle={t('Technician Management')} />
-        <Input inputSize="sm" placeholder={t('Search technicians...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        {filtered.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden>
-                    <Icon name="User" size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.name}</p>
-                    <p className="text-xs text-muted">{t(r.specialization)}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>
-                  {t(r.status)}
-                </Badge>
-              }
-            />
-            <MobileCardRow label={t('Certifications')} value={String(r.certCount)} />
-            <MobileCardRow label={t('Rating')} value={r.rating.toFixed(1)} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No technicians found')}</p>}
-      </div>
-    )
-  }
+  const columns: Column<Technician>[] = [
+    { header: 'Name', cell: (r) => r.name },
+    { header: 'Specialization', cell: (r) => t(r.specialization) },
+    { header: 'Certifications', cell: (r) => r.certCount, code: true },
+    { header: 'Rating', cell: (r) => r.rating.toFixed(1), code: true },
+    { header: 'Status', cell: (r) => <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>{t(r.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -127,36 +100,27 @@ export function TechnicianManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Specialization')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Certifications')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Rating')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.name}</td>
-                  <td className="py-3 pe-4 text-body">{t(r.specialization)}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.certCount}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.rating.toFixed(1)}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>
-                      {t(r.status)}
-                    </Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Technician management"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader
+              title={r.name}
+              trailing={
+                <Badge background={STATUS_COLORS[r.status].bg} color={STATUS_COLORS[r.status].fg}>
+                  {t(r.status)}
+                </Badge>
+              }
+            />
+            <MobileCardRow label={t('Specialization')}>{t(r.specialization)}</MobileCardRow>
+            <MobileCardRow label={t('Certifications')}>{String(r.certCount)}</MobileCardRow>
+            <MobileCardRow label={t('Rating')}>{r.rating.toFixed(1)}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }
