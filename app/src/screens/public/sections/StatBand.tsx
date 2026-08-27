@@ -24,7 +24,7 @@ export function StatBand({ items }: { items: readonly StatItem[] }) {
             dir="ltr"
             className="m-0 font-display text-4xl font-black text-salis-blue"
           >
-            {stat.value}
+            {t(stat.value)}
           </p>
           <p className="mb-0 mt-1.5 text-[13px] text-muted">{t(stat.label)}</p>
         </div>

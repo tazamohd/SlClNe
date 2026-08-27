@@ -1,4 +1,5 @@
 import { TintBadge, type Tint } from '../registry/badges'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
 /** Status pills for the CRM detail surfaces — lead pipeline stages and the CRM
  *  task types the calendar legends by.
@@ -26,8 +27,9 @@ const STAGE_LABEL: Record<string, string> = {
 }
 
 export function LeadStageBadge({ value }: { value: string }) {
+  const { t } = usePreferences()
   const key = value.toLowerCase()
-  return <TintBadge tint={STAGE_TINT[key] ?? 'slate'} label={STAGE_LABEL[key] ?? value} />
+  return <TintBadge tint={STAGE_TINT[key] ?? 'slate'} label={t(STAGE_LABEL[key] ?? value)} />
 }
 
 /** The four task kinds the calendar colours its events by. Kept to the blue
@@ -42,8 +44,9 @@ export const TASK_TINT: Record<string, Tint> = {
 }
 
 export function TaskTypeBadge({ value }: { value: string }) {
+  const { t } = usePreferences()
   const key = value.toLowerCase()
-  return <TintBadge tint={TASK_TINT[key] ?? 'slate'} label={key ? titleCase(value) : 'Task'} />
+  return <TintBadge tint={TASK_TINT[key] ?? 'slate'} label={t(key ? titleCase(value) : 'Task')} />
 }
 
 function titleCase(value: string): string {

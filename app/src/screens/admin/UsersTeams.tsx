@@ -161,63 +161,57 @@ export function UsersTeams() {
           />
         </div>
 
-        {users.length === 0 ? (
-          <div className="p-4">
+        <DataTable
+          caption="Users list"
+          columns={userColumns}
+          rows={users}
+          rowKey={(u) => u.email}
+          empty={
             <EmptyState
               icon="Users"
               title={t('No users found')}
               description={t('No users match the current search.')}
             />
-          </div>
-        ) : isMobile ? (
-          <div className="divide-y divide-border">
-            {users.map((u) => (
-              <div key={u.email} className="px-4 py-3">
-                <MobileCardHeader
-                  leading={
-                    <div className="flex items-center gap-2.5">
-                      <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
-                        {u.name.trim()[0]}
-                      </span>
-                      <div className="min-w-0">
-                        <span className="text-[13px] font-semibold text-heading">{u.name}</span>
-                        <span className="block text-[11px] text-muted">{u.email}</span>
-                      </div>
+          }
+          mobileCard={(u) => (
+            <>
+              <MobileCardHeader
+                leading={
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
+                      {u.name.trim()[0]}
+                    </span>
+                    <div className="min-w-0">
+                      <span className="text-[13px] font-semibold text-heading">{u.name}</span>
+                      <span className="block text-[11px] text-muted">{u.email}</span>
                     </div>
-                  }
-                  trailing={
-                    <Badge
-                      background={STATUS_STYLES[u.status][0]}
-                      color={STATUS_STYLES[u.status][1]}
-                    >
-                      {t(u.status)}
-                    </Badge>
-                  }
-                />
-                <MobileCardRow
-                  label={t('Role')}
-                  value={
-                    <Badge
-                      background={ROLE_TONES[u.roleTone][0]}
-                      color={ROLE_TONES[u.roleTone][1]}
-                    >
-                      {t(u.role)}
-                    </Badge>
-                  }
-                />
-                <MobileCardRow label={t('Team')} value={t(u.team)} />
-                <MobileCardRow label={t('Last Login')} value={u.lastLogin} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <DataTable
-            caption="Users list"
-            columns={userColumns}
-            rows={users}
-            rowKey={(u) => u.email}
-          />
-        )}
+                  </div>
+                }
+                trailing={
+                  <Badge
+                    background={STATUS_STYLES[u.status][0]}
+                    color={STATUS_STYLES[u.status][1]}
+                  >
+                    {t(u.status)}
+                  </Badge>
+                }
+              />
+              <MobileCardRow
+                label={t('Role')}
+                value={
+                  <Badge
+                    background={ROLE_TONES[u.roleTone][0]}
+                    color={ROLE_TONES[u.roleTone][1]}
+                  >
+                    {t(u.role)}
+                  </Badge>
+                }
+              />
+              <MobileCardRow label={t('Team')} value={t(u.team)} />
+              <MobileCardRow label={t('Last Login')} value={u.lastLogin} />
+            </>
+          )}
+        />
       </Card>
 
       <Card className="p-4 sm:p-6">

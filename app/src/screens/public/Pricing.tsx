@@ -97,7 +97,7 @@ export function PublicPricing() {
             <p className="mb-5 mt-0 text-2xl font-black text-heading">
               {t(plan.price)}
               {plan.period ? (
-                <span className="text-base font-normal text-muted">{plan.period}</span>
+                <span className="text-base font-normal text-muted">{t(plan.period)}</span>
               ) : null}
             </p>
             <ul className="mb-6 mt-0 flex flex-1 flex-col gap-2.5 ps-5">

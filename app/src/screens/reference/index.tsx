@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/Input'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Loading, Skeleton, EmptyState } from '@/components/ui/States'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { SCREENS } from '@/data/generated/screens'
@@ -141,7 +142,29 @@ export function UITableView() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" aria-label={t('TableView Pattern')}>
       <PageHeader icon="Table" title="TableView" subtitle="Tabular data with sorting, filtering and pagination" />
       <Section title="Standard Table">
-        <DataTable columns={cols} rows={rows} rowKey={r => r.id} />
+        <DataTable
+          columns={cols}
+          rows={rows}
+          rowKey={r => r.id}
+          mobileCard={(r) => (
+            <>
+              <MobileCardHeader title={r.id} code trailing={
+                (() => {
+                  const colors: Record<string, [string, string]> = {
+                    Paid: ['rgba(100,116,139,.1)', '#64748B'],
+                    Pending: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+                    Overdue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+                  }
+                  const [bg, fg] = colors[r.status] ?? ['rgba(100,116,139,.1)', '#64748B']
+                  return <Badge background={bg} color={fg}>{t(r.status)}</Badge>
+                })()
+              } />
+              <MobileCardRow label={t('Customer')} value={r.customer} />
+              <MobileCardRow label={t('Vehicle')} value={r.vehicle} />
+              <MobileCardRow label={t('Amount')} value={`SAR ${r.amount.toLocaleString()}`} />
+            </>
+          )}
+        />
       </Section>
     </div>
   )
