@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Job {
   workOrder: string
@@ -36,7 +36,6 @@ const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function TechnicianPortalDashboard() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -45,45 +44,14 @@ export function TechnicianPortalDashboard() {
     { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="LayoutDashboard" title={t('Technician Dashboard')} subtitle={t('Today overview')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {ASSIGNED_JOBS.map((j) => (
-          <MobileCard key={j.workOrder}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{j.service}</p>
-                    <p className="text-xs text-muted">{j.vehicle}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Work Order')} value={j.workOrder} />
-            <MobileCardRow label={t('Est. Hours')} value={String(j.estimatedHours)} />
-            <MobileCardRow label={t('Priority')}>
-              <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge>
-            </MobileCardRow>
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Job>[] = [
+    { header: t('Work Order'), cell: (j) => j.workOrder },
+    { header: t('Vehicle'), cell: (j) => j.vehicle },
+    { header: t('Service'), cell: (j) => j.service },
+    { header: t('Priority'), cell: (j) => <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge> },
+    { header: t('Est. Hours'), cell: (j) => j.estimatedHours },
+    { header: t('Status'), cell: (j) => <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -112,39 +80,20 @@ export function TechnicianPortalDashboard() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-heading">{t('Assigned Jobs')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Work Order')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Priority')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Est. Hours')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ASSIGNED_JOBS.map((j) => (
-                <tr key={j.workOrder} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{j.workOrder}</td>
-                  <td className="py-3 pe-4 text-body">{j.vehicle}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{j.service}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{j.estimatedHours}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Technician assigned jobs"
+        columns={columns}
+        rows={ASSIGNED_JOBS}
+        rowKey={(j) => j.workOrder}
+        mobileCard={(j) => (
+          <>
+            <MobileCardHeader title={j.service} trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>} />
+            <MobileCardRow label={t('Vehicle')}>{j.vehicle}</MobileCardRow>
+            <MobileCardRow label={t('Work Order')}>{j.workOrder}</MobileCardRow>
+            <MobileCardRow label={t('Priority')}><Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }
