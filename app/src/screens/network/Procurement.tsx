@@ -260,27 +260,11 @@ export function PartsNetworkQuotations() {
         subtitle={t('Compare quotes received for Front Brake Pads Set')}
       />
 
-      <div role="tablist" aria-label={t('Sort by')} className="flex flex-wrap gap-2">
+      <ChipGroup label={t('Sort by')}>
         {SORTS.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            role="tab"
-            aria-selected={sort === option.id}
-            onClick={() => setSort(option.id)}
-            className={cn(
-              'flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-1.5',
-              'font-action text-[13px] font-medium transition-all duration-150',
-              sort === option.id
-                ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                : 'border-border bg-card text-muted hover:border-border-strong'
-            )}
-          >
-            <Icon name={option.icon} size={13} />
-            {t(option.label)}
-          </button>
+          <Chip key={option.id} label={t(option.label)} selected={sort === option.id} onToggle={() => setSort(option.id)} />
         ))}
-      </div>
+      </ChipGroup>
 
       <DataTable
         columns={columns}
@@ -1454,42 +1438,18 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
       {unavailable ? <ReadOnlyNotice message={t(unavailable)} /> : null}
 
       <div className="flex flex-wrap items-center gap-2">
-        <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+        <ChipGroup label={t('Status')}>
           {REQ_TABS.map((option) => {
             const count =
               option === 'all'
                 ? requisitions.length
                 : requisitions.filter((r) => r.status === option).length
+            const label = option === 'all' ? 'All' : reqStatusLabel(option as ReqStatus)
             return (
-              <button
-                key={option}
-                type="button"
-                role="tab"
-                aria-selected={tab === option}
-                onClick={() => {
-                  setTab(option)
-                  setSelected({})
-                }}
-                className={cn(
-                  'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
-                  'font-action text-[13px] font-medium transition-all duration-150',
-                  tab === option
-                    ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                    : 'border-border bg-card text-muted hover:border-border-strong'
-                )}
-              >
-                {t(
-                  option === 'all'
-                    ? 'All'
-                    : reqStatusLabel(option as ReqStatus)
-                )}
-                <span className="font-mono text-[11px] opacity-70" dir="ltr">
-                  {count}
-                </span>
-              </button>
+              <Chip key={option} label={`${t(label)} ${count}`} selected={tab === option} onToggle={() => { setTab(option); setSelected({}) }} />
             )
           })}
-        </div>
+        </ChipGroup>
         <span className="flex-1" />
         {selectedRows.length ? (
           <div className="flex items-center gap-2 rounded-lg border border-[rgba(10,94,215,.22)] bg-[rgba(10,94,215,.05)] py-1 ps-3 pe-1.5">

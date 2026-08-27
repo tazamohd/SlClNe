@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { EmptyState } from '@/components/ui/States'
@@ -113,25 +114,11 @@ export function AuditLog() {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="tablist" aria-label={t('Filter by action type')}>
+        <ChipGroup label={t('Filter by action type')}>
           {FILTERS.map((f) => (
-            <button
-              key={f.key}
-              type="button"
-              role="tab"
-              aria-selected={filter === f.key}
-              onClick={() => setFilter(f.key)}
-              className={
-                'h-8 flex-shrink-0 cursor-pointer rounded-full px-3.5 font-action text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
-                (filter === f.key
-                  ? 'border-none bg-salis-gradient text-white'
-                  : 'border border-border bg-card text-body')
-              }
-            >
-              {t(f.label)}
-            </button>
+            <Chip key={f.key} label={t(f.label)} selected={filter === f.key} onToggle={() => setFilter(f.key)} />
           ))}
-        </div>
+        </ChipGroup>
         <Input
           icon="Search"
           inputSize="sm"

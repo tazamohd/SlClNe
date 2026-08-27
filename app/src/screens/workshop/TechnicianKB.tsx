@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
@@ -88,25 +89,11 @@ export function TechnicianKB() {
         />
       </label>
 
-      <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="tablist" aria-label={t('Category')}>
+      <ChipGroup label={t('Category')}>
         {categories.map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            role="tab"
-            aria-selected={category === cat}
-            onClick={() => setCategory(cat)}
-            className={
-              'h-8 flex-shrink-0 cursor-pointer rounded-full px-3.5 font-action text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
-              (category === cat
-                ? 'border-none bg-salis-gradient text-white'
-                : 'border border-border bg-card text-body')
-            }
-          >
-            {t(cat)}
-          </button>
+          <Chip key={cat} label={t(cat)} selected={category === cat} onToggle={() => setCategory(cat)} />
         ))}
-      </div>
+      </ChipGroup>
 
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {stats.map((s) => (

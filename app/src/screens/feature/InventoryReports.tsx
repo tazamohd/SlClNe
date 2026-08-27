@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { FeatureHeader, SearchField, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Button } from '@/components/ui/Button'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
@@ -273,25 +274,11 @@ function ReportsHeader({
       subtitle={t('Stock value, movement trends and reorder pressure, over the real parts ledger.')}
       actions={
         <div className="flex flex-wrap items-center gap-2">
-          <div role="tablist" aria-label={t('Reporting period')} className="flex flex-wrap gap-1">
+          <ChipGroup label={t('Reporting period')}>
             {PERIOD_ORDER.map((id) => (
-              <button
-                key={id}
-                type="button"
-                role="tab"
-                aria-selected={period === id}
-                onClick={() => onPeriod(id)}
-                className={
-                  'h-9 cursor-pointer rounded-lg border px-3 font-action text-[13px] font-medium transition-colors ' +
-                  (period === id
-                    ? 'border-transparent bg-salis-gradient text-white'
-                    : 'border-border bg-card text-body hover:border-border-strong')
-                }
-              >
-                {t(PERIODS[id].label)}
-              </button>
+              <Chip key={id} label={t(PERIODS[id].label)} selected={period === id} onToggle={() => onPeriod(id)} />
             ))}
-          </div>
+          </ChipGroup>
           <Button onClick={onExport} disabled={!canExport}>
             <Icon name="Download" size={16} />
             {t('Export Report')}

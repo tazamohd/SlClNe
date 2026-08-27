@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { EmptyState } from '@/components/ui/States'
@@ -129,26 +130,11 @@ export function GlobalSearch() {
           />
         </div>
 
-        <div className="flex gap-1.5 overflow-x-auto border-0 border-b border-solid border-border px-4 py-2.5" role="tablist" aria-label={t('Filter by category')}>
+        <ChipGroup label={t('Filter by category')} className="border-0 border-b border-solid border-border px-4 py-2.5">
           {CATEGORIES.map((cat) => (
-            <button
-              key={cat.key}
-              type="button"
-              role="tab"
-              aria-selected={category === cat.key}
-              onClick={() => setCategory(cat.key)}
-              className={
-                'flex h-8 flex-shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-3.5 font-action text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
-                (category === cat.key
-                  ? 'border-none bg-salis-gradient text-white'
-                  : 'border border-border bg-card text-body')
-              }
-            >
-              <Icon name={cat.icon} size={14} />
-              {t(cat.label)}
-            </button>
+            <Chip key={cat.key} label={t(cat.label)} selected={category === cat.key} onToggle={() => setCategory(cat.key)} />
           ))}
-        </div>
+        </ChipGroup>
 
         <div className="max-h-[480px] overflow-y-auto">
           {query.trim() === '' && category === 'all' ? (

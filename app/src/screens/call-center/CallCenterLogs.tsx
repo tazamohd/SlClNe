@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
@@ -162,26 +163,11 @@ export function CallCenterLogs() {
 
       {/* Filter tabs + search */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="tablist" aria-label={t('Filter by call type')}>
+        <ChipGroup label={t('Filter by call type')}>
           {FILTERS.map((f) => (
-            <button
-              key={f.key}
-              type="button"
-              role="tab"
-              aria-selected={filter === f.key}
-              onClick={() => setFilter(f.key)}
-              className={
-                'flex h-[34px] flex-shrink-0 cursor-pointer items-center gap-1 rounded-lg px-3.5 font-action text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
-                (filter === f.key
-                  ? 'border-none bg-salis-gradient text-white'
-                  : 'border border-border bg-card text-body')
-              }
-            >
-              {t(f.label)}
-              <span className="font-mono opacity-75">{filterCounts[f.key]}</span>
-            </button>
+            <Chip key={f.key} label={`${t(f.label)} ${filterCounts[f.key]}`} selected={filter === f.key} onToggle={() => setFilter(f.key)} />
           ))}
-        </div>
+        </ChipGroup>
         <Input
           icon="Search"
           inputSize="sm"

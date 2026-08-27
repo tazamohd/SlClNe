@@ -4,6 +4,7 @@ import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/F
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
@@ -271,25 +272,11 @@ export function PartsNetworkMembers() {
         subtitle={t('Garages, dealers, stores and suppliers you can trade with')}
       />
 
-      <div role="tablist" aria-label={t('Type')} className="flex flex-wrap gap-2">
+      <ChipGroup label={t('Type')}>
         {kinds.map((option) => (
-          <button
-            key={option}
-            type="button"
-            role="tab"
-            aria-selected={kind === option}
-            onClick={() => setKind(option)}
-            className={
-              'cursor-pointer rounded-full border px-3.5 py-1.5 font-action text-[13px] font-medium transition-all duration-150 ' +
-              (kind === option
-                ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                : 'border-border bg-card text-muted hover:border-border-strong')
-            }
-          >
-            {t(option === 'all' ? 'All' : option[0].toUpperCase() + option.slice(1))}
-          </button>
+          <Chip key={option} label={t(option === 'all' ? 'All' : option[0].toUpperCase() + option.slice(1))} selected={kind === option} onToggle={() => setKind(option)} />
         ))}
-      </div>
+      </ChipGroup>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {members.map((member) => (

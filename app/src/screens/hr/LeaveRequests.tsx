@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Modal } from '@/components/ui/Modal'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -81,25 +82,11 @@ export function LeaveRequests() {
         <ErrorState description={leave.error?.message} onRetry={() => void leave.refetch()} />
       ) : (
         <>
-          <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="tablist" aria-label={t('Filter by status')}>
+          <ChipGroup label={t('Filter by status')}>
             {(['all', ...STATUSES] as const).map((key) => (
-              <button
-                key={key}
-                type="button"
-                role="tab"
-                aria-selected={filter === key}
-                onClick={() => setFilter(key)}
-                className={
-                  'h-8 flex-shrink-0 cursor-pointer rounded-full px-3.5 font-action text-xs font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
-                  (filter === key
-                    ? 'border-none bg-salis-gradient text-white'
-                    : 'border border-border bg-card text-body')
-                }
-              >
-                {key === 'all' ? t('All') : t(key)}
-              </button>
+              <Chip key={key} label={key === 'all' ? t('All') : t(key)} selected={filter === key} onToggle={() => setFilter(key)} />
             ))}
-          </div>
+          </ChipGroup>
 
           {shown.length === 0 ? (
             <Card className="p-4">

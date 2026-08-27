@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Badge, StatusBadge } from '@/components/ui/Badge'
@@ -247,30 +248,10 @@ export function ApprovalInbox() {
         </div>
       </div>
 
-      <div className="flex gap-1.5 overflow-x-auto pb-0.5" role="tablist" aria-label={t('Filter')}>
-        {(
-          [
-            ['all', t('All')],
-            ['overLimit', t('Above my limit')],
-          ] as const
-        ).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            role="tab"
-            aria-selected={filter === key}
-            onClick={() => setFilter(key)}
-            className={
-              'h-8 flex-shrink-0 cursor-pointer rounded-full px-3.5 font-action text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
-              (filter === key
-                ? 'border-none bg-salis-gradient text-white'
-                : 'border border-border bg-card text-body')
-            }
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <ChipGroup label={t('Filter')}>
+        <Chip label={t('All')} selected={filter === 'all'} onToggle={() => setFilter('all')} />
+        <Chip label={t('Above my limit')} selected={filter === 'overLimit'} onToggle={() => setFilter('overLimit')} />
+      </ChipGroup>
 
       {shown.length === 0 ? (
         <Card className="p-4">
