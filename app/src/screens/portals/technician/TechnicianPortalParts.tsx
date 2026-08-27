@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface PartRequest {
   id: string
@@ -33,7 +33,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function TechnicianPortalParts() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Total Requests'), value: String(PART_REQUESTS.length), icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -42,43 +41,15 @@ export function TechnicianPortalParts() {
     { label: t('Out of Stock'), value: '1', icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Package" title={t('Parts Requests')} subtitle={t('Parts and inventory')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {PART_REQUESTS.map((p) => (
-          <MobileCard key={p.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Package" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{p.partName}</p>
-                    <p className="text-xs text-muted">{p.partNumber}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Work Order')} value={p.workOrder} />
-            <MobileCardRow label={t('Quantity')} value={String(p.quantity)} />
-            <MobileCardRow label={t('Requested')} value={p.requestDate} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<PartRequest>[] = [
+    { header: t('Ref'), cell: (p) => p.id },
+    { header: t('Part Name'), cell: (p) => p.partName },
+    { header: t('Part No.'), cell: (p) => p.partNumber },
+    { header: t('Work Order'), cell: (p) => p.workOrder },
+    { header: t('Qty'), cell: (p) => p.quantity },
+    { header: t('Requested'), cell: (p) => p.requestDate },
+    { header: t('Status'), cell: (p) => <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -107,38 +78,20 @@ export function TechnicianPortalParts() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Ref')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part No.')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Work Order')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Qty')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Requested')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PART_REQUESTS.map((p) => (
-                <tr key={p.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted">{p.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{p.partName}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">{p.partNumber}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">{p.workOrder}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{p.quantity}</td>
-                  <td className="py-3 pe-4 text-body">{p.requestDate}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Parts requests"
+        columns={columns}
+        rows={PART_REQUESTS}
+        rowKey={(p) => p.id}
+        mobileCard={(p) => (
+          <>
+            <MobileCardHeader title={p.partName} trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>} />
+            <MobileCardRow label={t('Part No.')}>{p.partNumber}</MobileCardRow>
+            <MobileCardRow label={t('Work Order')}>{p.workOrder}</MobileCardRow>
+            <MobileCardRow label={t('Quantity')}>{p.quantity}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

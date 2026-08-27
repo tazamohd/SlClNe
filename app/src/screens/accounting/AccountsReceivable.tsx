@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface ARRow {
   customer: string
@@ -36,7 +36,6 @@ function fmtSar(v: number): string {
 
 export function AccountsReceivable() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const rows = useRows(t)
   const [filter, setFilter] = useState('all')
 
@@ -53,56 +52,17 @@ export function AccountsReceivable() {
 
   const filtered = filter === 'overdue' ? overdue : filter === 'current' ? current : rows
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="ArrowDownRight" title={t('Accounts Receivable')} subtitle={t('Accounting')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <MobileCard key={k.label}>
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden>
-                <Icon name={k.icon} size={14} />
-              </span>
-              <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
-              <p dir="ltr" className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </MobileCard>
-          ))}
-        </div>
-        <ChipGroup label={t('Status')}>
-          {(['all', 'current', 'overdue'] as const).map((f) => (
-            <Chip
-              key={f}
-              label={t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
-              selected={filter === f}
-              onToggle={() => setFilter(f)}
-            />
-          ))}
-        </ChipGroup>
-        {filtered.map((r) => (
-          <MobileCard key={r.invoice}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)', color: r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} aria-hidden>
-                    <Icon name="FileText" size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.customer}</p>
-                    <p className="text-xs text-muted">{r.invoice}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              <span dir="ltr" className="font-mono text-sm font-bold text-heading">{fmtSar(r.amount)}</span>
-              <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
-                color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
-            </div>
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<ARRow>[] = [
+    { header: 'Customer', cell: (r) => <span className="font-medium text-heading">{r.customer}</span> },
+    { header: 'Invoice', cell: (r) => r.invoice, code: true },
+    { header: 'Amount', cell: (r) => <span dir="ltr" className="font-mono font-medium text-heading">{fmtSar(r.amount)}</span>, className: 'text-end' },
+    { header: 'Due Date', cell: (r) => <span dir="ltr" className="text-muted">{r.dueDate}</span> },
+    { header: 'Days Overdue', cell: (r) => <span className="font-mono text-heading">{r.daysOverdue || '—'}</span>, className: 'text-end' },
+    { header: 'Status', cell: (r) => (
+      <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
+        color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
+    ) },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -133,50 +93,40 @@ export function AccountsReceivable() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-base font-bold text-heading">{t('Outstanding Invoices')}</h3>
-          <ChipGroup label={t('Status')}>
-            {(['all', 'current', 'overdue'] as const).map((f) => (
-              <Chip
-                key={f}
-                label={t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
-                selected={filter === f}
-                onToggle={() => setFilter(f)}
-              />
-            ))}
-          </ChipGroup>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-start text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Customer')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Invoice')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Amount')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Due Date')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Days Overdue')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r) => (
-                <tr key={r.invoice} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.customer}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{r.invoice}</td>
-                  <td className="py-3 pe-4 text-end font-mono font-medium text-heading" dir="ltr">{fmtSar(r.amount)}</td>
-                  <td className="py-3 pe-4 text-muted" dir="ltr">{r.dueDate}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{r.daysOverdue || '—'}</td>
-                  <td className="py-3">
-                    <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
-                      color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="text-base font-bold text-heading">{t('Outstanding Invoices')}</h3>
+        <ChipGroup label={t('Status')}>
+          {(['all', 'current', 'overdue'] as const).map((f) => (
+            <Chip
+              key={f}
+              label={t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
+              selected={filter === f}
+              onToggle={() => setFilter(f)}
+            />
+          ))}
+        </ChipGroup>
+      </div>
+
+      <DataTable
+        caption="Outstanding receivable invoices"
+        columns={columns}
+        rows={filtered}
+        rowKey={(r) => r.invoice}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader
+              title={r.customer}
+              trailing={
+                <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
+                  color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
+              }
+            />
+            <MobileCardRow label={t('Invoice')}><span dir="ltr">{r.invoice}</span></MobileCardRow>
+            <MobileCardRow label={t('Amount')}><span dir="ltr" className="font-semibold">{fmtSar(r.amount)}</span></MobileCardRow>
+          </>
+        )}
+        empty={<EmptyState icon="FileText" title={t('No invoices found')} />}
+      />
     </div>
   )
 }

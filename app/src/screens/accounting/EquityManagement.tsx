@@ -1,15 +1,12 @@
 import { useMemo } from 'react'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
-  MobileCard,
   MobileCardHeader,
   MobileCardRow,
-  MobilePageHeader,
 } from '@/components/shell/MobileShell'
 
 interface EquityEntry {
@@ -38,7 +35,6 @@ const TYPE_PALETTE: Record<string, readonly [string, string]> = {
 
 export function EquityManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totals = useMemo(() => {
     let total = 0
@@ -61,50 +57,16 @@ export function EquityManagement() {
     { label: 'Reserves', value: formatSar(totals.reserves), caption: 'Legal and statutory', tone: 'info' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="PiggyBank"
-          title={t('Equity Management')}
-          subtitle={t('Accounting')}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{t(stat.label)}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{stat.value}</p>
-            </Card>
-          ))}
-        </div>
-        <div className="flex flex-col gap-3">
-          {MOCK_EQUITY.map((e) => {
-            const [bg, fg] = TYPE_PALETTE[e.type] ?? TYPE_PALETTE.Other
-            return (
-              <MobileCard key={e.code}>
-                <MobileCardHeader
-                  title={e.code}
-                  code
-                  trailing={
-                    <Badge background={bg} color={fg}>
-                      {t(e.type)}
-                    </Badge>
-                  }
-                />
-                <MobileCardRow>{t(e.name)}</MobileCardRow>
-                <MobileCardRow label={t('Balance')}>
-                  <Money sar={e.balance} className="font-semibold text-heading" />
-                </MobileCardRow>
-                <MobileCardRow label={t('Last Updated')}>
-                  <span dir="ltr">{e.lastUpdated}</span>
-                </MobileCardRow>
-              </MobileCard>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
+  const columns: Column<EquityEntry>[] = [
+    { header: 'Code', cell: (e) => e.code, code: true },
+    { header: 'Name', cell: (e) => t(e.name) },
+    { header: 'Type', cell: (e) => {
+      const [bg, fg] = TYPE_PALETTE[e.type] ?? TYPE_PALETTE.Other
+      return <Badge background={bg} color={fg}>{t(e.type)}</Badge>
+    } },
+    { header: 'Balance', cell: (e) => <Money sar={e.balance} className="font-semibold" />, className: 'text-end' },
+    { header: 'Last Updated', cell: (e) => <span dir="ltr" className="text-muted">{e.lastUpdated}</span> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -115,44 +77,23 @@ export function EquityManagement() {
       />
       <StatRow stats={stats} />
 
-      <Section
-        title={t('Equity Accounts')}
-        subtitle={t('All equity entries with balances')}
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-wide text-muted">
-                <th className="py-2.5 text-start font-medium">{t('Code')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Name')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Type')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Balance')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Last Updated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_EQUITY.map((e) => {
-                const [bg, fg] = TYPE_PALETTE[e.type] ?? TYPE_PALETTE.Other
-                return (
-                  <tr key={e.code} className="border-b border-border/50">
-                    <td className="py-2.5">
-                      <span className="font-mono text-[13px]" dir="ltr">{e.code}</span>
-                    </td>
-                    <td className="py-2.5 text-[13px] text-body">{t(e.name)}</td>
-                    <td className="py-2.5">
-                      <Badge background={bg} color={fg}>{t(e.type)}</Badge>
-                    </td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={e.balance} className="font-semibold" />
-                    </td>
-                    <td className="py-2.5 text-[13px] text-muted" dir="ltr">{e.lastUpdated}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Section>
+      <DataTable
+        caption="Equity accounts"
+        columns={columns}
+        rows={MOCK_EQUITY as EquityEntry[]}
+        rowKey={(e) => e.code}
+        mobileCard={(e) => {
+          const [bg, fg] = TYPE_PALETTE[e.type] ?? TYPE_PALETTE.Other
+          return (
+            <>
+              <MobileCardHeader title={e.code} code trailing={<Badge background={bg} color={fg}>{t(e.type)}</Badge>} />
+              <MobileCardRow>{t(e.name)}</MobileCardRow>
+              <MobileCardRow label={t('Balance')}><Money sar={e.balance} className="font-semibold text-heading" /></MobileCardRow>
+            </>
+          )
+        }}
+        empty={<EmptyState icon="PiggyBank" title={t('No equity entries found')} />}
+      />
     </div>
   )
 }

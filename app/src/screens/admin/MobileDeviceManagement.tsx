@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface ManagedDevice {
   name: string
@@ -37,6 +38,62 @@ export function MobileDeviceManagement() {
 
   const activeCount = DEVICES.filter((d) => d.status === 'Active').length
 
+  const columns: Column<ManagedDevice>[] = [
+    {
+      header: 'Device',
+      cell: (device) => (
+        <div>
+          <p className="font-semibold text-heading">{device.name}</p>
+          <p className="text-xs text-muted">{device.model}</p>
+        </div>
+      ),
+    },
+    { header: 'User', cell: (device) => device.user },
+    { header: 'Platform', cell: (device) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{device.platform}</Badge> },
+    {
+      header: 'Battery',
+      cell: (device) => (
+        <div className="flex items-center gap-2">
+          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'rgb(239,68,68)' : 'var(--salis-blue)' }} />
+          <span className="text-body">{device.battery}%</span>
+        </div>
+      ),
+    },
+    { header: 'App Version', cell: (device) => device.appVersion, code: true },
+    { header: 'Last Seen', cell: (device) => <span className="text-muted">{device.lastSeen}</span> },
+    { header: 'Status', cell: (device) => <Badge background={STATUS_STYLES[device.status].bg} color={STATUS_STYLES[device.status].fg}>{t(device.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Enrolled Devices"
+      columns={columns}
+      rows={DEVICES}
+      rowKey={(_, i) => `device-${i}`}
+      mobileCard={(device) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <Icon name={device.platform === 'iOS' ? 'Tablet' : 'Smartphone'} size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{device.name}</p>
+                  <p className="text-xs text-muted">{device.model}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[device.status].bg} color={STATUS_STYLES[device.status].fg}>{t(device.status)}</Badge>}
+          />
+          <MobileCardRow label={t('User')} value={device.user} />
+          <MobileCardRow label={t('Battery')} value={`${device.battery}%`} />
+          <MobileCardRow label={t('Last Seen')} value={device.lastSeen} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -45,27 +102,7 @@ export function MobileDeviceManagement() {
           <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{activeCount} {t('active')}</Badge>
           <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{DEVICES.length} {t('total')}</Badge>
         </div>
-        {DEVICES.map((device, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
-                    <Icon name={device.platform === 'iOS' ? 'Tablet' : 'Smartphone'} size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{device.name}</p>
-                    <p className="text-xs text-muted">{device.model}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[device.status].bg} color={STATUS_STYLES[device.status].fg}>{t(device.status)}</Badge>}
-            />
-            <MobileCardRow label={t('User')} value={device.user} />
-            <MobileCardRow label={t('Battery')} value={`${device.battery}%`} />
-            <MobileCardRow label={t('Last Seen')} value={device.lastSeen} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -105,51 +142,7 @@ export function MobileDeviceManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Enrolled Devices')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('Device')}</th>
-                <th className="pb-3 font-medium">{t('User')}</th>
-                <th className="pb-3 font-medium">{t('Platform')}</th>
-                <th className="pb-3 font-medium">{t('Battery')}</th>
-                <th className="pb-3 font-medium">{t('App Version')}</th>
-                <th className="pb-3 font-medium">{t('Last Seen')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {DEVICES.map((device, i) => (
-                <tr key={i} className="border-b border-border last:border-0">
-                  <td className="py-3">
-                    <div>
-                      <p className="font-semibold text-heading">{device.name}</p>
-                      <p className="text-xs text-muted">{device.model}</p>
-                    </div>
-                  </td>
-                  <td className="py-3 text-body">{device.user}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{device.platform}</Badge>
-                  </td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'rgb(239,68,68)' : 'var(--salis-blue)' }} />
-                      <span className="text-body">{device.battery}%</span>
-                    </div>
-                  </td>
-                  <td className="py-3 font-mono text-xs text-muted">{device.appVersion}</td>
-                  <td className="py-3 text-muted">{device.lastSeen}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[device.status].bg} color={STATUS_STYLES[device.status].fg}>{t(device.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

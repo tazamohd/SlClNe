@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface ServiceRecord {
   date: string
@@ -39,6 +40,30 @@ export function VehicleHistory() {
 
   const totalSpent = records.reduce((s, r) => s + r.cost, 0)
 
+  const columns: Column<ServiceRecord>[] = [
+    { header: 'Date', cell: (r) => r.date, code: true },
+    { header: 'Service Type', cell: (r) => r.type },
+    { header: 'Technician', cell: (r) => r.technician },
+    { header: 'Cost', cell: (r) => <span className="font-mono font-medium" dir="ltr">{fmtSar(r.cost)}</span> },
+    { header: 'Status', cell: (r) => <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Service timeline"
+      columns={columns}
+      rows={records}
+      rowKey={(_, i) => `record-${i}`}
+      mobileCard={(r) => (
+        <>
+          <MobileCardHeader title={r.type} trailing={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge>} />
+          <MobileCardRow label={t('Date')}>{r.date}</MobileCardRow>
+          <MobileCardRow label={t('Cost')}><span dir="ltr">{fmtSar(r.cost)}</span></MobileCardRow>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -53,25 +78,7 @@ export function VehicleHistory() {
             <span className="font-mono text-sm font-bold text-heading">{records.length}</span>
           </div>
         </MobileCard>
-        {records.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.type}</p>
-                    <p className="text-xs text-muted" dir="ltr">{r.date} · {r.technician}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              <span dir="ltr" className="font-mono text-sm font-bold text-heading">{fmtSar(r.cost)}</span>
-              <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge>
-            </div>
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -108,33 +115,7 @@ export function VehicleHistory() {
         </Card>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Service Timeline')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Technician')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Cost')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {records.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{r.date}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{r.type}</td>
-                  <td className="py-3 pe-4 text-body">{r.technician}</td>
-                  <td className="py-3 pe-4 text-end font-mono font-medium text-heading" dir="ltr">{fmtSar(r.cost)}</td>
-                  <td className="py-3"><Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

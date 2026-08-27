@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_DEVICES = [
   { id: 'IOT-001', name: 'Bay 1 Lift Sensor', type: 'Pressure', location: 'Workshop A', status: 'Online', battery: 92, lastPing: '2 min ago', value: '4,200 PSI' },
@@ -24,9 +24,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type DeviceRow = (typeof MOCK_DEVICES)[number]
+
 export function IoTDashboard() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_DEVICES : MOCK_DEVICES.filter(d => d.status === filter)
@@ -40,34 +41,15 @@ export function IoTDashboard() {
     { label: t('Avg Battery'), value: `${Math.round(MOCK_DEVICES.filter(d => d.battery > 0).reduce((a, d) => a + d.battery, 0) / MOCK_DEVICES.filter(d => d.battery > 0).length)}%`, icon: 'Battery', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Radio" title={t('IoT Dashboard')} subtitle={t('Device Monitoring')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(d => {
-          const [bg, fg] = STATUS_COLORS[d.status] ?? STATUS_COLORS.Offline
-          return (
-            <MobileCard key={d.id}>
-              <MobileCardHeader title={d.name} trailing={<Badge background={bg} color={fg}>{t(d.status)}</Badge>} />
-              <MobileCardRow label={t('Type')}>{t(d.type)}</MobileCardRow>
-              <MobileCardRow label={t('Location')}>{d.location}</MobileCardRow>
-              <MobileCardRow label={t('Value')}>{d.value}</MobileCardRow>
-              <MobileCardRow label={t('Battery')}>{d.battery > 0 ? `${d.battery}%` : '—'}</MobileCardRow>
-              <MobileCardRow label={t('Last Ping')}>{d.lastPing}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<DeviceRow>[] = [
+    { header: 'Device', cell: (d) => d.name },
+    { header: 'Type', cell: (d) => t(d.type) },
+    { header: 'Location', cell: (d) => d.location },
+    { header: 'Status', cell: (d) => { const [bg, fg] = STATUS_COLORS[d.status] ?? STATUS_COLORS.Offline; return <Badge background={bg} color={fg}>{t(d.status)}</Badge> } },
+    { header: 'Value', cell: (d) => d.value },
+    { header: 'Battery', cell: (d) => d.battery > 0 ? `${d.battery}%` : '—' },
+    { header: 'Last Ping', cell: (d) => d.lastPing },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -96,48 +78,32 @@ export function IoTDashboard() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Connected Devices')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Online">{t('Online')}</option>
-            <option value="Warning">{t('Warning')}</option>
-            <option value="Offline">{t('Offline')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Device')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Value')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Battery')}</th>
-                <th className="pb-3 text-start font-medium">{t('Last Ping')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(d => {
-                const [bg, fg] = STATUS_COLORS[d.status] ?? STATUS_COLORS.Offline
-                return (
-                  <tr key={d.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{d.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(d.type)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{d.location}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(d.status)}</Badge></td>
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading">{d.value}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{d.battery > 0 ? `${d.battery}%` : '—'}</td>
-                    <td className="py-3 text-[13px] text-muted">{d.lastPing}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Connected Devices')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Online">{t('Online')}</option>
+          <option value="Warning">{t('Warning')}</option>
+          <option value="Offline">{t('Offline')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="IoT connected devices"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Offline
+          return (
+            <>
+              <MobileCardHeader title={row.name} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Type')}>{t(row.type)}</MobileCardRow>
+              <MobileCardRow label={t('Location')}>{row.location}</MobileCardRow>
+              <MobileCardRow label={t('Value')}>{row.value}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

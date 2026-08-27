@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_RECOMMENDATIONS = [
   { id: 'SPR-001', partName: 'Brake Pad Set (Front)', partNo: 'BP-TY-4421', vehicle: '2024 Toyota Camry', reason: 'Wear sensor triggered', confidence: 97, price: 'SAR 285', inStock: true, priority: 'High' },
@@ -21,9 +21,10 @@ const PRIORITY_COLORS: Record<string, readonly [string, string]> = {
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type RecRow = (typeof MOCK_RECOMMENDATIONS)[number]
+
 export function SmartPartsRecommendations() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totalValue = 'SAR 2,500'
   const inStockCount = MOCK_RECOMMENDATIONS.filter(r => r.inStock).length
@@ -36,35 +37,16 @@ export function SmartPartsRecommendations() {
     { label: t('Total Value'), value: totalValue, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Sparkles" title={t('Parts Recommendations')} subtitle={t('AI-Powered')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_RECOMMENDATIONS.map(r => {
-          const [bg, fg] = PRIORITY_COLORS[r.priority] ?? PRIORITY_COLORS.Low
-          return (
-            <MobileCard key={r.id}>
-              <MobileCardHeader title={r.partName} trailing={<Badge background={bg} color={fg}>{t(r.priority)}</Badge>} />
-              <MobileCardRow label={t('Part No')}>{r.partNo}</MobileCardRow>
-              <MobileCardRow label={t('Vehicle')}>{r.vehicle}</MobileCardRow>
-              <MobileCardRow label={t('Reason')}>{t(r.reason)}</MobileCardRow>
-              <MobileCardRow label={t('Confidence')}>{r.confidence}%</MobileCardRow>
-              <MobileCardRow label={t('Price')}>{r.price}</MobileCardRow>
-              <MobileCardRow label={t('Stock')}>{r.inStock ? t('In Stock') : t('Out of Stock')}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<RecRow>[] = [
+    { header: 'Part', cell: (r) => r.partName },
+    { header: 'Part No', cell: (r) => r.partNo, code: true },
+    { header: 'Vehicle', cell: (r) => r.vehicle },
+    { header: 'Reason', cell: (r) => t(r.reason) },
+    { header: 'Confidence', cell: (r) => `${r.confidence}%` },
+    { header: 'Price', cell: (r) => r.price },
+    { header: 'Stock', cell: (r) => <Badge background={r.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={r.inStock ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{r.inStock ? t('In Stock') : t('Out of Stock')}</Badge> },
+    { header: 'Priority', cell: (r) => { const [bg, fg] = PRIORITY_COLORS[r.priority] ?? PRIORITY_COLORS.Low; return <Badge background={bg} color={fg}>{t(r.priority)}</Badge> } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -93,44 +75,24 @@ export function SmartPartsRecommendations() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Recommended Parts')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part No')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Reason')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Confidence')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Price')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Stock')}</th>
-                <th className="pb-3 text-start font-medium">{t('Priority')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_RECOMMENDATIONS.map(r => {
-                const [bg, fg] = PRIORITY_COLORS[r.priority] ?? PRIORITY_COLORS.Low
-                return (
-                  <tr key={r.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{r.partName}</td>
-                    <td className="py-3 pe-4 font-mono text-[13px] text-muted" dir="ltr">{r.partNo}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{r.vehicle}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(r.reason)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{r.confidence}%</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{r.price}</td>
-                    <td className="py-3 pe-4">
-                      <Badge background={r.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={r.inStock ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{r.inStock ? t('In Stock') : t('Out of Stock')}</Badge>
-                    </td>
-                    <td className="py-3"><Badge background={bg} color={fg}>{t(r.priority)}</Badge></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Recommended Parts')}</h3>
+      <DataTable
+        caption="Smart parts recommendations"
+        columns={columns}
+        rows={[...MOCK_RECOMMENDATIONS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = PRIORITY_COLORS[row.priority] ?? PRIORITY_COLORS.Low
+          return (
+            <>
+              <MobileCardHeader title={row.partName} trailing={<Badge background={bg} color={fg}>{t(row.priority)}</Badge>} />
+              <MobileCardRow label={t('Part No')}>{row.partNo}</MobileCardRow>
+              <MobileCardRow label={t('Vehicle')}>{row.vehicle}</MobileCardRow>
+              <MobileCardRow label={t('Price')}>{row.price}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

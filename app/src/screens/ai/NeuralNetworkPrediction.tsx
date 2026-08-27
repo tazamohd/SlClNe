@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_PREDICTIONS = [
   { id: 'PRD-001', vehicle: '2022 Toyota Hilux', component: 'Timing Belt', failureProbability: 89, predictedDate: '2026-09-12', mileage: '142,000 km', confidence: 94, priority: 'Critical' },
@@ -33,9 +33,10 @@ const MODEL_STATUS_COLORS: Record<string, readonly [string, string]> = {
   Training: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
 }
 
+type PredictionRow = (typeof MOCK_PREDICTIONS)[number]
+
 export function NeuralNetworkPrediction() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const critical = MOCK_PREDICTIONS.filter(p => p.priority === 'Critical' || p.priority === 'High').length
   const avgConfidence = Math.round(MOCK_PREDICTIONS.reduce((a, p) => a + p.confidence, 0) / MOCK_PREDICTIONS.length)
@@ -47,33 +48,15 @@ export function NeuralNetworkPrediction() {
     { label: t('Active Models'), value: String(MOCK_MODELS.filter(m => m.status === 'Active').length), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Cpu" title={t('Neural Prediction')} subtitle={t('Predictive Maintenance')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_PREDICTIONS.map(p => {
-          const [bg, fg] = PRIORITY_COLORS[p.priority] ?? PRIORITY_COLORS.Low
-          return (
-            <MobileCard key={p.id}>
-              <MobileCardHeader title={p.vehicle} trailing={<Badge background={bg} color={fg}>{t(p.priority)}</Badge>} />
-              <MobileCardRow label={t('Component')}>{t(p.component)}</MobileCardRow>
-              <MobileCardRow label={t('Failure Prob.')}>{p.failureProbability}%</MobileCardRow>
-              <MobileCardRow label={t('Predicted Date')}>{p.predictedDate}</MobileCardRow>
-              <MobileCardRow label={t('Mileage')}>{p.mileage}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<PredictionRow>[] = [
+    { header: 'Vehicle', cell: (p) => p.vehicle },
+    { header: 'Component', cell: (p) => t(p.component) },
+    { header: 'Failure %', cell: (p) => `${p.failureProbability}%` },
+    { header: 'Predicted Date', cell: (p) => p.predictedDate },
+    { header: 'Mileage', cell: (p) => p.mileage },
+    { header: 'Confidence', cell: (p) => `${p.confidence}%` },
+    { header: 'Priority', cell: (p) => { const [bg, fg] = PRIORITY_COLORS[p.priority] ?? PRIORITY_COLORS.Low; return <Badge background={bg} color={fg}>{t(p.priority)}</Badge> } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -124,40 +107,24 @@ export function NeuralNetworkPrediction() {
         </div>
       </Card>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Failure Predictions')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Component')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Failure %')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Predicted Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Mileage')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Confidence')}</th>
-                <th className="pb-3 text-start font-medium">{t('Priority')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_PREDICTIONS.map(p => {
-                const [bg, fg] = PRIORITY_COLORS[p.priority] ?? PRIORITY_COLORS.Low
-                return (
-                  <tr key={p.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{p.vehicle}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(p.component)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{p.failureProbability}%</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted" dir="ltr">{p.predictedDate}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{p.mileage}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{p.confidence}%</td>
-                    <td className="py-3"><Badge background={bg} color={fg}>{t(p.priority)}</Badge></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Failure Predictions')}</h3>
+      <DataTable
+        caption="Neural network failure predictions"
+        columns={columns}
+        rows={[...MOCK_PREDICTIONS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = PRIORITY_COLORS[row.priority] ?? PRIORITY_COLORS.Low
+          return (
+            <>
+              <MobileCardHeader title={row.vehicle} trailing={<Badge background={bg} color={fg}>{t(row.priority)}</Badge>} />
+              <MobileCardRow label={t('Component')}>{t(row.component)}</MobileCardRow>
+              <MobileCardRow label={t('Failure Prob.')}>{row.failureProbability}%</MobileCardRow>
+              <MobileCardRow label={t('Predicted Date')}>{row.predictedDate}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

@@ -4,9 +4,10 @@ import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
 import { Money } from '@/components/ui/Money'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 const PARTS = [
   { partNumber: 'SP-1001', name: 'Oil Filter', brand: 'Toyota Genuine', category: 'OEM', compatibility: 'Toyota', price: 18.50, stock: 120, status: 'Available' },
@@ -20,6 +21,8 @@ const PARTS = [
   { partNumber: 'SP-1009', name: 'Clutch Disc', brand: 'Exedy', category: 'Aftermarket', compatibility: 'Toyota', price: 310.00, stock: 0, status: 'Discontinued' },
   { partNumber: 'SP-1010', name: 'Wheel Bearing', brand: 'SKF', category: 'Universal', compatibility: 'All', price: 95.00, stock: 45, status: 'Available' },
 ] as const
+
+type Part = (typeof PARTS)[number]
 
 function statusColor(status: string) {
   if (status === 'Backordered') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
@@ -51,6 +54,48 @@ export function SparePartsList() {
     { label: t('Categories'), value: String(categories), icon: 'Tag', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
+  const columns: Column<Part>[] = [
+    { header: 'Part #', cell: (part) => part.partNumber, code: true },
+    { header: 'Name', cell: (part) => <span className="font-medium text-heading">{part.name}</span> },
+    { header: 'Brand', cell: (part) => part.brand },
+    { header: 'Category', cell: (part) => t(part.category) },
+    { header: 'Compatibility', cell: (part) => t(part.compatibility) },
+    { header: 'Price', cell: (part) => <Money sar={part.price} /> },
+    { header: 'Stock', cell: (part) => <span className="font-mono text-heading" dir="ltr">{part.stock}</span> },
+    { header: 'Status', cell: (part) => <Badge {...statusColor(part.status)}>{t(part.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Spare parts catalog"
+      columns={columns}
+      rows={filtered as unknown as Part[]}
+      rowKey={(part) => part.partNumber}
+      empty={<p className="py-8 text-center text-sm text-muted">{t('No parts found')}</p>}
+      mobileCard={(part) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{part.name}</p>
+                  <p className="text-xs text-muted" dir="ltr">{part.partNumber}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge {...statusColor(part.status)}>{t(part.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Brand')} value={part.brand} />
+          <MobileCardRow label={t('Category')} value={t(part.category)} />
+          <MobileCardRow label={t('Compatibility')} value={t(part.compatibility)} />
+          <MobileCardRow label={t('Stock')} value={String(part.stock)} />
+          <MobileCardRow label={t('Price')}><Money sar={part.price} /></MobileCardRow>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -67,28 +112,7 @@ export function SparePartsList() {
             </Card>
           ))}
         </div>
-        {filtered.map((part) => (
-          <MobileCard key={part.partNumber}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{part.name}</p>
-                    <p className="text-xs text-muted" dir="ltr">{part.partNumber}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge {...statusColor(part.status)}>{t(part.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Brand')} value={part.brand} />
-            <MobileCardRow label={t('Category')} value={t(part.category)} />
-            <MobileCardRow label={t('Compatibility')} value={t(part.compatibility)} />
-            <MobileCardRow label={t('Stock')} value={String(part.stock)} />
-            <MobileCardRow label={t('Price')}><Money sar={part.price} /></MobileCardRow>
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No parts found')}</p>}
+        {table}
       </div>
     )
   }
@@ -126,40 +150,7 @@ export function SparePartsList() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part #')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Brand')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Compatibility')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Price')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Stock')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((part) => (
-                <tr key={part.partNumber} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{part.partNumber}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{part.name}</td>
-                  <td className="py-3 pe-4 text-body">{part.brand}</td>
-                  <td className="py-3 pe-4 text-body">{t(part.category)}</td>
-                  <td className="py-3 pe-4 text-body">{t(part.compatibility)}</td>
-                  <td className="py-3 pe-4 text-end"><Money sar={part.price} /></td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{part.stock}</td>
-                  <td className="py-3">
-                    <Badge {...statusColor(part.status)}>{t(part.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

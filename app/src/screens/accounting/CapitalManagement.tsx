@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface CapitalAccount {
   name: string
@@ -32,7 +32,6 @@ function fmtSar(v: number): string {
 
 export function CapitalManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const accounts = useAccounts(t)
 
   const totalInvested = accounts.reduce((s, a) => s + a.invested, 0)
@@ -47,45 +46,29 @@ export function CapitalManagement() {
     { label: t('ROI'), value: `${roi}%`, icon: 'Percent', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Briefcase" title={t('Capital Management')} subtitle={t('Accounting')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <MobileCard key={k.label}>
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-              <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
-              <p dir="ltr" className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </MobileCard>
-          ))}
-        </div>
-        {accounts.map((a) => {
-          const ret = a.currentValue - a.invested
-          const pct = ((ret / a.invested) * 100).toFixed(1)
-          return (
-            <MobileCard key={a.name}>
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Briefcase" size={14} /></span>
-                    <div>
-                      <p className="text-[13px] font-semibold text-heading">{a.name}</p>
-                      <p className="text-xs text-muted">{a.type}</p>
-                    </div>
-                  </div>
-                }
-              />
-              <div className="mt-1.5 flex items-center justify-between">
-                <span dir="ltr" className="font-mono text-sm font-bold text-heading">{fmtSar(a.currentValue)}</span>
-                <span dir="ltr" className={'text-xs font-semibold ' + (ret >= 0 ? 'text-salis-blue' : 'text-salis-orange')}>{ret >= 0 ? '+' : ''}{pct}%</span>
-              </div>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<CapitalAccount>[] = [
+    { header: 'Account', cell: (a) => <span className="font-medium text-heading">{a.name}</span> },
+    { header: 'Type', cell: (a) => <span className="text-muted">{a.type}</span> },
+    { header: 'Invested', cell: (a) => <span dir="ltr" className="font-mono text-muted">{fmtSar(a.invested)}</span>, className: 'text-end' },
+    { header: 'Current Value', cell: (a) => <span dir="ltr" className="font-mono font-medium text-heading">{fmtSar(a.currentValue)}</span>, className: 'text-end' },
+    { header: 'Return', cell: (a) => {
+      const ret = a.currentValue - a.invested
+      return (
+        <span dir="ltr" className={'font-mono font-medium ' + (ret >= 0 ? 'text-salis-blue' : 'text-salis-orange')}>
+          {ret >= 0 ? '+' : ''}{fmtSar(ret)}
+        </span>
+      )
+    }, className: 'text-end' },
+    { header: '% Change', cell: (a) => {
+      const ret = a.currentValue - a.invested
+      const pct = ((ret / a.invested) * 100).toFixed(1)
+      return (
+        <span dir="ltr" className={'font-mono font-semibold ' + (ret >= 0 ? 'text-salis-blue' : 'text-salis-orange')}>
+          {ret >= 0 ? '+' : ''}{pct}%
+        </span>
+      )
+    }, className: 'text-end' },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -114,43 +97,27 @@ export function CapitalManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Capital Accounts')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Account')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Invested')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Current Value')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Return')}</th>
-                <th className="pb-3 text-end font-medium">{t('% Change')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {accounts.map((a) => {
-                const ret = a.currentValue - a.invested
-                const pct = ((ret / a.invested) * 100).toFixed(1)
-                return (
-                  <tr key={a.name} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-medium text-heading">{a.name}</td>
-                    <td className="py-3 pe-4 text-muted">{a.type}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-muted" dir="ltr">{fmtSar(a.invested)}</td>
-                    <td className="py-3 pe-4 text-end font-mono font-medium text-heading" dir="ltr">{fmtSar(a.currentValue)}</td>
-                    <td className={'py-3 pe-4 text-end font-mono font-medium ' + (ret >= 0 ? 'text-salis-blue' : 'text-salis-orange')} dir="ltr">
-                      {ret >= 0 ? '+' : ''}{fmtSar(ret)}
-                    </td>
-                    <td className={'py-3 text-end font-mono font-semibold ' + (ret >= 0 ? 'text-salis-blue' : 'text-salis-orange')} dir="ltr">
-                      {ret >= 0 ? '+' : ''}{pct}%
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Capital accounts"
+        columns={columns}
+        rows={accounts}
+        rowKey={(a) => a.name}
+        mobileCard={(a) => {
+          const ret = a.currentValue - a.invested
+          const pct = ((ret / a.invested) * 100).toFixed(1)
+          return (
+            <>
+              <MobileCardHeader
+                title={a.name}
+                trailing={<span dir="ltr" className={'text-xs font-semibold ' + (ret >= 0 ? 'text-salis-blue' : 'text-salis-orange')}>{ret >= 0 ? '+' : ''}{pct}%</span>}
+              />
+              <MobileCardRow label={t('Type')}>{a.type}</MobileCardRow>
+              <MobileCardRow label={t('Current Value')}><span dir="ltr" className="font-semibold">{fmtSar(a.currentValue)}</span></MobileCardRow>
+            </>
+          )
+        }}
+        empty={<EmptyState icon="Briefcase" title={t('No capital accounts found')} />}
+      />
     </div>
   )
 }

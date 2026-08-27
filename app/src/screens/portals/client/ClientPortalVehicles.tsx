@@ -1,9 +1,8 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Vehicle {
   plate: string
@@ -31,34 +30,15 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function ClientPortalVehicles() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Car" title={t('My Vehicles')} subtitle={t('Vehicle registry')} />
-        {VEHICLES.map((v) => (
-          <MobileCard key={v.plate}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{v.year} {v.make} {v.model}</p>
-                    <p className="text-xs text-muted">{v.plate}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Color')} value={v.color} />
-            <MobileCardRow label={t('Mileage')} value={`${v.mileage.toLocaleString()} km`} />
-            <MobileCardRow label={t('VIN')} value={v.vin} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Vehicle>[] = [
+    { header: t('Vehicle'), cell: (v) => `${v.year} ${v.make} ${v.model}` },
+    { header: t('Plate'), cell: (v) => v.plate },
+    { header: t('Color'), cell: (v) => v.color },
+    { header: t('Mileage'), cell: (v) => `${v.mileage.toLocaleString()} km` },
+    { header: t('VIN'), cell: (v) => v.vin },
+    { header: t('Status'), cell: (v) => <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -75,36 +55,20 @@ export function ClientPortalVehicles() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Color')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Mileage')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('VIN')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {VEHICLES.map((v) => (
-                <tr key={v.plate} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{v.year} {v.make} {v.model}</td>
-                  <td className="py-3 pe-4 font-mono text-body">{v.plate}</td>
-                  <td className="py-3 pe-4 text-body">{v.color}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{v.mileage.toLocaleString()} km</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted">{v.vin}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Client vehicle registry"
+        columns={columns}
+        rows={VEHICLES}
+        rowKey={(v) => v.plate}
+        mobileCard={(v) => (
+          <>
+            <MobileCardHeader title={`${v.year} ${v.make} ${v.model}`} trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>} />
+            <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
+            <MobileCardRow label={t('Mileage')}>{v.mileage.toLocaleString()} km</MobileCardRow>
+            <MobileCardRow label={t('VIN')}>{v.vin}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

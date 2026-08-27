@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Shipment {
   poNumber: string
@@ -35,7 +35,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PurchaseAgentTracking() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('In Transit'), value: '3', icon: 'Truck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -44,44 +43,16 @@ export function PurchaseAgentTracking() {
     { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: '#EF4444' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Truck" title={t('Shipment Tracking')} subtitle={t('Track deliveries')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {SHIPMENTS.map((s) => (
-          <MobileCard key={s.poNumber}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Truck" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{s.poNumber}</p>
-                    <p className="text-xs text-muted">{s.supplier}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Items')} value={s.items} />
-            <MobileCardRow label={t('Route')} value={`${s.origin} → ${s.destination}`} />
-            <MobileCardRow label={t('Carrier')} value={s.carrier} />
-            <MobileCardRow label={t('ETA')} value={s.eta} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Shipment>[] = [
+    { header: t('PO #'), cell: (s) => s.poNumber },
+    { header: t('Supplier'), cell: (s) => s.supplier },
+    { header: t('Items'), cell: (s) => s.items },
+    { header: t('Origin'), cell: (s) => s.origin },
+    { header: t('Destination'), cell: (s) => s.destination },
+    { header: t('Carrier'), cell: (s) => s.carrier },
+    { header: t('ETA'), cell: (s) => s.eta },
+    { header: t('Status'), cell: (s) => <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -110,40 +81,20 @@ export function PurchaseAgentTracking() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('PO #')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Items')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Origin')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Destination')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Carrier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('ETA')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SHIPMENTS.map((s) => (
-                <tr key={s.poNumber} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono font-semibold text-heading" dir="ltr">{s.poNumber}</td>
-                  <td className="py-3 pe-4 text-body">{s.supplier}</td>
-                  <td className="py-3 pe-4 text-body">{s.items}</td>
-                  <td className="py-3 pe-4 text-body">{s.origin}</td>
-                  <td className="py-3 pe-4 text-body">{s.destination}</td>
-                  <td className="py-3 pe-4 text-body">{s.carrier}</td>
-                  <td className="py-3 pe-4 text-muted">{s.eta}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Shipment tracking"
+        columns={columns}
+        rows={SHIPMENTS}
+        rowKey={(s) => s.poNumber}
+        mobileCard={(s) => (
+          <>
+            <MobileCardHeader title={s.poNumber} trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>} />
+            <MobileCardRow label={t('Supplier')}>{s.supplier}</MobileCardRow>
+            <MobileCardRow label={t('Carrier')}>{s.carrier}</MobileCardRow>
+            <MobileCardRow label={t('ETA')}>{s.eta}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

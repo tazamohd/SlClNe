@@ -1,9 +1,9 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface IncomingRequest {
   id: string
@@ -48,6 +48,50 @@ export function PartsNetworkIncomingRequests() {
 
   const newCount = INCOMING_REQUESTS.filter((r) => r.status === 'New').length
 
+  const columns: Column<IncomingRequest>[] = [
+    { header: 'ID', cell: (req) => req.id, code: true },
+    {
+      header: 'Requestor',
+      cell: (req) => (
+        <div>
+          <p className="text-body">{req.requestor}</p>
+          <p className="text-xs text-muted">{req.shop}</p>
+        </div>
+      ),
+    },
+    {
+      header: 'Part',
+      cell: (req) => (
+        <div>
+          <p className="text-body">{req.partName}</p>
+          <p className="font-mono text-xs text-muted">{req.partNumber}</p>
+        </div>
+      ),
+    },
+    { header: 'Vehicle', cell: (req) => req.vehicle },
+    { header: 'Qty', cell: (req) => req.quantity },
+    { header: 'Urgency', cell: (req) => <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge> },
+    { header: 'Received', cell: (req) => req.receivedAt },
+    { header: 'Status', cell: (req) => <Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Incoming parts requests"
+      columns={columns}
+      rows={INCOMING_REQUESTS}
+      rowKey={(req) => req.id}
+      mobileCard={(req) => (
+        <>
+          <MobileCardHeader title={req.id} code trailing={<Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>} />
+          <MobileCardRow label={t('From')} value={`${req.requestor} - ${req.shop}`} />
+          <MobileCardRow label={t('Part')} value={req.partName} />
+          <MobileCardRow label={t('Vehicle')} value={req.vehicle} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -55,22 +99,7 @@ export function PartsNetworkIncomingRequests() {
         {newCount > 0 && (
           <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{newCount} {t('new')}</Badge>
         )}
-        {INCOMING_REQUESTS.map((req) => (
-          <MobileCard key={req.id}>
-            <MobileCardHeader
-              title={req.id}
-              code
-              trailing={<Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>}
-            />
-            <MobileCardRow label={t('From')} value={`${req.requestor} - ${req.shop}`} />
-            <MobileCardRow label={t('Part')} value={req.partName} />
-            <MobileCardRow label={t('Vehicle')} value={req.vehicle} />
-            <MobileCardRow label={t('Qty')} value={req.quantity} />
-            <MobileCardRow label={t('Urgency')}>
-              <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge>
-            </MobileCardRow>
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -95,53 +124,7 @@ export function PartsNetworkIncomingRequests() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('All Incoming Requests')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('ID')}</th>
-                <th className="pb-3 font-medium">{t('Requestor')}</th>
-                <th className="pb-3 font-medium">{t('Part')}</th>
-                <th className="pb-3 font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 font-medium">{t('Qty')}</th>
-                <th className="pb-3 font-medium">{t('Urgency')}</th>
-                <th className="pb-3 font-medium">{t('Received')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {INCOMING_REQUESTS.map((req) => (
-                <tr key={req.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs font-semibold text-heading">{req.id}</td>
-                  <td className="py-3">
-                    <div>
-                      <p className="text-body">{req.requestor}</p>
-                      <p className="text-xs text-muted">{req.shop}</p>
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    <div>
-                      <p className="text-body">{req.partName}</p>
-                      <p className="font-mono text-xs text-muted">{req.partNumber}</p>
-                    </div>
-                  </td>
-                  <td className="py-3 text-body">{req.vehicle}</td>
-                  <td className="py-3 text-body">{req.quantity}</td>
-                  <td className="py-3">
-                    <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge>
-                  </td>
-                  <td className="py-3 text-muted">{req.receivedAt}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

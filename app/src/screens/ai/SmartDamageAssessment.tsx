@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_ASSESSMENTS = [
   { id: 'DA-001', vehicle: '2024 Toyota Camry', plate: 'ABC 1234', severity: 'Major', area: 'Front bumper & hood', confidence: 94, estimatedCost: 'SAR 8,500', status: 'Reviewed', date: '2026-08-17' },
@@ -28,9 +28,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Escalated: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type AssessmentRow = (typeof MOCK_ASSESSMENTS)[number]
+
 export function SmartDamageAssessment() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_ASSESSMENTS : MOCK_ASSESSMENTS.filter(a => a.severity === filter)
@@ -43,34 +44,16 @@ export function SmartDamageAssessment() {
     { label: t('Pending Review'), value: String(MOCK_ASSESSMENTS.filter(a => a.status === 'Pending').length), icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="ScanEye" title={t('Damage Assessment')} subtitle={t('AI Detection')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(a => {
-          const [bg, fg] = SEVERITY_COLORS[a.severity] ?? SEVERITY_COLORS.Minor
-          return (
-            <MobileCard key={a.id}>
-              <MobileCardHeader title={a.vehicle} trailing={<Badge background={bg} color={fg}>{t(a.severity)}</Badge>} />
-              <MobileCardRow label={t('Plate')}>{a.plate}</MobileCardRow>
-              <MobileCardRow label={t('Damage Area')}>{t(a.area)}</MobileCardRow>
-              <MobileCardRow label={t('Confidence')}>{a.confidence}%</MobileCardRow>
-              <MobileCardRow label={t('Est. Cost')}>{a.estimatedCost}</MobileCardRow>
-              <MobileCardRow label={t('Date')}>{a.date}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<AssessmentRow>[] = [
+    { header: 'Vehicle', cell: (a) => a.vehicle },
+    { header: 'Plate', cell: (a) => a.plate, code: true },
+    { header: 'Severity', cell: (a) => { const [bg, fg] = SEVERITY_COLORS[a.severity] ?? SEVERITY_COLORS.Minor; return <Badge background={bg} color={fg}>{t(a.severity)}</Badge> } },
+    { header: 'Damage Area', cell: (a) => t(a.area) },
+    { header: 'Confidence', cell: (a) => `${a.confidence}%` },
+    { header: 'Est. Cost', cell: (a) => a.estimatedCost },
+    { header: 'Status', cell: (a) => { const [bg, fg] = STATUS_COLORS[a.status] ?? STATUS_COLORS.Pending; return <Badge background={bg} color={fg}>{t(a.status)}</Badge> } },
+    { header: 'Date', cell: (a) => a.date },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -99,51 +82,32 @@ export function SmartDamageAssessment() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Damage Assessments')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by severity')}>
-            <option value="All">{t('All')}</option>
-            <option value="Major">{t('Major')}</option>
-            <option value="Moderate">{t('Moderate')}</option>
-            <option value="Minor">{t('Minor')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Severity')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Damage Area')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Confidence')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Est. Cost')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-start font-medium">{t('Date')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(a => {
-                const [sevBg, sevFg] = SEVERITY_COLORS[a.severity] ?? SEVERITY_COLORS.Minor
-                const [stBg, stFg] = STATUS_COLORS[a.status] ?? STATUS_COLORS.Pending
-                return (
-                  <tr key={a.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{a.vehicle}</td>
-                    <td className="py-3 pe-4 font-mono text-[13px] text-muted" dir="ltr">{a.plate}</td>
-                    <td className="py-3 pe-4"><Badge background={sevBg} color={sevFg}>{t(a.severity)}</Badge></td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(a.area)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{a.confidence}%</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{a.estimatedCost}</td>
-                    <td className="py-3 pe-4"><Badge background={stBg} color={stFg}>{t(a.status)}</Badge></td>
-                    <td className="py-3 text-[13px] text-muted" dir="ltr">{a.date}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Damage Assessments')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by severity')}>
+          <option value="All">{t('All')}</option>
+          <option value="Major">{t('Major')}</option>
+          <option value="Moderate">{t('Moderate')}</option>
+          <option value="Minor">{t('Minor')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Damage assessment results"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = SEVERITY_COLORS[row.severity] ?? SEVERITY_COLORS.Minor
+          return (
+            <>
+              <MobileCardHeader title={row.vehicle} trailing={<Badge background={bg} color={fg}>{t(row.severity)}</Badge>} />
+              <MobileCardRow label={t('Damage Area')}>{t(row.area)}</MobileCardRow>
+              <MobileCardRow label={t('Confidence')}>{row.confidence}%</MobileCardRow>
+              <MobileCardRow label={t('Est. Cost')}>{row.estimatedCost}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

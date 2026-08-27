@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_NODES = [
   { id: 'EDG-001', name: 'Workshop A Gateway', location: 'Main Workshop', cpuUsage: 45, memoryUsage: 62, status: 'Online', uptime: '45d 12h', latency: '2.3ms', tasks: 128 },
@@ -20,9 +20,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type NodeRow = (typeof MOCK_NODES)[number]
+
 export function EdgeComputing() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const online = MOCK_NODES.filter(n => n.status === 'Online').length
   const avgCpu = Math.round(MOCK_NODES.reduce((a, n) => a + n.cpuUsage, 0) / MOCK_NODES.length)
@@ -35,34 +36,30 @@ export function EdgeComputing() {
     { label: t('Active Tasks'), value: String(totalTasks), icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Cpu" title={t('Edge Computing')} subtitle={t('Node Status')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
+  const columns: Column<NodeRow>[] = [
+    { header: 'Node', cell: (n) => n.name },
+    { header: 'Location', cell: (n) => n.location },
+    { header: 'Status', cell: (n) => { const [bg, fg] = STATUS_COLORS[n.status] ?? STATUS_COLORS.Offline; return <Badge background={bg} color={fg}>{t(n.status)}</Badge> } },
+    { header: 'CPU', cell: (n) => (
+      <div className="flex items-center gap-2">
+        <div className="h-1.5 w-16 rounded-full bg-border">
+          <div className="h-full rounded-full" style={{ width: `${n.cpuUsage}%`, background: n.cpuUsage > 70 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
         </div>
-        {MOCK_NODES.map(n => {
-          const [bg, fg] = STATUS_COLORS[n.status] ?? STATUS_COLORS.Offline
-          return (
-            <MobileCard key={n.id}>
-              <MobileCardHeader title={n.name} trailing={<Badge background={bg} color={fg}>{t(n.status)}</Badge>} />
-              <MobileCardRow label={t('Location')}>{n.location}</MobileCardRow>
-              <MobileCardRow label={t('CPU')}>{n.cpuUsage}%</MobileCardRow>
-              <MobileCardRow label={t('Memory')}>{n.memoryUsage}%</MobileCardRow>
-              <MobileCardRow label={t('Latency')}>{n.latency}</MobileCardRow>
-              <MobileCardRow label={t('Uptime')}>{n.uptime}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
+        <span className="text-[12px] text-muted">{n.cpuUsage}%</span>
       </div>
-    )
-  }
+    ) },
+    { header: 'Memory', cell: (n) => (
+      <div className="flex items-center gap-2">
+        <div className="h-1.5 w-16 rounded-full bg-border">
+          <div className="h-full rounded-full" style={{ width: `${n.memoryUsage}%`, background: n.memoryUsage > 75 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
+        </div>
+        <span className="text-[12px] text-muted">{n.memoryUsage}%</span>
+      </div>
+    ) },
+    { header: 'Latency', cell: (n) => n.latency },
+    { header: 'Tasks', cell: (n) => `${n.tasks}` },
+    { header: 'Uptime', cell: (n) => n.uptime },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -91,56 +88,24 @@ export function EdgeComputing() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Edge Nodes')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Node')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('CPU')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Memory')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Latency')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Tasks')}</th>
-                <th className="pb-3 text-start font-medium">{t('Uptime')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_NODES.map(n => {
-                const [bg, fg] = STATUS_COLORS[n.status] ?? STATUS_COLORS.Offline
-                return (
-                  <tr key={n.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{n.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{n.location}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(n.status)}</Badge></td>
-                    <td className="py-3 pe-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-16 rounded-full bg-border">
-                          <div className="h-full rounded-full" style={{ width: `${n.cpuUsage}%`, background: n.cpuUsage > 70 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
-                        </div>
-                        <span className="text-[12px] text-muted">{n.cpuUsage}%</span>
-                      </div>
-                    </td>
-                    <td className="py-3 pe-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-16 rounded-full bg-border">
-                          <div className="h-full rounded-full" style={{ width: `${n.memoryUsage}%`, background: n.memoryUsage > 75 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
-                        </div>
-                        <span className="text-[12px] text-muted">{n.memoryUsage}%</span>
-                      </div>
-                    </td>
-                    <td className="py-3 pe-4 font-mono text-[13px] text-muted">{n.latency}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{n.tasks}</td>
-                    <td className="py-3 text-[13px] text-muted">{n.uptime}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Edge Nodes')}</h3>
+      <DataTable
+        caption="Edge computing nodes"
+        columns={columns}
+        rows={[...MOCK_NODES]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Offline
+          return (
+            <>
+              <MobileCardHeader title={row.name} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Location')}>{row.location}</MobileCardRow>
+              <MobileCardRow label={t('CPU')}>{row.cpuUsage}%</MobileCardRow>
+              <MobileCardRow label={t('Memory')}>{row.memoryUsage}%</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_MODULES = [
   { id: 'BI-001', name: 'Sales Analytics', category: 'Revenue', status: 'Active', reports: 24, lastUpdated: '2026-08-17', accuracy: 96 },
@@ -20,9 +20,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Planned: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type ModuleRow = (typeof MOCK_MODULES)[number]
+
 export function BusinessIntelligence() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const active = MOCK_MODULES.filter(m => m.status === 'Active').length
   const totalReports = MOCK_MODULES.reduce((a, m) => a + m.reports, 0)
@@ -35,33 +36,15 @@ export function BusinessIntelligence() {
     { label: t('Avg Accuracy'), value: `${avgAccuracy}%`, icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="BarChart3" title={t('Business Intelligence')} subtitle={t('Analytics Overview')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_MODULES.map(m => {
-          const [bg, fg] = STATUS_COLORS[m.status] ?? STATUS_COLORS.Planned
-          return (
-            <MobileCard key={m.id}>
-              <MobileCardHeader title={m.name} trailing={<Badge background={bg} color={fg}>{t(m.status)}</Badge>} />
-              <MobileCardRow label={t('Category')}>{t(m.category)}</MobileCardRow>
-              <MobileCardRow label={t('Reports')}>{m.reports}</MobileCardRow>
-              <MobileCardRow label={t('Accuracy')}>{m.accuracy > 0 ? `${m.accuracy}%` : '—'}</MobileCardRow>
-              <MobileCardRow label={t('Last Updated')}>{m.lastUpdated}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<ModuleRow>[] = [
+    { header: 'ID', cell: (m) => m.id, code: true },
+    { header: 'Module', cell: (m) => t(m.name) },
+    { header: 'Category', cell: (m) => t(m.category) },
+    { header: 'Status', cell: (m) => { const [bg, fg] = STATUS_COLORS[m.status] ?? STATUS_COLORS.Planned; return <Badge background={bg} color={fg}>{t(m.status)}</Badge> } },
+    { header: 'Reports', cell: (m) => `${m.reports}` },
+    { header: 'Accuracy', cell: (m) => m.accuracy > 0 ? `${m.accuracy}%` : '—' },
+    { header: 'Last Updated', cell: (m) => m.lastUpdated },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -90,40 +73,24 @@ export function BusinessIntelligence() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('BI Modules')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Module')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Reports')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Accuracy')}</th>
-                <th className="pb-3 text-start font-medium">{t('Last Updated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_MODULES.map(m => {
-                const [bg, fg] = STATUS_COLORS[m.status] ?? STATUS_COLORS.Planned
-                return (
-                  <tr key={m.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{m.id}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(m.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(m.category)}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(m.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{m.reports}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{m.accuracy > 0 ? `${m.accuracy}%` : '—'}</td>
-                    <td className="py-3 text-[13px] text-muted" dir="ltr">{m.lastUpdated}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('BI Modules')}</h3>
+      <DataTable
+        caption="Business intelligence modules"
+        columns={columns}
+        rows={[...MOCK_MODULES]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Planned
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Category')}>{t(row.category)}</MobileCardRow>
+              <MobileCardRow label={t('Reports')}>{row.reports}</MobileCardRow>
+              <MobileCardRow label={t('Accuracy')}>{row.accuracy > 0 ? `${row.accuracy}%` : '—'}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

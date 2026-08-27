@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Delivery {
   id: string
@@ -33,7 +33,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PurchaseAgentDelivery() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Active Shipments'), value: '3', icon: 'Truck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -42,44 +41,16 @@ export function PurchaseAgentDelivery() {
     { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Truck" title={t('Deliveries')} subtitle={t('Shipment tracking')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {DELIVERIES.map((d) => (
-          <MobileCard key={d.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Truck" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{d.id}</p>
-                    <p className="text-xs text-muted">{d.supplier}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[d.status].bg} color={STATUS_STYLES[d.status].fg}>{t(d.status)}</Badge>}
-            />
-            <MobileCardRow label={t('PO Ref')} value={d.poRef} />
-            <MobileCardRow label={t('Carrier')} value={d.carrier} />
-            <MobileCardRow label={t('Tracking')} value={d.trackingNo} />
-            <MobileCardRow label={t('ETA')} value={d.eta} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Delivery>[] = [
+    { header: t('Delivery'), cell: (d) => d.id },
+    { header: t('PO Ref'), cell: (d) => d.poRef },
+    { header: t('Supplier'), cell: (d) => d.supplier },
+    { header: t('Items'), cell: (d) => d.items },
+    { header: t('Carrier'), cell: (d) => d.carrier },
+    { header: t('Tracking'), cell: (d) => d.trackingNo },
+    { header: t('ETA'), cell: (d) => d.eta },
+    { header: t('Status'), cell: (d) => <Badge background={STATUS_STYLES[d.status].bg} color={STATUS_STYLES[d.status].fg}>{t(d.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -108,41 +79,20 @@ export function PurchaseAgentDelivery() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-heading">{t('Shipments')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Delivery')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('PO Ref')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Items')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Carrier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Tracking')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('ETA')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {DELIVERIES.map((d) => (
-                <tr key={d.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{d.id}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">{d.poRef}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{d.supplier}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{d.items}</td>
-                  <td className="py-3 pe-4 text-body">{d.carrier}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">{d.trackingNo}</td>
-                  <td className="py-3 pe-4 text-body">{d.eta}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[d.status].bg} color={STATUS_STYLES[d.status].fg}>{t(d.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Delivery shipments"
+        columns={columns}
+        rows={DELIVERIES}
+        rowKey={(d) => d.id}
+        mobileCard={(d) => (
+          <>
+            <MobileCardHeader title={d.id} trailing={<Badge background={STATUS_STYLES[d.status].bg} color={STATUS_STYLES[d.status].fg}>{t(d.status)}</Badge>} />
+            <MobileCardRow label={t('Supplier')}>{d.supplier}</MobileCardRow>
+            <MobileCardRow label={t('Carrier')}>{d.carrier}</MobileCardRow>
+            <MobileCardRow label={t('ETA')}>{d.eta}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

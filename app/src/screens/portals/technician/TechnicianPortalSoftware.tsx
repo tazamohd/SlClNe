@@ -1,9 +1,8 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface SoftwareTool {
   name: string
@@ -39,34 +38,20 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 export function TechnicianPortalSoftware() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Cpu" title={t('Diagnostic Software')} subtitle={t('Tools and licenses')} />
-        {SOFTWARE_TOOLS.map((s, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={CATEGORY_ICONS[s.category]} size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{s.name}</p>
-                    <p className="text-xs text-muted">v{s.version}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Category')} value={t(s.category)} />
-            <MobileCardRow label={t('Makes')} value={s.makes} />
-            <MobileCardRow label={t('License Expiry')} value={s.licenseExpiry} />
-          </MobileCard>
-        ))}
+  const columns: Column<SoftwareTool>[] = [
+    { header: t('Software'), cell: (s) => s.name },
+    { header: t('Version'), cell: (s) => `v${s.version}` },
+    { header: t('Category'), cell: (s) => (
+      <div className="flex items-center gap-1.5">
+        <Icon name={CATEGORY_ICONS[s.category]} size={14} className="text-muted" />
+        <span>{t(s.category)}</span>
       </div>
-    )
-  }
+    ) },
+    { header: t('Makes'), cell: (s) => s.makes },
+    { header: t('License Expiry'), cell: (s) => s.licenseExpiry },
+    { header: t('Status'), cell: (s) => <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -83,41 +68,20 @@ export function TechnicianPortalSoftware() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Software')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Version')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Makes')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('License Expiry')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SOFTWARE_TOOLS.map((s, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{s.name}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">v{s.version}</td>
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-1.5">
-                      <Icon name={CATEGORY_ICONS[s.category]} size={14} className="text-muted" />
-                      <span className="text-body">{t(s.category)}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{s.makes}</td>
-                  <td className="py-3 pe-4 text-body">{s.licenseExpiry}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Diagnostic software tools"
+        columns={columns}
+        rows={SOFTWARE_TOOLS}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(s) => (
+          <>
+            <MobileCardHeader title={s.name} trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>} />
+            <MobileCardRow label={t('Version')}>v{s.version}</MobileCardRow>
+            <MobileCardRow label={t('Category')}>{t(s.category)}</MobileCardRow>
+            <MobileCardRow label={t('License Expiry')}>{s.licenseExpiry}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

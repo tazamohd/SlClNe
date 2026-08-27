@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface BankAccount {
   bank: string
@@ -33,7 +33,6 @@ function fmtSar(v: number): string {
 
 export function BankAccountManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const accounts = useAccounts(t)
 
   const totalBalance = accounts.reduce((s, a) => s + a.balance, 0)
@@ -45,42 +44,17 @@ export function BankAccountManagement() {
     { label: t('Reconciled'), value: `${reconciled}/${accounts.length}`, icon: 'CheckCircle', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Landmark" title={t('Bank Accounts')} subtitle={t('Accounting')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <MobileCard key={k.label}>
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-              <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
-              <p dir="ltr" className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </MobileCard>
-          ))}
-        </div>
-        {accounts.map((a) => (
-          <MobileCard key={a.accountNo}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Landmark" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{a.bank}</p>
-                    <p className="font-mono text-xs text-muted" dir="ltr">{a.accountNo} · {a.type}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              <span dir="ltr" className="font-mono text-sm font-bold text-heading">{fmtSar(a.balance)}</span>
-              <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
-                color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
-            </div>
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<BankAccount>[] = [
+    { header: 'Bank', cell: (a) => <span className="font-medium text-heading">{a.bank}</span> },
+    { header: 'Account', cell: (a) => a.accountNo, code: true },
+    { header: 'Type', cell: (a) => a.type },
+    { header: 'Balance', cell: (a) => <span dir="ltr" className="font-mono font-medium text-heading">{fmtSar(a.balance)}</span>, className: 'text-end' },
+    { header: 'Status', cell: (a) => (
+      <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+        color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
+    ) },
+    { header: 'Last Reconciled', cell: (a) => <span dir="ltr" className="text-muted">{a.lastReconciled}</span> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -109,38 +83,26 @@ export function BankAccountManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Bank Accounts')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Bank')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Account')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Balance')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-start font-medium">{t('Last Reconciled')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {accounts.map((a) => (
-                <tr key={a.accountNo} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{a.bank}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{a.accountNo}</td>
-                  <td className="py-3 pe-4 text-body">{a.type}</td>
-                  <td className="py-3 pe-4 text-end font-mono font-medium text-heading" dir="ltr">{fmtSar(a.balance)}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
-                      color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
-                  </td>
-                  <td className="py-3 text-muted" dir="ltr">{a.lastReconciled}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Bank accounts"
+        columns={columns}
+        rows={accounts}
+        rowKey={(a) => a.accountNo}
+        mobileCard={(a) => (
+          <>
+            <MobileCardHeader
+              title={a.bank}
+              trailing={
+                <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                  color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
+              }
+            />
+            <MobileCardRow label={t('Account')}><span dir="ltr">{a.accountNo} · {a.type}</span></MobileCardRow>
+            <MobileCardRow label={t('Balance')}><span dir="ltr" className="font-semibold">{fmtSar(a.balance)}</span></MobileCardRow>
+          </>
+        )}
+        empty={<EmptyState icon="Landmark" title={t('No bank accounts found')} />}
+      />
     </div>
   )
 }

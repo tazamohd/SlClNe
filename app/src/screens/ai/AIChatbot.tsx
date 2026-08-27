@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_CHATBOTS = [
   { id: 'CB-01', name: 'Service Booking Bot', channel: 'Website', language: 'AR/EN', status: 'Active', conversations: 3420, satisfaction: 92 },
@@ -26,9 +26,18 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Beta: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
 }
 
+type StatRow = (typeof MOCK_STATS)[number]
+type ChatbotRow = (typeof MOCK_CHATBOTS)[number]
+
+const statsColumns: Column<StatRow>[] = [
+  { header: 'Period', cell: (row) => row.period },
+  { header: 'Conversations', cell: (row) => row.conversations.toLocaleString() },
+  { header: 'Resolved', cell: (row) => row.resolved.toLocaleString() },
+  { header: 'Escalated', cell: (row) => String(row.escalated) },
+]
+
 export function AIChatbot() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_CHATBOTS : MOCK_CHATBOTS.filter(c => c.status === filter)
@@ -42,33 +51,15 @@ export function AIChatbot() {
     { label: t('Resolution'), value: '91%', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Bot" title={t('AI Chatbot')} subtitle={t('Configuration & Stats')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(c => {
-          const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Beta
-          return (
-            <MobileCard key={c.id}>
-              <MobileCardHeader title={t(c.name)} trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>} />
-              <MobileCardRow label={t('Channel')}>{c.channel}</MobileCardRow>
-              <MobileCardRow label={t('Language')}>{c.language}</MobileCardRow>
-              <MobileCardRow label={t('Conversations')}>{c.conversations.toLocaleString()}</MobileCardRow>
-              <MobileCardRow label={t('Satisfaction')}>{c.satisfaction}%</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const chatbotColumns: Column<ChatbotRow>[] = [
+    { header: 'ID', cell: (c) => c.id, code: true },
+    { header: 'Name', cell: (c) => t(c.name) },
+    { header: 'Channel', cell: (c) => c.channel },
+    { header: 'Language', cell: (c) => c.language },
+    { header: 'Status', cell: (c) => { const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Beta; return <Badge background={bg} color={fg}>{t(c.status)}</Badge> } },
+    { header: 'Conversations', cell: (c) => c.conversations.toLocaleString() },
+    { header: 'Satisfaction', cell: (c) => `${c.satisfaction}%` },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -97,73 +88,47 @@ export function AIChatbot() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Conversation Stats')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Period')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Conversations')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Resolved')}</th>
-                <th className="pb-3 text-end font-medium">{t('Escalated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_STATS.map(s => (
-                <tr key={s.period} className="border-b border-border/50">
-                  <td className="py-3 pe-4 text-[13px] text-heading">{t(s.period)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{s.conversations.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{s.resolved.toLocaleString()}</td>
-                  <td className="py-3 text-end font-mono text-[13px] text-muted">{s.escalated}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Conversation Stats')}</h3>
+      <DataTable
+        caption="Conversation statistics"
+        columns={statsColumns}
+        rows={[...MOCK_STATS]}
+        rowKey={(row) => row.period}
+        mobileCard={(row) => (
+          <>
+            <MobileCardHeader title={t(row.period)} />
+            <MobileCardRow label={t('Conversations')}>{row.conversations.toLocaleString()}</MobileCardRow>
+            <MobileCardRow label={t('Resolved')}>{row.resolved.toLocaleString()}</MobileCardRow>
+            <MobileCardRow label={t('Escalated')}>{row.escalated}</MobileCardRow>
+          </>
+        )}
+      />
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Chatbot Configurations')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Active">{t('Active')}</option>
-            <option value="Beta">{t('Beta')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Channel')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Language')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Conversations')}</th>
-                <th className="pb-3 text-end font-medium">{t('Satisfaction')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(c => {
-                const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Beta
-                return (
-                  <tr key={c.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{c.id}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(c.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{c.channel}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{c.language}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(c.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{c.conversations.toLocaleString()}</td>
-                    <td className="py-3 text-end font-mono text-[13px] text-heading">{c.satisfaction}%</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Chatbot Configurations')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Active">{t('Active')}</option>
+          <option value="Beta">{t('Beta')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Chatbot configurations"
+        columns={chatbotColumns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Beta
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Channel')}>{row.channel}</MobileCardRow>
+              <MobileCardRow label={t('Conversations')}>{row.conversations.toLocaleString()}</MobileCardRow>
+              <MobileCardRow label={t('Satisfaction')}>{row.satisfaction}%</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

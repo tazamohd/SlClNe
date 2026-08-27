@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface ReorderRule {
   id: string
@@ -36,6 +37,50 @@ export function AutomatedReordering() {
     { label: t('Total Parts'), value: String(RULES.length), icon: 'Package', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   ]
 
+  const columns: Column<ReorderRule>[] = [
+    { header: 'Part', cell: (r) => r.partName },
+    { header: 'Part #', cell: (r) => r.partNo, code: true },
+    { header: 'Stock', cell: (r) => <span className="font-mono" style={{ color: r.currentStock < r.minStock ? 'rgb(239,68,68)' : undefined }}>{r.currentStock}</span> },
+    { header: 'Min Stock', cell: (r) => <span className="font-mono text-muted">{r.minStock}</span> },
+    { header: 'Reorder Qty', cell: (r) => <span className="font-mono">{r.reorderQty}</span> },
+    { header: 'Supplier', cell: (r) => r.supplier },
+    { header: 'Last Triggered', cell: (r) => r.lastTriggered },
+    {
+      header: 'Status',
+      cell: (r) => (
+        <Badge
+          background={r.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+          color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+        >{t(r.active ? 'Active' : 'Inactive')}</Badge>
+      ),
+    },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Reorder rules"
+      columns={columns}
+      rows={RULES}
+      rowKey={(r) => r.id}
+      mobileCard={(r) => (
+        <>
+          <MobileCardHeader
+            title={r.partName}
+            trailing={
+              <Badge
+                background={r.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+                color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+              >{t(r.active ? 'Active' : 'Inactive')}</Badge>
+            }
+          />
+          <MobileCardRow label={t('Stock')} value={`${r.currentStock} / ${r.minStock} ${t('min')}`} />
+          <MobileCardRow label={t('Reorder Qty')} value={String(r.reorderQty)} />
+          <MobileCardRow label={t('Supplier')} value={r.supplier} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -51,31 +96,7 @@ export function AutomatedReordering() {
             </Card>
           ))}
         </div>
-        {RULES.map((r) => (
-          <MobileCard key={r.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Package" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.partName}</p>
-                    <p className="text-xs text-muted">{r.partNo}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                <Badge
-                  background={r.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
-                  color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
-                >{t(r.active ? 'Active' : 'Inactive')}</Badge>
-              }
-            />
-            <MobileCardRow label={t('Stock')} value={`${r.currentStock} / ${r.minStock} ${t('min')}`} />
-            <MobileCardRow label={t('Reorder Qty')} value={String(r.reorderQty)} />
-            <MobileCardRow label={t('Supplier')} value={r.supplier} />
-            <MobileCardRow label={t('Last Triggered')} value={r.lastTriggered} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -107,44 +128,7 @@ export function AutomatedReordering() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-heading">{t('Reorder Rules')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part #')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Stock')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Min Stock')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Reorder Qty')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Last Triggered')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RULES.map((r) => (
-                <tr key={r.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.partName}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">{r.partNo}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" style={{ color: r.currentStock < r.minStock ? 'rgb(239,68,68)' : undefined }}>{r.currentStock}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-muted">{r.minStock}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-body">{r.reorderQty}</td>
-                  <td className="py-3 pe-4 text-body">{r.supplier}</td>
-                  <td className="py-3 pe-4 text-body">{r.lastTriggered}</td>
-                  <td className="py-3">
-                    <Badge
-                      background={r.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
-                      color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
-                    >{t(r.active ? 'Active' : 'Inactive')}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

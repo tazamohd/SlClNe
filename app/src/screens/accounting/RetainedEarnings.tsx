@@ -1,14 +1,11 @@
 import { useMemo } from 'react'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Money, formatSar } from '@/components/ui/Money'
-import { Icon } from '@/components/ui/Icon'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
-  MobileCard,
+  MobileCardHeader,
   MobileCardRow,
-  MobilePageHeader,
 } from '@/components/shell/MobileShell'
 
 interface FiscalYear {
@@ -28,7 +25,6 @@ const MOCK_YEARS: readonly FiscalYear[] = [
 
 export function RetainedEarnings() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const current = MOCK_YEARS[MOCK_YEARS.length - 1]
 
@@ -39,50 +35,13 @@ export function RetainedEarnings() {
     { label: 'Growth', value: `${Math.round(((current.closingBalance - MOCK_YEARS[0].openingBalance) / MOCK_YEARS[0].openingBalance) * 100)}%`, caption: 'Since FY 2023' },
   ], [current])
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="TrendingUp"
-          title={t('Retained Earnings')}
-          subtitle={t('Accounting')}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{t(stat.label)}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{stat.value}</p>
-            </Card>
-          ))}
-        </div>
-        <div className="flex flex-col gap-3">
-          {MOCK_YEARS.map((fy) => (
-            <MobileCard key={fy.year}>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-heading">{t('FY')} {fy.year}</span>
-                <span className="flex items-center gap-1 text-xs text-salis-blue">
-                  <Icon name="TrendingUp" size={12} />
-                  <Money sar={fy.closingBalance} bare className="font-semibold" />
-                </span>
-              </div>
-              <MobileCardRow label={t('Opening')}>
-                <Money sar={fy.openingBalance} className="text-heading" />
-              </MobileCardRow>
-              <MobileCardRow label={t('Net Income')}>
-                <Money sar={fy.netIncome} className="text-heading" />
-              </MobileCardRow>
-              <MobileCardRow label={t('Dividends')}>
-                <Money sar={fy.dividends} className="text-heading" />
-              </MobileCardRow>
-              <MobileCardRow label={t('Closing')}>
-                <Money sar={fy.closingBalance} className="font-semibold text-heading" />
-              </MobileCardRow>
-            </MobileCard>
-          ))}
-        </div>
-      </div>
-    )
-  }
+  const columns: Column<FiscalYear>[] = [
+    { header: 'Fiscal Year', cell: (fy) => <span className="font-medium text-heading">{t('FY')} {fy.year}</span> },
+    { header: 'Opening Balance', cell: (fy) => <Money sar={fy.openingBalance} />, className: 'text-end' },
+    { header: 'Net Income', cell: (fy) => <Money sar={fy.netIncome} className="text-salis-blue" />, className: 'text-end' },
+    { header: 'Dividends', cell: (fy) => <Money sar={fy.dividends} />, className: 'text-end' },
+    { header: 'Closing Balance', cell: (fy) => <Money sar={fy.closingBalance} className="font-semibold" />, className: 'text-end' },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -93,43 +52,20 @@ export function RetainedEarnings() {
       />
       <StatRow stats={stats} />
 
-      <Section
-        title={t('Fiscal Year Breakdown')}
-        subtitle={t('Opening balance, income, dividends and closing balance per year')}
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-wide text-muted">
-                <th className="py-2.5 text-start font-medium">{t('Fiscal Year')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Opening Balance')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Net Income')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Dividends')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Closing Balance')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_YEARS.map((fy) => (
-                <tr key={fy.year} className="border-b border-border/50">
-                  <td className="py-2.5 font-medium text-heading">{t('FY')} {fy.year}</td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={fy.openingBalance} />
-                  </td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={fy.netIncome} className="text-salis-blue" />
-                  </td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={fy.dividends} />
-                  </td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={fy.closingBalance} className="font-semibold" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Section>
+      <DataTable
+        caption="Fiscal year breakdown"
+        columns={columns}
+        rows={MOCK_YEARS as FiscalYear[]}
+        rowKey={(fy) => fy.year}
+        mobileCard={(fy) => (
+          <>
+            <MobileCardHeader title={`${t('FY')} ${fy.year}`} />
+            <MobileCardRow label={t('Net Income')}><Money sar={fy.netIncome} className="font-semibold text-salis-blue" /></MobileCardRow>
+            <MobileCardRow label={t('Closing')}><Money sar={fy.closingBalance} className="font-semibold text-heading" /></MobileCardRow>
+          </>
+        )}
+        empty={<EmptyState icon="TrendingUp" title={t('No fiscal year data found')} />}
+      />
     </div>
   )
 }

@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_WIDGETS = [
   { id: 'W-01', name: 'Revenue Trend', type: 'Line Chart', source: 'Sales DB', refreshRate: '5 min', status: 'Live' },
@@ -28,9 +28,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Paused: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
 }
 
+type WidgetRow = (typeof MOCK_WIDGETS)[number]
+
 export function BusinessIntelligenceDashboard() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [period, setPeriod] = useState('month')
 
   const kpis = [
@@ -40,38 +41,14 @@ export function BusinessIntelligenceDashboard() {
     { label: t('Refresh Rate'), value: t('5–60 min'), icon: 'RefreshCw', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="LayoutDashboard" title={t('BI Dashboard')} subtitle={t('Interactive Analytics')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_METRICS.map(m => (
-          <MobileCard key={m.label}>
-            <MobileCardHeader title={t(m.label)} trailing={<Badge background={m.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={m.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{m.change}</Badge>} />
-            <MobileCardRow label={t('Value')}>{m.value}</MobileCardRow>
-          </MobileCard>
-        ))}
-        {MOCK_WIDGETS.map(w => {
-          const [bg, fg] = STATUS_COLORS[w.status] ?? STATUS_COLORS.Paused
-          return (
-            <MobileCard key={w.id}>
-              <MobileCardHeader title={t(w.name)} trailing={<Badge background={bg} color={fg}>{t(w.status)}</Badge>} />
-              <MobileCardRow label={t('Type')}>{t(w.type)}</MobileCardRow>
-              <MobileCardRow label={t('Source')}>{w.source}</MobileCardRow>
-              <MobileCardRow label={t('Refresh')}>{w.refreshRate}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<WidgetRow>[] = [
+    { header: 'ID', cell: (w) => w.id, code: true },
+    { header: 'Widget', cell: (w) => t(w.name) },
+    { header: 'Type', cell: (w) => t(w.type) },
+    { header: 'Source', cell: (w) => w.source },
+    { header: 'Refresh', cell: (w) => w.refreshRate },
+    { header: 'Status', cell: (w) => { const [bg, fg] = STATUS_COLORS[w.status] ?? STATUS_COLORS.Paused; return <Badge background={bg} color={fg}>{t(w.status)}</Badge> } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -120,38 +97,24 @@ export function BusinessIntelligenceDashboard() {
         </div>
       </Card>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Dashboard Widgets')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Widget')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Source')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Refresh')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_WIDGETS.map(w => {
-                const [bg, fg] = STATUS_COLORS[w.status] ?? STATUS_COLORS.Paused
-                return (
-                  <tr key={w.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{w.id}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(w.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(w.type)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{w.source}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{w.refreshRate}</td>
-                    <td className="py-3"><Badge background={bg} color={fg}>{t(w.status)}</Badge></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Dashboard Widgets')}</h3>
+      <DataTable
+        caption="Dashboard widgets"
+        columns={columns}
+        rows={[...MOCK_WIDGETS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Paused
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Type')}>{t(row.type)}</MobileCardRow>
+              <MobileCardRow label={t('Source')}>{row.source}</MobileCardRow>
+              <MobileCardRow label={t('Refresh')}>{row.refreshRate}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

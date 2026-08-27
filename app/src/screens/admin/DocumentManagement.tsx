@@ -3,9 +3,10 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Document {
   name: string
@@ -64,6 +65,54 @@ export function DocumentManagement() {
     { label: t('Categories'), value: '5', icon: 'FolderOpen', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const columns: Column<Document>[] = [
+    {
+      header: 'Document',
+      cell: (doc) => (
+        <div className="flex items-center gap-2">
+          <Icon name={TYPE_ICONS[doc.type] ?? 'FileText'} size={14} className="text-salis-blue" />
+          <span className="font-medium text-heading">{doc.name}</span>
+        </div>
+      ),
+    },
+    { header: 'Type', cell: (doc) => t(doc.type) },
+    { header: 'Size', cell: (doc) => <span className="font-mono text-xs text-muted">{doc.size}</span> },
+    { header: 'Uploaded by', cell: (doc) => doc.uploadedBy },
+    { header: 'Date', cell: (doc) => <span className="text-muted">{doc.uploadDate}</span> },
+    { header: 'Status', cell: (doc) => <Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Document library"
+      columns={columns}
+      rows={filtered}
+      rowKey={(doc) => doc.name}
+      empty={<p className="py-8 text-center text-sm text-muted">{t('No documents found')}</p>}
+      mobileCard={(doc) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden>
+                  <Icon name={TYPE_ICONS[doc.type] ?? 'FileText'} size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{doc.name}</p>
+                  <p className="text-xs text-muted">{t(doc.type)}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Size')} value={doc.size} />
+          <MobileCardRow label={t('Uploaded by')} value={doc.uploadedBy} />
+          <MobileCardRow label={t('Date')} value={doc.uploadDate} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -80,28 +129,7 @@ export function DocumentManagement() {
             </Card>
           ))}
         </div>
-        {filtered.map((doc) => (
-          <MobileCard key={doc.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden>
-                    <Icon name={TYPE_ICONS[doc.type] ?? 'FileText'} size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{doc.name}</p>
-                    <p className="text-xs text-muted">{t(doc.type)}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Size')} value={doc.size} />
-            <MobileCardRow label={t('Uploaded by')} value={doc.uploadedBy} />
-            <MobileCardRow label={t('Date')} value={doc.uploadDate} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No documents found')}</p>}
+        {table}
       </div>
     )
   }
@@ -139,42 +167,7 @@ export function DocumentManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Document')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Size')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Uploaded by')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((doc) => (
-                <tr key={doc.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-2">
-                      <Icon name={TYPE_ICONS[doc.type] ?? 'FileText'} size={14} className="text-salis-blue" />
-                      <span className="font-medium text-heading">{doc.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{t(doc.type)}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted">{doc.size}</td>
-                  <td className="py-3 pe-4 text-body">{doc.uploadedBy}</td>
-                  <td className="py-3 pe-4 text-muted">{doc.uploadDate}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No documents found')}</p>}
-      </Card>
+      {table}
     </div>
   )
 }

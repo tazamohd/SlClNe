@@ -1,9 +1,8 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface RepairGuide {
   title: string
@@ -33,34 +32,16 @@ const DIFFICULTY_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function TechnicianPortalGuides() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="BookMarked" title={t('Repair Guides')} subtitle={t('Step-by-step procedures')} />
-        {GUIDES.map((g, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="BookMarked" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{g.title}</p>
-                    <p className="text-xs text-muted">{g.system}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={DIFFICULTY_STYLES[g.difficulty].bg} color={DIFFICULTY_STYLES[g.difficulty].fg}>{t(g.difficulty)}</Badge>}
-            />
-            <MobileCardRow label={t('Makes')} value={g.makes} />
-            <MobileCardRow label={t('Est. Time')} value={g.estimatedTime} />
-            <MobileCardRow label={t('Steps')} value={String(g.steps)} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<RepairGuide>[] = [
+    { header: t('Guide'), cell: (g) => g.title },
+    { header: t('System'), cell: (g) => g.system },
+    { header: t('Difficulty'), cell: (g) => <Badge background={DIFFICULTY_STYLES[g.difficulty].bg} color={DIFFICULTY_STYLES[g.difficulty].fg}>{t(g.difficulty)}</Badge> },
+    { header: t('Makes'), cell: (g) => g.makes },
+    { header: t('Steps'), cell: (g) => g.steps },
+    { header: t('Est. Time'), cell: (g) => g.estimatedTime },
+    { header: t('Updated'), cell: (g) => g.lastUpdated },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -77,38 +58,20 @@ export function TechnicianPortalGuides() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Guide')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('System')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Difficulty')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Makes')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Steps')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Est. Time')}</th>
-                <th className="pb-3 text-start font-medium">{t('Updated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {GUIDES.map((g, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{g.title}</td>
-                  <td className="py-3 pe-4 text-body">{g.system}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={DIFFICULTY_STYLES[g.difficulty].bg} color={DIFFICULTY_STYLES[g.difficulty].fg}>{t(g.difficulty)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{g.makes}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{g.steps}</td>
-                  <td className="py-3 pe-4 text-body">{g.estimatedTime}</td>
-                  <td className="py-3 text-body">{g.lastUpdated}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Repair guides"
+        columns={columns}
+        rows={GUIDES}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(g) => (
+          <>
+            <MobileCardHeader title={g.title} trailing={<Badge background={DIFFICULTY_STYLES[g.difficulty].bg} color={DIFFICULTY_STYLES[g.difficulty].fg}>{t(g.difficulty)}</Badge>} />
+            <MobileCardRow label={t('System')}>{g.system}</MobileCardRow>
+            <MobileCardRow label={t('Makes')}>{g.makes}</MobileCardRow>
+            <MobileCardRow label={t('Est. Time')}>{g.estimatedTime}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

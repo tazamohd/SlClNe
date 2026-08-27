@@ -1,9 +1,9 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface PartsRequest {
   id: string
@@ -45,26 +45,47 @@ export function PartsNetworkMyRequests() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<PartsRequest>[] = [
+    { header: 'ID', cell: (req) => req.id, code: true },
+    { header: 'Part', cell: (req) => req.partName },
+    { header: 'Part Number', cell: (req) => req.partNumber, code: true },
+    { header: 'Vehicle', cell: (req) => req.vehicle },
+    { header: 'Qty', cell: (req) => req.quantity },
+    { header: 'Urgency', cell: (req) => <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge> },
+    {
+      header: 'Responses',
+      cell: (req) => (
+        <div className="flex items-center gap-1">
+          <Icon name="MessagesSquare" size={14} className="text-muted" />
+          <span className="text-body">{req.responses}</span>
+        </div>
+      ),
+    },
+    { header: 'Status', cell: (req) => <Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="My parts requests"
+      columns={columns}
+      rows={MY_REQUESTS}
+      rowKey={(req) => req.id}
+      mobileCard={(req) => (
+        <>
+          <MobileCardHeader title={req.id} code trailing={<Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>} />
+          <MobileCardRow label={t('Part')} value={req.partName} />
+          <MobileCardRow label={t('Vehicle')} value={req.vehicle} />
+          <MobileCardRow label={t('Responses')} value={req.responses} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="PackageSearch" title={t('My Requests')} subtitle={t('Parts network requests')} />
-        {MY_REQUESTS.map((req) => (
-          <MobileCard key={req.id}>
-            <MobileCardHeader
-              title={req.id}
-              code
-              trailing={<Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Part')} value={req.partName} />
-            <MobileCardRow label={t('Vehicle')} value={req.vehicle} />
-            <MobileCardRow label={t('Qty')} value={req.quantity} />
-            <MobileCardRow label={t('Urgency')}>
-              <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge>
-            </MobileCardRow>
-            <MobileCardRow label={t('Responses')} value={req.responses} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -84,48 +105,7 @@ export function PartsNetworkMyRequests() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('All Requests')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('ID')}</th>
-                <th className="pb-3 font-medium">{t('Part')}</th>
-                <th className="pb-3 font-medium">{t('Part Number')}</th>
-                <th className="pb-3 font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 font-medium">{t('Qty')}</th>
-                <th className="pb-3 font-medium">{t('Urgency')}</th>
-                <th className="pb-3 font-medium">{t('Responses')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MY_REQUESTS.map((req) => (
-                <tr key={req.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs font-semibold text-heading">{req.id}</td>
-                  <td className="py-3 text-body">{req.partName}</td>
-                  <td className="py-3 font-mono text-xs text-muted">{req.partNumber}</td>
-                  <td className="py-3 text-body">{req.vehicle}</td>
-                  <td className="py-3 text-body">{req.quantity}</td>
-                  <td className="py-3">
-                    <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge>
-                  </td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-1">
-                      <Icon name="MessagesSquare" size={14} className="text-muted" />
-                      <span className="text-body">{req.responses}</span>
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

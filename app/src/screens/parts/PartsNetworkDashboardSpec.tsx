@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface NetworkNode {
   name: string
@@ -78,6 +79,86 @@ export function PartsNetworkDashboardSpec() {
     { label: t('Avg Fill Rate'), value: `${avgFillRate}%`, icon: 'BarChart3', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const nodeColumns: Column<NetworkNode>[] = [
+    { header: 'Node', cell: (n) => <span className="font-medium text-heading">{n.name}</span> },
+    { header: 'Type', cell: (n) => <Badge background={NODE_TYPE_STYLES[n.type].bg} color={NODE_TYPE_STYLES[n.type].fg}>{t(n.type)}</Badge> },
+    { header: 'City', cell: (n) => n.city },
+    { header: 'SKUs', cell: (n) => <span className="font-mono text-heading">{n.skus.toLocaleString()}</span> },
+    { header: 'Units', cell: (n) => <span className="font-mono text-heading">{n.unitsStored.toLocaleString()}</span> },
+    { header: 'Fill Rate', cell: (n) => <span className="font-mono text-heading" dir="ltr">{n.fillRate}%</span> },
+    { header: 'Status', cell: (n) => <Badge background={STATUS_STYLES[n.status].bg} color={STATUS_STYLES[n.status].fg}>{t(n.status)}</Badge> },
+  ]
+
+  const transferColumns: Column<TransferRequest>[] = [
+    { header: 'Transfer #', cell: (tr) => tr.id, code: true },
+    { header: 'From', cell: (tr) => tr.from },
+    { header: 'To', cell: (tr) => tr.to },
+    { header: 'Parts', cell: (tr) => tr.parts },
+    { header: 'Qty', cell: (tr) => <span className="font-mono text-heading">{tr.qty}</span> },
+    { header: 'Urgency', cell: (tr) => <Badge background={URGENCY_STYLES[tr.urgency].bg} color={URGENCY_STYLES[tr.urgency].fg}>{t(tr.urgency)}</Badge> },
+    { header: 'ETA', cell: (tr) => <span className="text-muted">{tr.eta}</span> },
+  ]
+
+  const nodesTable = (
+    <DataTable
+      caption="Network Nodes"
+      columns={nodeColumns}
+      rows={NODES}
+      rowKey={(n) => n.name}
+      mobileCard={(n) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: NODE_TYPE_STYLES[n.type].bg, color: NODE_TYPE_STYLES[n.type].fg }} aria-hidden>
+                  <Icon name={NODE_TYPE_STYLES[n.type].icon} size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{n.name}</p>
+                  <p className="text-xs text-muted">{n.city}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[n.status].bg} color={STATUS_STYLES[n.status].fg}>{t(n.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Type')} value={t(n.type)} />
+          <MobileCardRow label={t('SKUs')} value={n.skus.toLocaleString()} />
+          <MobileCardRow label={t('Units')} value={n.unitsStored.toLocaleString()} />
+          <MobileCardRow label={t('Fill Rate')} value={`${n.fillRate}%`} />
+        </>
+      )}
+    />
+  )
+
+  const transfersTable = (
+    <DataTable
+      caption="Active Transfers"
+      columns={transferColumns}
+      rows={TRANSFERS}
+      rowKey={(tr) => tr.id}
+      mobileCard={(tr) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="ArrowRightLeft" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{tr.id}</p>
+                  <p className="text-xs text-muted">{tr.parts}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={URGENCY_STYLES[tr.urgency].bg} color={URGENCY_STYLES[tr.urgency].fg}>{t(tr.urgency)}</Badge>}
+          />
+          <MobileCardRow label={t('From')} value={tr.from} />
+          <MobileCardRow label={t('To')} value={tr.to} />
+          <MobileCardRow label={t('Qty')} value={String(tr.qty)} />
+          <MobileCardRow label={t('ETA')} value={tr.eta} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -95,50 +176,10 @@ export function PartsNetworkDashboardSpec() {
         </div>
 
         <p className="text-[13px] font-bold text-heading">{t('Network Nodes')}</p>
-        {NODES.map((n) => (
-          <MobileCard key={n.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: NODE_TYPE_STYLES[n.type].bg, color: NODE_TYPE_STYLES[n.type].fg }} aria-hidden>
-                    <Icon name={NODE_TYPE_STYLES[n.type].icon} size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{n.name}</p>
-                    <p className="text-xs text-muted">{n.city}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[n.status].bg} color={STATUS_STYLES[n.status].fg}>{t(n.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Type')} value={t(n.type)} />
-            <MobileCardRow label={t('SKUs')} value={n.skus.toLocaleString()} />
-            <MobileCardRow label={t('Units')} value={n.unitsStored.toLocaleString()} />
-            <MobileCardRow label={t('Fill Rate')} value={`${n.fillRate}%`} />
-          </MobileCard>
-        ))}
+        {nodesTable}
 
         <p className="text-[13px] font-bold text-heading">{t('Active Transfers')}</p>
-        {TRANSFERS.map((tr) => (
-          <MobileCard key={tr.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="ArrowRightLeft" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{tr.id}</p>
-                    <p className="text-xs text-muted">{tr.parts}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={URGENCY_STYLES[tr.urgency].bg} color={URGENCY_STYLES[tr.urgency].fg}>{t(tr.urgency)}</Badge>}
-            />
-            <MobileCardRow label={t('From')} value={tr.from} />
-            <MobileCardRow label={t('To')} value={tr.to} />
-            <MobileCardRow label={t('Qty')} value={String(tr.qty)} />
-            <MobileCardRow label={t('ETA')} value={tr.eta} />
-          </MobileCard>
-        ))}
+        {transfersTable}
       </div>
     )
   }
@@ -170,75 +211,8 @@ export function PartsNetworkDashboardSpec() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Network Nodes')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Node')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('City')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('SKUs')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Units')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Fill Rate')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {NODES.map((n) => (
-                <tr key={n.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{n.name}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={NODE_TYPE_STYLES[n.type].bg} color={NODE_TYPE_STYLES[n.type].fg}>{t(n.type)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{n.city}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{n.skus.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{n.unitsStored.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{n.fillRate}%</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[n.status].bg} color={STATUS_STYLES[n.status].fg}>{t(n.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Active Transfers')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Transfer #')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('From')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('To')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Parts')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Qty')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Urgency')}</th>
-                <th className="pb-3 text-start font-medium">{t('ETA')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {TRANSFERS.map((tr) => (
-                <tr key={tr.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono font-semibold text-heading" dir="ltr">{tr.id}</td>
-                  <td className="py-3 pe-4 text-body">{tr.from}</td>
-                  <td className="py-3 pe-4 text-body">{tr.to}</td>
-                  <td className="py-3 pe-4 text-body">{tr.parts}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{tr.qty}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={URGENCY_STYLES[tr.urgency].bg} color={URGENCY_STYLES[tr.urgency].fg}>{t(tr.urgency)}</Badge>
-                  </td>
-                  <td className="py-3 text-muted">{tr.eta}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {nodesTable}
+      {transfersTable}
     </div>
   )
 }

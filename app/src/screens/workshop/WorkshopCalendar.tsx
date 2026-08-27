@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -58,6 +59,28 @@ export function WorkshopCalendar() {
   ]
 
   const filteredSlots = selectedBay ? slots.filter((s) => s.bay === selectedBay) : slots
+
+  const bayColumns: Column<typeof HOURS[number]>[] = [
+    { header: 'Time', cell: (h) => h, code: true },
+    ...BAYS.map((bay) => ({
+      header: bay,
+      cell: (h: typeof HOURS[number]) => {
+        const slot = slots.find((s) => s.bay === bay && s.hour === h)
+        if (slot?.status === 'occupied') {
+          return (
+            <div className="rounded-lg bg-[rgba(10,94,215,.06)] p-2">
+              <p className="text-xs font-semibold text-heading">{slot.vehicle}</p>
+              <p className="font-mono text-[10px] text-muted" dir="ltr">{slot.job}</p>
+            </div>
+          )
+        }
+        if (slot?.status === 'break') {
+          return <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Break')}</Badge>
+        }
+        return <span className="text-xs text-faint">—</span>
+      },
+    })),
+  ]
 
   if (isMobile) {
     return (
@@ -124,43 +147,12 @@ export function WorkshopCalendar() {
         ))}
       </div>
 
-      <Card className="overflow-x-auto rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Bay Schedule')}</h3>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-border">
-              <th className="pb-3 pe-4 text-start text-xs font-medium text-muted">{t('Time')}</th>
-              {BAYS.map((b) => (
-                <th key={b} className="pb-3 pe-4 text-start text-xs font-medium text-muted">{t(b)}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {HOURS.map((h) => (
-              <tr key={h} className="border-b border-border/50">
-                <td className="py-2 pe-4 font-mono text-xs text-muted" dir="ltr">{h}</td>
-                {BAYS.map((b) => {
-                  const slot = slots.find((s) => s.bay === b && s.hour === h)
-                  return (
-                    <td key={b} className="py-2 pe-4">
-                      {slot?.status === 'occupied' ? (
-                        <div className="rounded-lg bg-[rgba(10,94,215,.06)] p-2">
-                          <p className="text-xs font-semibold text-heading">{slot.vehicle}</p>
-                          <p className="font-mono text-[10px] text-muted" dir="ltr">{slot.job}</p>
-                        </div>
-                      ) : slot?.status === 'break' ? (
-                        <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Break')}</Badge>
-                      ) : (
-                        <span className="text-xs text-faint">—</span>
-                      )}
-                    </td>
-                  )
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
+      <DataTable
+        caption="Bay schedule"
+        columns={bayColumns}
+        rows={[...HOURS]}
+        rowKey={(h) => h}
+      />
     </div>
   )
 }

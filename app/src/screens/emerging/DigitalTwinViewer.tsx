@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_TWINS = [
   { id: 'DT-001', name: 'Workshop A Layout', type: 'Facility', syncStatus: 'Synced', lastSync: '2 min ago', sensors: 24, alerts: 0, status: 'Active' },
@@ -29,9 +29,11 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type TwinRow = (typeof MOCK_TWINS)[number]
+type MetricRow = (typeof MOCK_METRICS)[number]
+
 export function DigitalTwinViewer() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [view, setView] = useState('overview')
 
   const totalSensors = MOCK_TWINS.reduce((a, tw) => a + tw.sensors, 0)
@@ -44,34 +46,22 @@ export function DigitalTwinViewer() {
     { label: t('Sync Rate'), value: '99.2%', icon: 'RefreshCw', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Layers" title={t('Digital Twin')} subtitle={t('Virtual Models')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_TWINS.map(tw => {
-          const [bg, fg] = STATUS_COLORS[tw.status] ?? STATUS_COLORS.Offline
-          return (
-            <MobileCard key={tw.id}>
-              <MobileCardHeader title={tw.name} trailing={<Badge background={bg} color={fg}>{t(tw.status)}</Badge>} />
-              <MobileCardRow label={t('Type')}>{t(tw.type)}</MobileCardRow>
-              <MobileCardRow label={t('Sync')}>{t(tw.syncStatus)}</MobileCardRow>
-              <MobileCardRow label={t('Sensors')}>{tw.sensors}</MobileCardRow>
-              <MobileCardRow label={t('Alerts')}>{tw.alerts}</MobileCardRow>
-              <MobileCardRow label={t('Last Sync')}>{tw.lastSync}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const metricColumns: Column<MetricRow>[] = [
+    { header: 'Metric', cell: (m) => t(m.metric) },
+    { header: 'Real', cell: (m) => m.real },
+    { header: 'Simulated', cell: (m) => m.simulated },
+    { header: 'Variance', cell: (m) => m.variance },
+  ]
+
+  const twinColumns: Column<TwinRow>[] = [
+    { header: 'Name', cell: (tw) => tw.name },
+    { header: 'Type', cell: (tw) => t(tw.type) },
+    { header: 'Status', cell: (tw) => { const [bg, fg] = STATUS_COLORS[tw.status] ?? STATUS_COLORS.Offline; return <Badge background={bg} color={fg}>{t(tw.status)}</Badge> } },
+    { header: 'Sync', cell: (tw) => t(tw.syncStatus) },
+    { header: 'Sensors', cell: (tw) => `${tw.sensors}` },
+    { header: 'Alerts', cell: (tw) => `${tw.alerts}` },
+    { header: 'Last Sync', cell: (tw) => tw.lastSync },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -100,73 +90,47 @@ export function DigitalTwinViewer() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Real vs Simulated')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Metric')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Real')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Simulated')}</th>
-                <th className="pb-3 text-end font-medium">{t('Variance')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_METRICS.map(m => (
-                <tr key={m.metric} className="border-b border-border/50">
-                  <td className="py-3 pe-4 text-[13px] text-heading">{t(m.metric)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{m.real}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{m.simulated}</td>
-                  <td className="py-3 text-end font-mono text-[13px] text-heading">{m.variance}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Real vs Simulated')}</h3>
+      <DataTable
+        caption="Real vs simulated metrics"
+        columns={metricColumns}
+        rows={[...MOCK_METRICS]}
+        rowKey={(row) => row.metric}
+        mobileCard={(row) => (
+          <>
+            <MobileCardHeader title={t(row.metric)} />
+            <MobileCardRow label={t('Real')}>{row.real}</MobileCardRow>
+            <MobileCardRow label={t('Simulated')}>{row.simulated}</MobileCardRow>
+            <MobileCardRow label={t('Variance')}>{row.variance}</MobileCardRow>
+          </>
+        )}
+      />
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Twin Models')}</h3>
-          <Select value={view} onChange={e => setView(e.target.value)} aria-label={t('Select view')}>
-            <option value="overview">{t('Overview')}</option>
-            <option value="facility">{t('Facility')}</option>
-            <option value="equipment">{t('Equipment')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Sync')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Sensors')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Alerts')}</th>
-                <th className="pb-3 text-start font-medium">{t('Last Sync')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_TWINS.map(tw => {
-                const [bg, fg] = STATUS_COLORS[tw.status] ?? STATUS_COLORS.Offline
-                return (
-                  <tr key={tw.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{tw.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(tw.type)}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(tw.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(tw.syncStatus)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{tw.sensors}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{tw.alerts}</td>
-                    <td className="py-3 text-[13px] text-muted">{tw.lastSync}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Twin Models')}</h3>
+        <Select value={view} onChange={e => setView(e.target.value)} aria-label={t('Select view')}>
+          <option value="overview">{t('Overview')}</option>
+          <option value="facility">{t('Facility')}</option>
+          <option value="equipment">{t('Equipment')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Digital twin models"
+        columns={twinColumns}
+        rows={[...MOCK_TWINS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Offline
+          return (
+            <>
+              <MobileCardHeader title={row.name} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Type')}>{t(row.type)}</MobileCardRow>
+              <MobileCardRow label={t('Sensors')}>{row.sensors}</MobileCardRow>
+              <MobileCardRow label={t('Last Sync')}>{row.lastSync}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

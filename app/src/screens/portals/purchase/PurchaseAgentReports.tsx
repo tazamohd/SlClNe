@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface ProcurementReport {
   title: string
@@ -40,7 +40,6 @@ const TREND_STYLES: Record<string, { icon: string; fg: string }> = {
 
 export function PurchaseAgentReports() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Total Reports'), value: '24', icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -49,49 +48,19 @@ export function PurchaseAgentReports() {
     { label: t('Cost Savings YTD'), value: '42.3K', icon: 'PiggyBank', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="BarChart3" title={t('Procurement Reports')} subtitle={t('Analytics & insights')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {REPORTS.map((r, i) => (
-          <MobileCard key={`${r.title}-${r.period}-${i}`}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: TYPE_STYLES[r.type].bg, color: TYPE_STYLES[r.type].fg }} aria-hidden>
-                    <Icon name={TYPE_STYLES[r.type].icon} size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{t(r.title)}</p>
-                    <p className="text-xs text-muted">{r.period}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                <span style={{ color: TREND_STYLES[r.trend].fg }}>
-                  <Icon name={TREND_STYLES[r.trend].icon} size={14} />
-                </span>
-              }
-            />
-            <MobileCardRow label={t('Type')} value={t(r.type)} />
-            <MobileCardRow label={t('Value')} value={r.value} />
-            <MobileCardRow label={t('Generated')} value={r.generatedDate} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<ProcurementReport>[] = [
+    { header: t('Report'), cell: (r) => t(r.title) },
+    { header: t('Period'), cell: (r) => r.period },
+    { header: t('Type'), cell: (r) => <Badge background={TYPE_STYLES[r.type].bg} color={TYPE_STYLES[r.type].fg}>{t(r.type)}</Badge> },
+    { header: t('Key Value'), cell: (r) => r.value },
+    { header: t('Trend'), cell: (r) => (
+      <span className="flex items-center gap-1" style={{ color: TREND_STYLES[r.trend].fg }}>
+        <Icon name={TREND_STYLES[r.trend].icon} size={14} />
+        <span className="text-xs">{t(r.trend)}</span>
+      </span>
+    ) },
+    { header: t('Generated'), cell: (r) => r.generatedDate },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -120,41 +89,20 @@ export function PurchaseAgentReports() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Report')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Period')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Key Value')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Trend')}</th>
-                <th className="pb-3 text-start font-medium">{t('Generated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {REPORTS.map((r, i) => (
-                <tr key={`${r.title}-${r.period}-${i}`} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{t(r.title)}</td>
-                  <td className="py-3 pe-4 text-body">{r.period}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={TYPE_STYLES[r.type].bg} color={TYPE_STYLES[r.type].fg}>{t(r.type)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.value}</td>
-                  <td className="py-3 pe-4">
-                    <span className="flex items-center gap-1" style={{ color: TREND_STYLES[r.trend].fg }}>
-                      <Icon name={TREND_STYLES[r.trend].icon} size={14} />
-                      <span className="text-xs">{t(r.trend)}</span>
-                    </span>
-                  </td>
-                  <td className="py-3 text-muted">{r.generatedDate}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Procurement reports"
+        columns={columns}
+        rows={REPORTS}
+        rowKey={(r, i) => `${r.title}-${r.period}-${i}`}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader title={t(r.title)} trailing={<Badge background={TYPE_STYLES[r.type].bg} color={TYPE_STYLES[r.type].fg}>{t(r.type)}</Badge>} />
+            <MobileCardRow label={t('Period')}>{r.period}</MobileCardRow>
+            <MobileCardRow label={t('Key Value')}>{r.value}</MobileCardRow>
+            <MobileCardRow label={t('Generated')}>{r.generatedDate}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

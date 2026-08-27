@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -39,6 +40,8 @@ function intensityColor(value: number): string {
   return 'rgba(10,94,215,.08)'
 }
 
+type LocationRow = (typeof MOCK_LOCATIONS)[number]
+
 export function BusinessHeatmaps() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -49,6 +52,14 @@ export function BusinessHeatmaps() {
     { label: t('Peak Day'), value: t('Tuesday'), icon: 'Calendar', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Locations'), value: String(MOCK_LOCATIONS.length), icon: 'MapPin', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Avg Demand'), value: '63%', icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  ]
+
+  const locationColumns: Column<LocationRow>[] = [
+    { header: 'Location', cell: (loc) => loc.name },
+    { header: 'City', cell: (loc) => loc.city },
+    { header: 'Peak Hour', cell: (loc) => loc.peakHour },
+    { header: 'Avg Demand', cell: (loc) => `${loc.avgDemand}%` },
+    { header: 'Level', cell: (loc) => { const [bg, fg] = STATUS_COLORS[loc.status] ?? STATUS_COLORS.Low; return <Badge background={bg} color={fg}>{t(loc.status)}</Badge> } },
   ]
 
   if (isMobile) {
@@ -155,36 +166,24 @@ export function BusinessHeatmaps() {
         </div>
       </Card>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Location Demand')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('City')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Peak Hour')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Avg Demand')}</th>
-                <th className="pb-3 text-start font-medium">{t('Level')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_LOCATIONS.map(loc => {
-                const [bg, fg] = STATUS_COLORS[loc.status] ?? STATUS_COLORS.Low
-                return (
-                  <tr key={loc.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{loc.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{loc.city}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{loc.peakHour}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{loc.avgDemand}%</td>
-                    <td className="py-3"><Badge background={bg} color={fg}>{t(loc.status)}</Badge></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Location Demand')}</h3>
+      <DataTable
+        caption="Location demand overview"
+        columns={locationColumns}
+        rows={[...MOCK_LOCATIONS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Low
+          return (
+            <>
+              <MobileCardHeader title={row.name} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('City')}>{row.city}</MobileCardRow>
+              <MobileCardRow label={t('Peak Hour')}>{row.peakHour}</MobileCardRow>
+              <MobileCardRow label={t('Avg Demand')}>{row.avgDemand}%</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
-import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Money, formatSar } from '@/components/ui/Money'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
 interface Quotation {
   id: string
@@ -35,7 +35,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PurchaseAgentQuotations() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Active Quotes'), value: '4', icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -44,44 +43,15 @@ export function PurchaseAgentQuotations() {
     { label: t('Accepted'), value: '1', icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="FileText" title={t('Quotations')} subtitle={t('Supplier quotes')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {QUOTATIONS.map((q) => (
-          <MobileCard key={q.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="FileText" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{q.id}</p>
-                    <p className="text-xs text-muted">{q.supplier}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[q.status].bg} color={STATUS_STYLES[q.status].fg}>{t(q.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Description')} value={q.description} />
-            <MobileCardRow label={t('Items')} value={String(q.items)} />
-            <MobileCardRow label={t('Total')} value={<Money sar={q.total} />} />
-            <MobileCardRow label={t('Valid Until')} value={q.validUntil} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Quotation>[] = [
+    { header: t('Quote'), cell: (q) => q.id },
+    { header: t('Supplier'), cell: (q) => q.supplier },
+    { header: t('Description'), cell: (q) => q.description },
+    { header: t('Items'), cell: (q) => q.items },
+    { header: t('Total'), cell: (q) => <Money sar={q.total} /> },
+    { header: t('Valid Until'), cell: (q) => q.validUntil },
+    { header: t('Status'), cell: (q) => <Badge background={STATUS_STYLES[q.status].bg} color={STATUS_STYLES[q.status].fg}>{t(q.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -110,38 +80,20 @@ export function PurchaseAgentQuotations() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Quote')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Description')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Items')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Total')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Valid Until')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {QUOTATIONS.map((q) => (
-                <tr key={q.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{q.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{q.supplier}</td>
-                  <td className="py-3 pe-4 text-body">{q.description}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{q.items}</td>
-                  <td className="py-3 pe-4 text-end"><Money sar={q.total} /></td>
-                  <td className="py-3 pe-4 text-body">{q.validUntil}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[q.status].bg} color={STATUS_STYLES[q.status].fg}>{t(q.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Supplier quotations"
+        columns={columns}
+        rows={QUOTATIONS}
+        rowKey={(q) => q.id}
+        mobileCard={(q) => (
+          <>
+            <MobileCardHeader title={q.id} trailing={<Badge background={STATUS_STYLES[q.status].bg} color={STATUS_STYLES[q.status].fg}>{t(q.status)}</Badge>} />
+            <MobileCardRow label={t('Supplier')}>{q.supplier}</MobileCardRow>
+            <MobileCardRow label={t('Total')}><Money sar={q.total} /></MobileCardRow>
+            <MobileCardRow label={t('Valid Until')}>{q.validUntil}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

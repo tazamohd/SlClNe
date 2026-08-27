@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_ROADMAP = [
   { id: 'NG-001', name: 'Autonomous Diagnostics', phase: 'Phase 1', timeline: 'Q4 2026', status: 'In Progress', team: 'AI Lab', budget: 'SAR 450K', completion: 65 },
@@ -20,9 +20,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Research: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type RoadmapRow = (typeof MOCK_ROADMAP)[number]
+
 export function NextGenTechnologies() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const inProgress = MOCK_ROADMAP.filter(r => r.status === 'In Progress').length
   const avgCompletion = Math.round(MOCK_ROADMAP.reduce((a, r) => a + r.completion, 0) / MOCK_ROADMAP.length)
@@ -34,34 +35,22 @@ export function NextGenTechnologies() {
     { label: t('Teams'), value: '5', icon: 'Users', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Layers" title={t('Next-Gen Tech')} subtitle={t('Technology Roadmap')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
+  const columns: Column<RoadmapRow>[] = [
+    { header: 'Initiative', cell: (r) => t(r.name) },
+    { header: 'Phase', cell: (r) => r.phase },
+    { header: 'Timeline', cell: (r) => r.timeline },
+    { header: 'Status', cell: (r) => { const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Research; return <Badge background={bg} color={fg}>{t(r.status)}</Badge> } },
+    { header: 'Team', cell: (r) => r.team },
+    { header: 'Progress', cell: (r) => (
+      <div className="flex items-center gap-2">
+        <div className="h-1.5 w-20 rounded-full bg-border">
+          <div className="h-full rounded-full" style={{ width: `${r.completion}%`, background: 'var(--salis-blue)' }} />
         </div>
-        {MOCK_ROADMAP.map(r => {
-          const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Research
-          return (
-            <MobileCard key={r.id}>
-              <MobileCardHeader title={t(r.name)} trailing={<Badge background={bg} color={fg}>{t(r.status)}</Badge>} />
-              <MobileCardRow label={t('Phase')}>{r.phase}</MobileCardRow>
-              <MobileCardRow label={t('Timeline')}>{r.timeline}</MobileCardRow>
-              <MobileCardRow label={t('Team')}>{r.team}</MobileCardRow>
-              <MobileCardRow label={t('Progress')}>{r.completion}%</MobileCardRow>
-              <MobileCardRow label={t('Budget')}>{r.budget}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
+        <span className="text-[12px] text-muted">{r.completion}%</span>
       </div>
-    )
-  }
+    ) },
+    { header: 'Budget', cell: (r) => r.budget },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -90,47 +79,24 @@ export function NextGenTechnologies() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Innovation Roadmap')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Initiative')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Phase')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Timeline')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Team')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Progress')}</th>
-                <th className="pb-3 text-end font-medium">{t('Budget')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_ROADMAP.map(r => {
-                const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Research
-                return (
-                  <tr key={r.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(r.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{r.phase}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{r.timeline}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(r.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{r.team}</td>
-                    <td className="py-3 pe-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-20 rounded-full bg-border">
-                          <div className="h-full rounded-full" style={{ width: `${r.completion}%`, background: 'var(--salis-blue)' }} />
-                        </div>
-                        <span className="text-[12px] text-muted">{r.completion}%</span>
-                      </div>
-                    </td>
-                    <td className="py-3 text-end font-mono text-[13px] text-heading">{r.budget}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Innovation Roadmap')}</h3>
+      <DataTable
+        caption="Next-gen technology roadmap"
+        columns={columns}
+        rows={[...MOCK_ROADMAP]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Research
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Phase')}>{row.phase}</MobileCardRow>
+              <MobileCardRow label={t('Timeline')}>{row.timeline}</MobileCardRow>
+              <MobileCardRow label={t('Progress')}>{row.completion}%</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

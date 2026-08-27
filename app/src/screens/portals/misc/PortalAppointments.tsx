@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Appointment {
   id: string
@@ -37,7 +37,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PortalAppointments() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const todayCount = APPOINTMENTS.filter((a) => a.date === 'Aug 18, 2026').length
   const pendingCount = APPOINTMENTS.filter((a) => a.status === 'Pending').length
@@ -49,44 +48,15 @@ export function PortalAppointments() {
     { label: t('Avg Duration'), value: '48m', icon: 'Timer', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Calendar" title={t('Appointments')} subtitle={t('Manage bookings')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {APPOINTMENTS.map((a) => (
-          <MobileCard key={a.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Calendar" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{a.customer}</p>
-                    <p className="text-xs text-muted">{a.service}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Vehicle')} value={a.vehicle} />
-            <MobileCardRow label={t('Plate')} value={a.plate} />
-            <MobileCardRow label={t('Date')} value={`${a.date} ${a.time}`} />
-            <MobileCardRow label={t('Technician')} value={a.technician} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Appointment>[] = [
+    { header: t('ID'), cell: (a) => a.id },
+    { header: t('Customer'), cell: (a) => a.customer },
+    { header: t('Vehicle'), cell: (a) => a.vehicle },
+    { header: t('Service'), cell: (a) => t(a.service) },
+    { header: t('Date & Time'), cell: (a) => `${a.date} ${a.time}` },
+    { header: t('Technician'), cell: (a) => a.technician },
+    { header: t('Status'), cell: (a) => <Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -115,38 +85,21 @@ export function PortalAppointments() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Customer')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date & Time')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Technician')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {APPOINTMENTS.map((a) => (
-                <tr key={a.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-semibold text-heading" dir="ltr">{a.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{a.customer}</td>
-                  <td className="py-3 pe-4 text-body">{a.vehicle} <span className="font-mono text-xs text-muted" dir="ltr">{a.plate}</span></td>
-                  <td className="py-3 pe-4 text-body">{t(a.service)}</td>
-                  <td className="py-3 pe-4 text-muted">{a.date} {a.time}</td>
-                  <td className="py-3 pe-4 text-body">{a.technician}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Portal appointments"
+        columns={columns}
+        rows={APPOINTMENTS}
+        rowKey={(a) => a.id}
+        mobileCard={(a) => (
+          <>
+            <MobileCardHeader title={a.customer} trailing={<Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>} />
+            <MobileCardRow label={t('Service')}>{t(a.service)}</MobileCardRow>
+            <MobileCardRow label={t('Vehicle')}>{a.vehicle}</MobileCardRow>
+            <MobileCardRow label={t('Date')}>{a.date} {a.time}</MobileCardRow>
+            <MobileCardRow label={t('Technician')}>{a.technician}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

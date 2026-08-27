@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const INCIDENTS = [
   { id: 'INC-001', date: '2026-08-15', type: 'Injury', severity: 'High', location: 'Workshop A', status: 'Investigating', description: 'Technician sustained minor burn during welding' },
@@ -28,9 +28,10 @@ const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   Closed: { bg: 'rgba(100,116,139,.1)', fg: '#64748B' },
 }
 
+type IncidentRow = (typeof INCIDENTS)[number]
+
 export function SafetyIncidents() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const openCount = INCIDENTS.filter((i) => i.status === 'Open' || i.status === 'Investigating').length
   const thisMonth = INCIDENTS.filter((i) => i.date >= '2026-08-01').length
@@ -42,37 +43,15 @@ export function SafetyIncidents() {
     { label: t('Avg Resolution Days'), value: '4.2', icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="AlertTriangle" title={t('Safety Incidents')} subtitle={t('Incident log')} />
-        {INCIDENTS.map((inc, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="AlertTriangle" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{inc.id}</p>
-                    <p className="text-xs text-muted">{inc.type}</p>
-                  </div>
-                </div>
-              }
-            />
-            <MobileCardRow label={t('Date')} value={inc.date} />
-            <MobileCardRow label={t('Location')} value={inc.location} />
-            <MobileCardRow label={t('Severity')}>
-              <Badge background={SEVERITY_PALETTE[inc.severity].bg} color={SEVERITY_PALETTE[inc.severity].fg}>{t(inc.severity)}</Badge>
-            </MobileCardRow>
-            <MobileCardRow label={t('Status')}>
-              <Badge background={STATUS_PALETTE[inc.status].bg} color={STATUS_PALETTE[inc.status].fg}>{t(inc.status)}</Badge>
-            </MobileCardRow>
-            <p className="mt-1 text-xs text-muted">{inc.description}</p>
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<IncidentRow>[] = [
+    { header: 'ID', cell: (inc) => inc.id, code: true },
+    { header: 'Date', cell: (inc) => inc.date },
+    { header: 'Type', cell: (inc) => t(inc.type) },
+    { header: 'Severity', cell: (inc) => <Badge background={SEVERITY_PALETTE[inc.severity].bg} color={SEVERITY_PALETTE[inc.severity].fg}>{t(inc.severity)}</Badge> },
+    { header: 'Location', cell: (inc) => inc.location },
+    { header: 'Status', cell: (inc) => <Badge background={STATUS_PALETTE[inc.status].bg} color={STATUS_PALETTE[inc.status].fg}>{t(inc.status)}</Badge> },
+    { header: 'Description', cell: (inc) => inc.description },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -101,40 +80,22 @@ export function SafetyIncidents() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Severity')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-start font-medium">{t('Description')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {INCIDENTS.map((inc, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{inc.id}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{inc.date}</td>
-                  <td className="py-3 pe-4 text-body">{t(inc.type)}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={SEVERITY_PALETTE[inc.severity].bg} color={SEVERITY_PALETTE[inc.severity].fg}>{t(inc.severity)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{inc.location}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={STATUS_PALETTE[inc.status].bg} color={STATUS_PALETTE[inc.status].fg}>{t(inc.status)}</Badge>
-                  </td>
-                  <td className="py-3 text-xs text-muted">{inc.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Safety incidents log"
+        columns={columns}
+        rows={[...INCIDENTS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => (
+          <>
+            <MobileCardHeader title={row.id} code trailing={<Badge background={SEVERITY_PALETTE[row.severity].bg} color={SEVERITY_PALETTE[row.severity].fg}>{t(row.severity)}</Badge>} />
+            <MobileCardRow label={t('Date')}>{row.date}</MobileCardRow>
+            <MobileCardRow label={t('Type')}>{t(row.type)}</MobileCardRow>
+            <MobileCardRow label={t('Status')}>
+              <Badge background={STATUS_PALETTE[row.status].bg} color={STATUS_PALETTE[row.status].fg}>{t(row.status)}</Badge>
+            </MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

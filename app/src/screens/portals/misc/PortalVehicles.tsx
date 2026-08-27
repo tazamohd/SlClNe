@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Vehicle {
   plate: string
@@ -37,7 +37,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PortalVehicles() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Total Vehicles'), value: '1,842', icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -46,43 +45,15 @@ export function PortalVehicles() {
     { label: t('New This Month'), value: '34', icon: 'Plus', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Car" title={t('Vehicles')} subtitle={t('Vehicle registry')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {VEHICLES.map((v) => (
-          <MobileCard key={v.plate}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{v.make} {v.model} {v.year}</p>
-                    <p className="text-xs text-muted" dir="ltr">{v.plate}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Owner')} value={v.owner} />
-            <MobileCardRow label={t('Mileage')} value={v.mileage} />
-            <MobileCardRow label={t('Last Service')} value={v.lastService} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Vehicle>[] = [
+    { header: t('Plate'), cell: (v) => v.plate },
+    { header: t('Vehicle'), cell: (v) => `${v.make} ${v.model} ${v.year}` },
+    { header: t('Owner'), cell: (v) => v.owner },
+    { header: t('VIN'), cell: (v) => v.vin },
+    { header: t('Mileage'), cell: (v) => v.mileage },
+    { header: t('Last Service'), cell: (v) => v.lastService },
+    { header: t('Status'), cell: (v) => <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -111,38 +82,20 @@ export function PortalVehicles() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Owner')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('VIN')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Mileage')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Last Service')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {VEHICLES.map((v) => (
-                <tr key={v.plate} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono font-semibold text-heading" dir="ltr">{v.plate}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{v.make} {v.model} {v.year}</td>
-                  <td className="py-3 pe-4 text-body">{v.owner}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{v.vin}</td>
-                  <td className="py-3 pe-4 text-end text-body" dir="ltr">{v.mileage}</td>
-                  <td className="py-3 pe-4 text-muted">{v.lastService}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Portal vehicle registry"
+        columns={columns}
+        rows={VEHICLES}
+        rowKey={(v) => v.plate}
+        mobileCard={(v) => (
+          <>
+            <MobileCardHeader title={`${v.make} ${v.model} ${v.year}`} trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>} />
+            <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
+            <MobileCardRow label={t('Owner')}>{v.owner}</MobileCardRow>
+            <MobileCardRow label={t('Mileage')}>{v.mileage}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

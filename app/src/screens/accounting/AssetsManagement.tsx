@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
-  MobileCard,
   MobileCardHeader,
   MobileCardRow,
-  MobilePageHeader,
 } from '@/components/shell/MobileShell'
 
 interface Asset {
@@ -44,7 +41,6 @@ const CATEGORIES = ['All', 'Land', 'Building', 'Vehicle', 'Equipment', 'Furnitur
 
 export function AssetsManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [catFilter, setCatFilter] = useState<string>('All')
   const [query, setQuery] = useState('')
 
@@ -77,54 +73,19 @@ export function AssetsManagement() {
     { label: 'Net Book Value', value: formatSar(totals.netValue), caption: 'Current value', tone: 'info' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="Building"
-          title={t('Assets Management')}
-          subtitle={t('Accounting')}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{t(stat.label)}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{stat.value}</p>
-            </Card>
-          ))}
-        </div>
-        <div className="flex flex-col gap-3">
-          {filtered.map((a) => {
-            const [bg, fg] = STATUS_PALETTE[a.status] ?? STATUS_PALETTE.Active
-            return (
-              <MobileCard key={a.code}>
-                <MobileCardHeader
-                  title={a.code}
-                  code
-                  trailing={
-                    <Badge background={bg} color={fg}>
-                      {t(a.status)}
-                    </Badge>
-                  }
-                />
-                <MobileCardRow>{t(a.name)}</MobileCardRow>
-                <MobileCardRow label={t('Category')}>{t(a.category)}</MobileCardRow>
-                <MobileCardRow label={t('Cost')}>
-                  <Money sar={a.cost} className="text-heading" />
-                </MobileCardRow>
-                <MobileCardRow label={t('Depreciation')}>
-                  <Money sar={a.depreciation} className="text-heading" />
-                </MobileCardRow>
-                <MobileCardRow label={t('Net Value')}>
-                  <Money sar={a.netValue} className="font-semibold text-heading" />
-                </MobileCardRow>
-              </MobileCard>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
+  const columns: Column<Asset>[] = [
+    { header: 'Code', cell: (a) => a.code, code: true },
+    { header: 'Asset Name', cell: (a) => t(a.name) },
+    { header: 'Category', cell: (a) => t(a.category) },
+    { header: 'Acquired', cell: (a) => <span dir="ltr" className="text-muted">{a.acquisitionDate}</span> },
+    { header: 'Cost', cell: (a) => <Money sar={a.cost} />, className: 'text-end' },
+    { header: 'Depreciation', cell: (a) => <Money sar={a.depreciation} />, className: 'text-end' },
+    { header: 'Net Value', cell: (a) => <Money sar={a.netValue} className="font-semibold" />, className: 'text-end' },
+    { header: 'Status', cell: (a) => {
+      const [bg, fg] = STATUS_PALETTE[a.status] ?? STATUS_PALETTE.Active
+      return <Badge background={bg} color={fg}>{t(a.status)}</Badge>
+    } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -135,87 +96,52 @@ export function AssetsManagement() {
       />
       <StatRow stats={stats} />
 
-      <Section
-        title={t('Asset Register')}
-        subtitle={t('All registered assets with values and status')}
-        toolbar={
-          <div className="flex flex-wrap items-end gap-3">
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t('Code or name')}
-                aria-label={t('Search assets')}
-                className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-muted">{t('Category')}</span>
-              <select
-                value={catFilter}
-                onChange={(e) => setCatFilter(e.target.value)}
-                aria-label={t('Filter by category')}
-                className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
-              >
-                {CATEGORIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c === 'All' ? t('All Categories') : t(c)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        }
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-wide text-muted">
-                <th className="py-2.5 text-start font-medium">{t('Code')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Asset Name')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Category')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Acquired')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Cost')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Depreciation')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Net Value')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((a) => {
-                const [bg, fg] = STATUS_PALETTE[a.status] ?? STATUS_PALETTE.Active
-                return (
-                  <tr key={a.code} className="border-b border-border/50">
-                    <td className="py-2.5">
-                      <span className="font-mono text-[13px]" dir="ltr">{a.code}</span>
-                    </td>
-                    <td className="py-2.5 text-[13px] text-body">{t(a.name)}</td>
-                    <td className="py-2.5 text-[13px] text-body">{t(a.category)}</td>
-                    <td className="py-2.5 text-[13px] text-muted" dir="ltr">{a.acquisitionDate}</td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={a.cost} />
-                    </td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={a.depreciation} />
-                    </td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={a.netValue} className="font-semibold" />
-                    </td>
-                    <td className="py-2.5">
-                      <Badge background={bg} color={fg}>{t(a.status)}</Badge>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-        {filtered.length === 0 && (
-          <p className="py-8 text-center text-[13px] text-muted">{t('No assets match the filter')}</p>
-        )}
-      </Section>
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="flex flex-col gap-1">
+          <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('Code or name')}
+            aria-label={t('Search assets')}
+            className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-[11px] font-medium text-muted">{t('Category')}</span>
+          <select
+            value={catFilter}
+            onChange={(e) => setCatFilter(e.target.value)}
+            aria-label={t('Filter by category')}
+            className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {c === 'All' ? t('All Categories') : t(c)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <DataTable
+        caption="Asset register"
+        columns={columns}
+        rows={filtered}
+        rowKey={(a) => a.code}
+        mobileCard={(a) => {
+          const [bg, fg] = STATUS_PALETTE[a.status] ?? STATUS_PALETTE.Active
+          return (
+            <>
+              <MobileCardHeader title={a.code} code trailing={<Badge background={bg} color={fg}>{t(a.status)}</Badge>} />
+              <MobileCardRow>{t(a.name)}</MobileCardRow>
+              <MobileCardRow label={t('Cost')}><Money sar={a.cost} className="text-heading" /></MobileCardRow>
+            </>
+          )
+        }}
+        empty={<EmptyState icon="Building" title={t('No assets match the filter')} />}
+      />
     </div>
   )
 }

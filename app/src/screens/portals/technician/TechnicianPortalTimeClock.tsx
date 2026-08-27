@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface TimeEntry {
   date: string
@@ -32,7 +32,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function TechnicianPortalTimeClock() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [clockedIn] = useState(true)
 
   const kpis = [
@@ -42,41 +41,14 @@ export function TechnicianPortalTimeClock() {
     { label: t('Overtime'), value: '1.5h', icon: 'AlertCircle', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Clock" title={t('Time Clock')} subtitle={t('Clock in/out tracking')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {TIME_ENTRIES.map((e, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Clock" size={14} /></span>
-                  <p className="text-[13px] font-semibold text-heading">{e.date}</p>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[e.status].bg} color={STATUS_STYLES[e.status].fg}>{t(e.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Clock In')} value={e.clockIn} />
-            <MobileCardRow label={t('Clock Out')} value={e.clockOut} />
-            <MobileCardRow label={t('Break')} value={e.breakTime} />
-            <MobileCardRow label={t('Total Hours')} value={e.totalHours > 0 ? `${e.totalHours}h` : '--'} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<TimeEntry>[] = [
+    { header: t('Date'), cell: (e) => e.date },
+    { header: t('Clock In'), cell: (e) => e.clockIn },
+    { header: t('Clock Out'), cell: (e) => e.clockOut },
+    { header: t('Break'), cell: (e) => e.breakTime },
+    { header: t('Total Hours'), cell: (e) => e.totalHours > 0 ? `${e.totalHours}h` : '--' },
+    { header: t('Status'), cell: (e) => <Badge background={STATUS_STYLES[e.status].bg} color={STATUS_STYLES[e.status].fg}>{t(e.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -105,37 +77,20 @@ export function TechnicianPortalTimeClock() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-heading">{t('Time Log')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Clock In')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Clock Out')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Break')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Total Hours')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {TIME_ENTRIES.map((e, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{e.date}</td>
-                  <td className="py-3 pe-4 font-mono text-body">{e.clockIn}</td>
-                  <td className="py-3 pe-4 font-mono text-body">{e.clockOut}</td>
-                  <td className="py-3 pe-4 text-body">{e.breakTime}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{e.totalHours > 0 ? `${e.totalHours}h` : '--'}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[e.status].bg} color={STATUS_STYLES[e.status].fg}>{t(e.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Time clock log"
+        columns={columns}
+        rows={TIME_ENTRIES}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(e) => (
+          <>
+            <MobileCardHeader title={e.date} trailing={<Badge background={STATUS_STYLES[e.status].bg} color={STATUS_STYLES[e.status].fg}>{t(e.status)}</Badge>} />
+            <MobileCardRow label={t('Clock In')}>{e.clockIn}</MobileCardRow>
+            <MobileCardRow label={t('Clock Out')}>{e.clockOut}</MobileCardRow>
+            <MobileCardRow label={t('Total Hours')}>{e.totalHours > 0 ? `${e.totalHours}h` : '--'}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

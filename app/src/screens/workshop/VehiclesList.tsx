@@ -3,10 +3,11 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 export function VehiclesList() {
   const { t } = usePreferences()
@@ -32,28 +33,37 @@ export function VehiclesList() {
     { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const columns: Column<Record<string, string>>[] = [
+    { header: 'Plate', cell: (r) => r.plate ?? '—', code: true },
+    { header: 'Make / Model', cell: (r) => `${r.make} ${r.model}` },
+    { header: 'Owner', cell: (r) => r.ownerName ?? r.customer ?? '—' },
+    { header: 'Year', cell: (r) => r.year ?? '—', code: true },
+    { header: 'Status', cell: (r) => <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Registered vehicles"
+      columns={columns}
+      rows={filtered as Record<string, string>[]}
+      rowKey={(_, i) => `vehicle-${i}`}
+      empty={<p className="py-8 text-center text-sm text-muted">{t('No vehicles found')}</p>}
+      mobileCard={(r) => (
+        <>
+          <MobileCardHeader title={`${r.make} ${r.model}`} trailing={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>} />
+          <MobileCardRow label={t('Plate')}>{r.plate ?? '—'}</MobileCardRow>
+          <MobileCardRow label={t('Owner')}>{r.ownerName ?? r.customer ?? '—'}</MobileCardRow>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Car" title={t('Vehicles')} subtitle={t('Registry')} />
         <Input inputSize="sm" placeholder={t('Search vehicles...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        {filtered.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.make} {r.model}</p>
-                    <p className="font-mono text-xs text-muted" dir="ltr">{r.plate ?? r.vin ?? '—'}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1 text-xs text-muted">{r.ownerName ?? r.customer ?? '—'}</div>
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No vehicles found')}</p>}
+        {table}
       </div>
     )
   }
@@ -91,34 +101,7 @@ export function VehiclesList() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Make / Model')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Owner')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Year')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-heading" dir="ltr">{r.plate ?? '—'}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{r.make} {r.model}</td>
-                  <td className="py-3 pe-4 text-body">{r.ownerName ?? r.customer ?? '—'}</td>
-                  <td className="py-3 pe-4 text-muted" dir="ltr">{r.year ?? '—'}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

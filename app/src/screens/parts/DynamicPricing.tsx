@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 const RULES = [
   { partCategory: 'Engine Parts', baseMarkup: 25, currentMarkup: 32, demandLevel: 'High', autoAdjust: true, lastUpdated: '2026-08-15' },
@@ -13,6 +14,8 @@ const RULES = [
   { partCategory: 'Filters', baseMarkup: 22, currentMarkup: 28, demandLevel: 'High', autoAdjust: true, lastUpdated: '2026-08-16' },
   { partCategory: 'Brakes', baseMarkup: 28, currentMarkup: 34, demandLevel: 'Medium', autoAdjust: true, lastUpdated: '2026-08-14' },
 ] as const
+
+type Rule = (typeof RULES)[number]
 
 function demandColor(level: string) {
   if (level === 'Critical') return { background: 'rgba(239,68,68,.1)', color: '#EF4444' }
@@ -37,6 +40,47 @@ export function DynamicPricing() {
     { label: t('Auto-Adjusted'), value: String(autoAdjusted), icon: 'Zap', bg: 'rgba(245,158,11,.1)', fg: '#F59E0B' },
   ]
 
+  const columns: Column<Rule>[] = [
+    { header: 'Part Category', cell: (rule) => <span className="font-medium text-heading">{t(rule.partCategory)}</span> },
+    { header: 'Base Markup', cell: (rule) => <span className="font-mono text-muted" dir="ltr">{rule.baseMarkup}%</span> },
+    { header: 'Current Markup', cell: (rule) => <span className="font-mono text-heading" dir="ltr">{rule.currentMarkup}%</span> },
+    { header: 'Demand Level', cell: (rule) => <Badge {...demandColor(rule.demandLevel)}>{t(rule.demandLevel)}</Badge> },
+    {
+      header: 'Auto-Adjust',
+      cell: (rule) =>
+        rule.autoAdjust
+          ? <span className="flex items-center gap-1 text-salis-blue"><Icon name="Check" size={14} /> {t('Yes')}</span>
+          : <span className="text-muted">{t('No')}</span>,
+    },
+    { header: 'Last Updated', cell: (rule) => <span className="font-mono text-xs text-muted" dir="ltr">{rule.lastUpdated}</span> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Dynamic pricing rules"
+      columns={columns}
+      rows={RULES as unknown as Rule[]}
+      rowKey={(rule) => rule.partCategory}
+      mobileCard={(rule) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="TrendingUp" size={14} /></span>
+                <p className="text-[13px] font-semibold text-heading">{t(rule.partCategory)}</p>
+              </div>
+            }
+            trailing={<Badge {...demandColor(rule.demandLevel)}>{t(rule.demandLevel)}</Badge>}
+          />
+          <MobileCardRow label={t('Base Markup')} value={`${rule.baseMarkup}%`} />
+          <MobileCardRow label={t('Current Markup')} value={`${rule.currentMarkup}%`} />
+          <MobileCardRow label={t('Auto-Adjust')} value={rule.autoAdjust ? t('Yes') : t('No')} />
+          <MobileCardRow label={t('Last Updated')} value={rule.lastUpdated} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -52,23 +96,7 @@ export function DynamicPricing() {
             </Card>
           ))}
         </div>
-        {RULES.map((rule) => (
-          <MobileCard key={rule.partCategory}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="TrendingUp" size={14} /></span>
-                  <p className="text-[13px] font-semibold text-heading">{t(rule.partCategory)}</p>
-                </div>
-              }
-              trailing={<Badge {...demandColor(rule.demandLevel)}>{t(rule.demandLevel)}</Badge>}
-            />
-            <MobileCardRow label={t('Base Markup')} value={`${rule.baseMarkup}%`} />
-            <MobileCardRow label={t('Current Markup')} value={`${rule.currentMarkup}%`} />
-            <MobileCardRow label={t('Auto-Adjust')} value={rule.autoAdjust ? t('Yes') : t('No')} />
-            <MobileCardRow label={t('Last Updated')} value={rule.lastUpdated} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -100,41 +128,7 @@ export function DynamicPricing() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part Category')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Base Markup')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Current Markup')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Demand Level')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Auto-Adjust')}</th>
-                <th className="pb-3 text-start font-medium">{t('Last Updated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RULES.map((rule) => (
-                <tr key={rule.partCategory} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{t(rule.partCategory)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-muted" dir="ltr">{rule.baseMarkup}%</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{rule.currentMarkup}%</td>
-                  <td className="py-3 pe-4">
-                    <Badge {...demandColor(rule.demandLevel)}>{t(rule.demandLevel)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">
-                    {rule.autoAdjust
-                      ? <span className="flex items-center gap-1 text-salis-blue"><Icon name="Check" size={14} /> {t('Yes')}</span>
-                      : <span className="text-muted">{t('No')}</span>
-                    }
-                  </td>
-                  <td className="py-3 font-mono text-xs text-muted" dir="ltr">{rule.lastUpdated}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

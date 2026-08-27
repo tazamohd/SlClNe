@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface PriceQuote {
   partName: string
@@ -29,7 +29,6 @@ const QUOTES: PriceQuote[] = [
 
 export function PurchaseAgentPriceCompare() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const uniqueParts = [...new Set(QUOTES.map((q) => q.partNumber))].length
   const avgSavings = 14.2
@@ -41,48 +40,19 @@ export function PurchaseAgentPriceCompare() {
     { label: t('Active RFQs'), value: '5', icon: 'Send', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="GitCompare" title={t('Price Compare')} subtitle={t('Compare supplier quotes')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {QUOTES.map((q, i) => (
-          <MobileCard key={`${q.partNumber}-${q.supplier}-${i}`}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Box" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{q.partName}</p>
-                    <p className="text-xs text-muted">{q.supplier}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                q.bestPrice
-                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Best Price')}</Badge>
-                  : null
-              }
-            />
-            <MobileCardRow label={t('Unit Price')} value={`${q.unitPrice.toFixed(2)} SAR`} />
-            <MobileCardRow label={t('MOQ')} value={String(q.moq)} />
-            <MobileCardRow label={t('Lead Time')} value={`${q.leadTimeDays} ${t('days')}`} />
-            <MobileCardRow label={t('Warranty')} value={t(q.warranty)} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<PriceQuote>[] = [
+    { header: t('Part'), cell: (q) => q.partName },
+    { header: t('Part #'), cell: (q) => q.partNumber },
+    { header: t('Supplier'), cell: (q) => q.supplier },
+    { header: t('Unit Price'), cell: (q) => q.unitPrice.toFixed(2) },
+    { header: t('MOQ'), cell: (q) => q.moq },
+    { header: t('Lead Time'), cell: (q) => `${q.leadTimeDays} ${t('days')}` },
+    { header: t('Warranty'), cell: (q) => t(q.warranty) },
+    { header: t('Price'), cell: (q) => q.bestPrice
+      ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Best')}</Badge>
+      : <span className="text-xs text-muted">-</span>
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -111,42 +81,24 @@ export function PurchaseAgentPriceCompare() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part #')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Unit Price')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('MOQ')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Lead Time')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Warranty')}</th>
-                <th className="pb-3 text-start font-medium">{t('Price')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {QUOTES.map((q, i) => (
-                <tr key={`${q.partNumber}-${q.supplier}-${i}`} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{q.partName}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{q.partNumber}</td>
-                  <td className="py-3 pe-4 text-body">{q.supplier}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{q.unitPrice.toFixed(2)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-body">{q.moq}</td>
-                  <td className="py-3 pe-4 text-end text-body">{q.leadTimeDays} {t('days')}</td>
-                  <td className="py-3 pe-4 text-body">{t(q.warranty)}</td>
-                  <td className="py-3">
-                    {q.bestPrice
-                      ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Best')}</Badge>
-                      : <span className="text-xs text-muted">-</span>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Price comparison across suppliers"
+        columns={columns}
+        rows={QUOTES}
+        rowKey={(q, i) => `${q.partNumber}-${q.supplier}-${i}`}
+        mobileCard={(q) => (
+          <>
+            <MobileCardHeader title={q.partName} trailing={
+              q.bestPrice
+                ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Best Price')}</Badge>
+                : null
+            } />
+            <MobileCardRow label={t('Supplier')}>{q.supplier}</MobileCardRow>
+            <MobileCardRow label={t('Unit Price')}>{q.unitPrice.toFixed(2)} SAR</MobileCardRow>
+            <MobileCardRow label={t('Lead Time')}>{q.leadTimeDays} {t('days')}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

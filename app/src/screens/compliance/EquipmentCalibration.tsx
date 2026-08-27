@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_EQUIPMENT = [
   { id: 'EQ-001', name: 'Torque Wrench Set', category: 'Mechanical', lastCalibration: '2026-06-15', nextCalibration: '2026-12-15', status: 'Calibrated', accuracy: '±0.5%', technician: 'Ahmed K.' },
@@ -24,9 +24,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Overdue: ['rgba(239,68,68,.1)', '#EF4444'],
 }
 
+type EquipmentRow = (typeof MOCK_EQUIPMENT)[number]
+
 export function EquipmentCalibration() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_EQUIPMENT : MOCK_EQUIPMENT.filter(e => e.status === filter)
@@ -41,33 +42,15 @@ export function EquipmentCalibration() {
     { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: '#EF4444' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Ruler" title={t('Calibration')} subtitle={t('Compliance')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(eq => {
-          const [bg, fg] = STATUS_COLORS[eq.status] ?? STATUS_COLORS.Calibrated
-          return (
-            <MobileCard key={eq.id}>
-              <MobileCardHeader title={eq.id} code trailing={<Badge background={bg} color={fg}>{t(eq.status)}</Badge>} />
-              <MobileCardRow>{eq.name}</MobileCardRow>
-              <MobileCardRow label={t('Category')}>{t(eq.category)}</MobileCardRow>
-              <MobileCardRow label={t('Accuracy')}>{eq.accuracy}</MobileCardRow>
-              <MobileCardRow label={t('Next Calibration')}>{eq.nextCalibration}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<EquipmentRow>[] = [
+    { header: 'ID', cell: (eq) => eq.id, code: true },
+    { header: 'Equipment', cell: (eq) => eq.name },
+    { header: 'Category', cell: (eq) => t(eq.category) },
+    { header: 'Accuracy', cell: (eq) => eq.accuracy },
+    { header: 'Status', cell: (eq) => { const [bg, fg] = STATUS_COLORS[eq.status] ?? STATUS_COLORS.Calibrated; return <Badge background={bg} color={fg}>{t(eq.status)}</Badge> } },
+    { header: 'Last Cal.', cell: (eq) => eq.lastCalibration },
+    { header: 'Next Cal.', cell: (eq) => eq.nextCalibration },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -96,48 +79,32 @@ export function EquipmentCalibration() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Equipment Register')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Calibrated">{t('Calibrated')}</option>
-            <option value="Due Soon">{t('Due Soon')}</option>
-            <option value="Overdue">{t('Overdue')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Equipment')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Accuracy')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Last Cal.')}</th>
-                <th className="pb-3 text-start font-medium">{t('Next Cal.')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(eq => {
-                const [bg, fg] = STATUS_COLORS[eq.status] ?? STATUS_COLORS.Calibrated
-                return (
-                  <tr key={eq.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{eq.id}</td>
-                    <td className="py-3 pe-4 text-[13px] font-medium text-heading">{eq.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(eq.category)}</td>
-                    <td className="py-3 pe-4 font-mono text-[13px] text-muted" dir="ltr">{eq.accuracy}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(eq.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-[13px] text-muted" dir="ltr">{eq.lastCalibration}</td>
-                    <td className="py-3 text-[13px] text-muted" dir="ltr">{eq.nextCalibration}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Equipment Register')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Calibrated">{t('Calibrated')}</option>
+          <option value="Due Soon">{t('Due Soon')}</option>
+          <option value="Overdue">{t('Overdue')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Equipment calibration register"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Calibrated
+          return (
+            <>
+              <MobileCardHeader title={row.id} code trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow>{row.name}</MobileCardRow>
+              <MobileCardRow label={t('Category')}>{t(row.category)}</MobileCardRow>
+              <MobileCardRow label={t('Next Calibration')}>{row.nextCalibration}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

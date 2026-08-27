@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Reminder {
   id: string
@@ -37,7 +37,6 @@ const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function ClientPortalReminders() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Due Soon'), value: '2', icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
@@ -46,45 +45,14 @@ export function ClientPortalReminders() {
     { label: t('Total Active'), value: '5', icon: 'Bell', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Bell" title={t('Service Reminders')} subtitle={t('Upcoming services')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {REMINDERS.map((r) => (
-          <MobileCard key={r.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Bell" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.service}</p>
-                    <p className="text-xs text-muted">{r.vehicle}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[r.status].bg} color={STATUS_STYLES[r.status].fg}>{t(r.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Due Date')} value={r.dueDate} />
-            <MobileCardRow label={t('Mileage Due')} value={`${r.mileageDue.toLocaleString()} km`} />
-            <MobileCardRow label={t('Priority')}>
-              <Badge background={PRIORITY_STYLES[r.priority].bg} color={PRIORITY_STYLES[r.priority].fg}>{t(r.priority)}</Badge>
-            </MobileCardRow>
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Reminder>[] = [
+    { header: t('Service'), cell: (r) => r.service },
+    { header: t('Vehicle'), cell: (r) => r.vehicle },
+    { header: t('Due Date'), cell: (r) => r.dueDate },
+    { header: t('Mileage Due'), cell: (r) => `${r.mileageDue.toLocaleString()} km` },
+    { header: t('Priority'), cell: (r) => <Badge background={PRIORITY_STYLES[r.priority].bg} color={PRIORITY_STYLES[r.priority].fg}>{t(r.priority)}</Badge> },
+    { header: t('Status'), cell: (r) => <Badge background={STATUS_STYLES[r.status].bg} color={STATUS_STYLES[r.status].fg}>{t(r.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -113,38 +81,20 @@ export function ClientPortalReminders() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Due Date')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Mileage Due')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Priority')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {REMINDERS.map((r) => (
-                <tr key={r.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.service}</td>
-                  <td className="py-3 pe-4 text-body">{r.vehicle}</td>
-                  <td className="py-3 pe-4 text-body">{r.dueDate}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{r.mileageDue.toLocaleString()} km</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={PRIORITY_STYLES[r.priority].bg} color={PRIORITY_STYLES[r.priority].fg}>{t(r.priority)}</Badge>
-                  </td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[r.status].bg} color={STATUS_STYLES[r.status].fg}>{t(r.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Service reminders"
+        columns={columns}
+        rows={REMINDERS}
+        rowKey={(r) => r.id}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader title={r.service} trailing={<Badge background={STATUS_STYLES[r.status].bg} color={STATUS_STYLES[r.status].fg}>{t(r.status)}</Badge>} />
+            <MobileCardRow label={t('Vehicle')}>{r.vehicle}</MobileCardRow>
+            <MobileCardRow label={t('Due Date')}>{r.dueDate}</MobileCardRow>
+            <MobileCardRow label={t('Priority')}><Badge background={PRIORITY_STYLES[r.priority].bg} color={PRIORITY_STYLES[r.priority].fg}>{t(r.priority)}</Badge></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

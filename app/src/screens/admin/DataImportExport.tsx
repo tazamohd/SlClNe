@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Operation {
   type: 'Import' | 'Export'
@@ -40,6 +41,52 @@ export function DataImportExport() {
     { label: t('Last Export'), value: 'Aug 17', icon: 'ArrowUpCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
+  const columns: Column<Operation>[] = [
+    {
+      header: 'Type',
+      cell: (op) => (
+        <div className="flex items-center gap-1.5">
+          <Icon name={op.type === 'Import' ? 'Download' : 'Upload'} size={14} className="text-salis-blue" />
+          <span className="font-medium text-heading">{t(op.type)}</span>
+        </div>
+      ),
+    },
+    { header: 'Entity', cell: (op) => t(op.entity) },
+    { header: 'Format', cell: (op) => <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{op.format}</Badge> },
+    { header: 'Records', cell: (op) => <span className="font-mono text-heading">{op.recordCount.toLocaleString()}</span> },
+    { header: 'Status', cell: (op) => <Badge background={STATUS_STYLES[op.status].bg} color={STATUS_STYLES[op.status].fg}>{t(op.status)}</Badge> },
+    { header: 'Date', cell: (op) => <span className="text-muted">{op.date}</span> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Recent Operations"
+      columns={columns}
+      rows={OPERATIONS}
+      rowKey={(_, i) => `op-${i}`}
+      mobileCard={(op) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden>
+                  <Icon name={op.type === 'Import' ? 'Download' : 'Upload'} size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{t(op.type)} - {t(op.entity)}</p>
+                  <p className="text-xs text-muted">{op.date}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[op.status].bg} color={STATUS_STYLES[op.status].fg}>{t(op.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Format')} value={op.format} />
+          <MobileCardRow label={t('Records')} value={op.recordCount.toLocaleString()} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -55,26 +102,7 @@ export function DataImportExport() {
             </Card>
           ))}
         </div>
-        {OPERATIONS.map((op, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden>
-                    <Icon name={op.type === 'Import' ? 'Download' : 'Upload'} size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{t(op.type)} - {t(op.entity)}</p>
-                    <p className="text-xs text-muted">{op.date}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[op.status].bg} color={STATUS_STYLES[op.status].fg}>{t(op.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Format')} value={op.format} />
-            <MobileCardRow label={t('Records')} value={op.recordCount.toLocaleString()} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -106,44 +134,7 @@ export function DataImportExport() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Recent Operations')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Entity')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Format')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Records')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-start font-medium">{t('Date')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {OPERATIONS.map((op, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-1.5">
-                      <Icon name={op.type === 'Import' ? 'Download' : 'Upload'} size={14} className="text-salis-blue" />
-                      <span className="font-medium text-heading">{t(op.type)}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{t(op.entity)}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{op.format}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{op.recordCount.toLocaleString()}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={STATUS_STYLES[op.status].bg} color={STATUS_STYLES[op.status].fg}>{t(op.status)}</Badge>
-                  </td>
-                  <td className="py-3 text-muted">{op.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

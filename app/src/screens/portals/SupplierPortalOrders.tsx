@@ -1,20 +1,13 @@
 import { useMemo, useState } from 'react'
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { StatusBadge } from '@/components/ui/Badge'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
-import {
-  MobileCard,
-  MobileCardHeader,
-  MobileCardRow,
-  MobileList,
-  MobilePageHeader,
-} from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
 
 interface OrderRow {
@@ -34,7 +27,6 @@ const STATUS_OPTIONS = ['all', 'pending', 'confirmed', 'shipped', 'delivered'] a
  *  `SupplierPortalOrders.dc.html` is the design source. */
 export function SupplierPortalOrders() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const orders = useCollection('purchaseOrders')
   const orderRows = (orders.data ?? []) as unknown as readonly OrderRow[]
@@ -59,74 +51,14 @@ export function SupplierPortalOrders() {
     return rows
   }, [orderRows, search, statusFilter])
 
-  if (isMobile) {
-    return (
-      <MobileList>
-        <MobilePageHeader
-          icon="ClipboardList"
-          title={t('Orders')}
-          subtitle={t('Manage your purchase orders')}
-        />
-
-        <Input
-          icon="Search"
-          inputSize="sm"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={t('Search orders...')}
-          aria-label={t('Search orders')}
-        />
-
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {STATUS_OPTIONS.map((st) => (
-            <button
-              key={st}
-              type="button"
-              onClick={() => setStatusFilter(st)}
-              className={
-                'inline-flex h-8 flex-shrink-0 cursor-pointer items-center rounded-full border px-3 font-action text-[12px] font-medium capitalize transition-colors ' +
-                (statusFilter === st
-                  ? 'border-salis-blue bg-[rgba(10,94,215,.1)] text-salis-blue'
-                  : 'border-border bg-card text-muted')
-              }
-            >
-              {t(st === 'all' ? 'All' : st)}
-            </button>
-          ))}
-        </div>
-
-        {orders.isLoading ? (
-          <Loading label="Loading orders..." />
-        ) : orders.isError ? (
-          <ErrorState description={orders.error?.message} onRetry={() => void orders.refetch()} />
-        ) : filtered.length === 0 ? (
-          <Card className="p-5">
-            <EmptyState
-              icon="ClipboardList"
-              title={t('No orders found')}
-              description={t('No orders match the current filters.')}
-            />
-          </Card>
-        ) : (
-          filtered.map((order) => (
-            <MobileCard key={order._id ?? order.id}>
-              <MobileCardHeader
-                title={order.id}
-                code
-                trailing={<StatusBadge value={order.status} label={t(order.status)} />}
-              />
-              <MobileCardRow label={t('Workshop')} value={order.workshop} />
-              <MobileCardRow label={t('Items')} value={order.items} />
-              <MobileCardRow label={t('Total')}>
-                <span dir="ltr">{order.total.toLocaleString()} SAR</span>
-              </MobileCardRow>
-              <MobileCardRow label={t('Date')} value={order.date} />
-            </MobileCard>
-          ))
-        )}
-      </MobileList>
-    )
-  }
+  const columns: Column<OrderRow>[] = [
+    { header: t('Order #'), cell: (order) => order.id },
+    { header: t('Workshop'), cell: (order) => order.workshop },
+    { header: t('Items'), cell: (order) => order.items },
+    { header: t('Total (SAR)'), cell: (order) => order.total.toLocaleString() },
+    { header: t('Status'), cell: (order) => <StatusBadge value={order.status} label={t(order.status)} /> },
+    { header: t('Date'), cell: (order) => order.date },
+  ]
 
   return (
     <div className="flex max-w-[1240px] animate-fade-up flex-col gap-4">
@@ -181,54 +113,29 @@ export function SupplierPortalOrders() {
         <Loading label="Loading orders..." />
       ) : orders.isError ? (
         <ErrorState description={orders.error?.message} onRetry={() => void orders.refetch()} />
-      ) : filtered.length === 0 ? (
-        <Card className="p-6">
-          <EmptyState
-            icon="ClipboardList"
-            title={t('No orders found')}
-            description={t('No orders match the current filters.')}
-          />
-        </Card>
       ) : (
-        <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
-              <thead>
-                <tr className="border-b border-border bg-inset text-muted">
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Order #')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Workshop')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Items')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Total (SAR)')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Status')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Date')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((order) => (
-                  <tr
-                    key={order._id ?? order.id}
-                    className="border-b border-border transition-colors last:border-0 hover:bg-inset"
-                  >
-                    <td className="px-4 py-3 font-mono font-semibold text-heading" dir="ltr">
-                      {order.id}
-                    </td>
-                    <td className="px-4 py-3 text-body">{order.workshop}</td>
-                    <td className="max-w-[200px] truncate px-4 py-3 text-body">{order.items}</td>
-                    <td className="px-4 py-3 font-mono text-heading" dir="ltr">
-                      {order.total.toLocaleString()}
-                    </td>
-                    <td className="px-4 py-3">
-                      <StatusBadge value={order.status} label={t(order.status)} />
-                    </td>
-                    <td className="px-4 py-3 text-muted" dir="ltr">
-                      {order.date}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <DataTable
+          caption="Supplier purchase orders"
+          columns={columns}
+          rows={filtered as OrderRow[]}
+          rowKey={(order) => order._id ?? order.id}
+          empty={
+            <EmptyState
+              icon="ClipboardList"
+              title={t('No orders found')}
+              description={t('No orders match the current filters.')}
+            />
+          }
+          mobileCard={(order) => (
+            <>
+              <MobileCardHeader title={order.id} trailing={<StatusBadge value={order.status} label={t(order.status)} />} />
+              <MobileCardRow label={t('Workshop')}>{order.workshop}</MobileCardRow>
+              <MobileCardRow label={t('Items')}>{order.items}</MobileCardRow>
+              <MobileCardRow label={t('Total')}><span dir="ltr">{order.total.toLocaleString()} SAR</span></MobileCardRow>
+              <MobileCardRow label={t('Date')}>{order.date}</MobileCardRow>
+            </>
+          )}
+        />
       )}
     </div>
   )

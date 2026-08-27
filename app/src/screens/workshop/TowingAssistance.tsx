@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface TowRequest {
   id: string
@@ -50,6 +51,31 @@ export function TowingAssistance() {
     return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{status}</Badge>
   }
 
+  const columns: Column<TowRequest>[] = [
+    { header: 'Request', cell: (r) => r.id, code: true },
+    { header: 'Customer', cell: (r) => r.customer },
+    { header: 'Location', cell: (r) => r.location },
+    { header: 'Driver', cell: (r) => r.driver },
+    { header: 'ETA', cell: (r) => r.eta, code: true },
+    { header: 'Status', cell: (r) => statusBadge(r.status) },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Towing requests"
+      columns={columns}
+      rows={requests}
+      rowKey={(r) => r.id}
+      mobileCard={(r) => (
+        <>
+          <MobileCardHeader title={r.customer} trailing={statusBadge(r.status)} />
+          <MobileCardRow label={t('Location')}>{r.location}</MobileCardRow>
+          <MobileCardRow label={t('ETA')}>{r.eta}</MobileCardRow>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -63,25 +89,7 @@ export function TowingAssistance() {
             </MobileCard>
           ))}
         </div>
-        {requests.map((r) => (
-          <MobileCard key={r.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(249,115,22,.1)] text-salis-orange" aria-hidden><Icon name="Truck" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.customer}</p>
-                    <p className="text-xs text-muted">{r.location}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              <span className="text-xs text-muted">{r.eta !== '—' ? `ETA: ${r.eta}` : r.driver}</span>
-              {statusBadge(r.status)}
-            </div>
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -113,35 +121,7 @@ export function TowingAssistance() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Towing Requests')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Request')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Customer')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Driver')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('ETA')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requests.map((r) => (
-                <tr key={r.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{r.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{r.customer}</td>
-                  <td className="py-3 pe-4 text-body">{r.location}</td>
-                  <td className="py-3 pe-4 text-muted">{r.driver}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-heading" dir="ltr">{r.eta}</td>
-                  <td className="py-3">{statusBadge(r.status)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

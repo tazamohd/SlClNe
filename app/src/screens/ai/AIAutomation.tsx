@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_RULES = [
   { id: 'AUT-001', name: 'Auto-Schedule Follow-Up', trigger: 'Job Completed', action: 'Send SMS after 3 days', status: 'Active', executions: 1245, lastRun: '2026-08-17 14:32' },
@@ -21,9 +21,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Paused: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
 }
 
+type RuleRow = (typeof MOCK_RULES)[number]
+
 export function AIAutomation() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_RULES : MOCK_RULES.filter(r => r.status === filter)
@@ -36,33 +37,15 @@ export function AIAutomation() {
     { label: t('Success Rate'), value: '98.7%', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Workflow" title={t('AI Automation')} subtitle={t('Rules & Triggers')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(r => {
-          const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Paused
-          return (
-            <MobileCard key={r.id}>
-              <MobileCardHeader title={t(r.name)} trailing={<Badge background={bg} color={fg}>{t(r.status)}</Badge>} />
-              <MobileCardRow label={t('Trigger')}>{t(r.trigger)}</MobileCardRow>
-              <MobileCardRow label={t('Action')}>{t(r.action)}</MobileCardRow>
-              <MobileCardRow label={t('Executions')}>{r.executions.toLocaleString()}</MobileCardRow>
-              <MobileCardRow label={t('Last Run')}>{r.lastRun}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<RuleRow>[] = [
+    { header: 'ID', cell: (r) => r.id, code: true },
+    { header: 'Rule', cell: (r) => t(r.name) },
+    { header: 'Trigger', cell: (r) => t(r.trigger) },
+    { header: 'Action', cell: (r) => t(r.action) },
+    { header: 'Status', cell: (r) => { const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Paused; return <Badge background={bg} color={fg}>{t(r.status)}</Badge> } },
+    { header: 'Executions', cell: (r) => r.executions.toLocaleString() },
+    { header: 'Last Run', cell: (r) => r.lastRun },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -91,47 +74,31 @@ export function AIAutomation() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Automation Rules')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Active">{t('Active')}</option>
-            <option value="Paused">{t('Paused')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Rule')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Trigger')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Action')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Executions')}</th>
-                <th className="pb-3 text-start font-medium">{t('Last Run')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(r => {
-                const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Paused
-                return (
-                  <tr key={r.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{r.id}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(r.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(r.trigger)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(r.action)}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(r.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{r.executions.toLocaleString()}</td>
-                    <td className="py-3 text-[13px] text-muted" dir="ltr">{r.lastRun}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Automation Rules')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Active">{t('Active')}</option>
+          <option value="Paused">{t('Paused')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="AI automation rules"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Paused
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Trigger')}>{t(row.trigger)}</MobileCardRow>
+              <MobileCardRow label={t('Executions')}>{row.executions.toLocaleString()}</MobileCardRow>
+              <MobileCardRow label={t('Last Run')}>{row.lastRun}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

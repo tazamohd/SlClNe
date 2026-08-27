@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_SOURCES = [
   { id: 'EN-001', name: 'Solar Array A', type: 'Solar', capacity: '120 kW', currentOutput: '95 kW', utilization: 79, status: 'Active', co2Saved: '42 tons' },
@@ -30,9 +30,11 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type SourceRow = (typeof MOCK_SOURCES)[number]
+type MonthlyRow = (typeof MOCK_MONTHLY)[number]
+
 export function SustainableEnergyMonitoring() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [period, setPeriod] = useState('month')
 
   const kpis = [
@@ -42,34 +44,30 @@ export function SustainableEnergyMonitoring() {
     { label: t('Cost Savings'), value: 'SAR 70K', icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Zap" title={t('Energy Monitor')} subtitle={t('Sustainability')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
+  const sourceColumns: Column<SourceRow>[] = [
+    { header: 'Source', cell: (s) => s.name },
+    { header: 'Type', cell: (s) => t(s.type) },
+    { header: 'Capacity', cell: (s) => s.capacity },
+    { header: 'Output', cell: (s) => s.currentOutput },
+    { header: 'Utilization', cell: (s) => (
+      <div className="flex items-center gap-2">
+        <div className="h-1.5 w-16 rounded-full bg-border">
+          <div className="h-full rounded-full" style={{ width: `${s.utilization}%`, background: 'var(--salis-blue)' }} />
         </div>
-        {MOCK_SOURCES.map(s => {
-          const [bg, fg] = STATUS_COLORS[s.status] ?? STATUS_COLORS.Offline
-          return (
-            <MobileCard key={s.id}>
-              <MobileCardHeader title={s.name} trailing={<Badge background={bg} color={fg}>{t(s.status)}</Badge>} />
-              <MobileCardRow label={t('Type')}>{t(s.type)}</MobileCardRow>
-              <MobileCardRow label={t('Capacity')}>{s.capacity}</MobileCardRow>
-              <MobileCardRow label={t('Output')}>{s.currentOutput}</MobileCardRow>
-              <MobileCardRow label={t('Utilization')}>{s.utilization}%</MobileCardRow>
-              <MobileCardRow label={t('CO2 Saved')}>{s.co2Saved}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
+        <span className="text-[12px] text-muted">{s.utilization}%</span>
       </div>
-    )
-  }
+    ) },
+    { header: 'Status', cell: (s) => { const [bg, fg] = STATUS_COLORS[s.status] ?? STATUS_COLORS.Offline; return <Badge background={bg} color={fg}>{t(s.status)}</Badge> } },
+    { header: 'CO2 Saved', cell: (s) => s.co2Saved },
+  ]
+
+  const monthlyColumns: Column<MonthlyRow>[] = [
+    { header: 'Month', cell: (m) => m.month },
+    { header: 'Solar Gen', cell: (m) => m.solarGen },
+    { header: 'Grid Usage', cell: (m) => m.gridUsage },
+    { header: 'Savings', cell: (m) => m.savings },
+    { header: 'CO2 Reduced', cell: (m) => m.co2Reduced },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -98,82 +96,47 @@ export function SustainableEnergyMonitoring() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Energy Sources')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Source')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Capacity')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Output')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Utilization')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-end font-medium">{t('CO2 Saved')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_SOURCES.map(s => {
-                const [bg, fg] = STATUS_COLORS[s.status] ?? STATUS_COLORS.Offline
-                return (
-                  <tr key={s.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{s.name}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(s.type)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-muted">{s.capacity}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{s.currentOutput}</td>
-                    <td className="py-3 pe-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-16 rounded-full bg-border">
-                          <div className="h-full rounded-full" style={{ width: `${s.utilization}%`, background: 'var(--salis-blue)' }} />
-                        </div>
-                        <span className="text-[12px] text-muted">{s.utilization}%</span>
-                      </div>
-                    </td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(s.status)}</Badge></td>
-                    <td className="py-3 text-end font-mono text-[13px] text-heading">{s.co2Saved}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Energy Sources')}</h3>
+      <DataTable
+        caption="Energy sources and utilization"
+        columns={sourceColumns}
+        rows={[...MOCK_SOURCES]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Offline
+          return (
+            <>
+              <MobileCardHeader title={row.name} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Type')}>{t(row.type)}</MobileCardRow>
+              <MobileCardRow label={t('Output')}>{row.currentOutput}</MobileCardRow>
+              <MobileCardRow label={t('Utilization')}>{row.utilization}%</MobileCardRow>
+            </>
+          )
+        }}
+      />
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Monthly Performance')}</h3>
-          <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
-            <option value="month">{t('Last 6 Months')}</option>
-            <option value="quarter">{t('This Quarter')}</option>
-            <option value="year">{t('This Year')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Month')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Solar Gen')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Grid Usage')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Savings')}</th>
-                <th className="pb-3 text-end font-medium">{t('CO2 Reduced')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_MONTHLY.map(m => (
-                <tr key={m.month} className="border-b border-border/50">
-                  <td className="py-3 pe-4 text-[13px] text-heading">{m.month}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{m.solarGen}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-muted">{m.gridUsage}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{m.savings}</td>
-                  <td className="py-3 text-end font-mono text-[13px] text-heading">{m.co2Reduced}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Monthly Performance')}</h3>
+        <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
+          <option value="month">{t('Last 6 Months')}</option>
+          <option value="quarter">{t('This Quarter')}</option>
+          <option value="year">{t('This Year')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Monthly energy performance"
+        columns={monthlyColumns}
+        rows={[...MOCK_MONTHLY]}
+        rowKey={(row) => row.month}
+        mobileCard={(row) => (
+          <>
+            <MobileCardHeader title={row.month} />
+            <MobileCardRow label={t('Solar Gen')}>{row.solarGen}</MobileCardRow>
+            <MobileCardRow label={t('Savings')}>{row.savings}</MobileCardRow>
+            <MobileCardRow label={t('CO2 Reduced')}>{row.co2Reduced}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

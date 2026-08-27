@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_OPTIMIZATIONS = [
   { id: 'PO-001', service: 'Engine Oil Change', currentPrice: 'SAR 180', suggestedPrice: 'SAR 195', change: '+8.3%', reason: 'Market rate increase', confidence: 94, impact: 'High' },
@@ -22,9 +22,10 @@ const IMPACT_COLORS: Record<string, readonly [string, string]> = {
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type OptRow = (typeof MOCK_OPTIMIZATIONS)[number]
+
 export function IntelligentPriceOptimizer() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [strategy, setStrategy] = useState('balanced')
 
   const highImpact = MOCK_OPTIMIZATIONS.filter(o => o.impact === 'High').length
@@ -37,34 +38,15 @@ export function IntelligentPriceOptimizer() {
     { label: t('Revenue Impact'), value: '+4.2%', icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="DollarSign" title={t('Price Optimizer')} subtitle={t('AI-Powered Pricing')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_OPTIMIZATIONS.map(o => {
-          const [bg, fg] = IMPACT_COLORS[o.impact] ?? IMPACT_COLORS.Low
-          return (
-            <MobileCard key={o.id}>
-              <MobileCardHeader title={t(o.service)} trailing={<Badge background={bg} color={fg}>{t(o.impact)}</Badge>} />
-              <MobileCardRow label={t('Current')}>{o.currentPrice}</MobileCardRow>
-              <MobileCardRow label={t('Suggested')}>{o.suggestedPrice}</MobileCardRow>
-              <MobileCardRow label={t('Change')}>{o.change}</MobileCardRow>
-              <MobileCardRow label={t('Reason')}>{t(o.reason)}</MobileCardRow>
-              <MobileCardRow label={t('Confidence')}>{o.confidence}%</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<OptRow>[] = [
+    { header: 'Service', cell: (o) => t(o.service) },
+    { header: 'Current', cell: (o) => o.currentPrice },
+    { header: 'Suggested', cell: (o) => o.suggestedPrice },
+    { header: 'Change', cell: (o) => o.change },
+    { header: 'Reason', cell: (o) => t(o.reason) },
+    { header: 'Confidence', cell: (o) => `${o.confidence}%` },
+    { header: 'Impact', cell: (o) => { const [bg, fg] = IMPACT_COLORS[o.impact] ?? IMPACT_COLORS.Low; return <Badge background={bg} color={fg}>{t(o.impact)}</Badge> } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -93,47 +75,31 @@ export function IntelligentPriceOptimizer() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Price Suggestions')}</h3>
-          <Select value={strategy} onChange={e => setStrategy(e.target.value)} aria-label={t('Select strategy')}>
-            <option value="aggressive">{t('Aggressive')}</option>
-            <option value="balanced">{t('Balanced')}</option>
-            <option value="conservative">{t('Conservative')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Current')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Suggested')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Change')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Reason')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Confidence')}</th>
-                <th className="pb-3 text-start font-medium">{t('Impact')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_OPTIMIZATIONS.map(o => {
-                const [bg, fg] = IMPACT_COLORS[o.impact] ?? IMPACT_COLORS.Low
-                return (
-                  <tr key={o.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(o.service)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-muted">{o.currentPrice}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{o.suggestedPrice}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{o.change}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(o.reason)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{o.confidence}%</td>
-                    <td className="py-3"><Badge background={bg} color={fg}>{t(o.impact)}</Badge></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Price Suggestions')}</h3>
+        <Select value={strategy} onChange={e => setStrategy(e.target.value)} aria-label={t('Select strategy')}>
+          <option value="aggressive">{t('Aggressive')}</option>
+          <option value="balanced">{t('Balanced')}</option>
+          <option value="conservative">{t('Conservative')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Price optimization suggestions"
+        columns={columns}
+        rows={[...MOCK_OPTIMIZATIONS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = IMPACT_COLORS[row.impact] ?? IMPACT_COLORS.Low
+          return (
+            <>
+              <MobileCardHeader title={t(row.service)} trailing={<Badge background={bg} color={fg}>{t(row.impact)}</Badge>} />
+              <MobileCardRow label={t('Current')}>{row.currentPrice}</MobileCardRow>
+              <MobileCardRow label={t('Suggested')}>{row.suggestedPrice}</MobileCardRow>
+              <MobileCardRow label={t('Change')}>{row.change}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

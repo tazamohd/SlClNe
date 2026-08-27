@@ -1,10 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
-import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Money } from '@/components/ui/Money'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
 interface PartResult {
   partNumber: string
@@ -33,42 +33,17 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function TechnicianAppLookup() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Search" title={t('Parts Lookup')} subtitle={t('Search parts and VIN')} />
-        <Card className="rounded-xl p-3 shadow-sm">
-          <div className="flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.05)] px-3 py-2">
-            <Icon name="Search" size={16} className="text-muted" />
-            <span className="text-sm text-muted">{t('Search by part number, name, or VIN...')}</span>
-          </div>
-        </Card>
-        {PART_RESULTS.map((p) => (
-          <MobileCard key={p.partNumber}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Package" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{p.name}</p>
-                    <p className="text-xs text-muted">{p.partNumber}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Brand')} value={p.brand} />
-            <MobileCardRow label={t('Fits')} value={p.compatibility} />
-            <MobileCardRow label={t('Stock')} value={String(p.stock)} />
-            <MobileCardRow label={t('Location')} value={p.location} />
-            <MobileCardRow label={t('Price')} value={<Money sar={p.price} />} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<PartResult>[] = [
+    { header: t('Part No.'), cell: (p) => p.partNumber },
+    { header: t('Name'), cell: (p) => p.name },
+    { header: t('Brand'), cell: (p) => p.brand },
+    { header: t('Compatibility'), cell: (p) => p.compatibility },
+    { header: t('Stock'), cell: (p) => p.stock },
+    { header: t('Location'), cell: (p) => p.location },
+    { header: t('Price'), cell: (p) => <Money sar={p.price} /> },
+    { header: t('Status'), cell: (p) => <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -85,40 +60,27 @@ export function TechnicianAppLookup() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part No.')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Brand')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Compatibility')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Stock')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Price')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PART_RESULTS.map((p) => (
-                <tr key={p.partNumber} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{p.partNumber}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{p.name}</td>
-                  <td className="py-3 pe-4 text-body">{p.brand}</td>
-                  <td className="py-3 pe-4 text-xs text-body">{p.compatibility}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{p.stock}</td>
-                  <td className="py-3 pe-4 text-body">{p.location}</td>
-                  <td className="py-3 pe-4 text-end"><Money sar={p.price} /></td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <Card className="rounded-xl p-3 shadow-sm">
+        <div className="flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.05)] px-3 py-2">
+          <Icon name="Search" size={16} className="text-muted" />
+          <span className="text-sm text-muted">{t('Search by part number, name, or VIN...')}</span>
         </div>
       </Card>
+
+      <DataTable
+        caption="Parts lookup results"
+        columns={columns}
+        rows={PART_RESULTS}
+        rowKey={(p) => p.partNumber}
+        mobileCard={(p) => (
+          <>
+            <MobileCardHeader title={p.name} trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>} />
+            <MobileCardRow label={t('Part No.')}>{p.partNumber}</MobileCardRow>
+            <MobileCardRow label={t('Brand')}>{p.brand}</MobileCardRow>
+            <MobileCardRow label={t('Price')}><Money sar={p.price} /></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

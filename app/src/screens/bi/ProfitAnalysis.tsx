@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_SERVICES = [
   { id: 'SRV-01', name: 'Engine Repair', revenue: 485000, cost: 312000, profit: 173000, margin: 35.7, orders: 245, trend: 'up' },
@@ -25,9 +25,11 @@ const MOCK_PERIODS = [
   { month: 'Aug 2026', revenue: 'SAR 2.41M', profit: 'SAR 877K', margin: '36.4%' },
 ] as const
 
+type ServiceRow = (typeof MOCK_SERVICES)[number]
+type PeriodRow = (typeof MOCK_PERIODS)[number]
+
 export function ProfitAnalysis() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [period, setPeriod] = useState('month')
 
   const totalRevenue = MOCK_SERVICES.reduce((a, s) => a + s.revenue, 0)
@@ -41,30 +43,22 @@ export function ProfitAnalysis() {
     { label: t('Services'), value: String(MOCK_SERVICES.length), icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="DollarSign" title={t('Profit Analysis')} subtitle={t('Business Intelligence')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_SERVICES.map(s => (
-          <MobileCard key={s.id}>
-            <MobileCardHeader title={t(s.name)} trailing={<Badge background={s.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={s.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{s.trend === 'up' ? t('Up') : t('Down')}</Badge>} />
-            <MobileCardRow label={t('Revenue')}>{`SAR ${(s.revenue / 1000).toFixed(0)}K`}</MobileCardRow>
-            <MobileCardRow label={t('Profit')}>{`SAR ${(s.profit / 1000).toFixed(0)}K`}</MobileCardRow>
-            <MobileCardRow label={t('Margin')}>{s.margin}%</MobileCardRow>
-            <MobileCardRow label={t('Orders')}>{s.orders}</MobileCardRow>
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const serviceColumns: Column<ServiceRow>[] = [
+    { header: 'Service', cell: (s) => t(s.name) },
+    { header: 'Revenue', cell: (s) => `SAR ${(s.revenue / 1000).toFixed(0)}K` },
+    { header: 'Cost', cell: (s) => `SAR ${(s.cost / 1000).toFixed(0)}K` },
+    { header: 'Profit', cell: (s) => `SAR ${(s.profit / 1000).toFixed(0)}K` },
+    { header: 'Margin', cell: (s) => `${s.margin}%` },
+    { header: 'Orders', cell: (s) => `${s.orders}` },
+    { header: 'Trend', cell: (s) => <Badge background={s.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={s.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{s.trend === 'up' ? t('Up') : t('Down')}</Badge> },
+  ]
+
+  const periodColumns: Column<PeriodRow>[] = [
+    { header: 'Month', cell: (p) => p.month },
+    { header: 'Revenue', cell: (p) => p.revenue },
+    { header: 'Profit', cell: (p) => p.profit },
+    { header: 'Margin', cell: (p) => p.margin },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -93,72 +87,44 @@ export function ProfitAnalysis() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Profit by Service')}</h3>
-          <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
-            <option value="month">{t('This Month')}</option>
-            <option value="quarter">{t('This Quarter')}</option>
-            <option value="year">{t('This Year')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Revenue')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Cost')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Profit')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Margin')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Orders')}</th>
-                <th className="pb-3 text-start font-medium">{t('Trend')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_SERVICES.map(s => (
-                <tr key={s.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 text-[13px] text-heading">{t(s.name)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{`SAR ${(s.revenue / 1000).toFixed(0)}K`}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-muted">{`SAR ${(s.cost / 1000).toFixed(0)}K`}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{`SAR ${(s.profit / 1000).toFixed(0)}K`}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{s.margin}%</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-muted">{s.orders}</td>
-                  <td className="py-3">
-                    <Badge background={s.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={s.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{s.trend === 'up' ? t('Up') : t('Down')}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Profit by Service')}</h3>
+        <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
+          <option value="month">{t('This Month')}</option>
+          <option value="quarter">{t('This Quarter')}</option>
+          <option value="year">{t('This Year')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Profit by service"
+        columns={serviceColumns}
+        rows={[...MOCK_SERVICES]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => (
+          <>
+            <MobileCardHeader title={t(row.name)} trailing={<Badge background={row.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={row.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{row.trend === 'up' ? t('Up') : t('Down')}</Badge>} />
+            <MobileCardRow label={t('Revenue')}>{`SAR ${(row.revenue / 1000).toFixed(0)}K`}</MobileCardRow>
+            <MobileCardRow label={t('Profit')}>{`SAR ${(row.profit / 1000).toFixed(0)}K`}</MobileCardRow>
+            <MobileCardRow label={t('Margin')}>{row.margin}%</MobileCardRow>
+          </>
+        )}
+      />
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Monthly Trend')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Month')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Revenue')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Profit')}</th>
-                <th className="pb-3 text-end font-medium">{t('Margin')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_PERIODS.map(p => (
-                <tr key={p.month} className="border-b border-border/50">
-                  <td className="py-3 pe-4 text-[13px] text-heading">{p.month}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{p.revenue}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{p.profit}</td>
-                  <td className="py-3 text-end font-mono text-[13px] text-heading">{p.margin}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Monthly Trend')}</h3>
+      <DataTable
+        caption="Monthly profit trend"
+        columns={periodColumns}
+        rows={[...MOCK_PERIODS]}
+        rowKey={(row) => row.month}
+        mobileCard={(row) => (
+          <>
+            <MobileCardHeader title={row.month} />
+            <MobileCardRow label={t('Revenue')}>{row.revenue}</MobileCardRow>
+            <MobileCardRow label={t('Profit')}>{row.profit}</MobileCardRow>
+            <MobileCardRow label={t('Margin')}>{row.margin}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

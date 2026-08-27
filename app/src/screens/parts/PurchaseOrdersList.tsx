@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface PurchaseOrder {
   id: string
@@ -37,23 +38,43 @@ export function PurchaseOrdersList() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<PurchaseOrder>[] = [
+    { header: 'PO Number', cell: (po) => po.id, code: true },
+    { header: 'Supplier', cell: (po) => po.supplier },
+    { header: 'Items', cell: (po) => po.items },
+    { header: 'Total', cell: (po) => <span className="font-medium text-heading">{po.total}</span> },
+    { header: 'Order Date', cell: (po) => <span className="text-muted">{po.date}</span> },
+    { header: 'Expected Delivery', cell: (po) => <span className="text-muted">{po.expectedDelivery}</span> },
+    { header: 'Status', cell: (po) => <Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(po.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="All Purchase Orders"
+      columns={columns}
+      rows={PURCHASE_ORDERS}
+      rowKey={(po) => po.id}
+      mobileCard={(po) => (
+        <>
+          <MobileCardHeader
+            title={po.id}
+            code
+            trailing={<Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(po.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Supplier')} value={po.supplier} />
+          <MobileCardRow label={t('Items')} value={po.items} />
+          <MobileCardRow label={t('Total')} value={po.total} />
+          <MobileCardRow label={t('Delivery')} value={po.expectedDelivery} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="ShoppingCart" title={t('Purchase Orders')} subtitle={t('Parts procurement')} />
-        {PURCHASE_ORDERS.map((po) => (
-          <MobileCard key={po.id}>
-            <MobileCardHeader
-              title={po.id}
-              code
-              trailing={<Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(po.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Supplier')} value={po.supplier} />
-            <MobileCardRow label={t('Items')} value={po.items} />
-            <MobileCardRow label={t('Total')} value={po.total} />
-            <MobileCardRow label={t('Delivery')} value={po.expectedDelivery} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -94,39 +115,7 @@ export function PurchaseOrdersList() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('All Purchase Orders')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('PO Number')}</th>
-                <th className="pb-3 font-medium">{t('Supplier')}</th>
-                <th className="pb-3 font-medium">{t('Items')}</th>
-                <th className="pb-3 font-medium">{t('Total')}</th>
-                <th className="pb-3 font-medium">{t('Order Date')}</th>
-                <th className="pb-3 font-medium">{t('Expected Delivery')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PURCHASE_ORDERS.map((po) => (
-                <tr key={po.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs font-semibold text-heading">{po.id}</td>
-                  <td className="py-3 text-body">{po.supplier}</td>
-                  <td className="py-3 text-body">{po.items}</td>
-                  <td className="py-3 font-medium text-heading">{po.total}</td>
-                  <td className="py-3 text-muted">{po.date}</td>
-                  <td className="py-3 text-muted">{po.expectedDelivery}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(po.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

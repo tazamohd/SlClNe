@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface InventoryItem {
   partName: string
@@ -35,7 +35,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PurchaseAgentInventory() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totalItems = INVENTORY.reduce((sum, item) => sum + item.qtyOnHand, 0)
   const totalValue = INVENTORY.reduce((sum, item) => sum + item.qtyOnHand * item.unitCost, 0)
@@ -47,45 +46,16 @@ export function PurchaseAgentInventory() {
     { label: t('Low Stock Alerts'), value: '12', icon: 'AlertTriangle', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Package" title={t('Inventory')} subtitle={t('Stock overview')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {INVENTORY.map((item) => (
-          <MobileCard key={item.partNumber}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Package" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{item.partName}</p>
-                    <p className="text-xs text-muted">{item.partNumber}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[item.status].bg} color={STATUS_STYLES[item.status].fg}>{t(item.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Category')} value={t(item.category)} />
-            <MobileCardRow label={t('Qty on Hand')} value={item.qtyOnHand.toLocaleString()} />
-            <MobileCardRow label={t('Reorder Level')} value={String(item.reorderLevel)} />
-            <MobileCardRow label={t('Unit Cost')} value={`${item.unitCost.toFixed(2)} SAR`} />
-            <MobileCardRow label={t('Warehouse')} value={item.warehouse} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<InventoryItem>[] = [
+    { header: t('Part Name'), cell: (item) => item.partName },
+    { header: t('Part #'), cell: (item) => item.partNumber },
+    { header: t('Category'), cell: (item) => t(item.category) },
+    { header: t('Qty'), cell: (item) => item.qtyOnHand.toLocaleString() },
+    { header: t('Reorder Lvl'), cell: (item) => item.reorderLevel },
+    { header: t('Unit Cost'), cell: (item) => item.unitCost.toFixed(2) },
+    { header: t('Warehouse'), cell: (item) => item.warehouse },
+    { header: t('Status'), cell: (item) => <Badge background={STATUS_STYLES[item.status].bg} color={STATUS_STYLES[item.status].fg}>{t(item.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -114,40 +84,20 @@ export function PurchaseAgentInventory() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Part #')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Qty')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Reorder Lvl')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Unit Cost')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Warehouse')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {INVENTORY.map((item) => (
-                <tr key={item.partNumber} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{item.partName}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{item.partNumber}</td>
-                  <td className="py-3 pe-4 text-body">{t(item.category)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{item.qtyOnHand.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-body">{item.reorderLevel}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{item.unitCost.toFixed(2)}</td>
-                  <td className="py-3 pe-4 text-body">{item.warehouse}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[item.status].bg} color={STATUS_STYLES[item.status].fg}>{t(item.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Inventory overview"
+        columns={columns}
+        rows={INVENTORY}
+        rowKey={(item) => item.partNumber}
+        mobileCard={(item) => (
+          <>
+            <MobileCardHeader title={item.partName} trailing={<Badge background={STATUS_STYLES[item.status].bg} color={STATUS_STYLES[item.status].fg}>{t(item.status)}</Badge>} />
+            <MobileCardRow label={t('Part #')}>{item.partNumber}</MobileCardRow>
+            <MobileCardRow label={t('Qty on Hand')}>{item.qtyOnHand.toLocaleString()}</MobileCardRow>
+            <MobileCardRow label={t('Warehouse')}>{item.warehouse}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface OCRDocument {
   id: string
@@ -35,11 +36,72 @@ export function DocumentOCR() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<OCRDocument>[] = [
+    { header: 'ID', cell: (doc) => doc.id, code: true },
+    {
+      header: 'File',
+      cell: (doc) => (
+        <div className="flex items-center gap-2">
+          <Icon name="FileText" size={14} className="text-muted" />
+          <span className="font-semibold text-heading">{doc.fileName}</span>
+        </div>
+      ),
+    },
+    { header: 'Type', cell: (doc) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(doc.type)}</Badge> },
+    { header: 'Uploaded By', cell: (doc) => doc.uploadedBy },
+    { header: 'Date', cell: (doc) => <span className="text-muted">{doc.date}</span> },
+    {
+      header: 'Confidence',
+      cell: (doc) =>
+        doc.confidence > 0 ? (
+          <div className="flex items-center gap-2">
+            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-surface-secondary">
+              <div className="h-full rounded-full bg-salis-blue" style={{ width: `${doc.confidence}%` }} />
+            </div>
+            <span className="text-xs text-muted">{doc.confidence}%</span>
+          </div>
+        ) : (
+          <span className="text-xs text-muted">-</span>
+        ),
+    },
+    { header: 'Status', cell: (doc) => <Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Recent Documents"
+      columns={columns}
+      rows={DOCUMENTS}
+      rowKey={(doc) => doc.id}
+      mobileCard={(doc) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <Icon name="FileText" size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{doc.fileName}</p>
+                  <p className="text-xs text-muted">{doc.id}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Type')} value={t(doc.type)} />
+          <MobileCardRow label={t('Uploaded By')} value={doc.uploadedBy} />
+          {doc.confidence > 0 && <MobileCardRow label={t('Confidence')} value={`${doc.confidence}%`} />}
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="ScanLine" title={t('Document OCR')} subtitle={t('Optical character recognition')} />
-        <MobileCard>
+        <Card className="rounded-xl p-6 shadow-sm">
           <div className="flex flex-col items-center gap-2 py-4">
             <span className="flex rounded-xl p-3" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
               <Icon name="Upload" size={24} />
@@ -47,28 +109,8 @@ export function DocumentOCR() {
             <p className="text-sm font-semibold text-heading">{t('Upload Document')}</p>
             <p className="text-xs text-muted">{t('PDF, JPG, or PNG up to 10MB')}</p>
           </div>
-        </MobileCard>
-        {DOCUMENTS.map((doc) => (
-          <MobileCard key={doc.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
-                    <Icon name="FileText" size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{doc.fileName}</p>
-                    <p className="text-xs text-muted">{doc.id}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Type')} value={t(doc.type)} />
-            <MobileCardRow label={t('Uploaded By')} value={doc.uploadedBy} />
-            {doc.confidence > 0 && <MobileCardRow label={t('Confidence')} value={`${doc.confidence}%`} />}
-          </MobileCard>
-        ))}
+        </Card>
+        {table}
       </div>
     )
   }
@@ -98,57 +140,7 @@ export function DocumentOCR() {
         </div>
       </Card>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Recent Documents')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('ID')}</th>
-                <th className="pb-3 font-medium">{t('File')}</th>
-                <th className="pb-3 font-medium">{t('Type')}</th>
-                <th className="pb-3 font-medium">{t('Uploaded By')}</th>
-                <th className="pb-3 font-medium">{t('Date')}</th>
-                <th className="pb-3 font-medium">{t('Confidence')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {DOCUMENTS.map((doc) => (
-                <tr key={doc.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs text-muted">{doc.id}</td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <Icon name="FileText" size={14} className="text-muted" />
-                      <span className="font-semibold text-heading">{doc.fileName}</span>
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(doc.type)}</Badge>
-                  </td>
-                  <td className="py-3 text-body">{doc.uploadedBy}</td>
-                  <td className="py-3 text-muted">{doc.date}</td>
-                  <td className="py-3">
-                    {doc.confidence > 0 ? (
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-surface-secondary">
-                          <div className="h-full rounded-full bg-salis-blue" style={{ width: `${doc.confidence}%` }} />
-                        </div>
-                        <span className="text-xs text-muted">{doc.confidence}%</span>
-                      </div>
-                    ) : (
-                      <span className="text-xs text-muted">-</span>
-                    )}
-                  </td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[doc.status].bg} color={STATUS_STYLES[doc.status].fg}>{t(doc.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

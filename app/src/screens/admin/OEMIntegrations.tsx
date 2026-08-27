@@ -1,9 +1,9 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface OEMConnection {
   manufacturer: string
@@ -38,6 +38,40 @@ export function OEMIntegrations() {
 
   const connectedCount = OEM_CONNECTIONS.filter((c) => c.status === 'Connected').length
 
+  const columns: Column<OEMConnection>[] = [
+    { header: 'Manufacturer', cell: (conn) => <span className="font-semibold text-heading">{conn.manufacturer}</span> },
+    { header: 'System', cell: (conn) => conn.system },
+    { header: 'Type', cell: (conn) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(conn.type)}</Badge> },
+    { header: 'Records', cell: (conn) => conn.dataPoints > 0 ? conn.dataPoints.toLocaleString() : '-' },
+    { header: 'Last Sync', cell: (conn) => <span className="text-muted">{conn.lastSync}</span> },
+    { header: 'Status', cell: (conn) => <Badge background={STATUS_STYLES[conn.status].bg} color={STATUS_STYLES[conn.status].fg}>{t(conn.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Connected Systems"
+      columns={columns}
+      rows={OEM_CONNECTIONS}
+      rowKey={(_, i) => `oem-${i}`}
+      mobileCard={(conn) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div>
+                <p className="text-[13px] font-semibold text-heading">{conn.manufacturer}</p>
+                <p className="text-xs text-muted">{conn.system}</p>
+              </div>
+            }
+            trailing={<Badge background={STATUS_STYLES[conn.status].bg} color={STATUS_STYLES[conn.status].fg}>{t(conn.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Type')} value={t(conn.type)} />
+          <MobileCardRow label={t('Last Sync')} value={conn.lastSync} />
+          {conn.dataPoints > 0 && <MobileCardRow label={t('Records')} value={conn.dataPoints.toLocaleString()} />}
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -46,22 +80,7 @@ export function OEMIntegrations() {
           <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{connectedCount} {t('connected')}</Badge>
           <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{OEM_CONNECTIONS.length} {t('total')}</Badge>
         </div>
-        {OEM_CONNECTIONS.map((conn, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div>
-                  <p className="text-[13px] font-semibold text-heading">{conn.manufacturer}</p>
-                  <p className="text-xs text-muted">{conn.system}</p>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[conn.status].bg} color={STATUS_STYLES[conn.status].fg}>{t(conn.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Type')} value={t(conn.type)} />
-            <MobileCardRow label={t('Last Sync')} value={conn.lastSync} />
-            {conn.dataPoints > 0 && <MobileCardRow label={t('Records')} value={conn.dataPoints.toLocaleString()} />}
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -81,39 +100,7 @@ export function OEMIntegrations() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Connected Systems')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('Manufacturer')}</th>
-                <th className="pb-3 font-medium">{t('System')}</th>
-                <th className="pb-3 font-medium">{t('Type')}</th>
-                <th className="pb-3 font-medium">{t('Records')}</th>
-                <th className="pb-3 font-medium">{t('Last Sync')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {OEM_CONNECTIONS.map((conn, i) => (
-                <tr key={i} className="border-b border-border last:border-0">
-                  <td className="py-3 font-semibold text-heading">{conn.manufacturer}</td>
-                  <td className="py-3 text-body">{conn.system}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(conn.type)}</Badge>
-                  </td>
-                  <td className="py-3 text-body">{conn.dataPoints > 0 ? conn.dataPoints.toLocaleString() : '-'}</td>
-                  <td className="py-3 text-muted">{conn.lastSync}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[conn.status].bg} color={STATUS_STYLES[conn.status].fg}>{t(conn.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

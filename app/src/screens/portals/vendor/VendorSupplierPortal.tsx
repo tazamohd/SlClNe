@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface VendorOrder {
   orderId: string
@@ -46,7 +46,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function VendorSupplierPortal() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const activeOrders = ORDERS.filter((o) => o.status !== 'Delivered')
   const totalRevenue = ORDERS.reduce((sum, o) => sum + o.total, 0)
@@ -58,58 +57,15 @@ export function VendorSupplierPortal() {
     { label: t('Rating'), value: '4.7', icon: 'Star', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Store" title={t('Vendor Portal')} subtitle={t('Manage orders & performance')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-
-        <p className="text-[13px] font-bold text-heading">{t('Performance')}</p>
-        {METRICS.map((m) => (
-          <Card key={m.label} className="flex items-center gap-3 rounded-xl p-3 shadow-sm">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={m.icon} size={14} /></span>
-            <div className="flex-1">
-              <p className="text-[11px] text-muted">{t(m.label)}</p>
-              <p className="font-display text-lg font-black text-heading">{m.value}</p>
-            </div>
-            <span className="text-xs font-semibold" style={{ color: 'var(--salis-blue)' }}>{m.trend}</span>
-          </Card>
-        ))}
-
-        <p className="text-[13px] font-bold text-heading">{t('Recent Orders')}</p>
-        {ORDERS.map((o) => (
-          <MobileCard key={o.orderId}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="ShoppingCart" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{o.orderId}</p>
-                    <p className="text-xs text-muted">{o.workshop}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(o.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Items')} value={o.items} />
-            <MobileCardRow label={t('Qty')} value={String(o.qty)} />
-            <MobileCardRow label={t('Total')} value={`${o.total.toLocaleString()} SAR`} />
-            <MobileCardRow label={t('Due Date')} value={o.dueDate} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<VendorOrder>[] = [
+    { header: t('Order #'), cell: (o) => o.orderId },
+    { header: t('Workshop'), cell: (o) => o.workshop },
+    { header: t('Items'), cell: (o) => o.items },
+    { header: t('Qty'), cell: (o) => o.qty },
+    { header: t('Total'), cell: (o) => `${o.total.toLocaleString()} SAR` },
+    { header: t('Due Date'), cell: (o) => o.dueDate },
+    { header: t('Status'), cell: (o) => <Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(o.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -151,39 +107,21 @@ export function VendorSupplierPortal() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Recent Orders')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Order #')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Workshop')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Items')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Qty')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Total')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Due Date')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ORDERS.map((o) => (
-                <tr key={o.orderId} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono font-semibold text-heading" dir="ltr">{o.orderId}</td>
-                  <td className="py-3 pe-4 text-body">{o.workshop}</td>
-                  <td className="py-3 pe-4 text-body">{o.items}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{o.qty}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{o.total.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-muted">{o.dueDate}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(o.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Vendor recent orders"
+        columns={columns}
+        rows={ORDERS}
+        rowKey={(o) => o.orderId}
+        mobileCard={(o) => (
+          <>
+            <MobileCardHeader title={o.orderId} trailing={<Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(o.status)}</Badge>} />
+            <MobileCardRow label={t('Workshop')}>{o.workshop}</MobileCardRow>
+            <MobileCardRow label={t('Items')}>{o.items}</MobileCardRow>
+            <MobileCardRow label={t('Total')}>{o.total.toLocaleString()} SAR</MobileCardRow>
+            <MobileCardRow label={t('Due Date')}>{o.dueDate}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

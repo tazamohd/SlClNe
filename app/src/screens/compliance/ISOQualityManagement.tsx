@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_STANDARDS = [
   { id: 'ISO-9001', name: 'Quality Management System', version: '2015', status: 'Certified', lastAudit: '2026-03-15', nextAudit: '2027-03-15', auditor: 'Bureau Veritas', score: 92 },
@@ -22,9 +22,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Planned: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type StandardRow = (typeof MOCK_STANDARDS)[number]
+
 export function ISOQualityManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_STANDARDS : MOCK_STANDARDS.filter(s => s.status === filter)
@@ -38,33 +39,15 @@ export function ISOQualityManagement() {
     { label: t('Next Audit'), value: '2026-11', icon: 'Calendar', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Award" title={t('ISO Quality')} subtitle={t('Compliance')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(s => {
-          const [bg, fg] = STATUS_COLORS[s.status] ?? STATUS_COLORS.Planned
-          return (
-            <MobileCard key={s.id}>
-              <MobileCardHeader title={s.id} code trailing={<Badge background={bg} color={fg}>{t(s.status)}</Badge>} />
-              <MobileCardRow>{t(s.name)}</MobileCardRow>
-              <MobileCardRow label={t('Version')}>{s.version}</MobileCardRow>
-              <MobileCardRow label={t('Score')}>{s.score > 0 ? `${s.score}%` : '—'}</MobileCardRow>
-              <MobileCardRow label={t('Next Audit')}>{s.nextAudit}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<StandardRow>[] = [
+    { header: 'Standard', cell: (s) => s.id, code: true },
+    { header: 'Name', cell: (s) => t(s.name) },
+    { header: 'Version', cell: (s) => s.version },
+    { header: 'Status', cell: (s) => { const [bg, fg] = STATUS_COLORS[s.status] ?? STATUS_COLORS.Planned; return <Badge background={bg} color={fg}>{t(s.status)}</Badge> } },
+    { header: 'Score', cell: (s) => s.score > 0 ? `${s.score}%` : '—' },
+    { header: 'Auditor', cell: (s) => s.auditor },
+    { header: 'Next Audit', cell: (s) => s.nextAudit },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -93,48 +76,32 @@ export function ISOQualityManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Standards & Certifications')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Certified">{t('Certified')}</option>
-            <option value="In Progress">{t('In Progress')}</option>
-            <option value="Planned">{t('Planned')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Standard')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Version')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Score')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Auditor')}</th>
-                <th className="pb-3 text-start font-medium">{t('Next Audit')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(s => {
-                const [bg, fg] = STATUS_COLORS[s.status] ?? STATUS_COLORS.Planned
-                return (
-                  <tr key={s.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{s.id}</td>
-                    <td className="py-3 pe-4 text-[13px] text-body">{t(s.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{s.version}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(s.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{s.score > 0 ? `${s.score}%` : '—'}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{s.auditor}</td>
-                    <td className="py-3 text-[13px] text-muted" dir="ltr">{s.nextAudit}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Standards & Certifications')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Certified">{t('Certified')}</option>
+          <option value="In Progress">{t('In Progress')}</option>
+          <option value="Planned">{t('Planned')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="ISO standards and certifications"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Planned
+          return (
+            <>
+              <MobileCardHeader title={row.id} code trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow>{t(row.name)}</MobileCardRow>
+              <MobileCardRow label={t('Score')}>{row.score > 0 ? `${row.score}%` : '—'}</MobileCardRow>
+              <MobileCardRow label={t('Next Audit')}>{row.nextAudit}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

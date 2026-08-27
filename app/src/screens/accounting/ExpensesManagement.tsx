@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
-  MobileCard,
+  MobileCardHeader,
   MobileCardRow,
-  MobilePageHeader,
 } from '@/components/shell/MobileShell'
 
 interface ExpenseCategory {
@@ -39,7 +37,6 @@ const STATUS_PALETTE: Record<string, readonly [string, string]> = {
 
 export function ExpensesManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totals = useMemo(() => {
     let budget = 0
@@ -62,51 +59,25 @@ export function ExpensesManagement() {
     { label: 'Over Budget', value: totals.overBudget, caption: 'Categories exceeded', tone: 'warning' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="CreditCard"
-          title={t('Expenses Management')}
-          subtitle={t('Accounting')}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{t(stat.label)}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{stat.value}</p>
-            </Card>
-          ))}
+  const columns: Column<ExpenseCategory>[] = [
+    { header: 'Category', cell: (c) => <span className="font-medium text-heading">{t(c.name)}</span> },
+    { header: 'Budget', cell: (c) => <Money sar={c.budget} />, className: 'text-end' },
+    { header: 'Spent', cell: (c) => <Money sar={c.spent} className="font-semibold" />, className: 'text-end' },
+    { header: 'Remaining', cell: (c) => <Money sar={c.remaining} className={c.remaining < 0 ? 'text-salis-orange' : ''} />, className: 'text-end' },
+    { header: 'Transactions', cell: (c) => c.transactions, className: 'text-end' },
+    { header: 'Progress', cell: (c) => {
+      const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
+      return (
+        <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]" style={{ minWidth: 100 }}>
+          <div className="h-full rounded-full" style={{ width: `${Math.min(pct, 100)}%`, background: pct > 100 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
         </div>
-        <div className="flex flex-col gap-3">
-          {MOCK_CATEGORIES.map((c) => {
-            const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
-            const [bg, fg] = STATUS_PALETTE[c.status] ?? STATUS_PALETTE['Under Budget']
-            return (
-              <MobileCard key={c.name}>
-                <div className="flex items-center justify-between">
-                  <span className="text-[13px] font-semibold text-heading">{t(c.name)}</span>
-                  <Badge background={bg} color={fg}>{t(c.status)}</Badge>
-                </div>
-                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${Math.min(pct, 100)}%`, background: pct > 100 ? 'var(--salis-orange)' : 'var(--salis-blue)' }}
-                  />
-                </div>
-                <MobileCardRow label={t('Spent / Budget')}>
-                  <span dir="ltr" className="text-[12px]">
-                    <Money sar={c.spent} bare /> / <Money sar={c.budget} bare />
-                  </span>
-                </MobileCardRow>
-                <MobileCardRow label={t('Transactions')}>{c.transactions}</MobileCardRow>
-              </MobileCard>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
+      )
+    } },
+    { header: 'Status', cell: (c) => {
+      const [bg, fg] = STATUS_PALETTE[c.status] ?? STATUS_PALETTE['Under Budget']
+      return <Badge background={bg} color={fg}>{t(c.status)}</Badge>
+    } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -117,58 +88,28 @@ export function ExpensesManagement() {
       />
       <StatRow stats={stats} />
 
-      <Section
-        title={t('Expense Categories')}
-        subtitle={t('Budget vs actual spending by category')}
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-wide text-muted">
-                <th className="py-2.5 text-start font-medium">{t('Category')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Budget')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Spent')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Remaining')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Transactions')}</th>
-                <th className="py-2.5 font-medium" style={{ width: 140 }}>{t('Progress')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_CATEGORIES.map((c) => {
-                const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
-                const [bg, fg] = STATUS_PALETTE[c.status] ?? STATUS_PALETTE['Under Budget']
-                return (
-                  <tr key={c.name} className="border-b border-border/50">
-                    <td className="py-2.5 text-[13px] font-medium text-heading">{t(c.name)}</td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={c.budget} />
-                    </td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={c.spent} className="font-semibold" />
-                    </td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={c.remaining} className={c.remaining < 0 ? 'text-salis-orange' : ''} />
-                    </td>
-                    <td className="py-2.5 text-end text-[13px] text-heading">{c.transactions}</td>
-                    <td className="py-2.5">
-                      <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
-                        <div
-                          className="h-full rounded-full"
-                          style={{ width: `${Math.min(pct, 100)}%`, background: pct > 100 ? 'var(--salis-orange)' : 'var(--salis-blue)' }}
-                        />
-                      </div>
-                    </td>
-                    <td className="py-2.5">
-                      <Badge background={bg} color={fg}>{t(c.status)}</Badge>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Section>
+      <DataTable
+        caption="Expense categories"
+        columns={columns}
+        rows={MOCK_CATEGORIES as ExpenseCategory[]}
+        rowKey={(c) => c.name}
+        mobileCard={(c) => {
+          const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
+          const [bg, fg] = STATUS_PALETTE[c.status] ?? STATUS_PALETTE['Under Budget']
+          return (
+            <>
+              <MobileCardHeader title={t(c.name)} trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>} />
+              <MobileCardRow label={t('Spent / Budget')}>
+                <span dir="ltr" className="text-[12px]">
+                  <Money sar={c.spent} bare /> / <Money sar={c.budget} bare />
+                </span>
+              </MobileCardRow>
+              <MobileCardRow label={t('Progress')}>{pct}%</MobileCardRow>
+            </>
+          )
+        }}
+        empty={<EmptyState icon="CreditCard" title={t('No expense categories found')} />}
+      />
     </div>
   )
 }

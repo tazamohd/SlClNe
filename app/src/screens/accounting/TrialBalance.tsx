@@ -1,15 +1,12 @@
 import { useMemo } from 'react'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar } from '@/components/ui/Money'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
-  MobileCard,
   MobileCardHeader,
   MobileCardRow,
-  MobilePageHeader,
 } from '@/components/shell/MobileShell'
 
 /** Trial Balance screen — spec-only build.
@@ -46,7 +43,6 @@ const MOCK_ROWS: readonly TrialBalanceRow[] = [
 
 export function TrialBalance() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totals = useMemo(() => {
     let debit = 0
@@ -72,45 +68,14 @@ export function TrialBalance() {
     { label: 'Accounts', value: totals.count, caption: 'In trial balance' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="Scale"
-          title={t('Trial Balance')}
-          subtitle={t('Accounting')}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{t(stat.label)}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{stat.value}</p>
-            </Card>
-          ))}
-        </div>
-        <div className="flex flex-col gap-3">
-          {MOCK_ROWS.map((row) => (
-            <MobileCard key={row.code}>
-              <MobileCardHeader title={row.code} code />
-              <MobileCardRow>{t(row.name)}</MobileCardRow>
-              <MobileCardRow label={t('Opening')}>
-                <Money sar={row.opening} className="text-heading" />
-              </MobileCardRow>
-              <MobileCardRow label={t('Debit')}>
-                <Money sar={row.debit} className="text-heading" />
-              </MobileCardRow>
-              <MobileCardRow label={t('Credit')}>
-                <Money sar={row.credit} className="text-heading" />
-              </MobileCardRow>
-              <MobileCardRow label={t('Closing')}>
-                <Money sar={row.closing} className="font-semibold text-heading" />
-              </MobileCardRow>
-            </MobileCard>
-          ))}
-        </div>
-      </div>
-    )
-  }
+  const columns: Column<TrialBalanceRow>[] = [
+    { header: 'Account Code', cell: (r) => r.code, code: true },
+    { header: 'Account Name', cell: (r) => t(r.name) },
+    { header: 'Opening Balance', cell: (r) => <Money sar={r.opening} />, className: 'text-end' },
+    { header: 'Debit', cell: (r) => <Money sar={r.debit} />, className: 'text-end' },
+    { header: 'Credit', cell: (r) => <Money sar={r.credit} />, className: 'text-end' },
+    { header: 'Closing Balance', cell: (r) => <Money sar={r.closing} className="font-semibold" />, className: 'text-end' },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -128,61 +93,31 @@ export function TrialBalance() {
         </div>
       )}
 
-      <Section title={t('Trial Balance Report')} subtitle={t('Opening, period activity and closing balances')}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-wide text-muted">
-                <th className="py-2.5 text-start font-medium">{t('Account Code')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Account Name')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Opening Balance')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Debit')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Credit')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Closing Balance')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_ROWS.map((row) => (
-                <tr key={row.code} className="border-b border-border/50">
-                  <td className="py-2.5">
-                    <span className="font-mono text-[13px]" dir="ltr">{row.code}</span>
-                  </td>
-                  <td className="py-2.5 text-[13px] text-body">{t(row.name)}</td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={row.opening} />
-                  </td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={row.debit} />
-                  </td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={row.credit} />
-                  </td>
-                  <td className="py-2.5 text-end">
-                    <Money sar={row.closing} className="font-semibold" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className="border-t-2 border-border font-bold text-heading">
-                <td className="py-3 text-[13px]" colSpan={2}>{t('Totals')}</td>
-                <td className="py-3 text-end">
-                  <Money sar={MOCK_ROWS.reduce((s, r) => s + r.opening, 0)} className="font-bold" />
-                </td>
-                <td className="py-3 text-end">
-                  <Money sar={totals.debit} className="font-bold" />
-                </td>
-                <td className="py-3 text-end">
-                  <Money sar={totals.credit} className="font-bold" />
-                </td>
-                <td className="py-3 text-end">
-                  <Money sar={MOCK_ROWS.reduce((s, r) => s + r.closing, 0)} className="font-bold" />
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </Section>
+      <DataTable
+        caption="Trial balance report"
+        columns={columns}
+        rows={MOCK_ROWS as TrialBalanceRow[]}
+        rowKey={(r) => r.code}
+        footer={
+          <div className="flex items-center justify-between border-t-2 border-border px-6 py-3 text-[13px] font-bold text-heading">
+            <span>{t('Totals')}</span>
+            <span className="flex items-center gap-6">
+              <Money sar={MOCK_ROWS.reduce((s, r) => s + r.opening, 0)} className="font-bold" />
+              <Money sar={totals.debit} className="font-bold" />
+              <Money sar={totals.credit} className="font-bold" />
+              <Money sar={MOCK_ROWS.reduce((s, r) => s + r.closing, 0)} className="font-bold" />
+            </span>
+          </div>
+        }
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader title={r.code} code />
+            <MobileCardRow>{t(r.name)}</MobileCardRow>
+            <MobileCardRow label={t('Closing')}><Money sar={r.closing} className="font-semibold text-heading" /></MobileCardRow>
+          </>
+        )}
+        empty={<EmptyState icon="Scale" title={t('No accounts found')} />}
+      />
     </div>
   )
 }

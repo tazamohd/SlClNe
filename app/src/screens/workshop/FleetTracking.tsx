@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface FleetVehicle {
   id: string
@@ -50,6 +51,31 @@ export function FleetTracking() {
     return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{status}</Badge>
   }
 
+  const columns: Column<FleetVehicle>[] = [
+    { header: 'Vehicle', cell: (v) => v.vehicle },
+    { header: 'Plate', cell: (v) => v.plate, code: true },
+    { header: 'Driver', cell: (v) => v.driver },
+    { header: 'Last Location', cell: (v) => v.lastLocation },
+    { header: 'Status', cell: (v) => statusBadge(v.status) },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Fleet vehicles"
+      columns={columns}
+      rows={vehicles}
+      rowKey={(v) => v.id}
+      mobileCard={(v) => (
+        <>
+          <MobileCardHeader title={v.vehicle} trailing={statusBadge(v.status)} />
+          <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
+          <MobileCardRow label={t('Driver')}>{v.driver}</MobileCardRow>
+          <MobileCardRow label={t('Location')}>{v.lastLocation}</MobileCardRow>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -63,25 +89,7 @@ export function FleetTracking() {
             </MobileCard>
           ))}
         </div>
-        {vehicles.map((v) => (
-          <MobileCard key={v.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Truck" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{v.vehicle}</p>
-                    <p className="font-mono text-xs text-muted" dir="ltr">{v.plate}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              <span className="text-xs text-muted">{v.lastLocation}</span>
-              {statusBadge(v.status)}
-            </div>
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -113,33 +121,7 @@ export function FleetTracking() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Fleet Vehicles')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Driver')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Last Location')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vehicles.map((v) => (
-                <tr key={v.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{v.vehicle}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{v.plate}</td>
-                  <td className="py-3 pe-4 text-body">{v.driver}</td>
-                  <td className="py-3 pe-4 text-muted">{v.lastLocation}</td>
-                  <td className="py-3">{statusBadge(v.status)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

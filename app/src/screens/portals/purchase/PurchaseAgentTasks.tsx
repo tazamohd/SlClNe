@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Task {
   id: string
@@ -46,7 +46,6 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 export function PurchaseAgentTasks() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Total Tasks'), value: String(TASKS.length), icon: 'ListChecks', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -55,45 +54,19 @@ export function PurchaseAgentTasks() {
     { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="ListChecks" title={t('Tasks')} subtitle={t('Pending actions')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {TASKS.map((task) => (
-          <MobileCard key={task.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={CATEGORY_ICONS[task.category]} size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{task.title}</p>
-                    <p className="text-xs text-muted">{t(task.category)}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Assigned By')} value={task.assignedBy} />
-            <MobileCardRow label={t('Due')} value={task.dueDate} />
-            <MobileCardRow label={t('Priority')}>
-              <Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>
-            </MobileCardRow>
-          </MobileCard>
-        ))}
+  const columns: Column<Task>[] = [
+    { header: t('Task'), cell: (task) => task.title },
+    { header: t('Category'), cell: (task) => (
+      <div className="flex items-center gap-1.5">
+        <Icon name={CATEGORY_ICONS[task.category]} size={14} className="text-muted" />
+        <span>{t(task.category)}</span>
       </div>
-    )
-  }
+    ) },
+    { header: t('Assigned By'), cell: (task) => task.assignedBy },
+    { header: t('Due'), cell: (task) => task.dueDate },
+    { header: t('Priority'), cell: (task) => <Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge> },
+    { header: t('Status'), cell: (task) => <Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -122,43 +95,20 @@ export function PurchaseAgentTasks() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Task')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Assigned By')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Due')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Priority')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {TASKS.map((task) => (
-                <tr key={task.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{task.title}</td>
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-1.5">
-                      <Icon name={CATEGORY_ICONS[task.category]} size={14} className="text-muted" />
-                      <span className="text-body">{t(task.category)}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{task.assignedBy}</td>
-                  <td className="py-3 pe-4 text-body">{task.dueDate}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>
-                  </td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Purchase agent tasks"
+        columns={columns}
+        rows={TASKS}
+        rowKey={(task) => task.id}
+        mobileCard={(task) => (
+          <>
+            <MobileCardHeader title={task.title} trailing={<Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>} />
+            <MobileCardRow label={t('Category')}>{t(task.category)}</MobileCardRow>
+            <MobileCardRow label={t('Due')}>{task.dueDate}</MobileCardRow>
+            <MobileCardRow label={t('Priority')}><Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

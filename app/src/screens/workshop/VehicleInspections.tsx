@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface InspectionRow {
   id: string
@@ -49,6 +50,33 @@ export function VehicleInspections() {
     return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{result}</Badge>
   }
 
+  const columns: Column<InspectionRow>[] = [
+    { header: 'ID', cell: (r) => r.id, code: true },
+    { header: 'Vehicle', cell: (r) => r.vehicle },
+    { header: 'Plate', cell: (r) => r.plate, code: true },
+    { header: 'Date', cell: (r) => r.date, code: true },
+    { header: 'Inspector', cell: (r) => r.inspector },
+    { header: 'Result', cell: (r) => resultBadge(r.result) },
+    { header: 'Next Due', cell: (r) => r.nextDue, code: true },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Vehicle inspection records"
+      columns={columns}
+      rows={rows}
+      rowKey={(r) => r.id}
+      mobileCard={(r) => (
+        <>
+          <MobileCardHeader title={r.vehicle} trailing={resultBadge(r.result)} />
+          <MobileCardRow label={t('Plate')}>{r.plate}</MobileCardRow>
+          <MobileCardRow label={t('Date')}>{r.date}</MobileCardRow>
+          <MobileCardRow label={t('Inspector')}>{r.inspector}</MobileCardRow>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -62,25 +90,7 @@ export function VehicleInspections() {
             </MobileCard>
           ))}
         </div>
-        {rows.map((r) => (
-          <MobileCard key={r.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.vehicle}</p>
-                    <p className="font-mono text-xs text-muted" dir="ltr">{r.plate} · {r.date}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              <span className="text-xs text-muted">{r.inspector}</span>
-              {resultBadge(r.result)}
-            </div>
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -112,37 +122,7 @@ export function VehicleInspections() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Inspection Records')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plate')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Inspector')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Result')}</th>
-                <th className="pb-3 text-start font-medium">{t('Next Due')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{r.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{r.vehicle}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{r.plate}</td>
-                  <td className="py-3 pe-4 text-muted" dir="ltr">{r.date}</td>
-                  <td className="py-3 pe-4 text-body">{r.inspector}</td>
-                  <td className="py-3 pe-4">{resultBadge(r.result)}</td>
-                  <td className="py-3 text-muted" dir="ltr">{r.nextDue}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

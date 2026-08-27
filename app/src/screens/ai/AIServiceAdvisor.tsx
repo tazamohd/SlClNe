@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_RECOMMENDATIONS = [
   { id: 'REC-001', vehicle: '2024 Toyota Camry', vin: 'JTDKN3DU5R0...', service: 'Brake Pad Replacement', urgency: 'High', confidence: 96, reason: 'Wear pattern detected at 82% threshold', estimatedCost: 'SAR 450' },
@@ -20,9 +20,10 @@ const URGENCY_COLORS: Record<string, readonly [string, string]> = {
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type RecRow = (typeof MOCK_RECOMMENDATIONS)[number]
+
 export function AIServiceAdvisor() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const highUrgency = MOCK_RECOMMENDATIONS.filter(r => r.urgency === 'High').length
   const avgConfidence = Math.round(MOCK_RECOMMENDATIONS.reduce((a, r) => a + r.confidence, 0) / MOCK_RECOMMENDATIONS.length)
@@ -34,33 +35,14 @@ export function AIServiceAdvisor() {
     { label: t('Vehicles Scanned'), value: '148', icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Lightbulb" title={t('Service Advisor')} subtitle={t('AI Recommendations')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {MOCK_RECOMMENDATIONS.map(r => {
-          const [bg, fg] = URGENCY_COLORS[r.urgency] ?? URGENCY_COLORS.Low
-          return (
-            <MobileCard key={r.id}>
-              <MobileCardHeader title={r.vehicle} trailing={<Badge background={bg} color={fg}>{t(r.urgency)}</Badge>} />
-              <MobileCardRow label={t('Service')}>{t(r.service)}</MobileCardRow>
-              <MobileCardRow label={t('Confidence')}>{r.confidence}%</MobileCardRow>
-              <MobileCardRow label={t('Reason')}>{t(r.reason)}</MobileCardRow>
-              <MobileCardRow label={t('Est. Cost')}>{r.estimatedCost}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<RecRow>[] = [
+    { header: 'Vehicle', cell: (r) => r.vehicle },
+    { header: 'Service', cell: (r) => t(r.service) },
+    { header: 'Urgency', cell: (r) => { const [bg, fg] = URGENCY_COLORS[r.urgency] ?? URGENCY_COLORS.Low; return <Badge background={bg} color={fg}>{t(r.urgency)}</Badge> } },
+    { header: 'Confidence', cell: (r) => `${r.confidence}%` },
+    { header: 'Reason', cell: (r) => t(r.reason) },
+    { header: 'Est. Cost', cell: (r) => r.estimatedCost },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -89,38 +71,24 @@ export function AIServiceAdvisor() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('Service Recommendations')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Urgency')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Confidence')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Reason')}</th>
-                <th className="pb-3 text-end font-medium">{t('Est. Cost')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MOCK_RECOMMENDATIONS.map(r => {
-                const [bg, fg] = URGENCY_COLORS[r.urgency] ?? URGENCY_COLORS.Low
-                return (
-                  <tr key={r.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{r.vehicle}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(r.service)}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(r.urgency)}</Badge></td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{r.confidence}%</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(r.reason)}</td>
-                    <td className="py-3 text-end font-mono text-[13px] text-heading">{r.estimatedCost}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <h3 className="text-[15px] font-bold text-heading">{t('Service Recommendations')}</h3>
+      <DataTable
+        caption="AI service recommendations"
+        columns={columns}
+        rows={[...MOCK_RECOMMENDATIONS]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = URGENCY_COLORS[row.urgency] ?? URGENCY_COLORS.Low
+          return (
+            <>
+              <MobileCardHeader title={row.vehicle} trailing={<Badge background={bg} color={fg}>{t(row.urgency)}</Badge>} />
+              <MobileCardRow label={t('Service')}>{t(row.service)}</MobileCardRow>
+              <MobileCardRow label={t('Confidence')}>{row.confidence}%</MobileCardRow>
+              <MobileCardRow label={t('Est. Cost')}>{row.estimatedCost}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

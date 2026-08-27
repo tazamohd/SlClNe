@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_KPIS = [
   { id: 'KPI-01', name: 'Customer Satisfaction', category: 'Quality', value: '4.6/5', target: '4.5/5', status: 'On Track', trend: '+0.2' },
@@ -24,9 +24,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   'At Risk': ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
 }
 
+type KPIRow = (typeof MOCK_KPIS)[number]
+
 export function KPIDashboard() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [category, setCategory] = useState('All')
 
   const filtered = category === 'All' ? MOCK_KPIS : MOCK_KPIS.filter(k => k.category === category)
@@ -40,33 +41,14 @@ export function KPIDashboard() {
     { label: t('Categories'), value: '4', icon: 'Layers', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Target" title={t('KPI Dashboard')} subtitle={t('Business Intelligence')} />
-        <div className="grid grid-cols-2 gap-3">
-          {summaryKpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(k => {
-          const [bg, fg] = STATUS_COLORS[k.status] ?? STATUS_COLORS['At Risk']
-          return (
-            <MobileCard key={k.id}>
-              <MobileCardHeader title={t(k.name)} trailing={<Badge background={bg} color={fg}>{t(k.status)}</Badge>} />
-              <MobileCardRow label={t('Category')}>{t(k.category)}</MobileCardRow>
-              <MobileCardRow label={t('Value')}>{k.value}</MobileCardRow>
-              <MobileCardRow label={t('Target')}>{k.target}</MobileCardRow>
-              <MobileCardRow label={t('Trend')}>{k.trend}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<KPIRow>[] = [
+    { header: 'KPI', cell: (k) => t(k.name) },
+    { header: 'Category', cell: (k) => t(k.category) },
+    { header: 'Current', cell: (k) => k.value },
+    { header: 'Target', cell: (k) => k.target },
+    { header: 'Status', cell: (k) => { const [bg, fg] = STATUS_COLORS[k.status] ?? STATUS_COLORS['At Risk']; return <Badge background={bg} color={fg}>{t(k.status)}</Badge> } },
+    { header: 'Trend', cell: (k) => k.trend },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -95,48 +77,34 @@ export function KPIDashboard() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Performance Indicators')}</h3>
-          <Select value={category} onChange={e => setCategory(e.target.value)} aria-label={t('Filter by category')}>
-            <option value="All">{t('All Categories')}</option>
-            <option value="Quality">{t('Quality')}</option>
-            <option value="Operations">{t('Operations')}</option>
-            <option value="Financial">{t('Financial')}</option>
-            <option value="Inventory">{t('Inventory')}</option>
-            <option value="HR">{t('HR')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('KPI')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Current')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Target')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-end font-medium">{t('Trend')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(k => {
-                const [bg, fg] = STATUS_COLORS[k.status] ?? STATUS_COLORS['At Risk']
-                return (
-                  <tr key={k.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(k.name)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(k.category)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{k.value}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-muted">{k.target}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(k.status)}</Badge></td>
-                    <td className="py-3 text-end font-mono text-[13px] text-heading">{k.trend}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Performance Indicators')}</h3>
+        <Select value={category} onChange={e => setCategory(e.target.value)} aria-label={t('Filter by category')}>
+          <option value="All">{t('All Categories')}</option>
+          <option value="Quality">{t('Quality')}</option>
+          <option value="Operations">{t('Operations')}</option>
+          <option value="Financial">{t('Financial')}</option>
+          <option value="Inventory">{t('Inventory')}</option>
+          <option value="HR">{t('HR')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Key performance indicators"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS['At Risk']
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Category')}>{t(row.category)}</MobileCardRow>
+              <MobileCardRow label={t('Value')}>{row.value}</MobileCardRow>
+              <MobileCardRow label={t('Trend')}>{row.trend}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

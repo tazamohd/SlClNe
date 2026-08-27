@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Money, formatSar } from '@/components/ui/Money'
 
 interface Invoice {
@@ -32,7 +32,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function ClientPortalInvoices() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totalOwed = INVOICES.filter((i) => i.status !== 'Paid').reduce((s, i) => s + i.amount, 0)
   const totalPaid = INVOICES.filter((i) => i.status === 'Paid').reduce((s, i) => s + i.amount, 0)
@@ -44,43 +43,14 @@ export function ClientPortalInvoices() {
     { label: t('Overdue'), value: '1', icon: 'Clock', bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="FileText" title={t('Invoices')} subtitle={t('Payment history')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {INVOICES.map((inv) => (
-          <MobileCard key={inv.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="FileText" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{inv.id}</p>
-                    <p className="text-xs text-muted">{inv.vehicle}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[inv.status].bg} color={STATUS_STYLES[inv.status].fg}>{t(inv.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Service')} value={inv.service} />
-            <MobileCardRow label={t('Date')} value={inv.date} />
-            <MobileCardRow label={t('Amount')} value={<Money sar={inv.amount} />} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Invoice>[] = [
+    { header: t('Invoice'), cell: (inv) => inv.id },
+    { header: t('Vehicle'), cell: (inv) => inv.vehicle },
+    { header: t('Service'), cell: (inv) => inv.service },
+    { header: t('Date'), cell: (inv) => inv.date },
+    { header: t('Amount'), cell: (inv) => <Money sar={inv.amount} /> },
+    { header: t('Status'), cell: (inv) => <Badge background={STATUS_STYLES[inv.status].bg} color={STATUS_STYLES[inv.status].fg}>{t(inv.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -109,36 +79,20 @@ export function ClientPortalInvoices() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Invoice')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Amount')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {INVOICES.map((inv) => (
-                <tr key={inv.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{inv.id}</td>
-                  <td className="py-3 pe-4 text-body">{inv.vehicle}</td>
-                  <td className="py-3 pe-4 text-body">{inv.service}</td>
-                  <td className="py-3 pe-4 text-body">{inv.date}</td>
-                  <td className="py-3 pe-4 text-end"><Money sar={inv.amount} /></td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[inv.status].bg} color={STATUS_STYLES[inv.status].fg}>{t(inv.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Client invoices"
+        columns={columns}
+        rows={INVOICES}
+        rowKey={(inv) => inv.id}
+        mobileCard={(inv) => (
+          <>
+            <MobileCardHeader title={inv.id} trailing={<Badge background={STATUS_STYLES[inv.status].bg} color={STATUS_STYLES[inv.status].fg}>{t(inv.status)}</Badge>} />
+            <MobileCardRow label={t('Service')}>{inv.service}</MobileCardRow>
+            <MobileCardRow label={t('Date')}>{inv.date}</MobileCardRow>
+            <MobileCardRow label={t('Amount')}><Money sar={inv.amount} /></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

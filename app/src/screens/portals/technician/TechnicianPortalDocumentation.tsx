@@ -1,9 +1,8 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Document {
   title: string
@@ -39,34 +38,20 @@ const FORMAT_ICONS: Record<string, string> = {
 
 export function TechnicianPortalDocumentation() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="BookOpen" title={t('Documentation')} subtitle={t('Manuals and guides')} />
-        {DOCUMENTS.map((d, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={FORMAT_ICONS[d.format]} size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{d.title}</p>
-                    <p className="text-xs text-muted">{d.make}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={CATEGORY_STYLES[d.category].bg} color={CATEGORY_STYLES[d.category].fg}>{t(d.category)}</Badge>}
-            />
-            <MobileCardRow label={t('Format')} value={t(d.format)} />
-            <MobileCardRow label={t('Updated')} value={d.lastUpdated} />
-            {d.pages > 0 && <MobileCardRow label={t('Pages')} value={String(d.pages)} />}
-          </MobileCard>
-        ))}
+  const columns: Column<Document>[] = [
+    { header: t('Title'), cell: (d) => d.title },
+    { header: t('Category'), cell: (d) => <Badge background={CATEGORY_STYLES[d.category].bg} color={CATEGORY_STYLES[d.category].fg}>{t(d.category)}</Badge> },
+    { header: t('Make'), cell: (d) => d.make },
+    { header: t('Format'), cell: (d) => (
+      <div className="flex items-center gap-1.5">
+        <Icon name={FORMAT_ICONS[d.format]} size={14} className="text-muted" />
+        <span>{t(d.format)}</span>
       </div>
-    )
-  }
+    ) },
+    { header: t('Pages'), cell: (d) => d.pages > 0 ? d.pages : '--' },
+    { header: t('Updated'), cell: (d) => d.lastUpdated },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -83,41 +68,20 @@ export function TechnicianPortalDocumentation() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Title')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Make')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Format')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Pages')}</th>
-                <th className="pb-3 text-start font-medium">{t('Updated')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {DOCUMENTS.map((d, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{d.title}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={CATEGORY_STYLES[d.category].bg} color={CATEGORY_STYLES[d.category].fg}>{t(d.category)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{d.make}</td>
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-1.5">
-                      <Icon name={FORMAT_ICONS[d.format]} size={14} className="text-muted" />
-                      <span className="text-body">{t(d.format)}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{d.pages > 0 ? d.pages : '--'}</td>
-                  <td className="py-3 text-body">{d.lastUpdated}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Service documentation"
+        columns={columns}
+        rows={DOCUMENTS}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(d) => (
+          <>
+            <MobileCardHeader title={d.title} trailing={<Badge background={CATEGORY_STYLES[d.category].bg} color={CATEGORY_STYLES[d.category].fg}>{t(d.category)}</Badge>} />
+            <MobileCardRow label={t('Make')}>{d.make}</MobileCardRow>
+            <MobileCardRow label={t('Format')}>{t(d.format)}</MobileCardRow>
+            <MobileCardRow label={t('Updated')}>{d.lastUpdated}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

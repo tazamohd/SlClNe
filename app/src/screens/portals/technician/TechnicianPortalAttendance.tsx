@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface AttendanceRecord {
   date: string
@@ -35,7 +35,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function TechnicianPortalAttendance() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Present Days'), value: '18', icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
@@ -44,43 +43,14 @@ export function TechnicianPortalAttendance() {
     { label: t('Attendance Rate'), value: '94%', icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="CalendarCheck" title={t('Attendance')} subtitle={t('Monthly records')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {ATTENDANCE.map((a, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Calendar" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{a.date}</p>
-                    <p className="text-xs text-muted">{t(a.day)}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Check In')} value={a.checkIn} />
-            <MobileCardRow label={t('Check Out')} value={a.checkOut} />
-            <MobileCardRow label={t('Hours')} value={a.totalHours > 0 ? `${a.totalHours.toFixed(1)}h` : '--'} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<AttendanceRecord>[] = [
+    { header: t('Date'), cell: (a) => a.date },
+    { header: t('Day'), cell: (a) => t(a.day) },
+    { header: t('Check In'), cell: (a) => a.checkIn },
+    { header: t('Check Out'), cell: (a) => a.checkOut },
+    { header: t('Hours'), cell: (a) => a.totalHours > 0 ? `${a.totalHours.toFixed(1)}h` : '--' },
+    { header: t('Status'), cell: (a) => <Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -109,36 +79,20 @@ export function TechnicianPortalAttendance() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Day')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Check In')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Check Out')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Hours')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ATTENDANCE.map((a, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{a.date}</td>
-                  <td className="py-3 pe-4 text-body">{t(a.day)}</td>
-                  <td className="py-3 pe-4 font-mono text-body">{a.checkIn}</td>
-                  <td className="py-3 pe-4 font-mono text-body">{a.checkOut}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{a.totalHours > 0 ? `${a.totalHours.toFixed(1)}h` : '--'}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Attendance records"
+        columns={columns}
+        rows={ATTENDANCE}
+        rowKey={(_, i) => `row-${i}`}
+        mobileCard={(a) => (
+          <>
+            <MobileCardHeader title={a.date} trailing={<Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>} />
+            <MobileCardRow label={t('Day')}>{t(a.day)}</MobileCardRow>
+            <MobileCardRow label={t('Check In')}>{a.checkIn}</MobileCardRow>
+            <MobileCardRow label={t('Hours')}>{a.totalHours > 0 ? `${a.totalHours.toFixed(1)}h` : '--'}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

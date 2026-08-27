@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Tenant {
   id: string
@@ -57,38 +58,58 @@ export function SuperAdmin() {
     return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{plan}</Badge>
   }
 
+  const columns: Column<Tenant>[] = [
+    { header: 'ID', cell: (o) => o.id, code: true },
+    { header: 'Organization', cell: (o) => <span className="font-medium text-heading">{o.name}</span> },
+    { header: 'Region', cell: (o) => o.region },
+    { header: 'Plan', cell: (o) => planBadge(o.plan) },
+    { header: 'Branches', cell: (o) => <span className="font-mono text-heading" dir="ltr">{o.branches}</span> },
+    { header: 'Users', cell: (o) => <span className="font-mono text-heading" dir="ltr">{o.users}</span> },
+    { header: 'Status', cell: (o) => statusBadge(o.status) },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Organizations"
+      columns={columns}
+      rows={tenants}
+      rowKey={(o) => o.id}
+      mobileCard={(o) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{o.name}</p>
+                  <p className="text-xs text-muted">{o.region} · {o.branches} {t('branches')} · {o.users} {t('users')}</p>
+                </div>
+              </div>
+            }
+          />
+          <div className="mt-1.5 flex items-center justify-between">
+            {planBadge(o.plan)}
+            {statusBadge(o.status)}
+          </div>
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Shield" title={t('Super Admin')} subtitle={t('Platform Control')} />
         <div className="grid grid-cols-2 gap-3">
           {kpis.map((k) => (
-            <MobileCard key={k.label}>
+            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
               <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
               <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
               <p className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </MobileCard>
+            </Card>
           ))}
         </div>
-        {tenants.map((o) => (
-          <MobileCard key={o.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{o.name}</p>
-                    <p className="text-xs text-muted">{o.region} · {o.branches} {t('branches')} · {o.users} {t('users')}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1.5 flex items-center justify-between">
-              {planBadge(o.plan)}
-              {statusBadge(o.status)}
-            </div>
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -120,37 +141,7 @@ export function SuperAdmin() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Organizations')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Organization')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Region')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Plan')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Branches')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Users')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tenants.map((o) => (
-                <tr key={o.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{o.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{o.name}</td>
-                  <td className="py-3 pe-4 text-body">{o.region}</td>
-                  <td className="py-3 pe-4">{planBadge(o.plan)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{o.branches}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{o.users}</td>
-                  <td className="py-3">{statusBadge(o.status)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Supplier {
   name: string
@@ -34,7 +34,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PurchaseAgentSuppliers() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Total Suppliers'), value: '48', icon: 'Building2', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -43,44 +42,15 @@ export function PurchaseAgentSuppliers() {
     { label: t('Avg Rating'), value: '4.3', icon: 'Star', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Building2" title={t('Supplier Directory')} subtitle={t('Manage suppliers')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {SUPPLIERS.map((s) => (
-          <MobileCard key={s.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{s.name}</p>
-                    <p className="text-xs text-muted">{s.city}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Category')} value={t(s.category)} />
-            <MobileCardRow label={t('Rating')} value={String(s.rating)} />
-            <MobileCardRow label={t('Orders')} value={s.ordersCompleted.toLocaleString()} />
-            <MobileCardRow label={t('Avg Delivery')} value={`${s.avgDeliveryDays} ${t('days')}`} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Supplier>[] = [
+    { header: t('Supplier'), cell: (s) => s.name },
+    { header: t('Category'), cell: (s) => t(s.category) },
+    { header: t('City'), cell: (s) => s.city },
+    { header: t('Rating'), cell: (s) => s.rating },
+    { header: t('Orders'), cell: (s) => s.ordersCompleted.toLocaleString() },
+    { header: t('Avg Delivery'), cell: (s) => `${s.avgDeliveryDays} ${t('days')}` },
+    { header: t('Status'), cell: (s) => <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -109,38 +79,20 @@ export function PurchaseAgentSuppliers() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('City')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Rating')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Orders')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Avg Delivery')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SUPPLIERS.map((s) => (
-                <tr key={s.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{s.name}</td>
-                  <td className="py-3 pe-4 text-body">{t(s.category)}</td>
-                  <td className="py-3 pe-4 text-body">{s.city}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{s.rating}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{s.ordersCompleted.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-end text-body">{s.avgDeliveryDays} {t('days')}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Supplier directory"
+        columns={columns}
+        rows={SUPPLIERS}
+        rowKey={(s) => s.name}
+        mobileCard={(s) => (
+          <>
+            <MobileCardHeader title={s.name} trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>} />
+            <MobileCardRow label={t('Category')}>{t(s.category)}</MobileCardRow>
+            <MobileCardRow label={t('City')}>{s.city}</MobileCardRow>
+            <MobileCardRow label={t('Rating')}>{s.rating}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

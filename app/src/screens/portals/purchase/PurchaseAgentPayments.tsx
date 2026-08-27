@@ -1,10 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
-import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Money, formatSar } from '@/components/ui/Money'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
 interface Payment {
   id: string
@@ -33,7 +33,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PurchaseAgentPayments() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const kpis = [
     { label: t('Total Payable'), value: formatSar(35500), icon: 'Wallet', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -42,44 +41,15 @@ export function PurchaseAgentPayments() {
     { label: t('Scheduled'), value: formatSar(6200), icon: 'Calendar', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Wallet" title={t('Payments')} subtitle={t('Supplier payment tracking')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {PAYMENTS.map((p) => (
-          <MobileCard key={p.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Wallet" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{p.id}</p>
-                    <p className="text-xs text-muted">{p.supplier}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
-            />
-            <MobileCardRow label={t('PO Ref')} value={p.poRef} />
-            <MobileCardRow label={t('Amount')} value={<Money sar={p.amount} />} />
-            <MobileCardRow label={t('Due Date')} value={p.dueDate} />
-            <MobileCardRow label={t('Method')} value={t(p.method)} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Payment>[] = [
+    { header: t('Payment ID'), cell: (p) => p.id },
+    { header: t('Supplier'), cell: (p) => p.supplier },
+    { header: t('PO Ref'), cell: (p) => p.poRef },
+    { header: t('Amount'), cell: (p) => <Money sar={p.amount} /> },
+    { header: t('Due Date'), cell: (p) => p.dueDate },
+    { header: t('Method'), cell: (p) => t(p.method) },
+    { header: t('Status'), cell: (p) => <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -108,39 +78,20 @@ export function PurchaseAgentPayments() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 text-sm font-semibold text-heading">{t('Payment History')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Payment ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Supplier')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('PO Ref')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Amount')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Due Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Method')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PAYMENTS.map((p) => (
-                <tr key={p.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{p.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{p.supplier}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-body">{p.poRef}</td>
-                  <td className="py-3 pe-4 text-end"><Money sar={p.amount} /></td>
-                  <td className="py-3 pe-4 text-body">{p.dueDate}</td>
-                  <td className="py-3 pe-4 text-body">{t(p.method)}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Supplier payments"
+        columns={columns}
+        rows={PAYMENTS}
+        rowKey={(p) => p.id}
+        mobileCard={(p) => (
+          <>
+            <MobileCardHeader title={p.id} trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>} />
+            <MobileCardRow label={t('Supplier')}>{p.supplier}</MobileCardRow>
+            <MobileCardRow label={t('Amount')}><Money sar={p.amount} /></MobileCardRow>
+            <MobileCardRow label={t('Due Date')}>{p.dueDate}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

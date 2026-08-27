@@ -3,9 +3,10 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 const SUPPLIERS = [
   { code: 'SUP-001', name: 'Al-Rajhi Auto Parts', contact: 'Mohammed Al-Rajhi', phone: '+966 55 123 4567', email: 'info@alrajhiauto.sa', category: 'Parts', rating: 4.8, status: 'Active', ordersCount: 245 },
@@ -17,6 +18,8 @@ const SUPPLIERS = [
   { code: 'SUP-007', name: 'Clean Air Parts', contact: 'Tariq Mansour', phone: '+966 55 789 0123', email: 'info@cleanair.sa', category: 'Parts', rating: 4.9, status: 'Active', ordersCount: 210 },
   { code: 'SUP-008', name: 'Jeddah Motor Supply', contact: 'Salem Al-Harbi', phone: '+966 50 890 1234', email: 'orders@jeddahmotor.sa', category: 'Electrical', rating: 3.0, status: 'Pending', ordersCount: 0 },
 ] as const
+
+type Supplier = (typeof SUPPLIERS)[number]
 
 function statusColor(status: string) {
   if (status === 'Inactive') return { background: 'rgba(239,68,68,.1)', color: '#EF4444' }
@@ -51,6 +54,48 @@ export function SuppliersList() {
     { label: t('Total Orders'), value: String(totalOrders), icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
+  const columns: Column<Supplier>[] = [
+    { header: 'Code', cell: (s) => s.code, code: true },
+    { header: 'Name', cell: (s) => <span className="font-medium text-heading">{s.name}</span> },
+    { header: 'Contact', cell: (s) => s.contact },
+    { header: 'Phone', cell: (s) => <span className="font-mono text-xs text-muted" dir="ltr">{s.phone}</span> },
+    { header: 'Category', cell: (s) => t(s.category) },
+    { header: 'Rating', cell: (s) => <span className="text-amber-500">{s.rating}</span> },
+    { header: 'Orders', cell: (s) => <span className="font-mono text-heading" dir="ltr">{s.ordersCount}</span> },
+    { header: 'Status', cell: (s) => <Badge {...statusColor(s.status)}>{t(s.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Suppliers directory"
+      columns={columns}
+      rows={filtered as unknown as Supplier[]}
+      rowKey={(s) => s.code}
+      empty={<p className="py-8 text-center text-sm text-muted">{t('No suppliers found')}</p>}
+      mobileCard={(s) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{s.name}</p>
+                  <p className="text-xs text-muted" dir="ltr">{s.code}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge {...statusColor(s.status)}>{t(s.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Contact')} value={s.contact} />
+          <MobileCardRow label={t('Phone')} value={<span dir="ltr">{s.phone}</span>} />
+          <MobileCardRow label={t('Category')} value={t(s.category)} />
+          <MobileCardRow label={t('Rating')} value={<span className="text-amber-500">{s.rating}</span>} />
+          <MobileCardRow label={t('Orders')} value={String(s.ordersCount)} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -67,28 +112,7 @@ export function SuppliersList() {
             </Card>
           ))}
         </div>
-        {filtered.map((supplier) => (
-          <MobileCard key={supplier.code}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{supplier.name}</p>
-                    <p className="text-xs text-muted" dir="ltr">{supplier.code}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge {...statusColor(supplier.status)}>{t(supplier.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Contact')} value={supplier.contact} />
-            <MobileCardRow label={t('Phone')} value={<span dir="ltr">{supplier.phone}</span>} />
-            <MobileCardRow label={t('Category')} value={t(supplier.category)} />
-            <MobileCardRow label={t('Rating')} value={<span className="text-amber-500">{supplier.rating}</span>} />
-            <MobileCardRow label={t('Orders')} value={String(supplier.ordersCount)} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No suppliers found')}</p>}
+        {table}
       </div>
     )
   }
@@ -126,40 +150,7 @@ export function SuppliersList() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Code')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Contact')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Phone')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Rating')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Orders')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((supplier) => (
-                <tr key={supplier.code} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{supplier.code}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{supplier.name}</td>
-                  <td className="py-3 pe-4 text-body">{supplier.contact}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{supplier.phone}</td>
-                  <td className="py-3 pe-4 text-body">{t(supplier.category)}</td>
-                  <td className="py-3 pe-4 text-end"><span className="text-amber-500">{supplier.rating}</span></td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{supplier.ordersCount}</td>
-                  <td className="py-3">
-                    <Badge {...statusColor(supplier.status)}>{t(supplier.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

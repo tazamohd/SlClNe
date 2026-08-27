@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Message {
   id: string
@@ -41,7 +41,6 @@ const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function PortalCommunications() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const unreadCount = MESSAGES.filter((m) => !m.read).length
 
@@ -52,49 +51,22 @@ export function PortalCommunications() {
     { label: t('Response Rate'), value: '94%', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="MessageSquare" title={t('Communications')} subtitle={t('Messages & notifications')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {MESSAGES.map((m) => (
-          <MobileCard key={m.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: CHANNEL_STYLES[m.channel].bg, color: CHANNEL_STYLES[m.channel].fg }} aria-hidden>
-                    <Icon name={CHANNEL_STYLES[m.channel].icon} size={14} />
-                  </span>
-                  <div>
-                    <p className={`text-[13px] font-semibold ${m.read ? 'text-heading' : 'text-salis-blue'}`}>{m.from}</p>
-                    <p className="text-xs text-muted">{m.subject}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                !m.read
-                  ? <span className="h-2.5 w-2.5 rounded-full bg-salis-blue" />
-                  : null
-              }
-            />
-            <MobileCardRow label={t('Channel')} value={t(m.channel)} />
-            <MobileCardRow label={t('Priority')} value={t(m.priority)} />
-            <MobileCardRow label={t('Date')} value={m.date} />
-          </MobileCard>
-        ))}
+  const columns: Column<Message>[] = [
+    { header: t('From'), cell: (m) => m.from },
+    { header: t('Subject'), cell: (m) => (
+      <div>
+        <p className={`text-sm ${m.read ? '' : 'font-semibold'}`}>{m.subject}</p>
+        <p className="mt-0.5 text-xs text-muted">{m.preview.slice(0, 60)}...</p>
       </div>
-    )
-  }
+    ) },
+    { header: t('Channel'), cell: (m) => <Badge background={CHANNEL_STYLES[m.channel].bg} color={CHANNEL_STYLES[m.channel].fg}>{t(m.channel)}</Badge> },
+    { header: t('Priority'), cell: (m) => <Badge background={PRIORITY_STYLES[m.priority].bg} color={PRIORITY_STYLES[m.priority].fg}>{t(m.priority)}</Badge> },
+    { header: t('Date'), cell: (m) => m.date },
+    { header: t('Status'), cell: (m) => m.read
+      ? <span className="text-xs text-muted">{t('Read')}</span>
+      : <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Unread')}</Badge>
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -123,45 +95,25 @@ export function PortalCommunications() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('From')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Subject')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Channel')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Priority')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MESSAGES.map((m) => (
-                <tr key={m.id} className="border-b border-border/50">
-                  <td className={`py-3 pe-4 font-medium ${m.read ? 'text-heading' : 'text-salis-blue'}`}>{m.from}</td>
-                  <td className="py-3 pe-4 text-body">
-                    <p className={`text-sm ${m.read ? '' : 'font-semibold'}`}>{m.subject}</p>
-                    <p className="mt-0.5 text-xs text-muted">{m.preview.slice(0, 60)}...</p>
-                  </td>
-                  <td className="py-3 pe-4">
-                    <Badge background={CHANNEL_STYLES[m.channel].bg} color={CHANNEL_STYLES[m.channel].fg}>{t(m.channel)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4">
-                    <Badge background={PRIORITY_STYLES[m.priority].bg} color={PRIORITY_STYLES[m.priority].fg}>{t(m.priority)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-muted">{m.date}</td>
-                  <td className="py-3">
-                    {m.read
-                      ? <span className="text-xs text-muted">{t('Read')}</span>
-                      : <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Unread')}</Badge>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Portal communications"
+        columns={columns}
+        rows={MESSAGES}
+        rowKey={(m) => m.id}
+        mobileCard={(m) => (
+          <>
+            <MobileCardHeader title={m.from} trailing={
+              !m.read
+                ? <span className="h-2.5 w-2.5 rounded-full bg-salis-blue" />
+                : null
+            } />
+            <MobileCardRow label={t('Subject')}>{m.subject}</MobileCardRow>
+            <MobileCardRow label={t('Channel')}>{t(m.channel)}</MobileCardRow>
+            <MobileCardRow label={t('Priority')}>{t(m.priority)}</MobileCardRow>
+            <MobileCardRow label={t('Date')}>{m.date}</MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

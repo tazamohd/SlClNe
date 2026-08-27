@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface BackupRecord {
   id: string
@@ -43,38 +44,56 @@ export function DataBackup() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<BackupRecord>[] = [
+    { header: 'ID', cell: (b) => b.id, code: true },
+    { header: 'Type', cell: (b) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(b.type)}</Badge> },
+    { header: 'Size', cell: (b) => b.size },
+    { header: 'Duration', cell: (b) => b.duration },
+    { header: 'Date', cell: (b) => <span className="text-muted">{b.date} {b.time}</span> },
+    { header: 'Destination', cell: (b) => b.destination },
+    { header: 'Status', cell: (b) => <Badge background={STATUS_STYLES[b.status].bg} color={STATUS_STYLES[b.status].fg}>{t(b.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Backup History"
+      columns={columns}
+      rows={BACKUPS}
+      rowKey={(b) => b.id}
+      mobileCard={(backup) => (
+        <>
+          <MobileCardHeader
+            title={backup.id}
+            code
+            trailing={<Badge background={STATUS_STYLES[backup.status].bg} color={STATUS_STYLES[backup.status].fg}>{t(backup.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Type')} value={t(backup.type)} />
+          <MobileCardRow label={t('Size')} value={backup.size} />
+          <MobileCardRow label={t('Date')} value={`${backup.date} ${backup.time}`} />
+          <MobileCardRow label={t('Duration')} value={backup.duration} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Database" title={t('Data Backup')} subtitle={t('Backup management')} />
         <div className="grid grid-cols-2 gap-3">
           {STATS.map((stat) => (
-            <MobileCard key={stat.label}>
-              <MobileCardHeader
-                leading={
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
-                    <Icon name={stat.icon} size={14} />
-                  </span>
-                }
-              />
-              <p className="text-xs text-muted">{t(stat.label)}</p>
-              <p className="text-lg font-bold text-heading">{stat.value}</p>
-            </MobileCard>
+            <Card key={stat.label} className="rounded-xl p-3 shadow-sm">
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <Icon name={stat.icon} size={14} />
+                </span>
+                <span className="text-[11px] font-medium text-muted">{t(stat.label)}</span>
+              </div>
+              <h4 className="mt-1.5 font-display text-lg font-black text-heading">{stat.value}</h4>
+            </Card>
           ))}
         </div>
-        {BACKUPS.map((backup) => (
-          <MobileCard key={backup.id}>
-            <MobileCardHeader
-              title={backup.id}
-              code
-              trailing={<Badge background={STATUS_STYLES[backup.status].bg} color={STATUS_STYLES[backup.status].fg}>{t(backup.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Type')} value={t(backup.type)} />
-            <MobileCardRow label={t('Size')} value={backup.size} />
-            <MobileCardRow label={t('Date')} value={`${backup.date} ${backup.time}`} />
-            <MobileCardRow label={t('Duration')} value={backup.duration} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -110,41 +129,7 @@ export function DataBackup() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Backup History')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('ID')}</th>
-                <th className="pb-3 font-medium">{t('Type')}</th>
-                <th className="pb-3 font-medium">{t('Size')}</th>
-                <th className="pb-3 font-medium">{t('Duration')}</th>
-                <th className="pb-3 font-medium">{t('Date')}</th>
-                <th className="pb-3 font-medium">{t('Destination')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {BACKUPS.map((backup) => (
-                <tr key={backup.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs text-muted">{backup.id}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(backup.type)}</Badge>
-                  </td>
-                  <td className="py-3 text-body">{backup.size}</td>
-                  <td className="py-3 text-body">{backup.duration}</td>
-                  <td className="py-3 text-muted">{backup.date} {backup.time}</td>
-                  <td className="py-3 text-body">{backup.destination}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[backup.status].bg} color={STATUS_STYLES[backup.status].fg}>{t(backup.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface ScanEntry {
   id: string
@@ -41,6 +42,39 @@ export function BarcodeScanner() {
     { label: t('Lookups'), value: '7', icon: 'Search', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   ]
 
+  const columns: Column<ScanEntry>[] = [
+    {
+      header: 'Part',
+      cell: (s) => (
+        <div>
+          <p className="font-medium text-heading">{s.partName}</p>
+          <p className="text-xs text-muted">{s.partNo}</p>
+        </div>
+      ),
+    },
+    { header: 'Barcode', cell: (s) => s.barcode, code: true },
+    { header: 'Location', cell: (s) => s.location },
+    { header: 'Time', cell: (s) => s.scannedAt },
+    { header: 'Action', cell: (s) => <Badge background={ACTION_STYLES[s.action].bg} color={ACTION_STYLES[s.action].fg}>{t(s.action)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Recent barcode scans"
+      columns={columns}
+      rows={RECENT_SCANS}
+      rowKey={(s) => s.id}
+      mobileCard={(s) => (
+        <>
+          <MobileCardHeader title={s.partName} trailing={<Badge background={ACTION_STYLES[s.action].bg} color={ACTION_STYLES[s.action].fg}>{t(s.action)}</Badge>} />
+          <MobileCardRow label={t('Barcode')} value={s.barcode} />
+          <MobileCardRow label={t('Location')} value={s.location} />
+          <MobileCardRow label={t('Time')} value={s.scannedAt} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -63,25 +97,7 @@ export function BarcodeScanner() {
             </Card>
           ))}
         </div>
-        {RECENT_SCANS.map((s) => (
-          <MobileCard key={s.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="ScanLine" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{s.partName}</p>
-                    <p className="text-xs text-muted">{s.partNo}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={ACTION_STYLES[s.action].bg} color={ACTION_STYLES[s.action].fg}>{t(s.action)}</Badge>}
-            />
-            <MobileCardRow label={t('Barcode')} value={s.barcode} />
-            <MobileCardRow label={t('Location')} value={s.location} />
-            <MobileCardRow label={t('Time')} value={s.scannedAt} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -119,38 +135,9 @@ export function BarcodeScanner() {
           <p className="text-sm font-semibold text-heading">{t('Ready to Scan')}</p>
           <p className="text-center text-xs text-muted">{t('Connect a barcode scanner or use camera')}</p>
         </Card>
-        <Card className="col-span-2 rounded-2xl p-6 shadow-sm">
-          <h2 className="mb-4 text-sm font-semibold text-heading">{t('Recent Scans')}</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-xs font-medium text-muted">
-                  <th className="pb-3 pe-4 text-start font-medium">{t('Part')}</th>
-                  <th className="pb-3 pe-4 text-start font-medium">{t('Barcode')}</th>
-                  <th className="pb-3 pe-4 text-start font-medium">{t('Location')}</th>
-                  <th className="pb-3 pe-4 text-start font-medium">{t('Time')}</th>
-                  <th className="pb-3 text-start font-medium">{t('Action')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {RECENT_SCANS.map((s) => (
-                  <tr key={s.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4">
-                      <p className="font-medium text-heading">{s.partName}</p>
-                      <p className="text-xs text-muted">{s.partNo}</p>
-                    </td>
-                    <td className="py-3 pe-4 font-mono text-xs text-body">{s.barcode}</td>
-                    <td className="py-3 pe-4 text-body">{s.location}</td>
-                    <td className="py-3 pe-4 text-body">{s.scannedAt}</td>
-                    <td className="py-3">
-                      <Badge background={ACTION_STYLES[s.action].bg} color={ACTION_STYLES[s.action].fg}>{t(s.action)}</Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-          </table>
-          </div>
-        </Card>
+        <div className="col-span-2">
+          {table}
+        </div>
       </div>
     </div>
   )

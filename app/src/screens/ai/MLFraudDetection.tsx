@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_ALERTS = [
   { id: 'FRD-001', type: 'Invoice Anomaly', description: 'Duplicate invoice amount from same vendor', riskScore: 95, amount: 'SAR 24,500', entity: 'Parts Supplier Co.', status: 'Flagged', detectedAt: '2026-08-17 14:22' },
@@ -22,9 +22,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Dismissed: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
+type AlertRow = (typeof MOCK_ALERTS)[number]
+
 export function MLFraudDetection() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_ALERTS : MOCK_ALERTS.filter(a => a.status === filter)
@@ -38,34 +39,15 @@ export function MLFraudDetection() {
     { label: t('Model Accuracy'), value: '97.2%', icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="ShieldAlert" title={t('Fraud Detection')} subtitle={t('ML-Based Monitoring')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(a => {
-          const [bg, fg] = STATUS_COLORS[a.status] ?? STATUS_COLORS.Dismissed
-          return (
-            <MobileCard key={a.id}>
-              <MobileCardHeader title={t(a.type)} trailing={<Badge background={bg} color={fg}>{t(a.status)}</Badge>} />
-              <MobileCardRow label={t('Description')}>{t(a.description)}</MobileCardRow>
-              <MobileCardRow label={t('Risk Score')}>{a.riskScore}</MobileCardRow>
-              <MobileCardRow label={t('Amount')}>{a.amount}</MobileCardRow>
-              <MobileCardRow label={t('Entity')}>{a.entity}</MobileCardRow>
-              <MobileCardRow label={t('Detected')}>{a.detectedAt}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<AlertRow>[] = [
+    { header: 'ID', cell: (a) => a.id, code: true },
+    { header: 'Type', cell: (a) => t(a.type) },
+    { header: 'Description', cell: (a) => t(a.description) },
+    { header: 'Risk', cell: (a) => `${a.riskScore}` },
+    { header: 'Amount', cell: (a) => a.amount },
+    { header: 'Status', cell: (a) => { const [bg, fg] = STATUS_COLORS[a.status] ?? STATUS_COLORS.Dismissed; return <Badge background={bg} color={fg}>{t(a.status)}</Badge> } },
+    { header: 'Detected', cell: (a) => a.detectedAt },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -94,48 +76,32 @@ export function MLFraudDetection() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Fraud Alerts')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Flagged">{t('Flagged')}</option>
-            <option value="Under Review">{t('Under Review')}</option>
-            <option value="Dismissed">{t('Dismissed')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Type')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Description')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Risk')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Amount')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-start font-medium">{t('Detected')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(a => {
-                const [bg, fg] = STATUS_COLORS[a.status] ?? STATUS_COLORS.Dismissed
-                return (
-                  <tr key={a.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-mono text-[13px] text-heading" dir="ltr">{a.id}</td>
-                    <td className="py-3 pe-4 text-[13px] text-heading">{t(a.type)}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(a.description)}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{a.riskScore}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-[13px] text-heading">{a.amount}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(a.status)}</Badge></td>
-                    <td className="py-3 text-[13px] text-muted" dir="ltr">{a.detectedAt}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Fraud Alerts')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Flagged">{t('Flagged')}</option>
+          <option value="Under Review">{t('Under Review')}</option>
+          <option value="Dismissed">{t('Dismissed')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Fraud detection alerts"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Dismissed
+          return (
+            <>
+              <MobileCardHeader title={t(row.type)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Risk Score')}>{row.riskScore}</MobileCardRow>
+              <MobileCardRow label={t('Amount')}>{row.amount}</MobileCardRow>
+              <MobileCardRow label={t('Entity')}>{row.entity}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }

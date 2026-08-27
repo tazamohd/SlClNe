@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
-  MobileCard,
   MobileCardHeader,
   MobileCardRow,
-  MobilePageHeader,
 } from '@/components/shell/MobileShell'
 
 interface Sale {
@@ -42,7 +39,6 @@ const STATUS_PALETTE: Record<string, readonly [string, string]> = {
 
 export function SalesManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('All')
 
@@ -84,52 +80,18 @@ export function SalesManagement() {
 
   const statuses = ['All', 'Paid', 'Pending', 'Overdue', 'Cancelled'] as const
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="ShoppingCart"
-          title={t('Sales Management')}
-          subtitle={t('Accounting')}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{t(stat.label)}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{stat.value}</p>
-            </Card>
-          ))}
-        </div>
-        <div className="flex flex-col gap-3">
-          {filtered.map((s) => {
-            const [bg, fg] = STATUS_PALETTE[s.status] ?? STATUS_PALETTE.Pending
-            return (
-              <MobileCard key={s.invoiceNumber}>
-                <MobileCardHeader
-                  title={s.invoiceNumber}
-                  code
-                  trailing={
-                    <Badge background={bg} color={fg}>
-                      {t(s.status)}
-                    </Badge>
-                  }
-                />
-                <MobileCardRow label={t('Customer')}>{s.customer}</MobileCardRow>
-                <MobileCardRow label={t('Date')}>
-                  <span dir="ltr">{s.date}</span>
-                </MobileCardRow>
-                <MobileCardRow label={t('Items')}>{s.items}</MobileCardRow>
-                <MobileCardRow label={t('Amount')}>
-                  <Money sar={s.amount} className="font-semibold text-heading" />
-                </MobileCardRow>
-                <MobileCardRow label={t('Payment')}>{t(s.paymentMethod)}</MobileCardRow>
-              </MobileCard>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
+  const columns: Column<Sale>[] = [
+    { header: 'Invoice', cell: (s) => s.invoiceNumber, code: true },
+    { header: 'Customer', cell: (s) => s.customer },
+    { header: 'Date', cell: (s) => <span dir="ltr" className="text-muted">{s.date}</span> },
+    { header: 'Items', cell: (s) => s.items, className: 'text-end' },
+    { header: 'Amount', cell: (s) => <Money sar={s.amount} className="font-semibold" />, className: 'text-end' },
+    { header: 'Payment', cell: (s) => t(s.paymentMethod) },
+    { header: 'Status', cell: (s) => {
+      const [bg, fg] = STATUS_PALETTE[s.status] ?? STATUS_PALETTE.Pending
+      return <Badge background={bg} color={fg}>{t(s.status)}</Badge>
+    } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -140,81 +102,52 @@ export function SalesManagement() {
       />
       <StatRow stats={stats} />
 
-      <Section
-        title={t('Sales Invoices')}
-        subtitle={t('All invoices with payment status')}
-        toolbar={
-          <div className="flex flex-wrap items-end gap-3">
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t('Invoice or customer')}
-                aria-label={t('Search sales')}
-                className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-medium text-muted">{t('Status')}</span>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                aria-label={t('Filter by status')}
-                className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
-              >
-                {statuses.map((s) => (
-                  <option key={s} value={s}>
-                    {s === 'All' ? t('All Statuses') : t(s)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        }
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-wide text-muted">
-                <th className="py-2.5 text-start font-medium">{t('Invoice')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Customer')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Date')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Items')}</th>
-                <th className="py-2.5 text-end font-medium">{t('Amount')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Payment')}</th>
-                <th className="py-2.5 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((s) => {
-                const [bg, fg] = STATUS_PALETTE[s.status] ?? STATUS_PALETTE.Pending
-                return (
-                  <tr key={s.invoiceNumber} className="border-b border-border/50">
-                    <td className="py-2.5">
-                      <span className="font-mono text-[13px]" dir="ltr">{s.invoiceNumber}</span>
-                    </td>
-                    <td className="py-2.5 text-[13px] text-body">{s.customer}</td>
-                    <td className="py-2.5 text-[13px] text-muted" dir="ltr">{s.date}</td>
-                    <td className="py-2.5 text-end text-[13px] text-heading">{s.items}</td>
-                    <td className="py-2.5 text-end">
-                      <Money sar={s.amount} className="font-semibold" />
-                    </td>
-                    <td className="py-2.5 text-[13px] text-body">{t(s.paymentMethod)}</td>
-                    <td className="py-2.5">
-                      <Badge background={bg} color={fg}>{t(s.status)}</Badge>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-        {filtered.length === 0 && (
-          <p className="py-8 text-center text-[13px] text-muted">{t('No sales match the filter')}</p>
-        )}
-      </Section>
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="flex flex-col gap-1">
+          <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('Invoice or customer')}
+            aria-label={t('Search sales')}
+            className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-[11px] font-medium text-muted">{t('Status')}</span>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            aria-label={t('Filter by status')}
+            className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          >
+            {statuses.map((s) => (
+              <option key={s} value={s}>
+                {s === 'All' ? t('All Statuses') : t(s)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <DataTable
+        caption="Sales invoices"
+        columns={columns}
+        rows={filtered}
+        rowKey={(s) => s.invoiceNumber}
+        mobileCard={(s) => {
+          const [bg, fg] = STATUS_PALETTE[s.status] ?? STATUS_PALETTE.Pending
+          return (
+            <>
+              <MobileCardHeader title={s.invoiceNumber} code trailing={<Badge background={bg} color={fg}>{t(s.status)}</Badge>} />
+              <MobileCardRow label={t('Customer')}>{s.customer}</MobileCardRow>
+              <MobileCardRow label={t('Amount')}><Money sar={s.amount} className="font-semibold text-heading" /></MobileCardRow>
+            </>
+          )
+        }}
+        empty={<EmptyState icon="ShoppingCart" title={t('No sales match the filter')} />}
+      />
     </div>
   )
 }

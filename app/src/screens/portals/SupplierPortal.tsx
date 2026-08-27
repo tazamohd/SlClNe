@@ -2,7 +2,8 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { StatusBadge } from '@/components/ui/Badge'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
-import { MobileCard, MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
@@ -61,6 +62,15 @@ export function SupplierPortal() {
     { label: 'Rating', value: supplier?.rating?.toFixed(1) ?? '0.0', icon: 'Star' },
   ] as const
 
+  const activeOrderColumns: Column<PurchaseOrderRow>[] = [
+    { header: t('Order #'), cell: (order) => order.id },
+    { header: t('Items'), cell: (order) => order.items },
+    { header: t('Qty'), cell: (order) => order.qty },
+    { header: t('Status'), cell: (order) => <StatusBadge value={order.status} label={t(order.status)} /> },
+    { header: t('Due Date'), cell: (order) => order.dueDate },
+    { header: t('Workshop'), cell: (order) => order.workshop },
+  ]
+
   return (
     <div className="flex max-w-[1240px] animate-fade-up flex-col gap-4">
       {/* Gradient hero -- supplier greeting and key metrics. */}
@@ -103,57 +113,29 @@ export function SupplierPortal() {
         <Loading label="Loading orders..." />
       ) : orders.isError ? (
         <ErrorState description={orders.error?.message} onRetry={() => void orders.refetch()} />
-      ) : activeOrders.length === 0 ? (
-        <Card className="p-5">
-          <EmptyState
-            icon="ShoppingCart"
-            title={t('No active orders')}
-            description={t('New purchase orders from workshops will appear here.')}
-          />
-        </Card>
-      ) : isMobile ? (
-        <div className="flex flex-col gap-2.5">
-          {activeOrders.slice(0, 5).map((order) => (
-            <MobileCard key={order._id ?? order.id}>
-              <MobileCardHeader title={order.id} code trailing={<StatusBadge value={order.status} label={t(order.status)} />} />
-              <MobileCardRow label={t('Items')} value={order.items} />
-              <MobileCardRow label={t('Qty')} value={String(order.qty)} />
-              <MobileCardRow label={t('Due Date')} value={order.dueDate} />
-              <MobileCardRow label={t('Workshop')} value={order.workshop} />
-            </MobileCard>
-          ))}
-        </div>
       ) : (
-        <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
-              <thead>
-                <tr className="border-b border-border bg-inset text-muted">
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Order #')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Items')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Qty')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Status')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Due Date')}</th>
-                  <th className="px-4 py-2.5 text-start font-medium">{t('Workshop')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {activeOrders.slice(0, 10).map((order) => (
-                  <tr key={order._id ?? order.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 font-mono font-semibold text-heading" dir="ltr">{order.id}</td>
-                    <td className="px-4 py-3 text-body">{order.items}</td>
-                    <td className="px-4 py-3 text-body" dir="ltr">{order.qty}</td>
-                    <td className="px-4 py-3">
-                      <StatusBadge value={order.status} label={t(order.status)} />
-                    </td>
-                    <td className="px-4 py-3 text-muted" dir="ltr">{order.dueDate}</td>
-                    <td className="px-4 py-3 text-body">{order.workshop}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <DataTable
+          caption="Supplier active orders"
+          columns={activeOrderColumns}
+          rows={activeOrders.slice(0, 10) as PurchaseOrderRow[]}
+          rowKey={(order) => order._id ?? order.id}
+          empty={
+            <EmptyState
+              icon="ShoppingCart"
+              title={t('No active orders')}
+              description={t('New purchase orders from workshops will appear here.')}
+            />
+          }
+          mobileCard={(order) => (
+            <>
+              <MobileCardHeader title={order.id} trailing={<StatusBadge value={order.status} label={t(order.status)} />} />
+              <MobileCardRow label={t('Items')}>{order.items}</MobileCardRow>
+              <MobileCardRow label={t('Qty')}>{String(order.qty)}</MobileCardRow>
+              <MobileCardRow label={t('Due Date')}>{order.dueDate}</MobileCardRow>
+              <MobileCardRow label={t('Workshop')}>{order.workshop}</MobileCardRow>
+            </>
+          )}
+        />
       )}
 
       {/* Recent deliveries */}

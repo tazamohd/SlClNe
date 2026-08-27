@@ -5,11 +5,11 @@ import { Card } from '@/components/ui/Card'
 import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { StageNotice, stageBusy, stageLabel } from './StageNotice'
 import { useJobStage } from './useJobStage'
 
@@ -40,7 +40,6 @@ const LABOUR = [
  *  role's ceiling routes to the Approval Inbox instead (README §4). */
 export function WorkshopEstimate() {
   const { t, rtl } = usePreferences()
-  const isMobile = useIsMobile()
   const { canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
@@ -74,6 +73,19 @@ export function WorkshopEstimate() {
     })
   }
 
+  const partsColumns: Column<typeof PARTS[number]>[] = [
+    { header: 'Description', cell: (row) => t(row.desc) },
+    { header: 'Quantity', cell: (row) => String(row.qty) },
+    { header: 'Unit Price', cell: (row) => <Money sar={row.unit} /> },
+    { header: 'Total', cell: (row) => <Money sar={row.qty * row.unit} className="font-semibold" /> },
+  ]
+
+  const labourColumns: Column<typeof LABOUR[number]>[] = [
+    { header: 'Description', cell: (row) => t(row.desc) },
+    { header: 'Hours', cell: (row) => row.hours.toFixed(1) },
+    { header: 'Rate', cell: (row) => <span dir="ltr" className="font-mono">{`SAR ${row.rate}/hr`}</span> },
+    { header: 'Total', cell: (row) => <Money sar={row.hours * row.rate} className="font-semibold" /> },
+  ]
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
@@ -107,36 +119,40 @@ export function WorkshopEstimate() {
       <StageNotice stage={stage} />
 
       <Panel icon="Package" title={t('Parts')}>
-        <LineTable
-          isMobile={isMobile}
-          headers={[t('Description'), t('Quantity'), t('Unit Price'), t('Total')]}
-          rows={PARTS.map((row) => ({
-            key: row.desc,
-            cells: [
-              t(row.desc),
-              String(row.qty),
-              <Money key="unit" sar={row.unit} />,
-              <Money key="total" sar={row.qty * row.unit} className="font-semibold" />,
-            ],
-          }))}
+        <DataTable
+          caption="Parts line items"
+          columns={partsColumns}
+          rows={PARTS}
+          rowKey={(row) => row.desc}
+          mobileCard={(row) => (
+            <>
+              <MobileCardHeader
+                leading={<span className="text-[13px] text-body">{t(row.desc)}</span>}
+                trailing={<span className="text-[13px] font-semibold text-heading"><Money sar={row.qty * row.unit} /></span>}
+              />
+              <MobileCardRow label={t('Quantity')} value={String(row.qty)} />
+              <MobileCardRow label={t('Unit Price')}><Money sar={row.unit} /></MobileCardRow>
+            </>
+          )}
         />
       </Panel>
 
       <Panel icon="Wrench" title={t('Labor')}>
-        <LineTable
-          isMobile={isMobile}
-          headers={[t('Description'), t('Hours'), t('Rate'), t('Total')]}
-          rows={LABOUR.map((row) => ({
-            key: row.desc,
-            cells: [
-              t(row.desc),
-              row.hours.toFixed(1),
-              <span key="rate" dir="ltr" className="font-mono">
-                {`SAR ${row.rate}/hr`}
-              </span>,
-              <Money key="total" sar={row.hours * row.rate} className="font-semibold" />,
-            ],
-          }))}
+        <DataTable
+          caption="Labour line items"
+          columns={labourColumns}
+          rows={LABOUR}
+          rowKey={(row) => row.desc}
+          mobileCard={(row) => (
+            <>
+              <MobileCardHeader
+                leading={<span className="text-[13px] text-body">{t(row.desc)}</span>}
+                trailing={<span className="text-[13px] font-semibold text-heading"><Money sar={row.hours * row.rate} /></span>}
+              />
+              <MobileCardRow label={t('Hours')} value={row.hours.toFixed(1)} />
+              <MobileCardRow label={t('Rate')}><span dir="ltr">{`SAR ${row.rate}/hr`}</span></MobileCardRow>
+            </>
+          )}
         />
       </Panel>
 
@@ -184,74 +200,6 @@ function TotalRow({ label, sar }: { label: string; sar: number }) {
     <div className="flex justify-between text-sm text-body">
       <span>{label}</span>
       <Money sar={sar} className="font-semibold" />
-    </div>
-  )
-}
-
-function LineTable({
-  headers,
-  rows,
-  isMobile,
-}: {
-  headers: readonly string[]
-  rows: readonly { key: string; cells: readonly React.ReactNode[] }[]
-  isMobile: boolean
-}) {
-  if (isMobile) {
-    return (
-      <div className="divide-y divide-border">
-        {rows.map((row) => (
-          <div key={row.key} className="py-2.5">
-            <MobileCardHeader
-              leading={<span className="text-[13px] text-body">{row.cells[0]}</span>}
-              trailing={<span className="text-[13px] font-semibold text-heading">{row.cells[row.cells.length - 1]}</span>}
-            />
-            {row.cells.slice(1, -1).map((cell, i) => (
-              <MobileCardRow key={i} label={headers[i + 1]} value={cell} />
-            ))}
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-sm text-heading">
-        <thead>
-          <tr>
-            {headers.map((header, index) => (
-              <th
-                key={header}
-                scope="col"
-                className={
-                  'h-9 whitespace-nowrap border-b border-border text-xs font-semibold uppercase tracking-[.05em] text-muted ' +
-                  (index === 0 ? 'text-start' : 'text-end')
-                }
-              >
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.key}>
-              {row.cells.map((cell, index) => (
-                <td
-                  key={index}
-                  className={
-                    'border-b border-border py-2.5 align-middle last:border-b-0 ' +
-                    (index === 0 ? 'text-start text-body' : 'text-end')
-                  }
-                >
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   )
 }

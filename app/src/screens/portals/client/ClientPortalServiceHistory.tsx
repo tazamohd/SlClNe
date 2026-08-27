@@ -1,9 +1,8 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Money } from '@/components/ui/Money'
 
 interface ServiceRecord {
@@ -33,35 +32,16 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function ClientPortalServiceHistory() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="History" title={t('Service History')} subtitle={t('Past services timeline')} />
-        {SERVICE_HISTORY.map((s) => (
-          <MobileCard key={s.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{s.service}</p>
-                    <p className="text-xs text-muted">{s.vehicle}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Date')} value={s.date} />
-            <MobileCardRow label={t('Technician')} value={s.technician} />
-            <MobileCardRow label={t('Cost')} value={<Money sar={s.cost} />} />
-            <MobileCardRow label={t('Work Order')} value={s.id} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<ServiceRecord>[] = [
+    { header: t('Work Order'), cell: (s) => s.id },
+    { header: t('Date'), cell: (s) => s.date },
+    { header: t('Vehicle'), cell: (s) => s.vehicle },
+    { header: t('Service'), cell: (s) => s.service },
+    { header: t('Technician'), cell: (s) => s.technician },
+    { header: t('Cost'), cell: (s) => <Money sar={s.cost} /> },
+    { header: t('Status'), cell: (s) => <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -78,38 +58,20 @@ export function ClientPortalServiceHistory() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Work Order')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicle')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Service')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Technician')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Cost')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SERVICE_HISTORY.map((s) => (
-                <tr key={s.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-medium text-heading">{s.id}</td>
-                  <td className="py-3 pe-4 text-body">{s.date}</td>
-                  <td className="py-3 pe-4 text-body">{s.vehicle}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{s.service}</td>
-                  <td className="py-3 pe-4 text-body">{s.technician}</td>
-                  <td className="py-3 pe-4 text-end"><Money sar={s.cost} /></td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Client service history"
+        columns={columns}
+        rows={SERVICE_HISTORY}
+        rowKey={(s) => s.id}
+        mobileCard={(s) => (
+          <>
+            <MobileCardHeader title={s.service} trailing={<Badge background={STATUS_STYLES[s.status].bg} color={STATUS_STYLES[s.status].fg}>{t(s.status)}</Badge>} />
+            <MobileCardRow label={t('Date')}>{s.date}</MobileCardRow>
+            <MobileCardRow label={t('Vehicle')}>{s.vehicle}</MobileCardRow>
+            <MobileCardRow label={t('Cost')}><Money sar={s.cost} /></MobileCardRow>
+          </>
+        )}
+      />
     </div>
   )
 }

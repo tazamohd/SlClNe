@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface BudgetRow {
   category: string
@@ -33,7 +33,6 @@ function fmtSar(v: number): string {
 
 export function BudgetManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const rows = useRows(t)
 
   const totalBudget = rows.reduce((s, r) => s + r.budget, 0)
@@ -48,44 +47,28 @@ export function BudgetManagement() {
     { label: t('Utilization'), value: `${utilization}%`, icon: 'PieChart', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Target" title={t('Budget Management')} subtitle={t('Accounting')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <MobileCard key={k.label}>
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-              <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
-              <p dir="ltr" className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </MobileCard>
-          ))}
+  const columns: Column<BudgetRow>[] = [
+    { header: 'Category', cell: (r) => <span className="font-medium text-heading">{r.category}</span> },
+    { header: 'Budget', cell: (r) => <span dir="ltr" className="font-mono text-muted">{fmtSar(r.budget)}</span>, className: 'text-end' },
+    { header: 'Actual', cell: (r) => <span dir="ltr" className="font-mono font-medium text-heading">{fmtSar(r.actual)}</span>, className: 'text-end' },
+    { header: 'Variance', cell: (r) => {
+      const variance = r.budget - r.actual
+      return (
+        <span dir="ltr" className={'font-mono font-medium ' + (variance < 0 ? 'text-salis-orange' : 'text-salis-blue')}>
+          {variance >= 0 ? '+' : ''}{fmtSar(variance)}
+        </span>
+      )
+    }, className: 'text-end' },
+    { header: '% Used', cell: (r) => <span className="font-mono text-heading">{Math.round((r.actual / r.budget) * 100)}%</span>, className: 'text-end' },
+    { header: 'Progress', cell: (r) => {
+      const pct = Math.round((r.actual / r.budget) * 100)
+      return (
+        <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]" style={{ minWidth: 80 }}>
+          <div className="h-full rounded-full" style={{ width: `${Math.min(pct, 100)}%`, background: pct > 90 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
         </div>
-        {rows.map((r) => {
-          const pct = Math.round((r.actual / r.budget) * 100)
-          const variance = r.budget - r.actual
-          return (
-            <MobileCard key={r.category}>
-              <div className="flex items-center justify-between">
-                <p className="text-[13px] font-semibold text-heading">{r.category}</p>
-                <span className="text-xs font-medium text-muted">{pct}%</span>
-              </div>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
-                <div
-                  className="h-full rounded-full"
-                  style={{ width: `${Math.min(pct, 100)}%`, background: pct > 90 ? 'var(--salis-orange)' : 'var(--salis-blue)' }}
-                />
-              </div>
-              <div className="mt-1.5 flex justify-between text-xs text-muted">
-                <span dir="ltr">{fmtSar(r.actual)} / {fmtSar(r.budget)}</span>
-                <span dir="ltr" className={variance < 0 ? 'text-salis-orange' : 'text-salis-blue'}>{variance >= 0 ? '+' : ''}{fmtSar(variance)}</span>
-              </div>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+      )
+    } },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -114,45 +97,28 @@ export function BudgetManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Budget by Category')}</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Category')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Budget')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Actual')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Variance')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('% Used')}</th>
-                <th className="pb-3 font-medium" style={{ width: 120 }}>{t('Progress')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => {
-                const pct = Math.round((r.actual / r.budget) * 100)
-                const variance = r.budget - r.actual
-                return (
-                  <tr key={r.category} className="border-b border-border/50">
-                    <td className="py-3 pe-4 font-medium text-heading">{r.category}</td>
-                    <td className="py-3 pe-4 text-end font-mono text-muted" dir="ltr">{fmtSar(r.budget)}</td>
-                    <td className="py-3 pe-4 text-end font-mono font-medium text-heading" dir="ltr">{fmtSar(r.actual)}</td>
-                    <td className={'py-3 pe-4 text-end font-mono font-medium ' + (variance < 0 ? 'text-salis-orange' : 'text-salis-blue')} dir="ltr">
-                      {variance >= 0 ? '+' : ''}{fmtSar(variance)}
-                    </td>
-                    <td className="py-3 pe-4 text-end font-mono text-heading">{pct}%</td>
-                    <td className="py-3">
-                      <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
-                        <div className="h-full rounded-full" style={{ width: `${Math.min(pct, 100)}%`, background: pct > 90 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Budget by category"
+        columns={columns}
+        rows={rows}
+        rowKey={(r) => r.category}
+        mobileCard={(r) => {
+          const pct = Math.round((r.actual / r.budget) * 100)
+          const variance = r.budget - r.actual
+          return (
+            <>
+              <MobileCardHeader title={r.category} trailing={<span className="text-xs font-medium text-muted">{pct}%</span>} />
+              <MobileCardRow label={t('Spent / Budget')}>
+                <span dir="ltr">{fmtSar(r.actual)} / {fmtSar(r.budget)}</span>
+              </MobileCardRow>
+              <MobileCardRow label={t('Variance')}>
+                <span dir="ltr" className={variance < 0 ? 'text-salis-orange' : 'text-salis-blue'}>{variance >= 0 ? '+' : ''}{fmtSar(variance)}</span>
+              </MobileCardRow>
+            </>
+          )
+        }}
+        empty={<EmptyState icon="Target" title={t('No budget items found')} />}
+      />
     </div>
   )
 }

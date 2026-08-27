@@ -3,9 +3,9 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const MOCK_CONVERSATIONS = [
   { id: 'CONV-001', customer: 'Ahmed Al-Rashid', topic: 'Brake noise complaint', status: 'Active', duration: '4 min', sentiment: 'Neutral', agent: 'AI' },
@@ -29,9 +29,10 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Escalated: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
 }
 
+type ConversationRow = (typeof MOCK_CONVERSATIONS)[number]
+
 export function AIChatbotAssistant() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [filter, setFilter] = useState('All')
 
   const filtered = filter === 'All' ? MOCK_CONVERSATIONS : MOCK_CONVERSATIONS.filter(c => c.status === filter)
@@ -43,33 +44,14 @@ export function AIChatbotAssistant() {
     { label: t('AI Handled'), value: '83%', icon: 'Bot', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Bot" title={t('AI Assistant')} subtitle={t('Chat Interface')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
-            <Card key={k.label} className="rounded-lg p-3">
-              <p className="text-[11px] font-medium text-muted">{k.label}</p>
-              <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {filtered.map(c => {
-          const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Escalated
-          return (
-            <MobileCard key={c.id}>
-              <MobileCardHeader title={c.customer} trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>} />
-              <MobileCardRow label={t('Topic')}>{t(c.topic)}</MobileCardRow>
-              <MobileCardRow label={t('Duration')}>{c.duration}</MobileCardRow>
-              <MobileCardRow label={t('Sentiment')}>{t(c.sentiment)}</MobileCardRow>
-              <MobileCardRow label={t('Agent')}>{c.agent}</MobileCardRow>
-            </MobileCard>
-          )
-        })}
-      </div>
-    )
-  }
+  const columns: Column<ConversationRow>[] = [
+    { header: 'Customer', cell: (c) => c.customer },
+    { header: 'Topic', cell: (c) => t(c.topic) },
+    { header: 'Status', cell: (c) => { const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Escalated; return <Badge background={bg} color={fg}>{t(c.status)}</Badge> } },
+    { header: 'Duration', cell: (c) => c.duration },
+    { header: 'Sentiment', cell: (c) => t(c.sentiment) },
+    { header: 'Agent', cell: (c) => c.agent },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -113,46 +95,32 @@ export function AIChatbotAssistant() {
         </div>
       </Card>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Recent Conversations')}</h3>
-          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-            <option value="All">{t('All')}</option>
-            <option value="Active">{t('Active')}</option>
-            <option value="Resolved">{t('Resolved')}</option>
-            <option value="Escalated">{t('Escalated')}</option>
-          </Select>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Customer')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Topic')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Duration')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Sentiment')}</th>
-                <th className="pb-3 text-start font-medium">{t('Agent')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(c => {
-                const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Escalated
-                return (
-                  <tr key={c.id} className="border-b border-border/50">
-                    <td className="py-3 pe-4 text-[13px] text-heading">{c.customer}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(c.topic)}</td>
-                    <td className="py-3 pe-4"><Badge background={bg} color={fg}>{t(c.status)}</Badge></td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{c.duration}</td>
-                    <td className="py-3 pe-4 text-[13px] text-muted">{t(c.sentiment)}</td>
-                    <td className="py-3 text-[13px] text-muted">{c.agent}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="flex items-center justify-between">
+        <h3 className="text-[15px] font-bold text-heading">{t('Recent Conversations')}</h3>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Active">{t('Active')}</option>
+          <option value="Resolved">{t('Resolved')}</option>
+          <option value="Escalated">{t('Escalated')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="Recent conversations"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Escalated
+          return (
+            <>
+              <MobileCardHeader title={row.customer} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Topic')}>{t(row.topic)}</MobileCardRow>
+              <MobileCardRow label={t('Duration')}>{row.duration}</MobileCardRow>
+              <MobileCardRow label={t('Sentiment')}>{t(row.sentiment)}</MobileCardRow>
+            </>
+          )
+        }}
+      />
     </div>
   )
 }
