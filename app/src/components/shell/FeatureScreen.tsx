@@ -184,33 +184,8 @@ export function Section({
   )
 }
 
-/** Inline search field used inside a Section toolbar or above a table. */
-export function SearchField({
-  value,
-  onChange,
-  placeholder,
-  className,
-}: {
-  value: string
-  onChange: (next: string) => void
-  placeholder?: string
-  className?: string
-}) {
-  const { t } = usePreferences()
-  return (
-    <span className={cn('relative flex items-center', className)}>
-      <Icon name="Search" size={15} className="pointer-events-none absolute text-muted start-3" />
-      <input
-        type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder ?? t('Search...')}
-        aria-label={placeholder ?? t('Search')}
-        className="h-10 w-full rounded border border-border bg-inset px-3 ps-9 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
-      />
-    </span>
-  )
-}
+/** Inline search field — delegates to the Search primitive. */
+export { Search as SearchField } from '@/components/ui/Search'
 
 /** Scope selector (branch/garage picker) shown above the tabs. */
 export function ScopeSelect({

@@ -9,7 +9,7 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { useToast } from '@/components/ui/Toast'
-import { RepositoryError, useCreate } from '@/data/useCollection'
+import { RepositoryError, useCreate, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { NoWritesNotice, serverFieldError } from './writes'
 
@@ -20,26 +20,14 @@ import { NoWritesNotice, serverFieldError } from './writes'
  *  entity yet, so the form uses an inline zod schema that mirrors the
  *  fields the registry table already displays. */
 
-const technicianForm = z
-  .object({
-    name: z.string(),
-    specialization: z.string(),
-    phone: z.string(),
-    email: z.string(),
-  })
-  .transform((values) => {
-    const specialization = values.specialization.trim()
-    const phone = values.phone.trim()
-    const email = values.email.trim()
-    return {
-      name: values.name.trim(),
-      ...(specialization ? { specialization } : {}),
-      ...(phone ? { phone } : {}),
-      ...(email ? { email } : {}),
-    }
-  })
+const technicianForm = z.object({
+  name: z.string().min(1),
+  specialty: z.string(),
+  phone: z.string(),
+  email: z.string(),
+})
 
-type TechnicianFormValues = z.input<typeof technicianForm>
+type TechnicianFormValues = z.infer<typeof technicianForm>
 
 export function TechnicianFormModal({
   open,
@@ -56,13 +44,17 @@ export function TechnicianFormModal({
     schema: technicianForm,
     initial: {
       name: '',
-      specialization: '',
+      specialty: '',
       phone: '',
       email: '',
     } satisfies TechnicianFormValues,
     async onSubmit(values) {
       try {
-        await create.mutateAsync({ input: values as any })
+        const input: Partial<RowOf<'technicians'>> = {
+          name: values.name.trim(),
+          ...(values.specialty.trim() ? { specialty: values.specialty.trim() } : {}),
+        }
+        await create.mutateAsync({ input })
       } catch (cause) {
         const attributed = serverFieldError(cause)
         if (attributed) throw attributed
@@ -107,7 +99,7 @@ export function TechnicianFormModal({
       <Form form={form}>
         <FormErrorSummary />
         <Field name="name" label="Technician Name" required />
-        <Field name="specialization" label="Specialization" hint="Skill area, e.g. Engine, Electrical, Body." />
+        <Field name="specialty" label="Specialization" hint="Skill area, e.g. Engine, Electrical, Body." />
         <Field name="phone" label="Phone" kind="phone" placeholder="+966 55 210 4471" />
         <Field name="email" label="Email" kind="email" />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
