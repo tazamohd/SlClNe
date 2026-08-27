@@ -5,6 +5,7 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Money, formatSar } from '@/components/ui/Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface Quotation {
   id: string
@@ -55,18 +56,7 @@ export function PurchaseAgentQuotations() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="FileText" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Quotations')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Supplier quotation management')}</p>
-        </div>
-      </div>
+      <PageHeader icon="FileText" title={t('Quotations')} subtitle={t('Supplier quotation management')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map((k) => (

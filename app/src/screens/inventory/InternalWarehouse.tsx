@@ -5,6 +5,7 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const ZONES = [
   { code: 'A1', name: 'Main Floor', capacity: 500, utilized: 78, itemCount: 390, status: 'Active' },
@@ -50,18 +51,7 @@ export function InternalWarehouse() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Warehouse" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Internal Warehouse')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Warehouse zones and locations')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Warehouse" title={t('Internal Warehouse')} subtitle={t('Warehouse zones and locations')} />
 
       <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-4 gap-4'}>
         {kpis.map((k) => (

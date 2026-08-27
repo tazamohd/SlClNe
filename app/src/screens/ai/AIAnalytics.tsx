@@ -4,6 +4,7 @@ import { Icon } from '@/components/ui/Icon'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface KPI {
   icon: string
@@ -102,18 +103,7 @@ export function AIAnalytics() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Activity" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('AI Analytics')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('AI Platform')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Activity" title={t('AI Analytics')} subtitle={t('AI Platform')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map((k) => (

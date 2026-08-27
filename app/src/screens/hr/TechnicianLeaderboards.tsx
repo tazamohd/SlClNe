@@ -6,6 +6,7 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Input } from '@/components/ui/Input'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface LeaderboardEntry {
   rank: number
@@ -70,18 +71,7 @@ export function TechnicianLeaderboards() {
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="Trophy" size={28} />
-            </div>
-          </div>
-          <div>
-            <h1 className="font-display text-[30px] font-black text-heading">{t('Leaderboards')}</h1>
-            <p className="mt-0.5 text-[13px] text-muted">{t('Technician Rankings')}</p>
-          </div>
-        </div>
+        <PageHeader icon="Trophy" title={t('Leaderboards')} subtitle={t('Technician Rankings')} />
         <div className="relative flex items-center">
           <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
           <Input inputSize="sm" placeholder={t('Search technicians...')} value={search} onChange={(e) => setSearch(e.target.value)} className="w-[260px] !ps-8" />

@@ -5,6 +5,7 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Money } from '@/components/ui/Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface PartResult {
   partNumber: string
@@ -47,18 +48,7 @@ export function TechnicianAppLookup() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Search" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Parts Lookup')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Search parts by number, name, or VIN')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Search" title={t('Parts Lookup')} subtitle={t('Search parts by number, name, or VIN')} />
 
       <Card className="rounded-xl p-3 shadow-sm">
         <div className="flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.05)] px-3 py-2">

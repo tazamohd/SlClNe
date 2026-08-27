@@ -8,6 +8,7 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const PARTS = [
   { partNumber: 'SP-1001', name: 'Oil Filter', brand: 'Toyota Genuine', category: 'OEM', compatibility: 'Toyota', price: 18.50, stock: 120, status: 'Available' },
@@ -120,18 +121,7 @@ export function SparePartsList() {
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="Wrench" size={28} />
-            </div>
-          </div>
-          <div>
-            <h1 className="font-display text-[30px] font-black text-heading">{t('Spare Parts')}</h1>
-            <p className="mt-0.5 text-[13px] text-muted">{t('Parts catalog')}</p>
-          </div>
-        </div>
+        <PageHeader icon="Wrench" title={t('Spare Parts')} subtitle={t('Parts catalog')} />
         <div className="relative flex items-center">
           <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
           <Input inputSize="sm" placeholder={t('Search parts...')} value={search} onChange={(e) => setSearch(e.target.value)} className="w-[260px] !ps-8" />

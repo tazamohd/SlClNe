@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_ROADMAP = [
   { id: 'NG-001', name: 'Autonomous Diagnostics', phase: 'Phase 1', timeline: 'Q4 2026', status: 'In Progress', team: 'AI Lab', budget: 'SAR 450K', completion: 65 },
@@ -54,18 +55,7 @@ export function NextGenTechnologies() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Layers" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Next-Gen Technologies')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Technology roadmap and innovation pipeline')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Layers" title={t('Next-Gen Technologies')} subtitle={t('Technology roadmap and innovation pipeline')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map(k => (

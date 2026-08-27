@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface Prompt {
   id: number
@@ -105,18 +106,7 @@ export function PromptLibrary() {
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="BookMarked" size={28} />
-            </div>
-          </div>
-          <div>
-            <h1 className="font-display text-[30px] font-black text-heading">{t('Prompt Library')}</h1>
-            <p className="mt-0.5 text-[13px] text-muted">{t('AI Platform')}</p>
-          </div>
-        </div>
+        <PageHeader icon="BookMarked" title={t('Prompt Library')} subtitle={t('AI Platform')} />
         <div className="flex gap-2.5">
           <div className="relative flex items-center">
             <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />

@@ -8,6 +8,7 @@ import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const
 
@@ -124,18 +125,7 @@ export function Calendar() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="CalendarDays" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Calendar')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Schedule')}</p>
-        </div>
-      </div>
+      <PageHeader icon="CalendarDays" title={t('Calendar')} subtitle={t('Schedule')} />
 
       <div className="grid grid-cols-[1fr_340px] items-start gap-6">
         <Card className="rounded-2xl p-6 shadow-sm">

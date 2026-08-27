@@ -5,6 +5,7 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
 import { isLive } from '@/data/repository'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 function getGreeting(t: (s: string) => string): string {
   const hour = new Date().getHours()
@@ -69,18 +70,7 @@ export function WelcomePage() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Sparkles" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{greeting}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Welcome to Salis Auto ERP')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Sparkles" title={greeting} subtitle={t('Welcome to Salis Auto ERP')} />
 
       <div className="grid grid-cols-4 gap-4">
         {QUICK_STATS.map((s) => (

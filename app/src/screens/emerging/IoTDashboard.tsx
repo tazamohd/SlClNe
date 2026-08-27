@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/Select'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_DEVICES = [
   { id: 'IOT-001', name: 'Bay 1 Lift Sensor', type: 'Pressure', location: 'Workshop A', status: 'Online', battery: 92, lastPing: '2 min ago', value: '4,200 PSI' },
@@ -53,18 +54,7 @@ export function IoTDashboard() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Radio" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('IoT Dashboard')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('IoT device monitoring and telemetry')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Radio" title={t('IoT Dashboard')} subtitle={t('IoT device monitoring and telemetry')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map(k => (

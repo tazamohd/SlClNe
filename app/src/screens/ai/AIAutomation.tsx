@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/Select'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_RULES = [
   { id: 'AUT-001', name: 'Auto-Schedule Follow-Up', trigger: 'Job Completed', action: 'Send SMS after 3 days', status: 'Active', executions: 1245, lastRun: '2026-08-17 14:32' },
@@ -49,18 +50,7 @@ export function AIAutomation() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Workflow" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('AI Automation')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Automation rules and triggers')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Workflow" title={t('AI Automation')} subtitle={t('Automation rules and triggers')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map(k => (

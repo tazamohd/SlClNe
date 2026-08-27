@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface Vehicle {
   plate: string
@@ -57,18 +58,7 @@ export function PortalVehicles() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Car" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Vehicles')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Registered vehicles and service status')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Car" title={t('Vehicles')} subtitle={t('Registered vehicles and service status')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map((k) => (

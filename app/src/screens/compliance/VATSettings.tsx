@@ -5,6 +5,7 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Money } from '@/components/ui/Money'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const CONFIG = {
   vatRate: '15%',
@@ -69,18 +70,7 @@ export function VATSettings() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Receipt" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('VAT Settings')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('VAT configuration')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Receipt" title={t('VAT Settings')} subtitle={t('VAT configuration')} />
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <h2 className="mb-4 text-sm font-semibold text-heading">{t('Configuration')}</h2>

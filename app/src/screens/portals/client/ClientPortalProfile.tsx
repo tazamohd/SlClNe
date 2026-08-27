@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const PROFILE = {
   name: 'Abdullah Al-Qahtani',
@@ -67,18 +68,7 @@ export function ClientPortalProfile() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="User" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('My Profile')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Account details and preferences')}</p>
-        </div>
-      </div>
+      <PageHeader icon="User" title={t('My Profile')} subtitle={t('Account details and preferences')} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="rounded-2xl p-6 shadow-sm">

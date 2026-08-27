@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/Select'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_ALERTS = [
   { id: 'FRD-001', type: 'Invoice Anomaly', description: 'Duplicate invoice amount from same vendor', riskScore: 95, amount: 'SAR 24,500', entity: 'Parts Supplier Co.', status: 'Flagged', detectedAt: '2026-08-17 14:22' },
@@ -51,18 +52,7 @@ export function MLFraudDetection() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="ShieldAlert" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('ML Fraud Detection')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Machine learning-based fraud detection dashboard')}</p>
-        </div>
-      </div>
+      <PageHeader icon="ShieldAlert" title={t('ML Fraud Detection')} subtitle={t('Machine learning-based fraud detection dashboard')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map(k => (

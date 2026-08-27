@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const ITEMS = [
   { title: 'Fire Safety Inspection', category: 'Safety', dueDate: '2026-09-15', status: 'Compliant', assignee: 'Ahmed Al-Rashid' },
@@ -50,18 +51,7 @@ export function ComplianceManagement() {
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="ShieldCheck" size={28} />
-            </div>
-          </div>
-          <div>
-            <h1 className="font-display text-[30px] font-black text-heading">{t('Compliance Management')}</h1>
-            <p className="mt-0.5 text-[13px] text-muted">{t('Regulatory tracking')}</p>
-          </div>
-        </div>
+        <PageHeader icon="ShieldCheck" title={t('Compliance Management')} subtitle={t('Regulatory tracking')} />
         <div className="flex gap-2">
           {['All', 'Compliant', 'Pending', 'Overdue', 'In Review'].map((s) => (
             <button

@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/Select'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_OPTIMIZATIONS = [
   { id: 'PO-001', service: 'Engine Oil Change', currentPrice: 'SAR 180', suggestedPrice: 'SAR 195', change: '+8.3%', reason: 'Market rate increase', confidence: 94, impact: 'High' },
@@ -50,18 +51,7 @@ export function IntelligentPriceOptimizer() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="DollarSign" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Intelligent Price Optimizer')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('AI-powered pricing optimization for services')}</p>
-        </div>
-      </div>
+      <PageHeader icon="DollarSign" title={t('Intelligent Price Optimizer')} subtitle={t('AI-powered pricing optimization for services')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map(k => (

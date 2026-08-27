@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/Select'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_KPIS = [
   { id: 'KPI-01', name: 'Customer Satisfaction', category: 'Quality', value: '4.6/5', target: '4.5/5', status: 'On Track', trend: '+0.2' },
@@ -52,18 +53,7 @@ export function KPIDashboard() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Target" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('KPI Dashboard')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Key performance indicators at a glance')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Target" title={t('KPI Dashboard')} subtitle={t('Key performance indicators at a glance')} />
 
       <div className="grid grid-cols-4 gap-4">
         {summaryKpis.map(k => (

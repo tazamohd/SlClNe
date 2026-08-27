@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface SocialPlatform {
   name: string
@@ -59,18 +60,7 @@ export function SocialMediaIntegration() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Share2" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Social Media Integration')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Connected platforms and performance')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Share2" title={t('Social Media Integration')} subtitle={t('Connected platforms and performance')} />
 
       <div className="grid grid-cols-2 gap-4">
         {PLATFORMS.map((p) => (

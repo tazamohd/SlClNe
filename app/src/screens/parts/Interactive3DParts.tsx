@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 interface PartModel {
   name: string
@@ -64,18 +65,7 @@ export function Interactive3DParts() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Boxes" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Interactive 3D Parts')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Explore parts with interactive 3D models')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Boxes" title={t('Interactive 3D Parts')} subtitle={t('Explore parts with interactive 3D models')} />
 
       <div className="flex gap-4">
         <Card className="flex flex-1 flex-col items-center justify-center rounded-2xl p-12 shadow-sm">

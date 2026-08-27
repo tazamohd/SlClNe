@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/Select'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_TWINS = [
   { id: 'DT-001', name: 'Workshop A Layout', type: 'Facility', syncStatus: 'Synced', lastSync: '2 min ago', sensors: 24, alerts: 0, status: 'Active' },
@@ -65,18 +66,7 @@ export function DigitalTwinViewer() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Layers" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Digital Twin Viewer')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Digital twin visualization and simulation')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Layers" title={t('Digital Twin Viewer')} subtitle={t('Digital twin visualization and simulation')} />
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map(k => (

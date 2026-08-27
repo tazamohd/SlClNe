@@ -3,6 +3,7 @@ import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 const SETTINGS = [
   { label: 'Default Currency', value: 'SAR' },
@@ -33,18 +34,7 @@ export function FinancialSettings() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-          <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Landmark" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[30px] font-black text-heading">{t('Financial Settings')}</h1>
-          <p className="mt-0.5 text-[13px] text-muted">{t('Financial configuration')}</p>
-        </div>
-      </div>
+      <PageHeader icon="Landmark" title={t('Financial Settings')} subtitle={t('Financial configuration')} />
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
