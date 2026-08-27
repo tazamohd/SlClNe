@@ -19,10 +19,10 @@ const VARIANT_STYLES: Record<AlertVariant, { bg: string; border: string; icon: s
     iconColor: 'text-salis-orange',
   },
   error: {
-    bg: 'bg-[rgba(220,38,38,.06)]',
-    border: 'border-[rgba(220,38,38,.2)]',
+    bg: 'bg-[rgba(234,88,12,.06)]',
+    border: 'border-[rgba(234,88,12,.2)]',
     icon: 'AlertCircle',
-    iconColor: 'text-[#dc2626]',
+    iconColor: 'text-[#EA580C]',
   },
   neutral: {
     bg: 'bg-[rgba(100,116,139,.06)]',

@@ -29,7 +29,7 @@ const SUPPLIERS: Supplier[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Approved: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Suspended: { bg: 'rgba(239,68,68,.1)', fg: '#EF4444' },
+  Suspended: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
 }
 
 export function PurchaseAgentSuppliers() {

@@ -20,6 +20,11 @@
 --ring:var(--salis-blue);
 /* Charts (brand-safe only) */
 --chart-1:#0A5ED7;--chart-2:#0BB3FF;--chart-3:#38BDF8;--chart-4:#64748B;--chart-5:#F97316;
+/* Amber / warning accents — same orange family, approved hue */
+--amber:#F59E0B;--amber-dark:#B45309;
+/* Neutral accents used for toggle off-states, gradient endpoints, focus rings */
+--neutral-400:#94A3B8;--neutral-300:#CBD5E1;--navy-dark:#1E3A5F;--orange-light:#FB923C;
+--ring-light:#D7E5FA;--ring-dark:#173963;
 }
 .dark{
 --bg-page:#0E1117;--bg-page-alt:#0E1117;

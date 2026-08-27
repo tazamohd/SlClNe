@@ -21,7 +21,7 @@ const MOCK_EQUIPMENT = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Calibrated: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
   'Due Soon': ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Overdue: ['rgba(239,68,68,.1)', '#EF4444'],
+  Overdue: ['rgba(249,115,22,.1)', '#F97316'],
 }
 
 type EquipmentRow = (typeof MOCK_EQUIPMENT)[number]
@@ -39,7 +39,7 @@ export function EquipmentCalibration() {
     { label: t('Total Equipment'), value: String(MOCK_EQUIPMENT.length), icon: 'Ruler', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Calibrated'), value: String(calibrated), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Due Soon'), value: String(dueSoon), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: '#EF4444' },
+    { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
   ]
 
   const columns: Column<EquipmentRow>[] = [

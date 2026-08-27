@@ -28,11 +28,11 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Pending: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Completed: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  Overdue: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  High: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Medium: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   Low: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
@@ -51,7 +51,7 @@ export function PurchaseAgentTasks() {
     { label: t('Total Tasks'), value: String(TASKS.length), icon: 'ListChecks', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Pending'), value: '3', icon: 'Clock', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
     { label: t('In Progress'), value: '2', icon: 'Loader', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   ]
 
   const columns: Column<Task>[] = [

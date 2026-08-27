@@ -30,7 +30,7 @@ const INVENTORY: InventoryItem[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Stock': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'Low Stock': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  'Out of Stock': { bg: 'rgba(239,68,68,.1)', fg: '#EF4444' },
+  'Out of Stock': { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
 }
 
 export function PurchaseAgentInventory() {

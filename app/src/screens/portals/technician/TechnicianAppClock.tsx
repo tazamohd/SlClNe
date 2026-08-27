@@ -23,7 +23,7 @@ const RECENT_PUNCHES: RecentPunch[] = [
 
 const ACTION_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
   'Clock In': { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)', icon: 'LogIn' },
-  'Clock Out': { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)', icon: 'LogOut' },
+  'Clock Out': { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)', icon: 'LogOut' },
   'Break Start': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)', icon: 'Coffee' },
   'Break End': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'Play' },
 }

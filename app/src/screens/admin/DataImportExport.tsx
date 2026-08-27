@@ -26,7 +26,7 @@ const OPERATIONS: Operation[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Completed: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  Failed: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Failed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Processing: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
 

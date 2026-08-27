@@ -31,7 +31,7 @@ const TYPE_STYLES: Record<string, { bg: string; fg: string }> = {
   job: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   parts: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   schedule: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  alert: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  alert: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 export function TechnicianAppHome() {

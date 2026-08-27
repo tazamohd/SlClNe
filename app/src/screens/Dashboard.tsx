@@ -85,7 +85,7 @@ export function Dashboard() {
           iconColor="#0BB3FF"
           label={t('Active Jobs')}
           value="14"
-          orbGradient="linear-gradient(135deg,#0BB3FF,#06B6D4)"
+          orbGradient="linear-gradient(135deg,#0BB3FF,#38BDF8)"
           orbIcon="Gauge"
           orbShadow="rgba(11,179,255,.2)"
           footer={
@@ -397,7 +397,7 @@ function PageButton({ label, icon }: { label: string; icon: string }) {
 const PIPELINE = [
   { icon: 'Clock', label: 'Check-In', count: 5, gradient: 'linear-gradient(135deg,#F97316,#FB923C)' },
   { icon: 'Wrench', label: 'In Repair', count: 9, gradient: 'linear-gradient(135deg,#0A5ED7,#0BB3FF)' },
-  { icon: 'AlertCircle', label: 'QC', count: 6, gradient: 'linear-gradient(135deg,#0BB3FF,#06B6D4)' },
+  { icon: 'AlertCircle', label: 'QC', count: 6, gradient: 'linear-gradient(135deg,#0BB3FF,#38BDF8)' },
   { icon: 'CheckCircle', label: 'Done', count: 6, gradient: 'linear-gradient(135deg,#0A5ED7,#0BB3FF)' },
   { icon: 'Car', label: 'Delivered', count: 4, gradient: 'linear-gradient(135deg,#0B1F3B,#1e3a5f)' },
   { icon: 'Activity', label: 'Total', count: 27, gradient: 'linear-gradient(135deg,#64748B,#94A3B8)' },

@@ -29,7 +29,7 @@ const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
   Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   High: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Urgent: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Urgent: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const COLUMNS: { status: Task['status']; icon: string }[] = [

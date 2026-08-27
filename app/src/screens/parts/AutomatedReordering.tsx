@@ -32,7 +32,7 @@ export function AutomatedReordering() {
 
   const kpis = [
     { label: t('Active Rules'), value: String(RULES.filter((r) => r.active).length), icon: 'RotateCcw', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Below Minimum'), value: String(RULES.filter((r) => r.currentStock < r.minStock).length), icon: 'AlertTriangle', bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+    { label: t('Below Minimum'), value: String(RULES.filter((r) => r.currentStock < r.minStock).length), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
     { label: t('Orders Triggered'), value: '12', icon: 'ShoppingCart', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
     { label: t('Total Parts'), value: String(RULES.length), icon: 'Package', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   ]
@@ -40,7 +40,7 @@ export function AutomatedReordering() {
   const columns: Column<ReorderRule>[] = [
     { header: 'Part', cell: (r) => r.partName },
     { header: 'Part #', cell: (r) => r.partNo, code: true },
-    { header: 'Stock', cell: (r) => <span className="font-mono" style={{ color: r.currentStock < r.minStock ? 'rgb(239,68,68)' : undefined }}>{r.currentStock}</span> },
+    { header: 'Stock', cell: (r) => <span className="font-mono" style={{ color: r.currentStock < r.minStock ? 'rgb(249,115,22)' : undefined }}>{r.currentStock}</span> },
     { header: 'Min Stock', cell: (r) => <span className="font-mono text-muted">{r.minStock}</span> },
     { header: 'Reorder Qty', cell: (r) => <span className="font-mono">{r.reorderQty}</span> },
     { header: 'Supplier', cell: (r) => r.supplier },

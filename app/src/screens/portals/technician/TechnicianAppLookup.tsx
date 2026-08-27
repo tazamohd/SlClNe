@@ -28,7 +28,7 @@ const PART_RESULTS: PartResult[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Stock': { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
   'Low Stock': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  'Out of Stock': { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  'Out of Stock': { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 export function TechnicianAppLookup() {

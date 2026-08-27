@@ -20,7 +20,7 @@ const ITEMS = [
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   Compliant: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'rgba(245,158,11,.12)', fg: '#B45309' },
-  Overdue: { bg: 'rgba(220,38,38,.1)', fg: '#DC2626' },
+  Overdue: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
   'In Review': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
 }
 
@@ -36,7 +36,7 @@ export function ComplianceManagement() {
     { label: t('Total Items'), value: String(ITEMS.length), icon: 'ShieldCheck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Compliant'), value: String(ITEMS.filter((i) => i.status === 'Compliant').length), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Pending'), value: String(ITEMS.filter((i) => i.status === 'Pending').length), icon: 'Clock', bg: 'rgba(245,158,11,.12)', fg: '#B45309' },
-    { label: t('Overdue'), value: String(ITEMS.filter((i) => i.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(220,38,38,.1)', fg: '#DC2626' },
+    { label: t('Overdue'), value: String(ITEMS.filter((i) => i.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
   ]
 
   const columns: Column<ItemRow>[] = [

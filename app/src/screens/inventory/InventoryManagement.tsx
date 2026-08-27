@@ -24,7 +24,7 @@ const ITEMS = [
 type Item = (typeof ITEMS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Out of Stock') return { background: 'rgba(239,68,68,.1)', color: '#EF4444' }
+  if (status === 'Out of Stock') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
   if (status === 'Low Stock') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
   return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
 }
@@ -41,7 +41,7 @@ export function InventoryManagement() {
     { label: t('Total SKUs'), value: String(ITEMS.length), icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Total Value'), value: formatSar(totalValue), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Low Stock Items'), value: String(lowStock), icon: 'AlertTriangle', bg: 'rgba(245,158,11,.1)', fg: '#F59E0B' },
-    { label: t('Out of Stock'), value: String(outOfStock), icon: 'XCircle', bg: 'rgba(239,68,68,.1)', fg: '#EF4444' },
+    { label: t('Out of Stock'), value: String(outOfStock), icon: 'XCircle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
   ]
 
   const columns: Column<Item>[] = [

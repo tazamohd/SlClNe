@@ -48,8 +48,8 @@ export function PartsMarketplace() {
               }
               trailing={
                 <Badge
-                  background={listing.inStock ? 'rgba(10,94,215,.1)' : 'rgba(239,68,68,.1)'}
-                  color={listing.inStock ? 'var(--salis-blue)' : '#EF4444'}
+                  background={listing.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                  color={listing.inStock ? 'var(--salis-blue)' : '#F97316'}
                 >
                   {listing.inStock ? t('In Stock') : t('Out of Stock')}
                 </Badge>
@@ -89,8 +89,8 @@ export function PartsMarketplace() {
                 <h3 className="text-sm font-semibold text-heading">{listing.partName}</h3>
               </div>
               <Badge
-                background={listing.inStock ? 'rgba(10,94,215,.1)' : 'rgba(239,68,68,.1)'}
-                color={listing.inStock ? 'var(--salis-blue)' : '#EF4444'}
+                background={listing.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                color={listing.inStock ? 'var(--salis-blue)' : '#F97316'}
               >
                 {listing.inStock ? t('In Stock') : t('Out of Stock')}
               </Badge>

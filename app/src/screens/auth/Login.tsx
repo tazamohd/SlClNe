@@ -290,7 +290,7 @@ function RoleCard({
         className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded"
         style={
           selected
-            ? { background: 'var(--salis-gradient)', color: '#fff' }
+            ? { background: 'var(--salis-gradient)', color: '#FFFFFF' }
             : { background: 'rgba(10,94,215,.09)', color: role.color }
         }
       >

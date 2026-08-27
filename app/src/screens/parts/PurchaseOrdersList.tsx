@@ -31,7 +31,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Approved: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Shipped: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
   Delivered: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 export function PurchaseOrdersList() {

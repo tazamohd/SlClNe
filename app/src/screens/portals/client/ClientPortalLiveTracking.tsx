@@ -104,7 +104,7 @@ export function ClientPortalLiveTracking() {
                     className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold"
                     style={{
                       background: isActive ? 'var(--salis-blue)' : 'rgba(10,94,215,.1)',
-                      color: isActive ? '#fff' : 'var(--salis-blue)',
+                      color: isActive ? '#FFFFFF' : 'var(--salis-blue)',
                     }}
                   >
                     {idx + 1}

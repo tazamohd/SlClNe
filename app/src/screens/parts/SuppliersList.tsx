@@ -22,7 +22,7 @@ const SUPPLIERS = [
 type Supplier = (typeof SUPPLIERS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Inactive') return { background: 'rgba(239,68,68,.1)', color: '#EF4444' }
+  if (status === 'Inactive') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
   if (status === 'Pending') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
   return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
 }

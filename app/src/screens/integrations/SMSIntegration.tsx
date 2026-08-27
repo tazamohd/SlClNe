@@ -41,10 +41,10 @@ const SMS_LOGS: SMSLog[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Connected: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Disconnected: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Error: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Error: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Delivered: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Failed: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Failed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 export function SMSIntegration() {

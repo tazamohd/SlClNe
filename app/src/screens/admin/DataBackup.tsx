@@ -29,7 +29,7 @@ const BACKUPS: BackupRecord[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'In Progress': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Failed: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Failed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Scheduled: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }
 

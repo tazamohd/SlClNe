@@ -29,7 +29,7 @@ const DEVICES: ManagedDevice[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Inactive: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Lost: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Lost: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 export function MobileDeviceManagement() {
@@ -54,7 +54,7 @@ export function MobileDeviceManagement() {
       header: 'Battery',
       cell: (device) => (
         <div className="flex items-center gap-2">
-          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'rgb(239,68,68)' : 'var(--salis-blue)' }} />
+          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'rgb(249,115,22)' : 'var(--salis-blue)' }} />
           <span className="text-body">{device.battery}%</span>
         </div>
       ),

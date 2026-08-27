@@ -30,7 +30,7 @@ const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
   Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   High: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Critical: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Critical: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
@@ -38,7 +38,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Quoted: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
   Ordered: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
   Fulfilled: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 export function PartsNetworkMyRequests() {

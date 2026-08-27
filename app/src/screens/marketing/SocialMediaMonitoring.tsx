@@ -29,7 +29,7 @@ const MENTIONS: Mention[] = [
 const SENTIMENT_STYLES: Record<string, { bg: string; fg: string }> = {
   Positive: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Neutral: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Negative: { bg: 'rgba(239,68,68,.1)', fg: 'rgb(239,68,68)' },
+  Negative: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const PLATFORM_ICONS: Record<string, string> = {
