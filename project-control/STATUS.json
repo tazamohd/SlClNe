@@ -14,6 +14,9 @@
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
+    "hasLoadingState": 100,
+    "hasErrorState": 68,
+    "hasEmptyState": 97,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0

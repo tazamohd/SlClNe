@@ -200,6 +200,50 @@ const mobileImplemented = (() => {
   return names
 })()
 
+/** Screens whose source file imports Loading / ErrorState / EmptyState from
+ *  the UI States module. Maps component name → { loading, error, empty }. */
+const stateImplemented = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const src = fs.readFileSync(full, 'utf8')
+        const hasLoading = src.includes('Loading') && (src.includes('isLoading') || src.includes('<Loading'))
+        const hasError = src.includes('ErrorState') || (src.includes('isError') && src.includes('error'))
+        const hasEmpty = src.includes('EmptyState') || src.includes('empty') && (src.includes('length === 0') || src.includes('.length'))
+        if (!hasLoading && !hasError && !hasEmpty) continue
+        for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
+          map.set(m[1], { loading: hasLoading, error: hasError, empty: hasEmpty })
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+
+  const domainsDir = path.join(screensDir, 'domains')
+  if (fs.existsSync(domainsDir)) {
+    for (const f of fs.readdirSync(domainsDir).filter(n => n.endsWith('.ts'))) {
+      try {
+        const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
+        for (const m of src.matchAll(/['"]?(\w[\w.]*?)['"]?\s*:\s*(?:\w+\()?\s*(\w+)\s*\)?\s*[,}]/g)) {
+          const screenName = m[1]
+          const componentName = m[2]
+          if (map.has(componentName) && !map.has(screenName)) {
+            map.set(screenName, map.get(componentName))
+          }
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+
+  return map
+})()
+
 // ── classification ───────────────────────────────────────────────────────────
 
 /** Surface, shell and owning agent, in priority order. First match wins. */
@@ -327,7 +371,10 @@ for (const s of SCREENS) {
     responsive: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
     arabic: built ? 'PARTIAL' : 'MISSING',
     rtl: built ? 'PARTIAL' : 'MISSING',
-    loadingState: 'MISSING', emptyState: 'MISSING', errorState: 'MISSING', successState: 'MISSING',
+    loadingState: built && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
+    emptyState: built && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
+    errorState: built && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
+    successState: 'MISSING',
     accessibility: 'MISSING',
     dataBacked: false,
     dataSource: [],
@@ -375,7 +422,10 @@ for (const s of SPEC_SCREENS) {
     responsive: owned || kit ? 'PARTIAL' : 'MISSING',
     arabic: owned || kit ? 'PARTIAL' : 'MISSING',
     rtl: owned || kit ? 'PARTIAL' : 'MISSING',
-    loadingState: 'MISSING', emptyState: 'MISSING', errorState: 'MISSING', successState: 'MISSING',
+    loadingState: (owned || kit) && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
+    emptyState: (owned || kit) && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
+    errorState: (owned || kit) && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
+    successState: 'MISSING',
     accessibility: 'MISSING',
     dataBacked: false,
     dataSource: [],
@@ -493,6 +543,9 @@ const totals = {
   e2eCovered: count(entries, (e) => e.tests.e2e),
   contentAsserted: count(entries, (e) => e.e2eContent),
   renderedWithoutAssertion: count(entries, (e) => e.status === 'IMPLEMENTED' && !e.e2eContent),
+  hasLoadingState: count(entries, (e) => e.loadingState === 'DONE'),
+  hasErrorState: count(entries, (e) => e.errorState === 'DONE'),
+  hasEmptyState: count(entries, (e) => e.emptyState === 'DONE'),
   unregisteredDesigns: unregistered.length,
   orphanScreenFiles: orphanFiles.length,
   productionReady: count(entries, (e) => e.status === 'PRODUCTION_READY'),
