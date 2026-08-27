@@ -37,11 +37,11 @@ let skipped = 0
 const skippedReasons = {}
 
 for (const entry of entries) {
-  if (entry.category !== 'PRODUCT') continue
+  if (entry.category === 'REDIRECT' || entry.category === 'DEPRECATED') continue
   if (!entry.route || !entry.title) continue
   if (entry.status !== 'IMPLEMENTED') continue
   if (entry.route === '/splash') continue
-  if (entry.shell === 'none') continue
+  if (entry.shell === 'none' && entry.category !== 'REFERENCE_ONLY') continue
   if (redirects.has(entry.route)) continue
   if (existing.has(entry.route)) continue
 

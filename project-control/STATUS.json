@@ -12,8 +12,8 @@
     "mockOnly": 384,
     "dataBacked": 0,
     "e2eCovered": 424,
-    "contentAsserted": 394,
-    "renderedWithoutAssertion": 30,
+    "contentAsserted": 424,
+    "renderedWithoutAssertion": 0,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0

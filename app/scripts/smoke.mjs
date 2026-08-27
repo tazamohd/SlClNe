@@ -1471,6 +1471,36 @@ const EXPECTED_TEXT = {
   '/io-t-dashboard': "IoT Dashboard",
   '/system-settings': "System Settings",
   '/tasks': "Tasks",
+  '/flow-spec': "FlowSpec",
+  '/index': "Index",
+  '/rbacspec': "RBACSpec",
+  '/ui/activity-feed': "UI · ActivityFeed",
+  '/ui/advanced-filters': "UI · AdvancedFilters",
+  '/ui/attachments': "UI · Attachments",
+  '/ui/calendar-view': "UI · CalendarView",
+  '/ui/card-view': "UI · CardView",
+  '/ui/charts': "UI · Charts",
+  '/ui/comments': "UI · Comments",
+  '/ui/empty-states': "UI · EmptyStates",
+  '/ui/export-center': "UI · ExportCenter",
+  '/ui/form-validation': "UI · FormValidation",
+  '/ui/import-center': "UI · ImportCenter",
+  '/ui/kanban-view': "UI · KanbanView",
+  '/ui/list-view': "UI · ListView",
+  '/ui/loading-states': "UI · LoadingStates",
+  '/ui/map-view': "UI · MapView",
+  '/ui/media-gallery': "UI · MediaGallery",
+  '/ui/messages': "UI · Messages",
+  '/ui/modals/actions': "UI · Modals · Actions",
+  '/ui/modals/capture': "UI · Modals · Capture",
+  '/ui/modals/crud': "UI · Modals · CRUD",
+  '/ui/modals/data': "UI · Modals · Data",
+  '/ui/modals/lifecycle': "UI · Modals · Lifecycle",
+  '/ui/modals/status': "UI · Modals · Status",
+  '/ui/table-view': "UI · TableView",
+  '/ui/timeline-view': "UI · TimelineView",
+  '/wearable-integration': "Wearable Integration",
+  '/quantum-computing': "Quantum Computing",
 }
 
 // ── Overrides for registry titles that don't match rendered text ──────────────
@@ -1499,6 +1529,8 @@ Object.assign(EXPECTED_TEXT, {
  *  redirects is a capability that cannot be reached at its own address. */
 const EXPECTED_REDIRECTS = {
   '/splash': '/welcome',
+  '/customer-app': '/customer-app/home',
+  '/support': '/call-center',
 }
 
 /** Built screens whose registry shell does not exist yet, so they render inside
