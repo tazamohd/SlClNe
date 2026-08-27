@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
 import { Modal } from '@/components/ui/Modal'
 import { parseSar } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
@@ -368,12 +369,13 @@ function AddLine({ runId, onClose }: { runId: string; onClose: () => void }) {
         <label htmlFor="line-emp" className="text-[11px] font-semibold uppercase tracking-[.04em] text-muted">
           {t('Employee')}
         </label>
-        <select
+        <Select
           id="line-emp"
           value={employeeId}
           disabled={busy || empRows.length === 0}
           onChange={(e) => setEmployeeId(e.target.value)}
-          className="h-11 w-full rounded border border-border bg-inset px-3.5 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:cursor-not-allowed disabled:opacity-60"
+          aria-label={t('Employee')}
+          className="h-11 w-full bg-inset px-3.5 font-action text-sm transition-all duration-200 focus:bg-card disabled:cursor-not-allowed disabled:opacity-60"
         >
           <option value="">{t('Select an employee')}</option>
           {empRows.map((e) => (
@@ -381,7 +383,7 @@ function AddLine({ runId, onClose }: { runId: string; onClose: () => void }) {
               {e.employeeNumber} — {e.name}
             </option>
           ))}
-        </select>
+        </Select>
         {empRows.length === 0 ? (
           <span className="text-[11px] text-muted">{t('No employees are loaded to line up.')}</span>
         ) : null}

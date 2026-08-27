@@ -26,6 +26,7 @@ import {
 import { Modal, useModal } from '@/components/ui/Modal'
 import { ErrorState, ReadOnlyNotice } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -155,13 +156,13 @@ export function PartsNetworkSendRequest() {
             <label htmlFor="notes" className="font-action text-xs font-medium text-heading">
               {t('Notes')}
             </label>
-            <textarea
+            <Textarea
               id="notes"
               rows={3}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('Condition, brand preference, delivery window...')}
-              className="box-border w-full resize-y rounded border border-border bg-inset px-3 py-2.5 font-ui text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+              className="text-[13px]"
             />
           </div>
         </Section>

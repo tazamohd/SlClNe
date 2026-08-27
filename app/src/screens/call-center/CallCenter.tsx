@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState } from '@/components/ui/States'
+import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -278,11 +279,11 @@ export function CallCenter() {
                 </button>
               ))}
             </div>
-            <textarea
+            <Textarea
               rows={3}
               placeholder={t('What did the customer need, and what did you do?')}
               aria-label={t('Call notes')}
-              className="w-full resize-vertical rounded-[9px] border border-border bg-inset px-3 py-2.5 font-ui text-[13px] text-primary outline-none"
+              className="text-[13px]"
             />
             <div className="mt-3 flex flex-wrap gap-2">
               <Button variant="outline" disabled={!isLive} onClick={() => navigate('/appointment-calendar')}>

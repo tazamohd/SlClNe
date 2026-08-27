@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
+import { Select } from '@/components/ui/Select'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, queryKeys, type RowOf } from '@/data/useCollection'
@@ -335,11 +336,11 @@ function StatementSection({
         const busy = match.isPending && match.variables?.lineId === lineId
         return (
           <div className="flex flex-wrap items-center gap-2">
-            <select
+            <Select
               value={picked[lineId] ?? ''}
               onChange={(event) => setPicked((prev) => ({ ...prev, [lineId]: event.target.value }))}
               aria-label={t('Receipt to match')}
-              className="h-9 cursor-pointer rounded border border-border bg-card px-2 text-[12px] text-heading outline-none focus:border-salis-blue"
+              className="px-2 text-[12px]"
             >
               <option value="">{t('No receipt')}</option>
               {receipts.map((receipt) => (
@@ -347,7 +348,7 @@ function StatementSection({
                   {receipt.id}
                 </option>
               ))}
-            </select>
+            </Select>
             <Button
               variant="subtle"
               size="sm"

@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobilePageHeader } from '@/components/shell/MobileShell'
+import { Textarea } from '@/components/ui/Textarea'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -231,13 +232,13 @@ export function CustomerFeedback() {
         <label htmlFor="feedback-comment" className="font-action text-[11px] font-medium text-heading">
           {t('Additional Comments')}
         </label>
-        <textarea
+        <Textarea
           id="feedback-comment"
           rows={3}
           value={comment}
           onChange={(event) => setComment(event.target.value)}
           placeholder={t('Share your thoughts...')}
-          className="box-border w-full resize-none rounded-lg border border-solid border-border bg-inset px-3 py-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:ring-2 focus:ring-[rgba(10,94,215,.15)]"
+          className="resize-none text-[13px]"
         />
       </Card>
 

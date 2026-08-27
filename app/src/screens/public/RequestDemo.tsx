@@ -3,6 +3,7 @@ import { useT } from '@/providers/PreferencesProvider'
 import { useToast } from '@/components/ui/Toast'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
+import { Textarea } from '@/components/ui/Textarea'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 
@@ -78,7 +79,7 @@ export function PublicRequestDemo() {
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="demo-message" className="text-xs font-medium text-heading">{t('Message')}</label>
-          <textarea id="demo-message" rows={4} placeholder={t('Tell us about your needs')} className={INPUT} />
+          <Textarea id="demo-message" rows={4} placeholder={t('Tell us about your needs')} />
         </div>
         <button
           type="submit"

@@ -5,6 +5,8 @@ import { Card } from '@/components/ui/Card'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
+import { Textarea } from '@/components/ui/Textarea'
 import { Modal } from '@/components/ui/Modal'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -417,14 +419,13 @@ function ClaimDetail({ claim, onClose }: { claim: InsuranceClaimRow; onClose: ()
               >
                 {t('Rejection reason')}
               </label>
-              <textarea
+              <Textarea
                 id="reject-reason"
                 rows={2}
                 value={reason}
                 disabled={busy !== null}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder={t('Required to reject')}
-                className="w-full rounded border border-border bg-inset px-3.5 py-2 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
 
@@ -549,12 +550,13 @@ function SubmitClaim({ onClose }: { onClose: () => void }) {
         <label htmlFor="claim-policy" className="text-[11px] font-semibold uppercase tracking-[.04em] text-muted">
           {t('Policy')}
         </label>
-        <select
+        <Select
           id="claim-policy"
           value={policyId}
           disabled={busy || policyRows.length === 0}
           onChange={(e) => setPolicyId(e.target.value)}
-          className="h-11 w-full rounded border border-border bg-inset px-3.5 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:cursor-not-allowed disabled:opacity-60"
+          aria-label={t('Policy')}
+          className="h-11 w-full bg-inset px-3.5 font-action text-sm transition-all duration-200 focus:bg-card disabled:cursor-not-allowed disabled:opacity-60"
         >
           <option value="">{t('Select a policy')}</option>
           {policyRows.map((p) => (
@@ -562,7 +564,7 @@ function SubmitClaim({ onClose }: { onClose: () => void }) {
               {p.policyNumber} — {p.holder} ({p.vehicleLabel})
             </option>
           ))}
-        </select>
+        </Select>
         {policyRows.length === 0 ? (
           <span className="text-[11px] text-muted">
             {t('No policies are loaded to file against.')}
@@ -605,14 +607,13 @@ function SubmitClaim({ onClose }: { onClose: () => void }) {
         <label htmlFor="claim-desc" className="text-[11px] font-semibold uppercase tracking-[.04em] text-muted">
           {t('Description')}
         </label>
-        <textarea
+        <Textarea
           id="claim-desc"
           rows={3}
           value={description}
           disabled={busy}
           onChange={(e) => setDescription(e.target.value)}
           placeholder={t('What happened')}
-          className="w-full rounded border border-border bg-inset px-3.5 py-2 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
     </Modal>

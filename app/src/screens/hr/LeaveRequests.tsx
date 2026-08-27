@@ -6,6 +6,7 @@ import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Modal } from '@/components/ui/Modal'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -238,14 +239,13 @@ function LeaveDetail({ request, onClose }: { request: LeaveRequestRow; onClose: 
               <label htmlFor="leave-reason" className="text-[11px] font-semibold uppercase tracking-[.04em] text-muted">
                 {t('Reason')}
               </label>
-              <textarea
+              <Textarea
                 id="leave-reason"
                 rows={2}
                 value={reason}
                 disabled={busy !== null}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder={t('Required to reject; optional to approve')}
-                className="w-full rounded border border-border bg-inset px-3.5 py-2 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
             <div className="flex flex-wrap justify-end gap-2">

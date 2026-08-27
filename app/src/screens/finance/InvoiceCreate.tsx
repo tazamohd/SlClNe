@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
 import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import {
@@ -402,7 +403,7 @@ export function InvoiceCreate() {
                               inputSize="sm"
                               className={`${cellInput} focus:shadow-none`}
                             />
-                            <select
+                            <Select
                               value={line.kind}
                               disabled={Boolean(saved)}
                               onChange={(e) =>
@@ -416,7 +417,7 @@ export function InvoiceCreate() {
                                   {t(kind.label)}
                                 </option>
                               ))}
-                            </select>
+                            </Select>
                           </div>
                         </td>
                         <td className="border-b border-border px-3 py-2">

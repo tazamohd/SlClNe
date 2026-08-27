@@ -19,6 +19,7 @@ import {
 import { Icon } from '@/components/ui/Icon'
 import { Modal, useModal } from '@/components/ui/Modal'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
+import { Select } from '@/components/ui/Select'
 import { ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
@@ -221,11 +222,12 @@ function LineModal({
           >
             {t('Part')}
           </label>
-          <select
+          <Select
             id={`${form.id}-partSku`}
             value={typeof form.values.partSku === 'string' ? form.values.partSku : ''}
             onChange={(event) => pick(event.target.value)}
-            className="h-12 w-full rounded border border-border bg-inset px-3 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+            aria-label={t('Part')}
+            className="h-12 w-full bg-inset font-action text-sm transition-all duration-200 focus:bg-card"
           >
             <option value="">{t('Not from the catalogue')}</option>
             {options.map((option) => (
@@ -233,7 +235,7 @@ function LineModal({
                 {option.label}
               </option>
             ))}
-          </select>
+          </Select>
           {picked ? (
             <span className="flex items-center gap-1.5 text-[11px] text-muted">
               <Icon name="Package" size={12} className="flex-shrink-0" />
@@ -988,12 +990,13 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                         </Button>
                       ) : null}
                     </div>
-                    <select
+                    <Select
                       id={`${form.id}-supplierId`}
                       value={typeof form.values.supplierId === 'string' ? form.values.supplierId : ''}
                       onChange={(event) => form.setValue('supplierId', event.target.value)}
                       disabled={!api}
-                      className="h-12 w-full rounded border border-border bg-inset px-3 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:opacity-60"
+                      aria-label={t('Supplier')}
+                      className="h-12 w-full bg-inset font-action text-sm transition-all duration-200 focus:bg-card disabled:opacity-60"
                     >
                       <option value="">{t('Choose a supplier...')}</option>
                       {suppliers.map((supplier) => {
@@ -1004,7 +1007,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                           </option>
                         )
                       })}
-                    </select>
+                    </Select>
                     {api && !suppliers.length && !suppliersQuery.isLoading ? (
                       <span className="text-[11px] text-muted">
                         {t('No suppliers yet — add one to reference it on the order.')}

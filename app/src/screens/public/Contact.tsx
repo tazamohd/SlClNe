@@ -3,6 +3,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { API_URL } from '@/data/repository'
 import { useT } from '@/providers/PreferencesProvider'
+import { Textarea } from '@/components/ui/Textarea'
 import { cn } from '@/lib/cn'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
@@ -87,9 +88,6 @@ export function validateContact(values: {
   return errors
 }
 
-const INPUT =
-  'rounded-lg border border-border bg-inset px-3 text-sm text-heading outline-none ' +
-  'focus-visible:ring-2 focus-visible:ring-salis-blue'
 
 export function PublicContact() {
   const t = useT()
@@ -244,15 +242,14 @@ export function PublicContact() {
               />
             ))}
             {field(messageId, 'Message', errors.message, (invalid, describedBy) => (
-              <textarea
+              <Textarea
                 id={messageId}
                 rows={4}
                 value={values.message}
                 onChange={(e) => setValues((v) => ({ ...v, message: e.target.value }))}
                 placeholder={t('How can we help?')}
-                aria-invalid={invalid || undefined}
+                invalid={invalid}
                 aria-describedby={describedBy}
-                className={cn('resize-y py-3 font-ui', INPUT, invalid && 'border-salis-orange')}
               />
             ))}
 

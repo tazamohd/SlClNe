@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
+import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -194,13 +195,13 @@ export function ModelSettings() {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="font-action text-xs font-medium text-primary">{t('System Prompt')}</label>
-              <textarea
+              <Textarea
                 rows={4}
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
                 disabled={!isLive}
                 aria-label={t('System Prompt')}
-                className="resize-vertical rounded-lg border border-border bg-inset p-2.5 text-[13px] leading-relaxed text-primary outline-none"
+                className="text-[13px] leading-relaxed"
               />
             </div>
           </div>
@@ -304,13 +305,13 @@ export function ModelSettings() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="font-action text-xs font-medium text-primary">{t('System Prompt')}</label>
-                <textarea
+                <Textarea
                   rows={4}
                   value={systemPrompt}
                   onChange={(e) => setSystemPrompt(e.target.value)}
                   disabled={!isLive}
                   aria-label={t('System Prompt')}
-                  className="resize-vertical rounded-lg border border-border bg-inset p-2.5 text-[13px] leading-relaxed text-primary outline-none"
+                  className="text-[13px] leading-relaxed"
                 />
               </div>
             </div>

@@ -10,6 +10,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, useCreate, type RowOf } from '@/data/useCollection'
 import { isLive, RepositoryError } from '@/data/repository'
+import { Textarea } from '@/components/ui/Textarea'
 import { cn } from '@/lib/cn'
 import { minuteOf, todayIso, type AppointmentRow, type VehicleRow } from './portal-data'
 
@@ -380,14 +381,14 @@ export function CustomerPortalBooking() {
           >
             {t('Notes')}
           </label>
-          <textarea
+          <Textarea
             id={`${form.id}-notes`}
             rows={2}
             value={form.values.notes}
             placeholder={t('Any additional notes...')}
             onChange={(event) => form.setValue('notes', event.target.value)}
             onBlur={() => form.markTouched('notes')}
-            className="w-full resize-none rounded-lg border border-border bg-inset px-3 py-2.5 font-ui text-[13px] text-heading outline-none transition-all focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+            className="resize-none text-[13px]"
           />
           <FieldMessage form={form} name="notes" />
         </Card>

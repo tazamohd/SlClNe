@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
 import { Modal } from '@/components/ui/Modal'
 import { parseSar } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -355,12 +356,13 @@ function CreateEmployee({ onClose }: { onClose: () => void }) {
         <label htmlFor="emp-dept" className="text-[11px] font-semibold uppercase tracking-[.04em] text-muted">
           {t('Department')}
         </label>
-        <select
+        <Select
           id="emp-dept"
           value={departmentId}
           disabled={busy}
           onChange={(e) => setDepartmentId(e.target.value)}
-          className="h-11 w-full rounded border border-border bg-inset px-3.5 font-action text-sm text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] disabled:cursor-not-allowed disabled:opacity-60"
+          aria-label={t('Department')}
+          className="h-11 w-full bg-inset px-3.5 font-action text-sm transition-all duration-200 focus:bg-card disabled:cursor-not-allowed disabled:opacity-60"
         >
           <option value="">{t('Unassigned')}</option>
           {deptRows.map((d) => (
@@ -368,7 +370,7 @@ function CreateEmployee({ onClose }: { onClose: () => void }) {
               {d.name}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
       <div className="flex flex-col gap-1.5">
         <label htmlFor="emp-salary" className="text-[11px] font-semibold uppercase tracking-[.04em] text-muted">

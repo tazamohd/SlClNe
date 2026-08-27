@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Panel, FieldGrid, ReadField } from '@/components/ui/FieldGrid'
+import { Textarea } from '@/components/ui/Textarea'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -178,13 +179,13 @@ export function WorkshopCheckIn() {
                 >
                   {t('Reported Issues')}
                 </label>
-                <textarea
+                <Textarea
                   id="issues"
                   rows={3}
                   value={issues}
                   onChange={(e) => setIssues(e.target.value)}
                   placeholder={t('Describe reported issues...')}
-                  className="box-border w-full resize-y rounded border border-border bg-inset px-3 py-2.5 font-ui text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                  className="text-[13px]"
                 />
               </div>
 

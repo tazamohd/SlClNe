@@ -4,6 +4,7 @@ import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
   MobileCardHeader,
@@ -121,18 +122,18 @@ export function GeneralLedger() {
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-[11px] font-medium text-muted">{t('Account Type')}</span>
-          <select
+          <Select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
             aria-label={t('Filter by account type')}
-            className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+            size="md"
           >
             {ACCOUNT_TYPES.map((type) => (
               <option key={type} value={type}>
                 {type === 'All' ? t('All Types') : t(type)}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
       </div>
 

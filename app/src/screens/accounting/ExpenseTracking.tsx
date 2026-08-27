@@ -4,6 +4,7 @@ import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
   MobileCardHeader,
@@ -113,18 +114,18 @@ export function ExpenseTracking() {
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-[11px] font-medium text-muted">{t('Category')}</span>
-          <select
+          <Select
             value={catFilter}
             onChange={(e) => setCatFilter(e.target.value)}
             aria-label={t('Filter by category')}
-            className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+            size="md"
           >
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>
                 {c === 'All' ? t('All Categories') : t(c)}
               </option>
             ))}
-          </select>
+          </Select>
         </label>
       </div>
 

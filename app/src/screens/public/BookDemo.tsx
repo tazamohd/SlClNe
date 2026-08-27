@@ -3,6 +3,7 @@ import { useT } from '@/providers/PreferencesProvider'
 import { useToast } from '@/components/ui/Toast'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
+import { Textarea } from '@/components/ui/Textarea'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 
@@ -82,7 +83,7 @@ export function PublicBookDemo() {
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-message" className="text-xs font-medium text-heading">{t('Message')}</label>
-          <textarea id="book-message" rows={4} placeholder={t('Anything specific you would like to see?')} className={INPUT} />
+          <Textarea id="book-message" rows={4} placeholder={t('Anything specific you would like to see?')} />
         </div>
         <button
           type="submit"

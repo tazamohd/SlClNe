@@ -14,6 +14,7 @@ import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { Select } from '@/components/ui/Select'
 import {
   Field,
   Form,
@@ -1151,17 +1152,18 @@ function LedgerTab({
         <>
           <label className="flex flex-col gap-1">
             <span className="font-action text-xs font-medium text-heading">{t('Part')}</span>
-            <select
+            <Select
               value={selected.sku}
               onChange={(event) => setSku(event.target.value)}
-              className="h-12 w-full max-w-[420px] cursor-pointer rounded border border-border bg-inset px-3 font-action text-sm text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+              aria-label={t('Part')}
+              className="h-12 w-full max-w-[420px] bg-inset font-action text-sm"
             >
               {parts.map((part) => (
                 <option key={part.sku} value={part.sku}>
                   {`${part.name} — ${part.sku}`}
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
           <MovementHistory
             part={selected}
