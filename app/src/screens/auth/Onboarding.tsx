@@ -154,7 +154,7 @@ export function Onboarding() {
           <div className="mt-6 flex items-center justify-between">
             <button
               type="button"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-heading disabled:opacity-40"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-heading disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
               disabled={!canBack}
               onClick={() => setStep((s) => s - 1)}
             >
@@ -162,7 +162,7 @@ export function Onboarding() {
             </button>
             <button
               type="button"
-              className="rounded-lg bg-salis-blue px-6 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-salis-blue/90 disabled:opacity-40"
+              className="rounded-lg bg-salis-blue px-6 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-salis-blue/90 disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
               disabled={!canNext && step !== STEPS.length - 1}
               onClick={() => {
                 if (canNext) setStep((s) => s + 1)

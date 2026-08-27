@@ -168,7 +168,7 @@ function LanguageToggle() {
     <button
       type="button"
       onClick={toggleLanguage}
-      className="inline-flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-heading transition-colors hover:border-salis-blue"
+      className="inline-flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-heading transition-colors hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
       aria-label={t('Switch language')}
     >
       <Icon name="Languages" size={18} aria-hidden />
@@ -279,7 +279,7 @@ function VehicleStep({
             type="button"
             onClick={() => onSelect(v.id)}
             disabled={!isLive}
-            className="flex min-h-[64px] w-full cursor-pointer items-center gap-4 rounded-xl border border-border bg-card p-4 text-start transition-all hover:border-salis-blue hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
+            className="flex min-h-[64px] w-full cursor-pointer items-center gap-4 rounded-xl border border-border bg-card p-4 text-start transition-all hover:border-salis-blue hover:shadow-md disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[rgba(10,94,215,.08)] text-salis-blue">
               <Icon name="Car" size={24} aria-hidden />
@@ -296,7 +296,7 @@ function VehicleStep({
       <button
         type="button"
         onClick={onBack}
-        className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading"
+        className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
       >
         <Icon name="ArrowLeft" size={16} aria-hidden />
         {t('Back')}
@@ -357,7 +357,7 @@ function ServiceStep({
       <button
         type="button"
         onClick={onBack}
-        className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading"
+        className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
       >
         <Icon name="ArrowLeft" size={16} aria-hidden />
         {t('Back')}

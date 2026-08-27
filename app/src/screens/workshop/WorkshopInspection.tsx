@@ -218,7 +218,7 @@ function VerdictButton({
       onClick={onSelect}
       className={cn(
         'h-[26px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-2 font-action text-[10px] font-semibold',
-        selected ? TONES[tone] : 'bg-inset text-muted'
+        selected ? TONES[tone] : 'bg-inset text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
       )}
     >
       {label}

@@ -95,7 +95,7 @@ export function Chat() {
               inputSize="sm"
               className="flex-1"
             />
-            <button type="button" aria-label={t('Send')} className="flex items-center justify-center rounded-lg bg-salis-gradient px-3 text-white">
+            <button type="button" aria-label={t('Send')} className="flex items-center justify-center rounded-lg bg-salis-gradient px-3 text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2">
               <Icon name="Send" size={16} />
             </button>
           </div>
@@ -177,7 +177,7 @@ export function Chat() {
               inputSize="md"
               className="flex-1"
             />
-            <button type="button" aria-label={t('Send')} className="flex h-10 w-10 items-center justify-center rounded-xl bg-salis-gradient text-white shadow-sm">
+            <button type="button" aria-label={t('Send')} className="flex h-10 w-10 items-center justify-center rounded-xl bg-salis-gradient text-white shadow-sm focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2">
               <Icon name="Send" size={18} />
             </button>
           </div>

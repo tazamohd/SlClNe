@@ -91,7 +91,7 @@ export function OrganizationSelection() {
           <button
             type="button"
             aria-label={t('Create New Organization')}
-            className="flex h-[52px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-[1.5px] border-dashed border-border-strong bg-transparent px-3.5 font-action text-[13px] font-medium text-muted transition-all duration-150 hover:border-salis-blue hover:text-salis-blue"
+            className="flex h-[52px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-[1.5px] border-dashed border-border-strong bg-transparent px-3.5 font-action text-[13px] font-medium text-muted transition-all duration-150 hover:border-salis-blue hover:text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-inset">
               <Icon name="Plus" size={16} />

@@ -45,7 +45,7 @@ export function Error404() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="inline-flex h-12 cursor-pointer items-center justify-center gap-1.5 rounded-lg border-[1.5px] border-border-strong bg-transparent px-5 font-action text-sm font-medium text-body"
+            className="inline-flex h-12 cursor-pointer items-center justify-center gap-1.5 rounded-lg border-[1.5px] border-border-strong bg-transparent px-5 font-action text-sm font-medium text-body focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             aria-label={t('Go Back')}
           >
             <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={16} />

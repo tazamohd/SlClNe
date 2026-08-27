@@ -64,7 +64,7 @@ export function SocialLogin() {
               className={cn(
                 'flex h-[54px] w-full cursor-pointer items-center gap-3 rounded-xl border-[1.5px] border-border bg-card px-4',
                 'font-action text-sm font-medium text-body',
-                'transition-all duration-150 hover:-translate-y-px hover:shadow-lg'
+                'transition-all duration-150 hover:-translate-y-px hover:shadow-lg focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
               )}
               style={
                 { '--hover-border': p.hoverBorder } as React.CSSProperties

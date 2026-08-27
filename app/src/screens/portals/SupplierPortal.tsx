@@ -215,7 +215,7 @@ export function SupplierPortal() {
         <button
           type="button"
           disabled={!isLive}
-          className="inline-flex h-9 items-center gap-1.5 rounded bg-salis-gradient px-3.5 font-action text-[13px] font-semibold text-white shadow-[0_4px_12px_rgba(10,94,215,.25)] transition-all hover:-translate-y-px disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-9 items-center gap-1.5 rounded bg-salis-gradient px-3.5 font-action text-[13px] font-semibold text-white shadow-[0_4px_12px_rgba(10,94,215,.25)] transition-all hover:-translate-y-px disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           <Icon name="Send" size={14} />
           {t('View Messages')}

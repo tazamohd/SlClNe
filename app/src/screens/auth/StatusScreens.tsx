@@ -281,14 +281,14 @@ export function LogoutConfirmation() {
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="inline-flex h-11 flex-1 cursor-pointer items-center justify-center whitespace-nowrap rounded border border-border bg-transparent font-action text-sm font-medium text-body"
+              className="inline-flex h-11 flex-1 cursor-pointer items-center justify-center whitespace-nowrap rounded border border-border bg-transparent font-action text-sm font-medium text-body focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               {t('Cancel')}
             </button>
             <button
               type="button"
               onClick={confirm}
-              className="inline-flex h-11 flex-1 cursor-pointer items-center justify-center whitespace-nowrap rounded border-none bg-salis-orange font-action text-sm font-semibold text-white"
+              className="inline-flex h-11 flex-1 cursor-pointer items-center justify-center whitespace-nowrap rounded border-none bg-salis-orange font-action text-sm font-semibold text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               {t('Logout')}
             </button>

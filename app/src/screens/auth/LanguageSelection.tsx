@@ -142,7 +142,7 @@ function LanguageCard({
         'font-action transition-all duration-150',
         selected
           ? 'border-salis-blue bg-salis-blue/5 text-salis-blue dark:bg-salis-navy'
-          : 'border-border bg-card text-body'
+          : 'border-border bg-card text-body focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
       )}
     >
       <span className="text-2xl" aria-hidden>

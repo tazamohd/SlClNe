@@ -87,7 +87,7 @@ export function PublicBookDemo() {
         </div>
         <button
           type="submit"
-          className="mt-2 h-11 cursor-pointer rounded-lg border-none bg-salis-gradient font-action text-sm font-semibold text-white"
+          className="mt-2 h-11 cursor-pointer rounded-lg border-none bg-salis-gradient font-action text-sm font-semibold text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           {t('Book Demo')}
         </button>

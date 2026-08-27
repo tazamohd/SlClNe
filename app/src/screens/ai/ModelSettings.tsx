@@ -53,7 +53,7 @@ function Toggle({
       aria-label={label}
       onClick={onToggle}
       className={
-        'relative h-6 w-[44px] flex-shrink-0 cursor-pointer rounded-full border-none p-0.5 transition-colors ' +
+        'relative h-6 w-[44px] flex-shrink-0 cursor-pointer rounded-full border-none p-0.5 transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 ' +
         (on ? 'bg-salis-gradient' : 'bg-border-strong')
       }
     >

@@ -160,7 +160,7 @@ export function Login() {
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
                     aria-label={t('Toggle password visibility')}
-                    className="flex cursor-pointer border-none bg-transparent p-0 text-muted"
+                    className="flex cursor-pointer border-none bg-transparent p-0 text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                   >
                     <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
                   </button>
@@ -174,7 +174,7 @@ export function Login() {
                 role="checkbox"
                 aria-checked={remember}
                 onClick={() => setRemember((v) => !v)}
-                className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-action text-[13px] text-body"
+                className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-action text-[13px] text-body focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
               >
                 <span
                   className={cn(
@@ -283,7 +283,7 @@ function RoleCard({
         'transition-all duration-150 hover:-translate-y-px hover:border-[rgba(10,94,215,.4)] hover:shadow-lg',
         selected
           ? 'border-salis-blue bg-salis-blue/5 shadow-[0_0_0_3px_#D7E5FA] dark:bg-salis-navy dark:shadow-[0_0_0_3px_#173963]'
-          : 'border-border bg-card'
+          : 'border-border bg-card focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
       )}
     >
       <span

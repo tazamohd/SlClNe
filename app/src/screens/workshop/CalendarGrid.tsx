@@ -75,7 +75,7 @@ function Block({
     (onSelect ? 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue' : '')
   if (onSelect) {
     return (
-      <button type="button" dir={rtl ? 'rtl' : 'ltr'} onClick={() => onSelect(appt)} className={cn(className, 'border-none')} style={style}>
+      <button type="button" dir={rtl ? 'rtl' : 'ltr'} onClick={() => onSelect(appt)} className={cn(className, 'border-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2')} style={style}>
         {body}
       </button>
     )

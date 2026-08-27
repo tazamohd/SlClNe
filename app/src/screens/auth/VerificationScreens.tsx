@@ -272,7 +272,7 @@ export function TwoFactorVerification() {
             <button
               type="button"
               onClick={() => setLocalCode(issueLocalCode())}
-              className="cursor-pointer border-none bg-transparent p-0 font-semibold text-salis-blue"
+              className="cursor-pointer border-none bg-transparent p-0 font-semibold text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               {t('Refresh')}
             </button>
@@ -330,7 +330,7 @@ export function CreatePIN() {
                 type="button"
                 onClick={() => press(key)}
                 aria-label={key === '⌫' ? 'Delete' : key}
-                className={`cursor-pointer rounded-full border border-border bg-card font-display font-bold text-heading transition-colors duration-150 hover:bg-inset ${isMobile ? 'h-14 w-14 text-lg' : 'h-16 w-16 text-xl'}`}
+                className={`cursor-pointer rounded-full border border-border bg-card font-display font-bold text-heading transition-colors duration-150 hover:bg-inset ${isMobile ? 'h-14 w-14 text-lg' : 'h-16 w-16 text-xl'} focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2`}
               >
                 {key}
               </button>

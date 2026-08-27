@@ -240,7 +240,7 @@ export function CallCenter() {
                   key={c.icon}
                   type="button"
                   disabled={!isLive}
-                  className="flex flex-1 cursor-pointer flex-col items-center gap-1 rounded-[10px] border border-white/25 bg-white/15 px-0 py-2.5 text-white disabled:cursor-default disabled:opacity-60"
+                  className="flex flex-1 cursor-pointer flex-col items-center gap-1 rounded-[10px] border border-white/25 bg-white/15 px-0 py-2.5 text-white disabled:cursor-default disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                   aria-label={c.label}
                 >
                   <Icon name={c.icon} size={15} />
@@ -250,7 +250,7 @@ export function CallCenter() {
               <button
                 type="button"
                 disabled={!isLive}
-                className="flex flex-1 cursor-pointer flex-col items-center gap-1 rounded-[10px] border-none bg-salis-orange px-0 py-2.5 text-white disabled:cursor-default disabled:opacity-60"
+                className="flex flex-1 cursor-pointer flex-col items-center gap-1 rounded-[10px] border-none bg-salis-orange px-0 py-2.5 text-white disabled:cursor-default disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                 aria-label={t('End Call')}
               >
                 <Icon name="PhoneOff" size={15} />

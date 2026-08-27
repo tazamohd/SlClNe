@@ -131,7 +131,7 @@ export function Templates() {
                     type="button"
                     aria-label={t('Edit')}
                     disabled={!isLive}
-                    className="flex h-7 w-7 items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.06)] text-salis-blue transition-colors hover:bg-[rgba(10,94,215,.12)] disabled:opacity-50"
+                    className="flex h-7 w-7 items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.06)] text-salis-blue transition-colors hover:bg-[rgba(10,94,215,.12)] disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                   >
                     <Icon name="Edit" size={13} />
                   </button>
@@ -140,7 +140,7 @@ export function Templates() {
                     aria-label={t('Copy')}
                     onClick={() => toast.show({ title: t('Template copied') })}
                     disabled={!isLive}
-                    className="flex h-7 w-7 items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.06)] text-salis-blue transition-colors hover:bg-[rgba(10,94,215,.12)] disabled:opacity-50"
+                    className="flex h-7 w-7 items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.06)] text-salis-blue transition-colors hover:bg-[rgba(10,94,215,.12)] disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                   >
                     <Icon name="Copy" size={13} />
                   </button>

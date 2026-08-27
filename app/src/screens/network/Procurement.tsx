@@ -1649,7 +1649,7 @@ export function ProcurementPortal() {
               key={r.id}
               type="button"
               onClick={() => navigate('/procurement-portal/requisitions')}
-              className="flex cursor-pointer flex-wrap items-center gap-3 rounded-lg border border-border bg-inset p-3.5 text-start transition-colors duration-150 hover:border-salis-blue"
+              className="flex cursor-pointer flex-wrap items-center gap-3 rounded-lg border border-border bg-inset p-3.5 text-start transition-colors duration-150 hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(10,94,215,.09)] p-2 text-salis-blue">
                 <Icon name="Package" size={16} />

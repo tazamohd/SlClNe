@@ -50,7 +50,7 @@ export function CustomerAppHome() {
           <button
             type="button"
             onClick={() => navigate('/customer-app/service-tracking')}
-            className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white"
+            className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             {t('Track Service')}
             <Icon name="ArrowRight" size={13} />
@@ -69,7 +69,7 @@ export function CustomerAppHome() {
             key={action.label}
             type="button"
             onClick={() => navigate(action.to)}
-            className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-border bg-card p-3"
+            className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-border bg-card p-3 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <span className="flex rounded-[10px] bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
               <Icon name={action.icon} size={16} />
@@ -85,7 +85,7 @@ export function CustomerAppHome() {
           <button
             type="button"
             onClick={() => navigate('/customer-app/garage')}
-            className="cursor-pointer border-none bg-transparent font-action text-xs font-semibold text-salis-blue"
+            className="cursor-pointer border-none bg-transparent font-action text-xs font-semibold text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             {t('View All')}
           </button>
@@ -253,7 +253,7 @@ export function CustomerAppWallet() {
         <button
           type="button"
           disabled
-          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white opacity-50"
+          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           <Icon name="Plus" size={13} />
           {t('Top Up')}
@@ -380,7 +380,7 @@ export function CustomerAppMarketplace() {
                   type="button"
                   onClick={() => toast.show({ title: t('Added to cart'), description: product.name })}
                   aria-label={`${t('Add')}: ${t(product.name)}`}
-                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white"
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                 >
                   <Icon name="Plus" size={13} />
                 </button>

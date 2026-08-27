@@ -172,7 +172,7 @@ export function Register() {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={t('Toggle password visibility')}
-                  className="flex cursor-pointer border-none bg-transparent p-0 text-muted"
+                  className="flex cursor-pointer border-none bg-transparent p-0 text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                 >
                   <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
                 </button>
@@ -204,7 +204,7 @@ export function Register() {
                   type="button"
                   onClick={() => setShowConfirm((v) => !v)}
                   aria-label={t('Toggle password visibility')}
-                  className="flex cursor-pointer border-none bg-transparent p-0 text-muted"
+                  className="flex cursor-pointer border-none bg-transparent p-0 text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                 >
                   <Icon name={showConfirm ? 'EyeOff' : 'Eye'} size={20} />
                 </button>
@@ -218,7 +218,7 @@ export function Register() {
             role="checkbox"
             aria-checked={agreed}
             onClick={() => setAgreed((v) => !v)}
-            className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-action text-[13px] text-body"
+            className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-action text-[13px] text-body focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <span
               className={cn(

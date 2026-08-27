@@ -57,7 +57,7 @@ export function StageNotice({ stage }: { stage: JobStageValue }) {
             <button
               type="button"
               onClick={stage.dismissError}
-              className="mt-1.5 cursor-pointer border-none bg-transparent p-0 font-action text-[13px] font-medium text-salis-blue"
+              className="mt-1.5 cursor-pointer border-none bg-transparent p-0 font-action text-[13px] font-medium text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               {t('Dismiss')}
             </button>

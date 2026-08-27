@@ -297,7 +297,7 @@ export function PublicContact() {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="h-11 cursor-pointer rounded-lg border-none bg-salis-gradient font-action text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+              className="h-11 cursor-pointer rounded-lg border-none bg-salis-gradient font-action text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               {status === 'sending' ? t('Sending…') : t('Send Message')}
             </button>

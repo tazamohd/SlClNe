@@ -167,7 +167,7 @@ export function LeadPipeline() {
                         key={lead.name}
                         type="button"
                         onClick={() => navigate(`/lead-detail?name=${encodeURIComponent(lead.name)}`)}
-                        className="flex cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-colors hover:border-salis-blue"
+                        className="flex cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-colors hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                       >
                         <span className="text-[13px] font-semibold text-heading">{lead.name}</span>
                         <span className="text-[11px] text-muted">{lead.company}</span>
@@ -231,7 +231,7 @@ export function LeadPipeline() {
                       key={lead.name}
                       type="button"
                       onClick={() => navigate(`/lead-detail?name=${encodeURIComponent(lead.name)}`)}
-                      className="flex cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-colors hover:border-salis-blue"
+                      className="flex cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-colors hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                     >
                       <span className="text-[13px] font-semibold text-heading">{lead.name}</span>
                       <span className="text-[11px] text-muted">{lead.company}</span>

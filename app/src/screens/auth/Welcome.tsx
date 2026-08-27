@@ -21,7 +21,7 @@ export function Welcome() {
         <button
           type="button"
           onClick={toggleLanguage}
-          className="h-8 cursor-pointer rounded border border-border bg-card px-2.5 font-action text-xs text-muted"
+          className="h-8 cursor-pointer rounded border border-border bg-card px-2.5 font-action text-xs text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           {rtl ? 'English' : 'عربي'}
         </button>

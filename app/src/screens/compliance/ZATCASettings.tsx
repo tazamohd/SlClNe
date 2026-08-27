@@ -47,7 +47,7 @@ export function ZATCASettings() {
         <button
           type="button"
           disabled={!isLive}
-          className="rounded-xl bg-salis-blue px-4 py-3 text-sm font-semibold text-white shadow-sm transition-opacity disabled:opacity-40"
+          className="rounded-xl bg-salis-blue px-4 py-3 text-sm font-semibold text-white shadow-sm transition-opacity disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           {t('Test Connection')}
         </button>
@@ -90,7 +90,7 @@ export function ZATCASettings() {
         <button
           type="button"
           disabled={!isLive}
-          className="rounded-xl bg-salis-blue px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity disabled:opacity-40"
+          className="rounded-xl bg-salis-blue px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           {t('Test Connection')}
         </button>

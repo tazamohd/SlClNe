@@ -264,7 +264,7 @@ export function InvoiceCreate() {
         <button
           type="button"
           onClick={() => void leave('/invoices')}
-          className="inline-flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 font-action text-[13px] text-muted"
+          className="inline-flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 font-action text-[13px] text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
           {t('Invoices')}
@@ -343,7 +343,7 @@ export function InvoiceCreate() {
                       key={customer.name}
                       type="button"
                       onClick={() => form.setValue('customerName', customer.name)}
-                      className="cursor-pointer rounded-full border border-border bg-inset px-2.5 py-1 text-xs text-body hover:border-salis-blue"
+                      className="cursor-pointer rounded-full border border-border bg-inset px-2.5 py-1 text-xs text-body hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                     >
                       {customer.name}
                     </button>
@@ -461,7 +461,7 @@ export function InvoiceCreate() {
                               type="button"
                               onClick={() => setLines(lines.filter((_, i) => i !== index))}
                               aria-label={`${t('Remove')}: ${line.desc || t('Description')}`}
-                              className="flex cursor-pointer items-center justify-center rounded border-none bg-transparent p-1 text-muted transition-colors hover:text-salis-orange"
+                              className="flex cursor-pointer items-center justify-center rounded border-none bg-transparent p-1 text-muted transition-colors hover:text-salis-orange focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                             >
                               <Icon name="Trash2" size={14} />
                             </button>

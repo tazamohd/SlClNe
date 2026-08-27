@@ -52,12 +52,12 @@ export function AppointmentCalendar() {
         <MobilePageHeader icon="Calendar" title={t('Calendar')} subtitle={t('Appointments')} />
         <div className="flex items-center justify-between gap-2">
           <button type="button" aria-label={t('Previous')} onClick={() => shift(-1)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted">
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2">
             <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={16} />
           </button>
           <span className="text-center font-display text-[14px] font-bold text-heading">{dateLabel}</span>
           <button type="button" aria-label={t('Next')} onClick={() => shift(1)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted">
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2">
             <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={16} />
           </button>
         </div>
@@ -66,7 +66,7 @@ export function AppointmentCalendar() {
             {(['day', 'week'] as const).map((option) => (
               <button key={option} type="button" role="tab" aria-selected={view === option}
                 onClick={() => setView(option)}
-                className={'h-8 cursor-pointer px-3 font-action text-xs font-semibold ' +
+                className={'h-8 cursor-pointer px-3 font-action text-xs font-semibold focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 ' +
                   (view === option ? 'border-none bg-salis-gradient text-white' : 'bg-card text-body')}>
                 {t(option === 'day' ? 'Day' : 'Week')}
               </button>
@@ -125,7 +125,7 @@ export function AppointmentCalendar() {
             type="button"
             aria-label={t('Previous')}
             onClick={() => shift(-1)}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={16} />
           </button>
@@ -136,7 +136,7 @@ export function AppointmentCalendar() {
             type="button"
             aria-label={t('Next')}
             onClick={() => shift(1)}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted hover:border-salis-blue hover:text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={16} />
           </button>
