@@ -39,13 +39,13 @@ function AuthBackdrop() {
 
 /** Language and theme toggles, pinned to the top inline-end corner. */
 export function AuthControls() {
-  const { theme, toggleTheme, rtl, toggleLanguage } = usePreferences()
+  const { t, theme, toggleTheme, rtl, toggleLanguage } = usePreferences()
   return (
     <div className="absolute end-4 top-4 z-50 flex gap-2">
       <button
         type="button"
         onClick={toggleLanguage}
-        aria-label="Toggle language"
+        aria-label={t('Toggle language')}
         className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded border border-border bg-card px-2.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
       >
         <Icon name="Globe" size={14} />
@@ -54,7 +54,7 @@ export function AuthControls() {
       <button
         type="button"
         onClick={toggleTheme}
-        aria-label="Toggle theme"
+        aria-label={t('Toggle theme')}
         className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
       >
         <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />

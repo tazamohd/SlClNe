@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/cn'
+import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
 
 export interface DrawerProps {
@@ -22,6 +23,7 @@ export function Drawer({
   width = 'w-80',
   className,
 }: DrawerProps) {
+  const { t } = usePreferences()
   const drawerRef = useRef<HTMLDivElement>(null)
   const previousFocus = useRef<HTMLElement | null>(null)
 
@@ -82,7 +84,7 @@ export function Drawer({
     <div className="fixed inset-0 z-50 flex">
       <button
         type="button"
-        aria-label="Close"
+        aria-label={t('Close')}
         tabIndex={-1}
         onClick={onClose}
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
@@ -107,7 +109,7 @@ export function Drawer({
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t('Close')}
               className="flex rounded-lg p-1 text-muted hover:bg-inset hover:text-heading"
             >
               <Icon name="X" size={18} />

@@ -10,7 +10,7 @@ import { useSession } from '@/providers/SessionProvider'
  *  drops 24px → 16px, and the body scrolls in a `100vh - 56px` container rather
  *  than the page. `AppShell` renders this instead of the sidebar below 860px. */
 export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
-  const { theme, toggleTheme } = usePreferences()
+  const { t, theme, toggleTheme } = usePreferences()
   const { userName } = useSession()
 
   return (
@@ -18,7 +18,7 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
       <button
         type="button"
         onClick={onOpenNav}
-        aria-label="Open menu"
+        aria-label={t('Open menu')}
         className="inline-flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-heading"
       >
         <Icon name="Menu" size={20} />
@@ -30,14 +30,14 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
       <button
         type="button"
         onClick={toggleTheme}
-        aria-label="Toggle theme"
+        aria-label={t('Toggle theme')}
         className="inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
       >
         <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
       </button>
       <button
         type="button"
-        aria-label="Notifications"
+        aria-label={t('Notifications')}
         className="relative inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
       >
         <Icon name="Bell" size={16} />

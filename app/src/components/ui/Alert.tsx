@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
 
 type AlertVariant = 'info' | 'warning' | 'error' | 'neutral'
@@ -41,6 +42,7 @@ export interface AlertProps {
 }
 
 export function Alert({ variant = 'info', title, children, icon, className, onDismiss }: AlertProps) {
+  const { t } = usePreferences()
   const style = VARIANT_STYLES[variant]
   return (
     <div
@@ -63,7 +65,7 @@ export function Alert({ variant = 'info', title, children, icon, className, onDi
         <button
           type="button"
           onClick={onDismiss}
-          aria-label="Dismiss"
+          aria-label={t('Dismiss')}
           className="flex flex-shrink-0 cursor-pointer border-none bg-transparent p-0.5 text-muted transition-colors hover:text-heading"
         >
           <Icon name="X" size={16} />

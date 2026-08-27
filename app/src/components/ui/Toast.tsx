@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
 
 /** Corner toast, matching the design's card treatment.
@@ -29,6 +30,7 @@ interface ToastValue {
 const ToastContext = createContext<ToastValue | null>(null)
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { t } = usePreferences()
   const [toast, setToast] = useState<Toast | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout>>()
 
@@ -78,7 +80,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <button
             type="button"
             onClick={dismiss}
-            aria-label="Dismiss"
+            aria-label={t('Dismiss')}
             className="flex cursor-pointer rounded border-none bg-transparent p-0 text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-card"
           >
             <Icon name="X" size={14} />
