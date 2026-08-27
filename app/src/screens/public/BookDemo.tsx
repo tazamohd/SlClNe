@@ -1,6 +1,7 @@
 import { useRef, type FormEvent } from 'react'
 import { useT } from '@/providers/PreferencesProvider'
 import { useToast } from '@/components/ui/Toast'
+import { Select } from '@/components/ui/Select'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 
@@ -67,7 +68,7 @@ export function PublicBookDemo() {
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-time" className="text-xs font-medium text-heading">{t('Preferred Time')}</label>
-          <select id="book-time" required className={INPUT} defaultValue="">
+          <Select id="book-time" required className={INPUT} defaultValue="">
             <option value="" disabled>
               {t('Select a time slot')}
             </option>
@@ -76,7 +77,7 @@ export function PublicBookDemo() {
                 {t(opt)}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-message" className="text-xs font-medium text-heading">{t('Message')}</label>

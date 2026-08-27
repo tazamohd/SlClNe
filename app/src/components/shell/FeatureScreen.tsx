@@ -2,6 +2,7 @@ import { type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Select } from '@/components/ui/Select'
 import { Tabs, TabList, Tab } from '@/components/ui/Tabs'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -201,17 +202,18 @@ export function ScopeSelect({
   return (
     <label className="inline-flex">
       <span className="sr-only">{t('Branch')}</span>
-      <select
+      <Select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-10 min-w-[220px] cursor-pointer rounded border border-border bg-card px-3 font-action text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+        size="md"
+        className="min-w-[220px] font-action"
       >
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
-      </select>
+      </Select>
     </label>
   )
 }

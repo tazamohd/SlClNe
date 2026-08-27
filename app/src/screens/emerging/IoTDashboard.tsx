@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Select } from '@/components/ui/Select'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -98,12 +99,12 @@ export function IoTDashboard() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-[15px] font-bold text-heading">{t('Connected Devices')}</h3>
-          <select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')} className="h-9 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue">
+          <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
             <option value="All">{t('All')}</option>
             <option value="Online">{t('Online')}</option>
             <option value="Warning">{t('Warning')}</option>
             <option value="Offline">{t('Offline')}</option>
-          </select>
+          </Select>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

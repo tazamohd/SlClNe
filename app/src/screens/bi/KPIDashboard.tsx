@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Select } from '@/components/ui/Select'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -97,14 +98,14 @@ export function KPIDashboard() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-[15px] font-bold text-heading">{t('Performance Indicators')}</h3>
-          <select value={category} onChange={e => setCategory(e.target.value)} aria-label={t('Filter by category')} className="h-9 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue">
+          <Select value={category} onChange={e => setCategory(e.target.value)} aria-label={t('Filter by category')}>
             <option value="All">{t('All Categories')}</option>
             <option value="Quality">{t('Quality')}</option>
             <option value="Operations">{t('Operations')}</option>
             <option value="Financial">{t('Financial')}</option>
             <option value="Inventory">{t('Inventory')}</option>
             <option value="HR">{t('HR')}</option>
-          </select>
+          </Select>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

@@ -19,6 +19,7 @@ import {
 } from '@/data/useCollection'
 import { useToast } from '@/components/ui/Toast'
 import { Button } from '@/components/ui/Button'
+import { Select } from '@/components/ui/Select'
 import { isLive, type CollectionKey } from '@/data/repository'
 import { InvoiceStatusBadge } from '@/screens/finance/Invoices'
 import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
@@ -292,18 +293,18 @@ export function SalesReports() {
       </label>
       <label className="flex flex-col gap-1">
         <span className="text-[11px] font-medium text-muted">{t('Status')}</span>
-        <select
+        <Select
           value={status}
           onChange={(event) => setStatus(event.target.value as (typeof SALES_STATUSES)[number])}
           aria-label={t('Filter by status')}
-          className="h-10 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          size="md"
         >
           {SALES_STATUSES.map((value) => (
             <option key={value} value={value}>
               {value === 'all' ? t('All statuses') : t(value[0].toUpperCase() + value.slice(1))}
             </option>
           ))}
-        </select>
+        </Select>
       </label>
       <DateRangeFilter from={from} to={to} onFrom={setFrom} onTo={setTo} />
     </div>
@@ -952,10 +953,9 @@ export function CustomReports() {
         <Section title={t('Report definition')} subtitle={t('Pick a source, the columns, and a range')}>
           <label className="flex flex-col gap-1">
             <span className="text-[11px] font-medium text-muted">{t('Data source')}</span>
-            <select value={sourceKey} onChange={(event) => chooseSource(event.target.value as CollectionKey)}
-              className="h-9 rounded border border-border bg-card px-2 text-[13px] text-heading outline-none focus:border-salis-blue">
+            <Select value={sourceKey} onChange={(event) => chooseSource(event.target.value as CollectionKey)}>
               {SOURCES.map((s) => <option key={s.key} value={s.key}>{t(s.label)}</option>)}
-            </select>
+            </Select>
           </label>
         </Section>
         {error ? (
@@ -998,18 +998,19 @@ export function CustomReports() {
         <div className="flex flex-wrap items-end gap-4">
           <label className="flex flex-col gap-1">
             <span className="text-[11px] font-medium text-muted">{t('Data source')}</span>
-            <select
+            <Select
               value={sourceKey}
               onChange={(event) => chooseSource(event.target.value as CollectionKey)}
               aria-label={t('Data source')}
-              className="h-10 min-w-[200px] cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+              size="md"
+              className="min-w-[200px]"
             >
               {SOURCES.map((option) => (
                 <option key={option.key} value={option.key}>
                   {t(option.label)}
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
           <label className="flex flex-col gap-1">
             <span className="text-[11px] font-medium text-muted">{t('Search')}</span>

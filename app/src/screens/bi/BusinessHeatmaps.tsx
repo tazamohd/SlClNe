@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Select } from '@/components/ui/Select'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -107,11 +108,11 @@ export function BusinessHeatmaps() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-[15px] font-bold text-heading">{t('Service Demand Heatmap')}</h3>
-          <select value={view} onChange={e => setView(e.target.value)} aria-label={t('Select view')} className="h-9 cursor-pointer rounded border border-border bg-card px-3 text-[13px] text-heading outline-none focus:border-salis-blue">
+          <Select value={view} onChange={e => setView(e.target.value)} aria-label={t('Select view')}>
             <option value="demand">{t('Service Demand')}</option>
             <option value="revenue">{t('Revenue')}</option>
             <option value="wait">{t('Wait Time')}</option>
-          </select>
+          </Select>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
