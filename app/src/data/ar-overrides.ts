@@ -2452,4 +2452,10 @@ export const AR_OVERRIDES: Record<string, string> = {
   "No tasks match the current search.": "لا توجد مهام تطابق البحث الحالي.",
   "No payments found": "لم يتم العثور على مدفوعات",
   "No franchises found": "لم يتم العثور على امتيازات",
+  "No languages configured": "لم يتم تكوين لغات",
+  "No messages found": "لم يتم العثور على رسائل",
+  "No warehouse zones found": "لم يتم العثور على مناطق مستودع",
+  "No inventory items found": "لم يتم العثور على أصناف مخزون",
+  "No roles found": "لم يتم العثور على أدوار",
+  "No conversations found": "لم يتم العثور على محادثات",
 }

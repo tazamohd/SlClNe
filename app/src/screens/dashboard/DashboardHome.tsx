@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FeatureHeader, StatRow, Section } from '@/components/shell/FeatureScreen'
+import { FeatureHeader, StatRow } from '@/components/shell/FeatureScreen'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { StatusBadge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { formatSar, parseSar } from '@/components/ui/Money'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection } from '@/data/useCollection'
 import { isLive } from '@/data/repository'
 
@@ -20,7 +20,6 @@ import { isLive } from '@/data/repository'
 export function DashboardHome() {
   const { t, rtl } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
   const navigate = useNavigate()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: appointments = [] } = useCollection('appointments')
@@ -44,6 +43,19 @@ export function DashboardHome() {
 
   const recentJobs = useMemo(() => jobs.slice(0, 5), [jobs])
   const upcomingAppointments = useMemo(() => appointments.slice(0, 5), [appointments])
+
+  const jobColumns: Column<(typeof recentJobs)[number]>[] = [
+    { header: 'Job', cell: (job) => job.id, code: true },
+    { header: 'Customer', cell: (job) => <span className="font-medium text-heading">{job.cust}</span> },
+    { header: 'Vehicle', cell: (job) => job.veh },
+    { header: 'Status', cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} /> },
+  ]
+
+  const apptColumns: Column<(typeof upcomingAppointments)[number]>[] = [
+    { header: 'Customer', cell: (appt) => <span className="font-medium text-heading">{appt.cust}</span> },
+    { header: 'Time', cell: (appt) => appt.time, code: true },
+    { header: 'Vehicle', cell: (appt) => appt.veh, code: true },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -87,113 +99,51 @@ export function DashboardHome() {
       />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Section title={t('Recent Jobs')} subtitle={t('Last 5 job cards')}>
-          {recentJobs.length === 0 ? (
-            <p className="py-4 text-center text-[13px] text-muted">{t('No job cards yet')}</p>
-          ) : isMobile ? (
-            <div className="flex flex-col divide-y divide-border">
-              {recentJobs.map((job) => (
-                <div key={job.id} className="py-3">
-                  <MobileCardHeader
-                    title={job.id}
-                    code
-                    trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
-                  />
-                  <MobileCardRow>{job.cust}</MobileCardRow>
-                  <MobileCardRow>{job.veh}</MobileCardRow>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[400px] border-collapse text-sm">
-                <thead>
-                  <tr>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Job')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Customer')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Vehicle')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Status')}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recentJobs.map((job) => (
-                    <tr key={job.id}>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5 font-mono text-[13px] text-heading">
-                        {job.id}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5 text-body">
-                        {job.cust}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5 text-body">
-                        {job.veh}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5">
-                        <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </Section>
+        <div className="flex flex-col gap-3">
+          <div>
+            <h2 className="font-display text-base font-bold text-heading">{t('Recent Jobs')}</h2>
+            <p className="mt-0.5 text-[13px] text-muted">{t('Last 5 job cards')}</p>
+          </div>
+          <DataTable
+            caption="Recent jobs"
+            columns={jobColumns}
+            rows={recentJobs}
+            rowKey={(job) => job.id}
+            empty={t('No job cards yet')}
+            mobileCard={(job) => (
+              <>
+                <MobileCardHeader
+                  title={job.id}
+                  code
+                  trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+                />
+                <MobileCardRow>{job.cust}</MobileCardRow>
+                <MobileCardRow>{job.veh}</MobileCardRow>
+              </>
+            )}
+          />
+        </div>
 
-        <Section title={t('Upcoming Appointments')} subtitle={t('Next 5 appointments')}>
-          {upcomingAppointments.length === 0 ? (
-            <p className="py-4 text-center text-[13px] text-muted">{t('No upcoming appointments')}</p>
-          ) : isMobile ? (
-            <div className="flex flex-col divide-y divide-border">
-              {upcomingAppointments.map((appt, idx) => (
-                <div key={idx} className="py-3">
-                  <MobileCardHeader title={appt.cust} />
-                  <MobileCardRow label={t('Time')}>{appt.time}</MobileCardRow>
-                  <MobileCardRow label={t('Vehicle')}>{appt.veh}</MobileCardRow>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[350px] border-collapse text-sm">
-                <thead>
-                  <tr>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Customer')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Time')}
-                    </th>
-                    <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                      {t('Vehicle')}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {upcomingAppointments.map((appt, idx) => (
-                    <tr key={idx}>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5 font-medium text-heading">
-                        {appt.cust}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5 font-mono text-[13px] text-body">
-                        {appt.time}
-                      </td>
-                      <td className="border-0 border-b border-solid border-border px-4 py-2.5 font-mono text-[13px] text-body">
-                        {appt.veh}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </Section>
+        <div className="flex flex-col gap-3">
+          <div>
+            <h2 className="font-display text-base font-bold text-heading">{t('Upcoming Appointments')}</h2>
+            <p className="mt-0.5 text-[13px] text-muted">{t('Next 5 appointments')}</p>
+          </div>
+          <DataTable
+            caption="Upcoming appointments"
+            columns={apptColumns}
+            rows={upcomingAppointments}
+            rowKey={(_, i) => `row-${i}`}
+            empty={t('No upcoming appointments')}
+            mobileCard={(appt) => (
+              <>
+                <MobileCardHeader title={appt.cust} />
+                <MobileCardRow label={t('Time')}>{appt.time}</MobileCardRow>
+                <MobileCardRow label={t('Vehicle')}>{appt.veh}</MobileCardRow>
+              </>
+            )}
+          />
+        </div>
       </div>
     </div>
   )

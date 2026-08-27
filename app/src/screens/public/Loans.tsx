@@ -1,5 +1,6 @@
 import { useId, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Input } from '@/components/ui/Input'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
@@ -77,26 +78,26 @@ export function PublicLoans() {
             <label htmlFor={priceId} className="text-xs font-medium text-heading">
               {t('Vehicle Price')} (SAR)
             </label>
-            <input
+            <Input
               id={priceId}
               dir="ltr"
               inputMode="numeric"
               value={price}
               onChange={(event) => setPrice(event.target.value)}
-              className="h-12 rounded-lg border border-border bg-inset px-3.5 font-mono text-[15px] text-heading outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+              className="font-mono text-[15px]"
             />
           </div>
           <div className="flex flex-col gap-1.5">
             <label htmlFor={downId} className="text-xs font-medium text-heading">
               {t('Down Payment')} (SAR)
             </label>
-            <input
+            <Input
               id={downId}
               dir="ltr"
               inputMode="numeric"
               value={down}
               onChange={(event) => setDown(event.target.value)}
-              className="h-12 rounded-lg border border-border bg-inset px-3.5 font-mono text-[15px] text-heading outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+              className="font-mono text-[15px]"
             />
           </div>
         </div>

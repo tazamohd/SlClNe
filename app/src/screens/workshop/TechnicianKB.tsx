@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
 import { Modal } from '@/components/ui/Modal'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -74,18 +75,14 @@ export function TechnicianKB() {
         </p>
       </div>
 
-      <label className="relative flex items-center">
-        <Icon
-          name="Search"
-          size={17}
-          className="pointer-events-none absolute start-3.5 text-muted"
-        />
+      <label className="block">
         <span className="sr-only">{t('Search by procedure, code, or vehicle...')}</span>
-        <input
+        <Input
+          icon={<Icon name="Search" size={17} />}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('Search by procedure, code, or vehicle...')}
-          className="h-11 w-full rounded-xl border border-border bg-card ps-10 pe-3.5 text-sm text-heading outline-none focus-visible:border-salis-blue focus-visible:ring-2 focus-visible:ring-[rgba(10,94,215,.14)]"
+          inputSize="md"
         />
       </label>
 

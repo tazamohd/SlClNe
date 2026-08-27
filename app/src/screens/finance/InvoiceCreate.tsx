@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import {
@@ -392,13 +393,14 @@ export function InvoiceCreate() {
                             price, line total, remove. */}
                         <td className="border-b border-border px-5 py-2">
                           <div className="flex items-center gap-1.5">
-                            <input
+                            <Input
                               value={line.desc}
                               readOnly={Boolean(saved)}
                               onChange={(e) => patch(index, { desc: e.target.value })}
                               aria-label={t('Description')}
                               placeholder={t('Description')}
-                              className={cellInput}
+                              inputSize="sm"
+                              className={`${cellInput} focus:shadow-none`}
                             />
                             <select
                               value={line.kind}
@@ -418,7 +420,7 @@ export function InvoiceCreate() {
                           </div>
                         </td>
                         <td className="border-b border-border px-3 py-2">
-                          <input
+                          <Input
                             type="number"
                             min={0}
                             step="0.5"
@@ -427,11 +429,12 @@ export function InvoiceCreate() {
                             onChange={(e) => patch(index, { qty: e.target.value })}
                             aria-label={t('Qty')}
                             dir="ltr"
-                            className={`${cellInput} text-center font-mono`}
+                            inputSize="sm"
+                            className={`${cellInput} text-center font-mono focus:shadow-none`}
                           />
                         </td>
                         <td className="border-b border-border px-3 py-2">
-                          <input
+                          <Input
                             inputMode="decimal"
                             value={line.unit}
                             readOnly={Boolean(saved)}
@@ -439,7 +442,8 @@ export function InvoiceCreate() {
                             aria-label={t('Unit Price')}
                             placeholder="0.00"
                             dir="ltr"
-                            className={`${cellInput} text-end font-mono`}
+                            inputSize="sm"
+                            className={`${cellInput} text-end font-mono focus:shadow-none`}
                           />
                         </td>
                         <td className="border-b border-border px-3 py-2 text-end">

@@ -6,6 +6,7 @@ import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Money, formatSar } from '@/components/ui/Money'
 import { BarList, CHART_COLORS } from '@/components/ui/Charts'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -282,13 +283,13 @@ export function SalesReports() {
     <div className={isMobile ? 'flex flex-col gap-3' : 'flex flex-wrap items-end gap-3'}>
       <label className="flex flex-col gap-1">
         <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-        <input
+        <Input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('Invoice or customer')}
           aria-label={t('Search invoices')}
-          className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+          inputSize="sm"
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -1014,13 +1015,13 @@ export function CustomReports() {
           </label>
           <label className="flex flex-col gap-1">
             <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-            <input
+            <Input
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t('Any column')}
               aria-label={t('Search rows')}
-              className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+              inputSize="sm"
             />
           </label>
           <DateRangeFilter from={from} to={to} onFrom={setFrom} onTo={setTo} />
@@ -1154,13 +1155,14 @@ function SavedReportsPanel({
       <div className="flex flex-wrap items-end gap-3">
         <label className="flex flex-col gap-1">
           <span className="text-[11px] font-medium text-muted">{t('Report name')}</span>
-          <input
+          <Input
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
             placeholder={t('e.g. Overdue invoices')}
             aria-label={t('Report name')}
-            className="h-10 min-w-[220px] rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+            inputSize="sm"
+            className="min-w-[220px]"
           />
         </label>
         <Button variant="primary" size="md" onClick={save} disabled={!name.trim() || create.isPending}>

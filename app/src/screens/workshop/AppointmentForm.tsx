@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCreate, type RowOf } from '@/data/useCollection'
 import { RepositoryError } from '@/data/repository'
@@ -181,13 +182,13 @@ function Field({
   return (
     <label className="flex flex-col gap-1">
       <span className="font-action text-[12px] font-medium text-body">{label}</span>
-      <input
+      <Input
         type={type}
         value={value}
         placeholder={placeholder}
         dir={ltr ? 'ltr' : undefined}
         onChange={(event) => onChange(event.target.value)}
-        className="h-10 rounded-lg border border-border bg-card px-3 text-sm text-heading outline-none focus-visible:border-salis-blue focus-visible:ring-2 focus-visible:ring-[rgba(10,94,215,.2)]"
+        inputSize="sm"
       />
     </label>
   )

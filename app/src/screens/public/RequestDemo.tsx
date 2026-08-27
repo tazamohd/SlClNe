@@ -1,6 +1,7 @@
 import { useRef, type FormEvent } from 'react'
 import { useT } from '@/providers/PreferencesProvider'
 import { useToast } from '@/components/ui/Toast'
+import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
@@ -48,19 +49,19 @@ export function PublicRequestDemo() {
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="demo-name" className="text-xs font-medium text-heading">{t('Name')}</label>
-          <input id="demo-name" required placeholder={t('Your full name')} className={INPUT} />
+          <Input id="demo-name" required placeholder={t('Your full name')} inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="demo-email" className="text-xs font-medium text-heading">{t('Email')}</label>
-          <input id="demo-email" required type="email" dir="ltr" placeholder="your@email.com" className={INPUT} />
+          <Input id="demo-email" required type="email" dir="ltr" placeholder="your@email.com" inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="demo-phone" className="text-xs font-medium text-heading">{t('Phone')}</label>
-          <input id="demo-phone" type="tel" dir="ltr" placeholder="+966 5x xxx xxxx" className={INPUT} />
+          <Input id="demo-phone" type="tel" dir="ltr" placeholder="+966 5x xxx xxxx" inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="demo-company" className="text-xs font-medium text-heading">{t('Company Name')}</label>
-          <input id="demo-company" required placeholder={t('Your company')} className={INPUT} />
+          <Input id="demo-company" required placeholder={t('Your company')} inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="demo-workshops" className="text-xs font-medium text-heading">{t('Workshop Count')}</label>

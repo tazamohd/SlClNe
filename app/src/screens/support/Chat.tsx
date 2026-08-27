@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -85,13 +86,14 @@ export function Chat() {
         <div className="mt-2 rounded-xl border border-border bg-card p-3">
           <p className="mb-2 text-xs font-semibold text-heading">{t('Quick Reply')}</p>
           <div className="flex gap-2">
-            <input
+            <Input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t('Type a message...')}
               aria-label={t('Type a message...')}
-              className="flex-1 rounded-lg border border-border bg-surface-secondary px-3 py-2 text-sm text-body outline-none placeholder:text-muted"
+              inputSize="sm"
+              className="flex-1"
             />
             <button type="button" aria-label={t('Send')} className="flex items-center justify-center rounded-lg bg-salis-gradient px-3 text-white">
               <Icon name="Send" size={16} />
@@ -166,13 +168,14 @@ export function Chat() {
           </div>
 
           <div className="flex items-center gap-2 border-t border-border px-5 py-3">
-            <input
+            <Input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t('Type a message...')}
               aria-label={t('Type a message...')}
-              className="flex-1 rounded-xl border border-border bg-surface-secondary px-4 py-2.5 text-sm text-body outline-none placeholder:text-muted"
+              inputSize="md"
+              className="flex-1"
             />
             <button type="button" aria-label={t('Send')} className="flex h-10 w-10 items-center justify-center rounded-xl bg-salis-gradient text-white shadow-sm">
               <Icon name="Send" size={18} />

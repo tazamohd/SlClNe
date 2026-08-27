@@ -7,6 +7,7 @@ import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Money, parseSar } from '@/components/ui/Money'
 import { ErrorState } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
@@ -379,13 +380,13 @@ export function Vehicles() {
             ) : null
           }
         />
-        <input
+        <Input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('Search vehicles...')}
           aria-label={t('Search vehicles')}
-          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          inputSize="sm"
         />
         {isError ? (
           <Card className="p-6">
@@ -685,13 +686,13 @@ export function Technicians() {
             ) : null
           }
         />
-        <input
+        <Input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('Search technicians...')}
           aria-label={t('Search technicians')}
-          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          inputSize="sm"
         />
         <DataTable
           columns={columns}

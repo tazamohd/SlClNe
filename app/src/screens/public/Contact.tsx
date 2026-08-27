@@ -1,5 +1,6 @@
 import { useId, useState, type FormEvent } from 'react'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { API_URL } from '@/data/repository'
 import { useT } from '@/providers/PreferencesProvider'
 import { cn } from '@/lib/cn'
@@ -219,27 +220,27 @@ export function PublicContact() {
         >
           <div className="flex flex-col gap-4">
             {field(nameId, 'Name', errors.name, (invalid, describedBy) => (
-              <input
+              <Input
                 id={nameId}
                 value={values.name}
                 onChange={(e) => setValues((v) => ({ ...v, name: e.target.value }))}
                 placeholder={t('Your name')}
-                aria-invalid={invalid || undefined}
+                invalid={invalid}
                 aria-describedby={describedBy}
-                className={cn('h-11', INPUT, invalid && 'border-salis-orange')}
+                inputSize="md"
               />
             ))}
             {field(emailId, 'Email', errors.email, (invalid, describedBy) => (
-              <input
+              <Input
                 id={emailId}
                 type="email"
                 dir="ltr"
                 value={values.email}
                 onChange={(e) => setValues((v) => ({ ...v, email: e.target.value }))}
                 placeholder="your@email.com"
-                aria-invalid={invalid || undefined}
+                invalid={invalid}
                 aria-describedby={describedBy}
-                className={cn('h-11', INPUT, invalid && 'border-salis-orange')}
+                inputSize="md"
               />
             ))}
             {field(messageId, 'Message', errors.message, (invalid, describedBy) => (

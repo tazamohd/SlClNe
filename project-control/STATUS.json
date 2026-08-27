@@ -7,7 +7,7 @@
     "externalDependency": 12,
     "rendered": 424,
     "placeholder": 0,
-    "designedMobileOwed": 0,
+    "designedMobileOwed": 2,
     "untested": 0,
     "mockOnly": 384,
     "dataBacked": 0,
@@ -31,7 +31,7 @@
       "total": 313,
       "rendered": 313,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 2,
       "e2e": 313,
       "dataBacked": 0
     },
@@ -121,7 +121,7 @@
       "total": 22,
       "rendered": 22,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 2,
       "e2e": 22,
       "dataBacked": 0
     },
@@ -299,7 +299,7 @@
       "total": 4,
       "rendered": 4,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 4,
       "dataBacked": 0
     },
@@ -323,7 +323,7 @@
       "total": 6,
       "rendered": 6,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 6,
       "dataBacked": 0
     },

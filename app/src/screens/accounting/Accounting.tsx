@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Money, parseSar } from '@/components/ui/Money'
 import { ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -240,13 +241,13 @@ export function JournalEntries() {
           }
         />
         <JournalEntryFormModal open={creatingEntry} onClose={() => setCreatingEntry(false)} />
-        <input
+        <Input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('Search entries...')}
           aria-label={t('Search entries')}
-          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          inputSize="sm"
         />
         {balanceNotice}
         <DataTable
@@ -450,13 +451,13 @@ export function Receipts() {
             ) : null
           }
         />
-        <input
+        <Input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('Search receipts...')}
           aria-label={t('Search receipts')}
-          className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+          inputSize="sm"
         />
         <DataTable
           caption="Cash receipts"

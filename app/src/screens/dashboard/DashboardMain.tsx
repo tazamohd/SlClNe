@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { FeatureHeader, StatRow, Section } from '@/components/shell/FeatureScreen'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { formatSar, parseSar } from '@/components/ui/Money'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection } from '@/data/useCollection'
 
 const STATUS_TONE: Record<string, readonly [string, string]> = {
@@ -28,7 +28,6 @@ const BAR_COLORS = [
  *  and technician performance ranking. */
 export function DashboardMain() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: technicians = [] } = useCollection('technicians')
 
@@ -74,9 +73,18 @@ export function DashboardMain() {
     () =>
       [...technicians]
         .sort((a, b) => Number(b.rating ?? 0) - Number(a.rating ?? 0))
-        .slice(0, 5),
+        .slice(0, 5)
+        .map((tech, i) => ({ ...tech, rank: i + 1 })),
     [technicians]
   )
+
+  const techColumns: Column<(typeof topTechnicians)[number]>[] = [
+    { header: '#', cell: (tech) => <span className="font-mono text-muted">{tech.rank}</span>, code: true },
+    { header: 'Technician', cell: (tech) => <span className="font-medium text-heading">{tech.name}</span> },
+    { header: 'Specialty', cell: (tech) => tech.specialty || '—' },
+    { header: 'Active Jobs', cell: (tech) => <span className="font-mono" dir="ltr">{tech.jobs}</span> },
+    { header: 'Rating', cell: (tech) => <span className="font-mono font-semibold text-heading" dir="ltr">{tech.rating || '—'}</span> },
+  ]
 
   /* Revenue sparkline data — bin jobs into 7 rough buckets for a minimal
    * inline SVG trend line. */
@@ -171,75 +179,35 @@ export function DashboardMain() {
         </Section>
       </div>
 
-      <Section title={t('Top Technicians')} subtitle={t('By rating')}>
-        {topTechnicians.length === 0 ? (
-          <p className="py-4 text-center text-[13px] text-muted">{t('No technicians registered')}</p>
-        ) : isMobile ? (
-          <div className="flex flex-col divide-y divide-border">
-            {topTechnicians.map((tech, idx) => (
-              <div key={tech.name} className="py-3">
-                <MobileCardHeader
-                  title={`#${idx + 1} ${tech.name}`}
-                  trailing={
-                    <span className="font-mono text-[13px] font-bold text-heading" dir="ltr">
-                      {tech.rating || '—'}
-                    </span>
-                  }
-                />
-                <MobileCardRow label={t('Specialty')}>{tech.specialty || '—'}</MobileCardRow>
-                <MobileCardRow label={t('Active Jobs')}>
-                  <span className="font-mono" dir="ltr">{tech.jobs}</span>
-                </MobileCardRow>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[400px] border-collapse text-sm">
-              <thead>
-                <tr>
-                  <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                    #
-                  </th>
-                  <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                    {t('Technician')}
-                  </th>
-                  <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                    {t('Specialty')}
-                  </th>
-                  <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                    {t('Active Jobs')}
-                  </th>
-                  <th className="border-0 border-b border-solid border-border px-4 py-2.5 text-end font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
-                    {t('Rating')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {topTechnicians.map((tech, idx) => (
-                  <tr key={tech.name}>
-                    <td className="border-0 border-b border-solid border-border px-4 py-2.5 font-mono text-[13px] text-muted">
-                      {idx + 1}
-                    </td>
-                    <td className="border-0 border-b border-solid border-border px-4 py-2.5 font-medium text-heading">
-                      {tech.name}
-                    </td>
-                    <td className="border-0 border-b border-solid border-border px-4 py-2.5 text-body">
-                      {tech.specialty || '—'}
-                    </td>
-                    <td className="border-0 border-b border-solid border-border px-4 py-2.5 text-end font-mono text-body" dir="ltr">
-                      {tech.jobs}
-                    </td>
-                    <td className="border-0 border-b border-solid border-border px-4 py-2.5 text-end font-mono font-semibold text-heading" dir="ltr">
-                      {tech.rating || '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </Section>
+      <div className="flex flex-col gap-3">
+        <div>
+          <h2 className="font-display text-base font-bold text-heading">{t('Top Technicians')}</h2>
+          <p className="mt-0.5 text-[13px] text-muted">{t('By rating')}</p>
+        </div>
+        <DataTable
+          caption="Top technicians"
+          columns={techColumns}
+          rows={topTechnicians}
+          rowKey={(tech) => tech.name}
+          empty={t('No technicians registered')}
+          mobileCard={(tech) => (
+            <>
+              <MobileCardHeader
+                title={`#${tech.rank} ${tech.name}`}
+                trailing={
+                  <span className="font-mono text-[13px] font-bold text-heading" dir="ltr">
+                    {tech.rating || '—'}
+                  </span>
+                }
+              />
+              <MobileCardRow label={t('Specialty')}>{tech.specialty || '—'}</MobileCardRow>
+              <MobileCardRow label={t('Active Jobs')}>
+                <span className="font-mono" dir="ltr">{tech.jobs}</span>
+              </MobileCardRow>
+            </>
+          )}
+        />
+      </div>
     </div>
   )
 }

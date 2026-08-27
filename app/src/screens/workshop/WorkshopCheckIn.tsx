@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Panel, FieldGrid, ReadField } from '@/components/ui/FieldGrid'
@@ -143,13 +144,14 @@ export function WorkshopCheckIn() {
                   >
                     {t('Odometer Reading')}
                   </label>
-                  <input
+                  <Input
                     id="odometer"
                     value={odometer}
                     onChange={(e) => setOdometer(e.target.value)}
                     dir="ltr"
                     inputMode="numeric"
-                    className="box-border h-10 rounded border border-border bg-inset px-3 font-mono text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                    inputSize="sm"
+                    className="font-mono"
                   />
                 </div>
                 <div className="flex flex-col gap-1">

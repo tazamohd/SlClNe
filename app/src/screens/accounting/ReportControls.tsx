@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
 /** Controls shared by every reporting surface — the date range, the export and
@@ -21,31 +22,29 @@ export function DateRangeFilter({
   onTo: (value: string) => void
 }) {
   const { t } = usePreferences()
-  const field =
-    'h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]'
   return (
     <div className="flex flex-wrap items-end gap-3">
       <label className="flex flex-col gap-1">
         <span className="text-[11px] font-medium text-muted">{t('From')}</span>
-        <input
+        <Input
           type="date"
           value={from}
           max={to || undefined}
           onChange={(event) => onFrom(event.target.value)}
           aria-label={t('From date')}
-          className={field}
+          inputSize="sm"
           dir="ltr"
         />
       </label>
       <label className="flex flex-col gap-1">
         <span className="text-[11px] font-medium text-muted">{t('To')}</span>
-        <input
+        <Input
           type="date"
           value={to}
           min={from || undefined}
           onChange={(event) => onTo(event.target.value)}
           aria-label={t('To date')}
-          className={field}
+          inputSize="sm"
           dir="ltr"
         />
       </label>

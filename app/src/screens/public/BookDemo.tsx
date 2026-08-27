@@ -1,6 +1,7 @@
 import { useRef, type FormEvent } from 'react'
 import { useT } from '@/providers/PreferencesProvider'
 import { useToast } from '@/components/ui/Toast'
+import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
@@ -48,23 +49,23 @@ export function PublicBookDemo() {
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-name" className="text-xs font-medium text-heading">{t('Name')}</label>
-          <input id="book-name" required placeholder={t('Your full name')} className={INPUT} />
+          <Input id="book-name" required placeholder={t('Your full name')} inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-email" className="text-xs font-medium text-heading">{t('Email')}</label>
-          <input id="book-email" required type="email" dir="ltr" placeholder="your@email.com" className={INPUT} />
+          <Input id="book-email" required type="email" dir="ltr" placeholder="your@email.com" inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-phone" className="text-xs font-medium text-heading">{t('Phone')}</label>
-          <input id="book-phone" type="tel" dir="ltr" placeholder="+966 5x xxx xxxx" className={INPUT} />
+          <Input id="book-phone" type="tel" dir="ltr" placeholder="+966 5x xxx xxxx" inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-company" className="text-xs font-medium text-heading">{t('Company Name')}</label>
-          <input id="book-company" required placeholder={t('Your company')} className={INPUT} />
+          <Input id="book-company" required placeholder={t('Your company')} inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-date" className="text-xs font-medium text-heading">{t('Preferred Date')}</label>
-          <input id="book-date" required type="date" className={INPUT} />
+          <Input id="book-date" required type="date" inputSize="sm" />
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="book-time" className="text-xs font-medium text-heading">{t('Preferred Time')}</label>

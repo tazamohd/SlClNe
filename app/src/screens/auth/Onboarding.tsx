@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -58,15 +59,15 @@ export function Onboarding() {
               <div className="flex flex-col gap-3">
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Organization Name')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" placeholder={t('e.g. SALIS Auto Workshop')} />
+                  <Input type="text" inputSize="sm" placeholder={t('e.g. SALIS Auto Workshop')} />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Commercial Registration')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" dir="ltr" placeholder="1010XXXXXX" />
+                  <Input type="text" inputSize="sm" dir="ltr" placeholder="1010XXXXXX" />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('VAT Number')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" dir="ltr" placeholder="3XXXXXXXXXXXXXXX" />
+                  <Input type="text" inputSize="sm" dir="ltr" placeholder="3XXXXXXXXXXXXXXX" />
                 </label>
               </div>
             </div>
@@ -78,15 +79,15 @@ export function Onboarding() {
               <div className="flex flex-col gap-3">
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Branch Name')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" placeholder={t('e.g. Main Workshop')} />
+                  <Input type="text" inputSize="sm" placeholder={t('e.g. Main Workshop')} />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('City')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" placeholder={t('Riyadh')} />
+                  <Input type="text" inputSize="sm" placeholder={t('Riyadh')} />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Service Bays')}</span>
-                  <input type="number" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" dir="ltr" placeholder="4" />
+                  <Input type="number" inputSize="sm" dir="ltr" placeholder="4" />
                 </label>
               </div>
             </div>
@@ -98,15 +99,15 @@ export function Onboarding() {
               <div className="flex flex-col gap-3">
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Full Name')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" />
+                  <Input type="text" inputSize="sm" />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Phone')}</span>
-                  <input type="tel" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" dir="ltr" placeholder="+966 5X XXX XXXX" />
+                  <Input type="tel" inputSize="sm" dir="ltr" placeholder="+966 5X XXX XXXX" />
                 </label>
                 <label className="flex flex-col gap-1">
                   <span className="text-xs font-medium text-muted">{t('Job Title')}</span>
-                  <input type="text" className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-heading" placeholder={t('e.g. Workshop Manager')} />
+                  <Input type="text" inputSize="sm" placeholder={t('e.g. Workshop Manager')} />
                 </label>
               </div>
             </div>

@@ -844,32 +844,32 @@ function RequisitionFormModal({
               >
                 <label className="flex min-w-[150px] flex-1 flex-col gap-1">
                   <span className="text-[11px] text-muted">{t('Description')}</span>
-                  <input
+                  <Input
                     value={line.description}
                     onChange={(event) => setLine(index, { description: event.target.value })}
                     placeholder={t('Brake Pads (Front)')}
-                    className="h-9 w-full rounded border border-border bg-card px-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                    inputSize="sm"
                   />
                 </label>
                 <label className="flex w-[76px] flex-col gap-1">
                   <span className="text-[11px] text-muted">{t('Qty')}</span>
-                  <input
+                  <Input
                     value={line.qty}
                     onChange={(event) => setLine(index, { qty: event.target.value })}
                     inputMode="numeric"
                     dir="ltr"
-                    className="h-9 w-full rounded border border-border bg-card px-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                    inputSize="sm"
                   />
                 </label>
                 <label className="flex w-[110px] flex-col gap-1">
                   <span className="text-[11px] text-muted">{t('Est. Unit SAR')}</span>
-                  <input
+                  <Input
                     value={line.price}
                     onChange={(event) => setLine(index, { price: event.target.value })}
                     inputMode="decimal"
                     dir="ltr"
                     placeholder="0.00"
-                    className="h-9 w-full rounded border border-border bg-card px-2.5 text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                    inputSize="sm"
                   />
                 </label>
                 {lines.length > 1 ? (
@@ -1469,15 +1469,15 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
       </div>
 
       <div className="max-w-[340px]">
-        <label className="relative flex items-center">
+        <label className="block">
           <span className="sr-only">{t('Search requisitions')}</span>
-          <Icon name="Search" size={14} className="pointer-events-none absolute text-muted start-3" />
-          <input
+          <Input
+            icon={<Icon name="Search" size={14} />}
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder={t('Search requisitions...')}
-            className="h-9 w-full rounded border border-border bg-inset px-3 ps-8 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+            inputSize="sm"
           />
         </label>
       </div>
