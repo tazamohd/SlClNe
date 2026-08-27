@@ -1654,7 +1654,7 @@ const failures = []
   await page.goto(BASE + '/parts-network/quotations', { waitUntil: 'networkidle' })
   const first = () => page.locator('tbody tr').first().innerText()
   const byPrice = await first()
-  await page.getByRole('tab', { name: /Rating/ }).click()
+  await page.getByRole('radio', { name: /Rating/ }).click()
   const byRating = await first()
   if (byPrice === byRating) {
     failures.push({ route: 'quote sort', problems: ['sorting by rating did not reorder the table'] })
