@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
-import { EmptyState, ErrorState } from '@/components/ui/States'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -133,7 +133,7 @@ export function Invoices() {
               />
             </Card>
           ) : isLoading ? (
-            <p className="py-6 text-center text-sm text-muted">{t('Loading...')}</p>
+            <Loading label={t('Loading invoices...')} inline />
           ) : filtered.length === 0 ? (
             <EmptyState
               icon={query ? 'SearchX' : 'Receipt'}

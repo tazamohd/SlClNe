@@ -2,9 +2,9 @@ import { useCallback, useMemo, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
-import { cn } from '@/lib/cn'
-import { FeatureHeader, Section, StatRow } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+
+import { FeatureHeader, Section, StatRow, TabBar } from '@/components/shell/FeatureScreen'
+
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -1697,27 +1697,7 @@ export function PartsSupplyNetwork() {
         subtitle={t('Partner warehouses, fulfilment and shipment tracking')}
       />
 
-      <Card className="flex gap-1 overflow-x-auto rounded-lg p-1.5" role="tablist">
-        {tabs.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === option.id}
-            onClick={() => setTab(option.id)}
-            className={cn(
-              'flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded px-4 py-2.5',
-              'font-action text-[13px] font-semibold transition-all duration-150',
-              tab === option.id
-                ? 'bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
-                : 'bg-transparent text-muted hover:bg-[rgba(10,94,215,.06)] hover:text-salis-blue'
-            )}
-          >
-            <Icon name={option.icon} size={15} />
-            {t(option.label)}
-          </button>
-        ))}
-      </Card>
+      <TabBar tabs={tabs} value={tab} onChange={setTab} />
 
       <StatRow
         stats={[

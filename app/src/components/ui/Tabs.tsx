@@ -1,10 +1,13 @@
 import { createContext, useContext, useId, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
+type TabVariant = 'underline' | 'pill'
+
 interface TabsContextValue {
   activeTab: string
   setActiveTab: (id: string) => void
   baseId: string
+  variant: TabVariant
 }
 
 const TabsContext = createContext<TabsContextValue | null>(null)
@@ -21,9 +24,10 @@ export interface TabsProps {
   onChange?: (tab: string) => void
   children: ReactNode
   className?: string
+  variant?: TabVariant
 }
 
-export function Tabs({ defaultTab, value, onChange, children, className }: TabsProps) {
+export function Tabs({ defaultTab, value, onChange, children, className, variant = 'underline' }: TabsProps) {
   const [internal, setInternal] = useState(defaultTab ?? '')
   const baseId = useId()
   const activeTab = value ?? internal
@@ -32,7 +36,7 @@ export function Tabs({ defaultTab, value, onChange, children, className }: TabsP
     onChange?.(id)
   }
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab, baseId }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab, baseId, variant }}>
       <div className={className}>{children}</div>
     </TabsContext.Provider>
   )
@@ -45,12 +49,18 @@ export interface TabListProps {
 }
 
 export function TabList({ children, className, label }: TabListProps) {
+  const { variant } = useTabsContext()
   return (
     <div
       role="tablist"
       aria-label={label}
       tabIndex={-1}
-      className={cn('flex gap-1 border-b border-border', className)}
+      className={cn(
+        variant === 'pill'
+          ? 'flex gap-1 overflow-x-auto rounded-lg bg-surface p-1.5 shadow-sm ring-1 ring-border'
+          : 'flex gap-1 overflow-x-auto border-b border-border',
+        className,
+      )}
       onKeyDown={(e) => {
         const tabs = Array.from(
           e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
@@ -87,7 +97,7 @@ export interface TabProps {
 }
 
 export function Tab({ id, children, className, disabled }: TabProps) {
-  const { activeTab, setActiveTab, baseId } = useTabsContext()
+  const { activeTab, setActiveTab, baseId, variant } = useTabsContext()
   const selected = activeTab === id
   return (
     <button
@@ -100,10 +110,20 @@ export function Tab({ id, children, className, disabled }: TabProps) {
       disabled={disabled}
       onClick={() => setActiveTab(id)}
       className={cn(
-        '-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors',
-        selected
-          ? 'border-salis-blue text-salis-blue'
-          : 'border-transparent text-muted hover:border-border hover:text-heading',
+        variant === 'pill'
+          ? cn(
+              'flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded px-4 py-2.5',
+              'font-action text-[13px] font-semibold transition-all duration-150',
+              selected
+                ? 'bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
+                : 'bg-transparent text-muted hover:bg-[rgba(10,94,215,.06)] hover:text-salis-blue',
+            )
+          : cn(
+              '-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors',
+              selected
+                ? 'border-salis-blue text-salis-blue'
+                : 'border-transparent text-muted hover:border-border hover:text-heading',
+            ),
         disabled && 'cursor-not-allowed opacity-50',
         className,
       )}

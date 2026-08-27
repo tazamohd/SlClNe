@@ -10,7 +10,7 @@ import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { ErrorState } from '@/components/ui/States'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { JobCardForm } from './JobCardForm'
 
@@ -91,7 +91,7 @@ export function JobCards() {
               />
             </Card>
           ) : isLoading ? (
-            <p className="py-6 text-center text-sm text-muted">{t('Loading...')}</p>
+            <Loading label={t('Loading job cards...')} inline />
           ) : filtered.length === 0 ? (
             <EmptyState
               icon={query ? 'SearchX' : 'ClipboardList'}

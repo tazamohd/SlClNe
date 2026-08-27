@@ -1,7 +1,8 @@
-import { useState, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Tabs, TabList, Tab } from '@/components/ui/Tabs'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -63,8 +64,8 @@ export function FeatureHeader({
   )
 }
 
-/** Pill tab bar. Controlled when `value`/`onChange` are passed, otherwise it
- *  keeps its own state — most screens only need the latter. */
+/** Pill tab bar built on the Tabs primitive. Controlled when `value`/`onChange`
+ *  are passed, otherwise it keeps its own state. */
 export function TabBar({
   tabs,
   value,
@@ -75,35 +76,17 @@ export function TabBar({
   onChange?: (id: string) => void
 }) {
   const { t } = usePreferences()
-  const [internal, setInternal] = useState(tabs[0]?.id ?? '')
-  const active = value ?? internal
-  const select = onChange ?? setInternal
-
   return (
-    <Card className="flex gap-1 overflow-x-auto rounded-lg p-1.5" role="tablist">
-      {tabs.map((tab) => {
-        const on = tab.id === active
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={on}
-            onClick={() => select(tab.id)}
-            className={cn(
-              'flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded px-4 py-2.5',
-              'font-action text-[13px] font-semibold transition-all duration-150',
-              on
-                ? 'bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
-                : 'bg-transparent text-muted hover:bg-[rgba(10,94,215,.06)] hover:text-salis-blue'
-            )}
-          >
+    <Tabs defaultTab={tabs[0]?.id} value={value} onChange={onChange} variant="pill">
+      <TabList label="Section tabs">
+        {tabs.map((tab) => (
+          <Tab key={tab.id} id={tab.id}>
             {tab.icon ? <Icon name={tab.icon} size={15} /> : null}
             <span>{t(tab.label)}</span>
-          </button>
-        )
-      })}
-    </Card>
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
   )
 }
 

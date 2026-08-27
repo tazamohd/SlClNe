@@ -13,6 +13,7 @@ import {
   ReadOnlyNotice,
   Skeleton,
 } from '@/components/ui/States'
+import { Tabs, TabList, Tab } from '@/components/ui/Tabs'
 
 /** The frame every detail screen renders inside.
  *
@@ -329,7 +330,15 @@ export function DetailPage({
       ) : null}
 
       {tabs?.length ? (
-        <TabBar tabs={tabs} active={activeTab} onSelect={setActiveTab} />
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          <TabList label="Detail tabs" className="overflow-x-auto">
+            {tabs.map((tab) => (
+              <Tab key={tab.id} id={tab.id}>
+                {tab.icon ? <span className="inline-flex items-center gap-1.5"><Icon name={tab.icon} size={14} />{t(tab.label)}</span> : t(tab.label)}
+              </Tab>
+            ))}
+          </TabList>
+        </Tabs>
       ) : null}
 
       <div
@@ -525,48 +534,6 @@ function StatStrip({
           </div>
         </Card>
       ))}
-    </div>
-  )
-}
-
-// ── Tabs ────────────────────────────────────────────────────────────────────
-
-function TabBar({
-  tabs,
-  active,
-  onSelect,
-}: {
-  tabs: readonly DetailTab[]
-  active: string | undefined
-  onSelect: (id: string) => void
-}) {
-  const { t } = usePreferences()
-  return (
-    <div role="tablist" className="flex gap-1 overflow-x-auto border-b border-border">
-      {tabs.map((tab) => {
-        const selected = tab.id === active
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            id={`detail-tab-${tab.id}`}
-            aria-selected={selected}
-            onClick={() => onSelect(tab.id)}
-            className={cn(
-              'flex cursor-pointer items-center gap-1.5 whitespace-nowrap border-none bg-transparent px-3.5 py-2.5',
-              'font-action text-[13px] font-medium transition-colors duration-150',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue',
-              selected
-                ? 'border-b-2 border-solid border-salis-blue text-salis-blue'
-                : 'text-muted hover:text-heading'
-            )}
-          >
-            {tab.icon ? <Icon name={tab.icon} size={14} /> : null}
-            {t(tab.label)}
-          </button>
-        )
-      })}
     </div>
   )
 }
