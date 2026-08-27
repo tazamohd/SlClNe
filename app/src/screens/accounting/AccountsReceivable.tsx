@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
-import { Card } from '@/components/ui/Card'
 import { formatSar } from '@/components/ui/Money'
+import { KpiCard } from '@/components/ui/KpiCard'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
-import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -69,15 +68,7 @@ export function AccountsReceivable() {
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map((k) => (
-          <Card key={k.label} className="rounded-xl p-4 shadow-sm">
-            <div className="flex items-center gap-2">
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden>
-                <Icon name={k.icon} size={16} />
-              </span>
-              <span className="text-xs font-medium text-muted">{k.label}</span>
-            </div>
-            <h4 dir="ltr" className="mt-2 font-mono text-xl font-black text-heading">{k.value}</h4>
-          </Card>
+          <KpiCard key={k.label} {...k} mono />
         ))}
       </div>
 

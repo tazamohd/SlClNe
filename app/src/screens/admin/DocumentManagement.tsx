@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
+import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
@@ -147,13 +148,7 @@ export function DocumentManagement() {
 
       <div className="grid grid-cols-4 gap-4">
         {kpis.map((k) => (
-          <Card key={k.label} className="rounded-xl p-4 shadow-sm">
-            <div className="flex items-center gap-2">
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={16} /></span>
-              <span className="text-xs font-medium text-muted">{k.label}</span>
-            </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading">{k.value}</h4>
-          </Card>
+          <KpiCard key={k.label} {...k} />
         ))}
       </div>
 
