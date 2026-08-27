@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 
 interface Franchise {
   name: string
@@ -32,27 +32,21 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function FranchiseManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Building2" title={t('Franchises')} subtitle={t('Multi-location management')} />
-        {FRANCHISES.map((f, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              title={f.name}
-              trailing={<Badge background={STATUS_STYLES[f.status].bg} color={STATUS_STYLES[f.status].fg}>{t(f.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Location')} value={f.location} />
-            <MobileCardRow label={t('Owner')} value={f.owner} />
-            <MobileCardRow label={t('Revenue')} value={f.revenue} />
-            <MobileCardRow label={t('Employees')} value={f.employees} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Franchise>[] = [
+    { header: 'Name', cell: (f) => <span className="font-semibold text-heading">{f.name}</span> },
+    { header: 'Location', cell: (f) => f.location },
+    { header: 'Owner', cell: (f) => f.owner },
+    { header: 'Revenue', cell: (f) => <span className="font-medium text-heading">{f.revenue}</span> },
+    { header: 'Employees', cell: (f) => f.employees },
+    { header: 'Since', cell: (f) => f.since },
+    {
+      header: 'Status',
+      cell: (f) => (
+        <Badge background={STATUS_STYLES[f.status].bg} color={STATUS_STYLES[f.status].fg}>{t(f.status)}</Badge>
+      ),
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -69,7 +63,7 @@ export function FranchiseManagement() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {[
           { label: 'Total Franchises', value: FRANCHISES.length.toString(), icon: 'Building2' },
           { label: 'Active Locations', value: FRANCHISES.filter((f) => f.status === 'Active').length.toString(), icon: 'CheckCircle' },
@@ -89,39 +83,28 @@ export function FranchiseManagement() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Franchise Locations')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('Name')}</th>
-                <th className="pb-3 font-medium">{t('Location')}</th>
-                <th className="pb-3 font-medium">{t('Owner')}</th>
-                <th className="pb-3 font-medium">{t('Revenue')}</th>
-                <th className="pb-3 font-medium">{t('Employees')}</th>
-                <th className="pb-3 font-medium">{t('Since')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {FRANCHISES.map((f, i) => (
-                <tr key={i} className="border-b border-border last:border-0">
-                  <td className="py-3 font-semibold text-heading">{f.name}</td>
-                  <td className="py-3 text-body">{f.location}</td>
-                  <td className="py-3 text-body">{f.owner}</td>
-                  <td className="py-3 font-medium text-heading">{f.revenue}</td>
-                  <td className="py-3 text-body">{f.employees}</td>
-                  <td className="py-3 text-muted">{f.since}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[f.status].bg} color={STATUS_STYLES[f.status].fg}>{t(f.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div>
+        <p className="mb-3 text-sm font-bold text-heading">{t('Franchise Locations')}</p>
+        <DataTable
+          caption="Franchise locations"
+          columns={columns}
+          rows={FRANCHISES}
+          rowKey={(f, i) => f.name || String(i)}
+          empty={t('No franchises found')}
+          mobileCard={(f) => (
+            <>
+              <MobileCardHeader
+                title={f.name}
+                trailing={<Badge background={STATUS_STYLES[f.status].bg} color={STATUS_STYLES[f.status].fg}>{t(f.status)}</Badge>}
+              />
+              <MobileCardRow label={t('Location')} value={f.location} />
+              <MobileCardRow label={t('Owner')} value={f.owner} />
+              <MobileCardRow label={t('Revenue')} value={f.revenue} />
+              <MobileCardRow label={t('Employees')} value={f.employees} />
+            </>
+          )}
+        />
+      </div>
     </div>
   )
 }

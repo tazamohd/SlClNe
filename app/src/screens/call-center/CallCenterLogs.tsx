@@ -6,7 +6,8 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { EmptyState } from '@/components/ui/States'
-import { MobileCard, MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
@@ -79,8 +80,6 @@ const STATUS_STYLE: Record<CallStatus, [string, string, string]> = {
   voicemail: ['Voicemail', 'rgba(100,116,139,.1)', 'var(--text-muted)'],
 }
 
-const TABLE_COLS = ['', 'Customer', 'Disposition', 'Agent', 'When', 'Duration', 'Status']
-
 /* ---------- component ---------- */
 
 export function CallCenterLogs() {
@@ -123,6 +122,57 @@ export function CallCenterLogs() {
     }
     return c
   }, [])
+
+  const columns: Column<CallLog>[] = [
+    {
+      header: '',
+      cell: (log) => {
+        const [dirIcon, dirBg, dirFg] = DIR_ICON[log.direction]
+        return (
+          <span
+            className="flex flex-shrink-0 rounded-[10px] p-2"
+            style={{ background: dirBg, color: dirFg }}
+          >
+            <Icon name={dirIcon} size={13} />
+          </span>
+        )
+      },
+    },
+    {
+      header: 'Customer',
+      cell: (log) => (
+        <>
+          <p className="m-0 text-[13px] font-medium text-heading">{log.customer}</p>
+          <p className="m-0 mt-0.5 font-mono text-[11px] text-muted" dir="ltr">{log.phone}</p>
+        </>
+      ),
+    },
+    { header: 'Disposition', cell: (log) => t(log.disposition) },
+    { header: 'Agent', cell: (log) => log.agent },
+    { header: 'When', cell: (log) => log.when },
+    { header: 'Duration', cell: (log) => log.dur, code: true, className: 'text-end' },
+    {
+      header: 'Status',
+      cell: (log) => {
+        const [stLabel, stBg, stFg] = STATUS_STYLE[log.status]
+        return (
+          <div className="flex items-center gap-2">
+            <Badge background={stBg} color={stFg}>{t(stLabel)}</Badge>
+            {log.status === 'done' && (
+              <button
+                type="button"
+                disabled={!isLive}
+                className="flex h-[26px] w-[26px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.07)] text-salis-blue disabled:cursor-default disabled:opacity-60"
+                aria-label={t('Play recording for') + ' ' + log.customer}
+              >
+                <Icon name="Play" size={12} />
+              </button>
+            )}
+          </div>
+        )
+      },
+    },
+  ]
 
   return (
     <div className="flex max-w-[1240px] animate-fade-up flex-col gap-5 motion-reduce:animate-none">
@@ -180,8 +230,12 @@ export function CallCenterLogs() {
       </div>
 
       {/* Table / list */}
-      {filtered.length === 0 ? (
-        <Card className="p-4">
+      <DataTable
+        caption="Call logs"
+        columns={columns}
+        rows={filtered}
+        rowKey={(log) => log.id}
+        empty={
           <EmptyState
             icon="PhoneOff"
             title={t('No call logs')}
@@ -191,106 +245,39 @@ export function CallCenterLogs() {
                 : t('No calls have been recorded yet.')
             }
           />
-        </Card>
-      ) : isMobile ? (
-        <div className="flex flex-col gap-2.5">
-          {filtered.map((log) => {
-            const [dirIcon, dirBg, dirFg] = DIR_ICON[log.direction]
-            const [stLabel, stBg, stFg] = STATUS_STYLE[log.status]
-            return (
-              <MobileCard key={log.id}>
-                <MobileCardHeader
-                  leading={
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className="flex flex-shrink-0 rounded-lg p-1.5"
-                        style={{ background: dirBg, color: dirFg }}
-                      >
-                        <Icon name={dirIcon} size={14} />
-                      </span>
-                      <div className="min-w-0">
-                        <span className="text-[13px] font-semibold text-heading">{log.customer}</span>
-                        <span className="block font-mono text-[11px] text-muted" dir="ltr">{log.phone}</span>
-                      </div>
+        }
+        mobileCard={(log) => {
+          const [dirIcon, dirBg, dirFg] = DIR_ICON[log.direction]
+          const [stLabel, stBg, stFg] = STATUS_STYLE[log.status]
+          return (
+            <>
+              <MobileCardHeader
+                leading={
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className="flex flex-shrink-0 rounded-lg p-1.5"
+                      style={{ background: dirBg, color: dirFg }}
+                    >
+                      <Icon name={dirIcon} size={14} />
+                    </span>
+                    <div className="min-w-0">
+                      <span className="text-[13px] font-semibold text-heading">{log.customer}</span>
+                      <span className="block font-mono text-[11px] text-muted" dir="ltr">{log.phone}</span>
                     </div>
-                  }
-                  trailing={
-                    <Badge background={stBg} color={stFg}>{t(stLabel)}</Badge>
-                  }
-                />
-                <MobileCardRow label={t('Disposition')} value={t(log.disposition)} />
-                <MobileCardRow label={t('Agent')} value={log.agent} />
-                <MobileCardRow label={t('When')} value={log.when} />
-                <MobileCardRow label={t('Duration')} value={<span dir="ltr" className="font-mono">{log.dur}</span>} />
-              </MobileCard>
-            )
-          })}
-        </div>
-      ) : (
-        <Card className="overflow-hidden p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-start">
-              <thead>
-                <tr>
-                  {TABLE_COLS.map((h, i) => (
-                    <th
-                      key={h || 'dir'}
-                      className={
-                        'whitespace-nowrap border-0 border-b border-solid border-border px-5 py-3 font-action text-xs font-semibold uppercase tracking-[.05em] text-muted' +
-                        (i === 5 ? ' text-end' : ' text-start')
-                      }
-                    >
-                      {h ? t(h) : ''}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((log) => {
-                  const [dirIcon, dirBg, dirFg] = DIR_ICON[log.direction]
-                  const [stLabel, stBg, stFg] = STATUS_STYLE[log.status]
-                  return (
-                    <tr
-                      key={log.id}
-                      className="cursor-pointer border-0 border-t border-solid border-border transition-colors hover:bg-[rgba(10,94,215,.03)]"
-                    >
-                      <td className="border-b border-border px-5 py-3">
-                        <span
-                          className="flex flex-shrink-0 rounded-[10px] p-2"
-                          style={{ background: dirBg, color: dirFg }}
-                        >
-                          <Icon name={dirIcon} size={13} />
-                        </span>
-                      </td>
-                      <td className="border-b border-border px-5 py-3">
-                        <p className="m-0 text-[13px] font-medium text-heading">{log.customer}</p>
-                        <p className="m-0 mt-0.5 font-mono text-[11px] text-muted" dir="ltr">{log.phone}</p>
-                      </td>
-                      <td className="border-b border-border px-5 py-3 text-[13px] text-body">{t(log.disposition)}</td>
-                      <td className="border-b border-border px-5 py-3 text-[13px] text-muted">{log.agent}</td>
-                      <td className="border-b border-border px-5 py-3 text-[13px] text-muted">{log.when}</td>
-                      <td className="border-b border-border px-5 py-3 text-end font-mono text-[13px] font-semibold" dir="ltr">{log.dur}</td>
-                      <td className="border-b border-border px-5 py-3">
-                        <div className="flex items-center gap-2">
-                          <Badge background={stBg} color={stFg}>{t(stLabel)}</Badge>
-                          {log.status === 'done' && (
-                            <button
-                              type="button"
-                              disabled={!isLive}
-                              className="flex h-[26px] w-[26px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.07)] text-salis-blue disabled:cursor-default disabled:opacity-60"
-                              aria-label={t('Play recording for') + ' ' + log.customer}
-                            >
-                              <Icon name="Play" size={12} />
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+                  </div>
+                }
+                trailing={
+                  <Badge background={stBg} color={stFg}>{t(stLabel)}</Badge>
+                }
+              />
+              <MobileCardRow label={t('Disposition')} value={t(log.disposition)} />
+              <MobileCardRow label={t('Agent')} value={log.agent} />
+              <MobileCardRow label={t('When')} value={log.when} />
+              <MobileCardRow label={t('Duration')} value={<span dir="ltr" className="font-mono">{log.dur}</span>} />
+            </>
+          )
+        }}
+        footer={
           <div className="flex items-center border-0 border-t border-solid border-border px-5 py-3">
             <span className="text-xs text-muted">
               {t('Showing')} 1&ndash;{filtered.length} {t('of')} 186
@@ -305,8 +292,8 @@ export function CallCenterLogs() {
               </Button>
             </div>
           </div>
-        </Card>
-      )}
+        }
+      />
     </div>
   )
 }

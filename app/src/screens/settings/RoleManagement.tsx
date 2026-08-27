@@ -1,9 +1,9 @@
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Role {
   name: string
@@ -26,32 +26,64 @@ export function RoleManagement() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<Role>[] = [
+    {
+      header: 'Role',
+      cell: (role) => (
+        <div className="flex items-center gap-2">
+          <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+          <span className="font-medium text-heading">{t(role.name)}</span>
+        </div>
+      ),
+    },
+    { header: 'Description', cell: (role) => role.description },
+    { header: 'Users', cell: (role) => <span className="font-mono text-heading">{role.userCount}</span> },
+    { header: 'Permissions', cell: (role) => <span className="font-mono text-heading">{role.permissionCount}</span> },
+    {
+      header: 'Type',
+      cell: (role) =>
+        role.isSystem
+          ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
+          : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>,
+    },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Roles"
+      columns={columns}
+      rows={ROLES}
+      rowKey={(role) => role.name}
+      mobileCard={(role) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{t(role.name)}</p>
+                  <p className="text-xs text-muted">{role.description}</p>
+                </div>
+              </div>
+            }
+            trailing={
+              role.isSystem
+                ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
+                : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>
+            }
+          />
+          <MobileCardRow label={t('Users')} value={String(role.userCount)} />
+          <MobileCardRow label={t('Permissions')} value={String(role.permissionCount)} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Shield" title={t('Roles')} subtitle={t('Permission management')} />
-        {ROLES.map((role) => (
-          <MobileCard key={role.name}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{t(role.name)}</p>
-                    <p className="text-xs text-muted">{role.description}</p>
-                  </div>
-                </div>
-              }
-              trailing={
-                role.isSystem
-                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
-                  : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>
-              }
-            />
-            <MobileCardRow label={t('Users')} value={String(role.userCount)} />
-            <MobileCardRow label={t('Permissions')} value={String(role.permissionCount)} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -71,41 +103,7 @@ export function RoleManagement() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Role')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Description')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Users')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Permissions')}</th>
-                <th className="pb-3 text-start font-medium">{t('Type')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ROLES.map((role) => (
-                <tr key={role.name} className="border-b border-border/50">
-                  <td className="py-3 pe-4">
-                    <div className="flex items-center gap-2">
-                      <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
-                      <span className="font-medium text-heading">{t(role.name)}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{role.description}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{role.userCount}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading">{role.permissionCount}</td>
-                  <td className="py-3">
-                    {role.isSystem
-                      ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
-                      : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }

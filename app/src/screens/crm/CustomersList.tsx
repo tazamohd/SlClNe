@@ -3,14 +3,13 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
-import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 
 export function CustomersList() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const customers = useCollection('customers')
   const rows = (customers.data ?? []) as unknown as readonly Record<string, string>[]
   const [search, setSearch] = useState('')
@@ -31,31 +30,18 @@ export function CustomersList() {
     { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Users" title={t('Customers')} subtitle={t('Registry')} />
-        <Input inputSize="sm" placeholder={t('Search customers...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        {filtered.map((r, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{r.name ?? '—'}</p>
-                    <p className="text-xs text-muted" dir="ltr">{r.phone ?? '—'}</p>
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-1 text-xs text-muted">{r.email ?? '—'}</div>
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No customers found')}</p>}
-      </div>
-    )
-  }
+  const columns: Column<Record<string, string>>[] = [
+    { header: 'Name', cell: (r) => <span className="font-medium text-heading">{r.name ?? '—'}</span> },
+    { header: 'Phone', cell: (r) => r.phone ?? '—', code: true },
+    { header: 'Email', cell: (r) => r.email ?? '—', code: true },
+    { header: 'Vehicles', cell: (r) => r.vehicleCount ?? '—', code: true },
+    {
+      header: 'Status',
+      cell: (r) => (
+        <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>
+      ),
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -90,34 +76,31 @@ export function CustomersList() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Name')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Phone')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Email')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Vehicles')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((r, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{r.name ?? '—'}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{r.phone ?? '—'}</td>
-                  <td className="py-3 pe-4 text-body" dir="ltr">{r.email ?? '—'}</td>
-                  <td className="py-3 pe-4 font-mono text-heading" dir="ltr">{r.vehicleCount ?? '—'}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Customers"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(r, i) => r.name ?? String(i)}
+        empty={t('No customers found')}
+        mobileCard={(r) => (
+          <>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{r.name ?? '—'}</p>
+                    <p className="text-xs text-muted" dir="ltr">{r.phone ?? '—'}</p>
+                  </div>
+                </div>
+              }
+            />
+            <MobileCardRow label={t('Email')} value={r.email ?? '—'} />
+            <MobileCardRow label={t('Vehicles')} value={r.vehicleCount ?? '—'} />
+            <MobileCardRow label={t('Status')} value={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>} />
+          </>
+        )}
+      />
     </div>
   )
 }

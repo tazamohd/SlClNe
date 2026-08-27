@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface SMSProvider {
   name: string
@@ -68,18 +69,7 @@ export function SMSIntegration() {
           </MobileCard>
         ))}
         <p className="mt-2 text-xs font-bold text-heading">{t('Recent Messages')}</p>
-        {SMS_LOGS.map((log) => (
-          <MobileCard key={log.id}>
-            <MobileCardHeader
-              title={log.id}
-              code
-              trailing={<Badge background={STATUS_STYLES[log.status].bg} color={STATUS_STYLES[log.status].fg}>{t(log.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Recipient')} value={log.recipient} />
-            <MobileCardRow label={t('Type')} value={t(log.type)} />
-            <MobileCardRow label={t('Time')} value={log.timestamp} />
-          </MobileCard>
-        ))}
+        {smsTable}
       </div>
     )
   }
@@ -129,39 +119,7 @@ export function SMSIntegration() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Message Log')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('ID')}</th>
-                <th className="pb-3 font-medium">{t('Recipient')}</th>
-                <th className="pb-3 font-medium">{t('Type')}</th>
-                <th className="pb-3 font-medium">{t('Provider')}</th>
-                <th className="pb-3 font-medium">{t('Time')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SMS_LOGS.map((log) => (
-                <tr key={log.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs text-muted">{log.id}</td>
-                  <td className="py-3 text-body">{log.recipient}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(log.type)}</Badge>
-                  </td>
-                  <td className="py-3 text-body">{log.provider}</td>
-                  <td className="py-3 text-muted">{log.timestamp}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[log.status].bg} color={STATUS_STYLES[log.status].fg}>{t(log.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {smsTable}
     </div>
   )
 }

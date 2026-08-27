@@ -3,9 +3,10 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface Task {
   title: string
@@ -64,6 +65,46 @@ export function TasksList() {
     { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
   ]
 
+  const columns: Column<Task>[] = [
+    { header: 'Task', cell: (task) => <span className="font-medium text-heading">{task.title}</span> },
+    { header: 'Assignee', cell: (task) => task.assignee },
+    { header: 'Priority', cell: (task) => <Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge> },
+    { header: 'Due Date', cell: (task) => task.dueDate },
+    { header: 'Status', cell: (task) => <Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge> },
+    { header: 'Category', cell: (task) => t(task.category) },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Tasks"
+      columns={columns}
+      rows={filtered}
+      rowKey={(_, i) => `task-${i}`}
+      empty={{ icon: 'CheckSquare', title: t('No tasks found'), description: t('No tasks match the current search.') }}
+      mobileCard={(task) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: STATUS_STYLES[task.status].bg, color: STATUS_STYLES[task.status].fg }} aria-hidden>
+                  <Icon name="CheckSquare" size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{task.title}</p>
+                  <p className="text-xs text-muted">{task.assignee}</p>
+                </div>
+              </div>
+            }
+            trailing={<Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>}
+          />
+          <MobileCardRow label={t('Due')} value={task.dueDate} />
+          <MobileCardRow label={t('Status')} value={<Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>} />
+          <MobileCardRow label={t('Category')} value={t(task.category)} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -80,28 +121,7 @@ export function TasksList() {
             </Card>
           ))}
         </div>
-        {filtered.map((task, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: STATUS_STYLES[task.status].bg, color: STATUS_STYLES[task.status].fg }} aria-hidden>
-                    <Icon name="CheckSquare" size={14} />
-                  </span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{task.title}</p>
-                    <p className="text-xs text-muted">{task.assignee}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>}
-            />
-            <MobileCardRow label={t('Due')} value={task.dueDate} />
-            <MobileCardRow label={t('Status')} value={<Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>} />
-            <MobileCardRow label={t('Category')} value={t(task.category)} />
-          </MobileCard>
-        ))}
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No tasks found')}</p>}
+        {table}
       </div>
     )
   }
@@ -139,39 +159,7 @@ export function TasksList() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Task')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Assignee')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Priority')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Due Date')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Status')}</th>
-                <th className="pb-3 text-start font-medium">{t('Category')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((task, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-medium text-heading">{task.title}</td>
-                  <td className="py-3 pe-4 text-body">{task.assignee}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>
-                  </td>
-                  <td className="py-3 pe-4 text-body">{task.dueDate}</td>
-                  <td className="py-3 pe-4">
-                    <Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>
-                  </td>
-                  <td className="py-3 text-body">{t(task.category)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">{t('No tasks found')}</p>}
-      </Card>
+      {table}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 
 interface Payment {
   id: string
@@ -47,7 +47,6 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function CustomerAppPayments() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const totalSpent = PAYMENTS.filter((p) => p.status === 'Completed').reduce((sum, p) => sum + p.amount, 0)
 
@@ -58,57 +57,20 @@ export function CustomerAppPayments() {
     { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="CreditCard" title={t('Payments')} subtitle={t('History & methods')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-
-        <p className="text-[13px] font-bold text-heading">{t('Payment Methods')}</p>
-        {METHODS.map((m) => (
-          <Card key={m.last4} className="flex items-center gap-3 rounded-xl p-3 shadow-sm">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={m.icon} size={14} /></span>
-            <div className="flex-1">
-              <p className="text-[13px] font-semibold text-heading">{m.type} <span className="font-mono text-muted" dir="ltr">****{m.last4}</span></p>
-              <p className="text-xs text-muted">{m.expiry !== '-' ? `${t('Expires')} ${m.expiry}` : t('Digital Wallet')}</p>
-            </div>
-            {m.primary && <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Primary')}</Badge>}
-          </Card>
-        ))}
-
-        <p className="text-[13px] font-bold text-heading">{t('Payment History')}</p>
-        {PAYMENTS.map((p) => (
-          <MobileCard key={p.id}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{t(p.description)}</p>
-                    <p className="text-xs text-muted">{p.date}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Amount')} value={`${p.amount.toLocaleString()} SAR`} />
-            <MobileCardRow label={t('Method')} value={p.method} />
-            <MobileCardRow label={t('Invoice')} value={p.invoice} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Payment>[] = [
+    { header: 'ID', cell: (p) => p.id, code: true },
+    { header: 'Description', cell: (p) => <span className="font-medium text-heading">{t(p.description)}</span> },
+    { header: 'Amount', cell: (p) => p.amount.toLocaleString(), code: true, className: 'text-end' },
+    { header: 'Method', cell: (p) => p.method },
+    { header: 'Invoice', cell: (p) => p.invoice, code: true },
+    { header: 'Date', cell: (p) => p.date },
+    {
+      header: 'Status',
+      cell: (p) => (
+        <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
+      ),
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -125,7 +87,7 @@ export function CustomerAppPayments() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map((k) => (
           <Card key={k.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">
@@ -139,7 +101,7 @@ export function CustomerAppPayments() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Payment Methods')}</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {METHODS.map((m) => (
             <div key={m.last4} className="flex items-center gap-3 rounded-xl border border-border p-4">
               <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
@@ -153,39 +115,35 @@ export function CustomerAppPayments() {
         </div>
       </Card>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Payment History')}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('ID')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Description')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Amount')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Method')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Invoice')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Date')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PAYMENTS.map((p) => (
-                <tr key={p.id} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs font-semibold text-heading" dir="ltr">{p.id}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{t(p.description)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{p.amount.toLocaleString()}</td>
-                  <td className="py-3 pe-4 text-body">{p.method}</td>
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{p.invoice}</td>
-                  <td className="py-3 pe-4 text-muted">{p.date}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div>
+        <p className="mb-3 text-sm font-bold text-heading">{t('Payment History')}</p>
+        <DataTable
+          caption="Payment history"
+          columns={columns}
+          rows={PAYMENTS}
+          rowKey={(p) => p.id}
+          empty={t('No payments found')}
+          mobileCard={(p) => (
+            <>
+              <MobileCardHeader
+                leading={
+                  <div className="flex items-center gap-2">
+                    <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
+                    <div>
+                      <p className="text-[13px] font-semibold text-heading">{t(p.description)}</p>
+                      <p className="text-xs text-muted">{p.date}</p>
+                    </div>
+                  </div>
+                }
+                trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
+              />
+              <MobileCardRow label={t('Amount')} value={`${p.amount.toLocaleString()} SAR`} />
+              <MobileCardRow label={t('Method')} value={p.method} />
+              <MobileCardRow label={t('Invoice')} value={p.invoice} />
+            </>
+          )}
+        />
+      </div>
     </div>
   )
 }

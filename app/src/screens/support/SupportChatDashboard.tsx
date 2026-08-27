@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 
 interface ChatMetric {
   label: string
@@ -49,39 +50,55 @@ export function SupportChatDashboard() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
 
+  const columns: Column<RecentChat>[] = [
+    { header: 'ID', cell: (chat) => <span className="font-mono text-xs text-muted">{chat.id}</span> },
+    { header: 'Customer', cell: (chat) => <span className="font-semibold text-heading">{chat.customer}</span> },
+    { header: 'Agent', cell: (chat) => chat.agent },
+    { header: 'Subject', cell: (chat) => chat.subject },
+    { header: 'Duration', cell: (chat) => chat.duration },
+    { header: 'Messages', cell: (chat) => chat.messages },
+    { header: 'Status', cell: (chat) => <Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="Recent conversations"
+      columns={columns}
+      rows={RECENT_CHATS}
+      rowKey={(chat) => chat.id}
+      mobileCard={(chat) => (
+        <>
+          <MobileCardHeader
+            title={chat.customer}
+            trailing={<Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge>}
+          />
+          <MobileCardRow label={t('Agent')} value={chat.agent} />
+          <MobileCardRow label={t('Subject')} value={chat.subject} />
+          <MobileCardRow label={t('Duration')} value={chat.duration} />
+        </>
+      )}
+    />
+  )
+
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Headset" title={t('Support Dashboard')} subtitle={t('Chat metrics & activity')} />
         <div className="grid grid-cols-2 gap-3">
           {METRICS.map((m) => (
-            <MobileCard key={m.label}>
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
-                      <Icon name={m.icon} size={14} />
-                    </span>
-                    <span className="text-xs text-muted">{t(m.label)}</span>
-                  </div>
-                }
-              />
-              <p className="text-lg font-bold text-heading">{m.value}</p>
+            <Card key={m.label} className="rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <Icon name={m.icon} size={14} />
+                </span>
+                <span className="text-xs text-muted">{t(m.label)}</span>
+              </div>
+              <p className="mt-1 text-lg font-bold text-heading">{m.value}</p>
               <p className="text-[11px] text-muted">{t(m.change)}</p>
-            </MobileCard>
+            </Card>
           ))}
         </div>
-        {RECENT_CHATS.map((chat) => (
-          <MobileCard key={chat.id}>
-            <MobileCardHeader
-              title={chat.customer}
-              trailing={<Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Agent')} value={chat.agent} />
-            <MobileCardRow label={t('Subject')} value={chat.subject} />
-            <MobileCardRow label={t('Duration')} value={chat.duration} />
-          </MobileCard>
-        ))}
+        {table}
       </div>
     )
   }
@@ -118,39 +135,7 @@ export function SupportChatDashboard() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Recent Conversations')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('ID')}</th>
-                <th className="pb-3 font-medium">{t('Customer')}</th>
-                <th className="pb-3 font-medium">{t('Agent')}</th>
-                <th className="pb-3 font-medium">{t('Subject')}</th>
-                <th className="pb-3 font-medium">{t('Duration')}</th>
-                <th className="pb-3 font-medium">{t('Messages')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RECENT_CHATS.map((chat) => (
-                <tr key={chat.id} className="border-b border-border last:border-0">
-                  <td className="py-3 font-mono text-xs text-muted">{chat.id}</td>
-                  <td className="py-3 font-semibold text-heading">{chat.customer}</td>
-                  <td className="py-3 text-body">{chat.agent}</td>
-                  <td className="py-3 text-body">{chat.subject}</td>
-                  <td className="py-3 text-body">{chat.duration}</td>
-                  <td className="py-3 text-body">{chat.messages}</td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      {table}
     </div>
   )
 }
