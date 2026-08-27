@@ -5,8 +5,10 @@ import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
+import { ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
@@ -75,9 +77,11 @@ export function ChartOfAccounts() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: accounts = [], isLoading } = useCollection('chartOfAccounts')
+  const { data: accounts = [], isLoading, isError, error, refetch } = useCollection('chartOfAccounts')
   const { query, setQuery, filtered } = useFilter(accounts, (a) => [a.code, a.name, a.type])
   const [addingAccount, setAddingAccount] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const typeBadge = (value: string) => {
     const [bg, fg] = ACCOUNT_TYPE[value] ?? ACCOUNT_TYPE.Expense
@@ -167,9 +171,11 @@ export function JournalEntries() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: entries = [], isLoading } = useCollection('journalEntries')
+  const { data: entries = [], isLoading, isError, error, refetch } = useCollection('journalEntries')
   const { query, setQuery, filtered } = useFilter(entries, (e) => [e.id, e.ref, e.narration])
   const [creatingEntry, setCreatingEntry] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   // Double entry: debits must equal credits. Showing the totals makes an
   // unbalanced batch obvious instead of leaving it to be found at close.
@@ -327,9 +333,11 @@ export function Expenses() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: expenses = [], isLoading } = useCollection('expenses')
+  const { data: expenses = [], isLoading, isError, error, refetch } = useCollection('expenses')
   const { query, setQuery, filtered } = useFilter(expenses, (e) => [e.id, e.category, e.vendor])
   const [creatingExpense, setCreatingExpense] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Expense>[] = [
     { header: 'Expense #', cell: (e) => e.id, code: true },
@@ -411,9 +419,11 @@ export function Receipts() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: receipts = [], isLoading } = useCollection('receipts')
+  const { data: receipts = [], isLoading, isError, error, refetch } = useCollection('receipts')
   const { query, setQuery, filtered } = useFilter(receipts, (r) => [r.id, r.customer, r.invoice])
   const [raising, setRaising] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Receipt>[] = [
     { header: 'Receipt #', cell: (r) => r.id, code: true },
@@ -524,9 +534,11 @@ export function Departments() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: departments = [], isLoading } = useCollection('departments')
+  const { data: departments = [], isLoading, isError, error, refetch } = useCollection('departments')
   const { query, setQuery, filtered } = useFilter(departments, (d) => [d.name, d.head, d.branch])
   const [addingDepartment, setAddingDepartment] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Department>[] = [
     {

@@ -5,6 +5,7 @@ import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/shell/AppShell'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
@@ -16,8 +17,11 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 export function Dashboard() {
   const { t, rtl } = usePreferences()
   const { userName } = useSession()
-  const { data: jobs = [] } = useCollection('jobs')
+  const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
   const isMobile = useIsMobile()
+
+  if (isLoading) return <Loading label="Loading dashboard..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   return (
     <>

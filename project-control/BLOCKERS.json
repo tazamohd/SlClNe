@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26",
+  "generatedAt": "2026-08-27",
   "open": 5,
   "blockers": [
     {
@@ -29,20 +29,18 @@
     {
       "id": "BLK-012",
       "severity": "HIGH",
-      "title": "119 rendering capabilities still lack content assertions (305 covered of 424)",
-      "detail": "305 routes now have EXPECTED_TEXT assertions covering headings, status text, or key UI elements. Featuremap routes (generic template screens) and unwired routes are excluded. Remaining gaps are mostly portal/feature-map screens whose title appears in sub-components.",
+      "title": "332 rendering capabilities are visited but assert nothing",
+      "detail": "The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.",
       "owner": "07",
-      "wave": "W2",
-      "progress": "305/424 assertions added via expand-smoke-assertions.mjs"
+      "wave": "W2"
     },
     {
       "id": "BLK-008",
       "severity": "HIGH",
-      "title": "Tablet sweep added — 32px touch targets found across5 viewports",
-      "detail": "8 viewport combos (768/820/834/1024 portrait + 1024 landscape) now checked. Button h-8 bumped to h-9 (36px) and3 link targets fixed. Remaining32px targets are on secondary controls in the sidebar and detail pages.",
+      "title": "No tablet verification anywhere",
+      "detail": "768/820/834/1024, portrait and landscape, has never been checked.",
       "owner": "18",
-      "wave": "W3",
-      "progress": "tablet sweep live in smoke.mjs, touch targets partially fixed"
+      "wave": "W3"
     }
   ]
 }

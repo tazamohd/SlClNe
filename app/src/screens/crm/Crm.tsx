@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
@@ -86,7 +87,7 @@ export function LeadPipeline() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const navigate = useNavigate()
-  const { data: leads = [], isLoading } = useCollection('leads')
+  const { data: leads = [], isLoading, isError, error, refetch } = useCollection('leads')
   const [creating, setCreating] = useState(false)
 
   const byStage = useMemo(() => {
@@ -108,7 +109,8 @@ export function LeadPipeline() {
     [leads]
   )
 
-  if (isLoading) return <p className="text-sm text-muted">{t('Loading...')}</p>
+  if (isLoading) return <Loading label="Loading pipeline..." />
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const pipelineStats = (
     <StatRow
@@ -261,8 +263,10 @@ export function Opportunities() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: opportunities = [] } = useCollection('opportunities')
+  const { data: opportunities = [], isLoading, isError, error, refetch } = useCollection('opportunities')
   const [creating, setCreating] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   // Weighted pipeline: value × probability. The unweighted total flatters the
   // forecast, which is what a sales review actually argues about.
@@ -331,6 +335,7 @@ export function Opportunities() {
           columns={columns}
           rows={opportunities}
           rowKey={(o) => o.name}
+          loading={isLoading}
           mobileCard={(o) => (
             <>
               <MobileCardHeader
@@ -371,6 +376,7 @@ export function Opportunities() {
         columns={columns}
         rows={opportunities}
         rowKey={(o) => o.name}
+        loading={isLoading}
         mobileCard={(o) => (
           <>
             <MobileCardHeader
@@ -406,8 +412,10 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: all = [], isLoading } = useCollection('campaigns')
+  const { data: all = [], isLoading, isError, error, refetch } = useCollection('campaigns')
   const [creating, setCreating] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const campaigns = useMemo(
     () => (channel ? all.filter((c) => c.type === channel) : all),
@@ -567,7 +575,8 @@ export function CustomerSegments() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: segments = [], isLoading } = useCollection('segments')
+  const { data: segments = [], isLoading, isError, error, refetch } = useCollection('segments')
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
   const [creating, setCreating] = useState(false)
 
   const columns: Column<Segment>[] = [
@@ -650,7 +659,8 @@ export function CRMTasks() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: tasks = [], isLoading } = useCollection('crmTasks')
+  const { data: tasks = [], isLoading, isError, error, refetch } = useCollection('crmTasks')
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
   const [status, setStatus] = useState<string>('all')
   const [creating, setCreating] = useState(false)
 
@@ -766,7 +776,8 @@ type Agent = RowOf<'aiAgents'>
 export function AgentRegistry() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { data: agents = [], isLoading } = useCollection('aiAgents')
+  const { data: agents = [], isLoading, isError, error, refetch } = useCollection('aiAgents')
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Agent>[] = [
     {
@@ -841,7 +852,9 @@ export function AgentRegistry() {
 export function AgentDashboard() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { data: agents = [] } = useCollection('aiAgents')
+  const { data: agents = [], isError, error, refetch } = useCollection('aiAgents')
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const active = agents.filter((a) => a.status === 'active')
   const totalTasks = agents.reduce((sum, a) => sum + a.tasks, 0)
@@ -935,7 +948,8 @@ type Conversation = RowOf<'conversations'>
 export function ConversationHistory() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { data: conversations = [], isLoading } = useCollection('conversations')
+  const { data: conversations = [], isLoading, isError, error, refetch } = useCollection('conversations')
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Conversation>[] = [
     { header: 'Title', cell: (c) => t(c.title) },
@@ -1012,7 +1026,7 @@ const INTEGRATION_STATUS: Record<string, readonly [string, string]> = {
 export function Integrations() {
   const { t, rtl } = usePreferences()
   const isMobile = useIsMobile()
-  const { data: integrations = [], isLoading } = useCollection('integrations')
+  const { data: integrations = [], isLoading, isError, error, refetch } = useCollection('integrations')
   const [category, setCategory] = useState<string>('all')
 
   const categories = useMemo(
@@ -1024,7 +1038,8 @@ export function Integrations() {
     [integrations, category]
   )
 
-  if (isLoading) return <p className="text-sm text-muted">{t('Loading...')}</p>
+  if (isLoading) return <Loading label="Loading integrations..." />
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   if (isMobile) {
     return (

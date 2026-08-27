@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
@@ -38,11 +39,14 @@ function useSlots(t: (s: string) => string): BaySlot[] {
 export function WorkshopCalendar() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const jobs = useCollection('jobs')
+  const { data: jobData = [], isLoading, isError, error, refetch } = useCollection('jobs')
   const slots = useSlots(t)
   const [selectedBay, setSelectedBay] = useState<string | null>(null)
 
-  const activeJobs = (jobs.data ?? []).length
+  if (isLoading) return <Loading label="Loading calendar..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  const activeJobs = jobData.length
   const occupiedSlots = slots.filter((s) => s.status === 'occupied').length
   const availableSlots = BAYS.length * HOURS.length - occupiedSlots
 

@@ -559,8 +559,10 @@ export function Estimates() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const navigate = useNavigate()
-  const { data: estimates = [], isLoading } = useCollection('estimates')
+  const { data: estimates = [], isLoading, isError, error, refetch } = useCollection('estimates')
   const { query, setQuery, filtered } = useSearch(estimates, (e) => [e.id, e.cust, e.veh])
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const statusBadge = (value: string) => <EstimateStatusBadge value={value} />
 
@@ -648,9 +650,11 @@ export function Technicians() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
-  const { data: techs = [], isLoading } = useCollection('technicians')
+  const { data: techs = [], isLoading, isError, error, refetch } = useCollection('technicians')
   const { query, setQuery, filtered } = useSearch(techs, (x) => [x.name, x.specialty])
   const [techForm, setTechForm] = useState(false)
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const rating = (value: string): ReactNode => (
     <span className="inline-flex items-center gap-1">

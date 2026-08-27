@@ -4,6 +4,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Panel, FieldGrid, ReadField } from '@/components/ui/FieldGrid'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -31,8 +32,14 @@ export function WorkshopCheckIn() {
   const { fieldHidden } = useSession()
   const isMobile = useIsMobile()
   const stage = useJobStage()
-  const { data: customers = [] } = useCollection('customers')
-  const { data: vehicles = [] } = useCollection('vehicles')
+  const customers = useCollection('customers')
+  const vehicles = useCollection('vehicles')
+
+  const isLoading = customers.isLoading || vehicles.isLoading
+  const loadError = customers.error || vehicles.error
+  const refetch = () => { void customers.refetch(); void vehicles.refetch() }
+  if (isLoading) return <Loading label="Loading check-in..." />
+  if (loadError) return <ErrorState description={loadError.message} onRetry={refetch} />
 
   const [odometer, setOdometer] = useState('')
   const [fuel, setFuel] = useState<string>('1/2')
@@ -41,8 +48,8 @@ export function WorkshopCheckIn() {
 
   const hideContact = fieldHidden('Customer contact details')
   const job = stage.job
-  const customer = customers.find((row) => row.name === job?.cust)
-  const vehicle = vehicles.find((row) => row.make === job?.veh && row.owner === job?.cust)
+  const customer = (customers.data ?? []).find((row) => row.name === job?.cust)
+  const vehicle = (vehicles.data ?? []).find((row) => row.make === job?.veh && row.owner === job?.cust)
 
   async function complete() {
     const noted = [
