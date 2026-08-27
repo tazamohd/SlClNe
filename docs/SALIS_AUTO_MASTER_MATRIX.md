@@ -213,10 +213,10 @@
 | WorkflowBuilder | `/workflow-builder` | app | ai | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | WorkshopCheckIn | `/workshop-check-in` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | WorkshopDelivery | `/workshop-delivery` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
-| WorkshopEstimate | `/workshop-estimate` | app | estimates | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
+| WorkshopEstimate | `/workshop-estimate` | app | estimates | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | WorkshopInspection | `/workshop-inspection` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | WorkshopQC | `/workshop-qc` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
-| WorkshopReports | `/workshop-reports` | app | reports | DONE | MISSING | MISSING | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
+| WorkshopReports | `/workshop-reports` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
 | WorkshopSignature | `/workshop-signature` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | WorkspaceSelection | `/workspace-selection` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Dashboard Home | `/dashboard-home` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

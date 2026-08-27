@@ -102,7 +102,7 @@ export function SocialLogin() {
         {/* SSO link */}
         <div className="flex items-center justify-center gap-1">
           <Icon name="Building2" size={14} className="text-muted" />
-          <Link to="/sso-login" className="font-action text-[13px] font-medium">
+          <Link to="/ssologin" className="font-action text-[13px] font-medium">
             {t('Use SSO instead')}
           </Link>
         </div>

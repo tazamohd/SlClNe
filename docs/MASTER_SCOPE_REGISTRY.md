@@ -14,7 +14,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | external dependency | 12 |
 | rendered | 424 |
 | placeholder | 0 |
-| designed mobile owed | 2 |
+| designed mobile owed | 0 |
 | untested | 0 |
 | mock only | 384 |
 | data backed | 0 |
@@ -30,7 +30,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 28 | 0 | 0 | 28 |
-| app | 313 | 313 | 0 | 2 | 313 |
+| app | 313 | 313 | 0 | 0 | 313 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |

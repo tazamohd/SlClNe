@@ -6,6 +6,7 @@ import { ErrorState, Loading } from '@/components/ui/States'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { workshopReports, type WorkshopReport, type RepositoryError } from '@/data/repository'
 
@@ -28,6 +29,7 @@ const BAR_COLORS = ['var(--salis-blue)', 'var(--salis-blue-bright)', 'var(--sali
  *  `workshop-approval-gaps.test.ts`. */
 export function WorkshopReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const jobs = useCollection('jobs')
   const technicians = useCollection('technicians')
 
@@ -104,11 +106,13 @@ export function WorkshopReports() {
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-salis-gradient text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
-          <Icon name="Wrench" size={24} />
-        </span>
+        {!isMobile && (
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-salis-gradient text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
+            <Icon name="Wrench" size={24} />
+          </span>
+        )}
         <div>
-          <h1 className="font-display text-2xl font-black text-heading">{t('Workshop Reports')}</h1>
+          <h1 className={`font-display font-black text-heading ${isMobile ? 'text-xl' : 'text-2xl'}`}>{t('Workshop Reports')}</h1>
           <p className="mt-0.5 text-sm text-muted">{t('Reports & Analytics')}</p>
         </div>
       </div>
@@ -119,7 +123,7 @@ export function WorkshopReports() {
         </Card>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className={`grid gap-4 ${isMobile ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'}`}>
             {kpis.map((kpi) => (
               <Card key={kpi.label} className="rounded-2xl p-5">
                 <div className="mb-2.5 flex items-center gap-2">
@@ -135,7 +139,7 @@ export function WorkshopReports() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'}`}>
             <Card className="rounded-2xl p-6">
               <h3 className="mb-5 text-[17px] font-bold text-heading">{t('Jobs by service')}</h3>
               {breakdown.length === 0 ? (

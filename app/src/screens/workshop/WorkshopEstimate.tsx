@@ -10,6 +10,7 @@ import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { StageNotice, stageBusy, stageLabel } from './StageNotice'
 import { useJobStage } from './useJobStage'
 
@@ -43,6 +44,7 @@ export function WorkshopEstimate() {
   const { canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
   const stage = useJobStage()
 
   const partsTotal = PARTS.reduce((sum, row) => sum + row.qty * row.unit, 0)
@@ -100,14 +102,16 @@ export function WorkshopEstimate() {
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-          <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Calculator" size={28} />
+        {!isMobile && (
+          <div className="relative">
+            <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
+            <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
+              <Icon name="Calculator" size={28} />
+            </div>
           </div>
-        </div>
+        )}
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading">{t('Cost Estimate')}</h1>
+          <h1 className={`font-display font-black text-heading ${isMobile ? 'text-xl' : 'text-[26px]'}`}>{t('Cost Estimate')}</h1>
           <p className="mt-0.5 text-sm text-muted" dir="ltr">
             {stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}
           </p>
@@ -156,7 +160,7 @@ export function WorkshopEstimate() {
         />
       </Panel>
 
-      <Card className="flex flex-col gap-2.5 self-end p-6 sm:min-w-[360px]">
+      <Card className={`flex flex-col gap-2.5 p-6 ${isMobile ? 'w-full' : 'self-end sm:min-w-[360px]'}`}>
         <TotalRow label={t('Subtotal')} sar={subtotal} />
         <TotalRow label={t('VAT (15%)')} sar={vat} />
         <div className="flex justify-between border-t border-border pt-2.5 text-lg font-extrabold text-heading">
@@ -165,8 +169,8 @@ export function WorkshopEstimate() {
         </div>
       </Card>
 
-      <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="outline" size="lg" onClick={() => navigate('/customer-approval')}>
+      <div className={`flex gap-3 ${isMobile ? 'flex-col' : 'flex-wrap justify-end'}`}>
+        <Button variant="outline" size="lg" onClick={() => navigate('/customer-approval')} className={isMobile ? 'w-full' : ''}>
           <Icon name="Send" size={16} />
           {t('Send to Customer')}
         </Button>
@@ -174,6 +178,7 @@ export function WorkshopEstimate() {
           size="lg"
           onClick={() => void approve()}
           disabled={mayApprove && stageBusy(stage)}
+          className={isMobile ? 'w-full' : ''}
         >
           <Icon name="CheckCircle" size={18} />
           {t(stageLabel(stage, 'Approve Estimate'))}
