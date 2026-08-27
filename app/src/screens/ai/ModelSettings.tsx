@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
+import { Toggle } from '@/components/ui/Toggle'
 import { MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
@@ -34,43 +35,10 @@ const BEHAVIOR_TOGGLES: BehaviorToggle[] = [
   { key: 'log', label: 'Log Conversations', hint: 'Retain chat history for auditing' },
 ]
 
-function Toggle({
-  on,
-  onToggle,
-  rtl,
-  label,
-}: {
-  on: boolean
-  onToggle: () => void
-  rtl: boolean
-  label: string
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={on}
-      aria-label={label}
-      onClick={onToggle}
-      className={
-        'relative h-6 w-[44px] flex-shrink-0 cursor-pointer rounded-full border-none p-0.5 transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 ' +
-        (on ? 'bg-salis-gradient' : 'bg-border-strong')
-      }
-    >
-      <span
-        className="block h-5 w-5 rounded-full bg-white shadow-sm transition-transform"
-        style={{
-          transform: on
-            ? `translateX(${rtl ? '-20px' : '20px'})`
-            : 'translateX(0)',
-        }}
-      />
-    </button>
-  )
-}
+
 
 export function ModelSettings() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
 
@@ -136,7 +104,6 @@ export function ModelSettings() {
       <Toggle
         on={flags[tg.key] ?? false}
         onToggle={() => toggleFlag(tg.key)}
-        rtl={rtl}
         label={t(tg.label)}
       />
     </div>

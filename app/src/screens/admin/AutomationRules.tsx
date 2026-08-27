@@ -3,46 +3,13 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Toggle } from '@/components/ui/Toggle'
 import { MobileCard, MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
 
-function Toggle({
-  on,
-  onToggle,
-  rtl,
-  label,
-}: {
-  on: boolean
-  onToggle: () => void
-  rtl: boolean
-  label: string
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={on}
-      aria-label={label}
-      onClick={onToggle}
-      disabled={!isLive}
-      className={
-        'relative h-6 w-[44px] flex-shrink-0 cursor-pointer rounded-full border-none p-0.5 transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 ' +
-        (on ? 'bg-salis-gradient' : 'bg-border-strong')
-      }
-    >
-      <span
-        className="block h-5 w-5 rounded-full bg-white transition-transform"
-        style={{
-          transform: on
-            ? `translateX(${rtl ? '-20px' : '20px'})`
-            : 'translateX(0)',
-        }}
-      />
-    </button>
-  )
-}
+
 
 interface RuleDef {
   name: string
@@ -97,7 +64,7 @@ const FIXTURE_RULES: RuleDef[] = [
 ]
 
 export function AutomationRules() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
 
   const [active, setActive] = useState<Record<number, boolean>>({
@@ -153,7 +120,7 @@ export function AutomationRules() {
                   </div>
                 }
                 trailing={
-                  <Toggle on={on} onToggle={() => toggleRule(idx)} rtl={rtl} label={t(rule.name)} />
+                  <Toggle on={on} onToggle={() => toggleRule(idx)} label={t(rule.name)} disabled={!isLive} />
                 }
               />
               <MobileCardRow label={t('When')} value={t(rule.trigger)} />
@@ -183,7 +150,7 @@ export function AutomationRules() {
                 >
                   {on ? t('Active') : t('Inactive')}
                 </Badge>
-                <Toggle on={on} onToggle={() => toggleRule(idx)} rtl={rtl} label={t(rule.name)} />
+                <Toggle on={on} onToggle={() => toggleRule(idx)} label={t(rule.name)} disabled={!isLive} />
               </div>
 
               <div className="flex items-center gap-2 rounded-[10px] border border-border bg-inset p-3 text-[13px]">

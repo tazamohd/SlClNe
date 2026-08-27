@@ -4,46 +4,13 @@ import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Toggle } from '@/components/ui/Toggle'
 import { Icon } from '@/components/ui/Icon'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
 
-function Toggle({
-  on,
-  onToggle,
-  rtl,
-  label,
-}: {
-  on: boolean
-  onToggle: () => void
-  rtl: boolean
-  label: string
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={on}
-      aria-label={label}
-      onClick={onToggle}
-      disabled={!isLive}
-      className={
-        'relative h-6 w-[42px] flex-shrink-0 cursor-pointer rounded-full border-none p-0.5 transition-colors disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 ' +
-        (on ? 'bg-salis-gradient' : 'bg-border-strong')
-      }
-    >
-      <span
-        className="block h-5 w-5 rounded-full bg-white transition-transform"
-        style={{
-          transform: on
-            ? `translateX(${rtl ? '-18px' : '18px'})`
-            : 'translateX(0)',
-        }}
-      />
-    </button>
-  )
-}
+
 
 interface SettingItem {
   label: string
@@ -146,7 +113,7 @@ export function AdvancedSettings() {
                   <p className="m-0 mt-0.5 text-[11px] text-muted">{item.desc}</p>
                 </div>
                 {item.kind === 'toggle' && item.toggleKey && (
-                  <Toggle on={toggles[item.toggleKey]} onToggle={() => flip(item.toggleKey!)} rtl={rtl} label={item.label} />
+                  <Toggle on={toggles[item.toggleKey]} onToggle={() => flip(item.toggleKey!)} label={item.label} disabled={!isLive} />
                 )}
                 {item.kind === 'value' && (
                   <span className="flex-shrink-0 rounded-md border border-border bg-inset px-2 py-1 text-[12px] font-medium text-heading">{item.value}</span>
@@ -207,8 +174,8 @@ export function AdvancedSettings() {
                 <Toggle
                   on={toggles[item.toggleKey]}
                   onToggle={() => flip(item.toggleKey!)}
-                  rtl={rtl}
                   label={item.label}
+                  disabled={!isLive}
                 />
               )}
 
