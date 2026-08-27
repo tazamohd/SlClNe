@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
@@ -12,10 +13,27 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 export function SSOLogin() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const toast = useToast()
   const [domain, setDomain] = useState('')
+  const [error, setError] = useState('')
 
   function submit(event: FormEvent) {
     event.preventDefault()
+    if (!domain.trim()) {
+      setError('Please enter your company domain.')
+      return
+    }
+    setError('')
+
+    if (!isLive) {
+      toast.show({
+        title: t('SSO is not available yet'),
+        description: t('Please use the standard login to access the application.'),
+      })
+      return
+    }
+
+    toast.show({ title: t('Redirecting to SSO provider…') })
   }
 
   return (
@@ -45,10 +63,13 @@ export function SSOLogin() {
               onChange={(e) => setDomain(e.target.value)}
               icon={<Icon name="Building2" size={20} />}
               dir="ltr"
+              invalid={!!error}
+              aria-describedby={error ? 'sso-domain-error' : undefined}
             />
+            {error && <p id="sso-domain-error" className="text-xs text-salis-orange">{t(error)}</p>}
           </div>
 
-          <Button type="submit" size="lg" className="w-full" disabled={!isLive}>
+          <Button type="submit" size="lg" className="w-full">
             {t('Continue with SSO')}
           </Button>
         </form>

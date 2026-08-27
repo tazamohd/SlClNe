@@ -2,20 +2,42 @@ import { useState, type FormEvent } from 'react'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { useToast } from '@/components/ui/Toast'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
+interface FieldErrors { name?: string; phone?: string }
+
+function validate(values: { name: string; phone: string }): FieldErrors {
+  const errors: FieldErrors = {}
+  if (!values.name.trim()) errors.name = 'Please enter your name.'
+  if (!values.phone.trim()) errors.phone = 'Please enter your phone number.'
+  return errors
+}
+
 /** Complete your profile after signup — avatar, name, phone. */
 export function ProfileCompletion() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const toast = useToast()
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
+  const [errors, setErrors] = useState<FieldErrors>({})
 
   function submit(event: FormEvent) {
     event.preventDefault()
+    const found = validate({ name, phone })
+    setErrors(found)
+    if (Object.keys(found).length > 0) return
+
+    if (!isLive) {
+      toast.show({ title: t('Profile completion is not available yet') })
+      return
+    }
+
+    toast.show({ title: t('Profile updated') })
   }
 
   /** First letter of the name, or a fallback icon. */
@@ -50,7 +72,10 @@ export function ProfileCompletion() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               icon={<Icon name="User" size={20} />}
+              invalid={!!errors.name}
+              aria-describedby={errors.name ? 'pc-name-error' : undefined}
             />
+            {errors.name && <p id="pc-name-error" className="text-xs text-salis-orange">{t(errors.name)}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -70,10 +95,13 @@ export function ProfileCompletion() {
               icon={<Icon name="Phone" size={20} />}
               dir="ltr"
               className="font-mono text-[13px]"
+              invalid={!!errors.phone}
+              aria-describedby={errors.phone ? 'pc-phone-error' : undefined}
             />
+            {errors.phone && <p id="pc-phone-error" className="text-xs text-salis-orange">{t(errors.phone)}</p>}
           </div>
 
-          <Button type="submit" size="lg" className="w-full" disabled={!isLive}>
+          <Button type="submit" size="lg" className="w-full">
             {t('Continue')}
           </Button>
         </form>
