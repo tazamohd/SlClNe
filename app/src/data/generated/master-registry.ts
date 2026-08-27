@@ -5079,6 +5079,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
@@ -5151,6 +5153,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",

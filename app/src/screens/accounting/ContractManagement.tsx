@@ -3,6 +3,7 @@ import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScr
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
+import { Input } from '@/components/ui/Input'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
   MobileCardHeader,
@@ -110,13 +111,13 @@ export function ContractManagement() {
 
       <label className="flex flex-col gap-1">
         <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-        <input
+        <Input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('Number, title or party')}
           aria-label={t('Search contracts')}
-          className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+          inputSize="sm"
         />
       </label>
 

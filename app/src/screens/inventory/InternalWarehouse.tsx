@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 const ZONES = [
   { code: 'A1', name: 'Main Floor', capacity: 500, utilized: 78, itemCount: 390, status: 'Active' },
@@ -13,6 +14,8 @@ const ZONES = [
   { code: 'A5', name: 'Receiving', capacity: 150, utilized: 0, itemCount: 0, status: 'Maintenance' },
   { code: 'A6', name: 'Shipping', capacity: 120, utilized: 65, itemCount: 78, status: 'Active' },
 ] as const
+
+type Zone = (typeof ZONES)[number]
 
 function statusColor(status: string) {
   if (status === 'Full') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
@@ -36,43 +39,14 @@ export function InternalWarehouse() {
     { label: t('Active Zones'), value: String(activeZones), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Warehouse" title={t('Warehouse')} subtitle={t('Zones & Locations')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-lg font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {ZONES.map((zone) => (
-          <MobileCard key={zone.code}>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Warehouse" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{t(zone.name)}</p>
-                    <p className="text-xs text-muted" dir="ltr">{zone.code}</p>
-                  </div>
-                </div>
-              }
-              trailing={<Badge {...statusColor(zone.status)}>{t(zone.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Capacity')} value={String(zone.capacity)} />
-            <MobileCardRow label={t('Utilized')} value={`${zone.utilized}%`} />
-            <MobileCardRow label={t('Items')} value={String(zone.itemCount)} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const columns: Column<Zone>[] = [
+    { header: 'Code', cell: (zone) => <span className="font-mono text-xs text-muted" dir="ltr">{zone.code}</span> },
+    { header: 'Zone Name', cell: (zone) => <span className="font-medium text-heading">{t(zone.name)}</span> },
+    { header: 'Capacity', cell: (zone) => <span className="font-mono text-heading" dir="ltr">{zone.capacity}</span> },
+    { header: 'Utilized', cell: (zone) => <span className="font-mono text-heading" dir="ltr">{zone.utilized}%</span> },
+    { header: 'Items', cell: (zone) => <span className="font-mono text-heading" dir="ltr">{zone.itemCount}</span> },
+    { header: 'Status', cell: (zone) => <Badge {...statusColor(zone.status)}>{t(zone.status)}</Badge> },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -89,7 +63,7 @@ export function InternalWarehouse() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-4 gap-4'}>
         {kpis.map((k) => (
           <Card key={k.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">
@@ -101,36 +75,32 @@ export function InternalWarehouse() {
         ))}
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-medium text-muted">
-                <th className="pb-3 pe-4 text-start font-medium">{t('Code')}</th>
-                <th className="pb-3 pe-4 text-start font-medium">{t('Zone Name')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Capacity')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Utilized')}</th>
-                <th className="pb-3 pe-4 text-end font-medium">{t('Items')}</th>
-                <th className="pb-3 text-start font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ZONES.map((zone) => (
-                <tr key={zone.code} className="border-b border-border/50">
-                  <td className="py-3 pe-4 font-mono text-xs text-muted" dir="ltr">{zone.code}</td>
-                  <td className="py-3 pe-4 font-medium text-heading">{t(zone.name)}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{zone.capacity}</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{zone.utilized}%</td>
-                  <td className="py-3 pe-4 text-end font-mono text-heading" dir="ltr">{zone.itemCount}</td>
-                  <td className="py-3">
-                    <Badge {...statusColor(zone.status)}>{t(zone.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <DataTable
+        caption="Warehouse zones"
+        columns={columns}
+        rows={[...ZONES] as unknown as Zone[]}
+        rowKey={(zone) => zone.code}
+        empty={t('No warehouse zones found')}
+        mobileCard={(zone) => (
+          <>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Warehouse" size={14} /></span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{t(zone.name)}</p>
+                    <p className="text-xs text-muted" dir="ltr">{zone.code}</p>
+                  </div>
+                </div>
+              }
+              trailing={<Badge {...statusColor(zone.status)}>{t(zone.status)}</Badge>}
+            />
+            <MobileCardRow label={t('Capacity')} value={String(zone.capacity)} />
+            <MobileCardRow label={t('Utilized')} value={`${zone.utilized}%`} />
+            <MobileCardRow label={t('Items')} value={String(zone.itemCount)} />
+          </>
+        )}
+      />
     </div>
   )
 }

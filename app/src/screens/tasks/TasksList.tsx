@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/Input'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface Task {
   title: string
@@ -74,58 +74,6 @@ export function TasksList() {
     { header: 'Category', cell: (task) => t(task.category) },
   ]
 
-  const table = (
-    <DataTable
-      caption="Tasks"
-      columns={columns}
-      rows={filtered}
-      rowKey={(_, i) => `task-${i}`}
-      empty={{ icon: 'CheckSquare', title: t('No tasks found'), description: t('No tasks match the current search.') }}
-      mobileCard={(task) => (
-        <>
-          <MobileCardHeader
-            leading={
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: STATUS_STYLES[task.status].bg, color: STATUS_STYLES[task.status].fg }} aria-hidden>
-                  <Icon name="CheckSquare" size={14} />
-                </span>
-                <div>
-                  <p className="text-[13px] font-semibold text-heading">{task.title}</p>
-                  <p className="text-xs text-muted">{task.assignee}</p>
-                </div>
-              </div>
-            }
-            trailing={<Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>}
-          />
-          <MobileCardRow label={t('Due')} value={task.dueDate} />
-          <MobileCardRow label={t('Status')} value={<Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>} />
-          <MobileCardRow label={t('Category')} value={t(task.category)} />
-        </>
-      )}
-    />
-  )
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="CheckSquare" title={t('Tasks')} subtitle={t('Task list')} />
-        <Input inputSize="sm" placeholder={t('Search tasks...')} value={search} onChange={(e) => setSearch(e.target.value)} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-                <span className="text-[11px] font-medium text-muted">{k.label}</span>
-              </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
-            </Card>
-          ))}
-        </div>
-        {table}
-      </div>
-    )
-  }
-
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center justify-between">
@@ -147,7 +95,7 @@ export function TasksList() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-4 gap-4'}>
         {kpis.map((k) => (
           <Card key={k.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">
@@ -159,7 +107,34 @@ export function TasksList() {
         ))}
       </div>
 
-      {table}
+      <DataTable
+        caption="Tasks"
+        columns={columns}
+        rows={filtered}
+        rowKey={(_, i) => `task-${i}`}
+        empty={t('No tasks found')}
+        mobileCard={(task) => (
+          <>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg p-1.5" style={{ background: STATUS_STYLES[task.status].bg, color: STATUS_STYLES[task.status].fg }} aria-hidden>
+                    <Icon name="CheckSquare" size={14} />
+                  </span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{task.title}</p>
+                    <p className="text-xs text-muted">{task.assignee}</p>
+                  </div>
+                </div>
+              }
+              trailing={<Badge background={PRIORITY_STYLES[task.priority].bg} color={PRIORITY_STYLES[task.priority].fg}>{t(task.priority)}</Badge>}
+            />
+            <MobileCardRow label={t('Due')} value={task.dueDate} />
+            <MobileCardRow label={t('Status')} value={<Badge background={STATUS_STYLES[task.status].bg} color={STATUS_STYLES[task.status].fg}>{t(task.status)}</Badge>} />
+            <MobileCardRow label={t('Category')} value={t(task.category)} />
+          </>
+        )}
+      />
     </div>
   )
 }

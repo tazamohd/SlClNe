@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface ChatMetric {
   label: string
@@ -60,49 +60,6 @@ export function SupportChatDashboard() {
     { header: 'Status', cell: (chat) => <Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge> },
   ]
 
-  const table = (
-    <DataTable
-      caption="Recent conversations"
-      columns={columns}
-      rows={RECENT_CHATS}
-      rowKey={(chat) => chat.id}
-      mobileCard={(chat) => (
-        <>
-          <MobileCardHeader
-            title={chat.customer}
-            trailing={<Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge>}
-          />
-          <MobileCardRow label={t('Agent')} value={chat.agent} />
-          <MobileCardRow label={t('Subject')} value={chat.subject} />
-          <MobileCardRow label={t('Duration')} value={chat.duration} />
-        </>
-      )}
-    />
-  )
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Headset" title={t('Support Dashboard')} subtitle={t('Chat metrics & activity')} />
-        <div className="grid grid-cols-2 gap-3">
-          {METRICS.map((m) => (
-            <Card key={m.label} className="rounded-lg p-3">
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
-                  <Icon name={m.icon} size={14} />
-                </span>
-                <span className="text-xs text-muted">{t(m.label)}</span>
-              </div>
-              <p className="mt-1 text-lg font-bold text-heading">{m.value}</p>
-              <p className="text-[11px] text-muted">{t(m.change)}</p>
-            </Card>
-          ))}
-        </div>
-        {table}
-      </div>
-    )
-  }
-
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center gap-3">
@@ -118,7 +75,7 @@ export function SupportChatDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-4 gap-4'}>
         {METRICS.map((m) => (
           <Card key={m.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
@@ -135,7 +92,27 @@ export function SupportChatDashboard() {
         ))}
       </div>
 
-      {table}
+      <div>
+        <p className="mb-3 text-sm font-bold text-heading">{t('Recent Conversations')}</p>
+        <DataTable
+          caption="Recent conversations"
+          columns={columns}
+          rows={RECENT_CHATS}
+          rowKey={(chat) => chat.id}
+          empty={t('No conversations found')}
+          mobileCard={(chat) => (
+            <>
+              <MobileCardHeader
+                title={chat.customer}
+                trailing={<Badge background={STATUS_STYLES[chat.status].bg} color={STATUS_STYLES[chat.status].fg}>{t(chat.status)}</Badge>}
+              />
+              <MobileCardRow label={t('Agent')} value={chat.agent} />
+              <MobileCardRow label={t('Subject')} value={chat.subject} />
+              <MobileCardRow label={t('Duration')} value={chat.duration} />
+            </>
+          )}
+        />
+      </div>
     </div>
   )
 }

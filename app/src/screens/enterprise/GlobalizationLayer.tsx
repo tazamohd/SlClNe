@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 
 interface LocaleConfig {
   language: string
@@ -47,45 +47,34 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function GlobalizationLayer() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Globe" title={t('Globalization')} subtitle={t('Localization settings')} />
-        <p className="text-xs font-bold text-heading">{t('Languages')}</p>
-        {LOCALES.map((locale, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              title={locale.language}
-              trailing={<Badge background={STATUS_STYLES[locale.status].bg} color={STATUS_STYLES[locale.status].fg}>{t(locale.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Code')} value={locale.code} />
-            <MobileCardRow label={t('Direction')} value={locale.direction} />
-            <MobileCardRow label={t('Coverage')} value={`${locale.coverage}%`} />
-          </MobileCard>
-        ))}
-        <p className="mt-2 text-xs font-bold text-heading">{t('Currencies')}</p>
-        {CURRENCIES.map((cur, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              title={`${cur.currency} (${cur.symbol})`}
-              trailing={
-                <Badge
-                  background={cur.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
-                  color={cur.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
-                >
-                  {cur.active ? t('Active') : t('Inactive')}
-                </Badge>
-              }
-            />
-            <MobileCardRow label={t('Code')} value={cur.code} />
-            <MobileCardRow label={t('Region')} value={cur.region} />
-          </MobileCard>
-        ))}
-      </div>
-    )
-  }
+  const localeColumns: Column<LocaleConfig>[] = [
+    { header: 'Language', cell: (locale) => <span className="font-semibold text-heading">{locale.language}</span> },
+    { header: 'Code', cell: (locale) => locale.code, code: true },
+    {
+      header: 'Direction',
+      cell: (locale) => (
+        <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{locale.direction}</Badge>
+      ),
+    },
+    {
+      header: 'Coverage',
+      cell: (locale) => (
+        <div className="flex items-center gap-2">
+          <div className="h-1.5 w-24 overflow-hidden rounded-full bg-surface-secondary">
+            <div className="h-full rounded-full bg-salis-blue" style={{ width: `${locale.coverage}%` }} />
+          </div>
+          <span className="text-xs text-muted">{locale.coverage}%</span>
+        </div>
+      ),
+    },
+    {
+      header: 'Status',
+      cell: (locale) => (
+        <Badge background={STATUS_STYLES[locale.status].bg} color={STATUS_STYLES[locale.status].fg}>{t(locale.status)}</Badge>
+      ),
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -102,48 +91,31 @@ export function GlobalizationLayer() {
         </div>
       </div>
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <p className="mb-4 text-sm font-bold text-heading">{t('Languages & Translations')}</p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs text-muted">
-                <th className="pb-3 font-medium">{t('Language')}</th>
-                <th className="pb-3 font-medium">{t('Code')}</th>
-                <th className="pb-3 font-medium">{t('Direction')}</th>
-                <th className="pb-3 font-medium">{t('Coverage')}</th>
-                <th className="pb-3 font-medium">{t('Status')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {LOCALES.map((locale, i) => (
-                <tr key={i} className="border-b border-border last:border-0">
-                  <td className="py-3 font-semibold text-heading">{locale.language}</td>
-                  <td className="py-3 font-mono text-xs text-body">{locale.code}</td>
-                  <td className="py-3">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{locale.direction}</Badge>
-                  </td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-24 overflow-hidden rounded-full bg-surface-secondary">
-                        <div className="h-full rounded-full bg-salis-blue" style={{ width: `${locale.coverage}%` }} />
-                      </div>
-                      <span className="text-xs text-muted">{locale.coverage}%</span>
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    <Badge background={STATUS_STYLES[locale.status].bg} color={STATUS_STYLES[locale.status].fg}>{t(locale.status)}</Badge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div>
+        <p className="mb-3 text-sm font-bold text-heading">{t('Languages & Translations')}</p>
+        <DataTable
+          caption="Languages and translations"
+          columns={localeColumns}
+          rows={LOCALES}
+          rowKey={(locale) => locale.code}
+          empty={t('No languages configured')}
+          mobileCard={(locale) => (
+            <>
+              <MobileCardHeader
+                title={locale.language}
+                trailing={<Badge background={STATUS_STYLES[locale.status].bg} color={STATUS_STYLES[locale.status].fg}>{t(locale.status)}</Badge>}
+              />
+              <MobileCardRow label={t('Code')} value={locale.code} />
+              <MobileCardRow label={t('Direction')} value={locale.direction} />
+              <MobileCardRow label={t('Coverage')} value={`${locale.coverage}%`} />
+            </>
+          )}
+        />
+      </div>
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <p className="mb-4 text-sm font-bold text-heading">{t('Supported Currencies')}</p>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {CURRENCIES.map((cur, i) => (
             <div key={i} className="flex items-center gap-3 rounded-xl border border-border p-4">
               <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>

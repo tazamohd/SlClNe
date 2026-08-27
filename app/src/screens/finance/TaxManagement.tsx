@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { FeatureHeader, Section } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
+import { Input } from '@/components/ui/Input'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
@@ -156,13 +157,13 @@ export function TaxManagement() {
           <div className="flex flex-wrap items-end gap-3">
             <label className="flex flex-col gap-1">
               <span className="text-[11px] font-medium text-muted">{t('Search')}</span>
-              <input
+              <Input
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder={t('Invoice or customer')}
                 aria-label={t('Search invoices')}
-                className="h-10 rounded border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+                inputSize="sm"
               />
             </label>
             <DateRangeFilter from={from} to={to} onFrom={setFrom} onTo={setTo} />

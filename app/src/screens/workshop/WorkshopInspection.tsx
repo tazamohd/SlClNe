@@ -196,7 +196,7 @@ export function WorkshopInspection() {
 const TONES: Record<'pass' | 'fail' | 'na', string> = {
   pass: 'bg-[rgba(10,94,215,.15)] text-salis-blue',
   fail: 'bg-[rgba(249,115,22,.15)] text-salis-orange',
-  na: 'bg-[rgba(100,116,139,.12)] text-[#64748B]',
+  na: 'bg-[rgba(100,116,139,.12)] text-muted',
 }
 
 function VerdictButton({

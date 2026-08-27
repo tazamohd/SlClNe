@@ -6,6 +6,7 @@ import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -74,13 +75,13 @@ export function JobCards() {
               ) : null
             }
           />
-          <input
+          <Input
             type="search"
             aria-label={t('Search job cards...')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('Search job cards...')}
-            className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+            inputSize="sm"
           />
           {isError ? (
             <Card className="p-4">

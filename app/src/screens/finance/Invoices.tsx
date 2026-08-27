@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
 import { Money } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -116,13 +117,13 @@ export function Invoices() {
               ) : null
             }
           />
-          <input
+          <Input
             type="search"
             aria-label={t('Search invoices...')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('Search invoices...')}
-            className="h-10 w-full rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none focus:border-salis-blue"
+            inputSize="sm"
           />
           {error ? (
             <Card className="p-4">

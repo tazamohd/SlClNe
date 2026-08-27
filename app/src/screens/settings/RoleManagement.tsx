@@ -1,9 +1,8 @@
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface Role {
   name: string
@@ -24,7 +23,6 @@ const ROLES: Role[] = [
 
 export function RoleManagement() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
   const columns: Column<Role>[] = [
     {
@@ -48,46 +46,6 @@ export function RoleManagement() {
     },
   ]
 
-  const table = (
-    <DataTable
-      caption="Roles"
-      columns={columns}
-      rows={ROLES}
-      rowKey={(role) => role.name}
-      mobileCard={(role) => (
-        <>
-          <MobileCardHeader
-            leading={
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
-                <div>
-                  <p className="text-[13px] font-semibold text-heading">{t(role.name)}</p>
-                  <p className="text-xs text-muted">{role.description}</p>
-                </div>
-              </div>
-            }
-            trailing={
-              role.isSystem
-                ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
-                : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>
-            }
-          />
-          <MobileCardRow label={t('Users')} value={String(role.userCount)} />
-          <MobileCardRow label={t('Permissions')} value={String(role.permissionCount)} />
-        </>
-      )}
-    />
-  )
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Shield" title={t('Roles')} subtitle={t('Permission management')} />
-        {table}
-      </div>
-    )
-  }
-
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex items-center gap-3">
@@ -103,7 +61,35 @@ export function RoleManagement() {
         </div>
       </div>
 
-      {table}
+      <DataTable
+        caption="Roles"
+        columns={columns}
+        rows={ROLES}
+        rowKey={(role) => role.name}
+        empty={t('No roles found')}
+        mobileCard={(role) => (
+          <>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{t(role.name)}</p>
+                    <p className="text-xs text-muted">{role.description}</p>
+                  </div>
+                </div>
+              }
+              trailing={
+                role.isSystem
+                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
+                  : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>
+              }
+            />
+            <MobileCardRow label={t('Users')} value={String(role.userCount)} />
+            <MobileCardRow label={t('Permissions')} value={String(role.permissionCount)} />
+          </>
+        )}
+      />
     </div>
   )
 }

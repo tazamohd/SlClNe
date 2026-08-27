@@ -2,9 +2,8 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
 interface SMSProvider {
   name: string
@@ -50,29 +49,25 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 
 export function SMSIntegration() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="MessageSquareText" title={t('SMS Integration')} subtitle={t('Provider configuration')} />
-        <p className="text-xs font-bold text-heading">{t('Providers')}</p>
-        {PROVIDERS.map((provider, i) => (
-          <MobileCard key={i}>
-            <MobileCardHeader
-              title={provider.name}
-              trailing={<Badge background={STATUS_STYLES[provider.status].bg} color={STATUS_STYLES[provider.status].fg}>{t(provider.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Region')} value={provider.region} />
-            <MobileCardRow label={t('Sent Today')} value={provider.sentToday} />
-            <MobileCardRow label={t('Delivery Rate')} value={provider.deliveryRate > 0 ? `${provider.deliveryRate}%` : '-'} />
-          </MobileCard>
-        ))}
-        <p className="mt-2 text-xs font-bold text-heading">{t('Recent Messages')}</p>
-        {smsTable}
-      </div>
-    )
-  }
+  const logColumns: Column<SMSLog>[] = [
+    { header: 'ID', cell: (log) => log.id, code: true },
+    { header: 'Recipient', cell: (log) => log.recipient },
+    {
+      header: 'Type',
+      cell: (log) => (
+        <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(log.type)}</Badge>
+      ),
+    },
+    { header: 'Provider', cell: (log) => log.provider },
+    { header: 'Time', cell: (log) => log.timestamp },
+    {
+      header: 'Status',
+      cell: (log) => (
+        <Badge background={STATUS_STYLES[log.status].bg} color={STATUS_STYLES[log.status].fg}>{t(log.status)}</Badge>
+      ),
+    },
+  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -89,7 +84,7 @@ export function SMSIntegration() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {PROVIDERS.map((provider, i) => (
           <Card key={i} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
@@ -119,7 +114,29 @@ export function SMSIntegration() {
         ))}
       </div>
 
-      {smsTable}
+      <div>
+        <p className="mb-3 text-sm font-bold text-heading">{t('Message Log')}</p>
+        <DataTable
+          caption="SMS message log"
+          columns={logColumns}
+          rows={SMS_LOGS}
+          rowKey={(log) => log.id}
+          empty={t('No messages found')}
+          mobileCard={(log) => (
+            <>
+              <MobileCardHeader
+                title={log.id}
+                code
+                trailing={<Badge background={STATUS_STYLES[log.status].bg} color={STATUS_STYLES[log.status].fg}>{t(log.status)}</Badge>}
+              />
+              <MobileCardRow label={t('Recipient')} value={log.recipient} />
+              <MobileCardRow label={t('Type')} value={t(log.type)} />
+              <MobileCardRow label={t('Provider')} value={log.provider} />
+              <MobileCardRow label={t('Time')} value={log.timestamp} />
+            </>
+          )}
+        />
+      </div>
     </div>
   )
 }

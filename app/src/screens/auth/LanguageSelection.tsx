@@ -70,7 +70,7 @@ export function LanguageSelection() {
               'flex w-full cursor-pointer items-center justify-between gap-3 rounded-[10px] border px-3.5 py-3',
               'font-action text-[13.5px] font-semibold transition-all duration-150',
               notifications
-                ? 'border-salis-blue bg-[#EFF4FD] text-salis-blue dark:bg-[#10233D]'
+                ? 'border-salis-blue bg-salis-blue/5 text-salis-blue dark:bg-salis-navy'
                 : 'border-border bg-inset text-body'
             )}
           >
@@ -141,7 +141,7 @@ function LanguageCard({
         'flex flex-1 cursor-pointer flex-col items-center gap-2 rounded-lg border p-5',
         'font-action transition-all duration-150',
         selected
-          ? 'border-salis-blue bg-[#EFF4FD] text-salis-blue dark:bg-[#10233D]'
+          ? 'border-salis-blue bg-salis-blue/5 text-salis-blue dark:bg-salis-navy'
           : 'border-border bg-card text-body'
       )}
     >

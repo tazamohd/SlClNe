@@ -241,8 +241,8 @@ function BayMapView() {
   const bayColor = {
     active: { bg: 'bg-[rgba(10,94,215,.06)]', border: 'border-salis-blue/30', dot: 'bg-salis-blue' },
     waiting: { bg: 'bg-[rgba(249,115,22,.06)]', border: 'border-salis-orange/30', dot: 'bg-salis-orange' },
-    available: { bg: 'bg-card', border: 'border-border', dot: 'bg-[#64748B]' },
-    maintenance: { bg: 'bg-[rgba(100,116,139,.06)]', border: 'border-[#64748B]/30', dot: 'bg-[#64748B]' },
+    available: { bg: 'bg-card', border: 'border-border', dot: 'bg-muted' },
+    maintenance: { bg: 'bg-[rgba(100,116,139,.06)]', border: 'border-muted/30', dot: 'bg-muted' },
   }
 
   return (
