@@ -121,7 +121,7 @@ export function PartsNetworkSendRequest() {
                 inputSize="md"
                 value={vehicle}
                 onChange={(e) => setVehicle(e.target.value)}
-                placeholder="Toyota Camry 2022"
+                placeholder={t('Toyota Camry 2022')}
               />
             </AuthField>
             <AuthField label={t('Quantity')} htmlFor="qty">
@@ -816,9 +816,9 @@ function RequisitionFormModal({
             name="requesterName"
             label="Requested by (branch · department)"
             required
-            placeholder="Riyadh Main · Inventory"
+            placeholder={t('Riyadh Main · Inventory')}
           />
-          <Field name="department" label="Department" placeholder="Inventory" />
+          <Field name="department" label="Department" placeholder={t('Inventory')} />
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field name="priority" label="Priority" kind="select" required options={PRIORITY_OPTIONS} />

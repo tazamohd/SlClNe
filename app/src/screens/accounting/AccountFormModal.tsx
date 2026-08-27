@@ -88,7 +88,7 @@ export function AccountFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="BookOpen"
-      title="Add Account"
+      title={t('Add Account')}
       dismissible={!form.pending}
       footer={
         <>
@@ -105,7 +105,7 @@ export function AccountFormModal({
       <Form form={form}>
         <FormErrorSummary />
         <Field name="code" label="Account Code" required placeholder="1100" />
-        <Field name="name" label="Account Name" required placeholder="Cash on Hand" />
+        <Field name="name" label="Account Name" required placeholder={t('Cash on Hand')} />
         <Field
           name="type"
           label="Account Type"

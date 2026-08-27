@@ -192,14 +192,14 @@ export function VehicleFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="plate" label="Plate" required placeholder="RUH 4821" />
-        <Field name="makeModel" label="Make & Model" required placeholder="Toyota Camry 2022" />
+        <Field name="plate" label="Plate" required placeholder={t('RUH 4821')} />
+        <Field name="makeModel" label="Make & Model" required placeholder={t('Toyota Camry 2022')} />
         <Field
           name="ownerRef"
           label="Owner"
           kind="select"
           options={owners.map((owner) => ({ value: owner.value, label: owner.name }))}
-          placeholder="No owner on record"
+          placeholder={t('No owner on record')}
         />
         <Field name="mileage" label="Mileage" placeholder="42180" hint="Kilometres on the odometer." />
         <Field name="vin" label="VIN" hint="Optional. 17 characters." />

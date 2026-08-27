@@ -250,7 +250,7 @@ function LineModal({
             </span>
           ) : null}
         </div>
-        <Field name="description" label="Description" required placeholder="Brake Pads (Front)" />
+        <Field name="description" label="Description" required placeholder={t('Brake Pads (Front)')} />
         <Field name="qty" label="Order Qty" required placeholder="0" hint="Whole units only." />
         <Field name="unitCost" label="Unit Cost" kind="currency" required />
         <FormActions note>
@@ -323,14 +323,14 @@ function SupplierModal({
       onClose={close}
       variant="crud"
       icon="Building2"
-      title="Add Supplier"
+      title={t('Add Supplier')}
       description={t('A supplier joins the directory so purchase orders reference it, not a free-typed name.')}
     >
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Supplier Name" required placeholder="United Auto Parts Co." />
+        <Field name="name" label="Supplier Name" required placeholder={t('United Auto Parts Co.')} />
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <Field name="contactName" label="Contact Person" placeholder="Fahad Al-Qahtani" />
+          <Field name="contactName" label="Contact Person" placeholder={t('Fahad Al-Qahtani')} />
           <Field name="contactPhone" label="Phone" placeholder="+966 5X XXX XXXX" />
         </div>
         <Field name="contactEmail" label="Email" placeholder="orders@supplier.com" />

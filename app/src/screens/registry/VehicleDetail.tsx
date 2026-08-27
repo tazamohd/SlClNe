@@ -203,7 +203,7 @@ export function VehicleDetail() {
         }
         timeline={
           activities.length > 0 && !isMobile ? (
-            <ActivityFeed items={activities} title="Service History" />
+            <ActivityFeed items={activities} title={t('Service History')} />
           ) : undefined
         }
         related={[

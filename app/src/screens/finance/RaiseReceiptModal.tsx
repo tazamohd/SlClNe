@@ -129,7 +129,7 @@ export function RaiseReceiptModal({ open, onClose }: { open: boolean; onClose: (
                 label="Invoice"
                 kind="select"
                 required
-                placeholder="Choose an invoice"
+                placeholder={t('Choose an invoice')}
                 options={options.map(({ value, label }) => ({ value, label }))}
               />
               {chosen?.known ? (

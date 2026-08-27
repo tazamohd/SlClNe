@@ -316,10 +316,10 @@ export function RecordPaymentModal({
             label="Method"
             kind="select"
             required
-            placeholder="Select a method"
+            placeholder={t('Select a method')}
             options={PAYMENT_METHODS.map((method) => ({ value: method, label: method }))}
           />
-          <Field name="reference" label="Reference" placeholder="TXN-884201" />
+          <Field name="reference" label="Reference" placeholder={t('TXN-884201')} />
           <Field name="paidOn" label="Received on" kind="date" />
           <Field name="note" label="Note" kind="textarea" rows={2} />
 

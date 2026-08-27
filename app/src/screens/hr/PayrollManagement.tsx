@@ -352,7 +352,7 @@ function AddLine({ runId, onClose }: { runId: string; onClose: () => void }) {
       onClose={onClose}
       variant="crud"
       icon="UserPlus"
-      title="Add payroll line"
+      title={t('Add payroll line')}
       dismissible={!busy}
       footer={
         <>
@@ -454,7 +454,7 @@ function CreateRun({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       variant="crud"
       icon="CalendarPlus"
-      title="New payroll run"
+      title={t('New payroll run')}
       dismissible={!busy}
       footer={
         <>

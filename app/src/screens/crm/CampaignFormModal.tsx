@@ -90,7 +90,7 @@ export function CampaignFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Megaphone"
-      title="New Campaign"
+      title={t('New Campaign')}
       dismissible={!form.pending}
       footer={
         <>
@@ -106,7 +106,7 @@ export function CampaignFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Name" required placeholder="Summer promotion 2026" />
+        <Field name="name" label="Name" required placeholder={t('Summer promotion 2026')} />
         <Field name="type" label="Type" kind="select" options={TYPE_OPTIONS} />
         <Field name="status" label="Status" kind="select" options={STATUS_OPTIONS} />
         <Field name="startDate" label="Start Date" kind="date" />

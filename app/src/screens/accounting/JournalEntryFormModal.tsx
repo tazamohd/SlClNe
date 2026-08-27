@@ -85,7 +85,7 @@ export function JournalEntryFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="BookOpen"
-      title="New Journal Entry"
+      title={t('New Journal Entry')}
       dismissible={!form.pending}
       footer={
         <>
@@ -102,7 +102,7 @@ export function JournalEntryFormModal({
       <Form form={form}>
         <FormErrorSummary />
         <Field name="date" label="Date" kind="date" required />
-        <Field name="reference" label="Reference" required placeholder="JV-0001" />
+        <Field name="reference" label="Reference" required placeholder={t('JV-0001')} />
         <Field name="description" label="Description" kind="textarea" />
         <Field name="debitAccountCode" label="Debit Account Code" required placeholder="1100" />
         <Field name="creditAccountCode" label="Credit Account Code" required placeholder="2100" />

@@ -116,7 +116,7 @@ export function OpportunityFormModal({
       onClose={() => void close()}
       variant="crud"
       icon={editing ? 'Pencil' : 'Target'}
-      title={editing ? 'Edit Opportunity' : 'New Opportunity'}
+      title={t(editing ? 'Edit Opportunity' : 'New Opportunity')}
       dismissible={!form.pending}
       footer={
         <>
@@ -132,13 +132,13 @@ export function OpportunityFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Name" required placeholder="Fleet maintenance contract" />
-        <Field name="company" label="Company" placeholder="Al-Dosari Motors" />
+        <Field name="name" label="Name" required placeholder={t('Fleet maintenance contract')} />
+        <Field name="company" label="Company" placeholder={t('Al-Dosari Motors')} />
         <Field name="stage" label="Stage" kind="select" options={STAGE_OPTIONS} required />
         <Field name="valueHalalas" label="Value" kind="currency" />
         <Field name="probabilityPct" label="Probability %" placeholder="0-100" />
         <Field name="closeDate" label="Close Date" kind="date" />
-        <Field name="ownerName" label="Owner" placeholder="Khalid Al-Amri" />
+        <Field name="ownerName" label="Owner" placeholder={t('Khalid Al-Amri')} />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
           {t(editing ? 'Save Changes' : 'Add Opportunity')}
         </button>

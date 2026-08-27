@@ -114,7 +114,7 @@ export function LeadFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Pencil"
-      title="Edit Lead"
+      title={t('Edit Lead')}
       dismissible={!form.pending}
       footer={
         <>
@@ -133,7 +133,7 @@ export function LeadFormModal({
         <Field name="name" label="Full Name" required />
         <Field name="company" label="Company" />
         <Field name="value" label="Deal Value" kind="currency" placeholder="120,000" />
-        <Field name="source" label="Lead Source" placeholder="Referral" />
+        <Field name="source" label="Lead Source" placeholder={t('Referral')} />
         <Field name="stage" label="Stage" kind="select" options={STAGE_OPTIONS} required />
         <Field name="score" label="Lead Score" hint="0–100." placeholder="82" />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>

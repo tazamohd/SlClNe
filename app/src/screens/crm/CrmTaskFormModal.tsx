@@ -120,7 +120,7 @@ export function CrmTaskFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="CalendarPlus"
-      title="New Task"
+      title={t('New Task')}
       dismissible={!form.pending}
       footer={
         <>
@@ -136,8 +136,8 @@ export function CrmTaskFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="title" label="Task Title" required placeholder="Follow up with Tariq Al-Dosari" />
-        <Field name="assignedTo" label="Assigned To" placeholder="Khalid Al-Amri" />
+        <Field name="title" label="Task Title" required placeholder={t('Follow up with Tariq Al-Dosari')} />
+        <Field name="assignedTo" label="Assigned To" placeholder={t('Khalid Al-Amri')} />
         <Field name="dueDate" label="Due Date" kind="date" />
         <Field name="type" label="Type" kind="select" options={TYPE_OPTIONS} />
         <Field name="priority" label="Priority" kind="select" options={PRIORITY_OPTIONS} required />

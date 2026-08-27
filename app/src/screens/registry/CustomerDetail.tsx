@@ -248,12 +248,12 @@ export function CustomerDetail() {
         readOnly={can('customers', 'e') ? false : 'Read-only — your role can view this customer but not change it.'}
         timeline={
           activities.length > 0 && !isMobile ? (
-            <ActivityFeed items={activities} title="Recent Activity" />
+            <ActivityFeed items={activities} title={t('Recent Activity')} />
           ) : undefined
         }
         comments={
           comments.length > 0 && !isMobile ? (
-            <Comments items={comments} title="Notes" />
+            <Comments items={comments} title={t('Notes')} />
           ) : undefined
         }
         related={[

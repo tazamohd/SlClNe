@@ -168,25 +168,25 @@ export function BalanceSheet() {
       <Section title={t('Balance Sheet')} subtitle={t('As at end of current period')}>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <StatementSection
-            title="Assets"
+            title={t('Assets')}
             icon="Wallet"
             items={ASSETS}
-            subtotalLabel="Total Assets"
+            subtotalLabel={t('Total Assets')}
             accentColor="#0A5ED7"
           />
           <div className="flex flex-col gap-8">
             <StatementSection
-              title="Liabilities"
+              title={t('Liabilities')}
               icon="CreditCard"
               items={LIABILITIES}
-              subtotalLabel="Total Liabilities"
+              subtotalLabel={t('Total Liabilities')}
               accentColor="#F97316"
             />
             <StatementSection
-              title="Equity"
+              title={t('Equity')}
               icon="Landmark"
               items={EQUITY}
-              subtotalLabel="Total Equity"
+              subtotalLabel={t('Total Equity')}
               accentColor="#0B1F3B"
             />
           </div>

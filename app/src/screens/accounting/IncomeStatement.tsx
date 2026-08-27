@@ -162,17 +162,17 @@ export function IncomeStatement() {
       <Section title={t('Income Statement')} subtitle={t('For the current reporting period')}>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <StatementBlock
-            title="Revenue"
+            title={t('Revenue')}
             icon="ArrowUpRight"
             items={REVENUE}
-            subtotalLabel="Total Revenue"
+            subtotalLabel={t('Total Revenue')}
             accentColor="#0A5ED7"
           />
           <StatementBlock
-            title="Expenses"
+            title={t('Expenses')}
             icon="ArrowDownRight"
             items={EXPENSES}
-            subtotalLabel="Total Expenses"
+            subtotalLabel={t('Total Expenses')}
             accentColor="#F97316"
           />
         </div>

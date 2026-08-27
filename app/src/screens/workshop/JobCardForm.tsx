@@ -175,15 +175,15 @@ export function JobCardForm({
       )}
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="customerName" label="Customer" required placeholder="Ahmed Al-Rashid" />
-        <Field name="vehicleLabel" label="Vehicle" required placeholder="Toyota Camry 2022" />
+        <Field name="customerName" label="Customer" required placeholder={t('Ahmed Al-Rashid')} />
+        <Field name="vehicleLabel" label="Vehicle" required placeholder={t('Toyota Camry 2022')} />
         <Field name="service" label="Service" kind="select" options={SERVICE_OPTIONS} required />
         <Field name="priority" label="Priority" kind="select" options={PRIORITY_OPTIONS} required />
         <Field
           name="complaint"
           label="Reported Issues"
           kind="textarea"
-          placeholder="Describe reported issues..."
+          placeholder={t('Describe reported issues...')}
         />
         {/* The footer carries the visible buttons; this keeps Enter working
             from any field, which is what a keyboard user expects. */}

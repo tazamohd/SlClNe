@@ -117,7 +117,7 @@ export function LeadFormModal({
       onClose={() => void close()}
       variant="crud"
       icon={editing ? 'Pencil' : 'UserPlus'}
-      title={editing ? 'Edit Lead' : 'New Lead'}
+      title={t(editing ? 'Edit Lead' : 'New Lead')}
       dismissible={!form.pending}
       footer={
         <>
@@ -133,8 +133,8 @@ export function LeadFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Name" required placeholder="Tariq Al-Dosari" />
-        <Field name="company" label="Company" placeholder="Al-Dosari Motors" />
+        <Field name="name" label="Name" required placeholder={t('Tariq Al-Dosari')} />
+        <Field name="company" label="Company" placeholder={t('Al-Dosari Motors')} />
         <Field name="source" label="Source" kind="select" options={SOURCE_OPTIONS} />
         <Field name="stage" label="Stage" kind="select" options={STAGE_OPTIONS} />
         <Field name="score" label="Score" placeholder="0-100" />

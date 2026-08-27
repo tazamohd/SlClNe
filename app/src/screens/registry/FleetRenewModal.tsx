@@ -103,7 +103,7 @@ export function FleetRenewModal({
       onClose={onClose}
       variant="crud"
       icon="FileSignature"
-      title="Renew Contract"
+      title={t('Renew Contract')}
       dismissible={!form.pending}
       footer={
         <>

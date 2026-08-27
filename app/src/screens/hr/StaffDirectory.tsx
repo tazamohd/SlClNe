@@ -327,7 +327,7 @@ function CreateEmployee({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       variant="crud"
       icon="UserPlus"
-      title="Add employee"
+      title={t('Add employee')}
       dismissible={!busy}
       footer={
         <>

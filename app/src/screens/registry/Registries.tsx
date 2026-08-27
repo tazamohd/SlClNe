@@ -275,8 +275,8 @@ export function Customers() {
             <NoMatches
               query={query}
               icon="Users"
-              title="No customers yet"
-              description="Customers are created at check-in or from the portal."
+              title={t('No customers yet')}
+              description={t('Customers are created at check-in or from the portal.')}
               action={
                 can('customers', 'c') ? (
                   <Button size="md" onClick={() => setForm(null)}>
@@ -421,8 +421,8 @@ export function Vehicles() {
               <NoMatches
                 query={query}
                 icon="Car"
-                title="No vehicles yet"
-                description="Vehicles are added at check-in."
+                title={t('No vehicles yet')}
+                description={t('Vehicles are added at check-in.')}
               />
             }
           />
@@ -508,8 +508,8 @@ export function Vehicles() {
             <NoMatches
               query={query}
               icon="Car"
-              title="No vehicles yet"
-              description="Vehicles are added at check-in."
+              title={t('No vehicles yet')}
+              description={t('Vehicles are added at check-in.')}
               action={
                 can('vehicles', 'c') ? (
                   <Button size="md" onClick={() => setForm(null)}>
@@ -635,8 +635,8 @@ export function Estimates() {
           <NoMatches
             query={query}
             icon="FileText"
-            title="No estimates yet"
-            description="Estimates are raised after inspection."
+            title={t('No estimates yet')}
+            description={t('Estimates are raised after inspection.')}
           />
         }
       />
@@ -710,8 +710,8 @@ export function Technicians() {
             <NoMatches
               query={query}
               icon="Wrench"
-              title="No technicians yet"
-              description="Add technicians to assign work."
+              title={t('No technicians yet')}
+              description={t('Add technicians to assign work.')}
             />
           }
         />
@@ -752,8 +752,8 @@ export function Technicians() {
           <NoMatches
             query={query}
             icon="Wrench"
-            title="No technicians yet"
-            description="Add technicians to assign work."
+            title={t('No technicians yet')}
+            description={t('Add technicians to assign work.')}
           />
         }
       />
@@ -840,8 +840,8 @@ export function FleetManagement() {
           <NoMatches
             query={query}
             icon="Truck"
-            title="No fleet accounts yet"
-            description="Fleet accounts group vehicles under one contract."
+            title={t('No fleet accounts yet')}
+            description={t('Fleet accounts group vehicles under one contract.')}
           />
         }
       />

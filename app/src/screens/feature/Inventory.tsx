@@ -599,10 +599,10 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
       api={movements}
       unavailable={unavailable}
       only={['transfer']}
-      title="Stock Transfers"
-      subtitle="Movements between branches, newest last, for the part you select."
-      emptyTitle="No transfers recorded"
-      emptyDescription="This part has never been transferred between branches."
+      title={t('Stock Transfers')}
+      subtitle={t('Movements between branches, newest last, for the part you select.')}
+      emptyTitle={t('No transfers recorded')}
+      emptyDescription={t('This part has never been transferred between branches.')}
     />
   ) : tab === 'pricing' ? (
     <PricingTab
@@ -619,10 +619,10 @@ export function Inventory({ api }: { api?: MovementApi | null } = {}) {
       loading={isLoading}
       api={movements}
       unavailable={unavailable}
-      title="Stock Movement Audit"
-      subtitle="Every movement recorded against the part you select, with the balance it left behind."
-      emptyTitle="No movements recorded"
-      emptyDescription="Nothing has moved this part's stock since it was opened."
+      title={t('Stock Movement Audit')}
+      subtitle={t('Every movement recorded against the part you select, with the balance it left behind.')}
+      emptyTitle={t('No movements recorded')}
+      emptyDescription={t('Nothing has moved this part\'s stock since it was opened.')}
       reconcile
     />
   ) : (
@@ -2126,13 +2126,13 @@ function AddPartModal({ onClose }: { onClose: () => void }) {
       onClose={close}
       variant="crud"
       icon="Plus"
-      title="Add Part"
+      title={t('Add Part')}
       description={t('A new part starts at its opening quantity. Everything after that is a movement.')}
     >
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Part Name" required placeholder="Oil Filter (Toyota)" />
-        <Field name="sku" label="SKU" required placeholder="OF-TY-118" />
+        <Field name="name" label="Part Name" required placeholder={t('Oil Filter (Toyota)')} />
+        <Field name="sku" label="SKU" required placeholder={t('OF-TY-118')} />
         <Field name="price" label="Sell Price" kind="currency" required />
         <Field
           name="reorder"

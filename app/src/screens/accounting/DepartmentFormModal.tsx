@@ -76,7 +76,7 @@ export function DepartmentFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Building2"
-      title="Add Department"
+      title={t('Add Department')}
       dismissible={!form.pending}
       footer={
         <>
@@ -92,9 +92,9 @@ export function DepartmentFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Department Name" required placeholder="Operations" />
-        <Field name="code" label="Department Code" placeholder="OPS" />
-        <Field name="manager" label="Manager" placeholder="Ahmed Al-Rashid" />
+        <Field name="name" label="Department Name" required placeholder={t('Operations')} />
+        <Field name="code" label="Department Code" placeholder={t('OPS')} />
+        <Field name="manager" label="Manager" placeholder={t('Ahmed Al-Rashid')} />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
           {t('Add Department')}
         </button>

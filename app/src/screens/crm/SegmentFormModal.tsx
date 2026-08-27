@@ -75,7 +75,7 @@ export function SegmentFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Users"
-      title="New Segment"
+      title={t('New Segment')}
       dismissible={!form.pending}
       footer={
         <>
@@ -91,8 +91,8 @@ export function SegmentFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="name" label="Name" required placeholder="High-value fleet customers" />
-        <Field name="description" label="Description" kind="textarea" placeholder="Customers with 5+ vehicles and monthly spend over SAR 10,000" />
+        <Field name="name" label="Name" required placeholder={t('High-value fleet customers')} />
+        <Field name="description" label="Description" kind="textarea" placeholder={t('Customers with 5+ vehicles and monthly spend over SAR 10,000')} />
         <Field name="type" label="Type" kind="select" options={TYPE_OPTIONS} />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
           {t('Create Segment')}

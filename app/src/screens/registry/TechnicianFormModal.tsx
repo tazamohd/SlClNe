@@ -82,7 +82,7 @@ export function TechnicianFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Wrench"
-      title="Add Technician"
+      title={t('Add Technician')}
       dismissible={!form.pending}
       footer={
         <>

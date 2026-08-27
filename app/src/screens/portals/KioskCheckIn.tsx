@@ -236,7 +236,7 @@ function IdentifyStep({
             inputSize="lg"
             value={plate}
             onChange={(e) => onPlateChange(e.target.value)}
-            placeholder="ABC 1234"
+            placeholder={t('ABC 1234')}
             icon={<Icon name="Car" size={20} />}
             dir="ltr"
           />

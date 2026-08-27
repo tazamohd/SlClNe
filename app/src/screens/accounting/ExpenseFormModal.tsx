@@ -95,7 +95,7 @@ export function ExpenseFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Receipt"
-      title="New Expense"
+      title={t('New Expense')}
       dismissible={!form.pending}
       footer={
         <>
@@ -111,12 +111,12 @@ export function ExpenseFormModal({
       <NoWritesNotice />
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="description" label="Description" required placeholder="Office supplies" />
+        <Field name="description" label="Description" required placeholder={t('Office supplies')} />
         <Field name="amount" label="Amount (SAR)" kind="currency" required placeholder="1,500" />
         <Field name="category" label="Category" kind="select" required options={CATEGORY_OPTIONS} />
         <Field name="date" label="Date" kind="date" required />
-        <Field name="vendor" label="Vendor" placeholder="Al-Faisal Trading" />
-        <Field name="reference" label="Reference" placeholder="INV-2024-001" />
+        <Field name="vendor" label="Vendor" placeholder={t('Al-Faisal Trading')} />
+        <Field name="reference" label="Reference" placeholder={t('INV-2024-001')} />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
           {t('Add Expense')}
         </button>

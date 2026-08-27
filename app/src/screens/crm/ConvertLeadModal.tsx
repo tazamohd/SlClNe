@@ -93,7 +93,7 @@ export function ConvertLeadModal({
       onClose={onClose}
       variant="crud"
       icon="GitBranch"
-      title="Convert to Opportunity"
+      title={t('Convert to Opportunity')}
       dismissible={!form.pending}
       footer={
         <>
@@ -112,7 +112,7 @@ export function ConvertLeadModal({
       </p>
       <Form form={form}>
         <FormErrorSummary />
-        <Field name="ownerName" label="Opportunity Owner" placeholder="Khalid Al-Amri" />
+        <Field name="ownerName" label="Opportunity Owner" placeholder={t('Khalid Al-Amri')} />
         <Field name="probabilityPct" label="Probability %" hint="0–100. Defaults to the lead score." placeholder="60" />
         <Field name="closeDate" label="Expected Close" kind="date" />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>

@@ -105,7 +105,7 @@ export function FleetAccountFormModal({
       onClose={() => void close()}
       variant="crud"
       icon="Truck"
-      title="Add Fleet Account"
+      title={t('Add Fleet Account')}
       dismissible={!form.pending}
       footer={
         <>
@@ -122,7 +122,7 @@ export function FleetAccountFormModal({
       <Form form={form}>
         <FormErrorSummary />
         <Field name="name" label="Fleet Account Name" required />
-        <Field name="contractType" label="Contract Type" kind="select" options={CONTRACT_TYPE_OPTIONS} placeholder="Select contract type" />
+        <Field name="contractType" label="Contract Type" kind="select" options={CONTRACT_TYPE_OPTIONS} placeholder={t('Select contract type')} />
         <Field name="contactName" label="Contact Person" />
         <Field name="contactPhone" label="Contact Phone" kind="phone" placeholder="+966 55 210 4471" />
         <Field name="contactEmail" label="Contact Email" kind="email" />

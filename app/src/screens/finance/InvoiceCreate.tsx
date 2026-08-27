@@ -310,7 +310,7 @@ export function InvoiceCreate() {
                   name="customerName"
                   label="Customer"
                   required
-                  placeholder="Ahmed Al-Rashid"
+                  placeholder={t('Ahmed Al-Rashid')}
                   readOnly={Boolean(saved)}
                 />
                 <Field
@@ -489,7 +489,7 @@ export function InvoiceCreate() {
               label="Notes"
               kind="textarea"
               rows={2}
-              placeholder="Payment instructions, warranty terms..."
+              placeholder={t('Payment instructions, warranty terms...')}
               readOnly={Boolean(saved)}
             />
           </div>
