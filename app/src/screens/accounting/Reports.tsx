@@ -38,11 +38,16 @@ function ExportButtons() {
 
 /** Aggregates the ledger once, for every report that needs it. */
 function useLedgerTotals() {
-  const { data: accounts = [] } = useCollection('chartOfAccounts')
-  const { data: expenses = [] } = useCollection('expenses')
-  const { data: invoices = [] } = useCollection('invoices')
+  const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
+  const { data: expenses = [], isLoading: eL } = useCollection('expenses')
+  const { data: invoices = [], isLoading: iL } = useCollection('invoices')
 
-  return useMemo(() => {
+  const isLoading = aL || eL || iL
+  const isError = aE
+  const error = aErr
+  const refetch = aR
+
+  const totals = useMemo(() => {
     const byType = (type: string) =>
       accounts.filter((a) => a.type === type).reduce((sum, a) => sum + parseSar(a.balance), 0)
 
@@ -70,13 +75,15 @@ function useLedgerTotals() {
       profit: revenue - expenseAccounts,
     }
   }, [accounts, expenses, invoices])
+
+  return { ...totals, isLoading, isError, error, refetch }
 }
 
 // ── Financial reports ───────────────────────────────────────────────────────
 export function FinancialReports() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const totals = useLedgerTotals()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
 
   const stats: Stat[] = [
     { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
@@ -94,6 +101,9 @@ export function FinancialReports() {
       .map(([label, value]) => ({ label, value }))
       .sort((a, b) => b.value - a.value)
   }, [totals.expenses])
+
+  if (isLoading) return <Loading label={t('Loading reports...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
@@ -266,7 +276,7 @@ function ServerLedgerSummary() {
 export function FinancialStatements() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const totals = useLedgerTotals()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
 
   const rows: readonly { label: string; value: number; strong?: boolean }[] = [
     { label: 'Revenue', value: totals.revenue },
@@ -276,6 +286,9 @@ export function FinancialStatements() {
     { label: 'Liabilities', value: totals.liabilities },
     { label: 'Equity', value: totals.equity, strong: true },
   ]
+
+  if (isLoading) return <Loading label={t('Loading statements...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
@@ -334,17 +347,14 @@ export function ExecutiveReports() {
   const { t } = usePreferences()
   const { fieldHidden } = useSession()
   const isMobile = useIsMobile()
-  const totals = useLedgerTotals()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: customers = [] } = useCollection('customers')
 
-  // Defence in depth. Today this never fires: every role in the Branch P&L
-  // hidden list (advisor, technician, qc, parts, frontdesk, callcenter,
-  // procurement, supplier, customer) is already denied `execreports` view by
-  // the module gate, so they are redirected to Unauthorized before reaching
-  // this screen. Kept so that widening execreports in PERMS can't silently
-  // expose P&L figures — the field rule would then start applying here.
   const hidePnl = fieldHidden('Branch P&L')
+
+  if (isLoading) return <Loading label={t('Loading reports...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
@@ -574,7 +584,7 @@ export function OperationalReports() {
 export function BIDashboard() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const totals = useLedgerTotals()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
   const { data: jobs = [] } = useCollection('jobs')
 
   const bySvc = useMemo(() => {
@@ -582,6 +592,9 @@ export function BIDashboard() {
     for (const job of jobs) map.set(job.svc.replace(/_/g, ' '), (map.get(job.svc.replace(/_/g, ' ')) ?? 0) + 1)
     return [...map.entries()].map(([label, value]) => ({ label, value }))
   }, [jobs])
+
+  if (isLoading) return <Loading label={t('Loading dashboard...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (

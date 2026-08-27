@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -12,8 +13,8 @@ import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/
 export function VehiclesList() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const vehicles = useCollection('vehicles')
-  const rows = (vehicles.data ?? []) as readonly Record<string, string>[]
+  const { data: rawVehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
+  const rows = rawVehicles as readonly Record<string, string>[]
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
@@ -27,6 +28,9 @@ export function VehiclesList() {
         (r.ownerName ?? r.customer ?? '').toLowerCase().includes(q),
     )
   }, [rows, search])
+
+  if (isLoading) return <Loading label={t('Loading vehicles...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const kpis = [
     { label: t('Total Vehicles'), value: String(rows.length), icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },

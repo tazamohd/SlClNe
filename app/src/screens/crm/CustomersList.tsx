@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
@@ -10,8 +11,8 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 
 export function CustomersList() {
   const { t } = usePreferences()
-  const customers = useCollection('customers')
-  const rows = (customers.data ?? []) as unknown as readonly Record<string, string>[]
+  const { data: rawCustomers = [], isLoading, isError, error, refetch } = useCollection('customers')
+  const rows = rawCustomers as unknown as readonly Record<string, string>[]
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
@@ -24,6 +25,9 @@ export function CustomersList() {
         (r.email ?? '').toLowerCase().includes(q),
     )
   }, [rows, search])
+
+  if (isLoading) return <Loading label={t('Loading customers...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const kpis = [
     { label: t('Total Customers'), value: String(rows.length), icon: 'Users', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },

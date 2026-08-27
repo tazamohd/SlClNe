@@ -11,6 +11,7 @@ import {
   Section,
   type Stat,
 } from '@/components/shell/FeatureScreen'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 import { cn } from '@/lib/cn'
@@ -57,10 +58,10 @@ export function ControlTracker() {
   const navigate = useNavigate()
   const [tab, setTab] = useState('pipeline')
 
-  const { data: jobs = [] } = useCollection('jobs')
-  const { data: technicians = [] } = useCollection('technicians')
-  const { data: parts = [] } = useCollection('parts')
-  const { data: appointments = [] } = useCollection('appointments')
+  const { data: jobs = [], isLoading: jL, isError: jE, error: jErr, refetch: jR } = useCollection('jobs')
+  const { data: technicians = [], isLoading: tL } = useCollection('technicians')
+  const { data: parts = [], isLoading: pL } = useCollection('parts')
+  const { data: appointments = [], isLoading: aL } = useCollection('appointments')
 
   const activeJobs = jobs.filter((j) => j.st !== 'delivered' && j.st !== 'completed')
   const occupiedBays = BAY_DATA.filter((b) => b.status === 'active' || b.status === 'waiting').length
@@ -82,6 +83,9 @@ export function ControlTracker() {
     }
     return counts
   }, [jobs])
+
+  if (jL || tL || pL || aL) return <Loading label={t('Loading workshop...')} />
+  if (jE) return <ErrorState description={jErr?.message} onRetry={() => void jR()} />
 
   return (
     <div className="flex flex-col gap-6">

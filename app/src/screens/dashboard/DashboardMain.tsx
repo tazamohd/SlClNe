@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { formatSar, parseSar } from '@/components/ui/Money'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 
@@ -28,8 +29,8 @@ const BAR_COLORS = [
  *  and technician performance ranking. */
 export function DashboardMain() {
   const { t } = usePreferences()
-  const { data: jobs = [] } = useCollection('jobs')
-  const { data: technicians = [] } = useCollection('technicians')
+  const { data: jobs = [], isLoading: jL, isError: jE, error: jErr, refetch: jR } = useCollection('jobs')
+  const { data: technicians = [], isLoading: tL } = useCollection('technicians')
 
   type AnyJob = Record<string, string>
   const totalRevenue = useMemo(
@@ -103,6 +104,9 @@ export function DashboardMain() {
     if (sparkline.every((v) => v === 0)) return ''
     return sparkline.map((y, i) => `${i === 0 ? 'M' : 'L'}${i * 20},${40 - y}`).join(' ')
   }, [sparkline])
+
+  if (jL || tL) return <Loading label={t('Loading dashboard...')} />
+  if (jE) return <ErrorState description={jErr?.message} onRetry={() => void jR()} />
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">

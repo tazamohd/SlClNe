@@ -108,7 +108,7 @@ export function InvoiceCreate() {
   const toast = useToast()
   const navigate = useNavigate()
   const { can } = useSession()
-  const { data: customers = [] } = useCollection('customers')
+  const { data: customers = [], isLoading: customersLoading } = useCollection('customers')
   const [saved, setSaved] = useState<InvoiceResult | null>(null)
   const [issuing, setIssuing] = useState(false)
 
@@ -336,7 +336,9 @@ export function InvoiceCreate() {
                   readOnly={Boolean(saved)}
                 />
               </div>
-              {customers.length > 0 && !saved ? (
+              {customersLoading && !saved ? (
+                <p className="mt-3 text-xs text-muted">{t('Loading customers...')}</p>
+              ) : customers.length > 0 && !saved ? (
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {customers.slice(0, 6).map((customer) => (
                     <button

@@ -8,22 +8,19 @@ import { StatusBadge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { formatSar, parseSar } from '@/components/ui/Money'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
 import { isLive } from '@/data/repository'
 
-/** Main dashboard — the landing screen after login.
- *
- *  KPI row (Revenue, Jobs Today, Appointments, Customers), recent jobs,
- *  upcoming appointments, and quick-action buttons gated on `isLive`. */
 export function DashboardHome() {
   const { t, rtl } = usePreferences()
   const { can } = useSession()
   const navigate = useNavigate()
-  const { data: jobs = [] } = useCollection('jobs')
-  const { data: appointments = [] } = useCollection('appointments')
-  const { data: customers = [] } = useCollection('customers')
+  const { data: jobs = [], isLoading: jL, isError: jE, error: jErr, refetch: jR } = useCollection('jobs')
+  const { data: appointments = [], isLoading: aL } = useCollection('appointments')
+  const { data: customers = [], isLoading: cL } = useCollection('customers')
 
   const today = new Intl.DateTimeFormat(rtl ? 'ar' : 'en-US', {
     weekday: 'long',
@@ -56,6 +53,9 @@ export function DashboardHome() {
     { header: 'Time', cell: (appt) => appt.time, code: true },
     { header: 'Vehicle', cell: (appt) => appt.veh, code: true },
   ]
+
+  if (jL || aL || cL) return <Loading label={t('Loading dashboard...')} />
+  if (jE) return <ErrorState description={jErr?.message} onRetry={() => void jR()} />
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">

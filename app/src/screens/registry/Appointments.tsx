@@ -7,6 +7,7 @@ import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
@@ -29,13 +30,15 @@ export function Appointments() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const navigate = useNavigate()
-  const { data: appointments = [], isLoading } = useCollection('appointments')
+  const { data: appointments = [], isLoading, isError, error, refetch } = useCollection('appointments')
   const [filter, setFilter] = useState<string>('all')
 
   const filtered = useMemo(
     () => (filter === 'all' ? appointments : appointments.filter((a) => a.status === filter)),
     [appointments, filter]
   )
+
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const statusBadge = (value: string) => {
     const [bg, fg] = STATUS[value] ?? STATUS.awaiting

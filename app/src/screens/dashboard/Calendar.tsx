@@ -4,6 +4,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { CalendarView, type CalendarEvent } from '@/components/ui/CalendarView'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -13,9 +14,8 @@ const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 export function Calendar() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const appointments = useCollection('appointments')
-  const rows = (appointments.data ?? []) as unknown as readonly Record<string, string>[]
-
+  const { data: rawAppts = [], isLoading, isError, error, refetch } = useCollection('appointments')
+  const rows = rawAppts as unknown as readonly Record<string, string>[]
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
 
   const events: CalendarEvent[] = useMemo(() => {
@@ -75,6 +75,9 @@ export function Calendar() {
   const monthLabel = selectedDay
     ? `${t(MONTHS[selectedDay.getMonth()])} ${selectedDay.getDate()}, ${selectedDay.getFullYear()}`
     : null
+
+  if (isLoading) return <Loading label={t('Loading calendar...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
