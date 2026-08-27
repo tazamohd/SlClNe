@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
+import { formatSar } from '@/components/ui/Money'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -53,11 +54,7 @@ function useSections(t: (s: string) => string): CashFlowSection[] {
   )
 }
 
-function fmtSar(v: number): string {
-  const abs = Math.abs(v)
-  const formatted = abs.toLocaleString('en-SA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  return v < 0 ? `(SAR ${formatted})` : `SAR ${formatted}`
-}
+const fmtSar = (v: number) => formatSar(v, { parens: true })
 
 function SectionCard({
   section,

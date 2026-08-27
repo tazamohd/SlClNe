@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
+import { formatSar } from '@/components/ui/Money'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
@@ -28,9 +29,6 @@ function useRows(t: (s: string) => string): APRow[] {
   )
 }
 
-function fmtSar(v: number): string {
-  return `SAR ${v.toLocaleString('en-SA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-}
 
 export function AccountsPayable() {
   const { t } = usePreferences()
@@ -43,16 +41,16 @@ export function AccountsPayable() {
   const filtered = filter === 'overdue' ? overdue : filter === 'current' ? current : rows
 
   const kpis = [
-    { label: t('Total Payable'), value: fmtSar(total), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Current'), value: fmtSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Overdue'), value: fmtSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Payable'), value: formatSar(total), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Suppliers'), value: String(new Set(rows.map((r) => r.supplier)).size), icon: 'Users', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
   ]
 
   const columns: Column<APRow>[] = [
     { header: 'Supplier', cell: (r) => <span className="font-medium text-heading">{r.supplier}</span> },
     { header: 'Invoice', cell: (r) => r.invoice, code: true },
-    { header: 'Amount', cell: (r) => <span dir="ltr" className="font-mono font-medium text-heading">{fmtSar(r.amount)}</span>, className: 'text-end' },
+    { header: 'Amount', cell: (r) => <span dir="ltr" className="font-mono font-medium text-heading">{formatSar(r.amount)}</span>, className: 'text-end' },
     { header: 'Due Date', cell: (r) => <span dir="ltr" className="text-muted">{r.dueDate}</span> },
     { header: 'Days Overdue', cell: (r) => <span className="font-mono text-heading">{r.daysOverdue || '—'}</span>, className: 'text-end' },
     { header: 'Status', cell: (r) => (
@@ -116,7 +114,7 @@ export function AccountsPayable() {
               }
             />
             <MobileCardRow label={t('Invoice')}><span dir="ltr">{r.invoice}</span></MobileCardRow>
-            <MobileCardRow label={t('Amount')}><span dir="ltr" className="font-semibold">{fmtSar(r.amount)}</span></MobileCardRow>
+            <MobileCardRow label={t('Amount')}><span dir="ltr" className="font-semibold">{formatSar(r.amount)}</span></MobileCardRow>
           </>
         )}
         empty={<EmptyState icon="FileText" title={t('No bills found')} />}

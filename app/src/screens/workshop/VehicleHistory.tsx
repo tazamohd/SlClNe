@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
+import { formatSar } from '@/components/ui/Money'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
@@ -29,9 +30,6 @@ function useRecords(t: (s: string) => string): ServiceRecord[] {
   )
 }
 
-function fmtSar(v: number): string {
-  return `SAR ${v.toLocaleString('en-SA')}`
-}
 
 export function VehicleHistory() {
   const { t } = usePreferences()
@@ -44,7 +42,7 @@ export function VehicleHistory() {
     { header: 'Date', cell: (r) => r.date, code: true },
     { header: 'Service Type', cell: (r) => r.type },
     { header: 'Technician', cell: (r) => r.technician },
-    { header: 'Cost', cell: (r) => <span className="font-mono font-medium" dir="ltr">{fmtSar(r.cost)}</span> },
+    { header: 'Cost', cell: (r) => <span className="font-mono font-medium" dir="ltr">{formatSar(r.cost)}</span> },
     { header: 'Status', cell: (r) => <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge> },
   ]
 
@@ -58,7 +56,7 @@ export function VehicleHistory() {
         <>
           <MobileCardHeader title={r.type} trailing={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge>} />
           <MobileCardRow label={t('Date')}>{r.date}</MobileCardRow>
-          <MobileCardRow label={t('Cost')}><span dir="ltr">{fmtSar(r.cost)}</span></MobileCardRow>
+          <MobileCardRow label={t('Cost')}><span dir="ltr">{formatSar(r.cost)}</span></MobileCardRow>
         </>
       )}
     />
@@ -71,7 +69,7 @@ export function VehicleHistory() {
         <MobileCard>
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted">{t('Total Spent')}</span>
-            <span dir="ltr" className="font-mono text-sm font-bold text-heading">{fmtSar(totalSpent)}</span>
+            <span dir="ltr" className="font-mono text-sm font-bold text-heading">{formatSar(totalSpent)}</span>
           </div>
           <div className="mt-1 flex items-center justify-between">
             <span className="text-xs text-muted">{t('Total Services')}</span>
@@ -104,7 +102,7 @@ export function VehicleHistory() {
             <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="DollarSign" size={16} /></span>
             <span className="text-xs font-medium text-muted">{t('Total Spent')}</span>
           </div>
-          <h4 dir="ltr" className="mt-2 font-mono text-xl font-black text-heading">{fmtSar(totalSpent)}</h4>
+          <h4 dir="ltr" className="mt-2 font-mono text-xl font-black text-heading">{formatSar(totalSpent)}</h4>
         </Card>
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-2">

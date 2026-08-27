@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
+import { formatSar } from '@/components/ui/Money'
 import { Icon } from '@/components/ui/Icon'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -27,9 +28,7 @@ function useRows(t: (s: string) => string): BudgetRow[] {
   )
 }
 
-function fmtSar(v: number): string {
-  return `SAR ${v.toLocaleString('en-SA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
-}
+const fmtSar = (v: number) => formatSar(v, { decimals: 0 })
 
 export function BudgetManagement() {
   const { t } = usePreferences()

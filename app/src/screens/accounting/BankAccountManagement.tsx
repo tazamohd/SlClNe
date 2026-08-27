@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
+import { formatSar } from '@/components/ui/Money'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
@@ -27,9 +28,6 @@ function useAccounts(t: (s: string) => string): BankAccount[] {
   )
 }
 
-function fmtSar(v: number): string {
-  return `SAR ${v.toLocaleString('en-SA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-}
 
 export function BankAccountManagement() {
   const { t } = usePreferences()
@@ -39,7 +37,7 @@ export function BankAccountManagement() {
   const reconciled = accounts.filter((a) => a.status === t('Reconciled')).length
 
   const kpis = [
-    { label: t('Total Balance'), value: fmtSar(totalBalance), icon: 'Landmark', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Balance'), value: formatSar(totalBalance), icon: 'Landmark', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Active Accounts'), value: String(accounts.length), icon: 'CreditCard', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Reconciled'), value: `${reconciled}/${accounts.length}`, icon: 'CheckCircle', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
   ]
@@ -48,7 +46,7 @@ export function BankAccountManagement() {
     { header: 'Bank', cell: (a) => <span className="font-medium text-heading">{a.bank}</span> },
     { header: 'Account', cell: (a) => a.accountNo, code: true },
     { header: 'Type', cell: (a) => a.type },
-    { header: 'Balance', cell: (a) => <span dir="ltr" className="font-mono font-medium text-heading">{fmtSar(a.balance)}</span>, className: 'text-end' },
+    { header: 'Balance', cell: (a) => <span dir="ltr" className="font-mono font-medium text-heading">{formatSar(a.balance)}</span>, className: 'text-end' },
     { header: 'Status', cell: (a) => (
       <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
         color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
@@ -98,7 +96,7 @@ export function BankAccountManagement() {
               }
             />
             <MobileCardRow label={t('Account')}><span dir="ltr">{a.accountNo} · {a.type}</span></MobileCardRow>
-            <MobileCardRow label={t('Balance')}><span dir="ltr" className="font-semibold">{fmtSar(a.balance)}</span></MobileCardRow>
+            <MobileCardRow label={t('Balance')}><span dir="ltr" className="font-semibold">{formatSar(a.balance)}</span></MobileCardRow>
           </>
         )}
         empty={<EmptyState icon="Landmark" title={t('No bank accounts found')} />}

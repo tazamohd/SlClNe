@@ -1,6 +1,7 @@
 import { useId, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input } from '@/components/ui/Input'
+import { formatSar } from '@/components/ui/Money'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
@@ -26,7 +27,6 @@ export function monthlyPayment(principal: number): number {
   return Math.round((principal * r) / (1 - (1 + r) ** -TERM_MONTHS))
 }
 
-const formatSar = (value: number) => `SAR ${value.toLocaleString('en-US')}`
 
 /** Digits only — tolerate "SAR 150,000", "150000", "150,000". */
 function parseAmount(raw: string): number | null {
