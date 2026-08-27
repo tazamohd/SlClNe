@@ -29,7 +29,7 @@
     {
       "id": "BLK-012",
       "severity": "HIGH",
-      "title": "332 rendering capabilities are visited but assert nothing",
+      "title": "30 rendering capabilities are visited but assert nothing",
       "detail": "The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.",
       "owner": "07",
       "wave": "W2"

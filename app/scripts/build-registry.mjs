@@ -142,7 +142,7 @@ const KIT_ROUTES = new Set([...featureDefsSrc.matchAll(/route: '([^']+)'/g)].map
  *  is how a suite comes to look thorough while proving very little. */
 const SMOKE_READS_REGISTRY = /master-registry/.test(smokeSrc)
 const SMOKE_CONTENT_ROUTES = new Set(
-  [...smokeSrc.matchAll(/^\s*'([^']+)':\s*'/gm)].map((m) => m[1]).filter((r) => r.startsWith('/'))
+  [...smokeSrc.matchAll(/^\s*'([^']+)':\s*['"]/gm)].map((m) => m[1]).filter((r) => r.startsWith('/'))
 )
 const NAV_SCREENS = new Set(
   NAV.flatMap((g) => g.items ?? []).map((i) => i.screen).filter(Boolean)
