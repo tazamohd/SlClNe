@@ -4,6 +4,7 @@ import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
+import { Search } from '@/components/ui/Search'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -123,10 +124,7 @@ export function SuppliersList() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader icon="Building2" title={t('Suppliers')} subtitle={t('Supplier directory')} />
-        <div className="relative flex items-center">
-          <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
-          <Input inputSize="sm" placeholder={t('Search suppliers...')} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-[260px] !ps-8" />
-        </div>
+        <Search value={search} onChange={setSearch} placeholder={t('Search suppliers...')} className="w-full sm:w-[260px]" compact />
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">

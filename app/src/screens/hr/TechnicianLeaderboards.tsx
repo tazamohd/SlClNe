@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
-import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Money } from '@/components/ui/Money'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { Input } from '@/components/ui/Input'
+import { Search } from '@/components/ui/Search'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
 
@@ -72,10 +71,7 @@ export function TechnicianLeaderboards() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader icon="Trophy" title={t('Leaderboards')} subtitle={t('Technician Rankings')} />
-        <div className="relative flex items-center">
-          <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
-          <Input inputSize="sm" placeholder={t('Search technicians...')} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-[260px] !ps-8" />
-        </div>
+        <Search value={search} onChange={setSearch} placeholder={t('Search technicians...')} className="w-full sm:w-[260px]" compact />
       </div>
 
       <DataTable

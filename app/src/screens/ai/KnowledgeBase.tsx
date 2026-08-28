@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Search } from '@/components/ui/Search'
 import { Badge } from '@/components/ui/Badge'
 import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
@@ -142,16 +143,7 @@ export function KnowledgeBase() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <PageHeader icon="Library" title={t('Knowledge Base')} subtitle={t('AI Platform')} />
         <div className="flex gap-2.5">
-          <div className="relative flex items-center">
-            <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
-            <Input
-              inputSize="sm"
-              placeholder={t('Search articles...')}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full sm:w-[260px] !ps-8"
-            />
-          </div>
+          <Search value={search} onChange={setSearch} placeholder={t('Search articles...')} className="w-full sm:w-[260px]" compact />
           <Button size="sm" disabled={!isLive}
             onClick={() => toast.show({ title: t('Connect the API') })}>
             <Icon name="Plus" size={16} />
