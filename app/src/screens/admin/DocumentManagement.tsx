@@ -138,11 +138,11 @@ export function DocumentManagement() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader icon="FileText" title={t('Document Management')} subtitle={t('Files, contracts, and records')} />
         <div className="relative flex items-center">
           <Icon name="Search" size={15} className="pointer-events-none absolute start-3 text-muted" />
-          <Input inputSize="sm" placeholder={t('Search documents...')} value={search} onChange={(e) => setSearch(e.target.value)} className="w-[260px] !ps-8" />
+          <Input inputSize="sm" placeholder={t('Search documents...')} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-[260px] !ps-8" />
         </div>
       </div>
 

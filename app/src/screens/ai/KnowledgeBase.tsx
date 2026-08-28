@@ -149,7 +149,7 @@ export function KnowledgeBase() {
               placeholder={t('Search articles...')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-[260px] !ps-8"
+              className="w-full sm:w-[260px] !ps-8"
             />
           </div>
           <Button size="sm" disabled={!isLive}
