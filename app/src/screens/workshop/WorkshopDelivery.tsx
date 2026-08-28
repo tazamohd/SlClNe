@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Money, SummaryRow } from '@/components/ui/Money'
@@ -56,15 +57,7 @@ export function WorkshopDelivery() {
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex items-center gap-3">
         <div className="relative">

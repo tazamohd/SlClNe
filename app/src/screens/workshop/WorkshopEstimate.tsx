@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -40,7 +41,7 @@ const LABOUR = [
  *  can approve this estimate, a technician (0) never can, and anything above a
  *  role's ceiling routes to the Approval Inbox instead (README §4). */
 export function WorkshopEstimate() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
@@ -91,15 +92,7 @@ export function WorkshopEstimate() {
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex items-center gap-3">
         {!isMobile && (

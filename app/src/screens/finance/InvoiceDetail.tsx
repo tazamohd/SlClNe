@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { BackLink } from '@/components/ui/BackLink'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -104,15 +105,7 @@ export function InvoiceDetail() {
 
   return (
     <div className="flex max-w-[1100px] flex-col gap-6">
-      <div>
-        <Link
-          to="/invoices"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Invoices')}
-        </Link>
-      </div>
+      <BackLink to="/invoices" label="Invoices" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>

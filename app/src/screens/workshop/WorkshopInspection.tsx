@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Panel } from '@/components/ui/FieldGrid'
@@ -42,7 +42,7 @@ const CATEGORIES = [
 ] as const
 
 export function WorkshopInspection() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
   const stage = useJobStage()
@@ -84,15 +84,7 @@ export function WorkshopInspection() {
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">

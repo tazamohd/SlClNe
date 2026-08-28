@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { Icon } from '@/components/ui/Icon'
@@ -19,7 +20,7 @@ const TOTAL_SAR = 1546.75
  *  isn't a handover record. Strokes are kept as paths so the result can be
  *  serialised and stored once file storage exists (README §10). */
 export function WorkshopSignature() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
@@ -84,15 +85,7 @@ export function WorkshopSignature() {
 
   return (
     <div className="flex max-w-[900px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex items-center gap-3">
         <div className="relative">

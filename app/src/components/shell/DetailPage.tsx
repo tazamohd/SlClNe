@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { BackLink } from '@/components/ui/BackLink'
 import { Card } from '@/components/ui/Card'
 import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
@@ -223,7 +224,7 @@ export function DetailPage({
   denied,
   readOnly,
 }: DetailPageProps) {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
   const [activeTab, setActiveTab] = useState<string | undefined>(tabs?.[0]?.id)
 
@@ -244,15 +245,7 @@ export function DetailPage({
 
   const rails = [timeline, comments, attachments, audit].filter(Boolean)
 
-  const backLink = back ? (
-    <Link
-      to={back.to}
-      className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-    >
-      <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-      {t(back.label)}
-    </Link>
-  ) : null
+  const backLink = back ? <BackLink to={back.to} label={back.label} /> : null
 
   const frame = (children: ReactNode) => (
     <div

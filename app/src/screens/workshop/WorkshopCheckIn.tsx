@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -30,7 +30,7 @@ const BELONGINGS = ['Sunglasses', 'Phone charger', 'Documents', 'Spare key', 'GP
  *  recorded it. The reported issues and the odometer reading travel with the
  *  request as its reason, so the trail says what was found on arrival. */
 export function WorkshopCheckIn() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { fieldHidden } = useSession()
   const isMobile = useIsMobile()
   const stage = useJobStage()
@@ -68,15 +68,7 @@ export function WorkshopCheckIn() {
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex items-center gap-3">
         <div className="relative">

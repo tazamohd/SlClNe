@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Avatar } from '@/components/ui/Avatar'
@@ -34,7 +35,7 @@ import { railIndexFor, type JobRow } from './stages'
  *  lines, and the totals are the ones the server computed.
  */
 export function JobDetail() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { fieldHidden, can } = useSession()
   const isMobile = useIsMobile()
   const { confirm } = useModal()
@@ -122,15 +123,7 @@ export function JobDetail() {
 
   return (
     <div className="flex max-w-[1100px] animate-fade-up flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
