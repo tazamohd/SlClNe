@@ -1618,7 +1618,7 @@ const SHELL_NOT_BUILT = new Set(['/procurement-portal', '/procurement-portal/req
 
 /** Product routes still rendering `PendingScreen`, per the registry. The count
  *  is asserted so the number can fall but never quietly rise. */
-const PLACEHOLDER_BUDGET = 248
+const PLACEHOLDER_BUDGET = 0
 
 /** Marker text `PendingScreen` renders, and nothing else does. */
 const PENDING_MARKER = 'Designed, not yet rebuilt'

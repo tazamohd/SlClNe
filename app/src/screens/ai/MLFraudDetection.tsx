@@ -9,11 +9,11 @@ import { PageHeader } from '@/components/ui/PageHeader'
 
 const MOCK_ALERTS = [
   { id: 'FRD-001', type: 'Invoice Anomaly', description: 'Duplicate invoice amount from same vendor', riskScore: 95, amount: 'SAR 24,500', entity: 'Parts Supplier Co.', status: 'Flagged', detectedAt: '2026-08-17 14:22' },
-  { id: 'FRD-002', type: 'Claim Pattern', description: 'Suspicious warranty claim frequency', riskScore: 87, amount: 'SAR 18,200', entity: 'Customer #4521', status: 'Under Review', detectedAt: '2026-08-17 11:05' },
+  { id: 'FRD-002', type: 'Claim Pattern', description: 'Suspicious warranty claim frequency', riskScore: 87, amount: 'SAR 18,200', entity: 'Customer C-4521', status: 'Under Review', detectedAt: '2026-08-17 11:05' },
   { id: 'FRD-003', type: 'Price Manipulation', description: 'Labor rate exceeds market threshold', riskScore: 78, amount: 'SAR 3,400', entity: 'Technician T-089', status: 'Dismissed', detectedAt: '2026-08-16 16:30' },
   { id: 'FRD-004', type: 'Ghost Inventory', description: 'Parts marked used but no work order', riskScore: 92, amount: 'SAR 7,800', entity: 'Warehouse B', status: 'Flagged', detectedAt: '2026-08-16 09:45' },
-  { id: 'FRD-005', type: 'Identity Mismatch', description: 'Customer ID does not match vehicle owner', riskScore: 65, amount: 'SAR 5,100', entity: 'Customer #7832', status: 'Under Review', detectedAt: '2026-08-15 13:20' },
-  { id: 'FRD-006', type: 'Payment Anomaly', description: 'Multiple refunds to same account', riskScore: 88, amount: 'SAR 12,600', entity: 'Account #9912', status: 'Flagged', detectedAt: '2026-08-15 10:15' },
+  { id: 'FRD-005', type: 'Identity Mismatch', description: 'Customer ID does not match vehicle owner', riskScore: 65, amount: 'SAR 5,100', entity: 'Customer C-7832', status: 'Under Review', detectedAt: '2026-08-15 13:20' },
+  { id: 'FRD-006', type: 'Payment Anomaly', description: 'Multiple refunds to same account', riskScore: 88, amount: 'SAR 12,600', entity: 'Account A-9912', status: 'Flagged', detectedAt: '2026-08-15 10:15' },
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
