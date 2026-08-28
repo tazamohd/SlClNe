@@ -19,7 +19,7 @@ export function Maintenance() {
       <div className={`relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col items-center text-center ${isMobile ? 'max-w-full gap-4' : 'max-w-[420px] gap-6'}`}>
         {/* Spinning cog with wrench badge — the design's maintenance motif. */}
         <div className="relative">
-          <div className={`flex animate-spin-slow items-center justify-center rounded-full border-[3px] border-dashed border-salis-blue/[.2] ${isMobile ? 'h-[80px] w-[80px]' : 'h-[100px] w-[100px]'}`}>
+          <div className={`flex animate-spin-slow motion-reduce:animate-none items-center justify-center rounded-full border-[3px] border-dashed border-salis-blue/[.2] ${isMobile ? 'h-[80px] w-[80px]' : 'h-[100px] w-[100px]'}`}>
             <Icon name="Cog" size={isMobile ? 34 : 44} className="text-salis-blue opacity-60" />
           </div>
           <div className="absolute -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-salis-gradient text-white shadow-[0_2px_8px_rgba(10,94,215,.4)] -end-1">

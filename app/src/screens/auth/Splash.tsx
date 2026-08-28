@@ -34,7 +34,7 @@ export function Splash() {
       <div className={`relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col items-center ${isMobile ? 'gap-4' : 'gap-6'}`}>
         <div className="relative">
           <div
-            className="absolute -inset-5 animate-pulse rounded-[20px] bg-salis-gradient opacity-25 blur-[28px]"
+            className="absolute -inset-5 animate-pulse motion-reduce:animate-none rounded-[20px] bg-salis-gradient opacity-25 blur-[28px]"
             aria-hidden
           />
           <img

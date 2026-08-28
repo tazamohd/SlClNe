@@ -158,7 +158,7 @@ export function ExportCenter({
           <Button onClick={handleExport} disabled={exporting || (columns != null && selected.size === 0)}>
             {exporting ? (
               <>
-                <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                <span className="inline-block h-3.5 w-3.5 animate-spin motion-reduce:animate-none rounded-full border-2 border-current border-t-transparent" />
                 {t('Exporting')}…
               </>
             ) : (

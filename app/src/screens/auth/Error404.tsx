@@ -19,7 +19,7 @@ export function Error404() {
 
       <div className={`relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col items-center text-center ${isMobile ? 'max-w-full gap-4' : 'max-w-[400px] gap-6'}`}>
         {/* Floating 404 — the design's signature element. */}
-        <div className="animate-float">
+        <div className="animate-float motion-reduce:animate-none">
           <span className={`bg-salis-gradient-r bg-clip-text font-display font-black leading-none text-transparent drop-shadow-[0_4px_20px_rgba(10,94,215,.2)] ${isMobile ? 'text-[80px]' : 'text-[120px]'}`}>
             404
           </span>

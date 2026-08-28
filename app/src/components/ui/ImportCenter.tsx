@@ -153,7 +153,7 @@ export function ImportCenter({
 
       {phase === 'importing' ? (
         <div className="flex flex-col items-center gap-3 py-8 text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-salis-blue border-t-transparent" />
+          <div className="h-8 w-8 animate-spin motion-reduce:animate-none rounded-full border-2 border-salis-blue border-t-transparent" />
           <p className="text-sm text-muted">{t('Importing')}…</p>
         </div>
       ) : null}
