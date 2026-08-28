@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
@@ -59,22 +60,12 @@ export function WorkshopDelivery() {
     <div className="flex max-w-[1200px] flex-col gap-6">
       <BackLink to="/job-cards" label="Back to Job Cards" />
 
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-          <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Car" size={isMobile ? 20 : 28} />
-          </div>
-        </div>
-        <div>
-          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
-            {t('Vehicle Delivery')}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted" dir="ltr">
-            JC-A3F8B2C1 · Ahmed Al-Rashid
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        icon="Car"
+        title={t('Vehicle Delivery')}
+        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
+        compact={isMobile}
+      />
 
       <WorkflowStepper current="Delivery" />
 

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { cn } from '@/lib/cn'
 import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
@@ -87,22 +88,12 @@ export function WorkshopInspection() {
       <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-            <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="SearchCheck" size={isMobile ? 20 : 28} />
-            </div>
-          </div>
-          <div>
-            <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
-              {t('Vehicle Inspection')}
-            </h1>
-            <p className="mt-0.5 text-sm text-muted" dir="ltr">
-              {stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          icon="SearchCheck"
+          title={t('Vehicle Inspection')}
+          subtitle={<span dir="ltr">{stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}</span>}
+          compact={isMobile}
+        />
         <span className="font-mono text-[13px] text-muted">
           {checked}/{total} {t('checks recorded')}
         </span>

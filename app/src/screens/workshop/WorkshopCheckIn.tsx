@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
@@ -70,22 +71,12 @@ export function WorkshopCheckIn() {
     <div className="flex max-w-[1200px] flex-col gap-6">
       <BackLink to="/job-cards" label="Back to Job Cards" />
 
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-          <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="ClipboardCheck" size={isMobile ? 20 : 28} />
-          </div>
-        </div>
-        <div>
-          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'}>
-            {t('Vehicle Check-In')}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted" dir="ltr">
-            {job ? `${job.id} · ${job.cust}` : '—'}
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        icon="ClipboardCheck"
+        title={t('Vehicle Check-In')}
+        subtitle={<span dir="ltr">{job ? `${job.id} · ${job.cust}` : '—'}</span>}
+        compact={isMobile}
+      />
 
       <WorkflowStepper current={stage.stageLabel} />
 
