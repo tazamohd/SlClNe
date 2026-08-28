@@ -1,10 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { SCREENS } from '@/data/generated/screens'
-import { SPEC_SCREENS } from '@/data/generated/spec-screens'
 import { RequireAccess } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
-import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
 
 /**
  * Route-level code-splitting. Every screen below is loaded on demand via
@@ -597,9 +595,10 @@ const WorkflowBuilder = lazy(() =>
 const Inventory = lazy(() =>
   import('@/screens/feature/Inventory').then((m) => ({ default: m.Inventory })),
 )
-const FeatureScreenView = lazy(() =>
-  import('@/screens/feature/FeatureScreenView').then((m) => ({ default: m.FeatureScreenView })),
-)
+
+// Spec/feature-map screens lazily resolved to avoid pulling 244 KB of
+// definitions + spec-screen data into the main bundle.
+const SpecScreenResolver = lazy(() => import('./SpecScreenResolver'))
 
 /** Lightweight, brand-consistent fallback shown while a route chunk loads.
  *  Blue only; logical CSS. */
@@ -869,42 +868,14 @@ export function AppRoutes() {
           )
         })}
 
-        {/* Feature-map screens with no `.dc.html` design. They carry a spec and
-            a reference screenshot under project/spec-shots/, so the route and nav
-            entry exist and PendingScreen names what to build from. Screens that
-            do have a design are already routed above. */}
-        {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
-          const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
-          return (
-            <Route
-              key={spec.id}
-              path={spec.route}
-              element={
-                <RequireAccess screen={spec.name}>
-                  {def ? (
-                    <FeatureScreenView def={def} />
-                  ) : (
-                    <PendingScreen
-                      screen={{
-                        name: spec.title,
-                        route: spec.route,
-                        hasMobile: false,
-                        purpose: spec.purpose,
-                      }}
-                      specId={spec.id}
-                    />
-                  )}
-                </RequireAccess>
-              }
-            />
-          )
-        })}
-
         {/* Routes the design references but SCREEN_MAP doesn't list. */}
         <Route path="/customer-app" element={<Navigate to="/customer-app/home" replace />} />
         <Route path="/logout-confirmation" element={<LogoutConfirmation />} />
         <Route path="/support" element={<Navigate to="/call-center" replace />} />
-        <Route path="*" element={<Navigate to="/error404" replace />} />
+        {/* Feature-map screens without a .dc.html design. The resolver
+            lazy-loads spec-screens.ts + definitions.ts (~244 KB) only when a
+            user actually navigates to an unmatched path. */}
+        <Route path="*" element={<SpecScreenResolver />} />
       </Routes>
     </Suspense>
   )
