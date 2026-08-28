@@ -2537,4 +2537,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "No movements recorded": "لم تُسجَّل حركات",
   "No transfers recorded": "لم تُسجَّل تحويلات",
   "This part has never been transferred between branches.": "لم تُحوَّل هذه القطعة بين الفروع مطلقًا.",
+  "Validation error": "خطأ في التحقق",
+  "Please fix the highlighted fields.": "يرجى تصحيح الحقول المميّزة.",
+  "Your changes have been saved.": "تم حفظ تغييراتك.",
 }

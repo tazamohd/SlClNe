@@ -46,7 +46,7 @@ export function WorkshopSignature() {
     if (!context || !point) return
     event.currentTarget.setPointerCapture(event.pointerId)
     drawing.current = true
-    context.strokeStyle = getComputedStyle(canvasRef.current!).getPropertyValue('--salis-blue').trim() || '#0A5ED7'
+    context.strokeStyle = getComputedStyle(canvasRef.current!).getPropertyValue('--salis-blue').trim() || 'var(--salis-blue)'
     context.lineWidth = 2.5
     context.lineCap = 'round'
     context.lineJoin = 'round'

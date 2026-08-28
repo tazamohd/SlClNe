@@ -5,19 +5,51 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
+
+const MIN_PW = 8
+
+function validatePassword(t: (s: string) => string, current: string, next: string, confirm: string) {
+  const errors: { current?: string; next?: string; confirm?: string } = {}
+  if (!current) errors.current = t('Required')
+  if (!next) errors.next = t('Required')
+  else if (next.length < MIN_PW) errors.next = t('At least 8 characters')
+  if (!confirm) errors.confirm = t('Required')
+  else if (confirm !== next) errors.confirm = t('Passwords do not match')
+  return errors
+}
 
 export function Profile() {
   const { t, language, theme } = usePreferences()
   const { userName, roleLabel, user } = useSession()
   const isMobile = useIsMobile()
+  const toast = useToast()
 
   const [fullName, setFullName] = useState(userName)
   const [email] = useState(user?.email ?? '')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [pwErrors, setPwErrors] = useState<{ current?: string; next?: string; confirm?: string }>({})
+
+  function handleSave() {
+    if (currentPassword || newPassword || confirmPassword) {
+      const errors = validatePassword(t, currentPassword, newPassword, confirmPassword)
+      setPwErrors(errors)
+      if (Object.keys(errors).length > 0) {
+        toast.show({ title: t('Validation error'), description: t('Please fix the highlighted fields.'), error: true })
+        return
+      }
+    }
+    toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setPwErrors({})
+  }
 
   if (isMobile) {
     return (
@@ -70,7 +102,9 @@ export function Profile() {
                 placeholder="••••••••"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                aria-invalid={Boolean(pwErrors.current)}
               />
+              {pwErrors.current ? <span className="text-[11px] text-salis-orange">{pwErrors.current}</span> : null}
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="font-action text-xs font-medium text-body">{t('New Password')}</label>
@@ -79,12 +113,25 @@ export function Profile() {
                 placeholder="••••••••"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                aria-invalid={Boolean(pwErrors.next)}
               />
+              {pwErrors.next ? <span className="text-[11px] text-salis-orange">{pwErrors.next}</span> : null}
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
+              <Input
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                aria-invalid={Boolean(pwErrors.confirm)}
+              />
+              {pwErrors.confirm ? <span className="text-[11px] text-salis-orange">{pwErrors.confirm}</span> : null}
             </div>
           </div>
         </Card>
 
-        <Button className="self-end">
+        <Button className="self-end" onClick={handleSave}>
           <Icon name="Check" size={16} />
           {t('Save Changes')}
         </Button>
@@ -133,7 +180,9 @@ export function Profile() {
               placeholder="••••••••"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
+              aria-invalid={Boolean(pwErrors.current)}
             />
+            {pwErrors.current ? <span className="text-[11px] text-salis-orange">{pwErrors.current}</span> : null}
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="font-action text-xs font-medium text-body">{t('New Password')}</label>
@@ -142,12 +191,25 @@ export function Profile() {
               placeholder="••••••••"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              aria-invalid={Boolean(pwErrors.next)}
             />
+            {pwErrors.next ? <span className="text-[11px] text-salis-orange">{pwErrors.next}</span> : null}
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
+            <Input
+              type="password"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              aria-invalid={Boolean(pwErrors.confirm)}
+            />
+            {pwErrors.confirm ? <span className="text-[11px] text-salis-orange">{pwErrors.confirm}</span> : null}
           </div>
         </div>
       </Card>
 
-      <Button className="self-end">
+      <Button className="self-end" onClick={handleSave}>
         <Icon name="Check" size={16} />
         {t('Save Changes')}
       </Button>

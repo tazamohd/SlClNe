@@ -17,6 +17,7 @@ import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { queryKeys, useCollection } from '@/data/useCollection'
 import { isLive } from '@/data/repository'
+import { Loading } from '@/components/ui/States'
 import { PAYMENT_METHODS, createReceipt, writeFailureMessage, type PaymentMethod } from './api'
 import { fromHalalas, invoiceMoney } from './money'
 
@@ -33,7 +34,7 @@ export function RaiseReceiptModal({ open, onClose }: { open: boolean; onClose: (
   const { t } = usePreferences()
   const toast = useToast()
   const client = useQueryClient()
-  const { data: invoices = [] } = useCollection('invoices')
+  const { data: invoices = [], isLoading } = useCollection('invoices')
   const [raised, setRaised] = useState<string | null>(null)
 
   /** Only invoices that could carry a receipt: issued, not cancelled, and with
@@ -109,7 +110,9 @@ export function RaiseReceiptModal({ open, onClose }: { open: boolean; onClose: (
         ) : undefined
       }
     >
-      {raised ? (
+      {isLoading ? (
+        <Loading inline label="Loading invoices..." />
+      ) : raised ? (
         <p className="text-[13px] text-body">
           {t('Raised against')} <span className="font-mono text-heading">{raised}</span>.{' '}
           {t('It stays pending until the money clears.')}

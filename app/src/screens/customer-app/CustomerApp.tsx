@@ -15,6 +15,7 @@ import { Money } from '@/components/ui/Money'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
 import { useToast } from '@/components/ui/Toast'
 import { EmptyState } from '@/components/ui/DataTable'
+import { Loading, ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
@@ -27,7 +28,10 @@ export function CustomerAppHome() {
   const { t } = usePreferences()
   const { userName } = useSession()
   const navigate = useNavigate()
-  const { data: vehicles = [] } = useCollection('vehicles')
+  const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const inService = vehicles.find((v) => v.status === 'service')
 
@@ -114,7 +118,10 @@ export function CustomerAppHome() {
 export function CustomerAppGarage() {
   const { t } = usePreferences()
   const navigate = useNavigate()
-  const { data: vehicles = [] } = useCollection('vehicles')
+  const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   return (
     <>
@@ -160,7 +167,10 @@ export function CustomerAppGarage() {
 export function CustomerAppAppointments() {
   const { t } = usePreferences()
   const navigate = useNavigate()
-  const { data: appointments = [] } = useCollection('appointments')
+  const { data: appointments = [], isLoading, isError, error, refetch } = useCollection('appointments')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   return (
     <>

@@ -66,7 +66,7 @@ export function StatusBadge({ value, label }: { value: string; label?: string })
 export function PriorityBadge({ value, label }: { value: string; label?: string }) {
   const [bg] = lookup(PR_BADGE, value)
   return (
-    <Badge background={bg} color="#FFFFFF" strong>
+    <Badge background={bg} color="white" strong>
       {label ?? value}
     </Badge>
   )
