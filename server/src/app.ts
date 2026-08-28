@@ -6,12 +6,18 @@ import { corsOrigins } from './env.js'
 import { authRouter } from './routes/auth.js'
 import { collectionsRouter } from './routes/collections.js'
 import { AppError, sendError } from './http.js'
+import { securityHeaders, rateLimit } from './security.js'
 
 export function createApp(): Express {
   const app = express()
 
+  app.disable('x-powered-by')
+  app.use(securityHeaders)
   app.use(cors({ origin: corsOrigins, credentials: true }))
   app.use(express.json({ limit: '1mb' }))
+
+  app.use('/auth/login', rateLimit({ windowMs: 15 * 60 * 1000, max: 15 }))
+  app.use('/auth/refresh', rateLimit({ windowMs: 15 * 60 * 1000, max: 30 }))
 
   // Liveness — unauthenticated.
   app.get('/health', (_req, res) => {
@@ -23,7 +29,7 @@ export function createApp(): Express {
 
   // Unknown route → the same error envelope the client parses.
   app.use((req, res) => {
-    sendError(res, new AppError(404, 'not_found', `No route for ${req.method} ${req.path}`))
+    sendError(res, new AppError(404, 'not_found', `No route for ${req.method} ${req.path.slice(0, 200)}`))
   })
 
   // JSON body parse failures etc. → envelope, never an HTML stack trace.

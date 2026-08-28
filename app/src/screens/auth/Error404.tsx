@@ -11,7 +11,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
  *  matching the prototype's `history.back()`, and "Go to Dashboard" points at
  *  the one route every session can resolve. */
 export function Error404() {
-  const { t } = usePreferences()
+  const { t, rtl } = usePreferences()
   const navigate = useNavigate()
 
   return (
@@ -47,7 +47,7 @@ export function Error404() {
             onClick={() => navigate(-1)}
             className="inline-flex h-12 flex-1 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border-[1.5px] border-border-strong bg-transparent px-5 font-action text-sm font-medium text-body"
           >
-            <Icon name="ArrowLeft" size={16} />
+            <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={16} />
             {t('Go Back')}
           </button>
         </div>

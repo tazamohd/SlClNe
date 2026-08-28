@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -78,9 +78,27 @@ export function TabBar({
   const [internal, setInternal] = useState(tabs[0]?.id ?? '')
   const active = value ?? internal
   const select = onChange ?? setInternal
+  const tablistRef = useRef<HTMLDivElement>(null)
+
+  function handleKeyDown(event: KeyboardEvent) {
+    const tabElements = tablistRef.current?.querySelectorAll<HTMLElement>('[role="tab"]')
+    if (!tabElements?.length) return
+    const currentIndex = Array.from(tabElements).findIndex((el) => el === document.activeElement)
+    let nextIndex = -1
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabElements.length
+    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabElements.length) % tabElements.length
+    else if (event.key === 'Home') nextIndex = 0
+    else if (event.key === 'End') nextIndex = tabElements.length - 1
+    if (nextIndex >= 0) {
+      event.preventDefault()
+      tabElements[nextIndex].focus()
+      select(tabs[nextIndex].id)
+    }
+  }
 
   return (
-    <Card className="flex gap-1 overflow-x-auto rounded-lg p-1.5" role="tablist">
+    <Card className="overflow-x-auto rounded-lg p-1.5">
+      <div ref={tablistRef} className="flex gap-1" role="tablist" onKeyDown={handleKeyDown}>
       {tabs.map((tab) => {
         const on = tab.id === active
         return (
@@ -89,6 +107,7 @@ export function TabBar({
             type="button"
             role="tab"
             aria-selected={on}
+            tabIndex={on ? 0 : -1}
             onClick={() => select(tab.id)}
             className={cn(
               'flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded px-4 py-2.5',
@@ -103,6 +122,7 @@ export function TabBar({
           </button>
         )
       })}
+      </div>
     </Card>
   )
 }

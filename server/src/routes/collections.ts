@@ -14,6 +14,7 @@ import { getDb } from '../db/index.js'
 import * as schema from '../db/schema.js'
 import { requireAuth, requireModule, handler } from '../auth/middleware.js'
 import { errors } from '../http.js'
+import { escapeIlike } from '../security.js'
 
 interface CollectionDef {
   /** Path relative to the API root, matching ENDPOINTS in the frontend. */
@@ -68,7 +69,7 @@ function selectMap(def: CollectionDef): Record<string, PgColumn> {
 function buildWhere(def: CollectionDef, q: string | undefined, filter: Record<string, string> | undefined): SQL | undefined {
   const clauses: SQL[] = []
   if (q && def.searchable.length > 0) {
-    const like = def.searchable.map((c) => ilike(def.table[c], `%${q}%`))
+    const like = def.searchable.map((c) => ilike(def.table[c], `%${escapeIlike(q)}%`))
     const search = like.length === 1 ? like[0] : or(...like)
     if (search) clauses.push(search)
   }

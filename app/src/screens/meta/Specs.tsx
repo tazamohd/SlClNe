@@ -166,7 +166,7 @@ export function FlowSpec() {
                 <Badge background={GATE_TONE[step.kind][0]} color={GATE_TONE[step.kind][1]}>{t(GATE_LABEL[step.kind])}: {t(step.gate)}</Badge>
               </div>
               {index < flow.steps.length - 1 ? (
-                <div className="flex w-6 items-center justify-center pt-3.5"><Icon name="ArrowRight" size={15} className="text-border-strong" /></div>
+                <div className="flex w-6 items-center justify-center pt-3.5"><Icon name="ArrowRight" size={15} className="text-border-strong rtl:-scale-x-100" /></div>
               ) : null}
             </div>
           ))}
@@ -179,17 +179,17 @@ export function FlowSpec() {
             <table className="w-full min-w-[520px] border-collapse text-[13px]">
               <thead>
                 <tr>
-                  <th className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('From')}</th>
-                  <th className="border-b border-border px-3 py-2.5" />
-                  <th className="border-b border-border px-3 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('To')}</th>
-                  <th className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('Rule & who can do it')}</th>
+                  <th scope="col" className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('From')}</th>
+                  <th scope="col" className="border-b border-border px-3 py-2.5" />
+                  <th scope="col" className="border-b border-border px-3 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('To')}</th>
+                  <th scope="col" className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('Rule & who can do it')}</th>
                 </tr>
               </thead>
               <tbody>
                 {flow.transitions.map((row) => (
                   <tr key={row.from + row.to} className="transition-colors hover:bg-[rgba(10,94,215,.03)]">
                     <td className="border-b border-border px-5 py-2.5 text-xs text-muted">{t(row.from)}</td>
-                    <td className="border-b border-border px-3 py-2.5 text-center"><Icon name="ArrowRight" size={13} className="text-salis-blue" /></td>
+                    <td className="border-b border-border px-3 py-2.5 text-center"><Icon name="ArrowRight" size={13} className="text-salis-blue rtl:-scale-x-100" /></td>
                     <td className="border-b border-border px-3 py-2.5 text-xs font-semibold text-heading">{t(row.to)}</td>
                     <td className="border-b border-border px-5 py-2.5">
                       <p className="m-0 text-xs text-body">{t(row.rule)}</p>
@@ -337,9 +337,9 @@ export function RBACSpec() {
           <table className="w-full min-w-[900px] border-collapse">
             <thead>
               <tr className="bg-inset">
-                <th className="sticky start-0 z-[1] bg-inset px-3.5 py-2.5 text-start text-[10.5px] font-bold uppercase tracking-wider text-muted">{t('Module')}</th>
+                <th scope="col" className="sticky start-0 z-[1] bg-inset px-3.5 py-2.5 text-start text-[10.5px] font-bold uppercase tracking-wider text-muted">{t('Module')}</th>
                 {ROLES.map((r) => (
-                  <th key={r.id} className="px-1 py-2.5 text-[10px] font-bold text-muted" title={r.label}><span dir="ltr">{SHORT_CODE[r.id] ?? r.id.toUpperCase()}</span></th>
+                  <th scope="col" key={r.id} className="px-1 py-2.5 text-[10px] font-bold text-muted" title={r.label}><span dir="ltr">{SHORT_CODE[r.id] ?? r.id.toUpperCase()}</span></th>
                 ))}
               </tr>
             </thead>

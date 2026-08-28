@@ -29,6 +29,7 @@ export function Chip({
       className={cn(
         'cursor-pointer rounded-full border px-3 py-1.5 font-action text-xs font-medium',
         'transition-all duration-150',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-page',
         selected
           ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
           : 'border-border bg-inset text-muted hover:border-border-strong',

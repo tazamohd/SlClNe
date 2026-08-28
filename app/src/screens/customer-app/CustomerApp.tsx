@@ -21,7 +21,7 @@ import { useCollection } from '@/data/useCollection'
 
 // ── Home ────────────────────────────────────────────────────────────────────
 export function CustomerAppHome() {
-  const { t } = usePreferences()
+  const { t, rtl } = usePreferences()
   const { userName } = useSession()
   const navigate = useNavigate()
   const { data: vehicles = [] } = useCollection('vehicles')
@@ -51,7 +51,7 @@ export function CustomerAppHome() {
             className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white"
           >
             {t('Track Service')}
-            <Icon name="ArrowRight" size={13} />
+            <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={13} />
           </button>
         </AppHeroCard>
       ) : null}

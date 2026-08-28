@@ -541,6 +541,60 @@ export const NAV: readonly NavGroup[] = [
         "key": "ai-analytics",
         "screen": "AIAnalytics",
         "route": "/aianalytics"
+      },
+      {
+        "label": "AI Automation",
+        "key": "ai-automation",
+        "screen": "AIAutomation",
+        "route": "/ai-automation"
+      },
+      {
+        "label": "AI Chatbot",
+        "key": "ai-chatbot",
+        "screen": "AIChatbot",
+        "route": "/ai-chatbot"
+      },
+      {
+        "label": "Chatbot Assistant",
+        "key": "ai-chatbot-assistant",
+        "screen": "AIChatbotAssistant",
+        "route": "/ai-chatbot-assistant"
+      },
+      {
+        "label": "AI Service Advisor",
+        "key": "ai-service-advisor",
+        "screen": "AIServiceAdvisor",
+        "route": "/ai-service-advisor"
+      },
+      {
+        "label": "Damage Assessment",
+        "key": "smart-damage-assessment",
+        "screen": "SmartDamageAssessment",
+        "route": "/smart-damage-assessment"
+      },
+      {
+        "label": "Fraud Detection",
+        "key": "ml-fraud-detection",
+        "screen": "MLFraudDetection",
+        "route": "/ml-fraud-detection"
+      },
+      {
+        "label": "Neural Prediction",
+        "key": "neural-network-prediction",
+        "screen": "NeuralNetworkPrediction",
+        "route": "/neural-network-prediction"
+      },
+      {
+        "label": "Voice Commands",
+        "key": "voice-commands",
+        "screen": "VoiceCommands",
+        "route": "/voice-commands"
+      },
+      {
+        "label": "Voice Interface",
+        "key": "voice-command-interface",
+        "screen": "VoiceCommandInterface",
+        "route": "/voice-command-interface"
       }
     ]
   },
