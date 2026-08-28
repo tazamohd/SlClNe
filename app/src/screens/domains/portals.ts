@@ -70,7 +70,7 @@ export const SCREENS: DomainScreens = {
   'CustomerPortal.Booking': { component: CustomerPortalBooking, shell: PortalShell },
   SupplierPortal: { component: SupplierPortal, shell: PortalShell },
   'SupplierPortal.Orders': { component: SupplierPortalOrders, shell: PortalShell },
-  'Kiosk-Check-In': { component: KioskCheckIn, shell: null },
+  KioskCheckIn: { component: KioskCheckIn, shell: null },
   'Client-Portal-Dashboard': { component: ClientPortalDashboard, shell: PortalShell },
   'Client-Portal-Vehicles': { component: ClientPortalVehicles, shell: PortalShell },
   'Client-Portal-Appointments': { component: ClientPortalAppointments, shell: PortalShell },

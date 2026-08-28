@@ -1512,6 +1512,7 @@ Object.assign(EXPECTED_TEXT, {
   '/error404': '404',
   '/estimate-detail': 'Estimate',
   '/hrpayroll': 'HR & Payroll',
+  '/kiosk-check-in': 'Self Check-In',
   '/job-card-detail': 'Services',
   '/onboarding': 'Welcome to SALIS AUTO',
   '/onboarding-2': 'Welcome to SALIS AUTO',
@@ -1754,7 +1755,7 @@ const failures = []
     // and recorded state disagree.
     // Routes whose screen exists but isn't wired into the router fall to
     // PendingScreen — this is a wiring gap, not a placeholder mismatch.
-    const UNWIRED_ROUTES = new Set(['/kiosk-check-in', '/fleet-contract', '/job-card-detail'])
+    const UNWIRED_ROUTES = new Set([])
     const isPlaceholder = entry.status !== 'IMPLEMENTED'
     if (!UNWIRED_ROUTES.has(entry.route) && isPlaceholder !== rendered.pending) {
       problems.push(

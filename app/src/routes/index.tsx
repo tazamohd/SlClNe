@@ -345,7 +345,7 @@ const SCREEN_ENTRIES = composeScreens({
     () => import('@/screens/domains/portals'),
     [
       'TechnicianPortal', 'TechnicianPortal.JobDetail', 'CustomerPortal', 'CustomerPortal.Booking',
-      'SupplierPortal', 'SupplierPortal.Orders', 'Kiosk-Check-In',
+      'SupplierPortal', 'SupplierPortal.Orders', 'KioskCheckIn',
       'Client-Portal-Dashboard', 'Client-Portal-Vehicles', 'Client-Portal-Appointments',
       'Client-Portal-Invoices', 'Client-Portal-Profile', 'Client-Portal-Service-History',
       'Client-Portal-Live-Tracking', 'Client-Portal-Reminders', 'Client-Portal-Review-Chat',
