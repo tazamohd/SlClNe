@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { StatusBadge } from '@/components/ui/Badge'
@@ -145,12 +146,7 @@ export function TechnicianPortalJobDetail() {
 
       {/* Customer & vehicle. */}
       <Card className="flex items-center gap-3 p-3.5">
-        <span
-          aria-hidden
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[15px] font-bold text-white"
-        >
-          {job.cust.trim()[0] ?? '?'}
-        </span>
+        <Avatar name={job.cust} size={40} />
         <div className="min-w-0">
           <p className="truncate text-sm font-bold text-heading">{job.cust}</p>
           <p className="mt-0.5 truncate text-xs text-muted">{job.veh}</p>

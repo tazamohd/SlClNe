@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
@@ -149,11 +149,3 @@ export function WorkshopDelivery() {
   )
 }
 
-function SummaryRow({ label, sar }: { label: string; sar: number }) {
-  return (
-    <div className="flex justify-between text-[13px] text-body">
-      <span>{label}</span>
-      <Money sar={sar} className="font-semibold" />
-    </div>
-  )
-}

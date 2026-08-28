@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { cn } from '@/lib/cn'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { Avatar } from './Avatar'
 import { Card } from './Card'
 import { Icon } from './Icon'
 import { Button } from './Button'
@@ -44,9 +45,7 @@ export function Comments({ items, title, onAdd, className }: CommentsProps) {
       <div className="flex flex-col gap-4">
         {items.map((c) => (
           <div key={c.id} className="flex gap-3">
-            <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-xs font-bold text-white">
-              {c.avatar ?? c.author[0]}
-            </span>
+            <Avatar name={c.avatar ?? c.author} />
             <div className="min-w-0 flex-1 rounded-lg border border-border bg-card p-3">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-heading">{c.author}</span>

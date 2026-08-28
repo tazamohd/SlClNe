@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card } from '@/components/ui/Card'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { StatusBadge, PriorityBadge } from '@/components/ui/Badge'
@@ -350,9 +351,7 @@ function TeamView({
         return (
           <Card key={tech.name} className="flex flex-col gap-3 p-4">
             <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-salis-gradient text-sm font-bold text-white">
-                {tech.name[0]}
-              </span>
+              <Avatar name={tech.name} size={40} />
               <div className="flex-1">
                 <p className="font-action text-[13px] font-semibold text-heading">{tech.name}</p>
                 <p className="text-[11px] text-muted">{tech.specialty}</p>

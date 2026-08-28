@@ -2,7 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
 import { DetailPage, type DetailStat } from '@/components/shell/DetailPage'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -256,11 +256,11 @@ export function InvoicePreview() {
             <div className="ms-auto flex w-full max-w-[360px] flex-col gap-2.5">
               {money.fromServer ? (
                 <>
-                  <TotalRow label={t('Subtotal')} halalas={money.subtotalHalalas} />
+                  <SummaryRow label={t('Subtotal')} halalas={money.subtotalHalalas} />
                   {money.discountHalalas > 0 ? (
-                    <TotalRow label={t('Discount')} halalas={-money.discountHalalas} />
+                    <SummaryRow label={t('Discount')} halalas={-money.discountHalalas} />
                   ) : null}
-                  <TotalRow label={t('VAT')} halalas={money.taxHalalas} />
+                  <SummaryRow label={t('VAT')} halalas={money.taxHalalas} />
                 </>
               ) : (
                 <p className="text-[11px] text-muted">
@@ -271,7 +271,7 @@ export function InvoicePreview() {
                 <span>{t('Total')}</span>
                 <Money sar={fromHalalas(money.totalHalalas)} className="font-bold" />
               </div>
-              {money.fromServer ? <TotalRow label={t('Paid')} halalas={-money.paidHalalas} muted /> : null}
+              {money.fromServer ? <SummaryRow label={t('Paid')} halalas={-money.paidHalalas} muted /> : null}
               <div className="flex justify-between border-t border-border pt-2.5 text-base font-bold">
                 <span className="text-heading">{t('Balance due')}</span>
                 <Money
@@ -314,19 +314,3 @@ function Th({ children, align }: { children: React.ReactNode; align: 'start' | '
   )
 }
 
-function TotalRow({
-  label,
-  halalas,
-  muted,
-}: {
-  label: string
-  halalas: number
-  muted?: boolean
-}) {
-  return (
-    <div className="flex justify-between text-[13px] text-body">
-      <span>{label}</span>
-      <Money sar={fromHalalas(halalas)} className={muted ? 'text-muted' : 'font-semibold'} />
-    </div>
-  )
-}

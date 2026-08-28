@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -209,12 +210,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
           <span className="hidden h-6 w-px bg-border sm:block" aria-hidden />
 
           <span className="hidden items-center gap-2 sm:flex">
-            <span
-              aria-hidden
-              className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[12px] font-bold text-white"
-            >
-              {userName.trim()[0] ?? '?'}
-            </span>
+            <Avatar name={userName} aria-hidden />
             <span className="hidden min-w-0 flex-col md:flex">
               <span className="max-w-[160px] truncate text-[13px] font-semibold leading-tight text-heading">
                 {userName}

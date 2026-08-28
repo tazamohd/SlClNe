@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -24,9 +25,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     <aside className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">
       <div className="p-3 pb-1">
         <div className="flex items-center gap-2 rounded border border-border bg-inset p-2">
-          <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[10px] font-bold text-white">
-            {userName.trim()[0] ?? '?'}
-          </span>
+          <Avatar name={userName} size={28} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-semibold text-heading">{userName}</p>
             <div className="flex items-center gap-1.5">

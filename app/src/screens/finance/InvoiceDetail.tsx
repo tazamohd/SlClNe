@@ -5,7 +5,7 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { InvoiceStatusBadge } from './Invoices'
 import { InvoiceRowActions } from './InvoiceActions'
@@ -298,11 +298,11 @@ export function InvoiceDetail() {
           <Card className="flex flex-col gap-2.5 p-5">
             {money.fromServer ? (
               <>
-                <TotalRow label={t('Subtotal')} halalas={money.subtotalHalalas} />
+                <SummaryRow label={t('Subtotal')} halalas={money.subtotalHalalas} />
                 {money.discountHalalas > 0 ? (
-                  <TotalRow label={t('Discount')} halalas={-money.discountHalalas} />
+                  <SummaryRow label={t('Discount')} halalas={-money.discountHalalas} />
                 ) : null}
-                <TotalRow label={`${t('VAT')} 15%`} halalas={money.taxHalalas} />
+                <SummaryRow label={`${t('VAT')} 15%`} halalas={money.taxHalalas} />
               </>
             ) : (
               <p className="text-[11px] text-muted">
@@ -313,7 +313,7 @@ export function InvoiceDetail() {
               <span>{t('Total')}</span>
               <Money sar={fromHalalas(money.totalHalalas)} className="font-bold" />
             </div>
-            <TotalRow label={t('Paid')} halalas={-money.paidHalalas} muted />
+            <SummaryRow label={t('Paid')} halalas={-money.paidHalalas} muted />
             <div className="flex justify-between border-t border-border pt-2.5 text-base font-bold">
               <span className="text-heading">{t('Balance due')}</span>
               {/* Outstanding money is orange; settled is brand blue. */}
@@ -397,25 +397,6 @@ function Th({
   )
 }
 
-function TotalRow({
-  label,
-  halalas,
-  muted,
-}: {
-  label: string
-  halalas: number
-  muted?: boolean
-}) {
-  return (
-    <div className="flex justify-between text-[13px] text-body">
-      <span>{label}</span>
-      <Money
-        sar={fromHalalas(halalas)}
-        className={muted ? 'text-muted' : 'font-semibold'}
-      />
-    </div>
-  )
-}
 
 function MetaCard({
   label,

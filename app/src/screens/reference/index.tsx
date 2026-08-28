@@ -5,6 +5,7 @@
 import { useState } from 'react'
 import { Card, CardHeader } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -508,9 +509,7 @@ export function UIComments() {
         <div className="flex flex-col gap-4">
           {comments.map((c, i) => (
             <div key={i} className="flex gap-3">
-              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-xs font-bold text-white">
-                {c.avatar}
-              </span>
+              <Avatar name={c.avatar} />
               <div className="flex-1 rounded-lg border border-border bg-card p-3">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-heading">{c.author}</span>

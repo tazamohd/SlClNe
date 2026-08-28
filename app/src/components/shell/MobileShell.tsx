@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -23,9 +24,7 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
       >
         <Icon name="Menu" size={20} />
       </button>
-      <span className="flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[10px] font-bold text-white">
-        {userName.trim()[0] ?? '?'}
-      </span>
+      <Avatar name={userName} size={26} />
       <p className="flex-1 truncate text-[13px] font-semibold text-heading">{userName}</p>
       <button
         type="button"

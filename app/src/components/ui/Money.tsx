@@ -46,6 +46,28 @@ export function formatSar(
  *  The mock tables store money as display strings; the real API will return
  *  numbers. Screens call this so they can format consistently now and drop it
  *  the day the field becomes numeric. */
+/** Label + SAR amount on one row, used in invoice/estimate/delivery summaries.
+ *  Pass `sar` for values already in riyals or `halalas` for wire-format values. */
+export function SummaryRow({
+  label,
+  sar,
+  halalas,
+  muted,
+}: {
+  label: string
+  sar?: number
+  halalas?: number
+  muted?: boolean
+}) {
+  const amount = halalas != null ? halalas / 100 : (sar ?? 0)
+  return (
+    <div className="flex justify-between text-[13px] text-body">
+      <span>{label}</span>
+      <Money sar={amount} className={muted ? 'text-muted' : 'font-semibold'} />
+    </div>
+  )
+}
+
 export function parseSar(value: string): number {
   /* A ledger writes a negative in brackets: "(1,200)" is −1,200. The brackets
    * are exactly what the punctuation strip removes, so they are read first —

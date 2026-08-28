@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Avatar } from '@/components/ui/Avatar'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
@@ -61,9 +62,7 @@ export function Chat() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-salis-gradient text-xs font-bold text-white">
-                    {chat.customer[0]}
-                  </span>
+                  <Avatar name={chat.customer} />
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{chat.customer}</p>
                     <p className="text-xs text-muted">{chat.subject}</p>
@@ -115,9 +114,7 @@ export function Chat() {
           <div className="flex flex-col gap-1">
             {ACTIVE_CHATS.map((chat) => (
               <div key={chat.id} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors ${chat.id === 1 ? 'bg-[rgba(10,94,215,.06)]' : 'hover:bg-surface-secondary'}`}>
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-xs font-bold text-white">
-                  {chat.customer[0]}
-                </span>
+                <Avatar name={chat.customer} size={36} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between">
                     <span className="truncate text-sm font-semibold text-heading">{chat.customer}</span>
@@ -136,7 +133,7 @@ export function Chat() {
 
         <Card className="flex flex-1 flex-col rounded-2xl shadow-sm">
           <div className="flex items-center gap-3 border-b border-border px-5 py-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-salis-gradient text-xs font-bold text-white">A</span>
+            <Avatar name={ACTIVE_CHATS[0].customer} size={36} />
             <div>
               <p className="text-sm font-semibold text-heading">{ACTIVE_CHATS[0].customer}</p>
               <p className="text-xs text-muted">{ACTIVE_CHATS[0].subject}</p>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -330,12 +331,7 @@ export function WorkshopQC() {
           <Panel icon="User" title={t('Assigned Technician')}>
             {technician ? (
               <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-salis-gradient text-[13px] font-bold text-white"
-                >
-                  {technician.name.trim()[0] ?? '?'}
-                </span>
+                <Avatar name={technician.name} size={36} />
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{technician.name}</p>
                   <p className="mt-0.5 text-[11px] text-muted">

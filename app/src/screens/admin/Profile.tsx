@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Avatar } from '@/components/ui/Avatar'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
@@ -18,8 +19,6 @@ export function Profile() {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
 
-  const initial = userName.trim()[0] ?? '?'
-
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
@@ -35,9 +34,7 @@ export function Profile() {
 
         <Card className="rounded-2xl p-4">
           <div className="mb-4 flex items-center gap-3">
-            <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-xl font-bold text-white">
-              {initial}
-            </span>
+            <Avatar name={userName} size={56} />
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-heading">{userName}</p>
               <p className="text-xs text-muted">{t('Role')}: {roleLabel}</p>
@@ -101,9 +98,7 @@ export function Profile() {
 
       <Card className="rounded-2xl p-6">
         <div className="mb-5 flex items-center gap-4">
-          <span className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-2xl font-bold text-white">
-            {initial}
-          </span>
+          <Avatar name={userName} size={64} />
           <div>
             <p className="text-base font-bold text-heading">{userName}</p>
             <p className="mt-0.5 text-[13px] text-muted">{t('Role')}: {roleLabel}</p>

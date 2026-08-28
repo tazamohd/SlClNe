@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Card } from '@/components/ui/Card'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import {
   EmptyState,
@@ -428,9 +429,7 @@ function DetailHeader({
   // only the letter chip, and the one with no chip is not a card at all.
   if (isMobile) {
     const chip = avatar?.initial ? (
-      <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[17px] font-bold text-white">
-        {avatar.initial}
-      </span>
+      <Avatar name={avatar.initial} size={48} />
     ) : null
 
     const body = (

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -83,9 +84,7 @@ export function UsersTeams() {
       header: 'User',
       cell: (u) => (
         <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
-            {u.name.trim()[0]}
-          </span>
+          <Avatar name={u.name} />
           <div className="min-w-0">
             <p className="m-0 text-[13px] font-medium text-heading">{u.name}</p>
             <p className="m-0 text-[11px] text-muted">{u.email}</p>
@@ -178,9 +177,7 @@ export function UsersTeams() {
               <MobileCardHeader
                 leading={
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[11px] font-bold text-white">
-                      {u.name.trim()[0]}
-                    </span>
+                    <Avatar name={u.name} />
                     <div className="min-w-0">
                       <span className="text-[13px] font-semibold text-heading">{u.name}</span>
                       <span className="block text-[11px] text-muted">{u.email}</span>
@@ -232,13 +229,7 @@ export function UsersTeams() {
                 </div>
                 <div className="mb-2 flex">
                   {tm.avatars.map((av, i) => (
-                    <span
-                      key={av}
-                      className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-card bg-salis-gradient text-[10px] font-bold text-white"
-                      style={{ marginInlineStart: i > 0 ? '-6px' : 0 }}
-                    >
-                      {av}
-                    </span>
+                    <Avatar key={av} name={av} size={28} className={`border-2 border-card${i > 0 ? ' -ms-1.5' : ''}`} />
                   ))}
                 </div>
                 <p className="m-0 text-xs text-muted">

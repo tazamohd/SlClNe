@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import {
   Field,
@@ -648,14 +648,6 @@ function Th({ children, className = '' }: { children: React.ReactNode; className
   )
 }
 
-function SummaryRow({ label, halalas }: { label: string; halalas: number }) {
-  return (
-    <div className="flex justify-between text-sm text-body">
-      <span>{label}</span>
-      <Money sar={fromHalalas(halalas)} className="font-semibold" />
-    </div>
-  )
-}
 
 function toLineInput(line: DraftLine): InvoiceLineInput {
   return {

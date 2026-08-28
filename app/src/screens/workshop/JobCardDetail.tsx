@@ -5,7 +5,8 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Panel } from '@/components/ui/FieldGrid'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
+import { Avatar } from '@/components/ui/Avatar'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
 import { WORKSHOP_STAGES, WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -543,15 +544,6 @@ function CostSummary({ invoice, className }: { invoice?: InvoiceRow; className?:
   )
 }
 
-function SummaryRow({ label, halalas: value }: { label: string; halalas?: number }) {
-  return (
-    <div className="flex items-center justify-between gap-3 text-sm text-body">
-      <span>{label}</span>
-      <Money sar={halalas(value)} className="font-semibold" />
-    </div>
-  )
-}
-
 /* ------------------------------------------------------------------ pieces */
 
 /** Halalas on the wire, SAR at the boundary — never the other way round. */
@@ -595,17 +587,6 @@ function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   )
 }
 
-function Avatar({ name, size }: { name: string; size: number }) {
-  return (
-    <span
-      aria-hidden
-      style={{ width: size, height: size, fontSize: Math.round(size * 0.35) }}
-      className="flex flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient font-bold text-white"
-    >
-      {name.trim()[0] ?? '?'}
-    </span>
-  )
-}
 
 /** An ISO stamp from the API, or an em dash when the row has none — which is
  *  every fixture row, because the design bundle has no timestamps. */

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -126,9 +127,7 @@ export function TechnicianSchedule() {
             return (
               <Card key={tech._id ?? tech.name} className="flex flex-col gap-4 p-5">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-sm font-bold text-white">
-                    {tech.name.trim()[0] ?? '?'}
-                  </span>
+                  <Avatar name={tech.name} size={40} />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-bold text-heading">{tech.name}</p>
                     <p className="mt-0.5 text-[11px] text-muted">{tech.specialty || t('Technician')}</p>

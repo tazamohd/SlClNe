@@ -6,6 +6,7 @@ import {
   AppListRow,
   AppSection,
 } from '@/components/shell/CustomerAppShell'
+import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
@@ -33,9 +34,7 @@ export function CustomerAppHome() {
   return (
     <>
       <div className="flex items-center gap-2.5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-salis-gradient text-sm font-bold text-white">
-          {userName.trim()[0] ?? '?'}
-        </span>
+        <Avatar name={userName} size={40} />
         <div className="min-w-0">
           <p className="text-xs text-muted">{t('Welcome back,')}</p>
           <p className="truncate text-sm font-bold text-heading">{userName}</p>
@@ -465,9 +464,7 @@ export function CustomerAppProfile() {
   return (
     <>
       <div className="flex flex-col items-center gap-2 py-3">
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-salis-gradient text-xl font-bold text-white">
-          {userName.trim()[0] ?? '?'}
-        </span>
+        <Avatar name={userName} size={64} />
         <p className="text-sm font-bold text-heading">{userName}</p>
         <p className="text-xs text-muted">{roleLabel}</p>
       </div>

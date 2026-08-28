@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { DataTable, type Column } from '@/components/ui/DataTable'
@@ -161,8 +161,8 @@ export function WorkshopEstimate() {
       </Panel>
 
       <Card className={`flex flex-col gap-2.5 p-6 ${isMobile ? 'w-full' : 'self-end sm:min-w-[360px]'}`}>
-        <TotalRow label={t('Subtotal')} sar={subtotal} />
-        <TotalRow label={t('VAT (15%)')} sar={vat} />
+        <SummaryRow label={t('Subtotal')} sar={subtotal} />
+        <SummaryRow label={t('VAT (15%)')} sar={vat} />
         <div className="flex justify-between border-t border-border pt-2.5 text-lg font-extrabold text-heading">
           <span>{t('Grand Total')}</span>
           <Money sar={grandTotal} className="font-extrabold" />
@@ -200,11 +200,3 @@ export function WorkshopEstimate() {
   )
 }
 
-function TotalRow({ label, sar }: { label: string; sar: number }) {
-  return (
-    <div className="flex justify-between text-sm text-body">
-      <span>{label}</span>
-      <Money sar={sar} className="font-semibold" />
-    </div>
-  )
-}

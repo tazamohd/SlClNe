@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { StatusBadge } from '@/components/ui/Badge'
@@ -186,12 +187,7 @@ export function JobDetail() {
             <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h3>
             {technician ? (
               <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-salis-gradient text-[13px] font-bold text-white"
-                >
-                  {technician.name.trim()[0] ?? '?'}
-                </span>
+                <Avatar name={technician.name} size={36} />
                 <span className="text-sm text-body">{technician.name}</span>
               </div>
             ) : (
