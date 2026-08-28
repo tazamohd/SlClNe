@@ -144,6 +144,7 @@ export function UITableView() {
       <PageHeader icon="Table" title="TableView" subtitle="Tabular data with sorting, filtering and pagination" />
       <Section title="Standard Table">
         <DataTable
+          caption="Sample tabular data"
           columns={cols}
           rows={rows}
           rowKey={r => r.id}

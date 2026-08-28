@@ -268,6 +268,7 @@ export function PartsNetworkQuotations() {
       </ChipGroup>
 
       <DataTable
+        caption="Supplier quotations"
         columns={columns}
         rows={sorted}
         rowKey={(q) => q.supplier}
@@ -1487,6 +1488,7 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
         <ErrorState title={t("Couldn't load requisitions")} onRetry={() => void liveQuery.refetch()} />
       ) : (
         <DataTable
+          caption="Procurement requisitions"
           columns={columns}
           rows={rows}
           rowKey={(r) => r.ref}

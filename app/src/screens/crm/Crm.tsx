@@ -332,6 +332,7 @@ export function Opportunities() {
         {oppStats}
         <OpportunityFormModal open={creating} onClose={() => setCreating(false)} />
         <DataTable
+          caption="Sales opportunities"
           columns={columns}
           rows={opportunities}
           rowKey={(o) => o.name}
@@ -373,6 +374,7 @@ export function Opportunities() {
       {oppStats}
       <OpportunityFormModal open={creating} onClose={() => setCreating(false)} />
       <DataTable
+        caption="Sales opportunities"
         columns={columns}
         rows={opportunities}
         rowKey={(o) => o.name}
@@ -481,6 +483,7 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
           { label: 'Conversions', value: totals.conversions, caption: 'Booked' },
         ]} />
         <DataTable
+          caption="Marketing campaigns"
           columns={columns}
           rows={campaigns}
           rowKey={(c) => c.name}
@@ -535,6 +538,7 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
         ]}
       />
       <DataTable
+        caption="Marketing campaigns"
         columns={columns}
         rows={campaigns}
         rowKey={(c) => c.name}
@@ -591,6 +595,7 @@ export function CustomerSegments() {
       <>
         <MobilePageHeader icon="Users" title={t('Customer Segments')} subtitle={t('CRM')} />
         <DataTable
+          caption="Customer segments"
           columns={columns}
           rows={segments}
           rowKey={(s) => s.name}
@@ -626,6 +631,7 @@ export function CustomerSegments() {
       />
       <SegmentFormModal open={creating} onClose={() => setCreating(false)} />
       <DataTable
+        caption="Customer segments"
         columns={columns}
         rows={segments}
         rowKey={(s) => s.name}
@@ -704,6 +710,7 @@ export function CRMTasks() {
           })}
         </ChipGroup>
         <DataTable
+          caption="CRM tasks"
           columns={columns}
           rows={filtered}
           rowKey={(task) => task.title}
@@ -753,6 +760,7 @@ export function CRMTasks() {
       </ChipGroup>
 
       <DataTable
+        caption="CRM tasks"
         columns={columns}
         rows={filtered}
         rowKey={(task) => task.title}
@@ -802,6 +810,7 @@ export function AgentRegistry() {
       <>
         <MobilePageHeader icon="Bot" title={t('Agent Registry')} />
         <DataTable
+          caption="Deployed AI agents"
           columns={columns}
           rows={agents}
           rowKey={(a) => a.name}
@@ -830,6 +839,7 @@ export function AgentRegistry() {
         subtitle={t('Deployed AI agents and their runtime status')}
       />
       <DataTable
+        caption="Deployed AI agents"
         columns={columns}
         rows={agents}
         rowKey={(a) => a.name}
@@ -965,6 +975,7 @@ export function ConversationHistory() {
       <>
         <MobilePageHeader icon="MessagesSquare" title={t('Conversation History')} />
         <DataTable
+          caption="AI conversation history"
           columns={columns}
           rows={conversations}
           rowKey={(c) => c.title}
@@ -993,6 +1004,7 @@ export function ConversationHistory() {
         subtitle={t('AI conversation logs')}
       />
       <DataTable
+        caption="AI conversation history"
         columns={columns}
         rows={conversations}
         rowKey={(c) => c.title}

@@ -178,6 +178,7 @@ export function Customers() {
           </Card>
         ) : (
           <DataTable
+            caption="Customer records"
             columns={columns}
             rows={filtered}
             rowKey={(c) => rowId(c) ?? c.name}
@@ -240,6 +241,7 @@ export function Customers() {
         </Card>
       ) : (
         <DataTable
+          caption="Customer records"
           columns={columns}
           rows={filtered}
           rowKey={(c) => rowId(c) ?? c.name}
@@ -394,6 +396,7 @@ export function Vehicles() {
           </Card>
         ) : (
           <DataTable
+            caption="Vehicle records"
             columns={columns}
             rows={filtered}
             rowKey={(v) => rowId(v) ?? v.plate}
@@ -475,6 +478,7 @@ export function Vehicles() {
         </Card>
       ) : (
         <DataTable
+          caption="Vehicle records"
           columns={columns}
           rows={filtered}
           rowKey={(v) => rowId(v) ?? v.plate}
@@ -580,6 +584,7 @@ export function Estimates() {
       <>
         <MobilePageHeader icon="FileText" title={t('Estimates')} />
         <DataTable
+          caption="Service estimates"
           columns={columns}
           rows={filtered}
           rowKey={(e) => e.id}
@@ -616,6 +621,7 @@ export function Estimates() {
         }
       />
       <DataTable
+        caption="Service estimates"
         columns={columns}
         rows={filtered}
         rowKey={(e) => e.id}
@@ -695,6 +701,7 @@ export function Technicians() {
           inputSize="sm"
         />
         <DataTable
+          caption="Technician records"
           columns={columns}
           rows={filtered}
           rowKey={(x) => x.name}
@@ -737,6 +744,7 @@ export function Technicians() {
         }
       />
       <DataTable
+        caption="Technician records"
         columns={columns}
         rows={filtered}
         rowKey={(x) => x.name}
@@ -791,6 +799,7 @@ export function FleetManagement() {
       <>
         <MobilePageHeader icon="Truck" title={t('Fleet Management')} />
         <DataTable
+          caption="Fleet management contracts"
           columns={columns}
           rows={filtered}
           rowKey={(f) => f.name}
@@ -824,6 +833,7 @@ export function FleetManagement() {
         }
       />
       <DataTable
+        caption="Fleet management contracts"
         columns={columns}
         rows={filtered}
         rowKey={(f) => f.name}
