@@ -70,8 +70,8 @@ function FeatureSectionView({ section }: { section: FeatureSection }) {
     />
   ) : isMobile ? (
     <MobileList>
-      {rows.map((row, index) => (
-        <MobileCard key={index}>
+      {rows.map((row) => (
+        <MobileCard key={row[0]}>
           <MobileCardHeader title={row[0]} />
           {row.slice(1).map((cell, cellIndex) => (
             <MobileCardRow key={cellIndex} label={t(section.columns![cellIndex + 1])}>
@@ -98,8 +98,8 @@ function FeatureSectionView({ section }: { section: FeatureSection }) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
-            <tr key={index} className="transition-colors duration-150 hover:bg-salis-blue/[.04]">
+          {rows.map((row) => (
+            <tr key={row[0]} className="transition-colors duration-150 hover:bg-salis-blue/[.04]">
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}

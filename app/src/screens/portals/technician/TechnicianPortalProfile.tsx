@@ -66,20 +66,20 @@ export function TechnicianPortalProfile() {
         </Card>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Personal')}</p>} />
-          {PERSONAL_FIELDS.map((f, i) => (
-            <MobileCardRow key={i} label={t(f.label)} value={f.value} />
+          {PERSONAL_FIELDS.map((f) => (
+            <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
           ))}
         </MobileCard>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Work Details')}</p>} />
-          {WORK_FIELDS.map((f, i) => (
-            <MobileCardRow key={i} label={t(f.label)} value={f.value} />
+          {WORK_FIELDS.map((f) => (
+            <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
           ))}
         </MobileCard>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Certifications')}</p>} />
-          {CERTIFICATIONS.map((c, i) => (
-            <MobileCardRow key={i} label={c.name}>
+          {CERTIFICATIONS.map((c) => (
+            <MobileCardRow key={c.name} label={c.name}>
               <Badge background={CERT_STATUS_STYLES[c.status].bg} color={CERT_STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge>
             </MobileCardRow>
           ))}
@@ -99,8 +99,8 @@ export function TechnicianPortalProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Personal')}</h2>
           </div>
           <div className="grid gap-4">
-            {PERSONAL_FIELDS.map((f, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {PERSONAL_FIELDS.map((f) => (
+              <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <div className="flex items-center gap-2">
                   <Icon name={f.icon} size={14} className="text-muted" />
                   <span className="text-sm text-muted">{t(f.label)}</span>
@@ -117,8 +117,8 @@ export function TechnicianPortalProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Work Details')}</h2>
           </div>
           <div className="grid gap-4">
-            {WORK_FIELDS.map((f, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {WORK_FIELDS.map((f) => (
+              <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(f.label)}</span>
                 <span className="text-sm font-medium text-heading">{f.value}</span>
               </div>
@@ -132,8 +132,8 @@ export function TechnicianPortalProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Certifications')}</h2>
           </div>
           <div className="grid gap-4">
-            {CERTIFICATIONS.map((c, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {CERTIFICATIONS.map((c) => (
+              <div key={c.name} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <div>
                   <p className="text-sm font-medium text-heading">{c.name}</p>
                   <p className="text-xs text-muted">{t('Expires')}: {c.expiry}</p>

@@ -164,7 +164,7 @@ export function CalendarGrid({ appointments, date, view, onSelect }: CalendarGri
             const today = sameDay(d, new Date())
             return (
               <div
-                key={i}
+                key={d.toISOString()}
                 className={cn(
                   'border-0 border-s border-solid border-border py-2 text-center',
                   today && 'bg-salis-blue/[.06]'
@@ -191,11 +191,11 @@ export function CalendarGrid({ appointments, date, view, onSelect }: CalendarGri
               </div>
             ))}
           </div>
-          {days.map((d, i) => {
+          {days.map((d) => {
             const forDay = placeable.filter((a) => sameDay(apptDate(a, date), d))
             return (
               <div
-                key={i}
+                key={d.toISOString()}
                 className="relative border-0 border-s border-solid border-border"
                 style={{ height: gridHeight }}
               >

@@ -52,14 +52,14 @@ export function ClientPortalProfile() {
         </Card>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Personal Information')}</p>} />
-          {PERSONAL_FIELDS.map((f, i) => (
-            <MobileCardRow key={i} label={t(f.label)} value={f.value} />
+          {PERSONAL_FIELDS.map((f) => (
+            <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
           ))}
         </MobileCard>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Membership')}</p>} />
-          {MEMBERSHIP_FIELDS.map((f, i) => (
-            <MobileCardRow key={i} label={t(f.label)} value={f.value} />
+          {MEMBERSHIP_FIELDS.map((f) => (
+            <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
           ))}
         </MobileCard>
       </div>
@@ -77,8 +77,8 @@ export function ClientPortalProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Personal Information')}</h2>
           </div>
           <div className="grid gap-4">
-            {PERSONAL_FIELDS.map((f, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {PERSONAL_FIELDS.map((f) => (
+              <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <div className="flex items-center gap-2">
                   <Icon name={f.icon} size={14} className="text-muted" />
                   <span className="text-sm text-muted">{t(f.label)}</span>
@@ -95,8 +95,8 @@ export function ClientPortalProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Membership')}</h2>
           </div>
           <div className="grid gap-4">
-            {MEMBERSHIP_FIELDS.map((f, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {MEMBERSHIP_FIELDS.map((f) => (
+              <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(f.label)}</span>
                 {f.label === 'Loyalty Tier' ? (
                   <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t(f.value)}</Badge>

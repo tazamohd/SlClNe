@@ -35,8 +35,8 @@ export function PartsMarketplace() {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Store" title={t('Marketplace')} subtitle={t('Parts marketplace')} />
-        {LISTINGS.map((listing, i) => (
-          <MobileCard key={i}>
+        {LISTINGS.map((listing) => (
+          <MobileCard key={listing.partName}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -71,8 +71,8 @@ export function PartsMarketplace() {
       <PageHeader icon="Store" title={t('Parts Marketplace')} subtitle={t('Browse and compare parts from suppliers')} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {LISTINGS.map((listing, i) => (
-          <Card key={i} className="flex flex-col gap-3 rounded-2xl p-5 shadow-sm">
+        {LISTINGS.map((listing) => (
+          <Card key={listing.partName} className="flex flex-col gap-3 rounded-2xl p-5 shadow-sm">
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Box" size={16} /></span>

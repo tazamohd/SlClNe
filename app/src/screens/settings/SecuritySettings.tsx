@@ -24,8 +24,8 @@ export function SecuritySettings() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Lock" title={t('Security Settings')} subtitle={t('Security configuration')} />
         <MobileCard>
-          {SETTINGS.map((s, i) => (
-            <MobileCardRow key={i} label={t(s.label)}>
+          {SETTINGS.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)}>
               {s.type === 'toggle' ? (
                 <Badge
                   background={(s.value as boolean) ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
@@ -53,8 +53,8 @@ export function SecuritySettings() {
           <h2 className="text-sm font-semibold text-heading">{t('Security Configuration')}</h2>
         </div>
         <div className="grid gap-4">
-          {SETTINGS.map((s, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+          {SETTINGS.map((s) => (
+            <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{t(s.label)}</span>
               {s.type === 'toggle' ? (
                 <Badge

@@ -51,8 +51,8 @@ export function UserProfile() {
               <p className="text-xs text-muted">{PROFILE.role}</p>
             </div>
           </div>
-          {details.map((d, i) => (
-            <MobileCardRow key={i} label={d.label} value={d.value} />
+          {details.map((d) => (
+            <MobileCardRow key={d.label} label={d.label} value={d.value} />
           ))}
         </MobileCard>
         <div className="grid grid-cols-3 gap-3">
@@ -85,8 +85,8 @@ export function UserProfile() {
           </div>
         </div>
         <div className="mt-5 grid gap-4">
-          {details.map((d, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+          {details.map((d) => (
+            <div key={d.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{d.label}</span>
               <span className="text-sm font-medium text-heading">{d.value}</span>
             </div>

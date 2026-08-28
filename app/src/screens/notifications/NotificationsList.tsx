@@ -61,10 +61,10 @@ export function NotificationsList() {
             {t('Mark all read')}
           </Button>
         </div>
-        {notifications.map((n, i) => {
+        {notifications.map((n) => {
           const style = TYPE_STYLES[n.type]
           return (
-            <MobileCard key={i}>
+            <MobileCard key={`${n.title}-${n.timestamp}`}>
               <MobileCardHeader
                 leading={
                   <div className="flex items-center gap-2">
@@ -116,11 +116,11 @@ export function NotificationsList() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col gap-1">
-          {notifications.map((n, i) => {
+          {notifications.map((n) => {
             const style = TYPE_STYLES[n.type]
             return (
               <div
-                key={i}
+                key={`${n.title}-${n.timestamp}`}
                 className={`flex items-start gap-3 rounded-xl px-4 py-3 transition-colors ${!n.read ? 'bg-salis-blue/[.04]' : ''}`}
               >
                 <span className="mt-0.5 flex flex-shrink-0 rounded-lg p-1.5" style={{ background: style.bg, color: style.fg }} aria-hidden>

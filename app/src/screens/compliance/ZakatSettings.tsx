@@ -31,8 +31,8 @@ export function ZakatSettings() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Heart" title={t('Zakat Settings')} subtitle={t('Zakat configuration')} />
         <MobileCard>
-          {settings.map((s, i) => (
-            <MobileCardRow key={i} label={s.label}>
+          {settings.map((s) => (
+            <MobileCardRow key={s.label} label={s.label}>
               {s.badge ? (
                 <Badge background="rgba(249,115,22,.12)" color="var(--salis-orange)">{t(s.value!)}</Badge>
               ) : s.money !== undefined ? (
@@ -54,8 +54,8 @@ export function ZakatSettings() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <h2 className="mb-4 text-sm font-semibold text-heading">{t('Configuration')}</h2>
         <div className="grid gap-4">
-          {settings.map((s, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+          {settings.map((s) => (
+            <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{s.label}</span>
               {s.badge ? (
                 <Badge background="rgba(249,115,22,.12)" color="var(--salis-orange)">{t(s.value!)}</Badge>

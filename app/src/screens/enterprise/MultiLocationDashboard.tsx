@@ -60,8 +60,8 @@ export function MultiLocationDashboard() {
             </MobileCard>
           ))}
         </div>
-        {BRANCHES.map((branch, i) => (
-          <MobileCard key={i}>
+        {BRANCHES.map((branch) => (
+          <MobileCard key={branch.name}>
             <MobileCardHeader
               title={branch.name}
               trailing={<Badge background={STATUS_STYLES[branch.status].bg} color={STATUS_STYLES[branch.status].fg}>{t(branch.status)}</Badge>}
@@ -97,8 +97,8 @@ export function MultiLocationDashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        {BRANCHES.map((branch, i) => (
-          <Card key={i} className="rounded-2xl p-5 shadow-sm">
+        {BRANCHES.map((branch) => (
+          <Card key={branch.name} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>

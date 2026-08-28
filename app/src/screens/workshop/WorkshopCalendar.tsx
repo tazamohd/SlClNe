@@ -102,8 +102,8 @@ export function WorkshopCalendar() {
             <Chip key={b} label={t(b)} selected={selectedBay === b} onToggle={() => setSelectedBay(b)} />
           ))}
         </ChipGroup>
-        {filteredSlots.filter((s) => s.status === 'occupied').map((s, i) => (
-          <MobileCard key={i}>
+        {filteredSlots.filter((s) => s.status === 'occupied').map((s) => (
+          <MobileCard key={`${s.bay}-${s.hour}`}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">

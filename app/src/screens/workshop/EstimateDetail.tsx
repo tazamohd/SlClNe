@@ -291,8 +291,8 @@ export function EstimateDetail() {
                   <p className="text-[12px] font-bold text-salis-orange">
                     {t('Segregation-of-duties conflict')}
                   </p>
-                  {trail.data?.sodConflicts.map((c, i) => (
-                    <p key={i} className="mt-0.5 text-[11.5px] text-body">
+                  {trail.data?.sodConflicts.map((c) => (
+                    <p key={`${c.a}-${c.b}`} className="mt-0.5 text-[11.5px] text-body">
                       {t(c.a)} + {t(c.b)} — {c.risk}
                     </p>
                   ))}

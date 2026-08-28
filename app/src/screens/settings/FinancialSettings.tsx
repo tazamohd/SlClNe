@@ -24,8 +24,8 @@ export function FinancialSettings() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Landmark" title={t('Financial Settings')} subtitle={t('Financial configuration')} />
         <MobileCard>
-          {SETTINGS.map((s, i) => (
-            <MobileCardRow key={i} label={t(s.label)} value={s.value} />
+          {SETTINGS.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)} value={s.value} />
           ))}
         </MobileCard>
       </div>
@@ -42,8 +42,8 @@ export function FinancialSettings() {
           <h2 className="text-sm font-semibold text-heading">{t('Configuration')}</h2>
         </div>
         <div className="grid gap-4">
-          {SETTINGS.map((s, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+          {SETTINGS.map((s) => (
+            <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{t(s.label)}</span>
               <span className="font-mono text-sm font-medium text-heading">{s.value}</span>
             </div>

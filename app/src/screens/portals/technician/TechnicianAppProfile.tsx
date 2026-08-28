@@ -68,14 +68,14 @@ export function TechnicianAppProfile() {
         </div>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Contact')}</p>} />
-          {PROFILE_INFO.filter((f) => ['Phone', 'Email', 'Branch'].includes(f.label)).map((f, i) => (
-            <MobileCardRow key={i} label={t(f.label)} value={f.value} />
+          {PROFILE_INFO.filter((f) => ['Phone', 'Email', 'Branch'].includes(f.label)).map((f) => (
+            <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
           ))}
         </MobileCard>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Skills')}</p>} />
-          {SKILLS.map((s, i) => (
-            <MobileCardRow key={i} label={s.name}>
+          {SKILLS.map((s) => (
+            <MobileCardRow key={s.name} label={s.name}>
               <Badge background={LEVEL_STYLES[s.level].bg} color={LEVEL_STYLES[s.level].fg}>{t(s.level)}</Badge>
             </MobileCardRow>
           ))}
@@ -107,8 +107,8 @@ export function TechnicianAppProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Details')}</h2>
           </div>
           <div className="grid gap-4">
-            {PROFILE_INFO.map((f, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {PROFILE_INFO.map((f) => (
+              <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <div className="flex items-center gap-2">
                   <Icon name={f.icon} size={14} className="text-muted" />
                   <span className="text-sm text-muted">{t(f.label)}</span>
@@ -125,8 +125,8 @@ export function TechnicianAppProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Skills')}</h2>
           </div>
           <div className="grid gap-4">
-            {SKILLS.map((s, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {SKILLS.map((s) => (
+              <div key={s.name} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-heading">{s.name}</span>
                 <Badge background={LEVEL_STYLES[s.level].bg} color={LEVEL_STYLES[s.level].fg}>{t(s.level)}</Badge>
               </div>

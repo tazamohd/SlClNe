@@ -75,8 +75,8 @@ export function SMSIntegration() {
       <PageHeader icon="MessageSquareText" title={t('SMS Integration')} subtitle={t('SMS provider setup and message logs')} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {PROVIDERS.map((provider, i) => (
-          <Card key={i} className="rounded-2xl p-5 shadow-sm">
+        {PROVIDERS.map((provider) => (
+          <Card key={provider.name} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>

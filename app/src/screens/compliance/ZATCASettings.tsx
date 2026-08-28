@@ -31,9 +31,9 @@ export function ZATCASettings() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="FileCheck" title={t('ZATCA Settings')} subtitle={t('E-invoicing configuration')} />
         <MobileCard>
-          {rows.map((r, i) => (
+          {rows.map((r) => (
             <MobileCardRow
-              key={i}
+              key={r.label}
               label={r.label}
             >
               {r.badge ? (
@@ -62,8 +62,8 @@ export function ZATCASettings() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <h2 className="mb-4 text-sm font-semibold text-heading">{t('Configuration')}</h2>
         <div className="grid gap-4">
-          {rows.map((r, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+          {rows.map((r) => (
+            <div key={r.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{r.label}</span>
               {r.badge ? (
                 <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t(r.value)}</Badge>

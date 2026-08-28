@@ -155,8 +155,8 @@ export function WorkflowBuilder() {
 
             {/* Steps flow */}
             <div className="flex items-center gap-2 overflow-x-auto rounded-[10px] border border-border bg-inset p-3">
-              {wf.steps.map((s, i) => (
-                <div key={i} className="flex flex-shrink-0 items-center gap-1.5">
+              {wf.steps.map((s) => (
+                <div key={s.label} className="flex flex-shrink-0 items-center gap-1.5">
                   <span
                     className="flex h-7 w-7 items-center justify-center rounded-lg"
                     style={{ background: s.bg, color: s.fg }}

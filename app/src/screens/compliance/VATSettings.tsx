@@ -44,8 +44,8 @@ export function VATSettings() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Receipt" title={t('VAT Settings')} subtitle={t('VAT configuration')} />
         <MobileCard>
-          {settings.map((s, i) => (
-            <MobileCardRow key={i} label={s.label}>
+          {settings.map((s) => (
+            <MobileCardRow key={s.label} label={s.label}>
               {s.badge ? (
                 <Badge background="var(--tint-blue)" color="var(--salis-blue)">{s.value}</Badge>
               ) : (
@@ -58,8 +58,8 @@ export function VATSettings() {
           <MobileCardHeader
             leading={<p className="text-[13px] font-semibold text-heading">{t('VAT Summary')}</p>}
           />
-          {summaryRows.map((s, i) => (
-            <MobileCardRow key={i} label={s.label}>
+          {summaryRows.map((s) => (
+            <MobileCardRow key={s.label} label={s.label}>
               <Money sar={s.amount} className="text-xs" />
             </MobileCardRow>
           ))}
@@ -75,8 +75,8 @@ export function VATSettings() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <h2 className="mb-4 text-sm font-semibold text-heading">{t('Configuration')}</h2>
         <div className="grid gap-4">
-          {settings.map((s, i) => (
-            <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+          {settings.map((s) => (
+            <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{s.label}</span>
               {s.badge ? (
                 <Badge background="var(--tint-blue)" color="var(--salis-blue)">{s.value}</Badge>

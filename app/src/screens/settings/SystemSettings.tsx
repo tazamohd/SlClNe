@@ -35,14 +35,14 @@ export function SystemSettings() {
         <MobilePageHeader icon="Settings" title={t('System Settings')} subtitle={t('System configuration')} />
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('General')}</p>} />
-          {GENERAL.map((s, i) => (
-            <MobileCardRow key={i} label={t(s.label)} value={s.value} />
+          {GENERAL.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)} value={s.value} />
           ))}
         </MobileCard>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Notifications')}</p>} />
-          {NOTIFICATIONS.map((s, i) => (
-            <MobileCardRow key={i} label={t(s.label)}>
+          {NOTIFICATIONS.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)}>
               <Badge
                 background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
                 color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
@@ -54,8 +54,8 @@ export function SystemSettings() {
         </MobileCard>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Security')}</p>} />
-          {SECURITY.map((s, i) => (
-            <MobileCardRow key={i} label={t(s.label)}>
+          {SECURITY.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)}>
               {typeof s.value === 'boolean' ? (
                 <Badge
                   background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
@@ -84,8 +84,8 @@ export function SystemSettings() {
             <h2 className="text-sm font-semibold text-heading">{t('General')}</h2>
           </div>
           <div className="grid gap-4">
-            {GENERAL.map((s, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {GENERAL.map((s) => (
+              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 <span className="text-sm font-medium text-heading">{s.value}</span>
               </div>
@@ -99,8 +99,8 @@ export function SystemSettings() {
             <h2 className="text-sm font-semibold text-heading">{t('Notifications')}</h2>
           </div>
           <div className="grid gap-4">
-            {NOTIFICATIONS.map((s, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {NOTIFICATIONS.map((s) => (
+              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 <Badge
                   background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
@@ -119,8 +119,8 @@ export function SystemSettings() {
             <h2 className="text-sm font-semibold text-heading">{t('Security')}</h2>
           </div>
           <div className="grid gap-4">
-            {SECURITY.map((s, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+            {SECURITY.map((s) => (
+              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 {typeof s.value === 'boolean' ? (
                   <Badge

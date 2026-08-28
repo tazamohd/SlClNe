@@ -64,8 +64,8 @@ export function TaskManagement() {
                 <span className="text-sm font-bold text-heading">{t(col.status)}</span>
                 <Badge background="var(--tint-neutral)" color="var(--text-muted)">{tasks.length}</Badge>
               </div>
-              {tasks.map((task, i) => (
-                <MobileCard key={i}>
+              {tasks.map((task) => (
+                <MobileCard key={task.title}>
                   <MobileCardHeader
                     leading={
                       <div>
@@ -102,8 +102,8 @@ export function TaskManagement() {
                 <span className="text-sm font-bold text-heading">{t(col.status)}</span>
                 <Badge background="var(--tint-neutral)" color="var(--text-muted)">{tasks.length}</Badge>
               </div>
-              {tasks.map((task, i) => (
-                <Card key={i} className="rounded-xl p-4 shadow-sm">
+              {tasks.map((task) => (
+                <Card key={task.title} className="rounded-xl p-4 shadow-sm">
                   <p className="text-sm font-semibold text-heading">{task.title}</p>
                   <p className="mt-1 text-xs text-muted">{task.assignee}</p>
                   <div className="mt-3 flex items-center justify-between">

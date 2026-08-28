@@ -39,8 +39,8 @@ export function EnvironmentalCompliance() {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Leaf" title={t('Environmental Compliance')} subtitle={t('Environmental tracking')} />
-        {METRICS.map((m, i) => (
-          <MobileCard key={i}>
+        {METRICS.map((m) => (
+          <MobileCard key={m.metric}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -77,8 +77,8 @@ export function EnvironmentalCompliance() {
       <PageHeader icon="Leaf" title={t('Environmental Compliance')} subtitle={t('Environmental tracking')} />
 
       <div className="grid grid-cols-2 gap-4">
-        {METRICS.map((m, i) => (
-          <Card key={i} className="rounded-xl p-5 shadow-sm">
+        {METRICS.map((m) => (
+          <Card key={m.metric} className="rounded-xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="flex rounded-lg p-1.5" style={{ background: STATUS_PALETTE[m.status].bg, color: STATUS_PALETTE[m.status].fg }} aria-hidden>

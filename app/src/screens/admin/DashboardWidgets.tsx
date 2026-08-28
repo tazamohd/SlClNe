@@ -48,8 +48,8 @@ export function DashboardWidgets() {
           <Badge background="var(--tint-blue)" color="var(--salis-blue)">{enabledCount} {t('active')}</Badge>
           <Badge background="var(--tint-neutral)" color="var(--text-muted)">{WIDGETS.length - enabledCount} {t('hidden')}</Badge>
         </div>
-        {WIDGETS.map((widget, i) => (
-          <MobileCard key={i}>
+        {WIDGETS.map((widget) => (
+          <MobileCard key={widget.name}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -84,8 +84,8 @@ export function DashboardWidgets() {
       <PageHeader icon="LayoutGrid" title={t('Dashboard Widgets')} subtitle={t('Configure and arrange dashboard components')} />
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-        {WIDGETS.map((widget, i) => (
-          <Card key={i} className={`rounded-2xl p-5 shadow-sm ${!widget.enabled ? 'opacity-60' : ''}`}>
+        {WIDGETS.map((widget) => (
+          <Card key={widget.name} className={`rounded-2xl p-5 shadow-sm ${!widget.enabled ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between">
               <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                 <Icon name={widget.icon} size={20} />

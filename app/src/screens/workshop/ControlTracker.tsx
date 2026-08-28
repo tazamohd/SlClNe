@@ -385,8 +385,8 @@ function TeamView({
 
             {appts.length > 0 && (
               <div className="flex flex-col gap-1.5 border-t border-border pt-3">
-                {appts.slice(0, 3).map((appt, i) => (
-                  <div key={i} className="flex items-center gap-2 text-[12px]">
+                {appts.slice(0, 3).map((appt) => (
+                  <div key={`${appt.cust}-${appt.bay}`} className="flex items-center gap-2 text-[12px]">
                     <StatusBadge value={appt.status} label={t(appt.status)} />
                     <span className="flex-1 text-body">{appt.cust}</span>
                     <span className="text-muted">{appt.bay}</span>

@@ -106,8 +106,8 @@ export function GlobalizationLayer() {
       <Card className="rounded-2xl p-6 shadow-sm">
         <p className="mb-4 text-sm font-bold text-heading">{t('Supported Currencies')}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {CURRENCIES.map((cur, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-xl border border-border p-4">
+          {CURRENCIES.map((cur) => (
+            <div key={cur.code} className="flex items-center gap-3 rounded-xl border border-border p-4">
               <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                 <Icon name="Coins" size={20} />
               </span>

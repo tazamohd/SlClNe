@@ -54,13 +54,13 @@ export function NativeIOS() {
         </MobileCard>
         <p className="text-xs font-bold text-heading">{t('App Details')}</p>
         <MobileCard>
-          {APP_INFO.map((info, i) => (
-            <MobileCardRow key={i} label={t(info.label)} value={info.value} />
+          {APP_INFO.map((info) => (
+            <MobileCardRow key={info.label} label={t(info.label)} value={info.value} />
           ))}
         </MobileCard>
         <p className="text-xs font-bold text-heading">{t('Features')}</p>
-        {APP_FEATURES.map((feature, i) => (
-          <MobileCard key={i}>
+        {APP_FEATURES.map((feature) => (
+          <MobileCard key={feature.title}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -99,8 +99,8 @@ export function NativeIOS() {
             <span className="ms-1 text-xs text-muted">4.8</span>
           </div>
           <div className="mt-6 w-full">
-            {APP_INFO.map((info, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-border py-2.5 text-sm last:border-0">
+            {APP_INFO.map((info) => (
+              <div key={info.label} className="flex items-center justify-between border-b border-border py-2.5 text-sm last:border-0">
                 <span className="text-muted">{t(info.label)}</span>
                 <span className="font-medium text-heading">{info.value}</span>
               </div>
@@ -112,8 +112,8 @@ export function NativeIOS() {
           <Card className="rounded-2xl p-6 shadow-sm">
             <p className="mb-4 text-sm font-bold text-heading">{t('Key Features')}</p>
             <div className="grid grid-cols-2 gap-4">
-              {APP_FEATURES.map((feature, i) => (
-                <div key={i} className="flex items-start gap-3 rounded-xl bg-surface-secondary p-4">
+              {APP_FEATURES.map((feature) => (
+                <div key={feature.title} className="flex items-start gap-3 rounded-xl bg-surface-secondary p-4">
                   <span className="flex flex-shrink-0 rounded-lg p-2 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={feature.icon} size={18} />
                   </span>

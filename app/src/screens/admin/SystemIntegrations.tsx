@@ -44,8 +44,8 @@ export function SystemIntegrations() {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="PlugZap" title={t('Integrations')} subtitle={t('System connections')} />
-        {INTEGRATIONS.map((integration, i) => (
-          <MobileCard key={i}>
+        {INTEGRATIONS.map((integration) => (
+          <MobileCard key={integration.name}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -79,8 +79,8 @@ export function SystemIntegrations() {
           <div key={category}>
             <p className="mb-3 text-sm font-bold text-heading">{t(category)}</p>
             <div className="grid grid-cols-2 gap-4">
-              {items.map((integration, i) => (
-                <Card key={i} className="rounded-2xl p-5 shadow-sm">
+              {items.map((integration) => (
+                <Card key={integration.name} className="rounded-2xl p-5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <span className="flex flex-shrink-0 rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                       <Icon name={integration.icon} size={20} />

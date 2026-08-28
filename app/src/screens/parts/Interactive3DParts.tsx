@@ -47,8 +47,8 @@ export function Interactive3DParts() {
             <p className="text-center text-xs text-muted">{t('Select a part below to view its interactive 3D model')}</p>
           </div>
         </MobileCard>
-        {PART_MODELS.map((part, i) => (
-          <MobileCard key={i}>
+        {PART_MODELS.map((part) => (
+          <MobileCard key={part.partNumber}>
             <MobileCardHeader
               title={part.name}
               trailing={<Badge background={STATUS_STYLES[part.status].bg} color={STATUS_STYLES[part.status].fg}>{t(part.status)}</Badge>}
@@ -83,8 +83,8 @@ export function Interactive3DParts() {
         <Card className="w-80 flex-shrink-0 rounded-2xl p-4 shadow-sm">
           <p className="mb-3 text-sm font-bold text-heading">{t('Parts Catalog')}</p>
           <div className="flex flex-col gap-2">
-            {PART_MODELS.map((part, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-surface-secondary">
+            {PART_MODELS.map((part) => (
+              <div key={part.partNumber} className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-surface-secondary">
                 <span className="flex flex-shrink-0 rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
                   <Icon name="Package" size={14} />
                 </span>

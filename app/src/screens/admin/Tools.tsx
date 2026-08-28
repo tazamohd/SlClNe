@@ -43,8 +43,8 @@ export function Tools() {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Wrench" title={t('System Tools')} subtitle={t('Maintenance utilities')} />
-        {TOOLS.map((tool, i) => (
-          <MobileCard key={i}>
+        {TOOLS.map((tool) => (
+          <MobileCard key={tool.name}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
@@ -77,8 +77,8 @@ export function Tools() {
           <div key={category}>
             <p className="mb-3 text-sm font-bold text-heading">{t(category)}</p>
             <div className="grid grid-cols-2 gap-4">
-              {categoryTools.map((tool, i) => (
-                <Card key={i} className="rounded-2xl p-5 shadow-sm">
+              {categoryTools.map((tool) => (
+                <Card key={tool.name} className="rounded-2xl p-5 shadow-sm">
                   <div className="flex items-start gap-3">
                     <span className="flex flex-shrink-0 rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                       <Icon name={tool.icon} size={20} />

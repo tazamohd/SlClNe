@@ -1170,9 +1170,9 @@ function RequisitionDetailModal({
 
         {api && lines.length ? (
           <ul className="flex flex-col gap-1.5">
-            {lines.map((line, index) => (
+            {lines.map((line) => (
               <li
-                key={index}
+                key={line._id}
                 className="flex flex-wrap items-center gap-3 rounded border border-border bg-card px-3 py-2 text-[13px]"
               >
                 <span className="min-w-0 flex-1 text-body">{line.description}</span>
