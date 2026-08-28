@@ -105,6 +105,7 @@ export function PageHeader({
   subtitle?: ReactNode
   actions?: ReactNode
 }) {
+  const { t } = usePreferences()
   return (
     <div className="flex flex-wrap items-center justify-between gap-6">
       <div className="flex items-center gap-3">
@@ -116,7 +117,7 @@ export function PageHeader({
         </div>
         <div>
           <h1 className="bg-salis-gradient-r bg-clip-text font-display text-5xl font-black leading-[1.1] text-transparent">
-            {title}
+            {t(title)}
           </h1>
           {subtitle ? <p className="font-light text-muted">{subtitle}</p> : null}
         </div>

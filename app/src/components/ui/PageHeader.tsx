@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon } from '@/components/ui/Icon'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
 export function PageHeader({
   icon,
@@ -12,6 +13,7 @@ export function PageHeader({
   subtitle: ReactNode
   compact?: boolean
 }) {
+  const { t } = usePreferences()
   return (
     <div className="flex items-center gap-3">
       <div className="relative">
@@ -34,7 +36,7 @@ export function PageHeader({
           ? 'font-display text-xl font-black text-heading'
           : 'font-display text-[30px] font-black text-heading'}
         >
-          {title}
+          {t(title)}
         </h1>
         <p className={compact ? 'mt-0.5 text-sm text-muted' : 'mt-0.5 text-[13px] text-muted'}>
           {subtitle}

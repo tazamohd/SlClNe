@@ -100,10 +100,10 @@ export function EmptyState({
       </span>
       <div>
         <p className="font-action text-sm font-semibold text-heading">
-          {title ?? t('No results')}
+          {t(title ?? 'No results')}
         </p>
         <p className="mt-1 text-[13px] text-muted">
-          {description ?? t('Nothing matches the current filters.')}
+          {t(description ?? 'Nothing matches the current filters.')}
         </p>
       </div>
       {action}
