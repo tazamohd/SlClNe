@@ -1,10 +1,10 @@
-import type { HTMLAttributes, ReactNode } from 'react'
+import { memo, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Icon } from './Icon'
 
 /** Surface panel: 16px radius, hairline border, small shadow. The unit every
  *  dashboard metric, chart and table sits in. */
-export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export const Card = memo(function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
@@ -14,7 +14,7 @@ export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
       {...props}
     />
   )
-}
+})
 
 /** Card header with the design's gradient icon chip and 20px title. */
 export function CardHeader({

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { LucideProps } from 'lucide-react'
 import { ICONS } from './icon-registry'
 
@@ -21,11 +22,11 @@ export interface IconProps extends Omit<LucideProps, 'ref' | 'size'> {
   size?: number
 }
 
-export function Icon({ name, size = 16, strokeWidth = 2, ...props }: IconProps) {
+export const Icon = memo(function Icon({ name, size = 16, strokeWidth = 2, ...props }: IconProps) {
   const Glyph = ICONS[name]
   if (!Glyph) {
     if (import.meta.env.DEV) console.warn(`[Icon] unknown lucide icon: ${name}`)
     return null
   }
   return <Glyph size={size} strokeWidth={strokeWidth} aria-hidden {...props} />
-}
+})
