@@ -40,6 +40,8 @@ export function Splash() {
           <img
             src="/assets/logo-blue-orange.png"
             alt="SALIS AUTO"
+            width={1024}
+            height={1024}
             className={`relative h-auto ${isMobile ? 'w-[140px]' : 'w-[180px]'}`}
           />
         </div>

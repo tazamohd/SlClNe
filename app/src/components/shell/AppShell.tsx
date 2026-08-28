@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -24,12 +24,47 @@ export function AppShell({ children }: { children: ReactNode }) {
   // asked for.
   useEffect(() => setDrawerOpen(false), [pathname])
 
+  const drawerRef = useRef<HTMLDivElement>(null)
+  const previousFocus = useRef<HTMLElement | null>(null)
+
+  const handleDrawerKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setDrawerOpen(false); return }
+      if (e.key !== 'Tab') return
+      const el = drawerRef.current
+      if (!el) return
+      const focusable = el.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      )
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
+    },
+    [],
+  )
+
   useEffect(() => {
     if (!drawerOpen) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setDrawerOpen(false)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [drawerOpen])
+    previousFocus.current = document.activeElement as HTMLElement
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', handleDrawerKey)
+    requestAnimationFrame(() => {
+      const first = drawerRef.current?.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      )
+      first?.focus()
+    })
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', handleDrawerKey)
+      previousFocus.current?.focus()
+    }
+  }, [drawerOpen, handleDrawerKey])
 
   return (
     <div className="flex h-screen overflow-hidden bg-page font-ui">
@@ -50,6 +85,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             />
           ) : null}
           <div
+            ref={drawerRef}
             className={cn(
               'fixed inset-y-0 z-50 transition-transform duration-300 ease-salis start-0',
               drawerOpen ? 'translate-x-0' : 'ltr:-translate-x-full rtl:translate-x-full'

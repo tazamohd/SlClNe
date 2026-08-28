@@ -34,6 +34,8 @@ export function RegionSelection() {
           <img
             src="/assets/logo-blue-orange.png"
             alt="SALIS AUTO"
+            width={1024}
+            height={1024}
             className={`mx-auto h-auto ${isMobile ? 'w-[80px]' : 'w-[100px]'}`}
           />
           <h1 className={`mt-3 font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>

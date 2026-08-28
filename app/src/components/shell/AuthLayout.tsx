@@ -71,6 +71,8 @@ export function BrandMark({ width = 176 }: { width?: number }) {
       <img
         src="/assets/logo-blue-orange.png"
         alt="SALIS AUTO"
+        width={1024}
+        height={1024}
         style={{ width }}
         className="relative h-auto drop-shadow-[0_4px_8px_rgba(0,0,0,.15)]"
       />

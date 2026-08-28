@@ -24,7 +24,7 @@ export function LanguageSelection() {
       </div>
 
       <div className={`relative z-[1] flex animate-fade-up flex-col items-center ${isMobile ? 'max-w-full gap-4 px-3 py-4' : 'max-w-[440px] gap-[22px] px-4 py-6'}`}>
-        <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" className={`h-auto ${isMobile ? 'w-20' : 'w-28'}`} />
+        <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" width={1024} height={1024} className={`h-auto ${isMobile ? 'w-20' : 'w-28'}`} />
         <h1 className={`text-center font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-[22px]'}`}>
           {t('Choose your language')}
         </h1>
