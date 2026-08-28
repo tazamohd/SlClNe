@@ -501,27 +501,83 @@ export function ProcurementPortal() {
   )
 }
 
-/** Group-buying and fulfilment view across partner garages. */
+/** Group-buying and fulfilment view across partner garages.
+ *
+ *  Each tab is a table the API will fill; until it does, the design ships them
+ *  all empty. This keeps every pane's own columns, empty-state copy and CTA
+ *  (transcribed from PartsSupplyNetwork.dc.html) rather than collapsing them to
+ *  one generic "nothing here" — so a reviewer can see what each view will hold. */
+interface SupplyPane {
+  id: string
+  label: string
+  icon: string
+  note: string
+  columns: readonly string[]
+  emptyTitle: string
+  emptyBody: string
+  addLabel: string
+}
+
+const SUPPLY_PANES: readonly SupplyPane[] = [
+  {
+    id: 'partners',
+    label: 'Network Partners',
+    icon: 'Users',
+    note: 'B2B distribution partners by country',
+    columns: ['Partner Name', 'Type', 'Country', 'Status'],
+    emptyTitle: 'No network partners yet',
+    emptyBody: 'Add your first B2B partner to start routing fulfillment orders through the supply network.',
+    addLabel: 'Add Partner',
+  },
+  {
+    id: 'fulfillment',
+    label: 'Fulfillment Orders',
+    icon: 'Package',
+    note: 'Orders routed to partners for fulfillment',
+    columns: ['Order Reference', 'Partner', 'Destination', 'Status'],
+    emptyTitle: 'No fulfillment orders',
+    emptyBody: 'Fulfillment orders appear here once a partner is assigned to supply a parts order.',
+    addLabel: 'New Fulfillment Order',
+  },
+  {
+    id: 'shipments',
+    label: 'Shipments',
+    icon: 'Truck',
+    note: 'Inbound and outbound consignments',
+    columns: ['Tracking Number', 'Carrier', 'Route', 'Status'],
+    emptyTitle: 'No shipments in transit',
+    emptyBody: 'Shipments are created automatically when a fulfillment order leaves a partner warehouse.',
+    addLabel: 'Record Shipment',
+  },
+  {
+    id: 'warehouses',
+    label: 'Warehouses',
+    icon: 'Warehouse',
+    note: 'Distribution points and stock locations',
+    columns: ['Warehouse Name', 'Type', 'Country', 'Status'],
+    emptyTitle: 'No warehouses configured',
+    emptyBody: 'Register a warehouse to allocate stock and route shipments across regions.',
+    addLabel: 'Add Warehouse',
+  },
+]
+
 export function PartsSupplyNetwork() {
   const { t } = usePreferences()
-  const tabs = [
-    { id: 'partners', label: 'Network Partners', icon: 'Users' },
-    { id: 'fulfillment', label: 'Fulfillment Orders', icon: 'Package' },
-    { id: 'shipments', label: 'Shipments', icon: 'Truck' },
-    { id: 'warehouses', label: 'Warehouses', icon: 'Warehouse' },
-  ]
-  const [tab, setTab] = useState(tabs[0].id)
+  const toast = useToast()
+  const [tab, setTab] = useState(SUPPLY_PANES[0].id)
+
+  const pane = SUPPLY_PANES.find((x) => x.id === tab) ?? SUPPLY_PANES[0]
 
   return (
     <>
       <FeatureHeader
         icon="Network"
         title={t('Parts Supply Network')}
-        subtitle={t('Partner warehouses, fulfilment and shipment tracking')}
+        subtitle={t('Manage B2B partners, fulfillment orders, shipments, and warehouse distribution')}
       />
 
-      <Card className="flex gap-1 overflow-x-auto rounded-lg p-1.5" role="tablist">
-        {tabs.map((option) => (
+      <Card className="flex gap-1 overflow-x-auto rounded-lg p-1.5" role="tablist" aria-label={t('View')}>
+        {SUPPLY_PANES.map((option) => (
           <button
             key={option.id}
             type="button"
@@ -544,18 +600,44 @@ export function PartsSupplyNetwork() {
 
       <StatRow
         stats={[
-          { label: 'Partners', value: 156, caption: 'Connected', highlight: true },
-          { label: 'Open Fulfilments', value: 0, caption: 'In progress', tone: 'info' },
+          { label: 'Active Partners', value: 0, caption: 'Connected', highlight: true },
+          { label: 'Open Fulfillment', value: 0, caption: 'In progress', tone: 'info' },
           { label: 'In Transit', value: 0, caption: 'Shipments', tone: 'info' },
           { label: 'Warehouses', value: 0, caption: 'Stocking points' },
         ]}
       />
 
-      <Section title={t(tabs.find((x) => x.id === tab)?.label ?? '')}>
+      <Section title={t(pane.label)} subtitle={t(pane.note)}>
+        <div className="overflow-x-auto">
+          <div className="flex min-w-full gap-4 border-b border-border pb-2.5">
+            {pane.columns.map((column) => (
+              <span
+                key={column}
+                className="flex-1 whitespace-nowrap font-action text-[11px] font-semibold uppercase tracking-wide text-muted"
+              >
+                {t(column)}
+              </span>
+            ))}
+          </div>
+        </div>
         <EmptyState
-          icon="Network"
-          title={t('Nothing here yet')}
-          description={t('This view populates as network activity begins.')}
+          icon={pane.icon}
+          title={t(pane.emptyTitle)}
+          description={t(pane.emptyBody)}
+          action={
+            <Button
+              size="md"
+              onClick={() =>
+                toast.show({
+                  title: t(pane.addLabel),
+                  description: t('This action becomes available once the network API is connected.'),
+                })
+              }
+            >
+              <Icon name="Plus" size={16} />
+              {t(pane.addLabel)}
+            </Button>
+          }
         />
       </Section>
     </>
