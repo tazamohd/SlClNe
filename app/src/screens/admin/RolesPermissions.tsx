@@ -269,11 +269,12 @@ export function RolesPermissions() {
           <table className="w-full min-w-[620px] border-collapse">
             <thead>
               <tr className="bg-inset">
-                <th className="px-[18px] py-2.5 text-start font-action text-[10.5px] font-bold uppercase tracking-[.05em] text-muted">
+                <th scope="col" className="px-[18px] py-2.5 text-start font-action text-[10.5px] font-bold uppercase tracking-[.05em] text-muted">
                   {t('Module')}
                 </th>
                 {ACTIONS.map(([key, label]) => (
                   <th
+                    scope="col"
                     key={key}
                     className="whitespace-nowrap px-1.5 py-2.5 text-center font-action text-[10.5px] font-bold uppercase tracking-[.03em] text-muted"
                   >

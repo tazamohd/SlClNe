@@ -125,16 +125,16 @@ export function InvoicePreview() {
             <table className="w-full min-w-[420px] border-collapse text-sm">
               <thead>
                 <tr className="border-b-2 border-border">
-                  <th className="px-0 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
+                  <th scope="col" className="px-0 py-2.5 text-start font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
                     {t('Description')}
                   </th>
-                  <th className="w-[60px] px-0 py-2.5 text-center font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
+                  <th scope="col" className="w-[60px] px-0 py-2.5 text-center font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
                     {t('Qty')}
                   </th>
-                  <th className="w-[90px] px-0 py-2.5 text-end font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
+                  <th scope="col" className="w-[90px] px-0 py-2.5 text-end font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
                     {t('Rate')}
                   </th>
-                  <th className="w-[90px] px-0 py-2.5 text-end font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
+                  <th scope="col" className="w-[90px] px-0 py-2.5 text-end font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
                     {t('Amount')}
                   </th>
                 </tr>
