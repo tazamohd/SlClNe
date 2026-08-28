@@ -166,14 +166,14 @@ export function IncomeStatement() {
             icon="ArrowUpRight"
             items={REVENUE}
             subtotalLabel={t('Total Revenue')}
-            accentColor="#0A5ED7"
+            accentColor="var(--salis-blue)"
           />
           <StatementBlock
             title={t('Expenses')}
             icon="ArrowDownRight"
             items={EXPENSES}
             subtotalLabel={t('Total Expenses')}
-            accentColor="#F97316"
+            accentColor="var(--salis-orange)"
           />
         </div>
 

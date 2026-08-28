@@ -501,12 +501,12 @@ type PoStatus = PurchaseOrderRow['status']
 /** Status tone — blue for active/approved states, orange while receiving, muted
  *  for draft and closed. No green, no red (README §7). */
 const PO_STATUS_TONE: Record<PoStatus, readonly [string, string]> = {
-  draft: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
+  draft: ['var(--tint-neutral)', 'var(--text-muted)'],
   approved: ['var(--tint-blue)', 'var(--salis-blue)'],
   sent: ['var(--tint-blue)', 'var(--salis-blue)'],
   receiving: ['var(--tint-orange)', 'var(--salis-orange)'],
   received: ['var(--tint-blue)', 'var(--salis-blue)'],
-  closed: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
+  closed: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const RECEIVABLE: readonly PoStatus[] = ['approved', 'sent', 'receiving', 'received']

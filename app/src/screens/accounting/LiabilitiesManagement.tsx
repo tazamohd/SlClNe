@@ -30,9 +30,9 @@ const MOCK_LIABILITIES: readonly Liability[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Active: ['var(--tint-blue)', '#0A5ED7'],
-  Paid: ['rgba(100,116,139,.1)', '#64748B'],
-  Overdue: ['var(--tint-orange)', '#F97316'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Paid: ['var(--tint-neutral)', 'var(--text-muted)'],
+  Overdue: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 export function LiabilitiesManagement() {

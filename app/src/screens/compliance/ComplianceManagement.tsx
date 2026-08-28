@@ -20,7 +20,7 @@ const ITEMS = [
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   Compliant: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
-  Overdue: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
+  Overdue: { bg: 'rgba(234,88,12,.1)', fg: 'var(--salis-orange-hover)' },
   'In Review': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
 }
 
@@ -36,7 +36,7 @@ export function ComplianceManagement() {
     { label: t('Total Items'), value: String(ITEMS.length), icon: 'ShieldCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Compliant'), value: String(ITEMS.filter((i) => i.status === 'Compliant').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Pending'), value: String(ITEMS.filter((i) => i.status === 'Pending').length), icon: 'Clock', bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
-    { label: t('Overdue'), value: String(ITEMS.filter((i) => i.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
+    { label: t('Overdue'), value: String(ITEMS.filter((i) => i.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(234,88,12,.1)', fg: 'var(--salis-orange-hover)' },
   ]
 
   const columns: Column<ItemRow>[] = [
@@ -49,7 +49,7 @@ export function ComplianceManagement() {
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader icon="ShieldCheck" title={t('Compliance Management')} subtitle={t('Regulatory tracking')} />
         <div className="flex gap-2">
           {['All', 'Compliant', 'Pending', 'Overdue', 'In Review'].map((s) => (

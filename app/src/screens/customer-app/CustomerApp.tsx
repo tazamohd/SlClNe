@@ -100,7 +100,7 @@ export function CustomerAppHome() {
           onClick={() => navigate('/customer-app/garage')}
           trailing={
             vehicle.status === 'service' ? (
-              <Badge background="var(--tint-bright)" color="#0BB3FF">
+              <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">
                 {t('In Service')}
               </Badge>
             ) : null
@@ -136,7 +136,7 @@ export function CustomerAppGarage() {
               </p>
             </div>
             {vehicle.status === 'service' ? (
-              <Badge background="var(--tint-bright)" color="#0BB3FF">
+              <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">
                 {t('In Service')}
               </Badge>
             ) : null}
@@ -177,7 +177,7 @@ export function CustomerAppAppointments() {
               background={
                 appointment.status === 'confirmed' ? 'var(--tint-blue)' : 'var(--tint-bright)'
               }
-              color={appointment.status === 'confirmed' ? '#0A5ED7' : '#0BB3FF'}
+              color={appointment.status === 'confirmed' ? 'var(--salis-blue)' : 'var(--salis-blue-bright)'}
             >
               {t(appointment.status[0].toUpperCase() + appointment.status.slice(1))}
             </Badge>
@@ -266,7 +266,7 @@ export function CustomerAppWallet() {
           key={`${txn.desc}-${txn.date}`}
           icon={txn.icon}
           iconTint={txn.amount < 0 ? 'rgba(249,115,22,.08)' : 'rgba(10,94,215,.08)'}
-          iconColor={txn.amount < 0 ? '#F97316' : '#0A5ED7'}
+          iconColor={txn.amount < 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}
           title={t(txn.desc)}
           subtitle={txn.date}
           trailing={
@@ -309,7 +309,7 @@ export function CustomerAppOrders() {
             </span>
             <Badge
               background={order.status === 'Delivered' ? 'var(--tint-blue)' : 'var(--tint-bright)'}
-              color={order.status === 'Delivered' ? '#0A5ED7' : '#0BB3FF'}
+              color={order.status === 'Delivered' ? 'var(--salis-blue)' : 'var(--salis-blue-bright)'}
             >
               {t(order.status)}
             </Badge>
@@ -479,7 +479,7 @@ export function CustomerAppProfile() {
       <AppListRow
         icon="LogOut"
         iconTint="rgba(249,115,22,.08)"
-        iconColor="#F97316"
+        iconColor="var(--salis-orange)"
         title={t('Logout')}
         onClick={() => {
           signOut()

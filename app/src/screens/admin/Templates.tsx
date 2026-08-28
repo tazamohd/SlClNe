@@ -65,7 +65,7 @@ export function Templates() {
       desc: t('SMS template for appointment reminders'),
       icon: 'MessageSquare',
       lastEdit: 'Jul 10, 2026',
-      typeBg: 'rgba(100,116,139,.1)',
+      typeBg: 'var(--tint-neutral)',
       typeColor: 'var(--text-muted)',
     },
     {

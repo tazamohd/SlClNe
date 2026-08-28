@@ -26,12 +26,12 @@ type Invoice = RowOf<'invoices'>
  *  `draft` and `partial` arrive from the API, which carries the full lifecycle
  *  the design's three statuses only sampled. */
 export const INVOICE_STATUS: Record<string, readonly [string, string]> = {
-  draft: ['rgba(100,116,139,.1)', '#64748B'],
-  paid: ['var(--tint-blue)', '#0A5ED7'],
-  partial: ['var(--tint-bright)', '#0BB3FF'],
-  unpaid: ['rgba(100,116,139,.1)', '#64748B'],
-  overdue: ['var(--tint-orange)', '#F97316'],
-  cancelled: ['rgba(100,116,139,.1)', '#64748B'],
+  draft: ['var(--tint-neutral)', 'var(--text-muted)'],
+  paid: ['var(--tint-blue)', 'var(--salis-blue)'],
+  partial: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  unpaid: ['var(--tint-neutral)', 'var(--text-muted)'],
+  overdue: ['var(--tint-orange)', 'var(--salis-orange)'],
+  cancelled: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function InvoiceStatusBadge({ status }: { status: string }) {

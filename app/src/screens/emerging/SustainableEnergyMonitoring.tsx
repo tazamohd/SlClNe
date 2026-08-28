@@ -27,7 +27,7 @@ const MOCK_MONTHLY = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Active: ['var(--tint-blue)', 'var(--salis-blue)'],
   Charging: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Offline: ['rgba(100,116,139,.1)', '#64748B'],
+  Offline: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type SourceRow = (typeof MOCK_SOURCES)[number]

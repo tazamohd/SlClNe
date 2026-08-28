@@ -78,7 +78,7 @@ export function LanguageSelection() {
               <span
                 className={cn(
                   'h-2 w-2 flex-shrink-0 rounded-full',
-                  notifications ? 'bg-salis-blue' : 'bg-[#94A3B8]'
+                  notifications ? 'bg-salis-blue' : 'bg-[var(--neutral-400)]'
                 )}
               />
               <span>{t('Enable notifications')}</span>
@@ -88,7 +88,7 @@ export function LanguageSelection() {
             <span
               className={cn(
                 'relative h-[22px] w-[38px] flex-shrink-0 rounded-full transition-colors duration-150',
-                notifications ? 'bg-salis-blue' : 'bg-[#CBD5E1]'
+                notifications ? 'bg-salis-blue' : 'bg-[var(--neutral-300)]'
               )}
             >
               <span

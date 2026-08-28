@@ -20,7 +20,7 @@ const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Production: ['var(--tint-blue)', 'var(--salis-blue)'],
   Beta: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
   Pilot: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Research: ['rgba(100,116,139,.1)', '#64748B'],
+  Research: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function EmergingTechnologies() {

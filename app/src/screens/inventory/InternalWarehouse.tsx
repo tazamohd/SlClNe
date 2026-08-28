@@ -20,7 +20,7 @@ type Zone = (typeof ZONES)[number]
 
 function statusColor(status: string) {
   if (status === 'Full') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
-  if (status === 'Maintenance') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (status === 'Maintenance') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 

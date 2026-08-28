@@ -57,11 +57,11 @@ const NODE_TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }>
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Online: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Maintenance: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Offline: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  Offline: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Urgent: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  Urgent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Standard: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }

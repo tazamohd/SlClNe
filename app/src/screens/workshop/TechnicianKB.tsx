@@ -222,7 +222,7 @@ export function TechnicianKB() {
                 {rtl ? open.ar_torque || open.torque : open.torque}
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-3 gap-2.5 max-[420px]:grid-cols-1">
               {[
                 { label: t('Duration'), value: `${open.mins} ${t('min')}`, icon: 'Clock' },
                 { label: t('Steps'), value: String(open.steps), icon: 'ListOrdered' },

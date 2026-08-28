@@ -129,12 +129,12 @@ export function AIAnalytics() {
           <svg viewBox="0 0 600 180" className="block h-auto w-full" aria-hidden="true">
             <defs>
               <linearGradient id="aiG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--salis-blue, #0A5ED7)" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="var(--salis-blue, #0A5ED7)" stopOpacity="0" />
+                <stop offset="0%" stopColor="var(--salis-blue)" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="var(--salis-blue)" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path d="M20,140 C77,130 134,110 191,90 C248,70 305,60 362,50 C419,40 476,35 533,25 L533,160 L20,160 Z" fill="url(#aiG)" />
-            <path d="M20,140 C77,130 134,110 191,90 C248,70 305,60 362,50 C419,40 476,35 533,25" fill="none" stroke="var(--salis-blue, #0A5ED7)" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M20,140 C77,130 134,110 191,90 C248,70 305,60 362,50 C419,40 476,35 533,25" fill="none" stroke="var(--salis-blue)" strokeWidth="2.5" strokeLinecap="round" />
             <text x="20" y="176" fontSize="11" fill="currentColor" className="text-muted" fontFamily="Inter,sans-serif">Jan</text>
             <text x="191" y="176" fontSize="11" fill="currentColor" className="text-muted" fontFamily="Inter,sans-serif">Mar</text>
             <text x="362" y="176" fontSize="11" fill="currentColor" className="text-muted" fontFamily="Inter,sans-serif">May</text>

@@ -1,6 +1,14 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 
+export const TONES = {
+  blue:    { bg: 'var(--tint-blue)',    fg: 'var(--salis-blue)' },
+  bright:  { bg: 'var(--tint-bright)',  fg: 'var(--salis-blue-bright)' },
+  orange:  { bg: 'var(--tint-orange)',  fg: 'var(--salis-orange)' },
+  navy:    { bg: 'var(--tint-navy)',    fg: 'var(--text-heading)' },
+  neutral: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+} as const
+
 export interface Kpi {
   label: string
   value: string

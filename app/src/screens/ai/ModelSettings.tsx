@@ -79,7 +79,7 @@ export function ModelSettings() {
         <span
           className="flex rounded-lg p-1.5"
           style={{
-            background: selected ? 'rgba(10,94,215,.12)' : 'rgba(100,116,139,.1)',
+            background: selected ? 'rgba(10,94,215,.12)' : 'var(--tint-neutral)',
             color: selected ? 'var(--salis-blue)' : 'var(--text-muted)',
           }}
         >

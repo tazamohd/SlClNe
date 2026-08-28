@@ -19,7 +19,7 @@ const MOCK_OPTIMIZATIONS = [
 const IMPACT_COLORS: Record<string, readonly [string, string]> = {
   High: ['var(--tint-blue)', 'var(--salis-blue)'],
   Medium: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Low: ['rgba(100,116,139,.1)', '#64748B'],
+  Low: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type OptRow = (typeof MOCK_OPTIMIZATIONS)[number]

@@ -133,7 +133,7 @@ export function AIAssistant() {
                   <div className="flex gap-2.5">
                     <span
                       className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{ background: msg.role === 'assistant' ? 'var(--salis-gradient, #0A5ED7)' : 'var(--text-heading)' }}
+                      style={{ background: msg.role === 'assistant' ? 'var(--salis-gradient)' : 'var(--text-heading)' }}
                     >
                       {msg.role === 'assistant' ? 'AI' : 'U'}
                     </span>
@@ -190,7 +190,7 @@ export function AIAssistant() {
               <div key={msg.id} className="flex gap-3">
                 <span
                   className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ background: msg.role === 'assistant' ? 'var(--salis-gradient, #0A5ED7)' : 'var(--text-heading)' }}
+                  style={{ background: msg.role === 'assistant' ? 'var(--salis-gradient)' : 'var(--text-heading)' }}
                 >
                   {msg.role === 'assistant' ? 'AI' : 'U'}
                 </span>

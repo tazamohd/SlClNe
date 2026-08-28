@@ -34,9 +34,9 @@ const MOCK_EXPENSES: readonly Expense[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Approved: ['var(--tint-blue)', '#0A5ED7'],
-  Pending: ['var(--tint-orange)', '#F97316'],
-  Rejected: ['rgba(100,116,139,.1)', '#64748B'],
+  Approved: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Rejected: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const CATEGORIES = ['All', 'Rent', 'Utilities', 'Salaries', 'Supplies', 'Travel', 'Maintenance', 'Insurance', 'Misc'] as const

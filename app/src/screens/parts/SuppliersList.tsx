@@ -24,7 +24,7 @@ const SUPPLIERS = [
 type Supplier = (typeof SUPPLIERS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Inactive') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (status === 'Inactive') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   if (status === 'Pending') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }

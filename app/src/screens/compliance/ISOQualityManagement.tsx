@@ -19,7 +19,7 @@ const MOCK_STANDARDS = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Certified: ['var(--tint-blue)', 'var(--salis-blue)'],
   'In Progress': ['var(--tint-orange)', 'var(--salis-orange)'],
-  Planned: ['rgba(100,116,139,.1)', '#64748B'],
+  Planned: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type StandardRow = (typeof MOCK_STANDARDS)[number]

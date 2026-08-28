@@ -23,7 +23,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 const TONES = {
   blue: ['var(--tint-blue)', 'var(--salis-blue)'],
   orange: ['rgba(249,115,22,.13)', 'var(--salis-orange)'],
-  slate: ['rgba(100,116,139,.12)', 'var(--text-muted)'],
+  slate: ['var(--tint-neutral)', 'var(--text-muted)'],
 } as const
 
 const STATUS_TONE: Record<string, keyof typeof TONES> = {

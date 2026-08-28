@@ -127,7 +127,7 @@ export function SessionExpired() {
             cy={isMobile ? 30 : 38}
             r={isMobile ? 25 : 32}
             fill="none"
-            stroke="#0BB3FF"
+            stroke="var(--salis-blue-bright)"
             strokeWidth="4"
             strokeLinecap="round"
             strokeDasharray={isMobile ? '157' : '201'}

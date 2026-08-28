@@ -8,7 +8,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
  *  copy is how two screens end up disagreeing about what blue means. */
 
 /** Brand-safe chart palette — the five `--chart-*` tokens, no green or red. */
-export const CHART_COLORS = ['#0A5ED7', '#0BB3FF', '#38BDF8', '#64748B', '#F97316']
+export const CHART_COLORS = ['var(--salis-blue)', 'var(--salis-blue-bright)', 'var(--chart-3)', 'var(--text-muted)', 'var(--salis-orange)']
 
 /** Horizontal bar chart. Simple enough to draw inline; avoids pulling a chart
  *  library in for what the design draws as plain bars. */

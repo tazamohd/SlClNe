@@ -50,7 +50,7 @@ export function PartsMarketplace() {
               trailing={
                 <Badge
                   background={listing.inStock ? 'var(--tint-blue)' : 'var(--tint-orange)'}
-                  color={listing.inStock ? 'var(--salis-blue)' : '#F97316'}
+                  color={listing.inStock ? 'var(--salis-blue)' : 'var(--salis-orange)'}
                 >
                   {listing.inStock ? t('In Stock') : t('Out of Stock')}
                 </Badge>
@@ -80,7 +80,7 @@ export function PartsMarketplace() {
               </div>
               <Badge
                 background={listing.inStock ? 'var(--tint-blue)' : 'var(--tint-orange)'}
-                color={listing.inStock ? 'var(--salis-blue)' : '#F97316'}
+                color={listing.inStock ? 'var(--salis-blue)' : 'var(--salis-orange)'}
               >
                 {listing.inStock ? t('In Stock') : t('Out of Stock')}
               </Badge>

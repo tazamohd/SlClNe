@@ -47,7 +47,7 @@ type Receipt = RowOf<'receipts'>
 const RECEIPT_STATUS: Record<string, readonly [string, string]> = {
   cleared: ['var(--tint-blue)', 'rgb(10,94,215)'],
   pending: ['var(--tint-orange)', 'rgb(249,115,22)'],
-  bounced: ['rgba(100,116,139,.1)', 'rgb(100,116,139)'],
+  bounced: ['var(--tint-neutral)', 'rgb(100,116,139)'],
 }
 
 function ReceiptStatus({ value }: { value: string }) {

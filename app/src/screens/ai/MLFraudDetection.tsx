@@ -19,7 +19,7 @@ const MOCK_ALERTS = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Flagged: ['var(--tint-orange)', 'var(--salis-orange)'],
   'Under Review': ['var(--tint-blue)', 'var(--salis-blue)'],
-  Dismissed: ['rgba(100,116,139,.1)', '#64748B'],
+  Dismissed: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type AlertRow = (typeof MOCK_ALERTS)[number]

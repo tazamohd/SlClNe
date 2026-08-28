@@ -23,9 +23,9 @@ type Campaign = (typeof MOCK_CAMPAIGNS)[number]
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Active: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Completed: ['rgba(100,116,139,.1)', '#64748B'],
+  Completed: ['var(--tint-neutral)', 'var(--text-muted)'],
   Scheduled: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Draft: ['var(--tint-navy)', 'var(--salis-navy, #0B1F3B)'],
+  Draft: ['var(--tint-navy)', 'var(--salis-navy)'],
 }
 
 export function EmailMarketingCampaigns() {

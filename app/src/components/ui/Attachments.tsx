@@ -27,7 +27,7 @@ export interface AttachmentsProps {
 const FILE_ICON: Record<string, { icon: string; color: string }> = {
   PDF: { icon: 'FileText', color: 'var(--salis-blue)' },
   Image: { icon: 'Image', color: 'var(--salis-orange)' },
-  Spreadsheet: { icon: 'FileSpreadsheet', color: '#64748B' },
+  Spreadsheet: { icon: 'FileSpreadsheet', color: 'var(--text-muted)' },
   Document: { icon: 'FileText', color: 'var(--salis-blue)' },
 }
 
@@ -64,7 +64,7 @@ export function Attachments({
       {files.length > 0 ? (
         <div className="flex flex-col gap-2">
           {files.map((f) => {
-            const look = FILE_ICON[f.type] ?? { icon: f.icon ?? 'File', color: '#64748B' }
+            const look = FILE_ICON[f.type] ?? { icon: f.icon ?? 'File', color: 'var(--text-muted)' }
             return (
               <div
                 key={f.id}

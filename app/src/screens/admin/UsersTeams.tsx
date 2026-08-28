@@ -32,14 +32,14 @@ interface Team {
 const ROLE_TONES: Record<string, [string, string]> = {
   blue: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
   sky: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
-  slate: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
+  slate: ['var(--tint-neutral)', 'var(--text-muted)'],
   orange: ['var(--tint-orange)', 'var(--salis-orange)'],
   navy: ['var(--tint-navy)', 'var(--salis-navy)'],
 }
 
 const STATUS_STYLES: Record<string, [string, string]> = {
   online: ['var(--tint-blue)', 'var(--salis-blue)'],
-  offline: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
+  offline: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const FIXTURE_USERS: User[] = [

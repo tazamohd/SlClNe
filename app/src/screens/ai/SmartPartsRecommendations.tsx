@@ -18,7 +18,7 @@ const MOCK_RECOMMENDATIONS = [
 const PRIORITY_COLORS: Record<string, readonly [string, string]> = {
   High: ['var(--tint-orange)', 'var(--salis-orange)'],
   Medium: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Low: ['rgba(100,116,139,.1)', '#64748B'],
+  Low: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type RecRow = (typeof MOCK_RECOMMENDATIONS)[number]

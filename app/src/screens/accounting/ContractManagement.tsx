@@ -31,17 +31,17 @@ const MOCK_CONTRACTS: readonly Contract[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Active: ['var(--tint-blue)', '#0A5ED7'],
-  Expired: ['rgba(100,116,139,.1)', '#64748B'],
-  Pending: ['var(--tint-orange)', '#F97316'],
-  Terminated: ['var(--tint-navy)', '#0B1F3B'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Expired: ['var(--tint-neutral)', 'var(--text-muted)'],
+  Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Terminated: ['var(--tint-navy)', 'var(--salis-navy)'],
 }
 
 const TYPE_PALETTE: Record<string, readonly [string, string]> = {
-  Service: ['var(--tint-blue)', '#0A5ED7'],
-  Supply: ['var(--tint-bright)', '#0BB3FF'],
-  Maintenance: ['var(--tint-navy)', '#0B1F3B'],
-  Lease: ['var(--tint-orange)', '#F97316'],
+  Service: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Supply: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  Maintenance: ['var(--tint-navy)', 'var(--salis-navy)'],
+  Lease: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 export function ContractManagement() {

@@ -17,7 +17,7 @@ const MOCK_MODULES = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Active: ['var(--tint-blue)', 'var(--salis-blue)'],
   Beta: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Planned: ['rgba(100,116,139,.1)', '#64748B'],
+  Planned: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type ModuleRow = (typeof MOCK_MODULES)[number]

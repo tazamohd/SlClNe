@@ -50,7 +50,7 @@ const FIXTURE_RULES: RuleDef[] = [
     desc: 'Email when invoice is 7 days overdue',
     trigger: 'Invoice overdue > 7 days',
     action: 'Send email reminder',
-    iconBg: 'rgba(100,116,139,.1)',
+    iconBg: 'var(--tint-neutral)',
     iconFg: 'var(--text-muted)',
   },
   {
@@ -144,7 +144,7 @@ export function AutomationRules() {
                 </div>
                 <Badge
                   background={
-                    on ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'
+                    on ? 'var(--tint-blue)' : 'var(--tint-neutral)'
                   }
                   color={on ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >

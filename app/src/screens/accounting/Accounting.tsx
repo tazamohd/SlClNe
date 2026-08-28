@@ -32,12 +32,12 @@ const ACCOUNTING = 'Accounting'
  *  take brand blue; pending needs action and takes orange; rejected and
  *  unposted are neutral. No green or red anywhere (README §7). */
 const LEDGER_STATUS: Record<string, readonly [string, string]> = {
-  posted: ['var(--tint-blue)', '#0A5ED7'],
-  unposted: ['rgba(100,116,139,.1)', '#64748B'],
-  approved: ['var(--tint-blue)', '#0A5ED7'],
-  cleared: ['var(--tint-blue)', '#0A5ED7'],
-  pending: ['var(--tint-orange)', '#F97316'],
-  rejected: ['rgba(100,116,139,.1)', '#64748B'],
+  posted: ['var(--tint-blue)', 'var(--salis-blue)'],
+  unposted: ['var(--tint-neutral)', 'var(--text-muted)'],
+  approved: ['var(--tint-blue)', 'var(--salis-blue)'],
+  cleared: ['var(--tint-blue)', 'var(--salis-blue)'],
+  pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  rejected: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 function LedgerStatus({ value }: { value: string }) {
@@ -52,11 +52,11 @@ function LedgerStatus({ value }: { value: string }) {
 
 /** Account-type palette for the chart of accounts. */
 const ACCOUNT_TYPE: Record<string, readonly [string, string]> = {
-  Assets: ['var(--tint-blue)', '#0A5ED7'],
-  Liabilities: ['var(--tint-orange)', '#F97316'],
-  Equity: ['var(--tint-navy)', '#0B1F3B'],
-  Revenue: ['var(--tint-bright)', '#0BB3FF'],
-  Expense: ['rgba(100,116,139,.1)', '#64748B'],
+  Assets: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Liabilities: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Equity: ['var(--tint-navy)', 'var(--salis-navy)'],
+  Revenue: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  Expense: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 function useFilter<TRow>(rows: readonly TRow[], fields: (row: TRow) => (string | number)[]) {

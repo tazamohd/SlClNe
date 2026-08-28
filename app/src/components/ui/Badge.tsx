@@ -36,7 +36,7 @@ export function Badge({
   )
 }
 
-const FALLBACK = ['rgba(100,116,139,.1)', '#64748B'] as const
+const FALLBACK = ['var(--tint-neutral)', 'var(--text-muted)'] as const
 
 function lookup(palette: BadgePalette, key: string) {
   return palette[key] ?? FALLBACK

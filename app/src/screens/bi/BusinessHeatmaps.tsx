@@ -31,7 +31,7 @@ const MOCK_LOCATIONS = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   High: ['var(--tint-blue)', 'var(--salis-blue)'],
   Medium: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Low: ['rgba(100,116,139,.1)', '#64748B'],
+  Low: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 function intensityColor(value: number): string {

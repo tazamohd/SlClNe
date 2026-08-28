@@ -20,7 +20,7 @@ const RULES = [
 type Rule = (typeof RULES)[number]
 
 function demandColor(level: string) {
-  if (level === 'Critical') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (level === 'Critical') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   if (level === 'High') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   if (level === 'Low') return { background: 'rgba(10,94,215,.08)', color: 'var(--salis-blue)' }
   return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }

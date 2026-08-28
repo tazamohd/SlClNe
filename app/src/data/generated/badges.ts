@@ -4,80 +4,80 @@ export type BadgePalette = Record<string, readonly string[]>
 
 export const SVC_BADGE: BadgePalette = {
   "maintenance": [
-    "rgba(10,94,215,.1)",
-    "#0A5ED7",
+    "var(--tint-blue)",
+    "var(--salis-blue)",
     "🔧"
   ],
   "repair": [
-    "rgba(249,115,22,.1)",
-    "#F97316",
+    "var(--tint-orange)",
+    "var(--salis-orange)",
     "⚙️"
   ],
   "diagnostic": [
-    "rgba(11,179,255,.1)",
-    "#0BB3FF",
+    "var(--tint-bright)",
+    "var(--salis-blue-bright)",
     "🔍"
   ],
   "inspection": [
-    "rgba(10,94,215,.1)",
-    "#0A5ED7",
+    "var(--tint-blue)",
+    "var(--salis-blue)",
     "✓"
   ],
   "tire_service": [
-    "rgba(100,116,139,.1)",
-    "#64748B",
+    "var(--tint-neutral)",
+    "var(--text-muted)",
     "⭕"
   ]
 }
 
 export const ST_BADGE: BadgePalette = {
   "pending": [
-    "rgba(249,115,22,.1)",
-    "#F97316",
+    "var(--tint-orange)",
+    "var(--salis-orange)",
     "⏳"
   ],
   "assigned": [
-    "rgba(11,179,255,.1)",
-    "#0BB3FF",
+    "var(--tint-bright)",
+    "var(--salis-blue-bright)",
     "👤"
   ],
   "in_progress": [
-    "rgba(10,94,215,.1)",
-    "#0A5ED7",
+    "var(--tint-blue)",
+    "var(--salis-blue)",
     "🔄"
   ],
   "completed": [
-    "rgba(10,94,215,.1)",
-    "#0A5ED7",
+    "var(--tint-blue)",
+    "var(--salis-blue)",
     "✅"
   ],
   "delivered": [
-    "rgba(11,31,59,.1)",
-    "#0B1F3B",
+    "var(--tint-navy)",
+    "var(--salis-navy)",
     "🚗"
   ],
   "cancelled": [
-    "rgba(249,115,22,.1)",
-    "#F97316",
+    "var(--tint-orange)",
+    "var(--salis-orange)",
     "❌"
   ]
 }
 
 export const PR_BADGE: BadgePalette = {
   "urgent": [
-    "#F97316",
+    "var(--salis-orange)",
     "🔥"
   ],
   "high": [
-    "#F97316",
+    "var(--salis-orange)",
     "⚡"
   ],
   "medium": [
-    "#0BB3FF",
+    "var(--salis-blue-bright)",
     "⭐"
   ],
   "low": [
-    "#0A5ED7",
+    "var(--salis-blue)",
     "💙"
   ]
 }

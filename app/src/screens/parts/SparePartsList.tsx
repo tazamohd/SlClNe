@@ -28,7 +28,7 @@ type Part = (typeof PARTS)[number]
 
 function statusColor(status: string) {
   if (status === 'Backordered') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
-  if (status === 'Discontinued') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (status === 'Discontinued') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 

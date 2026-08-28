@@ -61,10 +61,10 @@ export function Dashboard() {
         <MetricCard
           icon="DollarSign"
           iconTint="var(--tint-blue)"
-          iconColor="#0A5ED7"
+          iconColor="var(--salis-blue)"
           label={t('Total Revenue')}
           value="$128,450"
-          orbGradient="linear-gradient(135deg,#0A5ED7,#0BB3FF)"
+          orbGradient="linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))"
           orbIcon="TrendingUp"
           orbShadow="rgba(10,94,215,.2)"
           footer={
@@ -73,7 +73,7 @@ export function Dashboard() {
                 <Icon name="ArrowUpRight" size={14} />
                 +12%
               </span>
-              <Sparkline points="0,26 13,22 26,24 40,16 53,18 66,8 80,4" stroke="#0A5ED7" />
+              <Sparkline points="0,26 13,22 26,24 40,16 53,18 66,8 80,4" stroke="var(--salis-blue)" />
             </div>
           }
           progress={0.75}
@@ -82,10 +82,10 @@ export function Dashboard() {
         <MetricCard
           icon="Wrench"
           iconTint="var(--tint-bright)"
-          iconColor="#0BB3FF"
+          iconColor="var(--salis-blue-bright)"
           label={t('Active Jobs')}
           value="14"
-          orbGradient="linear-gradient(135deg,#0BB3FF,#38BDF8)"
+          orbGradient="linear-gradient(135deg,var(--salis-blue-bright),var(--chart-3))"
           orbIcon="Gauge"
           orbShadow="rgba(11,179,255,.2)"
           footer={
@@ -103,10 +103,10 @@ export function Dashboard() {
         <MetricCard
           icon="Users"
           iconTint="var(--tint-navy)"
-          iconColor="#0B1F3B"
+          iconColor="var(--salis-navy)"
           label={t('Customers')}
           value="248"
-          orbGradient="linear-gradient(135deg,#0B1F3B,#1e3a5f)"
+          orbGradient="linear-gradient(135deg,var(--salis-navy),var(--navy-dark))"
           orbIcon="Target"
           orbShadow="rgba(11,31,59,.2)"
           footer={
@@ -115,7 +115,7 @@ export function Dashboard() {
                 <Icon name="ArrowUpRight" size={14} />
                 +8%
               </span>
-              <Sparkline points="0,24 13,20 26,22 40,14 53,16 66,10 80,6" stroke="#0B1F3B" />
+              <Sparkline points="0,24 13,20 26,22 40,14 53,16 66,10 80,6" stroke="var(--salis-navy)" />
             </div>
           }
         />
@@ -123,7 +123,7 @@ export function Dashboard() {
         <MetricCard
           icon="Package"
           iconTint="var(--tint-orange)"
-          iconColor="#F97316"
+          iconColor="var(--salis-orange)"
           label={t('Inventory')}
           value="86%"
           footer={<span className="text-xs text-salis-orange">{t('142/165 in stock')}</span>}
@@ -136,7 +136,7 @@ export function Dashboard() {
                   cx="28"
                   cy="28"
                   r="24"
-                  stroke="#F97316"
+                  stroke="var(--salis-orange)"
                   strokeWidth="6"
                   fill="none"
                   strokeDasharray="129 150"
@@ -179,19 +179,19 @@ export function Dashboard() {
           <svg viewBox="0 0 600 260" className="block h-auto w-full" role="img" aria-label={t('Revenue Trend')}>
             <defs>
               <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#0A5ED7" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#0A5ED7" stopOpacity="0" />
+                <stop offset="0%" stopColor="var(--salis-blue)" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="var(--salis-blue)" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path d={`${REVENUE_PATH} L580,220 L20,220 Z`} fill="url(#revGrad)" />
-            <path d={REVENUE_PATH} fill="none" stroke="#0A5ED7" strokeWidth="2.5" />
+            <path d={REVENUE_PATH} fill="none" stroke="var(--salis-blue)" strokeWidth="2.5" />
             {MONTHS.map((month, i) => (
               <text
                 key={month}
                 x={20 + i * 112}
                 y="244"
                 fontSize="11"
-                fill="#64748B"
+                fill="var(--text-muted)"
                 textAnchor="middle"
                 fontFamily="Inter,sans-serif"
               >
@@ -208,7 +208,7 @@ export function Dashboard() {
               className="relative h-[180px] w-[180px] flex-shrink-0 rounded-full"
               style={{
                 background:
-                  'conic-gradient(#0A5ED7 0% 22.22%,#0BB3FF 22.22% 55.56%,#F97316 55.56% 74.07%,#0B1F3B 74.07% 88.89%,#64748B 88.89% 100%)',
+                  'conic-gradient(var(--salis-blue) 0% 22.22%,var(--salis-blue-bright) 22.22% 55.56%,var(--salis-orange) 55.56% 74.07%,var(--salis-navy) 74.07% 88.89%,var(--text-muted) 88.89% 100%)',
               }}
             >
               <div className="absolute inset-9 flex flex-col items-center justify-center rounded-full bg-card">
@@ -395,20 +395,20 @@ function PageButton({ label, icon }: { label: string; icon: string }) {
 }
 
 const PIPELINE = [
-  { icon: 'Clock', label: 'Check-In', count: 5, gradient: 'linear-gradient(135deg,#F97316,#FB923C)' },
-  { icon: 'Wrench', label: 'In Repair', count: 9, gradient: 'linear-gradient(135deg,#0A5ED7,#0BB3FF)' },
-  { icon: 'AlertCircle', label: 'QC', count: 6, gradient: 'linear-gradient(135deg,#0BB3FF,#38BDF8)' },
-  { icon: 'CheckCircle', label: 'Done', count: 6, gradient: 'linear-gradient(135deg,#0A5ED7,#0BB3FF)' },
-  { icon: 'Car', label: 'Delivered', count: 4, gradient: 'linear-gradient(135deg,#0B1F3B,#1e3a5f)' },
-  { icon: 'Activity', label: 'Total', count: 27, gradient: 'linear-gradient(135deg,#64748B,#94A3B8)' },
+  { icon: 'Clock', label: 'Check-In', count: 5, gradient: 'linear-gradient(135deg,var(--salis-orange),var(--orange-light))' },
+  { icon: 'Wrench', label: 'In Repair', count: 9, gradient: 'linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))' },
+  { icon: 'AlertCircle', label: 'QC', count: 6, gradient: 'linear-gradient(135deg,var(--salis-blue-bright),var(--chart-3))' },
+  { icon: 'CheckCircle', label: 'Done', count: 6, gradient: 'linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))' },
+  { icon: 'Car', label: 'Delivered', count: 4, gradient: 'linear-gradient(135deg,var(--salis-navy),var(--navy-dark))' },
+  { icon: 'Activity', label: 'Total', count: 27, gradient: 'linear-gradient(135deg,var(--text-muted),var(--neutral-400))' },
 ] as const
 
 const LEGEND = [
-  ['Completed', 6, '#0A5ED7'],
-  ['In Progress', 9, '#0BB3FF'],
-  ['Pending', 5, '#F97316'],
-  ['Delivered', 4, '#0B1F3B'],
-  ['Cancelled', 3, '#64748B'],
+  ['Completed', 6, 'var(--salis-blue)'],
+  ['In Progress', 9, 'var(--salis-blue-bright)'],
+  ['Pending', 5, 'var(--salis-orange)'],
+  ['Delivered', 4, 'var(--salis-navy)'],
+  ['Cancelled', 3, 'var(--text-muted)'],
 ] as const
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] as const

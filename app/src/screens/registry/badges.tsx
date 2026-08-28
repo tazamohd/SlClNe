@@ -18,7 +18,7 @@ const TINT = {
   blue: { background: 'var(--tint-blue)', color: 'var(--salis-blue)' },
   bright: { background: 'var(--tint-bright)', color: 'var(--salis-blue-bright)' },
   orange: { background: 'var(--tint-orange)', color: 'var(--salis-orange)' },
-  slate: { background: 'rgba(100,116,139,.1)', color: 'var(--text-muted)' },
+  slate: { background: 'var(--tint-neutral)', color: 'var(--text-muted)' },
 } as const
 
 export type Tint = keyof typeof TINT

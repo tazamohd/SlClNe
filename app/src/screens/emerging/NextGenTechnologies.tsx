@@ -17,7 +17,7 @@ const MOCK_ROADMAP = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   'In Progress': ['var(--tint-blue)', 'var(--salis-blue)'],
   Planned: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Research: ['rgba(100,116,139,.1)', '#64748B'],
+  Research: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type RoadmapRow = (typeof MOCK_ROADMAP)[number]

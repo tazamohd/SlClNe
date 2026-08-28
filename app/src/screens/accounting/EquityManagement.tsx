@@ -26,11 +26,11 @@ const MOCK_EQUITY: readonly EquityEntry[] = [
 ]
 
 const TYPE_PALETTE: Record<string, readonly [string, string]> = {
-  'Paid-in Capital': ['var(--tint-blue)', '#0A5ED7'],
-  'Retained Earnings': ['var(--tint-bright)', '#0BB3FF'],
-  Reserves: ['var(--tint-navy)', '#0B1F3B'],
-  Drawings: ['var(--tint-orange)', '#F97316'],
-  Other: ['rgba(100,116,139,.1)', '#64748B'],
+  'Paid-in Capital': ['var(--tint-blue)', 'var(--salis-blue)'],
+  'Retained Earnings': ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  Reserves: ['var(--tint-navy)', 'var(--salis-navy)'],
+  Drawings: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Other: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function EquityManagement() {

@@ -15,7 +15,7 @@ export const ROLES = [
     },
     "scope": "all",
     "limit": null,
-    "color": "#0A5ED7"
+    "color": "var(--salis-blue)"
   },
   {
     "id": "superadmin",
@@ -29,7 +29,7 @@ export const ROLES = [
     },
     "scope": "platform",
     "limit": null,
-    "color": "#0B1F3B"
+    "color": "var(--salis-navy)"
   },
   {
     "id": "manager",
@@ -43,7 +43,7 @@ export const ROLES = [
     },
     "scope": "branch",
     "limit": 50000,
-    "color": "#0A5ED7"
+    "color": "var(--salis-blue)"
   },
   {
     "id": "advisor",
@@ -57,7 +57,7 @@ export const ROLES = [
     },
     "scope": "branch",
     "limit": 5000,
-    "color": "#0BB3FF"
+    "color": "var(--salis-blue-bright)"
   },
   {
     "id": "technician",
@@ -71,7 +71,7 @@ export const ROLES = [
     },
     "scope": "own",
     "limit": 0,
-    "color": "#0BB3FF"
+    "color": "var(--salis-blue-bright)"
   },
   {
     "id": "qc",
@@ -85,7 +85,7 @@ export const ROLES = [
     },
     "scope": "branch",
     "limit": 0,
-    "color": "#0BB3FF"
+    "color": "var(--salis-blue-bright)"
   },
   {
     "id": "parts",
@@ -99,7 +99,7 @@ export const ROLES = [
     },
     "scope": "branch",
     "limit": 10000,
-    "color": "#0A5ED7"
+    "color": "var(--salis-blue)"
   },
   {
     "id": "accountant",
@@ -113,7 +113,7 @@ export const ROLES = [
     },
     "scope": "all",
     "limit": 25000,
-    "color": "#0A5ED7"
+    "color": "var(--salis-blue)"
   },
   {
     "id": "hr",
@@ -127,7 +127,7 @@ export const ROLES = [
     },
     "scope": "all",
     "limit": 15000,
-    "color": "#0A5ED7"
+    "color": "var(--salis-blue)"
   },
   {
     "id": "frontdesk",
@@ -141,7 +141,7 @@ export const ROLES = [
     },
     "scope": "branch",
     "limit": 0,
-    "color": "#0BB3FF"
+    "color": "var(--salis-blue-bright)"
   },
   {
     "id": "callcenter",
@@ -155,7 +155,7 @@ export const ROLES = [
     },
     "scope": "all",
     "limit": 0,
-    "color": "#0BB3FF"
+    "color": "var(--salis-blue-bright)"
   },
   {
     "id": "procurement",
@@ -169,7 +169,7 @@ export const ROLES = [
     },
     "scope": "all",
     "limit": 20000,
-    "color": "#0A5ED7"
+    "color": "var(--salis-blue)"
   },
   {
     "id": "supplier",
@@ -183,7 +183,7 @@ export const ROLES = [
     },
     "scope": "external",
     "limit": 0,
-    "color": "#F97316"
+    "color": "var(--salis-orange)"
   },
   {
     "id": "customer",
@@ -197,7 +197,7 @@ export const ROLES = [
     },
     "scope": "self",
     "limit": 0,
-    "color": "#F97316"
+    "color": "var(--salis-orange)"
   }
 ] as const satisfies readonly Role[]
 

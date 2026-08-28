@@ -109,7 +109,7 @@ export function AppHeroCard({
 export function AppListRow({
   icon,
   iconTint = 'rgba(10,94,215,.08)',
-  iconColor = '#0A5ED7',
+  iconColor = 'var(--salis-blue)',
   title,
   subtitle,
   trailing,

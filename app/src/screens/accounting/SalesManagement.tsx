@@ -33,10 +33,10 @@ const MOCK_SALES: readonly Sale[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Paid: ['var(--tint-blue)', '#0A5ED7'],
-  Pending: ['var(--tint-orange)', '#F97316'],
-  Overdue: ['var(--tint-navy)', '#0B1F3B'],
-  Cancelled: ['rgba(100,116,139,.1)', '#64748B'],
+  Paid: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Overdue: ['var(--tint-navy)', 'var(--salis-navy)'],
+  Cancelled: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function SalesManagement() {

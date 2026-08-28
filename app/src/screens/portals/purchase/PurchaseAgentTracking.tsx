@@ -30,7 +30,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Transit': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Customs: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Delayed: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  Delayed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PurchaseAgentTracking() {
@@ -40,7 +40,7 @@ export function PurchaseAgentTracking() {
     { label: t('In Transit'), value: '3', icon: 'Truck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('At Customs'), value: '1', icon: 'ShieldAlert', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Delivered Today'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: '#F97316' },
+    { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Shipment>[] = [

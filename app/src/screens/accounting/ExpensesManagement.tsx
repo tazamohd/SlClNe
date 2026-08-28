@@ -30,9 +30,9 @@ const MOCK_CATEGORIES: readonly ExpenseCategory[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  'Under Budget': ['var(--tint-blue)', '#0A5ED7'],
-  'Over Budget': ['var(--tint-orange)', '#F97316'],
-  'At Limit': ['var(--tint-navy)', '#0B1F3B'],
+  'Under Budget': ['var(--tint-blue)', 'var(--salis-blue)'],
+  'Over Budget': ['var(--tint-orange)', 'var(--salis-orange)'],
+  'At Limit': ['var(--tint-navy)', 'var(--salis-navy)'],
 }
 
 export function ExpensesManagement() {

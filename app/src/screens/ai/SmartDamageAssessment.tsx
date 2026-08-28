@@ -19,13 +19,13 @@ const MOCK_ASSESSMENTS = [
 const SEVERITY_COLORS: Record<string, readonly [string, string]> = {
   Major: ['var(--tint-orange)', 'var(--salis-orange)'],
   Moderate: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Minor: ['rgba(100,116,139,.1)', '#64748B'],
+  Minor: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Reviewed: ['var(--tint-blue)', 'var(--salis-blue)'],
   Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Escalated: ['rgba(100,116,139,.1)', '#64748B'],
+  Escalated: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type AssessmentRow = (typeof MOCK_ASSESSMENTS)[number]

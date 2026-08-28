@@ -172,7 +172,7 @@ export function BalanceSheet() {
             icon="Wallet"
             items={ASSETS}
             subtotalLabel={t('Total Assets')}
-            accentColor="#0A5ED7"
+            accentColor="var(--salis-blue)"
           />
           <div className="flex flex-col gap-8">
             <StatementSection
@@ -180,14 +180,14 @@ export function BalanceSheet() {
               icon="CreditCard"
               items={LIABILITIES}
               subtotalLabel={t('Total Liabilities')}
-              accentColor="#F97316"
+              accentColor="var(--salis-orange)"
             />
             <StatementSection
               title={t('Equity')}
               icon="Landmark"
               items={EQUITY}
               subtotalLabel={t('Total Equity')}
-              accentColor="#0B1F3B"
+              accentColor="var(--salis-navy)"
             />
           </div>
         </div>

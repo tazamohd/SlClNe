@@ -34,7 +34,7 @@ const CHANNEL_STYLES: Record<string, { bg: string; fg: string; icon: string }> =
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
@@ -46,7 +46,7 @@ export function PortalCommunications() {
 
   const kpis = [
     { label: t('Total Messages'), value: '248', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Unread'), value: String(unreadCount), icon: 'Mail', bg: 'var(--tint-orange)', fg: '#F97316' },
+    { label: t('Unread'), value: String(unreadCount), icon: 'Mail', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Sent Today'), value: '12', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Response Rate'), value: '94%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

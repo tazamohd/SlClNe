@@ -72,7 +72,7 @@ export function UIListView() {
   const statusColors: Record<string, [string, string]> = {
     'In Progress': ['var(--tint-blue)', 'var(--salis-blue)'],
     Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
-    Completed: ['rgba(100,116,139,.1)', '#64748B'],
+    Completed: ['var(--tint-neutral)', 'var(--text-muted)'],
   }
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" aria-label={t('ListView Pattern')}>
@@ -129,11 +129,11 @@ export function UITableView() {
     {
       header: 'Status', cell: r => {
         const colors: Record<string, [string, string]> = {
-          Paid: ['rgba(100,116,139,.1)', '#64748B'],
+          Paid: ['var(--tint-neutral)', 'var(--text-muted)'],
           Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
           Overdue: ['var(--tint-blue)', 'var(--salis-blue)'],
         }
-        const [bg, fg] = colors[r.status] ?? ['rgba(100,116,139,.1)', '#64748B']
+        const [bg, fg] = colors[r.status] ?? ['var(--tint-neutral)', 'var(--text-muted)']
         return <Badge background={bg} color={fg}>{t(r.status)}</Badge>
       },
     },
@@ -151,11 +151,11 @@ export function UITableView() {
               <MobileCardHeader title={r.id} code trailing={
                 (() => {
                   const colors: Record<string, [string, string]> = {
-                    Paid: ['rgba(100,116,139,.1)', '#64748B'],
+                    Paid: ['var(--tint-neutral)', 'var(--text-muted)'],
                     Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
                     Overdue: ['var(--tint-blue)', 'var(--salis-blue)'],
                   }
-                  const [bg, fg] = colors[r.status] ?? ['rgba(100,116,139,.1)', '#64748B']
+                  const [bg, fg] = colors[r.status] ?? ['var(--tint-neutral)', 'var(--text-muted)']
                   return <Badge background={bg} color={fg}>{t(r.status)}</Badge>
                 })()
               } />
@@ -250,7 +250,7 @@ export function UICalendarView() {
   const events: Record<number, { label: string; color: string }[]> = {
     3: [{ label: 'Oil Change', color: 'var(--salis-blue)' }],
     7: [{ label: 'Brake Service', color: 'var(--salis-orange)' }],
-    12: [{ label: 'Engine Tune', color: 'var(--salis-blue)' }, { label: 'Inspection', color: '#64748B' }],
+    12: [{ label: 'Engine Tune', color: 'var(--salis-blue)' }, { label: 'Inspection', color: 'var(--text-muted)' }],
     18: [{ label: 'AC Repair', color: 'var(--salis-orange)' }],
     24: [{ label: 'Full Service', color: 'var(--salis-blue)' }],
   }
@@ -348,8 +348,8 @@ export function UIMapView() {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-heading">{t(loc.name)}</span>
                 <Badge
-                  background={loc.status === 'Open' ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                  color={loc.status === 'Open' ? 'var(--salis-blue)' : '#64748B'}
+                  background={loc.status === 'Open' ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={loc.status === 'Open' ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >{t(loc.status)}</Badge>
               </div>
               <span className="text-xs text-muted">{loc.address}</span>
@@ -376,7 +376,7 @@ export function UICharts() {
     { label: 'AC/Heating', value: 15 },
   ]
   const max = Math.max(...barData.map(d => d.value))
-  const COLORS = ['#0A5ED7', '#0BB3FF', '#38BDF8', '#64748B', '#F97316']
+  const COLORS = ['var(--salis-blue)', 'var(--salis-blue-bright)', 'var(--chart-3)', 'var(--text-muted)', 'var(--salis-orange)']
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" aria-label={t('Charts Pattern')}>
       <PageHeader icon="BarChart3" title="Charts" subtitle="Data visualization components for analytics" />
@@ -463,7 +463,7 @@ export function UIActivityFeed() {
     { icon: 'UserPlus', user: 'Noura Al-Qahtani', action: 'created job card', target: 'JC-2401', time: '2 min ago', color: 'var(--salis-blue)' },
     { icon: 'FileText', user: 'Faisal Al-Harbi', action: 'approved estimate', target: 'EST-1892', time: '15 min ago', color: 'var(--salis-orange)' },
     { icon: 'Wrench', user: 'Saeed Al-Zahrani', action: 'started repair on', target: 'JC-2399', time: '1 hour ago', color: 'var(--salis-blue)' },
-    { icon: 'CreditCard', user: 'Hessa Al-Mutairi', action: 'recorded payment', target: 'INV-4521', time: '2 hours ago', color: '#64748B' },
+    { icon: 'CreditCard', user: 'Hessa Al-Mutairi', action: 'recorded payment', target: 'INV-4521', time: '2 hours ago', color: 'var(--text-muted)' },
     { icon: 'CheckCircle', user: 'Majed Al-Otaibi', action: 'completed QC for', target: 'JC-2395', time: '3 hours ago', color: 'var(--salis-blue)' },
   ]
   return (
@@ -537,7 +537,7 @@ export function UIAttachments() {
     { name: 'inspection_report.pdf', size: '2.4 MB', type: 'PDF', icon: 'FileText', color: 'var(--salis-blue)' },
     { name: 'damage_front_bumper.jpg', size: '1.8 MB', type: 'Image', icon: 'Image', color: 'var(--salis-orange)' },
     { name: 'customer_signature.png', size: '340 KB', type: 'Image', icon: 'Image', color: 'var(--salis-orange)' },
-    { name: 'parts_invoice.xlsx', size: '560 KB', type: 'Spreadsheet', icon: 'FileSpreadsheet', color: '#64748B' },
+    { name: 'parts_invoice.xlsx', size: '560 KB', type: 'Spreadsheet', icon: 'FileSpreadsheet', color: 'var(--text-muted)' },
   ]
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" aria-label={t('Attachments Pattern')}>
@@ -972,7 +972,7 @@ export function UIModalsLifecycle() {
               </span>
               <h3 className="mt-3 text-sm font-bold text-heading">{t(s.label)}</h3>
               <div className="mt-2 flex items-center justify-center gap-2 text-xs text-muted">
-                <Badge background="rgba(100,116,139,.1)" color="#64748B">{t(s.from)}</Badge>
+                <Badge background="var(--tint-neutral)" color="var(--text-muted)">{t(s.from)}</Badge>
                 <Icon name="ArrowRight" size={12} />
                 <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t(s.to)}</Badge>
               </div>
@@ -993,7 +993,7 @@ export function UIModalsStatus() {
   const statusModals = [
     { title: 'Operation Successful', desc: 'The job card has been created.', icon: 'CheckCircle', color: 'var(--salis-blue)', bg: 'var(--tint-blue)' },
     { title: 'Warning', desc: 'This action cannot be undone.', icon: 'AlertTriangle', color: 'var(--salis-orange)', bg: 'var(--tint-orange)' },
-    { title: 'Session Expiring', desc: 'Your session will expire in 5 minutes.', icon: 'Clock', color: '#64748B', bg: 'rgba(100,116,139,.1)' },
+    { title: 'Session Expiring', desc: 'Your session will expire in 5 minutes.', icon: 'Clock', color: 'var(--text-muted)', bg: 'var(--tint-neutral)' },
   ]
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" aria-label={t('Status Modals Pattern')}>
@@ -1313,11 +1313,11 @@ export function RBACSpec() {
   }
   const ACTION_COLORS: Record<string, [string, string]> = {
     v: ['var(--tint-blue)', 'var(--salis-blue)'],
-    c: ['var(--tint-bright)', '#0BB3FF'],
+    c: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
     e: ['var(--tint-orange)', 'var(--salis-orange)'],
-    d: ['rgba(100,116,139,.1)', '#64748B'],
+    d: ['var(--tint-neutral)', 'var(--text-muted)'],
     a: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
-    x: ['rgba(56,189,248,.1)', '#38BDF8'],
+    x: ['rgba(56,189,248,.1)', 'var(--chart-3)'],
   }
 
   return (
@@ -1373,7 +1373,7 @@ export function RBACSpec() {
                         {perms ? (
                           <div className="flex flex-wrap justify-center gap-0.5">
                             {perms.split('').map(p => {
-                              const [bg, fg] = ACTION_COLORS[p] ?? ['rgba(100,116,139,.1)', '#64748B']
+                              const [bg, fg] = ACTION_COLORS[p] ?? ['var(--tint-neutral)', 'var(--text-muted)']
                               return (
                                 <span key={p} className="inline-flex h-5 w-5 items-center justify-center rounded text-[10px] font-bold" style={{ background: bg, color: fg }} title={ACTION_LABELS[p]}>
                                   {p}
@@ -1398,7 +1398,7 @@ export function RBACSpec() {
       <Section title="Action Legend">
         <div className="flex flex-wrap gap-3">
           {Object.entries(ACTION_LABELS).map(([key, label]) => {
-            const [bg, fg] = ACTION_COLORS[key] ?? ['rgba(100,116,139,.1)', '#64748B']
+            const [bg, fg] = ACTION_COLORS[key] ?? ['var(--tint-neutral)', 'var(--text-muted)']
             return (
               <div key={key} className="flex items-center gap-2">
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded text-xs font-bold" style={{ background: bg, color: fg }}>

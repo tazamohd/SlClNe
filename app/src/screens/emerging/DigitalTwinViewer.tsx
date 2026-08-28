@@ -26,7 +26,7 @@ const MOCK_METRICS = [
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
   Active: ['var(--tint-blue)', 'var(--salis-blue)'],
   Warning: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Offline: ['rgba(100,116,139,.1)', '#64748B'],
+  Offline: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 type TwinRow = (typeof MOCK_TWINS)[number]

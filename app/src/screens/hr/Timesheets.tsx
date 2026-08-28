@@ -92,7 +92,7 @@ export function Timesheets() {
         <ErrorState description={sheets.error?.message} onRetry={() => void sheets.refetch()} />
       ) : (
         <>
-          <div className="grid grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
             <StatCard icon="FileText" value={String(shown.length)} label="Records shown" />
             <StatCard icon="Clock" value={`${(totalMinutes / 60).toFixed(1)}`} label="Hours shown" />
             <StatCard icon="Hourglass" value={String(pending)} label="Awaiting review" />

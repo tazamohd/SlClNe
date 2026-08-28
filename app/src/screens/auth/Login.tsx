@@ -282,7 +282,7 @@ function RoleCard({
         'relative flex min-h-[52px] w-full cursor-pointer items-center gap-[9px] rounded-[10px] border px-[11px] py-[9px] text-start',
         'transition-all duration-150 hover:-translate-y-px hover:border-[rgba(10,94,215,.4)] hover:shadow-lg',
         selected
-          ? 'border-salis-blue bg-salis-blue/5 shadow-[0_0_0_3px_#D7E5FA] dark:bg-salis-navy dark:shadow-[0_0_0_3px_#173963]'
+          ? 'border-salis-blue bg-salis-blue/5 shadow-[0_0_0_3px_var(--ring-light)] dark:bg-salis-navy dark:shadow-[0_0_0_3px_var(--ring-dark)]'
           : 'border-border bg-card focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
       )}
     >

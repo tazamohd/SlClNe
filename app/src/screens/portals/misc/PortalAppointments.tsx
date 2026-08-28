@@ -32,7 +32,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   'In Progress': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Completed: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PortalAppointments() {

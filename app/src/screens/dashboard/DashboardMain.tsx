@@ -9,12 +9,12 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection } from '@/data/useCollection'
 
 const STATUS_TONE: Record<string, readonly [string, string]> = {
-  checked_in: ['rgba(11,179,255,.12)', '#0BB3FF'],
-  inspection: ['var(--tint-blue)', '#0A5ED7'],
-  in_progress: ['var(--tint-bright)', '#0BB3FF'],
-  completed: ['var(--tint-navy)', '#0B1F3B'],
-  delivered: ['rgba(100,116,139,.1)', '#64748B'],
-  pending_approval: ['var(--tint-orange)', '#F97316'],
+  checked_in: ['rgba(11,179,255,.12)', 'var(--salis-blue-bright)'],
+  inspection: ['var(--tint-blue)', 'var(--salis-blue)'],
+  in_progress: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  completed: ['var(--tint-navy)', 'var(--salis-navy)'],
+  delivered: ['var(--tint-neutral)', 'var(--text-muted)'],
+  pending_approval: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 const BAR_COLORS = [
@@ -156,7 +156,7 @@ export function DashboardMain() {
           ) : (
             <div className="flex flex-col gap-3.5">
               {statusBreakdown.map((row) => {
-                const [bg, fg] = row.tone ?? ['rgba(100,116,139,.1)', '#64748B']
+                const [bg, fg] = row.tone ?? ['var(--tint-neutral)', 'var(--text-muted)']
                 return (
                   <div key={row.label}>
                     <div className="mb-1 flex justify-between text-[13px]">

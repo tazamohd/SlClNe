@@ -28,8 +28,8 @@ export function SecuritySettings() {
             <MobileCardRow key={i} label={t(s.label)}>
               {s.type === 'toggle' ? (
                 <Badge
-                  background={(s.value as boolean) ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                  color={(s.value as boolean) ? 'var(--salis-blue)' : '#64748B'}
+                  background={(s.value as boolean) ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={(s.value as boolean) ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >
                   {(s.value as boolean) ? t('Enabled') : t('Disabled')}
                 </Badge>
@@ -58,8 +58,8 @@ export function SecuritySettings() {
               <span className="text-sm text-muted">{t(s.label)}</span>
               {s.type === 'toggle' ? (
                 <Badge
-                  background={(s.value as boolean) ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                  color={(s.value as boolean) ? 'var(--salis-blue)' : '#64748B'}
+                  background={(s.value as boolean) ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={(s.value as boolean) ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >
                   {(s.value as boolean) ? t('Enabled') : t('Disabled')}
                 </Badge>

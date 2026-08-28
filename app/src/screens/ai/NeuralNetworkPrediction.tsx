@@ -26,7 +26,7 @@ const PRIORITY_COLORS: Record<string, readonly [string, string]> = {
   Critical: ['rgba(249,115,22,.15)', 'var(--salis-orange)'],
   High: ['var(--tint-orange)', 'var(--salis-orange)'],
   Medium: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Low: ['rgba(100,116,139,.1)', '#64748B'],
+  Low: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const MODEL_STATUS_COLORS: Record<string, readonly [string, string]> = {

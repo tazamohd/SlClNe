@@ -44,8 +44,8 @@ export function SystemSettings() {
           {NOTIFICATIONS.map((s, i) => (
             <MobileCardRow key={i} label={t(s.label)}>
               <Badge
-                background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                color={s.value ? 'var(--salis-blue)' : '#64748B'}
+                background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
               >
                 {s.value ? t('On') : t('Off')}
               </Badge>
@@ -58,8 +58,8 @@ export function SystemSettings() {
             <MobileCardRow key={i} label={t(s.label)}>
               {typeof s.value === 'boolean' ? (
                 <Badge
-                  background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                  color={s.value ? 'var(--salis-blue)' : '#64748B'}
+                  background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >
                   {s.value ? t('On') : t('Off')}
                 </Badge>
@@ -103,8 +103,8 @@ export function SystemSettings() {
               <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 <Badge
-                  background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                  color={s.value ? 'var(--salis-blue)' : '#64748B'}
+                  background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >
                   {s.value ? t('On') : t('Off')}
                 </Badge>
@@ -124,8 +124,8 @@ export function SystemSettings() {
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 {typeof s.value === 'boolean' ? (
                   <Badge
-                    background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
-                    color={s.value ? 'var(--salis-blue)' : '#64748B'}
+                    background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                    color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
                   >
                     {s.value ? t('On') : t('Off')}
                   </Badge>

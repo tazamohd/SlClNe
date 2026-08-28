@@ -27,7 +27,7 @@ export interface KanbanViewProps {
 
 const DEFAULT_BG = [
   'rgba(10,94,215,.08)',
-  'rgba(249,115,22,.08)',
+  'var(--tint-orange)',
   'rgba(100,116,139,.08)',
   'rgba(10,94,215,.05)',
 ]

@@ -107,7 +107,7 @@ const DISPOSITIONS: { key: DispositionKey; label: string }[] = [
 const PRIORITY_TONES: Record<string, [string, string]> = {
   blue: ['var(--tint-blue)', 'var(--salis-blue)'],
   orange: ['rgba(249,115,22,.14)', 'var(--salis-orange)'],
-  slate: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
+  slate: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const STATUS_TONES: Record<string, [string, string]> = {

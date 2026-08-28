@@ -48,11 +48,11 @@ const MOCK_ACCOUNTS: readonly LedgerAccount[] = [
 ]
 
 const TYPE_PALETTE: Record<string, readonly [string, string]> = {
-  Assets: ['var(--tint-blue)', '#0A5ED7'],
-  Liabilities: ['var(--tint-orange)', '#F97316'],
-  Equity: ['var(--tint-navy)', '#0B1F3B'],
-  Revenue: ['var(--tint-bright)', '#0BB3FF'],
-  Expense: ['rgba(100,116,139,.1)', '#64748B'],
+  Assets: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Liabilities: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Equity: ['var(--tint-navy)', 'var(--salis-navy)'],
+  Revenue: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  Expense: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function GeneralLedger() {

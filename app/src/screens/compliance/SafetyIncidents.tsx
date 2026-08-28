@@ -17,15 +17,15 @@ const INCIDENTS = [
 const SEVERITY_PALETTE: Record<string, { bg: string; fg: string }> = {
   Low: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Medium: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
-  High: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
-  Critical: { bg: 'rgba(11,31,59,.12)', fg: '#0B1F3B' },
+  High: { bg: 'rgba(234,88,12,.1)', fg: 'var(--salis-orange-hover)' },
+  Critical: { bg: 'rgba(11,31,59,.12)', fg: 'var(--salis-navy)' },
 }
 
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
-  Open: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
+  Open: { bg: 'rgba(234,88,12,.1)', fg: 'var(--salis-orange-hover)' },
   Investigating: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   Resolved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Closed: { bg: 'rgba(100,116,139,.1)', fg: '#64748B' },
+  Closed: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 type IncidentRow = (typeof INCIDENTS)[number]
@@ -38,7 +38,7 @@ export function SafetyIncidents() {
 
   const kpis = [
     { label: t('Total Incidents'), value: String(INCIDENTS.length), icon: 'AlertTriangle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Open'), value: String(openCount), icon: 'AlertCircle', bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
+    { label: t('Open'), value: String(openCount), icon: 'AlertCircle', bg: 'rgba(234,88,12,.1)', fg: 'var(--salis-orange-hover)' },
     { label: t('This Month'), value: String(thisMonth), icon: 'Calendar', bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
     { label: t('Avg Resolution Days'), value: '4.2', icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

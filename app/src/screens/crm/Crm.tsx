@@ -27,31 +27,31 @@ import { CrmTaskFormModal } from './CrmTaskFormModal'
  *  rather than red, and `urgent` priority is the only orange (README §7). */
 
 const STAGE_TONE: Record<string, readonly [string, string]> = {
-  new: ['rgba(100,116,139,.12)', '#64748B'],
-  qualified: ['rgba(11,179,255,.12)', '#0BB3FF'],
-  proposal: ['var(--tint-blue)', '#0A5ED7'],
-  negotiation: ['rgba(10,94,215,.16)', '#0A5ED7'],
-  won: ['rgba(11,31,59,.12)', '#0B1F3B'],
-  lost: ['rgba(100,116,139,.1)', '#64748B'],
+  new: ['var(--tint-neutral)', 'var(--text-muted)'],
+  qualified: ['rgba(11,179,255,.12)', 'var(--salis-blue-bright)'],
+  proposal: ['var(--tint-blue)', 'var(--salis-blue)'],
+  negotiation: ['rgba(10,94,215,.16)', 'var(--salis-blue)'],
+  won: ['rgba(11,31,59,.12)', 'var(--salis-navy)'],
+  lost: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 const PRIORITY_TONE: Record<string, readonly [string, string]> = {
-  urgent: ['rgba(249,115,22,.12)', '#F97316'],
-  high: ['rgba(249,115,22,.08)', '#F97316'],
-  medium: ['var(--tint-bright)', '#0BB3FF'],
-  low: ['var(--tint-blue)', '#0A5ED7'],
+  urgent: ['rgba(249,115,22,.12)', 'var(--salis-orange)'],
+  high: ['rgba(249,115,22,.08)', 'var(--salis-orange)'],
+  medium: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  low: ['var(--tint-blue)', 'var(--salis-blue)'],
 }
 
 const STATUS_TONE: Record<string, readonly [string, string]> = {
-  running: ['var(--tint-blue)', '#0A5ED7'],
-  scheduled: ['var(--tint-bright)', '#0BB3FF'],
-  completed: ['var(--tint-navy)', '#0B1F3B'],
-  todo: ['rgba(100,116,139,.1)', '#64748B'],
-  in_progress: ['var(--tint-bright)', '#0BB3FF'],
-  done: ['var(--tint-blue)', '#0A5ED7'],
-  active: ['var(--tint-blue)', '#0A5ED7'],
-  paused: ['var(--tint-orange)', '#F97316'],
-  draft: ['rgba(100,116,139,.1)', '#64748B'],
+  running: ['var(--tint-blue)', 'var(--salis-blue)'],
+  scheduled: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  completed: ['var(--tint-navy)', 'var(--salis-navy)'],
+  todo: ['var(--tint-neutral)', 'var(--text-muted)'],
+  in_progress: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  done: ['var(--tint-blue)', 'var(--salis-blue)'],
+  active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  paused: ['var(--tint-orange)', 'var(--salis-orange)'],
+  draft: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 function Tone({
@@ -64,7 +64,7 @@ function Tone({
   label?: string
 }) {
   const { t } = usePreferences()
-  const [bg, fg] = palette[value] ?? ['rgba(100,116,139,.1)', '#64748B']
+  const [bg, fg] = palette[value] ?? ['var(--tint-neutral)', 'var(--text-muted)']
   const text = label ?? value.replace(/_/g, ' ')
   return (
     <Badge background={bg} color={fg}>
@@ -1018,9 +1018,9 @@ export function ConversationHistory() {
 type Integration = RowOf<'integrations'>
 
 const INTEGRATION_STATUS: Record<string, readonly [string, string]> = {
-  connected: ['var(--tint-blue)', '#0A5ED7'],
-  pending: ['var(--tint-orange)', '#F97316'],
-  available: ['rgba(100,116,139,.1)', '#64748B'],
+  connected: ['var(--tint-blue)', 'var(--salis-blue)'],
+  pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  available: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function Integrations() {

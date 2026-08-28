@@ -22,7 +22,7 @@ const VARIANT_STYLES: Record<AlertVariant, { bg: string; border: string; icon: s
     bg: 'bg-[rgba(234,88,12,.06)]',
     border: 'border-[rgba(234,88,12,.2)]',
     icon: 'AlertCircle',
-    iconColor: 'text-[#EA580C]',
+    iconColor: 'text-[var(--salis-orange-hover)]',
   },
   neutral: {
     bg: 'bg-[rgba(100,116,139,.06)]',
