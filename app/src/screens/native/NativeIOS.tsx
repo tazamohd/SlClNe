@@ -94,7 +94,7 @@ export function NativeIOS() {
           <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Version')} 3.2.1</Badge>
           <div className="mt-4 flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
-              <Icon key={star} name="Star" size={16} style={{ color: star <= 4 ? 'var(--salis-orange)' : 'var(--text-muted)' }} />
+              <Icon key={star} name="Star" size={16} className={star <= 4 ? 'text-salis-orange' : 'text-muted'} />
             ))}
             <span className="ms-1 text-xs text-muted">4.8</span>
           </div>

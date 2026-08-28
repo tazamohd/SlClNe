@@ -94,7 +94,7 @@ export function EmergingTechnologies() {
                 <span>{t('Impact')}: {t(tech.impact)}</span>
               </div>
               <div className="mt-2 h-1.5 w-full rounded-full bg-border">
-                <div className="h-full rounded-full" style={{ width: `${tech.adoption}%`, background: 'var(--salis-blue)' }} />
+                <div className="h-full rounded-full bg-salis-blue" style={{ width: `${tech.adoption}%` }} />
               </div>
             </Card>
           )

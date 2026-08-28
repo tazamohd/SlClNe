@@ -132,8 +132,7 @@ export function AIAssistant() {
                 <MobileCard key={msg.id}>
                   <div className="flex gap-2.5">
                     <span
-                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{ background: msg.role === 'assistant' ? 'var(--salis-gradient)' : 'var(--text-heading)' }}
+                      className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${msg.role === 'assistant' ? 'bg-salis-gradient' : 'bg-heading'}`}
                     >
                       {msg.role === 'assistant' ? 'AI' : 'U'}
                     </span>
@@ -189,8 +188,7 @@ export function AIAssistant() {
             {messages.map((msg) => (
               <div key={msg.id} className="flex gap-3">
                 <span
-                  className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ background: msg.role === 'assistant' ? 'var(--salis-gradient)' : 'var(--text-heading)' }}
+                  className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${msg.role === 'assistant' ? 'bg-salis-gradient' : 'bg-heading'}`}
                 >
                   {msg.role === 'assistant' ? 'AI' : 'U'}
                 </span>

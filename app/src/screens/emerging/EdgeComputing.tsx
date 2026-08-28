@@ -43,7 +43,7 @@ export function EdgeComputing() {
     { header: 'CPU', cell: (n) => (
       <div className="flex items-center gap-2">
         <div className="h-1.5 w-16 rounded-full bg-border">
-          <div className="h-full rounded-full" style={{ width: `${n.cpuUsage}%`, background: n.cpuUsage > 70 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
+          <div className={`h-full rounded-full ${n.cpuUsage > 70 ? 'bg-salis-orange' : 'bg-salis-blue'}`} style={{ width: `${n.cpuUsage}%` }} />
         </div>
         <span className="text-[12px] text-muted">{n.cpuUsage}%</span>
       </div>
@@ -51,7 +51,7 @@ export function EdgeComputing() {
     { header: 'Memory', cell: (n) => (
       <div className="flex items-center gap-2">
         <div className="h-1.5 w-16 rounded-full bg-border">
-          <div className="h-full rounded-full" style={{ width: `${n.memoryUsage}%`, background: n.memoryUsage > 75 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
+          <div className={`h-full rounded-full ${n.memoryUsage > 75 ? 'bg-salis-orange' : 'bg-salis-blue'}`} style={{ width: `${n.memoryUsage}%` }} />
         </div>
         <span className="text-[12px] text-muted">{n.memoryUsage}%</span>
       </div>

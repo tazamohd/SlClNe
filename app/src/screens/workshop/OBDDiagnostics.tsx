@@ -255,8 +255,7 @@ export function OBDDiagnostics() {
                       {pid.label}
                     </p>
                     <p
-                      className="mt-1 font-display text-lg font-black leading-tight"
-                      style={{ color: pid.warn ? 'var(--salis-orange)' : 'var(--salis-blue)' }}
+                      className={`mt-1 font-display text-lg font-black leading-tight ${pid.warn ? 'text-salis-orange' : 'text-salis-blue'}`}
                     >
                       {pid.value}
                     </p>

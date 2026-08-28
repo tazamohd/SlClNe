@@ -44,7 +44,7 @@ export function NextGenTechnologies() {
     { header: 'Progress', cell: (r) => (
       <div className="flex items-center gap-2">
         <div className="h-1.5 w-20 rounded-full bg-border">
-          <div className="h-full rounded-full" style={{ width: `${r.completion}%`, background: 'var(--salis-blue)' }} />
+          <div className="h-full rounded-full bg-salis-blue" style={{ width: `${r.completion}%` }} />
         </div>
         <span className="text-[12px] text-muted">{r.completion}%</span>
       </div>

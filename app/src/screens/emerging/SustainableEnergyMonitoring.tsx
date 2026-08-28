@@ -52,7 +52,7 @@ export function SustainableEnergyMonitoring() {
     { header: 'Utilization', cell: (s) => (
       <div className="flex items-center gap-2">
         <div className="h-1.5 w-16 rounded-full bg-border">
-          <div className="h-full rounded-full" style={{ width: `${s.utilization}%`, background: 'var(--salis-blue)' }} />
+          <div className="h-full rounded-full bg-salis-blue" style={{ width: `${s.utilization}%` }} />
         </div>
         <span className="text-[12px] text-muted">{s.utilization}%</span>
       </div>

@@ -55,7 +55,7 @@ export function MobileDeviceManagement() {
       header: 'Battery',
       cell: (device) => (
         <div className="flex items-center gap-2">
-          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
+          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} className={device.battery < 20 ? 'text-salis-orange' : 'text-salis-blue'} />
           <span className="text-body">{device.battery}%</span>
         </div>
       ),

@@ -42,7 +42,7 @@ export function AutomatedReordering() {
   const columns: Column<ReorderRule>[] = [
     { header: 'Part', cell: (r) => r.partName },
     { header: 'Part #', cell: (r) => r.partNo, code: true },
-    { header: 'Stock', cell: (r) => <span className="font-mono" style={{ color: r.currentStock < r.minStock ? 'var(--salis-orange)' : undefined }}>{r.currentStock}</span> },
+    { header: 'Stock', cell: (r) => <span className={`font-mono ${r.currentStock < r.minStock ? 'text-salis-orange' : ''}`}>{r.currentStock}</span> },
     { header: 'Min Stock', cell: (r) => <span className="font-mono text-muted">{r.minStock}</span> },
     { header: 'Reorder Qty', cell: (r) => <span className="font-mono">{r.reorderQty}</span> },
     { header: 'Supplier', cell: (r) => r.supplier },
