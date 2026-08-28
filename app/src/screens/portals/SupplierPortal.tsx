@@ -143,6 +143,9 @@ function PortalChrome({ children }: { children: ReactNode }) {
             />
           ) : null}
           <div
+            role="dialog"
+            aria-modal={drawerOpen ? true : undefined}
+            aria-label={t('Navigation')}
             className={cn(
               'fixed inset-y-0 z-50 flex w-sidebar flex-col bg-sidebar transition-transform duration-300 ease-salis start-0',
               drawerOpen ? 'translate-x-0' : 'ltr:-translate-x-full rtl:translate-x-full'
@@ -170,6 +173,7 @@ function PortalChrome({ children }: { children: ReactNode }) {
               <Icon name="Search" size={14} className="pointer-events-none absolute text-muted start-2.5" />
               <input
                 placeholder={t('Search orders, parts...')}
+                aria-label={t('Search orders, parts...')}
                 className="h-[34px] w-[250px] rounded-lg border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none"
               />
             </span>
