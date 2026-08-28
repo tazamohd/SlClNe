@@ -12,7 +12,7 @@ export function Error404() {
   const isMobile = useIsMobile()
 
   return (
-    <div className={`relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui ${isMobile ? 'p-4' : 'p-6'}`}>
+    <main id="main-content" className={`relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui ${isMobile ? 'p-4' : 'p-6'}`}>
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.06),transparent_65%)] blur-[64px]" />
       </div>
@@ -53,6 +53,6 @@ export function Error404() {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

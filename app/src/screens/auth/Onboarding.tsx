@@ -25,7 +25,7 @@ export function Onboarding() {
   const canBack = step > 0
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface-secondary p-4">
+    <main id="main-content" className="flex min-h-screen items-center justify-center bg-surface-secondary p-4">
       <div className="w-full max-w-2xl">
         <div className="mb-8 text-center">
           <h1 className="font-display text-2xl font-black text-heading">{t('Welcome to SALIS AUTO')}</h1>
@@ -177,6 +177,6 @@ export function Onboarding() {
           {t('Step')} {step + 1} {t('of')} {STEPS.length}
         </p>
       </div>
-    </div>
+    </main>
   )
 }

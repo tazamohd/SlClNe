@@ -24,7 +24,7 @@ export function RegionSelection() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
+    <main id="main-content" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute bottom-0 start-0 h-[700px] w-[700px] rounded-full bg-[radial-gradient(circle,var(--tint-bright),transparent_65%)] blur-[64px]" />
       </div>
@@ -76,6 +76,6 @@ export function RegionSelection() {
           {t('Continue')}
         </Link>
       </div>
-    </div>
+    </main>
   )
 }

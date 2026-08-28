@@ -11,7 +11,7 @@ export function Maintenance() {
   const isMobile = useIsMobile()
 
   return (
-    <div className={`relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui ${isMobile ? 'p-4' : 'p-6'}`}>
+    <main id="main-content" className={`relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui ${isMobile ? 'p-4' : 'p-6'}`}>
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute bottom-[-150px] left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(11,179,255,.08),transparent_65%)] blur-[64px]" />
       </div>
@@ -59,6 +59,6 @@ export function Maintenance() {
           </a>
         </p>
       </div>
-    </div>
+    </main>
   )
 }

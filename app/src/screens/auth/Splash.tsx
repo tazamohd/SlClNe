@@ -20,6 +20,7 @@ export function Splash() {
   }, [navigate])
 
   return (
+    <main id="main-content">
     <button
       type="button"
       onClick={() => navigate('/welcome', { replace: true })}
@@ -53,5 +54,6 @@ export function Splash() {
         </p>
       </div>
     </button>
+    </main>
   )
 }

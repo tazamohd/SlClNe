@@ -20,14 +20,14 @@ function StatusFrame({
   isMobile: boolean
 }) {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
+    <main id="main-content" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         {orbs}
       </div>
       <div className={`relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col items-center text-center ${isMobile ? 'max-w-full gap-4 p-3' : 'max-w-[440px] gap-6 p-4'}`}>
         {children}
       </div>
-    </div>
+    </main>
   )
 }
 
@@ -267,7 +267,7 @@ export function LogoutConfirmation() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-salis-navy/[.5] font-ui">
+    <main id="main-content" className="flex min-h-screen items-center justify-center bg-salis-navy/[.5] font-ui">
       <div className={`w-full animate-fade-up motion-reduce:animate-none ${isMobile ? 'max-w-full px-3' : 'max-w-[360px] p-4'}`}>
         <div className={`rounded-lg border border-border bg-card text-center shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}>
           <span className="mb-3.5 inline-flex rounded-full bg-tint-orange p-3.5 text-salis-orange">
@@ -295,6 +295,6 @@ export function LogoutConfirmation() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
