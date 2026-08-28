@@ -601,6 +601,31 @@ const FeatureScreenView = lazy(() =>
   import('@/screens/feature/FeatureScreenView').then((m) => ({ default: m.FeatureScreenView })),
 )
 
+// insurance / warranty / contracts
+const InsuranceClaims = lazy(() =>
+  import('@/screens/insurance/InsuranceClaims').then((m) => ({ default: m.InsuranceClaims })),
+)
+const WarrantyManagement = lazy(() =>
+  import('@/screens/insurance/WarrantyManagement').then((m) => ({ default: m.WarrantyManagement })),
+)
+const ContractManagement = lazy(() =>
+  import('@/screens/insurance/ContractManagement').then((m) => ({ default: m.ContractManagement })),
+)
+
+// fleet / loaner / towing
+const FleetTracking = lazy(() =>
+  import('@/screens/fleet/FleetTracking').then((m) => ({ default: m.FleetTracking })),
+)
+const LoanerVehicles = lazy(() =>
+  import('@/screens/fleet/LoanerVehicles').then((m) => ({ default: m.LoanerVehicles })),
+)
+const TowingAssistance = lazy(() =>
+  import('@/screens/fleet/TowingAssistance').then((m) => ({ default: m.TowingAssistance })),
+)
+const TowingServices = lazy(() =>
+  import('@/screens/fleet/TowingServices').then((m) => ({ default: m.TowingServices })),
+)
+
 /** Lightweight, brand-consistent fallback shown while a route chunk loads.
  *  Blue only; logical CSS. */
 function RouteFallback() {
@@ -828,6 +853,18 @@ const CUSTOMER_APP_SCREENS: Record<string, React.ComponentType> = {
   'CustomerApp.Profile': CustomerAppProfile,
 }
 
+/** Spec-screen routes that have graduated from the generic FeatureScreenView
+ *  to a dedicated component with typed columns, DataTable, and real data. */
+const SPEC_CUSTOM_SCREENS: Record<string, React.ComponentType> = {
+  '/insurance-claims': InsuranceClaims,
+  '/warranty-management': WarrantyManagement,
+  '/contract-management': ContractManagement,
+  '/fleet-tracking': FleetTracking,
+  '/loaner-vehicles': LoanerVehicles,
+  '/towing-assistance': TowingAssistance,
+  '/towing-services': TowingServices,
+}
+
 export function AppRoutes() {
   return (
     <Suspense fallback={<RouteFallback />}>
@@ -872,8 +909,11 @@ export function AppRoutes() {
         {/* Feature-map screens with no `.dc.html` design. They carry a spec and
             a reference screenshot under project/spec-shots/, so the route and nav
             entry exist and PendingScreen names what to build from. Screens that
-            do have a design are already routed above. */}
+            do have a design are already routed above.
+            SPEC_CUSTOM_SCREENS overrides the generic FeatureScreenView for screens
+            that have graduated to dedicated components. */}
         {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
+          const Custom = SPEC_CUSTOM_SCREENS[spec.route]
           const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
           return (
             <Route
@@ -881,7 +921,9 @@ export function AppRoutes() {
               path={spec.route}
               element={
                 <RequireAccess screen={spec.name}>
-                  {def ? (
+                  {Custom ? (
+                    <Custom />
+                  ) : def ? (
                     <FeatureScreenView def={def} />
                   ) : (
                     <PendingScreen
