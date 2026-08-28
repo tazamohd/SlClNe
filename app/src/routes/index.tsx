@@ -1,10 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { SCREENS } from '@/data/generated/screens'
-import { SPEC_SCREENS } from '@/data/generated/spec-screens'
 import { RequireAccess } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
-import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
 
 /**
  * Route-level code-splitting. Every screen below is loaded on demand via
@@ -525,33 +523,6 @@ const CallCenterLogs = lazy(() =>
 const HRPayroll = lazy(() =>
   import('@/screens/admin/HRPayroll').then((m) => ({ default: m.HRPayroll })),
 )
-const HRManagement = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.HRManagement })),
-)
-const StaffDirectory = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.StaffDirectory })),
-)
-const StaffScheduling = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.StaffScheduling })),
-)
-const StaffPerformanceReview = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.StaffPerformanceReview })),
-)
-const TimesheetManagement = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.TimesheetManagement })),
-)
-const TimeclockPayroll = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.TimeclockPayroll })),
-)
-const PayrollManagement = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.PayrollManagement })),
-)
-const LeaveRequests = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.LeaveRequests })),
-)
-const TrainingLMS = lazy(() =>
-  import('@/screens/admin/HRScreens').then((m) => ({ default: m.TrainingLMS })),
-)
 const AdvancedSettings = lazy(() =>
   import('@/screens/admin/AdvancedSettings').then((m) => ({ default: m.AdvancedSettings })),
 )
@@ -619,14 +590,42 @@ const PromptLibrary = lazy(() =>
 const WorkflowBuilder = lazy(() =>
   import('@/screens/ai/WorkflowBuilder').then((m) => ({ default: m.WorkflowBuilder })),
 )
+const AIAutomation = lazy(() =>
+  import('@/screens/ai/AIAutomation').then((m) => ({ default: m.AIAutomation })),
+)
+const AIChatbot = lazy(() =>
+  import('@/screens/ai/AIChatbot').then((m) => ({ default: m.AIChatbot })),
+)
+const AIChatbotAssistant = lazy(() =>
+  import('@/screens/ai/AIChatbotAssistant').then((m) => ({ default: m.AIChatbotAssistant })),
+)
+const AIServiceAdvisor = lazy(() =>
+  import('@/screens/ai/AIServiceAdvisor').then((m) => ({ default: m.AIServiceAdvisor })),
+)
+const SmartDamageAssessment = lazy(() =>
+  import('@/screens/ai/SmartDamageAssessment').then((m) => ({ default: m.SmartDamageAssessment })),
+)
+const MLFraudDetection = lazy(() =>
+  import('@/screens/ai/MLFraudDetection').then((m) => ({ default: m.MLFraudDetection })),
+)
+const NeuralNetworkPrediction = lazy(() =>
+  import('@/screens/ai/NeuralNetworkPrediction').then((m) => ({ default: m.NeuralNetworkPrediction })),
+)
+const VoiceCommands = lazy(() =>
+  import('@/screens/ai/VoiceCommands').then((m) => ({ default: m.VoiceCommands })),
+)
+const VoiceCommandInterface = lazy(() =>
+  import('@/screens/ai/VoiceCommandInterface').then((m) => ({ default: m.VoiceCommandInterface })),
+)
 
 // feature
 const Inventory = lazy(() =>
   import('@/screens/feature/Inventory').then((m) => ({ default: m.Inventory })),
 )
-const FeatureScreenView = lazy(() =>
-  import('@/screens/feature/FeatureScreenView').then((m) => ({ default: m.FeatureScreenView })),
-)
+
+// Spec/feature-map screens lazily resolved to avoid pulling 244 KB of
+// definitions + spec-screen data into the main bundle.
+const SpecScreenResolver = lazy(() => import('./SpecScreenResolver'))
 
 /** Lightweight, brand-consistent fallback shown while a route chunk loads.
  *  Blue only; logical CSS. */
@@ -822,6 +821,15 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   ModelSettings,
   PromptLibrary,
   WorkflowBuilder,
+  AIAutomation,
+  AIChatbot,
+  AIChatbotAssistant,
+  AIServiceAdvisor,
+  SmartDamageAssessment,
+  MLFraudDetection,
+  NeuralNetworkPrediction,
+  VoiceCommands,
+  VoiceCommandInterface,
   AdvancedSettings,
   AuditLog,
   Backup,
@@ -853,20 +861,6 @@ const CUSTOMER_APP_SCREENS: Record<string, React.ComponentType> = {
   'CustomerApp.Insurance': CustomerAppInsurance,
   'CustomerApp.Loans': CustomerAppLoans,
   'CustomerApp.Profile': CustomerAppProfile,
-}
-
-/** Real implementations for spec-screen routes. When a route is listed here,
- *  it takes priority over the generic FeatureScreenView placeholder. */
-const SPEC_IMPLEMENTATIONS: Record<string, React.ComponentType> = {
-  '/hr-management': HRManagement,
-  '/staff-directory': StaffDirectory,
-  '/staff-scheduling': StaffScheduling,
-  '/staff-performance-review': StaffPerformanceReview,
-  '/timesheet-management': TimesheetManagement,
-  '/timeclock-payroll': TimeclockPayroll,
-  '/payroll-management': PayrollManagement,
-  '/leave-requests': LeaveRequests,
-  '/training-lms': TrainingLMS,
 }
 
 export function AppRoutes() {
@@ -910,46 +904,14 @@ export function AppRoutes() {
           )
         })}
 
-        {/* Feature-map screens with no `.dc.html` design. They carry a spec and
-            a reference screenshot under project/spec-shots/, so the route and nav
-            entry exist and PendingScreen names what to build from. Screens that
-            do have a design are already routed above. Real implementations take
-            priority over the FeatureDef placeholder. */}
-        {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
-          const Implemented = SPEC_IMPLEMENTATIONS[spec.route]
-          const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
-          return (
-            <Route
-              key={spec.id}
-              path={spec.route}
-              element={
-                <RequireAccess screen={spec.name}>
-                  {Implemented ? (
-                    <Implemented />
-                  ) : def ? (
-                    <FeatureScreenView def={def} />
-                  ) : (
-                    <PendingScreen
-                      screen={{
-                        name: spec.title,
-                        route: spec.route,
-                        hasMobile: false,
-                        purpose: spec.purpose,
-                      }}
-                      specId={spec.id}
-                    />
-                  )}
-                </RequireAccess>
-              }
-            />
-          )
-        })}
-
         {/* Routes the design references but SCREEN_MAP doesn't list. */}
         <Route path="/customer-app" element={<Navigate to="/customer-app/home" replace />} />
         <Route path="/logout-confirmation" element={<LogoutConfirmation />} />
         <Route path="/support" element={<Navigate to="/call-center" replace />} />
-        <Route path="*" element={<Navigate to="/error404" replace />} />
+        {/* Feature-map screens without a .dc.html design. The resolver
+            lazy-loads spec-screens.ts + definitions.ts (~244 KB) only when a
+            user actually navigates to an unmatched path. */}
+        <Route path="*" element={<SpecScreenResolver />} />
       </Routes>
     </Suspense>
   )

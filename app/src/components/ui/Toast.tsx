@@ -56,8 +56,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       {toast ? (
         <div
-          role="status"
-          aria-live="polite"
+          role={toast.error ? 'alert' : 'status'}
+          aria-live={toast.error ? 'assertive' : 'polite'}
           key={toast.id}
           className="fixed bottom-6 end-6 z-[100] flex min-w-[280px] animate-fade-up items-start gap-3 rounded-lg border border-border bg-card px-4 py-3.5 shadow-lg"
         >

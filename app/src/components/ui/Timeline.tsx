@@ -20,9 +20,11 @@ export function Timeline({ steps }: { steps: readonly TimelineStep[] }) {
   const { t } = usePreferences()
 
   return (
-    <ol className="flex list-none flex-col p-0">
-      {steps.map((step, index) => (
-        <li key={step.label} className="flex gap-3.5">
+    <ol aria-label={t('Progress')} className="flex list-none flex-col p-0">
+      {steps.map((step, index) => {
+        const isCurrent = step.done && (index === steps.length - 1 || !steps[index + 1].done)
+        return (
+        <li key={step.label} aria-current={isCurrent ? 'step' : undefined} className="flex gap-3.5">
           <div className="flex flex-col items-center">
             <span
               className={cn(
@@ -45,7 +47,8 @@ export function Timeline({ steps }: { steps: readonly TimelineStep[] }) {
             <p className="mt-0.5 text-xs text-muted">{step.time ?? t('Pending')}</p>
           </div>
         </li>
-      ))}
+        )
+      })}
     </ol>
   )
 }

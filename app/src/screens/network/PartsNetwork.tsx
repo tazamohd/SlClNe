@@ -46,7 +46,7 @@ function PriorityPill({ value }: { value: string }) {
 
 // ── Dashboard ───────────────────────────────────────────────────────────────
 export function PartsNetworkDashboard() {
-  const { t } = usePreferences()
+  const { t, rtl } = usePreferences()
 
   const stats: Stat[] = [
     { label: 'Open Requests', value: 12, icon: 'Send', tone: 'info' },
@@ -131,7 +131,7 @@ export function PartsNetworkDashboard() {
                 className="mt-3 inline-flex h-9 items-center gap-2 rounded bg-salis-gradient px-3.5 font-action text-[13px] font-semibold text-white no-underline shadow-[0_4px_12px_rgba(10,94,215,.25)] hover:text-white hover:no-underline"
               >
                 {t(action.cta)}
-                <Icon name="ArrowRight" size={14} />
+                <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
               </Link>
             </div>
           </Card>

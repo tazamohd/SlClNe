@@ -89,7 +89,7 @@ export function LeadDetail() {
             {t('Edit')}
           </Button>
           <Button size="md">
-            <Icon name="ArrowRight" size={14} />
+            <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
             {t('Convert to Opportunity')}
           </Button>
         </div>
@@ -179,6 +179,7 @@ export function LeadDetail() {
         <div className="mt-3 flex gap-2">
           <input
             placeholder={t('Add a note...')}
+            aria-label={t('Add a note...')}
             className="h-10 flex-1 rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none"
           />
           <Button size="md">

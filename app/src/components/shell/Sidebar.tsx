@@ -21,7 +21,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     )
 
   return (
-    <aside className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">
+    <aside aria-label={t('Sidebar')} className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">
       <div className="p-3 pb-1">
         <div className="flex items-center gap-2 rounded border border-border bg-inset p-2">
           <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[10px] font-bold text-white">
@@ -41,7 +41,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-3">
+      <nav aria-label={t('Main navigation')} className="flex-1 overflow-y-auto p-3">
         <div className="flex flex-col gap-0.5">
           {nav.map((group) => {
             const open = !collapsed.includes(group.label)
@@ -72,6 +72,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                           cn(
                             'flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-md py-1.5 pe-3 ps-6',
                             'font-action text-xs font-medium no-underline transition-all duration-200',
+                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-1 focus-visible:ring-offset-sidebar',
                             isActive
                               ? 'bg-salis-gradient-r text-white shadow'
                               : 'text-heading hover:bg-[rgba(10,94,215,.08)]'
@@ -109,11 +110,12 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function LanguageToggle() {
-  const { rtl, toggleLanguage } = usePreferences()
+  const { rtl, toggleLanguage, t } = usePreferences()
   return (
     <button
       type="button"
       onClick={toggleLanguage}
+      aria-label={t('Toggle language')}
       className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
     >
       <Icon name="Globe" size={14} />

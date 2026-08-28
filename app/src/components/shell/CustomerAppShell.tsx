@@ -26,6 +26,12 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen justify-center bg-page-alt font-ui">
+      <a
+        href="#customer-main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:left-4 focus:top-4 focus:rounded focus:bg-salis-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+      >
+        {t('Skip to content')}
+      </a>
       <div className="flex h-screen w-full max-w-[430px] flex-col border-x border-border bg-page">
         <header className="flex flex-shrink-0 items-center gap-2.5 border-b border-border px-4 py-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-salis-gradient text-white">
@@ -52,11 +58,11 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
           </NavLink>
         </header>
 
-        <main className="flex-1 overflow-y-auto">
+        <main id="customer-main-content" className="flex-1 overflow-y-auto">
           <div className="flex animate-fade-up flex-col gap-3.5 p-4">{children}</div>
         </main>
 
-        <nav className="flex flex-shrink-0 border-t border-border bg-sidebar">
+        <nav aria-label={t('App navigation')} className="flex flex-shrink-0 border-t border-border bg-sidebar">
           {TABS.map((tab) => (
             <NavLink
               key={tab.to}
@@ -65,6 +71,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
               className={({ isActive }) =>
                 cn(
                   'flex flex-1 flex-col items-center gap-1 py-2.5 no-underline transition-colors hover:no-underline',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-salis-blue',
                   isActive ? 'text-salis-blue' : 'text-muted'
                 )
               }
@@ -130,7 +137,7 @@ export function AppListRow({
       {...(interactive ? { type: 'button' as const, onClick } : {})}
       className={cn(
         'flex w-full items-center gap-3 rounded-[14px] border border-border bg-card p-3.5 text-start',
-        interactive && 'cursor-pointer transition-colors active:bg-inset'
+        interactive && 'cursor-pointer transition-colors active:bg-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue'
       )}
     >
       <span

@@ -72,7 +72,7 @@ const SCHEDULE: Record<string, { utilization: number; slots: readonly Slot[] }> 
  *  design. Technicians come from the repository; the day's slot assignments
  *  are design scaffolding until the assignments endpoint exists. */
 export function TechnicianSchedule() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { can } = useSession()
   const { data: technicians = [], isLoading } = useCollection('technicians')
 
@@ -95,7 +95,7 @@ export function TechnicianSchedule() {
             </h1>
             {/* The demo dataset's fixed "today" — every mock date is Jul 2026. */}
             <p className="mt-0.5 text-sm text-muted">
-              {rtl ? 'الثلاثاء، 22 يوليو 2026' : 'Tuesday, Jul 22, 2026'}
+              {t('Tuesday, Jul 22, 2026')}
             </p>
           </div>
         </div>
