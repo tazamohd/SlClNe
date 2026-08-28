@@ -69,7 +69,7 @@ export function Interactive3DParts() {
 
       <div className="flex gap-4">
         <Card className="flex flex-1 flex-col items-center justify-center rounded-2xl p-12 shadow-sm">
-          <span className="flex rounded-2xl p-5" style={{ background: 'rgba(10,94,215,.06)', color: 'var(--salis-blue)' }} aria-hidden>
+          <span className="flex rounded-2xl bg-[var(--tint-blue)] p-5 text-salis-blue" aria-hidden>
             <Icon name="Boxes" size={48} />
           </span>
           <p className="mt-4 text-lg font-bold text-heading">{t('3D Part Viewer')}</p>

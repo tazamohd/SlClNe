@@ -143,10 +143,10 @@ export function BusinessHeatmaps() {
           </table>
         </div>
         <div className="mt-3 flex items-center gap-4 text-[11px] text-muted">
-          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded" style={{ background: 'rgba(10,94,215,.08)' }} /> {t('Low')}</span>
-          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded" style={{ background: 'rgba(10,94,215,.25)' }} /> {t('Medium')}</span>
-          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded" style={{ background: 'rgba(10,94,215,.5)' }} /> {t('High')}</span>
-          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded" style={{ background: 'rgba(10,94,215,.8)' }} /> {t('Very High')}</span>
+          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded bg-salis-blue opacity-[.08]" /> {t('Low')}</span>
+          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded bg-salis-blue opacity-25" /> {t('Medium')}</span>
+          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded bg-salis-blue opacity-50" /> {t('High')}</span>
+          <span className="flex items-center gap-1"><span className="inline-block h-3 w-3 rounded bg-salis-blue opacity-80" /> {t('Very High')}</span>
         </div>
       </Card>
 
