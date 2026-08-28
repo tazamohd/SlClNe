@@ -21,7 +21,7 @@
  *
  *      node scripts/check-a11y.mjs [--list]
  *
- *  The seven rules, each mapping to an axe-core rule family:
+ *  The eight rules, each mapping to an axe-core rule family:
  *    img-alt              <img> with no `alt`                        (image-alt)
  *    noninteractive-role  onClick/onKeyDown on a non-interactive
  *                         element missing `role` or `tabIndex`       (interactive-role)
@@ -32,6 +32,8 @@
  *    svg-hidden           raw <svg> that is neither aria-hidden nor
  *                         a labelled role="img"                      (svg-img-alt)
  *    button-type          <button> without explicit type attribute   (n/a)
+ *    motion-reduce        animate-* class without                    (prefers-reduced-motion)
+ *                         motion-reduce:animate-none
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -293,6 +295,15 @@ const RULES = {
       if (tag.name !== 'button') return false
       if (hasSpread(tag.attrs)) return false
       return !has(tag.attrs, 'type')
+    },
+  },
+  'motion-reduce': {
+    title: 'Animation class without motion-reduce:animate-none',
+    axe: 'prefers-reduced-motion',
+    test: (tag) => {
+      const a = tag.attrs
+      if (!/animate-(?!none)[a-z]/.test(a)) return false
+      return !a.includes('motion-reduce:animate-none')
     },
   },
 }
