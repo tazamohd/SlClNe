@@ -102,6 +102,20 @@ const SURFACES: readonly PortalConfig[] = [
       },
     ],
   },
+  {
+    base: '/supplier-portal',
+    title: 'Supplier Portal',
+    icon: 'Truck',
+    nav: [
+      { to: '/supplier-portal', icon: 'Home', label: 'Home', screen: 'SupplierPortal', end: true },
+      {
+        to: '/supplier-portal/orders',
+        icon: 'ClipboardList',
+        label: 'Orders',
+        screen: 'SupplierPortal.Orders',
+      },
+    ],
+  },
 ]
 
 /** The last-resort identity for a portal route nobody registered: the shell
