@@ -13,6 +13,10 @@ const schema = z.object({
 
 export const env = schema.parse(process.env)
 
+if (process.env.NODE_ENV === 'production' && env.JWT_SECRET === 'dev-only-change-me') {
+  throw new Error('FATAL: JWT_SECRET must be set to a strong secret in production')
+}
+
 /** Comma-separated CORS origins → array, `*` passes through. */
 export const corsOrigins = env.CORS_ORIGIN === '*'
   ? '*'
