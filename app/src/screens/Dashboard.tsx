@@ -240,6 +240,7 @@ export function Dashboard() {
                 {['Job Card', 'Customer', 'Vehicle', 'Service', 'Priority', 'Status'].map((head) => (
                   <th
                     key={head}
+                    scope="col"
                     className="h-11 whitespace-nowrap border-b border-border px-6 text-start text-xs font-semibold uppercase tracking-[.05em] text-muted"
                   >
                     {t(head)}
@@ -277,6 +278,8 @@ export function Dashboard() {
             <PageButton label="Previous page" icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
             <button
               type="button"
+              aria-current="page"
+              aria-label={t('Page 1')}
               className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
             >
               1
@@ -285,6 +288,7 @@ export function Dashboard() {
               <button
                 key={page}
                 type="button"
+                aria-label={`${t('Page')} ${page}`}
                 className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
               >
                 {page}
