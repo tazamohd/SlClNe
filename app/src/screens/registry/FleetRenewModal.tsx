@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { useQueryClient } from '@tanstack/react-query'
-import { fleetRenewBody } from '../../../../packages/contract/src/index'
+import { fleetRenewBody } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { Field, Form, FormErrorSummary, useZodForm } from '@/components/ui/Form'

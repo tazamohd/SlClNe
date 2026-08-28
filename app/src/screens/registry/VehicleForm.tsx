@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { z } from 'zod'
-import { vehicleCreate } from '../../../../packages/contract/src/index'
+import { vehicleCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import {

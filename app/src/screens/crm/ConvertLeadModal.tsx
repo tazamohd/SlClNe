@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { leadConvertBody } from '../../../../packages/contract/src/index'
+import { leadConvertBody } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { Field, Form, FormErrorSummary, useZodForm } from '@/components/ui/Form'

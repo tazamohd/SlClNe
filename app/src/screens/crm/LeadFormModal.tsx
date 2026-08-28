@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { leadCreate } from '../../../../packages/contract/src/index'
+import { leadCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import {

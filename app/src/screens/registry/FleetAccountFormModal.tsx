@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { fleetCreate } from '../../../../packages/contract/src/index'
+import { fleetCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import {

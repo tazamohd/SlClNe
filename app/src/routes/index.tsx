@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import type { ComponentType } from 'react'
 import { SCREENS } from '@/data/generated/screens'
 import { SPEC_SCREENS } from '@/data/generated/spec-screens'
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { RequireAccess } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
 import {
@@ -470,6 +471,7 @@ export function AppRoutes() {
   return (
     // One boundary for the whole table: a lazy screen suspends here to the
     // linear loading bar, never to a heavier stand-in, until its chunk lands.
+    <ErrorBoundary>
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Navigate to="/splash" replace />} />
@@ -558,5 +560,6 @@ export function AppRoutes() {
         <Route path="*" element={<Navigate to="/error404" replace />} />
       </Routes>
     </Suspense>
+    </ErrorBoundary>
   )
 }
