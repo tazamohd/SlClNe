@@ -27,7 +27,7 @@ export function KpiCard({ label, value, icon, bg, fg, mono }: Kpi) {
         </span>
         <span className="text-xs font-medium text-muted">{label}</span>
       </div>
-      <h4 dir={mono ? 'ltr' : undefined} className={`mt-2 font-black text-heading ${mono ? 'font-mono text-xl' : 'font-display text-2xl'}`}>{value}</h4>
+      <p dir={mono ? 'ltr' : undefined} className={`mt-2 font-black text-heading ${mono ? 'font-mono text-xl' : 'font-display text-2xl'}`}>{value}</p>
     </Card>
   )
 }

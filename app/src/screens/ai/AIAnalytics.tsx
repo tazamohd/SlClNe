@@ -79,7 +79,7 @@ export function AIAnalytics() {
         </div>
 
         <Card className="rounded-2xl p-4">
-          <h3 className="mb-4 text-base font-bold text-heading">{t('Top Topics')}</h3>
+          <h2 className="mb-4 text-base font-bold text-heading">{t('Top Topics')}</h2>
           <div className="flex flex-col gap-3">
             {topics.map((tp) => (
               <div key={tp.label}>
@@ -114,7 +114,7 @@ export function AIAnalytics() {
               </span>
               <span className="text-xs font-medium text-muted">{k.label}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading">{k.value}</h4>
+            <p className="mt-2 font-display text-2xl font-black text-heading">{k.value}</p>
             <span className="mt-1 inline-flex items-center gap-0.5 text-[11px] font-semibold text-salis-blue">
               <Icon name="ArrowUpRight" size={12} />
               {k.trend}
@@ -125,7 +125,7 @@ export function AIAnalytics() {
 
       <div className="grid grid-cols-[2fr_1fr] gap-6">
         <Card className="rounded-2xl p-6 shadow-sm">
-          <h3 className="mb-5 text-lg font-bold text-heading">{t('Usage Over Time')}</h3>
+          <h2 className="mb-5 text-lg font-bold text-heading">{t('Usage Over Time')}</h2>
           <svg viewBox="0 0 600 180" className="block h-auto w-full" aria-hidden="true">
             <defs>
               <linearGradient id="aiG" x1="0" y1="0" x2="0" y2="1">
@@ -143,7 +143,7 @@ export function AIAnalytics() {
         </Card>
 
         <Card className="rounded-2xl p-6 shadow-sm">
-          <h3 className="mb-5 text-lg font-bold text-heading">{t('Top Topics')}</h3>
+          <h2 className="mb-5 text-lg font-bold text-heading">{t('Top Topics')}</h2>
           <div className="flex flex-col gap-3">
             {topics.map((tp) => (
               <div key={tp.label}>

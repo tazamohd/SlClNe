@@ -45,7 +45,7 @@ export function Backup() {
       </div>
 
       <Card className="flex flex-col gap-3.5 rounded-2xl p-5">
-        <h3 className="text-base font-bold text-heading">{t('Export Data')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Export Data')}</h2>
         <div className={isMobile ? 'flex flex-col gap-3' : 'flex flex-wrap gap-3'}>
           <Button
             variant="outline"
@@ -75,7 +75,7 @@ export function Backup() {
       </Card>
 
       <Card className="flex flex-col gap-3.5 rounded-2xl p-5">
-        <h3 className="text-base font-bold text-heading">{t('Backup History')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Backup History')}</h2>
 
         {isMobile ? (
           <div className="flex flex-col gap-2.5">

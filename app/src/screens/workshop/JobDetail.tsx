@@ -171,13 +171,13 @@ export function JobDetail() {
 
       <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]'}>
         <Card className="p-6">
-          <h3 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h3>
+          <h2 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h2>
           <Timeline steps={timelineFor(job.stage)} />
         </Card>
 
         <div className="flex flex-col gap-4">
           <Card className="p-5">
-            <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h3>
+            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h2>
             {technician ? (
               <div className="flex items-center gap-2.5">
                 <Avatar name={technician.name} size={36} />
@@ -189,7 +189,7 @@ export function JobDetail() {
           </Card>
 
           <Card className="p-5">
-            <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Parts Used')}</h3>
+            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Parts Used')}</h2>
             {lines.isLoading ? (
               <Loading inline label="Loading parts..." />
             ) : parts.length === 0 ? (

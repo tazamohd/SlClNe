@@ -95,9 +95,9 @@ export function VATSettings() {
               <span className="flex rounded-lg p-1.5" style={{ background: s.bg, color: s.fg }} aria-hidden><Icon name={s.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{s.label}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading">
+            <p className="mt-2 font-display text-2xl font-black text-heading">
               <Money sar={s.amount} />
-            </h4>
+            </p>
           </Card>
         ))}
       </div>

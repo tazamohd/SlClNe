@@ -120,7 +120,7 @@ export function Branches() {
                     <Icon name="MapPin" size={18} className="text-salis-blue" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <h3 className="m-0 text-[15px] font-bold text-heading">{b.name}</h3>
+                    <h2 className="m-0 text-[15px] font-bold text-heading">{b.name}</h2>
                     <p className="m-0 mt-0.5 text-xs text-muted">{b.city}</p>
                   </div>
                   <Badge
@@ -160,7 +160,7 @@ export function Branches() {
                     <Icon name="MapPin" size={18} style={{ color: iconFg }} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <h3 className="m-0 text-[15px] font-bold text-heading">{b.name}</h3>
+                    <h2 className="m-0 text-[15px] font-bold text-heading">{b.name}</h2>
                     <p className="m-0 mt-0.5 text-xs text-muted">{t(b.city)}</p>
                   </div>
                   <Badge background={stBg} color={stFg}>

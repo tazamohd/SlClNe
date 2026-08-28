@@ -141,7 +141,7 @@ export function WorkshopReports() {
 
           <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'}`}>
             <Card className="rounded-2xl p-6">
-              <h3 className="mb-5 text-[17px] font-bold text-heading">{t('Jobs by service')}</h3>
+              <h2 className="mb-5 text-[17px] font-bold text-heading">{t('Jobs by service')}</h2>
               {breakdown.length === 0 ? (
                 <p className="text-[13px] text-muted">{t('No job cards to summarize yet.')}</p>
               ) : (
@@ -167,7 +167,7 @@ export function WorkshopReports() {
             </Card>
 
             <Card className="rounded-2xl p-6">
-              <h3 className="mb-2 text-[17px] font-bold text-heading">{t('Trend & analytics')}</h3>
+              <h2 className="mb-2 text-[17px] font-bold text-heading">{t('Trend & analytics')}</h2>
               {workshopReports ? (
                 report.isLoading ? (
                   <Loading inline label="Loading analytics..." />

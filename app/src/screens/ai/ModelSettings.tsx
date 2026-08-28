@@ -125,14 +125,14 @@ export function ModelSettings() {
         />
 
         <MobileCard>
-          <h3 className="mb-3 text-[15px] font-bold text-heading">{t('AI Model')}</h3>
+          <h2 className="mb-3 text-[15px] font-bold text-heading">{t('AI Model')}</h2>
           <div className="flex flex-col gap-2.5">
             {modelCards}
           </div>
         </MobileCard>
 
         <MobileCard>
-          <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Parameters')}</h3>
+          <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Parameters')}</h2>
           <div className="flex flex-col gap-4">
             <div>
               <div className="mb-1.5 flex justify-between">
@@ -184,14 +184,14 @@ export function ModelSettings() {
         </MobileCard>
 
         <MobileCard>
-          <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Behavior')}</h3>
+          <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Behavior')}</h2>
           <div className="flex flex-col gap-3.5">
             {behaviorSection}
           </div>
         </MobileCard>
 
         <MobileCard>
-          <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Usage')}</h3>
+          <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Usage')}</h2>
           <div className="flex flex-col gap-3">
             <div>
               <div className="mb-1 flex justify-between text-xs">
@@ -227,14 +227,14 @@ export function ModelSettings() {
       <div className="grid grid-cols-[1fr_340px] items-start gap-6">
         <div className="flex flex-col gap-5">
           <Card className="rounded-2xl p-6 shadow-sm">
-            <h3 className="mb-4 text-base font-bold text-heading">{t('AI Model')}</h3>
+            <h2 className="mb-4 text-base font-bold text-heading">{t('AI Model')}</h2>
             <div className="flex flex-col gap-2.5">
               {modelCards}
             </div>
           </Card>
 
           <Card className="rounded-2xl p-6 shadow-sm">
-            <h3 className="mb-4 text-base font-bold text-heading">{t('Parameters')}</h3>
+            <h2 className="mb-4 text-base font-bold text-heading">{t('Parameters')}</h2>
             <div className="flex flex-col gap-[18px]">
               <div>
                 <div className="mb-1.5 flex justify-between">
@@ -288,14 +288,14 @@ export function ModelSettings() {
 
         <div className="flex flex-col gap-5">
           <Card className="rounded-2xl p-5 shadow-sm">
-            <h3 className="mb-3.5 text-[15px] font-bold text-heading">{t('Behavior')}</h3>
+            <h2 className="mb-3.5 text-[15px] font-bold text-heading">{t('Behavior')}</h2>
             <div className="flex flex-col gap-3.5">
               {behaviorSection}
             </div>
           </Card>
 
           <Card className="rounded-2xl p-5 shadow-sm">
-            <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Usage')}</h3>
+            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Usage')}</h2>
             <div className="flex flex-col gap-3">
               <div>
                 <div className="mb-1 flex justify-between text-xs">

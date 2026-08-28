@@ -36,7 +36,7 @@ export function Settings() {
       </h1>
 
       <Card className="flex flex-col gap-4 rounded-2xl p-6">
-        <h3 className="text-[17px] font-bold text-heading">{t('Workshop Profile')}</h3>
+        <h2 className="text-[17px] font-bold text-heading">{t('Workshop Profile')}</h2>
         <div className={isMobile ? 'flex flex-col gap-4' : 'grid grid-cols-2 gap-4'}>
           <div className="flex flex-col gap-1.5">
             <label htmlFor="workshop-name" className="font-action text-xs font-medium text-primary">
@@ -68,9 +68,9 @@ export function Settings() {
       </Card>
 
       <Card className="flex flex-col gap-3.5 rounded-2xl p-6">
-        <h3 className="text-[17px] font-bold text-heading">
+        <h2 className="text-[17px] font-bold text-heading">
           {t('Notifications Preferences')}
-        </h3>
+        </h2>
         {isMobile ? (
           <div className="flex flex-col divide-y divide-border">
             {notifRows.map((row) => (
@@ -101,9 +101,9 @@ export function Settings() {
 
       <Card className="flex items-center justify-between gap-4 rounded-2xl p-6">
         <div>
-          <h3 className="text-[17px] font-bold text-heading">
+          <h2 className="text-[17px] font-bold text-heading">
             {t('Billing & Subscription')}
-          </h3>
+          </h2>
           <p className="mt-1 text-[13px] text-muted">
             {t('Current Plan')}:{' '}
             <span className="font-semibold text-salis-blue">PRO</span>

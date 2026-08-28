@@ -358,7 +358,7 @@ export function InvoiceCreate() {
               <div className="flex items-center justify-between border-b border-border px-5 py-4">
                 <div className="flex items-center gap-2">
                   <Icon name="List" size={16} className="text-salis-blue" />
-                  <h3 className="text-sm font-bold text-heading">{t('Line Items')}</h3>
+                  <h2 className="text-sm font-bold text-heading">{t('Line Items')}</h2>
                 </div>
                 {saved ? null : (
                   <Button
@@ -496,12 +496,12 @@ export function InvoiceCreate() {
 
           <div className="flex flex-col gap-4">
             <Card className="flex flex-col gap-2.5 p-5">
-              <h3 className="text-sm font-bold text-heading">
+              <h2 className="text-sm font-bold text-heading">
                 {t('Invoice Summary')}
                 <span className="ms-2 font-action text-[11px] font-normal text-muted">
                   {saved ? t('From the server') : t('Provisional')}
                 </span>
-              </h3>
+              </h2>
               <SummaryRow
                 label={t('Subtotal')}
                 halalas={saved?.subtotalHalalas ?? provisional.subtotalHalalas}

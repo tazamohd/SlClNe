@@ -195,7 +195,7 @@ export function CRMCalendar() {
         <MobilePageHeader icon="CalendarDays" title={t('CRM Calendar')} subtitle={t('CRM & Marketing')} />
         <div className="flex items-center justify-between gap-2">
           <MonthButton icon={rtl ? 'ChevronRight' : 'ChevronLeft'} label={t('Previous month')} onClick={() => step(-1)} />
-          <h3 className="text-[14px] font-bold text-heading">{monthLabel}</h3>
+          <h2 className="text-[14px] font-bold text-heading">{monthLabel}</h2>
           <MonthButton icon={rtl ? 'ChevronLeft' : 'ChevronRight'} label={t('Next month')} onClick={() => step(1)} />
         </div>
         {!hasAnyTasks ? (
@@ -206,9 +206,9 @@ export function CRMCalendar() {
         ) : (
           <>
             <Card className="flex flex-col gap-3 p-4">
-              <h3 className="text-[14px] font-bold text-heading">
+              <h2 className="text-[14px] font-bold text-heading">
                 {agendaDay ? `${agendaDay} ${monthLabel.split(' ')[0]}` : t("Day's Tasks")}
-              </h3>
+              </h2>
               {agendaTasks.length === 0 ? (
                 <p className="text-[13px] text-muted">{t('No tasks on this day.')}</p>
               ) : (
@@ -273,7 +273,7 @@ export function CRMCalendar() {
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
           <Card className="overflow-hidden p-0">
             <div className="flex items-center gap-2.5 border-0 border-b border-solid border-border px-5 py-3.5">
-              <h3 className="text-base font-bold text-heading">{monthLabel}</h3>
+              <h2 className="text-base font-bold text-heading">{monthLabel}</h2>
               <span className="flex-1" />
               <MonthButton
                 icon={rtl ? 'ChevronRight' : 'ChevronLeft'}
@@ -358,9 +358,9 @@ export function CRMCalendar() {
 
           <div className="flex flex-col gap-5">
             <Card className="flex flex-col gap-3 p-5">
-              <h3 className="text-[15px] font-bold text-heading">
+              <h2 className="text-[15px] font-bold text-heading">
                 {agendaDay ? `${agendaDay} ${monthLabel.split(' ')[0]}` : t("Day's Tasks")}
-              </h3>
+              </h2>
               {agendaTasks.length === 0 ? (
                 <p className="text-[13px] text-muted">{t('No tasks on this day.')}</p>
               ) : (
@@ -387,7 +387,7 @@ export function CRMCalendar() {
             </Card>
 
             <Card className="flex flex-col gap-3 p-5">
-              <h3 className="text-[15px] font-bold text-heading">{t('Legend')}</h3>
+              <h2 className="text-[15px] font-bold text-heading">{t('Legend')}</h2>
               <div className="flex flex-col gap-2">
                 {LEGEND.map((item) => (
                   <div key={item.type} className="flex items-center gap-2">

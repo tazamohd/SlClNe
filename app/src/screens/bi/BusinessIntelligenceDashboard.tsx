@@ -63,7 +63,7 @@ export function BusinessIntelligenceDashboard() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-[15px] font-bold text-heading">{t('Key Metrics')}</h3>
+          <h2 className="text-[15px] font-bold text-heading">{t('Key Metrics')}</h2>
           <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
             <option value="week">{t('This Week')}</option>
             <option value="month">{t('This Month')}</option>
@@ -81,7 +81,7 @@ export function BusinessIntelligenceDashboard() {
         </div>
       </Card>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Dashboard Widgets')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Dashboard Widgets')}</h2>
       <DataTable
         caption="Dashboard widgets"
         columns={columns}

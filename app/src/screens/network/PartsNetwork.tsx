@@ -124,7 +124,7 @@ export function PartsNetworkDashboard() {
               <Icon name={action.icon} size={20} />
             </span>
             <div className="min-w-0 flex-1">
-              <h3 className="font-display text-base font-bold text-heading">{t(action.title)}</h3>
+              <h2 className="font-display text-base font-bold text-heading">{t(action.title)}</h2>
               <p className="mt-1 text-[13px] text-muted">{t(action.desc)}</p>
               <Link
                 to={action.to}
@@ -301,9 +301,9 @@ function MemberCard({ member, rtl }: { member: NetworkMember; rtl: boolean }) {
           {member.initials}
         </span>
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-display text-[15px] font-bold text-heading">
+          <h2 className="truncate font-display text-[15px] font-bold text-heading">
             {rtl ? member.ar : member.name}
-          </h3>
+          </h2>
           <p className="text-xs text-muted">
             {t(member.kind[0].toUpperCase() + member.kind.slice(1))} · {t(member.city)}
           </p>

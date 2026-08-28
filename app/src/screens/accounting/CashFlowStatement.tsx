@@ -76,7 +76,7 @@ function SectionCard({
         >
           <Icon name={section.icon} size={16} />
         </span>
-        <h4 className="text-sm font-bold text-heading">{section.title}</h4>
+        <h3 className="text-sm font-bold text-heading">{section.title}</h3>
       </div>
       <div className="flex flex-col gap-1">
         {section.items.map((item) => (

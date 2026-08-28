@@ -76,7 +76,7 @@ export function PartsMarketplace() {
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Box" size={16} /></span>
-                <h3 className="text-sm font-semibold text-heading">{listing.partName}</h3>
+                <h2 className="text-sm font-semibold text-heading">{listing.partName}</h2>
               </div>
               <Badge
                 background={listing.inStock ? 'var(--tint-blue)' : 'var(--tint-orange)'}

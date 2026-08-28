@@ -62,7 +62,7 @@ export function NextGenTechnologies() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Innovation Roadmap')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Innovation Roadmap')}</h2>
       <DataTable
         caption="Next-gen technology roadmap"
         columns={columns}

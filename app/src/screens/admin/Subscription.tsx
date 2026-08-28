@@ -67,7 +67,7 @@ export function Subscription() {
 
       {/* Billing history */}
       <Card className="flex flex-col gap-3 rounded-2xl p-5">
-        <h3 className="text-base font-bold text-heading">{t('Billing History')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Billing History')}</h2>
 
         {isMobile ? (
           <div className="flex flex-col gap-2.5">

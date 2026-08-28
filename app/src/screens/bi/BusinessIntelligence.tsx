@@ -56,7 +56,7 @@ export function BusinessIntelligence() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('BI Modules')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('BI Modules')}</h2>
       <DataTable
         caption="Business intelligence modules"
         columns={columns}

@@ -92,14 +92,14 @@ export function VehicleHistory() {
             <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="DollarSign" size={16} /></span>
             <span className="text-xs font-medium text-muted">{t('Total Spent')}</span>
           </div>
-          <h4 dir="ltr" className="mt-2 font-mono text-xl font-black text-heading">{formatSar(totalSpent)}</h4>
+          <p dir="ltr" className="mt-2 font-mono text-xl font-black text-heading">{formatSar(totalSpent)}</p>
         </Card>
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-2">
             <span className="flex rounded-lg p-1.5 bg-[var(--tint-bright)] text-salis-bright" aria-hidden><Icon name="ClipboardList" size={16} /></span>
             <span className="text-xs font-medium text-muted">{t('Total Services')}</span>
           </div>
-          <h4 className="mt-2 font-display text-xl font-black text-heading">{records.length}</h4>
+          <p className="mt-2 font-display text-xl font-black text-heading">{records.length}</p>
         </Card>
       </div>
 

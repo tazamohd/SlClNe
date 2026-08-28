@@ -56,7 +56,7 @@ export function Attachments({
       {title ? (
         <div className="flex items-center gap-2">
           <Icon name="Paperclip" size={16} className="text-salis-blue" />
-          <h3 className="text-sm font-bold text-heading">{t(title)}</h3>
+          <h2 className="text-sm font-bold text-heading">{t(title)}</h2>
           <span className="ms-auto text-xs text-muted">{files.length}</span>
         </div>
       ) : null}

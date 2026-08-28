@@ -101,7 +101,7 @@ export function AdvancedSettings() {
               <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
                 <Icon name={sec.icon} size={16} />
               </span>
-              <h3 className="text-[14px] font-bold text-heading">{sec.title}</h3>
+              <h2 className="text-[14px] font-bold text-heading">{sec.title}</h2>
             </div>
             {sec.items.map((item) => (
               <div
@@ -157,7 +157,7 @@ export function AdvancedSettings() {
             <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
               <Icon name={sec.icon} size={18} />
             </span>
-            <h3 className="text-[15px] font-bold text-heading">{sec.title}</h3>
+            <h2 className="text-[15px] font-bold text-heading">{sec.title}</h2>
           </div>
 
           {sec.items.map((item) => (

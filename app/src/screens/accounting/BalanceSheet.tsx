@@ -74,7 +74,7 @@ function StatementSection({
         >
           <Icon name={icon} size={18} style={{ color: accentColor }} />
         </span>
-        <h3 className="font-display text-base font-bold text-heading">{t(title)}</h3>
+        <h2 className="font-display text-base font-bold text-heading">{t(title)}</h2>
       </div>
       <div className="flex flex-col">
         {items.map((item) => (
@@ -134,7 +134,7 @@ export function BalanceSheet() {
           { title: 'Equity', items: EQUITY },
         ].map(({ title, items }) => (
           <div key={title} className="flex flex-col gap-2">
-            <h3 className="font-display text-sm font-bold text-heading">{t(title)}</h3>
+            <h2 className="font-display text-sm font-bold text-heading">{t(title)}</h2>
             {items.map((item) => (
               <MobileCard key={item.name}>
                 <MobileCardHeader leading={<span className="text-sm font-semibold text-heading">{t(item.name)}</span>} />

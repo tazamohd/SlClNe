@@ -65,7 +65,7 @@ export function AIChatbotAssistant() {
       </div>
 
       <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('AI Suggestions')}</h3>
+        <h2 className="mb-4 text-[15px] font-bold text-heading">{t('AI Suggestions')}</h2>
         <div className="grid grid-cols-2 gap-4">
           {MOCK_SUGGESTIONS.map(s => (
             <div key={s.id} className="rounded-xl border border-border p-4">
@@ -80,7 +80,7 @@ export function AIChatbotAssistant() {
       </Card>
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Recent Conversations')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Recent Conversations')}</h2>
         <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
           <option value="All">{t('All')}</option>
           <option value="Active">{t('Active')}</option>

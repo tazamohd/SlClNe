@@ -96,7 +96,7 @@ export function PublicCareers() {
             className="flex flex-col gap-2 rounded-2xl border border-default bg-card p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(10,94,215,.3)] hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
-              <h3 className="m-0 text-[15px] font-bold text-heading">{t(pos.title)}</h3>
+              <h2 className="m-0 text-[15px] font-bold text-heading">{t(pos.title)}</h2>
               <p className="m-0 mt-1 text-[13px] text-muted">{t(pos.description)}</p>
             </div>
             <div className="flex shrink-0 items-center gap-2">

@@ -69,7 +69,7 @@ export function SocialMediaIntegration() {
               <div className="flex items-center gap-3">
                 <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={p.icon} size={20} /></span>
                 <div>
-                  <h3 className="text-sm font-bold text-heading">{p.name}</h3>
+                  <h2 className="text-sm font-bold text-heading">{p.name}</h2>
                   <p className="text-xs text-muted">{t('Last sync')}: {p.lastSync}</p>
                 </div>
               </div>

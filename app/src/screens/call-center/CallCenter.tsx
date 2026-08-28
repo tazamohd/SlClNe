@@ -152,7 +152,7 @@ export function CallCenter() {
               </span>
               <span className="text-xs font-medium text-muted">{t(k.label)}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading" dir="ltr">{k.value}</h4>
+            <p className="mt-2 font-display text-2xl font-black text-heading" dir="ltr">{k.value}</p>
             <p className="mt-1 text-[11px]" style={{ color: k.subColor }}>{t(k.sub)}</p>
           </Card>
         ))}
@@ -163,7 +163,7 @@ export function CallCenter() {
         {/* Left — Live Queue */}
         <Card className="overflow-hidden p-0">
           <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-            <h3 className="text-sm font-bold text-heading">{t('Live Queue')}</h3>
+            <h2 className="text-sm font-bold text-heading">{t('Live Queue')}</h2>
             <Badge background="var(--tint-orange)" color="var(--salis-orange)">
               {FIXTURE_QUEUE.length}
             </Badge>
@@ -261,7 +261,7 @@ export function CallCenter() {
 
           {/* Disposition */}
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-bold text-heading">{t('Call Disposition')}</h3>
+            <h2 className="mb-3 text-sm font-bold text-heading">{t('Call Disposition')}</h2>
             <div className="mb-3 flex flex-wrap gap-2">
               {DISPOSITIONS.map((d) => (
                 <button
@@ -304,7 +304,7 @@ export function CallCenter() {
         <div className="flex flex-col gap-5">
           {/* Customer Context */}
           <Card className="p-4">
-            <h3 className="mb-3 text-sm font-bold text-heading">{t('Customer Context')}</h3>
+            <h2 className="mb-3 text-sm font-bold text-heading">{t('Customer Context')}</h2>
             <div className="flex flex-col gap-2.5">
               {FIXTURE_CTX.map((c) => (
                 <div key={c.label} className="flex items-center gap-2">
@@ -325,7 +325,7 @@ export function CallCenter() {
 
           {/* Open Items */}
           <Card className="p-4">
-            <h3 className="mb-3 text-sm font-bold text-heading">{t('Open Items')}</h3>
+            <h2 className="mb-3 text-sm font-bold text-heading">{t('Open Items')}</h2>
             <div className="flex flex-col gap-2">
               {FIXTURE_OPEN.map((o) => {
                 const [stBg, stFg] = STATUS_TONES[o.statusTone]
@@ -345,7 +345,7 @@ export function CallCenter() {
 
           {/* Recent Calls */}
           <Card className="p-4">
-            <h3 className="mb-3 text-sm font-bold text-heading">{t('Recent Calls')}</h3>
+            <h2 className="mb-3 text-sm font-bold text-heading">{t('Recent Calls')}</h2>
             <div className="flex flex-col gap-2.5">
               {FIXTURE_RECENT.map((r) => (
                 <div key={r.reason + r.when} className="flex items-center gap-2">

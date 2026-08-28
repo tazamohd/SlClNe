@@ -112,7 +112,7 @@ export function CustomerFeedback() {
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--tint-blue)] text-salis-blue">
           <Icon name="CheckCircle" size={28} />
         </span>
-        <h3 className="text-base font-bold text-heading">{t('Thank you for your feedback')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Thank you for your feedback')}</h2>
         <p className="m-0 text-[13px] text-muted">
           {t('Your rating has been recorded and will help us improve our service.')}
         </p>
@@ -169,7 +169,7 @@ export function CustomerFeedback() {
 
       {/* Overall rating. */}
       <Card className="flex flex-col items-center gap-3 p-5 text-center">
-        <h3 className="text-[15px] font-bold text-heading">{t('How was your experience?')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('How was your experience?')}</h2>
         <div role="radiogroup" aria-label={t('Overall rating')} className="flex justify-center gap-2">
           {[1, 2, 3, 4, 5].map((value) => (
             <button
@@ -194,7 +194,7 @@ export function CustomerFeedback() {
 
       {/* Category ratings. */}
       <Card className="flex flex-col gap-3 p-4">
-        <h3 className="text-[13px] font-bold text-heading">{t('Rate the Details')}</h3>
+        <h2 className="text-[13px] font-bold text-heading">{t('Rate the Details')}</h2>
         {CATEGORIES.map((cat) => {
           const value = categories[cat.key] ?? 0
           return (

@@ -132,7 +132,7 @@ export function WorkshopCalendar() {
               <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{k.label}</span>
             </div>
-            <h4 className="mt-2 font-display text-xl font-black text-heading">{k.value}</h4>
+            <p className="mt-2 font-display text-xl font-black text-heading">{k.value}</p>
           </Card>
         ))}
       </div>

@@ -54,7 +54,7 @@ export function AIServiceAdvisor() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Service Recommendations')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Service Recommendations')}</h2>
       <DataTable
         caption="AI service recommendations"
         columns={columns}

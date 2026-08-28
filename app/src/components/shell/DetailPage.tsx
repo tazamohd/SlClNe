@@ -558,7 +558,7 @@ function PanelShell({
     >
       <div className="flex items-center gap-2">
         {icon ? <Icon name={icon} size={16} className="text-salis-blue" /> : null}
-        <h3 className="text-sm font-bold text-heading">{t(title)}</h3>
+        <h2 className="text-sm font-bold text-heading">{t(title)}</h2>
         <span className="flex-1" />
         {action}
       </div>

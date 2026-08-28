@@ -70,7 +70,7 @@ export function NeuralNetworkPrediction() {
       </div>
 
       <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-[15px] font-bold text-heading">{t('ML Models')}</h3>
+        <h2 className="mb-4 text-[15px] font-bold text-heading">{t('ML Models')}</h2>
         <div className="grid grid-cols-2 gap-4">
           {MOCK_MODELS.map(m => {
             const [bg, fg] = MODEL_STATUS_COLORS[m.status] ?? MODEL_STATUS_COLORS.Active
@@ -91,7 +91,7 @@ export function NeuralNetworkPrediction() {
         </div>
       </Card>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Failure Predictions')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Failure Predictions')}</h2>
       <DataTable
         caption="Neural network failure predictions"
         columns={columns}

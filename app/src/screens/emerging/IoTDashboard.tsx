@@ -62,7 +62,7 @@ export function IoTDashboard() {
       </div>
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Connected Devices')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Connected Devices')}</h2>
         <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
           <option value="All">{t('All')}</option>
           <option value="Online">{t('Online')}</option>

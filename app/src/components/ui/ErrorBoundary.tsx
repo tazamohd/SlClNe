@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
 
 interface Props {
@@ -8,6 +9,30 @@ interface Props {
 
 interface State {
   error: Error | null
+}
+
+function DefaultFallback({ error, onReset }: { error: Error; onReset: () => void }) {
+  const { t } = usePreferences()
+  return (
+    <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 p-8 text-center">
+      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--tint-orange)] text-salis-orange">
+        <Icon name="AlertTriangle" size={24} />
+      </span>
+      <div>
+        <h2 className="text-lg font-bold text-heading">{t('Something went wrong')}</h2>
+        <p className="mt-1 text-sm text-muted">
+          {error.message || t('An unexpected error occurred.')}
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={onReset}
+        className="rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-salis-blue/90 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+      >
+        {t('Try again')}
+      </button>
+    </div>
+  )
 }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -29,27 +54,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.error) {
       if (this.props.fallback) return this.props.fallback
-
-      return (
-        <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 p-8 text-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--tint-orange)] text-salis-orange">
-            <Icon name="AlertTriangle" size={24} />
-          </span>
-          <div>
-            <h2 className="text-lg font-bold text-heading">Something went wrong</h2>
-            <p className="mt-1 text-sm text-muted">
-              {this.state.error.message || 'An unexpected error occurred.'}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={this.reset}
-            className="rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-salis-blue/90 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
-          >
-            Try again
-          </button>
-        </div>
-      )
+      return <DefaultFallback error={this.state.error} onReset={this.reset} />
     }
 
     return this.props.children

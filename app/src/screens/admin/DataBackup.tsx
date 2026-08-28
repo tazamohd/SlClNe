@@ -90,7 +90,7 @@ export function DataBackup() {
                 </span>
                 <span className="text-[11px] font-medium text-muted">{t(stat.label)}</span>
               </div>
-              <h4 className="mt-1.5 font-display text-lg font-black text-heading">{stat.value}</h4>
+              <p className="mt-1.5 font-display text-lg font-black text-heading">{stat.value}</p>
             </Card>
           ))}
         </div>

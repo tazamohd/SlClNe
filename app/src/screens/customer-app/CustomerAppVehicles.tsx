@@ -55,7 +55,7 @@ export function CustomerAppVehicles() {
                 <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
                 <span className="text-[11px] font-medium text-muted">{k.label}</span>
               </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
+              <p className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</p>
             </Card>
           ))}
         </div>
@@ -101,7 +101,7 @@ export function CustomerAppVehicles() {
               <div className="flex items-center gap-3">
                 <span className="flex rounded-xl bg-[var(--tint-blue)] p-2.5 text-salis-blue" aria-hidden><Icon name="Car" size={22} /></span>
                 <div>
-                  <h3 className="font-display text-base font-bold text-heading">{v.make} {v.model} {v.year}</h3>
+                  <h2 className="font-display text-base font-bold text-heading">{v.make} {v.model} {v.year}</h2>
                   <p className="font-mono text-xs text-muted" dir="ltr">{v.plate}</p>
                 </div>
               </div>

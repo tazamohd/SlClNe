@@ -122,7 +122,7 @@ export function Templates() {
                   {tpl.type}
                 </Badge>
               </div>
-              <h3 className="m-0 text-[15px] font-bold text-heading">{tpl.name}</h3>
+              <h2 className="m-0 text-[15px] font-bold text-heading">{tpl.name}</h2>
               <p className="m-0 mt-1 text-xs text-muted">{tpl.desc}</p>
               <div className="mt-3 flex items-center justify-between">
                 <span className="text-[11px] text-faint">{tpl.lastEdit}</span>

@@ -139,7 +139,7 @@ export function AutomationRules() {
                   <Icon name="Zap" size={18} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <h3 className="m-0 text-base font-bold text-heading">{t(rule.name)}</h3>
+                  <h2 className="m-0 text-base font-bold text-heading">{t(rule.name)}</h2>
                   <p className="m-0 mt-0.5 text-xs text-muted">{t(rule.desc)}</p>
                 </div>
                 <Badge

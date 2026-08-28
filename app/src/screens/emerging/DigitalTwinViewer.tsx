@@ -73,7 +73,7 @@ export function DigitalTwinViewer() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Real vs Simulated')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Real vs Simulated')}</h2>
       <DataTable
         caption="Real vs simulated metrics"
         columns={metricColumns}
@@ -90,7 +90,7 @@ export function DigitalTwinViewer() {
       />
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Twin Models')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Twin Models')}</h2>
         <Select value={view} onChange={e => setView(e.target.value)} aria-label={t('Select view')}>
           <option value="overview">{t('Overview')}</option>
           <option value="facility">{t('Facility')}</option>

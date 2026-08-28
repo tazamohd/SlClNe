@@ -89,7 +89,7 @@ export function ImportCenter({
 
   return (
     <Card className={cn('p-6', className)}>
-      {title ? <h3 className="mb-1 text-sm font-bold text-heading">{t(title)}</h3> : null}
+      {title ? <h2 className="mb-1 text-sm font-bold text-heading">{t(title)}</h2> : null}
       {description ? <p className="mb-4 text-[13px] text-muted">{t(description)}</p> : null}
 
       {phase === 'idle' || phase === 'selected' ? (
@@ -205,9 +205,9 @@ export function ImportCenter({
 
       {fields && fields.length > 0 ? (
         <div className="mt-6">
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
             {t('Expected columns')}
-          </h4>
+          </h3>
           <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-xs">
               <thead>

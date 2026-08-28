@@ -71,7 +71,7 @@ export function ProfitAnalysis() {
       </div>
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Profit by Service')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Profit by Service')}</h2>
         <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
           <option value="month">{t('This Month')}</option>
           <option value="quarter">{t('This Quarter')}</option>
@@ -93,7 +93,7 @@ export function ProfitAnalysis() {
         )}
       />
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Monthly Trend')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Monthly Trend')}</h2>
       <DataTable
         caption="Monthly profit trend"
         columns={periodColumns}

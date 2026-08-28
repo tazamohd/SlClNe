@@ -48,7 +48,7 @@ export function MediaGallery({
   return (
     <>
       <Card className={cn('p-4', className)}>
-        {title ? <h3 className="mb-3 text-sm font-bold text-heading">{t(title)}</h3> : null}
+        {title ? <h2 className="mb-3 text-sm font-bold text-heading">{t(title)}</h2> : null}
 
         {items.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-8 text-center">

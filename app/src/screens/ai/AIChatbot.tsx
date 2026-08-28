@@ -71,7 +71,7 @@ export function AIChatbot() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Conversation Stats')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Conversation Stats')}</h2>
       <DataTable
         caption="Conversation statistics"
         columns={statsColumns}
@@ -88,7 +88,7 @@ export function AIChatbot() {
       />
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Chatbot Configurations')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Chatbot Configurations')}</h2>
         <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
           <option value="All">{t('All')}</option>
           <option value="Active">{t('Active')}</option>

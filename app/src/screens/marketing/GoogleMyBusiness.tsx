@@ -60,7 +60,7 @@ export function GoogleMyBusiness() {
                 <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
                 <span className="text-[11px] font-medium text-muted">{k.label}</span>
               </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</h4>
+              <p className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</p>
             </Card>
           ))}
         </div>
@@ -101,7 +101,7 @@ export function GoogleMyBusiness() {
       </div>
 
       <Card className="rounded-2xl p-6 shadow-sm">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Recent Reviews')}</h3>
+        <h2 className="mb-4 text-base font-bold text-heading">{t('Recent Reviews')}</h2>
         <div className="flex flex-col gap-4">
           {REVIEWS.map((r) => (
             <div key={r.author + r.date} className="flex items-start justify-between border-b border-border/50 pb-4 last:border-0 last:pb-0">

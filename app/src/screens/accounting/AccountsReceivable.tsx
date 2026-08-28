@@ -73,7 +73,7 @@ export function AccountsReceivable() {
       </div>
 
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-base font-bold text-heading">{t('Outstanding Invoices')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Outstanding Invoices')}</h2>
         <ChipGroup label={t('Status')}>
           {(['all', 'current', 'overdue'] as const).map((f) => (
             <Chip

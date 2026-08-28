@@ -79,14 +79,14 @@ export function ExportCenter({
 
   return (
     <Card className={cn('p-6', className)}>
-      {title ? <h3 className="mb-1 text-sm font-bold text-heading">{t(title)}</h3> : null}
+      {title ? <h2 className="mb-1 text-sm font-bold text-heading">{t(title)}</h2> : null}
       {description ? <p className="mb-4 text-[13px] text-muted">{t(description)}</p> : null}
 
       <div className="space-y-5">
         <div>
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
+          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
             {t('Format')}
-          </h4>
+          </h3>
           <div className="flex gap-2">
             {formats.map((f) => {
               const meta = FORMAT_META[f]
@@ -113,9 +113,9 @@ export function ExportCenter({
         {columns && columns.length > 0 ? (
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
                 {t('Columns')}
-              </h4>
+              </h3>
               <button
                 type="button"
                 className="text-xs font-medium text-salis-blue hover:underline"

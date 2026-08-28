@@ -93,7 +93,7 @@ export function Profile() {
         </Card>
 
         <Card className="rounded-2xl p-4">
-          <h3 className="mb-3 text-base font-bold text-heading">{t('Change Password')}</h3>
+          <h2 className="mb-3 text-base font-bold text-heading">{t('Change Password')}</h2>
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
               <label htmlFor="m-current-pw" className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
@@ -176,7 +176,7 @@ export function Profile() {
       </Card>
 
       <Card className="rounded-2xl p-6">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Change Password')}</h3>
+        <h2 className="mb-4 text-base font-bold text-heading">{t('Change Password')}</h2>
         <div className="flex flex-col gap-3.5">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="current-pw" className="font-action text-xs font-medium text-body">{t('Current Password')}</label>

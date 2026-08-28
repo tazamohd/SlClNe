@@ -61,7 +61,7 @@ export function KPIDashboard() {
       </div>
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Performance Indicators')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Performance Indicators')}</h2>
         <Select value={category} onChange={e => setCategory(e.target.value)} aria-label={t('Filter by category')}>
           <option value="All">{t('All Categories')}</option>
           <option value="Quality">{t('Quality')}</option>

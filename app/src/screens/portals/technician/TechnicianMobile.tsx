@@ -66,7 +66,7 @@ export function TechnicianMobile() {
                 <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
                 <span className="text-[11px] font-medium text-muted">{t(a.label)}</span>
               </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{a.count > 0 ? a.count : '--'}</h4>
+              <p className="mt-1.5 font-display text-xl font-black text-heading">{a.count > 0 ? a.count : '--'}</p>
             </Card>
           ))}
         </div>
@@ -108,7 +108,7 @@ export function TechnicianMobile() {
               <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{t(a.label)}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading">{a.count > 0 ? a.count : '--'}</h4>
+            <p className="mt-2 font-display text-2xl font-black text-heading">{a.count > 0 ? a.count : '--'}</p>
           </Card>
         ))}
       </div>

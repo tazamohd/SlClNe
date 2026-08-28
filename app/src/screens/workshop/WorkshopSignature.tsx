@@ -108,7 +108,7 @@ export function WorkshopSignature() {
 
       <Card className="flex flex-col gap-3.5 rounded-lg p-5">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-sm font-bold text-heading">{t('Sign Below')}</h3>
+          <h2 className="text-sm font-bold text-heading">{t('Sign Below')}</h2>
           <button
             type="button"
             onClick={clear}

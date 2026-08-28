@@ -101,7 +101,7 @@ export function UserProfile() {
               <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name={s.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{t(s.label)}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading">{s.value}</h4>
+            <p className="mt-2 font-display text-2xl font-black text-heading">{s.value}</p>
           </Card>
         ))}
       </div>

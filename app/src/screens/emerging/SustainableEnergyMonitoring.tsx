@@ -79,7 +79,7 @@ export function SustainableEnergyMonitoring() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Energy Sources')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Energy Sources')}</h2>
       <DataTable
         caption="Energy sources and utilization"
         columns={sourceColumns}
@@ -99,7 +99,7 @@ export function SustainableEnergyMonitoring() {
       />
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[15px] font-bold text-heading">{t('Monthly Performance')}</h3>
+        <h2 className="text-[15px] font-bold text-heading">{t('Monthly Performance')}</h2>
         <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
           <option value="month">{t('Last 6 Months')}</option>
           <option value="quarter">{t('This Quarter')}</option>

@@ -43,9 +43,9 @@ export function HowItWorks({ title, steps }: HowItWorksProps) {
                 >
                   {step.number}
                 </span>
-                <h3 className="mb-1.5 mt-0 text-[16px] font-bold text-heading">
+                <h2 className="mb-1.5 mt-0 text-[16px] font-bold text-heading">
                   {t(step.title)}
-                </h3>
+                </h2>
                 <p className="m-0 max-w-[220px] text-[13px] leading-[1.6] text-muted">
                   {t(step.description)}
                 </p>
@@ -73,9 +73,9 @@ export function HowItWorks({ title, steps }: HowItWorksProps) {
                 )}
               </div>
               <div className="pb-2 pt-1.5">
-                <h3 className="mb-1 mt-0 text-[15px] font-bold text-heading">
+                <h2 className="mb-1 mt-0 text-[15px] font-bold text-heading">
                   {t(step.title)}
-                </h3>
+                </h2>
                 <p className="m-0 text-[13px] leading-[1.6] text-muted">
                   {t(step.description)}
                 </p>

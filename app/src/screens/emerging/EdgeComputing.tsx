@@ -71,7 +71,7 @@ export function EdgeComputing() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Edge Nodes')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Edge Nodes')}</h2>
       <DataTable
         caption="Edge computing nodes"
         columns={columns}

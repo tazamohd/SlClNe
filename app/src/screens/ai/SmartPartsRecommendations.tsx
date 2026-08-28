@@ -58,7 +58,7 @@ export function SmartPartsRecommendations() {
         ))}
       </div>
 
-      <h3 className="text-[15px] font-bold text-heading">{t('Recommended Parts')}</h3>
+      <h2 className="text-[15px] font-bold text-heading">{t('Recommended Parts')}</h2>
       <DataTable
         caption="Smart parts recommendations"
         columns={columns}

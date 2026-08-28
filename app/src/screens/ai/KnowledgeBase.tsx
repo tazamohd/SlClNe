@@ -101,13 +101,13 @@ export function KnowledgeBase() {
               <span className="flex rounded-[10px] p-2" style={{ background: cc.iconBg, color: cc.iconFg }}>
                 <Icon name={cc.icon} size={16} />
               </span>
-              <h4 className="mt-2 text-[13px] font-semibold text-heading">{cc.name}</h4>
+              <h3 className="mt-2 text-[13px] font-semibold text-heading">{cc.name}</h3>
               <p className="text-xs text-muted">{cc.count} {t('articles')}</p>
             </MobileCard>
           ))}
         </div>
 
-        <h3 className="text-base font-bold text-heading">{t('Recent Articles')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Recent Articles')}</h2>
         <div className="flex flex-col gap-3">
           {filtered.map((a) => (
             <MobileCard key={a.id}>
@@ -118,7 +118,7 @@ export function KnowledgeBase() {
                       <Icon name="FileText" size={14} />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-[13px] font-semibold text-heading">{a.title}</h4>
+                      <h3 className="text-[13px] font-semibold text-heading">{a.title}</h3>
                       <p className="mt-0.5 text-xs text-muted">{a.category} · {a.date}</p>
                     </div>
                   </div>
@@ -161,14 +161,14 @@ export function KnowledgeBase() {
             <span className="flex rounded-[10px] p-2" style={{ background: cc.iconBg, color: cc.iconFg }}>
               <Icon name={cc.icon} size={18} />
             </span>
-            <h4 className="mt-2.5 text-sm font-semibold text-heading">{cc.name}</h4>
+            <h3 className="mt-2.5 text-sm font-semibold text-heading">{cc.name}</h3>
             <p className="mt-1 text-xs text-muted">{cc.count} {t('articles')}</p>
           </Card>
         ))}
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-base font-bold text-heading">{t('Recent Articles')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Recent Articles')}</h2>
         {filtered.map((a) => (
           <Card
             key={a.id}
@@ -178,7 +178,7 @@ export function KnowledgeBase() {
               <Icon name="FileText" size={16} />
             </span>
             <div className="min-w-0 flex-1">
-              <h4 className="text-sm font-semibold text-heading">{a.title}</h4>
+              <h3 className="text-sm font-semibold text-heading">{a.title}</h3>
               <p className="mt-0.5 text-xs text-muted">{a.category} · {a.date}</p>
             </div>
             <div className="flex flex-shrink-0 items-center gap-2 text-[11px] text-muted">

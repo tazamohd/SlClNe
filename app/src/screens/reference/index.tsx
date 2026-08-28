@@ -194,7 +194,7 @@ export function UICardView() {
               <span className="flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_10px_15px_-3px_rgba(10,94,215,.25)]">
                 <Icon name={c.icon} size={24} />
               </span>
-              <h3 className="text-sm font-bold text-heading">{t(c.title)}</h3>
+              <h2 className="text-sm font-bold text-heading">{t(c.title)}</h2>
               <span className="font-mono text-xs text-muted">{c.sku}</span>
               <span className="text-2xl font-black text-salis-blue">{c.qty}</span>
               <span className="text-xs text-muted">{t('in stock')}</span>
@@ -301,7 +301,7 @@ export function UIKanbanView() {
           <Card key={col.title} className="flex min-w-[220px] flex-1 flex-col p-4" style={{ background: colColors[ci] }}>
             <div className="mb-3 flex items-center gap-2">
               <Icon name={col.icon} size={16} className="text-salis-blue" />
-              <h3 className="text-sm font-bold text-heading">{t(col.title)}</h3>
+              <h2 className="text-sm font-bold text-heading">{t(col.title)}</h2>
               <Badge background="var(--tint-blue)" color="var(--salis-blue)">{col.items.length}</Badge>
             </div>
             <div className="flex flex-col gap-2">
@@ -344,7 +344,7 @@ export function UIMapView() {
           </div>
         </Card>
         <Card className="flex flex-col gap-3 p-4">
-          <h3 className="text-sm font-bold text-heading">{t('Locations')}</h3>
+          <h2 className="text-sm font-bold text-heading">{t('Locations')}</h2>
           {locations.map(loc => (
             <div key={loc.name} className="flex flex-col gap-1 rounded-lg border border-border p-3">
               <div className="flex items-center justify-between">
@@ -927,7 +927,7 @@ export function UIModalsCRUD() {
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <div className="flex items-center gap-2">
                 <Icon name={modal.icon} size={18} className="text-salis-blue" />
-                <h3 className="text-base font-bold text-heading">{t(modal.title)}</h3>
+                <h2 className="text-base font-bold text-heading">{t(modal.title)}</h2>
               </div>
               <Icon name="X" size={16} className="cursor-pointer text-muted" />
             </div>
@@ -973,7 +973,7 @@ export function UIModalsLifecycle() {
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-salis-gradient text-white">
                 <Icon name={s.icon} size={24} />
               </span>
-              <h3 className="mt-3 text-sm font-bold text-heading">{t(s.label)}</h3>
+              <h2 className="mt-3 text-sm font-bold text-heading">{t(s.label)}</h2>
               <div className="mt-2 flex items-center justify-center gap-2 text-xs text-muted">
                 <Badge background="var(--tint-neutral)" color="var(--text-muted)">{t(s.from)}</Badge>
                 <Icon name="ArrowRight" size={12} />
@@ -1007,7 +1007,7 @@ export function UIModalsStatus() {
             <span className="flex h-14 w-14 items-center justify-center rounded-full" style={{ background: m.bg }}>
               <Icon name={m.icon} size={28} style={{ color: m.color }} />
             </span>
-            <h3 className="mt-3 text-base font-bold text-heading">{t(m.title)}</h3>
+            <h2 className="mt-3 text-base font-bold text-heading">{t(m.title)}</h2>
             <p className="mt-1 text-sm text-muted">{t(m.desc)}</p>
             <Button variant="primary" size="sm" className="mt-4">{t('OK')}</Button>
           </Card>
@@ -1038,7 +1038,7 @@ export function UIModalsActions() {
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-salis-gradient text-white">
                   <Icon name={a.icon} size={20} />
                 </span>
-                <h3 className="text-sm font-bold text-heading">{t(a.title)}</h3>
+                <h2 className="text-sm font-bold text-heading">{t(a.title)}</h2>
               </div>
               <p className="mt-2 flex-1 text-xs text-muted">{t(a.desc)}</p>
               <div className="mt-4 flex justify-end gap-2">
@@ -1064,7 +1064,7 @@ export function UIModalsData() {
       <Section title="Record Preview">
         <Card className="max-w-md">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
-            <h3 className="text-base font-bold text-heading">{t('Vehicle Details')}</h3>
+            <h2 className="text-base font-bold text-heading">{t('Vehicle Details')}</h2>
             <Icon name="X" size={16} className="cursor-pointer text-muted" />
           </div>
           <div className="flex flex-col gap-3 p-5">
@@ -1185,7 +1185,7 @@ export function FlowSpec() {
           <CardHeader icon={flow.icon} title={t(flow.name)} />
           <div className="mt-4 flex flex-col gap-4">
             <div>
-              <h3 className="mb-2 text-sm font-semibold text-heading">{t('Workflow Steps')}</h3>
+              <h2 className="mb-2 text-sm font-semibold text-heading">{t('Workflow Steps')}</h2>
               <div className={`flex items-center gap-1 overflow-x-auto ${isMobile ? 'flex-wrap' : ''}`}>
                 {flow.steps.map((step, i) => (
                   <div key={step} className="flex items-center gap-1">
@@ -1199,7 +1199,7 @@ export function FlowSpec() {
             </div>
             <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-2'}`}>
               <div>
-                <h4 className="mb-1.5 text-xs font-semibold text-muted">{t('Triggers')}</h4>
+                <h3 className="mb-1.5 text-xs font-semibold text-muted">{t('Triggers')}</h3>
                 <ul className="flex flex-col gap-1">
                   {flow.triggers.map(tr => (
                     <li key={tr} className="flex items-center gap-2 text-sm text-body">
@@ -1209,7 +1209,7 @@ export function FlowSpec() {
                 </ul>
               </div>
               <div>
-                <h4 className="mb-1.5 text-xs font-semibold text-muted">{t('Notifications')}</h4>
+                <h3 className="mb-1.5 text-xs font-semibold text-muted">{t('Notifications')}</h3>
                 <ul className="flex flex-col gap-1">
                   {flow.notifications.map(n => (
                     <li key={n} className="flex items-center gap-2 text-sm text-body">

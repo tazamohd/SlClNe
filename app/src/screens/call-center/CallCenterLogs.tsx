@@ -206,7 +206,7 @@ export function CallCenterLogs() {
               </span>
               <span className="text-xs font-medium text-muted">{t(k.label)}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading" dir="ltr">{k.value}</h4>
+            <p className="mt-2 font-display text-2xl font-black text-heading" dir="ltr">{k.value}</p>
           </Card>
         ))}
       </div>

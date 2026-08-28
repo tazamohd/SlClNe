@@ -79,7 +79,7 @@ export function CalendarView({
         >
           <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={16} />
         </Button>
-        <h3 className="text-sm font-bold text-heading">{monthLabel}</h3>
+        <h2 className="text-sm font-bold text-heading">{monthLabel}</h2>
         <Button
           variant="ghost"
           size="sm"

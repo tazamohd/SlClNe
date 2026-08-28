@@ -253,7 +253,7 @@ function StatCard({
   return (
     <Card className="p-5">
       <p className="text-[13px] text-muted">{label}</p>
-      <h3
+      <p
         dir="ltr"
         className={
           'mt-1.5 font-display text-[28px] font-black ' +
@@ -261,7 +261,7 @@ function StatCard({
         }
       >
         {value}
-      </h3>
+      </p>
       {note ? <p className="mt-1 text-[11px] text-muted">{note}</p> : null}
     </Card>
   )

@@ -145,7 +145,7 @@ export function WorkflowBuilder() {
                 <Icon name="GitBranch" size={18} />
               </span>
               <div className="min-w-0 flex-1">
-                <h3 className="m-0 text-base font-bold text-heading">{wf.name}</h3>
+                <h2 className="m-0 text-base font-bold text-heading">{wf.name}</h2>
                 <p className="m-0 mt-0.5 text-xs text-muted">{wf.desc}</p>
               </div>
               <Badge background={wf.statusBg} color={wf.statusFg}>

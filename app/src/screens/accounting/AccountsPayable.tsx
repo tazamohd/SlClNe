@@ -70,7 +70,7 @@ export function AccountsPayable() {
       </div>
 
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-base font-bold text-heading">{t('Outstanding Bills')}</h3>
+        <h2 className="text-base font-bold text-heading">{t('Outstanding Bills')}</h2>
         <div className="flex gap-2">
           {['all', 'current', 'overdue'].map((f) => (
             <button key={f} type="button" onClick={() => setFilter(f)}

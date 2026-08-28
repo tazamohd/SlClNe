@@ -1072,9 +1072,9 @@ export function Integrations() {
                     <Icon name={integration.icon} size={18} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate font-display text-[15px] font-bold text-heading">
+                    <h2 className="truncate font-display text-[15px] font-bold text-heading">
                       {rtl ? integration.ar : integration.name}
-                    </h3>
+                    </h2>
                     <p className="text-xs text-muted">{t(integration.cat)}</p>
                   </div>
                   <Badge background={bg} color={fg}>
@@ -1141,9 +1141,9 @@ export function Integrations() {
                   <Icon name={integration.icon} size={18} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate font-display text-[15px] font-bold text-heading">
+                  <h2 className="truncate font-display text-[15px] font-bold text-heading">
                     {rtl ? integration.ar : integration.name}
-                  </h3>
+                  </h2>
                   <p className="text-xs text-muted">{t(integration.cat)}</p>
                 </div>
                 <Badge background={bg} color={fg}>

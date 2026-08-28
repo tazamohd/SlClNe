@@ -46,11 +46,11 @@ export function WelcomePage() {
                 <span className="flex rounded-lg p-1.5" style={{ background: s.bg, color: s.fg }} aria-hidden><Icon name={s.icon} size={14} /></span>
                 <span className="text-[11px] font-medium text-muted">{t(s.label)}</span>
               </div>
-              <h4 className="mt-1.5 font-display text-xl font-black text-heading">{s.value}</h4>
+              <p className="mt-1.5 font-display text-xl font-black text-heading">{s.value}</p>
             </Card>
           ))}
         </div>
-        <h3 className="text-sm font-bold text-heading">{t('Quick Actions')}</h3>
+        <h2 className="text-sm font-bold text-heading">{t('Quick Actions')}</h2>
         {QUICK_ACTIONS.map((a) => (
           <MobileCard key={a.label} onClick={() => navigate(a.route)}>
             <MobileCardHeader
@@ -79,7 +79,7 @@ export function WelcomePage() {
               <span className="flex rounded-lg p-1.5" style={{ background: s.bg, color: s.fg }} aria-hidden><Icon name={s.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{t(s.label)}</span>
             </div>
-            <h4 className="mt-2 font-display text-2xl font-black text-heading">{s.value}</h4>
+            <p className="mt-2 font-display text-2xl font-black text-heading">{s.value}</p>
           </Card>
         ))}
       </div>

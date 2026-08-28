@@ -971,7 +971,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                 <Card className="flex flex-col gap-3.5 rounded-xl p-5">
                   <div className="flex items-center gap-2">
                     <Icon name="Building2" size={16} className="text-salis-blue" />
-                    <h3 className="text-sm font-bold text-heading">{t('Supplier')}</h3>
+                    <h2 className="text-sm font-bold text-heading">{t('Supplier')}</h2>
                   </div>
                   <FormErrorSummary />
                   <div className="flex flex-col gap-1">
@@ -1033,7 +1033,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                 <Card className="flex flex-col gap-3.5 rounded-xl p-5">
                   <div className="flex items-center gap-2">
                     <Icon name="AlertTriangle" size={16} className="text-salis-orange" />
-                    <h3 className="text-sm font-bold text-heading">{t('Stock Alert')}</h3>
+                    <h2 className="text-sm font-bold text-heading">{t('Stock Alert')}</h2>
                   </div>
                   {lowStock.length ? (
                     <ul className="flex flex-col">
@@ -1075,7 +1075,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                 <div className="flex items-center justify-between border-b border-border px-5 py-4">
                   <div className="flex items-center gap-2">
                     <Icon name="Package" size={16} className="text-salis-blue" />
-                    <h3 className="text-sm font-bold text-heading">{t('Order Items')}</h3>
+                    <h2 className="text-sm font-bold text-heading">{t('Order Items')}</h2>
                   </div>
                   <Button variant="outline" size="sm" onClick={() => setEditingLine('new')}>
                     <Icon name="Plus" size={13} />
@@ -1211,7 +1211,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
           <Card className="flex flex-col gap-4 rounded-xl p-5">
             <div className="flex items-center gap-2">
               <Icon name="PackageCheck" size={16} className="text-salis-blue" />
-              <h3 className="text-sm font-bold text-heading">{t('Approval & Receiving')}</h3>
+              <h2 className="text-sm font-bold text-heading">{t('Approval & Receiving')}</h2>
             </div>
             {api ? (
               <OrdersPanel api={api} />

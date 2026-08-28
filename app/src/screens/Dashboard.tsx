@@ -165,7 +165,7 @@ export function Dashboard() {
               <Icon name={stage.icon} size={20} />
             </span>
             <div className="text-center">
-              <h4 className="font-display text-2xl font-black text-heading">{stage.count}</h4>
+              <p className="font-display text-2xl font-black text-heading">{stage.count}</p>
               <p className="mt-1 text-xs font-medium text-muted">{t(stage.label)}</p>
             </div>
           </Card>
@@ -341,7 +341,7 @@ function MetricCard({
             <span className="text-sm font-medium text-muted">{label}</span>
           </div>
           <div>
-            <h3 className="font-display text-3xl font-black text-heading">{value}</h3>
+            <h2 className="font-display text-3xl font-black text-heading">{value}</h2>
             {footer}
           </div>
         </div>

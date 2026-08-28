@@ -96,7 +96,7 @@ export function Organizations() {
                     {org.initial}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <h3 className="m-0 text-[17px] font-bold text-heading">{org.name}</h3>
+                    <h2 className="m-0 text-[17px] font-bold text-heading">{org.name}</h2>
                     <p className="m-0 mt-0.5 text-xs text-muted">{t(org.type)}</p>
                   </div>
                   <Badge background={stBg} color={stFg}>

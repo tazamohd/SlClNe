@@ -144,7 +144,7 @@ export function UsersTeams() {
 
       <Card className="overflow-hidden p-0">
         <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
-          <h3 className="text-base font-bold text-heading">{t('Users')}</h3>
+          <h2 className="text-base font-bold text-heading">{t('Users')}</h2>
           <Badge background="rgba(10,94,215,.08)" color="var(--salis-blue)">
             {users.length}
           </Badge>
@@ -212,7 +212,7 @@ export function UsersTeams() {
       </Card>
 
       <Card className="p-4 sm:p-6">
-        <h3 className="mb-4 text-base font-bold text-heading">{t('Teams')}</h3>
+        <h2 className="mb-4 text-base font-bold text-heading">{t('Teams')}</h2>
         <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-3 gap-4'}>
           {FIXTURE_TEAMS.map((tm) => {
             const [bg, fg] = TEAM_ICON_BG[tm.tone]
@@ -225,7 +225,7 @@ export function UsersTeams() {
                   >
                     <Icon name={tm.icon} size={16} />
                   </span>
-                  <h4 className="m-0 text-sm font-semibold text-heading">{t(tm.name)}</h4>
+                  <h3 className="m-0 text-sm font-semibold text-heading">{t(tm.name)}</h3>
                 </div>
                 <div className="mb-2 flex">
                   {tm.avatars.map((av, i) => (

@@ -39,7 +39,7 @@ export function Comments({ items, title, onAdd, className }: CommentsProps) {
       {title ? (
         <div className="flex items-center gap-2">
           <Icon name="MessageSquare" size={16} className="text-salis-blue" />
-          <h3 className="text-sm font-bold text-heading">{t(title)}</h3>
+          <h2 className="text-sm font-bold text-heading">{t(title)}</h2>
         </div>
       ) : null}
       <div className="flex flex-col gap-4">

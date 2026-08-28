@@ -139,7 +139,7 @@ export function CustomerAppBooking() {
               {svc.popular && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Popular')}</Badge>}
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-heading">{t(svc.name)}</h3>
+              <h2 className="text-sm font-semibold text-heading">{t(svc.name)}</h2>
               <p className="mt-0.5 text-xs text-muted">{t(svc.duration)}</p>
             </div>
             <p className="mt-auto font-mono text-lg font-bold text-heading" dir="ltr">{svc.price} <span className="text-xs font-normal text-muted">SAR</span></p>

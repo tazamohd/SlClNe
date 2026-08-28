@@ -77,7 +77,7 @@ export function ClientPortalLiveTracking() {
             <div className="flex items-center gap-3">
               <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name="Car" size={18} /></span>
               <div>
-                <h3 className="text-sm font-semibold text-heading">{item.vehicle}</h3>
+                <h2 className="text-sm font-semibold text-heading">{item.vehicle}</h2>
                 <p className="text-xs text-muted">{item.workOrder} - {item.service}</p>
               </div>
             </div>
