@@ -123,7 +123,7 @@ export function PublicPortalServices() {
           <p className="m-0 mb-10 text-center text-base text-muted">
             {t('Everything your workshop needs to deliver exceptional service')}
           </p>
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {SERVICES.map((service) => (
               <div
                 key={service.name}

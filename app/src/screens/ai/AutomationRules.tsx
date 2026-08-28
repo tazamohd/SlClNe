@@ -117,7 +117,7 @@ export function AutomationRules() {
                     setActive((prev) => prev.map((v, i) => (i === index ? !v : v)))
                   }
                   className={cn(
-                    'relative h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200',
+                    'relative box-content h-6 w-11 flex-shrink-0 cursor-pointer rounded-full py-2 transition-colors duration-200',
                     on ? 'bg-salis-blue' : 'bg-[#CBD5E1]'
                   )}
                 >

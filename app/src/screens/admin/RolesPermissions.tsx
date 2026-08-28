@@ -230,7 +230,7 @@ export function RolesPermissions() {
               {t('modules')}
             </p>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             <span
               className="inline-flex items-center gap-1 text-[11.5px] font-medium text-muted"
               title={t('This matrix mirrors the RBAC engine — it does not write to it.')}
@@ -238,7 +238,7 @@ export function RolesPermissions() {
               <Icon name="Lock" size={11} />
               {t('Read-only')}
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex flex-wrap gap-1.5">
               <Button
                 variant="subtle"
                 size="sm"

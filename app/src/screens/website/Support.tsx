@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { X } from 'lucide-react'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -26,7 +28,8 @@ interface SupportChannel {
 /** Public support hub: channel cards for chat, phone and email — the site's
  *  own header/nav/footer, standalone (no AppShell, no auth gate). */
 export function PublicPortalSupport() {
-  const { t, theme, toggleTheme } = usePreferences()
+  const { t, rtl, theme, toggleTheme } = usePreferences()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const channels: SupportChannel[] = [
     {
@@ -59,44 +62,69 @@ export function PublicPortalSupport() {
 
   return (
     <div className="flex min-h-screen flex-col bg-page font-ui">
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-sidebar px-6 md:px-10">
-        <div className="flex items-center gap-2">
-          <div className="flex size-8 items-center justify-center rounded-[10px] bg-salis-gradient">
-            <Icon name="Car" size={16} className="text-white" />
+      <header className="sticky top-0 z-10 border-b border-border bg-sidebar">
+        <div className="flex h-16 items-center gap-4 px-6 md:px-10">
+          <div className="flex items-center gap-2">
+            <div className="flex size-8 items-center justify-center rounded-[10px] bg-salis-gradient">
+              <Icon name="Car" size={16} className="text-white" />
+            </div>
+            <span className="font-display text-base font-extrabold text-heading">
+              {t('SALIS AUTO')}
+            </span>
           </div>
-          <span className="font-display text-base font-extrabold text-heading">
-            {t('SALIS AUTO')}
-          </span>
-        </div>
 
-        <nav className="hidden flex-1 items-center justify-center gap-6 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="font-ui text-[13px] font-medium text-body no-underline transition-colors hover:text-salis-blue"
+          <nav className="hidden flex-1 items-center justify-center gap-6 md:flex">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="font-ui text-[13px] font-medium text-body no-underline transition-colors hover:text-salis-blue"
+              >
+                {t(link.label)}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="ms-auto flex items-center gap-2 md:ms-0">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={t('Toggle theme')}
+              className="flex size-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-muted"
             >
-              {t(link.label)}
+              <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
+            </button>
+            <Link
+              to="/login"
+              className="inline-flex h-9 items-center rounded-lg bg-salis-gradient px-4 font-action text-[13px] font-semibold text-white no-underline hover:text-white hover:no-underline"
+            >
+              {t('Sign In')}
             </Link>
-          ))}
-        </nav>
-
-        <div className="ms-auto flex items-center gap-2 md:ms-0">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={t('Toggle theme')}
-            className="flex size-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-muted"
-          >
-            <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
-          </button>
-          <Link
-            to="/login"
-            className="inline-flex h-9 items-center rounded-lg bg-salis-gradient px-4 font-action text-[13px] font-semibold text-white no-underline hover:text-white hover:no-underline"
-          >
-            {t('Sign In')}
-          </Link>
+            <button
+              type="button"
+              aria-label={t('Menu')}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border border-border bg-transparent text-heading md:hidden"
+            >
+              {menuOpen ? <X size={18} /> : <Icon name="Menu" size={18} />}
+            </button>
+          </div>
         </div>
+        {menuOpen ? (
+          <div className="flex flex-col gap-1 border-t border-border bg-sidebar p-4 md:hidden" dir={rtl ? 'rtl' : 'ltr'}>
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setMenuOpen(false)}
+                className="rounded-lg px-3 py-2.5 text-[14px] font-medium text-body no-underline transition-colors hover:bg-[rgba(10,94,215,.04)]"
+              >
+                {t(link.label)}
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </header>
 
       <main className="flex-1">
@@ -106,7 +134,7 @@ export function PublicPortalSupport() {
           </h1>
           <p className="m-0 mb-8 text-center text-base text-muted">{t("We're here to help")}</p>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {channels.map((channel) => (
               <div
                 key={channel.title}
@@ -133,7 +161,7 @@ export function PublicPortalSupport() {
         </div>
       </main>
 
-      <footer className="flex flex-wrap gap-[60px] border-t border-border bg-sidebar p-10">
+      <footer className="flex flex-wrap gap-10 border-t border-border bg-sidebar p-6 sm:gap-[60px] sm:p-10">
         <div className="min-w-[200px]">
           <div className="mb-3 flex items-center gap-2">
             <div className="flex size-7 items-center justify-center rounded-lg bg-salis-gradient">

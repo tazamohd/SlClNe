@@ -337,7 +337,7 @@ export function UIAdvancedFilters() {
                   type="button"
                   onClick={() => removeRow(row.id)}
                   aria-label={t('Remove filter')}
-                  className="flex h-7 w-7 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-[rgba(249,115,22,.08)] text-salis-orange"
+                  className="flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-[rgba(249,115,22,.08)] text-salis-orange"
                 >
                   <X size={13} strokeWidth={2} aria-hidden />
                 </button>

@@ -55,7 +55,7 @@ function Specimen({ icon, tone = 'blue', title, actions, children }:
         <span className="flex rounded-lg p-1.5" style={{ background: bg, color: fg }}><Icon name={icon} size={16} /></span>
         <h3 className="min-w-0 truncate text-[15px] font-bold text-heading">{t(title)}</h3>
         <span className="flex-1" />
-        <span aria-hidden className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-lg leading-none text-muted">&times;</span>
+        <span aria-hidden className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-lg leading-none text-muted">&times;</span>
       </div>
       <div className="flex flex-1 flex-col gap-3.5 px-5 py-4">{children}</div>
       {actions ? <ActionBar actions={actions} /> : null}
@@ -93,8 +93,8 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 
 function SwitchDot({ on }: { on: boolean }) {
   return (
-    <span aria-hidden className={cn('relative inline-block h-[21px] w-[38px] flex-shrink-0 rounded-full', on ? 'bg-salis-blue' : 'bg-border-strong')}>
-      <span className={cn('absolute top-0.5 h-4 w-4 rounded-full bg-white shadow', on ? 'start-[19px]' : 'start-0.5')} />
+    <span aria-hidden className={cn('relative inline-block h-6 w-11 flex-shrink-0 rounded-full', on ? 'bg-salis-blue' : 'bg-border-strong')}>
+      <span className={cn('absolute top-0.5 h-5 w-5 rounded-full bg-white shadow', on ? 'start-[22px]' : 'start-0.5')} />
     </span>
   )
 }
