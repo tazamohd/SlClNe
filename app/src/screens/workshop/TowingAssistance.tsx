@@ -41,13 +41,13 @@ export function TowingAssistance() {
   const kpis = [
     { label: t('Active Requests'), value: String(active), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Completed Today'), value: String(completed), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Response'), value: '18 min', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Response'), value: '18 min', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Dispatched'), value: String(requests.filter((r) => r.status === t('Dispatched') || r.status === t('En Route')).length), icon: 'Truck', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   function statusBadge(status: string) {
     if (status === t('En Route')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{status}</Badge>
-    if (status === t('Dispatched')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright, #0BB3FF)">{status}</Badge>
+    if (status === t('Dispatched')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">{status}</Badge>
     if (status === t('Requested')) return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{status}</Badge>
     return <Badge background="var(--tint-navy)" color="var(--text-heading)">{status}</Badge>
   }

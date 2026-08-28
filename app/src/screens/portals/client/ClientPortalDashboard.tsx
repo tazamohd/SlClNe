@@ -40,7 +40,7 @@ export function ClientPortalDashboard() {
 
   const kpis = [
     { label: t('My Vehicles'), value: '3', icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Appointments'), value: '2', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Appointments'), value: '2', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Open Invoices'), value: '1', icon: 'FileText', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Messages'), value: '5', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

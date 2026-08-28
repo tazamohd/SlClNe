@@ -49,9 +49,9 @@ export function MarketingHub() {
 
   const kpis = [
     { label: t('Active Campaigns'), value: '12', icon: 'Megaphone', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Total Reach'), value: '45,200', icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Reach'), value: '45,200', icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Conversion Rate'), value: '3.8%', icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Monthly Budget'), value: formatSar(25000), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Monthly Budget'), value: formatSar(25000), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Campaign>[] = [

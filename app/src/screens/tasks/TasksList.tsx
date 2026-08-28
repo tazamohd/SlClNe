@@ -61,7 +61,7 @@ export function TasksList() {
 
   const kpis = [
     { label: t('Total Tasks'), value: String(TASKS.length), icon: 'CheckSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('In Progress'), value: String(TASKS.filter((t) => t.status === 'In Progress').length), icon: 'Loader', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('In Progress'), value: String(TASKS.filter((t) => t.status === 'In Progress').length), icon: 'Loader', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Overdue'), value: String(TASKS.filter((t) => t.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
     { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

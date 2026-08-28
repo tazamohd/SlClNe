@@ -44,14 +44,14 @@ export function TechnicianPerformance() {
 
   const kpis = [
     { label: t('Avg Completion Time'), value: SUMMARY.avgCompletionTime, icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Quality Score'), value: SUMMARY.avgQualityScore, icon: 'Target', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Quality Score'), value: SUMMARY.avgQualityScore, icon: 'Target', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Avg Customer Rating'), value: SUMMARY.avgCustomerRating, icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Jobs This Month'), value: SUMMARY.totalJobsThisMonth, icon: 'Briefcase', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]
 
   function ratingBadge(rate: number) {
     if (rate >= 92) return { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' }
-    if (rate >= 85) return { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' }
+    if (rate >= 85) return { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' }
     return { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' }
   }
 

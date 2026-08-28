@@ -21,7 +21,7 @@ const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   Compliant: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   Overdue: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
-  'In Review': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'In Review': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
 }
 
 type ItemRow = (typeof ITEMS)[number]

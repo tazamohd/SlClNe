@@ -41,7 +41,7 @@ export function BudgetManagement() {
 
   const kpis = [
     { label: t('Total Budget'), value: fmtSar(totalBudget), icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Spent'), value: fmtSar(totalActual), icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Spent'), value: fmtSar(totalActual), icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Remaining'), value: fmtSar(totalRemaining), icon: 'Wallet', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
     { label: t('Utilization'), value: `${utilization}%`, icon: 'PieChart', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

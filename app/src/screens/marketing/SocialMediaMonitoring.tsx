@@ -47,9 +47,9 @@ export function SocialMediaMonitoring() {
 
   const kpis = [
     { label: t('Total Mentions'), value: '342', icon: 'AtSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Positive'), value: '68%', icon: 'ThumbsUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Positive'), value: '68%', icon: 'ThumbsUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Response Rate'), value: '82%', icon: 'MessageCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Response Time'), value: '2.4h', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Response Time'), value: '2.4h', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Mention>[] = [

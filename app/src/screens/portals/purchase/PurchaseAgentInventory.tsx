@@ -41,7 +41,7 @@ export function PurchaseAgentInventory() {
 
   const kpis = [
     { label: t('Total SKUs'), value: '386', icon: 'Package', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Units on Hand'), value: totalItems.toLocaleString(), icon: 'Boxes', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Units on Hand'), value: totalItems.toLocaleString(), icon: 'Boxes', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Inventory Value'), value: `${(totalValue / 1000).toFixed(0)}K SAR`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Low Stock Alerts'), value: '12', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

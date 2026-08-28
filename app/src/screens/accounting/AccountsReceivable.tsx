@@ -43,7 +43,7 @@ export function AccountsReceivable() {
 
   const kpis = [
     { label: t('Total Outstanding'), value: formatSar(total), icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Avg Days Overdue'), value: String(Math.round(overdue.reduce((s, r) => s + r.daysOverdue, 0) / (overdue.length || 1))), icon: 'Clock', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]

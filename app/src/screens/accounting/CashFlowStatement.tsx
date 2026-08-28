@@ -123,7 +123,7 @@ export function CashFlowStatement() {
 
   const kpis = [
     { label: t('Opening Balance'), value: fmtSar(openingBalance), icon: 'Wallet', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Net Change'), value: fmtSar(netChange), icon: 'ArrowUpDown', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Net Change'), value: fmtSar(netChange), icon: 'ArrowUpDown', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Closing Balance'), value: fmtSar(closingBalance), icon: 'PiggyBank', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 

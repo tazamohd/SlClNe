@@ -35,7 +35,7 @@ export function PurchaseAgentDashboard() {
 
   const kpis = [
     { label: t('Open Orders'), value: '8', icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Monthly Spend'), value: formatSar(45200), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Monthly Spend'), value: formatSar(45200), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Pending Approvals'), value: '3', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Active Suppliers'), value: '12', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

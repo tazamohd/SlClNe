@@ -34,7 +34,7 @@ export function ISOQualityManagement() {
 
   const kpis = [
     { label: t('Total Standards'), value: String(MOCK_STANDARDS.length), icon: 'Award', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Certified'), value: String(certified), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Certified'), value: String(certified), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Avg Score'), value: `${avgScore}%`, icon: 'BarChart3', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Next Audit'), value: '2026-11', icon: 'Calendar', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

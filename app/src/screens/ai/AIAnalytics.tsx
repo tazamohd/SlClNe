@@ -25,7 +25,7 @@ interface Topic {
 function useKPIs(t: (s: string) => string): KPI[] {
   return useMemo(() => [
     { icon: 'MessageSquare', label: t('Total Queries'), value: '4,821', trend: '+24%', iconBg: 'var(--tint-blue)', iconFg: 'var(--salis-blue)' },
-    { icon: 'Clock', label: t('Avg Response Time'), value: '1.2s', trend: '-15%', iconBg: 'var(--tint-bright)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { icon: 'Clock', label: t('Avg Response Time'), value: '1.2s', trend: '-15%', iconBg: 'var(--tint-bright)', iconFg: 'var(--salis-blue-bright)' },
     { icon: 'ThumbsUp', label: t('Satisfaction Rate'), value: '96.4%', trend: '+2.1%', iconBg: 'var(--tint-navy)', iconFg: 'var(--text-heading)' },
     { icon: 'Cpu', label: t('Tokens Used'), value: '2.4M', trend: '+18%', iconBg: 'var(--tint-orange)', iconFg: 'var(--salis-orange)' },
   ], [t])
@@ -34,7 +34,7 @@ function useKPIs(t: (s: string) => string): KPI[] {
 function useTopics(t: (s: string) => string): Topic[] {
   return useMemo(() => [
     { label: t('Revenue & Finance'), count: '1,245', pct: 100, color: 'var(--salis-blue)' },
-    { label: t('Job Cards & Workshop'), count: '986', pct: 79, color: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Job Cards & Workshop'), count: '986', pct: 79, color: 'var(--salis-blue-bright)' },
     { label: t('Inventory'), count: '724', pct: 58, color: 'var(--salis-orange)' },
     { label: t('Customer Queries'), count: '612', pct: 49, color: 'var(--text-heading)' },
     { label: t('Scheduling'), count: '458', pct: 37, color: 'var(--text-muted)' },

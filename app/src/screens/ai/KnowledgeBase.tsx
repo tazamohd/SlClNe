@@ -35,7 +35,7 @@ interface Article {
 function useCategories(t: (s: string) => string): CategoryCard[] {
   return useMemo(() => [
     { icon: 'Wrench', name: t('Workshop Procedures'), count: '24', iconBg: 'var(--tint-blue)', iconFg: 'var(--salis-blue)' },
-    { icon: 'Headphones', name: t('Customer Service'), count: '18', iconBg: 'var(--tint-bright)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { icon: 'Headphones', name: t('Customer Service'), count: '18', iconBg: 'var(--tint-bright)', iconFg: 'var(--salis-blue-bright)' },
     { icon: 'Package', name: t('Parts & Inventory'), count: '12', iconBg: 'var(--tint-orange)', iconFg: 'var(--salis-orange)' },
     { icon: 'Shield', name: t('Policies & Compliance'), count: '8', iconBg: 'var(--tint-navy)', iconFg: 'var(--text-heading)' },
   ], [t])
@@ -45,7 +45,7 @@ function useArticles(t: (s: string) => string): Article[] {
   return useMemo(() => [
     { id: 1, title: t('How to Process a Vehicle Check-In'), category: t('Workshop'), date: 'Jul 20, 2026', views: '342', status: t('Published'), statusBg: 'var(--tint-blue)', statusFg: 'var(--salis-blue)', iconBg: 'rgba(10,94,215,.06)', iconFg: 'var(--salis-blue)' },
     { id: 2, title: t('ZATCA E-Invoice Requirements'), category: t('Compliance'), date: 'Jul 18, 2026', views: '256', status: t('Published'), statusBg: 'var(--tint-blue)', statusFg: 'var(--salis-blue)', iconBg: 'rgba(249,115,22,.06)', iconFg: 'var(--salis-orange)' },
-    { id: 3, title: t('Parts Return Policy'), category: t('Inventory'), date: 'Jul 15, 2026', views: '128', status: t('Draft'), statusBg: 'var(--tint-orange)', statusFg: 'var(--salis-orange)', iconBg: 'rgba(11,179,255,.06)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { id: 3, title: t('Parts Return Policy'), category: t('Inventory'), date: 'Jul 15, 2026', views: '128', status: t('Draft'), statusBg: 'var(--tint-orange)', statusFg: 'var(--salis-orange)', iconBg: 'rgba(11,179,255,.06)', iconFg: 'var(--salis-blue-bright)' },
     { id: 4, title: t('Customer Complaint Handling'), category: t('Customer Service'), date: 'Jul 12, 2026', views: '189', status: t('Published'), statusBg: 'var(--tint-blue)', statusFg: 'var(--salis-blue)', iconBg: 'rgba(11,31,59,.06)', iconFg: 'var(--text-heading)' },
     { id: 5, title: t('Quality Control Checklist'), category: t('Workshop'), date: 'Jul 10, 2026', views: '412', status: t('Published'), statusBg: 'var(--tint-blue)', statusFg: 'var(--salis-blue)', iconBg: 'rgba(10,94,215,.06)', iconFg: 'var(--salis-blue)' },
   ], [t])

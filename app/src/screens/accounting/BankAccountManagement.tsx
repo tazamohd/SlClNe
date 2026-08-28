@@ -38,7 +38,7 @@ export function BankAccountManagement() {
 
   const kpis = [
     { label: t('Total Balance'), value: formatSar(totalBalance), icon: 'Landmark', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active Accounts'), value: String(accounts.length), icon: 'CreditCard', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active Accounts'), value: String(accounts.length), icon: 'CreditCard', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Reconciled'), value: `${reconciled}/${accounts.length}`, icon: 'CheckCircle', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 

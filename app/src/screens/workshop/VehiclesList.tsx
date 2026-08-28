@@ -35,7 +35,7 @@ export function VehiclesList() {
 
   const kpis = [
     { label: t('Total Vehicles'), value: String(rows.length), icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Record<string, string>>[] = [

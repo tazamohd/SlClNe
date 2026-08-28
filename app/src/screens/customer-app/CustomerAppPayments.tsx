@@ -54,7 +54,7 @@ export function CustomerAppPayments() {
 
   const kpis = [
     { label: t('Total Spent'), value: `${(totalSpent / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

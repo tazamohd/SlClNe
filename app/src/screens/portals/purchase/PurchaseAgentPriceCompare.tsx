@@ -35,9 +35,9 @@ export function PurchaseAgentPriceCompare() {
 
   const kpis = [
     { label: t('Parts Compared'), value: String(uniqueParts), icon: 'GitCompare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Quotes Received'), value: String(QUOTES.length), icon: 'FileText', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Quotes Received'), value: String(QUOTES.length), icon: 'FileText', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Avg Savings'), value: `${avgSavings}%`, icon: 'TrendingDown', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active RFQs'), value: '5', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active RFQs'), value: '5', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<PriceQuote>[] = [

@@ -45,7 +45,7 @@ export function GoogleMyBusiness() {
   const kpis = [
     { label: t('Average Rating'), value: '4.6', icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Total Reviews'), value: '234', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Profile Views'), value: '1,890', icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Profile Views'), value: '1,890', icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Direction Requests'), value: '456', icon: 'Navigation', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 

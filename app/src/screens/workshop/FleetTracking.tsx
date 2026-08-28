@@ -41,7 +41,7 @@ export function FleetTracking() {
 
   const kpis = [
     { label: t('Total Fleet'), value: String(vehicles.length), icon: 'Truck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(active), icon: 'Navigation', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active'), value: String(active), icon: 'Navigation', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('In Service'), value: String(inService), icon: 'Wrench', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]

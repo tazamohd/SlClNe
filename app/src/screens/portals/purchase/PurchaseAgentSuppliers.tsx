@@ -37,7 +37,7 @@ export function PurchaseAgentSuppliers() {
 
   const kpis = [
     { label: t('Total Suppliers'), value: '48', icon: 'Building2', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Approved'), value: '36', icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Approved'), value: '36', icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Pending Review'), value: '8', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Avg Rating'), value: '4.3', icon: 'Star', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

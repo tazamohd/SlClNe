@@ -28,7 +28,7 @@ const MESSAGES: Message[] = [
 
 const CHANNEL_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
   Email: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Mail' },
-  SMS: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'Smartphone' },
+  SMS: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)', icon: 'Smartphone' },
   WhatsApp: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'MessageCircle' },
   System: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)', icon: 'Bell' },
 }
@@ -47,7 +47,7 @@ export function PortalCommunications() {
   const kpis = [
     { label: t('Total Messages'), value: '248', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Unread'), value: String(unreadCount), icon: 'Mail', bg: 'var(--tint-orange)', fg: '#F97316' },
-    { label: t('Sent Today'), value: '12', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Sent Today'), value: '12', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Response Rate'), value: '94%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 

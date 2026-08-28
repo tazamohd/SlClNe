@@ -38,9 +38,9 @@ export function DataImportExport() {
 
   const kpis = [
     { label: t('Total Imports'), value: '142', icon: 'Download', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Total Exports'), value: '98', icon: 'Upload', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Exports'), value: '98', icon: 'Upload', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Last Import'), value: 'Aug 18', icon: 'ArrowDownCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Last Export'), value: 'Aug 17', icon: 'ArrowUpCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Last Export'), value: 'Aug 17', icon: 'ArrowUpCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Operation>[] = [

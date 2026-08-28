@@ -16,9 +16,9 @@ function getGreeting(t: (s: string) => string): string {
 
 const QUICK_STATS = [
   { label: "Today's Appointments", value: '5', icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  { label: 'Active Jobs', value: '12', icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  { label: 'Active Jobs', value: '12', icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   { label: 'Pending Invoices', value: '8', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  { label: 'Notifications', value: '3', icon: 'Bell', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  { label: 'Notifications', value: '3', icon: 'Bell', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
 ]
 
 const QUICK_ACTIONS = [

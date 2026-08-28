@@ -62,9 +62,9 @@ export function DocumentManagement() {
 
   const kpis = [
     { label: t('Total Documents'), value: String(DOCUMENTS.length), icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('This Month'), value: '4', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('This Month'), value: '4', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Storage Used'), value: '38.5 MB', icon: 'HardDrive', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Categories'), value: '5', icon: 'FolderOpen', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Categories'), value: '5', icon: 'FolderOpen', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Document>[] = [

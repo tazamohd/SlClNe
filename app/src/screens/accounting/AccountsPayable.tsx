@@ -42,7 +42,7 @@ export function AccountsPayable() {
 
   const kpis = [
     { label: t('Total Payable'), value: formatSar(total), icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Suppliers'), value: String(new Set(rows.map((r) => r.supplier)).size), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]

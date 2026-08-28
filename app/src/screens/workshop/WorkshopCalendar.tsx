@@ -55,7 +55,7 @@ export function WorkshopCalendar() {
   const kpis = [
     { label: t('Active Jobs'), value: String(activeJobs), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Occupied Slots'), value: String(occupiedSlots), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Available Slots'), value: String(availableSlots), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Available Slots'), value: String(availableSlots), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Bays'), value: String(BAYS.length), icon: 'LayoutGrid', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 

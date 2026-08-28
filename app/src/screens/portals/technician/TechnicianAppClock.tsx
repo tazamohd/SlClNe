@@ -35,7 +35,7 @@ export function TechnicianAppClock() {
   const kpis = [
     { label: t('Status'), value: clockedIn ? t('On Shift') : t('Off Shift'), icon: 'Clock', bg: clockedIn ? 'var(--tint-blue)' : 'var(--tint-neutral)', fg: clockedIn ? 'var(--salis-blue)' : 'rgb(107,114,128)' },
     { label: t('Clock In'), value: '07:55 AM', icon: 'LogIn', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Elapsed'), value: '6h 35m', icon: 'Timer', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Elapsed'), value: '6h 35m', icon: 'Timer', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Break Used'), value: '30m', icon: 'Coffee', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 

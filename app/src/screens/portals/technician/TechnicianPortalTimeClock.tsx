@@ -36,7 +36,7 @@ export function TechnicianPortalTimeClock() {
 
   const kpis = [
     { label: t('Status'), value: clockedIn ? t('Clocked In') : t('Clocked Out'), icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Today'), value: '6h 30m', icon: 'Timer', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Today'), value: '6h 30m', icon: 'Timer', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('This Week'), value: '33.5h', icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Overtime'), value: '1.5h', icon: 'AlertCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

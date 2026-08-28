@@ -41,7 +41,7 @@ const METRICS: PerformanceMetric[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   New: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Processing: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Processing: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Shipped: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
@@ -54,7 +54,7 @@ export function VendorSupplierPortal() {
 
   const kpis = [
     { label: t('Active Orders'), value: String(activeOrders.length), icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Total Revenue'), value: `${(totalRevenue / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Revenue'), value: `${(totalRevenue / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Workshops Served'), value: '14', icon: 'Building', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Rating'), value: '4.7', icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

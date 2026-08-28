@@ -39,7 +39,7 @@ export function TechnicianPortalDashboard() {
 
   const kpis = [
     { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]

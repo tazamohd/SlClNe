@@ -37,7 +37,7 @@ export function ClientPortalAppointments() {
     { label: t('Upcoming'), value: '2', icon: 'CalendarCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Completed'), value: '8', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Cancelled'), value: '1', icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
-    { label: t('This Month'), value: '3', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('This Month'), value: '3', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Appointment>[] = [

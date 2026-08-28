@@ -37,7 +37,7 @@ const STATUS_COLORS: Record<Course['status'], { bg: string; fg: string }> = {
 const CATEGORY_COLORS: Record<Course['category'], { bg: string; fg: string }> = {
   Safety: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Technical: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'Customer Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'Customer Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Compliance: { bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
 }
 
@@ -61,7 +61,7 @@ export function TrainingLMS() {
 
   const kpis = [
     { label: t('Total Courses'), value: String(MOCK_COURSES.length), icon: 'BookOpen', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(activeCourses), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active'), value: String(activeCourses), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Avg Completion'), value: `${avgCompletion}%`, icon: 'TrendingUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Total Enrolled'), value: String(totalEnrolled), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]

@@ -41,9 +41,9 @@ export function LoyaltyProgram() {
 
   const kpis = [
     { label: t('Total Members'), value: '1,248', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: '1,086', icon: 'UserCheck', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active'), value: '1,086', icon: 'UserCheck', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Total Points Issued'), value: '542K', icon: 'Award', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Redemption Rate'), value: '34.2%', icon: 'Gift', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Redemption Rate'), value: '34.2%', icon: 'Gift', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<LoyaltyMember>[] = [

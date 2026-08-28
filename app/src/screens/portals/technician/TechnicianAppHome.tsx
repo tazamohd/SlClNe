@@ -31,7 +31,7 @@ const TYPE_ICONS: Record<string, string> = {
 
 const TYPE_STYLES: Record<string, { bg: string; fg: string }> = {
   job: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  parts: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  parts: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   schedule: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   alert: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
@@ -43,7 +43,7 @@ export function TechnicianAppHome() {
   const kpis = [
     { label: t('Jobs Today'), value: '5', icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Completed'), value: '3', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Hours Logged'), value: '6.5h', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Hours Logged'), value: '6.5h', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Unread'), value: '2', icon: 'Bell', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 

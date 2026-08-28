@@ -25,7 +25,7 @@ const STAGE_STYLES: Record<string, { bg: string; fg: string }> = {
   'Checked In': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
   Diagnosis: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'Quality Check': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'Quality Check': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Ready: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 

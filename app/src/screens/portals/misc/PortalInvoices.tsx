@@ -42,7 +42,7 @@ export function PortalInvoices() {
   const kpis = [
     { label: t('Total Invoices'), value: '142', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Outstanding'), value: `${(totalOutstanding / 1000).toFixed(1)}K`, icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Collected MTD'), value: `${(paidThisMonth / 1000).toFixed(1)}K`, icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Collected MTD'), value: `${(paidThisMonth / 1000).toFixed(1)}K`, icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Overdue'), value: '3', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: '#F97316' },
   ]
 

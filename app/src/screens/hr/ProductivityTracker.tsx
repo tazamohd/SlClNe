@@ -49,14 +49,14 @@ export function ProductivityTracker() {
 
   const kpis = [
     { label: t('Avg Efficiency'), value: `${avgEfficiency}%`, icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Utilization'), value: `${avgUtilization}%`, icon: 'Activity', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Utilization'), value: `${avgUtilization}%`, icon: 'Activity', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Total Hours'), value: String(totalHours), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Total Tasks'), value: String(totalTasks), icon: 'CheckSquare', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]
 
   function efficiencyBadge(value: number) {
     if (value >= 90) return { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' }
-    if (value >= 80) return { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' }
+    if (value >= 80) return { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' }
     return { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' }
   }
 

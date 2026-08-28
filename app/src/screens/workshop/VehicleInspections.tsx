@@ -41,7 +41,7 @@ export function VehicleInspections() {
 
   const kpis = [
     { label: t('Total Inspections'), value: String(rows.length), icon: 'ClipboardCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Passed'), value: String(passed), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Passed'), value: String(passed), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Failed'), value: String(failed), icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 

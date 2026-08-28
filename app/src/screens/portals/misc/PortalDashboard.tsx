@@ -27,7 +27,7 @@ const ACTIVITIES: RecentActivity[] = [
 
 const TYPE_ICONS: Record<string, { icon: string; bg: string; fg: string }> = {
   Appointment: { icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Invoice: { icon: 'FileText', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Invoice: { icon: 'FileText', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Vehicle: { icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Message: { icon: 'MessageSquare', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
@@ -37,14 +37,14 @@ export function PortalDashboard() {
 
   const kpis = [
     { label: t('Active Users'), value: '128', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Appointments Today'), value: '24', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Appointments Today'), value: '24', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Open Invoices'), value: '67', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Vehicles in Service'), value: '18', icon: 'Car', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Vehicles in Service'), value: '18', icon: 'Car', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const quickLinks = [
     { label: t('New Appointment'), icon: 'CalendarPlus', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Create Invoice'), icon: 'FilePlus', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Create Invoice'), icon: 'FilePlus', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Register Vehicle'), icon: 'CarFront', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Send Message'), icon: 'Send', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

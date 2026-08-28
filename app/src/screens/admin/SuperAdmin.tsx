@@ -43,7 +43,7 @@ export function SuperAdmin() {
 
   const kpis = [
     { label: t('Organizations'), value: String(tenants.length), icon: 'Building2', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(activeTenants), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Active'), value: String(activeTenants), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Total Branches'), value: String(totalBranches), icon: 'MapPin', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Total Users'), value: String(totalUsers), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
@@ -56,7 +56,7 @@ export function SuperAdmin() {
 
   function planBadge(plan: string) {
     if (plan === t('Enterprise')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{plan}</Badge>
-    if (plan === t('Professional')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright, #0BB3FF)">{plan}</Badge>
+    if (plan === t('Professional')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">{plan}</Badge>
     return <Badge background="var(--tint-navy)" color="var(--text-heading)">{plan}</Badge>
   }
 

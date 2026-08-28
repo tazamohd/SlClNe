@@ -37,7 +37,7 @@ export function EquipmentCalibration() {
 
   const kpis = [
     { label: t('Total Equipment'), value: String(MOCK_EQUIPMENT.length), icon: 'Ruler', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Calibrated'), value: String(calibrated), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Calibrated'), value: String(calibrated), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Due Soon'), value: String(dueSoon), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: '#F97316' },
   ]

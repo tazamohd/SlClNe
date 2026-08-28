@@ -49,7 +49,7 @@ const TRANSFERS: TransferRequest[] = [
 
 const NODE_TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
   Warehouse: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Warehouse' },
-  Hub: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'GitBranch' },
+  Hub: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)', icon: 'GitBranch' },
   Branch: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'Building' },
   Supplier: { bg: 'rgba(107,114,128,.15)', fg: 'rgb(107,114,128)', icon: 'Factory' },
 }
@@ -76,9 +76,9 @@ export function PartsNetworkDashboardSpec() {
 
   const kpis = [
     { label: t('Network Nodes'), value: String(NODES.length), icon: 'Network', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Total SKUs'), value: totalSKUs.toLocaleString(), icon: 'Package', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total SKUs'), value: totalSKUs.toLocaleString(), icon: 'Package', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Total Units'), value: `${(totalUnits / 1000).toFixed(0)}K`, icon: 'Boxes', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Fill Rate'), value: `${avgFillRate}%`, icon: 'BarChart3', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Fill Rate'), value: `${avgFillRate}%`, icon: 'BarChart3', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const nodeColumns: Column<NetworkNode>[] = [

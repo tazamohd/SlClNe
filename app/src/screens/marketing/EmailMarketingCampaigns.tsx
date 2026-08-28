@@ -40,7 +40,7 @@ export function EmailMarketingCampaigns() {
 
   const kpis = [
     { label: t('Total Campaigns'), value: String(MOCK_CAMPAIGNS.length), icon: 'Mail', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Emails Sent'), value: totalSent.toLocaleString(), icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Emails Sent'), value: totalSent.toLocaleString(), icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Open Rate'), value: `${openRate}%`, icon: 'Eye', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Click Rate'), value: `${clickRate}%`, icon: 'MousePointerClick', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]

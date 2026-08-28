@@ -19,7 +19,7 @@ const STATS = [
   { label: 'Jobs This Month', value: '42', icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   { label: 'Avg Rating', value: '4.8', icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   { label: 'On-Time Rate', value: '96%', icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  { label: 'Efficiency', value: '92%', icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  { label: 'Efficiency', value: '92%', icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
 ]
 
 const SKILLS = [
@@ -32,7 +32,7 @@ const SKILLS = [
 
 const LEVEL_STYLES: Record<string, { bg: string; fg: string }> = {
   Expert: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Advanced: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Advanced: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Intermediate: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 

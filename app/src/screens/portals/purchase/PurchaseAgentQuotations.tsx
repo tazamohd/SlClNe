@@ -38,7 +38,7 @@ export function PurchaseAgentQuotations() {
 
   const kpis = [
     { label: t('Active Quotes'), value: '4', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Total Value'), value: formatSar(133400), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Value'), value: formatSar(133400), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Pending Review'), value: '2', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Accepted'), value: '1', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
