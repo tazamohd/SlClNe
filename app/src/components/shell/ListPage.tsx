@@ -45,7 +45,7 @@ export function ListPageHeader({
               onChange={(e) => search.onChange(e.target.value)}
               placeholder={search.placeholder ?? t('Search customers, vehicles, parts...')}
               aria-label={search.placeholder ?? t('Search')}
-              className="h-9 w-[220px] rounded border border-border bg-inset px-3 ps-8 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+              className="h-9 w-full rounded border border-border bg-inset px-3 ps-8 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] sm:w-[220px]"
             />
           </span>
         ) : null}

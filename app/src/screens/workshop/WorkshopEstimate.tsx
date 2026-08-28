@@ -123,7 +123,7 @@ export function WorkshopEstimate() {
         />
       </Panel>
 
-      <Card className="flex flex-col gap-2.5 self-end p-6 sm:min-w-[360px]">
+      <Card className="flex w-full flex-col gap-2.5 p-6 sm:w-auto sm:min-w-[360px] sm:self-end">
         <TotalRow label={t('Subtotal')} sar={subtotal} />
         <TotalRow label={t('VAT (15%)')} sar={vat} />
         <div className="flex justify-between border-t border-border pt-2.5 text-lg font-extrabold text-heading">

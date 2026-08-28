@@ -337,7 +337,7 @@ export function GlobalSearch() {
               type="button"
               onClick={() => onQueryChange('')}
               aria-label={t('Clear')}
-              className="absolute flex h-6 w-6 items-center justify-center rounded-md border-none bg-inset text-muted end-2.5"
+              className="absolute flex h-9 w-9 items-center justify-center rounded-md border-none bg-inset text-muted end-2.5"
             >
               <X size={13} />
             </button>

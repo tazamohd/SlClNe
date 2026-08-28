@@ -152,7 +152,7 @@ export function ApprovalInbox() {
       </div>
 
       {/* Queue health at a glance. */}
-      <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile icon="Inbox" tone="blue" value={String(live.length)} label={t('Awaiting me')} />
         <StatTile
           icon="ArrowUp"
@@ -226,7 +226,7 @@ export function ApprovalInbox() {
                 <span className="mt-px flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
                   <Icon name={item.icon} size={16} />
                 </span>
-                <div className="min-w-[180px] flex-1">
+                <div className="min-w-0 flex-1 sm:min-w-[180px]">
                   <div className="flex flex-wrap items-center gap-2">
                     <span dir="ltr" className="font-mono text-[13px] font-bold text-heading">
                       {item.ref}

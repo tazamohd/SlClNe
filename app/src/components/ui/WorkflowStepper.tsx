@@ -30,15 +30,15 @@ export function WorkflowStepper({
   const currentIndex = stages.indexOf(current)
 
   return (
-    <Card className="flex items-center overflow-x-auto rounded-lg px-6 py-4">
-      <ol className="flex w-full list-none items-center p-0">
+    <Card className="flex items-center overflow-x-auto rounded-lg px-3 py-3 sm:px-6 sm:py-4">
+      <ol className="flex w-full min-w-max list-none items-center gap-1 p-0 sm:min-w-0 sm:gap-0">
         {stages.map((stage, index) => {
           const isCurrent = index === currentIndex
           const isDone = index < currentIndex
           return (
             <li key={stage} className="flex min-w-0 flex-1 items-center">
               <div
-                className="flex items-center gap-2 whitespace-nowrap"
+                className="flex items-center gap-1.5 whitespace-nowrap sm:gap-2"
                 aria-current={isCurrent ? 'step' : undefined}
               >
                 <span

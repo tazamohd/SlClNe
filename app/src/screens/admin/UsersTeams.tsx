@@ -158,7 +158,7 @@ function RowActions({
   const canEdit = can('admin', 'e')
   const canInvite = can('admin', 'c')
   const canModerate = can('admin', 'x')
-  const base = 'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors'
+  const base = 'inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors'
   const btnClass = `${base} hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue`
   const warnClass = `${base} hover:bg-[rgba(249,115,22,.1)] hover:text-salis-orange`
 

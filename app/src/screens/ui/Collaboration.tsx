@@ -216,8 +216,8 @@ export function UIMessages() {
   return (
     <>
       <ListPageHeader title={t('Messages')} subtitle={t('UI Patterns')} />
-      <div className="flex h-[calc(100vh-13rem)] min-h-[420px] gap-5">
-        <Card className="flex w-full max-w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-2xl">
+      <div className="flex h-auto flex-col gap-5 lg:h-[calc(100vh-13rem)] lg:min-h-[420px] lg:flex-row">
+        <Card className="flex w-full flex-shrink-0 flex-col overflow-hidden rounded-2xl lg:max-w-[300px]">
           <div className="border-b border-border p-3.5">
             <span className="relative flex items-center">
               <Icon name="Search" size={14} className="pointer-events-none absolute text-muted start-2.5" />

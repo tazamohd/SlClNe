@@ -160,7 +160,7 @@ export function PromptLibrary() {
                     aria-label={t('Favorite')}
                     aria-pressed={favorited}
                     onClick={() => toggleFavorite(prompt.name)}
-                    className="flex h-6 w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent hover:bg-[rgba(10,94,215,.08)]"
+                    className="flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent hover:bg-[rgba(10,94,215,.08)]"
                   >
                     <Icon
                       name="Star"

@@ -194,7 +194,7 @@ function VerdictButton({
       aria-checked={selected}
       onClick={onSelect}
       className={cn(
-        'h-[26px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-2 font-action text-[10px] font-semibold',
+        'h-[26px] min-h-[44px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-3 font-action text-[10px] font-semibold',
         selected ? TONES[tone] : 'bg-inset text-muted'
       )}
     >

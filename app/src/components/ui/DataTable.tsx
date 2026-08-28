@@ -211,7 +211,7 @@ export function EmptyState({
 /** The "Showing 1–5 of 27" + page buttons footer under a table. */
 export function TableFooter({ summary, children }: { summary: ReactNode; children?: ReactNode }) {
   return (
-    <div className="flex items-center justify-between px-6 pb-5 pt-4">
+    <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-5 pt-4 sm:px-6">
       <span className="text-[13px] text-muted">{summary}</span>
       {children ? <div className="flex gap-1.5">{children}</div> : null}
     </div>

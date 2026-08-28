@@ -291,7 +291,7 @@ export function SuperAdmin() {
                           type="button"
                           aria-label={`${t('Impersonate')} ${org.name}`}
                           onClick={() => impersonate(org)}
-                          className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
+                          className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
                         >
                           <Icon name="LogIn" size={14} />
                         </button>
@@ -299,7 +299,7 @@ export function SuperAdmin() {
                           type="button"
                           aria-label={`${org.status === 'suspended' ? t('Reactivate') : t('Suspend')} ${org.name}`}
                           onClick={() => suspend(org)}
-                          className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted hover:bg-[rgba(249,115,22,.1)] hover:text-salis-orange"
+                          className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted hover:bg-[rgba(249,115,22,.1)] hover:text-salis-orange"
                         >
                           <Icon name={org.status === 'suspended' ? 'RotateCcw' : 'ShieldOff'} size={14} />
                         </button>

@@ -71,7 +71,7 @@ function SpecimenBar({
       <button
         type="button"
         aria-label={t("Close")}
-        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-muted transition-colors hover:bg-inset"
+        className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-muted transition-colors hover:bg-inset"
       >
         <X size={16} strokeWidth={2} aria-hidden />
       </button>

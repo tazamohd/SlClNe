@@ -252,7 +252,7 @@ export function AIAssistant() {
               type="submit"
               disabled={!input.trim() || isTyping}
               aria-label={t('Send')}
-              className="absolute end-1.5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-salis-gradient text-white shadow-[0_4px_8px_rgba(10,94,215,.2)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="absolute end-1.5 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl bg-salis-gradient text-white shadow-[0_4px_8px_rgba(10,94,215,.2)] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Icon name="ArrowUp" size={18} />
             </button>

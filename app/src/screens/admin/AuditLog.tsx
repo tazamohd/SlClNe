@@ -269,8 +269,8 @@ export function AuditLog() {
                   aria-selected={active}
                   onClick={() => selectFilter(id)}
                   className={cn(
-                    'h-[34px] flex-shrink-0 cursor-pointer whitespace-nowrap border-none font-action text-xs font-semibold transition-colors duration-150',
-                    isMobile ? 'rounded-lg px-3.5' : 'flex-1 px-3.5',
+                    'flex-shrink-0 cursor-pointer whitespace-nowrap border-none font-action text-xs font-semibold transition-colors duration-150',
+                    isMobile ? 'h-11 rounded-lg px-3.5' : 'h-[34px] flex-1 px-3.5',
                     active
                       ? 'bg-salis-gradient text-white'
                       : cn(
