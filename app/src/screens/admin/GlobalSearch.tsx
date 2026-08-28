@@ -200,9 +200,7 @@ export function GlobalSearch() {
                   {group.items.map((item) => (
                     <div
                       key={item.id}
-                      tabIndex={0}
-                      role="button"
-                      className="flex cursor-pointer items-center gap-3 px-5 py-2.5 transition-colors hover:bg-[rgba(10,94,215,.04)] focus-visible:outline-none focus-visible:bg-[rgba(10,94,215,.06)]"
+                      className="flex items-center gap-3 px-5 py-2.5"
                     >
                       <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
                         <Icon name={item.icon} size={14} />

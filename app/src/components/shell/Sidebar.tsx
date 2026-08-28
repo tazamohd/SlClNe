@@ -40,7 +40,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-3">
+      <nav aria-label={t('Main navigation')} className="flex-1 overflow-y-auto p-3">
         <div className="flex flex-col gap-0.5">
           {nav.map((group) => {
             const open = !collapsed.includes(group.label)

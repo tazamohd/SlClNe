@@ -62,7 +62,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
           <div className="flex animate-fade-up flex-col gap-3.5 p-4">{children}</div>
         </main>
 
-        <nav className="flex flex-shrink-0 border-t border-border bg-sidebar">
+        <nav aria-label={t('App navigation')} className="flex flex-shrink-0 border-t border-border bg-sidebar">
           {TABS.map((tab) => (
             <NavLink
               key={tab.to}

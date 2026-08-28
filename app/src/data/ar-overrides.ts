@@ -1737,6 +1737,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Analytics overview and module status": "نظرة عامة على التحليلات وحالة الوحدات",
   "Android App": "تطبيق أندرويد",
   "App Details": "تفاصيل التطبيق",
+  "App navigation": "تنقّل التطبيق",
   "App Version": "إصدار التطبيق",
   "Appointments Today": "مواعيد اليوم",
   "Assessments": "التقييمات",
