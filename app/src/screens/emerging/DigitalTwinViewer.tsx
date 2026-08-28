@@ -100,7 +100,7 @@ export function DigitalTwinViewer() {
       <DataTable
         caption="Digital twin models"
         columns={twinColumns}
-        rows={[...MOCK_TWINS]}
+        rows={view === 'overview' ? [...MOCK_TWINS] : [...MOCK_TWINS].filter(tw => tw.type.toLowerCase() === view)}
         rowKey={(row) => row.id}
         mobileCard={(row) => {
           const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Offline

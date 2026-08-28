@@ -1711,13 +1711,42 @@ export function PartsSupplyNetwork() {
         ]}
       />
 
-      <Section title={t(tabs.find((x) => x.id === tab)?.label ?? '')}>
-        <EmptyState
-          icon="Network"
-          title={t('Nothing here yet')}
-          description={t('This view populates as network activity begins.')}
-        />
-      </Section>
+      {tab === 'partners' && (
+        <Section title={t('Network Partners')}>
+          <EmptyState
+            icon="Users"
+            title={t('No network partners')}
+            description={t('Partner garages appear here once they join the supply network.')}
+          />
+        </Section>
+      )}
+      {tab === 'fulfillment' && (
+        <Section title={t('Fulfillment Orders')}>
+          <EmptyState
+            icon="Package"
+            title={t('No fulfillment orders')}
+            description={t('Group-buy and fulfillment orders appear here once placed.')}
+          />
+        </Section>
+      )}
+      {tab === 'shipments' && (
+        <Section title={t('Shipments')}>
+          <EmptyState
+            icon="Truck"
+            title={t('No shipments in transit')}
+            description={t('Shipments and delivery tracking appear here once orders are dispatched.')}
+          />
+        </Section>
+      )}
+      {tab === 'warehouses' && (
+        <Section title={t('Warehouses')}>
+          <EmptyState
+            icon="Warehouse"
+            title={t('No warehouses registered')}
+            description={t('Partner warehouse locations and stock levels appear here.')}
+          />
+        </Section>
+      )}
     </>
   )
 }
