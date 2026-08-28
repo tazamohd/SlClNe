@@ -102,7 +102,9 @@ export function BusinessHeatmaps() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-[15px] font-bold text-heading">{t('Service Demand Heatmap')}</h2>
+          <h2 className="text-[15px] font-bold text-heading">
+            {view === 'demand' ? t('Service Demand Heatmap') : view === 'revenue' ? t('Revenue Heatmap') : t('Wait Time Heatmap')}
+          </h2>
           <Select value={view} onChange={e => setView(e.target.value)} aria-label={t('Select view')}>
             <option value="demand">{t('Service Demand')}</option>
             <option value="revenue">{t('Revenue')}</option>

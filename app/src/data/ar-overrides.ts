@@ -2584,4 +2584,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Partner warehouse locations and stock levels appear here.": "تظهر مواقع مستودعات الشركاء ومستويات المخزون هنا.",
   "Shipments and delivery tracking appear here once orders are dispatched.": "يظهر تتبع الشحنات والتسليم هنا بمجرد إرسال الطلبات.",
   "Warehouses": "المستودعات",
+  "Revenue": "الإيرادات",
+  "Revenue Heatmap": "خريطة حرارية للإيرادات",
+  "Wait Time Heatmap": "خريطة حرارية لوقت الانتظار",
 }
