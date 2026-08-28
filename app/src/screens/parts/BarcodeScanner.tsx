@@ -83,7 +83,7 @@ export function BarcodeScanner() {
         <MobilePageHeader icon="ScanLine" title={t('Barcode Scanner')} subtitle={t('Scan and track parts')} />
         <Card className="rounded-xl p-6 shadow-sm">
           <div className="flex flex-col items-center gap-3 text-center">
-            <span className="flex rounded-2xl bg-[var(--tint-blue)] p-4 text-salis-blue" aria-hidden><Icon name="ScanLine" size={40} /></span>
+            <span className="flex rounded-2xl bg-tint-blue p-4 text-salis-blue" aria-hidden><Icon name="ScanLine" size={40} /></span>
             <p className="text-sm font-semibold text-heading">{t('Ready to Scan')}</p>
             <p className="text-xs text-muted">{t('Point camera at barcode to scan')}</p>
           </div>
@@ -116,7 +116,7 @@ export function BarcodeScanner() {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         <Card className="col-span-1 flex flex-col items-center gap-4 rounded-2xl p-8 shadow-sm">
-          <span className="flex rounded-2xl bg-[var(--tint-blue)] p-5 text-salis-blue" aria-hidden><Icon name="ScanLine" size={48} /></span>
+          <span className="flex rounded-2xl bg-tint-blue p-5 text-salis-blue" aria-hidden><Icon name="ScanLine" size={48} /></span>
           <p className="text-sm font-semibold text-heading">{t('Ready to Scan')}</p>
           <p className="text-center text-xs text-muted">{t('Connect a barcode scanner or use camera')}</p>
         </Card>

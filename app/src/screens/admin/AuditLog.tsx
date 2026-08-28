@@ -39,9 +39,9 @@ const FIXTURE_ENTRIES: AuditEntry[] = [
   { id: '3', icon: 'UserPlus', user: 'Khalid Al-Amri', action: 'assigned technician', detail: 'Yousef Al-Otaibi → JC-A3F8B2C1', time: '10:18 AM', ip: '192.168.1.45', cat: 'data', dotColor: 'bg-salis-bright', iconBg: 'rgba(11,179,255,.08)', iconColor: 'var(--salis-blue-bright)' },
   { id: '4', icon: 'CheckCircle', user: 'Yousef Al-Otaibi', action: 'completed inspection', detail: 'Multi-point inspection — 18/22 pass', time: '11:45 AM', ip: '192.168.1.102', cat: 'data', dotColor: 'bg-salis-blue', iconBg: 'rgba(10,94,215,.08)', iconColor: 'var(--salis-blue)' },
   { id: '5', icon: 'Receipt', user: 'Khalid Al-Amri', action: 'created estimate', detail: 'EST-0232 — SAR 1,546.75', time: '12:10 PM', ip: '192.168.1.45', cat: 'data', dotColor: 'bg-salis-blue', iconBg: 'rgba(10,94,215,.08)', iconColor: 'var(--salis-blue)' },
-  { id: '6', icon: 'Send', user: 'System', action: 'sent estimate to customer', detail: 'Email to ahmed@email.com', time: '12:12 PM', ip: '—', cat: 'system', dotColor: 'bg-[var(--text-muted)]', iconBg: 'rgba(100,116,139,.06)', iconColor: 'var(--text-muted)' },
+  { id: '6', icon: 'Send', user: 'System', action: 'sent estimate to customer', detail: 'Email to ahmed@email.com', time: '12:12 PM', ip: '—', cat: 'system', dotColor: 'bg-muted', iconBg: 'rgba(100,116,139,.06)', iconColor: 'var(--text-muted)' },
   { id: '7', icon: 'Shield', user: 'Khalid Al-Amri', action: 'changed security settings', detail: 'Enabled 2FA', time: '1:30 PM', ip: '192.168.1.45', cat: 'system', dotColor: 'bg-salis-orange', iconBg: 'rgba(249,115,22,.08)', iconColor: 'var(--salis-orange)' },
-  { id: '8', icon: 'LogOut', user: 'Layla Al-Sulaiman', action: 'logged out', detail: 'Session expired', time: '2:00 PM', ip: '192.168.1.78', cat: 'auth', dotColor: 'bg-[var(--text-muted)]', iconBg: 'rgba(100,116,139,.06)', iconColor: 'var(--text-muted)' },
+  { id: '8', icon: 'LogOut', user: 'Layla Al-Sulaiman', action: 'logged out', detail: 'Session expired', time: '2:00 PM', ip: '192.168.1.78', cat: 'auth', dotColor: 'bg-muted', iconBg: 'rgba(100,116,139,.06)', iconColor: 'var(--text-muted)' },
 ]
 
 export function AuditLog() {

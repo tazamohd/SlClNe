@@ -98,7 +98,7 @@ export function AdvancedSettings() {
         {sections.map((sec) => (
           <Card key={sec.title} className="flex flex-col gap-3 rounded-xl p-4">
             <div className="flex items-center gap-2.5">
-              <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
+              <span className="flex rounded-[10px] bg-tint-blue p-2 text-salis-blue">
                 <Icon name={sec.icon} size={16} />
               </span>
               <h2 className="text-[14px] font-bold text-heading">{sec.title}</h2>
@@ -154,7 +154,7 @@ export function AdvancedSettings() {
       {sections.map((sec) => (
         <Card key={sec.title} className="flex flex-col gap-4 rounded-xl p-5">
           <div className="flex items-center gap-2.5">
-            <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
+            <span className="flex rounded-[10px] bg-tint-blue p-2 text-salis-blue">
               <Icon name={sec.icon} size={18} />
             </span>
             <h2 className="text-[15px] font-bold text-heading">{sec.title}</h2>

@@ -64,7 +64,7 @@ export function CustomerAppVehicles() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{v.make} {v.model} {v.year}</p>
                     <p className="text-xs text-muted" dir="ltr">{v.plate}</p>
@@ -99,7 +99,7 @@ export function CustomerAppVehicles() {
           <Card key={v.plate} className="flex flex-col gap-4 rounded-2xl p-5 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex rounded-xl bg-[var(--tint-blue)] p-2.5 text-salis-blue" aria-hidden><Icon name="Car" size={22} /></span>
+                <span className="flex rounded-xl bg-tint-blue p-2.5 text-salis-blue" aria-hidden><Icon name="Car" size={22} /></span>
                 <div>
                   <h2 className="font-display text-base font-bold text-heading">{v.make} {v.model} {v.year}</h2>
                   <p className="font-mono text-xs text-muted" dir="ltr">{v.plate}</p>

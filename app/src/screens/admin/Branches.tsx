@@ -116,7 +116,7 @@ export function Branches() {
                 className="cursor-pointer p-5 transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
               >
                 <div className="mb-3.5 flex items-center gap-2.5">
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--tint-blue)]">
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-tint-blue">
                     <Icon name="MapPin" size={18} className="text-salis-blue" />
                   </span>
                   <div className="min-w-0 flex-1">

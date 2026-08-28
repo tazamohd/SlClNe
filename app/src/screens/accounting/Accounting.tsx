@@ -207,7 +207,7 @@ export function JournalEntries() {
         className={
           'flex rounded p-2 ' +
           (balanced
-            ? 'bg-[var(--tint-blue)] text-salis-blue'
+            ? 'bg-tint-blue text-salis-blue'
             : 'bg-[rgba(249,115,22,.12)] text-salis-orange')
         }
       >

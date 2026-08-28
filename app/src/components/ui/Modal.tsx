@@ -210,7 +210,7 @@ export function Modal({
       className={cn(
         'flex rounded-full p-3.5',
         destructive
-          ? 'bg-[var(--tint-orange)] text-salis-orange'
+          ? 'bg-tint-orange text-salis-orange'
           : 'bg-[rgba(10,94,215,.09)] text-salis-blue'
       )}
     >
@@ -270,7 +270,7 @@ export function Modal({
                 className={cn(
                   'flex flex-shrink-0 rounded-lg p-1.5',
                   destructive
-                    ? 'bg-[var(--tint-orange)] text-salis-orange'
+                    ? 'bg-tint-orange text-salis-orange'
                     : 'bg-[rgba(10,94,215,.08)] text-salis-blue'
                 )}
               >

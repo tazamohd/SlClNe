@@ -155,7 +155,7 @@ export function SupplierPortal() {
               key={order._id ?? `${order.id}-${index}`}
               className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3"
             >
-              <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-bright)] p-1.5 text-salis-bright">
+              <span className="flex flex-shrink-0 rounded-lg bg-tint-bright p-1.5 text-salis-bright">
                 <Icon name="PackageCheck" size={14} />
               </span>
               <span className="min-w-0 flex-1">

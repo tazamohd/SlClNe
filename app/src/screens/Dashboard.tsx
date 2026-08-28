@@ -90,10 +90,10 @@ export function Dashboard() {
           orbShadow="rgba(11,179,255,.2)"
           footer={
             <div className="mt-1 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-[rgba(249,115,22,.3)] bg-[var(--tint-orange)] px-2.5 py-0.5 text-xs font-medium text-salis-orange">
+              <span className="rounded-full border border-[rgba(249,115,22,.3)] bg-tint-orange px-2.5 py-0.5 text-xs font-medium text-salis-orange">
                 {t('5 pending')}
               </span>
-              <span className="rounded-full border border-[rgba(11,179,255,.3)] bg-[var(--tint-bright)] px-2.5 py-0.5 text-xs font-medium text-salis-bright">
+              <span className="rounded-full border border-[rgba(11,179,255,.3)] bg-tint-bright px-2.5 py-0.5 text-xs font-medium text-salis-bright">
                 {t('9 active')}
               </span>
             </div>
@@ -356,7 +356,7 @@ function MetricCard({
           ) : null)}
       </div>
       {progress !== undefined ? (
-        <div className="mt-4 h-1 overflow-hidden rounded-full bg-[var(--tint-blue)]">
+        <div className="mt-4 h-1 overflow-hidden rounded-full bg-tint-blue">
           <div
             className="h-full rounded-full bg-salis-gradient-r"
             style={{ width: `${progress * 100}%` }}

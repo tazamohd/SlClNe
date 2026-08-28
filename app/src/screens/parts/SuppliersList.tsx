@@ -80,7 +80,7 @@ export function SuppliersList() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
+                <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{s.name}</p>
                   <p className="text-xs text-muted" dir="ltr">{s.code}</p>

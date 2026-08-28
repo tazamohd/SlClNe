@@ -65,7 +65,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             className={
               'flex flex-shrink-0 rounded p-1.5 ' +
               (toast.error
-                ? 'bg-[var(--tint-orange)] text-salis-orange'
+                ? 'bg-tint-orange text-salis-orange'
                 : 'bg-[rgba(10,94,215,.12)] text-salis-blue')
             }
           >

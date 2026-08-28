@@ -86,7 +86,7 @@ export function SocialMediaMonitoring() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={PLATFORM_ICONS[m.platform]} size={14} /></span>
+                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name={PLATFORM_ICONS[m.platform]} size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{m.author}</p>
                   <p className="text-xs text-muted">{m.platform}</p>

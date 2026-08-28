@@ -1364,7 +1364,7 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
           checked={!!selected[r.ref]}
           onChange={() => setSelected((s) => ({ ...s, [r.ref]: !s[r.ref] }))}
           onClick={(event) => event.stopPropagation()}
-          className="h-[15px] w-[15px] cursor-pointer accent-[var(--salis-blue)]"
+          className="h-[15px] w-[15px] cursor-pointer accent-salis-blue"
         />
       ),
       className: 'w-[44px]',

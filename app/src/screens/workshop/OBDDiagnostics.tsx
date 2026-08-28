@@ -162,7 +162,7 @@ export function OBDDiagnostics() {
             </p>
           </div>
           <span className="flex-1" />
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tint-blue)] px-2.5 py-1 font-action text-[11px] font-semibold text-salis-blue">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-tint-blue px-2.5 py-1 font-action text-[11px] font-semibold text-salis-blue">
             <span
               className="h-1.5 w-1.5 rounded-full bg-salis-blue"
               aria-hidden
@@ -373,7 +373,7 @@ export function OBDDiagnostics() {
                           (index ? 'border-0 border-t border-solid border-border' : '')
                         }
                       >
-                        <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
+                        <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
                           <Icon name="AlertCircle" size={14} />
                         </span>
                         <div className="min-w-0 flex-1">

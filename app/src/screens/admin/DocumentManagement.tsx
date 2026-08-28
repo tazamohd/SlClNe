@@ -97,7 +97,7 @@ export function DocumentManagement() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden>
+                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden>
                   <Icon name={TYPE_ICONS[doc.type] ?? 'FileText'} size={14} />
                 </span>
                 <div>

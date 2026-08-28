@@ -122,7 +122,7 @@ export function CustomerApproval() {
             {t('Riyadh Main')} · {t('Service Advisor')}
           </p>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tint-blue)] px-2.5 py-1 font-action text-[11px] font-semibold text-salis-blue">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-tint-blue px-2.5 py-1 font-action text-[11px] font-semibold text-salis-blue">
           <Icon name="ShieldCheck" size={12} />
           {t('Secure link')}
         </span>

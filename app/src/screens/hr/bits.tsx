@@ -67,7 +67,7 @@ export function StatCard({
   const { t } = usePreferences()
   return (
     <Card className="flex items-center gap-3 rounded-xl p-3.5">
-      <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2.5 text-salis-blue">
+      <span className="flex flex-shrink-0 rounded-lg bg-tint-blue p-2.5 text-salis-blue">
         <Icon name={icon} size={16} />
       </span>
       <div className="min-w-0">

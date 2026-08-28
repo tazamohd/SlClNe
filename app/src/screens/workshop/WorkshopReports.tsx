@@ -127,7 +127,7 @@ export function WorkshopReports() {
             {kpis.map((kpi) => (
               <Card key={kpi.label} className="rounded-2xl p-5">
                 <div className="mb-2.5 flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue">
+                  <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue">
                     <Icon name={kpi.icon} size={18} />
                   </span>
                   <span className="text-[13px] font-medium text-muted">{kpi.label}</span>

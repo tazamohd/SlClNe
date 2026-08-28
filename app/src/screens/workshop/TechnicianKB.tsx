@@ -95,7 +95,7 @@ export function TechnicianKB() {
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {stats.map((s) => (
           <Card key={s.label} className="flex items-center gap-3 rounded-xl p-3.5">
-            <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2.5 text-salis-blue">
+            <span className="flex flex-shrink-0 rounded-lg bg-tint-blue p-2.5 text-salis-blue">
               <Icon name={s.icon} size={16} />
             </span>
             <div className="min-w-0">
@@ -145,7 +145,7 @@ export function TechnicianKB() {
               className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-start transition-all hover:-translate-y-0.5 hover:border-salis-blue hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue motion-reduce:hover:translate-y-0"
             >
               <div className="flex items-start gap-3">
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
                   <Icon name={CATEGORY_ICON[p.cat] ?? 'Wrench'} size={17} />
                 </span>
                 <div className="min-w-0 flex-1">

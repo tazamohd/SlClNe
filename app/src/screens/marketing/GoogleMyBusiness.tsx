@@ -31,7 +31,7 @@ function StarRating({ rating }: { rating: number }) {
           key={i}
           name="Star"
           size={14}
-          className={i < rating ? 'text-[var(--salis-orange)]' : 'text-border'}
+          className={i < rating ? 'text-salis-orange' : 'text-border'}
         />
       ))}
     </div>
@@ -69,7 +69,7 @@ export function GoogleMyBusiness() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{r.author}</p>
                     <StarRating rating={r.rating} />

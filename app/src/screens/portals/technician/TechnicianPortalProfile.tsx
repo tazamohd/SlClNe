@@ -55,7 +55,7 @@ export function TechnicianPortalProfile() {
         <MobilePageHeader icon="User" title={t('My Profile')} subtitle={t('Technician details')} />
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--tint-blue)] text-salis-blue">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-tint-blue text-salis-blue">
               <Icon name="User" size={24} />
             </span>
             <div>
@@ -95,7 +95,7 @@ export function TechnicianPortalProfile() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={16} /></span>
+            <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Personal')}</h2>
           </div>
           <div className="grid gap-4">
@@ -113,7 +113,7 @@ export function TechnicianPortalProfile() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Briefcase" size={16} /></span>
+            <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Briefcase" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Work Details')}</h2>
           </div>
           <div className="grid gap-4">
@@ -128,7 +128,7 @@ export function TechnicianPortalProfile() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
+            <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Certifications')}</h2>
           </div>
           <div className="grid gap-4">

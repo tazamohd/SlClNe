@@ -57,7 +57,7 @@ export function Loading({
     >
       <span
         aria-hidden
-        className="h-[3px] w-[180px] overflow-hidden rounded-full bg-[var(--tint-blue)]"
+        className="h-[3px] w-[180px] overflow-hidden rounded-full bg-tint-blue"
       >
         <span className="block h-full w-[30%] rounded-full bg-salis-gradient animate-[salis-linear-progress_1.5s_ease-in-out_infinite] motion-reduce:animate-none" />
       </span>
@@ -75,6 +75,39 @@ export function Skeleton({ className }: { className?: string }) {
       aria-hidden
       className={cn('block h-4 w-full animate-pulse rounded bg-inset motion-reduce:animate-none', className)}
     />
+  )
+}
+
+export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
+  return (
+    <div role="status" aria-label="Loading" className="w-full animate-pulse motion-reduce:animate-none">
+      <div className="flex gap-4 border-b border-border px-4 py-3">
+        {Array.from({ length: cols }, (_, i) => (
+          <span key={i} aria-hidden className={cn('h-3 rounded bg-inset', i === 0 ? 'w-32' : 'w-20')} />
+        ))}
+      </div>
+      {Array.from({ length: rows }, (_, r) => (
+        <div key={r} className="flex gap-4 border-b border-border px-4 py-4">
+          {Array.from({ length: cols }, (_, c) => (
+            <span key={c} aria-hidden className={cn('h-3 rounded bg-inset', c === 0 ? 'w-40' : 'w-24')} />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function CardSkeleton({ count = 3 }: { count?: number }) {
+  return (
+    <div role="status" aria-label="Loading" className="grid gap-4 animate-pulse sm:grid-cols-2 lg:grid-cols-3 motion-reduce:animate-none">
+      {Array.from({ length: count }, (_, i) => (
+        <div key={i} aria-hidden className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
+          <span className="h-4 w-3/4 rounded bg-inset" />
+          <span className="h-3 w-1/2 rounded bg-inset" />
+          <span className="h-3 w-2/3 rounded bg-inset" />
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -130,7 +163,7 @@ export function ErrorState({
   const { t } = usePreferences()
   return (
     <div role="alert" className="flex flex-col items-center gap-3 py-6 text-center">
-      <span className="flex rounded-full bg-[var(--tint-orange)] p-4 text-salis-orange">
+      <span className="flex rounded-full bg-tint-orange p-4 text-salis-orange">
         <Icon name="CloudOff" size={24} />
       </span>
       <div>

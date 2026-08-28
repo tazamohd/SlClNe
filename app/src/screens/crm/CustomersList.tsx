@@ -72,7 +72,7 @@ export function CustomersList() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{r.name ?? '—'}</p>
                     <p className="text-xs text-muted" dir="ltr">{r.phone ?? '—'}</p>

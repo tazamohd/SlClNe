@@ -80,7 +80,7 @@ export function SystemSettings() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Building" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Building" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('General')}</h2>
           </div>
           <div className="grid gap-4">
@@ -95,7 +95,7 @@ export function SystemSettings() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Bell" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Bell" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Notifications')}</h2>
           </div>
           <div className="grid gap-4">
@@ -115,7 +115,7 @@ export function SystemSettings() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Lock" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Lock" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Security')}</h2>
           </div>
           <div className="grid gap-4">

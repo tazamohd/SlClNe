@@ -187,7 +187,7 @@ function ClaimsPanel() {
                   (index ? 'border-0 border-t border-solid border-border' : '')
                 }
               >
-                <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
+                <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
                   <Icon name="ShieldAlert" size={16} />
                 </span>
                 <div className="min-w-0 flex-1">

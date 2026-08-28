@@ -7,17 +7,17 @@
 export type Tint = 'blue' | 'bright' | 'orange' | 'navy'
 
 export const TINT_CHIP: Record<Tint, string> = {
-  blue: 'bg-[var(--tint-blue)] text-salis-blue',
-  bright: 'bg-[var(--tint-bright)] text-salis-bright',
-  orange: 'bg-[var(--tint-orange)] text-salis-orange',
-  navy: 'bg-[var(--tint-navy)] text-salis-navy dark:bg-[var(--tint-bright)] dark:text-salis-bright',
+  blue: 'bg-tint-blue text-salis-blue',
+  bright: 'bg-tint-bright text-salis-bright',
+  orange: 'bg-tint-orange text-salis-orange',
+  navy: 'bg-tint-navy text-salis-navy dark:bg-tint-bright dark:text-salis-bright',
 }
 
 export const TINT_PILL: Record<Tint, string> = {
-  blue: 'bg-[var(--tint-blue)] text-salis-blue',
-  bright: 'bg-[var(--tint-bright)] text-salis-bright',
-  orange: 'bg-[var(--tint-orange)] text-salis-orange',
-  navy: 'bg-[var(--tint-navy)] text-salis-navy dark:bg-[var(--tint-bright)] dark:text-salis-bright',
+  blue: 'bg-tint-blue text-salis-blue',
+  bright: 'bg-tint-bright text-salis-bright',
+  orange: 'bg-tint-orange text-salis-orange',
+  navy: 'bg-tint-navy text-salis-navy dark:bg-tint-bright dark:text-salis-bright',
 }
 
 /** Soft two-stop gradients used as decorative tile/card headers (Marketplace

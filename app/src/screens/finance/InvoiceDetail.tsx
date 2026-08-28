@@ -266,7 +266,7 @@ export function InvoiceDetail() {
                   key={`${payment.ref || 'payment'}-${index}`}
                   className="flex items-center gap-3 border-b border-border px-[18px] py-3 last:border-b-0"
                 >
-                  <span className="flex rounded bg-[var(--tint-blue)] p-2 text-salis-blue">
+                  <span className="flex rounded bg-tint-blue p-2 text-salis-blue">
                     <Icon name="CreditCard" size={15} />
                   </span>
                   <div className="min-w-0 flex-1">

@@ -118,7 +118,7 @@ function ReportCard({ link }: { link: ReportLink }) {
       to={link.route}
       className="flex items-start gap-3 rounded-lg border border-border bg-card p-4 no-underline transition-colors duration-150 hover:border-salis-blue hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
     >
-      <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2.5 text-salis-blue">
+      <span className="flex flex-shrink-0 rounded-lg bg-tint-blue p-2.5 text-salis-blue">
         <Icon name={link.icon} size={18} />
       </span>
       <div className="min-w-0 flex-1">
@@ -1041,7 +1041,7 @@ export function CustomReports() {
                   className={
                     'flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors duration-150 ' +
                     (on
-                      ? 'border-salis-blue bg-[var(--tint-blue)] text-salis-blue'
+                      ? 'border-salis-blue bg-tint-blue text-salis-blue'
                       : 'border-border bg-card text-muted hover:text-heading')
                   }
                 >

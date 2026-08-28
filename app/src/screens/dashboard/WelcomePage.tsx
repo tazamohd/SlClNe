@@ -56,7 +56,7 @@ export function WelcomePage() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
                   <span className={`text-[13px] font-semibold ${isLive ? 'text-heading' : 'text-muted'}`}>{t(a.label)}</span>
                 </div>
               }
@@ -93,7 +93,7 @@ export function WelcomePage() {
               className={`flex flex-col items-center gap-3 rounded-2xl p-6 shadow-sm transition-shadow ${isLive ? 'cursor-pointer hover:shadow-md' : 'opacity-60'}`}
               onClick={() => navigate(a.route)}
             >
-              <span className="flex rounded-xl bg-[var(--tint-blue)] p-3 text-salis-blue" aria-hidden>
+              <span className="flex rounded-xl bg-tint-blue p-3 text-salis-blue" aria-hidden>
                 <Icon name={a.icon} size={24} />
               </span>
               <span className="text-sm font-semibold text-heading">{t(a.label)}</span>

@@ -271,7 +271,7 @@ export function CallCenter() {
                   className={
                     'h-[30px] cursor-pointer rounded-lg px-3 font-action text-xs font-medium ' +
                     (disposition === d.key
-                      ? 'border-[1.5px] border-salis-blue bg-[var(--tint-blue)] text-salis-blue'
+                      ? 'border-[1.5px] border-salis-blue bg-tint-blue text-salis-blue'
                       : 'border border-border bg-inset text-body')
                   }
                 >

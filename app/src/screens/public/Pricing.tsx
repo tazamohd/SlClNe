@@ -90,7 +90,7 @@ export function PublicPricing() {
             key={plan.name}
             className={cn(
               'flex flex-1 flex-col rounded-2xl border border-default bg-card p-6',
-              plan.highlighted && 'ring-2 ring-[var(--salis-blue)]'
+              plan.highlighted && 'ring-2 ring-salis-blue'
             )}
           >
             <h2 className="mb-1 mt-0 text-lg font-bold text-heading">{t(plan.name)}</h2>

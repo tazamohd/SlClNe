@@ -89,7 +89,7 @@ export function CustomerAppPayments() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {METHODS.map((m) => (
             <div key={m.last4} className="flex items-center gap-3 rounded-xl border border-border p-4">
-              <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
+              <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-heading">{m.type} <span className="font-mono text-muted" dir="ltr">****{m.last4}</span></p>
                 <p className="text-xs text-muted">{m.expiry !== '-' ? `${t('Expires')} ${m.expiry}` : t('Digital Wallet')}</p>
@@ -113,7 +113,7 @@ export function CustomerAppPayments() {
               <MobileCardHeader
                 leading={
                   <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
+                    <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
                     <div>
                       <p className="text-[13px] font-semibold text-heading">{t(p.description)}</p>
                       <p className="text-xs text-muted">{p.date}</p>

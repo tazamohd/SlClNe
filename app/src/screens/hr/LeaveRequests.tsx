@@ -108,7 +108,7 @@ export function LeaveRequests() {
                       (index ? 'border-0 border-t border-solid border-border' : '')
                     }
                   >
-                    <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
+                    <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
                       <Icon name={TYPE_ICON[req.type]} size={16} />
                     </span>
                     <div className="min-w-0 flex-1">

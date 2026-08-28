@@ -70,7 +70,7 @@ export function InternalWarehouse() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Warehouse" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Warehouse" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{t(zone.name)}</p>
                     <p className="text-xs text-muted" dir="ltr">{zone.code}</p>

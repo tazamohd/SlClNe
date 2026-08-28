@@ -48,7 +48,7 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
       {Array.from({ length: 5 }, (_, i) => (
-        <Icon key={i} name="Star" size={12} className={i < rating ? 'text-[var(--salis-orange)]' : 'text-muted/30'} />
+        <Icon key={i} name="Star" size={12} className={i < rating ? 'text-salis-orange' : 'text-muted/30'} />
       ))}
     </div>
   )
@@ -77,7 +77,7 @@ export function ClientPortalReviewChat() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{r.service}</p>
                     <StarRating rating={r.rating} />
@@ -102,7 +102,7 @@ export function ClientPortalReviewChat() {
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="MessageCircle" size={16} /></span>
+              <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="MessageCircle" size={16} /></span>
               <h2 className="text-sm font-semibold text-heading">{t('Messages')}</h2>
             </div>
             {unreadCount > 0 && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge>}
@@ -122,7 +122,7 @@ export function ClientPortalReviewChat() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={16} /></span>
+            <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('My Reviews')}</h2>
           </div>
           <div className="grid gap-4">

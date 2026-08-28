@@ -82,7 +82,7 @@ export function VendorSupplierPortal() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {METRICS.map((m) => (
           <Card key={m.label} className="flex items-center gap-3 rounded-xl p-4 shadow-sm">
-            <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
+            <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
             <div className="flex-1">
               <p className="text-[11px] text-muted">{t(m.label)}</p>
               <p className="mt-0.5 font-display text-xl font-black text-heading" dir="ltr">{m.value}</p>

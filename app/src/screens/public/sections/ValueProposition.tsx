@@ -21,7 +21,7 @@ export function ValueProposition({ items }: { items: readonly ValuePropItem[] })
           {items.map((item) => (
             <div key={item.title} className="flex flex-col items-center text-center">
               <span
-                className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--tint-blue)] text-2xl"
+                className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-tint-blue text-2xl"
                 aria-hidden
               >
                 {item.icon}

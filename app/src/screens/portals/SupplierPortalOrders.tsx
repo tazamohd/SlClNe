@@ -98,7 +98,7 @@ export function SupplierPortalOrders() {
               className={
                 'inline-flex h-8 cursor-pointer items-center rounded-full border px-3 font-action text-[12px] font-medium capitalize transition-colors ' +
                 (statusFilter === st
-                  ? 'border-salis-blue bg-[var(--tint-blue)] text-salis-blue'
+                  ? 'border-salis-blue bg-tint-blue text-salis-blue'
                   : 'border-border bg-card text-muted')
               }
             >

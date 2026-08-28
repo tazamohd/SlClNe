@@ -47,13 +47,13 @@ export function TechnicianMobile() {
         <MobilePageHeader icon="Smartphone" title={t('Technician Mobile')} subtitle={t('Mobile dashboard')} />
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--tint-blue)] text-salis-blue">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-tint-blue text-salis-blue">
               <Icon name="User" size={20} />
             </span>
             <div>
               <p className="text-[13px] font-bold text-heading">{t('Ahmed Al-Farsi')}</p>
               <div className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-[var(--salis-blue)]" />
+                <span className="h-2 w-2 rounded-full bg-salis-blue" />
                 <span className="text-xs text-muted">{t('Clocked In')} - 6h 30m</span>
               </div>
             </div>
@@ -63,7 +63,7 @@ export function TechnicianMobile() {
           {QUICK_ACTIONS.map((a) => (
             <Card key={a.label} className="rounded-xl p-3 shadow-sm">
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
+                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
                 <span className="text-[11px] font-medium text-muted">{t(a.label)}</span>
               </div>
               <p className="mt-1.5 font-display text-xl font-black text-heading">{a.count > 0 ? a.count : '--'}</p>
@@ -75,7 +75,7 @@ export function TechnicianMobile() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{j.service}</p>
                     <p className="text-xs text-muted">{j.vehicle}</p>
@@ -87,7 +87,7 @@ export function TechnicianMobile() {
             <MobileCardRow label={t('Work Order')} value={j.workOrder} />
             <MobileCardRow label={t('Progress')} value={`${j.progress}%`} />
             <div className="px-4 pb-3">
-              <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--tint-blue)]">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-tint-blue">
                 <div className="h-full rounded-full bg-salis-blue transition-all" style={{ width: `${j.progress}%` }} />
               </div>
             </div>
@@ -105,7 +105,7 @@ export function TechnicianMobile() {
         {QUICK_ACTIONS.map((a) => (
           <Card key={a.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">
-              <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={16} /></span>
+              <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{t(a.label)}</span>
             </div>
             <p className="mt-2 font-display text-2xl font-black text-heading">{a.count > 0 ? a.count : '--'}</p>
@@ -118,7 +118,7 @@ export function TechnicianMobile() {
         <div className="grid gap-4">
           {ACTIVE_JOBS.map((j) => (
             <div key={j.workOrder} className="flex items-center gap-4 rounded-xl border border-border/50 p-4">
-              <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name="Wrench" size={18} /></span>
+              <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue" aria-hidden><Icon name="Wrench" size={18} /></span>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <div>
@@ -127,7 +127,7 @@ export function TechnicianMobile() {
                   </div>
                   <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>
                 </div>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--tint-blue)]">
+                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-tint-blue">
                   <div className="h-full rounded-full bg-salis-blue transition-all" style={{ width: `${j.progress}%` }} />
                 </div>
                 <p className="mt-1 text-end text-xs text-muted">{j.progress}%</p>

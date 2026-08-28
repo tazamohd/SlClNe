@@ -143,7 +143,7 @@ export function Onboarding() {
           )}
           {step === 4 && (
             <div className="flex flex-col items-center gap-4 py-8 text-center">
-              <span className="flex rounded-full bg-[var(--tint-blue)] p-4 text-salis-blue" aria-hidden>
+              <span className="flex rounded-full bg-tint-blue p-4 text-salis-blue" aria-hidden>
                 <Icon name="CheckCircle" size={40} />
               </span>
               <h2 className="text-lg font-bold text-heading">{t('All Set!')}</h2>

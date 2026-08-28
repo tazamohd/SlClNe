@@ -109,7 +109,7 @@ export function CustomerFeedback() {
   if (submitted) {
     return shell(
       <Card className="flex flex-col items-center gap-3 p-8 text-center">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--tint-blue)] text-salis-blue">
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-tint-blue text-salis-blue">
           <Icon name="CheckCircle" size={28} />
         </span>
         <h2 className="text-base font-bold text-heading">{t('Thank you for your feedback')}</h2>

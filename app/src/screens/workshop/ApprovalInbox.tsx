@@ -215,7 +215,7 @@ export function ApprovalInbox() {
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
         {stats.map((s) => (
           <Card key={s.label} className="flex items-center gap-3 rounded-xl p-3.5">
-            <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2.5 text-salis-blue">
+            <span className="flex flex-shrink-0 rounded-lg bg-tint-blue p-2.5 text-salis-blue">
               <Icon name={s.icon} size={16} />
             </span>
             <div className="min-w-0">
@@ -284,7 +284,7 @@ export function ApprovalInbox() {
                     (index ? 'border-0 border-t border-solid border-border' : '')
                   }
                 >
-                  <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
+                  <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
                     <Icon name="FileText" size={16} />
                   </span>
                   <div className="min-w-0 flex-1">

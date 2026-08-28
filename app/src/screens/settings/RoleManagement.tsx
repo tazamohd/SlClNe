@@ -30,7 +30,7 @@ export function RoleManagement() {
       header: 'Role',
       cell: (role) => (
         <div className="flex items-center gap-2">
-          <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+          <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
           <span className="font-medium text-heading">{t(role.name)}</span>
         </div>
       ),
@@ -62,7 +62,7 @@ export function RoleManagement() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{t(role.name)}</p>
                     <p className="text-xs text-muted">{role.description}</p>

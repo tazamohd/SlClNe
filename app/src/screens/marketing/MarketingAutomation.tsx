@@ -54,7 +54,7 @@ export function MarketingAutomation() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Zap" size={14} /></span>
+                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Zap" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{w.name}</p>
                   <p className="text-xs text-muted">{t(w.trigger)}</p>

@@ -44,7 +44,7 @@ export function ClientPortalLiveTracking() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Radio" size={14} /></span>
+                  <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Radio" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{item.service}</p>
                     <p className="text-xs text-muted">{item.vehicle}</p>
@@ -57,7 +57,7 @@ export function ClientPortalLiveTracking() {
             <MobileCardRow label={t('ETA')} value={item.estimatedCompletion} />
             <MobileCardRow label={t('Progress')} value={`${item.progress}%`} />
             <div className="px-4 pb-3">
-              <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--tint-blue)]">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-tint-blue">
                 <div className="h-full rounded-full bg-salis-blue transition-all" style={{ width: `${item.progress}%` }} />
               </div>
             </div>
@@ -75,7 +75,7 @@ export function ClientPortalLiveTracking() {
         <Card key={item.workOrder} className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name="Car" size={18} /></span>
+              <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue" aria-hidden><Icon name="Car" size={18} /></span>
               <div>
                 <h2 className="text-sm font-semibold text-heading">{item.vehicle}</h2>
                 <p className="text-xs text-muted">{item.workOrder} - {item.service}</p>
@@ -105,7 +105,7 @@ export function ClientPortalLiveTracking() {
             })}
           </div>
 
-          <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-[var(--tint-blue)]">
+          <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-tint-blue">
             <div className="h-full rounded-full bg-salis-blue transition-all" style={{ width: `${item.progress}%` }} />
           </div>
 

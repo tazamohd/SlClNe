@@ -82,7 +82,7 @@ export function MarketingHub() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={CHANNEL_ICONS[c.channel]} size={14} /></span>
+                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name={CHANNEL_ICONS[c.channel]} size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{c.name}</p>
                   <p className="text-xs text-muted">{t(c.channel)}</p>

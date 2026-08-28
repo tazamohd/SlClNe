@@ -50,7 +50,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   type="button"
                   onClick={() => toggleGroup(group.label)}
                   aria-expanded={open}
-                  className="flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 font-action text-[13px] font-extrabold uppercase tracking-[.05em] text-heading transition-colors duration-150 hover:bg-[var(--tint-blue)]"
+                  className="flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 font-action text-[13px] font-extrabold uppercase tracking-[.05em] text-heading transition-colors duration-150 hover:bg-tint-blue"
                 >
                   <span>{t(group.label)}</span>
                   <span className="flex-1" />

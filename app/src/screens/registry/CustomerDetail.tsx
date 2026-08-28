@@ -220,7 +220,7 @@ export function CustomerDetail() {
            the record does carry — takes the slot. */
         status={
           !isMobile && customer.type ? (
-            <span className="rounded-full bg-[var(--tint-blue)] px-2.5 py-1 text-[11px] font-semibold text-salis-blue">
+            <span className="rounded-full bg-tint-blue px-2.5 py-1 text-[11px] font-semibold text-salis-blue">
               {t(customer.type === 'fleet' ? 'Fleet Account' : 'Individual')}
             </span>
           ) : undefined
