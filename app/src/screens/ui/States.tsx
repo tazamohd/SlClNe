@@ -376,8 +376,9 @@ export function UIFormValidation() {
                 <Hint tone="muted" icon={<Icon name="Info" size={12} className="mt-px flex-shrink-0" />}>{t('Optional. Required only for VAT-registered business customers.')}</Hint>
               </div>
               <div className="flex flex-col gap-1.5 sm:col-span-2">
-                <label className="font-action text-xs font-medium text-heading">{t('Notes')}</label>
+                <label htmlFor="customer-notes" className="font-action text-xs font-medium text-heading">{t('Notes')}</label>
                 <textarea
+                  id="customer-notes"
                   rows={2}
                   maxLength={500}
                   value={notes}

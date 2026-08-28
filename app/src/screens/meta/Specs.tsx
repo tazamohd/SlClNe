@@ -179,10 +179,10 @@ export function FlowSpec() {
             <table className="w-full min-w-[520px] border-collapse text-[13px]">
               <thead>
                 <tr>
-                  <th className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('From')}</th>
-                  <th className="border-b border-border px-3 py-2.5" />
-                  <th className="border-b border-border px-3 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('To')}</th>
-                  <th className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('Rule & who can do it')}</th>
+                  <th scope="col" className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('From')}</th>
+                  <th scope="col" className="border-b border-border px-3 py-2.5" />
+                  <th scope="col" className="border-b border-border px-3 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('To')}</th>
+                  <th scope="col" className="border-b border-border px-5 py-2.5 text-start text-[11px] font-semibold uppercase tracking-wider text-muted">{t('Rule & who can do it')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -337,9 +337,9 @@ export function RBACSpec() {
           <table className="w-full min-w-[900px] border-collapse">
             <thead>
               <tr className="bg-inset">
-                <th className="sticky start-0 z-[1] bg-inset px-3.5 py-2.5 text-start text-[10.5px] font-bold uppercase tracking-wider text-muted">{t('Module')}</th>
+                <th scope="col" className="sticky start-0 z-[1] bg-inset px-3.5 py-2.5 text-start text-[10.5px] font-bold uppercase tracking-wider text-muted">{t('Module')}</th>
                 {ROLES.map((r) => (
-                  <th key={r.id} className="px-1 py-2.5 text-[10px] font-bold text-muted" title={r.label}><span dir="ltr">{SHORT_CODE[r.id] ?? r.id.toUpperCase()}</span></th>
+                  <th scope="col" key={r.id} className="px-1 py-2.5 text-[10px] font-bold text-muted" title={r.label}><span dir="ltr">{SHORT_CODE[r.id] ?? r.id.toUpperCase()}</span></th>
                 ))}
               </tr>
             </thead>

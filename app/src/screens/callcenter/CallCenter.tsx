@@ -242,6 +242,7 @@ export function CallCenter() {
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               placeholder={t('What did the customer need, and what did you do?')}
+              aria-label={t('Call notes')}
               className="w-full resize-y rounded-lg border border-border bg-inset p-3 text-[13px] text-heading outline-none focus:border-salis-blue"
             />
             <div className="mt-3.5 flex justify-end gap-2">
