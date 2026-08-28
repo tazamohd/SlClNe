@@ -53,7 +53,7 @@ export function DashboardWidgets() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={widget.icon} size={14} />
                   </span>
                   <div>
@@ -87,7 +87,7 @@ export function DashboardWidgets() {
         {WIDGETS.map((widget, i) => (
           <Card key={i} className={`rounded-2xl p-5 shadow-sm ${!widget.enabled ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                 <Icon name={widget.icon} size={20} />
               </span>
               <div className="flex items-center gap-2">

@@ -51,7 +51,7 @@ export function SalesGuide() {
             <MobileCard key={metric.label}>
               <MobileCardHeader
                 leading={
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={metric.icon} size={14} />
                   </span>
                 }
@@ -93,7 +93,7 @@ export function SalesGuide() {
         {SALES_METRICS.map((metric) => (
           <Card key={metric.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                 <Icon name={metric.icon} size={20} />
               </span>
               <div>
@@ -116,7 +116,7 @@ export function SalesGuide() {
               </span>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={step.icon} size={14} />
                   </span>
                   <p className="text-sm font-bold text-heading">{t(step.title)}</p>

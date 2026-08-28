@@ -82,7 +82,7 @@ export function EmergingTechnologies() {
             <Card key={tech.id} className="rounded-2xl p-5 shadow-sm">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden><Icon name="Cpu" size={16} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Cpu" size={16} /></span>
                   <h3 className="text-[14px] font-bold text-heading">{t(tech.name)}</h3>
                 </div>
                 <Badge background={bg} color={fg}>{t(tech.status)}</Badge>

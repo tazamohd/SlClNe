@@ -227,11 +227,11 @@ export function GlobalSearch() {
 
         <div className="flex items-center gap-3 border-0 border-t border-solid border-border px-5 py-2.5">
           <span className="flex items-center gap-1 text-[11px] text-faint">
-            <kbd className="rounded bg-inset px-1.5 py-px font-mono text-[10px] text-muted" style={{ border: '1px solid var(--border-default)' }}>&uarr;&darr;</kbd>
+            <kbd className="rounded border border-border bg-inset px-1.5 py-px font-mono text-[10px] text-muted">&uarr;&darr;</kbd>
             {t('Navigate')}
           </span>
           <span className="flex items-center gap-1 text-[11px] text-faint">
-            <kbd className="rounded bg-inset px-1.5 py-px font-mono text-[10px] text-muted" style={{ border: '1px solid var(--border-default)' }}>&crarr;</kbd>
+            <kbd className="rounded border border-border bg-inset px-1.5 py-px font-mono text-[10px] text-muted">&crarr;</kbd>
             {t('Open')}
           </span>
           <span className="flex-1" />

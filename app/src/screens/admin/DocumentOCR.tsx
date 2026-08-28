@@ -79,7 +79,7 @@ export function DocumentOCR() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
                   <Icon name="FileText" size={14} />
                 </span>
                 <div>
@@ -104,7 +104,7 @@ export function DocumentOCR() {
         <MobilePageHeader icon="ScanLine" title={t('Document OCR')} subtitle={t('Optical character recognition')} />
         <Card className="rounded-xl p-6 shadow-sm">
           <div className="flex flex-col items-center gap-2 py-4">
-            <span className="flex rounded-xl p-3" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+            <span className="flex rounded-xl p-3 bg-tint-blue text-salis-blue" aria-hidden>
               <Icon name="Upload" size={24} />
             </span>
             <p className="text-sm font-semibold text-heading">{t('Upload Document')}</p>
@@ -122,7 +122,7 @@ export function DocumentOCR() {
 
       <Card className="rounded-2xl border-2 border-dashed border-border p-8 shadow-sm">
         <div className="flex flex-col items-center gap-3">
-          <span className="flex rounded-2xl p-4" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+          <span className="flex rounded-2xl p-4 bg-tint-blue text-salis-blue" aria-hidden>
             <Icon name="Upload" size={32} />
           </span>
           <p className="text-sm font-semibold text-heading">{t('Drop files here or click to upload')}</p>

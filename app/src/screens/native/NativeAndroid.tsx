@@ -77,7 +77,7 @@ export function NativeAndroid() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={feature.icon} size={14} />
                   </span>
                   <div>
@@ -127,7 +127,7 @@ export function NativeAndroid() {
             <div className="grid grid-cols-2 gap-4">
               {APP_FEATURES.map((feature, i) => (
                 <div key={i} className="flex items-start gap-3 rounded-xl bg-surface-secondary p-4">
-                  <span className="flex flex-shrink-0 rounded-lg p-2" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex flex-shrink-0 rounded-lg p-2 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={feature.icon} size={18} />
                   </span>
                   <div>
@@ -144,7 +144,7 @@ export function NativeAndroid() {
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               {DEVICE_REQUIREMENTS.map((req, i) => (
                 <div key={i} className="flex flex-col items-center rounded-xl bg-surface-secondary p-4 text-center">
-                  <span className="flex rounded-lg p-2" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-2 bg-tint-blue text-salis-blue" aria-hidden>
                     <Icon name={req.icon} size={16} />
                   </span>
                   <p className="mt-2 text-xs font-semibold text-heading">{t(req.label)}</p>

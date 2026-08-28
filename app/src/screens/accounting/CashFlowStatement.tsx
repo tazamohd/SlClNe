@@ -70,8 +70,7 @@ function SectionCard({
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <span
-          className="flex rounded-lg p-1.5"
-          style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }}
+          className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue"
           aria-hidden
         >
           <Icon name={section.icon} size={16} />

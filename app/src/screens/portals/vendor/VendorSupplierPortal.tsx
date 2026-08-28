@@ -87,7 +87,7 @@ export function VendorSupplierPortal() {
               <p className="text-[11px] text-muted">{t(m.label)}</p>
               <p className="mt-0.5 font-display text-xl font-black text-heading" dir="ltr">{m.value}</p>
             </div>
-            <span className="text-xs font-semibold" style={{ color: 'var(--salis-blue)' }}>{m.trend}</span>
+            <span className="text-xs font-semibold text-salis-blue">{m.trend}</span>
           </Card>
         ))}
       </div>

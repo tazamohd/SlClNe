@@ -108,7 +108,7 @@ export function GlobalizationLayer() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {CURRENCIES.map((cur, i) => (
             <div key={i} className="flex items-center gap-3 rounded-xl border border-border p-4">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
                 <Icon name="Coins" size={20} />
               </span>
               <div className="flex-1">
