@@ -14,6 +14,35 @@ const specByRoute = new Map(
 // to a dedicated component with typed columns, DataTable, and real data.
 // Lazy-loaded alongside this resolver so they stay out of the main bundle.
 
+// hr & payroll
+const HRManagement = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.HRManagement })),
+)
+const StaffDirectory = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.StaffDirectory })),
+)
+const StaffScheduling = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.StaffScheduling })),
+)
+const StaffPerformanceReview = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.StaffPerformanceReview })),
+)
+const TimesheetManagement = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.TimesheetManagement })),
+)
+const TimeclockPayroll = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.TimeclockPayroll })),
+)
+const PayrollManagement = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.PayrollManagement })),
+)
+const LeaveRequests = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.LeaveRequests })),
+)
+const TrainingLMS = lazy(() =>
+  import('@/screens/admin/HRScreens').then((m) => ({ default: m.TrainingLMS })),
+)
+
 // insurance / warranty / contracts
 const InsuranceClaims = lazy(() =>
   import('@/screens/insurance/InsuranceClaims').then((m) => ({ default: m.InsuranceClaims })),
@@ -39,7 +68,18 @@ const TowingServices = lazy(() =>
   import('@/screens/fleet/TowingServices').then((m) => ({ default: m.TowingServices })),
 )
 
+/** Real implementations for spec-screen routes. When a route is listed here,
+ *  it takes priority over the generic FeatureScreenView placeholder. */
 const SPEC_CUSTOM_SCREENS: Record<string, React.ComponentType> = {
+  '/hr-management': HRManagement,
+  '/staff-directory': StaffDirectory,
+  '/staff-scheduling': StaffScheduling,
+  '/staff-performance-review': StaffPerformanceReview,
+  '/timesheet-management': TimesheetManagement,
+  '/timeclock-payroll': TimeclockPayroll,
+  '/payroll-management': PayrollManagement,
+  '/leave-requests': LeaveRequests,
+  '/training-lms': TrainingLMS,
   '/insurance-claims': InsuranceClaims,
   '/warranty-management': WarrantyManagement,
   '/contract-management': ContractManagement,
