@@ -14,7 +14,7 @@ interface State {
 function DefaultFallback({ error, onReset }: { error: Error; onReset: () => void }) {
   const { t } = usePreferences()
   return (
-    <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 p-8 text-center">
+    <div role="alert" className="flex min-h-[320px] flex-col items-center justify-center gap-4 p-8 text-center">
       <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-tint-orange text-salis-orange">
         <Icon name="AlertTriangle" size={24} />
       </span>

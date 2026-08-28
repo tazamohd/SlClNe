@@ -33,7 +33,7 @@ export function Onboarding() {
         </div>
 
         {/* Step indicator */}
-        <div className={`mb-8 flex items-center justify-center ${isMobile ? 'gap-2' : 'gap-4'}`}>
+        <div role="group" aria-label={`${t('Step')} ${step + 1} ${t('of')} ${STEPS.length}`} className={`mb-8 flex items-center justify-center ${isMobile ? 'gap-2' : 'gap-4'}`}>
           {labels.map((label, i) => (
             <div key={label} className="flex flex-col items-center gap-1">
               <span

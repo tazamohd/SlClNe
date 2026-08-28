@@ -89,7 +89,7 @@ export function KioskCheckIn() {
       </header>
 
       {/* Progress indicator */}
-      <div className="flex items-center justify-center gap-2 px-6 py-4">
+      <div role="group" aria-label={t('Check-in progress')} className="flex items-center justify-center gap-2 px-6 py-4">
         {STEPS.filter((s) => s !== 'done').map((s, i) => {
           const done = stepIndex > i
           const current = stepIndex === i
