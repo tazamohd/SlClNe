@@ -133,7 +133,7 @@ export function AutomationRules() {
               <div className="flex flex-wrap items-center gap-2 rounded-[10px] border border-border bg-inset p-3 text-[13px]">
                 <span className="font-semibold text-salis-blue">{t('When')}</span>
                 <span className="text-body">{t(rule.trigger)}</span>
-                <Icon name="ArrowRight" size={14} className="flex-shrink-0 text-muted" />
+                <Icon name="ArrowRight" size={14} className="flex-shrink-0 text-muted rtl:-scale-x-100" />
                 <span className="font-semibold text-salis-orange">{t('Then')}</span>
                 <span className="text-body">{t(rule.action)}</span>
               </div>

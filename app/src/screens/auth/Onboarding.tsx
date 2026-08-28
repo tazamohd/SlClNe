@@ -295,6 +295,7 @@ export function Onboarding() {
                     />
                     <input
                       placeholder={t('Email address')}
+                      aria-label={t('Email address')}
                       value={invEmail}
                       onChange={(e) => setInvEmail(e.target.value)}
                       dir="ltr"
@@ -305,6 +306,7 @@ export function Onboarding() {
                     <select
                       value={invRole}
                       onChange={(e) => setInvRole(e.target.value as (typeof ROLES)[number])}
+                      aria-label={t('Role')}
                       className="h-11 flex-1 cursor-pointer rounded border border-border bg-inset px-3 font-action text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] sm:flex-none"
                     >
                       {ROLES.map((r) => (

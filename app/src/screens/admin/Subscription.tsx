@@ -79,7 +79,7 @@ const BILLING_HISTORY: readonly BillingRow[] = [
 const PAYMENT_METHOD = { brand: 'Visa', last4: '4242', expiry: '09/28' }
 
 export function Subscription() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { can } = useSession()
   const toast = useToast()
 
@@ -103,9 +103,7 @@ export function Subscription() {
   const upgrade = (plan: PlanTier) => {
     toast.show({
       title: t('Upgrade requested'),
-      description: rtl
-        ? `تم إرسال طلب الترقية إلى ${t(plan.name)}`
-        : `A request to switch to ${plan.name} has been sent.`,
+      description: `${t('A request to switch to')} ${t(plan.name)} ${t('has been sent.')}`,
     })
     setManaging(false)
   }
@@ -115,18 +113,14 @@ export function Subscription() {
     setConfirmingCancel(false)
     toast.show({
       title: t('Subscription cancelled'),
-      description: rtl
-        ? `يستمر الوصول حتى ${NEXT_BILLING_DATE}`
-        : `Access continues until ${NEXT_BILLING_DATE}.`,
+      description: `${t('Access continues until')} ${NEXT_BILLING_DATE}`,
     })
   }
 
   const updatePaymentMethod = () => {
     toast.show({
       title: t('Payment Method'),
-      description: rtl
-        ? 'غير متاح تحديث طريقة الدفع في هذا العرض التجريبي.'
-        : "Updating the payment method isn't available in this demo.",
+      description: t('Payment method updates are not available in this demo.'),
     })
   }
 
@@ -172,11 +166,7 @@ export function Subscription() {
             {t(currentPlan.name).toUpperCase()}
           </h2>
           <p className="m-0 mt-1.5 text-[13px] opacity-90">
-            {cancelPending
-              ? rtl
-                ? 'ينتهي الاشتراك في'
-                : 'Cancels on'
-              : t('Next Billing Date')}
+            {cancelPending ? t('Cancels on') : t('Next Billing Date')}
             : <span dir="ltr">{NEXT_BILLING_DATE}</span>
           </p>
         </div>
@@ -221,14 +211,14 @@ export function Subscription() {
             in use rather than a hardcoded total. */}
         <Card className="flex flex-col gap-2.5 p-4 md:p-5">
           <h3 className="text-[15px] font-bold text-heading">
-            {rtl ? 'الرسوم القادمة المقدرة' : 'Estimated Next Charge'}
+            {t('Estimated Next Charge')}
           </h3>
           <ChargeRow
-            label={rtl ? 'سعر المقعد' : 'Per-seat rate'}
+            label={t('Per-seat rate')}
             value={<Money sar={currentPlan.seatRate} className="text-body" />}
           />
           <ChargeRow
-            label={rtl ? 'المقاعد المستخدمة' : 'Seats in use'}
+            label={t('Seats in use')}
             value={<span dir="ltr">{USAGE.seatsUsed}</span>}
           />
           <ChargeRow label={t('Subtotal')} value={<Money sar={subtotal} className="text-body" />} />
@@ -254,14 +244,14 @@ export function Subscription() {
                 {t(PAYMENT_METHOD.brand)} •••• {PAYMENT_METHOD.last4}
               </p>
               <p className="m-0 mt-0.5 text-xs text-muted" dir="ltr">
-                {rtl ? 'تنتهي' : 'Expires'} {PAYMENT_METHOD.expiry}
+                {t('Expires')} {PAYMENT_METHOD.expiry}
               </p>
             </div>
           </div>
           {canUpgrade ? (
             <Button variant="outline" size="sm" className="self-start" onClick={updatePaymentMethod}>
               <Icon name="Pencil" size={13} />
-              {rtl ? 'تحديث طريقة الدفع' : 'Update payment method'}
+              {t('Update payment method')}
             </Button>
           ) : null}
         </Card>
@@ -272,7 +262,7 @@ export function Subscription() {
       {managing ? (
         <Card className="flex flex-col gap-4 p-4 md:p-5">
           <h3 className="text-[15px] font-bold text-heading">
-            {rtl ? 'خطط الاشتراك' : 'Plan Tiers'}
+            {t('Plan Tiers')}
           </h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {PLAN_TIERS.map((plan, rank) => {
@@ -298,7 +288,7 @@ export function Subscription() {
                     {formatSar(plan.seatRate, { bare: true })}
                   </p>
                   <p className="-mt-2 text-xs text-muted">
-                    {rtl ? 'ر.س / مقعد / شهر' : 'SAR / seat / month'}
+                    {t('SAR / seat / month')}
                   </p>
                   <ul className="m-0 flex list-none flex-col gap-1 p-0 text-xs text-muted">
                     <li>
@@ -321,7 +311,7 @@ export function Subscription() {
                       onClick={() => upgrade(plan)}
                     >
                       <ArrowUpCircle size={14} aria-hidden />
-                      {rtl ? `الترقية إلى ${t(plan.name)}` : `Upgrade to ${plan.name}`}
+                      {`${t('Upgrade to')} ${t(plan.name)}`}
                     </Button>
                   ) : null}
                 </div>
@@ -334,9 +324,7 @@ export function Subscription() {
               {cancelPending ? (
                 <p className="m-0 flex items-center gap-2 text-[13px] text-muted">
                   <CheckCircle size={15} className="text-salis-blue" aria-hidden />
-                  {rtl
-                    ? `تم جدولة الإلغاء — يستمر الوصول حتى ${NEXT_BILLING_DATE}`
-                    : `Cancellation scheduled — access continues until ${NEXT_BILLING_DATE}.`}
+                  {`${t('Cancellation scheduled — access continues until')} ${NEXT_BILLING_DATE}`}
                 </p>
               ) : confirmingCancel ? (
                 <div className="flex flex-col gap-3 rounded-lg border border-border bg-inset p-3.5">
@@ -346,23 +334,21 @@ export function Subscription() {
                       className="mt-0.5 flex-shrink-0 text-muted"
                       aria-hidden
                     />
-                    {rtl
-                      ? `سيتوقف التجديد التلقائي. يستمر وصولك حتى ${NEXT_BILLING_DATE}.`
-                      : `Auto-renewal will stop. You keep access until ${NEXT_BILLING_DATE}.`}
+                    {`${t('Auto-renewal will stop. You keep access until')} ${NEXT_BILLING_DATE}.`}
                   </p>
                   <div className="flex flex-wrap gap-2.5">
                     <Button size="sm" onClick={() => setConfirmingCancel(false)}>
-                      {rtl ? 'الإبقاء على الاشتراك' : 'Keep Subscription'}
+                      {t('Keep Subscription')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={confirmCancel}>
-                      {rtl ? `${t('Confirm')} الإلغاء` : 'Confirm Cancellation'}
+                      {t('Confirm Cancellation')}
                     </Button>
                   </div>
                 </div>
               ) : (
                 <Button variant="outline" size="sm" onClick={() => setConfirmingCancel(true)}>
                   <XCircle size={14} aria-hidden />
-                  {rtl ? 'إلغاء الاشتراك' : 'Cancel Subscription'}
+                  {t('Cancel Subscription')}
                 </Button>
               )}
             </div>

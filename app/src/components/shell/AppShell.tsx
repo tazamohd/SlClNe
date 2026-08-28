@@ -33,6 +33,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-page font-ui">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:left-4 focus:top-4 focus:rounded focus:bg-salis-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+      >
+        {t('Skip to content')}
+      </a>
       {isMobile ? (
         <>
           {drawerOpen ? (
@@ -44,6 +50,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             />
           ) : null}
           <div
+            role="dialog"
+            aria-modal={drawerOpen ? true : undefined}
+            aria-label={t("Navigation")}
             className={cn(
               'fixed inset-y-0 z-50 transition-transform duration-300 ease-salis start-0',
               drawerOpen ? 'translate-x-0' : 'ltr:-translate-x-full rtl:translate-x-full'
@@ -57,10 +66,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* The mobile designs use their own 56px header composition, not a
-            narrowed Topbar — no search box, user chip instead. */}
         {isMobile ? <MobileHeader onOpenNav={() => setDrawerOpen(true)} /> : <Topbar />}
-        <main className="relative flex-1 overflow-auto">
+        <main id="main-content" className="relative flex-1 overflow-auto">
           <PageBackdrop />
           <div
             className={cn(

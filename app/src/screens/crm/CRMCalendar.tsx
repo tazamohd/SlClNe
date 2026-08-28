@@ -49,7 +49,7 @@ function parseDue(due: string): Date | null {
 }
 
 export function CRMCalendar() {
-  const { t } = usePreferences()
+  const { t, rtl } = usePreferences()
   const { can } = useSession()
   const { data: tasks = [], isLoading } = useCollection('crmTasks')
   const [monthOffset, setMonthOffset] = useState(0)
@@ -140,7 +140,7 @@ export function CRMCalendar() {
                 onClick={() => setMonthOffset((o) => o - 1)}
                 className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
               >
-                <Icon name="ChevronLeft" size={14} />
+                <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={14} />
               </button>
               <button
                 type="button"
@@ -148,7 +148,7 @@ export function CRMCalendar() {
                 onClick={() => setMonthOffset((o) => o + 1)}
                 className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
               >
-                <Icon name="ChevronRight" size={14} />
+                <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={14} />
               </button>
             </div>
 

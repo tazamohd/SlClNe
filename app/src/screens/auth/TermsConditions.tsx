@@ -11,7 +11,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 const SECTION_COUNT = 6
 
 export function TermsConditions() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const [agreed, setAgreed] = useState(false)
 
   const sections = Array.from({ length: SECTION_COUNT }, (_, i) => i + 1)
@@ -35,7 +35,7 @@ export function TermsConditions() {
         <div className="flex flex-1 flex-col gap-3.5 overflow-y-auto px-6 py-5 text-sm leading-[1.7] text-body">
           {sections.map((n) => (
             <p key={n} className="m-0">
-              {t('Terms & Conditions')} — {rtl ? 'القسم' : 'section'} {n}.{' '}
+              {t('Terms & Conditions')} — {t('section')} {n}.{' '}
               {t('Integrated automotive workshop management system')}.
             </p>
           ))}

@@ -701,4 +701,55 @@ export const AR_OVERRIDES: Record<string, string> = {
   'Sign Below': 'وقّع أدناه',
   'Tap to sign': 'انقر للتوقيع',
   'I authorize the work described above and accept the total amount.': 'أفوّض بتنفيذ العمل الموضّح أعلاه وأوافق على المبلغ الإجمالي.',
+
+  // Subscription
+  'Estimated Next Charge': 'الرسوم القادمة المقدرة',
+  'Per-seat rate': 'سعر المقعد',
+  'Seats in use': 'المقاعد المستخدمة',
+  'Cancels on': 'ينتهي الاشتراك في',
+  'Update payment method': 'تحديث طريقة الدفع',
+  'Plan Tiers': 'خطط الاشتراك',
+  'SAR / seat / month': 'ر.س / مقعد / شهر',
+  'Upgrade to': 'الترقية إلى',
+  'Keep Subscription': 'الإبقاء على الاشتراك',
+  'Confirm Cancellation': 'تأكيد الإلغاء',
+  'Cancel Subscription': 'إلغاء الاشتراك',
+  'A request to switch to': 'تم إرسال طلب الترقية إلى',
+  'has been sent.': 'تم إرساله.',
+  'Access continues until': 'يستمر الوصول حتى',
+  'Cancellation scheduled — access continues until': 'تم جدولة الإلغاء — يستمر الوصول حتى',
+  'Auto-renewal will stop. You keep access until': 'سيتوقف التجديد التلقائي. يستمر وصولك حتى',
+  'Payment method updates are not available in this demo.': 'غير متاح تحديث طريقة الدفع في هذا العرض التجريبي.',
+
+  // Advanced Settings
+  'Configure your system': 'تكوين النظام',
+  'Sat–Thu, 8 AM – 6 PM': 'السبت-الخميس',
+  'Extra layer of security': 'طبقة أمان إضافية',
+  'Auto-expire after inactivity': 'انتهاء تلقائي بعد',
+  '30 min': '30 دقيقة',
+  'Receive email alerts': 'إشعارات البريد الإلكتروني',
+  'SMS for critical alerts': 'تنبيهات الرسائل النصية',
+  'Saudi e-invoicing integration': 'ربط الفوترة الإلكترونية',
+  'Customer notifications': 'إشعارات العملاء',
+  'Accounting Software': 'برنامج المحاسبة',
+  'Financial data export': 'تصدير البيانات المالية',
+  'Daily automatic backup': 'نسخ احتياطي يومي',
+  'How long to keep data': 'مدة الاحتفاظ بالبيانات',
+
+  // Status / Auth screens
+  'Timed out at': 'انتهت الجلسة الساعة',
+  'Code refreshes every 30 seconds': 'يتم تحديث الرمز كل 30 ثانية',
+
+  // TechnicianSchedule
+  'Tuesday, Jul 22, 2026': 'الثلاثاء، 22 يوليو 2026',
+
+  // Dashboard
+  'Previous page': 'الصفحة السابقة',
+  'Next page': 'الصفحة التالية',
+  'Jan': 'يناير',
+  'Feb': 'فبراير',
+  'Mar': 'مارس',
+  'Apr': 'أبريل',
+  'May': 'مايو',
+  'Jun': 'يونيو',
 }

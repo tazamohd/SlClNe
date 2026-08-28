@@ -11,6 +11,9 @@ export default defineConfig({
     },
   },
   build: {
+    // Modern browsers only — enables smaller output (no async/await transforms,
+    // native optional chaining, nullish coalescing, etc.).
+    target: 'es2022',
     // Screens are route-split via React.lazy, so the remaining large modules are
     // the shared vendor deps. Split them into stable, cache-friendly chunks so a
     // screen change never re-downloads React et al.

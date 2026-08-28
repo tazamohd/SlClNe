@@ -21,6 +21,7 @@ export function Topbar() {
         />
         <input
           placeholder={t('Search customers, vehicles, parts...')}
+          aria-label={t('Search')}
           onFocus={() => navigate('/global-search')}
           className="h-9 w-[260px] rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
         />
@@ -38,17 +39,17 @@ export function Topbar() {
       </button>
 
       <IconButton
-        label="Toggle theme"
+        label={t("Toggle theme")}
         icon={theme === 'dark' ? 'Sun' : 'Moon'}
         onClick={toggleTheme}
       />
       <IconButton
-        label="Notifications"
+        label={t("Notifications")}
         icon="Bell"
         onClick={() => navigate('/notification-center')}
         badge
       />
-      <IconButton label="Chat" icon="MessageSquare" onClick={() => navigate('/aiassistant')} />
+      <IconButton label={t("Chat")} icon="MessageSquare" onClick={() => navigate('/aiassistant')} />
     </header>
   )
 }
@@ -70,7 +71,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
+      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar"
     >
       <Icon name={icon} size={16} />
       {badge ? (

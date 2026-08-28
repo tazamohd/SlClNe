@@ -170,9 +170,9 @@ export function Dashboard() {
             </defs>
             <path d={`${REVENUE_PATH} L580,220 L20,220 Z`} fill="url(#revGrad)" />
             <path d={REVENUE_PATH} fill="none" stroke="#0A5ED7" strokeWidth="2.5" />
-            {MONTHS.map((month, i) => (
+            {[t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun')].map((label, i) => (
               <text
-                key={month}
+                key={i}
                 x={20 + i * 112}
                 y="244"
                 fontSize="11"
@@ -180,7 +180,7 @@ export function Dashboard() {
                 textAnchor="middle"
                 fontFamily="Inter,sans-serif"
               >
-                {month}
+                {label}
               </text>
             ))}
           </svg>
@@ -240,6 +240,7 @@ export function Dashboard() {
                 {['Job Card', 'Customer', 'Vehicle', 'Service', 'Priority', 'Status'].map((head) => (
                   <th
                     key={head}
+                    scope="col"
                     className="h-11 whitespace-nowrap border-b border-border px-6 text-start text-xs font-semibold uppercase tracking-[.05em] text-muted"
                   >
                     {t(head)}
@@ -274,9 +275,11 @@ export function Dashboard() {
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-5 pt-4 sm:px-6">
           <span className="text-[13px] text-muted">{t('Showing 1–5 of 27')}</span>
           <div className="flex gap-1.5">
-            <PageButton label="Previous page" icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
+            <PageButton label={t('Previous page')} icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
             <button
               type="button"
+              aria-current="page"
+              aria-label={t('Page 1')}
               className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
             >
               1
@@ -285,12 +288,13 @@ export function Dashboard() {
               <button
                 key={page}
                 type="button"
+                aria-label={`${t('Page')} ${page}`}
                 className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
               >
                 {page}
               </button>
             ))}
-            <PageButton label="Next page" icon={rtl ? 'ChevronLeft' : 'ChevronRight'} />
+            <PageButton label={t('Next page')} icon={rtl ? 'ChevronLeft' : 'ChevronRight'} />
           </div>
         </div>
       </Card>
@@ -408,8 +412,6 @@ const LEGEND = [
   ['Delivered', 4, '#0B1F3B'],
   ['Cancelled', 3, '#64748B'],
 ] as const
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] as const
 
 const REVENUE_PATH =
   'M20,121 C57,112 95,94 132,94 C169,94 207,106 244,106 C281,106 319,81 356,69 C393,57 431,55 468,49 C505,43 543,29 580,22'

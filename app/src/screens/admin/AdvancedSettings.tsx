@@ -74,7 +74,7 @@ interface SettingSection {
 }
 
 export function AdvancedSettings() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { can } = useSession()
   const toast = useToast()
   const canEdit = can('settings', 'e')
@@ -115,7 +115,7 @@ export function AdvancedSettings() {
         { label: t('VAT Rate'), desc: t('Tax Settings'), kind: 'value', value: '15%', latin: true },
         {
           label: t('Business Hours'),
-          desc: rtl ? 'السبت-الخميس' : 'Sat–Thu, 8 AM – 6 PM',
+          desc: t('Sat–Thu, 8 AM – 6 PM'),
           kind: 'value',
           value: '8–18',
           latin: true,
@@ -128,19 +128,19 @@ export function AdvancedSettings() {
       items: [
         {
           label: t('Two-Factor Authentication'),
-          desc: rtl ? 'طبقة أمان إضافية' : 'Extra layer of security',
+          desc: t('Extra layer of security'),
           kind: 'toggle',
           key: 'twoFa',
         },
         {
           label: t('Session Timeout'),
-          desc: rtl ? 'انتهاء تلقائي بعد' : 'Auto-expire after inactivity',
+          desc: t('Auto-expire after inactivity'),
           kind: 'value',
-          value: rtl ? '30 دقيقة' : '30 min',
+          value: t('30 min'),
         },
         {
           label: t('Audit Log'),
-          desc: rtl ? 'تتبع جميع الإجراءات' : 'Track all system actions',
+          desc: t('Track all system actions'),
           kind: 'toggle',
           key: 'auditLog',
         },
@@ -152,13 +152,13 @@ export function AdvancedSettings() {
       items: [
         {
           label: t('Email Notifications'),
-          desc: rtl ? 'إشعارات البريد الإلكتروني' : 'Receive email alerts',
+          desc: t('Receive email alerts'),
           kind: 'toggle',
           key: 'emailNotif',
         },
         {
           label: t('SMS Alerts'),
-          desc: rtl ? 'تنبيهات الرسائل النصية' : 'SMS for critical alerts',
+          desc: t('SMS for critical alerts'),
           kind: 'toggle',
           key: 'smsAlert',
         },
@@ -170,19 +170,19 @@ export function AdvancedSettings() {
       items: [
         {
           label: 'ZATCA E-Invoice',
-          desc: rtl ? 'ربط الفوترة الإلكترونية' : 'Saudi e-invoicing integration',
+          desc: t('Saudi e-invoicing integration'),
           kind: 'badge',
           connected: true,
         },
         {
           label: 'WhatsApp Business',
-          desc: rtl ? 'إشعارات العملاء' : 'Customer notifications',
+          desc: t('Customer notifications'),
           kind: 'badge',
           connected: true,
         },
         {
-          label: rtl ? 'برنامج المحاسبة' : 'Accounting Software',
-          desc: rtl ? 'تصدير البيانات المالية' : 'Financial data export',
+          label: t('Accounting Software'),
+          desc: t('Financial data export'),
           kind: 'badge',
           connected: false,
         },
@@ -194,13 +194,13 @@ export function AdvancedSettings() {
       items: [
         {
           label: t('Auto Backup'),
-          desc: rtl ? 'نسخ احتياطي يومي' : 'Daily automatic backup',
+          desc: t('Daily automatic backup'),
           kind: 'toggle',
           key: 'autoBackup',
         },
         {
           label: t('Retention Period'),
-          desc: rtl ? 'مدة الاحتفاظ بالبيانات' : 'How long to keep data',
+          desc: t('How long to keep data'),
           kind: 'value',
           value: t('1 year'),
         },
@@ -223,7 +223,7 @@ export function AdvancedSettings() {
             {t('Settings')}
           </h1>
           <p className="mt-0.5 text-sm text-muted">
-            {rtl ? 'تكوين النظام' : 'Configure your system'}
+            {t('Configure your system')}
           </p>
         </div>
       </div>

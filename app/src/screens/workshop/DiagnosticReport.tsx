@@ -411,10 +411,10 @@ export function DiagnosticReport() {
                 <table className="w-full min-w-[540px] border-collapse">
                   <thead>
                     <tr className="bg-inset">
-                      <th className={cn(TH, 'px-4 text-start')}>{t('Part')}</th>
-                      <th className={cn(TH, 'px-2 text-start')}>{t('Stock')}</th>
-                      <th className={cn(TH, 'px-2 text-end')}>{t('Qty')}</th>
-                      <th className={cn(TH, 'px-4 text-end')}>{t('Line total')}</th>
+                      <th scope="col" className={cn(TH, 'px-4 text-start')}>{t('Part')}</th>
+                      <th scope="col" className={cn(TH, 'px-2 text-start')}>{t('Stock')}</th>
+                      <th scope="col" className={cn(TH, 'px-2 text-end')}>{t('Qty')}</th>
+                      <th scope="col" className={cn(TH, 'px-4 text-end')}>{t('Line total')}</th>
                     </tr>
                   </thead>
                   <tbody>

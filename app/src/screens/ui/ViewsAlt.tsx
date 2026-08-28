@@ -124,7 +124,7 @@ interface CalendarCell {
 }
 
 export function UICalendarView() {
-  const { t } = usePreferences()
+  const { t, rtl } = usePreferences()
   const [cursor, setCursor] = useState(() => {
     const now = new Date()
     return new Date(now.getFullYear(), now.getMonth(), 1)
@@ -163,7 +163,7 @@ export function UICalendarView() {
             aria-label={t('Previous month')}
             onClick={() => setCursor((c) => new Date(c.getFullYear(), c.getMonth() - 1, 1))}
           >
-            <Icon name="ChevronLeft" size={14} />
+            <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={14} />
           </Button>
           <span className="flex-1 text-center text-sm font-semibold text-heading" dir="ltr">
             {monthLabel}
@@ -174,7 +174,7 @@ export function UICalendarView() {
             aria-label={t('Next month')}
             onClick={() => setCursor((c) => new Date(c.getFullYear(), c.getMonth() + 1, 1))}
           >
-            <Icon name="ChevronRight" size={14} />
+            <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={14} />
           </Button>
         </div>
         <div className="overflow-x-auto">
