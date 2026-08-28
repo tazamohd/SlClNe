@@ -122,7 +122,7 @@ export function JobDetail() {
   }
 
   return (
-    <div className="flex max-w-[1100px] animate-fade-up flex-col gap-6">
+    <div className="flex max-w-[1100px] animate-fade-up motion-reduce:animate-none flex-col gap-6">
       <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">

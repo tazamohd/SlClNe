@@ -29,7 +29,7 @@ export function RegionSelection() {
         <div className="absolute bottom-0 start-0 h-[700px] w-[700px] rounded-full bg-[radial-gradient(circle,var(--tint-bright),transparent_65%)] blur-[64px]" />
       </div>
 
-      <div className={`relative z-[1] flex w-full animate-fade-up flex-col ${isMobile ? 'max-w-full gap-4 p-3' : 'max-w-[420px] gap-5 p-4'}`}>
+      <div className={`relative z-[1] flex w-full animate-fade-up motion-reduce:animate-none flex-col ${isMobile ? 'max-w-full gap-4 p-3' : 'max-w-[420px] gap-5 p-4'}`}>
         <div className="text-center">
           <img
             src="/assets/logo-blue-orange.png"

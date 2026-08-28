@@ -137,7 +137,7 @@ export function MobileCardRow({
 
 /** Vertical stack for a mobile list body, with the design's 16px page padding. */
 export function MobileList({ children }: { children: ReactNode }) {
-  return <div className="flex animate-fade-up flex-col gap-3">{children}</div>
+  return <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3">{children}</div>
 }
 
 /** Compact page title for mobile screens (the 48px gradient heading doesn't

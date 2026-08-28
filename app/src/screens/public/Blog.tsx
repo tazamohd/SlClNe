@@ -77,7 +77,7 @@ export function PublicBlog() {
   })
 
   return (
-    <div className="mx-auto max-w-[1100px] animate-fade-up px-5 py-10 md:px-10 md:py-[60px]">
+    <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro centered title="Blog" subtitle="Latest news and automotive insights" />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {POSTS.map((post) => (

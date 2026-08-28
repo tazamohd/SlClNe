@@ -135,7 +135,7 @@ export function KioskCheckIn() {
 
       {/* Step content */}
       <div className="flex flex-1 items-start justify-center px-4 py-6">
-        <div className="w-full max-w-lg animate-fade-up">
+        <div className="w-full max-w-lg animate-fade-up motion-reduce:animate-none">
           {step === 'identify' ? (
             <IdentifyStep
               phone={phone}

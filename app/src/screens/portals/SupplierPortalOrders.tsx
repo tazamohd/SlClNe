@@ -61,7 +61,7 @@ export function SupplierPortalOrders() {
   ]
 
   return (
-    <div className="flex max-w-[1240px] animate-fade-up flex-col gap-4">
+    <div className="flex max-w-[1240px] animate-fade-up motion-reduce:animate-none flex-col gap-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">

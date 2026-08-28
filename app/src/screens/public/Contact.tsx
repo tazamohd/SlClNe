@@ -207,7 +207,7 @@ export function PublicContact() {
   }
 
   return (
-    <div className="mx-auto max-w-[800px] animate-fade-up px-5 py-10 md:px-10 md:py-[60px]">
+    <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro title="Contact Us" subtitle="Get in touch with our team" />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <form

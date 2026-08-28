@@ -61,7 +61,7 @@ export function CustomerPortal() {
   const invoiceRows = ((invoices.data ?? []) as readonly InvoiceRow[]).slice(0, 5)
 
   return (
-    <div className="flex animate-fade-up flex-col gap-4">
+    <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-4">
       <div>
         <h1 className="font-display text-[15px] font-bold text-heading">
           {t('Hi')}, {userName}

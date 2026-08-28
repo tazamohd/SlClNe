@@ -29,7 +29,7 @@ export interface LegalDocumentProps {
 export function LegalDocument({ title, updated, intro, clauses }: LegalDocumentProps) {
   const t = useT()
   return (
-    <div className="mx-auto max-w-[800px] animate-fade-up px-5 py-10 md:px-10 md:py-[60px]">
+    <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <h1 className="mb-2 mt-0 font-display text-3xl font-black text-heading md:text-[40px]">
         {t(title)}
       </h1>

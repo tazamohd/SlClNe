@@ -46,7 +46,7 @@ export function TechnicianPortal() {
   ] as const
 
   return (
-    <div className="flex animate-fade-up flex-col gap-4">
+    <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-4">
       {/* Gradient hero — greeting, role, today's numbers. */}
       <section
         aria-label={t('Technician Portal')}

@@ -59,7 +59,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
         </header>
 
         <main id="main-content" className="flex-1 overflow-y-auto">
-          <div className="flex animate-fade-up flex-col gap-3.5 p-4">{children}</div>
+          <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3.5 p-4">{children}</div>
         </main>
 
         <nav aria-label={t('App navigation')} className="flex flex-shrink-0 border-t border-border bg-sidebar">

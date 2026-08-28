@@ -72,7 +72,7 @@ export function SupplierPortal() {
   ]
 
   return (
-    <div className="flex max-w-[1240px] animate-fade-up flex-col gap-4">
+    <div className="flex max-w-[1240px] animate-fade-up motion-reduce:animate-none flex-col gap-4">
       {/* Gradient hero -- supplier greeting and key metrics. */}
       <section
         aria-label={t('Supplier Portal')}

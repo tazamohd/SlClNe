@@ -123,7 +123,7 @@ export function TechnicianPortalJobDetail() {
   const finished = job.stage === 'delivery' || job.stage === 'invoiced' || job.stage === 'closed'
 
   return (
-    <div className="flex max-w-[720px] animate-fade-up flex-col gap-3.5">
+    <div className="flex max-w-[720px] animate-fade-up motion-reduce:animate-none flex-col gap-3.5">
       {/* Header row — back, title + code, status. */}
       <div className="flex items-center gap-2.5">
         <Link

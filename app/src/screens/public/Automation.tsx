@@ -53,7 +53,7 @@ export function PublicAutomation() {
   })
 
   return (
-    <div className="mx-auto max-w-[1100px] animate-fade-up px-5 py-10 md:px-10 md:py-[60px]">
+    <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro
         centered
         title="Automation & Workflows"

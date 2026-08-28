@@ -106,7 +106,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <PageBackdrop />
           <div
             className={cn(
-              'relative z-[1] flex animate-fade-up flex-col',
+              'relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col',
               isMobile ? 'gap-5 p-4' : 'gap-8 p-6'
             )}
           >

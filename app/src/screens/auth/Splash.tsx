@@ -31,7 +31,7 @@ export function Splash() {
         <div className="absolute bottom-0 start-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,var(--tint-bright),transparent_65%)] blur-[64px]" />
       </div>
 
-      <div className={`relative z-[1] flex animate-fade-up flex-col items-center ${isMobile ? 'gap-4' : 'gap-6'}`}>
+      <div className={`relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col items-center ${isMobile ? 'gap-4' : 'gap-6'}`}>
         <div className="relative">
           <div
             className="absolute -inset-5 animate-pulse rounded-[20px] bg-salis-gradient opacity-25 blur-[28px]"

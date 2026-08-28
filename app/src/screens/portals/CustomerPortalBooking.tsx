@@ -139,7 +139,7 @@ export function CustomerPortalBooking() {
   const currentStep = steps.findIndex((step) => !step.done)
 
   return (
-    <div className="flex max-w-[720px] animate-fade-up flex-col gap-4">
+    <div className="flex max-w-[720px] animate-fade-up motion-reduce:animate-none flex-col gap-4">
       <div className="flex items-center gap-2.5">
         <Link
           to="/customer-portal"
@@ -406,7 +406,7 @@ export function CustomerPortalBooking() {
 function BookingConfirmed({ row, onAgain }: { row: AppointmentRow; onAgain: () => void }) {
   const { t } = usePreferences()
   return (
-    <div className="flex max-w-[720px] animate-fade-up flex-col gap-4">
+    <div className="flex max-w-[720px] animate-fade-up motion-reduce:animate-none flex-col gap-4">
       <Card role="status" className="flex flex-col items-center gap-3 p-8 text-center">
         <span className="flex rounded-full bg-salis-blue/[.09] p-4 text-salis-blue">
           <Icon name="CalendarCheck" size={28} />

@@ -39,7 +39,7 @@ export function PublicInsurance() {
   })
 
   return (
-    <div className="mx-auto max-w-[800px] animate-fade-up px-5 py-10 md:px-10 md:py-[60px]">
+    <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro
         title="Vehicle Insurance"
         subtitle="Comprehensive and third-party coverage for your vehicles"

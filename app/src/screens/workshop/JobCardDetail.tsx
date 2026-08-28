@@ -115,7 +115,7 @@ export function JobCardDetail() {
   if (isMobile) return <MobileLayout {...shared} stageLabel={stageLabel} />
 
   return (
-    <div className="flex max-w-[1200px] animate-fade-up flex-col gap-6">
+    <div className="flex max-w-[1200px] animate-fade-up motion-reduce:animate-none flex-col gap-6">
       <div>
         <Link
           to="/job-cards"
@@ -214,7 +214,7 @@ function MobileLayout({
 
       <MobileStageStrip current={stageLabel} />
 
-      <div className="flex animate-fade-up flex-col gap-3 p-4">
+      <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3 p-4">
         <Card className="flex items-center gap-2.5 rounded-xl p-3.5">
           <Avatar name={job.cust} size={38} />
           <div className="min-w-0">

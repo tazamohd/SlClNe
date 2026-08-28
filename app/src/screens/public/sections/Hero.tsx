@@ -32,7 +32,7 @@ export function Hero({ badge, title, description, primaryCta, secondaryCta }: He
         className="absolute end-0 top-0 h-[600px] w-[600px] rounded-full blur-[64px]"
         style={{ background: 'radial-gradient(circle, rgba(10,94,215,.06), transparent 70%)' }}
       />
-      <div className="relative mx-auto max-w-[720px] animate-fade-up">
+      <div className="relative mx-auto max-w-[720px] animate-fade-up motion-reduce:animate-none">
         <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-salis-blue/[.08] px-3.5 py-1 text-[13px] font-semibold text-salis-blue">
           {t(badge)}
         </span>

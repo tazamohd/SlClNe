@@ -27,7 +27,7 @@ export function Welcome() {
         </button>
       </div>
 
-      <div className={`relative z-[1] flex animate-fade-up flex-col items-center text-center ${isMobile ? 'max-w-full gap-4 p-3' : 'max-w-[420px] gap-6 p-4'}`}>
+      <div className={`relative z-[1] flex animate-fade-up motion-reduce:animate-none flex-col items-center text-center ${isMobile ? 'max-w-full gap-4 p-3' : 'max-w-[420px] gap-6 p-4'}`}>
         <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" width={1024} height={1024} className={`h-auto ${isMobile ? 'w-[110px]' : 'w-[140px]'}`} />
         <div>
           <h1 className={`font-display font-black text-heading ${isMobile ? 'text-xl' : 'text-[28px]'}`}>

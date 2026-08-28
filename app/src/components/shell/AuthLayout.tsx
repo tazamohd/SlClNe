@@ -21,7 +21,7 @@ export function AuthLayout({
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
       <AuthBackdrop />
       {controls ? <AuthControls /> : null}
-      <div className={cn('relative z-[1] w-full animate-fade-up p-4', className)}>{children}</div>
+      <div className={cn('relative z-[1] w-full animate-fade-up motion-reduce:animate-none p-4', className)}>{children}</div>
     </div>
   )
 }

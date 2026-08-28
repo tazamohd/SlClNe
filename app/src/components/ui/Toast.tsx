@@ -59,7 +59,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           role="status"
           aria-live="polite"
           key={toast.id}
-          className="fixed bottom-6 end-6 z-[100] flex min-w-[280px] animate-fade-up items-start gap-3 rounded-lg border border-border bg-card px-4 py-3.5 shadow-lg"
+          className="fixed bottom-6 end-6 z-[100] flex min-w-[280px] animate-fade-up motion-reduce:animate-none items-start gap-3 rounded-lg border border-border bg-card px-4 py-3.5 shadow-lg"
         >
           <span
             className={
