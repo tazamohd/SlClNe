@@ -266,8 +266,6 @@ export function Opportunities() {
   const { data: opportunities = [], isLoading, isError, error, refetch } = useCollection('opportunities')
   const [creating, setCreating] = useState(false)
 
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
   // Weighted pipeline: value × probability. The unweighted total flatters the
   // forecast, which is what a sales review actually argues about.
   const weighted = useMemo(
@@ -282,6 +280,8 @@ export function Opportunities() {
     () => opportunities.reduce((sum, o) => sum + parseSar(o.value), 0),
     [opportunities]
   )
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Opportunity>[] = [
     { header: 'Name', cell: (o) => t(o.name) },
@@ -415,8 +415,6 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
   const { data: all = [], isLoading, isError, error, refetch } = useCollection('campaigns')
   const [creating, setCreating] = useState(false)
 
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
   const campaigns = useMemo(
     () => (channel ? all.filter((c) => c.type === channel) : all),
     [all, channel]
@@ -429,6 +427,8 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
     const conversions = campaigns.reduce((sum, c) => sum + c.conversions, 0)
     return { reach, opens, clicks, conversions }
   }, [campaigns])
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const title =
     channel === 'email'
@@ -576,8 +576,8 @@ export function CustomerSegments() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const { data: segments = [], isLoading, isError, error, refetch } = useCollection('segments')
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
   const [creating, setCreating] = useState(false)
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Segment>[] = [
     { header: 'Name', cell: (s) => t(s.name) },
@@ -660,7 +660,6 @@ export function CRMTasks() {
   const { can } = useSession()
   const isMobile = useIsMobile()
   const { data: tasks = [], isLoading, isError, error, refetch } = useCollection('crmTasks')
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
   const [status, setStatus] = useState<string>('all')
   const [creating, setCreating] = useState(false)
 
@@ -668,6 +667,8 @@ export function CRMTasks() {
     () => (status === 'all' ? tasks : tasks.filter((task) => task.status === status)),
     [tasks, status]
   )
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<CrmTask>[] = [
     {

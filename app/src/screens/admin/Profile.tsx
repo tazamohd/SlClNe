@@ -96,8 +96,9 @@ export function Profile() {
           <h3 className="mb-3 text-base font-bold text-heading">{t('Change Password')}</h3>
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1.5">
-              <label className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
+              <label htmlFor="m-current-pw" className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
               <Input
+                id="m-current-pw"
                 type="password"
                 placeholder="••••••••"
                 value={currentPassword}
@@ -107,8 +108,9 @@ export function Profile() {
               {pwErrors.current ? <span className="text-[11px] text-salis-orange">{pwErrors.current}</span> : null}
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="font-action text-xs font-medium text-body">{t('New Password')}</label>
+              <label htmlFor="m-new-pw" className="font-action text-xs font-medium text-body">{t('New Password')}</label>
               <Input
+                id="m-new-pw"
                 type="password"
                 placeholder="••••••••"
                 value={newPassword}
@@ -118,8 +120,9 @@ export function Profile() {
               {pwErrors.next ? <span className="text-[11px] text-salis-orange">{pwErrors.next}</span> : null}
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
+              <label htmlFor="m-confirm-pw" className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
               <Input
+                id="m-confirm-pw"
                 type="password"
                 placeholder="••••••••"
                 value={confirmPassword}
@@ -153,15 +156,17 @@ export function Profile() {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-body">{t('Full Name')}</label>
+            <label htmlFor="profile-name" className="font-action text-xs font-medium text-body">{t('Full Name')}</label>
             <Input
+              id="profile-name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-body">{t('Email')}</label>
+            <label htmlFor="profile-email" className="font-action text-xs font-medium text-body">{t('Email')}</label>
             <Input
+              id="profile-email"
               dir="ltr"
               value={email}
               readOnly
@@ -174,8 +179,9 @@ export function Profile() {
         <h3 className="mb-4 text-base font-bold text-heading">{t('Change Password')}</h3>
         <div className="flex flex-col gap-3.5">
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
+            <label htmlFor="current-pw" className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
             <Input
+              id="current-pw"
               type="password"
               placeholder="••••••••"
               value={currentPassword}
@@ -185,8 +191,9 @@ export function Profile() {
             {pwErrors.current ? <span className="text-[11px] text-salis-orange">{pwErrors.current}</span> : null}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-body">{t('New Password')}</label>
+            <label htmlFor="new-pw" className="font-action text-xs font-medium text-body">{t('New Password')}</label>
             <Input
+              id="new-pw"
               type="password"
               placeholder="••••••••"
               value={newPassword}
@@ -196,8 +203,9 @@ export function Profile() {
             {pwErrors.next ? <span className="text-[11px] text-salis-orange">{pwErrors.next}</span> : null}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
+            <label htmlFor="confirm-pw" className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
             <Input
+              id="confirm-pw"
               type="password"
               placeholder="••••••••"
               value={confirmPassword}

@@ -39,10 +39,11 @@ export function Settings() {
         <h3 className="text-[17px] font-bold text-heading">{t('Workshop Profile')}</h3>
         <div className={isMobile ? 'flex flex-col gap-4' : 'grid grid-cols-2 gap-4'}>
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-primary">
+            <label htmlFor="workshop-name" className="font-action text-xs font-medium text-primary">
               {t('Workshop Name')}
             </label>
             <Input
+              id="workshop-name"
               inputSize="md"
               value={wsName}
               onChange={(e) => setWsName(e.target.value)}
@@ -50,10 +51,11 @@ export function Settings() {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="font-action text-xs font-medium text-primary">
+            <label htmlFor="settings-phone" className="font-action text-xs font-medium text-primary">
               {t('Phone')}
             </label>
             <Input
+              id="settings-phone"
               inputSize="md"
               dir="ltr"
               value={phone}

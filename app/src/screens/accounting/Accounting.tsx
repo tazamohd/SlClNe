@@ -176,8 +176,6 @@ export function JournalEntries() {
   const { query, setQuery, filtered } = useFilter(entries, (e) => [e.id, e.ref, e.narration])
   const [creatingEntry, setCreatingEntry] = useState(false)
 
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
   // Double entry: debits must equal credits. Showing the totals makes an
   // unbalanced batch obvious instead of leaving it to be found at close.
   const { debit, credit } = useMemo(() => {
@@ -190,6 +188,8 @@ export function JournalEntries() {
     return { debit: d, credit: c }
   }, [entries])
   const balanced = Math.abs(debit - credit) < 0.005
+
+  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<JournalEntry>[] = [
     { header: 'Entry #', cell: (e) => e.id, code: true },

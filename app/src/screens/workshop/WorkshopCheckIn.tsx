@@ -38,16 +38,16 @@ export function WorkshopCheckIn() {
   const customers = useCollection('customers')
   const vehicles = useCollection('vehicles')
 
+  const [odometer, setOdometer] = useState('')
+  const [fuel, setFuel] = useState<string>('1/2')
+  const [issues, setIssues] = useState('')
+  const [belongings, setBelongings] = useState<readonly string[]>([])
+
   const isLoading = customers.isLoading || vehicles.isLoading
   const loadError = customers.error || vehicles.error
   const refetch = () => { void customers.refetch(); void vehicles.refetch() }
   if (isLoading) return <Loading label="Loading check-in..." />
   if (loadError) return <ErrorState description={loadError.message} onRetry={refetch} />
-
-  const [odometer, setOdometer] = useState('')
-  const [fuel, setFuel] = useState<string>('1/2')
-  const [issues, setIssues] = useState('')
-  const [belongings, setBelongings] = useState<readonly string[]>([])
 
   const hideContact = fieldHidden('Customer contact details')
   const job = stage.job

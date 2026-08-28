@@ -803,21 +803,21 @@ export function UIFormValidation() {
       <Section title="Field States">
         <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-2'}`}>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted">{t('Default Field')}</label>
-            <Input placeholder={t('Enter value...')} />
+            <label htmlFor="ref-default-field" className="text-xs font-medium text-muted">{t('Default Field')}</label>
+            <Input id="ref-default-field" placeholder={t('Enter value...')} />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted">{t('With Value')}</label>
-            <Input defaultValue="Abdullah Al-Salis" />
+            <label htmlFor="ref-with-value" className="text-xs font-medium text-muted">{t('With Value')}</label>
+            <Input id="ref-with-value" defaultValue="Abdullah Al-Salis" />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted">{t('Invalid Field')}</label>
-            <Input defaultValue="abc" invalid />
+            <label htmlFor="ref-invalid-field" className="text-xs font-medium text-muted">{t('Invalid Field')}</label>
+            <Input id="ref-invalid-field" defaultValue="abc" invalid />
             <span className="text-xs text-salis-orange">{t('Please enter a valid phone number')}</span>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-muted">{t('Disabled Field')}</label>
-            <Input defaultValue="Read-only value" disabled />
+            <label htmlFor="ref-disabled-field" className="text-xs font-medium text-muted">{t('Disabled Field')}</label>
+            <Input id="ref-disabled-field" defaultValue="Read-only value" disabled />
           </div>
         </div>
       </Section>
@@ -931,12 +931,15 @@ export function UIModalsCRUD() {
               <Icon name="X" size={16} className="cursor-pointer text-muted" />
             </div>
             <div className="flex flex-col gap-3 p-5">
-              {modal.fields.map(f => (
-                <div key={f} className="flex flex-col gap-1">
-                  <label className="text-xs font-medium text-muted">{t(f)}</label>
-                  <Input placeholder={`${t('Enter')} ${t(f).toLowerCase()}...`} inputSize="md" />
-                </div>
-              ))}
+              {modal.fields.map(f => {
+                const fieldId = `ref-${modal.title.toLowerCase().replace(/\s+/g, '-')}-${f.toLowerCase().replace(/\s+/g, '-')}`
+                return (
+                  <div key={f} className="flex flex-col gap-1">
+                    <label htmlFor={fieldId} className="text-xs font-medium text-muted">{t(f)}</label>
+                    <Input id={fieldId} placeholder={`${t('Enter')} ${t(f).toLowerCase()}...`} inputSize="md" />
+                  </div>
+                )
+              })}
             </div>
             <div className="flex justify-end gap-2 border-t border-border px-5 py-3">
               <Button variant="ghost" size="sm">{t('Cancel')}</Button>

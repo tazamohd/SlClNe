@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
@@ -42,6 +42,11 @@ export function ModelSettings() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
+
+  const baseId = useId()
+  const tempId = `${baseId}-temperature`
+  const tokensId = `${baseId}-max-tokens`
+  const promptId = `${baseId}-system-prompt`
 
   const [selectedModel, setSelectedModel] = useState('sonnet')
   const [temperature, setTemperature] = useState(30)
@@ -131,10 +136,11 @@ export function ModelSettings() {
           <div className="flex flex-col gap-4">
             <div>
               <div className="mb-1.5 flex justify-between">
-                <label className="font-action text-xs font-medium text-primary">{t('Temperature')}</label>
+                <label htmlFor={tempId} className="font-action text-xs font-medium text-primary">{t('Temperature')}</label>
                 <span className="font-mono text-xs font-semibold text-salis-blue">{tempDisplay}</span>
               </div>
               <input
+                id={tempId}
                 type="range"
                 min={0}
                 max={100}
@@ -147,10 +153,11 @@ export function ModelSettings() {
             </div>
             <div>
               <div className="mb-1.5 flex justify-between">
-                <label className="font-action text-xs font-medium text-primary">{t('Max Tokens')}</label>
+                <label htmlFor={tokensId} className="font-action text-xs font-medium text-primary">{t('Max Tokens')}</label>
                 <span className="font-mono text-xs font-semibold text-salis-blue">{tokensDisplay}</span>
               </div>
               <input
+                id={tokensId}
                 type="range"
                 min={1}
                 max={32}
@@ -162,8 +169,9 @@ export function ModelSettings() {
               <p className="mt-1 text-[11px] text-muted">{t('Maximum response length per request')}</p>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="font-action text-xs font-medium text-primary">{t('System Prompt')}</label>
+              <label htmlFor={promptId} className="font-action text-xs font-medium text-primary">{t('System Prompt')}</label>
               <Textarea
+                id={promptId}
                 rows={4}
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
@@ -230,10 +238,11 @@ export function ModelSettings() {
             <div className="flex flex-col gap-[18px]">
               <div>
                 <div className="mb-1.5 flex justify-between">
-                  <label className="font-action text-xs font-medium text-primary">{t('Temperature')}</label>
+                  <label htmlFor={tempId} className="font-action text-xs font-medium text-primary">{t('Temperature')}</label>
                   <span className="font-mono text-xs font-semibold text-salis-blue">{tempDisplay}</span>
                 </div>
                 <input
+                  id={tempId}
                   type="range"
                   min={0}
                   max={100}
@@ -246,10 +255,11 @@ export function ModelSettings() {
               </div>
               <div>
                 <div className="mb-1.5 flex justify-between">
-                  <label className="font-action text-xs font-medium text-primary">{t('Max Tokens')}</label>
+                  <label htmlFor={tokensId} className="font-action text-xs font-medium text-primary">{t('Max Tokens')}</label>
                   <span className="font-mono text-xs font-semibold text-salis-blue">{tokensDisplay}</span>
                 </div>
                 <input
+                  id={tokensId}
                   type="range"
                   min={1}
                   max={32}
@@ -261,8 +271,9 @@ export function ModelSettings() {
                 <p className="mt-1 text-[11px] text-muted">{t('Maximum response length per request')}</p>
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="font-action text-xs font-medium text-primary">{t('System Prompt')}</label>
+                <label htmlFor={promptId} className="font-action text-xs font-medium text-primary">{t('System Prompt')}</label>
                 <Textarea
+                  id={promptId}
                   rows={4}
                   value={systemPrompt}
                   onChange={(e) => setSystemPrompt(e.target.value)}
