@@ -193,7 +193,14 @@ async function emitIconRegistry() {
     }
   }
   // Icons this rebuild introduces that no prototype referenced.
-  for (const extra of ['Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight']) {
+  for (const extra of [
+    'Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight',
+    // Referenced only by feature-screen definitions as `icon: 'Name'` object
+    // props, which neither scan above catches (they match `name="..."` and
+    // quoted tokens in the design bundle). Pin them or Icon renders nothing.
+    'ScanLine', 'HeartPulse', 'BellRing', 'PackageSearch', 'Undo2',
+    'ScanEye', 'Lightbulb', 'LineChart', 'Radio', 'VideoIcon',
+  ]) {
     if (known.has(extra)) used.add(extra)
   }
 
