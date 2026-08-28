@@ -27,6 +27,12 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen justify-center bg-page-alt font-ui">
       <div className="flex h-screen w-full max-w-[430px] flex-col border-x border-border bg-page">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
+        >
+          {t('Skip to main content')}
+        </a>
         <header className="flex flex-shrink-0 items-center gap-2.5 border-b border-border px-4 py-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-salis-gradient text-white">
             <Icon name="Wrench" size={16} />
@@ -52,7 +58,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
           </NavLink>
         </header>
 
-        <main className="flex-1 overflow-y-auto">
+        <main id="main-content" className="flex-1 overflow-y-auto">
           <div className="flex animate-fade-up flex-col gap-3.5 p-4">{children}</div>
         </main>
 

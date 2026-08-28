@@ -50,10 +50,10 @@ export function PublicShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-page font-ui">
       <a
-        href="#public-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-2 focus:top-2 focus:z-20 focus:rounded focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:text-heading"
+        href="#main-content"
+        className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
       >
-        {t('Skip to content')}
+        {t('Skip to main content')}
       </a>
 
       <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-sidebar px-4 md:px-10">
@@ -149,7 +149,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
         </nav>
       ) : null}
 
-      <main id="public-content" className="flex-1">
+      <main id="main-content" className="flex-1">
         {children}
       </main>
 

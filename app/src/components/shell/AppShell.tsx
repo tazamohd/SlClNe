@@ -33,6 +33,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-page font-ui">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
+      >
+        {t('Skip to main content')}
+      </a>
       {isMobile ? (
         <>
           {drawerOpen ? (
@@ -60,7 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* The mobile designs use their own 56px header composition, not a
             narrowed Topbar — no search box, user chip instead. */}
         {isMobile ? <MobileHeader onOpenNav={() => setDrawerOpen(true)} /> : <Topbar />}
-        <main className="relative flex-1 overflow-auto">
+        <main id="main-content" className="relative flex-1 overflow-auto">
           <PageBackdrop />
           <div
             className={cn(

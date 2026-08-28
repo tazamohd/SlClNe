@@ -145,6 +145,12 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
 
   return (
     <div className="flex min-h-screen flex-col bg-page-alt font-ui">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
+      >
+        {t('Skip to main content')}
+      </a>
       <header className="sticky top-0 z-20 border-b border-border bg-sidebar">
         <div className="mx-auto flex w-full max-w-[960px] items-center gap-2.5 px-4 py-3">
           <NavLink
@@ -232,7 +238,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
         </div>
       </header>
 
-      <main className={cn('mx-auto w-full max-w-[960px] flex-1 p-4 md:p-6', tabbed && 'pb-24 md:pb-6')}>
+      <main id="main-content" className={cn('mx-auto w-full max-w-[960px] flex-1 p-4 md:p-6', tabbed && 'pb-24 md:pb-6')}>
         {children}
       </main>
 
