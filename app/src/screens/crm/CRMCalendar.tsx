@@ -138,7 +138,7 @@ export function CRMCalendar() {
                 type="button"
                 aria-label={t('Previous month')}
                 onClick={() => setMonthOffset((o) => o - 1)}
-                className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
               >
                 <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={14} />
               </button>
@@ -146,7 +146,7 @@ export function CRMCalendar() {
                 type="button"
                 aria-label={t('Next month')}
                 onClick={() => setMonthOffset((o) => o + 1)}
-                className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
               >
                 <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={14} />
               </button>

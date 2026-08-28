@@ -173,7 +173,7 @@ function CardAction({
       aria-label={label}
       title={label}
       className={cn(
-        'flex h-7 w-7 flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none',
+        'flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none',
         'transition-colors duration-150',
         tone === 'orange'
           ? 'bg-[rgba(249,115,22,.08)] text-salis-orange hover:bg-[rgba(249,115,22,.16)]'
@@ -281,7 +281,7 @@ export function Templates() {
               aria-selected={filter === id}
               onClick={() => setFilter(id)}
               className={cn(
-                'h-8 flex-shrink-0 cursor-pointer whitespace-nowrap rounded-full px-3.5',
+                'h-10 flex-shrink-0 cursor-pointer whitespace-nowrap rounded-full px-3.5',
                 'font-action text-xs font-semibold transition-all duration-150',
                 filter === id
                   ? 'border-none bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'

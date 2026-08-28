@@ -555,7 +555,7 @@ function CalendarNavButton({
       onClick={onClick}
       className={cn(
         'flex cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-muted transition-colors hover:border-salis-blue hover:text-salis-blue',
-        small ? 'h-7 w-7' : 'h-8 w-8'
+        small ? 'h-10 w-10' : 'h-10 w-10'
       )}
     >
       <Icon name={icon} size={small ? 14 : 16} />

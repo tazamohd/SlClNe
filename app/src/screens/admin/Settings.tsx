@@ -255,7 +255,7 @@ function Switch({
       aria-label={label}
       onClick={onToggle}
       className={cn(
-        'relative h-6 w-[42px] flex-shrink-0 cursor-pointer rounded-full border-none transition-colors duration-200',
+        'relative box-content h-6 w-[42px] flex-shrink-0 cursor-pointer rounded-full border-none py-2.5 transition-colors duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-page',
         on ? 'bg-salis-gradient' : 'bg-border-strong'
       )}

@@ -624,7 +624,10 @@ const Inventory = lazy(() =>
 )
 
 // Spec/feature-map screens lazily resolved to avoid pulling 244 KB of
-// definitions + spec-screen data into the main bundle.
+// definitions + spec-screen data into the main bundle. Screens that have
+// graduated from the generic FeatureScreenView to a dedicated component
+// (insurance, fleet, towing, ...) are lazy-loaded inside the resolver too,
+// keyed by route.
 const SpecScreenResolver = lazy(() => import('./SpecScreenResolver'))
 
 /** Lightweight, brand-consistent fallback shown while a route chunk loads.

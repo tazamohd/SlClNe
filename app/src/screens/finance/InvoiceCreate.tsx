@@ -211,7 +211,7 @@ export function InvoiceCreate() {
                             setLines((prev) => prev.filter((entry) => entry.id !== line.id))
                           }
                           aria-label={`${t('Remove')}: ${t(line.desc)}`}
-                          className="flex cursor-pointer items-center justify-center rounded border-none bg-transparent p-1 text-muted transition-colors hover:text-salis-orange"
+                          className="flex cursor-pointer items-center justify-center rounded border-none bg-transparent p-2.5 text-muted transition-colors hover:text-salis-orange"
                         >
                           <Icon name="Trash2" size={14} />
                         </button>

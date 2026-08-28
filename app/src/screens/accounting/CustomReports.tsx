@@ -450,7 +450,7 @@ export function CustomReports() {
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t('Search reports...')}
               aria-label={t('Search reports...')}
-              className="h-9 w-[200px] rounded border border-border bg-inset px-3 ps-8 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+              className="h-9 w-full rounded border border-border bg-inset px-3 ps-8 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] sm:w-[200px]"
             />
           </span>
         }

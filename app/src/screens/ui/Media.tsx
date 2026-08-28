@@ -151,7 +151,7 @@ function MapControl({ icon, label }: { icon: string; label: string }) {
     <button
       type="button"
       aria-label={label}
-      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body shadow-sm"
+      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body shadow-sm"
     >
       <Icon name={icon} size={14} />
     </button>
@@ -360,7 +360,7 @@ function FileAction({ icon, label, tone }: { icon: string; label: string; tone?:
       type="button"
       aria-label={label}
       className={cn(
-        'flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border-none transition-colors duration-150',
+        'flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border-none transition-colors duration-150',
         tone === 'warning'
           ? 'bg-[rgba(249,115,22,.06)] text-salis-orange hover:bg-[rgba(249,115,22,.12)]'
           : 'bg-[rgba(10,94,215,.06)] text-salis-blue hover:bg-[rgba(10,94,215,.12)]'

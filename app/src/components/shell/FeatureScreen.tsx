@@ -266,7 +266,7 @@ export function ScopeSelect({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-10 min-w-[220px] cursor-pointer rounded border border-border bg-card px-3 font-action text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+        className="h-10 w-full cursor-pointer rounded border border-border bg-card px-3 font-action text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] sm:min-w-[220px] sm:w-auto"
       >
         {options.map((option) => (
           <option key={option} value={option}>
