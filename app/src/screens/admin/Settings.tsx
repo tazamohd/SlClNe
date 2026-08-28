@@ -65,7 +65,7 @@ function loadBoolean(key: string, fallback: boolean): boolean {
 }
 
 export function Settings() {
-  const { t, rtl, theme, setTheme, language, setLanguage, notifications, setNotifications } =
+  const { t, theme, setTheme, language, setLanguage, notifications, setNotifications } =
     usePreferences()
   const toast = useToast()
 
@@ -181,18 +181,16 @@ export function Settings() {
             on={notifications}
             label={t('Email Notifications')}
             onToggle={() => setNotifications(!notifications)}
-            rtl={rtl}
           />
         </SettingRow>
         <SettingRow label={t('SMS Alerts')}>
-          <Switch label={t('SMS Alerts')} on={smsAlerts} onToggle={toggleSms} rtl={rtl} />
+          <Switch label={t('SMS Alerts')} on={smsAlerts} onToggle={toggleSms} />
         </SettingRow>
         <SettingRow label={t('Two-Factor Authentication')}>
           <Switch
             label={t('Two-Factor Authentication')}
             on={twoFactor}
             onToggle={toggleTfa}
-            rtl={rtl}
           />
         </SettingRow>
       </Card>
@@ -238,18 +236,15 @@ function SettingRow({ label, children }: { label: string; children: React.ReactN
   )
 }
 
-/** The design's 42×24 pill switch. Knob position is driven by `rtl` rather
- *  than a mirrored transform, matching `LanguageSelection`'s idiom, so it
- *  travels the correct way in Arabic. */
+/** The design's 42×24 pill switch. Uses `insetInlineStart` so the knob
+ *  travels the correct way in both LTR and RTL without a conditional. */
 function Switch({
   on,
   label,
-  rtl,
   onToggle,
 }: {
   on: boolean
   label: string
-  rtl: boolean
   onToggle: () => void
 }) {
   return (
@@ -266,8 +261,8 @@ function Switch({
       )}
     >
       <span
-        className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.2)] transition-[left,right] duration-200"
-        style={rtl ? { right: on ? 2 : 20 } : { left: on ? 20 : 2 }}
+        className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.2)] transition-[inset-inline-start] duration-200"
+        style={{ insetInlineStart: on ? 20 : 2 }}
       />
     </button>
   )

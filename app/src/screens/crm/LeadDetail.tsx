@@ -89,7 +89,7 @@ export function LeadDetail() {
             {t('Edit')}
           </Button>
           <Button size="md">
-            <Icon name="ArrowRight" size={14} />
+            <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
             {t('Convert to Opportunity')}
           </Button>
         </div>

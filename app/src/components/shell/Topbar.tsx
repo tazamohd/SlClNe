@@ -39,17 +39,17 @@ export function Topbar() {
       </button>
 
       <IconButton
-        label="Toggle theme"
+        label={t("Toggle theme")}
         icon={theme === 'dark' ? 'Sun' : 'Moon'}
         onClick={toggleTheme}
       />
       <IconButton
-        label="Notifications"
+        label={t("Notifications")}
         icon="Bell"
         onClick={() => navigate('/notification-center')}
         badge
       />
-      <IconButton label="Chat" icon="MessageSquare" onClick={() => navigate('/aiassistant')} />
+      <IconButton label={t("Chat")} icon="MessageSquare" onClick={() => navigate('/aiassistant')} />
     </header>
   )
 }

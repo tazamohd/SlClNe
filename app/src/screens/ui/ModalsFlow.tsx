@@ -248,7 +248,7 @@ export function UIModalsData() {
               {DATA_MAPPINGS.map((m) => (
                 <div key={m.source} className="flex items-center gap-2 rounded-lg border border-border bg-inset px-2.5 py-1.5">
                   <span className="flex-1 truncate font-mono text-[11px] text-muted" dir="ltr">{m.source}</span>
-                  <Icon name="ArrowRight" size={12} className="flex-shrink-0 text-faint" />
+                  <Icon name="ArrowRight" size={12} className="flex-shrink-0 text-faint rtl:-scale-x-100" />
                   <span className="flex-1 truncate text-xs font-medium text-heading">{t(m.target)}</span>
                 </div>
               ))}

@@ -166,7 +166,7 @@ export function FlowSpec() {
                 <Badge background={GATE_TONE[step.kind][0]} color={GATE_TONE[step.kind][1]}>{t(GATE_LABEL[step.kind])}: {t(step.gate)}</Badge>
               </div>
               {index < flow.steps.length - 1 ? (
-                <div className="flex w-6 items-center justify-center pt-3.5"><Icon name="ArrowRight" size={15} className="text-border-strong" /></div>
+                <div className="flex w-6 items-center justify-center pt-3.5"><Icon name="ArrowRight" size={15} className="text-border-strong rtl:-scale-x-100" /></div>
               ) : null}
             </div>
           ))}
@@ -189,7 +189,7 @@ export function FlowSpec() {
                 {flow.transitions.map((row) => (
                   <tr key={row.from + row.to} className="transition-colors hover:bg-[rgba(10,94,215,.03)]">
                     <td className="border-b border-border px-5 py-2.5 text-xs text-muted">{t(row.from)}</td>
-                    <td className="border-b border-border px-3 py-2.5 text-center"><Icon name="ArrowRight" size={13} className="text-salis-blue" /></td>
+                    <td className="border-b border-border px-3 py-2.5 text-center"><Icon name="ArrowRight" size={13} className="text-salis-blue rtl:-scale-x-100" /></td>
                     <td className="border-b border-border px-3 py-2.5 text-xs font-semibold text-heading">{t(row.to)}</td>
                     <td className="border-b border-border px-5 py-2.5">
                       <p className="m-0 text-xs text-body">{t(row.rule)}</p>

@@ -100,7 +100,7 @@ export function Unauthorized() {
 /** Session timeout. Shows when it lapsed so the user can tell an idle timeout
  *  from a server-side revocation. */
 export function SessionExpired() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const [at] = useState(() => {
     const now = new Date()
     return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
@@ -136,8 +136,7 @@ export function SessionExpired() {
         {t('Your session has expired. Please sign in again.')}
       </p>
       <p className="font-mono text-[11px] text-faint" dir="ltr">
-        {rtl ? 'انتهت الجلسة الساعة ' : 'Timed out at '}
-        {at}
+        {t('Timed out at')} {at}
       </p>
       <Link
         to="/login"

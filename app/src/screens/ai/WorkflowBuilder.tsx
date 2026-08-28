@@ -161,7 +161,7 @@ export function WorkflowBuilder() {
                       {t(step.label)}
                     </span>
                     {index < wf.steps.length - 1 ? (
-                      <Icon name="ArrowRight" size={12} className="flex-shrink-0 text-faint" />
+                      <Icon name="ArrowRight" size={12} className="flex-shrink-0 text-faint rtl:-scale-x-100" />
                     ) : null}
                   </div>
                 ))}
