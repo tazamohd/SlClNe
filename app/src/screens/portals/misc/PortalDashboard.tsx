@@ -29,7 +29,7 @@ const TYPE_ICONS: Record<string, { icon: string; bg: string; fg: string }> = {
   Appointment: { icon: 'Calendar', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Invoice: { icon: 'FileText', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   Vehicle: { icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Message: { icon: 'MessageSquare', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Message: { icon: 'MessageSquare', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 export function PortalDashboard() {
@@ -46,7 +46,7 @@ export function PortalDashboard() {
     { label: t('New Appointment'), icon: 'CalendarPlus', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Create Invoice'), icon: 'FilePlus', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Register Vehicle'), icon: 'CarFront', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Send Message'), icon: 'Send', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Send Message'), icon: 'Send', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<RecentActivity>[] = [

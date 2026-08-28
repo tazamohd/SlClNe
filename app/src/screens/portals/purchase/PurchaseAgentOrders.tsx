@@ -29,8 +29,8 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Draft: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Submitted: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Confirmed: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Shipped: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Received: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Shipped: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Received: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
@@ -40,7 +40,7 @@ export function PurchaseAgentOrders() {
   const kpis = [
     { label: t('Total Orders'), value: String(ORDERS.length), icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Total Value'), value: formatSar(37600), icon: 'Wallet', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('In Transit'), value: '1', icon: 'Truck', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('In Transit'), value: '1', icon: 'Truck', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Received'), value: '2', icon: 'PackageCheck', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   ]
 

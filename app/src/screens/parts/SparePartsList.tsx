@@ -27,7 +27,7 @@ const PARTS = [
 type Part = (typeof PARTS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Backordered') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
+  if (status === 'Backordered') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
   if (status === 'Discontinued') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
   return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
 }
@@ -52,7 +52,7 @@ export function SparePartsList() {
   const kpis = [
     { label: t('Total Parts'), value: String(PARTS.length), icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Backordered'), value: String(backordered), icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: '#F59E0B' },
+    { label: t('Backordered'), value: String(backordered), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Categories'), value: String(categories), icon: 'Tag', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

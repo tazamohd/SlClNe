@@ -30,7 +30,7 @@ const VEHICLES: CustomerVehicle[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'In Service': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  'Needs Attention': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  'Needs Attention': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 export function CustomerAppVehicles() {
@@ -40,7 +40,7 @@ export function CustomerAppVehicles() {
   const kpis = [
     { label: t('My Vehicles'), value: String(VEHICLES.length), icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('In Service'), value: String(VEHICLES.filter((v) => v.status === 'In Service').length), icon: 'Wrench', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Needs Attention'), value: String(VEHICLES.filter((v) => v.status === 'Needs Attention').length), icon: 'AlertTriangle', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Needs Attention'), value: String(VEHICLES.filter((v) => v.status === 'Needs Attention').length), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Total Mileage'), value: '144K', icon: 'Gauge', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

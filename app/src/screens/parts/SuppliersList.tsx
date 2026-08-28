@@ -25,7 +25,7 @@ type Supplier = (typeof SUPPLIERS)[number]
 
 function statusColor(status: string) {
   if (status === 'Inactive') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  if (status === 'Pending') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
+  if (status === 'Pending') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
   return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
 }
 
@@ -52,7 +52,7 @@ export function SuppliersList() {
   const kpis = [
     { label: t('Total Suppliers'), value: String(SUPPLIERS.length), icon: 'Building2', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Active'), value: String(activeCount), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Rating'), value: avgRating, icon: 'Star', bg: 'rgba(245,158,11,.1)', fg: '#F59E0B' },
+    { label: t('Avg Rating'), value: avgRating, icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Total Orders'), value: String(totalOrders), icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

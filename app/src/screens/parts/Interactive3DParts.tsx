@@ -26,8 +26,8 @@ const PART_MODELS: PartModel[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Available: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Upcoming': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  Premium: { bg: 'rgba(245,158,11,.15)', fg: 'rgb(245,158,11)' },
+  'Upcoming': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Premium: { bg: 'rgba(249,115,22,.15)', fg: 'var(--salis-orange)' },
 }
 
 export function Interactive3DParts() {

@@ -25,8 +25,8 @@ const INVOICES: Invoice[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Paid: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Paid: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
@@ -38,8 +38,8 @@ export function ClientPortalInvoices() {
 
   const kpis = [
     { label: t('Total Invoices'), value: String(INVOICES.length), icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Amount Due'), value: formatSar(totalOwed), icon: 'AlertCircle', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-    { label: t('Total Paid'), value: formatSar(totalPaid), icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+    { label: t('Amount Due'), value: formatSar(totalOwed), icon: 'AlertCircle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Paid'), value: formatSar(totalPaid), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Overdue'), value: '1', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   ]
 

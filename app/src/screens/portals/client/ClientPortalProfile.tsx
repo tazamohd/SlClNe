@@ -46,7 +46,7 @@ export function ClientPortalProfile() {
             </span>
             <div>
               <p className="text-[15px] font-bold text-heading">{PROFILE.name}</p>
-              <Badge background="rgba(245,158,11,.1)" color="rgb(245,158,11)">{t(PROFILE.loyaltyTier)}</Badge>
+              <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t(PROFILE.loyaltyTier)}</Badge>
             </div>
           </div>
         </Card>
@@ -99,7 +99,7 @@ export function ClientPortalProfile() {
               <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(f.label)}</span>
                 {f.label === 'Loyalty Tier' ? (
-                  <Badge background="rgba(245,158,11,.1)" color="rgb(245,158,11)">{t(f.value)}</Badge>
+                  <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t(f.value)}</Badge>
                 ) : (
                   <span className="text-sm font-medium text-heading">{f.value}</span>
                 )}

@@ -43,7 +43,7 @@ const METHODS: PaymentMethod[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Refunded: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }
 
@@ -55,7 +55,7 @@ export function CustomerAppPayments() {
   const kpis = [
     { label: t('Total Spent'), value: `${(totalSpent / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

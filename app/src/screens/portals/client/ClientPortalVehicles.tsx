@@ -23,9 +23,9 @@ const VEHICLES: Vehicle[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'In Service': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Pending Pickup': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  'Pending Pickup': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 export function ClientPortalVehicles() {

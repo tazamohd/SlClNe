@@ -35,12 +35,8 @@ for (const f of fs.readdirSync(tokensDir)) {
   for (const m of css.matchAll(/#[0-9A-Fa-f]{3,8}\b/g)) TOKENS.add(m[0].toUpperCase())
 }
 
-function hexToHsl(hex) {
-  let h = hex.slice(1)
-  if (h.length === 3) h = h.split('').map((c) => c + c).join('')
-  const r = parseInt(h.slice(0, 2), 16) / 255
-  const g = parseInt(h.slice(2, 4), 16) / 255
-  const b = parseInt(h.slice(4, 6), 16) / 255
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255
   const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min
   const l = (max + min) / 2
   if (!d) return { h: 0, s: 0, l }
@@ -51,6 +47,12 @@ function hexToHsl(hex) {
   else hue = (r - g) / d + 4
   hue = Math.round(hue * 60)
   return { h: hue < 0 ? hue + 360 : hue, s, l }
+}
+
+function hexToHsl(hex) {
+  let h = hex.slice(1)
+  if (h.length === 3) h = h.split('').map((c) => c + c).join('')
+  return rgbToHsl(parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16))
 }
 
 /** Hue bands the brand forbids. Greys and near-blacks are exempt — a desaturated
@@ -91,6 +93,14 @@ for (const abs of files(path.join(APP, 'src'))) {
       if (!NEUTRAL(hsl) && band && !band.allowed) forbidden.push({ ...where, band: band.name })
       else if (!TOKENS.has(hex)) drift.push(where)
       else inline.push(where)
+    }
+    for (const m of line.matchAll(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})/g)) {
+      const [r, g, b] = [+m[1], +m[2], +m[3]]
+      const hsl = rgbToHsl(r, g, b)
+      const band = BANDS.find((bn) => bn.test(hsl.h))
+      if (!NEUTRAL(hsl) && band && !band.allowed) {
+        forbidden.push({ file: rel, line: i + 1, hex: `rgb(${r},${g},${b})`, band: band.name, text: line.trim().slice(0, 90) })
+      }
     }
   })
 }

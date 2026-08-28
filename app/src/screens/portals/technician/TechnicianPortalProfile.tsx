@@ -41,8 +41,8 @@ const CERTIFICATIONS = [
 ]
 
 const CERT_STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  'Expiring Soon': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'Expiring Soon': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 export function TechnicianPortalProfile() {

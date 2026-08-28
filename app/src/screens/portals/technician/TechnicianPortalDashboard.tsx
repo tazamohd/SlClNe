@@ -25,7 +25,7 @@ const ASSIGNED_JOBS: Job[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Queued: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  'Waiting Parts': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  'Waiting Parts': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
@@ -40,8 +40,8 @@ export function TechnicianPortalDashboard() {
   const kpis = [
     { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-    { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+    { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Job>[] = [

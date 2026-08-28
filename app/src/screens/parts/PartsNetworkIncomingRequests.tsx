@@ -30,13 +30,13 @@ const INCOMING_REQUESTS: IncomingRequest[] = [
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
   Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  High: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  High: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Critical: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   New: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Quoted: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Quoted: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Accepted: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
   Declined: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Expired: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },

@@ -24,9 +24,9 @@ const RECENT_ORDERS: RecentOrder[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Delivered: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Delivered: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'In Transit': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
@@ -36,7 +36,7 @@ export function PurchaseAgentDashboard() {
   const kpis = [
     { label: t('Open Orders'), value: '8', icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Monthly Spend'), value: formatSar(45200), icon: 'Wallet', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Pending Approvals'), value: '3', icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Pending Approvals'), value: '3', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Active Suppliers'), value: '12', icon: 'Users', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

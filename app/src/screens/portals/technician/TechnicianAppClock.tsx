@@ -22,9 +22,9 @@ const RECENT_PUNCHES: RecentPunch[] = [
 ]
 
 const ACTION_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
-  'Clock In': { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)', icon: 'LogIn' },
+  'Clock In': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'LogIn' },
   'Clock Out': { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)', icon: 'LogOut' },
-  'Break Start': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)', icon: 'Coffee' },
+  'Break Start': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)', icon: 'Coffee' },
   'Break End': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'Play' },
 }
 
@@ -33,10 +33,10 @@ export function TechnicianAppClock() {
   const [clockedIn] = useState(true)
 
   const kpis = [
-    { label: t('Status'), value: clockedIn ? t('On Shift') : t('Off Shift'), icon: 'Clock', bg: clockedIn ? 'rgba(16,185,129,.1)' : 'rgba(107,114,128,.1)', fg: clockedIn ? 'rgb(16,185,129)' : 'rgb(107,114,128)' },
+    { label: t('Status'), value: clockedIn ? t('On Shift') : t('Off Shift'), icon: 'Clock', bg: clockedIn ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)', fg: clockedIn ? 'var(--salis-blue)' : 'rgb(107,114,128)' },
     { label: t('Clock In'), value: '07:55 AM', icon: 'LogIn', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Elapsed'), value: '6h 35m', icon: 'Timer', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Break Used'), value: '30m', icon: 'Coffee', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Break Used'), value: '30m', icon: 'Coffee', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<RecentPunch>[] = [

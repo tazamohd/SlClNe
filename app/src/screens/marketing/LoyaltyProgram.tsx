@@ -30,7 +30,7 @@ const MEMBERS: LoyaltyMember[] = [
 
 const TIER_STYLES: Record<string, { bg: string; fg: string }> = {
   Platinum: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Gold: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Gold: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Silver: { bg: 'rgba(107,114,128,.15)', fg: 'rgb(107,114,128)' },
   Bronze: { bg: 'rgba(180,130,80,.1)', fg: 'rgb(180,130,80)' },
 }

@@ -30,8 +30,8 @@ const TYPE_ICONS: Record<string, string> = {
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Upcoming: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
 
@@ -41,7 +41,7 @@ export function ClientPortalDashboard() {
   const kpis = [
     { label: t('My Vehicles'), value: '3', icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Appointments'), value: '2', icon: 'Calendar', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Open Invoices'), value: '1', icon: 'FileText', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Open Invoices'), value: '1', icon: 'FileText', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Messages'), value: '5', icon: 'MessageSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

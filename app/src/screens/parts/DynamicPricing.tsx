@@ -21,7 +21,7 @@ type Rule = (typeof RULES)[number]
 
 function demandColor(level: string) {
   if (level === 'Critical') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  if (level === 'High') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
+  if (level === 'High') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
   if (level === 'Low') return { background: 'rgba(10,94,215,.08)', color: 'var(--salis-blue)' }
   return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
 }
@@ -39,7 +39,7 @@ export function DynamicPricing() {
     { label: t('Avg Markup'), value: `${avgMarkup}%`, icon: 'Percent', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Revenue Impact'), value: revenueImpact, icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Active Rules'), value: String(activeRules), icon: 'Settings', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Auto-Adjusted'), value: String(autoAdjusted), icon: 'Zap', bg: 'rgba(245,158,11,.1)', fg: '#F59E0B' },
+    { label: t('Auto-Adjusted'), value: String(autoAdjusted), icon: 'Zap', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Rule>[] = [

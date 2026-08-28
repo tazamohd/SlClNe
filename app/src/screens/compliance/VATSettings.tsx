@@ -35,7 +35,7 @@ export function VATSettings() {
 
   const summaryRows = [
     { label: t('Total VAT Collected'), amount: SUMMARY.totalCollected, bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'TrendingUp' },
-    { label: t('Total VAT Paid'), amount: SUMMARY.totalPaid, bg: 'rgba(245,158,11,.12)', fg: '#B45309', icon: 'TrendingDown' },
+    { label: t('Total VAT Paid'), amount: SUMMARY.totalPaid, bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)', icon: 'TrendingDown' },
     { label: t('Net VAT'), amount: SUMMARY.netVat, bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'DollarSign' },
   ]
 

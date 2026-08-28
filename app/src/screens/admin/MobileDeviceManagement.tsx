@@ -29,7 +29,7 @@ const DEVICES: ManagedDevice[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Inactive: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Inactive: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Lost: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 

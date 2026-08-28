@@ -28,13 +28,13 @@ const TASKS: Task[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Pending: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Completed: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
   High: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Medium: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Medium: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Low: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
 

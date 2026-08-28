@@ -17,7 +17,7 @@ const METRICS = [
 
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   'Within Limits': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Warning: { bg: 'rgba(245,158,11,.12)', fg: '#B45309' },
+  Warning: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   Exceeding: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
 }
 
@@ -27,7 +27,7 @@ function progressPercent(current: number, target: number): number {
 
 function progressColor(status: string): string {
   if (status === 'Within Limits') return 'var(--salis-blue)'
-  if (status === 'Warning') return '#B45309'
+  if (status === 'Warning') return 'var(--salis-orange)'
   return '#EA580C'
 }
 

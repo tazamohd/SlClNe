@@ -26,7 +26,7 @@ const PAYMENTS: Payment[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Paid: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Scheduled: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
@@ -38,7 +38,7 @@ export function PurchaseAgentPayments() {
     { label: t('Total Payable'), value: formatSar(35500), icon: 'Wallet', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Paid This Month'), value: formatSar(13200), icon: 'CheckCircle', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
     { label: t('Overdue'), value: formatSar(3600), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-    { label: t('Scheduled'), value: formatSar(6200), icon: 'Calendar', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Scheduled'), value: formatSar(6200), icon: 'Calendar', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Payment>[] = [

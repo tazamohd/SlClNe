@@ -34,7 +34,7 @@ const ACTIVE_JOBS: ActiveJob[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Paused: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Paused: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 export function TechnicianMobile() {
@@ -53,7 +53,7 @@ export function TechnicianMobile() {
             <div>
               <p className="text-[13px] font-bold text-heading">{t('Ahmed Al-Farsi')}</p>
               <div className="flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-[rgb(16,185,129)]" />
+                <span className="h-2 w-2 rounded-full bg-[var(--salis-blue)]" />
                 <span className="text-xs text-muted">{t('Clocked In')} - 6h 30m</span>
               </div>
             </div>

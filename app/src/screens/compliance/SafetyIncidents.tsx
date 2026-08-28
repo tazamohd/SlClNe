@@ -16,14 +16,14 @@ const INCIDENTS = [
 
 const SEVERITY_PALETTE: Record<string, { bg: string; fg: string }> = {
   Low: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Medium: { bg: 'rgba(245,158,11,.12)', fg: '#B45309' },
+  Medium: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   High: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
   Critical: { bg: 'rgba(11,31,59,.12)', fg: '#0B1F3B' },
 }
 
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   Open: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
-  Investigating: { bg: 'rgba(245,158,11,.12)', fg: '#B45309' },
+  Investigating: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   Resolved: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Closed: { bg: 'rgba(100,116,139,.1)', fg: '#64748B' },
 }
@@ -39,7 +39,7 @@ export function SafetyIncidents() {
   const kpis = [
     { label: t('Total Incidents'), value: String(INCIDENTS.length), icon: 'AlertTriangle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Open'), value: String(openCount), icon: 'AlertCircle', bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
-    { label: t('This Month'), value: String(thisMonth), icon: 'Calendar', bg: 'rgba(245,158,11,.12)', fg: '#B45309' },
+    { label: t('This Month'), value: String(thisMonth), icon: 'Calendar', bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
     { label: t('Avg Resolution Days'), value: '4.2', icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

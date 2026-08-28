@@ -32,14 +32,14 @@ const TASKS: Task[] = [
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
   Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  High: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  High: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Urgent: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'To Do': { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Done: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Done: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
@@ -63,7 +63,7 @@ export function TasksList() {
     { label: t('Total Tasks'), value: String(TASKS.length), icon: 'CheckSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('In Progress'), value: String(TASKS.filter((t) => t.status === 'In Progress').length), icon: 'Loader', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Overdue'), value: String(TASKS.filter((t) => t.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-    { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+    { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Task>[] = [

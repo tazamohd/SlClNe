@@ -34,7 +34,7 @@ export function ZakatSettings() {
           {settings.map((s, i) => (
             <MobileCardRow key={i} label={s.label}>
               {s.badge ? (
-                <Badge background="rgba(245,158,11,.12)" color="#B45309">{t(s.value!)}</Badge>
+                <Badge background="rgba(249,115,22,.12)" color="var(--salis-orange)">{t(s.value!)}</Badge>
               ) : s.money !== undefined ? (
                 <Money sar={s.money} className="text-xs" />
               ) : (
@@ -58,7 +58,7 @@ export function ZakatSettings() {
             <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{s.label}</span>
               {s.badge ? (
-                <Badge background="rgba(245,158,11,.12)" color="#B45309">{t(s.value!)}</Badge>
+                <Badge background="rgba(249,115,22,.12)" color="var(--salis-orange)">{t(s.value!)}</Badge>
               ) : s.money !== undefined ? (
                 <span className="font-mono text-sm font-medium text-heading"><Money sar={s.money} /></span>
               ) : (

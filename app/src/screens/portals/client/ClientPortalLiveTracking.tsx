@@ -23,10 +23,10 @@ const TRACKING: TrackingItem[] = [
 
 const STAGE_STYLES: Record<string, { bg: string; fg: string }> = {
   'Checked In': { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Diagnosis: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Diagnosis: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'Quality Check': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Ready: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Ready: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
 
 const STAGES = ['Checked In', 'Diagnosis', 'In Progress', 'Quality Check', 'Ready']

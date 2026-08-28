@@ -31,7 +31,7 @@ const VEHICLES: Vehicle[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'In Service': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  'Awaiting Pickup': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  'Awaiting Pickup': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Inactive: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }
 
@@ -41,7 +41,7 @@ export function PortalVehicles() {
   const kpis = [
     { label: t('Total Vehicles'), value: '1,842', icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('In Service'), value: '18', icon: 'Wrench', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Awaiting Pickup'), value: '6', icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Awaiting Pickup'), value: '6', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('New This Month'), value: '34', icon: 'Plus', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
 

@@ -26,7 +26,7 @@ const DELIVERIES: Delivery[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Transit': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Out for Delivery': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  'Out for Delivery': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Delivered: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Delayed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
@@ -36,7 +36,7 @@ export function PurchaseAgentDelivery() {
 
   const kpis = [
     { label: t('Active Shipments'), value: '3', icon: 'Truck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Out for Delivery'), value: '1', icon: 'Package', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Out for Delivery'), value: '1', icon: 'Package', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Delivered'), value: '2', icon: 'PackageCheck', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
     { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   ]

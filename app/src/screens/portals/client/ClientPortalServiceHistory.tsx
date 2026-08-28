@@ -26,7 +26,7 @@ const SERVICE_HISTORY: ServiceRecord[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   'Warranty Claim': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
 

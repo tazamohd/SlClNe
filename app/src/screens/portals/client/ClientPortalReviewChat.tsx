@@ -39,8 +39,8 @@ const MESSAGES: ChatMessage[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Published: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Published: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Replied: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
 }
 
@@ -48,7 +48,7 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
       {Array.from({ length: 5 }, (_, i) => (
-        <Icon key={i} name="Star" size={12} className={i < rating ? 'text-[rgb(245,158,11)]' : 'text-muted/30'} />
+        <Icon key={i} name="Star" size={12} className={i < rating ? 'text-[var(--salis-orange)]' : 'text-muted/30'} />
       ))}
     </div>
   )

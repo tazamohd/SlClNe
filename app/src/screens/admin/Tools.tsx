@@ -29,7 +29,7 @@ const TOOLS: SystemTool[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Available: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Running: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Running: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Disabled: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }
 

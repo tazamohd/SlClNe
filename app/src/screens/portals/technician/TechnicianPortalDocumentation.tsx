@@ -26,7 +26,7 @@ const DOCUMENTS: Document[] = [
 
 const CATEGORY_STYLES: Record<string, { bg: string; fg: string }> = {
   Manual: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  TSB: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  TSB: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Procedure: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   Safety: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }

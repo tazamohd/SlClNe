@@ -31,7 +31,7 @@ function StarRating({ rating }: { rating: number }) {
           key={i}
           name="Star"
           size={14}
-          className={i < rating ? 'text-[rgb(245,158,11)]' : 'text-border'}
+          className={i < rating ? 'text-[var(--salis-orange)]' : 'text-border'}
         />
       ))}
     </div>
@@ -43,7 +43,7 @@ export function GoogleMyBusiness() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('Average Rating'), value: '4.6', icon: 'Star', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Average Rating'), value: '4.6', icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Total Reviews'), value: '234', icon: 'MessageSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Profile Views'), value: '1,890', icon: 'Eye', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Direction Requests'), value: '456', icon: 'Navigation', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
@@ -79,7 +79,7 @@ export function GoogleMyBusiness() {
               trailing={
                 r.replied
                   ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Replied')}</Badge>
-                  : <Badge background="rgba(245,158,11,.1)" color="rgb(245,158,11)">{t('Pending')}</Badge>
+                  : <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Pending')}</Badge>
               }
             />
             <p className="mt-1 text-xs text-body">{r.text}</p>
@@ -116,7 +116,7 @@ export function GoogleMyBusiness() {
               <div className="ms-4 flex-shrink-0">
                 {r.replied
                   ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Replied')}</Badge>
-                  : <Badge background="rgba(245,158,11,.1)" color="rgb(245,158,11)">{t('Pending')}</Badge>}
+                  : <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Pending')}</Badge>}
               </div>
             </div>
           ))}

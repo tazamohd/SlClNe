@@ -29,7 +29,7 @@ const INVENTORY: InventoryItem[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Stock': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Low Stock': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  'Low Stock': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   'Out of Stock': { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
 }
 
@@ -43,7 +43,7 @@ export function PurchaseAgentInventory() {
     { label: t('Total SKUs'), value: '386', icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Units on Hand'), value: totalItems.toLocaleString(), icon: 'Boxes', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Inventory Value'), value: `${(totalValue / 1000).toFixed(0)}K SAR`, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Low Stock Alerts'), value: '12', icon: 'AlertTriangle', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Low Stock Alerts'), value: '12', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<InventoryItem>[] = [

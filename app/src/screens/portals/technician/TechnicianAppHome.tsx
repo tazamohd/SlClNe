@@ -32,7 +32,7 @@ const TYPE_ICONS: Record<string, string> = {
 const TYPE_STYLES: Record<string, { bg: string; fg: string }> = {
   job: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   parts: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  schedule: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  schedule: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   alert: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 
@@ -42,9 +42,9 @@ export function TechnicianAppHome() {
 
   const kpis = [
     { label: t('Jobs Today'), value: '5', icon: 'Clipboard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Completed'), value: '3', icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+    { label: t('Completed'), value: '3', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Hours Logged'), value: '6.5h', icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Unread'), value: '2', icon: 'Bell', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Unread'), value: '2', icon: 'Bell', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   ]
 
   if (isMobile) {

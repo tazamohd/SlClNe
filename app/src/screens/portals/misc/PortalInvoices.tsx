@@ -28,7 +28,7 @@ const INVOICES: Invoice[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Paid: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Overdue: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
   Draft: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }
@@ -41,7 +41,7 @@ export function PortalInvoices() {
 
   const kpis = [
     { label: t('Total Invoices'), value: '142', icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Outstanding'), value: `${(totalOutstanding / 1000).toFixed(1)}K`, icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Outstanding'), value: `${(totalOutstanding / 1000).toFixed(1)}K`, icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Collected MTD'), value: `${(paidThisMonth / 1000).toFixed(1)}K`, icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Overdue'), value: '3', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
   ]

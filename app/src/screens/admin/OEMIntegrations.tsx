@@ -27,7 +27,7 @@ const OEM_CONNECTIONS: OEMConnection[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Connected: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Error: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
   Inactive: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }

@@ -25,8 +25,8 @@ const SOFTWARE_TOOLS: SoftwareTool[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-  'Update Available': { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'Update Available': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   Expired: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
 }
 

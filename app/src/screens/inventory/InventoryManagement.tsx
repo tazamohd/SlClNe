@@ -26,7 +26,7 @@ type Item = (typeof ITEMS)[number]
 
 function statusColor(status: string) {
   if (status === 'Out of Stock') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  if (status === 'Low Stock') return { background: 'rgba(245,158,11,.1)', color: '#F59E0B' }
+  if (status === 'Low Stock') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
   return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
 }
 
@@ -41,7 +41,7 @@ export function InventoryManagement() {
   const kpis = [
     { label: t('Total SKUs'), value: String(ITEMS.length), icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
     { label: t('Total Value'), value: formatSar(totalValue), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Low Stock Items'), value: String(lowStock), icon: 'AlertTriangle', bg: 'rgba(245,158,11,.1)', fg: '#F59E0B' },
+    { label: t('Low Stock Items'), value: String(lowStock), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Out of Stock'), value: String(outOfStock), icon: 'XCircle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
   ]
 

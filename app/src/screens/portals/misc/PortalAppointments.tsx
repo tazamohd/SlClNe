@@ -29,7 +29,7 @@ const APPOINTMENTS: Appointment[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Confirmed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   'In Progress': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   Completed: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
   Cancelled: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
@@ -43,7 +43,7 @@ export function PortalAppointments() {
 
   const kpis = [
     { label: t('Today'), value: String(todayCount), icon: 'Calendar', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Pending'), value: String(pendingCount), icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Pending'), value: String(pendingCount), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('This Week'), value: '31', icon: 'CalendarDays', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
     { label: t('Avg Duration'), value: '48m', icon: 'Timer', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]

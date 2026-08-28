@@ -17,8 +17,8 @@ const PROFILE_INFO = [
 
 const STATS = [
   { label: 'Jobs This Month', value: '42', icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  { label: 'Avg Rating', value: '4.8', icon: 'Star', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
-  { label: 'On-Time Rate', value: '96%', icon: 'Clock', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  { label: 'Avg Rating', value: '4.8', icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  { label: 'On-Time Rate', value: '96%', icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   { label: 'Efficiency', value: '92%', icon: 'TrendingUp', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
 ]
 
@@ -33,7 +33,7 @@ const SKILLS = [
 const LEVEL_STYLES: Record<string, { bg: string; fg: string }> = {
   Expert: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Advanced: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Intermediate: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Intermediate: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
 }
 
 export function TechnicianAppProfile() {

@@ -26,9 +26,9 @@ const ATTENDANCE: AttendanceRecord[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Present: { bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
+  Present: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Absent: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Late: { bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+  Late: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
   'Half Day': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   Holiday: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
 }
@@ -37,8 +37,8 @@ export function TechnicianPortalAttendance() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Present Days'), value: '18', icon: 'CheckCircle', bg: 'rgba(16,185,129,.1)', fg: 'rgb(16,185,129)' },
-    { label: t('Late Days'), value: '2', icon: 'Clock', bg: 'rgba(245,158,11,.1)', fg: 'rgb(245,158,11)' },
+    { label: t('Present Days'), value: '18', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Late Days'), value: '2', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
     { label: t('Absent'), value: '1', icon: 'XCircle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
     { label: t('Attendance Rate'), value: '94%', icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
   ]
