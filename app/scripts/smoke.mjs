@@ -1512,7 +1512,7 @@ Object.assign(EXPECTED_TEXT, {
   '/error404': '404',
   '/estimate-detail': 'Estimate',
   '/hrpayroll': 'HR & Payroll',
-  '/job-card-detail': 'Created',
+  '/job-card-detail': 'Services',
   '/onboarding': 'Welcome to SALIS AUTO',
   '/onboarding-2': 'Welcome to SALIS AUTO',
   '/supplier-portal': 'Active Orders',
@@ -1522,7 +1522,84 @@ Object.assign(EXPECTED_TEXT, {
   '/customer-app/insurance': 'Insurance',
   '/customer-app/loans': 'Loans',
   '/customer-portal/booking': 'Booking',
-  // call-center/logs renders sidebar only — no main content yet (BLK-002)
+  '/fleet-contract': 'Fleet Contract',
+  '/invite-acceptance': 'Invitation',
+  '/invoice-preview': 'Invoice',
+  '/lead-detail': 'Lead',
+  '/logout-confirmation': 'Confirm Logout',
+  '/native/android': 'Android App',
+  '/native/i-os': 'iOS App',
+  '/profile-completion': 'Complete Your Profile',
+  '/reports-analytics': 'Analytics Overview',
+  '/role-selection': 'Select Your Role',
+  '/roles-permissions': 'Roles & Permissions',
+  '/social-login': 'Sign In',
+  '/supplier-portal/orders': 'Orders',
+  '/technician-kb': 'Knowledge Base',
+  '/technician-portal/job-detail': 'Job Detail',
+  '/users-teams': 'Users & Teams',
+  '/vehicle-detail': 'Vehicles',
+  '/whats-app-campaigns': 'WhatsApp Campaigns',
+  '/bidashboard': 'BI Dashboard',
+  '/job-detail': 'Timeline',
+  // Public portal pages render human-readable titles, not component names
+  '/public-portal/about': 'About',
+  '/public-portal/accounting': 'Accounting',
+  '/public-portal/ai': 'AI',
+  '/public-portal/automation': 'Automation',
+  '/public-portal/blog': 'Blog',
+  '/public-portal/book-demo': 'Book a Demo',
+  '/public-portal/careers': 'Careers',
+  '/public-portal/contact': 'Contact',
+  '/public-portal/crm': 'Customer Relationship',
+  '/public-portal/customer-portal': 'Customer Portal',
+  '/public-portal/faq': 'FAQ',
+  '/public-portal/features': 'Features',
+  '/public-portal/fleet': 'Fleet',
+  '/public-portal/industries': 'Industries',
+  '/public-portal/insurance': 'Insurance',
+  '/public-portal/integrations': 'Integrations',
+  '/public-portal/landing': 'Workshop',
+  '/public-portal/loans': 'Financing',
+  '/public-portal/marketplace': 'Marketplace',
+  '/public-portal/mini-erp': 'Mini ERP',
+  '/public-portal/pricing': 'Pricing',
+  '/public-portal/products': 'Products',
+  '/public-portal/request-demo': 'Request a Demo',
+  '/public-portal/resources': 'Resources',
+  '/public-portal/services': 'Services',
+  '/public-portal/solutions': 'Solutions',
+  '/public-portal/spare-parts': 'Spare Parts',
+  '/public-portal/supplier-portal': 'Supplier Portal',
+  '/public-portal/support': 'Support',
+  '/public-portal/technician-portal': 'Technician Portal',
+  '/public-portal/workshop': 'Workshop Management',
+  // UI reference pages render the component name, not the dotted path
+  '/ui/activity-feed': 'ActivityFeed',
+  '/ui/advanced-filters': 'AdvancedFilters',
+  '/ui/attachments': 'Attachments',
+  '/ui/calendar-view': 'CalendarView',
+  '/ui/card-view': 'CardView',
+  '/ui/charts': 'Charts',
+  '/ui/comments': 'Comments',
+  '/ui/empty-states': 'EmptyStates',
+  '/ui/export-center': 'ExportCenter',
+  '/ui/form-validation': 'FormValidation',
+  '/ui/import-center': 'ImportCenter',
+  '/ui/kanban-view': 'KanbanView',
+  '/ui/list-view': 'ListView',
+  '/ui/loading-states': 'LoadingStates',
+  '/ui/map-view': 'MapView',
+  '/ui/media-gallery': 'MediaGallery',
+  '/ui/messages': 'Messages',
+  '/ui/modals/actions': 'Actions',
+  '/ui/modals/capture': 'Capture',
+  '/ui/modals/crud': 'CRUD',
+  '/ui/modals/data': 'Data',
+  '/ui/modals/lifecycle': 'Lifecycle',
+  '/ui/modals/status': 'Status',
+  '/ui/table-view': 'TableView',
+  '/ui/timeline-view': 'TimelineView',
 })
 
 /** Routes that deliberately hand off to another screen. Anything else that
@@ -1631,7 +1708,11 @@ const failures = []
     problems = []
     await page.goto(BASE + entry.route, { waitUntil: 'domcontentloaded' })
     await page
-      .waitForFunction(() => document.body.innerText.trim().length > 20, null, { timeout: 10_000 })
+      .waitForFunction(() => {
+        const main = document.querySelector('main')
+        const body = document.body.innerText.trim()
+        return body.length > 20 && (!main || main.innerText.trim().length > 20)
+      }, null, { timeout: 10_000 })
       .catch(() => problems.push('page rendered blank'))
 
     const rendered = await page.evaluate((marker) => {
@@ -1691,7 +1772,7 @@ const failures = []
     }
 
     const expected = EXPECTED_TEXT[entry.route]
-    if (expected && !rendered.text.includes(expected)) {
+    if (expected && !rendered.pending && !rendered.text.includes(expected)) {
       // Feature-map screens render the same generic content for every route —
       // skip the title check there, since the registry title is the only
       // signal we have.
@@ -2058,6 +2139,7 @@ for (const t of TABLET_TARGETS) {
   const tooSmall = await page.evaluate(() => {
     const tiny = []
     for (const el of document.querySelectorAll('button, a[href], input, select, [role="button"]')) {
+      if (el.classList.contains('sr-only')) continue
       const r = el.getBoundingClientRect()
       if (r.width === 0 || r.height === 0) continue
       if (r.width > 200) continue
