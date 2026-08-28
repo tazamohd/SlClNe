@@ -590,6 +590,33 @@ const PromptLibrary = lazy(() =>
 const WorkflowBuilder = lazy(() =>
   import('@/screens/ai/WorkflowBuilder').then((m) => ({ default: m.WorkflowBuilder })),
 )
+const AIAutomation = lazy(() =>
+  import('@/screens/ai/AIAutomation').then((m) => ({ default: m.AIAutomation })),
+)
+const AIChatbot = lazy(() =>
+  import('@/screens/ai/AIChatbot').then((m) => ({ default: m.AIChatbot })),
+)
+const AIChatbotAssistant = lazy(() =>
+  import('@/screens/ai/AIChatbotAssistant').then((m) => ({ default: m.AIChatbotAssistant })),
+)
+const AIServiceAdvisor = lazy(() =>
+  import('@/screens/ai/AIServiceAdvisor').then((m) => ({ default: m.AIServiceAdvisor })),
+)
+const SmartDamageAssessment = lazy(() =>
+  import('@/screens/ai/SmartDamageAssessment').then((m) => ({ default: m.SmartDamageAssessment })),
+)
+const MLFraudDetection = lazy(() =>
+  import('@/screens/ai/MLFraudDetection').then((m) => ({ default: m.MLFraudDetection })),
+)
+const NeuralNetworkPrediction = lazy(() =>
+  import('@/screens/ai/NeuralNetworkPrediction').then((m) => ({ default: m.NeuralNetworkPrediction })),
+)
+const VoiceCommands = lazy(() =>
+  import('@/screens/ai/VoiceCommands').then((m) => ({ default: m.VoiceCommands })),
+)
+const VoiceCommandInterface = lazy(() =>
+  import('@/screens/ai/VoiceCommandInterface').then((m) => ({ default: m.VoiceCommandInterface })),
+)
 
 // feature
 const Inventory = lazy(() =>
@@ -794,6 +821,15 @@ const APP_SCREENS: Record<string, React.ComponentType> = {
   ModelSettings,
   PromptLibrary,
   WorkflowBuilder,
+  AIAutomation,
+  AIChatbot,
+  AIChatbotAssistant,
+  AIServiceAdvisor,
+  SmartDamageAssessment,
+  MLFraudDetection,
+  NeuralNetworkPrediction,
+  VoiceCommands,
+  VoiceCommandInterface,
   AdvancedSettings,
   AuditLog,
   Backup,

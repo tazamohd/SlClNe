@@ -3,7 +3,7 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 191 screens. */
+ *  handoff/SCREEN_MAP.md — 200 screens. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -40,6 +40,30 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/aiassistant",
     "hasMobile": true,
     "purpose": "Conversational AI helper"
+  },
+  {
+    "name": "AIAutomation",
+    "route": "/ai-automation",
+    "hasMobile": true,
+    "purpose": "Automation rule engine & trigger builder"
+  },
+  {
+    "name": "AIChatbot",
+    "route": "/ai-chatbot",
+    "hasMobile": true,
+    "purpose": "Customer & staff conversational interface"
+  },
+  {
+    "name": "AIChatbotAssistant",
+    "route": "/ai-chatbot-assistant",
+    "hasMobile": true,
+    "purpose": "Chatbot training & analytics admin"
+  },
+  {
+    "name": "AIServiceAdvisor",
+    "route": "/ai-service-advisor",
+    "hasMobile": true,
+    "purpose": "AI-powered service recommendations"
   },
   {
     "name": "AppointmentCalendar",
@@ -504,6 +528,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "System maintenance banner"
   },
   {
+    "name": "MLFraudDetection",
+    "route": "/ml-fraud-detection",
+    "hasMobile": true,
+    "purpose": "Anomaly detection in transactions & claims"
+  },
+  {
     "name": "ModelSettings",
     "route": "/model-settings",
     "hasMobile": true,
@@ -520,6 +550,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/native/i-os",
     "hasMobile": false,
     "purpose": "Native shell frame — iOS"
+  },
+  {
+    "name": "NeuralNetworkPrediction",
+    "route": "/neural-network-prediction",
+    "hasMobile": true,
+    "purpose": "Predictive analytics dashboard"
   },
   {
     "name": "NotificationCenter",
@@ -810,6 +846,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "SMS campaign composer"
   },
   {
+    "name": "SmartDamageAssessment",
+    "route": "/smart-damage-assessment",
+    "hasMobile": true,
+    "purpose": "AI-powered damage detection & estimation"
+  },
+  {
     "name": "SocialLogin",
     "route": "/social-login",
     "hasMobile": true,
@@ -1084,6 +1126,18 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/vehicles",
     "hasMobile": true,
     "purpose": "Vehicle registry"
+  },
+  {
+    "name": "VoiceCommandInterface",
+    "route": "/voice-command-interface",
+    "hasMobile": true,
+    "purpose": "Voice interaction history & debug view"
+  },
+  {
+    "name": "VoiceCommands",
+    "route": "/voice-commands",
+    "hasMobile": true,
+    "purpose": "Voice interface settings"
   },
   {
     "name": "Welcome",
