@@ -27,7 +27,7 @@ function DefaultFallback({ error, onReset }: { error: Error; onReset: () => void
       <button
         type="button"
         onClick={onReset}
-        className="rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-salis-blue/90 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+        className="rounded-lg bg-salis-blue px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-salis-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
       >
         {t('Try again')}
       </button>

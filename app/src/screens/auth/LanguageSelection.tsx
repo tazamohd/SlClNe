@@ -12,7 +12,7 @@ import type { Language } from '@/data/types'
  *  page direction all flip under you, so you can see the choice before
  *  committing to it. */
 export function LanguageSelection() {
-  const { t, language, setLanguage, notifications, setNotifications, rtl } = usePreferences()
+  const { t, language, setLanguage, notifications, setNotifications } = usePreferences()
   const isMobile = useIsMobile()
 
   return (
@@ -83,8 +83,6 @@ export function LanguageSelection() {
               />
               <span>{t('Enable notifications')}</span>
             </span>
-            {/* Knob position is driven by `rtl` rather than a CSS transform so
-                the switch travels the correct way in Arabic. */}
             <span
               className={cn(
                 'relative h-[22px] w-[38px] flex-shrink-0 rounded-full transition-colors duration-150',
@@ -92,12 +90,8 @@ export function LanguageSelection() {
               )}
             >
               <span
-                className="absolute top-0.5 h-[18px] w-[18px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.2)] transition-[left,right] duration-150"
-                style={
-                  rtl
-                    ? { right: notifications ? 2 : 18 }
-                    : { left: notifications ? 18 : 2 }
-                }
+                className="absolute top-0.5 h-[18px] w-[18px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.2)] transition-[inset-inline-start] duration-150"
+                style={{ insetInlineStart: notifications ? 18 : 2 }}
               />
             </span>
           </button>

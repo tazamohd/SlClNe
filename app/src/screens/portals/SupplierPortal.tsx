@@ -247,7 +247,7 @@ function MetricCard({
         <p className="text-[11px] text-muted">{label}</p>
         <p className="mt-0.5 font-display text-xl font-black text-heading" dir="ltr">
           {loading ? '...' : value}
-          <span className="ml-1 text-xs font-normal text-muted">{unit}</span>
+          <span className="ms-1 text-xs font-normal text-muted">{unit}</span>
         </p>
       </div>
     </Card>

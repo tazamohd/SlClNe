@@ -298,7 +298,7 @@ function BayMapView() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[12px] text-muted">
-                      <Icon name="User" size={12} className="mr-1 inline" />
+                      <Icon name="User" size={12} className="me-1 inline" />
                       {bay.tech}
                     </span>
                     {bay.elapsed && (
@@ -356,7 +356,7 @@ function TeamView({
                 <p className="font-action text-[13px] font-semibold text-heading">{tech.name}</p>
                 <p className="text-[11px] text-muted">{tech.specialty}</p>
               </div>
-              <div className="text-right">
+              <div className="text-end">
                 <p className="font-mono text-[13px] font-bold text-heading">{tech.jobs}</p>
                 <p className="text-[11px] text-muted">{t('active jobs')}</p>
               </div>
