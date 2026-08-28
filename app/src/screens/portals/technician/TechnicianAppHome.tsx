@@ -33,7 +33,7 @@ const TYPE_STYLES: Record<string, { bg: string; fg: string }> = {
   job: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   parts: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   schedule: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  alert: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  alert: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function TechnicianAppHome() {

@@ -34,15 +34,15 @@ export function AutomatedReordering() {
 
   const kpis = [
     { label: t('Active Rules'), value: String(RULES.filter((r) => r.active).length), icon: 'RotateCcw', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Below Minimum'), value: String(RULES.filter((r) => r.currentStock < r.minStock).length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Below Minimum'), value: String(RULES.filter((r) => r.currentStock < r.minStock).length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Orders Triggered'), value: '12', icon: 'ShoppingCart', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Total Parts'), value: String(RULES.length), icon: 'Package', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+    { label: t('Total Parts'), value: String(RULES.length), icon: 'Package', bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   ]
 
   const columns: Column<ReorderRule>[] = [
     { header: 'Part', cell: (r) => r.partName },
     { header: 'Part #', cell: (r) => r.partNo, code: true },
-    { header: 'Stock', cell: (r) => <span className="font-mono" style={{ color: r.currentStock < r.minStock ? 'rgb(249,115,22)' : undefined }}>{r.currentStock}</span> },
+    { header: 'Stock', cell: (r) => <span className="font-mono" style={{ color: r.currentStock < r.minStock ? 'var(--salis-orange)' : undefined }}>{r.currentStock}</span> },
     { header: 'Min Stock', cell: (r) => <span className="font-mono text-muted">{r.minStock}</span> },
     { header: 'Reorder Qty', cell: (r) => <span className="font-mono">{r.reorderQty}</span> },
     { header: 'Supplier', cell: (r) => r.supplier },
@@ -52,7 +52,7 @@ export function AutomatedReordering() {
       cell: (r) => (
         <Badge
           background={r.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-          color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+          color={r.active ? 'var(--salis-blue)' : 'var(--text-muted)'}
         >{t(r.active ? 'Active' : 'Inactive')}</Badge>
       ),
     },
@@ -71,7 +71,7 @@ export function AutomatedReordering() {
             trailing={
               <Badge
                 background={r.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+                color={r.active ? 'var(--salis-blue)' : 'var(--text-muted)'}
               >{t(r.active ? 'Active' : 'Inactive')}</Badge>
             }
           />

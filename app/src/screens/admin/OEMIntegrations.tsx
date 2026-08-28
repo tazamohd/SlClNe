@@ -28,8 +28,8 @@ const OEM_CONNECTIONS: OEMConnection[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Connected: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Error: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
-  Inactive: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Error: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Inactive: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function OEMIntegrations() {
@@ -41,7 +41,7 @@ export function OEMIntegrations() {
   const columns: Column<OEMConnection>[] = [
     { header: 'Manufacturer', cell: (conn) => <span className="font-semibold text-heading">{conn.manufacturer}</span> },
     { header: 'System', cell: (conn) => conn.system },
-    { header: 'Type', cell: (conn) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(conn.type)}</Badge> },
+    { header: 'Type', cell: (conn) => <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{t(conn.type)}</Badge> },
     { header: 'Records', cell: (conn) => conn.dataPoints > 0 ? conn.dataPoints.toLocaleString() : '-' },
     { header: 'Last Sync', cell: (conn) => <span className="text-muted">{conn.lastSync}</span> },
     { header: 'Status', cell: (conn) => <Badge background={STATUS_STYLES[conn.status].bg} color={STATUS_STYLES[conn.status].fg}>{t(conn.status)}</Badge> },
@@ -78,7 +78,7 @@ export function OEMIntegrations() {
         <MobilePageHeader icon="Car" title={t('OEM Integrations')} subtitle={t('Manufacturer connections')} />
         <div className="flex items-center gap-2">
           <Badge background="var(--tint-blue)" color="var(--salis-blue)">{connectedCount} {t('connected')}</Badge>
-          <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{OEM_CONNECTIONS.length} {t('total')}</Badge>
+          <Badge background="var(--tint-neutral)" color="var(--text-muted)">{OEM_CONNECTIONS.length} {t('total')}</Badge>
         </div>
         {table}
       </div>

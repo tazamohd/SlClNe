@@ -28,7 +28,7 @@ const FRANCHISES: Franchise[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Suspended: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Suspended: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function FranchiseManagement() {

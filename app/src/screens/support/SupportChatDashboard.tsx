@@ -43,8 +43,8 @@ const RECENT_CHATS: RecentChat[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Waiting: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Resolved: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Escalated: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Resolved: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Escalated: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function SupportChatDashboard() {

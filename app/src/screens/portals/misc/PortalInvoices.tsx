@@ -30,7 +30,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Paid: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Draft: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function PortalInvoices() {

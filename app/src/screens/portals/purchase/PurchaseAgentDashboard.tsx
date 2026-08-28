@@ -27,7 +27,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Delivered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'In Transit': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PurchaseAgentDashboard() {

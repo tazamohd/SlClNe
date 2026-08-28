@@ -28,7 +28,7 @@ const OPERATIONS: Operation[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Processing: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
@@ -54,7 +54,7 @@ export function DataImportExport() {
       ),
     },
     { header: 'Entity', cell: (op) => t(op.entity) },
-    { header: 'Format', cell: (op) => <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{op.format}</Badge> },
+    { header: 'Format', cell: (op) => <Badge background="var(--tint-neutral)" color="var(--text-muted)">{op.format}</Badge> },
     { header: 'Records', cell: (op) => <span className="font-mono text-heading">{op.recordCount.toLocaleString()}</span> },
     { header: 'Status', cell: (op) => <Badge background={STATUS_STYLES[op.status].bg} color={STATUS_STYLES[op.status].fg}>{t(op.status)}</Badge> },
     { header: 'Date', cell: (op) => <span className="text-muted">{op.date}</span> },

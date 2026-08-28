@@ -27,8 +27,8 @@ const DELIVERIES: Delivery[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Transit': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'Out for Delivery': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Delayed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Delivered: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Delayed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PurchaseAgentDelivery() {
@@ -37,8 +37,8 @@ export function PurchaseAgentDelivery() {
   const kpis = [
     { label: t('Active Shipments'), value: '3', icon: 'Truck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Out for Delivery'), value: '1', icon: 'Package', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Delivered'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-    { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Delivered'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+    { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Delivery>[] = [

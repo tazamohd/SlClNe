@@ -39,7 +39,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Paused: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Draft: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function MarketingHub() {

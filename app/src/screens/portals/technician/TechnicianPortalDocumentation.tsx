@@ -28,7 +28,7 @@ const CATEGORY_STYLES: Record<string, { bg: string; fg: string }> = {
   Manual: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   TSB: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Procedure: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-  Safety: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Safety: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const FORMAT_ICONS: Record<string, string> = {

@@ -28,18 +28,18 @@ const MY_REQUESTS: PartsRequest[] = [
 ]
 
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Critical: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Critical: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Open: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Quoted: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Ordered: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Fulfilled: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Fulfilled: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PartsNetworkMyRequests() {

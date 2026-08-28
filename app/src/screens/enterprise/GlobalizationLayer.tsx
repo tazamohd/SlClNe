@@ -43,7 +43,7 @@ const CURRENCIES: CurrencyConfig[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Complete: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'In Progress': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Planned: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Planned: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function GlobalizationLayer() {
@@ -55,7 +55,7 @@ export function GlobalizationLayer() {
     {
       header: 'Direction',
       cell: (locale) => (
-        <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{locale.direction}</Badge>
+        <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{locale.direction}</Badge>
       ),
     },
     {
@@ -117,7 +117,7 @@ export function GlobalizationLayer() {
               </div>
               <Badge
                 background={cur.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                color={cur.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+                color={cur.active ? 'var(--salis-blue)' : 'var(--text-muted)'}
               >
                 {cur.active ? t('Active') : t('Inactive')}
               </Badge>

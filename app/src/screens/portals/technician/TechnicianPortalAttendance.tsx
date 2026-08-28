@@ -27,10 +27,10 @@ const ATTENDANCE: AttendanceRecord[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Present: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Absent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Absent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Late: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   'Half Day': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Holiday: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Holiday: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function TechnicianPortalAttendance() {
@@ -39,7 +39,7 @@ export function TechnicianPortalAttendance() {
   const kpis = [
     { label: t('Present Days'), value: '18', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Late Days'), value: '2', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Absent'), value: '1', icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Absent'), value: '1', icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Attendance Rate'), value: '94%', icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 

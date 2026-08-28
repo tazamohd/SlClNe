@@ -29,7 +29,7 @@ const WIDGETS: DashboardWidget[] = [
 ]
 
 const SIZE_STYLES: Record<string, { bg: string; fg: string }> = {
-  Small: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Small: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Large: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
@@ -46,7 +46,7 @@ export function DashboardWidgets() {
         <MobilePageHeader icon="LayoutGrid" title={t('Widgets')} subtitle={t('Dashboard configuration')} />
         <div className="flex items-center gap-2">
           <Badge background="var(--tint-blue)" color="var(--salis-blue)">{enabledCount} {t('active')}</Badge>
-          <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{WIDGETS.length - enabledCount} {t('hidden')}</Badge>
+          <Badge background="var(--tint-neutral)" color="var(--text-muted)">{WIDGETS.length - enabledCount} {t('hidden')}</Badge>
         </div>
         {WIDGETS.map((widget, i) => (
           <MobileCard key={i}>
@@ -65,7 +65,7 @@ export function DashboardWidgets() {
               trailing={
                 <Badge
                   background={widget.enabled ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                  color={widget.enabled ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+                  color={widget.enabled ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >
                   {widget.enabled ? t('Enabled') : t('Disabled')}
                 </Badge>
@@ -97,10 +97,10 @@ export function DashboardWidgets() {
             <p className="mt-3 text-sm font-semibold text-heading">{t(widget.name)}</p>
             <p className="mt-1 text-xs text-muted">{t(widget.description)}</p>
             <div className="mt-3 flex items-center justify-between">
-              <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(widget.category)}</Badge>
+              <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{t(widget.category)}</Badge>
               <Badge
                 background={widget.enabled ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                color={widget.enabled ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+                color={widget.enabled ? 'var(--salis-blue)' : 'var(--text-muted)'}
               >
                 {widget.enabled ? t('Enabled') : t('Disabled')}
               </Badge>

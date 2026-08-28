@@ -23,7 +23,7 @@ const RECENT_PUNCHES: RecentPunch[] = [
 
 const ACTION_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
   'Clock In': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'LogIn' },
-  'Clock Out': { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)', icon: 'LogOut' },
+  'Clock Out': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'LogOut' },
   'Break Start': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'Coffee' },
   'Break End': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Play' },
 }
@@ -33,7 +33,7 @@ export function TechnicianAppClock() {
   const [clockedIn] = useState(true)
 
   const kpis = [
-    { label: t('Status'), value: clockedIn ? t('On Shift') : t('Off Shift'), icon: 'Clock', bg: clockedIn ? 'var(--tint-blue)' : 'var(--tint-neutral)', fg: clockedIn ? 'var(--salis-blue)' : 'rgb(107,114,128)' },
+    { label: t('Status'), value: clockedIn ? t('On Shift') : t('Off Shift'), icon: 'Clock', bg: clockedIn ? 'var(--tint-blue)' : 'var(--tint-neutral)', fg: clockedIn ? 'var(--salis-blue)' : 'var(--text-muted)' },
     { label: t('Clock In'), value: '07:55 AM', icon: 'LogIn', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Elapsed'), value: '6h 35m', icon: 'Timer', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('Break Used'), value: '30m', icon: 'Coffee', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },

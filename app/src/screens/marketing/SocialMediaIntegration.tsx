@@ -46,7 +46,7 @@ export function SocialMediaIntegration() {
               trailing={
                 p.connected
                   ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Connected')}</Badge>
-                  : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Disconnected')}</Badge>
+                  : <Badge background="var(--tint-neutral)" color="var(--text-muted)">{t('Disconnected')}</Badge>
               }
             />
             <MobileCardRow label={t('Followers')} value={p.followers.toLocaleString()} />
@@ -75,7 +75,7 @@ export function SocialMediaIntegration() {
               </div>
               {p.connected
                 ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Connected')}</Badge>
-                : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Disconnected')}</Badge>}
+                : <Badge background="var(--tint-neutral)" color="var(--text-muted)">{t('Disconnected')}</Badge>}
             </div>
             <div className="mt-4 grid grid-cols-3 gap-3">
               <div>

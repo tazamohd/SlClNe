@@ -30,8 +30,8 @@ const MENTIONS: Mention[] = [
 
 const SENTIMENT_STYLES: Record<string, { bg: string; fg: string }> = {
   Positive: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Neutral: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Negative: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Neutral: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Negative: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const PLATFORM_ICONS: Record<string, string> = {

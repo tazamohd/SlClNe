@@ -27,7 +27,7 @@ const SOFTWARE_TOOLS: SoftwareTool[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'Update Available': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Expired: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Expired: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const CATEGORY_ICONS: Record<string, string> = {

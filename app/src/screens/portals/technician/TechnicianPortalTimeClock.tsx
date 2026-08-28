@@ -27,7 +27,7 @@ const TIME_ENTRIES: TimeEntry[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Complete: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Absent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Absent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function TechnicianPortalTimeClock() {

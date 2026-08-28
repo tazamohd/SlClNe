@@ -30,17 +30,17 @@ const TASKS: Task[] = [
 ]
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Urgent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Urgent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'To Do': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'To Do': { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Done: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function TasksList() {
@@ -62,7 +62,7 @@ export function TasksList() {
   const kpis = [
     { label: t('Total Tasks'), value: String(TASKS.length), icon: 'CheckSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('In Progress'), value: String(TASKS.filter((t) => t.status === 'In Progress').length), icon: 'Loader', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Overdue'), value: String(TASKS.filter((t) => t.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Overdue'), value: String(TASKS.filter((t) => t.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 

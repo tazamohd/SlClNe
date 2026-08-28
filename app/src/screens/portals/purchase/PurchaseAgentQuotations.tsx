@@ -29,8 +29,8 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Received: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'Under Review': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Accepted: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Rejected: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
-  Expired: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Rejected: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Expired: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function PurchaseAgentQuotations() {

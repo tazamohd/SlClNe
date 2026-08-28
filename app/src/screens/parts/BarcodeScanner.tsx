@@ -27,7 +27,7 @@ const RECENT_SCANS: ScanEntry[] = [
 ]
 
 const ACTION_STYLES: Record<string, { bg: string; fg: string }> = {
-  Lookup: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Lookup: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   'Check-In': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'Check-Out': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Count: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
@@ -41,7 +41,7 @@ export function BarcodeScanner() {
     { label: t('Scans Today'), value: '47', icon: 'ScanLine', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Check-Ins'), value: '18', icon: 'PackagePlus', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Check-Outs'), value: '22', icon: 'PackageMinus', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Lookups'), value: '7', icon: 'Search', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+    { label: t('Lookups'), value: '7', icon: 'Search', bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   ]
 
   const columns: Column<ScanEntry>[] = [

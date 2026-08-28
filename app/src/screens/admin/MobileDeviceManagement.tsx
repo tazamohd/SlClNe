@@ -30,7 +30,7 @@ const DEVICES: ManagedDevice[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Inactive: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Lost: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Lost: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function MobileDeviceManagement() {
@@ -50,12 +50,12 @@ export function MobileDeviceManagement() {
       ),
     },
     { header: 'User', cell: (device) => device.user },
-    { header: 'Platform', cell: (device) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{device.platform}</Badge> },
+    { header: 'Platform', cell: (device) => <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{device.platform}</Badge> },
     {
       header: 'Battery',
       cell: (device) => (
         <div className="flex items-center gap-2">
-          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'rgb(249,115,22)' : 'var(--salis-blue)' }} />
+          <Icon name={device.battery < 20 ? 'Battery' : 'BatteryCharging'} size={14} style={{ color: device.battery < 20 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
           <span className="text-body">{device.battery}%</span>
         </div>
       ),
@@ -101,7 +101,7 @@ export function MobileDeviceManagement() {
         <MobilePageHeader icon="Smartphone" title={t('MDM')} subtitle={t('Device management')} />
         <div className="flex items-center gap-2">
           <Badge background="var(--tint-blue)" color="var(--salis-blue)">{activeCount} {t('active')}</Badge>
-          <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{DEVICES.length} {t('total')}</Badge>
+          <Badge background="var(--tint-neutral)" color="var(--text-muted)">{DEVICES.length} {t('total')}</Badge>
         </div>
         {table}
       </div>

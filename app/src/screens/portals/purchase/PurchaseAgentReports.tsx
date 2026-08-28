@@ -30,13 +30,13 @@ const TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
   'Supplier Performance': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)', icon: 'Star' },
   'Inventory Turnover': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'RefreshCw' },
   'Cost Savings': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'PiggyBank' },
-  Compliance: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)', icon: 'ShieldCheck' },
+  Compliance: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)', icon: 'ShieldCheck' },
 }
 
 const TREND_STYLES: Record<string, { icon: string; fg: string }> = {
   Up: { icon: 'TrendingUp', fg: 'var(--salis-blue)' },
   Down: { icon: 'TrendingDown', fg: 'var(--salis-orange)' },
-  Stable: { icon: 'Minus', fg: 'rgb(107,114,128)' },
+  Stable: { icon: 'Minus', fg: 'var(--text-muted)' },
 }
 
 export function PurchaseAgentReports() {

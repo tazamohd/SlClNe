@@ -43,7 +43,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   New: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Processing: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   Shipped: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Delivered: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function VendorSupplierPortal() {

@@ -31,8 +31,8 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Shipped: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Delivered: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PurchaseOrdersList() {

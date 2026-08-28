@@ -30,13 +30,13 @@ const CHANNEL_STYLES: Record<string, { bg: string; fg: string; icon: string }> =
   Email: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Mail' },
   SMS: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)', icon: 'Smartphone' },
   WhatsApp: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'MessageCircle' },
-  System: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)', icon: 'Bell' },
+  System: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)', icon: 'Bell' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
   High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function PortalCommunications() {

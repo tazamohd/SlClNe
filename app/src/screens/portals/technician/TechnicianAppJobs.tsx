@@ -26,15 +26,15 @@ const JOBS: AppJob[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   'On Hold': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Done: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Urgent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Urgent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function TechnicianAppJobs() {

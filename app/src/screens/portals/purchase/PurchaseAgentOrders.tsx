@@ -26,12 +26,12 @@ const ORDERS: AgentOrder[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Draft: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Submitted: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Confirmed: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
   Shipped: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Received: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function PurchaseAgentOrders() {
@@ -41,7 +41,7 @@ export function PurchaseAgentOrders() {
     { label: t('Total Orders'), value: String(ORDERS.length), icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Total Value'), value: formatSar(37600), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
     { label: t('In Transit'), value: '1', icon: 'Truck', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Received'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+    { label: t('Received'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   ]
 
   const columns: Column<AgentOrder>[] = [

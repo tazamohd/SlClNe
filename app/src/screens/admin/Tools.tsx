@@ -30,7 +30,7 @@ const TOOLS: SystemTool[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Available: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Running: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Disabled: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Disabled: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 const CATEGORIES = ['Database', 'Communication', 'Diagnostics', 'Utilities'] as const

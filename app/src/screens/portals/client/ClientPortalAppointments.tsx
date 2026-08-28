@@ -27,7 +27,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Confirmed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function ClientPortalAppointments() {
@@ -36,7 +36,7 @@ export function ClientPortalAppointments() {
   const kpis = [
     { label: t('Upcoming'), value: '2', icon: 'CalendarCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Completed'), value: '8', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Cancelled'), value: '1', icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Cancelled'), value: '1', icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('This Month'), value: '3', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 

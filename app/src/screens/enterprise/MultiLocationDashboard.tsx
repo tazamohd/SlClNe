@@ -26,7 +26,7 @@ const BRANCHES: BranchSummary[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Online: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Offline: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Offline: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Maintenance: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 

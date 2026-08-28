@@ -41,7 +41,7 @@ const TYPE_ICONS: Record<string, string> = {
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Archived: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Archived: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Draft: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 

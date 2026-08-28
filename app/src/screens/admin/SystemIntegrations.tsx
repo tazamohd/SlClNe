@@ -30,8 +30,8 @@ const INTEGRATIONS: Integration[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Inactive: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Error: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Inactive: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Error: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const CATEGORIES = ['Payment', 'Accounting', 'Communication', 'Government', 'Cloud'] as const

@@ -29,8 +29,8 @@ const DOCUMENTS: OCRDocument[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Processed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Processing: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function DocumentOCR() {
@@ -48,7 +48,7 @@ export function DocumentOCR() {
         </div>
       ),
     },
-    { header: 'Type', cell: (doc) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(doc.type)}</Badge> },
+    { header: 'Type', cell: (doc) => <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{t(doc.type)}</Badge> },
     { header: 'Uploaded By', cell: (doc) => doc.uploadedBy },
     { header: 'Date', cell: (doc) => <span className="text-muted">{doc.date}</span> },
     {

@@ -29,7 +29,7 @@ const SHIPMENTS: Shipment[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'In Transit': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Customs: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Delivered: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Delayed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 

@@ -25,9 +25,9 @@ const PAYMENTS: Payment[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Paid: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Paid: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Scheduled: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
@@ -36,8 +36,8 @@ export function PurchaseAgentPayments() {
 
   const kpis = [
     { label: t('Total Payable'), value: formatSar(35500), icon: 'Wallet', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Paid This Month'), value: formatSar(13200), icon: 'CheckCircle', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-    { label: t('Overdue'), value: formatSar(3600), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Paid This Month'), value: formatSar(13200), icon: 'CheckCircle', bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+    { label: t('Overdue'), value: formatSar(3600), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Scheduled'), value: formatSar(6200), icon: 'Calendar', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 

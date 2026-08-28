@@ -44,7 +44,7 @@ const METHODS: PaymentMethod[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Refunded: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Refunded: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function CustomerAppPayments() {

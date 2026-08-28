@@ -32,7 +32,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'In Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   'Awaiting Pickup': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Inactive: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Inactive: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function PortalVehicles() {

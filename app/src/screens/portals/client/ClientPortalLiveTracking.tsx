@@ -22,7 +22,7 @@ const TRACKING: TrackingItem[] = [
 ]
 
 const STAGE_STYLES: Record<string, { bg: string; fg: string }> = {
-  'Checked In': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'Checked In': { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Diagnosis: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'Quality Check': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },

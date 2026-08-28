@@ -27,7 +27,7 @@ const INVOICES: Invoice[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Paid: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function ClientPortalInvoices() {
@@ -40,7 +40,7 @@ export function ClientPortalInvoices() {
     { label: t('Total Invoices'), value: String(INVOICES.length), icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Amount Due'), value: formatSar(totalOwed), icon: 'AlertCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Total Paid'), value: formatSar(totalPaid), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Overdue'), value: '1', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Overdue'), value: '1', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Invoice>[] = [

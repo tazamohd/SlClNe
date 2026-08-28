@@ -124,7 +124,7 @@ export function SalesGuide() {
                 <p className="mt-1 text-sm text-body">{t(step.description)}</p>
                 <div className="mt-2 flex items-center gap-3">
                   <Badge background="var(--tint-blue)" color="var(--salis-blue)">{step.duration}</Badge>
-                  <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{step.tips} {t('tips')}</Badge>
+                  <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{step.tips} {t('tips')}</Badge>
                 </div>
               </div>
             </div>

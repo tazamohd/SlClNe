@@ -25,12 +25,12 @@ const REMINDERS: Reminder[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   'Due Soon': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Scheduled: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Medium: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Low: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
@@ -40,7 +40,7 @@ export function ClientPortalReminders() {
 
   const kpis = [
     { label: t('Due Soon'), value: '2', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
     { label: t('Scheduled'), value: '2', icon: 'CalendarCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Total Active'), value: '5', icon: 'Bell', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]

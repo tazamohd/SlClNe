@@ -27,10 +27,10 @@ const TASKS: Task[] = [
 ]
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Urgent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Urgent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const COLUMNS: { status: Task['status']; icon: string }[] = [
@@ -40,7 +40,7 @@ const COLUMNS: { status: Task['status']; icon: string }[] = [
 ]
 
 const COLUMN_STYLES: Record<string, { bg: string; fg: string }> = {
-  'To Do': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'To Do': { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Done: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
@@ -62,7 +62,7 @@ export function TaskManagement() {
                   <Icon name={col.icon} size={14} />
                 </span>
                 <span className="text-sm font-bold text-heading">{t(col.status)}</span>
-                <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{tasks.length}</Badge>
+                <Badge background="var(--tint-neutral)" color="var(--text-muted)">{tasks.length}</Badge>
               </div>
               {tasks.map((task, i) => (
                 <MobileCard key={i}>
@@ -100,7 +100,7 @@ export function TaskManagement() {
                   <Icon name={col.icon} size={16} />
                 </span>
                 <span className="text-sm font-bold text-heading">{t(col.status)}</span>
-                <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{tasks.length}</Badge>
+                <Badge background="var(--tint-neutral)" color="var(--text-muted)">{tasks.length}</Badge>
               </div>
               {tasks.map((task, i) => (
                 <Card key={i} className="rounded-xl p-4 shadow-sm">
@@ -111,7 +111,7 @@ export function TaskManagement() {
                     <span className="text-xs text-muted">{task.dueDate}</span>
                   </div>
                   <div className="mt-2">
-                    <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(task.category)}</Badge>
+                    <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{t(task.category)}</Badge>
                   </div>
                 </Card>
               ))}

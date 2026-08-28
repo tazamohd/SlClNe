@@ -26,14 +26,14 @@ const TASKS: Task[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Pending: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Pending: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
   'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Medium: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Low: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
@@ -50,9 +50,9 @@ export function PurchaseAgentTasks() {
 
   const kpis = [
     { label: t('Total Tasks'), value: String(TASKS.length), icon: 'ListChecks', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Pending'), value: '3', icon: 'Clock', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+    { label: t('Pending'), value: '3', icon: 'Clock', bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
     { label: t('In Progress'), value: '2', icon: 'Loader', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Task>[] = [

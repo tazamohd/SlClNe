@@ -41,11 +41,11 @@ const SMS_LOGS: SMSLog[] = [
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Connected: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Disconnected: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
-  Error: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Disconnected: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Error: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Delivered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function SMSIntegration() {
@@ -57,7 +57,7 @@ export function SMSIntegration() {
     {
       header: 'Type',
       cell: (log) => (
-        <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(log.type)}</Badge>
+        <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{t(log.type)}</Badge>
       ),
     },
     { header: 'Provider', cell: (log) => log.provider },

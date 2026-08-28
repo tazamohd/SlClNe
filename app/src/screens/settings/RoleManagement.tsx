@@ -43,7 +43,7 @@ export function RoleManagement() {
       cell: (role) =>
         role.isSystem
           ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('System')}</Badge>
-          : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Custom')}</Badge>,
+          : <Badge background="var(--tint-neutral)" color="var(--text-muted)">{t('Custom')}</Badge>,
     },
   ]
 
@@ -72,7 +72,7 @@ export function RoleManagement() {
               trailing={
                 role.isSystem
                   ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('System')}</Badge>
-                  : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Custom')}</Badge>
+                  : <Badge background="var(--tint-neutral)" color="var(--text-muted)">{t('Custom')}</Badge>
               }
             />
             <MobileCardRow label={t('Users')} value={String(role.userCount)} />

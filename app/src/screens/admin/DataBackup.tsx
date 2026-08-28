@@ -30,8 +30,8 @@ const BACKUPS: BackupRecord[] = [
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
   Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   'In Progress': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
-  Scheduled: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Scheduled: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 const STATS = [
@@ -47,7 +47,7 @@ export function DataBackup() {
 
   const columns: Column<BackupRecord>[] = [
     { header: 'ID', cell: (b) => b.id, code: true },
-    { header: 'Type', cell: (b) => <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(b.type)}</Badge> },
+    { header: 'Type', cell: (b) => <Badge background="rgba(107,114,128,.08)" color="var(--text-muted)">{t(b.type)}</Badge> },
     { header: 'Size', cell: (b) => b.size },
     { header: 'Duration', cell: (b) => b.duration },
     { header: 'Date', cell: (b) => <span className="text-muted">{b.date} {b.time}</span> },

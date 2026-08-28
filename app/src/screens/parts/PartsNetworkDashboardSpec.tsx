@@ -51,7 +51,7 @@ const NODE_TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }>
   Warehouse: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Warehouse' },
   Hub: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)', icon: 'GitBranch' },
   Branch: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'Building' },
-  Supplier: { bg: 'rgba(107,114,128,.15)', fg: 'rgb(107,114,128)', icon: 'Factory' },
+  Supplier: { bg: 'rgba(107,114,128,.15)', fg: 'var(--text-muted)', icon: 'Factory' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
@@ -63,7 +63,7 @@ const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
   Urgent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Standard: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
 export function PartsNetworkDashboardSpec() {

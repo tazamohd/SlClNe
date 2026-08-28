@@ -31,7 +31,7 @@ const MEMBERS: LoyaltyMember[] = [
 const TIER_STYLES: Record<string, { bg: string; fg: string }> = {
   Platinum: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Gold: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Silver: { bg: 'rgba(107,114,128,.15)', fg: 'rgb(107,114,128)' },
+  Silver: { bg: 'rgba(107,114,128,.15)', fg: 'var(--text-muted)' },
   Bronze: { bg: 'rgba(180,130,80,.1)', fg: 'rgb(180,130,80)' },
 }
 
@@ -57,7 +57,7 @@ export function LoyaltyProgram() {
       cell: (m) => (
         <Badge
           background={m.status === 'Active' ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-          color={m.status === 'Active' ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
+          color={m.status === 'Active' ? 'var(--salis-blue)' : 'var(--text-muted)'}
         >{t(m.status)}</Badge>
       ),
     },
