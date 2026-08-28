@@ -21,7 +21,7 @@
  *
  *      node scripts/check-a11y.mjs [--list]
  *
- *  The six rules, each mapping to an axe-core rule family:
+ *  The seven rules, each mapping to an axe-core rule family:
  *    img-alt              <img> with no `alt`                        (image-alt)
  *    noninteractive-role  onClick/onKeyDown on a non-interactive
  *                         element missing `role` or `tabIndex`       (interactive-role)
@@ -31,6 +31,7 @@
  *    link-name            <a> with no text and no aria-label         (link-name)
  *    svg-hidden           raw <svg> that is neither aria-hidden nor
  *                         a labelled role="img"                      (svg-img-alt)
+ *    button-type          <button> without explicit type attribute   (n/a)
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -283,6 +284,15 @@ const RULES = {
       // A meaningful graphic must both claim the image role and carry a name.
       const labelled = has(tag.attrs, 'aria-label') || has(tag.attrs, 'aria-labelledby')
       return !(/role=(['"])img\1/.test(tag.attrs) && labelled)
+    },
+  },
+  'button-type': {
+    title: 'Button without explicit type (defaults to submit inside forms)',
+    axe: 'n/a',
+    test: (tag) => {
+      if (tag.name !== 'button') return false
+      if (hasSpread(tag.attrs)) return false
+      return !has(tag.attrs, 'type')
     },
   },
 }
