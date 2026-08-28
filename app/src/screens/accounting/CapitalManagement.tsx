@@ -39,10 +39,10 @@ export function CapitalManagement() {
   const roi = ((totalReturn / totalInvested) * 100).toFixed(1)
 
   const kpis = [
-    { label: t('Total Capital'), value: fmtSar(totalCurrent), icon: 'Briefcase', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Invested'), value: fmtSar(totalInvested), icon: 'TrendingUp', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Returns'), value: fmtSar(totalReturn), icon: 'ArrowUpRight', bg: totalReturn >= 0 ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)', fg: totalReturn >= 0 ? 'var(--salis-blue)' : 'var(--salis-orange)' },
-    { label: t('ROI'), value: `${roi}%`, icon: 'Percent', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Total Capital'), value: fmtSar(totalCurrent), icon: 'Briefcase', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Invested'), value: fmtSar(totalInvested), icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Returns'), value: fmtSar(totalReturn), icon: 'ArrowUpRight', bg: totalReturn >= 0 ? 'var(--tint-blue)' : 'var(--tint-orange)', fg: totalReturn >= 0 ? 'var(--salis-blue)' : 'var(--salis-orange)' },
+    { label: t('ROI'), value: `${roi}%`, icon: 'Percent', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   const columns: Column<CapitalAccount>[] = [

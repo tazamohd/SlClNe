@@ -24,9 +24,9 @@ const SUPPLIERS = [
 type Supplier = (typeof SUPPLIERS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Inactive') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  if (status === 'Pending') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
-  return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
+  if (status === 'Inactive') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (status === 'Pending') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
+  return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 
 export function SuppliersList() {
@@ -50,10 +50,10 @@ export function SuppliersList() {
   const totalOrders = SUPPLIERS.reduce((sum, s) => sum + s.ordersCount, 0)
 
   const kpis = [
-    { label: t('Total Suppliers'), value: String(SUPPLIERS.length), icon: 'Building2', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(activeCount), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Rating'), value: avgRating, icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Orders'), value: String(totalOrders), icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Suppliers'), value: String(SUPPLIERS.length), icon: 'Building2', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(activeCount), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Rating'), value: avgRating, icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Orders'), value: String(totalOrders), icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Supplier>[] = [
@@ -79,7 +79,7 @@ export function SuppliersList() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
+                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{s.name}</p>
                   <p className="text-xs text-muted" dir="ltr">{s.code}</p>

@@ -25,9 +25,9 @@ const BRANCHES: BranchSummary[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Online: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Offline: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Maintenance: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Online: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Offline: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Maintenance: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const SUMMARY_STATS = [
@@ -50,7 +50,7 @@ export function MultiLocationDashboard() {
             <MobileCard key={stat.label}>
               <MobileCardHeader
                 leading={
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                     <Icon name={stat.icon} size={14} />
                   </span>
                 }
@@ -84,7 +84,7 @@ export function MultiLocationDashboard() {
         {SUMMARY_STATS.map((stat) => (
           <Card key={stat.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name={stat.icon} size={20} />
               </span>
               <div>
@@ -101,7 +101,7 @@ export function MultiLocationDashboard() {
           <Card key={i} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                   <Icon name="MapPin" size={20} />
                 </span>
                 <div>

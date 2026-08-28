@@ -34,10 +34,10 @@ export function PurchaseAgentPriceCompare() {
   const avgSavings = 14.2
 
   const kpis = [
-    { label: t('Parts Compared'), value: String(uniqueParts), icon: 'GitCompare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Quotes Received'), value: String(QUOTES.length), icon: 'FileText', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Avg Savings'), value: `${avgSavings}%`, icon: 'TrendingDown', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active RFQs'), value: '5', icon: 'Send', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Parts Compared'), value: String(uniqueParts), icon: 'GitCompare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Quotes Received'), value: String(QUOTES.length), icon: 'FileText', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Savings'), value: `${avgSavings}%`, icon: 'TrendingDown', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active RFQs'), value: '5', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<PriceQuote>[] = [
@@ -49,7 +49,7 @@ export function PurchaseAgentPriceCompare() {
     { header: t('Lead Time'), cell: (q) => `${q.leadTimeDays} ${t('days')}` },
     { header: t('Warranty'), cell: (q) => t(q.warranty) },
     { header: t('Price'), cell: (q) => q.bestPrice
-      ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Best')}</Badge>
+      ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Best')}</Badge>
       : <span className="text-xs text-muted">-</span>
     },
   ]
@@ -73,7 +73,7 @@ export function PurchaseAgentPriceCompare() {
           <>
             <MobileCardHeader title={q.partName} trailing={
               q.bestPrice
-                ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Best Price')}</Badge>
+                ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Best Price')}</Badge>
                 : null
             } />
             <MobileCardRow label={t('Supplier')}>{q.supplier}</MobileCardRow>

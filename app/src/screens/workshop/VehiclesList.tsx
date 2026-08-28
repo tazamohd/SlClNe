@@ -34,8 +34,8 @@ export function VehiclesList() {
   if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const kpis = [
-    { label: t('Total Vehicles'), value: String(rows.length), icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Vehicles'), value: String(rows.length), icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<Record<string, string>>[] = [
@@ -43,7 +43,7 @@ export function VehiclesList() {
     { header: 'Make / Model', cell: (r) => `${r.make} ${r.model}` },
     { header: 'Owner', cell: (r) => r.ownerName ?? r.customer ?? '—' },
     { header: 'Year', cell: (r) => r.year ?? '—', code: true },
-    { header: 'Status', cell: (r) => <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge> },
+    { header: 'Status', cell: (r) => <Badge background="var(--tint-blue)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge> },
   ]
 
   const table = (
@@ -55,7 +55,7 @@ export function VehiclesList() {
       empty={<p className="py-8 text-center text-sm text-muted">{t('No vehicles found')}</p>}
       mobileCard={(r) => (
         <>
-          <MobileCardHeader title={`${r.make} ${r.model}`} trailing={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>} />
+          <MobileCardHeader title={`${r.make} ${r.model}`} trailing={<Badge background="var(--tint-blue)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>} />
           <MobileCardRow label={t('Plate')}>{r.plate ?? '—'}</MobileCardRow>
           <MobileCardRow label={t('Owner')}>{r.ownerName ?? r.customer ?? '—'}</MobileCardRow>
         </>

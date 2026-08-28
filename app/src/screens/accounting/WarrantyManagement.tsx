@@ -31,15 +31,15 @@ const MOCK_WARRANTIES: readonly Warranty[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  Active: ['var(--tint-blue)', '#0A5ED7'],
   Expired: ['rgba(100,116,139,.1)', '#64748B'],
-  Claimed: ['rgba(249,115,22,.1)', '#F97316'],
+  Claimed: ['var(--tint-orange)', '#F97316'],
 }
 
 const COVERAGE_PALETTE: Record<string, readonly [string, string]> = {
-  Full: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  Limited: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  Extended: ['rgba(11,179,255,.1)', '#0BB3FF'],
+  Full: ['var(--tint-blue)', '#0A5ED7'],
+  Limited: ['var(--tint-navy)', '#0B1F3B'],
+  Extended: ['var(--tint-bright)', '#0BB3FF'],
 }
 
 export function WarrantyManagement() {

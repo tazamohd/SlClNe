@@ -104,7 +104,7 @@ export function CustomerPortal() {
       {/* Pending estimate, when there is one. */}
       {pending ? (
         <Card className="flex items-center gap-3 border-salis-orange/20 p-3.5">
-          <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(249,115,22,.1)] p-2.5 text-salis-orange">
+          <span className="flex flex-shrink-0 rounded-[10px] bg-[var(--tint-orange)] p-2.5 text-salis-orange">
             <Icon name="Receipt" size={18} />
           </span>
           <div className="min-w-0 flex-1">
@@ -211,7 +211,7 @@ export function CustomerPortal() {
               key={slot._id ?? `${slot.time}-${index}`}
               className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3"
             >
-              <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue">
+              <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue">
                 <Icon name="Calendar" size={14} />
               </span>
               <span className="min-w-0 flex-1">
@@ -264,7 +264,7 @@ export function CustomerPortal() {
                 key={invoice._id ?? `${invoice.id}-${index}`}
                 className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3"
               >
-                <span className="flex flex-shrink-0 rounded-lg bg-[rgba(11,179,255,.1)] p-1.5 text-salis-bright">
+                <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-bright)] p-1.5 text-salis-bright">
                   <Icon name="Receipt" size={14} />
                 </span>
                 <span className="min-w-0 flex-1">
@@ -362,7 +362,7 @@ function QuickAction({ to, icon, label }: { to: string; icon: string; label: str
 
   const body = (
     <>
-      <span className="flex rounded-[10px] bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+      <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
         <Icon name={icon} size={16} />
       </span>
       <span className="text-center font-action text-[10px] font-semibold text-body">

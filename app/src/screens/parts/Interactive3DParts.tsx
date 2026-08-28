@@ -25,8 +25,8 @@ const PART_MODELS: PartModel[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Available: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Upcoming': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Available: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Upcoming': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Premium: { bg: 'rgba(249,115,22,.15)', fg: 'var(--salis-orange)' },
 }
 
@@ -40,7 +40,7 @@ export function Interactive3DParts() {
         <MobilePageHeader icon="Boxes" title={t('3D Parts Viewer')} subtitle={t('Interactive models')} />
         <MobileCard>
           <div className="flex flex-col items-center gap-3 py-6">
-            <span className="flex rounded-2xl p-4" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+            <span className="flex rounded-2xl p-4" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
               <Icon name="Boxes" size={32} />
             </span>
             <p className="text-sm font-semibold text-heading">{t('3D Viewer')}</p>
@@ -85,7 +85,7 @@ export function Interactive3DParts() {
           <div className="flex flex-col gap-2">
             {PART_MODELS.map((part, i) => (
               <div key={i} className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-surface-secondary">
-                <span className="flex flex-shrink-0 rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                <span className="flex flex-shrink-0 rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                   <Icon name="Package" size={14} />
                 </span>
                 <div className="min-w-0 flex-1">

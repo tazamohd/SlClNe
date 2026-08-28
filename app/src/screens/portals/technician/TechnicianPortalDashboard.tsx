@@ -23,25 +23,25 @@ const ASSIGNED_JOBS: Job[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  'Waiting Parts': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Queued: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'Waiting Parts': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Normal: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  High: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function TechnicianPortalDashboard() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Job>[] = [

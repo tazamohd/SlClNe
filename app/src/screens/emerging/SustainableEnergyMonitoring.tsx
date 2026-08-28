@@ -25,8 +25,8 @@ const MOCK_MONTHLY = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Charging: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Charging: ['var(--tint-orange)', 'var(--salis-orange)'],
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -38,10 +38,10 @@ export function SustainableEnergyMonitoring() {
   const [period, setPeriod] = useState('month')
 
   const kpis = [
-    { label: t('Solar Output'), value: '157 kW', icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Grid Saved'), value: '62%', icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('CO2 Reduced'), value: '85 tons', icon: 'Wind', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Cost Savings'), value: 'SAR 70K', icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Solar Output'), value: '157 kW', icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Grid Saved'), value: '62%', icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('CO2 Reduced'), value: '85 tons', icon: 'Wind', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Cost Savings'), value: 'SAR 70K', icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const sourceColumns: Column<SourceRow>[] = [

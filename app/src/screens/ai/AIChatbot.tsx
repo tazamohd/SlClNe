@@ -22,8 +22,8 @@ const MOCK_STATS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Beta: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Beta: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 type StatRow = (typeof MOCK_STATS)[number]
@@ -45,10 +45,10 @@ export function AIChatbot() {
   const avgSatisfaction = Math.round(MOCK_CHATBOTS.reduce((a, c) => a + c.satisfaction, 0) / MOCK_CHATBOTS.length)
 
   const kpis = [
-    { label: t('Chatbots'), value: String(MOCK_CHATBOTS.length), icon: 'Bot', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Conversations'), value: totalConversations.toLocaleString(), icon: 'MessageSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Satisfaction'), value: `${avgSatisfaction}%`, icon: 'ThumbsUp', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Resolution'), value: '91%', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Chatbots'), value: String(MOCK_CHATBOTS.length), icon: 'Bot', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Conversations'), value: totalConversations.toLocaleString(), icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Satisfaction'), value: `${avgSatisfaction}%`, icon: 'ThumbsUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Resolution'), value: '91%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const chatbotColumns: Column<ChatbotRow>[] = [

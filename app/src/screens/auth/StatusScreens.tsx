@@ -49,7 +49,7 @@ export function Unauthorized() {
       {/* Three stacked, slightly rotated tiles — the design's layered shield. */}
       <div className={`relative ${isMobile ? 'h-[90px] w-[90px]' : 'h-[120px] w-[120px]'}`}>
         <div className="absolute inset-2.5 -rotate-6 rounded-[20px] bg-[rgba(10,94,215,.06)]" />
-        <div className="absolute inset-[5px] rotate-3 rounded-[20px] bg-[rgba(10,94,215,.1)]" />
+        <div className="absolute inset-[5px] rotate-3 rounded-[20px] bg-[var(--tint-blue)]" />
         <div className="absolute inset-0 flex items-center justify-center rounded-[20px] border border-border bg-card shadow-lg">
           <div className="flex flex-col items-center gap-1">
             <Icon name="ShieldOff" size={isMobile ? 24 : 32} className="text-salis-blue" />
@@ -68,7 +68,7 @@ export function Unauthorized() {
       </div>
 
       <div className={`box-border flex w-full items-center gap-3 rounded-lg border border-border bg-card ${isMobile ? 'p-3' : 'p-4'}`}>
-        <span className="flex rounded-[10px] bg-[rgba(10,94,215,.1)] p-2.5 text-salis-blue">
+        <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2.5 text-salis-blue">
           <Icon name="Shield" size={isMobile ? 16 : 18} />
         </span>
         <div className="flex-1 text-start">
@@ -77,7 +77,7 @@ export function Unauthorized() {
             {t('Your role')}: {roleLabel}
           </p>
         </div>
-        <span className="rounded-full bg-[rgba(249,115,22,.1)] px-2.5 py-1 text-[11px] font-semibold text-salis-orange">
+        <span className="rounded-full bg-[var(--tint-orange)] px-2.5 py-1 text-[11px] font-semibold text-salis-orange">
           {t('Denied')}
         </span>
       </div>
@@ -270,7 +270,7 @@ export function LogoutConfirmation() {
     <div className="flex min-h-screen items-center justify-center bg-[rgba(11,31,59,.5)] font-ui">
       <div className={`w-full animate-fade-up ${isMobile ? 'max-w-full px-3' : 'max-w-[360px] p-4'}`}>
         <div className={`rounded-lg border border-border bg-card text-center shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}>
-          <span className="mb-3.5 inline-flex rounded-full bg-[rgba(249,115,22,.1)] p-3.5 text-salis-orange">
+          <span className="mb-3.5 inline-flex rounded-full bg-[var(--tint-orange)] p-3.5 text-salis-orange">
             <Icon name="LogOut" size={isMobile ? 20 : 24} />
           </span>
           <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-base' : 'text-lg'}`}>{t('Confirm Logout')}</h2>

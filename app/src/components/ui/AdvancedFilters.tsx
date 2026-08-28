@@ -80,7 +80,7 @@ export function AdvancedFilters({
             return (
               <Badge
                 key={`${a.groupId}-${a.value}`}
-                background="rgba(10,94,215,.1)"
+                background="var(--tint-blue)"
                 color="var(--salis-blue)"
               >
                 {group ? `${t(group.label)}: ` : ''}

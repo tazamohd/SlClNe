@@ -220,7 +220,7 @@ export function LoansPanel() {
         <Card className="flex flex-col gap-3 p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+              <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue">
                 <Icon name="CalendarClock" size={15} />
               </span>
               <div>

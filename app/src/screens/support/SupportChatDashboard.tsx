@@ -41,10 +41,10 @@ const RECENT_CHATS: RecentChat[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Waiting: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Resolved: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Escalated: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Waiting: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Resolved: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Escalated: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function SupportChatDashboard() {
@@ -69,7 +69,7 @@ export function SupportChatDashboard() {
         {METRICS.map((m) => (
           <Card key={m.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name={m.icon} size={20} />
               </span>
               <div>

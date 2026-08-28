@@ -28,7 +28,7 @@ export function SecuritySettings() {
             <MobileCardRow key={i} label={t(s.label)}>
               {s.type === 'toggle' ? (
                 <Badge
-                  background={(s.value as boolean) ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                  background={(s.value as boolean) ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                   color={(s.value as boolean) ? 'var(--salis-blue)' : '#64748B'}
                 >
                   {(s.value as boolean) ? t('Enabled') : t('Disabled')}
@@ -49,7 +49,7 @@ export function SecuritySettings() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
-          <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Shield" size={16} /></span>
+          <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Shield" size={16} /></span>
           <h2 className="text-sm font-semibold text-heading">{t('Security Configuration')}</h2>
         </div>
         <div className="grid gap-4">
@@ -58,7 +58,7 @@ export function SecuritySettings() {
               <span className="text-sm text-muted">{t(s.label)}</span>
               {s.type === 'toggle' ? (
                 <Badge
-                  background={(s.value as boolean) ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                  background={(s.value as boolean) ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                   color={(s.value as boolean) ? 'var(--salis-blue)' : '#64748B'}
                 >
                   {(s.value as boolean) ? t('Enabled') : t('Disabled')}

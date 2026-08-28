@@ -17,8 +17,8 @@ const MOCK_ALERTS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Flagged: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  'Under Review': ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  Flagged: ['var(--tint-orange)', 'var(--salis-orange)'],
+  'Under Review': ['var(--tint-blue)', 'var(--salis-blue)'],
   Dismissed: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -33,10 +33,10 @@ export function MLFraudDetection() {
   const avgRisk = Math.round(MOCK_ALERTS.reduce((a, d) => a + d.riskScore, 0) / MOCK_ALERTS.length)
 
   const kpis = [
-    { label: t('Total Alerts'), value: String(MOCK_ALERTS.length), icon: 'ShieldAlert', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Flagged'), value: String(flagged), icon: 'Shield', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Risk Score'), value: `${avgRisk}`, icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Model Accuracy'), value: '97.2%', icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Alerts'), value: String(MOCK_ALERTS.length), icon: 'ShieldAlert', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Flagged'), value: String(flagged), icon: 'Shield', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Risk Score'), value: `${avgRisk}`, icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Model Accuracy'), value: '97.2%', icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<AlertRow>[] = [

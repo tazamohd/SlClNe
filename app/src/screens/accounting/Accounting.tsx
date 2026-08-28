@@ -32,11 +32,11 @@ const ACCOUNTING = 'Accounting'
  *  take brand blue; pending needs action and takes orange; rejected and
  *  unposted are neutral. No green or red anywhere (README §7). */
 const LEDGER_STATUS: Record<string, readonly [string, string]> = {
-  posted: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  posted: ['var(--tint-blue)', '#0A5ED7'],
   unposted: ['rgba(100,116,139,.1)', '#64748B'],
-  approved: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  cleared: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  pending: ['rgba(249,115,22,.1)', '#F97316'],
+  approved: ['var(--tint-blue)', '#0A5ED7'],
+  cleared: ['var(--tint-blue)', '#0A5ED7'],
+  pending: ['var(--tint-orange)', '#F97316'],
   rejected: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -52,10 +52,10 @@ function LedgerStatus({ value }: { value: string }) {
 
 /** Account-type palette for the chart of accounts. */
 const ACCOUNT_TYPE: Record<string, readonly [string, string]> = {
-  Assets: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  Liabilities: ['rgba(249,115,22,.1)', '#F97316'],
-  Equity: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  Revenue: ['rgba(11,179,255,.1)', '#0BB3FF'],
+  Assets: ['var(--tint-blue)', '#0A5ED7'],
+  Liabilities: ['var(--tint-orange)', '#F97316'],
+  Equity: ['var(--tint-navy)', '#0B1F3B'],
+  Revenue: ['var(--tint-bright)', '#0BB3FF'],
   Expense: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -207,7 +207,7 @@ export function JournalEntries() {
         className={
           'flex rounded p-2 ' +
           (balanced
-            ? 'bg-[rgba(10,94,215,.1)] text-salis-blue'
+            ? 'bg-[var(--tint-blue)] text-salis-blue'
             : 'bg-[rgba(249,115,22,.12)] text-salis-orange')
         }
       >

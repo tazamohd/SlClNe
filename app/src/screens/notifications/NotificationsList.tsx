@@ -31,10 +31,10 @@ const NOTIFICATIONS: Notification[] = [
 ]
 
 const TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
-  Info: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'Info' },
-  Warning: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)', icon: 'AlertTriangle' },
-  Success: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'CheckCircle' },
-  Error: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)', icon: 'XCircle' },
+  Info: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Info' },
+  Warning: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'AlertTriangle' },
+  Success: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'CheckCircle' },
+  Error: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)', icon: 'XCircle' },
 }
 
 export function NotificationsList() {
@@ -54,7 +54,7 @@ export function NotificationsList() {
         <MobilePageHeader icon="Bell" title={t('Notifications')} subtitle={t('Activity feed')} />
         <div className="flex items-center justify-between">
           {unreadCount > 0 && (
-            <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge>
+            <Badge background="var(--tint-blue)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge>
           )}
           <Button variant="outline" size="sm" onClick={handleMarkAllRead} disabled={!isLive || unreadCount === 0}>
             <Icon name="CheckCheck" size={14} />
@@ -78,7 +78,7 @@ export function NotificationsList() {
                     </div>
                   </div>
                 }
-                trailing={<Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t(n.category)}</Badge>}
+                trailing={<Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t(n.category)}</Badge>}
               />
               <p className="mt-1 text-xs text-body">{t(n.message)}</p>
             </MobileCard>
@@ -102,7 +102,7 @@ export function NotificationsList() {
             <div className="flex items-center gap-2">
               <h1 className="font-display text-[30px] font-black text-heading">{t('Notifications')}</h1>
               {unreadCount > 0 && (
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{unreadCount}</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{unreadCount}</Badge>
               )}
             </div>
             <p className="mt-0.5 text-[13px] text-muted">{t('Activity feed and alerts')}</p>
@@ -130,7 +130,7 @@ export function NotificationsList() {
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-heading">{t(n.title)}</span>
                     {!n.read && <span className="h-2 w-2 rounded-full bg-salis-blue" />}
-                    <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t(n.category)}</Badge>
+                    <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t(n.category)}</Badge>
                   </div>
                   <p className="mt-0.5 text-sm text-body">{t(n.message)}</p>
                 </div>

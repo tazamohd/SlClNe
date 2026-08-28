@@ -48,22 +48,22 @@ const TRANSFERS: TransferRequest[] = [
 ]
 
 const NODE_TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
-  Warehouse: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'Warehouse' },
-  Hub: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'GitBranch' },
-  Branch: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)', icon: 'Building' },
+  Warehouse: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Warehouse' },
+  Hub: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'GitBranch' },
+  Branch: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'Building' },
   Supplier: { bg: 'rgba(107,114,128,.15)', fg: 'rgb(107,114,128)', icon: 'Factory' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Online: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Maintenance: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Offline: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+  Online: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Maintenance: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Offline: { bg: 'var(--tint-orange)', fg: '#F97316' },
 }
 
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Urgent: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
-  Standard: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Urgent: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  Standard: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function PartsNetworkDashboardSpec() {
@@ -75,10 +75,10 @@ export function PartsNetworkDashboardSpec() {
   const avgFillRate = (NODES.reduce((sum, n) => sum + n.fillRate, 0) / NODES.length).toFixed(1)
 
   const kpis = [
-    { label: t('Network Nodes'), value: String(NODES.length), icon: 'Network', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total SKUs'), value: totalSKUs.toLocaleString(), icon: 'Package', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Total Units'), value: `${(totalUnits / 1000).toFixed(0)}K`, icon: 'Boxes', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Fill Rate'), value: `${avgFillRate}%`, icon: 'BarChart3', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Network Nodes'), value: String(NODES.length), icon: 'Network', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total SKUs'), value: totalSKUs.toLocaleString(), icon: 'Package', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Units'), value: `${(totalUnits / 1000).toFixed(0)}K`, icon: 'Boxes', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Fill Rate'), value: `${avgFillRate}%`, icon: 'BarChart3', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const nodeColumns: Column<NetworkNode>[] = [
@@ -143,7 +143,7 @@ export function PartsNetworkDashboardSpec() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="ArrowRightLeft" size={14} /></span>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="ArrowRightLeft" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{tr.id}</p>
                   <p className="text-xs text-muted">{tr.parts}</p>

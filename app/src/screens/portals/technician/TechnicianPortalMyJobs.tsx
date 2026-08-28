@@ -25,16 +25,16 @@ const JOBS: Job[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  'Waiting Parts': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Queued: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'Waiting Parts': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Normal: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  High: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function TechnicianPortalMyJobs() {

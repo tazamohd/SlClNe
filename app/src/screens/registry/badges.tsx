@@ -15,9 +15,9 @@ import { usePreferences } from '@/providers/PreferencesProvider'
  *  green and no red in this product (README §7). */
 
 const TINT = {
-  blue: { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' },
-  bright: { background: 'rgba(11,179,255,.1)', color: 'var(--salis-blue-bright)' },
-  orange: { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' },
+  blue: { background: 'var(--tint-blue)', color: 'var(--salis-blue)' },
+  bright: { background: 'var(--tint-bright)', color: 'var(--salis-blue-bright)' },
+  orange: { background: 'var(--tint-orange)', color: 'var(--salis-orange)' },
   slate: { background: 'rgba(100,116,139,.1)', color: 'var(--text-muted)' },
 } as const
 

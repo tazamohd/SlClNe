@@ -27,10 +27,10 @@ const TASKS: Task[] = [
 ]
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Urgent: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Urgent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 const COLUMNS: { status: Task['status']; icon: string }[] = [
@@ -40,9 +40,9 @@ const COLUMNS: { status: Task['status']; icon: string }[] = [
 ]
 
 const COLUMN_STYLES: Record<string, { bg: string; fg: string }> = {
-  'To Do': { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Done: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'To Do': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Done: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 export function TaskManagement() {
@@ -62,7 +62,7 @@ export function TaskManagement() {
                   <Icon name={col.icon} size={14} />
                 </span>
                 <span className="text-sm font-bold text-heading">{t(col.status)}</span>
-                <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{tasks.length}</Badge>
+                <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{tasks.length}</Badge>
               </div>
               {tasks.map((task, i) => (
                 <MobileCard key={i}>
@@ -100,7 +100,7 @@ export function TaskManagement() {
                   <Icon name={col.icon} size={16} />
                 </span>
                 <span className="text-sm font-bold text-heading">{t(col.status)}</span>
-                <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{tasks.length}</Badge>
+                <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{tasks.length}</Badge>
               </div>
               {tasks.map((task, i) => (
                 <Card key={i} className="rounded-xl p-4 shadow-sm">

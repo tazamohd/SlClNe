@@ -7,17 +7,17 @@
 export type Tint = 'blue' | 'bright' | 'orange' | 'navy'
 
 export const TINT_CHIP: Record<Tint, string> = {
-  blue: 'bg-[rgba(10,94,215,.1)] text-salis-blue',
-  bright: 'bg-[rgba(11,179,255,.1)] text-salis-bright',
-  orange: 'bg-[rgba(249,115,22,.1)] text-salis-orange',
-  navy: 'bg-[rgba(11,31,59,.1)] text-salis-navy dark:bg-[rgba(11,179,255,.1)] dark:text-salis-bright',
+  blue: 'bg-[var(--tint-blue)] text-salis-blue',
+  bright: 'bg-[var(--tint-bright)] text-salis-bright',
+  orange: 'bg-[var(--tint-orange)] text-salis-orange',
+  navy: 'bg-[var(--tint-navy)] text-salis-navy dark:bg-[var(--tint-bright)] dark:text-salis-bright',
 }
 
 export const TINT_PILL: Record<Tint, string> = {
-  blue: 'bg-[rgba(10,94,215,.1)] text-salis-blue',
-  bright: 'bg-[rgba(11,179,255,.1)] text-salis-bright',
-  orange: 'bg-[rgba(249,115,22,.1)] text-salis-orange',
-  navy: 'bg-[rgba(11,31,59,.1)] text-salis-navy dark:bg-[rgba(11,179,255,.1)] dark:text-salis-bright',
+  blue: 'bg-[var(--tint-blue)] text-salis-blue',
+  bright: 'bg-[var(--tint-bright)] text-salis-bright',
+  orange: 'bg-[var(--tint-orange)] text-salis-orange',
+  navy: 'bg-[var(--tint-navy)] text-salis-navy dark:bg-[var(--tint-bright)] dark:text-salis-bright',
 }
 
 /** Soft two-stop gradients used as decorative tile/card headers (Marketplace

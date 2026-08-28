@@ -25,20 +25,20 @@ const PART_REQUESTS: PartRequest[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Approved: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Out of Stock': { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Delivered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Out of Stock': { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function TechnicianPortalParts() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Total Requests'), value: String(PART_REQUESTS.length), icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Pending'), value: '2', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Delivered'), value: '2', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Out of Stock'), value: '1', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+    { label: t('Total Requests'), value: String(PART_REQUESTS.length), icon: 'Package', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Pending'), value: '2', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Delivered'), value: '2', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Out of Stock'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
   ]
 
   const columns: Column<PartRequest>[] = [

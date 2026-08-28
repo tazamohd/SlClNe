@@ -66,7 +66,7 @@ export function TechnicianPortal() {
             <p className="text-xs leading-tight opacity-80">{roleLabel}</p>
           </div>
         </div>
-        <dl className="grid grid-cols-4 gap-2">
+        <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="rounded-[10px] bg-white/10 p-2.5 text-center">
               <dd className="font-display text-xl font-black leading-none" dir="ltr">
@@ -153,7 +153,7 @@ export function TechnicianPortal() {
               key={slot._id ?? `${slot.time}-${index}`}
               className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3"
             >
-              <span className="flex flex-shrink-0 rounded-lg bg-[rgba(11,179,255,.1)] p-1.5 text-salis-bright">
+              <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-bright)] p-1.5 text-salis-bright">
                 <Icon name="Clock" size={14} />
               </span>
               <span className="min-w-0 flex-1">
@@ -189,7 +189,7 @@ function CurrentJobCard({ job }: { job: JobRow }) {
   const pct = Math.round(((reached + 1) / total) * 100)
 
   return (
-    <Card className="flex flex-col gap-3 border-[1.5px] border-salis-blue p-4 shadow-[0_4px_16px_rgba(10,94,215,.1)]">
+    <Card className="flex flex-col gap-3 border-[1.5px] border-salis-blue p-4 shadow-[0_4px_16px_var(--tint-blue)]">
       <div className="flex items-center gap-2">
         <span className="flex rounded-lg bg-salis-gradient p-1.5 text-white">
           <Icon name="Wrench" size={14} />

@@ -17,14 +17,14 @@ const MOCK_ASSESSMENTS = [
 ] as const
 
 const SEVERITY_COLORS: Record<string, readonly [string, string]> = {
-  Major: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Moderate: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  Major: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Moderate: ['var(--tint-blue)', 'var(--salis-blue)'],
   Minor: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Reviewed: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Pending: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Reviewed: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
   Escalated: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -38,10 +38,10 @@ export function SmartDamageAssessment() {
   const avgConfidence = Math.round(MOCK_ASSESSMENTS.reduce((a, d) => a + d.confidence, 0) / MOCK_ASSESSMENTS.length)
 
   const kpis = [
-    { label: t('Assessments'), value: String(MOCK_ASSESSMENTS.length), icon: 'ScanEye', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Major Cases'), value: String(MOCK_ASSESSMENTS.filter(a => a.severity === 'Major').length), icon: 'CircleDot', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Pending Review'), value: String(MOCK_ASSESSMENTS.filter(a => a.status === 'Pending').length), icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Assessments'), value: String(MOCK_ASSESSMENTS.length), icon: 'ScanEye', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Major Cases'), value: String(MOCK_ASSESSMENTS.filter(a => a.severity === 'Major').length), icon: 'CircleDot', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Pending Review'), value: String(MOCK_ASSESSMENTS.filter(a => a.status === 'Pending').length), icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<AssessmentRow>[] = [

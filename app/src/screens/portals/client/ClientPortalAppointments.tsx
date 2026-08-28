@@ -24,20 +24,20 @@ const APPOINTMENTS: Appointment[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Confirmed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Confirmed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function ClientPortalAppointments() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Upcoming'), value: '2', icon: 'CalendarCheck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Completed'), value: '8', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Cancelled'), value: '1', icon: 'XCircle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-    { label: t('This Month'), value: '3', icon: 'Calendar', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Upcoming'), value: '2', icon: 'CalendarCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Completed'), value: '8', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Cancelled'), value: '1', icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('This Month'), value: '3', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<Appointment>[] = [

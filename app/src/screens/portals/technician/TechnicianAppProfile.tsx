@@ -16,10 +16,10 @@ const PROFILE_INFO = [
 ]
 
 const STATS = [
-  { label: 'Jobs This Month', value: '42', icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  { label: 'Avg Rating', value: '4.8', icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  { label: 'On-Time Rate', value: '96%', icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  { label: 'Efficiency', value: '92%', icon: 'TrendingUp', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  { label: 'Jobs This Month', value: '42', icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  { label: 'Avg Rating', value: '4.8', icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  { label: 'On-Time Rate', value: '96%', icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  { label: 'Efficiency', value: '92%', icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
 ]
 
 const SKILLS = [
@@ -31,9 +31,9 @@ const SKILLS = [
 ]
 
 const LEVEL_STYLES: Record<string, { bg: string; fg: string }> = {
-  Expert: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Advanced: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Intermediate: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Expert: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Advanced: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Intermediate: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function TechnicianAppProfile() {
@@ -46,7 +46,7 @@ export function TechnicianAppProfile() {
         <MobilePageHeader icon="User" title={t('Profile')} subtitle={t('Your details')} />
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(10,94,215,.1)] text-salis-blue">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--tint-blue)] text-salis-blue">
               <Icon name="User" size={24} />
             </span>
             <div>
@@ -103,7 +103,7 @@ export function TechnicianAppProfile() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={16} /></span>
+            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Details')}</h2>
           </div>
           <div className="grid gap-4">
@@ -121,7 +121,7 @@ export function TechnicianAppProfile() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
+            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Skills')}</h2>
           </div>
           <div className="grid gap-4">

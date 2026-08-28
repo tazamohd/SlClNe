@@ -33,10 +33,10 @@ export function AutomatedReordering() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('Active Rules'), value: String(RULES.filter((r) => r.active).length), icon: 'RotateCcw', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Below Minimum'), value: String(RULES.filter((r) => r.currentStock < r.minStock).length), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-    { label: t('Orders Triggered'), value: '12', icon: 'ShoppingCart', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Parts'), value: String(RULES.length), icon: 'Package', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+    { label: t('Active Rules'), value: String(RULES.filter((r) => r.active).length), icon: 'RotateCcw', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Below Minimum'), value: String(RULES.filter((r) => r.currentStock < r.minStock).length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Orders Triggered'), value: '12', icon: 'ShoppingCart', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Parts'), value: String(RULES.length), icon: 'Package', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
   ]
 
   const columns: Column<ReorderRule>[] = [
@@ -51,7 +51,7 @@ export function AutomatedReordering() {
       header: 'Status',
       cell: (r) => (
         <Badge
-          background={r.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+          background={r.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
           color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
         >{t(r.active ? 'Active' : 'Inactive')}</Badge>
       ),
@@ -70,7 +70,7 @@ export function AutomatedReordering() {
             title={r.partName}
             trailing={
               <Badge
-                background={r.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+                background={r.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
                 color={r.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
               >{t(r.active ? 'Active' : 'Inactive')}</Badge>
             }

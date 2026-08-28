@@ -42,9 +42,9 @@ const METHODS: PaymentMethod[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Refunded: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Refunded: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function CustomerAppPayments() {
@@ -53,10 +53,10 @@ export function CustomerAppPayments() {
   const totalSpent = PAYMENTS.filter((p) => p.status === 'Completed').reduce((sum, p) => sum + p.amount, 0)
 
   const kpis = [
-    { label: t('Total Spent'), value: `${(totalSpent / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Spent'), value: `${(totalSpent / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Payment>[] = [
@@ -89,12 +89,12 @@ export function CustomerAppPayments() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {METHODS.map((m) => (
             <div key={m.last4} className="flex items-center gap-3 rounded-xl border border-border p-4">
-              <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
+              <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-heading">{m.type} <span className="font-mono text-muted" dir="ltr">****{m.last4}</span></p>
                 <p className="text-xs text-muted">{m.expiry !== '-' ? `${t('Expires')} ${m.expiry}` : t('Digital Wallet')}</p>
               </div>
-              {m.primary && <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Primary')}</Badge>}
+              {m.primary && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Primary')}</Badge>}
             </div>
           ))}
         </div>
@@ -113,7 +113,7 @@ export function CustomerAppPayments() {
               <MobileCardHeader
                 leading={
                   <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
+                    <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
                     <div>
                       <p className="text-[13px] font-semibold text-heading">{t(p.description)}</p>
                       <p className="text-xs text-muted">{p.date}</p>

@@ -48,10 +48,10 @@ const MOCK_ACCOUNTS: readonly LedgerAccount[] = [
 ]
 
 const TYPE_PALETTE: Record<string, readonly [string, string]> = {
-  Assets: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  Liabilities: ['rgba(249,115,22,.1)', '#F97316'],
-  Equity: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  Revenue: ['rgba(11,179,255,.1)', '#0BB3FF'],
+  Assets: ['var(--tint-blue)', '#0A5ED7'],
+  Liabilities: ['var(--tint-orange)', '#F97316'],
+  Equity: ['var(--tint-navy)', '#0B1F3B'],
+  Revenue: ['var(--tint-bright)', '#0BB3FF'],
   Expense: ['rgba(100,116,139,.1)', '#64748B'],
 }
 

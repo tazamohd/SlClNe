@@ -104,7 +104,7 @@ export function AggregateGapNotice({ endpoint }: { endpoint: string }) {
   const { t } = usePreferences()
   return (
     <div className="flex items-start gap-3 rounded-lg border border-border bg-[rgba(10,94,215,.05)] px-4 py-3">
-      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+      <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue">
         <Icon name="Info" size={16} />
       </span>
       <div className="min-w-0 text-[13px]">
@@ -132,7 +132,7 @@ export function ServerTotalsNote({ endpoint }: { endpoint: string }) {
   const { t } = usePreferences()
   return (
     <div className="flex items-start gap-3 rounded-lg border border-border bg-[rgba(10,94,215,.05)] px-4 py-3">
-      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+      <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue">
         <Icon name="Calculator" size={16} />
       </span>
       <div className="min-w-0 text-[13px]">

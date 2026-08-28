@@ -17,8 +17,8 @@ const MOCK_OPTIMIZATIONS = [
 ] as const
 
 const IMPACT_COLORS: Record<string, readonly [string, string]> = {
-  High: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Medium: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  High: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Medium: ['var(--tint-orange)', 'var(--salis-orange)'],
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -32,10 +32,10 @@ export function IntelligentPriceOptimizer() {
   const avgConfidence = Math.round(MOCK_OPTIMIZATIONS.reduce((a, o) => a + o.confidence, 0) / MOCK_OPTIMIZATIONS.length)
 
   const kpis = [
-    { label: t('Optimizations'), value: String(MOCK_OPTIMIZATIONS.length), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('High Impact'), value: String(highImpact), icon: 'TrendingUp', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Revenue Impact'), value: '+4.2%', icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Optimizations'), value: String(MOCK_OPTIMIZATIONS.length), icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('High Impact'), value: String(highImpact), icon: 'TrendingUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Revenue Impact'), value: '+4.2%', icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<OptRow>[] = [

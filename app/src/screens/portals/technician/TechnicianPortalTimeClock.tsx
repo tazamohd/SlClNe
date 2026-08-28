@@ -25,9 +25,9 @@ const TIME_ENTRIES: TimeEntry[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Complete: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Absent: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Complete: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Absent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function TechnicianPortalTimeClock() {
@@ -35,10 +35,10 @@ export function TechnicianPortalTimeClock() {
   const [clockedIn] = useState(true)
 
   const kpis = [
-    { label: t('Status'), value: clockedIn ? t('Clocked In') : t('Clocked Out'), icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Today'), value: '6h 30m', icon: 'Timer', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('This Week'), value: '33.5h', icon: 'Calendar', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Overtime'), value: '1.5h', icon: 'AlertCircle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Status'), value: clockedIn ? t('Clocked In') : t('Clocked Out'), icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Today'), value: '6h 30m', icon: 'Timer', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('This Week'), value: '33.5h', icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Overtime'), value: '1.5h', icon: 'AlertCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<TimeEntry>[] = [

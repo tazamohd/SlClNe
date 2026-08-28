@@ -76,9 +76,9 @@ export function AdvancedSettings() {
       icon: 'Plug',
       title: t('Integrations'),
       items: [
-        { label: 'ZATCA E-Invoice', desc: rtl ? 'ربط الفوترة الإلكترونية' : 'Saudi e-invoicing integration', kind: 'badge', badgeLabel: t('Connected'), badgeBg: 'rgba(10,94,215,.1)', badgeColor: 'var(--salis-blue)' },
-        { label: 'WhatsApp Business', desc: rtl ? 'إشعارات العملاء' : 'Customer notifications', kind: 'badge', badgeLabel: t('Connected'), badgeBg: 'rgba(10,94,215,.1)', badgeColor: 'var(--salis-blue)' },
-        { label: t('Accounting Software'), desc: rtl ? 'تصدير البيانات المالية' : 'Financial data export', kind: 'badge', badgeLabel: t('Disconnected'), badgeBg: 'rgba(249,115,22,.1)', badgeColor: 'var(--salis-orange)' },
+        { label: 'ZATCA E-Invoice', desc: rtl ? 'ربط الفوترة الإلكترونية' : 'Saudi e-invoicing integration', kind: 'badge', badgeLabel: t('Connected'), badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
+        { label: 'WhatsApp Business', desc: rtl ? 'إشعارات العملاء' : 'Customer notifications', kind: 'badge', badgeLabel: t('Connected'), badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
+        { label: t('Accounting Software'), desc: rtl ? 'تصدير البيانات المالية' : 'Financial data export', kind: 'badge', badgeLabel: t('Disconnected'), badgeBg: 'var(--tint-orange)', badgeColor: 'var(--salis-orange)' },
       ],
     },
     {
@@ -98,7 +98,7 @@ export function AdvancedSettings() {
         {sections.map((sec) => (
           <Card key={sec.title} className="flex flex-col gap-3 rounded-xl p-4">
             <div className="flex items-center gap-2.5">
-              <span className="flex rounded-[10px] bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+              <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
                 <Icon name={sec.icon} size={16} />
               </span>
               <h3 className="text-[14px] font-bold text-heading">{sec.title}</h3>
@@ -154,7 +154,7 @@ export function AdvancedSettings() {
       {sections.map((sec) => (
         <Card key={sec.title} className="flex flex-col gap-4 rounded-xl p-5">
           <div className="flex items-center gap-2.5">
-            <span className="flex rounded-[10px] bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
+            <span className="flex rounded-[10px] bg-[var(--tint-blue)] p-2 text-salis-blue">
               <Icon name={sec.icon} size={18} />
             </span>
             <h3 className="text-[15px] font-bold text-heading">{sec.title}</h3>

@@ -22,10 +22,10 @@ const MOCK_CAMPAIGNS = [
 type Campaign = (typeof MOCK_CAMPAIGNS)[number]
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
   Completed: ['rgba(100,116,139,.1)', '#64748B'],
-  Scheduled: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Draft: ['rgba(11,31,59,.1)', 'var(--salis-navy, #0B1F3B)'],
+  Scheduled: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Draft: ['var(--tint-navy)', 'var(--salis-navy, #0B1F3B)'],
 }
 
 export function EmailMarketingCampaigns() {
@@ -39,10 +39,10 @@ export function EmailMarketingCampaigns() {
   const clickRate = totalOpened > 0 ? Math.round((totalClicked / totalOpened) * 100) : 0
 
   const kpis = [
-    { label: t('Total Campaigns'), value: String(MOCK_CAMPAIGNS.length), icon: 'Mail', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Emails Sent'), value: totalSent.toLocaleString(), icon: 'Send', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Open Rate'), value: `${openRate}%`, icon: 'Eye', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Click Rate'), value: `${clickRate}%`, icon: 'MousePointerClick', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Campaigns'), value: String(MOCK_CAMPAIGNS.length), icon: 'Mail', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Emails Sent'), value: totalSent.toLocaleString(), icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Open Rate'), value: `${openRate}%`, icon: 'Eye', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Click Rate'), value: `${clickRate}%`, icon: 'MousePointerClick', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Campaign>[] = [
@@ -74,7 +74,7 @@ export function EmailMarketingCampaigns() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Mail" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Mail" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{c.name}</p>
                     <p className="text-xs text-muted">{c.subject}</p>

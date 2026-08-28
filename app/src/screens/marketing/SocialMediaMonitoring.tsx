@@ -29,9 +29,9 @@ const MENTIONS: Mention[] = [
 ]
 
 const SENTIMENT_STYLES: Record<string, { bg: string; fg: string }> = {
-  Positive: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Neutral: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Negative: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Positive: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Neutral: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Negative: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 const PLATFORM_ICONS: Record<string, string> = {
@@ -46,10 +46,10 @@ export function SocialMediaMonitoring() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('Total Mentions'), value: '342', icon: 'AtSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Positive'), value: '68%', icon: 'ThumbsUp', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Response Rate'), value: '82%', icon: 'MessageCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Response Time'), value: '2.4h', icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Mentions'), value: '342', icon: 'AtSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Positive'), value: '68%', icon: 'ThumbsUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Response Rate'), value: '82%', icon: 'MessageCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Response Time'), value: '2.4h', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<Mention>[] = [
@@ -86,7 +86,7 @@ export function SocialMediaMonitoring() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={PLATFORM_ICONS[m.platform]} size={14} /></span>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={PLATFORM_ICONS[m.platform]} size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{m.author}</p>
                   <p className="text-xs text-muted">{m.platform}</p>

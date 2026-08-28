@@ -40,7 +40,7 @@ export function PartsMarketplace() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Store" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Store" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{listing.partName}</p>
                     <p className="text-xs text-muted">{listing.supplier}</p>
@@ -49,7 +49,7 @@ export function PartsMarketplace() {
               }
               trailing={
                 <Badge
-                  background={listing.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                  background={listing.inStock ? 'var(--tint-blue)' : 'var(--tint-orange)'}
                   color={listing.inStock ? 'var(--salis-blue)' : '#F97316'}
                 >
                   {listing.inStock ? t('In Stock') : t('Out of Stock')}
@@ -75,11 +75,11 @@ export function PartsMarketplace() {
           <Card key={i} className="flex flex-col gap-3 rounded-2xl p-5 shadow-sm">
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Box" size={16} /></span>
+                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Box" size={16} /></span>
                 <h3 className="text-sm font-semibold text-heading">{listing.partName}</h3>
               </div>
               <Badge
-                background={listing.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                background={listing.inStock ? 'var(--tint-blue)' : 'var(--tint-orange)'}
                 color={listing.inStock ? 'var(--salis-blue)' : '#F97316'}
               >
                 {listing.inStock ? t('In Stock') : t('Out of Stock')}

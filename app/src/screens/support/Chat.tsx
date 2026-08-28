@@ -42,9 +42,9 @@ const ACTIVE_CHATS: ActiveChat[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Waiting: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Resolved: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Waiting: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Resolved: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function Chat() {

@@ -34,9 +34,9 @@ export function VATSettings() {
   ]
 
   const summaryRows = [
-    { label: t('Total VAT Collected'), amount: SUMMARY.totalCollected, bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'TrendingUp' },
+    { label: t('Total VAT Collected'), amount: SUMMARY.totalCollected, bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'TrendingUp' },
     { label: t('Total VAT Paid'), amount: SUMMARY.totalPaid, bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)', icon: 'TrendingDown' },
-    { label: t('Net VAT'), amount: SUMMARY.netVat, bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'DollarSign' },
+    { label: t('Net VAT'), amount: SUMMARY.netVat, bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'DollarSign' },
   ]
 
   if (isMobile) {
@@ -47,7 +47,7 @@ export function VATSettings() {
           {settings.map((s, i) => (
             <MobileCardRow key={i} label={s.label}>
               {s.badge ? (
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{s.value}</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{s.value}</Badge>
               ) : (
                 <span className="font-mono text-xs text-heading">{s.value}</span>
               )}
@@ -79,7 +79,7 @@ export function VATSettings() {
             <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{s.label}</span>
               {s.badge ? (
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{s.value}</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{s.value}</Badge>
               ) : (
                 <span className="font-mono text-sm font-medium text-heading">{s.value}</span>
               )}

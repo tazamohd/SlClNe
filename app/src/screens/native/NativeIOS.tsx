@@ -49,7 +49,7 @@ export function NativeIOS() {
               <Icon name="Apple" size={32} />
             </span>
             <p className="text-sm font-bold text-heading">{t('Salis Auto ERP')}</p>
-            <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Version')} 3.2.1</Badge>
+            <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Version')} 3.2.1</Badge>
           </div>
         </MobileCard>
         <p className="text-xs font-bold text-heading">{t('App Details')}</p>
@@ -64,7 +64,7 @@ export function NativeIOS() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                     <Icon name={feature.icon} size={14} />
                   </span>
                   <div>
@@ -91,7 +91,7 @@ export function NativeIOS() {
           </span>
           <p className="mt-4 text-lg font-bold text-heading">{t('Salis Auto ERP')}</p>
           <p className="mt-1 text-xs text-muted">{t('By Salis Technologies')}</p>
-          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Version')} 3.2.1</Badge>
+          <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Version')} 3.2.1</Badge>
           <div className="mt-4 flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <Icon key={star} name="Star" size={16} style={{ color: star <= 4 ? 'var(--salis-orange)' : 'rgb(107,114,128)' }} />
@@ -114,7 +114,7 @@ export function NativeIOS() {
             <div className="grid grid-cols-2 gap-4">
               {APP_FEATURES.map((feature, i) => (
                 <div key={i} className="flex items-start gap-3 rounded-xl bg-surface-secondary p-4">
-                  <span className="flex flex-shrink-0 rounded-lg p-2" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex flex-shrink-0 rounded-lg p-2" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                     <Icon name={feature.icon} size={18} />
                   </span>
                   <div>

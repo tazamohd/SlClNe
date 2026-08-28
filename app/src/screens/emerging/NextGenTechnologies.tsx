@@ -15,8 +15,8 @@ const MOCK_ROADMAP = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  'In Progress': ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Planned: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  'In Progress': ['var(--tint-blue)', 'var(--salis-blue)'],
+  Planned: ['var(--tint-orange)', 'var(--salis-orange)'],
   Research: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -29,10 +29,10 @@ export function NextGenTechnologies() {
   const avgCompletion = Math.round(MOCK_ROADMAP.reduce((a, r) => a + r.completion, 0) / MOCK_ROADMAP.length)
 
   const kpis = [
-    { label: t('Initiatives'), value: String(MOCK_ROADMAP.length), icon: 'Layers', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('In Progress'), value: String(inProgress), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Progress'), value: `${avgCompletion}%`, icon: 'TrendingUp', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Teams'), value: '5', icon: 'Users', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Initiatives'), value: String(MOCK_ROADMAP.length), icon: 'Layers', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Progress'), value: String(inProgress), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Progress'), value: `${avgCompletion}%`, icon: 'TrendingUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Teams'), value: '5', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<RoadmapRow>[] = [

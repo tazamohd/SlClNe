@@ -18,10 +18,10 @@ const ITEMS = [
 ] as const
 
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
-  Compliant: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Compliant: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Pending: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   Overdue: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
-  'In Review': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'In Review': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
 }
 
 type ItemRow = (typeof ITEMS)[number]
@@ -33,8 +33,8 @@ export function ComplianceManagement() {
   const filtered = filter === 'All' ? ITEMS : ITEMS.filter((i) => i.status === filter)
 
   const kpis = [
-    { label: t('Total Items'), value: String(ITEMS.length), icon: 'ShieldCheck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Compliant'), value: String(ITEMS.filter((i) => i.status === 'Compliant').length), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Items'), value: String(ITEMS.length), icon: 'ShieldCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Compliant'), value: String(ITEMS.filter((i) => i.status === 'Compliant').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Pending'), value: String(ITEMS.filter((i) => i.status === 'Pending').length), icon: 'Clock', bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
     { label: t('Overdue'), value: String(ITEMS.filter((i) => i.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
   ]

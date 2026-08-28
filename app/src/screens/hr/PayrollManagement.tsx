@@ -108,7 +108,7 @@ export function PayrollManagement() {
                   (index ? 'border-0 border-t border-solid border-border' : '')
                 }
               >
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
                   <Icon name="Calendar" size={16} />
                 </span>
                 <div className="min-w-0 flex-1">

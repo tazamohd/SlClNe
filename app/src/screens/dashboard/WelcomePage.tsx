@@ -15,10 +15,10 @@ function getGreeting(t: (s: string) => string): string {
 }
 
 const QUICK_STATS = [
-  { label: "Today's Appointments", value: '5', icon: 'Calendar', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  { label: 'Active Jobs', value: '12', icon: 'Wrench', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  { label: 'Pending Invoices', value: '8', icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  { label: 'Notifications', value: '3', icon: 'Bell', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  { label: "Today's Appointments", value: '5', icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  { label: 'Active Jobs', value: '12', icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  { label: 'Pending Invoices', value: '8', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  { label: 'Notifications', value: '3', icon: 'Bell', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
 ]
 
 const QUICK_ACTIONS = [
@@ -56,7 +56,7 @@ export function WelcomePage() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={a.icon} size={14} /></span>
                   <span className={`text-[13px] font-semibold ${isLive ? 'text-heading' : 'text-muted'}`}>{t(a.label)}</span>
                 </div>
               }
@@ -93,7 +93,7 @@ export function WelcomePage() {
               className={`flex flex-col items-center gap-3 rounded-2xl p-6 shadow-sm transition-shadow ${isLive ? 'cursor-pointer hover:shadow-md' : 'opacity-60'}`}
               onClick={() => navigate(a.route)}
             >
-              <span className="flex rounded-xl bg-[rgba(10,94,215,.1)] p-3 text-salis-blue" aria-hidden>
+              <span className="flex rounded-xl bg-[var(--tint-blue)] p-3 text-salis-blue" aria-hidden>
                 <Icon name={a.icon} size={24} />
               </span>
               <span className="text-sm font-semibold text-heading">{t(a.label)}</span>

@@ -29,16 +29,16 @@ const MOCK_COURSES: readonly Course[] = [
 ]
 
 const STATUS_COLORS: Record<Course['status'], { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Draft: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Archived: { bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Draft: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Archived: { bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
 }
 
 const CATEGORY_COLORS: Record<Course['category'], { bg: string; fg: string }> = {
-  Safety: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Technical: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Customer Service': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Compliance: { bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
+  Safety: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Technical: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Customer Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Compliance: { bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
 }
 
 export function TrainingLMS() {
@@ -60,10 +60,10 @@ export function TrainingLMS() {
   const totalEnrolled = MOCK_COURSES.reduce((sum, r) => sum + r.enrolled, 0)
 
   const kpis = [
-    { label: t('Total Courses'), value: String(MOCK_COURSES.length), icon: 'BookOpen', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(activeCourses), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Avg Completion'), value: `${avgCompletion}%`, icon: 'TrendingUp', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Enrolled'), value: String(totalEnrolled), icon: 'Users', bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
+    { label: t('Total Courses'), value: String(MOCK_COURSES.length), icon: 'BookOpen', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(activeCourses), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Completion'), value: `${avgCompletion}%`, icon: 'TrendingUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Enrolled'), value: String(totalEnrolled), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]
 
   const columns: Column<Course>[] = [

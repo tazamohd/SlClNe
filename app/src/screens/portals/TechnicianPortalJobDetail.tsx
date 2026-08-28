@@ -216,7 +216,7 @@ export function TechnicianPortalJobDetail() {
                   {t(label)}
                 </span>
                 {currentStep ? (
-                  <span className="rounded-full bg-[rgba(10,94,215,.1)] px-2.5 py-0.5 text-[10px] font-semibold text-salis-blue">
+                  <span className="rounded-full bg-[var(--tint-blue)] px-2.5 py-0.5 text-[10px] font-semibold text-salis-blue">
                     {t('Current')}
                   </span>
                 ) : null}

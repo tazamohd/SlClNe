@@ -25,9 +25,9 @@ const WORKFLOWS: Workflow[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Paused: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Draft: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Paused: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Draft: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function MarketingAutomation() {
@@ -54,7 +54,7 @@ export function MarketingAutomation() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Zap" size={14} /></span>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Zap" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{w.name}</p>
                   <p className="text-xs text-muted">{t(w.trigger)}</p>

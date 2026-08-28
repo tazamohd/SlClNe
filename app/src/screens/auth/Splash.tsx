@@ -27,8 +27,8 @@ export function Splash() {
       className="relative flex min-h-screen w-full cursor-default items-center justify-center overflow-hidden border-none bg-page font-ui focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
     >
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.1),transparent_65%)] blur-[64px]" />
-        <div className="absolute bottom-0 start-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(11,179,255,.1),transparent_65%)] blur-[64px]" />
+        <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,var(--tint-blue),transparent_65%)] blur-[64px]" />
+        <div className="absolute bottom-0 start-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,var(--tint-bright),transparent_65%)] blur-[64px]" />
       </div>
 
       <div className={`relative z-[1] flex animate-fade-up flex-col items-center ${isMobile ? 'gap-4' : 'gap-6'}`}>

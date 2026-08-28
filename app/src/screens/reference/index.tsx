@@ -54,7 +54,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 /** Small example pill for pattern labels. */
 function PatternLabel({ text }: { text: string }) {
   return (
-    <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{text}</Badge>
+    <Badge background="var(--tint-blue)" color="var(--salis-blue)">{text}</Badge>
   )
 }
 
@@ -70,8 +70,8 @@ export function UIListView() {
     { id: 'JC-2403', title: 'Engine Diagnostics', status: 'Completed', date: '2026-08-18' },
   ]
   const statusColors: Record<string, [string, string]> = {
-    'In Progress': ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-    Pending: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+    'In Progress': ['var(--tint-blue)', 'var(--salis-blue)'],
+    Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
     Completed: ['rgba(100,116,139,.1)', '#64748B'],
   }
   return (
@@ -130,8 +130,8 @@ export function UITableView() {
       header: 'Status', cell: r => {
         const colors: Record<string, [string, string]> = {
           Paid: ['rgba(100,116,139,.1)', '#64748B'],
-          Pending: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-          Overdue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+          Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+          Overdue: ['var(--tint-blue)', 'var(--salis-blue)'],
         }
         const [bg, fg] = colors[r.status] ?? ['rgba(100,116,139,.1)', '#64748B']
         return <Badge background={bg} color={fg}>{t(r.status)}</Badge>
@@ -152,8 +152,8 @@ export function UITableView() {
                 (() => {
                   const colors: Record<string, [string, string]> = {
                     Paid: ['rgba(100,116,139,.1)', '#64748B'],
-                    Pending: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-                    Overdue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+                    Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+                    Overdue: ['var(--tint-blue)', 'var(--salis-blue)'],
                   }
                   const [bg, fg] = colors[r.status] ?? ['rgba(100,116,139,.1)', '#64748B']
                   return <Badge background={bg} color={fg}>{t(r.status)}</Badge>
@@ -300,7 +300,7 @@ export function UIKanbanView() {
             <div className="mb-3 flex items-center gap-2">
               <Icon name={col.icon} size={16} className="text-salis-blue" />
               <h3 className="text-sm font-bold text-heading">{t(col.title)}</h3>
-              <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{col.items.length}</Badge>
+              <Badge background="var(--tint-blue)" color="var(--salis-blue)">{col.items.length}</Badge>
             </div>
             <div className="flex flex-col gap-2">
               {col.items.map(item => (
@@ -348,7 +348,7 @@ export function UIMapView() {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-heading">{t(loc.name)}</span>
                 <Badge
-                  background={loc.status === 'Open' ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                  background={loc.status === 'Open' ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                   color={loc.status === 'Open' ? 'var(--salis-blue)' : '#64748B'}
                 >{t(loc.status)}</Badge>
               </div>
@@ -671,10 +671,10 @@ export function UIAdvancedFilters() {
       </Section>
       <Section title="Active Filters">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+          <Badge background="var(--tint-blue)" color="var(--salis-blue)">
             {t('Status')}: {t('Active')} <span className="ms-1 cursor-pointer opacity-60">&times;</span>
           </Badge>
-          <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">
+          <Badge background="var(--tint-orange)" color="var(--salis-orange)">
             {t('Branch')}: {t('Main')} <span className="ms-1 cursor-pointer opacity-60">&times;</span>
           </Badge>
           <Button variant="ghost" size="sm">{t('Clear All')}</Button>
@@ -728,7 +728,7 @@ export function UIImportCenter() {
                 <p className="text-xs text-muted">{h.records} {t('records')} &middot; {h.date}</p>
               </div>
               <Badge
-                background={h.status === 'Completed' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                background={h.status === 'Completed' ? 'var(--tint-blue)' : 'var(--tint-orange)'}
                 color={h.status === 'Completed' ? 'var(--salis-blue)' : 'var(--salis-orange)'}
               >{t(h.status)}</Badge>
             </div>
@@ -974,7 +974,7 @@ export function UIModalsLifecycle() {
               <div className="mt-2 flex items-center justify-center gap-2 text-xs text-muted">
                 <Badge background="rgba(100,116,139,.1)" color="#64748B">{t(s.from)}</Badge>
                 <Icon name="ArrowRight" size={12} />
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t(s.to)}</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t(s.to)}</Badge>
               </div>
               <Button variant="outline" size="sm" className="mt-3">{t('Confirm Transition')}</Button>
             </Card>
@@ -991,8 +991,8 @@ export function UIModalsLifecycle() {
 export function UIModalsStatus() {
   const { t } = usePreferences()
   const statusModals = [
-    { title: 'Operation Successful', desc: 'The job card has been created.', icon: 'CheckCircle', color: 'var(--salis-blue)', bg: 'rgba(10,94,215,.1)' },
-    { title: 'Warning', desc: 'This action cannot be undone.', icon: 'AlertTriangle', color: 'var(--salis-orange)', bg: 'rgba(249,115,22,.1)' },
+    { title: 'Operation Successful', desc: 'The job card has been created.', icon: 'CheckCircle', color: 'var(--salis-blue)', bg: 'var(--tint-blue)' },
+    { title: 'Warning', desc: 'This action cannot be undone.', icon: 'AlertTriangle', color: 'var(--salis-orange)', bg: 'var(--tint-orange)' },
     { title: 'Session Expiring', desc: 'Your session will expire in 5 minutes.', icon: 'Clock', color: '#64748B', bg: 'rgba(100,116,139,.1)' },
   ]
   return (
@@ -1275,7 +1275,7 @@ export function ScreenIndex() {
           <Card key={group} className="p-4">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-base font-bold text-heading">{t(group)}</h2>
-              <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{screens.length}</Badge>
+              <Badge background="var(--tint-blue)" color="var(--salis-blue)">{screens.length}</Badge>
             </div>
             <div className={`grid gap-2 ${isMobile ? 'grid-cols-1' : 'grid-cols-2 lg:grid-cols-3'}`}>
               {screens.map(s => (
@@ -1312,9 +1312,9 @@ export function RBACSpec() {
     v: 'View', c: 'Create', e: 'Edit', d: 'Delete', a: 'Approve', x: 'Export',
   }
   const ACTION_COLORS: Record<string, [string, string]> = {
-    v: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-    c: ['rgba(11,179,255,.1)', '#0BB3FF'],
-    e: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+    v: ['var(--tint-blue)', 'var(--salis-blue)'],
+    c: ['var(--tint-bright)', '#0BB3FF'],
+    e: ['var(--tint-orange)', 'var(--salis-orange)'],
     d: ['rgba(100,116,139,.1)', '#64748B'],
     a: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
     x: ['rgba(56,189,248,.1)', '#38BDF8'],

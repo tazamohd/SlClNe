@@ -59,7 +59,7 @@ export function UserProfile() {
           {STATS.map((s) => (
             <MobileCard key={s.label}>
               <div className="flex flex-col items-center gap-1 py-1">
-                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name={s.icon} size={14} /></span>
+                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name={s.icon} size={14} /></span>
                 <p className="font-display text-lg font-black text-heading">{s.value}</p>
                 <p className="text-[10px] text-muted">{t(s.label)}</p>
               </div>
@@ -98,7 +98,7 @@ export function UserProfile() {
         {STATS.map((s) => (
           <Card key={s.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">
-              <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name={s.icon} size={16} /></span>
+              <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name={s.icon} size={16} /></span>
               <span className="text-xs font-medium text-muted">{t(s.label)}</span>
             </div>
             <h4 className="mt-2 font-display text-2xl font-black text-heading">{s.value}</h4>

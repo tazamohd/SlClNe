@@ -28,9 +28,9 @@ const TOOLS: SystemTool[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Available: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Running: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Disabled: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Available: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Running: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Disabled: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 const CATEGORIES = ['Database', 'Communication', 'Diagnostics', 'Utilities'] as const
@@ -48,7 +48,7 @@ export function Tools() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                     <Icon name={tool.icon} size={14} />
                   </span>
                   <div>
@@ -80,7 +80,7 @@ export function Tools() {
               {categoryTools.map((tool, i) => (
                 <Card key={i} className="rounded-2xl p-5 shadow-sm">
                   <div className="flex items-start gap-3">
-                    <span className="flex flex-shrink-0 rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                    <span className="flex flex-shrink-0 rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                       <Icon name={tool.icon} size={20} />
                     </span>
                     <div className="flex-1">

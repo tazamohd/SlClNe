@@ -39,7 +39,7 @@ const MONTHS = [
 ] as const
 
 const EVENT_TONE: Record<string, string> = {
-  blue: 'bg-[rgba(10,94,215,.1)] text-salis-blue',
+  blue: 'bg-[var(--tint-blue)] text-salis-blue',
   bright: 'bg-[rgba(11,179,255,.12)] text-salis-bright',
   orange: 'bg-[rgba(249,115,22,.12)] text-salis-orange',
   slate: 'bg-inset text-muted',

@@ -19,8 +19,8 @@ const MOCK_DEVICES = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Online: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Warning: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Online: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Warning: ['var(--tint-orange)', 'var(--salis-orange)'],
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -35,10 +35,10 @@ export function IoTDashboard() {
   const warnings = MOCK_DEVICES.filter(d => d.status === 'Warning').length
 
   const kpis = [
-    { label: t('Total Devices'), value: String(MOCK_DEVICES.length), icon: 'Radio', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Online'), value: String(online), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Warnings'), value: String(warnings), icon: 'CircleDot', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Battery'), value: `${Math.round(MOCK_DEVICES.filter(d => d.battery > 0).reduce((a, d) => a + d.battery, 0) / MOCK_DEVICES.filter(d => d.battery > 0).length)}%`, icon: 'Battery', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Devices'), value: String(MOCK_DEVICES.length), icon: 'Radio', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Online'), value: String(online), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Warnings'), value: String(warnings), icon: 'CircleDot', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Battery'), value: `${Math.round(MOCK_DEVICES.filter(d => d.battery > 0).reduce((a, d) => a + d.battery, 0) / MOCK_DEVICES.filter(d => d.battery > 0).length)}%`, icon: 'Battery', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<DeviceRow>[] = [

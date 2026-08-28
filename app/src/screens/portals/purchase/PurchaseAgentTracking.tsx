@@ -27,20 +27,20 @@ const SHIPMENTS: Shipment[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Transit': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Customs: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Delayed: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+  'In Transit': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Customs: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Delayed: { bg: 'var(--tint-orange)', fg: '#F97316' },
 }
 
 export function PurchaseAgentTracking() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('In Transit'), value: '3', icon: 'Truck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('At Customs'), value: '1', icon: 'ShieldAlert', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Delivered Today'), value: '2', icon: 'PackageCheck', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+    { label: t('In Transit'), value: '3', icon: 'Truck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('At Customs'), value: '1', icon: 'ShieldAlert', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Delivered Today'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Delayed'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: '#F97316' },
   ]
 
   const columns: Column<Shipment>[] = [

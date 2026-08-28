@@ -30,7 +30,7 @@ export function RoleManagement() {
       header: 'Role',
       cell: (role) => (
         <div className="flex items-center gap-2">
-          <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+          <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
           <span className="font-medium text-heading">{t(role.name)}</span>
         </div>
       ),
@@ -42,8 +42,8 @@ export function RoleManagement() {
       header: 'Type',
       cell: (role) =>
         role.isSystem
-          ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
-          : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>,
+          ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('System')}</Badge>
+          : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Custom')}</Badge>,
     },
   ]
 
@@ -62,7 +62,7 @@ export function RoleManagement() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Shield" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{t(role.name)}</p>
                     <p className="text-xs text-muted">{role.description}</p>
@@ -71,8 +71,8 @@ export function RoleManagement() {
               }
               trailing={
                 role.isSystem
-                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('System')}</Badge>
-                  : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Custom')}</Badge>
+                  ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('System')}</Badge>
+                  : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Custom')}</Badge>
               }
             />
             <MobileCardRow label={t('Users')} value={String(role.userCount)} />

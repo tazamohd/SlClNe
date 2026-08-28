@@ -27,19 +27,19 @@ const SUPPLIERS: Supplier[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Approved: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Suspended: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+  Approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Suspended: { bg: 'var(--tint-orange)', fg: '#F97316' },
 }
 
 export function PurchaseAgentSuppliers() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Total Suppliers'), value: '48', icon: 'Building2', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Approved'), value: '36', icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Pending Review'), value: '8', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Rating'), value: '4.3', icon: 'Star', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Suppliers'), value: '48', icon: 'Building2', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Approved'), value: '36', icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Pending Review'), value: '8', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Rating'), value: '4.3', icon: 'Star', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Supplier>[] = [

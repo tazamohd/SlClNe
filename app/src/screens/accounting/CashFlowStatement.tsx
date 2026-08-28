@@ -71,7 +71,7 @@ function SectionCard({
       <div className="flex items-center gap-2">
         <span
           className="flex rounded-lg p-1.5"
-          style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }}
+          style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }}
           aria-hidden
         >
           <Icon name={section.icon} size={16} />
@@ -122,9 +122,9 @@ export function CashFlowStatement() {
   const closingBalance = openingBalance + netChange
 
   const kpis = [
-    { label: t('Opening Balance'), value: fmtSar(openingBalance), icon: 'Wallet', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Net Change'), value: fmtSar(netChange), icon: 'ArrowUpDown', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Closing Balance'), value: fmtSar(closingBalance), icon: 'PiggyBank', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Opening Balance'), value: fmtSar(openingBalance), icon: 'Wallet', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Net Change'), value: fmtSar(netChange), icon: 'ArrowUpDown', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Closing Balance'), value: fmtSar(closingBalance), icon: 'PiggyBank', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   if (isMobile) {

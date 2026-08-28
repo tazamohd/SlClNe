@@ -21,8 +21,8 @@ interface Org {
 }
 
 const STATUS_PILL: Record<string, [string, string]> = {
-  active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  setup: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  setup: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 const FIXTURE_ORGS: Org[] = [

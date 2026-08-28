@@ -27,9 +27,9 @@ const PART_RESULTS: PartResult[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Stock': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Low Stock': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  'Out of Stock': { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  'In Stock': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Low Stock': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  'Out of Stock': { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function TechnicianAppLookup() {

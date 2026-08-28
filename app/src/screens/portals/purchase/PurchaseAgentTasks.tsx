@@ -26,16 +26,16 @@ const TASKS: Task[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Pending: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Pending: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Medium: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Low: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  High: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Medium: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Low: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -49,10 +49,10 @@ export function PurchaseAgentTasks() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Total Tasks'), value: String(TASKS.length), icon: 'ListChecks', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Pending'), value: '3', icon: 'Clock', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-    { label: t('In Progress'), value: '2', icon: 'Loader', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+    { label: t('Total Tasks'), value: String(TASKS.length), icon: 'ListChecks', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Pending'), value: '3', icon: 'Clock', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+    { label: t('In Progress'), value: '2', icon: 'Loader', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Overdue'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
   ]
 
   const columns: Column<Task>[] = [

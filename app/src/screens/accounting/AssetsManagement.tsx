@@ -34,9 +34,9 @@ const MOCK_ASSETS: readonly Asset[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  Active: ['var(--tint-blue)', '#0A5ED7'],
   Disposed: ['rgba(100,116,139,.1)', '#64748B'],
-  'Under Maintenance': ['rgba(249,115,22,.1)', '#F97316'],
+  'Under Maintenance': ['var(--tint-orange)', '#F97316'],
 }
 
 const CATEGORIES = ['All', 'Land', 'Building', 'Vehicle', 'Equipment', 'Furniture', 'IT'] as const

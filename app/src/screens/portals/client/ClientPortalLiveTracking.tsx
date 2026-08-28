@@ -22,11 +22,11 @@ const TRACKING: TrackingItem[] = [
 ]
 
 const STAGE_STYLES: Record<string, { bg: string; fg: string }> = {
-  'Checked In': { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Diagnosis: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Quality Check': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Ready: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'Checked In': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Diagnosis: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Quality Check': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Ready: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 const STAGES = ['Checked In', 'Diagnosis', 'In Progress', 'Quality Check', 'Ready']
@@ -44,7 +44,7 @@ export function ClientPortalLiveTracking() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Radio" size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Radio" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{item.service}</p>
                     <p className="text-xs text-muted">{item.vehicle}</p>
@@ -57,7 +57,7 @@ export function ClientPortalLiveTracking() {
             <MobileCardRow label={t('ETA')} value={item.estimatedCompletion} />
             <MobileCardRow label={t('Progress')} value={`${item.progress}%`} />
             <div className="px-4 pb-3">
-              <div className="h-2 w-full overflow-hidden rounded-full bg-[rgba(10,94,215,.1)]">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--tint-blue)]">
                 <div className="h-full rounded-full bg-salis-blue transition-all" style={{ width: `${item.progress}%` }} />
               </div>
             </div>
@@ -75,7 +75,7 @@ export function ClientPortalLiveTracking() {
         <Card key={item.workOrder} className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue" aria-hidden><Icon name="Car" size={18} /></span>
+              <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name="Car" size={18} /></span>
               <div>
                 <h3 className="text-sm font-semibold text-heading">{item.vehicle}</h3>
                 <p className="text-xs text-muted">{item.workOrder} - {item.service}</p>
@@ -93,7 +93,7 @@ export function ClientPortalLiveTracking() {
                   <div
                     className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold"
                     style={{
-                      background: isActive ? 'var(--salis-blue)' : 'rgba(10,94,215,.1)',
+                      background: isActive ? 'var(--salis-blue)' : 'var(--tint-blue)',
                       color: isActive ? '#FFFFFF' : 'var(--salis-blue)',
                     }}
                   >
@@ -105,7 +105,7 @@ export function ClientPortalLiveTracking() {
             })}
           </div>
 
-          <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-[rgba(10,94,215,.1)]">
+          <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-[var(--tint-blue)]">
             <div className="h-full rounded-full bg-salis-blue transition-all" style={{ width: `${item.progress}%` }} />
           </div>
 

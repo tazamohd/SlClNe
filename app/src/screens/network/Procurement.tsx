@@ -229,7 +229,7 @@ export function PartsNetworkQuotations() {
         <span className="flex items-center gap-2">
           {q.supplier}
           {q.unit === best ? (
-            <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+            <Badge background="var(--tint-blue)" color="var(--salis-blue)">
               {t('Best price')}
             </Badge>
           ) : null}
@@ -277,7 +277,7 @@ export function PartsNetworkQuotations() {
               title={q.supplier}
               trailing={
                 q.unit === best ? (
-                  <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">
                     {t('Best price')}
                   </Badge>
                 ) : undefined

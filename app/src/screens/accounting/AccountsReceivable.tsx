@@ -42,10 +42,10 @@ export function AccountsReceivable() {
   const current = rows.filter((r) => r.daysOverdue === 0)
 
   const kpis = [
-    { label: t('Total Outstanding'), value: formatSar(total), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Days Overdue'), value: String(Math.round(overdue.reduce((s, r) => s + r.daysOverdue, 0) / (overdue.length || 1))), icon: 'Clock', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Total Outstanding'), value: formatSar(total), icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Days Overdue'), value: String(Math.round(overdue.reduce((s, r) => s + r.daysOverdue, 0) / (overdue.length || 1))), icon: 'Clock', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   const filtered = filter === 'overdue' ? overdue : filter === 'current' ? current : rows
@@ -57,7 +57,7 @@ export function AccountsReceivable() {
     { header: 'Due Date', cell: (r) => <span dir="ltr" className="text-muted">{r.dueDate}</span> },
     { header: 'Days Overdue', cell: (r) => <span className="font-mono text-heading">{r.daysOverdue || '—'}</span>, className: 'text-end' },
     { header: 'Status', cell: (r) => (
-      <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
+      <Badge background={r.daysOverdue > 0 ? 'var(--tint-orange)' : 'var(--tint-blue)'}
         color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
     ) },
   ]
@@ -96,7 +96,7 @@ export function AccountsReceivable() {
             <MobileCardHeader
               title={r.customer}
               trailing={
-                <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
+                <Badge background={r.daysOverdue > 0 ? 'var(--tint-orange)' : 'var(--tint-blue)'}
                   color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
               }
             />

@@ -39,9 +39,9 @@ const MESSAGES: ChatMessage[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Published: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Replied: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Published: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Replied: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -65,7 +65,7 @@ export function ClientPortalReviewChat() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="MessageSquare" title={t('Reviews & Chat')} subtitle={t('Feedback and messages')} />
         <MobileCard>
-          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Messages')}</p>} trailing={unreadCount > 0 ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge> : undefined} />
+          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Messages')}</p>} trailing={unreadCount > 0 ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge> : undefined} />
           {MESSAGES.map((m) => (
             <MobileCardRow key={m.id} label={m.from} value={
               <span className={m.read ? 'text-xs text-muted' : 'text-xs font-semibold text-heading'}>{m.message.length > 30 ? m.message.slice(0, 30) + '...' : m.message}</span>
@@ -77,7 +77,7 @@ export function ClientPortalReviewChat() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{r.service}</p>
                     <StarRating rating={r.rating} />
@@ -102,10 +102,10 @@ export function ClientPortalReviewChat() {
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="MessageCircle" size={16} /></span>
+              <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="MessageCircle" size={16} /></span>
               <h2 className="text-sm font-semibold text-heading">{t('Messages')}</h2>
             </div>
-            {unreadCount > 0 && <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge>}
+            {unreadCount > 0 && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{unreadCount} {t('unread')}</Badge>}
           </div>
           <div className="grid gap-3">
             {MESSAGES.map((m) => (
@@ -122,7 +122,7 @@ export function ClientPortalReviewChat() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={16} /></span>
+            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Star" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('My Reviews')}</h2>
           </div>
           <div className="grid gap-4">

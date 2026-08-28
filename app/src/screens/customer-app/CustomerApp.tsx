@@ -100,7 +100,7 @@ export function CustomerAppHome() {
           onClick={() => navigate('/customer-app/garage')}
           trailing={
             vehicle.status === 'service' ? (
-              <Badge background="rgba(11,179,255,.1)" color="#0BB3FF">
+              <Badge background="var(--tint-bright)" color="#0BB3FF">
                 {t('In Service')}
               </Badge>
             ) : null
@@ -136,7 +136,7 @@ export function CustomerAppGarage() {
               </p>
             </div>
             {vehicle.status === 'service' ? (
-              <Badge background="rgba(11,179,255,.1)" color="#0BB3FF">
+              <Badge background="var(--tint-bright)" color="#0BB3FF">
                 {t('In Service')}
               </Badge>
             ) : null}
@@ -175,7 +175,7 @@ export function CustomerAppAppointments() {
           trailing={
             <Badge
               background={
-                appointment.status === 'confirmed' ? 'rgba(10,94,215,.1)' : 'rgba(11,179,255,.1)'
+                appointment.status === 'confirmed' ? 'var(--tint-blue)' : 'var(--tint-bright)'
               }
               color={appointment.status === 'confirmed' ? '#0A5ED7' : '#0BB3FF'}
             >
@@ -308,7 +308,7 @@ export function CustomerAppOrders() {
               {order.id}
             </span>
             <Badge
-              background={order.status === 'Delivered' ? 'rgba(10,94,215,.1)' : 'rgba(11,179,255,.1)'}
+              background={order.status === 'Delivered' ? 'var(--tint-blue)' : 'var(--tint-bright)'}
               color={order.status === 'Delivered' ? '#0A5ED7' : '#0BB3FF'}
             >
               {t(order.status)}

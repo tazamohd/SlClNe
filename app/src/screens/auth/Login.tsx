@@ -219,7 +219,7 @@ export function Login() {
         <div className="flex flex-col gap-[13px] rounded-lg border border-border bg-[color-mix(in_srgb,var(--surface-card)_85%,transparent)] p-5 shadow-lg backdrop-blur-[24px]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="flex rounded bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue">
+              <span className="flex rounded bg-[var(--tint-blue)] p-1.5 text-salis-blue">
                 <Icon name="Users" size={14} />
               </span>
               <p className="font-display text-sm font-bold text-heading">
@@ -312,7 +312,7 @@ function RoleCard({
                 ? 'bg-salis-gradient text-white'
                 : role.limit === 0
                   ? 'bg-inset text-muted'
-                  : 'bg-[rgba(10,94,215,.1)] text-salis-blue'
+                  : 'bg-[var(--tint-blue)] text-salis-blue'
             )}
           >
             {limit}

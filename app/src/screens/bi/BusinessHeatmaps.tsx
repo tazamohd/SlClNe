@@ -29,8 +29,8 @@ const MOCK_LOCATIONS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  High: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Medium: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  High: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Medium: ['var(--tint-orange)', 'var(--salis-orange)'],
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -49,10 +49,10 @@ export function BusinessHeatmaps() {
   const [view, setView] = useState('demand')
 
   const kpis = [
-    { label: t('Peak Hour'), value: '10AM', icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Peak Day'), value: t('Tuesday'), icon: 'Calendar', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Locations'), value: String(MOCK_LOCATIONS.length), icon: 'MapPin', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Demand'), value: '63%', icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Peak Hour'), value: '10AM', icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Peak Day'), value: t('Tuesday'), icon: 'Calendar', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Locations'), value: String(MOCK_LOCATIONS.length), icon: 'MapPin', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Demand'), value: '63%', icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const locationColumns: Column<LocationRow>[] = [

@@ -20,10 +20,10 @@ const RULES = [
 type Rule = (typeof RULES)[number]
 
 function demandColor(level: string) {
-  if (level === 'Critical') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  if (level === 'High') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
+  if (level === 'Critical') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (level === 'High') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   if (level === 'Low') return { background: 'rgba(10,94,215,.08)', color: 'var(--salis-blue)' }
-  return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
+  return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 
 export function DynamicPricing() {
@@ -36,10 +36,10 @@ export function DynamicPricing() {
   const autoAdjusted = RULES.filter((r) => r.autoAdjust).length
 
   const kpis = [
-    { label: t('Avg Markup'), value: `${avgMarkup}%`, icon: 'Percent', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Revenue Impact'), value: revenueImpact, icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active Rules'), value: String(activeRules), icon: 'Settings', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Auto-Adjusted'), value: String(autoAdjusted), icon: 'Zap', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Markup'), value: `${avgMarkup}%`, icon: 'Percent', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Revenue Impact'), value: revenueImpact, icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active Rules'), value: String(activeRules), icon: 'Settings', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Auto-Adjusted'), value: String(autoAdjusted), icon: 'Zap', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Rule>[] = [
@@ -68,7 +68,7 @@ export function DynamicPricing() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="TrendingUp" size={14} /></span>
+                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="TrendingUp" size={14} /></span>
                 <p className="text-[13px] font-semibold text-heading">{t(rule.partCategory)}</p>
               </div>
             }

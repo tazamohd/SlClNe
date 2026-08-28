@@ -17,9 +17,9 @@ const MOCK_TECHNOLOGIES = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Production: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  Production: ['var(--tint-blue)', 'var(--salis-blue)'],
   Beta: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
-  Pilot: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Pilot: ['var(--tint-orange)', 'var(--salis-orange)'],
   Research: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -31,10 +31,10 @@ export function EmergingTechnologies() {
   const avgAdoption = Math.round(MOCK_TECHNOLOGIES.reduce((a, t) => a + t.adoption, 0) / MOCK_TECHNOLOGIES.length)
 
   const kpis = [
-    { label: t('Technologies'), value: String(MOCK_TECHNOLOGIES.length), icon: 'Cpu', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('In Production'), value: String(inProduction), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Adoption'), value: `${avgAdoption}%`, icon: 'TrendingUp', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('High Impact'), value: String(MOCK_TECHNOLOGIES.filter(t => t.impact === 'High').length), icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Technologies'), value: String(MOCK_TECHNOLOGIES.length), icon: 'Cpu', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Production'), value: String(inProduction), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Adoption'), value: `${avgAdoption}%`, icon: 'TrendingUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('High Impact'), value: String(MOCK_TECHNOLOGIES.filter(t => t.impact === 'High').length), icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   if (isMobile) {
@@ -82,7 +82,7 @@ export function EmergingTechnologies() {
             <Card key={tech.id} className="rounded-2xl p-5 shadow-sm">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden><Icon name="Cpu" size={16} /></span>
+                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden><Icon name="Cpu" size={16} /></span>
                   <h4 className="text-[14px] font-bold text-heading">{t(tech.name)}</h4>
                 </div>
                 <Badge background={bg} color={fg}>{t(tech.status)}</Badge>

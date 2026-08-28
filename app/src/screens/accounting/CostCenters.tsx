@@ -31,7 +31,7 @@ const MOCK_CENTERS: readonly CostCenter[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  Active: ['var(--tint-blue)', '#0A5ED7'],
   Inactive: ['rgba(100,116,139,.1)', '#64748B'],
 }
 

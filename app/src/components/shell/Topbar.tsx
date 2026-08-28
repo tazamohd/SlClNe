@@ -71,7 +71,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue"
+      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-[var(--tint-blue)] hover:text-salis-blue"
     >
       <Icon name={icon} size={16} />
       {badge ? (

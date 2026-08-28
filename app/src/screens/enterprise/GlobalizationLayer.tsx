@@ -41,9 +41,9 @@ const CURRENCIES: CurrencyConfig[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Complete: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'In Progress': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Planned: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Complete: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'In Progress': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Planned: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function GlobalizationLayer() {
@@ -108,7 +108,7 @@ export function GlobalizationLayer() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {CURRENCIES.map((cur, i) => (
             <div key={i} className="flex items-center gap-3 rounded-xl border border-border p-4">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name="Coins" size={20} />
               </span>
               <div className="flex-1">
@@ -116,7 +116,7 @@ export function GlobalizationLayer() {
                 <p className="text-xs text-muted">{cur.code} ({cur.symbol}) - {cur.region}</p>
               </div>
               <Badge
-                background={cur.active ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+                background={cur.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
                 color={cur.active ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
               >
                 {cur.active ? t('Active') : t('Inactive')}

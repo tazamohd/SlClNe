@@ -34,12 +34,12 @@ const CATEGORIES: { key: Category; icon: string; label: string }[] = [
 ]
 
 const FIXTURE_RESULTS: SearchResult[] = [
-  { id: '1', group: 'Customers', groupKey: 'customers', icon: 'User', title: 'Ahmed Al-Rashid', subtitle: 'Customer · +966 55 210 4471', badge: 'Loyal', badgeBg: 'rgba(10,94,215,.1)', badgeColor: 'var(--salis-blue)' },
-  { id: '2', group: 'Job Cards', groupKey: 'jobs', icon: 'ClipboardList', title: 'JC-A3F8B2C1', subtitle: 'Ahmed Al-Rashid · Toyota Camry 2022 · In Progress', badge: 'In Progress', badgeBg: 'rgba(11,179,255,.1)', badgeColor: 'var(--salis-blue-bright)' },
-  { id: '3', group: 'Vehicles', groupKey: 'vehicles', icon: 'Car', title: 'Toyota Camry 2022', subtitle: 'RUH 4821 · Ahmed Al-Rashid · 42,195 km', badge: 'In Service', badgeBg: 'rgba(11,179,255,.1)', badgeColor: 'var(--salis-blue-bright)' },
-  { id: '4', group: 'Invoices', groupKey: 'invoices', icon: 'Receipt', title: 'INV-2026-0143', subtitle: 'Ahmed Al-Rashid · SAR 2,116 · Jul 22', badge: 'Pending', badgeBg: 'rgba(249,115,22,.1)', badgeColor: 'var(--salis-orange)' },
-  { id: '5', group: 'Customers', groupKey: 'customers', icon: 'User', title: 'Sara Al-Mutairi', subtitle: 'Customer · +966 55 891 3344', badge: 'New', badgeBg: 'rgba(10,94,215,.1)', badgeColor: 'var(--salis-blue)' },
-  { id: '6', group: 'Job Cards', groupKey: 'jobs', icon: 'ClipboardList', title: 'JC-E5D7A3B5', subtitle: 'Sara Al-Mutairi · Ford Explorer 2022', badge: 'Check-In', badgeBg: 'rgba(10,94,215,.1)', badgeColor: 'var(--salis-blue)' },
+  { id: '1', group: 'Customers', groupKey: 'customers', icon: 'User', title: 'Ahmed Al-Rashid', subtitle: 'Customer · +966 55 210 4471', badge: 'Loyal', badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
+  { id: '2', group: 'Job Cards', groupKey: 'jobs', icon: 'ClipboardList', title: 'JC-A3F8B2C1', subtitle: 'Ahmed Al-Rashid · Toyota Camry 2022 · In Progress', badge: 'In Progress', badgeBg: 'var(--tint-bright)', badgeColor: 'var(--salis-blue-bright)' },
+  { id: '3', group: 'Vehicles', groupKey: 'vehicles', icon: 'Car', title: 'Toyota Camry 2022', subtitle: 'RUH 4821 · Ahmed Al-Rashid · 42,195 km', badge: 'In Service', badgeBg: 'var(--tint-bright)', badgeColor: 'var(--salis-blue-bright)' },
+  { id: '4', group: 'Invoices', groupKey: 'invoices', icon: 'Receipt', title: 'INV-2026-0143', subtitle: 'Ahmed Al-Rashid · SAR 2,116 · Jul 22', badge: 'Pending', badgeBg: 'var(--tint-orange)', badgeColor: 'var(--salis-orange)' },
+  { id: '5', group: 'Customers', groupKey: 'customers', icon: 'User', title: 'Sara Al-Mutairi', subtitle: 'Customer · +966 55 891 3344', badge: 'New', badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
+  { id: '6', group: 'Job Cards', groupKey: 'jobs', icon: 'ClipboardList', title: 'JC-E5D7A3B5', subtitle: 'Sara Al-Mutairi · Ford Explorer 2022', badge: 'Check-In', badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
 ]
 
 const RECENT_SEARCHES = ['Ahmed Al-Rashid', 'Toyota Camry', 'INV-2026', 'Brake pads']

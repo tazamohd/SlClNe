@@ -26,11 +26,11 @@ const REPORTS: ProcurementReport[] = [
 ]
 
 const TYPE_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
-  'Spend Analysis': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'DollarSign' },
-  'Supplier Performance': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'Star' },
-  'Inventory Turnover': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'RefreshCw' },
-  'Cost Savings': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)', icon: 'PiggyBank' },
-  Compliance: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)', icon: 'ShieldCheck' },
+  'Spend Analysis': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'DollarSign' },
+  'Supplier Performance': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'Star' },
+  'Inventory Turnover': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'RefreshCw' },
+  'Cost Savings': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', icon: 'PiggyBank' },
+  Compliance: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)', icon: 'ShieldCheck' },
 }
 
 const TREND_STYLES: Record<string, { icon: string; fg: string }> = {
@@ -43,10 +43,10 @@ export function PurchaseAgentReports() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Total Reports'), value: '24', icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('This Month'), value: '4', icon: 'Calendar', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Total Spend YTD'), value: '1.68M', icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Cost Savings YTD'), value: '42.3K', icon: 'PiggyBank', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Reports'), value: '24', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('This Month'), value: '4', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Spend YTD'), value: '1.68M', icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Cost Savings YTD'), value: '42.3K', icon: 'PiggyBank', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<ProcurementReport>[] = [

@@ -53,10 +53,10 @@ export function WorkshopCalendar() {
   const availableSlots = BAYS.length * HOURS.length - occupiedSlots
 
   const kpis = [
-    { label: t('Active Jobs'), value: String(activeJobs), icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Occupied Slots'), value: String(occupiedSlots), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Available Slots'), value: String(availableSlots), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Bays'), value: String(BAYS.length), icon: 'LayoutGrid', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Active Jobs'), value: String(activeJobs), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Occupied Slots'), value: String(occupiedSlots), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Available Slots'), value: String(availableSlots), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Bays'), value: String(BAYS.length), icon: 'LayoutGrid', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   const filteredSlots = selectedBay ? slots.filter((s) => s.bay === selectedBay) : slots
@@ -76,7 +76,7 @@ export function WorkshopCalendar() {
           )
         }
         if (slot?.status === 'break') {
-          return <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Break')}</Badge>
+          return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t('Break')}</Badge>
         }
         return <span className="text-xs text-faint">—</span>
       },
@@ -107,7 +107,7 @@ export function WorkshopCalendar() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{s.vehicle}</p>
                     <p className="text-xs text-muted">{t(s.bay)} · {s.hour} · {s.job}</p>

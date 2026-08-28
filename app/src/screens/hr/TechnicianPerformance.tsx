@@ -43,16 +43,16 @@ export function TechnicianPerformance() {
   }, [search])
 
   const kpis = [
-    { label: t('Avg Completion Time'), value: SUMMARY.avgCompletionTime, icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Quality Score'), value: SUMMARY.avgQualityScore, icon: 'Target', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Avg Customer Rating'), value: SUMMARY.avgCustomerRating, icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Jobs This Month'), value: SUMMARY.totalJobsThisMonth, icon: 'Briefcase', bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
+    { label: t('Avg Completion Time'), value: SUMMARY.avgCompletionTime, icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Quality Score'), value: SUMMARY.avgQualityScore, icon: 'Target', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Customer Rating'), value: SUMMARY.avgCustomerRating, icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Jobs This Month'), value: SUMMARY.totalJobsThisMonth, icon: 'Briefcase', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]
 
   function ratingBadge(rate: number) {
-    if (rate >= 92) return { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' }
-    if (rate >= 85) return { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' }
-    return { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' }
+    if (rate >= 92) return { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' }
+    if (rate >= 85) return { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' }
+    return { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' }
   }
 
   const columns: Column<TechPerformance>[] = [

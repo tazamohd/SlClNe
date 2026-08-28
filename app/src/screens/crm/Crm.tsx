@@ -29,7 +29,7 @@ import { CrmTaskFormModal } from './CrmTaskFormModal'
 const STAGE_TONE: Record<string, readonly [string, string]> = {
   new: ['rgba(100,116,139,.12)', '#64748B'],
   qualified: ['rgba(11,179,255,.12)', '#0BB3FF'],
-  proposal: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  proposal: ['var(--tint-blue)', '#0A5ED7'],
   negotiation: ['rgba(10,94,215,.16)', '#0A5ED7'],
   won: ['rgba(11,31,59,.12)', '#0B1F3B'],
   lost: ['rgba(100,116,139,.1)', '#64748B'],
@@ -38,19 +38,19 @@ const STAGE_TONE: Record<string, readonly [string, string]> = {
 const PRIORITY_TONE: Record<string, readonly [string, string]> = {
   urgent: ['rgba(249,115,22,.12)', '#F97316'],
   high: ['rgba(249,115,22,.08)', '#F97316'],
-  medium: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  low: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  medium: ['var(--tint-bright)', '#0BB3FF'],
+  low: ['var(--tint-blue)', '#0A5ED7'],
 }
 
 const STATUS_TONE: Record<string, readonly [string, string]> = {
-  running: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  scheduled: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  completed: ['rgba(11,31,59,.1)', '#0B1F3B'],
+  running: ['var(--tint-blue)', '#0A5ED7'],
+  scheduled: ['var(--tint-bright)', '#0BB3FF'],
+  completed: ['var(--tint-navy)', '#0B1F3B'],
   todo: ['rgba(100,116,139,.1)', '#64748B'],
-  in_progress: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  done: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  active: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  paused: ['rgba(249,115,22,.1)', '#F97316'],
+  in_progress: ['var(--tint-bright)', '#0BB3FF'],
+  done: ['var(--tint-blue)', '#0A5ED7'],
+  active: ['var(--tint-blue)', '#0A5ED7'],
+  paused: ['var(--tint-orange)', '#F97316'],
   draft: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -1018,8 +1018,8 @@ export function ConversationHistory() {
 type Integration = RowOf<'integrations'>
 
 const INTEGRATION_STATUS: Record<string, readonly [string, string]> = {
-  connected: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  pending: ['rgba(249,115,22,.1)', '#F97316'],
+  connected: ['var(--tint-blue)', '#0A5ED7'],
+  pending: ['var(--tint-orange)', '#F97316'],
   available: ['rgba(100,116,139,.1)', '#64748B'],
 }
 

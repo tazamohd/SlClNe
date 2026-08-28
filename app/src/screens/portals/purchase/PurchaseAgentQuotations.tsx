@@ -26,21 +26,21 @@ const QUOTATIONS: Quotation[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Received: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Under Review': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Accepted: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Rejected: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Expired: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Received: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Under Review': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Accepted: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Rejected: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Expired: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function PurchaseAgentQuotations() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Active Quotes'), value: '4', icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Value'), value: formatSar(133400), icon: 'Wallet', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Pending Review'), value: '2', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Accepted'), value: '1', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Active Quotes'), value: '4', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Value'), value: formatSar(133400), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Pending Review'), value: '2', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Accepted'), value: '1', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Quotation>[] = [

@@ -28,9 +28,9 @@ const MOCK_INTEGRATIONS: readonly Integration[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Connected: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  Connected: ['var(--tint-blue)', '#0A5ED7'],
   Disconnected: ['rgba(100,116,139,.1)', '#64748B'],
-  Error: ['rgba(249,115,22,.1)', '#F97316'],
+  Error: ['var(--tint-orange)', '#F97316'],
 }
 
 const STATUS_ICON: Record<string, string> = {

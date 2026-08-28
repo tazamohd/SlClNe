@@ -31,17 +31,17 @@ const MOCK_CONTRACTS: readonly Contract[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  Active: ['var(--tint-blue)', '#0A5ED7'],
   Expired: ['rgba(100,116,139,.1)', '#64748B'],
-  Pending: ['rgba(249,115,22,.1)', '#F97316'],
-  Terminated: ['rgba(11,31,59,.1)', '#0B1F3B'],
+  Pending: ['var(--tint-orange)', '#F97316'],
+  Terminated: ['var(--tint-navy)', '#0B1F3B'],
 }
 
 const TYPE_PALETTE: Record<string, readonly [string, string]> = {
-  Service: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  Supply: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  Maintenance: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  Lease: ['rgba(249,115,22,.1)', '#F97316'],
+  Service: ['var(--tint-blue)', '#0A5ED7'],
+  Supply: ['var(--tint-bright)', '#0BB3FF'],
+  Maintenance: ['var(--tint-navy)', '#0B1F3B'],
+  Lease: ['var(--tint-orange)', '#F97316'],
 }
 
 export function ContractManagement() {

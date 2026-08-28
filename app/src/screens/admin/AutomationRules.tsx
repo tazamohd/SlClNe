@@ -26,7 +26,7 @@ const FIXTURE_RULES: RuleDef[] = [
     desc: 'Notify when parts fall below reorder level',
     trigger: 'Part stock < reorder level',
     action: 'Send notification to manager',
-    iconBg: 'rgba(249,115,22,.1)',
+    iconBg: 'var(--tint-orange)',
     iconFg: 'var(--salis-orange)',
   },
   {
@@ -34,7 +34,7 @@ const FIXTURE_RULES: RuleDef[] = [
     desc: 'Generate invoice when job is completed',
     trigger: 'Job status = Completed',
     action: 'Create draft invoice',
-    iconBg: 'rgba(10,94,215,.1)',
+    iconBg: 'var(--tint-blue)',
     iconFg: 'var(--salis-blue)',
   },
   {
@@ -42,7 +42,7 @@ const FIXTURE_RULES: RuleDef[] = [
     desc: 'Send SMS 24h before appointment',
     trigger: '24h before appointment',
     action: 'Send SMS to customer',
-    iconBg: 'rgba(11,179,255,.1)',
+    iconBg: 'var(--tint-bright)',
     iconFg: 'var(--salis-blue-bright)',
   },
   {
@@ -58,7 +58,7 @@ const FIXTURE_RULES: RuleDef[] = [
     desc: 'Alert technician when QC fails',
     trigger: 'QC status = Fail',
     action: 'Assign back to technician',
-    iconBg: 'rgba(11,31,59,.1)',
+    iconBg: 'var(--tint-navy)',
     iconFg: 'var(--salis-navy)',
   },
 ]
@@ -144,7 +144,7 @@ export function AutomationRules() {
                 </div>
                 <Badge
                   background={
-                    on ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'
+                    on ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'
                   }
                   color={on ? 'var(--salis-blue)' : 'var(--text-muted)'}
                 >

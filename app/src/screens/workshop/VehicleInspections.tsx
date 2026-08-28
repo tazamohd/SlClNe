@@ -40,15 +40,15 @@ export function VehicleInspections() {
   const failed = rows.filter((r) => r.result === t('Fail')).length
 
   const kpis = [
-    { label: t('Total Inspections'), value: String(rows.length), icon: 'ClipboardCheck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Passed'), value: String(passed), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Failed'), value: String(failed), icon: 'XCircle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Inspections'), value: String(rows.length), icon: 'ClipboardCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Passed'), value: String(passed), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Failed'), value: String(failed), icon: 'XCircle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   function resultBadge(result: string) {
-    if (result === t('Pass')) return <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{result}</Badge>
-    if (result === t('Fail')) return <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{result}</Badge>
-    return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{result}</Badge>
+    if (result === t('Pass')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{result}</Badge>
+    if (result === t('Fail')) return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{result}</Badge>
+    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{result}</Badge>
   }
 
   const columns: Column<InspectionRow>[] = [

@@ -15,7 +15,7 @@ const INCIDENTS = [
 ] as const
 
 const SEVERITY_PALETTE: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Low: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Medium: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   High: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
   Critical: { bg: 'rgba(11,31,59,.12)', fg: '#0B1F3B' },
@@ -24,7 +24,7 @@ const SEVERITY_PALETTE: Record<string, { bg: string; fg: string }> = {
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
   Open: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
   Investigating: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
-  Resolved: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Resolved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Closed: { bg: 'rgba(100,116,139,.1)', fg: '#64748B' },
 }
 
@@ -37,10 +37,10 @@ export function SafetyIncidents() {
   const thisMonth = INCIDENTS.filter((i) => i.date >= '2026-08-01').length
 
   const kpis = [
-    { label: t('Total Incidents'), value: String(INCIDENTS.length), icon: 'AlertTriangle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Incidents'), value: String(INCIDENTS.length), icon: 'AlertTriangle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Open'), value: String(openCount), icon: 'AlertCircle', bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
     { label: t('This Month'), value: String(thisMonth), icon: 'Calendar', bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Resolution Days'), value: '4.2', icon: 'Clock', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Resolution Days'), value: '4.2', icon: 'Clock', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<IncidentRow>[] = [

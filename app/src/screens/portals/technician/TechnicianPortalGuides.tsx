@@ -25,9 +25,9 @@ const GUIDES: RepairGuide[] = [
 ]
 
 const DIFFICULTY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Beginner: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Intermediate: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Advanced: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Beginner: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Intermediate: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Advanced: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function TechnicianPortalGuides() {

@@ -17,8 +17,8 @@ const MOCK_RULES = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Paused: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Paused: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 type RuleRow = (typeof MOCK_RULES)[number]
@@ -31,10 +31,10 @@ export function AIAutomation() {
   const totalExecutions = MOCK_RULES.reduce((a, r) => a + r.executions, 0)
 
   const kpis = [
-    { label: t('Total Rules'), value: String(MOCK_RULES.length), icon: 'Workflow', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(MOCK_RULES.filter(r => r.status === 'Active').length), icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Executions'), value: totalExecutions.toLocaleString(), icon: 'Activity', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Success Rate'), value: '98.7%', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Rules'), value: String(MOCK_RULES.length), icon: 'Workflow', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(MOCK_RULES.filter(r => r.status === 'Active').length), icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Executions'), value: totalExecutions.toLocaleString(), icon: 'Activity', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Success Rate'), value: '98.7%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<RuleRow>[] = [

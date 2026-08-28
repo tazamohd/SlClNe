@@ -40,16 +40,16 @@ export function FleetTracking() {
   const available = vehicles.filter((v) => v.status === t('Available')).length
 
   const kpis = [
-    { label: t('Total Fleet'), value: String(vehicles.length), icon: 'Truck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(active), icon: 'Navigation', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('In Service'), value: String(inService), icon: 'Wrench', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Total Fleet'), value: String(vehicles.length), icon: 'Truck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(active), icon: 'Navigation', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('In Service'), value: String(inService), icon: 'Wrench', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   function statusBadge(status: string) {
-    if (status === t('Active')) return <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{status}</Badge>
-    if (status === t('In Service')) return <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{status}</Badge>
-    return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{status}</Badge>
+    if (status === t('Active')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{status}</Badge>
+    if (status === t('In Service')) return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{status}</Badge>
+    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{status}</Badge>
   }
 
   const columns: Column<FleetVehicle>[] = [

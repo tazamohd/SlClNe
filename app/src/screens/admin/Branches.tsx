@@ -22,15 +22,15 @@ interface FixtureBranch {
 }
 
 const STATUS_PILL: Record<string, [string, string]> = {
-  active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  setup: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  setup: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 const ICON_BG: Record<string, [string, string]> = {
-  blue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  sky: ['rgba(11,179,255,.1)', 'var(--salis-blue-bright)'],
-  navy: ['rgba(11,31,59,.1)', 'var(--salis-navy)'],
-  orange: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  blue: ['var(--tint-blue)', 'var(--salis-blue)'],
+  sky: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  navy: ['var(--tint-navy)', 'var(--salis-navy)'],
+  orange: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 const FIXTURE_BRANCHES: FixtureBranch[] = [
@@ -116,7 +116,7 @@ export function Branches() {
                 className="cursor-pointer p-5 transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
               >
                 <div className="mb-3.5 flex items-center gap-2.5">
-                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[rgba(10,94,215,.1)]">
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--tint-blue)]">
                     <Icon name="MapPin" size={18} className="text-salis-blue" />
                   </span>
                   <div className="min-w-0 flex-1">

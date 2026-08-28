@@ -60,7 +60,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           icon="DollarSign"
-          iconTint="rgba(10,94,215,.1)"
+          iconTint="var(--tint-blue)"
           iconColor="#0A5ED7"
           label={t('Total Revenue')}
           value="$128,450"
@@ -81,7 +81,7 @@ export function Dashboard() {
 
         <MetricCard
           icon="Wrench"
-          iconTint="rgba(11,179,255,.1)"
+          iconTint="var(--tint-bright)"
           iconColor="#0BB3FF"
           label={t('Active Jobs')}
           value="14"
@@ -90,10 +90,10 @@ export function Dashboard() {
           orbShadow="rgba(11,179,255,.2)"
           footer={
             <div className="mt-1 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-[rgba(249,115,22,.3)] bg-[rgba(249,115,22,.1)] px-2.5 py-0.5 text-xs font-medium text-salis-orange">
+              <span className="rounded-full border border-[rgba(249,115,22,.3)] bg-[var(--tint-orange)] px-2.5 py-0.5 text-xs font-medium text-salis-orange">
                 {t('5 pending')}
               </span>
-              <span className="rounded-full border border-[rgba(11,179,255,.3)] bg-[rgba(11,179,255,.1)] px-2.5 py-0.5 text-xs font-medium text-salis-bright">
+              <span className="rounded-full border border-[rgba(11,179,255,.3)] bg-[var(--tint-bright)] px-2.5 py-0.5 text-xs font-medium text-salis-bright">
                 {t('9 active')}
               </span>
             </div>
@@ -102,7 +102,7 @@ export function Dashboard() {
 
         <MetricCard
           icon="Users"
-          iconTint="rgba(11,31,59,.1)"
+          iconTint="var(--tint-navy)"
           iconColor="#0B1F3B"
           label={t('Customers')}
           value="248"
@@ -122,7 +122,7 @@ export function Dashboard() {
 
         <MetricCard
           icon="Package"
-          iconTint="rgba(249,115,22,.1)"
+          iconTint="var(--tint-orange)"
           iconColor="#F97316"
           label={t('Inventory')}
           value="86%"
@@ -356,7 +356,7 @@ function MetricCard({
           ) : null)}
       </div>
       {progress !== undefined ? (
-        <div className="mt-4 h-1 overflow-hidden rounded-full bg-[rgba(10,94,215,.1)]">
+        <div className="mt-4 h-1 overflow-hidden rounded-full bg-[var(--tint-blue)]">
           <div
             className="h-full rounded-full bg-salis-gradient-r"
             style={{ width: `${progress * 100}%` }}

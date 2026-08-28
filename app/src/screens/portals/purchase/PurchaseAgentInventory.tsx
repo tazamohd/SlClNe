@@ -28,9 +28,9 @@ const INVENTORY: InventoryItem[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Stock': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Low Stock': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  'Out of Stock': { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+  'In Stock': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Low Stock': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  'Out of Stock': { bg: 'var(--tint-orange)', fg: '#F97316' },
 }
 
 export function PurchaseAgentInventory() {
@@ -40,10 +40,10 @@ export function PurchaseAgentInventory() {
   const totalValue = INVENTORY.reduce((sum, item) => sum + item.qtyOnHand * item.unitCost, 0)
 
   const kpis = [
-    { label: t('Total SKUs'), value: '386', icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Units on Hand'), value: totalItems.toLocaleString(), icon: 'Boxes', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Inventory Value'), value: `${(totalValue / 1000).toFixed(0)}K SAR`, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Low Stock Alerts'), value: '12', icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total SKUs'), value: '386', icon: 'Package', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Units on Hand'), value: totalItems.toLocaleString(), icon: 'Boxes', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Inventory Value'), value: `${(totalValue / 1000).toFixed(0)}K SAR`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Low Stock Alerts'), value: '12', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<InventoryItem>[] = [

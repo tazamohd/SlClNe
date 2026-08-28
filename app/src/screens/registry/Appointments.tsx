@@ -18,9 +18,9 @@ type Appointment = RowOf<'appointments'>
 /** Booking status palette. No-show is the one that needs chasing, so it takes
  *  the warning orange; confirmed and awaiting sit on the blue scale. */
 const STATUS: Record<string, readonly [string, string]> = {
-  confirmed: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  awaiting: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  'no-show': ['rgba(249,115,22,.1)', '#F97316'],
+  confirmed: ['var(--tint-blue)', '#0A5ED7'],
+  awaiting: ['var(--tint-bright)', '#0BB3FF'],
+  'no-show': ['var(--tint-orange)', '#F97316'],
 }
 
 const FILTERS = ['all', 'confirmed', 'awaiting', 'no-show'] as const

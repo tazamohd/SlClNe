@@ -49,7 +49,7 @@ export function KanbanView({ columns, onCardClick, className }: KanbanViewProps)
               <Icon name={col.icon} size={16} className="text-salis-blue" />
             ) : null}
             <h3 className="text-sm font-bold text-heading">{t(col.title)}</h3>
-            <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+            <Badge background="var(--tint-blue)" color="var(--salis-blue)">
               {col.cards.length}
             </Badge>
           </div>

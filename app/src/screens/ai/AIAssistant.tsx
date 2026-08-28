@@ -25,12 +25,12 @@ interface Suggestion {
 
 function useSuggestions(t: (s: string) => string): Suggestion[] {
   return [
-    { icon: 'TrendingUp', title: t('Revenue Analysis'), desc: t('Show me this month\'s revenue breakdown'), iconBg: 'rgba(10,94,215,.1)', iconFg: 'var(--salis-blue)' },
-    { icon: 'Package', title: t('Low Stock Check'), desc: t('Which parts need reordering?'), iconBg: 'rgba(249,115,22,.1)', iconFg: 'var(--salis-orange)' },
-    { icon: 'AlertCircle', title: t('Overdue Invoices'), desc: t('List all overdue invoices this month'), iconBg: 'rgba(249,115,22,.1)', iconFg: 'var(--salis-orange)' },
-    { icon: 'Users', title: t('Technician Load'), desc: t('Show technician workload distribution'), iconBg: 'rgba(11,179,255,.1)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { icon: 'Heart', title: t('Customer Insights'), desc: t('Top customers by revenue this quarter'), iconBg: 'rgba(11,31,59,.1)', iconFg: 'var(--text-heading)' },
-    { icon: 'FileBarChart', title: t('Generate Report'), desc: t('Create a monthly operations summary'), iconBg: 'rgba(10,94,215,.1)', iconFg: 'var(--salis-blue)' },
+    { icon: 'TrendingUp', title: t('Revenue Analysis'), desc: t('Show me this month\'s revenue breakdown'), iconBg: 'var(--tint-blue)', iconFg: 'var(--salis-blue)' },
+    { icon: 'Package', title: t('Low Stock Check'), desc: t('Which parts need reordering?'), iconBg: 'var(--tint-orange)', iconFg: 'var(--salis-orange)' },
+    { icon: 'AlertCircle', title: t('Overdue Invoices'), desc: t('List all overdue invoices this month'), iconBg: 'var(--tint-orange)', iconFg: 'var(--salis-orange)' },
+    { icon: 'Users', title: t('Technician Load'), desc: t('Show technician workload distribution'), iconBg: 'var(--tint-bright)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { icon: 'Heart', title: t('Customer Insights'), desc: t('Top customers by revenue this quarter'), iconBg: 'var(--tint-navy)', iconFg: 'var(--text-heading)' },
+    { icon: 'FileBarChart', title: t('Generate Report'), desc: t('Create a monthly operations summary'), iconBg: 'var(--tint-blue)', iconFg: 'var(--salis-blue)' },
   ]
 }
 

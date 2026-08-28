@@ -17,8 +17,8 @@ const MOCK_STANDARDS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Certified: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  'In Progress': ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Certified: ['var(--tint-blue)', 'var(--salis-blue)'],
+  'In Progress': ['var(--tint-orange)', 'var(--salis-orange)'],
   Planned: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -33,10 +33,10 @@ export function ISOQualityManagement() {
   const avgScore = Math.round(MOCK_STANDARDS.filter(s => s.score > 0).reduce((a, s) => a + s.score, 0) / MOCK_STANDARDS.filter(s => s.score > 0).length)
 
   const kpis = [
-    { label: t('Total Standards'), value: String(MOCK_STANDARDS.length), icon: 'Award', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Certified'), value: String(certified), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Avg Score'), value: `${avgScore}%`, icon: 'BarChart3', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Next Audit'), value: '2026-11', icon: 'Calendar', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Standards'), value: String(MOCK_STANDARDS.length), icon: 'Award', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Certified'), value: String(certified), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Score'), value: `${avgScore}%`, icon: 'BarChart3', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Next Audit'), value: '2026-11', icon: 'Calendar', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<StandardRow>[] = [

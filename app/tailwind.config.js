@@ -28,6 +28,13 @@ export default {
         body: 'var(--text-body)',
         muted: 'var(--text-muted)',
         faint: 'var(--text-faint)',
+        tint: {
+          blue: 'var(--tint-blue)',
+          orange: 'var(--tint-orange)',
+          bright: 'var(--tint-bright)',
+          navy: 'var(--tint-navy)',
+          neutral: 'var(--tint-neutral)',
+        },
         // Blue = success/active/progress, orange = warning/critical. Green,
         // red, yellow, purple, pink and teal are forbidden (README §7).
         success: 'var(--success)',

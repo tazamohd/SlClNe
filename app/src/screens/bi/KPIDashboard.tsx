@@ -19,9 +19,9 @@ const MOCK_KPIS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  'On Track': ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  'On Track': ['var(--tint-blue)', 'var(--salis-blue)'],
   Exceeded: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
-  'At Risk': ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  'At Risk': ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 type KPIRow = (typeof MOCK_KPIS)[number]
@@ -35,10 +35,10 @@ export function KPIDashboard() {
   const atRisk = MOCK_KPIS.filter(k => k.status === 'At Risk').length
 
   const summaryKpis = [
-    { label: t('Total KPIs'), value: String(MOCK_KPIS.length), icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('On Track'), value: String(onTrack), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('At Risk'), value: String(atRisk), icon: 'CircleDot', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Categories'), value: '4', icon: 'Layers', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total KPIs'), value: String(MOCK_KPIS.length), icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('On Track'), value: String(onTrack), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('At Risk'), value: String(atRisk), icon: 'CircleDot', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Categories'), value: '4', icon: 'Layers', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<KPIRow>[] = [

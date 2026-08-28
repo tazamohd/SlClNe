@@ -39,9 +39,9 @@ const TYPE_ICONS: Record<string, string> = {
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Archived: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Draft: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Archived: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Draft: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function DocumentManagement() {
@@ -61,10 +61,10 @@ export function DocumentManagement() {
   }, [search])
 
   const kpis = [
-    { label: t('Total Documents'), value: String(DOCUMENTS.length), icon: 'FileText', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('This Month'), value: '4', icon: 'Calendar', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Storage Used'), value: '38.5 MB', icon: 'HardDrive', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Categories'), value: '5', icon: 'FolderOpen', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Documents'), value: String(DOCUMENTS.length), icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('This Month'), value: '4', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Storage Used'), value: '38.5 MB', icon: 'HardDrive', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Categories'), value: '5', icon: 'FolderOpen', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<Document>[] = [
@@ -96,7 +96,7 @@ export function DocumentManagement() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden>
                   <Icon name={TYPE_ICONS[doc.type] ?? 'FileText'} size={14} />
                 </span>
                 <div>

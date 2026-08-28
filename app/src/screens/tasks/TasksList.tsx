@@ -30,17 +30,17 @@ const TASKS: Task[] = [
 ]
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Urgent: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Urgent: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'To Do': { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  'In Progress': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Done: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Overdue: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  'To Do': { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Done: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Overdue: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function TasksList() {
@@ -60,10 +60,10 @@ export function TasksList() {
   }, [search])
 
   const kpis = [
-    { label: t('Total Tasks'), value: String(TASKS.length), icon: 'CheckSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('In Progress'), value: String(TASKS.filter((t) => t.status === 'In Progress').length), icon: 'Loader', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Overdue'), value: String(TASKS.filter((t) => t.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-    { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Tasks'), value: String(TASKS.length), icon: 'CheckSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Progress'), value: String(TASKS.filter((t) => t.status === 'In Progress').length), icon: 'Loader', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Overdue'), value: String(TASKS.filter((t) => t.status === 'Overdue').length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+    { label: t('Completed Today'), value: String(TASKS.filter((t) => t.status === 'Done').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Task>[] = [

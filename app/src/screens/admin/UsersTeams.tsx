@@ -31,14 +31,14 @@ interface Team {
 
 const ROLE_TONES: Record<string, [string, string]> = {
   blue: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
-  sky: ['rgba(11,179,255,.1)', 'var(--salis-blue-bright)'],
+  sky: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
   slate: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
-  orange: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  navy: ['rgba(11,31,59,.1)', 'var(--salis-navy)'],
+  orange: ['var(--tint-orange)', 'var(--salis-orange)'],
+  navy: ['var(--tint-navy)', 'var(--salis-navy)'],
 }
 
 const STATUS_STYLES: Record<string, [string, string]> = {
-  online: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  online: ['var(--tint-blue)', 'var(--salis-blue)'],
   offline: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
 }
 
@@ -57,9 +57,9 @@ const FIXTURE_TEAMS: Team[] = [
 ]
 
 const TEAM_ICON_BG: Record<string, [string, string]> = {
-  blue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  sky: ['rgba(11,179,255,.1)', 'var(--salis-blue-bright)'],
-  orange: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  blue: ['var(--tint-blue)', 'var(--salis-blue)'],
+  sky: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  orange: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 export function UsersTeams() {

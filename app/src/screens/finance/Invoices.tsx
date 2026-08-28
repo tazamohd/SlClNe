@@ -27,10 +27,10 @@ type Invoice = RowOf<'invoices'>
  *  the design's three statuses only sampled. */
 export const INVOICE_STATUS: Record<string, readonly [string, string]> = {
   draft: ['rgba(100,116,139,.1)', '#64748B'],
-  paid: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  partial: ['rgba(11,179,255,.1)', '#0BB3FF'],
+  paid: ['var(--tint-blue)', '#0A5ED7'],
+  partial: ['var(--tint-bright)', '#0BB3FF'],
   unpaid: ['rgba(100,116,139,.1)', '#64748B'],
-  overdue: ['rgba(249,115,22,.1)', '#F97316'],
+  overdue: ['var(--tint-orange)', '#F97316'],
   cancelled: ['rgba(100,116,139,.1)', '#64748B'],
 }
 

@@ -25,9 +25,9 @@ const ITEMS = [
 type Item = (typeof ITEMS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Out of Stock') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  if (status === 'Low Stock') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
-  return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
+  if (status === 'Out of Stock') return { background: 'var(--tint-orange)', color: '#F97316' }
+  if (status === 'Low Stock') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
+  return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 
 export function InventoryManagement() {
@@ -39,10 +39,10 @@ export function InventoryManagement() {
   const outOfStock = ITEMS.filter((i) => i.status === 'Out of Stock').length
 
   const kpis = [
-    { label: t('Total SKUs'), value: String(ITEMS.length), icon: 'Package', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Value'), value: formatSar(totalValue), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Low Stock Items'), value: String(lowStock), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Out of Stock'), value: String(outOfStock), icon: 'XCircle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+    { label: t('Total SKUs'), value: String(ITEMS.length), icon: 'Package', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Value'), value: formatSar(totalValue), icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Low Stock Items'), value: String(lowStock), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Out of Stock'), value: String(outOfStock), icon: 'XCircle', bg: 'var(--tint-orange)', fg: '#F97316' },
   ]
 
   const columns: Column<Item>[] = [
@@ -78,7 +78,7 @@ export function InventoryManagement() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Package" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Package" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{item.name}</p>
                     <p className="text-xs text-muted" dir="ltr">{item.sku}</p>

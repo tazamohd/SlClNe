@@ -29,20 +29,20 @@ const VEHICLES: Vehicle[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'In Service': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  'Awaiting Pickup': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Inactive: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'In Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'Awaiting Pickup': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Inactive: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function PortalVehicles() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Total Vehicles'), value: '1,842', icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('In Service'), value: '18', icon: 'Wrench', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Awaiting Pickup'), value: '6', icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('New This Month'), value: '34', icon: 'Plus', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Vehicles'), value: '1,842', icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Service'), value: '18', icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Awaiting Pickup'), value: '6', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('New This Month'), value: '34', icon: 'Plus', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Vehicle>[] = [

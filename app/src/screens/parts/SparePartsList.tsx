@@ -27,9 +27,9 @@ const PARTS = [
 type Part = (typeof PARTS)[number]
 
 function statusColor(status: string) {
-  if (status === 'Backordered') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
-  if (status === 'Discontinued') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
+  if (status === 'Backordered') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
+  if (status === 'Discontinued') return { background: 'var(--tint-orange)', color: '#F97316' }
+  return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 
 export function SparePartsList() {
@@ -50,10 +50,10 @@ export function SparePartsList() {
   const categories = new Set(PARTS.map((p) => p.category)).size
 
   const kpis = [
-    { label: t('Total Parts'), value: String(PARTS.length), icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Backordered'), value: String(backordered), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Categories'), value: String(categories), icon: 'Tag', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Parts'), value: String(PARTS.length), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Backordered'), value: String(backordered), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Categories'), value: String(categories), icon: 'Tag', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Part>[] = [
@@ -79,7 +79,7 @@ export function SparePartsList() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
+                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{part.name}</p>
                   <p className="text-xs text-muted" dir="ltr">{part.partNumber}</p>

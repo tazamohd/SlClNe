@@ -57,7 +57,7 @@ export function Loading({
     >
       <span
         aria-hidden
-        className="h-[3px] w-[180px] overflow-hidden rounded-full bg-[rgba(10,94,215,.1)]"
+        className="h-[3px] w-[180px] overflow-hidden rounded-full bg-[var(--tint-blue)]"
       >
         <span className="block h-full w-[30%] rounded-full bg-salis-gradient animate-[salis-linear-progress_1.5s_ease-in-out_infinite] motion-reduce:animate-none" />
       </span>
@@ -130,7 +130,7 @@ export function ErrorState({
   const { t } = usePreferences()
   return (
     <div role="alert" className="flex flex-col items-center gap-3 py-6 text-center">
-      <span className="flex rounded-full bg-[rgba(249,115,22,.1)] p-4 text-salis-orange">
+      <span className="flex rounded-full bg-[var(--tint-orange)] p-4 text-salis-orange">
         <Icon name="CloudOff" size={24} />
       </span>
       <div>

@@ -41,10 +41,10 @@ export function AccountsPayable() {
   const filtered = filter === 'overdue' ? overdue : filter === 'current' ? current : rows
 
   const kpis = [
-    { label: t('Total Payable'), value: formatSar(total), icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Suppliers'), value: String(new Set(rows.map((r) => r.supplier)).size), icon: 'Users', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Total Payable'), value: formatSar(total), icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Current'), value: formatSar(current.reduce((s, r) => s + r.amount, 0)), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Overdue'), value: formatSar(overdue.reduce((s, r) => s + r.amount, 0)), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Suppliers'), value: String(new Set(rows.map((r) => r.supplier)).size), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   const columns: Column<APRow>[] = [
@@ -54,7 +54,7 @@ export function AccountsPayable() {
     { header: 'Due Date', cell: (r) => <span dir="ltr" className="text-muted">{r.dueDate}</span> },
     { header: 'Days Overdue', cell: (r) => <span className="font-mono text-heading">{r.daysOverdue || '—'}</span>, className: 'text-end' },
     { header: 'Status', cell: (r) => (
-      <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
+      <Badge background={r.daysOverdue > 0 ? 'var(--tint-orange)' : 'var(--tint-blue)'}
         color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
     ) },
   ]
@@ -92,7 +92,7 @@ export function AccountsPayable() {
             <MobileCardHeader
               title={r.supplier}
               trailing={
-                <Badge background={r.daysOverdue > 0 ? 'rgba(249,115,22,.1)' : 'rgba(10,94,215,.1)'}
+                <Badge background={r.daysOverdue > 0 ? 'var(--tint-orange)' : 'var(--tint-blue)'}
                   color={r.daysOverdue > 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}>{r.status}</Badge>
               }
             />

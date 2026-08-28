@@ -29,8 +29,8 @@ const MEMBERS: LoyaltyMember[] = [
 ]
 
 const TIER_STYLES: Record<string, { bg: string; fg: string }> = {
-  Platinum: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Gold: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Platinum: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Gold: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Silver: { bg: 'rgba(107,114,128,.15)', fg: 'rgb(107,114,128)' },
   Bronze: { bg: 'rgba(180,130,80,.1)', fg: 'rgb(180,130,80)' },
 }
@@ -40,10 +40,10 @@ export function LoyaltyProgram() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('Total Members'), value: '1,248', icon: 'Users', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: '1,086', icon: 'UserCheck', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Total Points Issued'), value: '542K', icon: 'Award', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Redemption Rate'), value: '34.2%', icon: 'Gift', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Members'), value: '1,248', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: '1,086', icon: 'UserCheck', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Points Issued'), value: '542K', icon: 'Award', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Redemption Rate'), value: '34.2%', icon: 'Gift', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<LoyaltyMember>[] = [
@@ -56,7 +56,7 @@ export function LoyaltyProgram() {
       header: 'Status',
       cell: (m) => (
         <Badge
-          background={m.status === 'Active' ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+          background={m.status === 'Active' ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
           color={m.status === 'Active' ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
         >{t(m.status)}</Badge>
       ),
@@ -74,7 +74,7 @@ export function LoyaltyProgram() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{m.name}</p>
                   <p className="text-xs text-muted">{t(m.lastVisit)}</p>

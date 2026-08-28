@@ -37,7 +37,7 @@ export function ZATCASettings() {
               label={r.label}
             >
               {r.badge ? (
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t(r.value)}</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t(r.value)}</Badge>
               ) : (
                 <span className="font-mono text-xs text-heading">{r.value}</span>
               )}
@@ -66,7 +66,7 @@ export function ZATCASettings() {
             <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
               <span className="text-sm text-muted">{r.label}</span>
               {r.badge ? (
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t(r.value)}</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t(r.value)}</Badge>
               ) : (
                 <span className="font-mono text-sm font-medium text-heading">{r.value}</span>
               )}

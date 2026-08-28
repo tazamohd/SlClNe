@@ -40,12 +40,12 @@ const SMS_LOGS: SMSLog[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Connected: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Disconnected: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Error: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Delivered: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Failed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Connected: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Disconnected: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Error: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Delivered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function SMSIntegration() {
@@ -79,7 +79,7 @@ export function SMSIntegration() {
           <Card key={i} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                   <Icon name="Radio" size={20} />
                 </span>
                 <div>

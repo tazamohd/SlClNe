@@ -15,8 +15,8 @@ const MOCK_RECOMMENDATIONS = [
 ] as const
 
 const URGENCY_COLORS: Record<string, readonly [string, string]> = {
-  High: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Medium: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  High: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Medium: ['var(--tint-blue)', 'var(--salis-blue)'],
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -29,10 +29,10 @@ export function AIServiceAdvisor() {
   const avgConfidence = Math.round(MOCK_RECOMMENDATIONS.reduce((a, r) => a + r.confidence, 0) / MOCK_RECOMMENDATIONS.length)
 
   const kpis = [
-    { label: t('Recommendations'), value: String(MOCK_RECOMMENDATIONS.length), icon: 'Lightbulb', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('High Priority'), value: String(highUrgency), icon: 'Zap', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Vehicles Scanned'), value: '148', icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Recommendations'), value: String(MOCK_RECOMMENDATIONS.length), icon: 'Lightbulb', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('High Priority'), value: String(highUrgency), icon: 'Zap', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Vehicles Scanned'), value: '148', icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<RecRow>[] = [

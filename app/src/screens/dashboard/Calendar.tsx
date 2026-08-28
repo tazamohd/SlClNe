@@ -105,7 +105,7 @@ export function Calendar() {
                     <MobileCardHeader
                       leading={
                         <div className="flex items-center gap-2">
-                          <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Clock" size={14} /></span>
+                          <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Clock" size={14} /></span>
                           <div>
                             <p className="text-[13px] font-semibold text-heading">{a.customerName ?? t('Appointment')}</p>
                             <p className="text-xs text-muted">{a.scheduledTime ?? a.time ?? '—'}</p>
@@ -153,12 +153,12 @@ export function Calendar() {
                 const a = ev.data as Record<string, string>
                 return (
                   <div key={ev.id} className="flex items-center gap-2.5 rounded-lg border border-border p-3">
-                    <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Clock" size={14} /></span>
+                    <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Clock" size={14} /></span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[13px] font-semibold text-heading">{a.customerName ?? t('Appointment')}</p>
                       <p className="text-xs text-muted">{a.scheduledTime ?? a.time ?? '—'} · {a.serviceType ?? a.type ?? ''}</p>
                     </div>
-                    <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{a.status ?? t('Scheduled')}</Badge>
+                    <Badge background="var(--tint-blue)" color="var(--salis-blue)">{a.status ?? t('Scheduled')}</Badge>
                   </div>
                 )
               })}

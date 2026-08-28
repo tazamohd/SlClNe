@@ -26,7 +26,7 @@ export function PendingScreen({
       <PageHeader icon="Hammer" title={screen.name} subtitle={screen.purpose ?? undefined} />
       <Card className="flex max-w-2xl flex-col gap-4 p-6">
         <div className="flex items-center gap-3">
-          <span className="flex rounded-lg bg-[rgba(249,115,22,.1)] p-2.5 text-salis-orange">
+          <span className="flex rounded-lg bg-[var(--tint-orange)] p-2.5 text-salis-orange">
             <Icon name="Construction" size={20} />
           </span>
           <div>

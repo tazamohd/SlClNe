@@ -39,7 +39,7 @@ export function AccountingConfig() {
               <div className="flex items-center gap-2">
                 <span
                   className="flex rounded-lg p-1.5"
-                  style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }}
+                  style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }}
                   aria-hidden
                 >
                   <Icon name={item.icon} size={14} />
@@ -71,7 +71,7 @@ export function AccountingConfig() {
             <div className="flex items-center gap-3">
               <span
                 className="flex rounded-lg p-2"
-                style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }}
+                style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }}
                 aria-hidden
               >
                 <Icon name={item.icon} size={18} />

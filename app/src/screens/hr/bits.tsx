@@ -23,7 +23,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
  *  terminated), and slate is the neutral in-flight state. Colours are tokens and
  *  `rgba()`, never hex, so the token gate holds. */
 const TONES = {
-  blue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  blue: ['var(--tint-blue)', 'var(--salis-blue)'],
   orange: ['rgba(249,115,22,.13)', 'var(--salis-orange)'],
   slate: ['rgba(100,116,139,.12)', 'var(--text-muted)'],
 } as const
@@ -67,7 +67,7 @@ export function StatCard({
   const { t } = usePreferences()
   return (
     <Card className="flex items-center gap-3 rounded-xl p-3.5">
-      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2.5 text-salis-blue">
+      <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2.5 text-salis-blue">
         <Icon name={icon} size={16} />
       </span>
       <div className="min-w-0">

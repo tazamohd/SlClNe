@@ -55,7 +55,7 @@ export function PublicInsurance() {
             }
           >
             {plan.popular ? (
-              <span className="mb-3 inline-flex items-center rounded-full bg-[rgba(10,94,215,.1)] px-3 py-1 text-xs font-semibold text-salis-blue">
+              <span className="mb-3 inline-flex items-center rounded-full bg-[var(--tint-blue)] px-3 py-1 text-xs font-semibold text-salis-blue">
                 {t('Popular')}
               </span>
             ) : null}

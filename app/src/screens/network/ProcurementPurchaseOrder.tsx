@@ -502,10 +502,10 @@ type PoStatus = PurchaseOrderRow['status']
  *  for draft and closed. No green, no red (README §7). */
 const PO_STATUS_TONE: Record<PoStatus, readonly [string, string]> = {
   draft: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
-  approved: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  sent: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  receiving: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  received: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  approved: ['var(--tint-blue)', 'var(--salis-blue)'],
+  sent: ['var(--tint-blue)', 'var(--salis-blue)'],
+  receiving: ['var(--tint-orange)', 'var(--salis-orange)'],
+  received: ['var(--tint-blue)', 'var(--salis-blue)'],
   closed: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
 }
 
@@ -649,7 +649,7 @@ function OrderCard({
                   {line.receivedQty} / {line.qty}
                 </span>
                 {line.receivedQty >= line.qty ? (
-                  <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">
                     {t('Fully received')}
                   </Badge>
                 ) : mayReceive ? (
@@ -857,7 +857,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
             background={
               line.reorder !== null && line.stock <= line.reorder
                 ? 'rgba(249,115,22,.12)'
-                : 'rgba(10,94,215,.1)'
+                : 'var(--tint-blue)'
             }
             color={
               line.reorder !== null && line.stock <= line.reorder

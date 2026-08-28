@@ -87,7 +87,7 @@ export function LossAccount() {
             }
             mobileCard={(r) => (
               <>
-                <MobileCardHeader title={t(r.category)} trailing={<Badge background="rgba(10,94,215,.1)" color="#0A5ED7">{r.percentage}%</Badge>} />
+                <MobileCardHeader title={t(r.category)} trailing={<Badge background="var(--tint-blue)" color="#0A5ED7">{r.percentage}%</Badge>} />
                 <MobileCardRow label={t('Amount')}><Money sar={r.amount} className="font-semibold text-heading" /></MobileCardRow>
               </>
             )}
@@ -113,7 +113,7 @@ export function LossAccount() {
             }
             mobileCard={(e) => (
               <>
-                <MobileCardHeader title={t(e.category)} trailing={<Badge background="rgba(249,115,22,.1)" color="#F97316">{e.percentage}%</Badge>} />
+                <MobileCardHeader title={t(e.category)} trailing={<Badge background="var(--tint-orange)" color="#F97316">{e.percentage}%</Badge>} />
                 <MobileCardRow label={t('Amount')}><Money sar={e.amount} className="font-semibold text-heading" /></MobileCardRow>
               </>
             )}

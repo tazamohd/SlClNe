@@ -27,16 +27,16 @@ const MESSAGES: Message[] = [
 ]
 
 const CHANNEL_STYLES: Record<string, { bg: string; fg: string; icon: string }> = {
-  Email: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'Mail' },
-  SMS: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'Smartphone' },
-  WhatsApp: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', icon: 'MessageCircle' },
-  System: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)', icon: 'Bell' },
+  Email: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'Mail' },
+  SMS: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)', icon: 'Smartphone' },
+  WhatsApp: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', icon: 'MessageCircle' },
+  System: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)', icon: 'Bell' },
 }
 
 const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
-  Normal: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  High: { bg: 'var(--tint-orange)', fg: '#F97316' },
+  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function PortalCommunications() {
@@ -45,10 +45,10 @@ export function PortalCommunications() {
   const unreadCount = MESSAGES.filter((m) => !m.read).length
 
   const kpis = [
-    { label: t('Total Messages'), value: '248', icon: 'MessageSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Unread'), value: String(unreadCount), icon: 'Mail', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
-    { label: t('Sent Today'), value: '12', icon: 'Send', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Response Rate'), value: '94%', icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Messages'), value: '248', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Unread'), value: String(unreadCount), icon: 'Mail', bg: 'var(--tint-orange)', fg: '#F97316' },
+    { label: t('Sent Today'), value: '12', icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Response Rate'), value: '94%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Message>[] = [
@@ -64,7 +64,7 @@ export function PortalCommunications() {
     { header: t('Date'), cell: (m) => m.date },
     { header: t('Status'), cell: (m) => m.read
       ? <span className="text-xs text-muted">{t('Read')}</span>
-      : <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Unread')}</Badge>
+      : <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Unread')}</Badge>
     },
   ]
 

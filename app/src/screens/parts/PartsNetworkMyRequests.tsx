@@ -28,18 +28,18 @@ const MY_REQUESTS: PartsRequest[] = [
 ]
 
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Critical: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Critical: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Open: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Quoted: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Open: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Quoted: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Ordered: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Fulfilled: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Fulfilled: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function PartsNetworkMyRequests() {

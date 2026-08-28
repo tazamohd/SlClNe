@@ -15,8 +15,8 @@ const MOCK_NODES = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Online: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Warning: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Online: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Warning: ['var(--tint-orange)', 'var(--salis-orange)'],
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -30,10 +30,10 @@ export function EdgeComputing() {
   const totalTasks = MOCK_NODES.reduce((a, n) => a + n.tasks, 0)
 
   const kpis = [
-    { label: t('Edge Nodes'), value: String(MOCK_NODES.length), icon: 'Cpu', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Online'), value: String(online), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg CPU'), value: `${avgCpu}%`, icon: 'Gauge', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Active Tasks'), value: String(totalTasks), icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Edge Nodes'), value: String(MOCK_NODES.length), icon: 'Cpu', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Online'), value: String(online), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg CPU'), value: `${avgCpu}%`, icon: 'Gauge', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Active Tasks'), value: String(totalTasks), icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<NodeRow>[] = [

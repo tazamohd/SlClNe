@@ -294,7 +294,7 @@ export function RolesPermissions() {
             {hiddenFields.map((field) => (
               <Badge
                 key={field}
-                background="rgba(249,115,22,.1)"
+                background="var(--tint-orange)"
                 color="var(--salis-orange)"
               >
                 {field}

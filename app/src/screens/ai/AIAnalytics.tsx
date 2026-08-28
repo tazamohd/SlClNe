@@ -24,10 +24,10 @@ interface Topic {
 
 function useKPIs(t: (s: string) => string): KPI[] {
   return useMemo(() => [
-    { icon: 'MessageSquare', label: t('Total Queries'), value: '4,821', trend: '+24%', iconBg: 'rgba(10,94,215,.1)', iconFg: 'var(--salis-blue)' },
-    { icon: 'Clock', label: t('Avg Response Time'), value: '1.2s', trend: '-15%', iconBg: 'rgba(11,179,255,.1)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { icon: 'ThumbsUp', label: t('Satisfaction Rate'), value: '96.4%', trend: '+2.1%', iconBg: 'rgba(11,31,59,.1)', iconFg: 'var(--text-heading)' },
-    { icon: 'Cpu', label: t('Tokens Used'), value: '2.4M', trend: '+18%', iconBg: 'rgba(249,115,22,.1)', iconFg: 'var(--salis-orange)' },
+    { icon: 'MessageSquare', label: t('Total Queries'), value: '4,821', trend: '+24%', iconBg: 'var(--tint-blue)', iconFg: 'var(--salis-blue)' },
+    { icon: 'Clock', label: t('Avg Response Time'), value: '1.2s', trend: '-15%', iconBg: 'var(--tint-bright)', iconFg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { icon: 'ThumbsUp', label: t('Satisfaction Rate'), value: '96.4%', trend: '+2.1%', iconBg: 'var(--tint-navy)', iconFg: 'var(--text-heading)' },
+    { icon: 'Cpu', label: t('Tokens Used'), value: '2.4M', trend: '+18%', iconBg: 'var(--tint-orange)', iconFg: 'var(--salis-orange)' },
   ], [t])
 }
 

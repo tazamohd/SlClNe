@@ -41,12 +41,12 @@ export function ClientPortalProfile() {
         <MobilePageHeader icon="User" title={t('My Profile')} subtitle={t('Account details')} />
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(10,94,215,.1)] text-salis-blue">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--tint-blue)] text-salis-blue">
               <Icon name="User" size={24} />
             </span>
             <div>
               <p className="text-[15px] font-bold text-heading">{PROFILE.name}</p>
-              <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t(PROFILE.loyaltyTier)}</Badge>
+              <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t(PROFILE.loyaltyTier)}</Badge>
             </div>
           </div>
         </Card>
@@ -73,7 +73,7 @@ export function ClientPortalProfile() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={16} /></span>
+            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Personal Information')}</h2>
           </div>
           <div className="grid gap-4">
@@ -91,7 +91,7 @@ export function ClientPortalProfile() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
+            <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Membership')}</h2>
           </div>
           <div className="grid gap-4">
@@ -99,7 +99,7 @@ export function ClientPortalProfile() {
               <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(f.label)}</span>
                 {f.label === 'Loyalty Tier' ? (
-                  <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t(f.value)}</Badge>
+                  <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t(f.value)}</Badge>
                 ) : (
                   <span className="text-sm font-medium text-heading">{f.value}</span>
                 )}

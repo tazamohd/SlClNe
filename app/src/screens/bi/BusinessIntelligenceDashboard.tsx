@@ -25,8 +25,8 @@ const MOCK_METRICS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Live: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Paused: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Live: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Paused: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 type WidgetRow = (typeof MOCK_WIDGETS)[number]
@@ -36,10 +36,10 @@ export function BusinessIntelligenceDashboard() {
   const [period, setPeriod] = useState('month')
 
   const kpis = [
-    { label: t('Widgets'), value: String(MOCK_WIDGETS.length), icon: 'LayoutGrid', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Live'), value: String(MOCK_WIDGETS.filter(w => w.status === 'Live').length), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Data Sources'), value: '5', icon: 'Database', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Refresh Rate'), value: t('5–60 min'), icon: 'RefreshCw', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Widgets'), value: String(MOCK_WIDGETS.length), icon: 'LayoutGrid', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Live'), value: String(MOCK_WIDGETS.filter(w => w.status === 'Live').length), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Data Sources'), value: '5', icon: 'Database', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Refresh Rate'), value: t('5–60 min'), icon: 'RefreshCw', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<WidgetRow>[] = [
@@ -75,7 +75,7 @@ export function BusinessIntelligenceDashboard() {
             <div key={m.label} className="rounded-xl border border-border p-4">
               <p className="text-xs font-medium text-muted">{t(m.label)}</p>
               <p className="mt-1 font-display text-xl font-black text-heading">{m.value}</p>
-              <Badge background={m.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={m.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{m.change}</Badge>
+              <Badge background={m.trend === 'up' ? 'var(--tint-blue)' : 'var(--tint-orange)'} color={m.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{m.change}</Badge>
             </div>
           ))}
         </div>

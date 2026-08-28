@@ -28,18 +28,18 @@ const INCOMING_REQUESTS: IncomingRequest[] = [
 ]
 
 const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Low: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  High: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Critical: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Low: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Critical: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  New: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Quoted: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  New: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Quoted: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   Accepted: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Declined: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Expired: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Declined: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Expired: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function PartsNetworkIncomingRequests() {
@@ -97,7 +97,7 @@ export function PartsNetworkIncomingRequests() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Inbox" title={t('Incoming Requests')} subtitle={t('From parts network')} />
         {newCount > 0 && (
-          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{newCount} {t('new')}</Badge>
+          <Badge background="var(--tint-blue)" color="var(--salis-blue)">{newCount} {t('new')}</Badge>
         )}
         {table}
       </div>
@@ -117,7 +117,7 @@ export function PartsNetworkIncomingRequests() {
           <div className="flex items-center gap-2">
             <h1 className="font-display text-[30px] font-black text-heading">{t('Incoming Requests')}</h1>
             {newCount > 0 && (
-              <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{newCount} {t('new')}</Badge>
+              <Badge background="var(--tint-blue)" color="var(--salis-blue)">{newCount} {t('new')}</Badge>
             )}
           </div>
           <p className="mt-0.5 text-[13px] text-muted">{t('Parts requests from your network')}</p>

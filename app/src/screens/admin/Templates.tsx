@@ -29,7 +29,7 @@ export function Templates() {
       desc: t('ZATCA-compliant tax invoice template'),
       icon: 'Receipt',
       lastEdit: 'Jul 20, 2026',
-      typeBg: 'rgba(10,94,215,.1)',
+      typeBg: 'var(--tint-blue)',
       typeColor: 'var(--salis-blue)',
     },
     {
@@ -38,7 +38,7 @@ export function Templates() {
       desc: t('Detailed service cost estimate for customers'),
       icon: 'FileText',
       lastEdit: 'Jul 18, 2026',
-      typeBg: 'rgba(11,179,255,.1)',
+      typeBg: 'var(--tint-bright)',
       typeColor: 'var(--salis-blue-bright)',
     },
     {
@@ -47,7 +47,7 @@ export function Templates() {
       desc: t('Workshop job card for printing'),
       icon: 'ClipboardList',
       lastEdit: 'Jul 15, 2026',
-      typeBg: 'rgba(249,115,22,.1)',
+      typeBg: 'var(--tint-orange)',
       typeColor: 'var(--salis-orange)',
     },
     {
@@ -56,7 +56,7 @@ export function Templates() {
       desc: t('New customer welcome email'),
       icon: 'Mail',
       lastEdit: 'Jul 12, 2026',
-      typeBg: 'rgba(11,31,59,.1)',
+      typeBg: 'var(--tint-navy)',
       typeColor: 'var(--salis-navy)',
     },
     {
@@ -74,7 +74,7 @@ export function Templates() {
       desc: t('Vehicle delivery acknowledgment receipt'),
       icon: 'Car',
       lastEdit: 'Jul 8, 2026',
-      typeBg: 'rgba(10,94,215,.1)',
+      typeBg: 'var(--tint-blue)',
       typeColor: 'var(--salis-blue)',
     },
   ]

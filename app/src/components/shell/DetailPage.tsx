@@ -517,7 +517,7 @@ function StatStrip({
           )}
         >
           {stat.icon ? (
-            <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-2.5 text-salis-blue">
+            <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-2.5 text-salis-blue">
               <Icon name={stat.icon} size={16} />
             </span>
           ) : null}

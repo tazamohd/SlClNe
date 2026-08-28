@@ -26,9 +26,9 @@ const FRANCHISES: Franchise[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Suspended: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Suspended: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function FranchiseManagement() {
@@ -61,7 +61,7 @@ export function FranchiseManagement() {
         ].map((stat) => (
           <Card key={stat.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name={stat.icon} size={20} />
               </span>
               <div>

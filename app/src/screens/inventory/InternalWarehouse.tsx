@@ -19,9 +19,9 @@ const ZONES = [
 type Zone = (typeof ZONES)[number]
 
 function statusColor(status: string) {
-  if (status === 'Full') return { background: 'rgba(249,115,22,.1)', color: 'var(--salis-orange)' }
-  if (status === 'Maintenance') return { background: 'rgba(249,115,22,.1)', color: '#F97316' }
-  return { background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }
+  if (status === 'Full') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
+  if (status === 'Maintenance') return { background: 'var(--tint-orange)', color: '#F97316' }
+  return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 
 export function InternalWarehouse() {
@@ -34,10 +34,10 @@ export function InternalWarehouse() {
   const activeZones = ZONES.filter((z) => z.status === 'Active').length
 
   const kpis = [
-    { label: t('Total Zones'), value: String(ZONES.length), icon: 'LayoutGrid', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Capacity'), value: String(totalCapacity), icon: 'Warehouse', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Utilization'), value: `${avgUtilization}%`, icon: 'BarChart3', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active Zones'), value: String(activeZones), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Zones'), value: String(ZONES.length), icon: 'LayoutGrid', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Capacity'), value: String(totalCapacity), icon: 'Warehouse', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Utilization'), value: `${avgUtilization}%`, icon: 'BarChart3', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active Zones'), value: String(activeZones), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Zone>[] = [
@@ -70,7 +70,7 @@ export function InternalWarehouse() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Warehouse" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Warehouse" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{t(zone.name)}</p>
                     <p className="text-xs text-muted" dir="ltr">{zone.code}</p>

@@ -44,7 +44,7 @@ export function SystemSettings() {
           {NOTIFICATIONS.map((s, i) => (
             <MobileCardRow key={i} label={t(s.label)}>
               <Badge
-                background={s.value ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                 color={s.value ? 'var(--salis-blue)' : '#64748B'}
               >
                 {s.value ? t('On') : t('Off')}
@@ -58,7 +58,7 @@ export function SystemSettings() {
             <MobileCardRow key={i} label={t(s.label)}>
               {typeof s.value === 'boolean' ? (
                 <Badge
-                  background={s.value ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                  background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                   color={s.value ? 'var(--salis-blue)' : '#64748B'}
                 >
                   {s.value ? t('On') : t('Off')}
@@ -80,7 +80,7 @@ export function SystemSettings() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Building" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('General')}</h2>
           </div>
           <div className="grid gap-4">
@@ -95,7 +95,7 @@ export function SystemSettings() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Bell" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Bell" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Notifications')}</h2>
           </div>
           <div className="grid gap-4">
@@ -103,7 +103,7 @@ export function SystemSettings() {
               <div key={i} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 <Badge
-                  background={s.value ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                  background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                   color={s.value ? 'var(--salis-blue)' : '#64748B'}
                 >
                   {s.value ? t('On') : t('Off')}
@@ -115,7 +115,7 @@ export function SystemSettings() {
 
         <Card className="rounded-2xl p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Lock" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Lock" size={16} /></span>
             <h2 className="text-sm font-semibold text-heading">{t('Security')}</h2>
           </div>
           <div className="grid gap-4">
@@ -124,7 +124,7 @@ export function SystemSettings() {
                 <span className="text-sm text-muted">{t(s.label)}</span>
                 {typeof s.value === 'boolean' ? (
                   <Badge
-                    background={s.value ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
+                    background={s.value ? 'var(--tint-blue)' : 'rgba(100,116,139,.1)'}
                     color={s.value ? 'var(--salis-blue)' : '#64748B'}
                   >
                     {s.value ? t('On') : t('Off')}

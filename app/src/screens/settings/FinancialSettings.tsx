@@ -38,7 +38,7 @@ export function FinancialSettings() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-2">
-          <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Landmark" size={16} /></span>
+          <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Landmark" size={16} /></span>
           <h2 className="text-sm font-semibold text-heading">{t('Configuration')}</h2>
         </div>
         <div className="grid gap-4">

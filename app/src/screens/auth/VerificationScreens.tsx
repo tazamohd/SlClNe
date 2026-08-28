@@ -352,7 +352,7 @@ export function BiometricSetup() {
   return (
     <AuthLayout controls={false} className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[360px]'}>
       <div className={`flex flex-col items-center text-center ${isMobile ? 'gap-3' : 'gap-4'}`}>
-        <span className={`inline-flex animate-pulse rounded-full bg-[rgba(10,94,215,.1)] text-salis-blue ${isMobile ? 'p-4' : 'p-[22px]'}`}>
+        <span className={`inline-flex animate-pulse rounded-full bg-[var(--tint-blue)] text-salis-blue ${isMobile ? 'p-4' : 'p-[22px]'}`}>
           <Icon name="Fingerprint" size={isMobile ? 32 : 40} />
         </span>
         <h1 className={`font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('Biometric Setup')}</h1>

@@ -16,8 +16,8 @@ const MOCK_RECOMMENDATIONS = [
 ] as const
 
 const PRIORITY_COLORS: Record<string, readonly [string, string]> = {
-  High: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Medium: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  High: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Medium: ['var(--tint-blue)', 'var(--salis-blue)'],
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -31,10 +31,10 @@ export function SmartPartsRecommendations() {
   const avgConfidence = Math.round(MOCK_RECOMMENDATIONS.reduce((a, r) => a + r.confidence, 0) / MOCK_RECOMMENDATIONS.length)
 
   const kpis = [
-    { label: t('Recommendations'), value: String(MOCK_RECOMMENDATIONS.length), icon: 'Sparkles', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('In Stock'), value: `${inStockCount}/${MOCK_RECOMMENDATIONS.length}`, icon: 'PackageCheck', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Value'), value: totalValue, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Recommendations'), value: String(MOCK_RECOMMENDATIONS.length), icon: 'Sparkles', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Stock'), value: `${inStockCount}/${MOCK_RECOMMENDATIONS.length}`, icon: 'PackageCheck', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Value'), value: totalValue, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<RecRow>[] = [
@@ -44,7 +44,7 @@ export function SmartPartsRecommendations() {
     { header: 'Reason', cell: (r) => t(r.reason) },
     { header: 'Confidence', cell: (r) => `${r.confidence}%` },
     { header: 'Price', cell: (r) => r.price },
-    { header: 'Stock', cell: (r) => <Badge background={r.inStock ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={r.inStock ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{r.inStock ? t('In Stock') : t('Out of Stock')}</Badge> },
+    { header: 'Stock', cell: (r) => <Badge background={r.inStock ? 'var(--tint-blue)' : 'var(--tint-orange)'} color={r.inStock ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{r.inStock ? t('In Stock') : t('Out of Stock')}</Badge> },
     { header: 'Priority', cell: (r) => { const [bg, fg] = PRIORITY_COLORS[r.priority] ?? PRIORITY_COLORS.Low; return <Badge background={bg} color={fg}>{t(r.priority)}</Badge> } },
   ]
 

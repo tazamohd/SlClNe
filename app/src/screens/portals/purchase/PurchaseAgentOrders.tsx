@@ -26,22 +26,22 @@ const ORDERS: AgentOrder[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Draft: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Submitted: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Draft: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Submitted: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Confirmed: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Shipped: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Received: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Cancelled: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Shipped: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Received: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function PurchaseAgentOrders() {
   const { t } = usePreferences()
 
   const kpis = [
-    { label: t('Total Orders'), value: String(ORDERS.length), icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Value'), value: formatSar(37600), icon: 'Wallet', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('In Transit'), value: '1', icon: 'Truck', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Received'), value: '2', icon: 'PackageCheck', bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+    { label: t('Total Orders'), value: String(ORDERS.length), icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Value'), value: formatSar(37600), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('In Transit'), value: '1', icon: 'Truck', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Received'), value: '2', icon: 'PackageCheck', bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
   ]
 
   const columns: Column<AgentOrder>[] = [

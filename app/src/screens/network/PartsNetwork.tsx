@@ -185,7 +185,7 @@ export function PartsNetworkRequests() {
             <div className="flex items-center gap-2">
               <PriorityPill value={r.priority} />
               {Number(r.unread) > 0 ? (
-                <Badge background="rgba(249,115,22,.1)" color="#F97316">
+                <Badge background="var(--tint-orange)" color="#F97316">
                   {r.unread} {t('unread')}
                 </Badge>
               ) : null}

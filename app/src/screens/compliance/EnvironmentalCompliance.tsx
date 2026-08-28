@@ -16,7 +16,7 @@ const METRICS = [
 ] as const
 
 const STATUS_PALETTE: Record<string, { bg: string; fg: string }> = {
-  'Within Limits': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  'Within Limits': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   Warning: { bg: 'rgba(249,115,22,.12)', fg: 'var(--salis-orange)' },
   Exceeding: { bg: 'rgba(234,88,12,.1)', fg: '#EA580C' },
 }
@@ -44,7 +44,7 @@ export function EnvironmentalCompliance() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Leaf" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Leaf" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{t(m.metric)}</p>
                     <p className="text-xs text-muted">{t(m.category)}</p>

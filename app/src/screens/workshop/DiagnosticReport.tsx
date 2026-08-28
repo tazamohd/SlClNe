@@ -311,7 +311,7 @@ export function DiagnosticReport() {
               <div className="flex flex-col gap-2">
                 {copyRows.map((copy, index) => (
                   <div key={copy._id ?? `${copy.to}-${index}`} className="flex items-center gap-2.5">
-                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
                       <Icon name={copy.icon || 'Bell'} size={13} />
                     </span>
                     <div className="min-w-0 flex-1">

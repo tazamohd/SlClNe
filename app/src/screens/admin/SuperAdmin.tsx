@@ -42,22 +42,22 @@ export function SuperAdmin() {
   const totalUsers = tenants.reduce((s, o) => s + o.users, 0)
 
   const kpis = [
-    { label: t('Organizations'), value: String(tenants.length), icon: 'Building2', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(activeTenants), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Total Branches'), value: String(totalBranches), icon: 'MapPin', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Users'), value: String(totalUsers), icon: 'Users', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Organizations'), value: String(tenants.length), icon: 'Building2', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(activeTenants), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Branches'), value: String(totalBranches), icon: 'MapPin', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Users'), value: String(totalUsers), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   function statusBadge(status: string) {
-    if (status === t('Active')) return <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{status}</Badge>
-    if (status === t('Suspended')) return <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{status}</Badge>
-    return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{status}</Badge>
+    if (status === t('Active')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{status}</Badge>
+    if (status === t('Suspended')) return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{status}</Badge>
+    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{status}</Badge>
   }
 
   function planBadge(plan: string) {
-    if (plan === t('Enterprise')) return <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{plan}</Badge>
-    if (plan === t('Professional')) return <Badge background="rgba(11,179,255,.1)" color="var(--salis-blue-bright, #0BB3FF)">{plan}</Badge>
-    return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{plan}</Badge>
+    if (plan === t('Enterprise')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{plan}</Badge>
+    if (plan === t('Professional')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright, #0BB3FF)">{plan}</Badge>
+    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{plan}</Badge>
   }
 
   const columns: Column<Tenant>[] = [
@@ -81,7 +81,7 @@ export function SuperAdmin() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
+                <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{o.name}</p>
                   <p className="text-xs text-muted">{o.region} · {o.branches} {t('branches')} · {o.users} {t('users')}</p>

@@ -32,8 +32,8 @@ const MOCK_LEADERBOARD: readonly LeaderboardEntry[] = [
 
 const RANK_BADGES: Record<number, { bg: string; fg: string; label: string }> = {
   1: { bg: 'rgba(249,115,22,.15)', fg: 'var(--salis-orange)', label: 'Gold' },
-  2: { bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)', label: 'Silver' },
-  3: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)', label: 'Bronze' },
+  2: { bg: 'var(--tint-navy)', fg: 'var(--salis-navy)', label: 'Silver' },
+  3: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', label: 'Bronze' },
 }
 
 function RankBadge({ rank }: { rank: number }) {

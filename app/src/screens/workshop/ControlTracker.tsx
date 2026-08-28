@@ -165,7 +165,7 @@ function PipelineView({
                     {t(stage.label)}
                   </span>
                 </div>
-                <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[rgba(10,94,215,.1)] px-1.5 font-mono text-[11px] font-bold text-salis-blue">
+                <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[var(--tint-blue)] px-1.5 font-mono text-[11px] font-bold text-salis-blue">
                   {stageJobs.length}
                 </span>
               </div>

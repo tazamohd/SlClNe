@@ -13,7 +13,7 @@ export function Welcome() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.1),transparent_65%)] blur-[64px]" />
+        <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,var(--tint-blue),transparent_65%)] blur-[64px]" />
         <div className="absolute bottom-0 start-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,.06),transparent_65%)] blur-[64px]" />
       </div>
 

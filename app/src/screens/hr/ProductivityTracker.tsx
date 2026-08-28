@@ -48,16 +48,16 @@ export function ProductivityTracker() {
   const totalTasks = MOCK_STAFF.reduce((sum, r) => sum + r.tasksCompleted, 0)
 
   const kpis = [
-    { label: t('Avg Efficiency'), value: `${avgEfficiency}%`, icon: 'Zap', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Utilization'), value: `${avgUtilization}%`, icon: 'Activity', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Total Hours'), value: String(totalHours), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Tasks'), value: String(totalTasks), icon: 'CheckSquare', bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
+    { label: t('Avg Efficiency'), value: `${avgEfficiency}%`, icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Utilization'), value: `${avgUtilization}%`, icon: 'Activity', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Hours'), value: String(totalHours), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Tasks'), value: String(totalTasks), icon: 'CheckSquare', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]
 
   function efficiencyBadge(value: number) {
-    if (value >= 90) return { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' }
-    if (value >= 80) return { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' }
-    return { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' }
+    if (value >= 90) return { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' }
+    if (value >= 80) return { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' }
+    return { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' }
   }
 
   const columns: Column<StaffProductivity>[] = [

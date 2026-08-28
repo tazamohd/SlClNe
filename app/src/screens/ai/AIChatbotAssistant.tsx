@@ -25,9 +25,9 @@ const MOCK_SUGGESTIONS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
   Resolved: ['rgba(10,94,215,.15)', 'var(--salis-blue)'],
-  Escalated: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Escalated: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 type ConversationRow = (typeof MOCK_CONVERSATIONS)[number]
@@ -39,10 +39,10 @@ export function AIChatbotAssistant() {
   const filtered = filter === 'All' ? MOCK_CONVERSATIONS : MOCK_CONVERSATIONS.filter(c => c.status === filter)
 
   const kpis = [
-    { label: t('Active Chats'), value: String(MOCK_CONVERSATIONS.filter(c => c.status === 'Active').length), icon: 'MessageSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Resolved Today'), value: String(MOCK_CONVERSATIONS.filter(c => c.status === 'Resolved').length), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Response'), value: '1.2s', icon: 'Zap', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('AI Handled'), value: '83%', icon: 'Bot', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Active Chats'), value: String(MOCK_CONVERSATIONS.filter(c => c.status === 'Active').length), icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Resolved Today'), value: String(MOCK_CONVERSATIONS.filter(c => c.status === 'Resolved').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Response'), value: '1.2s', icon: 'Zap', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('AI Handled'), value: '83%', icon: 'Bot', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<ConversationRow>[] = [
@@ -71,7 +71,7 @@ export function AIChatbotAssistant() {
             <div key={s.id} className="rounded-xl border border-border p-4">
               <div className="flex items-center justify-between">
                 <span className="text-[13px] font-semibold text-heading">{t(s.query)}</span>
-                <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{s.confidence}%</Badge>
+                <Badge background="var(--tint-blue)" color="var(--salis-blue)">{s.confidence}%</Badge>
               </div>
               <p className="mt-2 text-[13px] text-muted">{t(s.suggestion)}</p>
             </div>

@@ -37,9 +37,9 @@ export function BankAccountManagement() {
   const reconciled = accounts.filter((a) => a.status === t('Reconciled')).length
 
   const kpis = [
-    { label: t('Total Balance'), value: formatSar(totalBalance), icon: 'Landmark', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active Accounts'), value: String(accounts.length), icon: 'CreditCard', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Reconciled'), value: `${reconciled}/${accounts.length}`, icon: 'CheckCircle', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Total Balance'), value: formatSar(totalBalance), icon: 'Landmark', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active Accounts'), value: String(accounts.length), icon: 'CreditCard', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Reconciled'), value: `${reconciled}/${accounts.length}`, icon: 'CheckCircle', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   const columns: Column<BankAccount>[] = [
@@ -48,7 +48,7 @@ export function BankAccountManagement() {
     { header: 'Type', cell: (a) => a.type },
     { header: 'Balance', cell: (a) => <span dir="ltr" className="font-mono font-medium text-heading">{formatSar(a.balance)}</span>, className: 'text-end' },
     { header: 'Status', cell: (a) => (
-      <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+      <Badge background={a.status === t('Reconciled') ? 'var(--tint-blue)' : 'var(--tint-orange)'}
         color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
     ) },
     { header: 'Last Reconciled', cell: (a) => <span dir="ltr" className="text-muted">{a.lastReconciled}</span> },
@@ -74,7 +74,7 @@ export function BankAccountManagement() {
             <MobileCardHeader
               title={a.bank}
               trailing={
-                <Badge background={a.status === t('Reconciled') ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'}
+                <Badge background={a.status === t('Reconciled') ? 'var(--tint-blue)' : 'var(--tint-orange)'}
                   color={a.status === t('Reconciled') ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{a.status}</Badge>
               }
             />

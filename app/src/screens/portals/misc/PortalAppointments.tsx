@@ -28,11 +28,11 @@ const APPOINTMENTS: Appointment[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Confirmed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  'In Progress': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Completed: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Cancelled: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+  Confirmed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  'In Progress': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Completed: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: '#F97316' },
 }
 
 export function PortalAppointments() {
@@ -42,10 +42,10 @@ export function PortalAppointments() {
   const pendingCount = APPOINTMENTS.filter((a) => a.status === 'Pending').length
 
   const kpis = [
-    { label: t('Today'), value: String(todayCount), icon: 'Calendar', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Pending'), value: String(pendingCount), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('This Week'), value: '31', icon: 'CalendarDays', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Avg Duration'), value: '48m', icon: 'Timer', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Today'), value: String(todayCount), icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Pending'), value: String(pendingCount), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('This Week'), value: '31', icon: 'CalendarDays', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Duration'), value: '48m', icon: 'Timer', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Appointment>[] = [

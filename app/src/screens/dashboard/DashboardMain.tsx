@@ -10,11 +10,11 @@ import { useCollection } from '@/data/useCollection'
 
 const STATUS_TONE: Record<string, readonly [string, string]> = {
   checked_in: ['rgba(11,179,255,.12)', '#0BB3FF'],
-  inspection: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  in_progress: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  completed: ['rgba(11,31,59,.1)', '#0B1F3B'],
+  inspection: ['var(--tint-blue)', '#0A5ED7'],
+  in_progress: ['var(--tint-bright)', '#0BB3FF'],
+  completed: ['var(--tint-navy)', '#0B1F3B'],
   delivered: ['rgba(100,116,139,.1)', '#64748B'],
-  pending_approval: ['rgba(249,115,22,.1)', '#F97316'],
+  pending_approval: ['var(--tint-orange)', '#F97316'],
 }
 
 const BAR_COLORS = [

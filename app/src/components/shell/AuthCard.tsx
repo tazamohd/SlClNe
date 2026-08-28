@@ -39,7 +39,7 @@ export function AuthCard({
           <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" className="h-auto w-[120px]" />
         ) : null}
         {icon ? (
-          <span className="mb-3.5 inline-flex rounded-full bg-[rgba(10,94,215,.1)] p-3.5 text-salis-blue">
+          <span className="mb-3.5 inline-flex rounded-full bg-[var(--tint-blue)] p-3.5 text-salis-blue">
             <Icon name={icon} size={26} />
           </span>
         ) : null}

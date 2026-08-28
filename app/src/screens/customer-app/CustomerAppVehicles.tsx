@@ -28,9 +28,9 @@ const VEHICLES: CustomerVehicle[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'In Service': { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  'Needs Attention': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'In Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  'Needs Attention': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function CustomerAppVehicles() {
@@ -38,10 +38,10 @@ export function CustomerAppVehicles() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('My Vehicles'), value: String(VEHICLES.length), icon: 'Car', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('In Service'), value: String(VEHICLES.filter((v) => v.status === 'In Service').length), icon: 'Wrench', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Needs Attention'), value: String(VEHICLES.filter((v) => v.status === 'Needs Attention').length), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Mileage'), value: '144K', icon: 'Gauge', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('My Vehicles'), value: String(VEHICLES.length), icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Service'), value: String(VEHICLES.filter((v) => v.status === 'In Service').length), icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Needs Attention'), value: String(VEHICLES.filter((v) => v.status === 'Needs Attention').length), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Mileage'), value: '144K', icon: 'Gauge', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   if (isMobile) {
@@ -64,7 +64,7 @@ export function CustomerAppVehicles() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="Car" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{v.make} {v.model} {v.year}</p>
                     <p className="text-xs text-muted" dir="ltr">{v.plate}</p>
@@ -99,7 +99,7 @@ export function CustomerAppVehicles() {
           <Card key={v.plate} className="flex flex-col gap-4 rounded-2xl p-5 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex rounded-xl bg-[rgba(10,94,215,.1)] p-2.5 text-salis-blue" aria-hidden><Icon name="Car" size={22} /></span>
+                <span className="flex rounded-xl bg-[var(--tint-blue)] p-2.5 text-salis-blue" aria-hidden><Icon name="Car" size={22} /></span>
                 <div>
                   <h3 className="font-display text-base font-bold text-heading">{v.make} {v.model} {v.year}</h3>
                   <p className="font-mono text-xs text-muted" dir="ltr">{v.plate}</p>

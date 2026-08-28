@@ -84,7 +84,7 @@ export function Backup() {
                 <MobileCardHeader
                   leading={
                     <div className="flex items-center gap-2.5">
-                      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue">
+                      <span className="flex flex-shrink-0 rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue">
                         <Icon name="Database" size={14} />
                       </span>
                       <span className="text-[13px] text-body">{b.date}</span>
@@ -105,7 +105,7 @@ export function Backup() {
                 className="flex items-center justify-between border-b border-border py-2.5 last:border-0"
               >
                 <div className="flex items-center gap-2.5">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue">
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue">
                     <Icon name="Database" size={14} />
                   </span>
                   <span className="text-[13px] text-body">{b.date}</span>

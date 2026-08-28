@@ -26,8 +26,8 @@ const SERVICE_HISTORY: ServiceRecord[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'Warranty Claim': { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'Warranty Claim': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 export function ClientPortalServiceHistory() {

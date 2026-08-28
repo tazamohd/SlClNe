@@ -15,8 +15,8 @@ const MOCK_MODULES = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Beta: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Beta: ['var(--tint-orange)', 'var(--salis-orange)'],
   Planned: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -30,10 +30,10 @@ export function BusinessIntelligence() {
   const avgAccuracy = Math.round(MOCK_MODULES.filter(m => m.accuracy > 0).reduce((a, m) => a + m.accuracy, 0) / MOCK_MODULES.filter(m => m.accuracy > 0).length)
 
   const kpis = [
-    { label: t('BI Modules'), value: String(MOCK_MODULES.length), icon: 'BarChart3', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(active), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Reports'), value: String(totalReports), icon: 'FileText', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Accuracy'), value: `${avgAccuracy}%`, icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('BI Modules'), value: String(MOCK_MODULES.length), icon: 'BarChart3', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(active), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Reports'), value: String(totalReports), icon: 'FileText', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Accuracy'), value: `${avgAccuracy}%`, icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<ModuleRow>[] = [

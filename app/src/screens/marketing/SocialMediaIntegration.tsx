@@ -36,7 +36,7 @@ export function SocialMediaIntegration() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={p.icon} size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={p.icon} size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{p.name}</p>
                     <p className="text-xs text-muted">{p.lastSync}</p>
@@ -45,8 +45,8 @@ export function SocialMediaIntegration() {
               }
               trailing={
                 p.connected
-                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Connected')}</Badge>
-                  : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Disconnected')}</Badge>
+                  ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Connected')}</Badge>
+                  : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Disconnected')}</Badge>
               }
             />
             <MobileCardRow label={t('Followers')} value={p.followers.toLocaleString()} />
@@ -67,15 +67,15 @@ export function SocialMediaIntegration() {
           <Card key={p.name} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue" aria-hidden><Icon name={p.icon} size={20} /></span>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={p.icon} size={20} /></span>
                 <div>
                   <h3 className="text-sm font-bold text-heading">{p.name}</h3>
                   <p className="text-xs text-muted">{t('Last sync')}: {p.lastSync}</p>
                 </div>
               </div>
               {p.connected
-                ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Connected')}</Badge>
-                : <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{t('Disconnected')}</Badge>}
+                ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Connected')}</Badge>
+                : <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{t('Disconnected')}</Badge>}
             </div>
             <div className="mt-4 grid grid-cols-3 gap-3">
               <div>

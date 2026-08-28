@@ -39,17 +39,17 @@ export function TowingAssistance() {
   const completed = requests.filter((r) => r.status === t('Completed')).length
 
   const kpis = [
-    { label: t('Active Requests'), value: String(active), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Completed Today'), value: String(completed), icon: 'CheckCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Response'), value: '18 min', icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Dispatched'), value: String(requests.filter((r) => r.status === t('Dispatched') || r.status === t('En Route')).length), icon: 'Truck', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
+    { label: t('Active Requests'), value: String(active), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Completed Today'), value: String(completed), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Response'), value: '18 min', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Dispatched'), value: String(requests.filter((r) => r.status === t('Dispatched') || r.status === t('En Route')).length), icon: 'Truck', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
   ]
 
   function statusBadge(status: string) {
-    if (status === t('En Route')) return <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{status}</Badge>
-    if (status === t('Dispatched')) return <Badge background="rgba(11,179,255,.1)" color="var(--salis-blue-bright, #0BB3FF)">{status}</Badge>
-    if (status === t('Requested')) return <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{status}</Badge>
-    return <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{status}</Badge>
+    if (status === t('En Route')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{status}</Badge>
+    if (status === t('Dispatched')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright, #0BB3FF)">{status}</Badge>
+    if (status === t('Requested')) return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{status}</Badge>
+    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{status}</Badge>
   }
 
   const columns: Column<TowRequest>[] = [

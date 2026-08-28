@@ -31,8 +31,8 @@ export function CustomersList() {
   if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const kpis = [
-    { label: t('Total Customers'), value: String(rows.length), icon: 'Users', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Customers'), value: String(rows.length), icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(rows.filter((r) => r.status === 'Active' || !r.status).length), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<Record<string, string>>[] = [
@@ -43,7 +43,7 @@ export function CustomersList() {
     {
       header: 'Status',
       cell: (r) => (
-        <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>
+        <Badge background="var(--tint-blue)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>
       ),
     },
   ]
@@ -75,7 +75,7 @@ export function CustomersList() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                  <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{r.name ?? '—'}</p>
                     <p className="text-xs text-muted" dir="ltr">{r.phone ?? '—'}</p>
@@ -85,7 +85,7 @@ export function CustomersList() {
             />
             <MobileCardRow label={t('Email')} value={r.email ?? '—'} />
             <MobileCardRow label={t('Vehicles')} value={r.vehicleCount ?? '—'} />
-            <MobileCardRow label={t('Status')} value={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>} />
+            <MobileCardRow label={t('Status')} value={<Badge background="var(--tint-blue)" color="var(--salis-blue)">{r.status ?? t('Active')}</Badge>} />
           </>
         )}
       />

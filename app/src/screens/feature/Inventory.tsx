@@ -1249,7 +1249,7 @@ function MovementHistory({
     {
       header: 'Movement',
       cell: (row) => (
-        <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+        <Badge background="var(--tint-blue)" color="var(--salis-blue)">
           {t(TYPE_LABEL[row.type] ?? row.type)}
         </Badge>
       ),
@@ -2170,11 +2170,11 @@ function StockBadge({ part }: { part: Part }) {
     )
   }
   return part.stock <= part.reorder ? (
-    <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">
+    <Badge background="var(--tint-orange)" color="var(--salis-orange)">
       {t('Low Stock')}
     </Badge>
   ) : (
-    <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">
+    <Badge background="var(--tint-blue)" color="var(--salis-blue)">
       {t('In Stock')}
     </Badge>
   )

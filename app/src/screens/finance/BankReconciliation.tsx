@@ -45,8 +45,8 @@ type Receipt = RowOf<'receipts'>
  * for hex literals, and these tints already live as tokens — cleared/settled is
  * brand blue, pending is warning orange, bounced is neutral. No green or red. */
 const RECEIPT_STATUS: Record<string, readonly [string, string]> = {
-  cleared: ['rgba(10,94,215,.1)', 'rgb(10,94,215)'],
-  pending: ['rgba(249,115,22,.1)', 'rgb(249,115,22)'],
+  cleared: ['var(--tint-blue)', 'rgb(10,94,215)'],
+  pending: ['var(--tint-orange)', 'rgb(249,115,22)'],
   bounced: ['rgba(100,116,139,.1)', 'rgb(100,116,139)'],
 }
 
@@ -313,11 +313,11 @@ function StatementSection({
       header: 'Status',
       cell: (l) =>
         l.matched ? (
-          <Badge background="rgba(10,94,215,.1)" color="rgb(10,94,215)">
+          <Badge background="var(--tint-blue)" color="rgb(10,94,215)">
             {t('Matched')}
           </Badge>
         ) : (
-          <Badge background="rgba(249,115,22,.1)" color="rgb(249,115,22)">
+          <Badge background="var(--tint-orange)" color="rgb(249,115,22)">
             {t('Unreconciled')}
           </Badge>
         ),
@@ -384,11 +384,11 @@ function StatementSection({
                 title={l.description}
                 trailing={
                   l.matched ? (
-                    <Badge background="rgba(10,94,215,.1)" color="rgb(10,94,215)">
+                    <Badge background="var(--tint-blue)" color="rgb(10,94,215)">
                       {t('Matched')}
                     </Badge>
                   ) : (
-                    <Badge background="rgba(249,115,22,.1)" color="rgb(249,115,22)">
+                    <Badge background="var(--tint-orange)" color="rgb(249,115,22)">
                       {t('Unreconciled')}
                     </Badge>
                   )

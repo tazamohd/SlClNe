@@ -55,7 +55,7 @@ export function WorkspaceSelection() {
                   'flex w-full cursor-pointer items-center gap-3 rounded-xl px-3.5 py-3.5',
                   'font-action transition-all duration-200 ease-salis',
                   selected
-                    ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)] text-salis-blue shadow-[0_4px_16px_rgba(10,94,215,.1)]'
+                    ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)] text-salis-blue shadow-[0_4px_16px_var(--tint-blue)]'
                     : 'border border-border bg-card text-body hover:border-[rgba(10,94,215,.3)]'
                 )}
               >

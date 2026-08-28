@@ -29,9 +29,9 @@ const WIDGETS: DashboardWidget[] = [
 ]
 
 const SIZE_STYLES: Record<string, { bg: string; fg: string }> = {
-  Small: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
-  Medium: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Large: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+  Small: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
+  Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Large: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
 }
 
 export function DashboardWidgets() {
@@ -45,15 +45,15 @@ export function DashboardWidgets() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="LayoutGrid" title={t('Widgets')} subtitle={t('Dashboard configuration')} />
         <div className="flex items-center gap-2">
-          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{enabledCount} {t('active')}</Badge>
-          <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{WIDGETS.length - enabledCount} {t('hidden')}</Badge>
+          <Badge background="var(--tint-blue)" color="var(--salis-blue)">{enabledCount} {t('active')}</Badge>
+          <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{WIDGETS.length - enabledCount} {t('hidden')}</Badge>
         </div>
         {WIDGETS.map((widget, i) => (
           <MobileCard key={i}>
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                  <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                     <Icon name={widget.icon} size={14} />
                   </span>
                   <div>
@@ -64,7 +64,7 @@ export function DashboardWidgets() {
               }
               trailing={
                 <Badge
-                  background={widget.enabled ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+                  background={widget.enabled ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
                   color={widget.enabled ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
                 >
                   {widget.enabled ? t('Enabled') : t('Disabled')}
@@ -87,7 +87,7 @@ export function DashboardWidgets() {
         {WIDGETS.map((widget, i) => (
           <Card key={i} className={`rounded-2xl p-5 shadow-sm ${!widget.enabled ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name={widget.icon} size={20} />
               </span>
               <div className="flex items-center gap-2">
@@ -99,7 +99,7 @@ export function DashboardWidgets() {
             <div className="mt-3 flex items-center justify-between">
               <Badge background="rgba(107,114,128,.08)" color="rgb(107,114,128)">{t(widget.category)}</Badge>
               <Badge
-                background={widget.enabled ? 'rgba(10,94,215,.1)' : 'rgba(107,114,128,.1)'}
+                background={widget.enabled ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
                 color={widget.enabled ? 'var(--salis-blue)' : 'rgb(107,114,128)'}
               >
                 {widget.enabled ? t('Enabled') : t('Disabled')}

@@ -81,7 +81,7 @@ export function CustomerAppBooking() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name={svc.icon} size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name={svc.icon} size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{t(svc.name)}</p>
                     <p className="text-xs text-muted">{t(svc.duration)}</p>
@@ -90,7 +90,7 @@ export function CustomerAppBooking() {
               }
               trailing={
                 <div className="flex items-center gap-2">
-                  {svc.popular && <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Popular')}</Badge>}
+                  {svc.popular && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Popular')}</Badge>}
                   <span className="font-mono text-sm font-bold text-heading" dir="ltr">{svc.price} SAR</span>
                 </div>
               }
@@ -135,8 +135,8 @@ export function CustomerAppBooking() {
         {SERVICES.map((svc) => (
           <Card key={svc.name} className="flex flex-col gap-3 rounded-2xl p-4 shadow-sm">
             <div className="flex items-start justify-between">
-              <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue" aria-hidden><Icon name={svc.icon} size={18} /></span>
-              {svc.popular && <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Popular')}</Badge>}
+              <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={svc.icon} size={18} /></span>
+              {svc.popular && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Popular')}</Badge>}
             </div>
             <div>
               <h3 className="text-sm font-semibold text-heading">{t(svc.name)}</h3>

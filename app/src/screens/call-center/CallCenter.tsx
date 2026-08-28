@@ -105,14 +105,14 @@ const DISPOSITIONS: { key: DispositionKey; label: string }[] = [
 /* ---------- palette helpers ---------- */
 
 const PRIORITY_TONES: Record<string, [string, string]> = {
-  blue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  blue: ['var(--tint-blue)', 'var(--salis-blue)'],
   orange: ['rgba(249,115,22,.14)', 'var(--salis-orange)'],
   slate: ['rgba(100,116,139,.1)', 'var(--text-muted)'],
 }
 
 const STATUS_TONES: Record<string, [string, string]> = {
-  blue: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  orange: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  blue: ['var(--tint-blue)', 'var(--salis-blue)'],
+  orange: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 /* ---------- component ---------- */
@@ -164,7 +164,7 @@ export function CallCenter() {
         <Card className="overflow-hidden p-0">
           <div className="flex items-center gap-2 border-b border-border px-4 py-3">
             <h3 className="text-sm font-bold text-heading">{t('Live Queue')}</h3>
-            <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">
+            <Badge background="var(--tint-orange)" color="var(--salis-orange)">
               {FIXTURE_QUEUE.length}
             </Badge>
           </div>
@@ -192,7 +192,7 @@ export function CallCenter() {
                     </span>
                     <span className="flex-1 truncate text-[13px] font-semibold text-heading">{q.name}</span>
                     <Badge
-                      background={q.slaWarn ? 'rgba(249,115,22,.12)' : 'rgba(10,94,215,.1)'}
+                      background={q.slaWarn ? 'rgba(249,115,22,.12)' : 'var(--tint-blue)'}
                       color={q.slaWarn ? 'var(--salis-orange)' : 'var(--salis-blue)'}
                     >
                       {q.wait}
@@ -271,7 +271,7 @@ export function CallCenter() {
                   className={
                     'h-[30px] cursor-pointer rounded-lg px-3 font-action text-xs font-medium ' +
                     (disposition === d.key
-                      ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.1)] text-salis-blue'
+                      ? 'border-[1.5px] border-salis-blue bg-[var(--tint-blue)] text-salis-blue'
                       : 'border border-border bg-inset text-body')
                   }
                 >

@@ -27,9 +27,9 @@ const OPERATIONS: Operation[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Failed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Processing: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Processing: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
 }
 
 export function DataImportExport() {
@@ -37,10 +37,10 @@ export function DataImportExport() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('Total Imports'), value: '142', icon: 'Download', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Exports'), value: '98', icon: 'Upload', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Last Import'), value: 'Aug 18', icon: 'ArrowDownCircle', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Last Export'), value: 'Aug 17', icon: 'ArrowUpCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Total Imports'), value: '142', icon: 'Download', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Exports'), value: '98', icon: 'Upload', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Last Import'), value: 'Aug 18', icon: 'ArrowDownCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Last Export'), value: 'Aug 17', icon: 'ArrowUpCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
   ]
 
   const columns: Column<Operation>[] = [
@@ -54,7 +54,7 @@ export function DataImportExport() {
       ),
     },
     { header: 'Entity', cell: (op) => t(op.entity) },
-    { header: 'Format', cell: (op) => <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{op.format}</Badge> },
+    { header: 'Format', cell: (op) => <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{op.format}</Badge> },
     { header: 'Records', cell: (op) => <span className="font-mono text-heading">{op.recordCount.toLocaleString()}</span> },
     { header: 'Status', cell: (op) => <Badge background={STATUS_STYLES[op.status].bg} color={STATUS_STYLES[op.status].fg}>{t(op.status)}</Badge> },
     { header: 'Date', cell: (op) => <span className="text-muted">{op.date}</span> },
@@ -71,7 +71,7 @@ export function DataImportExport() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden>
+                <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden>
                   <Icon name={op.type === 'Import' ? 'Download' : 'Upload'} size={14} />
                 </span>
                 <div>

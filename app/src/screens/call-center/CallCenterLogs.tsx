@@ -75,8 +75,8 @@ const DIR_ICON: Record<CallDirection, [string, string, string]> = {
 }
 
 const STATUS_STYLE: Record<CallStatus, [string, string, string]> = {
-  done: ['Completed', 'rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  missed: ['Missed', 'rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  done: ['Completed', 'var(--tint-blue)', 'var(--salis-blue)'],
+  missed: ['Missed', 'var(--tint-orange)', 'var(--salis-orange)'],
   voicemail: ['Voicemail', 'rgba(100,116,139,.1)', 'var(--text-muted)'],
 }
 

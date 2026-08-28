@@ -20,7 +20,7 @@ export function LanguageSelection() {
       {/* Single blue orb at the top inline-end corner — this screen is quieter
           than Login, which carries three. */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.1),transparent_65%)] blur-[64px]" />
+        <div className="absolute end-0 top-0 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,var(--tint-blue),transparent_65%)] blur-[64px]" />
       </div>
 
       <div className={`relative z-[1] flex animate-fade-up flex-col items-center ${isMobile ? 'max-w-full gap-4 px-3 py-4' : 'max-w-[440px] gap-[22px] px-4 py-6'}`}>

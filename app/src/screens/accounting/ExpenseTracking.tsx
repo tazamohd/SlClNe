@@ -34,8 +34,8 @@ const MOCK_EXPENSES: readonly Expense[] = [
 ]
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Approved: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  Pending: ['rgba(249,115,22,.1)', '#F97316'],
+  Approved: ['var(--tint-blue)', '#0A5ED7'],
+  Pending: ['var(--tint-orange)', '#F97316'],
   Rejected: ['rgba(100,116,139,.1)', '#64748B'],
 }
 

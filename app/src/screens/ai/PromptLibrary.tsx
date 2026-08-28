@@ -24,15 +24,15 @@ interface Prompt {
 
 function usePrompts(t: (s: string) => string): Prompt[] {
   return useMemo(() => [
-    { id: 1, name: t('Monthly Revenue Summary'), category: t('Finance'), catBg: 'rgba(10,94,215,.1)', catFg: 'var(--salis-blue)', preview: 'Generate a comprehensive revenue breakdown by service type, branch, and customer segment for the current month.', uses: '124', favorited: true },
-    { id: 2, name: t('Inventory Reorder Check'), category: t('Inventory'), catBg: 'rgba(249,115,22,.1)', catFg: 'var(--salis-orange)', preview: 'List all parts below reorder level with supplier info and estimated delivery times.', uses: '89', favorited: true },
-    { id: 3, name: t('Customer Follow-up Draft'), category: t('CRM'), catBg: 'rgba(11,179,255,.1)', catFg: 'var(--salis-blue-bright, #0BB3FF)', preview: 'Draft a follow-up email for customers who haven\'t visited in 60+ days.', uses: '67', favorited: false },
-    { id: 4, name: t('Technician Schedule Optimizer'), category: t('Operations'), catBg: 'rgba(11,31,59,.1)', catFg: 'var(--text-heading)', preview: 'Analyze current job assignments and suggest optimal technician allocation.', uses: '52', favorited: false },
+    { id: 1, name: t('Monthly Revenue Summary'), category: t('Finance'), catBg: 'var(--tint-blue)', catFg: 'var(--salis-blue)', preview: 'Generate a comprehensive revenue breakdown by service type, branch, and customer segment for the current month.', uses: '124', favorited: true },
+    { id: 2, name: t('Inventory Reorder Check'), category: t('Inventory'), catBg: 'var(--tint-orange)', catFg: 'var(--salis-orange)', preview: 'List all parts below reorder level with supplier info and estimated delivery times.', uses: '89', favorited: true },
+    { id: 3, name: t('Customer Follow-up Draft'), category: t('CRM'), catBg: 'var(--tint-bright)', catFg: 'var(--salis-blue-bright, #0BB3FF)', preview: 'Draft a follow-up email for customers who haven\'t visited in 60+ days.', uses: '67', favorited: false },
+    { id: 4, name: t('Technician Schedule Optimizer'), category: t('Operations'), catBg: 'var(--tint-navy)', catFg: 'var(--text-heading)', preview: 'Analyze current job assignments and suggest optimal technician allocation.', uses: '52', favorited: false },
     { id: 5, name: t('Tax Filing Checklist'), category: t('Accounting'), catBg: 'rgba(100,116,139,.1)', catFg: 'var(--text-muted)', preview: 'Generate a ZATCA VAT filing checklist with all required documents and calculations.', uses: '41', favorited: true },
-    { id: 6, name: t('Job Card Summary'), category: t('Workshop'), catBg: 'rgba(10,94,215,.1)', catFg: 'var(--salis-blue)', preview: 'Summarize all active job cards with status, assigned technician, and ETA.', uses: '156', favorited: true },
-    { id: 7, name: t('Performance Review'), category: t('HR'), catBg: 'rgba(11,179,255,.1)', catFg: 'var(--salis-blue-bright, #0BB3FF)', preview: 'Generate a performance review summary for a technician based on their metrics.', uses: '38', favorited: false },
-    { id: 8, name: t('Fleet Report'), category: t('Fleet'), catBg: 'rgba(249,115,22,.1)', catFg: 'var(--salis-orange)', preview: 'Create a detailed fleet maintenance report for a specific account.', uses: '45', favorited: false },
-    { id: 9, name: t('Appointment Optimizer'), category: t('Scheduling'), catBg: 'rgba(11,31,59,.1)', catFg: 'var(--text-heading)', preview: 'Analyze appointment patterns and suggest optimal time slots for next week.', uses: '33', favorited: false },
+    { id: 6, name: t('Job Card Summary'), category: t('Workshop'), catBg: 'var(--tint-blue)', catFg: 'var(--salis-blue)', preview: 'Summarize all active job cards with status, assigned technician, and ETA.', uses: '156', favorited: true },
+    { id: 7, name: t('Performance Review'), category: t('HR'), catBg: 'var(--tint-bright)', catFg: 'var(--salis-blue-bright, #0BB3FF)', preview: 'Generate a performance review summary for a technician based on their metrics.', uses: '38', favorited: false },
+    { id: 8, name: t('Fleet Report'), category: t('Fleet'), catBg: 'var(--tint-orange)', catFg: 'var(--salis-orange)', preview: 'Create a detailed fleet maintenance report for a specific account.', uses: '45', favorited: false },
+    { id: 9, name: t('Appointment Optimizer'), category: t('Scheduling'), catBg: 'var(--tint-navy)', catFg: 'var(--text-heading)', preview: 'Analyze appointment patterns and suggest optimal time slots for next week.', uses: '33', favorited: false },
   ], [t])
 }
 

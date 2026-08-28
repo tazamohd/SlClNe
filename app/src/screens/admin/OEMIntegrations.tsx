@@ -26,10 +26,10 @@ const OEM_CONNECTIONS: OEMConnection[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Connected: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Error: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Inactive: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Connected: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Error: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Inactive: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function OEMIntegrations() {
@@ -77,8 +77,8 @@ export function OEMIntegrations() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Car" title={t('OEM Integrations')} subtitle={t('Manufacturer connections')} />
         <div className="flex items-center gap-2">
-          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{connectedCount} {t('connected')}</Badge>
-          <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{OEM_CONNECTIONS.length} {t('total')}</Badge>
+          <Badge background="var(--tint-blue)" color="var(--salis-blue)">{connectedCount} {t('connected')}</Badge>
+          <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{OEM_CONNECTIONS.length} {t('total')}</Badge>
         </div>
         {table}
       </div>

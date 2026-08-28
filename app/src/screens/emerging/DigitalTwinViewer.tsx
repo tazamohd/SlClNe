@@ -24,8 +24,8 @@ const MOCK_METRICS = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Warning: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Warning: ['var(--tint-orange)', 'var(--salis-orange)'],
   Offline: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
@@ -40,10 +40,10 @@ export function DigitalTwinViewer() {
   const totalAlerts = MOCK_TWINS.reduce((a, tw) => a + tw.alerts, 0)
 
   const kpis = [
-    { label: t('Digital Twins'), value: String(MOCK_TWINS.length), icon: 'Layers', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Sensors'), value: String(totalSensors), icon: 'Radio', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Alerts'), value: String(totalAlerts), icon: 'Bell', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Sync Rate'), value: '99.2%', icon: 'RefreshCw', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Digital Twins'), value: String(MOCK_TWINS.length), icon: 'Layers', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Sensors'), value: String(totalSensors), icon: 'Radio', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Alerts'), value: String(totalAlerts), icon: 'Bell', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Sync Rate'), value: '99.2%', icon: 'RefreshCw', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const metricColumns: Column<MetricRow>[] = [

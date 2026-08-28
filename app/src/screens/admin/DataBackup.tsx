@@ -28,10 +28,10 @@ const BACKUPS: BackupRecord[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'In Progress': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Failed: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
-  Scheduled: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'In Progress': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Failed: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
+  Scheduled: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 const STATS = [
@@ -85,7 +85,7 @@ export function DataBackup() {
           {STATS.map((stat) => (
             <Card key={stat.label} className="rounded-xl p-3 shadow-sm">
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                   <Icon name={stat.icon} size={14} />
                 </span>
                 <span className="text-[11px] font-medium text-muted">{t(stat.label)}</span>
@@ -107,7 +107,7 @@ export function DataBackup() {
         {STATS.map((stat) => (
           <Card key={stat.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name={stat.icon} size={20} />
               </span>
               <div>

@@ -24,14 +24,14 @@ const MOCK_MODELS = [
 
 const PRIORITY_COLORS: Record<string, readonly [string, string]> = {
   Critical: ['rgba(249,115,22,.15)', 'var(--salis-orange)'],
-  High: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Medium: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
+  High: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Medium: ['var(--tint-blue)', 'var(--salis-blue)'],
   Low: ['rgba(100,116,139,.1)', '#64748B'],
 }
 
 const MODEL_STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  Training: ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Training: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 type PredictionRow = (typeof MOCK_PREDICTIONS)[number]
@@ -43,10 +43,10 @@ export function NeuralNetworkPrediction() {
   const avgConfidence = Math.round(MOCK_PREDICTIONS.reduce((a, p) => a + p.confidence, 0) / MOCK_PREDICTIONS.length)
 
   const kpis = [
-    { label: t('Predictions'), value: String(MOCK_PREDICTIONS.length), icon: 'Cpu', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Critical/High'), value: String(critical), icon: 'Zap', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active Models'), value: String(MOCK_MODELS.filter(m => m.status === 'Active').length), icon: 'Activity', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Predictions'), value: String(MOCK_PREDICTIONS.length), icon: 'Cpu', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Critical/High'), value: String(critical), icon: 'Zap', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Avg Confidence'), value: `${avgConfidence}%`, icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active Models'), value: String(MOCK_MODELS.filter(m => m.status === 'Active').length), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<PredictionRow>[] = [

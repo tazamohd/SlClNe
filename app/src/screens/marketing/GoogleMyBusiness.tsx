@@ -43,10 +43,10 @@ export function GoogleMyBusiness() {
   const isMobile = useIsMobile()
 
   const kpis = [
-    { label: t('Average Rating'), value: '4.6', icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Total Reviews'), value: '234', icon: 'MessageSquare', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Profile Views'), value: '1,890', icon: 'Eye', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Direction Requests'), value: '456', icon: 'Navigation', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Average Rating'), value: '4.6', icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Reviews'), value: '234', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Profile Views'), value: '1,890', icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Direction Requests'), value: '456', icon: 'Navigation', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   if (isMobile) {
@@ -69,7 +69,7 @@ export function GoogleMyBusiness() {
             <MobileCardHeader
               leading={
                 <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
+                  <span className="flex rounded-lg bg-[var(--tint-blue)] p-1.5 text-salis-blue" aria-hidden><Icon name="User" size={14} /></span>
                   <div>
                     <p className="text-[13px] font-semibold text-heading">{r.author}</p>
                     <StarRating rating={r.rating} />
@@ -78,8 +78,8 @@ export function GoogleMyBusiness() {
               }
               trailing={
                 r.replied
-                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Replied')}</Badge>
-                  : <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Pending')}</Badge>
+                  ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Replied')}</Badge>
+                  : <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t('Pending')}</Badge>
               }
             />
             <p className="mt-1 text-xs text-body">{r.text}</p>
@@ -115,8 +115,8 @@ export function GoogleMyBusiness() {
               </div>
               <div className="ms-4 flex-shrink-0">
                 {r.replied
-                  ? <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('Replied')}</Badge>
-                  : <Badge background="rgba(249,115,22,.1)" color="var(--salis-orange)">{t('Pending')}</Badge>}
+                  ? <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Replied')}</Badge>
+                  : <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t('Pending')}</Badge>}
               </div>
             </div>
           ))}

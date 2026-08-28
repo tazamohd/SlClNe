@@ -28,9 +28,9 @@ const DEVICES: ManagedDevice[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Inactive: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Lost: { bg: 'rgba(249,115,22,.1)', fg: 'rgb(249,115,22)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Inactive: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Lost: { bg: 'var(--tint-orange)', fg: 'rgb(249,115,22)' },
 }
 
 export function MobileDeviceManagement() {
@@ -76,7 +76,7 @@ export function MobileDeviceManagement() {
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+                <span className="flex rounded-lg p-1.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                   <Icon name={device.platform === 'iOS' ? 'Tablet' : 'Smartphone'} size={14} />
                 </span>
                 <div>
@@ -100,8 +100,8 @@ export function MobileDeviceManagement() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Smartphone" title={t('MDM')} subtitle={t('Device management')} />
         <div className="flex items-center gap-2">
-          <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{activeCount} {t('active')}</Badge>
-          <Badge background="rgba(107,114,128,.1)" color="rgb(107,114,128)">{DEVICES.length} {t('total')}</Badge>
+          <Badge background="var(--tint-blue)" color="var(--salis-blue)">{activeCount} {t('active')}</Badge>
+          <Badge background="var(--tint-neutral)" color="rgb(107,114,128)">{DEVICES.length} {t('total')}</Badge>
         </div>
         {table}
       </div>
@@ -120,7 +120,7 @@ export function MobileDeviceManagement() {
         ].map((stat) => (
           <Card key={stat.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="flex rounded-xl p-2.5" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>
+              <span className="flex rounded-xl p-2.5" style={{ background: 'var(--tint-blue)', color: 'var(--salis-blue)' }} aria-hidden>
                 <Icon name={stat.icon} size={20} />
               </span>
               <div>

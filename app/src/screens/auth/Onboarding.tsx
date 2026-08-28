@@ -122,28 +122,28 @@ export function Onboarding() {
                     <Icon name="Globe" size={16} className="text-salis-blue" />
                     <span className="text-sm text-heading">{t('Language')}</span>
                   </div>
-                  <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('English')}</Badge>
+                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('English')}</Badge>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border border-border p-3">
                   <div className="flex items-center gap-2">
                     <Icon name="Moon" size={16} className="text-salis-blue" />
                     <span className="text-sm text-heading">{t('Dark Mode')}</span>
                   </div>
-                  <Badge background="rgba(11,31,59,.1)" color="var(--text-heading)">{t('Off')}</Badge>
+                  <Badge background="var(--tint-navy)" color="var(--text-heading)">{t('Off')}</Badge>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border border-border p-3">
                   <div className="flex items-center gap-2">
                     <Icon name="Bell" size={16} className="text-salis-blue" />
                     <span className="text-sm text-heading">{t('Notifications')}</span>
                   </div>
-                  <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{t('On')}</Badge>
+                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('On')}</Badge>
                 </div>
               </div>
             </div>
           )}
           {step === 4 && (
             <div className="flex flex-col items-center gap-4 py-8 text-center">
-              <span className="flex rounded-full bg-[rgba(10,94,215,.1)] p-4 text-salis-blue" aria-hidden>
+              <span className="flex rounded-full bg-[var(--tint-blue)] p-4 text-salis-blue" aria-hidden>
                 <Icon name="CheckCircle" size={40} />
               </span>
               <h2 className="text-lg font-bold text-heading">{t('All Set!')}</h2>

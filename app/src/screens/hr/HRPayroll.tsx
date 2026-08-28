@@ -80,7 +80,7 @@ export function HRPayroll() {
           {LINKS.map(([to, icon, title, sub]) => (
             <Link key={to} to={to}
               className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 no-underline transition-colors hover:bg-[rgba(10,94,215,.05)]">
-              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
                 <Icon name={icon} size={16} />
               </span>
               <div className="min-w-0 flex-1">
@@ -141,7 +141,7 @@ export function HRPayroll() {
           {latestRun ? (
             <Card className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[rgba(10,94,215,.1)] text-salis-blue">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--tint-blue)] text-salis-blue">
                   <Icon name="CreditCard" size={18} />
                 </span>
                 <div>
@@ -215,7 +215,7 @@ export function HRPayroll() {
             to={to}
             className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3.5 no-underline transition-colors hover:bg-[rgba(10,94,215,.05)]"
           >
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
               <Icon name={icon} size={18} />
             </span>
             <div className="min-w-0 flex-1">

@@ -40,10 +40,10 @@ export function BudgetManagement() {
   const utilization = Math.round((totalActual / totalBudget) * 100)
 
   const kpis = [
-    { label: t('Total Budget'), value: fmtSar(totalBudget), icon: 'Target', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Spent'), value: fmtSar(totalActual), icon: 'TrendingUp', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Remaining'), value: fmtSar(totalRemaining), icon: 'Wallet', bg: 'rgba(11,31,59,.1)', fg: 'var(--text-heading)' },
-    { label: t('Utilization'), value: `${utilization}%`, icon: 'PieChart', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Total Budget'), value: fmtSar(totalBudget), icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Spent'), value: fmtSar(totalActual), icon: 'TrendingUp', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Remaining'), value: fmtSar(totalRemaining), icon: 'Wallet', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
+    { label: t('Utilization'), value: `${utilization}%`, icon: 'PieChart', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<BudgetRow>[] = [

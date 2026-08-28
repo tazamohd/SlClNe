@@ -28,9 +28,9 @@ const MOCK_TECHNICIANS: readonly Technician[] = [
 ]
 
 const STATUS_COLORS: Record<Technician['status'], { bg: string; fg: string }> = {
-  Active: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  'On Leave': { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Training: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  'On Leave': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Training: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
 }
 
 export function TechnicianManagement() {
@@ -52,10 +52,10 @@ export function TechnicianManagement() {
   const totalCerts = MOCK_TECHNICIANS.reduce((sum, r) => sum + r.certCount, 0)
 
   const kpis = [
-    { label: t('Total Technicians'), value: String(MOCK_TECHNICIANS.length), icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(active), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Avg Rating'), value: avgRating, icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Certified'), value: String(totalCerts), icon: 'Award', bg: 'rgba(11,31,59,.1)', fg: 'var(--salis-navy)' },
+    { label: t('Total Technicians'), value: String(MOCK_TECHNICIANS.length), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(active), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Avg Rating'), value: avgRating, icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Certified'), value: String(totalCerts), icon: 'Award', bg: 'var(--tint-navy)', fg: 'var(--salis-navy)' },
   ]
 
   const columns: Column<Technician>[] = [

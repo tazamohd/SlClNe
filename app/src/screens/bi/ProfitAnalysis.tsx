@@ -37,10 +37,10 @@ export function ProfitAnalysis() {
   const avgMargin = (totalProfit / totalRevenue * 100).toFixed(1)
 
   const kpis = [
-    { label: t('Total Revenue'), value: `SAR ${(totalRevenue / 1000).toFixed(0)}K`, icon: 'DollarSign', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Profit'), value: `SAR ${(totalProfit / 1000).toFixed(0)}K`, icon: 'TrendingUp', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Avg Margin'), value: `${avgMargin}%`, icon: 'Percent', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Services'), value: String(MOCK_SERVICES.length), icon: 'Wrench', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
+    { label: t('Total Revenue'), value: `SAR ${(totalRevenue / 1000).toFixed(0)}K`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Profit'), value: `SAR ${(totalProfit / 1000).toFixed(0)}K`, icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Margin'), value: `${avgMargin}%`, icon: 'Percent', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Services'), value: String(MOCK_SERVICES.length), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const serviceColumns: Column<ServiceRow>[] = [
@@ -50,7 +50,7 @@ export function ProfitAnalysis() {
     { header: 'Profit', cell: (s) => `SAR ${(s.profit / 1000).toFixed(0)}K` },
     { header: 'Margin', cell: (s) => `${s.margin}%` },
     { header: 'Orders', cell: (s) => `${s.orders}` },
-    { header: 'Trend', cell: (s) => <Badge background={s.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={s.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{s.trend === 'up' ? t('Up') : t('Down')}</Badge> },
+    { header: 'Trend', cell: (s) => <Badge background={s.trend === 'up' ? 'var(--tint-blue)' : 'var(--tint-orange)'} color={s.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{s.trend === 'up' ? t('Up') : t('Down')}</Badge> },
   ]
 
   const periodColumns: Column<PeriodRow>[] = [
@@ -85,7 +85,7 @@ export function ProfitAnalysis() {
         rowKey={(row) => row.id}
         mobileCard={(row) => (
           <>
-            <MobileCardHeader title={t(row.name)} trailing={<Badge background={row.trend === 'up' ? 'rgba(10,94,215,.1)' : 'rgba(249,115,22,.1)'} color={row.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{row.trend === 'up' ? t('Up') : t('Down')}</Badge>} />
+            <MobileCardHeader title={t(row.name)} trailing={<Badge background={row.trend === 'up' ? 'var(--tint-blue)' : 'var(--tint-orange)'} color={row.trend === 'up' ? 'var(--salis-blue)' : 'var(--salis-orange)'}>{row.trend === 'up' ? t('Up') : t('Down')}</Badge>} />
             <MobileCardRow label={t('Revenue')}>{`SAR ${(row.revenue / 1000).toFixed(0)}K`}</MobileCardRow>
             <MobileCardRow label={t('Profit')}>{`SAR ${(row.profit / 1000).toFixed(0)}K`}</MobileCardRow>
             <MobileCardRow label={t('Margin')}>{row.margin}%</MobileCardRow>

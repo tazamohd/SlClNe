@@ -44,7 +44,7 @@ export function VehicleHistory() {
     { header: 'Service Type', cell: (r) => r.type },
     { header: 'Technician', cell: (r) => r.technician },
     { header: 'Cost', cell: (r) => <span className="font-mono font-medium" dir="ltr">{formatSar(r.cost)}</span> },
-    { header: 'Status', cell: (r) => <Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge> },
+    { header: 'Status', cell: (r) => <Badge background="var(--tint-blue)" color="var(--salis-blue)">{r.status}</Badge> },
   ]
 
   const table = (
@@ -55,7 +55,7 @@ export function VehicleHistory() {
       rowKey={(_, i) => `record-${i}`}
       mobileCard={(r) => (
         <>
-          <MobileCardHeader title={r.type} trailing={<Badge background="rgba(10,94,215,.1)" color="var(--salis-blue)">{r.status}</Badge>} />
+          <MobileCardHeader title={r.type} trailing={<Badge background="var(--tint-blue)" color="var(--salis-blue)">{r.status}</Badge>} />
           <MobileCardRow label={t('Date')}>{r.date}</MobileCardRow>
           <MobileCardRow label={t('Cost')}><span dir="ltr">{formatSar(r.cost)}</span></MobileCardRow>
         </>
@@ -89,14 +89,14 @@ export function VehicleHistory() {
       <div className="grid grid-cols-2 gap-4">
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[rgba(10,94,215,.1)] text-salis-blue" aria-hidden><Icon name="DollarSign" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-[var(--tint-blue)] text-salis-blue" aria-hidden><Icon name="DollarSign" size={16} /></span>
             <span className="text-xs font-medium text-muted">{t('Total Spent')}</span>
           </div>
           <h4 dir="ltr" className="mt-2 font-mono text-xl font-black text-heading">{formatSar(totalSpent)}</h4>
         </Card>
         <Card className="rounded-xl p-4 shadow-sm">
           <div className="flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-[rgba(11,179,255,.1)] text-salis-bright" aria-hidden><Icon name="ClipboardList" size={16} /></span>
+            <span className="flex rounded-lg p-1.5 bg-[var(--tint-bright)] text-salis-bright" aria-hidden><Icon name="ClipboardList" size={16} /></span>
             <span className="text-xs font-medium text-muted">{t('Total Services')}</span>
           </div>
           <h4 className="mt-2 font-display text-xl font-black text-heading">{records.length}</h4>

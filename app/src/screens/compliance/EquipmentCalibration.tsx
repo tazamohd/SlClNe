@@ -19,9 +19,9 @@ const MOCK_EQUIPMENT = [
 ] as const
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Calibrated: ['rgba(10,94,215,.1)', 'var(--salis-blue)'],
-  'Due Soon': ['rgba(249,115,22,.1)', 'var(--salis-orange)'],
-  Overdue: ['rgba(249,115,22,.1)', '#F97316'],
+  Calibrated: ['var(--tint-blue)', 'var(--salis-blue)'],
+  'Due Soon': ['var(--tint-orange)', 'var(--salis-orange)'],
+  Overdue: ['var(--tint-orange)', '#F97316'],
 }
 
 type EquipmentRow = (typeof MOCK_EQUIPMENT)[number]
@@ -36,10 +36,10 @@ export function EquipmentCalibration() {
   const overdue = MOCK_EQUIPMENT.filter(e => e.status === 'Overdue').length
 
   const kpis = [
-    { label: t('Total Equipment'), value: String(MOCK_EQUIPMENT.length), icon: 'Ruler', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Calibrated'), value: String(calibrated), icon: 'CheckCircle', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Due Soon'), value: String(dueSoon), icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-    { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
+    { label: t('Total Equipment'), value: String(MOCK_EQUIPMENT.length), icon: 'Ruler', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Calibrated'), value: String(calibrated), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Due Soon'), value: String(dueSoon), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: '#F97316' },
   ]
 
   const columns: Column<EquipmentRow>[] = [

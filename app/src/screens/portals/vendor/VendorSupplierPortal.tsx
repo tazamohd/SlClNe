@@ -40,10 +40,10 @@ const METRICS: PerformanceMetric[] = [
 ]
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  New: { bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-  Processing: { bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-  Shipped: { bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'rgba(107,114,128,.1)', fg: 'rgb(107,114,128)' },
+  New: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Processing: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+  Shipped: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Delivered: { bg: 'var(--tint-neutral)', fg: 'rgb(107,114,128)' },
 }
 
 export function VendorSupplierPortal() {
@@ -53,10 +53,10 @@ export function VendorSupplierPortal() {
   const totalRevenue = ORDERS.reduce((sum, o) => sum + o.total, 0)
 
   const kpis = [
-    { label: t('Active Orders'), value: String(activeOrders.length), icon: 'ShoppingCart', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Total Revenue'), value: `${(totalRevenue / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'rgba(11,179,255,.1)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
-    { label: t('Workshops Served'), value: '14', icon: 'Building', bg: 'rgba(10,94,215,.1)', fg: 'var(--salis-blue)' },
-    { label: t('Rating'), value: '4.7', icon: 'Star', bg: 'rgba(249,115,22,.1)', fg: 'var(--salis-orange)' },
+    { label: t('Active Orders'), value: String(activeOrders.length), icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Revenue'), value: `${(totalRevenue / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright, #0BB3FF)' },
+    { label: t('Workshops Served'), value: '14', icon: 'Building', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Rating'), value: '4.7', icon: 'Star', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<VendorOrder>[] = [
@@ -82,7 +82,7 @@ export function VendorSupplierPortal() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {METRICS.map((m) => (
           <Card key={m.label} className="flex items-center gap-3 rounded-xl p-4 shadow-sm">
-            <span className="flex rounded-lg bg-[rgba(10,94,215,.1)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
+            <span className="flex rounded-lg bg-[var(--tint-blue)] p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
             <div className="flex-1">
               <p className="text-[11px] text-muted">{t(m.label)}</p>
               <p className="mt-0.5 font-display text-xl font-black text-heading" dir="ltr">{m.value}</p>
