@@ -112,7 +112,7 @@ export function MobileDeviceManagement() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Smartphone" title={t('Mobile Device Management')} subtitle={t('Monitor and manage enrolled devices')} />
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {[
           { label: 'Total Devices', value: DEVICES.length.toString(), icon: 'Smartphone' },
           { label: 'Active Devices', value: activeCount.toString(), icon: 'CheckCircle' },

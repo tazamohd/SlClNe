@@ -84,7 +84,7 @@ export function PurchaseOrdersList() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="ShoppingCart" title={t('Purchase Orders')} subtitle={t('Parts procurement and supplier orders')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {[
           { label: 'Total Orders', value: PURCHASE_ORDERS.length.toString(), icon: 'ShoppingCart' },
           { label: 'Pending', value: PURCHASE_ORDERS.filter((p) => p.status === 'Pending').length.toString(), icon: 'Clock' },

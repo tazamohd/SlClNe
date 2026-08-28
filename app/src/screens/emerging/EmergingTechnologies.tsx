@@ -69,7 +69,7 @@ export function EmergingTechnologies() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Cpu" title={t('Emerging Technologies')} subtitle={t('Overview of emerging technology features')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map(k => (
           <KpiCard key={k.label} {...k} />
         ))}

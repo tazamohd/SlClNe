@@ -141,7 +141,7 @@ export function NativeAndroid() {
 
           <Card className="rounded-2xl p-6 shadow-sm">
             <p className="mb-4 text-sm font-bold text-heading">{t('Device Requirements')}</p>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               {DEVICE_REQUIREMENTS.map((req, i) => (
                 <div key={i} className="flex flex-col items-center rounded-xl bg-surface-secondary p-4 text-center">
                   <span className="flex rounded-lg p-2" style={{ background: 'rgba(10,94,215,.1)', color: 'var(--salis-blue)' }} aria-hidden>

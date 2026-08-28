@@ -64,7 +64,7 @@ export function ProfitAnalysis() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="DollarSign" title={t('Profit Analysis')} subtitle={t('Profit breakdown by service and period')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map(k => (
           <KpiCard key={k.label} {...k} />
         ))}

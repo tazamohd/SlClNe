@@ -88,7 +88,7 @@ export function TechnicianAppProfile() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="User" title={t('Profile')} subtitle={t('Technician profile and performance')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {STATS.map((s) => (
           <Card key={s.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">

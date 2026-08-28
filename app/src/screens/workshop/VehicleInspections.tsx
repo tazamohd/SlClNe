@@ -100,7 +100,7 @@ export function VehicleInspections() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="ClipboardCheck" title={t('Vehicle Inspections')} subtitle={t('Workshop')} />
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
         ))}

@@ -108,13 +108,13 @@ export function BarcodeScanner() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="ScanLine" title={t('Barcode Scanner')} subtitle={t('Scan barcodes for inventory operations')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         <Card className="col-span-1 flex flex-col items-center gap-4 rounded-2xl p-8 shadow-sm">
           <span className="flex rounded-2xl bg-[rgba(10,94,215,.1)] p-5 text-salis-blue" aria-hidden><Icon name="ScanLine" size={48} /></span>
           <p className="text-sm font-semibold text-heading">{t('Ready to Scan')}</p>

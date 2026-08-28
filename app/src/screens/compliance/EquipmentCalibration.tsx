@@ -56,7 +56,7 @@ export function EquipmentCalibration() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Ruler" title={t('Equipment Calibration')} subtitle={t('Calibration tracking and scheduling')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map(k => (
           <KpiCard key={k.label} {...k} />
         ))}

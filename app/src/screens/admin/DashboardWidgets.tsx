@@ -83,7 +83,7 @@ export function DashboardWidgets() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="LayoutGrid" title={t('Dashboard Widgets')} subtitle={t('Configure and arrange dashboard components')} />
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {WIDGETS.map((widget, i) => (
           <Card key={i} className={`rounded-2xl p-5 shadow-sm ${!widget.enabled ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between">

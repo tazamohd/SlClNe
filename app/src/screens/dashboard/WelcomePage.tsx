@@ -72,7 +72,7 @@ export function WelcomePage() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Sparkles" title={greeting} subtitle={t('Welcome to Salis Auto ERP')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {QUICK_STATS.map((s) => (
           <Card key={s.label} className="rounded-xl p-4 shadow-sm">
             <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export function WelcomePage() {
 
       <div>
         <h2 className="mb-3 text-base font-bold text-heading">{t('Quick Actions')}</h2>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
           {QUICK_ACTIONS.map((a) => (
             <Card
               key={a.label}

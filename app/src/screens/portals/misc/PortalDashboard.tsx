@@ -61,13 +61,13 @@ export function PortalDashboard() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="LayoutDashboard" title={t('Portal Dashboard')} subtitle={t('Overview of portal activity and quick actions')} />
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {quickLinks.map((link) => (
           <Card key={link.label} className="flex items-center gap-3 rounded-xl p-4 shadow-sm">
             <span className="flex rounded-lg p-2" style={{ background: link.bg, color: link.fg }} aria-hidden><Icon name={link.icon} size={18} /></span>
