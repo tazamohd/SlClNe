@@ -151,7 +151,7 @@ export function RolesPermissions() {
                 aria-selected={selected}
                 onClick={() => setSelRole(r.id as RoleId)}
                 className={cn(
-                  'inline-flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full px-3',
+                  'inline-flex h-10 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full px-3',
                   'font-action text-xs font-semibold transition-all duration-150',
                   selected
                     ? 'border-none bg-salis-gradient text-white'

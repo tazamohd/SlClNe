@@ -268,7 +268,7 @@ export function CustomerApproval() {
                 <button
                   type="button"
                   onClick={() => setOff([])}
-                  className="h-[30px] cursor-pointer rounded-lg border border-border bg-card px-3 font-action text-[11.5px] font-semibold text-body transition-colors hover:border-salis-blue hover:text-salis-blue"
+                  className="h-10 cursor-pointer rounded-lg border border-border bg-card px-3 font-action text-[11.5px] font-semibold text-body transition-colors hover:border-salis-blue hover:text-salis-blue"
                 >
                   {t('Select all')}
                 </button>
@@ -277,7 +277,7 @@ export function CustomerApproval() {
                   onClick={() =>
                     setOff(lines.filter((line) => line.urgency !== 'critical').map((l) => l.id))
                   }
-                  className="h-[30px] cursor-pointer rounded-lg border border-border bg-card px-3 font-action text-[11.5px] font-semibold text-body transition-colors hover:border-salis-orange hover:text-salis-orange"
+                  className="h-10 cursor-pointer rounded-lg border border-border bg-card px-3 font-action text-[11.5px] font-semibold text-body transition-colors hover:border-salis-orange hover:text-salis-orange"
                 >
                   {t('Critical only')}
                 </button>
@@ -328,7 +328,7 @@ export function CustomerApproval() {
                         )
                       }
                       className={cn(
-                        'mt-0.5 flex h-[19px] w-[19px] flex-shrink-0 cursor-pointer items-center justify-center rounded-[5px] transition-all duration-150',
+                        'mt-0.5 flex h-[19px] w-[19px] min-h-[44px] min-w-[44px] flex-shrink-0 cursor-pointer items-center justify-center rounded-[5px] transition-all duration-150',
                         on
                           ? 'border-none bg-salis-gradient text-white'
                           : 'border-[1.5px] border-border-strong bg-inset text-transparent'
@@ -415,7 +415,7 @@ export function CustomerApproval() {
                 type="button"
                 onClick={clearSignature}
                 disabled={!signed}
-                className="flex h-[30px] cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-card px-3 font-action text-[11.5px] font-semibold text-muted transition-colors hover:border-salis-orange hover:text-salis-orange disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-card px-3 font-action text-[11.5px] font-semibold text-muted transition-colors hover:border-salis-orange hover:text-salis-orange disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Icon name="Eraser" size={12} />
                 {t('Clear')}

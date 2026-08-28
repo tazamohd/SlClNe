@@ -109,7 +109,7 @@ export function PageHeader({
           </div>
         </div>
         <div>
-          <h1 className="bg-salis-gradient-r bg-clip-text font-display text-5xl font-black leading-[1.1] text-transparent">
+          <h1 className="bg-salis-gradient-r bg-clip-text font-display text-2xl font-black leading-[1.1] text-transparent sm:text-4xl xl:text-5xl">
             {title}
           </h1>
           {subtitle ? <p className="font-light text-muted">{subtitle}</p> : null}

@@ -91,7 +91,7 @@ export function InvoiceDetail() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetaCard label={t('Customer')} value="Ahmed Al-Rashid" sub="+966 55 214 8890" subCode />
         <MetaCard label={t('Vehicle')} value="Toyota Camry 2022" sub="RUH 4821 · 58,420 km" subCode />
         <MetaCard label={t('Job card')} value="JC-2026-0884" valueCode sub={t('Completed')} />

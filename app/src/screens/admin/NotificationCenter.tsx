@@ -268,7 +268,7 @@ export function NotificationCenter() {
                 onClick={() => setFilter(id)}
                 className={cn(
                   'flex-shrink-0 cursor-pointer whitespace-nowrap border-none font-action text-xs font-semibold transition-colors duration-150',
-                  isMobile ? 'h-8 rounded-lg px-3.5' : 'h-[34px] px-3.5',
+                  isMobile ? 'h-11 rounded-lg px-3.5' : 'h-[34px] px-3.5',
                   active
                     ? 'bg-salis-gradient text-white'
                     : 'bg-card text-body hover:bg-[rgba(10,94,215,.06)]'

@@ -245,7 +245,7 @@ export function DiagnosticReport() {
                   aria-pressed={cur}
                   onClick={() => setStage(i)}
                   className={cn(
-                    'flex min-w-[158px] flex-1 cursor-pointer flex-col gap-1.5 rounded-lg p-3 text-start font-ui transition-all duration-150',
+                    'flex min-w-[120px] flex-1 cursor-pointer flex-col gap-1.5 rounded-lg p-3 text-start font-ui transition-all duration-150 sm:min-w-[158px]',
                     cur
                       ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)]'
                       : 'border border-border bg-card'

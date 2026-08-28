@@ -9,6 +9,7 @@ import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { InvoiceStatusBadge } from './Invoices'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useCollection, type RowOf } from '@/data/useCollection'
 
 type Invoice = RowOf<'invoices'>
@@ -77,6 +78,14 @@ export function Payments() {
         rowKey={(invoice) => invoice.id}
         loading={isLoading}
         onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
+        mobileCard={(invoice) => (
+          <>
+            <MobileCardHeader title={invoice.id} code trailing={<InvoiceStatusBadge status={invoice.status} />} />
+            <MobileCardRow>{invoice.cust}</MobileCardRow>
+            <MobileCardRow label={t('Amount')}><Money sar={parseSar(invoice.amount)} className="font-semibold text-heading" /></MobileCardRow>
+            <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
+          </>
+        )}
         empty={
           <EmptyState
             icon="Wallet"

@@ -188,16 +188,16 @@ export function Dashboard() {
 
         <Card className="p-6">
           <CardHeader icon="BarChart3" title={t('Job Status')} className="mb-6" />
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:justify-start">
             <div
-              className="relative h-[180px] w-[180px] flex-shrink-0 rounded-full"
+              className="relative h-[140px] w-[140px] flex-shrink-0 rounded-full sm:h-[180px] sm:w-[180px]"
               style={{
                 background:
                   'conic-gradient(#0A5ED7 0% 22.22%,#0BB3FF 22.22% 55.56%,#F97316 55.56% 74.07%,#0B1F3B 74.07% 88.89%,#64748B 88.89% 100%)',
               }}
             >
-              <div className="absolute inset-9 flex flex-col items-center justify-center rounded-full bg-card">
-                <span className="font-display text-[28px] font-black text-heading">27</span>
+              <div className="absolute inset-7 flex flex-col items-center justify-center rounded-full bg-card sm:inset-9">
+                <span className="font-display text-xl font-black text-heading sm:text-[28px]">27</span>
                 <span className="text-[11px] text-muted">{t('jobs')}</span>
               </div>
             </div>
@@ -271,13 +271,13 @@ export function Dashboard() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between px-6 pb-5 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-5 pt-4 sm:px-6">
           <span className="text-[13px] text-muted">{t('Showing 1–5 of 27')}</span>
           <div className="flex gap-1.5">
             <PageButton label="Previous page" icon={rtl ? 'ChevronRight' : 'ChevronLeft'} />
             <button
               type="button"
-              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
+              className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border-none bg-salis-gradient text-[13px] font-semibold text-white"
             >
               1
             </button>
@@ -285,7 +285,7 @@ export function Dashboard() {
               <button
                 key={page}
                 type="button"
-                className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
+                className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border border-border bg-card text-[13px] text-body hover:border-salis-blue hover:text-salis-blue"
               >
                 {page}
               </button>
@@ -385,7 +385,7 @@ function PageButton({ label, icon }: { label: string; icon: string }) {
     <button
       type="button"
       aria-label={label}
-      className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-border bg-card text-body hover:border-salis-blue hover:text-salis-blue"
+      className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded border border-border bg-card text-body hover:border-salis-blue hover:text-salis-blue"
     >
       <Icon name={icon} size={14} />
     </button>
