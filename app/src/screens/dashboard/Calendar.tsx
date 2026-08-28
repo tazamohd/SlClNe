@@ -94,7 +94,7 @@ export function Calendar() {
         </MobileCard>
         {selectedDay && (
           <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-bold text-heading">{monthLabel}</h3>
+            <h2 className="text-sm font-bold text-heading">{monthLabel}</h2>
             {selectedAppointments.length === 0 ? (
               <p className="text-xs text-muted">{t('No appointments')}</p>
             ) : (

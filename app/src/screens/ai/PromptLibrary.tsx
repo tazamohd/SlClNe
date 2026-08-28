@@ -91,7 +91,7 @@ export function PromptLibrary() {
                   </div>
                 }
               />
-              <h3 className="text-[13px] font-semibold text-heading">{p.name}</h3>
+              <h2 className="text-[13px] font-semibold text-heading">{p.name}</h2>
               <p className="line-clamp-2 text-xs text-muted">{p.preview}</p>
               <span className="inline-flex items-center gap-1 text-[11px] text-muted">
                 <Icon name="Zap" size={10} />

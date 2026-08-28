@@ -101,7 +101,7 @@ export function KnowledgeBase() {
               <span className="flex rounded-[10px] p-2" style={{ background: cc.iconBg, color: cc.iconFg }}>
                 <Icon name={cc.icon} size={16} />
               </span>
-              <h3 className="mt-2 text-[13px] font-semibold text-heading">{cc.name}</h3>
+              <h2 className="mt-2 text-[13px] font-semibold text-heading">{cc.name}</h2>
               <p className="text-xs text-muted">{cc.count} {t('articles')}</p>
             </MobileCard>
           ))}
@@ -161,7 +161,7 @@ export function KnowledgeBase() {
             <span className="flex rounded-[10px] p-2" style={{ background: cc.iconBg, color: cc.iconFg }}>
               <Icon name={cc.icon} size={18} />
             </span>
-            <h3 className="mt-2.5 text-sm font-semibold text-heading">{cc.name}</h3>
+            <h2 className="mt-2.5 text-sm font-semibold text-heading">{cc.name}</h2>
             <p className="mt-1 text-xs text-muted">{cc.count} {t('articles')}</p>
           </Card>
         ))}

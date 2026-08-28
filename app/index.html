@@ -7,6 +7,8 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/assets/logo-blue-orange.png" />
     <meta name="theme-color" content="#0A5ED7" />
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="description" content="Integrated automotive workshop management system — scheduling, invoicing, parts, CRM, and more." />
     <meta property="og:title" content="SALIS AUTO" />
     <meta property="og:description" content="Integrated automotive workshop management system — scheduling, invoicing, parts, CRM, and more." />
@@ -16,6 +18,14 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif;padding:2rem;text-align:center">
+        <div>
+          <h1 style="font-size:1.5rem;font-weight:700;color:#0B1F3B;margin-bottom:0.5rem">SALIS AUTO</h1>
+          <p style="color:#64748B">JavaScript is required to run this application. Please enable JavaScript in your browser settings.</p>
+        </div>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
