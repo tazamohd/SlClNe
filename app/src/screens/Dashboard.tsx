@@ -90,10 +90,10 @@ export function Dashboard() {
           orbShadow="rgba(11,179,255,.2)"
           footer={
             <div className="mt-1 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-[rgba(249,115,22,.3)] bg-tint-orange px-2.5 py-0.5 text-xs font-medium text-salis-orange">
+              <span className="rounded-full border border-salis-orange/[.3] bg-tint-orange px-2.5 py-0.5 text-xs font-medium text-salis-orange">
                 {t('5 pending')}
               </span>
-              <span className="rounded-full border border-[rgba(11,179,255,.3)] bg-tint-bright px-2.5 py-0.5 text-xs font-medium text-salis-bright">
+              <span className="rounded-full border border-salis-bright/[.3] bg-tint-bright px-2.5 py-0.5 text-xs font-medium text-salis-bright">
                 {t('9 active')}
               </span>
             </div>
@@ -156,7 +156,7 @@ export function Dashboard() {
         {PIPELINE.map((stage) => (
           <Card
             key={stage.label}
-            className="flex flex-col items-center gap-3 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+            className="flex flex-col items-center gap-3 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-salis-blue/[.3] hover:shadow-lg"
           >
             <span
               className="flex rounded-lg p-3 text-white shadow-lg"
@@ -241,7 +241,7 @@ export function Dashboard() {
           action={
             <Link
               to="/job-cards"
-              className="inline-flex h-9 items-center gap-1.5 rounded px-3 font-action text-[13px] font-medium text-salis-blue no-underline transition-colors duration-150 hover:bg-[rgba(10,94,215,.08)] hover:no-underline"
+              className="inline-flex h-9 items-center gap-1.5 rounded px-3 font-action text-[13px] font-medium text-salis-blue no-underline transition-colors duration-150 hover:bg-salis-blue/[.08] hover:no-underline"
             >
               {t('View All')}
               <Icon name="ArrowUpRight" size={14} />
@@ -328,7 +328,7 @@ function MetricCard({
   progress?: number
 }) {
   return (
-    <Card className="p-6 transition-all duration-200 hover:border-[rgba(10,94,215,.3)] hover:shadow-lg">
+    <Card className="p-6 transition-all duration-200 hover:border-salis-blue/[.3] hover:shadow-lg">
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-col gap-3">
           <div className="flex items-center gap-2">

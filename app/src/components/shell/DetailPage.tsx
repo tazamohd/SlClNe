@@ -456,7 +456,7 @@ function DetailHeader({
       {avatar.initial}
     </span>
   ) : avatar?.icon ? (
-    <span className="flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center rounded-xl bg-[rgba(10,94,215,.08)] text-salis-blue">
+    <span className="flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center rounded-xl bg-salis-blue/[.08] text-salis-blue">
       <Icon name={avatar.icon} size={32} />
     </span>
   ) : null
@@ -621,7 +621,7 @@ function RecordRow({ record }: { record: DetailRecord }) {
   const body = (
     <>
       {record.icon ? (
-        <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
+        <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-2 text-salis-blue">
           <Icon name={record.icon} size={16} />
         </span>
       ) : null}

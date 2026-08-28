@@ -1068,7 +1068,7 @@ export function Integrations() {
             return (
               <Card key={integration.name} className="flex flex-col gap-3 rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(10,94,215,.09)] p-2.5 text-salis-blue">
+                  <span className="flex flex-shrink-0 rounded-[10px] bg-salis-blue/[.09] p-2.5 text-salis-blue">
                     <Icon name={integration.icon} size={18} />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -1137,7 +1137,7 @@ export function Integrations() {
           return (
             <Card key={integration.name} className="flex flex-col gap-3 rounded-lg p-5">
               <div className="flex items-start gap-3">
-                <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(10,94,215,.09)] p-2.5 text-salis-blue">
+                <span className="flex flex-shrink-0 rounded-[10px] bg-salis-blue/[.09] p-2.5 text-salis-blue">
                   <Icon name={integration.icon} size={18} />
                 </span>
                 <div className="min-w-0 flex-1">

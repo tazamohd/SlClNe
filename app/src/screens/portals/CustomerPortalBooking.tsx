@@ -238,11 +238,11 @@ export function CustomerPortalBooking() {
                     className={cn(
                       'flex w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-none p-2.5 text-start font-action transition-colors',
                       picked
-                        ? 'bg-[rgba(10,94,215,.08)] text-salis-blue'
-                        : 'bg-inset text-body hover:bg-[rgba(10,94,215,.04)]'
+                        ? 'bg-salis-blue/[.08] text-salis-blue'
+                        : 'bg-inset text-body hover:bg-salis-blue/[.04]'
                     )}
                   >
-                    <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
+                    <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
                       <Icon name="Car" size={14} />
                     </span>
                     <span className="min-w-0 flex-1">
@@ -290,7 +290,7 @@ export function CustomerPortalBooking() {
                       'flex cursor-pointer items-center gap-1.5 rounded-lg border-none px-3.5 py-2 font-action text-xs font-semibold transition-colors',
                       picked
                         ? 'bg-salis-gradient text-white'
-                        : 'bg-inset text-body hover:bg-[rgba(10,94,215,.06)]'
+                        : 'bg-inset text-body hover:bg-salis-blue/[.06]'
                     )}
                   >
                     <Icon name={icon} size={14} />
@@ -329,7 +329,7 @@ export function CustomerPortalBooking() {
                     'flex min-w-[48px] flex-shrink-0 cursor-pointer flex-col items-center gap-0.5 rounded-[10px] border-none px-3 py-2 font-action transition-colors',
                     picked
                       ? 'bg-salis-gradient text-white'
-                      : 'bg-inset text-body hover:bg-[rgba(10,94,215,.06)]'
+                      : 'bg-inset text-body hover:bg-salis-blue/[.06]'
                   )}
                 >
                   <span className="text-[10px] opacity-70">{day.weekday}</span>
@@ -362,7 +362,7 @@ export function CustomerPortalBooking() {
                       ? 'cursor-default bg-inset text-faint opacity-50'
                       : picked
                         ? 'cursor-pointer bg-salis-gradient text-white'
-                        : 'cursor-pointer bg-inset text-body hover:bg-[rgba(10,94,215,.06)]'
+                        : 'cursor-pointer bg-inset text-body hover:bg-salis-blue/[.06]'
                   )}
                 >
                   {slot}
@@ -408,7 +408,7 @@ function BookingConfirmed({ row, onAgain }: { row: AppointmentRow; onAgain: () =
   return (
     <div className="flex max-w-[720px] animate-fade-up flex-col gap-4">
       <Card role="status" className="flex flex-col items-center gap-3 p-8 text-center">
-        <span className="flex rounded-full bg-[rgba(10,94,215,.09)] p-4 text-salis-blue">
+        <span className="flex rounded-full bg-salis-blue/[.09] p-4 text-salis-blue">
           <Icon name="CalendarCheck" size={28} />
         </span>
         <div>

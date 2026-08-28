@@ -359,7 +359,7 @@ function Notice({ children }: { children: React.ReactNode }) {
   return (
     <p
       role="status"
-      className="flex flex-wrap items-center gap-1.5 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body"
+      className="flex flex-wrap items-center gap-1.5 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-[13px] text-body"
     >
       <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
       {children}

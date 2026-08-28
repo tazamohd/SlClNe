@@ -116,7 +116,7 @@ export function Tab({ id, children, className, disabled }: TabProps) {
               'font-action text-[13px] font-semibold transition-all duration-150',
               selected
                 ? 'bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
-                : 'bg-transparent text-muted hover:bg-[rgba(10,94,215,.06)] hover:text-salis-blue',
+                : 'bg-transparent text-muted hover:bg-salis-blue/[.06] hover:text-salis-blue',
             )
           : cn(
               '-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors',

@@ -317,7 +317,7 @@ export function FormErrorSummary() {
   return (
     <div
       role="alert"
-      className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3.5 py-3"
+      className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-3.5 py-3"
     >
       <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
       <div>
@@ -696,7 +696,7 @@ function FileField({
           invalid
             ? 'border-salis-orange'
             : over
-              ? 'border-salis-blue bg-[rgba(10,94,215,.04)]'
+              ? 'border-salis-blue bg-salis-blue/[.04]'
               : 'border-border bg-inset'
         )}
       >

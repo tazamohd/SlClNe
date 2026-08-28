@@ -1189,7 +1189,7 @@ function RequisitionDetailModal({
         {canApproveHere && api && mayDecide && !withinCeiling ? (
           <p
             role="note"
-            className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3.5 py-3 text-[13px] text-body"
+            className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-3.5 py-3 text-[13px] text-body"
           >
             <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
             <span>
@@ -1454,7 +1454,7 @@ export function ProcurementRequisitions({ api: injected }: { api?: ProcurementAp
         </ChipGroup>
         <span className="flex-1" />
         {selectedRows.length ? (
-          <div className="flex items-center gap-2 rounded-lg border border-[rgba(10,94,215,.22)] bg-[rgba(10,94,215,.05)] py-1 ps-3 pe-1.5">
+          <div className="flex items-center gap-2 rounded-lg border border-salis-blue/[.22] bg-salis-blue/[.05] py-1 ps-3 pe-1.5">
             <span className="text-xs font-semibold text-salis-blue">
               <span dir="ltr" className="font-mono">
                 {selectedRows.length}
@@ -1653,7 +1653,7 @@ export function ProcurementPortal() {
               onClick={() => navigate('/procurement-portal/requisitions')}
               className="flex cursor-pointer flex-wrap items-center gap-3 rounded-lg border border-border bg-inset p-3.5 text-start transition-colors duration-150 hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
-              <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(10,94,215,.09)] p-2 text-salis-blue">
+              <span className="flex flex-shrink-0 rounded-[10px] bg-salis-blue/[.09] p-2 text-salis-blue">
                 <Icon name="Package" size={16} />
               </span>
               <div className="min-w-0 flex-1">

@@ -153,7 +153,7 @@ export function CustomerAppBooking() {
           {TIME_SLOTS.map((slot) => (
             <div
               key={slot.time}
-              className={`rounded-lg border p-3 text-center text-sm font-semibold ${slot.available ? 'border-salis-blue/30 bg-[rgba(10,94,215,.05)] text-salis-blue' : 'border-border text-muted opacity-50'}`}
+              className={`rounded-lg border p-3 text-center text-sm font-semibold ${slot.available ? 'border-salis-blue/30 bg-salis-blue/[.05] text-salis-blue' : 'border-border text-muted opacity-50'}`}
             >
               {slot.time}
             </div>

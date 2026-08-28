@@ -122,7 +122,7 @@ export function PromptLibrary() {
         {filtered.map((p) => (
           <Card
             key={p.id}
-            className="flex cursor-pointer flex-col gap-2.5 rounded-[14px] p-[18px] shadow-sm transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+            className="flex cursor-pointer flex-col gap-2.5 rounded-[14px] p-[18px] shadow-sm transition-all hover:border-salis-blue/[.3] hover:shadow-lg"
           >
             <div className="flex items-center gap-2">
               <Badge background={p.catBg} color={p.catFg}>{p.category}</Badge>

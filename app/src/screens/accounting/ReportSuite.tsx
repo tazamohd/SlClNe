@@ -125,7 +125,7 @@ function ReportCard({ link }: { link: ReportLink }) {
         <p className="flex items-center gap-2 text-sm font-bold text-heading">
           {t(link.name)}
           {link.gapped && !isLive ? (
-            <span className="rounded bg-[rgba(249,115,22,.12)] px-1.5 py-0.5 text-[10px] font-semibold text-salis-orange">
+            <span className="rounded bg-salis-orange/[.12] px-1.5 py-0.5 text-[10px] font-semibold text-salis-orange">
               {t('Partial data')}
             </span>
           ) : null}
@@ -732,7 +732,7 @@ function LedgerRow({
  *  red. F-008 is surfaced, not tied off. */
 function ImbalanceNotice({ text }: { text: string }) {
   return (
-    <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body">
+    <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-[13px] text-body">
       <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
       {text}
     </p>

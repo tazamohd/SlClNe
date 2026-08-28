@@ -88,7 +88,7 @@ function PageButton({
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue',
         active
           ? 'bg-salis-gradient text-white'
-          : 'bg-transparent text-body hover:bg-[rgba(10,94,215,.06)]',
+          : 'bg-transparent text-body hover:bg-salis-blue/[.06]',
         disabled && 'pointer-events-none opacity-40'
       )}
       {...rest}

@@ -177,7 +177,7 @@ export function IncomeStatement() {
           />
         </div>
 
-        <div className="mt-4 flex items-center justify-between rounded-lg border-2 border-salis-blue/30 bg-[rgba(10,94,215,.04)] px-5 py-4">
+        <div className="mt-4 flex items-center justify-between rounded-lg border-2 border-salis-blue/30 bg-salis-blue/[.04] px-5 py-4">
           <div>
             <p className="font-display text-sm font-bold text-heading">{t('Net Income')}</p>
             <p className="mt-0.5 text-xs text-muted">

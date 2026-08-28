@@ -149,7 +149,7 @@ export function DataTable<TRow>({
                   className={cn(
                     'transition-colors duration-150',
                     onRowClick &&
-                      'cursor-pointer hover:bg-[rgba(10,94,215,.04)] focus-visible:bg-[rgba(10,94,215,.08)] focus-visible:outline-none'
+                      'cursor-pointer hover:bg-salis-blue/[.04] focus-visible:bg-salis-blue/[.08] focus-visible:outline-none'
                   )}
                 >
                   {columns.map((column) => (

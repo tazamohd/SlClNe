@@ -121,7 +121,7 @@ export function NotificationsList() {
             return (
               <div
                 key={i}
-                className={`flex items-start gap-3 rounded-xl px-4 py-3 transition-colors ${!n.read ? 'bg-[rgba(10,94,215,.04)]' : ''}`}
+                className={`flex items-start gap-3 rounded-xl px-4 py-3 transition-colors ${!n.read ? 'bg-salis-blue/[.04]' : ''}`}
               >
                 <span className="mt-0.5 flex flex-shrink-0 rounded-lg p-1.5" style={{ background: style.bg, color: style.fg }} aria-hidden>
                   <Icon name={style.icon} size={16} />

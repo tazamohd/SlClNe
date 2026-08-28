@@ -240,7 +240,7 @@ export function TechnicianPortalJobDetail() {
       {/* What went wrong, when something did. */}
       {failure ? (
         <Card role="alert" className="flex items-start gap-3 border-salis-orange/40 p-3.5">
-          <span className="flex flex-shrink-0 rounded bg-[rgba(249,115,22,.12)] p-2 text-salis-orange">
+          <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
             <Icon name={failure.refused ? 'ShieldAlert' : 'CloudOff'} size={16} />
           </span>
           <div className="min-w-0">
@@ -255,7 +255,7 @@ export function TechnicianPortalJobDetail() {
       {/* Why the button below cannot be pressed, before it is pressed. */}
       {atQc && sodConflict ? (
         <Card className="flex items-start gap-3 border-salis-orange/40 p-3.5">
-          <span className="flex flex-shrink-0 rounded bg-[rgba(249,115,22,.12)] p-2 text-salis-orange">
+          <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
             <Icon name="AlertTriangle" size={16} />
           </span>
           <div className="min-w-0">

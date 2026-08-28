@@ -160,7 +160,7 @@ export function WorkshopQC() {
 
       {sodConflict ? (
         <Card className="flex items-start gap-3 border-salis-orange/40 p-4">
-          <span className="flex flex-shrink-0 rounded bg-[rgba(249,115,22,.12)] p-2 text-salis-orange">
+          <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
             <Icon name="AlertTriangle" size={18} />
           </span>
           <div>
@@ -204,7 +204,7 @@ export function WorkshopQC() {
               {conflictActorIds.size > 0 ? (
                 <div
                   role="note"
-                  className="flex items-start gap-2.5 border-0 border-b border-solid border-border bg-[rgba(249,115,22,.07)] p-3.5"
+                  className="flex items-start gap-2.5 border-0 border-b border-solid border-border bg-salis-orange/[.07] p-3.5"
                 >
                   <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
                   <div className="min-w-0">
@@ -229,7 +229,7 @@ export function WorkshopQC() {
                         className={
                           'flex items-start gap-3 p-3.5 ' +
                           (index ? 'border-0 border-t border-solid border-border ' : '') +
-                          (conflicted ? 'bg-[rgba(249,115,22,.06)]' : '')
+                          (conflicted ? 'bg-salis-orange/[.06]' : '')
                         }
                       >
                         <Icon

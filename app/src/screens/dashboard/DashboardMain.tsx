@@ -169,7 +169,7 @@ export function DashboardMain() {
                         {row.count}
                       </span>
                     </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+                    <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${row.pct}%`, background: row.color }}

@@ -211,7 +211,7 @@ export function Modal({
         'flex rounded-full p-3.5',
         destructive
           ? 'bg-tint-orange text-salis-orange'
-          : 'bg-[rgba(10,94,215,.09)] text-salis-blue'
+          : 'bg-salis-blue/[.09] text-salis-blue'
       )}
     >
       <Icon name={icon ?? (destructive ? 'AlertTriangle' : 'Info')} size={28} />
@@ -234,7 +234,7 @@ export function Modal({
       // Below the toast layer: a save confirmation must stay readable over the
       // dialog that triggered it.
       className={cn(
-        'fixed inset-0 z-[90] flex bg-[rgba(11,31,59,.55)]',
+        'fixed inset-0 z-[90] flex bg-salis-navy/[.55]',
         isMobile
           ? resolvedSheet === 'full'
             ? 'items-stretch'
@@ -271,7 +271,7 @@ export function Modal({
                   'flex flex-shrink-0 rounded-lg p-1.5',
                   destructive
                     ? 'bg-tint-orange text-salis-orange'
-                    : 'bg-[rgba(10,94,215,.08)] text-salis-blue'
+                    : 'bg-salis-blue/[.08] text-salis-blue'
                 )}
               >
                 <Icon name={icon} size={16} />

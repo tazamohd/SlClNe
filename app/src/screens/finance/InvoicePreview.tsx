@@ -284,7 +284,7 @@ export function InvoicePreview() {
               {subtotalDisagrees ? (
                 <p
                   role="status"
-                  className="mt-1 flex items-start gap-1.5 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-2.5 py-2 text-[11px] text-body"
+                  className="mt-1 flex items-start gap-1.5 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-2.5 py-2 text-[11px] text-body"
                 >
                   <Icon name="AlertTriangle" size={13} className="mt-0.5 flex-shrink-0 text-salis-orange" />
                   {t('These lines total')}{' '}

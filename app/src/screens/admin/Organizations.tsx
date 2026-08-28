@@ -89,7 +89,7 @@ export function Organizations() {
             return (
               <Card
                 key={org.name}
-                className="cursor-pointer p-6 transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+                className="cursor-pointer p-6 transition-all hover:border-salis-blue/[.3] hover:shadow-lg"
               >
                 <div className="mb-4 flex items-center gap-3.5">
                   <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[14px] bg-salis-gradient text-lg font-extrabold text-white shadow-[0_8px_20px_rgba(10,94,215,.2)]">

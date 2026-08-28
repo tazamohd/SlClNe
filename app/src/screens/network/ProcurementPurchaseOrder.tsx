@@ -941,7 +941,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
         </div>
         <span className="flex-1" />
         {lowStock.length ? (
-          <div className="flex items-center gap-2 rounded-lg border border-salis-orange/20 bg-[rgba(249,115,22,.08)] px-3.5 py-2">
+          <div className="flex items-center gap-2 rounded-lg border border-salis-orange/20 bg-salis-orange/[.08] px-3.5 py-2">
             <Icon name="AlertTriangle" size={14} className="text-salis-orange" />
             <span className="font-action text-xs font-semibold text-salis-orange">
               <span dir="ltr" className="font-mono">
@@ -1153,7 +1153,7 @@ export function PurchaseOrder({ api: injected }: { api?: ProcurementApi | null }
                   {lines.length && !withinCeiling ? (
                     <p
                       role="note"
-                      className="flex items-start gap-2 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2.5 text-[12px] text-body"
+                      className="flex items-start gap-2 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2.5 text-[12px] text-body"
                     >
                       <Icon
                         name="AlertTriangle"

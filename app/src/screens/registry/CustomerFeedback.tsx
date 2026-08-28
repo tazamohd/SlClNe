@@ -250,7 +250,7 @@ export function CustomerFeedback() {
           {error ? (
             <p
               role="alert"
-              className="flex items-start gap-2 rounded-lg border border-salis-orange bg-[rgba(249,115,22,.08)] px-3 py-2.5 text-[13px] text-body"
+              className="flex items-start gap-2 rounded-lg border border-salis-orange bg-salis-orange/[.08] px-3 py-2.5 text-[13px] text-body"
             >
               <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
               {error}

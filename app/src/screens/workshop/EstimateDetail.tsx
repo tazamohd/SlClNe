@@ -185,7 +185,7 @@ export function EstimateDetail() {
               key={line.id}
               className="flex items-center gap-3 border-0 border-b border-solid border-border py-2 last:border-b-0"
             >
-              <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
+              <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-2 text-salis-blue">
                 <Icon name={line.kind === 'labour' ? 'Clock' : 'Package'} size={14} />
               </span>
               <div className="min-w-0 flex-1">
@@ -284,7 +284,7 @@ export function EstimateDetail() {
             {(trail.data?.sodConflicts.length ?? 0) > 0 ? (
               <div
                 role="note"
-                className="flex items-start gap-2.5 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5"
+                className="flex items-start gap-2.5 rounded-lg border border-salis-orange/[.28] bg-salis-orange/[.07] p-2.5"
               >
                 <Icon name="AlertTriangle" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
                 <div className="min-w-0">
@@ -311,7 +311,7 @@ export function EstimateDetail() {
                       key={entry.id}
                       className={
                         'flex items-start gap-2.5 rounded-lg p-2 ' +
-                        (conflicted ? 'bg-[rgba(249,115,22,.07)]' : '')
+                        (conflicted ? 'bg-salis-orange/[.07]' : '')
                       }
                     >
                       <Icon
@@ -375,7 +375,7 @@ export function EstimateDetail() {
               <Button
                 variant="outline"
                 size="md"
-                className="border-[rgba(249,115,22,.4)] text-salis-orange hover:bg-[rgba(249,115,22,.07)]"
+                className="border-salis-orange/[.4] text-salis-orange hover:bg-salis-orange/[.07]"
                 onClick={() => void decide('reject')}
                 disabled={busy}
               >

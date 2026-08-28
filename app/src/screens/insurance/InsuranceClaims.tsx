@@ -371,7 +371,7 @@ function ClaimDetail({ claim, onClose }: { claim: InsuranceClaimRow; onClose: ()
             {iSubmitted ? (
               <p
                 role="note"
-                className="flex items-start gap-2 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5 text-[12px] leading-relaxed text-body"
+                className="flex items-start gap-2 rounded-lg border border-salis-orange/[.28] bg-salis-orange/[.07] p-2.5 text-[12px] leading-relaxed text-body"
               >
                 <Icon name="AlertTriangle" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
                 {t(
@@ -433,7 +433,7 @@ function ClaimDetail({ claim, onClose }: { claim: InsuranceClaimRow; onClose: ()
               <Button
                 variant="outline"
                 size="sm"
-                className="border-[rgba(249,115,22,.4)] text-salis-orange hover:bg-[rgba(249,115,22,.07)]"
+                className="border-salis-orange/[.4] text-salis-orange hover:bg-salis-orange/[.07]"
                 onClick={() => void reject()}
                 disabled={busy !== null || !mayDecide || !reason.trim()}
                 title={mayDecide ? undefined : t('Your role cannot decide claims')}

@@ -293,7 +293,7 @@ export function DiagnosticReport() {
                 'The priced total, handling fee and VAT are computed and issued by the estimate the server generates from this report — never in the browser. This report exposes the line figures above; it does not expose a total.'
               )}
             </p>
-            <div className="mt-3 flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.06)] p-2.5 text-[11.5px] text-body">
+            <div className="mt-3 flex items-center gap-2 rounded-lg bg-salis-blue/[.06] p-2.5 text-[11.5px] text-body">
               <Icon name="FileCheck" size={14} className="flex-shrink-0 text-salis-blue" />
               {t('Totals live on the estimate, not this report.')}
             </div>

@@ -1673,7 +1673,7 @@ function MovementModal({
         {kind.warning ? (
           <p
             role="note"
-            className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3.5 py-3 text-[13px] text-body"
+            className="flex items-start gap-2.5 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-3.5 py-3 text-[13px] text-body"
           >
             <Icon name="AlertTriangle" size={15} className="mt-0.5 flex-shrink-0 text-salis-orange" />
             {t(kind.warning)}

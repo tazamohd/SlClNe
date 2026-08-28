@@ -45,7 +45,7 @@ export function Splash() {
             className={`relative h-auto ${isMobile ? 'w-[140px]' : 'w-[180px]'}`}
           />
         </div>
-        <div className={`h-1 overflow-hidden rounded-full bg-[rgba(10,94,215,.12)] ${isMobile ? 'w-32' : 'w-40'}`}>
+        <div className={`h-1 overflow-hidden rounded-full bg-salis-blue/[.12] ${isMobile ? 'w-32' : 'w-40'}`}>
           <div className="h-full w-3/5 rounded-full bg-salis-gradient-r" />
         </div>
         <p role="status" className="font-action text-[13px] text-muted">

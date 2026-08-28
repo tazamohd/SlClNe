@@ -39,7 +39,7 @@ export interface IconCardGridProps {
 const CARD =
   'block rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-200 ' +
   'no-underline hover:no-underline'
-const CARD_HOVER = 'hover:border-[rgba(10,94,215,.3)] hover:shadow-lg hover:-translate-y-1'
+const CARD_HOVER = 'hover:border-salis-blue/[.3] hover:shadow-lg hover:-translate-y-1'
 
 function CardBody({
   item,

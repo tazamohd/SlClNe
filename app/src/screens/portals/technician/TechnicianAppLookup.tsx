@@ -51,7 +51,7 @@ export function TechnicianAppLookup() {
       <PageHeader icon="Search" title={t('Parts Lookup')} subtitle={t('Search parts by number, name, or VIN')} />
 
       <Card className="rounded-xl p-3 shadow-sm">
-        <div className="flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.05)] px-3 py-2">
+        <div className="flex items-center gap-2 rounded-lg bg-salis-blue/[.05] px-3 py-2">
           <Icon name="Search" size={16} className="text-muted" />
           <span className="text-sm text-muted">{t('Search by part number, name, or VIN...')}</span>
         </div>

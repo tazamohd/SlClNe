@@ -167,7 +167,7 @@ export function CalendarGrid({ appointments, date, view, onSelect }: CalendarGri
                 key={i}
                 className={cn(
                   'border-0 border-s border-solid border-border py-2 text-center',
-                  today && 'bg-[rgba(10,94,215,.06)]'
+                  today && 'bg-salis-blue/[.06]'
                 )}
               >
                 <p className="font-action text-[11px] text-muted">{dayNames[i]}</p>

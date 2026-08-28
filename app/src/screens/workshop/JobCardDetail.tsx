@@ -437,7 +437,7 @@ function ServicesPanel({ job }: { job: JobRow }) {
   return (
     <Panel icon="Wrench" title={rtl ? AR.services : 'Services'}>
       <div className="flex items-center gap-2.5 py-2.5">
-        <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
+        <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
           <Icon name="Wrench" size={14} />
         </span>
         <div className="min-w-0 flex-1">

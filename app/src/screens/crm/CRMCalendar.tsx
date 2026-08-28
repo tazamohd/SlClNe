@@ -40,8 +40,8 @@ const MONTHS = [
 
 const EVENT_TONE: Record<string, string> = {
   blue: 'bg-tint-blue text-salis-blue',
-  bright: 'bg-[rgba(11,179,255,.12)] text-salis-bright',
-  orange: 'bg-[rgba(249,115,22,.12)] text-salis-orange',
+  bright: 'bg-salis-bright/[.12] text-salis-bright',
+  orange: 'bg-salis-orange/[.12] text-salis-orange',
   slate: 'bg-inset text-muted',
 }
 const DOT_TONE: Record<string, string> = {
@@ -320,7 +320,7 @@ export function CRMCalendar() {
                     className={cn(
                       'flex min-h-[76px] cursor-pointer flex-col items-stretch gap-1 border-0 border-b border-e border-solid border-border bg-transparent p-1.5 text-start sm:min-h-[92px]',
                       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-salis-blue',
-                      isSelected ? 'bg-[rgba(10,94,215,.06)]' : 'hover:bg-inset'
+                      isSelected ? 'bg-salis-blue/[.06]' : 'hover:bg-inset'
                     )}
                   >
                     <span

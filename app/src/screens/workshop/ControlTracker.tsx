@@ -124,7 +124,7 @@ export function ControlTracker() {
               key={item.id}
               role="button"
               tabIndex={0}
-              className="flex cursor-pointer items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:border-salis-blue/30 hover:bg-[rgba(10,94,215,.03)]"
+              className="flex cursor-pointer items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:border-salis-blue/30 hover:bg-salis-blue/[.03]"
               onClick={() => navigate('/customer-approval')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/customer-approval') }}
             >
@@ -211,7 +211,7 @@ function PipelineView({
               <div key={stage.id} className="flex items-center">
                 <div className={cn(
                   'flex flex-col items-center gap-1 rounded-lg px-4 py-3 text-center',
-                  count > 0 ? 'bg-[rgba(10,94,215,.06)]' : 'bg-transparent'
+                  count > 0 ? 'bg-salis-blue/[.06]' : 'bg-transparent'
                 )}>
                   <span className={cn(
                     'flex rounded-lg p-2',
@@ -244,10 +244,10 @@ function BayMapView() {
   const navigate = useNavigate()
 
   const bayColor = {
-    active: { bg: 'bg-[rgba(10,94,215,.06)]', border: 'border-salis-blue/30', dot: 'bg-salis-blue' },
-    waiting: { bg: 'bg-[rgba(249,115,22,.06)]', border: 'border-salis-orange/30', dot: 'bg-salis-orange' },
+    active: { bg: 'bg-salis-blue/[.06]', border: 'border-salis-blue/30', dot: 'bg-salis-blue' },
+    waiting: { bg: 'bg-salis-orange/[.06]', border: 'border-salis-orange/30', dot: 'bg-salis-orange' },
     available: { bg: 'bg-card', border: 'border-border', dot: 'bg-muted' },
-    maintenance: { bg: 'bg-[rgba(100,116,139,.06)]', border: 'border-muted/30', dot: 'bg-muted' },
+    maintenance: { bg: 'bg-muted/[.06]', border: 'border-muted/30', dot: 'bg-muted' },
   }
 
   return (
@@ -415,7 +415,7 @@ function PartsView({
     <div className="flex flex-col gap-4">
       {lowStock.length > 0 && (
         <Card className="flex items-start gap-3 border-salis-orange/40 p-4">
-          <span className="flex flex-shrink-0 rounded bg-[rgba(249,115,22,.12)] p-2 text-salis-orange">
+          <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
             <Icon name="AlertTriangle" size={18} />
           </span>
           <div>
@@ -442,7 +442,7 @@ function PartsView({
                   <p className="font-mono text-[11px] text-muted">{part.sku}</p>
                 </div>
                 {low && (
-                  <span className="flex rounded bg-[rgba(249,115,22,.12)] p-1 text-salis-orange">
+                  <span className="flex rounded bg-salis-orange/[.12] p-1 text-salis-orange">
                     <Icon name="AlertTriangle" size={14} />
                   </span>
                 )}

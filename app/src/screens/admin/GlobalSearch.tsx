@@ -148,7 +148,7 @@ export function GlobalSearch() {
                     key={term}
                     type="button"
                     onClick={() => setQuery(term)}
-                    className="flex cursor-pointer items-center gap-3 rounded-lg border-none bg-transparent px-2 py-2 text-start transition-colors hover:bg-[rgba(10,94,215,.04)] focus-visible:outline-none focus-visible:bg-[rgba(10,94,215,.06)]"
+                    className="flex cursor-pointer items-center gap-3 rounded-lg border-none bg-transparent px-2 py-2 text-start transition-colors hover:bg-salis-blue/[.04] focus-visible:outline-none focus-visible:bg-salis-blue/[.06]"
                   >
                     <Icon name="Clock" size={14} className="flex-shrink-0 text-muted" />
                     <span className="text-[13px] text-body">{term}</span>
@@ -167,11 +167,11 @@ export function GlobalSearch() {
                       </span>
                     </div>
                     {group.items.map((item) => (
-                      <div key={item.id} className="px-4 py-3 transition-colors hover:bg-[rgba(10,94,215,.04)]">
+                      <div key={item.id} className="px-4 py-3 transition-colors hover:bg-salis-blue/[.04]">
                         <MobileCardHeader
                           leading={
                             <div className="flex items-center gap-2.5">
-                              <span className="flex rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
+                              <span className="flex rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
                                 <Icon name={item.icon} size={14} />
                               </span>
                               <span className="text-[13px] font-semibold text-heading">{item.title}</span>
@@ -202,7 +202,7 @@ export function GlobalSearch() {
                       key={item.id}
                       className="flex items-center gap-3 px-5 py-2.5"
                     >
-                      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
+                      <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
                         <Icon name={item.icon} size={14} />
                       </span>
                       <div className="min-w-0 flex-1">

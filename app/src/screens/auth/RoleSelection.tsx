@@ -90,8 +90,8 @@ export function RoleSelection() {
                   'flex w-full cursor-pointer flex-col gap-2.5 rounded-[14px] p-4 text-start',
                   'transition-all duration-200 ease-salis',
                   selected
-                    ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)] text-salis-blue shadow-[0_8px_24px_rgba(10,94,215,.12)]'
-                    : 'border border-border bg-card text-body hover:border-[rgba(10,94,215,.3)]'
+                    ? 'border-[1.5px] border-salis-blue bg-salis-blue/[.06] text-salis-blue shadow-[0_8px_24px_rgba(10,94,215,.12)]'
+                    : 'border border-border bg-card text-body hover:border-salis-blue/[.3]'
                 )}
               >
                 <div className="flex items-center gap-2.5">
@@ -100,7 +100,7 @@ export function RoleSelection() {
                       'flex flex-shrink-0 items-center justify-center rounded-xl p-2.5',
                       selected
                         ? 'bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
-                        : 'bg-[rgba(10,94,215,.08)] text-salis-blue'
+                        : 'bg-salis-blue/[.08] text-salis-blue'
                     )}
                   >
                     <Icon name={role.icon} size={20} />

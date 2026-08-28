@@ -24,10 +24,10 @@ export function TrustBand({ headline, logos }: TrustBandProps) {
             {index > 0 && (
               <span
                 aria-hidden
-                className="hidden h-1 w-1 rounded-full bg-[rgba(10,94,215,.25)] sm:block"
+                className="hidden h-1 w-1 rounded-full bg-salis-blue/[.25] sm:block"
               />
             )}
-            <span className="text-[14px] font-semibold text-[rgba(11,31,59,.35)] dark:text-[rgba(255,255,255,.3)]">
+            <span className="text-[14px] font-semibold text-salis-navy/[.35] dark:text-white/[.3]">
               {name}
             </span>
           </span>

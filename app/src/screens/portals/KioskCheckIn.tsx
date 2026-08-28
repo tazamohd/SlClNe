@@ -281,7 +281,7 @@ function VehicleStep({
             disabled={!isLive}
             className="flex min-h-[64px] w-full cursor-pointer items-center gap-4 rounded-xl border border-border bg-card p-4 text-start transition-all hover:border-salis-blue hover:shadow-md disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
-            <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[rgba(10,94,215,.08)] text-salis-blue">
+            <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-salis-blue/[.08] text-salis-blue">
               <Icon name="Car" size={24} aria-hidden />
             </span>
             <div className="min-w-0 flex-1">
@@ -334,7 +334,7 @@ function ServiceStep({
             className={
               'flex min-h-[80px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border p-4 text-center transition-all ' +
               (selected === svc.id
-                ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue shadow-[0_0_0_3px_rgba(10,94,215,.15)]'
+                ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue shadow-[0_0_0_3px_rgba(10,94,215,.15)]'
                 : 'border-border bg-card text-heading hover:border-salis-blue hover:shadow-md')
             }
           >

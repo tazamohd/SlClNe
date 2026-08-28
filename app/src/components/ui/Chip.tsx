@@ -33,7 +33,7 @@ export function Chip({
         // selection ring is the only cue and it never moves as you Tab through.
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-card',
         selected
-          ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
+          ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue'
           : 'border-border bg-inset text-muted hover:border-border-strong',
         className
       )}

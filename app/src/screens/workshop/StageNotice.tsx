@@ -27,7 +27,7 @@ export function StageNotice({ stage }: { stage: JobStageValue }) {
   if (!stage.job) {
     return (
       <Card role="alert" className="flex items-start gap-3 border-salis-orange/40 p-4">
-        <span className="flex flex-shrink-0 rounded bg-[rgba(249,115,22,.12)] p-2 text-salis-orange">
+        <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
           <Icon name="FileQuestion" size={18} />
         </span>
         <div>
@@ -45,7 +45,7 @@ export function StageNotice({ stage }: { stage: JobStageValue }) {
   if (stage.error) {
     return (
       <Card role="alert" className="flex items-start gap-3 border-salis-orange/40 p-4">
-        <span className="flex flex-shrink-0 rounded bg-[rgba(249,115,22,.12)] p-2 text-salis-orange">
+        <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
           <Icon name={stage.refused ? 'ShieldAlert' : 'CloudOff'} size={18} />
         </span>
         <div className="min-w-0">

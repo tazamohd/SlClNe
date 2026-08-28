@@ -182,7 +182,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
                       'flex items-center gap-1.5 rounded-md px-3 py-1.5 font-action text-[13px] font-medium no-underline transition-colors hover:no-underline',
                       isActive
                         ? 'bg-salis-gradient-r text-white shadow'
-                        : 'text-heading hover:bg-[rgba(10,94,215,.08)]'
+                        : 'text-heading hover:bg-salis-blue/[.08]'
                     )
                   }
                 >
@@ -198,7 +198,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex h-8 cursor-pointer items-center gap-1.5 rounded-md border-none bg-transparent px-2 font-action text-xs font-medium text-muted transition-colors hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
+            className="flex h-8 cursor-pointer items-center gap-1.5 rounded-md border-none bg-transparent px-2 font-action text-xs font-medium text-muted transition-colors hover:bg-salis-blue/[.08] hover:text-salis-blue"
           >
             <Icon name="Globe" size={14} />
             <span>{rtl ? 'English' : 'عربي'}</span>
@@ -208,7 +208,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted transition-colors hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted transition-colors hover:bg-salis-blue/[.08] hover:text-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>

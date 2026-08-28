@@ -256,7 +256,7 @@ export function PublicContact() {
             {status === 'sent' ? (
               <div
                 role="status"
-                className="rounded-[14px] border border-salis-blue bg-[rgba(10,94,215,.06)] p-4 text-[13px] leading-relaxed text-heading"
+                className="rounded-[14px] border border-salis-blue bg-salis-blue/[.06] p-4 text-[13px] leading-relaxed text-heading"
               >
                 <p className="m-0 font-semibold">{t('Message sent.')}</p>
                 <p className="mb-0 mt-1">
@@ -270,7 +270,7 @@ export function PublicContact() {
             {status === 'unavailable' || status === 'error' ? (
               <div
                 role="alert"
-                className="rounded-[14px] border border-salis-orange bg-[rgba(249,115,22,.06)] p-4 text-[13px] leading-relaxed text-heading"
+                className="rounded-[14px] border border-salis-orange bg-salis-orange/[.06] p-4 text-[13px] leading-relaxed text-heading"
               >
                 <p className="m-0 font-semibold">
                   {status === 'unavailable'

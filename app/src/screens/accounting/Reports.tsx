@@ -185,7 +185,7 @@ export function FinancialReports() {
         {/* Assets must equal liabilities plus equity. Saying so where it fails
             beats letting it pass silently into a statement. */}
         {Math.abs(totals.assets - (totals.liabilities + totals.equity)) > 0.005 ? (
-          <p className="flex items-center gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body">
+          <p className="flex items-center gap-2 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-[13px] text-body">
             <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
             {t('Assets do not equal liabilities plus equity in the seeded ledger.')}
           </p>
@@ -263,7 +263,7 @@ function ServerLedgerSummary() {
         ))}
       </div>
       {bs.balanced ? null : (
-        <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body">
+        <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-[13px] text-body">
           <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
           {t('The server confirms assets do not equal liabilities plus equity — the books are not tied off.')}
         </p>

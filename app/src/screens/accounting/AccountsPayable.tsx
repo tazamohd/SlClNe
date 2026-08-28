@@ -75,7 +75,7 @@ export function AccountsPayable() {
           {['all', 'current', 'overdue'].map((f) => (
             <button key={f} type="button" onClick={() => setFilter(f)}
               className={'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 ' +
-                (filter === f ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border text-muted')}>
+                (filter === f ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue' : 'border-border text-muted')}>
               {t(f === 'all' ? 'All' : f === 'current' ? 'Current' : 'Overdue')}
             </button>
           ))}

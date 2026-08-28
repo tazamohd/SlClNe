@@ -214,7 +214,7 @@ export function TechnicianKB() {
               ) : null}
               <span className="text-[12px] text-muted">{open.make}</span>
             </div>
-            <div className="rounded-lg border-s-2 border-salis-blue bg-[rgba(10,94,215,.05)] p-3">
+            <div className="rounded-lg border-s-2 border-salis-blue bg-salis-blue/[.05] p-3">
               <p className="font-action text-[10px] font-bold uppercase tracking-wide text-salis-blue">
                 {t('Torque specification')}
               </p>

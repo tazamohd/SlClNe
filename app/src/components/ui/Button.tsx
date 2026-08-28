@@ -17,9 +17,9 @@ const VARIANTS: Record<ButtonVariant, string> = {
     'hover:bg-salis-gradient-hover hover:-translate-y-px hover:shadow-[0_8px_20px_rgba(10,94,215,.35)]',
   outline:
     'border-[1.5px] border-salis-blue bg-transparent text-salis-blue font-medium ' +
-    'hover:bg-[rgba(10,94,215,.08)]',
+    'hover:bg-salis-blue/[.08]',
   ghost:
-    'border-none bg-transparent text-salis-blue font-medium hover:bg-[rgba(10,94,215,.08)]',
+    'border-none bg-transparent text-salis-blue font-medium hover:bg-salis-blue/[.08]',
   subtle:
     'border border-border bg-card text-heading ' +
     'hover:bg-salis-gradient hover:text-white hover:border-transparent',

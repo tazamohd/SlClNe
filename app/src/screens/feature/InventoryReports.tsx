@@ -477,7 +477,7 @@ function ValueByPart({
                   <Money sar={value / 100} />
                 </span>
               </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+              <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
                 <div
                   className="h-full rounded-full bg-salis-blue"
                   style={{ inlineSize: `${Math.round((value / max) * 100)}%` }}
@@ -507,7 +507,7 @@ function UnitsByPart({ parts, loading }: { parts: readonly Part[]; loading: bool
               {part.stock}
             </span>
           </div>
-          <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+          <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
             <div
               className="h-full rounded-full bg-salis-blue"
               style={{ inlineSize: `${Math.round((part.stock / max) * 100)}%` }}

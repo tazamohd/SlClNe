@@ -282,7 +282,7 @@ export function RolesPermissions() {
 
       <Card className="rounded-xl p-4">
         <div className="mb-2.5 flex items-center gap-2">
-          <span className="flex rounded-lg bg-[rgba(249,115,22,.12)] p-1.5 text-salis-orange">
+          <span className="flex rounded-lg bg-salis-orange/[.12] p-1.5 text-salis-orange">
             <Icon name="EyeOff" size={14} />
           </span>
           <p className="font-display text-sm font-bold text-heading">

@@ -156,7 +156,7 @@ export function KnowledgeBase() {
         {categories.map((cc) => (
           <Card
             key={cc.name}
-            className="cursor-pointer rounded-xl p-4 shadow-sm transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+            className="cursor-pointer rounded-xl p-4 shadow-sm transition-all hover:border-salis-blue/[.3] hover:shadow-lg"
           >
             <span className="flex rounded-[10px] p-2" style={{ background: cc.iconBg, color: cc.iconFg }}>
               <Icon name={cc.icon} size={18} />
@@ -172,7 +172,7 @@ export function KnowledgeBase() {
         {filtered.map((a) => (
           <Card
             key={a.id}
-            className="flex cursor-pointer items-center gap-3.5 rounded-[14px] p-4 shadow-sm transition-all hover:border-[rgba(10,94,215,.2)]"
+            className="flex cursor-pointer items-center gap-3.5 rounded-[14px] p-4 shadow-sm transition-all hover:border-salis-blue/[.2]"
           >
             <span className="flex rounded-[10px] p-2" style={{ background: a.iconBg, color: a.iconFg }}>
               <Icon name="FileText" size={16} />

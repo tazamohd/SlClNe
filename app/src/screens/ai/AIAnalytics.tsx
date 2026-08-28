@@ -87,7 +87,7 @@ export function AIAnalytics() {
                   <span className="text-body">{tp.label}</span>
                   <span className="font-mono text-muted">{tp.count}</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+                <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
                   <div
                     className="h-full rounded-full"
                     style={{ width: `${tp.pct}%`, background: tp.color }}
@@ -151,7 +151,7 @@ export function AIAnalytics() {
                   <span className="text-body">{tp.label}</span>
                   <span className="font-mono text-muted">{tp.count}</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+                <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
                   <div
                     className="h-full rounded-full"
                     style={{ width: `${tp.pct}%`, background: tp.color }}

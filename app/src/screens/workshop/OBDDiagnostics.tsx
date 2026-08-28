@@ -193,8 +193,8 @@ export function OBDDiagnostics() {
                   className={
                     'flex w-full items-center gap-2.5 rounded-xl p-3 text-start transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue ' +
                     (on
-                      ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.07)]'
-                      : 'border border-border bg-card hover:border-[rgba(10,94,215,.35)]')
+                      ? 'border-[1.5px] border-salis-blue bg-salis-blue/[.07]'
+                      : 'border border-border bg-card hover:border-salis-blue/[.35]')
                   }
                 >
                   <span
@@ -209,7 +209,7 @@ export function OBDDiagnostics() {
                     </p>
                   </div>
                   {device.dtc > 0 ? (
-                    <span className="flex h-[19px] min-w-[19px] items-center justify-center rounded-full bg-[rgba(249,115,22,.15)] px-1.5 text-[10.5px] font-bold text-salis-orange">
+                    <span className="flex h-[19px] min-w-[19px] items-center justify-center rounded-full bg-salis-orange/[.15] px-1.5 text-[10.5px] font-bold text-salis-orange">
                       {device.dtc}
                     </span>
                   ) : null}
@@ -217,7 +217,7 @@ export function OBDDiagnostics() {
               )
             })
           )}
-          <div className="flex items-start gap-2.5 rounded-xl border border-dashed border-[rgba(10,94,215,.28)] bg-[rgba(10,94,215,.05)] p-3">
+          <div className="flex items-start gap-2.5 rounded-xl border border-dashed border-salis-blue/[.28] bg-salis-blue/[.05] p-3">
             <Icon name="Bluetooth" size={14} className="mt-0.5 flex-shrink-0 text-salis-blue" />
             <div>
               <p className="text-[12px] font-semibold text-heading">{t('Pair a new tool')}</p>
@@ -299,7 +299,7 @@ export function OBDDiagnostics() {
                   {command.kind === 'unavailable' ? (
                     <div
                       role="note"
-                      className="flex items-start gap-2.5 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5"
+                      className="flex items-start gap-2.5 rounded-lg border border-salis-orange/[.28] bg-salis-orange/[.07] p-2.5"
                     >
                       <Icon name="Plug" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
                       <div className="min-w-0">
@@ -314,14 +314,14 @@ export function OBDDiagnostics() {
                   {command.kind === 'error' ? (
                     <div
                       role="alert"
-                      className="rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5 text-[11.5px] text-body"
+                      className="rounded-lg border border-salis-orange/[.28] bg-salis-orange/[.07] p-2.5 text-[11.5px] text-body"
                     >
                       {command.message}
                     </div>
                   ) : null}
 
                   {command.kind === 'done' ? (
-                    <div className="rounded-lg bg-[rgba(10,94,215,.06)] p-2.5 text-[11.5px] text-body">
+                    <div className="rounded-lg bg-salis-blue/[.06] p-2.5 text-[11.5px] text-body">
                       {t('Command completed')}: {command.result.command}
                       {command.result.mock ? (
                         <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
@@ -450,7 +450,7 @@ export function OBDDiagnostics() {
                         </div>
                         <Link
                           to="/technician-kb"
-                          className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 font-action text-[11px] font-semibold text-salis-blue no-underline hover:bg-[rgba(10,94,215,.07)] hover:no-underline"
+                          className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1.5 font-action text-[11px] font-semibold text-salis-blue no-underline hover:bg-salis-blue/[.07] hover:no-underline"
                         >
                           <Icon name="BookOpen" size={11} />
                           {t('Procedure')}

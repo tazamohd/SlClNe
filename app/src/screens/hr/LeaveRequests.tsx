@@ -252,7 +252,7 @@ function LeaveDetail({ request, onClose }: { request: LeaveRequestRow; onClose: 
               <Button
                 variant="outline"
                 size="sm"
-                className="border-[rgba(249,115,22,.4)] text-salis-orange hover:bg-[rgba(249,115,22,.07)]"
+                className="border-salis-orange/[.4] text-salis-orange hover:bg-salis-orange/[.07]"
                 onClick={() => void reject()}
                 disabled={busy !== null || !reason.trim()}
               >

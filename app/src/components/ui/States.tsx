@@ -42,7 +42,7 @@ export function Loading({
       >
         <span
           aria-hidden
-          className="h-[15px] w-[15px] flex-shrink-0 animate-pulse rounded-[3px] bg-[rgba(10,94,215,.14)] motion-reduce:animate-none"
+          className="h-[15px] w-[15px] flex-shrink-0 animate-pulse rounded-[3px] bg-salis-blue/[.14] motion-reduce:animate-none"
         />
         {text}
       </span>
@@ -200,7 +200,7 @@ export function PermissionDenied({
   const { t } = usePreferences()
   return (
     <div role="alert" className="flex flex-col items-center gap-3 py-6 text-center">
-      <span className="flex rounded-full bg-[rgba(10,94,215,.09)] p-4 text-salis-blue">
+      <span className="flex rounded-full bg-salis-blue/[.09] p-4 text-salis-blue">
         <Icon name="Lock" size={24} />
       </span>
       <div>

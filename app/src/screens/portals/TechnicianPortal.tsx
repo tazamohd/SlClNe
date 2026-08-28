@@ -104,7 +104,7 @@ export function TechnicianPortal() {
                       to={detailRoute(job.id)}
                       className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3.5 no-underline transition-colors hover:border-salis-blue hover:no-underline"
                     >
-                      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
+                      <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
                         <Icon name="Wrench" size={14} />
                       </span>
                       <span className="min-w-0 flex-1">

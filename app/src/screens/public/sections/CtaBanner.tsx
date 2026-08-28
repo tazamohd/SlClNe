@@ -23,7 +23,7 @@ export function CtaBanner({ title, description, primaryCta, secondaryCta }: CtaB
         <h2 className="mb-3 mt-0 font-display text-3xl font-black text-white md:text-[36px]">
           {t(title)}
         </h2>
-        <p className="mx-auto mb-8 mt-0 max-w-[540px] text-base leading-[1.6] text-[rgba(255,255,255,.85)]">
+        <p className="mx-auto mb-8 mt-0 max-w-[540px] text-base leading-[1.6] text-white/[.85]">
           {t(description)}
         </p>
         <div className="flex flex-col justify-center gap-3 sm:flex-row">

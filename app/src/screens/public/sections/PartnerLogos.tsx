@@ -26,7 +26,7 @@ export function PartnerLogos({ title, subtitle, partners }: PartnerLogosProps) {
           {partners.map((name) => (
             <span
               key={name}
-              className="rounded-full bg-[rgba(10,94,215,.08)] px-5 py-2 text-[13px] font-semibold text-salis-blue"
+              className="rounded-full bg-salis-blue/[.08] px-5 py-2 text-[13px] font-semibold text-salis-blue"
             >
               {name}
             </span>

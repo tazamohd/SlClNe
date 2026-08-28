@@ -129,7 +129,7 @@ export function AutomationRules() {
           ) : (
             <Card
               key={rule.name}
-              className="rounded-2xl p-5 transition-all hover:border-[rgba(10,94,215,.3)]"
+              className="rounded-2xl p-5 transition-all hover:border-salis-blue/[.3]"
             >
               <div className="mb-3.5 flex items-center gap-3.5">
                 <span

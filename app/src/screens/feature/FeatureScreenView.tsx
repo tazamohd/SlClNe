@@ -99,7 +99,7 @@ function FeatureSectionView({ section }: { section: FeatureSection }) {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={index} className="transition-colors duration-150 hover:bg-[rgba(10,94,215,.04)]">
+            <tr key={index} className="transition-colors duration-150 hover:bg-salis-blue/[.04]">
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}

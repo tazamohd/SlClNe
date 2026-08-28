@@ -105,14 +105,14 @@ export function PublicLoans() {
         {result.error ? (
           <p
             role="alert"
-            className="mb-0 mt-5 rounded-[14px] border border-salis-orange bg-[rgba(249,115,22,.06)] p-4 text-center text-sm text-heading"
+            className="mb-0 mt-5 rounded-[14px] border border-salis-orange bg-salis-orange/[.06] p-4 text-center text-sm text-heading"
           >
             {t(result.error)}
           </p>
         ) : (
           <div
             aria-live="polite"
-            className="mt-5 rounded-[14px] border border-[rgba(10,94,215,.15)] bg-[rgba(10,94,215,.04)] p-6 text-center"
+            className="mt-5 rounded-[14px] border border-salis-blue/[.15] bg-salis-blue/[.04] p-6 text-center"
           >
             <p className="m-0 text-sm text-muted">{t('Estimated Monthly Payment')}</p>
             <p dir="ltr" className="mb-0 mt-2 font-display text-3xl font-black text-salis-blue md:text-[40px]">

@@ -201,7 +201,7 @@ export function NotificationCenter() {
                     markRead(n.id)
                   }
                 }}
-                className="flex cursor-pointer gap-3.5 border-0 border-b border-solid border-border px-4 py-4 transition-colors duration-150 hover:bg-[rgba(10,94,215,.03)]"
+                className="flex cursor-pointer gap-3.5 border-0 border-b border-solid border-border px-4 py-4 transition-colors duration-150 hover:bg-salis-blue/[.03]"
                 style={isUnread ? { background: 'rgba(10,94,215,.03)' } : undefined}
               >
                 <span

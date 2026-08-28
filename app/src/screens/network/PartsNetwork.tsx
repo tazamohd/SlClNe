@@ -97,7 +97,7 @@ export function PartsNetworkDashboard() {
             <span
               className={
                 'flex w-fit rounded-[10px] p-2 ' +
-                (stat.highlight ? 'bg-white/20 text-white' : 'bg-[rgba(10,94,215,.09)] text-salis-blue')
+                (stat.highlight ? 'bg-white/20 text-white' : 'bg-salis-blue/[.09] text-salis-blue')
               }
             >
               <Icon name={stat.icon ?? 'Circle'} size={18} />
@@ -120,7 +120,7 @@ export function PartsNetworkDashboard() {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {actions.map((action) => (
           <Card key={action.title} className="flex items-start gap-4 rounded-lg p-5">
-            <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(10,94,215,.09)] p-2.5 text-salis-blue">
+            <span className="flex flex-shrink-0 rounded-[10px] bg-salis-blue/[.09] p-2.5 text-salis-blue">
               <Icon name={action.icon} size={20} />
             </span>
             <div className="min-w-0 flex-1">

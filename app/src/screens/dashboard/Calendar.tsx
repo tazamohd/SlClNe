@@ -61,7 +61,7 @@ export function Calendar() {
           (isSelected
             ? 'bg-salis-gradient font-bold text-white'
             : hasAppts
-              ? 'bg-[rgba(10,94,215,.06)] font-medium text-heading hover:bg-[rgba(10,94,215,.12)]'
+              ? 'bg-salis-blue/[.06] font-medium text-heading hover:bg-salis-blue/[.12]'
               : 'bg-transparent text-body hover:bg-inset')
         }
       >

@@ -39,7 +39,7 @@ export function LegalDocument({ title, updated, intro, clauses }: LegalDocumentP
 
       {/* Not a heading, not styled as an error — an honest note about status.
           Blue (informational/active), never a warning hue. */}
-      <p className="mb-8 mt-0 rounded-[14px] border border-salis-blue bg-[rgba(10,94,215,.06)] p-4 text-[13px] leading-relaxed text-heading">
+      <p className="mb-8 mt-0 rounded-[14px] border border-salis-blue bg-salis-blue/[.06] p-4 text-[13px] leading-relaxed text-heading">
         {t(
           'This is a plain-language template provided for transparency while the platform is being built. It has not been reviewed by legal counsel and is not a substitute for professional legal advice.'
         )}

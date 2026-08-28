@@ -177,8 +177,8 @@ export function WorkshopInspection() {
 /** Pass is blue, fail is orange, N/A is slate — the palette has no red or
  *  green, so "fail" reads as the warning colour (README §7). */
 const TONES: Record<'pass' | 'fail' | 'na', string> = {
-  pass: 'bg-[rgba(10,94,215,.15)] text-salis-blue',
-  fail: 'bg-[rgba(249,115,22,.15)] text-salis-orange',
+  pass: 'bg-salis-blue/[.15] text-salis-blue',
+  fail: 'bg-salis-orange/[.15] text-salis-orange',
   na: 'bg-tint-neutral text-muted',
 }
 

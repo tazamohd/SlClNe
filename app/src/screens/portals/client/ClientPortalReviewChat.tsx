@@ -109,7 +109,7 @@ export function ClientPortalReviewChat() {
           </div>
           <div className="grid gap-3">
             {MESSAGES.map((m) => (
-              <div key={m.id} className={`flex flex-col gap-1 rounded-xl p-3 ${m.role === 'customer' ? 'bg-[rgba(10,94,215,.05)] ms-8' : 'bg-surface me-8'}`}>
+              <div key={m.id} className={`flex flex-col gap-1 rounded-xl p-3 ${m.role === 'customer' ? 'bg-salis-blue/[.05] ms-8' : 'bg-surface me-8'}`}>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-heading">{m.from}</span>
                   <span className="text-[10px] text-muted">{m.time}</span>

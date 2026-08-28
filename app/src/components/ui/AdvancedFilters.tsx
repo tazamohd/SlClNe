@@ -60,7 +60,7 @@ export function AdvancedFilters({
                     className={cn(
                       'cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
                       selected
-                        ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
+                        ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue'
                         : 'border-border bg-transparent text-body hover:border-salis-blue'
                     )}
                   >

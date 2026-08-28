@@ -291,7 +291,7 @@ export function InvoiceCreate() {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 rounded border border-[rgba(10,94,215,.2)] bg-[rgba(10,94,215,.08)] px-3 py-1.5">
+        <div className="flex items-center gap-1.5 rounded border border-salis-blue/[.2] bg-salis-blue/[.08] px-3 py-1.5">
           <Icon name="ShieldCheck" size={14} className="text-salis-blue" />
           <span className="font-action text-xs font-semibold text-salis-blue">
             {t('ZATCA Ready')}

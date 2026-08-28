@@ -48,7 +48,7 @@ export function Unauthorized() {
     >
       {/* Three stacked, slightly rotated tiles — the design's layered shield. */}
       <div className={`relative ${isMobile ? 'h-[90px] w-[90px]' : 'h-[120px] w-[120px]'}`}>
-        <div className="absolute inset-2.5 -rotate-6 rounded-[20px] bg-[rgba(10,94,215,.06)]" />
+        <div className="absolute inset-2.5 -rotate-6 rounded-[20px] bg-salis-blue/[.06]" />
         <div className="absolute inset-[5px] rotate-3 rounded-[20px] bg-tint-blue" />
         <div className="absolute inset-0 flex items-center justify-center rounded-[20px] border border-border bg-card shadow-lg">
           <div className="flex flex-col items-center gap-1">
@@ -183,7 +183,7 @@ export function AccountLocked() {
         </>
       }
     >
-      <div className={`relative flex items-center justify-center rounded-[24px] border-2 border-[rgba(249,115,22,.15)] bg-[rgba(249,115,22,.08)] ${isMobile ? 'h-20 w-20' : 'h-24 w-24'}`}>
+      <div className={`relative flex items-center justify-center rounded-[24px] border-2 border-salis-orange/[.15] bg-salis-orange/[.08] ${isMobile ? 'h-20 w-20' : 'h-24 w-24'}`}>
         <Icon name="Lock" size={isMobile ? 28 : 36} className="text-salis-orange" />
         <div className="absolute -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-salis-orange text-xs font-extrabold text-white shadow-[0_2px_8px_rgba(249,115,22,.4)] -end-1.5">
           !
@@ -267,7 +267,7 @@ export function LogoutConfirmation() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[rgba(11,31,59,.5)] font-ui">
+    <div className="flex min-h-screen items-center justify-center bg-salis-navy/[.5] font-ui">
       <div className={`w-full animate-fade-up ${isMobile ? 'max-w-full px-3' : 'max-w-[360px] p-4'}`}>
         <div className={`rounded-lg border border-border bg-card text-center shadow-lg ${isMobile ? 'p-4' : 'p-6'}`}>
           <span className="mb-3.5 inline-flex rounded-full bg-tint-orange p-3.5 text-salis-orange">

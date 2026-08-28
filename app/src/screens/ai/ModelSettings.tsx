@@ -77,7 +77,7 @@ export function ModelSettings() {
         className={
           'flex w-full items-center gap-3 rounded-xl border-[1.5px] p-3 text-start transition-all ' +
           (selected
-            ? 'border-salis-blue bg-[rgba(10,94,215,.05)]'
+            ? 'border-salis-blue bg-salis-blue/[.05]'
             : 'border-border bg-inset')
         }
       >
@@ -198,7 +198,7 @@ export function ModelSettings() {
                 <span className="text-muted">{t('Tokens Used')}</span>
                 <span className="font-mono text-body">2.4M / 5M</span>
               </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+              <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
                 <div className="h-full w-[48%] rounded-full bg-salis-gradient" />
               </div>
             </div>
@@ -302,7 +302,7 @@ export function ModelSettings() {
                   <span className="text-muted">{t('Tokens Used')}</span>
                   <span className="font-mono text-body">2.4M / 5M</span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+                <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
                   <div className="h-full w-[48%] rounded-full bg-salis-gradient" />
                 </div>
               </div>

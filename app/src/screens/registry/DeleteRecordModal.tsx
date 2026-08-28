@@ -104,7 +104,7 @@ export function DeleteRecordModal({
       {error ? (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-start text-[13px] text-body"
+          className="flex items-start gap-2 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-start text-[13px] text-body"
         >
           <Icon name="AlertTriangle" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
           {error}

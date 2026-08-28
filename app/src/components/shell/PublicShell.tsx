@@ -139,7 +139,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
               className={({ isActive }) =>
                 cn(
                   'rounded-lg px-2 py-3 text-[15px] font-medium no-underline hover:no-underline',
-                  isActive ? 'bg-[rgba(10,94,215,.08)] text-salis-blue' : 'text-body'
+                  isActive ? 'bg-salis-blue/[.08] text-salis-blue' : 'text-body'
                 )
               }
             >

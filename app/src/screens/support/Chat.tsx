@@ -113,7 +113,7 @@ export function Chat() {
           <p className="mb-3 text-sm font-bold text-heading">{t('Conversations')}</p>
           <div className="flex flex-col gap-1">
             {ACTIVE_CHATS.map((chat) => (
-              <div key={chat.id} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors ${chat.id === 1 ? 'bg-[rgba(10,94,215,.06)]' : 'hover:bg-surface-secondary'}`}>
+              <div key={chat.id} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors ${chat.id === 1 ? 'bg-salis-blue/[.06]' : 'hover:bg-surface-secondary'}`}>
                 <Avatar name={chat.customer} size={36} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between">

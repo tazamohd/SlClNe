@@ -29,7 +29,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-semibold text-heading">{userName}</p>
             <div className="flex items-center gap-1.5">
-              <span className="rounded-full bg-[rgba(10,94,215,.12)] px-1.5 py-px text-[10px] font-semibold tracking-[.03em] text-salis-blue">
+              <span className="rounded-full bg-salis-blue/[.12] px-1.5 py-px text-[10px] font-semibold tracking-[.03em] text-salis-blue">
                 {roleLabel}
               </span>
               <span className="rounded-full bg-salis-gradient px-1.5 py-px text-[10px] font-semibold tracking-[.03em] text-white">
@@ -73,7 +73,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                             'font-action text-xs font-medium no-underline transition-all duration-200',
                             isActive
                               ? 'bg-salis-gradient-r text-white shadow'
-                              : 'text-heading hover:bg-[rgba(10,94,215,.08)]'
+                              : 'text-heading hover:bg-salis-blue/[.08]'
                           )
                         }
                       >
@@ -113,7 +113,7 @@ function LanguageToggle() {
     <button
       type="button"
       onClick={toggleLanguage}
-      className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
+      className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-salis-blue/[.08] hover:text-salis-blue"
     >
       <Icon name="Globe" size={14} />
       <span>{rtl ? 'English' : 'عربي'}</span>

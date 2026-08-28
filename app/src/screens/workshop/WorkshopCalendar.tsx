@@ -69,7 +69,7 @@ export function WorkshopCalendar() {
         const slot = slots.find((s) => s.bay === bay && s.hour === h)
         if (slot?.status === 'occupied') {
           return (
-            <div className="rounded-lg bg-[rgba(10,94,215,.06)] p-2">
+            <div className="rounded-lg bg-salis-blue/[.06] p-2">
               <p className="text-xs font-semibold text-heading">{slot.vehicle}</p>
               <p className="font-mono text-[10px] text-muted" dir="ltr">{slot.job}</p>
             </div>

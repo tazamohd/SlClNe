@@ -66,7 +66,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               'flex flex-shrink-0 rounded p-1.5 ' +
               (toast.error
                 ? 'bg-tint-orange text-salis-orange'
-                : 'bg-[rgba(10,94,215,.12)] text-salis-blue')
+                : 'bg-salis-blue/[.12] text-salis-blue')
             }
           >
             <Icon name={toast.error ? 'AlertCircle' : 'CheckCircle'} size={18} />

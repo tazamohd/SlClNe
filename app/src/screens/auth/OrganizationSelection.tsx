@@ -69,8 +69,8 @@ export function OrganizationSelection() {
                   'flex h-[60px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] px-3.5',
                   'font-action text-sm font-medium transition-all duration-200 ease-salis',
                   selected
-                    ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)] text-salis-blue'
-                    : 'border border-border bg-card text-body hover:border-[rgba(10,94,215,.3)]'
+                    ? 'border-[1.5px] border-salis-blue bg-salis-blue/[.06] text-salis-blue'
+                    : 'border border-border bg-card text-body hover:border-salis-blue/[.3]'
                 )}
               >
                 <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-salis-gradient text-[13px] font-bold text-white">

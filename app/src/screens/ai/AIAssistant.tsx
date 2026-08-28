@@ -97,7 +97,7 @@ export function AIAssistant() {
           type="button"
           onClick={() => handleSuggestionClick(s)}
           disabled={!isLive}
-          className="flex cursor-pointer flex-col gap-1.5 rounded-xl border border-border bg-card p-3.5 text-start transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+          className="flex cursor-pointer flex-col gap-1.5 rounded-xl border border-border bg-card p-3.5 text-start transition-all hover:border-salis-blue/[.3] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           <span
             className="flex rounded-lg p-1.5"

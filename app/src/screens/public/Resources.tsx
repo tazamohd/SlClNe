@@ -84,7 +84,7 @@ export function PublicResources() {
             to={cat.to}
             className={cn(
               'flex flex-col gap-2 rounded-2xl border border-default bg-card p-5 no-underline',
-              'transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(10,94,215,.3)] hover:shadow-lg'
+              'transition-all duration-200 hover:-translate-y-0.5 hover:border-salis-blue/[.3] hover:shadow-lg'
             )}
           >
             <span className={cn('inline-flex w-fit rounded-[14px] p-3', TINT_CHIP[cat.tint])}>

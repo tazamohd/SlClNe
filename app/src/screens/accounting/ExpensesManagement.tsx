@@ -68,7 +68,7 @@ export function ExpensesManagement() {
     { header: 'Progress', cell: (c) => {
       const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
       return (
-        <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]" style={{ minWidth: 100 }}>
+        <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]" style={{ minWidth: 100 }}>
           <div className="h-full rounded-full" style={{ width: `${Math.min(pct, 100)}%`, background: pct > 100 ? 'var(--salis-orange)' : 'var(--salis-blue)' }} />
         </div>
       )

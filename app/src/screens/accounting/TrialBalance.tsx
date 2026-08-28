@@ -87,7 +87,7 @@ export function TrialBalance() {
       <StatRow stats={stats} />
 
       {!balanced && (
-        <div className="flex items-center gap-2 rounded-lg border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-4 py-3 text-[13px] text-body">
+        <div className="flex items-center gap-2 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-4 py-3 text-[13px] text-body">
           <Icon name="AlertTriangle" size={16} className="flex-shrink-0 text-salis-orange" />
           {t('The trial balance does not balance — total debits do not equal total credits.')}
         </div>

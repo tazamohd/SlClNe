@@ -167,7 +167,7 @@ export function CustomerApproval() {
                             {t(urg.label)}
                           </Badge>
                           {line.kind === 'labour' ? (
-                            <span className="rounded-full bg-[rgba(100,116,139,.14)] px-1.5 py-0.5 font-action text-[10px] font-semibold text-muted">
+                            <span className="rounded-full bg-muted/[.14] px-1.5 py-0.5 font-action text-[10px] font-semibold text-muted">
                               {t('Labour')}
                             </span>
                           ) : null}
@@ -252,7 +252,7 @@ export function CustomerApproval() {
                 ) : null}
 
                 {otp.kind === 'verified' ? (
-                  <div className="flex items-center gap-2 rounded-lg bg-[rgba(10,94,215,.08)] p-2.5 text-[12px] font-semibold text-salis-blue">
+                  <div className="flex items-center gap-2 rounded-lg bg-salis-blue/[.08] p-2.5 text-[12px] font-semibold text-salis-blue">
                     <Icon name="CheckCircle" size={14} />
                     {t('Signed and authorised')}
                   </div>
@@ -261,7 +261,7 @@ export function CustomerApproval() {
                 {otp.kind === 'unavailable' ? (
                   <div
                     role="note"
-                    className="flex items-start gap-2.5 rounded-lg border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-2.5"
+                    className="flex items-start gap-2.5 rounded-lg border border-salis-orange/[.28] bg-salis-orange/[.07] p-2.5"
                   >
                     <Icon name="MessageSquare" size={14} className="mt-0.5 flex-shrink-0 text-salis-orange" />
                     <div className="min-w-0">

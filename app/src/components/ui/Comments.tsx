@@ -50,7 +50,7 @@ export function Comments({ items, title, onAdd, className }: CommentsProps) {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-heading">{c.author}</span>
                 {c.role ? (
-                  <span className="rounded-full bg-[rgba(10,94,215,.08)] px-2 py-0.5 text-[10px] font-medium text-salis-blue">
+                  <span className="rounded-full bg-salis-blue/[.08] px-2 py-0.5 text-[10px] font-medium text-salis-blue">
                     {t(c.role)}
                   </span>
                 ) : null}

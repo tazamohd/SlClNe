@@ -79,7 +79,7 @@ export function HRPayroll() {
         <div className="flex flex-col gap-2.5">
           {LINKS.map(([to, icon, title, sub]) => (
             <Link key={to} to={to}
-              className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 no-underline transition-colors hover:bg-[rgba(10,94,215,.05)]">
+              className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 no-underline transition-colors hover:bg-salis-blue/[.05]">
               <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
                 <Icon name={icon} size={16} />
               </span>
@@ -161,7 +161,7 @@ export function HRPayroll() {
               </div>
               <Link
                 to="/payroll-management"
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 font-action text-xs font-semibold text-body no-underline transition-colors hover:bg-[rgba(10,94,215,.06)]"
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 font-action text-xs font-semibold text-body no-underline transition-colors hover:bg-salis-blue/[.06]"
               >
                 {t('Open payroll')}
                 <Icon name="ArrowRight" size={13} />
@@ -213,7 +213,7 @@ export function HRPayroll() {
           <Link
             key={to}
             to={to}
-            className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3.5 no-underline transition-colors hover:bg-[rgba(10,94,215,.05)]"
+            className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3.5 no-underline transition-colors hover:bg-salis-blue/[.05]"
           >
             <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
               <Icon name={icon} size={18} />

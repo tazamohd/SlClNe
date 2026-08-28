@@ -205,7 +205,7 @@ export function SupplierPortal() {
 
       {/* Communications quick action */}
       <Card className="flex items-center gap-3 p-4">
-        <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
+        <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-2 text-salis-blue">
           <Icon name="MessageSquare" size={18} />
         </span>
         <div className="min-w-0 flex-1">
@@ -240,7 +240,7 @@ function MetricCard({
 }) {
   return (
     <Card className="flex items-center gap-3 p-4">
-      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
+      <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-2 text-salis-blue">
         <Icon name={icon} size={18} aria-hidden />
       </span>
       <div className="min-w-0 flex-1">

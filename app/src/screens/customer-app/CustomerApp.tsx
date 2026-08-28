@@ -74,7 +74,7 @@ export function CustomerAppHome() {
             onClick={() => navigate(action.to)}
             className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-border bg-card p-3 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
-            <span className="flex rounded-[10px] bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
+            <span className="flex rounded-[10px] bg-salis-blue/[.08] p-2 text-salis-blue">
               <Icon name={action.icon} size={16} />
             </span>
             <span className="text-[10px] font-semibold text-body">{t(action.label)}</span>
@@ -132,7 +132,7 @@ export function CustomerAppGarage() {
           className="flex flex-col gap-2 rounded-[14px] border border-border bg-card p-3.5"
         >
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[10px] bg-[rgba(10,94,215,.08)] text-salis-blue">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[10px] bg-salis-blue/[.08] text-salis-blue">
               <Icon name="Car" size={18} />
             </span>
             <div className="min-w-0 flex-1">

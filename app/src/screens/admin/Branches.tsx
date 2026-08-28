@@ -113,7 +113,7 @@ export function Branches() {
             {filteredLive.map((b) => (
               <Card
                 key={b._id ?? b.name}
-                className="cursor-pointer p-5 transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+                className="cursor-pointer p-5 transition-all hover:border-salis-blue/[.3] hover:shadow-lg"
               >
                 <div className="mb-3.5 flex items-center gap-2.5">
                   <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-tint-blue">
@@ -150,7 +150,7 @@ export function Branches() {
             return (
               <Card
                 key={b.name}
-                className="cursor-pointer p-5 transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+                className="cursor-pointer p-5 transition-all hover:border-salis-blue/[.3] hover:shadow-lg"
               >
                 <div className="mb-3.5 flex items-center gap-2.5">
                   <span
@@ -179,7 +179,7 @@ export function Branches() {
                 </div>
                 <div className="mt-3">
                   <p className="m-0 mb-1 text-[11px] text-muted">{t('Monthly Revenue')}</p>
-                  <div className="h-1 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
+                  <div className="h-1 overflow-hidden rounded-full bg-salis-blue/[.08]">
                     <div
                       className="h-full rounded-full bg-salis-gradient-r"
                       style={{ width: `${b.revPct}%` }}

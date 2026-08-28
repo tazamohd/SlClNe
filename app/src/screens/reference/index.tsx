@@ -229,7 +229,7 @@ export function UITimelineView() {
         <div className="flex items-center gap-1 overflow-x-auto py-2">
           {steps.map((s, i) => (
             <div key={s.label} className="flex items-center gap-1">
-              <div className={`flex flex-col items-center gap-1 rounded-lg px-3 py-2 ${s.done ? 'bg-[rgba(10,94,215,.08)]' : 'bg-inset'}`}>
+              <div className={`flex flex-col items-center gap-1 rounded-lg px-3 py-2 ${s.done ? 'bg-salis-blue/[.08]' : 'bg-inset'}`}>
                 <Icon name={s.icon} size={16} className={s.done ? 'text-salis-blue' : 'text-muted'} />
                 <span className={`whitespace-nowrap text-xs font-medium ${s.done ? 'text-salis-blue' : 'text-muted'}`}>{t(s.label)}</span>
               </div>
@@ -660,7 +660,7 @@ export function UIAdvancedFilters() {
               </label>
               <div className="flex flex-wrap gap-1.5">
                 {f.options.map((opt, i) => (
-                  <span key={opt} className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${i === 0 ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue' : 'border-border text-body hover:border-salis-blue'}`}>
+                  <span key={opt} className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${i === 0 ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue' : 'border-border text-body hover:border-salis-blue'}`}>
                     {t(opt)}
                   </span>
                 ))}
@@ -707,7 +707,7 @@ export function UIImportCenter() {
           {importFormats.map(f => (
             <Card key={f.format} className="cursor-pointer p-4 transition-shadow hover:shadow-md">
               <div className="flex items-center gap-3">
-                <span className="flex rounded-lg bg-[rgba(10,94,215,.08)] p-2">
+                <span className="flex rounded-lg bg-salis-blue/[.08] p-2">
                   <Icon name={f.icon} size={20} className="text-salis-blue" />
                 </span>
                 <div>
@@ -823,7 +823,7 @@ export function UIFormValidation() {
         </div>
       </Section>
       <Section title="Validation Summary">
-        <div className="rounded-lg border border-salis-orange bg-[rgba(249,115,22,.06)] p-3">
+        <div className="rounded-lg border border-salis-orange bg-salis-orange/[.06] p-3">
           <div className="flex items-center gap-2">
             <Icon name="AlertCircle" size={16} className="text-salis-orange" />
             <span className="text-sm font-semibold text-heading">{t('Please fix the following errors')}</span>
@@ -1087,7 +1087,7 @@ export function UIModalsData() {
           </div>
           <div className="flex flex-col divide-y divide-border">
             {['Main Warehouse', 'North Branch Store', 'Jeddah Parts Center'].map((item, i) => (
-              <div key={item} className={`flex cursor-pointer items-center gap-3 px-4 py-3 ${i === 0 ? 'bg-[rgba(10,94,215,.05)]' : 'hover:bg-inset'}`}>
+              <div key={item} className={`flex cursor-pointer items-center gap-3 px-4 py-3 ${i === 0 ? 'bg-salis-blue/[.05]' : 'hover:bg-inset'}`}>
                 <span className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${i === 0 ? 'border-salis-blue bg-salis-blue' : 'border-border'}`}>
                   {i === 0 && <Icon name="Check" size={12} className="text-white" />}
                 </span>
@@ -1189,7 +1189,7 @@ export function FlowSpec() {
               <div className={`flex items-center gap-1 overflow-x-auto ${isMobile ? 'flex-wrap' : ''}`}>
                 {flow.steps.map((step, i) => (
                   <div key={step} className="flex items-center gap-1">
-                    <span className="whitespace-nowrap rounded-full bg-[rgba(10,94,215,.08)] px-3 py-1 text-xs font-medium text-salis-blue">
+                    <span className="whitespace-nowrap rounded-full bg-salis-blue/[.08] px-3 py-1 text-xs font-medium text-salis-blue">
                       {t(step)}
                     </span>
                     {i < flow.steps.length - 1 && <Icon name="ChevronRight" size={12} className="flex-shrink-0 text-muted" />}
@@ -1285,7 +1285,7 @@ export function ScreenIndex() {
                 <a
                   key={s.name}
                   href={s.route}
-                  className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-body no-underline transition-colors hover:border-salis-blue hover:bg-[rgba(10,94,215,.04)]"
+                  className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-body no-underline transition-colors hover:border-salis-blue hover:bg-salis-blue/[.04]"
                 >
                   <Icon name={s.hasMobile ? 'Smartphone' : 'Monitor'} size={14} className="flex-shrink-0 text-muted" />
                   <div className="min-w-0 flex-1">

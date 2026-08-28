@@ -7,26 +7,26 @@ type AlertVariant = 'info' | 'warning' | 'error' | 'neutral'
 
 const VARIANT_STYLES: Record<AlertVariant, { bg: string; border: string; icon: string; iconColor: string }> = {
   info: {
-    bg: 'bg-[rgba(10,94,215,.06)]',
-    border: 'border-[rgba(10,94,215,.2)]',
+    bg: 'bg-salis-blue/[.06]',
+    border: 'border-salis-blue/[.2]',
     icon: 'Info',
     iconColor: 'text-salis-blue',
   },
   warning: {
-    bg: 'bg-[rgba(249,115,22,.06)]',
-    border: 'border-[rgba(249,115,22,.2)]',
+    bg: 'bg-salis-orange/[.06]',
+    border: 'border-salis-orange/[.2]',
     icon: 'AlertTriangle',
     iconColor: 'text-salis-orange',
   },
   error: {
-    bg: 'bg-[rgba(234,88,12,.06)]',
-    border: 'border-[rgba(234,88,12,.2)]',
+    bg: 'bg-salis-orange-hover/[.06]',
+    border: 'border-salis-orange-hover/[.2]',
     icon: 'AlertCircle',
     iconColor: 'text-salis-orange-hover',
   },
   neutral: {
-    bg: 'bg-[rgba(100,116,139,.06)]',
-    border: 'border-[rgba(100,116,139,.2)]',
+    bg: 'bg-muted/[.06]',
+    border: 'border-muted/[.2]',
     icon: 'Info',
     iconColor: 'text-muted',
   },

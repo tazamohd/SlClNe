@@ -93,7 +93,7 @@ export function PublicCareers() {
           <Link
             key={pos.title}
             to="/public-portal/contact"
-            className="flex flex-col gap-2 rounded-2xl border border-default bg-card p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(10,94,215,.3)] hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-2 rounded-2xl border border-default bg-card p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-salis-blue/[.3] hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
               <h2 className="m-0 text-[15px] font-bold text-heading">{t(pos.title)}</h2>
@@ -101,7 +101,7 @@ export function PublicCareers() {
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <span className="text-[13px] text-muted">{t(pos.location)}</span>
-              <span className="rounded-full bg-[rgba(10,94,215,.08)] px-2.5 py-0.5 text-xs font-medium text-salis-blue">
+              <span className="rounded-full bg-salis-blue/[.08] px-2.5 py-0.5 text-xs font-medium text-salis-blue">
                 {t(pos.type)}
               </span>
             </div>

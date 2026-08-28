@@ -134,7 +134,7 @@ export function WorkflowBuilder() {
         {workflows.map((wf) => (
           <Card
             key={wf.name}
-            className="cursor-pointer rounded-2xl p-5 transition-all hover:border-[rgba(10,94,215,.3)] hover:shadow-lg"
+            className="cursor-pointer rounded-2xl p-5 transition-all hover:border-salis-blue/[.3] hover:shadow-lg"
           >
             {/* Header */}
             <div className="mb-4 flex items-center gap-3">

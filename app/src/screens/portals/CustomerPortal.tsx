@@ -152,7 +152,7 @@ export function CustomerPortal() {
               className="flex min-w-[200px] flex-shrink-0 flex-col gap-2 rounded-xl border border-border bg-card p-3.5"
             >
               <div className="flex items-center gap-2">
-                <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
+                <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
                   <Icon name="Car" size={14} />
                 </span>
                 <div className="min-w-0">

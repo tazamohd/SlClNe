@@ -178,7 +178,7 @@ export function CallCenter() {
               return (
                 <div
                   key={q.name}
-                  className="flex flex-col gap-1.5 border-b border-border px-4 py-3 transition-colors last:border-b-0 hover:bg-[rgba(10,94,215,.03)]"
+                  className="flex flex-col gap-1.5 border-b border-border px-4 py-3 transition-colors last:border-b-0 hover:bg-salis-blue/[.03]"
                 >
                   <div className="flex items-center gap-2">
                     <span

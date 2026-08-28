@@ -56,7 +56,7 @@ export function RegionSelection() {
                   'box-border flex h-12 w-full cursor-pointer items-center gap-2.5 rounded px-4',
                   'font-action text-sm font-medium transition-all duration-150',
                   on
-                    ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)] text-salis-blue'
+                    ? 'border-[1.5px] border-salis-blue bg-salis-blue/[.06] text-salis-blue'
                     : 'border border-border bg-card text-body'
                 )}
               >

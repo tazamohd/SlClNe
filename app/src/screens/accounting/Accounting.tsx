@@ -208,7 +208,7 @@ export function JournalEntries() {
           'flex rounded p-2 ' +
           (balanced
             ? 'bg-tint-blue text-salis-blue'
-            : 'bg-[rgba(249,115,22,.12)] text-salis-orange')
+            : 'bg-salis-orange/[.12] text-salis-orange')
         }
       >
         <Icon name={balanced ? 'Scale' : 'AlertTriangle'} size={18} />

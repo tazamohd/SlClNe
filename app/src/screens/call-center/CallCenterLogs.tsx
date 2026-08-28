@@ -162,7 +162,7 @@ export function CallCenterLogs() {
               <button
                 type="button"
                 disabled={!isLive}
-                className="flex h-[26px] w-[26px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-[rgba(10,94,215,.07)] text-salis-blue disabled:cursor-default disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+                className="flex h-[26px] w-[26px] flex-shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-salis-blue/[.07] text-salis-blue disabled:cursor-default disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                 aria-label={t('Play recording for') + ' ' + log.customer}
               >
                 <Icon name="Play" size={12} />

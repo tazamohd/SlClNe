@@ -32,7 +32,7 @@ export function HowItWorks({ title, steps }: HowItWorksProps) {
             {/* Connecting line behind all steps */}
             <div
               aria-hidden
-              className="absolute start-0 end-0 top-6 mx-auto h-[2px] bg-[rgba(10,94,215,.12)]"
+              className="absolute start-0 end-0 top-6 mx-auto h-[2px] bg-salis-blue/[.12]"
               style={{ width: `${((steps.length - 1) / steps.length) * 100}%`, marginInlineStart: `${(100 / steps.length) / 2}%` }}
             />
             {steps.map((step) => (
@@ -68,7 +68,7 @@ export function HowItWorks({ title, steps }: HowItWorksProps) {
                 {index < steps.length - 1 && (
                   <div
                     aria-hidden
-                    className="mt-2 w-[2px] flex-1 bg-[rgba(10,94,215,.12)]"
+                    className="mt-2 w-[2px] flex-1 bg-salis-blue/[.12]"
                   />
                 )}
               </div>

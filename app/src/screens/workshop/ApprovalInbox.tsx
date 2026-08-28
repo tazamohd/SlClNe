@@ -229,9 +229,9 @@ export function ApprovalInbox() {
       {/* Segregation of duties is a server control here, not a client flag. */}
       <div
         role="note"
-        className="flex items-start gap-3 rounded-xl border border-[rgba(249,115,22,.28)] bg-[rgba(249,115,22,.07)] p-3.5"
+        className="flex items-start gap-3 rounded-xl border border-salis-orange/[.28] bg-salis-orange/[.07] p-3.5"
       >
-        <span className="mt-0.5 flex flex-shrink-0 rounded-lg bg-[rgba(249,115,22,.14)] p-1.5 text-salis-orange">
+        <span className="mt-0.5 flex flex-shrink-0 rounded-lg bg-salis-orange/[.14] p-1.5 text-salis-orange">
           <Icon name="AlertTriangle" size={15} />
         </span>
         <div className="min-w-0">
@@ -328,7 +328,7 @@ export function ApprovalInbox() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-[rgba(249,115,22,.4)] text-salis-orange hover:bg-[rgba(249,115,22,.07)]"
+                        className="border-salis-orange/[.4] text-salis-orange hover:bg-salis-orange/[.07]"
                         onClick={() => void decide(item, 'reject')}
                         disabled={isBusy}
                       >
