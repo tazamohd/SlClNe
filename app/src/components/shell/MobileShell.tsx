@@ -20,7 +20,7 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
         type="button"
         onClick={onOpenNav}
         aria-label={t('Open menu')}
-        className="inline-flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-heading"
+        className="inline-flex h-9 w-9 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
       >
         <Icon name="Menu" size={20} />
       </button>
@@ -30,14 +30,14 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
         type="button"
         onClick={toggleTheme}
         aria-label={t('Toggle theme')}
-        className="inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
+        className="inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
       >
         <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
       </button>
       <button
         type="button"
         aria-label={t('Notifications')}
-        className="relative inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
+        className="relative inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
       >
         <Icon name="Bell" size={16} />
         <span className="absolute top-1.5 h-[7px] w-[7px] rounded-full border-2 border-sidebar bg-salis-orange end-[7px]" />

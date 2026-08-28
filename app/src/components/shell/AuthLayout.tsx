@@ -46,7 +46,7 @@ export function AuthControls() {
         type="button"
         onClick={toggleLanguage}
         aria-label={t('Toggle language')}
-        className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded border border-border bg-card px-2.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue"
+        className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded border border-border bg-card px-2.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
       >
         <Icon name="Globe" size={14} />
         <span>{rtl ? 'English' : 'عربي'}</span>
@@ -55,7 +55,7 @@ export function AuthControls() {
         type="button"
         onClick={toggleTheme}
         aria-label={t('Toggle theme')}
-        className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue"
+        className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
       >
         <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
       </button>

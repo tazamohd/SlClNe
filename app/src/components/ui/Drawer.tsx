@@ -110,7 +110,7 @@ export function Drawer({
               type="button"
               onClick={onClose}
               aria-label={t('Close')}
-              className="flex rounded-lg p-1 text-muted hover:bg-inset hover:text-heading"
+              className="flex rounded-lg p-1 text-muted hover:bg-inset hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
             >
               <Icon name="X" size={18} />
             </button>

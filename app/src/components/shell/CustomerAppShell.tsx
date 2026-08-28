@@ -42,14 +42,14 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>
           <NavLink
             to="/customer-app/notifications"
             aria-label={t('Notifications')}
-            className="relative flex h-10 w-10 items-center justify-center rounded text-muted no-underline hover:no-underline"
+            className="relative flex h-10 w-10 items-center justify-center rounded text-muted no-underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name="Bell" size={16} />
             {pathname !== '/customer-app/notifications' ? (

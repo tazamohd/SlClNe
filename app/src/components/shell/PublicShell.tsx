@@ -90,7 +90,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-muted"
+            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>
@@ -98,7 +98,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
             type="button"
             onClick={toggleLanguage}
             aria-label={t('Switch language')}
-            className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-none bg-transparent px-2 font-action text-[13px] font-medium text-muted"
+            className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-none bg-transparent px-2 font-action text-[13px] font-medium text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name="Globe" size={16} />
             <span lang={language === 'ar' ? 'ar' : 'en'}>
@@ -118,7 +118,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
               aria-label={t('Menu')}
               aria-expanded={menuOpen}
               aria-controls="public-mobile-menu"
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-heading"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
             >
               <Icon name={menuOpen ? 'X' : 'Menu'} size={20} />
             </button>

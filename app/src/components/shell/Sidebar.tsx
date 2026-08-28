@@ -50,7 +50,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   type="button"
                   onClick={() => toggleGroup(group.label)}
                   aria-expanded={open}
-                  className="flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 font-action text-[13px] font-extrabold uppercase tracking-[.05em] text-heading transition-colors duration-150 hover:bg-tint-blue"
+                  className="flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 font-action text-[13px] font-extrabold uppercase tracking-[.05em] text-heading transition-colors duration-150 hover:bg-tint-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
                 >
                   <span>{t(group.label)}</span>
                   <span className="flex-1" />
@@ -113,7 +113,7 @@ function LanguageToggle() {
     <button
       type="button"
       onClick={toggleLanguage}
-      className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-salis-blue/[.08] hover:text-salis-blue"
+      className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-salis-blue/[.08] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
     >
       <Icon name="Globe" size={14} />
       <span>{rtl ? 'English' : 'عربي'}</span>

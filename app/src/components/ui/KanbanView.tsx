@@ -57,8 +57,19 @@ export function KanbanView({ columns, onCardClick, className }: KanbanViewProps)
             {col.cards.map((card) => (
               <Card
                 key={card.id}
-                className={cn('p-3 transition-shadow hover:shadow-md', onCardClick && 'cursor-pointer')}
+                className={cn(
+                  'p-3 transition-shadow hover:shadow-md',
+                  onCardClick && 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue'
+                )}
                 onClick={onCardClick ? () => onCardClick(card.id, col.id) : undefined}
+                tabIndex={onCardClick ? 0 : undefined}
+                role={onCardClick ? 'button' : undefined}
+                onKeyDown={onCardClick ? (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onCardClick(card.id, col.id)
+                  }
+                } : undefined}
               >
                 {card.content}
               </Card>

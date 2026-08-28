@@ -124,7 +124,7 @@ export function ControlTracker() {
               key={item.id}
               role="button"
               tabIndex={0}
-              className="flex cursor-pointer items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:border-salis-blue/30 hover:bg-salis-blue/[.03]"
+              className="flex cursor-pointer items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:border-salis-blue/30 hover:bg-salis-blue/[.03] focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:outline-none"
               onClick={() => navigate('/customer-approval')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/customer-approval') }}
             >
@@ -180,7 +180,7 @@ function PipelineView({
                       key={job.id}
                       role="button"
                       tabIndex={0}
-                      className="cursor-pointer rounded-lg border border-border bg-inset p-2.5 transition-colors hover:border-salis-blue/30"
+                      className="cursor-pointer rounded-lg border border-border bg-inset p-2.5 transition-colors hover:border-salis-blue/30 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:outline-none"
                       onClick={() => navigate(`/job-detail?id=${job.id}`)}
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate(`/job-detail?id=${job.id}`) }}
                     >

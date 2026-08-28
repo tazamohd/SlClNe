@@ -236,7 +236,7 @@ export function CustomerPortalBooking() {
                       form.markTouched('vehicle')
                     }}
                     className={cn(
-                      'flex w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-none p-2.5 text-start font-action transition-colors',
+                      'flex w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-none p-2.5 text-start font-action transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:outline-none',
                       picked
                         ? 'bg-salis-blue/[.08] text-salis-blue'
                         : 'bg-inset text-body hover:bg-salis-blue/[.04]'
@@ -287,7 +287,7 @@ export function CustomerPortalBooking() {
                       form.markTouched('service')
                     }}
                     className={cn(
-                      'flex cursor-pointer items-center gap-1.5 rounded-lg border-none px-3.5 py-2 font-action text-xs font-semibold transition-colors',
+                      'flex cursor-pointer items-center gap-1.5 rounded-lg border-none px-3.5 py-2 font-action text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:outline-none',
                       picked
                         ? 'bg-salis-gradient text-white'
                         : 'bg-inset text-body hover:bg-salis-blue/[.06]'
@@ -326,7 +326,7 @@ export function CustomerPortalBooking() {
                     form.setValue('time', '')
                   }}
                   className={cn(
-                    'flex min-w-[48px] flex-shrink-0 cursor-pointer flex-col items-center gap-0.5 rounded-[10px] border-none px-3 py-2 font-action transition-colors',
+                    'flex min-w-[48px] flex-shrink-0 cursor-pointer flex-col items-center gap-0.5 rounded-[10px] border-none px-3 py-2 font-action transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:outline-none',
                     picked
                       ? 'bg-salis-gradient text-white'
                       : 'bg-inset text-body hover:bg-salis-blue/[.06]'
@@ -357,7 +357,7 @@ export function CustomerPortalBooking() {
                   }}
                   dir="ltr"
                   className={cn(
-                    'h-[38px] rounded-lg border-none font-mono text-xs font-semibold transition-colors',
+                    'h-[38px] rounded-lg border-none font-mono text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:outline-none',
                     busy
                       ? 'cursor-default bg-inset text-faint opacity-50'
                       : picked
