@@ -59,7 +59,9 @@ export function IntelligentPriceOptimizer() {
       </div>
 
       <div className="flex items-center justify-between">
-        <h2 className="text-[15px] font-bold text-heading">{t('Price Suggestions')}</h2>
+        <h2 className="text-[15px] font-bold text-heading">
+          {strategy === 'aggressive' ? t('Aggressive Price Suggestions') : strategy === 'balanced' ? t('Balanced Price Suggestions') : t('Conservative Price Suggestions')}
+        </h2>
         <Select value={strategy} onChange={e => setStrategy(e.target.value)} aria-label={t('Select strategy')}>
           <option value="aggressive">{t('Aggressive')}</option>
           <option value="balanced">{t('Balanced')}</option>

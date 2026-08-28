@@ -63,7 +63,9 @@ export function BusinessIntelligenceDashboard() {
 
       <Card className="rounded-2xl p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-[15px] font-bold text-heading">{t('Key Metrics')}</h2>
+          <h2 className="text-[15px] font-bold text-heading">
+            {period === 'week' ? t('Weekly Metrics') : period === 'month' ? t('Monthly Metrics') : t('Quarterly Metrics')}
+          </h2>
           <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
             <option value="week">{t('This Week')}</option>
             <option value="month">{t('This Month')}</option>

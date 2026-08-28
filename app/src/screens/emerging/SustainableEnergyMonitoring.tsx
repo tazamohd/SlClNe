@@ -99,7 +99,9 @@ export function SustainableEnergyMonitoring() {
       />
 
       <div className="flex items-center justify-between">
-        <h2 className="text-[15px] font-bold text-heading">{t('Monthly Performance')}</h2>
+        <h2 className="text-[15px] font-bold text-heading">
+          {period === 'month' ? t('Monthly Performance') : period === 'quarter' ? t('Quarterly Performance') : t('Yearly Performance')}
+        </h2>
         <Select value={period} onChange={e => setPeriod(e.target.value)} aria-label={t('Select period')}>
           <option value="month">{t('Last 6 Months')}</option>
           <option value="quarter">{t('This Quarter')}</option>
