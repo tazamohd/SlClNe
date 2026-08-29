@@ -14,11 +14,11 @@
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 94,
-    "hasErrorState": 66,
-    "hasEmptyState": 94,
+    "hasLoadingState": 92,
+    "hasErrorState": 64,
+    "hasEmptyState": 101,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 48,
+    "orphanScreenFiles": 63,
     "productionReady": 0
   },
   "bySurface": {
