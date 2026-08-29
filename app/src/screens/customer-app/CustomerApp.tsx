@@ -6,12 +6,16 @@ import {
   AppListRow,
   AppSection,
 } from '@/components/shell/CustomerAppShell'
+import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
+import { useToast } from '@/components/ui/Toast'
 import { EmptyState } from '@/components/ui/DataTable'
+import { Loading, ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
@@ -21,19 +25,20 @@ import { useCollection } from '@/data/useCollection'
 
 // ── Home ────────────────────────────────────────────────────────────────────
 export function CustomerAppHome() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const { userName } = useSession()
   const navigate = useNavigate()
-  const { data: vehicles = [] } = useCollection('vehicles')
+  const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const inService = vehicles.find((v) => v.status === 'service')
 
   return (
     <>
       <div className="flex items-center gap-2.5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-salis-gradient text-sm font-bold text-white">
-          {userName.trim()[0] ?? '?'}
-        </span>
+        <Avatar name={userName} size={40} />
         <div className="min-w-0">
           <p className="text-xs text-muted">{t('Welcome back,')}</p>
           <p className="truncate text-sm font-bold text-heading">{userName}</p>
@@ -48,10 +53,10 @@ export function CustomerAppHome() {
           <button
             type="button"
             onClick={() => navigate('/customer-app/service-tracking')}
-            className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white"
+            className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             {t('Track Service')}
-            <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={13} />
+            <Icon name="ArrowRight" size={13} />
           </button>
         </AppHeroCard>
       ) : null}
@@ -67,9 +72,9 @@ export function CustomerAppHome() {
             key={action.label}
             type="button"
             onClick={() => navigate(action.to)}
-            className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-border bg-card p-3"
+            className="flex cursor-pointer flex-col items-center gap-1.5 rounded-[14px] border border-border bg-card p-3 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
-            <span className="flex rounded-[10px] bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
+            <span className="flex rounded-[10px] bg-salis-blue/[.08] p-2 text-salis-blue">
               <Icon name={action.icon} size={16} />
             </span>
             <span className="text-[10px] font-semibold text-body">{t(action.label)}</span>
@@ -83,7 +88,7 @@ export function CustomerAppHome() {
           <button
             type="button"
             onClick={() => navigate('/customer-app/garage')}
-            className="cursor-pointer border-none bg-transparent font-action text-xs font-semibold text-salis-blue"
+            className="cursor-pointer border-none bg-transparent font-action text-xs font-semibold text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             {t('View All')}
           </button>
@@ -98,7 +103,7 @@ export function CustomerAppHome() {
           onClick={() => navigate('/customer-app/garage')}
           trailing={
             vehicle.status === 'service' ? (
-              <Badge background="rgba(11,179,255,.1)" color="#0BB3FF">
+              <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">
                 {t('In Service')}
               </Badge>
             ) : null
@@ -112,7 +117,11 @@ export function CustomerAppHome() {
 // ── Garage ──────────────────────────────────────────────────────────────────
 export function CustomerAppGarage() {
   const { t } = usePreferences()
-  const { data: vehicles = [] } = useCollection('vehicles')
+  const navigate = useNavigate()
+  const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   return (
     <>
@@ -123,7 +132,7 @@ export function CustomerAppGarage() {
           className="flex flex-col gap-2 rounded-[14px] border border-border bg-card p-3.5"
         >
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[10px] bg-[rgba(10,94,215,.08)] text-salis-blue">
+            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[10px] bg-salis-blue/[.08] text-salis-blue">
               <Icon name="Car" size={18} />
             </span>
             <div className="min-w-0 flex-1">
@@ -133,7 +142,7 @@ export function CustomerAppGarage() {
               </p>
             </div>
             {vehicle.status === 'service' ? (
-              <Badge background="rgba(11,179,255,.1)" color="#0BB3FF">
+              <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">
                 {t('In Service')}
               </Badge>
             ) : null}
@@ -146,7 +155,7 @@ export function CustomerAppGarage() {
           </div>
         </div>
       ))}
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/garage')}>
         <Icon name="Plus" size={16} />
         {t('Add Vehicle')}
       </Button>
@@ -157,7 +166,11 @@ export function CustomerAppGarage() {
 // ── Appointments ────────────────────────────────────────────────────────────
 export function CustomerAppAppointments() {
   const { t } = usePreferences()
-  const { data: appointments = [] } = useCollection('appointments')
+  const navigate = useNavigate()
+  const { data: appointments = [], isLoading, isError, error, refetch } = useCollection('appointments')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   return (
     <>
@@ -171,16 +184,16 @@ export function CustomerAppAppointments() {
           trailing={
             <Badge
               background={
-                appointment.status === 'confirmed' ? 'rgba(10,94,215,.1)' : 'rgba(11,179,255,.1)'
+                appointment.status === 'confirmed' ? 'var(--tint-blue)' : 'var(--tint-bright)'
               }
-              color={appointment.status === 'confirmed' ? '#0A5ED7' : '#0BB3FF'}
+              color={appointment.status === 'confirmed' ? 'var(--salis-blue)' : 'var(--salis-blue-bright)'}
             >
               {t(appointment.status[0].toUpperCase() + appointment.status.slice(1))}
             </Badge>
           }
         />
       ))}
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/appointments')}>
         <Icon name="CalendarPlus" size={16} />
         {t('Book Service')}
       </Button>
@@ -248,7 +261,8 @@ export function CustomerAppWallet() {
       <AppHeroCard icon="Wallet" label={t('Balance')} value={`SAR ${balance.toLocaleString('en-US')}.00`}>
         <button
           type="button"
-          className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white"
+          disabled
+          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           <Icon name="Plus" size={13} />
           {t('Top Up')}
@@ -261,7 +275,7 @@ export function CustomerAppWallet() {
           key={`${txn.desc}-${txn.date}`}
           icon={txn.icon}
           iconTint={txn.amount < 0 ? 'rgba(249,115,22,.08)' : 'rgba(10,94,215,.08)'}
-          iconColor={txn.amount < 0 ? '#F97316' : '#0A5ED7'}
+          iconColor={txn.amount < 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}
           title={t(txn.desc)}
           subtitle={txn.date}
           trailing={
@@ -303,8 +317,8 @@ export function CustomerAppOrders() {
               {order.id}
             </span>
             <Badge
-              background={order.status === 'Delivered' ? 'rgba(10,94,215,.1)' : 'rgba(11,179,255,.1)'}
-              color={order.status === 'Delivered' ? '#0A5ED7' : '#0BB3FF'}
+              background={order.status === 'Delivered' ? 'var(--tint-blue)' : 'var(--tint-bright)'}
+              color={order.status === 'Delivered' ? 'var(--salis-blue)' : 'var(--salis-blue-bright)'}
             >
               {t(order.status)}
             </Badge>
@@ -332,6 +346,7 @@ const PRODUCTS = [
 
 export function CustomerAppMarketplace() {
   const { t } = usePreferences()
+  const toast = useToast()
   const [category, setCategory] = useState<string>('All')
 
   // The design's category chips were decorative; filtering is the point of a
@@ -342,25 +357,16 @@ export function CustomerAppMarketplace() {
   return (
     <>
       <AppSection title={t('Marketplace')} />
-      <div role="tablist" aria-label={t('Category')} className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+      <ChipGroup label={t('Category')}>
         {CATEGORIES.map((option) => (
-          <button
+          <Chip
             key={option}
-            type="button"
-            role="tab"
-            aria-selected={category === option}
-            onClick={() => setCategory(option)}
-            className={cn(
-              'cursor-pointer whitespace-nowrap rounded-full border px-3 py-1.5 font-action text-[11px] font-semibold',
-              category === option
-                ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                : 'border-border bg-card text-muted'
-            )}
-          >
-            {t(option)}
-          </button>
+            label={t(option)}
+            selected={category === option}
+            onToggle={() => setCategory(option)}
+          />
         ))}
-      </div>
+      </ChipGroup>
 
       {products.length === 0 ? (
         <EmptyState icon="ShoppingBag" title={t('Nothing in this category')} />
@@ -381,8 +387,9 @@ export function CustomerAppMarketplace() {
                 <Money sar={product.price} className="text-xs font-bold text-heading" />
                 <button
                   type="button"
+                  onClick={() => toast.show({ title: t('Added to cart'), description: product.name })}
                   aria-label={`${t('Add')}: ${t(product.name)}`}
-                  className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white"
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                 >
                   <Icon name="Plus" size={13} />
                 </button>
@@ -423,6 +430,7 @@ export function CustomerAppNotifications() {
 // ── Insurance / loans ───────────────────────────────────────────────────────
 export function CustomerAppInsurance() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
   return (
     <>
       <AppSection title={t('Insurance')} />
@@ -432,14 +440,15 @@ export function CustomerAppInsurance() {
         </p>
       </AppHeroCard>
       <AppListRow icon="Car" title="Toyota Camry 2022" subtitle="RUH 4821" />
-      <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} />
-      <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} />
+      <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} onClick={() => navigate('/customer-app/insurance')} />
+      <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} onClick={() => navigate('/customer-app/insurance')} />
     </>
   )
 }
 
 export function CustomerAppLoans() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
   return (
     <>
       <AppSection title={t('Loans')} />
@@ -448,7 +457,7 @@ export function CustomerAppLoans() {
         title={t('No active finance')}
         description={t('Vehicle finance and instalment plans appear here.')}
       />
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/loans')}>
         <Icon name="Plus" size={16} />
         {t('Apply for Finance')}
       </Button>
@@ -465,9 +474,7 @@ export function CustomerAppProfile() {
   return (
     <>
       <div className="flex flex-col items-center gap-2 py-3">
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-salis-gradient text-xl font-bold text-white">
-          {userName.trim()[0] ?? '?'}
-        </span>
+        <Avatar name={userName} size={64} />
         <p className="text-sm font-bold text-heading">{userName}</p>
         <p className="text-xs text-muted">{roleLabel}</p>
       </div>
@@ -479,7 +486,7 @@ export function CustomerAppProfile() {
       <AppListRow
         icon="LogOut"
         iconTint="rgba(249,115,22,.08)"
-        iconColor="#F97316"
+        iconColor="var(--salis-orange)"
         title={t('Logout')}
         onClick={() => {
           signOut()

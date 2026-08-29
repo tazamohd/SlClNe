@@ -1,240 +1,108 @@
-import { useMemo, useState } from 'react'
-import { cn } from '@/lib/cn'
-import { FeatureHeader } from '@/components/shell/FeatureScreen'
 import { Card } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { EmptyState } from '@/components/ui/DataTable'
-import { useToast } from '@/components/ui/Toast'
+import { Badge } from '@/components/ui/Badge'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useSession } from '@/providers/SessionProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
-/** System-wide integrations console — government, insurance, payments,
- *  telematics, commerce, ERP and messaging connectors, ported from
- *  `SystemIntegrations.dc.html`.
- *
- *  Per README §7: blue is connected, orange is setup-pending, slate is merely
- *  available. No green/red. This is the deeper admin console over the same
- *  `integrations` collection the CRM overview (`Crm.tsx`'s `Integrations`)
- *  summarizes — palette and status labels are kept consistent with it. */
-
-type SysIntegration = RowOf<'integrations'>
-type IntegrationStatus = 'connected' | 'pending' | 'available'
-
-function statusOf(item: SysIntegration): IntegrationStatus {
-  return item.status === 'connected' || item.status === 'pending' ? item.status : 'available'
-}
-
-const STATUS: Record<IntegrationStatus, { label: string; bg: string; fg: string }> = {
-  connected: { label: 'Connected', bg: 'rgba(10,94,215,.12)', fg: '#0A5ED7' },
-  pending: { label: 'Setup pending', bg: 'rgba(249,115,22,.13)', fg: '#F97316' },
-  available: { label: 'Available', bg: 'rgba(100,116,139,.13)', fg: '#64748B' },
-}
-
-/** Compact icon-chip + figure stat tile matching the design's stat row. */
-function StatTile({
-  icon,
-  value,
-  label,
-  chipBg,
-  chipFg,
-}: {
+interface Integration {
+  name: string
+  description: string
   icon: string
-  value: number
-  label: string
-  chipBg: string
-  chipFg: string
-}) {
-  return (
-    <Card className="flex items-center gap-3 rounded-xl p-3.5">
-      <span
-        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg"
-        style={{ background: chipBg, color: chipFg }}
-      >
-        <Icon name={icon} size={16} />
-      </span>
-      <div className="min-w-0">
-        <p
-          className="font-display text-[19px] font-black leading-tight text-heading [font-variant-numeric:tabular-nums]"
-          dir="ltr"
-        >
-          {value}
-        </p>
-        <p className="truncate text-[11px] text-muted">{label}</p>
-      </div>
-    </Card>
-  )
+  category: 'Payment' | 'Accounting' | 'Communication' | 'Government' | 'Cloud'
+  status: 'Active' | 'Inactive' | 'Error'
+  lastActivity: string
+  version: string
 }
+
+const INTEGRATIONS: Integration[] = [
+  { name: 'ZATCA e-Invoicing', description: 'Saudi tax authority electronic invoicing', icon: 'Receipt', category: 'Government', status: 'Active', lastActivity: '5 min ago', version: 'v3.1' },
+  { name: 'Mada Payment Gateway', description: 'Debit card payment processing', icon: 'CreditCard', category: 'Payment', status: 'Active', lastActivity: '2 min ago', version: 'v2.4' },
+  { name: 'STC Pay', description: 'Mobile wallet payment integration', icon: 'Wallet', category: 'Payment', status: 'Active', lastActivity: '15 min ago', version: 'v1.8' },
+  { name: 'QuickBooks Online', description: 'Accounting and financial sync', icon: 'Calculator', category: 'Accounting', status: 'Active', lastActivity: '1 hour ago', version: 'v4.0' },
+  { name: 'WhatsApp Business', description: 'Customer messaging and notifications', icon: 'MessageCircle', category: 'Communication', status: 'Active', lastActivity: '1 min ago', version: 'v2.1' },
+  { name: 'Elm Absher', description: 'Vehicle registration verification', icon: 'ShieldCheck', category: 'Government', status: 'Active', lastActivity: '30 min ago', version: 'v1.3' },
+  { name: 'AWS S3 Storage', description: 'Cloud file storage and backup', icon: 'Database', category: 'Cloud', status: 'Active', lastActivity: '10 min ago', version: 'v3.0' },
+  { name: 'Xero Accounting', description: 'Alternative accounting platform', icon: 'FileSpreadsheet', category: 'Accounting', status: 'Inactive', lastActivity: 'Never', version: 'v2.2' },
+  { name: 'Tabby', description: 'Buy now, pay later integration', icon: 'Coins', category: 'Payment', status: 'Error', lastActivity: '2 days ago', version: 'v1.5' },
+]
+
+const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Inactive: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Error: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+}
+
+const CATEGORIES = ['Payment', 'Accounting', 'Communication', 'Government', 'Cloud'] as const
 
 export function SystemIntegrations() {
-  const { t, rtl } = usePreferences()
-  const { can } = useSession()
-  const { show } = useToast()
-  const { data: integrations = [], isLoading } = useCollection('integrations')
-  const [filter, setFilter] = useState('all')
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
 
-  const canManage = can('settings', 'e')
-
-  const categories = useMemo(
-    () => ['all', ...new Set(integrations.map((item) => item.cat))],
-    [integrations]
-  )
-
-  const filtered = useMemo(
-    () => (filter === 'all' ? integrations : integrations.filter((item) => item.cat === filter)),
-    [integrations, filter]
-  )
-
-  const stats = useMemo(
-    () => ({
-      connected: integrations.filter((item) => statusOf(item) === 'connected').length,
-      pending: integrations.filter((item) => statusOf(item) === 'pending').length,
-      categories: categories.length - 1,
-    }),
-    [integrations, categories]
-  )
-
-  const act = (item: SysIntegration) => {
-    const connected = statusOf(item) === 'connected'
-    show({
-      title: connected ? t('Opening settings') : t('Connection started'),
-      description: rtl ? item.ar : item.name,
-    })
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="PlugZap" title={t('Integrations')} subtitle={t('System connections')} />
+        {INTEGRATIONS.map((integration) => (
+          <MobileCard key={integration.name}>
+            <MobileCardHeader
+              leading={
+                <div className="flex items-center gap-2">
+                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
+                    <Icon name={integration.icon} size={14} />
+                  </span>
+                  <div>
+                    <p className="text-[13px] font-semibold text-heading">{t(integration.name)}</p>
+                    <p className="text-xs text-muted">{t(integration.category)}</p>
+                  </div>
+                </div>
+              }
+              trailing={<Badge background={STATUS_STYLES[integration.status].bg} color={STATUS_STYLES[integration.status].fg}>{t(integration.status)}</Badge>}
+            />
+            <MobileCardRow label={t('Last Activity')} value={integration.lastActivity} />
+            <MobileCardRow label={t('Version')} value={integration.version} />
+          </MobileCard>
+        ))}
+      </div>
+    )
   }
 
   return (
-    <>
-      <FeatureHeader
-        icon="Network"
-        title={t('System Integrations')}
-        subtitle={t('Government, insurance, payments, telematics and ERP')}
-      />
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <PageHeader icon="PlugZap" title={t('System Integrations')} subtitle={t('Third-party connections and API integrations')} />
 
-      {isLoading ? (
-        <p className="text-sm text-muted">{t('Loading...')}</p>
-      ) : integrations.length === 0 ? (
-        <Card className="rounded-lg p-6">
-          <EmptyState
-            icon="Network"
-            title={t('No integrations registered')}
-            description={t('Connected systems appear here once added.')}
-          />
-        </Card>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-2.5 xl:grid-cols-4">
-            <StatTile
-              icon="Network"
-              value={integrations.length}
-              label={t('Integrations')}
-              chipBg="rgba(10,94,215,.12)"
-              chipFg="#0A5ED7"
-            />
-            <StatTile
-              icon="CheckCircle2"
-              value={stats.connected}
-              label={t('Connected')}
-              chipBg="rgba(10,94,215,.12)"
-              chipFg="#0A5ED7"
-            />
-            <StatTile
-              icon="Clock"
-              value={stats.pending}
-              label={t('Setup pending')}
-              chipBg="rgba(249,115,22,.12)"
-              chipFg="#F97316"
-            />
-            <StatTile
-              icon="Layers"
-              value={stats.categories}
-              label={t('Categories')}
-              chipBg="rgba(11,179,255,.12)"
-              chipFg="#0BB3FF"
-            />
-          </div>
-
-          <div role="tablist" aria-label={t('Category')} className="flex gap-2 overflow-x-auto pb-0.5">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                role="tab"
-                aria-selected={filter === cat}
-                onClick={() => setFilter(cat)}
-                className={cn(
-                  'h-8 flex-shrink-0 cursor-pointer whitespace-nowrap rounded-full px-3.5',
-                  'font-action text-xs font-semibold transition-all duration-150',
-                  filter === cat
-                    ? 'border-none bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
-                    : 'border border-border bg-card text-body hover:border-salis-blue hover:text-salis-blue'
-                )}
-              >
-                {t(cat === 'all' ? 'All' : cat)}
-              </button>
-            ))}
-          </div>
-
-          {filtered.length === 0 ? (
-            <Card className="rounded-lg p-6">
-              <EmptyState icon="Network" title={t('No integrations in this view')} />
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {filtered.map((item) => {
-                const status = statusOf(item)
-                const meta = STATUS[status]
-                const connected = status === 'connected'
-                return (
-                  <Card
-                    key={item.name}
-                    className="flex flex-col gap-2.5 rounded-xl p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(10,94,215,.35)] hover:shadow-lg"
-                  >
-                    <div className="flex items-start gap-2.5">
-                      <span className="flex h-[34px] w-[34px] flex-shrink-0 items-center justify-center rounded-[10px] bg-[rgba(10,94,215,.1)] text-salis-blue">
-                        <Icon name={item.icon} size={17} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-[13.5px] font-bold text-heading">
-                          {rtl ? item.ar : item.name}
-                        </p>
-                        <span className="mt-0.5 inline-block truncate rounded-full bg-[rgba(11,179,255,.12)] px-1.5 py-px font-action text-[10px] font-semibold text-salis-bright">
-                          {t(item.cat)}
-                        </span>
+      {CATEGORIES.map((category) => {
+        const items = INTEGRATIONS.filter((int) => int.category === category)
+        if (items.length === 0) return null
+        return (
+          <div key={category}>
+            <p className="mb-3 text-sm font-bold text-heading">{t(category)}</p>
+            <div className="grid grid-cols-2 gap-4">
+              {items.map((integration) => (
+                <Card key={integration.name} className="rounded-2xl p-5 shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <span className="flex flex-shrink-0 rounded-xl p-2.5 bg-tint-blue text-salis-blue" aria-hidden>
+                      <Icon name={integration.icon} size={20} />
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-semibold text-heading">{t(integration.name)}</p>
+                        <Badge background={STATUS_STYLES[integration.status].bg} color={STATUS_STYLES[integration.status].fg}>{t(integration.status)}</Badge>
                       </div>
-                      <span
-                        aria-hidden
-                        className="mt-1 h-2 w-2 flex-shrink-0 rounded-full"
-                        style={{ background: meta.fg }}
-                      />
+                      <p className="mt-1 text-xs text-muted">{t(integration.description)}</p>
+                      <div className="mt-2 flex items-center gap-3 text-[11px] text-muted">
+                        <span>{integration.version}</span>
+                        <span>{t('Last')}: {integration.lastActivity}</span>
+                      </div>
                     </div>
-
-                    <p className="text-xs leading-relaxed text-muted [text-wrap:pretty]">
-                      {rtl ? item.ar_detail : item.detail}
-                    </p>
-
-                    <div className="flex items-center justify-between gap-2 border-t border-border pt-2.5">
-                      <Badge background={meta.bg} color={meta.fg} className="font-action">
-                        {t(meta.label)}
-                      </Badge>
-                      {canManage ? (
-                        <Button
-                          size="sm"
-                          variant={connected ? 'subtle' : 'primary'}
-                          onClick={() => act(item)}
-                        >
-                          {connected ? t('Manage') : t('Connect')}
-                        </Button>
-                      ) : null}
-                    </div>
-                  </Card>
-                )
-              })}
+                  </div>
+                </Card>
+              ))}
             </div>
-          )}
-        </>
-      )}
-    </>
+          </div>
+        )
+      })}
+    </div>
   )
 }

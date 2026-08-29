@@ -1,265 +1,340 @@
-import { Link, useSearchParams } from 'react-router-dom'
-import { Card } from '@/components/ui/Card'
+import { useMemo, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { DetailPage, type DetailRecord, type DetailStat } from '@/components/shell/DetailPage'
 import { Button } from '@/components/ui/Button'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
-import { Badge, StatusBadge, ServiceBadge, PriorityBadge } from '@/components/ui/Badge'
 import { Money, parseSar } from '@/components/ui/Money'
-import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { StatRow } from '@/components/shell/FeatureScreen'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { StatusBadge } from '@/components/ui/Badge'
+import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
+import { Comments, type Comment } from '@/components/ui/Comments'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { useToast } from '@/components/ui/Toast'
+import { CustomerFormModal } from './CustomerForm'
+import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
+import { InvoiceStatusBadge, VehicleStatusBadge } from './badges'
+import { derived, rowId } from './writes'
 
-/** Customer 360: contact card, vehicles, job history and invoice history for
- *  one customer, joined off the customer's name — the only key the mock
- *  tables share (`vehicles.owner`, `jobs.cust`, `invoices.cust`).
+/** Customer 360 — `CustomerDetail.dc.html` and `.Mobile.dc.html`.
  *
- *  Contact details (email/phone) are role-gated the same way the Customers
- *  registry gates its phone column — technicians, QC and suppliers don't get
- *  a customer's contact details (FIELD_RULES). Spend and invoice history stay
- *  visible; that gate only covers PII, not revenue. */
-
-type Invoice = RowOf<'invoices'>
+ *  Desktop: the profile header, a four-stat strip, the vehicles and invoices
+ *  panels side by side, and the service-history table. Phone: the compact
+ *  profile card, three different stats, and the vehicles panel alone — which is
+ *  what the mobile design draws, not a narrowed copy of the desktop one. Both
+ *  come out of one `DetailPage`, with `on: 'desktop' | 'mobile'` marking the
+ *  parts that genuinely differ.
+ *
+ *  Two deliberate departures from the prototype, both because the alternative
+ *  would be inventing data:
+ *
+ *  - The service-history table drops the design's Date, Technician and Cost
+ *    columns. A job card carries customer, vehicle, service, status and
+ *    priority; it carries no date, no assigned-technician name and no total, so
+ *    those three columns could only have been filled with numbers nobody wrote.
+ *    The columns that exist are shown.
+ *  - "Member Since" appears only when the record actually carries a creation
+ *    timestamp, which the API sends and the demo fixtures do not.
+ *
+ *  Contact details are redacted for technicians, QC and suppliers
+ *  (`FIELD_RULES`), so the email and phone are dropped from the header rather
+ *  than rendered blank. **That is presentation, not protection** — the server
+ *  still sends both fields to those roles today, which is recorded as a finding
+ *  rather than papered over here. */
+type Customer = RowOf<'customers'> & {
+  email?: string | null
+  type?: string
+  _id?: string
+  _createdAt?: string
+}
+type Vehicle = RowOf<'vehicles'>
 type Job = RowOf<'jobs'>
 
-// Invoice status palette — matches the Invoices register: paid is brand blue,
-// overdue is the warning orange, unpaid is neutral slate. No green/red/yellow.
-const INVOICE_STATUS: Record<string, readonly [string, string]> = {
-  paid: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  unpaid: ['rgba(100,116,139,.1)', '#64748B'],
-  overdue: ['rgba(249,115,22,.1)', '#F97316'],
-}
-
-// Vehicle status palette — matches the Vehicles registry.
-const VEHICLE_STATUS: Record<string, readonly [string, string]> = {
-  active: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  service: ['rgba(11,179,255,.1)', '#0BB3FF'],
-}
-
 export function CustomerDetail() {
-  const { t, rtl } = usePreferences()
-  const { fieldHidden } = useSession()
+  const { t } = usePreferences()
+  const { can, fieldHidden } = useSession()
+  const isMobile = useIsMobile()
+  const toast = useToast()
+  const navigate = useNavigate()
   const [params] = useSearchParams()
-  const { data: customers = [], isLoading: loadingCustomers } = useCollection('customers')
-  const { data: vehicles = [], isLoading: loadingVehicles } = useCollection('vehicles')
-  const { data: jobs = [], isLoading: loadingJobs } = useCollection('jobs')
-  const { data: invoices = [], isLoading: loadingInvoices } = useCollection('invoices')
+  const [editing, setEditing] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
-  const name = params.get('name') ?? params.get('id')
-  const customer = name ? customers.find((row) => row.name === name) : customers[0]
+  const ref = params.get('id') ?? params.get('name') ?? ''
 
-  const isLoading = loadingCustomers || loadingVehicles || loadingJobs || loadingInvoices
+  const customers = useCollection('customers')
+  const vehicles = useCollection('vehicles')
+  const invoices = useCollection('invoices')
+  const jobs = useCollection('jobs')
+  const remove = useDelete('customers')
 
-  if (isLoading) {
-    return <p className="text-sm text-muted">{t('Loading...')}</p>
+  const rows = (customers.data ?? []) as readonly Customer[]
+  // The design's own screens fall back to the first record when the query
+  // string names nobody, and the route is reachable that way.
+  const customer = ref ? rows.find((row) => rowId(row) === ref || row.name === ref) : rows[0]
+  const customerName = customer?.name ?? ''
+  const owned = (vehicles.data ?? []).filter((v: Vehicle) => customerName && v.owner === customerName)
+  const billed = (invoices.data ?? []).filter((row) => customerName && row.cust === customerName)
+  const worked = (jobs.data ?? []).filter((row: Job) => customerName && row.cust === customerName)
+
+  const activities: ActivityItem[] = useMemo(
+    () =>
+      customerName
+        ? worked.slice(0, 5).map((job, i) => ({
+            id: `act-${job.id}`,
+            icon: i % 2 === 0 ? 'Wrench' : 'CheckCircle',
+            user: customerName,
+            action: job.st === 'completed' ? 'completed' : 'started',
+            target: job.id,
+            time: t(job.st.replace(/_/g, ' ')),
+          }))
+        : [],
+    [worked, customerName, t]
+  )
+
+  const comments: Comment[] = useMemo(
+    () =>
+      customerName
+        ? worked.slice(0, 3).map((job) => ({
+            id: `cmt-${job.id}`,
+            author: customerName,
+            text: `${t(job.svc.replace(/_/g, ' '))} — ${t(job.st.replace(/_/g, ' '))}`,
+            time: t(job.pr),
+          }))
+        : [],
+    [worked, customerName, t]
+  )
+
+  if (customers.isLoading) return <DetailPage title={t('Customers')} loading />
+
+  if (customers.isError) {
+    return (
+      <DetailPage
+        title={t('Customers')}
+        back={{ to: '/customers', label: 'Customers' }}
+        error={{ message: customers.error?.message, onRetry: () => void customers.refetch() }}
+      />
+    )
   }
 
   if (!customer) {
     return (
-      <Card className="p-6">
-        <EmptyState
-          icon="Users"
-          title={t('Customer not found')}
-          description={t('It may have been deleted, merged, or the link is out of date.')}
-          action={
-            <Link to="/customers" className="font-action text-[13px] font-medium">
-              {t('Back to Customers')}
-            </Link>
-          }
-        />
-      </Card>
+      <DetailPage
+        title={t('Customers')}
+        back={{ to: '/customers', label: 'Customers' }}
+        notFound={{
+          title: 'Customer not found',
+          description: 'It may have been deleted, or the link is out of date.',
+        }}
+      />
     )
   }
 
   const hideContact = fieldHidden('Customer contact details')
+  const id = rowId(customer)
+  const memberSince = customer._createdAt ? customer._createdAt.slice(0, 4) : undefined
 
-  const customerVehicles = vehicles.filter((v) => v.owner === customer.name)
-  const customerJobs = jobs.filter((j) => j.cust === customer.name)
-  const customerInvoices = invoices.filter((i) => i.cust === customer.name)
-  const totalSpent = customerInvoices.reduce((sum, invoice) => sum + parseSar(invoice.amount), 0)
+  const summary: DetailStat[] = [
+    { label: 'Total Jobs', value: worked.length, icon: 'Wrench', on: 'desktop' },
+    {
+      label: 'Total Spent',
+      value: <Money sar={parseSar(customer.spent ?? '')} />,
+      icon: 'DollarSign',
+      on: 'desktop',
+    },
+    { label: 'Vehicles', value: derived(customer.vehicles), icon: 'Car', on: 'desktop' },
+    ...(memberSince
+      ? [
+          {
+            label: 'Member Since',
+            value: (
+              <span dir="ltr" className="font-mono">
+                {memberSince}
+              </span>
+            ),
+            icon: 'Calendar',
+            on: 'desktop' as const,
+          },
+        ]
+      : []),
+    // The phone screen shows a different three.
+    { label: 'Vehicles Count', value: derived(customer.vehicles), on: 'mobile' },
+    { label: 'Total Spent', value: <Money sar={parseSar(customer.spent ?? '')} />, on: 'mobile' },
+    { label: 'Last Visit', value: derived(customer.last && t(customer.last)), on: 'mobile' },
+  ]
 
-  const invoiceBadge = (status: string) => {
-    const [background, color] = INVOICE_STATUS[status] ?? INVOICE_STATUS.unpaid
-    return (
-      <Badge background={background} color={color}>
-        {t(status[0].toUpperCase() + status.slice(1))}
-      </Badge>
-    )
-  }
+  const vehicleRecords: DetailRecord[] = owned.map((vehicle) => ({
+    id: vehicle.plate,
+    to: `/vehicle-detail?plate=${encodeURIComponent(vehicle.plate)}`,
+    icon: isMobile ? undefined : 'Car',
+    primary: vehicle.make,
+    secondary: (
+      <span dir="ltr">
+        {vehicle.plate} · {vehicle.mileage}
+      </span>
+    ),
+    badge: <VehicleStatusBadge value={vehicle.status} />,
+  }))
 
-  const vehicleBadge = (status: string) => {
-    const [background, color] = VEHICLE_STATUS[status] ?? VEHICLE_STATUS.active
-    return (
-      <Badge background={background} color={color}>
-        {t(status === 'service' ? 'In Service' : 'Active')}
-      </Badge>
-    )
-  }
+  const invoiceRecords: DetailRecord[] = billed.map((invoice) => ({
+    id: invoice.id,
+    to: `/invoice-detail?id=${encodeURIComponent(invoice.id)}`,
+    primary: <span dir="ltr">{invoice.id}</span>,
+    secondary: invoice.due,
+    meta: <Money sar={parseSar(invoice.amount)} className="text-[13px] font-semibold text-heading" />,
+    badge: <InvoiceStatusBadge value={invoice.status} />,
+  }))
 
-  const jobColumns: Column<Job>[] = [
-    { header: 'Job Card #', cell: (j) => j.id, code: true },
-    { header: 'Vehicle', cell: (j) => j.veh },
-    { header: 'Service', cell: (j) => <ServiceBadge value={j.svc} label={t(j.svc.replace(/_/g, ' '))} /> },
-    { header: 'Priority', cell: (j) => <PriorityBadge value={j.pr} label={t(j.pr)} /> },
-    { header: 'Status', cell: (j) => <StatusBadge value={j.st} label={t(j.st.replace(/_/g, ' '))} /> },
+  const historyColumns: Column<Job>[] = [
+    { header: 'Job Card', cell: (job) => job.id, code: true },
+    { header: 'Vehicle', cell: (job) => job.veh },
+    { header: 'Service', cell: (job) => t(job.svc.replace(/_/g, ' ')) },
+    {
+      header: 'Status',
+      cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />,
+    },
   ]
 
   return (
-    <div className="flex max-w-[1100px] flex-col gap-6">
-      <div>
-        <Link
-          to="/customers"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Customers')}
-        </Link>
-      </div>
-
-      <Card className="flex flex-wrap items-center gap-5 p-6">
-        <span className="flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-2xl font-extrabold text-white shadow-[0_8px_20px_rgba(10,94,215,.2)]">
-          {customer.name[0]}
-        </span>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-display text-2xl font-black text-heading">{customer.name}</h1>
-          <div className="mt-1.5 flex flex-wrap items-center gap-3">
-            {hideContact ? null : (
-              <>
-                <span className="flex items-center gap-1 text-[13px] text-muted" dir="ltr">
-                  <Icon name="Mail" size={13} />
-                  {customer.name.toLowerCase().replace(/[^a-z]/g, '')}@email.com
-                </span>
-                <span className="flex items-center gap-1 text-[13px] text-muted" dir="ltr">
-                  <Icon name="Phone" size={13} />
-                  {customer.phone}
-                </span>
-              </>
-            )}
-            <span className="rounded-full bg-[rgba(10,94,215,.1)] px-2.5 py-0.5 text-[11px] font-semibold text-salis-blue">
-              {t('Loyal Customer')}
+    <>
+      <DetailPage
+        back={{ to: '/customers', label: 'Customers' }}
+        title={customer.name}
+        avatar={{ initial: customer.name.trim()[0] ?? '?' }}
+        subtitle={isMobile && !hideContact ? <span dir="ltr">{customer.phone}</span> : undefined}
+        meta={
+          isMobile || hideContact
+            ? undefined
+            : [
+                ...(customer.email
+                  ? [{ icon: 'Mail', label: 'Email', value: customer.email, code: true }]
+                  : []),
+                { icon: 'Phone', label: 'Phone', value: customer.phone, code: true },
+              ]
+        }
+        /* The design draws a "Loyal Customer" pill here. There is no loyalty
+           column anywhere in the data model, so rendering it for every customer
+           would be a label the record does not carry. The account type — which
+           the record does carry — takes the slot. */
+        status={
+          !isMobile && customer.type ? (
+            <span className="rounded-full bg-tint-blue px-2.5 py-1 text-[11px] font-semibold text-salis-blue">
+              {t(customer.type === 'fleet' ? 'Fleet Account' : 'Individual')}
             </span>
-          </div>
-        </div>
-        <div className="flex flex-shrink-0 gap-2">
-          <Button variant="outline" size="md">
-            <Icon name="MessageSquare" size={14} />
-            {t('Message')}
-          </Button>
-          <Button size="md">
-            <Icon name="Plus" size={14} />
-            {t('New Job')}
-          </Button>
-        </div>
-      </Card>
-
-      <StatRow
-        stats={[
-          { label: 'Total Jobs', value: customerJobs.length, icon: 'Wrench' },
-          { label: 'Total Spent', value: `SAR ${totalSpent.toLocaleString('en-US')}`, icon: 'DollarSign' },
-          { label: 'Vehicles', value: customerVehicles.length, icon: 'Car' },
-          { label: 'Last Visit', value: t(customer.last), icon: 'Calendar' },
+          ) : undefined
+        }
+        actions={
+          can('customers', 'e') || can('customers', 'd') ? (
+            <>
+              {can('customers', 'e') ? (
+                <Button variant="subtle" onClick={() => setEditing(true)}>
+                  <Icon name="Pencil" size={14} />
+                  {t('Edit')}
+                </Button>
+              ) : null}
+              {can('customers', 'd') ? (
+                <Button variant="subtle" onClick={() => setDeleting(true)}>
+                  <Icon name="Trash2" size={14} />
+                  {t('Delete')}
+                </Button>
+              ) : null}
+            </>
+          ) : undefined
+        }
+        summary={summary}
+        summaryAlign="center"
+        readOnly={can('customers', 'e') ? false : 'Read-only — your role can view this customer but not change it.'}
+        timeline={
+          activities.length > 0 && !isMobile ? (
+            <ActivityFeed items={activities} title={t('Recent Activity')} />
+          ) : undefined
+        }
+        comments={
+          comments.length > 0 && !isMobile ? (
+            <Comments items={comments} title={t('Notes')} />
+          ) : undefined
+        }
+        related={[
+          {
+            id: 'vehicles',
+            title: 'Vehicles',
+            icon: 'Car',
+            span: 'half',
+            loading: vehicles.isLoading,
+            records: vehicleRecords,
+            empty: {
+              icon: 'Car',
+              title: 'No vehicles yet',
+              description: 'Vehicles are added at check-in.',
+            },
+          },
+          {
+            id: 'invoices',
+            title: 'Invoices',
+            icon: 'Receipt',
+            span: 'half',
+            on: 'desktop',
+            loading: invoices.isLoading,
+            records: invoiceRecords,
+            empty: {
+              icon: 'Receipt',
+              title: 'No invoices yet',
+              description: 'Invoices are raised when a job is delivered.',
+            },
+          },
+        ]}
+        sections={[
+          {
+            id: 'history',
+            title: 'Service History',
+            icon: 'History',
+            on: 'desktop',
+            children: (
+              <DataTable
+                caption="Service history for this customer"
+                columns={historyColumns}
+                rows={worked}
+                rowKey={(job) => job.id}
+                loading={jobs.isLoading}
+                empty={
+                  <div className="py-2 text-center text-[13px] text-muted">
+                    {t('No job cards for this customer yet.')}
+                  </div>
+                }
+              />
+            ),
+          },
         ]}
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Card className="flex flex-col gap-3.5 p-5">
-          <div className="flex items-center gap-2">
-            <Icon name="Car" size={16} className="text-salis-blue" />
-            <h3 className="text-sm font-bold text-heading">{t('Vehicles')}</h3>
-          </div>
-          {customerVehicles.length === 0 ? (
-            <EmptyState
-              icon="Car"
-              title={t('No vehicles yet')}
-              description={t('Vehicles are added at check-in.')}
-            />
-          ) : (
-            customerVehicles.map((vehicle) => (
-              <div
-                key={vehicle.plate}
-                className="flex items-center gap-2.5 rounded-[10px] border border-border bg-inset p-2.5"
-              >
-                <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-2 text-salis-blue">
-                  <Icon name="Car" size={16} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[13px] font-semibold text-heading">{vehicle.make}</p>
-                  <p className="mt-0.5 text-[11px] text-muted" dir="ltr">
-                    {vehicle.plate} · {vehicle.mileage}
-                  </p>
-                </div>
-                {vehicleBadge(vehicle.status)}
-              </div>
-            ))
-          )}
-        </Card>
+      {editing ? (
+        <CustomerFormModal open onClose={() => setEditing(false)} customer={customer} />
+      ) : null}
 
-        <Card className="flex flex-col gap-3 p-5">
-          <div className="flex items-center gap-2">
-            <Icon name="Receipt" size={16} className="text-salis-blue" />
-            <h3 className="text-sm font-bold text-heading">{t('Invoices')}</h3>
-          </div>
-          {customerInvoices.length === 0 ? (
-            <EmptyState
-              icon="Receipt"
-              title={t('No invoices yet')}
-              description={t('Invoices are raised when a job card is delivered.')}
-            />
-          ) : (
-            customerInvoices.map((invoice: Invoice) => (
-              <div
-                key={invoice.id}
-                className="flex items-center gap-2.5 border-b border-border py-2 last:border-b-0"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[13px] font-medium text-body" dir="ltr">
-                    {invoice.id}
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-muted">{invoice.due}</p>
-                </div>
-                <Money sar={parseSar(invoice.amount)} className="text-[13px] font-semibold text-heading" />
-                {invoiceBadge(invoice.status)}
-              </div>
-            ))
-          )}
-        </Card>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <Icon name="History" size={16} className="text-salis-blue" />
-          <h3 className="text-sm font-bold text-heading">{t('Job History')}</h3>
-        </div>
-        <DataTable
-          columns={jobColumns}
-          rows={customerJobs}
-          rowKey={(j) => j.id}
-          mobileCard={(j) => (
+      {deleting ? (
+        <DeleteRecordModal
+          open
+          onClose={() => setDeleting(false)}
+          kind="Customer"
+          name={customer.name}
+          consequences={
             <>
-              <MobileCardHeader
-                title={j.id}
-                code
-                trailing={<StatusBadge value={j.st} label={t(j.st.replace(/_/g, ' '))} />}
-              />
-              <MobileCardRow>{j.veh}</MobileCardRow>
-              <MobileCardRow label={t('Service')}>
-                <ServiceBadge value={j.svc} label={t(j.svc.replace(/_/g, ' '))} />
-              </MobileCardRow>
-              <MobileCardRow label={t('Priority')}>
-                <PriorityBadge value={j.pr} label={t(j.pr)} />
-              </MobileCardRow>
+              <Consequence count={owned.length} label="vehicles stay in the registry" />
+              <Consequence label="Job cards and invoices keep their history" />
             </>
-          )}
-          empty={
-            <EmptyState
-              icon="Wrench"
-              title={t('No job cards yet')}
-              description={t('Job cards are created at check-in.')}
-            />
           }
+          onConfirm={async () => {
+            if (!id) throw new Error(t('This record has no id, so it cannot be deleted.'))
+            await remove.mutateAsync({ id })
+            toast.show({ title: t('Customer deleted'), description: customer.name })
+            // Staying on the detail page of a record that no longer exists
+            // would show a not-found panel a second later; go back to the list.
+            navigate('/customers')
+          }}
         />
-      </div>
-    </div>
+      ) : null}
+    </>
   )
 }

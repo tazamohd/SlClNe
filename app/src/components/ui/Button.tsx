@@ -17,16 +17,16 @@ const VARIANTS: Record<ButtonVariant, string> = {
     'hover:bg-salis-gradient-hover hover:-translate-y-px hover:shadow-[0_8px_20px_rgba(10,94,215,.35)]',
   outline:
     'border-[1.5px] border-salis-blue bg-transparent text-salis-blue font-medium ' +
-    'hover:bg-[rgba(10,94,215,.08)]',
+    'hover:bg-salis-blue/[.08]',
   ghost:
-    'border-none bg-transparent text-salis-blue font-medium hover:bg-[rgba(10,94,215,.08)]',
+    'border-none bg-transparent text-salis-blue font-medium hover:bg-salis-blue/[.08]',
   subtle:
     'border border-border bg-card text-heading ' +
     'hover:bg-salis-gradient hover:text-white hover:border-transparent',
 }
 
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-[13px]',
+  sm: 'h-9 px-3 text-[13px]',
   md: 'h-9 px-3.5 text-[13px]',
   lg: 'h-12 px-4 text-[15px]',
 }

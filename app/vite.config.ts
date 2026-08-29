@@ -8,6 +8,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@contract': fileURLToPath(new URL('../packages/contract/src/index', import.meta.url)),
+      zod: fileURLToPath(new URL('./node_modules/zod', import.meta.url)),
     },
   },
   build: {

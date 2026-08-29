@@ -1,0 +1,142 @@
+import { Card } from '@/components/ui/Card'
+import { Icon } from '@/components/ui/Icon'
+import { Badge } from '@/components/ui/Badge'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
+
+const GENERAL = [
+  { label: 'Company Name', value: 'SALIS Auto' },
+  { label: 'Timezone', value: 'Asia/Riyadh (UTC+3)' },
+  { label: 'Language', value: 'English' },
+  { label: 'Currency', value: 'SAR' },
+]
+
+const NOTIFICATIONS = [
+  { label: 'Email Notifications', value: true },
+  { label: 'SMS Notifications', value: false },
+  { label: 'Push Notifications', value: true },
+]
+
+const SECURITY = [
+  { label: 'Session Timeout', value: '30 minutes' },
+  { label: '2FA Required', value: true },
+  { label: 'Password Policy', value: 'Strong' },
+]
+
+export function SystemSettings() {
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Settings" title={t('System Settings')} subtitle={t('System configuration')} />
+        <MobileCard>
+          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('General')}</p>} />
+          {GENERAL.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)} value={s.value} />
+          ))}
+        </MobileCard>
+        <MobileCard>
+          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Notifications')}</p>} />
+          {NOTIFICATIONS.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)}>
+              <Badge
+                background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
+              >
+                {s.value ? t('On') : t('Off')}
+              </Badge>
+            </MobileCardRow>
+          ))}
+        </MobileCard>
+        <MobileCard>
+          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Security')}</p>} />
+          {SECURITY.map((s) => (
+            <MobileCardRow key={s.label} label={t(s.label)}>
+              {typeof s.value === 'boolean' ? (
+                <Badge
+                  background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
+                >
+                  {s.value ? t('On') : t('Off')}
+                </Badge>
+              ) : (
+                <span className="text-xs font-medium text-heading">{s.value}</span>
+              )}
+            </MobileCardRow>
+          ))}
+        </MobileCard>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <PageHeader icon="Settings" title={t('System Settings')} subtitle={t('System configuration')} />
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Card className="rounded-2xl p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Building" size={16} /></span>
+            <h2 className="text-sm font-semibold text-heading">{t('General')}</h2>
+          </div>
+          <div className="grid gap-4">
+            {GENERAL.map((s) => (
+              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+                <span className="text-sm text-muted">{t(s.label)}</span>
+                <span className="text-sm font-medium text-heading">{s.value}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="rounded-2xl p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Bell" size={16} /></span>
+            <h2 className="text-sm font-semibold text-heading">{t('Notifications')}</h2>
+          </div>
+          <div className="grid gap-4">
+            {NOTIFICATIONS.map((s) => (
+              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+                <span className="text-sm text-muted">{t(s.label)}</span>
+                <Badge
+                  background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                  color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
+                >
+                  {s.value ? t('On') : t('Off')}
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="rounded-2xl p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Lock" size={16} /></span>
+            <h2 className="text-sm font-semibold text-heading">{t('Security')}</h2>
+          </div>
+          <div className="grid gap-4">
+            {SECURITY.map((s) => (
+              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
+                <span className="text-sm text-muted">{t(s.label)}</span>
+                {typeof s.value === 'boolean' ? (
+                  <Badge
+                    background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                    color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
+                  >
+                    {s.value ? t('On') : t('Off')}
+                  </Badge>
+                ) : (
+                  <span className="text-sm font-medium text-heading">{s.value}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </div>
+  )
+}

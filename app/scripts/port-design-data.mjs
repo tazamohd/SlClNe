@@ -65,16 +65,29 @@ function routeForHref(href) {
   return screenMap.get(key)?.route ?? null
 }
 
+/** Prototype-navigation aids, not product menu items. The design bundle lists
+ *  the screen index, the flow and RBAC specifications and the pattern galleries
+ *  in the sidebar so a reviewer can reach them while clicking through the
+ *  prototypes. Left in, they appear in *every* role's menu — a signed-in
+ *  customer or supplier finds the RBAC specification in their navigation.
+ *
+ *  They stay routed and reachable by URL for the team; it is the menu entry that
+ *  is wrong, not the page. Dropping them here rather than filtering at render
+ *  time keeps one definition of what the sidebar contains. */
+const REFERENCE_ONLY = /^(Index|FlowSpec|RBACSpec|UI\.)/
+
 const nav = D.NAV.map((g) => ({
   label: g.label,
   icon: g.icon,
-  items: g.items.map((it) => ({
-    label: it.l,
-    key: it.r ?? null,
-    screen: (it.href ?? '').replace('.dc.html', '') || null,
-    route: routeForHref(it.href),
-  })),
-}))
+  items: g.items
+    .map((it) => ({
+      label: it.l,
+      key: it.r ?? null,
+      screen: (it.href ?? '').replace('.dc.html', '') || null,
+      route: routeForHref(it.href),
+    }))
+    .filter((it) => !it.screen || !REFERENCE_ONLY.test(it.screen)),
+})).filter((g) => g.items.length > 0)
 
 const unresolved = nav.flatMap((g) =>
   g.items.filter((i) => !i.route).map((i) => `${g.label} › ${i.label}`)
@@ -91,18 +104,6 @@ emit(
 )
 
 // ── Screen registry (from SCREEN_MAP.md) ─────────────────────────────────────
-
-/** Every .ts/.tsx under a directory, recursively. */
-function sourceFiles(dir) {
-  const out = []
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    const full = resolve(dir, entry.name)
-    if (entry.isDirectory()) out.push(...sourceFiles(full))
-    else if (/\.tsx?$/.test(entry.name)) out.push(full)
-  }
-  return out
-}
-
 function parseScreenMap() {
   const md = readFileSync(resolve(designDir, 'handoff/SCREEN_MAP.md'), 'utf8')
   const rows = new Map()
@@ -167,66 +168,112 @@ emit(
 // can't be static imports — but importing lucide's whole `icons` map ships
 // ~1500 glyphs to load the ~180 the design actually uses. Collect the names
 // referenced anywhere in the bundle and emit explicit imports for just those.
+/** lucide renamed a family of icons in v0.4xx. The design bundle still asks for
+ *  the old names, so a name-for-name lookup against lucide's current keys finds
+ *  nothing — and the old code dropped those silently, leaving 23 glyphs blank in
+ *  shipped screens, including the close control on every toast. Renames are
+ *  registered under *both* keys so stored design data keeps working unchanged. */
+const LUCIDE_RENAMES = {
+  AlertCircle: 'CircleAlert',
+  AlertTriangle: 'TriangleAlert',
+  BarChart: 'ChartBar',
+  BarChart3: 'ChartColumn',
+  CheckCircle: 'CircleCheckBig',
+  CheckCircle2: 'CircleCheck',
+  CheckSquare: 'SquareCheck',
+  Edit: 'Pencil',
+  FileBarChart: 'FileChartColumn',
+  FileSignature: 'FilePen',
+  HelpCircle: 'CircleHelp',
+  Home: 'House',
+  MoreHorizontal: 'Ellipsis',
+  LineChart: 'ChartLine',
+  PieChart: 'ChartPie',
+  UserCircle: 'CircleUser',
+  VideoIcon: 'Video',
+  XCircle: 'CircleX',
+}
+
 await emitIconRegistry()
 
 async function emitIconRegistry() {
-  const lucide = await import('lucide-react')
-  // `lucide.icons` holds only canonical names. Deprecated aliases — CheckCircle,
-  // AlertTriangle, Home — are still exported as components but are absent from
-  // that map, so gating on it silently dropped them: `<Icon name="CheckCircle">`
-  // looked up undefined and rendered nothing at all. Gate on the exported
-  // components instead, which is what an explicit import actually needs.
-  const known = new Set(
-    Object.keys(lucide).filter((name) => /^[A-Z][A-Za-z0-9]*$/.test(name)),
-  )
-  const used = new Set()
+  const { icons } = await import('lucide-react')
+  const known = new Set(Object.keys(icons))
+  // Two grades of reference, and the difference decides what a miss means.
+  // A `<salis-icon name="…">` or an `icon:` field *is* an icon — if it does not
+  // resolve, the product renders a blank square and someone must be told. A bare
+  // quoted PascalCase token is a guess that also catches names built at runtime;
+  // most such tokens are statuses, cities and month names, so a miss there is
+  // ordinary and silent. Conflating the two is why 23 real misses hid inside
+  // hundreds of false ones and nobody noticed for the whole port.
+  const definite = new Set()
+  const speculative = new Set()
 
   const files = readdirSync(designDir).filter(
     (f) => f.endsWith('.dc.html') || f.endsWith('.js')
   )
   for (const file of files) {
     const text = readFileSync(resolve(designDir, file), 'utf8')
-    // `<salis-icon name="Wrench">` plus any quoted PascalCase token, which
-    // catches the names built in the screens' JS (chevrons, theme icons).
-    for (const [, token] of text.matchAll(/["']([A-Z][A-Za-z0-9]{2,})["']/g)) {
-      if (known.has(token)) used.add(token)
+    for (const [, n] of text.matchAll(/<salis-icon[^>]*\bname=["']([A-Z][A-Za-z0-9]*)["']/g)) definite.add(n)
+    for (const [, n] of text.matchAll(/["']?icon["']?\s*:\s*["']([A-Z][A-Za-z0-9]*)["']/g)) definite.add(n)
+    // One character minimum, not three: the previous `{2,}` bound excluded `X`,
+    // the close control on every dialog and toast in the product.
+    for (const [, n] of text.matchAll(/["']([A-Z][A-Za-z0-9]*)["']/g)) speculative.add(n)
+  }
+
+  // Hand-written screens ask for icons the design bundle never mentions. Scan
+  // them too, so a name added in the app cannot go missing from the registry.
+  const srcDir = resolve(here, '../src')
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const p = resolve(dir, entry.name)
+      if (entry.isDirectory()) walk(p)
+      else if (/\.tsx?$/.test(entry.name) && !p.endsWith('icon-registry.ts')) {
+        const text = readFileSync(p, 'utf8')
+        for (const [, n] of text.matchAll(/(?:name|icon)=["']([A-Z][A-Za-z0-9]*)["']/g)) definite.add(n)
+        for (const [, n] of text.matchAll(/["']?icon["']?\s*:\s*["']([A-Z][A-Za-z0-9]*)["']/g)) definite.add(n)
+      }
     }
   }
+  walk(srcDir)
+
   // Icons this rebuild introduces that no prototype referenced.
-  for (const extra of [
-    'Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight',
-    // Referenced only by feature-screen definitions as `icon: 'Name'` object
-    // props, which neither scan above catches (they match `name="..."` and
-    // quoted tokens in the design bundle). Pin them or Icon renders nothing.
-    'ScanLine', 'HeartPulse', 'BellRing', 'PackageSearch', 'Undo2',
-    'ScanEye', 'Lightbulb', 'LineChart', 'Radio', 'VideoIcon',
-  ]) {
-    if (known.has(extra)) used.add(extra)
-  }
+  for (const extra of ['Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight']) definite.add(extra)
 
-  // Names the rebuilt screens ask for by string literal. Scanning only the
-  // design bundle missed these: `<Icon name="CheckCircle">` resolved to
-  // undefined and rendered nothing at all, silently, on eight screens. The
-  // registry has to follow the call sites, not just the prototypes.
-  for (const file of sourceFiles(resolve(here, '../src'))) {
-    const text = readFileSync(file, 'utf8')
-    for (const [, token] of text.matchAll(/\bname="([A-Z][A-Za-z0-9]{2,})"/g)) {
-      if (known.has(token)) used.add(token)
-    }
+  /** name as referenced -> lucide export that actually exists. */
+  const resolved = new Map()
+  const lookup = (name) =>
+    known.has(name) ? name
+      : LUCIDE_RENAMES[name] && known.has(LUCIDE_RENAMES[name]) ? LUCIDE_RENAMES[name]
+      : null
+  for (const name of [...definite, ...speculative]) {
+    const glyph = lookup(name)
+    if (glyph) resolved.set(name, glyph)
   }
+  const unresolved = [...definite].filter((n) => !resolved.has(n))
 
-  const names = [...used].sort()
+  const imports = [...new Set(resolved.values())].sort()
+  const names = [...resolved.keys()].sort()
   const body =
-    `import {\n${names.map((n) => `  ${n},`).join('\n')}\n} from 'lucide-react'\n` +
+    `import {\n${imports.map((n) => `  ${n},`).join('\n')}\n} from 'lucide-react'\n` +
     `import type { LucideIcon } from 'lucide-react'\n\n` +
-    `/** The ${names.length} lucide icons the design references, keyed by name so\n` +
-    ` *  data-driven lookups work without importing all ~1500. */\n` +
+    `/** The ${names.length} icon names referenced by the design bundle and the app,\n` +
+    ` *  mapped to the ${imports.length} lucide exports behind them, so data-driven\n` +
+    ` *  lookups work without importing all ~1500. Names lucide has since renamed\n` +
+    ` *  appear under the name the data uses. */\n` +
     `export const ICONS: Record<string, LucideIcon> = {\n` +
-    names.map((n) => `  ${n},`).join('\n') +
+    names.map((n) => (n === resolved.get(n) ? `  ${n},` : `  ${n}: ${resolved.get(n)},`)).join('\n') +
     `\n}\n`
 
   writeFileSync(resolve(here, '../src/components/ui/icon-registry.ts'), BANNER + body)
-  console.log(`  wrote ../components/ui/icon-registry.ts (${names.length} icons)`)
+  console.log(`  wrote ../components/ui/icon-registry.ts (${names.length} names -> ${imports.length} glyphs)`)
+
+  // Never silent again: an unresolved name is a blank icon in the product.
+  if (unresolved.length) {
+    console.warn(`  WARNING: ${unresolved.length} icon name(s) resolve to no glyph — they will render blank:`)
+    console.warn(`    ${unresolved.sort().join(', ')}`)
+    console.warn(`    Add them to LUCIDE_RENAMES in this script, or correct the source that asks for them.`)
+  }
 }
 
 console.log(`\nPorted ${screens.length} screens, ${Object.keys(D.AR).length} AR keys, ${TABLES.length} tables.`)

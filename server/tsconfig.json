@@ -1,17 +1,26 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
     "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "types": ["node"],
     "strict": true,
-    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "noEmit": true,
-    "outDir": "dist"
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@salis/contract": ["../packages/contract/src/index.ts"],
+      "@salis/contract/rules": ["../packages/contract/src/rules/index.ts"]
+    }
   },
-  "include": ["src", "tests", "drizzle.config.ts", "vitest.config.ts"]
+  "include": ["src", "scripts", "tests", "drizzle.config.ts", "vitest.config.ts"]
 }

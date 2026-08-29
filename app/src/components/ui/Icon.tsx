@@ -1,6 +1,6 @@
-import { memo } from 'react'
-import type { LucideProps } from 'lucide-react'
+import { type LucideProps } from 'lucide-react'
 import { ICONS } from './icon-registry'
+
 
 /** lucide icon looked up by name.
  *
@@ -14,19 +14,34 @@ import { ICONS } from './icon-registry'
  *  name is known at author time — that tree-shakes.
  *
  *  The registry is generated from the names the design bundle actually
- *  references, so this ships ~230 glyphs rather than lucide's full ~1500. A new
- *  name warns in dev and renders nothing rather than crashing the screen; add
- *  it to the `extra` list in scripts/port-design-data.mjs. */
+ *  references, so this ships ~230 glyphs rather than lucide's full ~1500, with
+ *  `ALIASES` above covering the names the generator misses. A name in neither
+ *  warns in dev and renders nothing rather than crashing the screen; add it to
+ *  the `extra` list in scripts/port-design-data.mjs. */
 export interface IconProps extends Omit<LucideProps, 'ref' | 'size'> {
   name: string
   size?: number
 }
 
-export const Icon = memo(function Icon({ name, size = 16, strokeWidth = 2, ...props }: IconProps) {
+export function Icon({ name, size = 16, strokeWidth = 2, ...props }: IconProps) {
   const Glyph = ICONS[name]
   if (!Glyph) {
     if (import.meta.env.DEV) console.warn(`[Icon] unknown lucide icon: ${name}`)
     return null
   }
-  return <Glyph size={size} strokeWidth={strokeWidth} aria-hidden {...props} />
-})
+  // An icon is decorative by default: the label beside it carries the meaning,
+  // so the glyph is hidden from the accessibility tree to spare a screen reader
+  // announcing the same thing twice. When the glyph *is* the meaning — an icon-
+  // only control, a status dot with no text — the caller passes `aria-label`
+  // (or `aria-labelledby`), which opts it back in as a named `img` and stands
+  // the default `aria-hidden` down. Both come after nothing else can override.
+  const meaningful = props['aria-label'] != null || props['aria-labelledby'] != null
+  return (
+    <Glyph
+      size={size}
+      strokeWidth={strokeWidth}
+      {...(meaningful ? { role: 'img' } : { 'aria-hidden': true })}
+      {...props}
+    />
+  )
+}

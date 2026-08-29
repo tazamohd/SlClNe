@@ -1,0 +1,280 @@
+{
+  "note": "Wave status the deck reads. Written by the orchestrator when an agent is launched and when it reports. The deck shows the `asOf` stamp rather than implying live polling — a published page cannot see this session, and pretending otherwise is the same failure as a screen rendering a total it did not compute.",
+  "asOf": "2026-08-17T10:45:00Z",
+  "wave": "W3",
+  "waveName": "Hardening",
+  "waveNote": "W3 hardening complete: performance, RBAC lab, Arabic, a11y, and the gated CSV export that closes the export(x) gap all landed and integrated. RBAC lab now sweeps 2394 cells (incl. 728 export cells), 0 UNEXPECTED, gate re-verified independently. Remaining candidates: per-screen a11y backlog and dynamic-t() coverage (both quantified in their audits), and runtime axe/Playwright once CI has a browser.",
+  "agents": [
+    {
+      "id": "03",
+      "name": "Integration & Release",
+      "team": "cmd",
+      "state": "running",
+      "startedAt": "2026-08-11T16:10:00Z",
+      "scope": "CI pipeline, shared-file arbitration, re-verifying each agent's Definition of Done before anything merges",
+      "owns": [
+        ".github/workflows/**",
+        "project-control/**"
+      ],
+      "blocks": [
+        "every merge to main — no agent merges its own branch"
+      ],
+      "notes": "Integration pass after tranche 3, on a quiet tree (all four agents committed cleanly, 0 uncommitted): app 697 tests, typecheck and build green, gates at the new baseline (207 placeholder, 112 inline). Server untouched this tranche (274 still holds). F-023 resolved; F-027–F-030 opened as the backend-tranche work orders. Confirmed the agents faked nothing — every capability the server cannot yet serve renders a tested GAP: state."
+    },
+    {
+      "id": "04",
+      "name": "UI Foundation",
+      "team": "fnd",
+      "state": "done",
+      "startedAt": "2026-08-11T15:52:00Z",
+      "scope": "Modal system (6 variants, focus trap, mobile sheet), Form system over Zod, Charts extracted from accounting/Reports.tsx, state kit",
+      "owns": [
+        "app/src/components/ui/**",
+        "app/src/components/shell/**",
+        "app/src/styles/**"
+      ],
+      "blocks": [
+        "every create/edit/delete flow",
+        "23 dead CTAs",
+        "G10 portals",
+        "G11 website"
+      ],
+      "notes": "Landed as 2095896. Found 23 icon names resolving to nothing — lucide renamed a family in v0.4xx and the generator dropped the misses silently, so the close X on every toast rendered blank. Aliased in Icon.tsx; durable fix belongs in port-design-data.mjs."
+    },
+    {
+      "id": "05",
+      "name": "Backend & Data",
+      "team": "fnd",
+      "state": "done",
+      "startedAt": "2026-08-12T15:05:00Z",
+      "scope": "Procurement backend (F-022): requisitions (+lines, submit/approve), purchase orders (+lines, raise-from-requisition, approve within ceiling, SOD), receiving against PO lines (qty ≤ ordered, over-receipt needs approval), suppliers if absent. Migration 0010, seed, RLS, client wiring. Owns the DB.",
+      "owns": [
+        "server/**",
+        "packages/contract/**",
+        "app/src/data/repository.ts",
+        "app/src/data/useCollection.ts"
+      ],
+      "blocks": [
+        "every capability's Definition of Done — real data, persistence and audit are clauses in it"
+      ],
+      "notes": "Procurement backend (F-022): suppliers + requisitions + purchase orders, migration 0010, 406 server tests. PO-over-ceiling and over-receipt invariants proven over HTTP; SOD raise/approve made audit-observable; receiving idempotent, stock-movement deferred honestly."
+    },
+    {
+      "id": "07",
+      "name": "Test Infrastructure",
+      "team": "fnd",
+      "state": "done",
+      "startedAt": "2026-08-11T15:52:00Z",
+      "scope": "vitest + jsdom + testing-library, RBAC unit tests across 14 roles × 28 modules × 5 actions, FIELD_RULES reachability audit, component tests, registry-driven route coverage in smoke.mjs",
+      "owns": [
+        "app/vitest.config.ts",
+        "app/tests/**",
+        "app/scripts/smoke.mjs"
+      ],
+      "blocks": [
+        "every later tranche's verification"
+      ],
+      "notes": "Landed as a87fde5. 174 tests, route coverage now generated from the registry (402 checked). Nine defects found in existing code — see BLOCKERS.json BLK-013 to BLK-016."
+    },
+    {
+      "id": "06",
+      "name": "Auth & Security",
+      "team": "fnd",
+      "state": "done",
+      "startedAt": "2026-08-12T00:20:00Z",
+      "scope": "JWT with rotating refresh and reuse detection, argon2id, session revocation, OTP throttling, server-side RBAC middleware, tenant and branch isolation tests",
+      "owns": [
+        "server/src/auth/**",
+        "app/src/providers/SessionProvider.tsx",
+        "app/src/routes/RequireAccess.tsx",
+        "app/src/screens/auth/**"
+      ],
+      "blocks": [
+        "G10 portals — separate audiences need a session model"
+      ],
+      "notes": "Landed as f4a5a52. Found and closed a live privilege escalation: routes/collections.ts checked 'x' for DELETE, and 'x' is export — that granted delete to every role holding view-plus-export, including accountant on the audit log. Closed F-002, F-004, F-005, F-006. 225 server tests pass against a real PostgreSQL, including 21 isolation tests at the HTTP boundary. Reported open items honestly rather than claiming completeness."
+    },
+    {
+      "id": "08",
+      "name": "Workshop / Mini ERP",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: ApprovalInbox→GET /approvals, EstimateDetail/DiagnosticReport→estimate VAT fields + diagnostic total, WorkshopQC/EstimateDetail→history + sodConflicts, a workshop-analytics view→GET /reports/workshop, the OBD/OTP screen→adapter with the 503 gap state.",
+      "owns": [
+        "app/src/screens/workshop/**",
+        "app/src/screens/domains/workshop.ts"
+      ],
+      "blocks": [],
+      "notes": "Tranche 5 wiring: ApprovalInbox, EstimateDetail, WorkshopQC, WorkshopReports, OBD/OTP — six screens, live + gap; §40 503s render as \"not connected\", never faked. Its source was swept into a peer commit by a git-churn artifact; code correct, 86 workshop tests green."
+    },
+    {
+      "id": "09",
+      "name": "Customers / CRM",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: Customers/Vehicles edit + the four CRM detail screens (LeadDetail conversion, FleetContract terms/renew/vehicles, CustomerFeedback submit, CRMCalendar task create) to the now-writable CRM/fleet collections and the feedback/conversion endpoints.",
+      "owns": [
+        "app/src/screens/registry/**",
+        "app/src/screens/crm/**",
+        "app/src/screens/domains/crm.ts",
+        "app/src/components/shell/DetailPage.tsx (W2 grant)"
+      ],
+      "blocks": [],
+      "notes": "Tranche 5 wiring: LeadDetail Edit/Convert, FleetContract terms/renew/vehicle-join, CustomerFeedback submit, CRMCalendar New Task — live + gap. Category ratings folded into the stored comment so nothing shown is unstored. 84 CRM tests green."
+    },
+    {
+      "id": "10",
+      "name": "Parts / Inventory",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T06:55:00Z",
+      "scope": "F-023: wire return / adjust_down / reservation into the Inventory movement UI now that the server enforces them, plus the InventoryReports screen",
+      "owns": [
+        "app/src/screens/feature/Inventory.tsx",
+        "app/src/screens/network/PartsNetwork.tsx",
+        "app/src/screens/domains/parts.ts"
+      ],
+      "blocks": [],
+      "notes": "Tranche 3: F-023 (return/adjust_down/reservation wired into the Inventory modal with per-kind refusal tests) and InventoryReports. Own suite 82 green, zero hex/markers."
+    },
+    {
+      "id": "12",
+      "name": "Accounting / Finance",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: SalesReports→invoicesSummary, TaxManagement→taxReturn, FinancialReports/ReportsAnalytics→trialBalance, BankReconciliation→bankStatements + match, CustomReports→savedReports. Replace each AGGREGATE_GAP notice with the server figure.",
+      "owns": [
+        "app/src/screens/accounting/**",
+        "app/src/screens/finance/**",
+        "app/src/screens/domains/accounting.ts"
+      ],
+      "blocks": [],
+      "notes": "Tranche 5 wiring: all five report screens to the finance aggregates + bank-match + saved-reports, F-008 banner kept visible, no client money aggregate introduced. · F-035: the orchestrator graduated InsuranceReports/LoanReports to the productReports aggregates."
+    },
+    {
+      "id": "11",
+      "name": "Procurement",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T15:40:00Z",
+      "scope": "Wire the procurement screens to the F-022 backend: requisitions (create with lines, submit, approve/reject), purchase orders (raise from requisition, approve within ceiling, statuses), receiving (qty ≤ ordered, over-receipt approval), suppliers directory. Live + fixture-gap paths.",
+      "owns": [
+        "app/src/screens/network/Procurement.tsx",
+        "app/src/screens/domains/procurement.ts"
+      ],
+      "blocks": [],
+      "notes": "Procurement screens wired to the F-022 backend: requisitions, PO raise/approve (ceiling + SOD surfaced, server-enforced), receiving by line id with the over-receipt guard, supplier directory. Died on a session limit at test reconciliation; resumed to finish — 816 tests, gates at baseline. Flagged that no role can receive-but-not-approve (unreachable defence-in-depth)."
+    },
+    {
+      "id": "16",
+      "name": "Portals",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T03:40:00Z",
+      "scope": "PortalShell (wave grant), TechnicianPortal and its JobDetail, CustomerPortal and its Booking — the first separate-audience surfaces, on the session model W1 built",
+      "owns": [
+        "app/src/screens/portals/**",
+        "app/src/screens/domains/portals.ts",
+        "app/src/components/shell/PortalShell.tsx (W2 grant)"
+      ],
+      "blocks": [],
+      "notes": "PortalShell plus the technician and customer portals, four routes graduated from placeholder. Proved customer booking persists live over HTTP, including the bay double-booking refusal. F-015 closed by agent 05, so the technician sees their own job on a reset DB."
+    },
+    {
+      "id": "17",
+      "name": "Public Website & Landing",
+      "team": "prd",
+      "state": "done",
+      "startedAt": "2026-08-12T11:10:00Z",
+      "scope": "Wiring: the Contact form→POST /public/leads (F-025) with a real success state; plus the SEO/sitemap follow-ups it flagged, and the Tier C content pages (Pricing, Request Demo, Careers, Privacy, Terms) if time allows.",
+      "owns": [
+        "app/src/screens/public/**",
+        "app/src/components/shell/PublicShell.tsx",
+        "app/src/screens/domains/website.ts"
+      ],
+      "blocks": [],
+      "notes": "Tranche 5: Contact wired to POST /public/leads (202/429/400/transport mapped) with the fixture gap kept; Privacy and Terms pages; sitemap regenerated. Four other Tier C pages have no registry route (F-031)."
+    },
+    {
+      "id": "22",
+      "name": "Performance",
+      "team": "hardening",
+      "state": "done",
+      "startedAt": "2026-08-17T09:20:00Z",
+      "finishedAt": "2026-08-17T10:05:00Z",
+      "scope": "Route-level code-splitting, vendor manualChunks, bundle-budget gate",
+      "owns": [
+        "app/vite.config.ts",
+        "app/src/routes/index.tsx",
+        "app/scripts/check-bundle.mjs"
+      ],
+      "notes": "Commit b5bb574. Largest JS chunk 1,410kB->331.9kB raw (366->93kB gzip); 1 monolith -> 67 chunks; domains lazy-load on navigation. check-bundle budget 375kB. typecheck/build/test(816) green; re-verified on integration."
+    },
+    {
+      "id": "21",
+      "name": "Security / RBAC Lab",
+      "team": "hardening",
+      "state": "done",
+      "startedAt": "2026-08-17T09:20:00Z",
+      "finishedAt": "2026-08-17T09:40:00Z",
+      "scope": "RBAC persona lab (14 roles x module x action) + IDOR/tenant-isolation, as a release gate",
+      "owns": [
+        "server/scripts/rbac-lab.ts",
+        "server/tests/rbac-lab.test.ts"
+      ],
+      "notes": "Commit cf01334. 1,666 cells vs real Postgres: 0 UNEXPECTED, 0 IDOR/isolation breaches. Server authz matches @salis/contract everywhere enforced. FINDING (now RESOLVED by agent 23, commit afb4c70): export(x) was unenforced; a gated CSV export route now consumes x and the lab verifies all 728 x-cells. Fixed a rate-limit false-green in the harness."
+    },
+    {
+      "id": "20",
+      "name": "i18n / Arabic",
+      "team": "hardening",
+      "state": "done",
+      "startedAt": "2026-08-17T09:50:00Z",
+      "finishedAt": "2026-08-17T10:15:00Z",
+      "scope": "Arabic completeness via a checked overrides supplement over the generated AR dict",
+      "owns": [
+        "app/src/data/ar-overrides.ts",
+        "app/src/providers/PreferencesProvider.tsx",
+        "app/scripts/check-i18n.mjs"
+      ],
+      "notes": "Commit e3014e8. AR_OVERRIDES merged over generated AR (overrides win); check-i18n gate: 1331/1331 unique literal t() keys covered (878 hand-authored MSA added). 431 dynamic t(var) sites uncheckable+logged (known residual). check-i18n added to gates chain. One scoped test fix (inventory-screen.test.tsx) flagged by the agent."
+    },
+    {
+      "id": "19",
+      "name": "Accessibility & Responsive",
+      "team": "hardening",
+      "state": "done",
+      "startedAt": "2026-08-17T09:50:00Z",
+      "finishedAt": "2026-08-17T10:15:00Z",
+      "scope": "Static a11y linter + primitive-level a11y fixes + mobile/tablet assessment",
+      "owns": [
+        "app/scripts/check-a11y.mjs",
+        "docs/A11Y_AUDIT.md",
+        "app/src/components/ui/**"
+      ],
+      "notes": "Commit a5aef19. Browser-free check-a11y.mjs + docs/A11Y_AUDIT.md; focus-visible, meaningful-icon aria escape hatch, DataTable caption fixed at the primitive level. Integration fixed the 2 residual unlabelled inputs (Topbar search, CustomerApproval OTP); gate ratcheted 2->0 and added to gates chain. Mobile/tablet strong; residual backlog (tap targets, per-screen captions, runtime axe) in the doc."
+    },
+    {
+      "id": "23",
+      "name": "Export / Data Egress",
+      "team": "hardening",
+      "state": "done",
+      "startedAt": "2026-08-17T10:25:00Z",
+      "finishedAt": "2026-08-17T10:45:00Z",
+      "scope": "Permission-gated CSV export per collection (x grant) + extend the RBAC lab to verify x",
+      "owns": [
+        "server/src/routes/collections.ts (export route)",
+        "server/scripts/rbac-lab.ts",
+        "server/tests/export.test.ts"
+      ],
+      "notes": "Commit afb4c70. Closes the export(x) gap agent 21 found: GET /{path}/export on all 52 collections, gated on requirePermission(module,'x') — a STRICTER gate than view (v-but-not-x -> 403). Reuses presentRow so field redaction + RLS hold on the CSV; OWASP CSV-injection neutralization (=,+,-,@); no silent truncation (50k cap emits X-Export-Truncated). RBAC lab now probes x: 728 export cells (156 ALLOWED/572 DENIED), total sweep 2394 cells, 0 UNEXPECTED, GATE PASS (re-verified independently). Residual (labeled SKIPPED, no data surface): reports, kiosk, execreports, portals, audit, network."
+    }
+  ],
+  "shared": {
+    "arbiter": "01",
+    "note": "package.json was updated by the orchestrator before launch — vitest, testing-library, jsdom, msw and zod are installed, and the test scripts added — so no agent needs to touch it. That file is the top contention point in the plan. As of W2, screen registration is no longer shared at all: each domain declares its screens in its own barrel under app/src/screens/domains/, and app/src/screens/registry.ts refuses to let two domains claim one name."
+  }
+}

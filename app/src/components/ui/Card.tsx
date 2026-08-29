@@ -38,7 +38,7 @@ export function CardHeader({
             <Icon name={icon} size={20} />
           </span>
         ) : null}
-        <h3 className="text-xl font-bold text-heading">{title}</h3>
+        <h2 className="text-xl font-bold text-heading">{title}</h2>
       </div>
       {action}
     </div>

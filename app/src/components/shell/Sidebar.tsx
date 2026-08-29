@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -21,16 +22,14 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     )
 
   return (
-    <aside aria-label={t('Sidebar')} className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">
+    <aside className="flex h-full w-sidebar flex-shrink-0 flex-col border-e border-border bg-sidebar">
       <div className="p-3 pb-1">
         <div className="flex items-center gap-2 rounded border border-border bg-inset p-2">
-          <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[10px] font-bold text-white">
-            {userName.trim()[0] ?? '?'}
-          </span>
+          <Avatar name={userName} size={28} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-semibold text-heading">{userName}</p>
             <div className="flex items-center gap-1.5">
-              <span className="rounded-full bg-[rgba(10,94,215,.12)] px-1.5 py-px text-[10px] font-semibold tracking-[.03em] text-salis-blue">
+              <span className="rounded-full bg-salis-blue/[.12] px-1.5 py-px text-[10px] font-semibold tracking-[.03em] text-salis-blue">
                 {roleLabel}
               </span>
               <span className="rounded-full bg-salis-gradient px-1.5 py-px text-[10px] font-semibold tracking-[.03em] text-white">
@@ -51,7 +50,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   type="button"
                   onClick={() => toggleGroup(group.label)}
                   aria-expanded={open}
-                  className="flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 font-action text-[13px] font-extrabold uppercase tracking-[.05em] text-heading transition-colors duration-150 hover:bg-[rgba(10,94,215,.1)]"
+                  className="flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 font-action text-[13px] font-extrabold uppercase tracking-[.05em] text-heading transition-colors duration-150 hover:bg-tint-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
                 >
                   <span>{t(group.label)}</span>
                   <span className="flex-1" />
@@ -72,10 +71,9 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                           cn(
                             'flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-md py-1.5 pe-3 ps-6',
                             'font-action text-xs font-medium no-underline transition-all duration-200',
-                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-1 focus-visible:ring-offset-sidebar',
                             isActive
                               ? 'bg-salis-gradient-r text-white shadow'
-                              : 'text-heading hover:bg-[rgba(10,94,215,.08)]'
+                              : 'text-heading hover:bg-salis-blue/[.08]'
                           )
                         }
                       >
@@ -110,13 +108,12 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function LanguageToggle() {
-  const { rtl, toggleLanguage, t } = usePreferences()
+  const { rtl, toggleLanguage } = usePreferences()
   return (
     <button
       type="button"
       onClick={toggleLanguage}
-      aria-label={t('Toggle language')}
-      className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.08)] hover:text-salis-blue"
+      className="flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-2 py-1.5 font-action text-xs font-medium text-muted transition-all duration-150 hover:bg-salis-blue/[.08] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
     >
       <Icon name="Globe" size={14} />
       <span>{rtl ? 'English' : 'عربي'}</span>

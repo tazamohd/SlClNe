@@ -1,318 +1,393 @@
-import { useEffect, useState } from 'react'
-import { CircleCheckBig } from 'lucide-react'
+import { useState } from 'react'
+import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { cn } from '@/lib/cn'
+import { isLive } from '@/data/repository'
 
-type Translate = (source: string) => string
-type Step = 'checkin' | 'confirmation'
+type Step = 'identify' | 'vehicle' | 'service' | 'done'
+const STEPS: Step[] = ['identify', 'vehicle', 'service', 'done']
 
-interface ServiceOption {
-  icon: string
-  label: string
-}
-
-const SERVICES: ServiceOption[] = [
-  { icon: 'Wrench', label: 'Maintenance' },
-  { icon: 'Cog', label: 'Repair' },
-  { icon: 'SearchCheck', label: 'Inspection' },
-  { icon: 'CircleDot', label: 'Tire Service' },
-  { icon: 'Droplets', label: 'Oil Change' },
+/** Fixture vehicles shown after identification. In live mode these come from the
+ *  API; in demo mode the kiosk still demonstrates the flow. */
+const FIXTURE_VEHICLES = [
+  { id: 'v1', make: 'Toyota Camry 2023', plate: 'ABC 1234' },
+  { id: 'v2', make: 'Hyundai Sonata 2022', plate: 'XYZ 5678' },
 ]
 
-/** Demo queue ticket. A real terminal would get this from the check-in API;
- *  there's no backend here, so it's the same fixed ticket every run. */
-const QUEUE_NUMBER = 'A-014'
+const FIXTURE_SERVICES = [
+  { id: 's1', label: 'Oil Change', icon: 'Droplets' },
+  { id: 's2', label: 'Tire Rotation', icon: 'CircleDot' },
+  { id: 's3', label: 'Brake Inspection', icon: 'ShieldCheck' },
+  { id: 's4', label: 'Full Service', icon: 'Wrench' },
+  { id: 's5', label: 'AC Service', icon: 'Thermometer' },
+  { id: 's6', label: 'Battery Check', icon: 'Battery' },
+]
 
-function formatTime(date: Date): string {
-  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
-}
-
-/** Lobby walk-in terminal — a standalone, unauthenticated tablet screen with
- *  no app shell and no session, so it lives in PUBLIC_SCREENS. It always
- *  renders on its own navy backdrop regardless of the visitor's light/dark
- *  preference, matching the physical kiosk hardware in the design.
+/** Self-service customer check-in kiosk. Large touch targets, simple step flow:
+ *  Identify (phone/plate) -> Select Vehicle -> Confirm Service -> Done.
  *
- *  Two local steps: scan-or-type plate/phone + pick a service, then a queue
- *  ticket confirmation with a reset button that leaves the tablet ready for
- *  the next car. */
+ *  `shell: null` in the barrel -- renders fullscreen with no sidebar or topbar.
+ *  All touch targets are at least 48px for kiosk accessibility.
+ *
+ *  `KioskCheckIn.dc.html` is the design source. */
 export function KioskCheckIn() {
-  const { t, rtl, toggleLanguage } = usePreferences()
-  const [step, setStep] = useState<Step>('checkin')
-  const [plate, setPlate] = useState('')
+  const { t } = usePreferences()
+
+  const [step, setStep] = useState<Step>('identify')
   const [phone, setPhone] = useState('')
-  const [service, setService] = useState<string>('Maintenance')
-  const [time, setTime] = useState(() => formatTime(new Date()))
+  const [plate, setPlate] = useState('')
+  const [, setSelectedVehicle] = useState<string | null>(null)
+  const [selectedService, setSelectedService] = useState<string | null>(null)
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(formatTime(new Date())), 1000)
-    return () => clearInterval(timer)
-  }, [])
+  const stepIndex = STEPS.indexOf(step)
 
-  function startOver() {
-    setPlate('')
-    setPhone('')
-    setService('Maintenance')
-    setStep('checkin')
+  function handleIdentify() {
+    if (!phone.trim() && !plate.trim()) return
+    setStep('vehicle')
   }
 
-  const selectedService = SERVICES.find((svc) => svc.label === service) ?? SERVICES[0]
+  function handleSelectVehicle(id: string) {
+    setSelectedVehicle(id)
+    setStep('service')
+  }
+
+  function handleSelectService(id: string) {
+    setSelectedService(id)
+  }
+
+  function handleConfirm() {
+    if (!selectedService) return
+    setStep('done')
+  }
+
+  function handleRestart() {
+    setStep('identify')
+    setPhone('')
+    setPlate('')
+    setSelectedVehicle(null)
+    setSelectedService(null)
+  }
 
   return (
-    <div
-      dir={rtl ? 'rtl' : 'ltr'}
-      className="relative flex min-h-screen w-full flex-col overflow-hidden bg-salis-navy font-ui text-white"
-    >
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <div className="absolute -top-52 end-[-200px] h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.2),transparent_65%)] blur-[80px]" />
-        <div className="absolute -bottom-52 start-[-200px] h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(11,179,255,.12),transparent_65%)] blur-[80px]" />
-      </div>
-
-      <div className="relative z-[1] flex items-center gap-3 px-5 py-5 sm:px-8">
-        <img
-          src="/assets/logo-blue-orange.png"
-          alt="SALIS AUTO"
-          className="h-auto w-10 flex-shrink-0"
-        />
-        <div className="min-w-0">
-          <h1 className="bg-salis-gradient-r bg-clip-text font-display text-lg font-black text-transparent">
-            SALIS AUTO
-          </h1>
-          <p className="truncate text-[11px] text-white/50">
-            {t('Integrated Workshop Management')}
-          </p>
-        </div>
-        <div className="flex-1" />
-        <div
-          className="hidden items-center gap-1.5 font-mono text-xs text-white/50 sm:flex"
-          dir="ltr"
-        >
-          <Icon name="Clock" size={14} />
-          <span>{time}</span>
-        </div>
-        <button
-          type="button"
-          onClick={toggleLanguage}
-          className="flex h-8 cursor-pointer items-center gap-1 rounded-md border border-white/15 bg-transparent px-2.5 font-action text-[11px] text-white/60"
-        >
-          <Icon name="Globe" size={12} />
-          <span>{rtl ? 'English' : 'عربي'}</span>
-        </button>
-      </div>
-
-      <div className="relative z-[1] flex flex-1 animate-fade-up flex-col items-center justify-center gap-8 px-4 py-6">
-        {step === 'checkin' ? (
-          <CheckinStep
-            t={t}
-            plate={plate}
-            setPlate={setPlate}
-            phone={phone}
-            setPhone={setPhone}
-            service={service}
-            setService={setService}
-            onCheckIn={() => setStep('confirmation')}
-          />
-        ) : (
-          <ConfirmationStep
-            t={t}
-            plate={plate}
-            serviceLabel={t(selectedService.label)}
-            serviceIcon={selectedService.icon}
-            onStartOver={startOver}
-          />
-        )}
-      </div>
-
-      <div className="relative z-[1] flex items-center justify-center gap-4 px-8 py-4 text-[11px] text-white/30">
-        <span>{t('Powered by SALIS AUTO')}</span>
-      </div>
-    </div>
-  )
-}
-
-function CheckinStep({
-  t,
-  plate,
-  setPlate,
-  phone,
-  setPhone,
-  service,
-  setService,
-  onCheckIn,
-}: {
-  t: Translate
-  plate: string
-  setPlate: (value: string) => void
-  phone: string
-  setPhone: (value: string) => void
-  service: string
-  setService: (value: string) => void
-  onCheckIn: () => void
-}) {
-  const canCheckIn = plate.trim().length > 0
-
-  return (
-    <>
-      <div className="text-center">
-        <h2 className="font-display text-[28px] font-black tracking-tight sm:text-4xl">
-          {t('Vehicle Check-In')}
-        </h2>
-        <p className="mt-2 text-sm text-white/60 sm:text-base">
-          {t('Scan your QR code or enter vehicle details')}
-        </p>
-      </div>
-
-      <div className="flex w-full max-w-[700px] flex-col items-center gap-6 sm:flex-row sm:items-stretch">
-        <div className="flex flex-1 flex-col items-center gap-4">
-          <div className="relative flex h-[160px] w-[160px] items-center justify-center rounded-[20px] border-[3px] border-[rgba(10,94,215,.4)] bg-[rgba(10,94,215,.05)] sm:h-[200px] sm:w-[200px]">
-            <Icon name="QrCode" size={56} className="animate-pulse text-[rgba(10,94,215,.5)]" />
+    <main id="main-content" className="flex min-h-screen flex-col bg-page">
+      {/* Header bar */}
+      <header className="flex items-center justify-between border-b border-border bg-card px-6 py-4">
+        <div className="flex items-center gap-3">
+          <span className="flex rounded-xl bg-salis-gradient p-2.5 text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
+            <Icon name="MonitorSmartphone" size={24} aria-hidden />
+          </span>
+          <div>
+            <h1 className="font-display text-xl font-black text-heading">
+              {t('Self Check-In')}
+            </h1>
+            <p className="text-xs text-muted">{t('SALIS AUTO Workshop')}</p>
           </div>
-          <p className="text-sm text-white/50">{t('Point camera at QR code')}</p>
         </div>
+        <LanguageToggle />
+      </header>
 
-        <div
-          className="flex w-full items-center gap-2 sm:w-auto sm:flex-col sm:justify-center"
-          aria-hidden
-        >
-          <div className="h-px flex-1 bg-white/10 sm:h-full sm:w-px sm:flex-1" />
-          <span className="text-xs font-semibold text-white/30">{t('OR')}</span>
-          <div className="h-px flex-1 bg-white/10 sm:h-full sm:w-px sm:flex-1" />
-        </div>
-
-        <div className="flex flex-1 flex-col justify-center gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="kiosk-plate" className="font-action text-xs font-medium text-white/50">
-              {t('License Plate')}
-            </label>
-            <input
-              id="kiosk-plate"
-              value={plate}
-              onChange={(e) => setPlate(e.target.value)}
-              dir="ltr"
-              placeholder="RUH 4821"
-              className="h-14 rounded-xl border-2 border-white/10 bg-white/5 px-4 text-center font-mono text-xl font-bold uppercase tracking-widest text-white outline-none focus:border-salis-blue focus:bg-[rgba(10,94,215,.08)] focus:shadow-[0_0_0_4px_rgba(10,94,215,.2)]"
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="kiosk-phone" className="font-action text-xs font-medium text-white/50">
-              {t('Phone')}
-            </label>
-            <input
-              id="kiosk-phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              dir="ltr"
-              placeholder="+966 5X XXX XXXX"
-              className="h-14 rounded-xl border-2 border-white/10 bg-white/5 px-4 text-center font-mono text-lg text-white outline-none focus:border-salis-blue focus:bg-[rgba(10,94,215,.08)] focus:shadow-[0_0_0_4px_rgba(10,94,215,.2)]"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={onCheckIn}
-            disabled={!canCheckIn}
-            className="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-xl border-none bg-salis-gradient font-action text-base font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(10,94,215,.4)] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <Icon name="Check" size={20} />
-            {t('Check-In')}
-          </button>
-        </div>
-      </div>
-
-      <div className="flex max-w-[600px] flex-wrap justify-center gap-3">
-        {SERVICES.map((svc) => {
-          const active = service === svc.label
+      {/* Progress indicator */}
+      <div role="group" aria-label={t('Check-in progress')} className="flex items-center justify-center gap-2 px-6 py-4">
+        {STEPS.filter((s) => s !== 'done').map((s, i) => {
+          const done = stepIndex > i
+          const current = stepIndex === i
           return (
-            <button
-              key={svc.label}
-              type="button"
-              onClick={() => setService(svc.label)}
-              aria-pressed={active}
-              className={cn(
-                'flex flex-col items-center gap-1.5 rounded-xl px-5 py-3.5 font-action text-xs font-semibold transition-all duration-150',
-                active
-                  ? 'border-none bg-salis-gradient text-white shadow-[0_4px_16px_rgba(10,94,215,.4)]'
-                  : 'border border-white/10 bg-white/5 text-white/60'
-              )}
-            >
-              <Icon name={svc.icon} size={18} />
-              <span>{t(svc.label)}</span>
-            </button>
+            <div key={s} className="flex items-center gap-2">
+              {i > 0 ? (
+                <span
+                  aria-hidden
+                  className={
+                    'h-0.5 w-8 rounded-full ' +
+                    (done ? 'bg-salis-blue' : 'bg-border')
+                  }
+                />
+              ) : null}
+              <span
+                className={
+                  'flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ' +
+                  (done
+                    ? 'bg-salis-gradient text-white'
+                    : current
+                      ? 'border-2 border-salis-blue bg-card text-salis-blue'
+                      : 'border-2 border-border bg-card text-muted')
+                }
+              >
+                {done ? (
+                  <Icon name="Check" size={16} strokeWidth={3} aria-label={t('Completed')} />
+                ) : (
+                  i + 1
+                )}
+              </span>
+              <span
+                className={
+                  'hidden text-sm font-medium sm:inline ' +
+                  (current ? 'text-heading' : 'text-muted')
+                }
+              >
+                {t(s === 'identify' ? 'Identify' : s === 'vehicle' ? 'Vehicle' : 'Service')}
+              </span>
+            </div>
           )
         })}
       </div>
-    </>
+
+      {/* Step content */}
+      <div className="flex flex-1 items-start justify-center px-4 py-6">
+        <div className="w-full max-w-lg animate-fade-up motion-reduce:animate-none">
+          {step === 'identify' ? (
+            <IdentifyStep
+              phone={phone}
+              plate={plate}
+              onPhoneChange={setPhone}
+              onPlateChange={setPlate}
+              onNext={handleIdentify}
+            />
+          ) : step === 'vehicle' ? (
+            <VehicleStep onSelect={handleSelectVehicle} onBack={() => setStep('identify')} />
+          ) : step === 'service' ? (
+            <ServiceStep
+              selected={selectedService}
+              onSelect={handleSelectService}
+              onConfirm={handleConfirm}
+              onBack={() => setStep('vehicle')}
+            />
+          ) : (
+            <DoneStep onRestart={handleRestart} />
+          )}
+        </div>
+      </div>
+    </main>
   )
 }
 
-function ConfirmationStep({
-  t,
-  plate,
-  serviceLabel,
-  serviceIcon,
-  onStartOver,
-}: {
-  t: Translate
-  plate: string
-  serviceLabel: string
-  serviceIcon: string
-  onStartOver: () => void
-}) {
+function LanguageToggle() {
+  const { language, toggleLanguage, t } = usePreferences()
   return (
-    <div className="flex w-full max-w-[440px] flex-col items-center gap-6 text-center">
-      <span className="flex h-20 w-20 items-center justify-center rounded-full bg-[rgba(10,94,215,.1)] text-salis-blue">
-        <CircleCheckBig size={44} strokeWidth={2} aria-hidden />
-      </span>
-      <div>
-        <h2 className="font-display text-3xl font-black">{t('Checked In')}</h2>
-        <p className="mt-2 text-sm text-white/60">
-          {t("We'll call your number when a bay is ready")}
-        </p>
+    <button
+      type="button"
+      onClick={toggleLanguage}
+      className="inline-flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-heading transition-colors hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+      aria-label={t('Switch language')}
+    >
+      <Icon name="Languages" size={18} aria-hidden />
+      {language === 'ar' ? 'English' : 'عربي'}
+    </button>
+  )
+}
+
+function IdentifyStep({
+  phone,
+  plate,
+  onPhoneChange,
+  onPlateChange,
+  onNext,
+}: {
+  phone: string
+  plate: string
+  onPhoneChange: (v: string) => void
+  onPlateChange: (v: string) => void
+  onNext: () => void
+}) {
+  const { t } = usePreferences()
+  const canProceed = phone.trim().length > 0 || plate.trim().length > 0
+
+  return (
+    <Card className="flex flex-col gap-6 p-6">
+      <div className="text-center">
+        <span className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-salis-gradient text-white shadow-[0_12px_24px_rgba(10,94,215,.3)]">
+          <Icon name="UserSearch" size={28} aria-hidden />
+        </span>
+        <h2 className="font-display text-xl font-bold text-heading">{t('Identify Yourself')}</h2>
+        <p className="mt-1 text-sm text-muted">{t('Enter your phone number or license plate')}</p>
       </div>
 
-      <div className="flex flex-col items-center gap-1 rounded-2xl border border-white/10 bg-white/5 px-10 py-6">
-        <span className="text-xs font-semibold uppercase tracking-wider text-white/40">
-          {t('Your Queue Number')}
-        </span>
-        <span className="font-mono text-5xl font-black text-salis-bright" dir="ltr">
-          {QUEUE_NUMBER}
-        </span>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="kiosk-phone" className="font-action text-sm font-medium text-heading">
+            {t('Phone Number')}
+          </label>
+          <Input
+            id="kiosk-phone"
+            type="tel"
+            inputSize="lg"
+            value={phone}
+            onChange={(e) => onPhoneChange(e.target.value)}
+            placeholder="+966 5XX XXX XXXX"
+            icon={<Icon name="Phone" size={20} />}
+            dir="ltr"
+          />
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="h-px flex-1 bg-border" />
+          <span className="text-xs text-muted">{t('or')}</span>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="kiosk-plate" className="font-action text-sm font-medium text-heading">
+            {t('License Plate')}
+          </label>
+          <Input
+            id="kiosk-plate"
+            type="text"
+            inputSize="lg"
+            value={plate}
+            onChange={(e) => onPlateChange(e.target.value)}
+            placeholder={t('ABC 1234')}
+            icon={<Icon name="Car" size={20} />}
+            dir="ltr"
+          />
+        </div>
       </div>
 
-      <div className="flex w-full flex-col gap-2.5 rounded-xl border border-white/10 bg-white/5 px-5 py-4">
-        <SummaryRow label={t('License Plate')} value={plate || '—'} ltr />
-        <div className="h-px bg-white/10" />
-        <SummaryRow label={t('Service')} value={serviceLabel} icon={serviceIcon} />
+      <Button
+        size="lg"
+        className="h-14 w-full text-base"
+        disabled={!canProceed || !isLive}
+        onClick={onNext}
+      >
+        <Icon name="ArrowRight" size={20} />
+        {t('Find My Vehicle')}
+      </Button>
+    </Card>
+  )
+}
+
+function VehicleStep({
+  onSelect,
+  onBack,
+}: {
+  onSelect: (id: string) => void
+  onBack: () => void
+}) {
+  const { t } = usePreferences()
+
+  return (
+    <Card className="flex flex-col gap-5 p-6">
+      <div className="text-center">
+        <h2 className="font-display text-xl font-bold text-heading">{t('Select Your Vehicle')}</h2>
+        <p className="mt-1 text-sm text-muted">{t('Choose the vehicle for this visit')}</p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {FIXTURE_VEHICLES.map((v) => (
+          <button
+            key={v.id}
+            type="button"
+            onClick={() => onSelect(v.id)}
+            disabled={!isLive}
+            className="flex min-h-[64px] w-full cursor-pointer items-center gap-4 rounded-xl border border-border bg-card p-4 text-start transition-all hover:border-salis-blue hover:shadow-md disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+          >
+            <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-salis-blue/[.08] text-salis-blue">
+              <Icon name="Car" size={24} aria-hidden />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-base font-semibold text-heading">{v.make}</p>
+              <p className="mt-0.5 font-mono text-sm text-muted" dir="ltr">{v.plate}</p>
+            </div>
+            <Icon name="ChevronRight" size={20} className="text-muted" aria-hidden />
+          </button>
+        ))}
       </div>
 
       <button
         type="button"
-        onClick={onStartOver}
-        className="mt-2 h-12 w-full cursor-pointer rounded-xl border border-white/15 bg-transparent font-action text-sm font-semibold text-white/70"
+        onClick={onBack}
+        className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
       >
-        {t('Start New Check-In')}
+        <Icon name="ArrowLeft" size={16} aria-hidden />
+        {t('Back')}
       </button>
-    </div>
+    </Card>
   )
 }
 
-function SummaryRow({
-  label,
-  value,
-  icon,
-  ltr,
+function ServiceStep({
+  selected,
+  onSelect,
+  onConfirm,
+  onBack,
 }: {
-  label: string
-  value: string
-  icon?: string
-  ltr?: boolean
+  selected: string | null
+  onSelect: (id: string) => void
+  onConfirm: () => void
+  onBack: () => void
 }) {
+  const { t } = usePreferences()
+
   return (
-    <div className="flex items-center justify-between gap-3 text-sm">
-      <span className="text-white/50">{label}</span>
-      <span className="flex items-center gap-1.5 font-semibold text-white" dir={ltr ? 'ltr' : undefined}>
-        {icon ? <Icon name={icon} size={14} /> : null}
-        {value}
+    <Card className="flex flex-col gap-5 p-6">
+      <div className="text-center">
+        <h2 className="font-display text-xl font-bold text-heading">{t('Select Service')}</h2>
+        <p className="mt-1 text-sm text-muted">{t('What brings you in today?')}</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {FIXTURE_SERVICES.map((svc) => (
+          <button
+            key={svc.id}
+            type="button"
+            onClick={() => onSelect(svc.id)}
+            className={
+              'flex min-h-[80px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border p-4 text-center transition-all ' +
+              (selected === svc.id
+                ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue shadow-[0_0_0_3px_rgba(10,94,215,.15)]'
+                : 'border-border bg-card text-heading hover:border-salis-blue hover:shadow-md')
+            }
+          >
+            <Icon name={svc.icon} size={24} aria-hidden />
+            <span className="font-action text-sm font-medium">{t(svc.label)}</span>
+          </button>
+        ))}
+      </div>
+
+      <Button
+        size="lg"
+        className="h-14 w-full text-base"
+        disabled={!selected || !isLive}
+        onClick={onConfirm}
+      >
+        <Icon name="CheckCircle" size={20} />
+        {t('Confirm Check-In')}
+      </Button>
+
+      <button
+        type="button"
+        onClick={onBack}
+        className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+      >
+        <Icon name="ArrowLeft" size={16} aria-hidden />
+        {t('Back')}
+      </button>
+    </Card>
+  )
+}
+
+function DoneStep({ onRestart }: { onRestart: () => void }) {
+  const { t } = usePreferences()
+
+  return (
+    <Card className="flex flex-col items-center gap-5 p-8 text-center">
+      <span className="flex h-20 w-20 items-center justify-center rounded-full bg-salis-gradient text-white shadow-[0_12px_24px_rgba(10,94,215,.3)]">
+        <Icon name="CheckCircle" size={40} aria-hidden />
       </span>
-    </div>
+      <h2 className="font-display text-2xl font-bold text-heading">{t('Check-In Complete')}</h2>
+      <p className="max-w-sm text-sm text-muted">
+        {t('Your service advisor will be with you shortly. Please have a seat in the waiting area.')}
+      </p>
+      <div className="rounded-xl border border-border bg-inset p-4">
+        <p className="text-xs text-muted">{t('Estimated Wait Time')}</p>
+        <p className="mt-1 font-display text-3xl font-black text-heading" dir="ltr">
+          15 <span className="text-base font-normal text-muted">{t('min')}</span>
+        </p>
+      </div>
+      <Button size="lg" variant="outline" className="h-14 w-full text-base" onClick={onRestart}>
+        <Icon name="RotateCcw" size={20} />
+        {t('New Check-In')}
+      </Button>
+    </Card>
   )
 }

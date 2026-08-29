@@ -1,97 +1,97 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
+import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { isLive } from '@/data/repository'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
-/** Demo organizations offered on this screen. Membership counts are static —
- *  there's no backing org-membership endpoint yet, so this mirrors the
- *  prototype's fixture rather than fetching anything real. */
-const ORGS = [
-  { name: 'SALIS AUTO Holding', members: 24 },
-  { name: 'Al-Amri Auto Group', members: 11 },
-  { name: 'Najd Motors Est.', members: 6 },
-] as const
+interface Organization {
+  id: string
+  name: string
+  members: number
+}
 
-/** Org picker — third step of the auth chain after signing in, before
- *  landing in the app shell. Filtering is local; picking an org only updates
- *  the selection here, `Continue` is what commits it and moves on. */
+const ORGANIZATIONS: Organization[] = [
+  { id: 'o1', name: 'SALIS AUTO Holding', members: 24 },
+  { id: 'o2', name: 'Al-Amri Auto Group', members: 11 },
+  { id: 'o3', name: 'Najd Motors Est.', members: 6 },
+]
+
+/** Select or create an organization. */
 export function OrganizationSelection() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
+  const [picked, setPicked] = useState('o1')
   const [query, setQuery] = useState('')
-  const [picked, setPicked] = useState<string>('SALIS AUTO Holding')
 
-  const orgs = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return ORGS
-    return ORGS.filter((org) => org.name.toLowerCase().includes(q))
-  }, [query])
+  const filtered = ORGANIZATIONS.filter(
+    (o) => !query.trim() || o.name.toLowerCase().includes(query.trim().toLowerCase())
+  )
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <div className="absolute bottom-0 start-0 h-[700px] w-[700px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.1),transparent_65%)] blur-[64px]" />
-      </div>
-
-      <div className="relative z-[1] flex w-full max-w-[440px] animate-fade-up flex-col gap-5 p-4">
+    <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[440px]'}>
+      <div className={`flex flex-col ${isMobile ? 'gap-3.5' : 'gap-5'}`}>
+        {/* Header */}
         <div className="text-center">
-          <img
-            src="/assets/logo-blue-orange.png"
-            alt="SALIS AUTO"
-            className="mx-auto h-auto w-[100px]"
-          />
-          <h1 className="mt-3 font-display text-xl font-extrabold text-heading">
+          <BrandMark width={isMobile ? 80 : 100} />
+          <h1 className={`mt-3 font-display font-extrabold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>
             {t('Organization Selection')}
           </h1>
-          <p className="mt-1.5 font-action text-[13px] text-muted">
+          <p className="mt-1.5 text-[13px] text-muted">
             {t('Select your organization')}
           </p>
         </div>
 
+        {/* Search */}
         <Input
+          placeholder={t('Search organizations...')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={t('Search organizations')}
           icon={<Icon name="Search" size={15} />}
-          inputSize="md"
-          dir="ltr"
+          inputSize="sm"
+          aria-label={t('Search organizations...')}
         />
 
+        {/* Organization list */}
         <div className="flex flex-col gap-2">
-          {orgs.map((org) => {
-            const on = picked === org.name
+          {filtered.map((org) => {
+            const selected = picked === org.id
             return (
               <button
-                key={org.name}
+                key={org.id}
                 type="button"
-                aria-pressed={on}
-                onClick={() => setPicked(org.name)}
+                aria-pressed={selected}
+                onClick={() => setPicked(org.id)}
                 className={cn(
-                  'box-border flex h-[60px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] px-3.5',
-                  'font-action text-sm font-medium transition-all duration-150',
-                  on
-                    ? 'border-[1.5px] border-salis-blue bg-[rgba(10,94,215,.06)] text-salis-blue'
-                    : 'border border-border bg-card text-body'
+                  'flex h-[60px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] px-3.5',
+                  'font-action text-sm font-medium transition-all duration-200 ease-salis',
+                  selected
+                    ? 'border-[1.5px] border-salis-blue bg-salis-blue/[.06] text-salis-blue'
+                    : 'border border-border bg-card text-body hover:border-salis-blue/[.3]'
                 )}
               >
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-salis-gradient text-white">
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-salis-gradient text-[13px] font-bold text-white">
                   <Icon name="Building2" size={16} />
                 </span>
-                <span className="flex flex-1 flex-col items-start text-start">
+                <span className="flex min-w-0 flex-1 flex-col text-start">
                   <span>{org.name}</span>
-                  <span className="font-normal text-[11px] text-muted">
+                  <span className="text-[11px] font-normal text-muted">
                     {org.members} {t('members')}
                   </span>
                 </span>
-                {on ? <Icon name="Check" size={16} /> : null}
+                {selected ? <Icon name="Check" size={16} /> : null}
               </button>
             )
           })}
 
+          {/* Create new */}
           <button
             type="button"
-            className="box-border flex h-[52px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-[1.5px] border-dashed border-border-strong bg-transparent px-3.5 font-action text-[13px] font-medium text-muted"
+            aria-label={t('Create New Organization')}
+            className="flex h-[52px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] border-[1.5px] border-dashed border-border-strong bg-transparent px-3.5 font-action text-[13px] font-medium text-muted transition-all duration-150 hover:border-salis-blue hover:text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[10px] bg-inset">
               <Icon name="Plus" size={16} />
@@ -100,13 +100,11 @@ export function OrganizationSelection() {
           </button>
         </div>
 
-        <Link
-          to="/workspace-selection"
-          className="box-border inline-flex h-12 w-full items-center justify-center whitespace-nowrap rounded bg-salis-gradient font-action text-[15px] font-semibold text-white no-underline shadow-[0_4px_12px_rgba(10,94,215,.25)] hover:text-white hover:no-underline"
-        >
+        {/* Continue */}
+        <Button size="lg" className="w-full" disabled={!isLive}>
           {t('Continue')}
-        </Link>
+        </Button>
       </div>
-    </div>
+    </AuthLayout>
   )
 }

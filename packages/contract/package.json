@@ -1,0 +1,21 @@
+{
+  "name": "@salis/contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Zod schemas shared by the SALIS AUTO client and server. One definition is the API type, the server guard and the form validator.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./rules": "./src/rules/index.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "zod": "^3.25.76"
+  }
+}

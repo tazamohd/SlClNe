@@ -1,12 +1,16 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { StageNotice, stageBusy, stageLabel } from './StageNotice'
+import { useJobStage } from './useJobStage'
 
 type Verdict = 'pass' | 'fail' | 'na'
 
@@ -39,9 +43,10 @@ const CATEGORIES = [
 ] as const
 
 export function WorkshopInspection() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
-  const navigate = useNavigate()
+  const stage = useJobStage()
   const [results, setResults] = useState<Record<string, Verdict>>({})
 
   const { checked, total } = useMemo(() => {
@@ -51,7 +56,12 @@ export function WorkshopInspection() {
     return { checked: all.filter((key) => results[key]).length, total: all.length }
   }, [results])
 
-  function submit() {
+  const failures = useMemo(
+    () => Object.entries(results).filter(([, verdict]) => verdict === 'fail').length,
+    [results]
+  )
+
+  async function submit() {
     // The prototype let you submit an untouched checklist. An inspection that
     // recorded nothing is worse than none — the estimate would be built on it.
     if (checked < total) {
@@ -62,45 +72,36 @@ export function WorkshopInspection() {
       })
       return
     }
-    toast.show({ title: t('Inspection'), description: t('Inspection submitted') })
-    setTimeout(() => navigate('/workshop-estimate'), 700)
+    /* The verdicts themselves have no table yet — `diag_findings` belongs to
+     * the diagnostics flow and nothing links it to a job card — so the count of
+     * failures rides along as the transition's reason, which the audit log does
+     * keep. It is a summary, not a substitute for the findings record. */
+    await stage.advance('estimate', {
+      reason: `inspection ${checked}/${total}, ${failures} fail`,
+      then: '/workshop-estimate',
+    })
   }
+
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-            <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="SearchCheck" size={28} />
-            </div>
-          </div>
-          <div>
-            <h1 className="font-display text-[26px] font-black text-heading">
-              {t('Vehicle Inspection')}
-            </h1>
-            <p className="mt-0.5 text-sm text-muted" dir="ltr">
-              JC-A3F8B2C1 · Toyota Camry 2022
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          icon="SearchCheck"
+          title={t('Vehicle Inspection')}
+          subtitle={<span dir="ltr">{stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}</span>}
+          compact={isMobile}
+        />
         <span className="font-mono text-[13px] text-muted">
           {checked}/{total} {t('checks recorded')}
         </span>
       </div>
 
-      <WorkflowStepper current="Inspection" />
+      <WorkflowStepper current={stage.stageLabel} />
+
+      <StageNotice stage={stage} />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {CATEGORIES.map((category) => {
@@ -160,9 +161,14 @@ export function WorkshopInspection() {
         })}
       </div>
 
-      <Button size="lg" className="w-full max-w-[400px] self-end" onClick={submit}>
+      <Button
+        size="lg"
+        className="w-full max-w-[400px] self-end"
+        onClick={() => void submit()}
+        disabled={stageBusy(stage)}
+      >
         <Icon name="CheckCircle" size={18} />
-        {t('Submit Inspection')}
+        {t(stageLabel(stage, 'Submit Inspection'))}
       </Button>
     </div>
   )
@@ -171,9 +177,9 @@ export function WorkshopInspection() {
 /** Pass is blue, fail is orange, N/A is slate — the palette has no red or
  *  green, so "fail" reads as the warning colour (README §7). */
 const TONES: Record<'pass' | 'fail' | 'na', string> = {
-  pass: 'bg-[rgba(10,94,215,.15)] text-salis-blue',
-  fail: 'bg-[rgba(249,115,22,.15)] text-salis-orange',
-  na: 'bg-[rgba(100,116,139,.12)] text-[#64748B]',
+  pass: 'bg-salis-blue/[.15] text-salis-blue',
+  fail: 'bg-salis-orange/[.15] text-salis-orange',
+  na: 'bg-tint-neutral text-muted',
 }
 
 function VerdictButton({
@@ -194,8 +200,8 @@ function VerdictButton({
       aria-checked={selected}
       onClick={onSelect}
       className={cn(
-        'h-[26px] min-h-[44px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-3 font-action text-[10px] font-semibold',
-        selected ? TONES[tone] : 'bg-inset text-muted'
+        'h-[26px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-2 font-action text-[10px] font-semibold',
+        selected ? TONES[tone] : 'bg-inset text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
       )}
     >
       {label}

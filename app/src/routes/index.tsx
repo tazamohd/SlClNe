@@ -1,906 +1,552 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import type { ComponentType } from 'react'
 import { SCREENS } from '@/data/generated/screens'
+import { SPEC_SCREENS } from '@/data/generated/spec-screens'
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { RequireAccess } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
+import {
+  composeScreens,
+  entryOf,
+  type DomainScreens,
+  type ScreenEntry,
+  type Shell,
+} from '@/screens/registry'
+import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
+import { PortalShell } from '@/components/shell/PortalShell'
+import { PublicShell } from '@/components/shell/PublicShell'
+import { Loading } from '@/components/ui/States'
+import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
+import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
 
-/**
- * Route-level code-splitting. Every screen below is loaded on demand via
- * `React.lazy`, so the initial bundle carries only the shell, the router, and
- * this map — not all ~130 screens. Screens are named exports (and several
- * modules export multiple screens), so each factory unwraps the wanted export
- * into the `{ default }` shape `React.lazy` requires. Exports themselves are
- * untouched; only the import mechanism changed.
- */
+/** Everything below reaches its screen through `React.lazy(() => import(...))`
+ *  rather than a static import. The routes, guards, shells and screen-name
+ *  mapping are byte-for-byte what they were — only the loading strategy changed.
+ *  Vite emits one chunk per dynamic-import target, so the auth chain and the
+ *  operational shell are all the first paint needs, and each ERP domain, the
+ *  marketing site and the customer portal arrive on the navigation that first
+ *  reaches them. See `vite.config.ts` for how those chunks are grouped.
+ *
+ *  The barrel tables below mirror the screen names each domain declares in
+ *  `screens/domains/*`. The barrel stays the module the code actually loads —
+ *  these tables only say which lazy chunk a name resolves to, and the same
+ *  `composeScreens` double-claim check still runs over them. A name added to a
+ *  barrel needs a line here to route; that coupling is the price of splitting a
+ *  file whose imports are the whole product. */
 
-// auth
-const Splash = lazy(() => import('@/screens/auth/Splash').then((m) => ({ default: m.Splash })))
-const Welcome = lazy(() => import('@/screens/auth/Welcome').then((m) => ({ default: m.Welcome })))
-const LanguageSelection = lazy(() =>
-  import('@/screens/auth/LanguageSelection').then((m) => ({ default: m.LanguageSelection })),
-)
-const RegionSelection = lazy(() =>
-  import('@/screens/auth/RegionSelection').then((m) => ({ default: m.RegionSelection })),
-)
-const Login = lazy(() => import('@/screens/auth/Login').then((m) => ({ default: m.Login })))
-const AccountLocked = lazy(() =>
-  import('@/screens/auth/StatusScreens').then((m) => ({ default: m.AccountLocked })),
-)
-const LogoutConfirmation = lazy(() =>
-  import('@/screens/auth/StatusScreens').then((m) => ({ default: m.LogoutConfirmation })),
-)
-const SessionExpired = lazy(() =>
-  import('@/screens/auth/StatusScreens').then((m) => ({ default: m.SessionExpired })),
-)
-const Unauthorized = lazy(() =>
-  import('@/screens/auth/StatusScreens').then((m) => ({ default: m.Unauthorized })),
-)
-const ForgotPassword = lazy(() =>
-  import('@/screens/auth/PasswordScreens').then((m) => ({ default: m.ForgotPassword })),
-)
-const ResetPassword = lazy(() =>
-  import('@/screens/auth/PasswordScreens').then((m) => ({ default: m.ResetPassword })),
-)
-const BiometricSetup = lazy(() =>
-  import('@/screens/auth/VerificationScreens').then((m) => ({ default: m.BiometricSetup })),
-)
-const CreatePIN = lazy(() =>
-  import('@/screens/auth/VerificationScreens').then((m) => ({ default: m.CreatePIN })),
-)
-const OTPVerification = lazy(() =>
-  import('@/screens/auth/VerificationScreens').then((m) => ({ default: m.OTPVerification })),
-)
-const TwoFactorVerification = lazy(() =>
-  import('@/screens/auth/VerificationScreens').then((m) => ({ default: m.TwoFactorVerification })),
-)
-const Register = lazy(() => import('@/screens/auth/Register').then((m) => ({ default: m.Register })))
-const RoleSelection = lazy(() =>
-  import('@/screens/auth/RoleSelection').then((m) => ({ default: m.RoleSelection })),
-)
-const SocialLogin = lazy(() =>
-  import('@/screens/auth/SocialLogin').then((m) => ({ default: m.SocialLogin })),
-)
-const SSOLogin = lazy(() => import('@/screens/auth/SSOLogin').then((m) => ({ default: m.SSOLogin })))
-const OrganizationSelection = lazy(() =>
-  import('@/screens/auth/OrganizationSelection').then((m) => ({ default: m.OrganizationSelection })),
-)
-const WorkspaceSelection = lazy(() =>
-  import('@/screens/auth/WorkspaceSelection').then((m) => ({ default: m.WorkspaceSelection })),
-)
-const ProfileCompletion = lazy(() =>
-  import('@/screens/auth/ProfileCompletion').then((m) => ({ default: m.ProfileCompletion })),
-)
-const Onboarding = lazy(() =>
-  import('@/screens/auth/Onboarding').then((m) => ({ default: m.Onboarding })),
-)
-const InviteAcceptance = lazy(() =>
-  import('@/screens/auth/InviteAcceptance').then((m) => ({ default: m.InviteAcceptance })),
-)
-const Error404 = lazy(() => import('@/screens/auth/Error404').then((m) => ({ default: m.Error404 })))
-const Maintenance = lazy(() =>
-  import('@/screens/auth/Maintenance').then((m) => ({ default: m.Maintenance })),
-)
-const PrivacyPolicy = lazy(() =>
-  import('@/screens/auth/PrivacyPolicy').then((m) => ({ default: m.PrivacyPolicy })),
-)
-const TermsConditions = lazy(() =>
-  import('@/screens/auth/TermsConditions').then((m) => ({ default: m.TermsConditions })),
-)
+/** Wrap a named module export in `React.lazy`. Repeated calls with the same
+ *  import specifier resolve to one chunk, so a module that exports several
+ *  screens is split once, not per screen. */
+function lazyNamed(
+  load: () => Promise<Record<string, unknown>>,
+  name: string
+): ComponentType {
+  return lazy(async () => ({ default: (await load())[name] as ComponentType }))
+}
 
-// website (public marketing)
-const PublicPortalLanding = lazy(() =>
-  import('@/screens/website/Landing').then((m) => ({ default: m.PublicPortalLanding })),
-)
-const PublicPortalAbout = lazy(() =>
-  import('@/screens/website/About').then((m) => ({ default: m.PublicPortalAbout })),
-)
-const PublicPortalServices = lazy(() =>
-  import('@/screens/website/Services').then((m) => ({ default: m.PublicPortalServices })),
-)
-const PublicPortalMarketplace = lazy(() =>
-  import('@/screens/website/Marketplace').then((m) => ({ default: m.PublicPortalMarketplace })),
-)
-const PublicPortalInsurance = lazy(() =>
-  import('@/screens/website/Insurance').then((m) => ({ default: m.PublicPortalInsurance })),
-)
-const PublicPortalLoans = lazy(() =>
-  import('@/screens/website/Loans').then((m) => ({ default: m.PublicPortalLoans })),
-)
-const PublicPortalBlog = lazy(() =>
-  import('@/screens/website/Blog').then((m) => ({ default: m.PublicPortalBlog })),
-)
-const PublicPortalFAQ = lazy(() =>
-  import('@/screens/website/FAQ').then((m) => ({ default: m.PublicPortalFAQ })),
-)
-const PublicPortalContact = lazy(() =>
-  import('@/screens/website/Contact').then((m) => ({ default: m.PublicPortalContact })),
-)
-const PublicPortalSupport = lazy(() =>
-  import('@/screens/website/Support').then((m) => ({ default: m.PublicPortalSupport })),
-)
+type BarrelModule = { SCREENS: DomainScreens }
 
-// standalone portals
-const CustomerPortal = lazy(() =>
-  import('@/screens/portals/CustomerPortal').then((m) => ({ default: m.CustomerPortal })),
-)
-const CustomerPortalBooking = lazy(() =>
-  import('@/screens/portals/CustomerPortal').then((m) => ({ default: m.CustomerPortalBooking })),
-)
-const SupplierPortal = lazy(() =>
-  import('@/screens/portals/SupplierPortal').then((m) => ({ default: m.SupplierPortal })),
-)
-const SupplierPortalOrders = lazy(() =>
-  import('@/screens/portals/SupplierPortal').then((m) => ({ default: m.SupplierPortalOrders })),
-)
-const TechnicianPortal = lazy(() =>
-  import('@/screens/portals/TechnicianPortal').then((m) => ({ default: m.TechnicianPortal })),
-)
-const TechnicianPortalJobDetail = lazy(() =>
-  import('@/screens/portals/TechnicianPortal').then((m) => ({
-    default: m.TechnicianPortalJobDetail,
-  })),
-)
-const KioskCheckIn = lazy(() =>
-  import('@/screens/portals/KioskCheckIn').then((m) => ({ default: m.KioskCheckIn })),
-)
-
-// core / workshop
-const Dashboard = lazy(() => import('@/screens/Dashboard').then((m) => ({ default: m.Dashboard })))
-const JobCards = lazy(() =>
-  import('@/screens/workshop/JobCards').then((m) => ({ default: m.JobCards })),
-)
-const JobDetail = lazy(() =>
-  import('@/screens/workshop/JobDetail').then((m) => ({ default: m.JobDetail })),
-)
-const JobCardDetail = lazy(() =>
-  import('@/screens/workshop/JobCardDetail').then((m) => ({ default: m.JobCardDetail })),
-)
-const AppointmentCalendar = lazy(() =>
-  import('@/screens/workshop/AppointmentCalendar').then((m) => ({ default: m.AppointmentCalendar })),
-)
-const ApprovalInbox = lazy(() =>
-  import('@/screens/workshop/ApprovalInbox').then((m) => ({ default: m.ApprovalInbox })),
-)
-const CustomerApproval = lazy(() =>
-  import('@/screens/workshop/CustomerApproval').then((m) => ({ default: m.CustomerApproval })),
-)
-const DiagnosticReport = lazy(() =>
-  import('@/screens/workshop/DiagnosticReport').then((m) => ({ default: m.DiagnosticReport })),
-)
-const EstimateDetail = lazy(() =>
-  import('@/screens/workshop/EstimateDetail').then((m) => ({ default: m.EstimateDetail })),
-)
-const OBDDiagnostics = lazy(() =>
-  import('@/screens/workshop/OBDDiagnostics').then((m) => ({ default: m.OBDDiagnostics })),
-)
-const TechnicianKB = lazy(() =>
-  import('@/screens/workshop/TechnicianKB').then((m) => ({ default: m.TechnicianKB })),
-)
-const TechnicianSchedule = lazy(() =>
-  import('@/screens/workshop/TechnicianSchedule').then((m) => ({ default: m.TechnicianSchedule })),
-)
-const WorkshopReports = lazy(() =>
-  import('@/screens/workshop/WorkshopReports').then((m) => ({ default: m.WorkshopReports })),
-)
-const WorkshopCheckIn = lazy(() =>
-  import('@/screens/workshop/WorkshopCheckIn').then((m) => ({ default: m.WorkshopCheckIn })),
-)
-const WorkshopInspection = lazy(() =>
-  import('@/screens/workshop/WorkshopInspection').then((m) => ({ default: m.WorkshopInspection })),
-)
-const WorkshopEstimate = lazy(() =>
-  import('@/screens/workshop/WorkshopEstimate').then((m) => ({ default: m.WorkshopEstimate })),
-)
-const WorkshopQC = lazy(() =>
-  import('@/screens/workshop/WorkshopQC').then((m) => ({ default: m.WorkshopQC })),
-)
-const WorkshopSignature = lazy(() =>
-  import('@/screens/workshop/WorkshopSignature').then((m) => ({ default: m.WorkshopSignature })),
-)
-const WorkshopDelivery = lazy(() =>
-  import('@/screens/workshop/WorkshopDelivery').then((m) => ({ default: m.WorkshopDelivery })),
-)
-
-// finance
-const Invoices = lazy(() =>
-  import('@/screens/finance/Invoices').then((m) => ({ default: m.Invoices })),
-)
-const InvoiceDetail = lazy(() =>
-  import('@/screens/finance/InvoiceDetail').then((m) => ({ default: m.InvoiceDetail })),
-)
-const InvoiceCreate = lazy(() =>
-  import('@/screens/finance/InvoiceCreate').then((m) => ({ default: m.InvoiceCreate })),
-)
-const Payments = lazy(() =>
-  import('@/screens/finance/Payments').then((m) => ({ default: m.Payments })),
-)
-
-// registry
-const Customers = lazy(() =>
-  import('@/screens/registry/Registries').then((m) => ({ default: m.Customers })),
-)
-const Estimates = lazy(() =>
-  import('@/screens/registry/Registries').then((m) => ({ default: m.Estimates })),
-)
-const FleetManagement = lazy(() =>
-  import('@/screens/registry/Registries').then((m) => ({ default: m.FleetManagement })),
-)
-const Technicians = lazy(() =>
-  import('@/screens/registry/Registries').then((m) => ({ default: m.Technicians })),
-)
-const Vehicles = lazy(() =>
-  import('@/screens/registry/Registries').then((m) => ({ default: m.Vehicles })),
-)
-const Appointments = lazy(() =>
-  import('@/screens/registry/Appointments').then((m) => ({ default: m.Appointments })),
-)
-const CustomerDetail = lazy(() =>
-  import('@/screens/registry/CustomerDetail').then((m) => ({ default: m.CustomerDetail })),
-)
-const VehicleDetail = lazy(() =>
-  import('@/screens/registry/VehicleDetail').then((m) => ({ default: m.VehicleDetail })),
-)
-const FleetContract = lazy(() =>
-  import('@/screens/registry/FleetContract').then((m) => ({ default: m.FleetContract })),
-)
-
-// network / procurement
-const PartsNetworkDashboard = lazy(() =>
-  import('@/screens/network/PartsNetwork').then((m) => ({ default: m.PartsNetworkDashboard })),
-)
-const PartsNetworkIncoming = lazy(() =>
-  import('@/screens/network/PartsNetwork').then((m) => ({ default: m.PartsNetworkIncoming })),
-)
-const PartsNetworkMembers = lazy(() =>
-  import('@/screens/network/PartsNetwork').then((m) => ({ default: m.PartsNetworkMembers })),
-)
-const PartsNetworkOrders = lazy(() =>
-  import('@/screens/network/PartsNetwork').then((m) => ({ default: m.PartsNetworkOrders })),
-)
-const PartsNetworkRequests = lazy(() =>
-  import('@/screens/network/PartsNetwork').then((m) => ({ default: m.PartsNetworkRequests })),
-)
-const PartsNetworkQuotations = lazy(() =>
-  import('@/screens/network/Procurement').then((m) => ({ default: m.PartsNetworkQuotations })),
-)
-const PartsNetworkSendRequest = lazy(() =>
-  import('@/screens/network/Procurement').then((m) => ({ default: m.PartsNetworkSendRequest })),
-)
-const PartsSupplyNetwork = lazy(() =>
-  import('@/screens/network/Procurement').then((m) => ({ default: m.PartsSupplyNetwork })),
-)
-const ProcurementPortal = lazy(() =>
-  import('@/screens/network/Procurement').then((m) => ({ default: m.ProcurementPortal })),
-)
-const ProcurementRequisitions = lazy(() =>
-  import('@/screens/network/Procurement').then((m) => ({ default: m.ProcurementRequisitions })),
-)
-const PurchaseOrder = lazy(() =>
-  import('@/screens/network/PurchaseOrder').then((m) => ({ default: m.PurchaseOrder })),
-)
-
-// accounting
-const ChartOfAccounts = lazy(() =>
-  import('@/screens/accounting/Accounting').then((m) => ({ default: m.ChartOfAccounts })),
-)
-const Departments = lazy(() =>
-  import('@/screens/accounting/Accounting').then((m) => ({ default: m.Departments })),
-)
-const Expenses = lazy(() =>
-  import('@/screens/accounting/Accounting').then((m) => ({ default: m.Expenses })),
-)
-const JournalEntries = lazy(() =>
-  import('@/screens/accounting/Accounting').then((m) => ({ default: m.JournalEntries })),
-)
-const Receipts = lazy(() =>
-  import('@/screens/accounting/Accounting').then((m) => ({ default: m.Receipts })),
-)
-const BIDashboard = lazy(() =>
-  import('@/screens/accounting/Reports').then((m) => ({ default: m.BIDashboard })),
-)
-const ExecutiveReports = lazy(() =>
-  import('@/screens/accounting/Reports').then((m) => ({ default: m.ExecutiveReports })),
-)
-const FinancialReports = lazy(() =>
-  import('@/screens/accounting/Reports').then((m) => ({ default: m.FinancialReports })),
-)
-const FinancialStatements = lazy(() =>
-  import('@/screens/accounting/Reports').then((m) => ({ default: m.FinancialStatements })),
-)
-const OperationalReports = lazy(() =>
-  import('@/screens/accounting/Reports').then((m) => ({ default: m.OperationalReports })),
-)
-const BankReconciliation = lazy(() =>
-  import('@/screens/accounting/BankReconciliation').then((m) => ({ default: m.BankReconciliation })),
-)
-const CustomReports = lazy(() =>
-  import('@/screens/accounting/CustomReports').then((m) => ({ default: m.CustomReports })),
-)
-const InsuranceReports = lazy(() =>
-  import('@/screens/accounting/InsuranceReports').then((m) => ({ default: m.InsuranceReports })),
-)
-const InvoicePreview = lazy(() =>
-  import('@/screens/accounting/InvoicePreview').then((m) => ({ default: m.InvoicePreview })),
-)
-const LoanReports = lazy(() =>
-  import('@/screens/accounting/LoanReports').then((m) => ({ default: m.LoanReports })),
-)
-const Reports = lazy(() =>
-  import('@/screens/accounting/ReportsHub').then((m) => ({ default: m.Reports })),
-)
-const ReportsAnalytics = lazy(() =>
-  import('@/screens/accounting/ReportsAnalytics').then((m) => ({ default: m.ReportsAnalytics })),
-)
-const SalesReports = lazy(() =>
-  import('@/screens/accounting/SalesReports').then((m) => ({ default: m.SalesReports })),
-)
-const TaxManagement = lazy(() =>
-  import('@/screens/accounting/TaxManagement').then((m) => ({ default: m.TaxManagement })),
-)
-const InventoryReports = lazy(() =>
-  import('@/screens/accounting/InventoryReports').then((m) => ({ default: m.InventoryReports })),
-)
-
-// crm
-const AgentDashboard = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.AgentDashboard })),
-)
-const AgentRegistry = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.AgentRegistry })),
-)
-const Campaigns = lazy(() => import('@/screens/crm/Crm').then((m) => ({ default: m.Campaigns })))
-const ConversationHistory = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.ConversationHistory })),
-)
-const CRMTasks = lazy(() => import('@/screens/crm/Crm').then((m) => ({ default: m.CRMTasks })))
-const CustomerSegments = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.CustomerSegments })),
-)
-const EmailMarketing = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.EmailMarketing })),
-)
-const Integrations = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.Integrations })),
-)
-const LeadPipeline = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.LeadPipeline })),
-)
-const Opportunities = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.Opportunities })),
-)
-const SMSCampaigns = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.SMSCampaigns })),
-)
-const WhatsAppCampaigns = lazy(() =>
-  import('@/screens/crm/Crm').then((m) => ({ default: m.WhatsAppCampaigns })),
-)
-const CRMCalendar = lazy(() =>
-  import('@/screens/crm/CRMCalendar').then((m) => ({ default: m.CRMCalendar })),
-)
-const CustomerFeedback = lazy(() =>
-  import('@/screens/crm/CustomerFeedback').then((m) => ({ default: m.CustomerFeedback })),
-)
-const LeadDetail = lazy(() =>
-  import('@/screens/crm/LeadDetail').then((m) => ({ default: m.LeadDetail })),
-)
-
-// customer-app
-const CustomerAppAppointments = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({
-    default: m.CustomerAppAppointments,
-  })),
-)
-const CustomerAppGarage = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppGarage })),
-)
-const CustomerAppHome = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppHome })),
-)
-const CustomerAppInsurance = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppInsurance })),
-)
-const CustomerAppLoans = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppLoans })),
-)
-const CustomerAppMarketplace = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppMarketplace })),
-)
-const CustomerAppNotifications = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({
-    default: m.CustomerAppNotifications,
-  })),
-)
-const CustomerAppOrders = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppOrders })),
-)
-const CustomerAppProfile = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppProfile })),
-)
-const CustomerAppServiceTracking = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({
-    default: m.CustomerAppServiceTracking,
-  })),
-)
-const CustomerAppWallet = lazy(() =>
-  import('@/screens/customer-app/CustomerApp').then((m) => ({ default: m.CustomerAppWallet })),
-)
-
-// meta / native
-const FlowSpec = lazy(() => import('@/screens/meta/Specs').then((m) => ({ default: m.FlowSpec })))
-const IndexPage = lazy(() => import('@/screens/meta/Specs').then((m) => ({ default: m.IndexPage })))
-const RBACSpec = lazy(() => import('@/screens/meta/Specs').then((m) => ({ default: m.RBACSpec })))
-const NativeAndroid = lazy(() =>
-  import('@/screens/meta/Native').then((m) => ({ default: m.NativeAndroid })),
-)
-const NativeIOS = lazy(() =>
-  import('@/screens/meta/Native').then((m) => ({ default: m.NativeIOS })),
-)
-
-// ui pattern library
-const UICardView = lazy(() =>
-  import('@/screens/ui/Views').then((m) => ({ default: m.UICardView })),
-)
-const UIListView = lazy(() =>
-  import('@/screens/ui/Views').then((m) => ({ default: m.UIListView })),
-)
-const UITableView = lazy(() =>
-  import('@/screens/ui/Views').then((m) => ({ default: m.UITableView })),
-)
-const UICalendarView = lazy(() =>
-  import('@/screens/ui/ViewsAlt').then((m) => ({ default: m.UICalendarView })),
-)
-const UIKanbanView = lazy(() =>
-  import('@/screens/ui/ViewsAlt').then((m) => ({ default: m.UIKanbanView })),
-)
-const UITimelineView = lazy(() =>
-  import('@/screens/ui/ViewsAlt').then((m) => ({ default: m.UITimelineView })),
-)
-const UIAttachments = lazy(() =>
-  import('@/screens/ui/Media').then((m) => ({ default: m.UIAttachments })),
-)
-const UIMapView = lazy(() => import('@/screens/ui/Media').then((m) => ({ default: m.UIMapView })))
-const UIMediaGallery = lazy(() =>
-  import('@/screens/ui/Media').then((m) => ({ default: m.UIMediaGallery })),
-)
-const UIAdvancedFilters = lazy(() =>
-  import('@/screens/ui/Insights').then((m) => ({ default: m.UIAdvancedFilters })),
-)
-const UICharts = lazy(() =>
-  import('@/screens/ui/Insights').then((m) => ({ default: m.UICharts })),
-)
-const UIExportCenter = lazy(() =>
-  import('@/screens/ui/Transfer').then((m) => ({ default: m.UIExportCenter })),
-)
-const UIImportCenter = lazy(() =>
-  import('@/screens/ui/Transfer').then((m) => ({ default: m.UIImportCenter })),
-)
-const UIEmptyStates = lazy(() =>
-  import('@/screens/ui/States').then((m) => ({ default: m.UIEmptyStates })),
-)
-const UIFormValidation = lazy(() =>
-  import('@/screens/ui/States').then((m) => ({ default: m.UIFormValidation })),
-)
-const UILoadingStates = lazy(() =>
-  import('@/screens/ui/States').then((m) => ({ default: m.UILoadingStates })),
-)
-const UIActivityFeed = lazy(() =>
-  import('@/screens/ui/Collaboration').then((m) => ({ default: m.UIActivityFeed })),
-)
-const UIComments = lazy(() =>
-  import('@/screens/ui/Collaboration').then((m) => ({ default: m.UIComments })),
-)
-const UIMessages = lazy(() =>
-  import('@/screens/ui/Collaboration').then((m) => ({ default: m.UIMessages })),
-)
-const UIModalsActions = lazy(() =>
-  import('@/screens/ui/ModalsCore').then((m) => ({ default: m.UIModalsActions })),
-)
-const UIModalsCRUD = lazy(() =>
-  import('@/screens/ui/ModalsCore').then((m) => ({ default: m.UIModalsCRUD })),
-)
-const UIModalsStatus = lazy(() =>
-  import('@/screens/ui/ModalsCore').then((m) => ({ default: m.UIModalsStatus })),
-)
-const UIModalsCapture = lazy(() =>
-  import('@/screens/ui/ModalsFlow').then((m) => ({ default: m.UIModalsCapture })),
-)
-const UIModalsData = lazy(() =>
-  import('@/screens/ui/ModalsFlow').then((m) => ({ default: m.UIModalsData })),
-)
-const UIModalsLifecycle = lazy(() =>
-  import('@/screens/ui/ModalsFlow').then((m) => ({ default: m.UIModalsLifecycle })),
-)
-
-// call center
-const CallCenter = lazy(() =>
-  import('@/screens/callcenter/CallCenter').then((m) => ({ default: m.CallCenter })),
-)
-const CallCenterLogs = lazy(() =>
-  import('@/screens/callcenter/CallCenter').then((m) => ({ default: m.CallCenterLogs })),
-)
-
-// admin
-const HRPayroll = lazy(() =>
-  import('@/screens/admin/HRPayroll').then((m) => ({ default: m.HRPayroll })),
-)
-const AdvancedSettings = lazy(() =>
-  import('@/screens/admin/AdvancedSettings').then((m) => ({ default: m.AdvancedSettings })),
-)
-const AuditLog = lazy(() =>
-  import('@/screens/admin/AuditLog').then((m) => ({ default: m.AuditLog })),
-)
-const Backup = lazy(() => import('@/screens/admin/Backup').then((m) => ({ default: m.Backup })))
-const Branches = lazy(() =>
-  import('@/screens/admin/Branches').then((m) => ({ default: m.Branches })),
-)
-const GlobalSearch = lazy(() =>
-  import('@/screens/admin/GlobalSearch').then((m) => ({ default: m.GlobalSearch })),
-)
-const NotificationCenter = lazy(() =>
-  import('@/screens/admin/NotificationCenter').then((m) => ({ default: m.NotificationCenter })),
-)
-const OEMIntegrations = lazy(() =>
-  import('@/screens/admin/OEMIntegrations').then((m) => ({ default: m.OEMIntegrations })),
-)
-const Organizations = lazy(() =>
-  import('@/screens/admin/Organizations').then((m) => ({ default: m.Organizations })),
-)
-const Profile = lazy(() => import('@/screens/admin/Profile').then((m) => ({ default: m.Profile })))
-const RolesPermissions = lazy(() =>
-  import('@/screens/admin/RolesPermissions').then((m) => ({ default: m.RolesPermissions })),
-)
-const Settings = lazy(() =>
-  import('@/screens/admin/Settings').then((m) => ({ default: m.Settings })),
-)
-const Subscription = lazy(() =>
-  import('@/screens/admin/Subscription').then((m) => ({ default: m.Subscription })),
-)
-const SuperAdmin = lazy(() =>
-  import('@/screens/admin/SuperAdmin').then((m) => ({ default: m.SuperAdmin })),
-)
-const SystemIntegrations = lazy(() =>
-  import('@/screens/admin/SystemIntegrations').then((m) => ({ default: m.SystemIntegrations })),
-)
-const Templates = lazy(() =>
-  import('@/screens/admin/Templates').then((m) => ({ default: m.Templates })),
-)
-const UsersTeams = lazy(() =>
-  import('@/screens/admin/UsersTeams').then((m) => ({ default: m.UsersTeams })),
-)
-
-// ai
-const AIAnalytics = lazy(() =>
-  import('@/screens/ai/AIAnalytics').then((m) => ({ default: m.AIAnalytics })),
-)
-const AIAssistant = lazy(() =>
-  import('@/screens/ai/AIAssistant').then((m) => ({ default: m.AIAssistant })),
-)
-const AutomationRules = lazy(() =>
-  import('@/screens/ai/AutomationRules').then((m) => ({ default: m.AutomationRules })),
-)
-const KnowledgeBase = lazy(() =>
-  import('@/screens/ai/KnowledgeBase').then((m) => ({ default: m.KnowledgeBase })),
-)
-const ModelSettings = lazy(() =>
-  import('@/screens/ai/ModelSettings').then((m) => ({ default: m.ModelSettings })),
-)
-const PromptLibrary = lazy(() =>
-  import('@/screens/ai/PromptLibrary').then((m) => ({ default: m.PromptLibrary })),
-)
-const WorkflowBuilder = lazy(() =>
-  import('@/screens/ai/WorkflowBuilder').then((m) => ({ default: m.WorkflowBuilder })),
-)
-const AIAutomation = lazy(() =>
-  import('@/screens/ai/AIAutomation').then((m) => ({ default: m.AIAutomation })),
-)
-const AIChatbot = lazy(() =>
-  import('@/screens/ai/AIChatbot').then((m) => ({ default: m.AIChatbot })),
-)
-const AIChatbotAssistant = lazy(() =>
-  import('@/screens/ai/AIChatbotAssistant').then((m) => ({ default: m.AIChatbotAssistant })),
-)
-const AIServiceAdvisor = lazy(() =>
-  import('@/screens/ai/AIServiceAdvisor').then((m) => ({ default: m.AIServiceAdvisor })),
-)
-const SmartDamageAssessment = lazy(() =>
-  import('@/screens/ai/SmartDamageAssessment').then((m) => ({ default: m.SmartDamageAssessment })),
-)
-const MLFraudDetection = lazy(() =>
-  import('@/screens/ai/MLFraudDetection').then((m) => ({ default: m.MLFraudDetection })),
-)
-const NeuralNetworkPrediction = lazy(() =>
-  import('@/screens/ai/NeuralNetworkPrediction').then((m) => ({ default: m.NeuralNetworkPrediction })),
-)
-const VoiceCommands = lazy(() =>
-  import('@/screens/ai/VoiceCommands').then((m) => ({ default: m.VoiceCommands })),
-)
-const VoiceCommandInterface = lazy(() =>
-  import('@/screens/ai/VoiceCommandInterface').then((m) => ({ default: m.VoiceCommandInterface })),
-)
-
-// feature
-const Inventory = lazy(() =>
-  import('@/screens/feature/Inventory').then((m) => ({ default: m.Inventory })),
-)
-
-// Spec/feature-map screens lazily resolved to avoid pulling 244 KB of
-// definitions + spec-screen data into the main bundle. Screens that have
-// graduated from the generic FeatureScreenView to a dedicated component
-// (insurance, fleet, towing, ...) are lazy-loaded inside the resolver too,
-// keyed by route.
-const SpecScreenResolver = lazy(() => import('./SpecScreenResolver'))
-
-/** Lightweight, brand-consistent fallback shown while a route chunk loads.
- *  Blue only; logical CSS. */
-function RouteFallback() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center bg-page"
-      role="status"
-      aria-live="polite"
-    >
-      <span className="h-8 w-8 animate-spin rounded-full border-2 border-salis-blue border-t-transparent" />
-      <span className="sr-only">Loading…</span>
-    </div>
+/** Turn a domain barrel into lazy entries: each named screen becomes a chunk
+ *  that pulls the barrel on first render, and `meta` carries the sync chrome the
+ *  router needs before the chunk lands (a portal/public shell, or `ungated`). */
+function lazyBarrel(
+  load: () => Promise<BarrelModule>,
+  names: readonly string[],
+  meta: Omit<ScreenEntry, 'component'> = {}
+): DomainScreens {
+  return Object.fromEntries(
+    names.map((name) => [
+      name,
+      {
+        ...meta,
+        component: lazy(async () => ({
+          default: entryOf((await load()).SCREENS[name]).component,
+        })),
+      },
+    ])
   )
 }
 
+// Also routed on its own below, so it gets a name of its own.
+const LogoutConfirmation = lazyNamed(
+  () => import('@/screens/auth/StatusScreens'),
+  'LogoutConfirmation'
+)
+
 /** Screens that render without the app shell and without a role check —
  *  the auth chain and the terminal-state pages. */
-const PUBLIC_SCREENS: Record<string, React.ComponentType> = {
-  Splash,
-  Welcome,
-  LanguageSelection,
-  RegionSelection,
-  Login,
-  Unauthorized,
-  SessionExpired,
-  AccountLocked,
+const PUBLIC_SCREENS: Record<string, ComponentType> = {
+  Splash: lazyNamed(() => import('@/screens/auth/Splash'), 'Splash'),
+  Welcome: lazyNamed(() => import('@/screens/auth/Welcome'), 'Welcome'),
+  LanguageSelection: lazyNamed(() => import('@/screens/auth/LanguageSelection'), 'LanguageSelection'),
+  RegionSelection: lazyNamed(() => import('@/screens/auth/RegionSelection'), 'RegionSelection'),
+  Login: lazyNamed(() => import('@/screens/auth/Login'), 'Login'),
+  Unauthorized: lazyNamed(() => import('@/screens/auth/StatusScreens'), 'Unauthorized'),
+  SessionExpired: lazyNamed(() => import('@/screens/auth/StatusScreens'), 'SessionExpired'),
+  AccountLocked: lazyNamed(() => import('@/screens/auth/StatusScreens'), 'AccountLocked'),
   LogoutConfirmation,
-  ForgotPassword,
-  ResetPassword,
-  OTPVerification,
-  TwoFactorVerification,
-  CreatePIN,
-  BiometricSetup,
-  // Public marketing site: each page ships its own site header/nav/footer.
-  'PublicPortal.Landing': PublicPortalLanding,
-  'PublicPortal.About': PublicPortalAbout,
-  'PublicPortal.Services': PublicPortalServices,
-  'PublicPortal.Marketplace': PublicPortalMarketplace,
-  'PublicPortal.Insurance': PublicPortalInsurance,
-  'PublicPortal.Loans': PublicPortalLoans,
-  'PublicPortal.Blog': PublicPortalBlog,
-  'PublicPortal.FAQ': PublicPortalFAQ,
-  'PublicPortal.Contact': PublicPortalContact,
-  'PublicPortal.Support': PublicPortalSupport,
-  // Standalone portals: the designs ship their own chrome (sidebar/header or
-  // phone frame), so they render outside AppShell like the auth chain does.
-  CustomerPortal,
-  'CustomerPortal.Booking': CustomerPortalBooking,
-  SupplierPortal,
-  'SupplierPortal.Orders': SupplierPortalOrders,
-  TechnicianPortal,
-  'TechnicianPortal.JobDetail': TechnicianPortalJobDetail,
-  KioskCheckIn,
-  Register,
-  RoleSelection,
-  SocialLogin,
-  SSOLogin,
-  OrganizationSelection,
-  WorkspaceSelection,
-  ProfileCompletion,
-  Onboarding,
-  InviteAcceptance,
-  Error404,
-  Maintenance,
-  PrivacyPolicy,
-  TermsConditions,
+  ForgotPassword: lazyNamed(() => import('@/screens/auth/PasswordScreens'), 'ForgotPassword'),
+  ResetPassword: lazyNamed(() => import('@/screens/auth/PasswordScreens'), 'ResetPassword'),
+  OTPVerification: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'OTPVerification'),
+  TwoFactorVerification: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'TwoFactorVerification'),
+  CreatePIN: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'CreatePIN'),
+  BiometricSetup: lazyNamed(() => import('@/screens/auth/VerificationScreens'), 'BiometricSetup'),
+  Error404: lazyNamed(() => import('@/screens/auth/Error404'), 'Error404'),
+  Maintenance: lazyNamed(() => import('@/screens/auth/Maintenance'), 'Maintenance'),
 }
 
 /** Rebuilt operational screens. Everything in SCREENS not listed here gets a
  *  PendingScreen, so the nav never dead-ends while the port is in progress. */
-const APP_SCREENS: Record<string, React.ComponentType> = {
-  Dashboard,
-  JobCards,
-  JobDetail,
-  JobCardDetail,
-  AppointmentCalendar,
-  ApprovalInbox,
-  CustomerApproval,
-  DiagnosticReport,
-  EstimateDetail,
-  OBDDiagnostics,
-  TechnicianKB,
-  TechnicianSchedule,
-  WorkshopReports,
-  WorkshopCheckIn,
-  WorkshopInspection,
-  WorkshopEstimate,
-  WorkshopQC,
-  WorkshopSignature,
-  WorkshopDelivery,
-  Invoices,
-  InvoiceDetail,
-  InvoiceCreate,
-  Payments,
-  Inventory,
-  Customers,
-  Vehicles,
-  Estimates,
-  Technicians,
-  FleetManagement,
-  Appointments,
+const APP_SCREENS: Record<string, ComponentType> = {
+  ControlTracker: lazyNamed(() => import('@/screens/workshop/ControlTracker'), 'ControlTracker'),
+  Dashboard: lazyNamed(() => import('@/screens/Dashboard'), 'Dashboard'),
+  JobCards: lazyNamed(() => import('@/screens/workshop/JobCards'), 'JobCards'),
+  JobDetail: lazyNamed(() => import('@/screens/workshop/JobDetail'), 'JobDetail'),
+  WorkshopCheckIn: lazyNamed(() => import('@/screens/workshop/WorkshopCheckIn'), 'WorkshopCheckIn'),
+  WorkshopInspection: lazyNamed(() => import('@/screens/workshop/WorkshopInspection'), 'WorkshopInspection'),
+  WorkshopEstimate: lazyNamed(() => import('@/screens/workshop/WorkshopEstimate'), 'WorkshopEstimate'),
+  WorkshopQC: lazyNamed(() => import('@/screens/workshop/WorkshopQC'), 'WorkshopQC'),
+  WorkshopSignature: lazyNamed(() => import('@/screens/workshop/WorkshopSignature'), 'WorkshopSignature'),
+  WorkshopDelivery: lazyNamed(() => import('@/screens/workshop/WorkshopDelivery'), 'WorkshopDelivery'),
+  Invoices: lazyNamed(() => import('@/screens/finance/Invoices'), 'Invoices'),
+  InvoiceDetail: lazyNamed(() => import('@/screens/finance/InvoiceDetail'), 'InvoiceDetail'),
+  InvoiceCreate: lazyNamed(() => import('@/screens/finance/InvoiceCreate'), 'InvoiceCreate'),
+  Payments: lazyNamed(() => import('@/screens/finance/Payments'), 'Payments'),
+  Inventory: lazyNamed(() => import('@/screens/feature/Inventory'), 'Inventory'),
+  Customers: lazyNamed(() => import('@/screens/registry/Registries'), 'Customers'),
+  Vehicles: lazyNamed(() => import('@/screens/registry/Registries'), 'Vehicles'),
+  Estimates: lazyNamed(() => import('@/screens/registry/Registries'), 'Estimates'),
+  Technicians: lazyNamed(() => import('@/screens/registry/Registries'), 'Technicians'),
+  FleetManagement: lazyNamed(() => import('@/screens/registry/Registries'), 'FleetManagement'),
+  Appointments: lazyNamed(() => import('@/screens/registry/Appointments'), 'Appointments'),
   // Dotted design names map to sub-routes like /parts-network/requests.
-  PartsNetwork: PartsNetworkDashboard,
-  'PartsNetwork.Requests': PartsNetworkRequests,
-  'PartsNetwork.Quotations': PartsNetworkQuotations,
-  'PartsNetwork.Orders': PartsNetworkOrders,
-  'PartsNetwork.Members': PartsNetworkMembers,
-  'PartsNetwork.Incoming': PartsNetworkIncoming,
-  'PartsNetwork.SendRequest': PartsNetworkSendRequest,
-  PartsSupplyNetwork,
-  ProcurementPortal,
-  'ProcurementPortal.Requisitions': ProcurementRequisitions,
-  ChartOfAccounts,
-  JournalEntries,
-  Expenses,
-  Receipts,
-  Departments,
-  FinancialReports,
-  FinancialStatements,
-  ExecutiveReports,
-  OperationalReports,
-  BIDashboard,
-  BankReconciliation,
-  CustomReports,
-  InsuranceReports,
-  InvoicePreview,
-  LoanReports,
-  Reports,
-  ReportsAnalytics,
-  SalesReports,
-  TaxManagement,
-  LeadPipeline,
-  Opportunities,
-  Campaigns,
-  EmailMarketing,
-  SMSCampaigns,
-  WhatsAppCampaigns,
-  CustomerSegments,
-  CRMTasks,
-  AgentRegistry,
-  AgentDashboard,
-  ConversationHistory,
-  Integrations,
-  // The project's own reference pages: flow spec, RBAC matrix, screen index,
-  // and the native-shell mockups.
-  FlowSpec,
-  RBACSpec,
-  Index: IndexPage,
-  'Native.Android': NativeAndroid,
-  'Native.iOS': NativeIOS,
-  // Internal pattern library — reference galleries for the design system.
-  'UI.ListView': UIListView,
-  'UI.TableView': UITableView,
-  'UI.CardView': UICardView,
-  'UI.KanbanView': UIKanbanView,
-  'UI.CalendarView': UICalendarView,
-  'UI.TimelineView': UITimelineView,
-  'UI.MapView': UIMapView,
-  'UI.MediaGallery': UIMediaGallery,
-  'UI.Attachments': UIAttachments,
-  'UI.Charts': UICharts,
-  'UI.AdvancedFilters': UIAdvancedFilters,
-  'UI.ExportCenter': UIExportCenter,
-  'UI.ImportCenter': UIImportCenter,
-  'UI.EmptyStates': UIEmptyStates,
-  'UI.LoadingStates': UILoadingStates,
-  'UI.FormValidation': UIFormValidation,
-  'UI.ActivityFeed': UIActivityFeed,
-  'UI.Comments': UIComments,
-  'UI.Messages': UIMessages,
-  'UI.Modals.CRUD': UIModalsCRUD,
-  'UI.Modals.Actions': UIModalsActions,
-  'UI.Modals.Status': UIModalsStatus,
-  'UI.Modals.Data': UIModalsData,
-  'UI.Modals.Capture': UIModalsCapture,
-  'UI.Modals.Lifecycle': UIModalsLifecycle,
-  CallCenter,
-  'CallCenter.Logs': CallCenterLogs,
-  CustomerDetail,
-  VehicleDetail,
-  PurchaseOrder,
-  CRMCalendar,
-  CustomerFeedback,
-  LeadDetail,
-  FleetContract,
-  InventoryReports,
-  HRPayroll,
-  AIAnalytics,
-  AIAssistant,
-  AutomationRules,
-  KnowledgeBase,
-  ModelSettings,
-  PromptLibrary,
-  WorkflowBuilder,
-  AIAutomation,
-  AIChatbot,
-  AIChatbotAssistant,
-  AIServiceAdvisor,
-  SmartDamageAssessment,
-  MLFraudDetection,
-  NeuralNetworkPrediction,
-  VoiceCommands,
-  VoiceCommandInterface,
-  AdvancedSettings,
-  AuditLog,
-  Backup,
-  Branches,
-  GlobalSearch,
-  NotificationCenter,
-  OEMIntegrations,
-  Organizations,
-  Profile,
-  RolesPermissions,
-  Settings,
-  Subscription,
-  SuperAdmin,
-  SystemIntegrations,
-  Templates,
-  UsersTeams,
+  PartsNetwork: lazyNamed(() => import('@/screens/network/PartsNetwork'), 'PartsNetworkDashboard'),
+  'PartsNetwork.Requests': lazyNamed(() => import('@/screens/network/PartsNetwork'), 'PartsNetworkRequests'),
+  'PartsNetwork.Quotations': lazyNamed(() => import('@/screens/network/Procurement'), 'PartsNetworkQuotations'),
+  'PartsNetwork.Orders': lazyNamed(() => import('@/screens/network/PartsNetwork'), 'PartsNetworkOrders'),
+  'PartsNetwork.Members': lazyNamed(() => import('@/screens/network/PartsNetwork'), 'PartsNetworkMembers'),
+  'PartsNetwork.Incoming': lazyNamed(() => import('@/screens/network/PartsNetwork'), 'PartsNetworkIncoming'),
+  'PartsNetwork.SendRequest': lazyNamed(() => import('@/screens/network/Procurement'), 'PartsNetworkSendRequest'),
+  PartsSupplyNetwork: lazyNamed(() => import('@/screens/network/Procurement'), 'PartsSupplyNetwork'),
+  ProcurementPortal: lazyNamed(() => import('@/screens/network/Procurement'), 'ProcurementPortal'),
+  'ProcurementPortal.Requisitions': lazyNamed(() => import('@/screens/network/Procurement'), 'ProcurementRequisitions'),
+  ChartOfAccounts: lazyNamed(() => import('@/screens/accounting/Accounting'), 'ChartOfAccounts'),
+  JournalEntries: lazyNamed(() => import('@/screens/accounting/Accounting'), 'JournalEntries'),
+  Expenses: lazyNamed(() => import('@/screens/accounting/Accounting'), 'Expenses'),
+  Receipts: lazyNamed(() => import('@/screens/accounting/Accounting'), 'Receipts'),
+  Departments: lazyNamed(() => import('@/screens/accounting/Accounting'), 'Departments'),
+  FinancialReports: lazyNamed(() => import('@/screens/accounting/Reports'), 'FinancialReports'),
+  FinancialStatements: lazyNamed(() => import('@/screens/accounting/Reports'), 'FinancialStatements'),
+  ExecutiveReports: lazyNamed(() => import('@/screens/accounting/Reports'), 'ExecutiveReports'),
+  OperationalReports: lazyNamed(() => import('@/screens/accounting/Reports'), 'OperationalReports'),
+  BIDashboard: lazyNamed(() => import('@/screens/accounting/Reports'), 'BIDashboard'),
+  LeadPipeline: lazyNamed(() => import('@/screens/crm/Crm'), 'LeadPipeline'),
+  Opportunities: lazyNamed(() => import('@/screens/crm/Crm'), 'Opportunities'),
+  Campaigns: lazyNamed(() => import('@/screens/crm/Crm'), 'Campaigns'),
+  EmailMarketing: lazyNamed(() => import('@/screens/crm/Crm'), 'EmailMarketing'),
+  SMSCampaigns: lazyNamed(() => import('@/screens/crm/Crm'), 'SMSCampaigns'),
+  WhatsAppCampaigns: lazyNamed(() => import('@/screens/crm/Crm'), 'WhatsAppCampaigns'),
+  CustomerSegments: lazyNamed(() => import('@/screens/crm/Crm'), 'CustomerSegments'),
+  CRMTasks: lazyNamed(() => import('@/screens/crm/Crm'), 'CRMTasks'),
+  AgentRegistry: lazyNamed(() => import('@/screens/crm/Crm'), 'AgentRegistry'),
+  AgentDashboard: lazyNamed(() => import('@/screens/crm/Crm'), 'AgentDashboard'),
+  ConversationHistory: lazyNamed(() => import('@/screens/crm/Crm'), 'ConversationHistory'),
+  Integrations: lazyNamed(() => import('@/screens/crm/Crm'), 'Integrations'),
+  Settings: lazyNamed(() => import('@/screens/admin/Settings'), 'Settings'),
+  RolesPermissions: lazyNamed(() => import('@/screens/admin/RolesPermissions'), 'RolesPermissions'),
+  Profile: lazyNamed(() => import('@/screens/admin/Profile'), 'Profile'),
+  NotificationCenter: lazyNamed(() => import('@/screens/admin/NotificationCenter'), 'NotificationCenter'),
+  GlobalSearch: lazyNamed(() => import('@/screens/admin/GlobalSearch'), 'GlobalSearch'),
+  AuditLog: lazyNamed(() => import('@/screens/admin/AuditLog'), 'AuditLog'),
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
-const CUSTOMER_APP_SCREENS: Record<string, React.ComponentType> = {
-  'CustomerApp.Home': CustomerAppHome,
-  'CustomerApp.Garage': CustomerAppGarage,
-  'CustomerApp.Appointments': CustomerAppAppointments,
-  'CustomerApp.ServiceTracking': CustomerAppServiceTracking,
-  'CustomerApp.Wallet': CustomerAppWallet,
-  'CustomerApp.Orders': CustomerAppOrders,
-  'CustomerApp.Marketplace': CustomerAppMarketplace,
-  'CustomerApp.Notifications': CustomerAppNotifications,
-  'CustomerApp.Insurance': CustomerAppInsurance,
-  'CustomerApp.Loans': CustomerAppLoans,
-  'CustomerApp.Profile': CustomerAppProfile,
+const CUSTOMER_APP_SCREENS: Record<string, ComponentType> = {
+  'CustomerApp.Home': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppHome'),
+  'CustomerApp.Garage': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppGarage'),
+  'CustomerApp.Appointments': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppAppointments'),
+  'CustomerApp.ServiceTracking': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppServiceTracking'),
+  'CustomerApp.Wallet': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppWallet'),
+  'CustomerApp.Orders': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppOrders'),
+  'CustomerApp.Marketplace': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppMarketplace'),
+  'CustomerApp.Notifications': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppNotifications'),
+  'CustomerApp.Insurance': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppInsurance'),
+  'CustomerApp.Loans': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppLoans'),
+  'CustomerApp.Profile': lazyNamed(() => import('@/screens/customer-app/CustomerApp'), 'CustomerAppProfile'),
 }
+
+/** The three maps above predate the domain barrels and stay where they are —
+ *  moving 80 working screens to prove a point is the kind of churn §57 warns
+ *  about. They are folded in as three more domains, so the same double-claim
+ *  check covers them: a W2 agent that re-declares `JobCards` in its own barrel
+ *  gets an error naming both sides, not a silent overwrite. */
+const asDomain = (
+  screens: Record<string, ComponentType>,
+  shell: Shell | null | undefined,
+  ungated = false
+): DomainScreens =>
+  Object.fromEntries(
+    Object.entries(screens).map(([name, component]) => [name, { component, shell, ungated }])
+  )
+
+const SCREEN_ENTRIES = composeScreens({
+  'legacy:auth': asDomain(PUBLIC_SCREENS, null, true),
+  'legacy:customer-app': asDomain(CUSTOMER_APP_SCREENS, CustomerAppShell),
+  'legacy:app': asDomain(APP_SCREENS, undefined),
+  'auth-extra': lazyBarrel(
+    () => import('@/screens/domains/auth-extra'),
+    ['Register', 'SSOLogin', 'SocialLogin', 'RoleSelection', 'WorkspaceSelection', 'OrganizationSelection', 'ProfileCompletion', 'InviteAcceptance', 'Onboarding'],
+    { ungated: true }
+  ),
+  dashboard: lazyBarrel(() => import('@/screens/domains/dashboard'), [
+    'Dashboard-Home',
+    'Dashboard-Main',
+    'Calendar',
+    'Welcome-Page',
+  ]),
+  workshop: lazyBarrel(() => import('@/screens/domains/workshop'), [
+    'JobCardDetail',
+    'ApprovalInbox',
+    'EstimateDetail',
+    'AppointmentCalendar',
+    'TechnicianSchedule',
+    'TechnicianKB',
+    'OBDDiagnostics',
+    'DiagnosticReport',
+    'WorkshopReports',
+    'CustomerApproval',
+    'Workshop-Calendar',
+    'Vehicles-List',
+    'Vehicle-History',
+    'Vehicle-Inspections',
+    'Fleet-Tracking',
+    'Towing-Assistance',
+  ]),
+  crm: lazyBarrel(() => import('@/screens/domains/crm'), [
+    'CustomerDetail',
+    'VehicleDetail',
+    'CustomerFeedback',
+    'FleetContract',
+    'LeadDetail',
+    'CRMCalendar',
+    'Customers-List',
+  ]),
+  parts: lazyBarrel(() => import('@/screens/domains/parts'), [
+    'InventoryReports',
+    'Inventory-Management',
+    'Internal-Warehouse',
+    'Spare-Parts',
+    'Parts-Marketplace',
+    'Dynamic-Pricing',
+    'Suppliers',
+    'Automated-Reordering',
+    'Barcode-Scanner',
+    'Interactive-3D-Parts',
+    'Purchase-Orders',
+    'Parts-Network-Dashboard',
+    'Parts-Network-My-Requests',
+    'Parts-Network-Incoming-Requests',
+  ]),
+  procurement: lazyBarrel(() => import('@/screens/domains/procurement'), ['PurchaseOrder']),
+  accounting: lazyBarrel(() => import('@/screens/domains/accounting'), [
+    'InvoicePreview',
+    'TaxManagement',
+    'BankReconciliation',
+    'Reports',
+    'ReportsAnalytics',
+    'SalesReports',
+    'CustomReports',
+    'InsuranceReports',
+    'LoanReports',
+    'General-Ledger',
+    'Trial-Balance',
+    'Balance-Sheet',
+    'Income-Statement',
+    'Cash-Flow-Statement',
+    'Accounts-Receivable',
+    'Accounts-Payable',
+    'Bank-Account-Management',
+    'Budget-Management',
+    'Capital-Management',
+    'Assets-Management',
+    'Liabilities-Management',
+    'Equity-Management',
+    'Retained-Earnings',
+    'Cost-Centers',
+    'Loss-Account',
+    'Partners-Current-Account',
+    'Expense-Tracking',
+    'Expenses-Management',
+    'Sales-Management',
+    'Accounting-Integration',
+    'Warranty-Management',
+    'Contract-Management',
+    'Accounting-Config',
+  ]),
+  insurance: lazyBarrel(() => import('@/screens/domains/insurance'), ['Insurance-Claims']),
+  ai: lazyBarrel(() => import('@/screens/domains/ai'), [
+    'AIAssistant',
+    'AIAnalytics',
+    'PromptLibrary',
+    'ModelSettings',
+    'KnowledgeBase',
+    'AI-Automation',
+    'AI-Chatbot',
+    'AI-Chatbot-Assistant',
+    'AI-Service-Advisor',
+    'Smart-Damage-Assessment',
+    'ML-Fraud-Detection',
+    'Neural-Network-Prediction',
+    'Smart-Parts-Recommendations',
+    'Intelligent-Price-Optimizer',
+  ]),
+  'call-center': lazyBarrel(() => import('@/screens/domains/call-center'), ['CallCenter', 'CallCenter.Logs']),
+  admin: lazyBarrel(() => import('@/screens/domains/admin'), [
+    'AdvancedSettings',
+    'AutomationRules',
+    'Backup',
+    'Branches',
+    'Organizations',
+    'Subscription',
+    'SuperAdmin',
+    'Templates',
+    'UsersTeams',
+    'WorkflowBuilder',
+    'Data-Import-Export',
+    'Document-Management',
+    'OEMIntegrations',
+    'SystemIntegrations',
+    'Mobile-Device-Management',
+    'Document-OCR',
+    'Data-Backup',
+    'Tools',
+    'Dashboard-Widgets',
+    'SMS-Integration',
+    'Sales-Guide',
+  ]),
+  hr: lazyBarrel(() => import('@/screens/domains/hr'), [
+    'HRPayroll',
+    'Staff-Directory',
+    'HR-Management',
+    'Payroll-Management',
+    'Timesheet-Management',
+    'Timeclock-Payroll',
+    'Leave-Requests',
+    'Staff-Scheduling',
+    'Staff-Performance-Review',
+    'Technician-Management',
+    'Technician-Leaderboards',
+    'Technician-Performance',
+    'Training-LMS',
+    'Productivity-Tracker',
+  ]),
+  portals: lazyBarrel(
+    () => import('@/screens/domains/portals'),
+    [
+      'TechnicianPortal', 'TechnicianPortal.JobDetail', 'CustomerPortal', 'CustomerPortal.Booking',
+      'SupplierPortal', 'SupplierPortal.Orders', 'KioskCheckIn',
+      'Client-Portal-Dashboard', 'Client-Portal-Vehicles', 'Client-Portal-Appointments',
+      'Client-Portal-Invoices', 'Client-Portal-Profile', 'Client-Portal-Service-History',
+      'Client-Portal-Live-Tracking', 'Client-Portal-Reminders', 'Client-Portal-Review-Chat',
+      'Technician-Portal-Dashboard', 'Technician-Portal-My-Jobs', 'Technician-Portal-Time-Clock',
+      'Technician-Portal-Parts', 'Technician-Portal-Documentation', 'Technician-Portal-Profile',
+      'Technician-Portal-Attendance', 'Technician-Portal-Guides', 'Technician-Portal-Software',
+      'Technician-Mobile', 'Technician-App-Home', 'Technician-App-Jobs',
+      'Technician-App-Clock', 'Technician-App-Lookup', 'Technician-App-Profile',
+      'Purchase-Agent-Dashboard', 'Purchase-Agent-Tasks', 'Purchase-Agent-Quotations',
+      'Purchase-Agent-Payments', 'Purchase-Agent-Delivery', 'Purchase-Agent-Orders',
+      'Purchase-Agent-Suppliers', 'Purchase-Agent-Inventory', 'Purchase-Agent-Price-Compare',
+      'Purchase-Agent-Tracking', 'Purchase-Agent-Reports',
+      'Vendor-Supplier-Portal', 'Portal-Dashboard', 'Portal-Appointments',
+      'Portal-Invoices', 'Portal-Vehicles', 'Portal-Communications',
+      'Customer-App-Booking', 'Customer-App-Vehicles', 'Customer-App-Payments',
+    ],
+    { shell: PortalShell }
+  ),
+  website: lazyBarrel(
+    () => import('@/screens/domains/website'),
+    [
+      'PublicPortal.Landing',
+      'PublicPortal.About',
+      'PublicPortal.Accounting',
+      'PublicPortal.AI',
+      'PublicPortal.Automation',
+      'PublicPortal.Blog',
+      'PublicPortal.BookDemo',
+      'PublicPortal.Careers',
+      'PublicPortal.Contact',
+      'PublicPortal.CRM',
+      'PublicPortal.CustomerPortal',
+      'PublicPortal.FAQ',
+      'PublicPortal.Features',
+      'PublicPortal.Fleet',
+      'PublicPortal.Industries',
+      'PublicPortal.Insurance',
+      'PublicPortal.Integrations',
+      'PublicPortal.Loans',
+      'PublicPortal.Marketplace',
+      'PublicPortal.MiniERP',
+      'PublicPortal.Pricing',
+      'PublicPortal.Products',
+      'PublicPortal.RequestDemo',
+      'PublicPortal.Resources',
+      'PublicPortal.Services',
+      'PublicPortal.Solutions',
+      'PublicPortal.SpareParts',
+      'PublicPortal.SupplierPortal',
+      'PublicPortal.Support',
+      'PublicPortal.TechnicianPortal',
+      'PublicPortal.Workshop',
+      'PrivacyPolicy',
+      'TermsConditions',
+      'CookiePolicy',
+    ],
+    { shell: PublicShell, ungated: true }
+  ),
+  compliance: lazyBarrel(() => import('@/screens/domains/compliance'), [
+    'Compliance-Management',
+    'ZATCA-Settings',
+    'VAT-Settings',
+    'Zakat-Settings',
+    'Safety-Incidents',
+    'Environmental-Compliance',
+    'ISO-Quality-Management',
+    'Equipment-Calibration',
+  ]),
+  settings: lazyBarrel(() => import('@/screens/domains/settings'), [
+    'System-Settings',
+    'Security-Settings',
+    'User-Settings',
+    'User-Profile',
+    'Financial-Settings',
+    'Role-Management',
+  ]),
+  marketing: lazyBarrel(() => import('@/screens/domains/marketing'), [
+    'Marketing-Hub',
+    'Marketing-Automation',
+    'Loyalty-Program',
+    'Google-My-Business',
+    'Social-Media-Integration',
+    'Social-Media-Monitoring',
+    'Email-Marketing-Campaigns',
+  ]),
+  notifications: lazyBarrel(() => import('@/screens/domains/notifications'), ['Notifications']),
+  tasks: lazyBarrel(() => import('@/screens/domains/tasks'), ['Tasks', 'Task-Management']),
+  bi: lazyBarrel(() => import('@/screens/domains/bi'), [
+    'Business-Intelligence',
+    'Business-Intelligence-Dashboard',
+    'Business-Heatmaps',
+    'Profit-Analysis',
+    'KPI-Dashboard',
+  ]),
+  emerging: lazyBarrel(() => import('@/screens/domains/emerging'), [
+    'Emerging-Technologies',
+    'NextGen-Technologies',
+    'IoT-Dashboard',
+    'Edge-Computing',
+    'Digital-Twin-Viewer',
+    'Sustainable-Energy-Monitoring',
+  ]),
+  support: lazyBarrel(() => import('@/screens/domains/support'), ['Chat', 'Support-Chat-Dashboard']),
+  enterprise: lazyBarrel(() => import('@/screens/domains/enterprise'), [
+    'Franchise-Management',
+    'Globalization-Layer',
+    'Multi-Location-Dashboard',
+  ]),
+  native: lazyBarrel(() => import('@/screens/domains/native'), ['Native.iOS', 'Native.Android']),
+  reference: lazyBarrel(() => import('@/screens/domains/reference'), [
+    'UI.ListView', 'UI.TableView', 'UI.CardView', 'UI.TimelineView',
+    'UI.CalendarView', 'UI.KanbanView', 'UI.MapView', 'UI.Charts',
+    'UI.ActivityFeed', 'UI.Comments', 'UI.Attachments', 'UI.MediaGallery',
+    'UI.Messages', 'UI.AdvancedFilters', 'UI.ImportCenter', 'UI.ExportCenter',
+    'UI.FormValidation', 'UI.EmptyStates', 'UI.LoadingStates',
+    'UI.Modals.CRUD', 'UI.Modals.Lifecycle', 'UI.Modals.Status',
+    'UI.Modals.Actions', 'UI.Modals.Data', 'UI.Modals.Capture',
+    'FlowSpec', 'Index', 'RBACSpec',
+  ]),
+})
 
 export function AppRoutes() {
   return (
-    <Suspense fallback={<RouteFallback />}>
+    // One boundary for the whole table: a lazy screen suspends here to the
+    // linear loading bar, never to a heavier stand-in, until its chunk lands.
+    <ErrorBoundary>
+    <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Navigate to="/splash" replace />} />
 
         {SCREENS.map((screen) => {
-          const Public = PUBLIC_SCREENS[screen.name]
-          if (Public) {
-            return <Route key={screen.name} path={screen.route} element={<Public />} />
-          }
+          const entry = SCREEN_ENTRIES[screen.name]
 
-          const CustomerScreen = CUSTOMER_APP_SCREENS[screen.name]
-          if (CustomerScreen) {
+          // Ungated screens render outside RequireAccess entirely rather than
+          // passing a flag through it: the guard redirects anyone without a
+          // session to /login, and /login is one of these screens.
+          if (entry?.ungated) {
+            const Ungated = entry.component
+            const UngatedShell = entry.shell
             return (
               <Route
                 key={screen.name}
                 path={screen.route}
                 element={
-                  <RequireAccess screen={screen.name} shell="customer-app">
-                    <CustomerScreen />
-                  </RequireAccess>
+                  UngatedShell ? (
+                    <UngatedShell>
+                      <Ungated />
+                    </UngatedShell>
+                  ) : (
+                    <Ungated />
+                  )
                 }
               />
             )
           }
 
-          const Implemented = APP_SCREENS[screen.name]
+          const Implemented = entry?.component
           return (
             <Route
               key={screen.name}
               path={screen.route}
               element={
-                <RequireAccess screen={screen.name}>
+                <RequireAccess screen={screen.name} shell={entry?.shell}>
                   {Implemented ? <Implemented /> : <PendingScreen screen={screen} />}
+                </RequireAccess>
+              }
+            />
+          )
+        })}
+
+        {/* Feature-map screens with no `.dc.html` design. They carry a spec and
+            a reference screenshot under project/spec-shots/, so the route and nav
+            entry exist and PendingScreen names what to build from. Screens that
+            do have a design are already routed above. */}
+        {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
+          const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
+          // A domain that has built the real screen outranks both the kit and the
+          // placeholder — that is how a feature-map route graduates.
+          const owned = SCREEN_ENTRIES[spec.name]
+          const Owned = owned?.component
+          return (
+            <Route
+              key={spec.id}
+              path={spec.route}
+              element={
+                <RequireAccess screen={spec.name} shell={owned?.shell}>
+                  {Owned ? (
+                    <Owned />
+                  ) : def ? (
+                    <FeatureScreenView def={def} />
+                  ) : (
+                    <PendingScreen
+                      screen={{
+                        name: spec.title,
+                        route: spec.route,
+                        hasMobile: false,
+                        purpose: spec.purpose,
+                      }}
+                      specId={spec.id}
+                    />
+                  )}
                 </RequireAccess>
               }
             />
@@ -911,11 +557,9 @@ export function AppRoutes() {
         <Route path="/customer-app" element={<Navigate to="/customer-app/home" replace />} />
         <Route path="/logout-confirmation" element={<LogoutConfirmation />} />
         <Route path="/support" element={<Navigate to="/call-center" replace />} />
-        {/* Feature-map screens without a .dc.html design. The resolver
-            lazy-loads spec-screens.ts + definitions.ts (~244 KB) only when a
-            user actually navigates to an unmatched path. */}
-        <Route path="*" element={<SpecScreenResolver />} />
+        <Route path="*" element={<Navigate to="/error404" replace />} />
       </Routes>
     </Suspense>
+    </ErrorBoundary>
   )
 }

@@ -36,7 +36,7 @@ export const Badge = memo(function Badge({
   )
 })
 
-const FALLBACK = ['rgba(100,116,139,.1)', '#64748B'] as const
+const FALLBACK = ['var(--tint-neutral)', 'var(--text-muted)'] as const
 
 function lookup(palette: BadgePalette, key: string) {
   return palette[key] ?? FALLBACK
@@ -66,7 +66,7 @@ export function StatusBadge({ value, label }: { value: string; label?: string })
 export function PriorityBadge({ value, label }: { value: string; label?: string }) {
   const [bg] = lookup(PR_BADGE, value)
   return (
-    <Badge background={bg} color="#fff" strong>
+    <Badge background={bg} color="white" strong>
       {label ?? value}
     </Badge>
   )

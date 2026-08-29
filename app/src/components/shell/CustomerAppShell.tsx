@@ -26,13 +26,13 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen justify-center bg-page-alt font-ui">
-      <a
-        href="#customer-main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:start-4 focus:top-4 focus:rounded focus:bg-salis-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
-      >
-        {t('Skip to content')}
-      </a>
       <div className="flex h-screen w-full max-w-[430px] flex-col border-x border-border bg-page">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-salis-blue px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
+        >
+          {t('Skip to main content')}
+        </a>
         <header className="flex flex-shrink-0 items-center gap-2.5 border-b border-border px-4 py-3">
           <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-salis-gradient text-white">
             <Icon name="Wrench" size={16} />
@@ -42,24 +42,24 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>
           <NavLink
             to="/customer-app/notifications"
             aria-label={t('Notifications')}
-            className="relative flex h-8 w-8 items-center justify-center rounded text-muted no-underline hover:no-underline"
+            className="relative flex h-10 w-10 items-center justify-center rounded text-muted no-underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name="Bell" size={16} />
             {pathname !== '/customer-app/notifications' ? (
-              <span className="absolute end-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-salis-orange" />
+              <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-salis-orange" />
             ) : null}
           </NavLink>
         </header>
 
-        <main id="customer-main-content" className="flex-1 overflow-y-auto">
-          <div className="flex animate-fade-up flex-col gap-3.5 p-4">{children}</div>
+        <main id="main-content" className="flex-1 overflow-y-auto">
+          <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3.5 p-4">{children}</div>
         </main>
 
         <nav aria-label={t('App navigation')} className="flex flex-shrink-0 border-t border-border bg-sidebar">
@@ -71,7 +71,6 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
               className={({ isActive }) =>
                 cn(
                   'flex flex-1 flex-col items-center gap-1 py-2.5 no-underline transition-colors hover:no-underline',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-salis-blue',
                   isActive ? 'text-salis-blue' : 'text-muted'
                 )
               }
@@ -116,7 +115,7 @@ export function AppHeroCard({
 export function AppListRow({
   icon,
   iconTint = 'rgba(10,94,215,.08)',
-  iconColor = '#0A5ED7',
+  iconColor = 'var(--salis-blue)',
   title,
   subtitle,
   trailing,
@@ -137,7 +136,7 @@ export function AppListRow({
       {...(interactive ? { type: 'button' as const, onClick } : {})}
       className={cn(
         'flex w-full items-center gap-3 rounded-[14px] border border-border bg-card p-3.5 text-start',
-        interactive && 'cursor-pointer transition-colors active:bg-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue'
+        interactive && 'cursor-pointer transition-colors active:bg-inset'
       )}
     >
       <span

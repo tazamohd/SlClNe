@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { cn } from '@/lib/cn'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -18,7 +21,8 @@ const TOTAL_SAR = 1546.75
  *  isn't a handover record. Strokes are kept as paths so the result can be
  *  serialised and stored once file storage exists (README §10). */
 export function WorkshopSignature() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -42,7 +46,7 @@ export function WorkshopSignature() {
     if (!context || !point) return
     event.currentTarget.setPointerCapture(event.pointerId)
     drawing.current = true
-    context.strokeStyle = '#0A5ED7'
+    context.strokeStyle = getComputedStyle(canvasRef.current!).getPropertyValue('--salis-blue').trim() || 'var(--salis-blue)'
     context.lineWidth = 2.5
     context.lineCap = 'round'
     context.lineJoin = 'round'
@@ -82,32 +86,14 @@ export function WorkshopSignature() {
 
   return (
     <div className="flex max-w-[900px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-          <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="PenTool" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[26px] font-black text-heading">
-            {t('Customer Signature')}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted" dir="ltr">
-            JC-A3F8B2C1 · Ahmed Al-Rashid
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        icon="PenTool"
+        title={t('Customer Signature')}
+        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
+        compact={isMobile}
+      />
 
       <Panel icon="FileText" title={t('Job Summary')}>
         <FieldGrid>
@@ -122,12 +108,12 @@ export function WorkshopSignature() {
 
       <Card className="flex flex-col gap-3.5 rounded-lg p-5">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-sm font-bold text-heading">{t('Sign Below')}</h3>
+          <h2 className="text-sm font-bold text-heading">{t('Sign Below')}</h2>
           <button
             type="button"
             onClick={clear}
             disabled={!hasSignature}
-            className="flex h-10 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-transparent px-3 font-action text-xs text-muted transition-colors hover:border-salis-orange hover:text-salis-orange disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-[30px] cursor-pointer items-center gap-1.5 rounded-md border border-border bg-transparent px-3 font-action text-xs text-muted transition-colors hover:border-salis-orange hover:text-salis-orange disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <Icon name="Eraser" size={13} />
             {t('Clear')}
@@ -137,14 +123,14 @@ export function WorkshopSignature() {
         <div className="relative">
           <canvas
             ref={canvasRef}
-            width={800}
-            height={220}
+            width={isMobile ? 400 : 800}
+            height={isMobile ? 160 : 220}
             onPointerDown={start}
             onPointerMove={move}
             onPointerUp={end}
             onPointerLeave={end}
             aria-label={t('Sign Below')}
-            className="h-[220px] w-full touch-none rounded border-[1.5px] border-dashed border-border-strong bg-inset"
+            className={`${isMobile ? 'h-[160px]' : 'h-[220px]'} w-full touch-none rounded border-[1.5px] border-dashed border-border-strong bg-inset`}
           />
           {hasSignature ? null : (
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-muted">

@@ -1,0 +1,143 @@
+# SALIS AUTO — continuous integration.
+#
+# The pipeline only runs checks that exist. Suites still being built (unit,
+# component, API, mobile, RTL, a11y, visual, golden paths) are absent rather
+# than stubbed green — a job that reports success without running anything is
+# the CI equivalent of a screen that renders a total it did not compute. They
+# are added as each wave lands them; docs/MASTER_TEST_STRATEGY.md tracks who
+# owns which.
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build:
+    name: Typecheck, build and gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Tests are opt-in until the harness lands, so this passes cleanly before
+      # it exists and starts enforcing the moment it does.
+      - name: Unit, component and integration tests
+        run: npm run test --if-present
+
+      - name: Build
+        run: npm run build
+
+      # The registry is generated from the repository, so a committed copy that
+      # disagrees with a fresh run means someone edited it by hand — exactly the
+      # drift the registry exists to prevent.
+      - name: Registry is current
+        run: |
+          npm run registry
+          cd ..
+          git diff --exit-code -- project-control/ docs/ app/src/data/generated/master-registry.ts \
+            || { echo "::error::The committed registry is stale. Run 'npm run registry' in app/ and commit the result."; exit 1; }
+
+      - name: No placeholders or fake completion
+        run: npm run check-no-fake
+
+      - name: Design tokens and brand palette
+        run: npm run check-tokens
+
+      - name: Upload the gap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gap-report
+          path: |
+            project-control/MASTER_REGISTRY.json
+            project-control/BLOCKERS.json
+            docs/MASTER_GAP_REPORT.md
+          retention-days: 14
+
+  e2e:
+    name: Route, behaviour and brand checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      - name: Start preview
+        run: |
+          npx vite preview --port 4173 &
+          npx wait-on http://localhost:4173 --timeout 60000
+
+      - name: Smoke — routes, behaviour, mobile, brand guard
+        run: npm run smoke
+
+  security:
+    name: Secrets and dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # gitleaks needs history to scan past commits
+
+      # Three PATs were exposed in chat during this project. This job exists so
+      # the next one fails the build instead of reaching a log.
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Audit dependencies
+        working-directory: app
+        run: npm audit --audit-level=high

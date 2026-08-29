@@ -1,32 +1,74 @@
-import { Link, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { StatusBadge } from '@/components/ui/Badge'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
 import { Money } from '@/components/ui/Money'
+import { DESTRUCTIVE_BUTTON, useModal } from '@/components/ui/Modal'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { useToast } from '@/components/ui/Toast'
+import { WORKSHOP_STAGES } from '@/components/ui/WorkflowStepper'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection } from '@/data/useCollection'
-import { EmptyState } from '@/components/ui/DataTable'
+import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
+import { RepositoryError } from '@/data/repository'
+import { JobCardForm } from './JobCardForm'
+import { railIndexFor, type JobRow } from './stages'
 
 /** A single job card: stage timeline, assigned technician, parts and costs.
  *
  *  Costs are role-gated. Part cost and margin are hidden from advisors,
  *  technicians, QC, front desk and call centre (FIELD_RULES), so this screen
  *  drops the whole totals panel for them rather than showing blanked-out rows
- *  that invite "why can't I see this". */
+ *  that invite "why can't I see this".
+ *
+ *  Everything on it now comes from a record. The rebuild inherited a screen
+ *  whose technician, parts, costs and timeline stamps were module constants —
+ *  it rendered "Yousef Al-Otaibi · SAR 840 · Jul 18, 9:02 AM" for every job
+ *  card in the database, including ones with no technician and no invoice. The
+ *  timeline is now the job's real stage, the parts are its invoice's part
+ *  lines, and the totals are the ones the server computed.
+ */
 export function JobDetail() {
-  const { t, rtl } = usePreferences()
-  const { fieldHidden } = useSession()
+  const { t } = usePreferences()
+  const { fieldHidden, can } = useSession()
+  const isMobile = useIsMobile()
+  const { confirm } = useModal()
+  const toast = useToast()
+  const navigate = useNavigate()
   const [params] = useSearchParams()
-  const { data: jobs = [], isLoading } = useCollection('jobs')
+  const jobs = useCollection('jobs')
+  const remove = useDelete('jobs')
+  const [editing, setEditing] = useState(false)
 
   const jobId = params.get('id')
-  const job = jobId ? jobs.find((row) => row.id === jobId) : jobs[0]
+  const rows = (jobs.data ?? []) as readonly JobRow[]
+  const job = jobId ? rows.find((row) => row.id === jobId) : rows[0]
 
-  if (isLoading) {
-    return <p className="text-sm text-muted">{t('Loading...')}</p>
+  /* The two links the API models: an invoice names its job card, a line names
+   * its invoice. Filtered server-side; an empty id matches nothing. */
+  const invoices = useCollection('invoices', { filter: { jobCardId: job?._id ?? '' } })
+  const invoice = invoices.data?.[0] as InvoiceRow | undefined
+  const lines = useCollection('invoiceLines', { filter: { invoiceId: invoice?._id ?? '' } })
+  const technicians = useCollection('technicians')
+
+  if (jobs.isLoading) {
+    return <Loading label="Loading job card..." />
+  }
+
+  if (jobs.isError) {
+    return (
+      <ErrorState
+        title={t("Couldn't load this")}
+        description={jobs.error?.message}
+        onRetry={() => void jobs.refetch()}
+      />
+    )
   }
 
   if (!job) {
@@ -47,79 +89,154 @@ export function JobDetail() {
   }
 
   const hideCosts = fieldHidden('Part cost / margin')
+  const technician = job.assignedTechId
+    ? (technicians.data as readonly TechnicianRow[] | undefined)?.find(
+        (row) => row._id === job.assignedTechId
+      )
+    : undefined
+  const parts = ((lines.data ?? []) as readonly LineRow[]).filter((line) => line.kind === 'part')
+
+  async function deleteJob() {
+    if (!job) return
+    const agreed = await confirm({
+      title: 'Delete Job Card?',
+      description: `${job.id} — ${job.cust}. This cannot be undone.`,
+      icon: 'Trash2',
+      confirmLabel: 'Delete',
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id: job._id ?? job.id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete Job Card?'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Job Cards'), description: job.id })
+    navigate('/job-cards')
+  }
 
   return (
-    <div className="flex max-w-[1100px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+    <div className="flex max-w-[1100px] animate-fade-up motion-reduce:animate-none flex-col gap-6">
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading" dir="ltr">
+          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'} dir="ltr">
             {job.id}
           </h1>
           <p className="mt-1 text-sm text-muted">
             {job.cust} · {job.veh}
           </p>
         </div>
-        <div className="flex gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
-          <Button size="md">
+          <Link
+            to={`/job-card-detail?id=${encodeURIComponent(job.id)}`}
+            className="inline-flex h-9 items-center gap-2 rounded border border-border bg-card px-3.5 font-action text-[13px] text-heading no-underline hover:no-underline"
+          >
+            <Icon name="ClipboardList" size={15} />
+            {t('Job Card')}
+          </Link>
+          {can('jobcards', 'e') ? (
+            <Button variant="subtle" size="md" onClick={() => setEditing(true)}>
+              <Icon name="Pencil" size={15} />
+              {t('Edit')}
+            </Button>
+          ) : null}
+          {can('jobcards', 'd') ? (
+            <Button
+              size="md"
+              className={DESTRUCTIVE_BUTTON}
+              onClick={() => void deleteJob()}
+              disabled={remove.isPending}
+            >
+              <Icon name="Trash2" size={15} />
+              {t(remove.isPending ? 'Saving...' : 'Delete')}
+            </Button>
+          ) : null}
+          <Button size="md" onClick={() => window.print()}>
             <Icon name="Printer" size={15} />
             {t('Print Job Card')}
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+      <JobCardForm open={editing} onClose={() => setEditing(false)} job={job} />
+
+      <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]'}>
         <Card className="p-6">
-          <h3 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h3>
-          <Timeline steps={TIMELINE} />
+          <h2 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h2>
+          <Timeline steps={timelineFor(job.stage)} />
         </Card>
 
         <div className="flex flex-col gap-4">
           <Card className="p-5">
-            <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h3>
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-salis-gradient text-[13px] font-bold text-white">
-                {ASSIGNED_TECH[0]}
-              </span>
-              <span className="text-sm text-body">{ASSIGNED_TECH}</span>
-            </div>
+            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h2>
+            {technician ? (
+              <div className="flex items-center gap-2.5">
+                <Avatar name={technician.name} size={36} />
+                <span className="text-sm text-body">{technician.name}</span>
+              </div>
+            ) : (
+              <p className="text-[13px] text-muted">{t('No technician assigned yet')}</p>
+            )}
           </Card>
 
           <Card className="p-5">
-            <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Parts Used')}</h3>
-            <div className="flex flex-col gap-2">
-              {PARTS_USED.map((part) => (
-                <div key={part.name} className="flex justify-between text-[13px]">
-                  <span className="text-body">{t(part.name)}</span>
-                  {/* Part prices follow the same redaction rule as the totals. */}
-                  {hideCosts ? (
-                    <span className="text-faint">—</span>
-                  ) : (
-                    <Money sar={part.sar} className="text-muted" />
-                  )}
-                </div>
-              ))}
-            </div>
+            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Parts Used')}</h2>
+            {lines.isLoading ? (
+              <Loading inline label="Loading parts..." />
+            ) : parts.length === 0 ? (
+              <p className="text-[13px] text-muted">
+                {t('Parts appear here once they are billed to this job card.')}
+              </p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {parts.map((part, index) => (
+                  <div
+                    key={part._id ?? `${part.part}-${index}`}
+                    className="flex justify-between gap-3 text-[13px]"
+                  >
+                    <span className="min-w-0 truncate text-body">{part.desc}</span>
+                    {/* Part prices follow the same redaction rule as the totals. */}
+                    {hideCosts ? (
+                      <span className="text-faint">—</span>
+                    ) : (
+                      <Money sar={part.unit} className="flex-shrink-0 text-muted" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </Card>
 
           {hideCosts ? null : (
             <Card className="flex flex-col gap-2 p-5">
-              <CostRow label={t('Labor Cost')} sar={350} />
-              <CostRow label={t('Parts Cost')} sar={490} />
-              <div className="flex justify-between border-t border-border pt-2 text-base font-bold text-heading">
-                <span>{t('Total Cost')}</span>
-                <Money sar={840} className="font-bold" />
-              </div>
+              {invoice ? (
+                <>
+                  {/* Server-computed. Splitting the subtotal into labour and
+                      parts in the browser would be a frontend financial
+                      calculation, which Part 5b forbids outright. */}
+                  <CostRow label={t('Subtotal')} halalas={invoice.subtotalHalalas} />
+                  <CostRow label={t('VAT (15%)')} halalas={invoice.taxHalalas} />
+                  <div className="flex justify-between border-t border-border pt-2 text-base font-bold text-heading">
+                    <span>{t('Total Cost')}</span>
+                    <Money sar={(invoice.totalHalalas ?? 0) / 100} className="font-bold" />
+                  </div>
+                </>
+              ) : (
+                <EmptyState
+                  icon="Receipt"
+                  title={t('Not invoiced yet')}
+                  description={t('Totals appear once this job card is invoiced.')}
+                />
+              )}
             </Card>
           )}
         </div>
@@ -128,28 +245,44 @@ export function JobDetail() {
   )
 }
 
-function CostRow({ label, sar }: { label: string; sar: number }) {
+function CostRow({ label, halalas }: { label: string; halalas?: number }) {
   return (
     <div className="flex justify-between text-[13px] text-muted">
       <span>{label}</span>
-      <Money sar={sar} className="text-muted" />
+      <Money sar={(halalas ?? 0) / 100} className="text-muted" />
     </div>
   )
 }
 
-const ASSIGNED_TECH = 'Yousef Al-Otaibi'
+/** The six workshop stages as a vertical rail, filled to wherever the record
+ *  actually is.
+ *
+ *  No timestamps: the audit log holds when each transition happened and no
+ *  endpoint exposes it to a client yet, so a stamp here would be invented. A
+ *  step is done, current or pending — which is what the record can prove. */
+const STAGE_ICONS = [
+  'ClipboardCheck',
+  'SearchCheck',
+  'Calculator',
+  'Wrench',
+  'ShieldCheck',
+  'Car',
+] as const
 
-const PARTS_USED = [
-  { name: 'Oil Filter', sar: 85 },
-  { name: 'Brake Pads', sar: 310 },
-  { name: 'Air Filter', sar: 95 },
-]
+function timelineFor(stage: string | undefined): TimelineStep[] {
+  const reached = railIndexFor(stage)
+  return WORKSHOP_STAGES.map((label, index) => ({
+    icon: STAGE_ICONS[index] ?? 'Circle',
+    label,
+    done: index <= reached,
+  }))
+}
 
-const TIMELINE: TimelineStep[] = [
-  { icon: 'CheckCircle', label: 'Vehicle Checked In', time: 'Jul 18, 9:02 AM', done: true },
-  { icon: 'SearchCheck', label: 'Diagnostics Started', time: 'Jul 18, 9:40 AM', done: true },
-  { icon: 'Package', label: 'Parts Ordered', time: 'Jul 18, 11:15 AM', done: true },
-  { icon: 'Wrench', label: 'Repair In Progress', time: 'Jul 19, 8:30 AM', done: true },
-  { icon: 'ShieldCheck', label: 'Quality Check', done: false },
-  { icon: 'Car', label: 'Ready for Delivery', done: false },
-]
+type TechnicianRow = RowOf<'technicians'> & { _id?: string }
+type InvoiceRow = RowOf<'invoices'> & {
+  _id?: string
+  subtotalHalalas?: number
+  taxHalalas?: number
+  totalHalalas?: number
+}
+type LineRow = RowOf<'invoiceLines'> & { _id?: string }

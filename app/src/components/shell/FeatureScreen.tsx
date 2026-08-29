@@ -1,7 +1,9 @@
-import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { Select } from '@/components/ui/Select'
+import { Tabs, TabList, Tab } from '@/components/ui/Tabs'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -63,8 +65,8 @@ export function FeatureHeader({
   )
 }
 
-/** Pill tab bar. Controlled when `value`/`onChange` are passed, otherwise it
- *  keeps its own state — most screens only need the latter. */
+/** Pill tab bar built on the Tabs primitive. Controlled when `value`/`onChange`
+ *  are passed, otherwise it keeps its own state. */
 export function TabBar({
   tabs,
   value,
@@ -75,55 +77,17 @@ export function TabBar({
   onChange?: (id: string) => void
 }) {
   const { t } = usePreferences()
-  const [internal, setInternal] = useState(tabs[0]?.id ?? '')
-  const active = value ?? internal
-  const select = onChange ?? setInternal
-  const tablistRef = useRef<HTMLDivElement>(null)
-
-  function handleKeyDown(event: KeyboardEvent) {
-    const tabElements = tablistRef.current?.querySelectorAll<HTMLElement>('[role="tab"]')
-    if (!tabElements?.length) return
-    const currentIndex = Array.from(tabElements).findIndex((el) => el === document.activeElement)
-    let nextIndex = -1
-    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabElements.length
-    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabElements.length) % tabElements.length
-    else if (event.key === 'Home') nextIndex = 0
-    else if (event.key === 'End') nextIndex = tabElements.length - 1
-    if (nextIndex >= 0) {
-      event.preventDefault()
-      tabElements[nextIndex].focus()
-      select(tabs[nextIndex].id)
-    }
-  }
-
   return (
-    <Card className="overflow-x-auto rounded-lg p-1.5">
-      <div ref={tablistRef} className="flex gap-1" role="tablist" onKeyDown={handleKeyDown}>
-      {tabs.map((tab) => {
-        const on = tab.id === active
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={on}
-            tabIndex={on ? 0 : -1}
-            onClick={() => select(tab.id)}
-            className={cn(
-              'flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded px-4 py-2.5',
-              'font-action text-[13px] font-semibold transition-all duration-150',
-              on
-                ? 'bg-salis-gradient text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]'
-                : 'bg-transparent text-muted hover:bg-[rgba(10,94,215,.06)] hover:text-salis-blue'
-            )}
-          >
+    <Tabs defaultTab={tabs[0]?.id} value={value} onChange={onChange} variant="pill">
+      <TabList label="Section tabs">
+        {tabs.map((tab) => (
+          <Tab key={tab.id} id={tab.id}>
             {tab.icon ? <Icon name={tab.icon} size={15} /> : null}
             <span>{t(tab.label)}</span>
-          </button>
-        )
-      })}
-      </div>
-    </Card>
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
   )
 }
 
@@ -221,33 +185,8 @@ export function Section({
   )
 }
 
-/** Inline search field used inside a Section toolbar or above a table. */
-export function SearchField({
-  value,
-  onChange,
-  placeholder,
-  className,
-}: {
-  value: string
-  onChange: (next: string) => void
-  placeholder?: string
-  className?: string
-}) {
-  const { t } = usePreferences()
-  return (
-    <span className={cn('relative flex items-center', className)}>
-      <Icon name="Search" size={15} className="pointer-events-none absolute text-muted start-3" />
-      <input
-        type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder ?? t('Search...')}
-        aria-label={placeholder ?? t('Search')}
-        className="h-10 w-full rounded border border-border bg-inset px-3 ps-9 text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
-      />
-    </span>
-  )
-}
+/** Inline search field — delegates to the Search primitive. */
+export { Search as SearchField } from '@/components/ui/Search'
 
 /** Scope selector (branch/garage picker) shown above the tabs. */
 export function ScopeSelect({
@@ -263,17 +202,18 @@ export function ScopeSelect({
   return (
     <label className="inline-flex">
       <span className="sr-only">{t('Branch')}</span>
-      <select
+      <Select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-10 w-full cursor-pointer rounded border border-border bg-card px-3 font-action text-[13px] text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)] sm:min-w-[220px] sm:w-auto"
+        size="md"
+        className="min-w-[220px] font-action"
       >
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
-      </select>
+      </Select>
     </label>
   )
 }

@@ -1,255 +1,425 @@
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { cn } from '@/lib/cn'
-import { Card } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
-import { Icon } from '@/components/ui/Icon'
-import { EmptyState } from '@/components/ui/DataTable'
 import { FeatureHeader } from '@/components/shell/FeatureScreen'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
+import { Icon } from '@/components/ui/Icon'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { useCollection, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { TASK_TINT } from './crm-badges'
+import { CrmTaskFormModal } from './CrmTaskFormModal'
 
-/** CRM Calendar: month grid + upcoming-tasks agenda, built from `crmTasks`.
+/** CRM Calendar — `CRMCalendar.dc.html` and `.Mobile.dc.html`.
  *
- *  The design's grid used static placeholder events (Call, Demo, Proposal
- *  due, …) with no real backing data. `crmTasks` carries the same shape of
- *  content — titled items with a due date, an assignee and a type — so this
- *  places each task on its due date instead of re-hardcoding the design's
- *  strings, and month navigation actually walks the data. */
+ *  A month grid over `crmTasks`, plus the design's two right-rail panels: the
+ *  agenda for the focused day and the type legend. The prototype hardcoded a
+ *  July 2026 board; this places every real task on its own `due` date, colours
+ *  it by `type`, and lets the month be paged.
+ *
+ *  This is the CRM-task view, distinct from any `appointments` calendar agent 08
+ *  builds — a different collection, a different surface, in its own file.
+ *
+ *  **New Task (F-027).** `crmTasks` is now writable, so the design's "New Task"
+ *  control is real: it opens `CrmTaskFormModal`, which creates the task through
+ *  `useCreate('crmTasks')` with the selected day pre-filled as the due date, so
+ *  the task lands on the cell the user was looking at. Gated on `crm:c`. Against
+ *  the fixtures it refuses honestly with the "set VITE_API_URL" state. The header
+ *  still links to the full task list too. */
+type Task = RowOf<'crmTasks'> & { _id?: string }
 
-type CrmTask = RowOf<'crmTasks'>
+const DAY_KEYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+] as const
 
-const DAY_HEADERS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
-
-/** Event-chip tone by task type, mapped onto the design's calendar legend
- *  (Calls / Meetings / Deadlines / Reviews). Blue scale + orange only —
- *  no green/red/yellow/purple/pink/teal (README §7). */
-const TYPE_TONE: Record<string, readonly [string, string]> = {
-  call: ['rgba(10,94,215,.12)', '#0A5ED7'],
-  meeting: ['rgba(11,179,255,.12)', '#0BB3FF'],
-  document: ['rgba(249,115,22,.12)', '#F97316'],
-  task: ['rgba(11,31,59,.12)', '#0B1F3B'],
+const EVENT_TONE: Record<string, string> = {
+  blue: 'bg-tint-blue text-salis-blue',
+  bright: 'bg-salis-bright/[.12] text-salis-bright',
+  orange: 'bg-salis-orange/[.12] text-salis-orange',
+  slate: 'bg-inset text-muted',
 }
-const FALLBACK_TONE: readonly [string, string] = ['rgba(100,116,139,.12)', '#64748B']
-
-const TYPE_LABEL: Record<string, string> = {
-  call: 'Calls',
-  meeting: 'Meetings',
-  document: 'Deadlines',
-  task: 'Reviews',
+const DOT_TONE: Record<string, string> = {
+  blue: 'bg-salis-blue',
+  bright: 'bg-salis-bright',
+  orange: 'bg-salis-orange',
+  slate: 'bg-border-strong',
 }
 
-// Mirrors the design's highlighted "today" cell. The demo dataset lives in a
-// fixed month, so the real system date would never land inside the grid.
-const HIGHLIGHT_DAY = 24
+const LEGEND: readonly { type: string; label: string }[] = [
+  { type: 'call', label: 'Calls' },
+  { type: 'meeting', label: 'Meetings' },
+  { type: 'document', label: 'Documents' },
+  { type: 'email', label: 'Emails' },
+]
 
-function parseDue(due: string): Date | null {
-  const parsed = new Date(due)
-  return Number.isNaN(parsed.getTime()) ? null : parsed
+const MONTH_INDEX: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
 }
+
+/** `"Jul 23, 2026"` or `"2026-07-23"` → a `{y, m, d}`, or null if unparseable.
+ *  Both the fixture rows and the server's `dateUS` output land here. Parsed by
+ *  hand rather than `new Date` — V8 rejects `"Jul 23, 2026 UTC"` and treats a
+ *  bare `"Jul 23, 2026"` as local time, either of which drifts the day. */
+function parseDue(value: string | undefined | null): { y: number; m: number; d: number } | null {
+  if (!value) return null
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
+  if (iso) return { y: Number(iso[1]), m: Number(iso[2]) - 1, d: Number(iso[3]) }
+  const us = /^([A-Za-z]{3})[a-z]*\s+(\d{1,2}),\s*(\d{4})$/.exec(value.trim())
+  if (us) {
+    const m = MONTH_INDEX[us[1].toLowerCase()]
+    if (m === undefined) return null
+    return { y: Number(us[3]), m, d: Number(us[2]) }
+  }
+  return null
+}
+
+const toneOf = (task: Task) => TASK_TINT[(task.type ?? '').toLowerCase()] ?? 'slate'
 
 export function CRMCalendar() {
   const { t, rtl } = usePreferences()
   const { can } = useSession()
-  const { data: tasks = [], isLoading } = useCollection('crmTasks')
-  const [monthOffset, setMonthOffset] = useState(0)
+  const isMobile = useIsMobile()
+  const navigate = useNavigate()
+  const [creating, setCreating] = useState(false)
+  const tasks = useCollection('crmTasks')
 
-  const base = useMemo(() => {
-    for (const task of tasks) {
-      const due = parseDue(task.due)
-      if (due) return due
-    }
-    return new Date()
-  }, [tasks])
+  const rows = (tasks.data ?? []) as readonly Task[]
 
-  const view = useMemo(
-    () => new Date(base.getFullYear(), base.getMonth() + monthOffset, 1),
-    [base, monthOffset]
-  )
-  const year = view.getFullYear()
-  const month = view.getMonth()
-  const monthLabel = view.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-
+  // Each task pinned to its due day, keyed `y-m-d`.
   const byDay = useMemo(() => {
-    const map = new Map<number, CrmTask[]>()
-    for (const task of tasks) {
+    const map = new Map<string, Task[]>()
+    for (const task of rows) {
       const due = parseDue(task.due)
-      if (!due || due.getFullYear() !== year || due.getMonth() !== month) continue
-      const list = map.get(due.getDate()) ?? []
-      list.push(task)
-      map.set(due.getDate(), list)
+      if (!due) continue
+      const key = `${due.y}-${due.m}-${due.d}`
+      const bucket = map.get(key)
+      if (bucket) bucket.push(task)
+      else map.set(key, [task])
     }
     return map
-  }, [tasks, year, month])
+  }, [rows])
 
-  const calDays = useMemo(() => {
-    const firstWeekday = new Date(year, month, 1).getDay()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-    return Array.from({ length: 35 }, (_, i) => {
-      const dayNum = i - firstWeekday + 1
-      const inMonth = dayNum >= 1 && dayNum <= daysInMonth
-      return { dayNum: inMonth ? dayNum : null, events: inMonth ? (byDay.get(dayNum) ?? []) : [] }
-    })
-  }, [year, month, byDay])
+  // Open on the month that actually holds tasks, so the first paint is not an
+  // empty grid the user has to page away from.
+  const busiestMonth = useMemo(() => {
+    const counts = new Map<string, { y: number; m: number; n: number }>()
+    for (const task of rows) {
+      const due = parseDue(task.due)
+      if (!due) continue
+      const key = `${due.y}-${due.m}`
+      const entry = counts.get(key) ?? { y: due.y, m: due.m, n: 0 }
+      entry.n += 1
+      counts.set(key, entry)
+    }
+    let best: { y: number; m: number; n: number } | null = null
+    for (const entry of counts.values()) {
+      if (!best || entry.n > best.n || (entry.n === best.n && (entry.y < best.y || (entry.y === best.y && entry.m < best.m)))) {
+        best = entry
+      }
+    }
+    const now = new Date()
+    return best ?? { y: now.getUTCFullYear(), m: now.getUTCMonth() }
+  }, [rows])
 
-  const upcoming = useMemo(
-    () =>
-      [...tasks].sort(
-        (a, b) => (parseDue(a.due)?.getTime() ?? 0) - (parseDue(b.due)?.getTime() ?? 0)
-      ),
-    [tasks]
-  )
+  // Null until the user pages, so the view follows `busiestMonth` as the data
+  // lands — a `useState(busiestMonth)` would freeze on the empty-first-render
+  // month (today's) and never move to the month the tasks are actually in.
+  const [paged, setPaged] = useState<{ y: number; m: number } | null>(null)
+  const [selected, setSelected] = useState<string | null>(null)
+  const view = paged ?? busiestMonth
 
-  const types = useMemo(() => [...new Set(tasks.map((task) => task.type))], [tasks])
+  if (tasks.isLoading) {
+    return (
+      <div className="flex flex-col gap-6">
+        <FeatureHeader icon="CalendarDays" title={t('CRM Calendar')} subtitle={t('CRM & Marketing')} />
+        <Loading label="Loading calendar..." />
+      </div>
+    )
+  }
 
-  if (isLoading) return <p className="text-sm text-muted">{t('Loading...')}</p>
+  if (tasks.isError) {
+    return (
+      <div className="flex flex-col gap-6">
+        <FeatureHeader icon="CalendarDays" title={t('CRM Calendar')} subtitle={t('CRM & Marketing')} />
+        <Card className="p-6">
+          <ErrorState description={tasks.error?.message} onRetry={() => void tasks.refetch()} />
+        </Card>
+      </div>
+    )
+  }
+
+  const first = new Date(Date.UTC(view.y, view.m, 1))
+  const leading = first.getUTCDay()
+  const daysInMonth = new Date(Date.UTC(view.y, view.m + 1, 0)).getUTCDate()
+
+  const cells: ({ day: number; key: string } | null)[] = []
+  for (let i = 0; i < leading; i++) cells.push(null)
+  for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, key: `${view.y}-${view.m}-${d}` })
+  while (cells.length % 7 !== 0) cells.push(null)
+
+  const step = (delta: number) => {
+    setSelected(null)
+    const next = new Date(Date.UTC(view.y, view.m + delta, 1))
+    setPaged({ y: next.getUTCFullYear(), m: next.getUTCMonth() })
+  }
+
+  // The agenda follows the selected day, or the first day this month with tasks.
+  const firstBusy = cells.find((c) => c && byDay.has(c.key)) as { day: number; key: string } | undefined
+  const agendaKey = selected ?? firstBusy?.key ?? null
+  const agendaTasks = agendaKey ? (byDay.get(agendaKey) ?? []) : []
+  const agendaDay = agendaKey ? Number(agendaKey.split('-')[2]) : null
+
+  const monthLabel = `${t(MONTHS[view.m])} ${view.y}`
+  const hasAnyTasks = byDay.size > 0
+  const canCreate = can('crm', 'c')
+
+  // The day a new task defaults to: the one in view (selected, or the first
+  // with tasks). `y-m-d` with a zero-based month → an ISO `YYYY-MM-DD`.
+  const defaultDue = agendaKey
+    ? (() => {
+        const [y, m, d] = agendaKey.split('-').map(Number)
+        return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+      })()
+    : ''
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col gap-4">
+        <MobilePageHeader icon="CalendarDays" title={t('CRM Calendar')} subtitle={t('CRM & Marketing')} />
+        <div className="flex items-center justify-between gap-2">
+          <MonthButton icon={rtl ? 'ChevronRight' : 'ChevronLeft'} label={t('Previous month')} onClick={() => step(-1)} />
+          <h2 className="text-[14px] font-bold text-heading">{monthLabel}</h2>
+          <MonthButton icon={rtl ? 'ChevronLeft' : 'ChevronRight'} label={t('Next month')} onClick={() => step(1)} />
+        </div>
+        {!hasAnyTasks ? (
+          <Card className="p-5">
+            <EmptyState icon="CalendarDays" title={t('No scheduled tasks')}
+              description={t('CRM tasks with a due date will appear on the calendar.')} />
+          </Card>
+        ) : (
+          <>
+            <Card className="flex flex-col gap-3 p-4">
+              <h2 className="text-[14px] font-bold text-heading">
+                {agendaDay ? `${agendaDay} ${monthLabel.split(' ')[0]}` : t("Day's Tasks")}
+              </h2>
+              {agendaTasks.length === 0 ? (
+                <p className="text-[13px] text-muted">{t('No tasks on this day.')}</p>
+              ) : (
+                <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+                  {agendaTasks.map((task) => (
+                    <li key={task._id ?? task.title} className="flex gap-2.5 rounded-lg border border-border bg-inset p-2.5">
+                      <span aria-hidden className={cn('w-[3px] flex-shrink-0 rounded-full', DOT_TONE[toneOf(task)])} />
+                      <div className="min-w-0 flex-1">
+                        <p className="m-0 truncate text-xs font-semibold text-heading">{task.title}</p>
+                        <p className="m-0 mt-0.5 truncate text-[11px] text-muted">
+                          {[task.assigned, task.type ? t(task.type) : null].filter(Boolean).join(' · ')}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+            <div className="flex justify-center">
+              <Button variant="subtle" size="sm" onClick={() => navigate('/crmtasks')}>
+                <Icon name="ListChecks" size={14} /> {t('All Tasks')}
+              </Button>
+            </div>
+          </>
+        )}
+        {creating ? <CrmTaskFormModal open onClose={() => setCreating(false)} defaultDueDate={defaultDue} /> : null}
+      </div>
+    )
+  }
 
   return (
-    <>
+    <div className="flex flex-col gap-6">
       <FeatureHeader
         icon="CalendarDays"
         title={t('CRM Calendar')}
         subtitle={t('CRM & Marketing')}
         actions={
-          can('crm', 'c') ? (
-            <Button size="md">
-              <Icon name="Plus" size={16} />
-              {t('New Task')}
+          <>
+            {canCreate ? (
+              <Button onClick={() => setCreating(true)}>
+                <Icon name="Plus" size={16} />
+                {t('New Task')}
+              </Button>
+            ) : null}
+            <Button variant="subtle" onClick={() => navigate('/crmtasks')}>
+              <Icon name="ListChecks" size={16} />
+              {t('All Tasks')}
             </Button>
-          ) : null
+          </>
         }
       />
 
-      {tasks.length === 0 ? (
+      {!hasAnyTasks ? (
         <Card className="p-6">
           <EmptyState
-            icon="CalendarX"
-            title={t('No events scheduled')}
+            icon="CalendarDays"
+            title={t('No scheduled tasks')}
             description={t('CRM tasks with a due date will appear on the calendar.')}
           />
         </Card>
       ) : (
-        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_300px]">
-          <Card className="overflow-hidden">
-            <div className="flex items-center gap-2.5 border-b border-border px-5 py-3.5">
-              <h3 className="font-display text-base font-bold text-heading">{monthLabel}</h3>
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <Card className="overflow-hidden p-0">
+            <div className="flex items-center gap-2.5 border-0 border-b border-solid border-border px-5 py-3.5">
+              <h2 className="text-base font-bold text-heading">{monthLabel}</h2>
               <span className="flex-1" />
-              <button
-                type="button"
-                aria-label={t('Previous month')}
-                onClick={() => setMonthOffset((o) => o - 1)}
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
-              >
-                <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={14} />
-              </button>
-              <button
-                type="button"
-                aria-label={t('Next month')}
-                onClick={() => setMonthOffset((o) => o + 1)}
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-body hover:border-border-strong"
-              >
-                <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={14} />
-              </button>
+              <MonthButton
+                icon={rtl ? 'ChevronRight' : 'ChevronLeft'}
+                label={t('Previous month')}
+                onClick={() => step(-1)}
+              />
+              <MonthButton
+                icon={rtl ? 'ChevronLeft' : 'ChevronRight'}
+                label={t('Next month')}
+                onClick={() => step(1)}
+              />
             </div>
 
-            <div className="overflow-x-auto">
-              <div className="min-w-[560px]">
-                <div className="grid grid-cols-7">
-                  {DAY_HEADERS.map((day) => (
+            <div className="grid grid-cols-7">
+              {DAY_KEYS.map((key) => (
+                <div
+                  key={key}
+                  className="border-0 border-b border-solid border-border py-2.5 text-center text-[11px] font-semibold text-muted"
+                >
+                  {t(key)}
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-7">
+              {cells.map((cell, index) => {
+                if (!cell) {
+                  return (
                     <div
-                      key={day}
-                      className="border-b border-border p-2.5 text-center text-xs font-semibold text-muted"
+                      key={`pad-${index}`}
+                      className="min-h-[76px] border-0 border-b border-e border-solid border-border sm:min-h-[92px]"
+                    />
+                  )
+                }
+                const dayTasks = byDay.get(cell.key) ?? []
+                const isSelected = cell.key === agendaKey
+                return (
+                  <button
+                    key={cell.key}
+                    type="button"
+                    onClick={() => setSelected(cell.key)}
+                    aria-pressed={isSelected}
+                    aria-label={`${cell.day} ${monthLabel}, ${dayTasks.length} ${t('tasks')}`}
+                    className={cn(
+                      'flex min-h-[76px] cursor-pointer flex-col items-stretch gap-1 border-0 border-b border-e border-solid border-border bg-transparent p-1.5 text-start sm:min-h-[92px]',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-salis-blue',
+                      isSelected ? 'bg-salis-blue/[.06]' : 'hover:bg-inset'
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        'text-xs',
+                        isSelected ? 'font-bold text-salis-blue' : 'font-normal text-body'
+                      )}
                     >
-                      {t(day)}
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-7">
-                  {calDays.map((cell, i) => {
-                    const isToday = monthOffset === 0 && cell.dayNum === HIGHLIGHT_DAY
-                    return (
-                      <div
-                        key={i}
-                        className={cn(
-                          'min-h-[92px] border-b border-e border-border p-1.5',
-                          isToday && 'bg-[rgba(10,94,215,.04)]'
-                        )}
-                      >
-                        {cell.dayNum ? (
-                          <span
-                            className={cn(
-                              'font-mono text-xs',
-                              isToday ? 'font-bold text-salis-blue' : 'text-body'
-                            )}
-                            dir="ltr"
-                          >
-                            {cell.dayNum}
-                          </span>
-                        ) : null}
-                        <div className="mt-1 flex flex-col gap-1">
-                          {cell.events.map((task) => {
-                            const [bg, fg] = TYPE_TONE[task.type] ?? FALLBACK_TONE
-                            return (
-                              <div
-                                key={task.title}
-                                className="truncate rounded px-1.5 py-0.5 text-[10px] font-medium"
-                                style={{ background: bg, color: fg }}
-                                title={t(task.title)}
-                              >
-                                {t(task.title)}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
+                      {cell.day}
+                    </span>
+                    <span className="flex flex-col gap-1">
+                      {dayTasks.slice(0, 2).map((task) => (
+                        <span
+                          key={task._id ?? task.title}
+                          title={task.title}
+                          className={cn(
+                            'truncate rounded px-1.5 py-0.5 text-[10px] font-medium',
+                            EVENT_TONE[toneOf(task)]
+                          )}
+                        >
+                          {task.title}
+                        </span>
+                      ))}
+                      {dayTasks.length > 2 ? (
+                        <span className="px-1.5 text-[10px] text-muted">
+                          +{dayTasks.length - 2} {t('more')}
+                        </span>
+                      ) : null}
+                    </span>
+                  </button>
+                )
+              })}
             </div>
           </Card>
 
           <div className="flex flex-col gap-5">
-            <Card className="p-5">
-              <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Upcoming Tasks')}</h3>
-              <div className="flex flex-col gap-2.5">
-                {upcoming.map((task) => {
-                  const [, fg] = TYPE_TONE[task.type] ?? FALLBACK_TONE
-                  return (
-                    <div
-                      key={task.title}
-                      className="flex gap-2.5 rounded-[10px] border border-border bg-inset p-2.5"
+            <Card className="flex flex-col gap-3 p-5">
+              <h2 className="text-[15px] font-bold text-heading">
+                {agendaDay ? `${agendaDay} ${monthLabel.split(' ')[0]}` : t("Day's Tasks")}
+              </h2>
+              {agendaTasks.length === 0 ? (
+                <p className="text-[13px] text-muted">{t('No tasks on this day.')}</p>
+              ) : (
+                <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+                  {agendaTasks.map((task) => (
+                    <li
+                      key={task._id ?? task.title}
+                      className="flex gap-2.5 rounded-lg border border-border bg-inset p-2.5"
                     >
-                      <span className="w-[3px] flex-shrink-0 rounded-full" style={{ background: fg }} />
+                      <span
+                        aria-hidden
+                        className={cn('w-[3px] flex-shrink-0 rounded-full', DOT_TONE[toneOf(task)])}
+                      />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-xs font-semibold text-heading">{t(task.title)}</p>
-                        <p className="mt-0.5 text-[11px] text-muted">
-                          <span dir="ltr">{task.due}</span> · {task.assigned}
+                        <p className="m-0 truncate text-xs font-semibold text-heading">{task.title}</p>
+                        <p className="m-0 mt-0.5 truncate text-[11px] text-muted">
+                          {[task.assigned, task.type ? t(task.type) : null].filter(Boolean).join(' · ')}
                         </p>
                       </div>
-                    </div>
-                  )
-                })}
-              </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </Card>
 
-            <Card className="p-5">
-              <h3 className="mb-3 text-[15px] font-bold text-heading">{t('Legend')}</h3>
+            <Card className="flex flex-col gap-3 p-5">
+              <h2 className="text-[15px] font-bold text-heading">{t('Legend')}</h2>
               <div className="flex flex-col gap-2">
-                {types.map((type) => {
-                  const [, fg] = TYPE_TONE[type] ?? FALLBACK_TONE
-                  return (
-                    <div key={type} className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-[3px]" style={{ background: fg }} />
-                      <span className="text-xs text-body">{t(TYPE_LABEL[type] ?? type)}</span>
-                    </div>
-                  )
-                })}
+                {LEGEND.map((item) => (
+                  <div key={item.type} className="flex items-center gap-2">
+                    <span
+                      aria-hidden
+                      className={cn('h-2.5 w-2.5 rounded-[3px]', DOT_TONE[TASK_TINT[item.type] ?? 'slate'])}
+                    />
+                    <span className="text-xs text-body">{t(item.label)}</span>
+                  </div>
+                ))}
               </div>
             </Card>
           </div>
         </div>
       )}
-    </>
+
+      {creating ? (
+        <CrmTaskFormModal open onClose={() => setCreating(false)} defaultDueDate={defaultDue} />
+      ) : null}
+    </div>
+  )
+}
+
+function MonthButton({ icon, label, onClick }: { icon: string; label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-solid border-border bg-transparent text-body hover:bg-inset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+    >
+      <Icon name={icon} size={14} />
+    </button>
   )
 }

@@ -3,7 +3,7 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 200 screens. */
+ *  handoff/SCREEN_MAP.md — 213 screens. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -40,30 +40,6 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/aiassistant",
     "hasMobile": true,
     "purpose": "Conversational AI helper"
-  },
-  {
-    "name": "AIAutomation",
-    "route": "/ai-automation",
-    "hasMobile": true,
-    "purpose": "Automation rule engine & trigger builder"
-  },
-  {
-    "name": "AIChatbot",
-    "route": "/ai-chatbot",
-    "hasMobile": true,
-    "purpose": "Customer & staff conversational interface"
-  },
-  {
-    "name": "AIChatbotAssistant",
-    "route": "/ai-chatbot-assistant",
-    "hasMobile": true,
-    "purpose": "Chatbot training & analytics admin"
-  },
-  {
-    "name": "AIServiceAdvisor",
-    "route": "/ai-service-advisor",
-    "hasMobile": true,
-    "purpose": "AI-powered service recommendations"
   },
   {
     "name": "AppointmentCalendar",
@@ -154,6 +130,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/conversation-history",
     "hasMobile": true,
     "purpose": "AI conversation logs"
+  },
+  {
+    "name": "CookiePolicy",
+    "route": "/cookie-policy",
+    "hasMobile": false,
+    "purpose": "Legal — cookie policy"
   },
   {
     "name": "CreatePIN",
@@ -528,12 +510,6 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "System maintenance banner"
   },
   {
-    "name": "MLFraudDetection",
-    "route": "/ml-fraud-detection",
-    "hasMobile": true,
-    "purpose": "Anomaly detection in transactions & claims"
-  },
-  {
     "name": "ModelSettings",
     "route": "/model-settings",
     "hasMobile": true,
@@ -550,12 +526,6 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/native/i-os",
     "hasMobile": false,
     "purpose": "Native shell frame — iOS"
-  },
-  {
-    "name": "NeuralNetworkPrediction",
-    "route": "/neural-network-prediction",
-    "hasMobile": true,
-    "purpose": "Predictive analytics dashboard"
   },
   {
     "name": "NotificationCenter",
@@ -708,10 +678,40 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — About"
   },
   {
+    "name": "PublicPortal.Accounting",
+    "route": "/public-portal/accounting",
+    "hasMobile": false,
+    "purpose": "Public website — Accounting product page"
+  },
+  {
+    "name": "PublicPortal.AI",
+    "route": "/public-portal/ai",
+    "hasMobile": false,
+    "purpose": "Public website — AI & Automation product page"
+  },
+  {
+    "name": "PublicPortal.Automation",
+    "route": "/public-portal/automation",
+    "hasMobile": false,
+    "purpose": "Public website — Automation & Workflows"
+  },
+  {
     "name": "PublicPortal.Blog",
     "route": "/public-portal/blog",
     "hasMobile": false,
     "purpose": "Public website — Blog"
+  },
+  {
+    "name": "PublicPortal.BookDemo",
+    "route": "/public-portal/book-demo",
+    "hasMobile": false,
+    "purpose": "Public website — Book a demo form"
+  },
+  {
+    "name": "PublicPortal.Careers",
+    "route": "/public-portal/careers",
+    "hasMobile": false,
+    "purpose": "Public website — Careers"
   },
   {
     "name": "PublicPortal.Contact",
@@ -720,16 +720,52 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Contact"
   },
   {
+    "name": "PublicPortal.CRM",
+    "route": "/public-portal/crm",
+    "hasMobile": false,
+    "purpose": "Public website — CRM product page"
+  },
+  {
+    "name": "PublicPortal.CustomerPortal",
+    "route": "/public-portal/customer-portal",
+    "hasMobile": false,
+    "purpose": "Public website — Customer Portal product page"
+  },
+  {
     "name": "PublicPortal.FAQ",
     "route": "/public-portal/faq",
     "hasMobile": false,
     "purpose": "Public website — FAQ"
   },
   {
+    "name": "PublicPortal.Features",
+    "route": "/public-portal/features",
+    "hasMobile": false,
+    "purpose": "Public website — Features overview"
+  },
+  {
+    "name": "PublicPortal.Fleet",
+    "route": "/public-portal/fleet",
+    "hasMobile": false,
+    "purpose": "Public website — Fleet Management product page"
+  },
+  {
+    "name": "PublicPortal.Industries",
+    "route": "/public-portal/industries",
+    "hasMobile": false,
+    "purpose": "Public website — Industries served"
+  },
+  {
     "name": "PublicPortal.Insurance",
     "route": "/public-portal/insurance",
     "hasMobile": false,
     "purpose": "Public website — Insurance"
+  },
+  {
+    "name": "PublicPortal.Integrations",
+    "route": "/public-portal/integrations",
+    "hasMobile": false,
+    "purpose": "Public website — Integration partners"
   },
   {
     "name": "PublicPortal.Landing",
@@ -750,16 +786,76 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Marketplace"
   },
   {
+    "name": "PublicPortal.MiniERP",
+    "route": "/public-portal/mini-erp",
+    "hasMobile": false,
+    "purpose": "Public website — Mini ERP product page"
+  },
+  {
+    "name": "PublicPortal.Pricing",
+    "route": "/public-portal/pricing",
+    "hasMobile": false,
+    "purpose": "Public website — Pricing plans"
+  },
+  {
+    "name": "PublicPortal.Products",
+    "route": "/public-portal/products",
+    "hasMobile": false,
+    "purpose": "Public website — Product suite overview"
+  },
+  {
+    "name": "PublicPortal.RequestDemo",
+    "route": "/public-portal/request-demo",
+    "hasMobile": false,
+    "purpose": "Public website — Request a demo form"
+  },
+  {
+    "name": "PublicPortal.Resources",
+    "route": "/public-portal/resources",
+    "hasMobile": false,
+    "purpose": "Public website — Resources & learning hub"
+  },
+  {
     "name": "PublicPortal.Services",
     "route": "/public-portal/services",
     "hasMobile": false,
     "purpose": "Public website — Services"
   },
   {
+    "name": "PublicPortal.Solutions",
+    "route": "/public-portal/solutions",
+    "hasMobile": false,
+    "purpose": "Public website — Solutions overview"
+  },
+  {
+    "name": "PublicPortal.SpareParts",
+    "route": "/public-portal/spare-parts",
+    "hasMobile": false,
+    "purpose": "Public website — Spare Parts product page"
+  },
+  {
+    "name": "PublicPortal.SupplierPortal",
+    "route": "/public-portal/supplier-portal",
+    "hasMobile": false,
+    "purpose": "Public website — Supplier Portal product page"
+  },
+  {
     "name": "PublicPortal.Support",
     "route": "/public-portal/support",
     "hasMobile": false,
     "purpose": "Public website — Support"
+  },
+  {
+    "name": "PublicPortal.TechnicianPortal",
+    "route": "/public-portal/technician-portal",
+    "hasMobile": false,
+    "purpose": "Public website — Technician Portal product page"
+  },
+  {
+    "name": "PublicPortal.Workshop",
+    "route": "/public-portal/workshop",
+    "hasMobile": false,
+    "purpose": "Public website — Workshop Management product page"
   },
   {
     "name": "PurchaseOrder",
@@ -844,12 +940,6 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/smscampaigns",
     "hasMobile": true,
     "purpose": "SMS campaign composer"
-  },
-  {
-    "name": "SmartDamageAssessment",
-    "route": "/smart-damage-assessment",
-    "hasMobile": true,
-    "purpose": "AI-powered damage detection & estimation"
   },
   {
     "name": "SocialLogin",
@@ -1126,18 +1216,6 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/vehicles",
     "hasMobile": true,
     "purpose": "Vehicle registry"
-  },
-  {
-    "name": "VoiceCommandInterface",
-    "route": "/voice-command-interface",
-    "hasMobile": true,
-    "purpose": "Voice interaction history & debug view"
-  },
-  {
-    "name": "VoiceCommands",
-    "route": "/voice-commands",
-    "hasMobile": true,
-    "purpose": "Voice interface settings"
   },
   {
     "name": "Welcome",

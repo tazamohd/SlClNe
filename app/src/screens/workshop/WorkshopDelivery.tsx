@@ -1,11 +1,14 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
-import { Money } from '@/components/ui/Money'
+import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -29,6 +32,7 @@ const VAT_RATE = 0.15
  *  customer queries. */
 export function WorkshopDelivery() {
   const { t, rtl } = usePreferences()
+  const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
   const [checked, setChecked] = useState<Record<string, boolean>>({})
@@ -54,32 +58,14 @@ export function WorkshopDelivery() {
 
   return (
     <div className="flex max-w-[1200px] flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+      <BackLink to="/job-cards" label="Back to Job Cards" />
 
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-          <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name="Car" size={28} />
-          </div>
-        </div>
-        <div>
-          <h1 className="font-display text-[26px] font-black text-heading">
-            {t('Vehicle Delivery')}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted" dir="ltr">
-            JC-A3F8B2C1 · Ahmed Al-Rashid
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        icon="Car"
+        title={t('Vehicle Delivery')}
+        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
+        compact={isMobile}
+      />
 
       <WorkflowStepper current="Delivery" />
 
@@ -134,7 +120,7 @@ export function WorkshopDelivery() {
       </div>
 
       <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="outline" size="lg" className="border-border-strong text-body">
+        <Button variant="outline" size="lg" className="border-border-strong text-body" onClick={() => window.print()}>
           <Icon name="Printer" size={16} />
           {t('Print Delivery Note')}
         </Button>
@@ -147,11 +133,3 @@ export function WorkshopDelivery() {
   )
 }
 
-function SummaryRow({ label, sar }: { label: string; sar: number }) {
-  return (
-    <div className="flex justify-between text-[13px] text-body">
-      <span>{label}</span>
-      <Money sar={sar} className="font-semibold" />
-    </div>
-  )
-}

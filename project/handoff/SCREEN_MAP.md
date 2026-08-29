@@ -158,20 +158,42 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **CustomerApp.ServiceTracking** | `/customer-app/service-tracking` | 🖥 `CustomerApp.ServiceTracking.dc.html` | Customer mobile app — ServiceTracking |
 | **CustomerApp.Wallet** | `/customer-app/wallet` | 🖥 `CustomerApp.Wallet.dc.html` | Customer mobile app — Wallet |
 
-## PublicPortal (10 screens)
+## PublicPortal (34 screens)
 
 | Screen | Route | Files | Purpose |
 |---|---|---|---|
 | **PublicPortal.About** | `/public-portal/about` | 🖥 `PublicPortal.About.dc.html` | Public website — About |
+| **PublicPortal.Accounting** | `/public-portal/accounting` | 🖥 | Public website — Accounting product page |
+| **PublicPortal.AI** | `/public-portal/ai` | 🖥 | Public website — AI & Automation product page |
+| **PublicPortal.Automation** | `/public-portal/automation` | 🖥 | Public website — Automation & Workflows |
+| **PublicPortal.BookDemo** | `/public-portal/book-demo` | 🖥 | Public website — Book a demo form |
 | **PublicPortal.Blog** | `/public-portal/blog` | 🖥 `PublicPortal.Blog.dc.html` | Public website — Blog |
+| **PublicPortal.Careers** | `/public-portal/careers` | 🖥 | Public website — Careers |
 | **PublicPortal.Contact** | `/public-portal/contact` | 🖥 `PublicPortal.Contact.dc.html` | Public website — Contact |
+| **PublicPortal.CRM** | `/public-portal/crm` | 🖥 | Public website — CRM product page |
+| **PublicPortal.CustomerPortal** | `/public-portal/customer-portal` | 🖥 | Public website — Customer Portal product page |
 | **PublicPortal.FAQ** | `/public-portal/faq` | 🖥 `PublicPortal.FAQ.dc.html` | Public website — FAQ |
+| **PublicPortal.Features** | `/public-portal/features` | 🖥 | Public website — Features overview |
+| **PublicPortal.Fleet** | `/public-portal/fleet` | 🖥 | Public website — Fleet Management product page |
+| **PublicPortal.Industries** | `/public-portal/industries` | 🖥 | Public website — Industries served |
 | **PublicPortal.Insurance** | `/public-portal/insurance` | 🖥 `PublicPortal.Insurance.dc.html` | Public website — Insurance |
+| **PublicPortal.Integrations** | `/public-portal/integrations` | 🖥 | Public website — Integration partners |
 | **PublicPortal.Landing** | `/public-portal/landing` | 🖥 `PublicPortal.Landing.dc.html` | Public website — Landing |
 | **PublicPortal.Loans** | `/public-portal/loans` | 🖥 `PublicPortal.Loans.dc.html` | Public website — Loans |
 | **PublicPortal.Marketplace** | `/public-portal/marketplace` | 🖥 `PublicPortal.Marketplace.dc.html` | Public website — Marketplace |
+| **PublicPortal.MiniERP** | `/public-portal/mini-erp` | 🖥 | Public website — Mini ERP product page |
+| **PublicPortal.Pricing** | `/public-portal/pricing` | 🖥 | Public website — Pricing plans |
+| **PublicPortal.Products** | `/public-portal/products` | 🖥 | Public website — Product suite overview |
+| **PublicPortal.RequestDemo** | `/public-portal/request-demo` | 🖥 | Public website — Request a demo form |
+| **PublicPortal.Resources** | `/public-portal/resources` | 🖥 | Public website — Resources & learning hub |
 | **PublicPortal.Services** | `/public-portal/services` | 🖥 `PublicPortal.Services.dc.html` | Public website — Services |
+| **PublicPortal.Solutions** | `/public-portal/solutions` | 🖥 | Public website — Solutions overview |
+| **PublicPortal.SpareParts** | `/public-portal/spare-parts` | 🖥 | Public website — Spare Parts product page |
+| **PublicPortal.SupplierPortal** | `/public-portal/supplier-portal` | 🖥 | Public website — Supplier Portal product page |
 | **PublicPortal.Support** | `/public-portal/support` | 🖥 `PublicPortal.Support.dc.html` | Public website — Support |
+| **PublicPortal.TechnicianPortal** | `/public-portal/technician-portal` | 🖥 | Public website — Technician Portal product page |
+| **PublicPortal.Workshop** | `/public-portal/workshop` | 🖥 | Public website — Workshop Management product page |
+| **CookiePolicy** | `/cookie-policy` | 🖥 | Legal — cookie policy |
 
 ## UI (25 screens)
 
