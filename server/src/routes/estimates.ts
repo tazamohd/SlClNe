@@ -42,7 +42,7 @@ export function registerEstimateRoutes(app: FastifyInstance, deps: RouteDeps): v
 
     const created = await withTenant(deps.db, principal, async (tx) => {
       const totals = computeInvoiceTotals(
-        input.lines.map((line) => ({ qty: line.qty, unitPriceHalalas: line.unitPriceHalalas })),
+        input.lines.map((line: (typeof input.lines)[number]) => ({ qty: line.qty, unitPriceHalalas: line.unitPriceHalalas })),
       )
       const id = ulid()
       const [row] = await tx
@@ -72,7 +72,7 @@ export function registerEstimateRoutes(app: FastifyInstance, deps: RouteDeps): v
       if (!row) throw notFound('Estimate')
 
       await tx.insert(estimateLines).values(
-        input.lines.map((line, index) => ({
+        input.lines.map((line: (typeof input.lines)[number], index: number) => ({
           id: ulid(),
           orgId: principal.orgId,
           branchId: principal.branchId,
@@ -128,12 +128,12 @@ export function registerEstimateRoutes(app: FastifyInstance, deps: RouteDeps): v
 
       if (parsed.data.lines) {
         const totals = computeInvoiceTotals(
-          parsed.data.lines.map((l) => ({ qty: l.qty, unitPriceHalalas: l.unitPriceHalalas })),
+          parsed.data.lines.map((l: (typeof parsed.data.lines)[number]) => ({ qty: l.qty, unitPriceHalalas: l.unitPriceHalalas })),
         )
         Object.assign(patch, totals)
         await tx.delete(estimateLines).where(eq(estimateLines.estimateId, before.id))
         await tx.insert(estimateLines).values(
-          parsed.data.lines.map((line, index) => ({
+          parsed.data.lines.map((line: (typeof parsed.data.lines)[number], index: number) => ({
             id: ulid(),
             orgId: principal.orgId,
             branchId: principal.branchId,

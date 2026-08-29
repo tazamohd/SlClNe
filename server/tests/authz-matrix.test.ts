@@ -226,7 +226,7 @@ describe('approval authority and ceiling are separate questions (F-002)', () => 
   })
 
   it('never lets the engine and the approvals grant disagree', () => {
-    const disagreeing = ROLE_IDS.filter((role) => canApprove(role) !== granted('approvals', 'a', role))
+    const disagreeing = ROLE_IDS.filter((role: RoleId) => canApprove(role) !== granted('approvals', 'a', role))
     expect(disagreeing).toEqual([])
   })
 

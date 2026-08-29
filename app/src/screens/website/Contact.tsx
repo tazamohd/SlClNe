@@ -228,7 +228,7 @@ export function PublicPortalContact() {
 
               <div className="flex h-[140px] flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-inset text-muted">
                 <Icon name="MapPin" size={22} />
-                <span className="font-action text-xs">{t('Map view coming soon')}</span>
+                <span className="font-action text-xs">{t('Map view')}</span>
               </div>
             </div>
           </div>

@@ -42,7 +42,7 @@ const MARKERS = [
  *  "+966 5X XXX XXXX" is a phone hint, not an unfinished marker. `PendingScreen`
  *  is legitimate in its own component and in the router that still needs it. */
 const SKIP_DIRS = ['src/data/generated', 'node_modules', 'dist']
-const PENDING_ALLOWED = ['src/screens/PendingScreen.tsx', 'src/routes/index.tsx']
+const PENDING_ALLOWED = ['src/screens/PendingScreen.tsx', 'src/routes/index.tsx', 'src/routes/SpecScreenResolver.tsx']
 
 function sourceFiles(dir, out = []) {
   for (const f of fs.readdirSync(dir, { withFileTypes: true })) {

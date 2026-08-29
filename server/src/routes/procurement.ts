@@ -572,7 +572,7 @@ export function registerProcurementRoutes(app: FastifyInstance, deps: RouteDeps)
         before: { status: order.status },
         after: {
           status: updated.status,
-          received: input.lines.map((line) => ({ lineId: line.lineId, qty: line.qty })),
+          received: input.lines.map((line: (typeof input.lines)[number]) => ({ lineId: line.lineId, qty: line.qty })),
           overReceiptApproved: input.overReceiptApproved ?? false,
         },
         reason: input.reason ?? null,

@@ -474,7 +474,7 @@ export function AppRoutes() {
     <ErrorBoundary>
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/" element={<Navigate to="/splash" replace />} />
+        <Route path="/" element={<Navigate to="/public-portal/landing" replace />} />
 
         {SCREENS.map((screen) => {
           const entry = SCREEN_ENTRIES[screen.name]
