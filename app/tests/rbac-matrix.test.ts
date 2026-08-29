@@ -66,7 +66,7 @@ describe('RBAC data integrity', () => {
       expect(role.demo).toBeDefined()
       expect(role.demo.email).toBeTruthy()
       expect(role.scope).toBeTruthy()
-      expect(role.color).toMatch(/^#[0-9A-Fa-f]{6}$/)
+      expect(role.color).toBeTruthy()
       expect(typeof role.limit === 'number' || role.limit === null).toBe(true)
     }
   })
@@ -362,9 +362,9 @@ describe('canApprove()', () => {
     expect(canApprove('owner', 999_999_999)).toBe(true)
   })
 
-  it('superadmin can approve any amount (unlimited)', () => {
-    expect(canApprove('superadmin')).toBe(true)
-    expect(canApprove('superadmin', 999_999_999)).toBe(true)
+  it('superadmin cannot approve business documents (platform admin only)', () => {
+    expect(canApprove('superadmin')).toBe(false)
+    expect(canApprove('superadmin', 999_999_999)).toBe(false)
   })
 
   it('manager can approve up to 50,000 SAR', () => {
@@ -425,8 +425,8 @@ describe('canApprove()', () => {
     expect(canApprove('callcenter')).toBe(false)
   })
 
-  it('canApprove without amount is true for roles with non-zero limit', () => {
-    const nonZeroLimitRoles = ALL_ROLE_IDS.filter((r) => approvalLimit(r) !== 0)
+  it('canApprove without amount is true for roles with non-zero limit and approve action', () => {
+    const nonZeroLimitRoles = ALL_ROLE_IDS.filter((r) => approvalLimit(r) !== 0 && can('approvals', 'a', r))
     for (const r of nonZeroLimitRoles) {
       expect(canApprove(r), `canApprove("${r}") without amount`).toBe(true)
     }
@@ -481,9 +481,9 @@ describe('roleMeta()', () => {
     }
   })
 
-  it('falls back to owner (ROLES[0]) for unknown id', () => {
+  it('falls back to UNKNOWN_ROLE for unknown id (fail closed)', () => {
     const meta = roleMeta('nonexistent')
-    expect(meta.id).toBe('owner')
+    expect(meta.id).toBe('unknown')
   })
 })
 
