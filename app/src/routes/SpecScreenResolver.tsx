@@ -68,6 +68,95 @@ const TowingServices = lazy(() =>
   import('@/screens/fleet/TowingServices').then((m) => ({ default: m.TowingServices })),
 )
 
+// settings
+const SystemSettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.SystemSettings })),
+)
+const UserSettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.UserSettings })),
+)
+const SecuritySettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.SecuritySettings })),
+)
+const FinancialSettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.FinancialSettings })),
+)
+const ZATCASettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.ZATCASettings })),
+)
+const VATSettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.VATSettings })),
+)
+const ZakatSettings = lazy(() =>
+  import('@/screens/admin/SettingsScreens').then((m) => ({ default: m.ZakatSettings })),
+)
+
+// admin / compliance
+const UserProfile = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.UserProfile })),
+)
+const RoleManagement = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.RoleManagement })),
+)
+const ComplianceManagement = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.ComplianceManagement })),
+)
+const SafetyIncidents = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.SafetyIncidents })),
+)
+const EnvironmentalCompliance = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.EnvironmentalCompliance })),
+)
+const ISOQualityManagement = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.ISOQualityManagement })),
+)
+const EquipmentCalibration = lazy(() =>
+  import('@/screens/admin/ComplianceScreens').then((m) => ({ default: m.EquipmentCalibration })),
+)
+
+// system / infrastructure
+const NotificationsScreen = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.NotificationsScreen })),
+)
+const AccountingIntegration = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.AccountingIntegration })),
+)
+const SMSIntegration = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.SMSIntegration })),
+)
+const SecurityCameras = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.SecurityCameras })),
+)
+const MobileDeviceManagement = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.MobileDeviceManagement })),
+)
+const DocumentManagement = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.DocumentManagement })),
+)
+const DocumentOCR = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.DocumentOCR })),
+)
+const DataImportExport = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.DataImportExport })),
+)
+const DataBackup = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.DataBackup })),
+)
+const DigitalSignage = lazy(() =>
+  import('@/screens/admin/SystemScreens').then((m) => ({ default: m.DigitalSignage })),
+)
+
+// organization / multi-site
+const FranchiseManagement = lazy(() =>
+  import('@/screens/admin/OrganizationScreens').then((m) => ({ default: m.FranchiseManagement })),
+)
+const GlobalizationLayer = lazy(() =>
+  import('@/screens/admin/OrganizationScreens').then((m) => ({ default: m.GlobalizationLayer })),
+)
+const MultiLocationDashboard = lazy(() =>
+  import('@/screens/admin/OrganizationScreens').then((m) => ({ default: m.MultiLocationDashboard })),
+)
+
 /** Real implementations for spec-screen routes. When a route is listed here,
  *  it takes priority over the generic FeatureScreenView placeholder. */
 const SPEC_CUSTOM_SCREENS: Record<string, React.ComponentType> = {
@@ -87,6 +176,37 @@ const SPEC_CUSTOM_SCREENS: Record<string, React.ComponentType> = {
   '/loaner-vehicles': LoanerVehicles,
   '/towing-assistance': TowingAssistance,
   '/towing-services': TowingServices,
+  // settings
+  '/system-settings': SystemSettings,
+  '/user-settings': UserSettings,
+  '/security-settings': SecuritySettings,
+  '/financial-settings': FinancialSettings,
+  '/zatca-settings': ZATCASettings,
+  '/vat-settings': VATSettings,
+  '/zakat-settings': ZakatSettings,
+  // admin / compliance
+  '/user-profile': UserProfile,
+  '/role-management': RoleManagement,
+  '/compliance-management': ComplianceManagement,
+  '/safety-incidents': SafetyIncidents,
+  '/environmental-compliance': EnvironmentalCompliance,
+  '/iso-quality-management': ISOQualityManagement,
+  '/equipment-calibration': EquipmentCalibration,
+  // system / infrastructure
+  '/notifications': NotificationsScreen,
+  '/accounting-integration': AccountingIntegration,
+  '/sms-integration': SMSIntegration,
+  '/security-cameras': SecurityCameras,
+  '/mobile-device-management': MobileDeviceManagement,
+  '/document-management': DocumentManagement,
+  '/document-ocr': DocumentOCR,
+  '/data-import-export': DataImportExport,
+  '/data-backup': DataBackup,
+  '/digital-signage': DigitalSignage,
+  // organization / multi-site
+  '/franchise-management': FranchiseManagement,
+  '/globalization-layer': GlobalizationLayer,
+  '/multi-location-dashboard': MultiLocationDashboard,
 }
 
 export default function SpecScreenResolver() {
