@@ -1682,8 +1682,9 @@ function expectedShell(entry) {
 }
 
 const browser = await chromium.launch({
-  executablePath:
-    process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+  ...(process.env.CHROMIUM_PATH
+    ? { executablePath: process.env.CHROMIUM_PATH }
+    : {}),
 })
 const failures = []
 
