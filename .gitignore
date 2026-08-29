@@ -1,8 +1,6 @@
-# Dependencies and build output, wherever they appear. Each workspace also
-# carries its own ignore file; this one exists so a new workspace cannot arrive
-# without them — the server agent ran its own install, and 6,840 files were one
-# `git add` away from a patch.
+# Dependencies and build output, wherever they appear.
 node_modules/
+.vite/
 dist/
 build/
 coverage/
@@ -15,5 +13,7 @@ coverage/
 
 # Local tooling noise
 *.log
+*.local
 .DS_Store
 *.tsbuildinfo
+app/vite.config.d.ts

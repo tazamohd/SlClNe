@@ -91,7 +91,7 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
     const result = await withTenant(deps.db, principal, async (tx) =>
       once(tx, request, { principal, endpoint: 'POST /invoices', status: 201 }, async () => {
         const totals = computeInvoiceTotals(
-          input.lines.map((line) => ({ qty: line.qty, unitPriceHalalas: line.unitPriceHalalas })),
+          input.lines.map((line: (typeof input.lines)[number]) => ({ qty: line.qty, unitPriceHalalas: line.unitPriceHalalas })),
           input.discountHalalas,
         )
 
@@ -122,7 +122,7 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
         if (!invoice) throw notFound('Invoice')
 
         await tx.insert(invoiceLines).values(
-          input.lines.map((line, index) => ({
+          input.lines.map((line: (typeof input.lines)[number], index: number) => ({
             id: ulid(),
             orgId: principal.orgId,
             branchId: principal.branchId,
@@ -180,13 +180,13 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
       if (parsed.data.lines) {
         const totals = computeInvoiceTotals(
-          parsed.data.lines.map((l) => ({ qty: l.qty, unitPriceHalalas: l.unitPriceHalalas })),
+          parsed.data.lines.map((l: (typeof parsed.data.lines)[number]) => ({ qty: l.qty, unitPriceHalalas: l.unitPriceHalalas })),
           parsed.data.discountHalalas ?? before.discountHalalas,
         )
         Object.assign(patch, totals)
         await tx.delete(invoiceLines).where(eq(invoiceLines.invoiceId, before.id))
         await tx.insert(invoiceLines).values(
-          parsed.data.lines.map((line, index) => ({
+          parsed.data.lines.map((line: (typeof parsed.data.lines)[number], index: number) => ({
             id: ulid(),
             orgId: principal.orgId,
             branchId: principal.branchId,

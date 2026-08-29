@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   build:
@@ -45,17 +45,12 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      # Tests are opt-in until the harness lands, so this passes cleanly before
-      # it exists and starts enforcing the moment it does.
       - name: Unit, component and integration tests
         run: npm run test --if-present
 
       - name: Build
         run: npm run build
 
-      # The registry is generated from the repository, so a committed copy that
-      # disagrees with a fresh run means someone edited it by hand — exactly the
-      # drift the registry exists to prevent.
       - name: Registry is current
         run: |
           npm run registry
@@ -115,6 +110,65 @@ jobs:
       - name: Smoke — routes, behaviour, mobile, brand guard
         run: npm run smoke
 
+  server-typecheck:
+    name: Server / Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - run: npm ci
+        working-directory: packages/contract
+
+      - run: npm ci
+        working-directory: server
+
+      - run: npm run typecheck
+        working-directory: server
+
+  server-test:
+    name: Server / Unit Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: salis
+          POSTGRES_PASSWORD: salis
+          POSTGRES_DB: salis_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U salis"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://salis:salis@localhost:5432/salis_test
+      JWT_SECRET: ci-test-secret
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - run: npm ci
+        working-directory: packages/contract
+
+      - run: npm ci
+        working-directory: server
+
+      - run: npx vitest run --reporter=verbose
+        working-directory: server
+
   security:
     name: Secrets and dependencies
     runs-on: ubuntu-latest
@@ -123,10 +177,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # gitleaks needs history to scan past commits
+          fetch-depth: 0
 
-      # Three PATs were exposed in chat during this project. This job exists so
-      # the next one fails the build instead of reaching a log.
       - name: Scan for secrets
         uses: gitleaks/gitleaks-action@v2
         env:

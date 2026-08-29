@@ -21,7 +21,7 @@ export function App() {
           <RepositoryProvider>
             <ToastProvider>
               <ModalProvider>
-                <BrowserRouter>
+                <BrowserRouter basename={import.meta.env.BASE_URL}>
                   <AppRoutes />
                 </BrowserRouter>
               </ModalProvider>

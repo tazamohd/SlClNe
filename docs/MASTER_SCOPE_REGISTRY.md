@@ -21,11 +21,11 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | e2e covered | 424 |
 | content asserted | 424 |
 | rendered without assertion | 0 |
-| has loading state | 94 |
-| has error state | 66 |
-| has empty state | 94 |
+| has loading state | 92 |
+| has error state | 64 |
+| has empty state | 101 |
 | unregistered designs | 0 |
-| orphan screen files | 48 |
+| orphan screen files | 63 |
 | production ready | 0 |
 
 ## By surface

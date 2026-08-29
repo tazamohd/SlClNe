@@ -42,7 +42,7 @@ describe('Arabic coverage', () => {
     // Not an assertion on the number: this is a content task for a native
     // reviewer, and failing CI on it would only invite deleting the test.
     // eslint-disable-next-line no-console
-    console.log(`Arabic coverage: ${covered}/${used.size} (${pct}%) — ${untranslated.length} strings still English`)
+    console.info(`Arabic coverage: ${covered}/${used.size} (${pct}%) — ${untranslated.length} strings still English`)
     expect(untranslated.length).toBeLessThan(used.size)
   })
 })
