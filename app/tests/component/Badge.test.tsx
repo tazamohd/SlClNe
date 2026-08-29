@@ -75,11 +75,10 @@ describe('palette-driven badges', () => {
     expect(screen.getByText('خدمة الإطارات')).toBeInTheDocument()
   })
 
-  it('falls back to slate for a status the palette has never seen', () => {
-    // A new status from the API must not render an invisible pill.
+  it('falls back to the neutral tint for a status the palette has never seen', () => {
     renderWithProviders(<StatusBadge value="awaiting_parts" />)
     const badge = screen.getByText('awaiting parts')
-    expect(badge).toHaveStyle({ color: 'rgb(100, 116, 139)' })
+    expect(badge).toHaveStyle({ color: 'var(--text-muted)' })
   })
 
   it('keeps every palette entry inside the brand hues', () => {

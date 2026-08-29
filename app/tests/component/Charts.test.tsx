@@ -61,13 +61,8 @@ describe('BarList', () => {
       (bar) => bar.style.background
     )
     expect(backgrounds.length).toBeGreaterThan(0)
-    // jsdom normalises a hex colour to rgb(), so compare on channels.
-    const palette = CHART_COLORS.map((hex) => {
-      const value = Number.parseInt(hex.slice(1), 16)
-      return `rgb(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255})`
-    })
     for (const background of backgrounds) {
-      expect(palette).toContain(background)
+      expect(CHART_COLORS).toContain(background)
     }
   })
 })
