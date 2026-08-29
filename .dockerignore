@@ -1,0 +1,11 @@
+node_modules
+app/node_modules
+app/dist
+.git
+*.md
+.github
+.claude
+project-control
+docs
+server
+packages
