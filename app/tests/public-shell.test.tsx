@@ -91,9 +91,9 @@ describe('PublicShell', () => {
 
   it('offers a skip link to the main content landmark', () => {
     renderShell()
-    const skip = screen.getByRole('link', { name: 'Skip to content' })
-    expect(skip).toHaveAttribute('href', '#public-content')
-    expect(document.getElementById('public-content')).toBe(screen.getByRole('main'))
+    const skip = screen.getByRole('link', { name: 'Skip to main content' })
+    expect(skip).toHaveAttribute('href', '#main-content')
+    expect(document.getElementById('main-content')).toBe(screen.getByRole('main'))
   })
 
   it('footer contains only links with real destinations', () => {

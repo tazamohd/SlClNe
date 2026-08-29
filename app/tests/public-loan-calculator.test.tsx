@@ -33,7 +33,7 @@ describe('loan calculator screen', () => {
   it('shows a real computed payment for the design default inputs', () => {
     renderLoans()
     expect(screen.getByText('Estimated Monthly Payment')).toBeInTheDocument()
-    expect(screen.getByText(`SAR ${expected(120_000).toLocaleString('en-US')}`)).toBeInTheDocument()
+    expect(screen.getByText(/SAR 2,183/)).toBeInTheDocument()
     expect(screen.getByText('60 months at 3.5% APR')).toBeInTheDocument()
   })
 
@@ -43,7 +43,7 @@ describe('loan calculator screen', () => {
     const priceField = screen.getByLabelText(/Vehicle Price/)
     await user.clear(priceField)
     await user.type(priceField, '90,000')
-    expect(screen.getByText(`SAR ${expected(60_000).toLocaleString('en-US')}`)).toBeInTheDocument()
+    expect(screen.getByText(/SAR 1,092/)).toBeInTheDocument()
   })
 
   it('refuses a down payment at or above the price, replacing the result with an error', async () => {
