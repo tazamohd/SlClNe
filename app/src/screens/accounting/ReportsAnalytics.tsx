@@ -248,7 +248,7 @@ export function ReportsAnalytics() {
               </span>
             </div>
             {kpi.loading ? (
-              <span className="block h-6 w-2/3 animate-pulse rounded bg-inset" />
+              <span className="block h-6 w-2/3 animate-pulse motion-reduce:animate-none rounded bg-inset" />
             ) : (
               <h3 className="font-display text-xl font-black text-heading lg:text-2xl" dir="ltr">
                 {kpi.value}
@@ -287,7 +287,7 @@ export function ReportsAnalytics() {
           {jobsLoading ? (
             <div className="flex flex-col gap-3">
               {Array.from({ length: 4 }, (_, i) => (
-                <span key={i} className="block h-2 w-full animate-pulse rounded-full bg-inset" />
+                <span key={i} className="block h-2 w-full animate-pulse motion-reduce:animate-none rounded-full bg-inset" />
               ))}
             </div>
           ) : byService.length ? (

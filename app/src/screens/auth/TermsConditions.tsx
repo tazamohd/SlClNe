@@ -22,7 +22,7 @@ export function TermsConditions() {
         <div className="absolute end-0 top-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.08),transparent_65%)] blur-[64px]" />
       </div>
 
-      <div className="relative z-[1] flex max-h-[80vh] w-full max-w-[640px] animate-fade-up flex-col rounded-lg border border-border bg-card shadow-lg">
+      <div className="relative z-[1] flex max-h-[80vh] w-full max-w-[640px] animate-fade-up motion-reduce:animate-none flex-col rounded-lg border border-border bg-card shadow-lg">
         <div className="flex items-center gap-2.5 border-b border-border px-6 py-5">
           <span className="flex rounded-[10px] bg-[rgba(10,94,215,.1)] p-2 text-salis-blue">
             <Icon name="FileText" size={18} />

@@ -208,7 +208,7 @@ function Hero() {
         className="pointer-events-none absolute end-0 top-0 h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle,rgba(10,94,215,.06),transparent_70%)] blur-[64px]"
         aria-hidden
       />
-      <div className="relative z-[1] mx-auto max-w-[720px] animate-fade-up">
+      <div className="relative z-[1] mx-auto max-w-[720px] animate-fade-up motion-reduce:animate-none">
         <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-[rgba(10,94,215,.08)] px-3.5 py-1 font-ui text-[13px] font-semibold text-salis-blue">
           {t('Automotive ERP for Saudi Arabia')}
         </span>

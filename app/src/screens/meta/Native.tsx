@@ -54,8 +54,8 @@ function DeviceFrame({ platform, label, children }: { platform: Platform; label:
         height: size.h,
         borderRadius: isAndroid ? 26 : 42,
         boxShadow: isAndroid
-          ? '0 20px 40px rgba(0,0,0,.35), 0 0 0 7px #33394a'
-          : '0 20px 40px rgba(0,0,0,.35), 0 0 0 7px #1b1d22',
+          ? '0 20px 40px rgba(0,0,0,.35), 0 0 0 7px var(--neutral-700)'
+          : '0 20px 40px rgba(0,0,0,.35), 0 0 0 7px var(--neutral-900)',
       }}
     >
       {isAndroid ? (

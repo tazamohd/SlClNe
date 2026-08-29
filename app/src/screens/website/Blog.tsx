@@ -163,7 +163,7 @@ export function PublicPortalBlog() {
       </header>
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[1100px] animate-fade-up px-6 py-10 sm:px-10 sm:py-[60px]">
+        <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-6 py-10 sm:px-10 sm:py-[60px]">
           <h1 className="m-0 mb-2 text-center font-display text-[32px] font-black text-heading sm:text-[40px]">
             {t('Blog')}
           </h1>

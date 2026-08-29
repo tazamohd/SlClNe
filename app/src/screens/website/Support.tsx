@@ -128,7 +128,7 @@ export function PublicPortalSupport() {
       </header>
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[800px] animate-fade-up px-6 py-12 md:px-10 md:py-[60px]">
+        <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-6 py-12 md:px-10 md:py-[60px]">
           <h1 className="m-0 mb-2 text-center font-display text-[32px] font-black text-heading md:text-[40px]">
             {t('Help & Support')}
           </h1>

@@ -103,7 +103,7 @@ export function PublicPortalInsurance() {
       </header>
 
       <main className="flex-1">
-        <div className="mx-auto max-w-[800px] animate-fade-up px-4 py-12 sm:px-10 sm:py-[60px]">
+        <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-4 py-12 sm:px-10 sm:py-[60px]">
           <h1 className="m-0 mb-2 font-display text-[28px] font-black text-heading sm:text-[40px]">
             {t('Vehicle Insurance')}
           </h1>

@@ -221,7 +221,7 @@ function ProductGrid() {
     category === 'All' ? PRODUCTS : PRODUCTS.filter((product) => product.cat === category)
 
   return (
-    <div className="mx-auto max-w-[1100px] animate-fade-up px-4 py-12 sm:px-10 sm:py-16">
+    <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-4 py-12 sm:px-10 sm:py-16">
       <h1 className="mb-2 text-center font-display text-[28px] font-black text-heading sm:text-[40px]">
         {t('Parts Marketplace')}
       </h1>
