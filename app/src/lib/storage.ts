@@ -32,4 +32,11 @@ export const STORAGE_KEYS = {
   role: 'salis-role',
   notifications: 'salis-notif',
   region: 'salis-region',
+  /** JWT access token — read by the API client as `Authorization: Bearer`. */
+  token: 'salis-token',
+  /** Refresh token, exchanged for a new access token on 401. */
+  refresh: 'salis-refresh',
+  /** The signed-in user object (JSON), so a reload restores the session
+   *  without a round-trip to `/auth/me`. */
+  user: 'salis-user',
 } as const

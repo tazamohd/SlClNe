@@ -8,7 +8,8 @@ import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { ROLES, destinationFor } from '@/data/rbac'
+import { ROLES } from '@/data/rbac'
+import { authenticate, apiBaseUrl, demoPassword } from '@/data/auth'
 import type { Role, RoleId } from '@/data/types'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
@@ -18,9 +19,10 @@ import { useIsMobile } from '@/lib/useMediaQuery'
  *  two-step is deliberate — it proves the real form works rather than
  *  side-stepping it, and it's what the role-filtering demo depends on.
  *
- *  In production this posts to the auth endpoint and stores a JWT; the shared
- *  demo password and the role lookup below are the only parts that go away. */
-const DEMO_PASSWORD = 'Demo@1234'
+ *  `authenticate()` posts to `/auth/login` and stores the JWT when
+ *  `VITE_API_BASE_URL` is set, or validates the demo role otherwise — the
+ *  screen is the same either way. The demo password the cards prefill matches
+ *  the active mode (the backend's seeded password vs the design's demo one). */
 
 export function Login() {
   const { t, rtl } = usePreferences()
@@ -34,10 +36,13 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(true)
   const [picked, setPicked] = useState<RoleId | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+
+  const demoPw = demoPassword()
 
   function fillFrom(role: Role) {
     setEmail(role.demo.email)
-    setPassword(DEMO_PASSWORD)
+    setPassword(demoPw)
     setPicked(role.id as RoleId)
     setShowPassword(false)
     toast.show(
@@ -49,8 +54,9 @@ export function Login() {
     )
   }
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault()
+    if (submitting) return
     const normalized = email.trim().toLowerCase()
 
     if (!normalized || !password) {
@@ -58,23 +64,26 @@ export function Login() {
       return
     }
 
-    const role = (ROLES as readonly Role[]).find((r) => r.demo.email === normalized)
-    if (!role || password !== DEMO_PASSWORD) {
+    setSubmitting(true)
+    try {
+      const session = await authenticate(normalized, password)
+      signIn(session)
+      toast.show({
+        title: t('Signed in'),
+        description: `${rtl ? session.user.ar : session.user.name} · ${session.user.roleLabel}`,
+      })
+      // Brief pause so the confirmation is readable before the route changes.
+      setTimeout(() => navigate(session.user.destination, { replace: true }), 700)
+    } catch {
       toast.show({
         title: t('Sign in failed'),
-        description: t('Pick a demo role to fill valid credentials.'),
+        description: apiBaseUrl()
+          ? t('Check your email and password and try again.')
+          : t('Pick a demo role to fill valid credentials.'),
         error: true,
       })
-      return
+      setSubmitting(false)
     }
-
-    signIn(role.id as RoleId)
-    toast.show({
-      title: t('Signed in'),
-      description: `${rtl ? role.demo.ar : role.demo.name} · ${rtl ? role.ar : role.label}`,
-    })
-    // Brief pause so the confirmation is readable before the route changes.
-    setTimeout(() => navigate(destinationFor(role.id), { replace: true }), 700)
   }
 
   return (
@@ -219,7 +228,7 @@ export function Login() {
           <p className="flex gap-[7px] border-t border-border pt-[11px] text-[11.5px] leading-[1.5] text-muted">
             <Icon name="Info" size={13} className="mt-px flex-shrink-0 text-salis-blue" />
             <span>
-              {t('Demo accounts only · shared password')}: {DEMO_PASSWORD} ·{' '}
+              {t('Demo accounts only · shared password')}: {demoPw} ·{' '}
               {t('approval limits in SAR')}
             </span>
           </p>
