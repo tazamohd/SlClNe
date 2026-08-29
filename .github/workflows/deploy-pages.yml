@@ -15,7 +15,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check:
+    name: Typecheck & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: app
+        run: npm run typecheck
+
+      - name: Unit tests
+        working-directory: app
+        run: npx vitest run
+
   build:
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
