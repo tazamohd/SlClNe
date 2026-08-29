@@ -7,15 +7,8 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { AR } from '@/data/generated/ar'
-import { AR_OVERRIDES } from '@/data/ar-overrides'
 import type { Language, Theme } from '@/data/types'
 import { readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
-
-// Generated dictionary first, hand-maintained supplement last: overrides win,
-// so a gap the generator missed is filled and a bad generated string can be
-// corrected without editing the generated file. See src/data/ar-overrides.ts.
-const AR_LOOKUP: Record<string, string> = { ...AR, ...AR_OVERRIDES }
 
 /** Theme + language, persisted and applied to <html>.
  *
@@ -48,8 +41,6 @@ const PreferencesContext = createContext<PreferencesValue | null>(null)
 function initialTheme(): Theme {
   const stored = readStored(STORAGE_KEYS.theme)
   if (stored === 'light' || stored === 'dark') return stored
-  // Dark is the product default (established across the design), but respect an
-  // explicit OS preference for light when the user has never chosen.
   const prefersLight =
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-color-scheme: light)').matches
@@ -61,15 +52,32 @@ function initialLanguage(): Language {
   return stored === 'ar' ? 'ar' : 'en'
 }
 
+let arCache: Record<string, string> | null = null
+
+async function loadArabic(): Promise<Record<string, string>> {
+  if (arCache) return arCache
+  const [{ AR }, { AR_OVERRIDES }] = await Promise.all([
+    import('@/data/generated/ar'),
+    import('@/data/ar-overrides'),
+  ])
+  arCache = { ...AR, ...AR_OVERRIDES }
+  return arCache
+}
+
 export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(initialTheme)
   const [language, setLanguageState] = useState<Language>(initialLanguage)
   const [notifications, setNotificationsState] = useState(
     () => (readStored(STORAGE_KEYS.notifications) ?? 'on') === 'on'
   )
+  const [arLookup, setArLookup] = useState<Record<string, string> | null>(arCache)
 
-  // The design system keys dark mode off a `dark` class and RTL off `dir`.
-  // Both belong on <html> so portals and overlays inherit them too.
+  useEffect(() => {
+    if (language === 'ar' && !arLookup) {
+      loadArabic().then(setArLookup)
+    }
+  }, [language, arLookup])
+
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark')
   }, [theme])
@@ -96,6 +104,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<PreferencesValue>(() => {
     const rtl = language === 'ar'
+    const dict = arLookup
     return {
       theme,
       language,
@@ -107,9 +116,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       setLanguage,
       toggleLanguage: () => setLanguage(rtl ? 'en' : 'ar'),
       setNotifications,
-      t: (source: string) => (rtl ? (AR_LOOKUP[source] ?? source) : source),
+      t: (source: string) => (rtl && dict ? (dict[source] ?? source) : source),
     }
-  }, [theme, language, notifications, setTheme, setLanguage, setNotifications])
+  }, [theme, language, notifications, arLookup, setTheme, setLanguage, setNotifications])
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>
 }

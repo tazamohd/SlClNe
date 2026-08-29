@@ -440,6 +440,7 @@ export function UIModalsLifecycle() {
           <p className="max-w-[330px] text-sm leading-relaxed text-muted">{t('Locking prevents further edits. Only managers and above can unlock it again.')}</p>
           <Field label="Reason">
             <textarea rows={3} readOnly placeholder={t('Why is this record being locked?')}
+              aria-label={t('Reason')}
               className="resize-none rounded-lg border border-border bg-inset px-2.5 py-2.5 font-ui text-[13px] text-heading outline-none" />
           </Field>
           <label className="flex items-center gap-2 text-xs text-body">

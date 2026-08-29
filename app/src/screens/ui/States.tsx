@@ -99,7 +99,7 @@ export function UIEmptyStates() {
 /** Same skeleton treatment `DataTable`'s own loading rows use — a pulsing
  *  inset block, never a spinner (the brand rule the banner below states). */
 function Sk({ className }: { className: string }) {
-  return <span className={cn('block animate-pulse rounded bg-inset', className)} />
+  return <span className={cn('block animate-pulse motion-reduce:animate-none rounded bg-inset', className)} />
 }
 
 interface SkeletonRow { id: string }
@@ -195,11 +195,11 @@ export function UILoadingStates() {
         <Card className="flex flex-col gap-3.5 p-5">
           <h3 className="font-display text-[15px] font-bold text-heading">{t('Inline busy states')}</h3>
           <Button disabled className="w-full justify-center gap-2">
-            <span className="h-[15px] w-[15px] animate-pulse rounded-[3px] bg-white/35" />
+            <span className="h-[15px] w-[15px] animate-pulse motion-reduce:animate-none rounded-[3px] bg-white/35" />
             {t('Saving…')}
           </Button>
           <div className="flex items-center gap-2.5 rounded-[10px] border border-border bg-inset p-3">
-            <span className="h-[22px] w-[22px] flex-shrink-0 animate-pulse rounded-md bg-[rgba(10,94,215,.14)]" />
+            <span className="h-[22px] w-[22px] flex-shrink-0 animate-pulse motion-reduce:animate-none rounded-md bg-[rgba(10,94,215,.14)]" />
             <div className="flex flex-1 flex-col gap-1.5">
               <Sk className="h-2.5 w-[58%]" />
               <Sk className="h-2 w-[34%]" />

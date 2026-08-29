@@ -48,7 +48,7 @@ function ContractStatusBadge({ status }: { status: Contract['status'] }) {
       )
     case 'draft':
       return (
-        <Badge background="rgba(10,94,215,.06)" color="#6B7280">
+        <Badge background="rgba(10,94,215,.06)" color="var(--neutral-500)">
           {t('Draft')}
         </Badge>
       )

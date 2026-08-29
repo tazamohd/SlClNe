@@ -89,7 +89,7 @@ export function UIMapView() {
             {PINS.map((pin) => (
               <g key={pin.id}>
                 <circle cx={pin.x} cy={pin.y} r={22} fill={pin.color} opacity={0.14} />
-                <circle cx={pin.x} cy={pin.y} r={9} fill={pin.color} stroke="#fff" strokeWidth={2.5} />
+                <circle cx={pin.x} cy={pin.y} r={9} fill={pin.color} stroke="var(--surface-card)" strokeWidth={2.5} />
                 <text
                   x={pin.x}
                   y={pin.y - 22}

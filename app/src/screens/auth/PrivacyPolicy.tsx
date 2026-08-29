@@ -29,7 +29,7 @@ export function PrivacyPolicy() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-page p-4 font-ui sm:p-6">
-      <div className="flex max-h-[80vh] w-full max-w-[640px] animate-fade-up flex-col rounded-lg border border-border bg-card shadow-lg">
+      <div className="flex max-h-[80vh] w-full max-w-[640px] animate-fade-up motion-reduce:animate-none flex-col rounded-lg border border-border bg-card shadow-lg">
         <div className="flex items-center gap-2.5 border-b border-border px-4 py-5 sm:px-6">
           <span className="flex rounded-[10px] bg-[rgba(11,179,255,.12)] p-2.5 text-salis-bright">
             <Icon name="Shield" size={18} />

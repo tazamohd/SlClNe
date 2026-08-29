@@ -30,13 +30,13 @@ interface ActivityItem {
 }
 
 const ACTIVITY_ITEMS: readonly ActivityItem[] = [
-  { user: 'Khalid Al-Amri', action: 'created job card', detail: 'JC-A3F8B2C1 for Toyota Camry 2022', time: '2 min ago', icon: 'Plus', dotBg: '#0A5ED7', dotFg: '#fff' },
-  { user: 'Yousef Al-Otaibi', action: 'updated status to In Progress', detail: 'Engine diagnostics started', time: '15 min ago', icon: 'Wrench', dotBg: '#0BB3FF', dotFg: '#fff' },
-  { user: 'System', action: 'sent notification', detail: 'Low stock alert: Brake Pads (18 remaining)', time: '1 hour ago', icon: 'AlertTriangle', dotBg: '#F97316', dotFg: '#fff' },
-  { user: 'Ahmed Al-Rashid', action: 'approved estimate', detail: 'EST-0231 — SAR 1,250 for maintenance', time: '2 hours ago', icon: 'Check', dotBg: '#0A5ED7', dotFg: '#fff' },
-  { user: 'Fatima Al-Zahrani', action: 'scheduled appointment', detail: 'Layla Al-Sulaiman — Jul 25, 10:00 AM', time: '3 hours ago', icon: 'Calendar', dotBg: '#0BB3FF', dotFg: '#fff' },
-  { user: 'System', action: 'generated invoice', detail: 'INV-2026-0142 — SAR 1,840', time: '4 hours ago', icon: 'FileText', dotBg: '#64748B', dotFg: '#fff' },
-  { user: 'Omar Al-Ghamdi', action: 'added vehicle', detail: 'Hyundai Sonata 2023 — RUH 3357', time: 'Yesterday', icon: 'Car', dotBg: '#0B1F3B', dotFg: '#fff' },
+  { user: 'Khalid Al-Amri', action: 'created job card', detail: 'JC-A3F8B2C1 for Toyota Camry 2022', time: '2 min ago', icon: 'Plus', dotBg: '#0A5ED7', dotFg: 'var(--surface-card)' },
+  { user: 'Yousef Al-Otaibi', action: 'updated status to In Progress', detail: 'Engine diagnostics started', time: '15 min ago', icon: 'Wrench', dotBg: '#0BB3FF', dotFg: 'var(--surface-card)' },
+  { user: 'System', action: 'sent notification', detail: 'Low stock alert: Brake Pads (18 remaining)', time: '1 hour ago', icon: 'AlertTriangle', dotBg: '#F97316', dotFg: 'var(--surface-card)' },
+  { user: 'Ahmed Al-Rashid', action: 'approved estimate', detail: 'EST-0231 — SAR 1,250 for maintenance', time: '2 hours ago', icon: 'Check', dotBg: '#0A5ED7', dotFg: 'var(--surface-card)' },
+  { user: 'Fatima Al-Zahrani', action: 'scheduled appointment', detail: 'Layla Al-Sulaiman — Jul 25, 10:00 AM', time: '3 hours ago', icon: 'Calendar', dotBg: '#0BB3FF', dotFg: 'var(--surface-card)' },
+  { user: 'System', action: 'generated invoice', detail: 'INV-2026-0142 — SAR 1,840', time: '4 hours ago', icon: 'FileText', dotBg: '#64748B', dotFg: 'var(--surface-card)' },
+  { user: 'Omar Al-Ghamdi', action: 'added vehicle', detail: 'Hyundai Sonata 2023 — RUH 3357', time: 'Yesterday', icon: 'Car', dotBg: '#0B1F3B', dotFg: 'var(--surface-card)' },
 ]
 
 export function UIActivityFeed() {
