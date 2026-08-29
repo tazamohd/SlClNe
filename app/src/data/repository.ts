@@ -5,6 +5,8 @@
  *  then a one-line change in `RepositoryProvider`, and no screen has to move.
  */
 import * as T from './generated/tables'
+import { apiBaseUrl, refreshSession } from './auth'
+import { readStored, STORAGE_KEYS } from '../lib/storage'
 
 /** A read collection. Writes land here too once the API exists — the mock
  *  implementation throws on them rather than pretending to persist. */
@@ -106,15 +108,18 @@ export const mockRepository: Repository = {
  *  Imported lazily so the HTTP layer is not pulled into the bundle (or
  *  evaluated in tests) when no base URL is configured. */
 export async function createRepository(): Promise<Repository> {
-  const baseUrl = import.meta.env?.VITE_API_BASE_URL
+  const baseUrl = apiBaseUrl()
   if (!baseUrl) return mockRepository
 
   const [{ ApiClient }, { createHttpRepository }] = await Promise.all([
     import('./http/client'),
     import('./http/repository'),
   ])
-  const { readStored } = await import('../lib/storage')
   return createHttpRepository(
-    new ApiClient({ baseUrl, getToken: () => readStored('salis-token') }),
+    new ApiClient({
+      baseUrl,
+      getToken: () => readStored(STORAGE_KEYS.token),
+      onAuthFailure: refreshSession,
+    }),
   )
 }

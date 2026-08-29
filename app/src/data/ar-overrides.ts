@@ -752,4 +752,6 @@ export const AR_OVERRIDES: Record<string, string> = {
   'Apr': 'أبريل',
   'May': 'مايو',
   'Jun': 'يونيو',
+  'Check your email and password and try again.':
+    'تحقّق من بريدك الإلكتروني وكلمة المرور ثم حاول مرّة أخرى.',
 }

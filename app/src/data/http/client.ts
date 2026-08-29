@@ -42,6 +42,12 @@ export interface ClientOptions {
   /** Called per request so a refreshed token is picked up without rebuilding
    *  the client. Returning null sends the request unauthenticated. */
   getToken?: () => string | null
+  /** Invoked once when a request comes back 401, to exchange the refresh token
+   *  for a new access token. Returning the new token makes the client retry
+   *  the request with it; returning null lets the 401 propagate (the session
+   *  is over). Only 401 triggers it — a 403 is a real permission denial, not an
+   *  expired token, so it is never retried. */
+  onAuthFailure?: () => Promise<string | null>
   /** Injected in tests; defaults to the platform `fetch`. */
   fetchImpl?: typeof fetch
 }
@@ -67,31 +73,48 @@ function joinUrl(baseUrl: string, path: string): string {
 export class ApiClient {
   private readonly baseUrl: string
   private readonly getToken: () => string | null
+  private readonly onAuthFailure?: () => Promise<string | null>
   private readonly fetchImpl: typeof fetch
 
   constructor(options: ClientOptions) {
     this.baseUrl = options.baseUrl
     this.getToken = options.getToken ?? (() => null)
+    this.onAuthFailure = options.onAuthFailure
     this.fetchImpl = options.fetchImpl ?? globalThis.fetch.bind(globalThis)
   }
 
   async request<T>(method: string, path: string, init: { query?: ListQuery; body?: unknown } = {}): Promise<T> {
-    const headers: Record<string, string> = { Accept: 'application/json' }
-    const token = this.getToken()
-    if (token) headers.Authorization = `Bearer ${token}`
-    if (init.body !== undefined) headers['Content-Type'] = 'application/json'
+    let response = await this.send(method, path, init, this.getToken())
 
-    const response = await this.fetchImpl(joinUrl(this.baseUrl, path) + buildQuery(init.query), {
-      method,
-      headers,
-      body: init.body === undefined ? undefined : JSON.stringify(init.body),
-    })
+    // Access token expired mid-session: refresh once and replay the request.
+    // Guard on `onAuthFailure` so a 401 with no refresh path propagates as-is.
+    if (response.status === 401 && this.onAuthFailure) {
+      const refreshed = await this.onAuthFailure()
+      if (refreshed) response = await this.send(method, path, init, refreshed)
+    }
 
     if (!response.ok) throw await toApiError(response)
 
     // 204 carries no body; `DELETE` uses it.
     if (response.status === 204) return undefined as T
     return (await response.json()) as T
+  }
+
+  private send(
+    method: string,
+    path: string,
+    init: { query?: ListQuery; body?: unknown },
+    token: string | null,
+  ): Promise<Response> {
+    const headers: Record<string, string> = { Accept: 'application/json' }
+    if (token) headers.Authorization = `Bearer ${token}`
+    if (init.body !== undefined) headers['Content-Type'] = 'application/json'
+
+    return this.fetchImpl(joinUrl(this.baseUrl, path) + buildQuery(init.query), {
+      method,
+      headers,
+      body: init.body === undefined ? undefined : JSON.stringify(init.body),
+    })
   }
 
   get<T>(path: string, query?: ListQuery): Promise<T> {
