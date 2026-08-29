@@ -1578,4 +1578,8 @@ export const procurement: ProcurementApi | null = API_URL ? createProcurementApi
  *  a save button is unavailable rather than letting the click fail. */
 export const isLive: boolean = httpRepository !== null
 
+export async function createRepository(): Promise<Repository> {
+  return repository
+}
+
 export { DEFAULT_PAGE_SIZE }

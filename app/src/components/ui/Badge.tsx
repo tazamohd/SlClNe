@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { memo, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { PR_BADGE, ST_BADGE, SVC_BADGE, type BadgePalette } from '@/data/generated/badges'
 
@@ -8,7 +8,7 @@ import { PR_BADGE, ST_BADGE, SVC_BADGE, type BadgePalette } from '@/data/generat
  *  because the mapping (`in_progress` → blue, `pending` → orange) is data the
  *  backend will eventually own. Only blue, orange, navy and slate appear —
  *  green/red/yellow are forbidden brand-wide (README §7). */
-export function Badge({
+export const Badge = memo(function Badge({
   children,
   background,
   color,
@@ -34,7 +34,7 @@ export function Badge({
       {children}
     </span>
   )
-}
+})
 
 const FALLBACK = ['var(--tint-neutral)', 'var(--text-muted)'] as const
 

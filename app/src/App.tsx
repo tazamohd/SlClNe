@@ -4,6 +4,7 @@ import { PreferencesProvider } from '@/providers/PreferencesProvider'
 import { SessionProvider } from '@/providers/SessionProvider'
 import { ModalProvider } from '@/components/ui/Modal'
 import { ToastProvider } from '@/components/ui/Toast'
+import { RepositoryProvider } from '@/providers/RepositoryProvider'
 import { AppRoutes } from '@/routes'
 
 // Mock data never goes stale, and won't once it's real either — the screens
@@ -17,15 +18,15 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <PreferencesProvider>
         <SessionProvider>
-          <ToastProvider>
-            {/* Inside ToastProvider so a toast raised from a dialog still
-                paints over it — the toast layer sits above the dialog layer. */}
-            <ModalProvider>
-              <BrowserRouter>
-                <AppRoutes />
-              </BrowserRouter>
-            </ModalProvider>
-          </ToastProvider>
+          <RepositoryProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <BrowserRouter>
+                  <AppRoutes />
+                </BrowserRouter>
+              </ModalProvider>
+            </ToastProvider>
+          </RepositoryProvider>
         </SessionProvider>
       </PreferencesProvider>
     </QueryClientProvider>

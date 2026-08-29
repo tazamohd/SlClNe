@@ -219,7 +219,7 @@ export function OTPVerification() {
  *  and in the fixture build it verifies against a locally-issued code the same
  *  way `OTPVerification` does. */
 export function TwoFactorVerification() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const toast = useToast()
   const navigate = useNavigate()
   const { live } = useSession()
@@ -279,7 +279,7 @@ export function TwoFactorVerification() {
           </p>
         ) : null}
         <p className="mt-3.5 text-xs text-faint">
-          {rtl ? 'يتم تحديث الرمز كل 30 ثانية' : 'Code refreshes every 30 seconds'}
+          {t('Code refreshes every 30 seconds')}
         </p>
       </AuthCard>
     </AuthLayout>
