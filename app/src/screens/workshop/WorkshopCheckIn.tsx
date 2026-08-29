@@ -8,6 +8,8 @@ import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { useCollectionWrite } from '@/data/useCollectionWrite'
+import { MockWriteError } from '@/data/repository'
 
 const FUEL_LEVELS = ['1/4', '1/2', '3/4', 'Full'] as const
 const BELONGINGS = ['Sunglasses', 'Phone charger', 'Documents', 'Spare key', 'GPS device'] as const
@@ -22,17 +24,51 @@ export function WorkshopCheckIn() {
   const { fieldHidden } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
+  const { create } = useCollectionWrite('jobs')
 
   const [odometer, setOdometer] = useState('42,180')
   const [fuel, setFuel] = useState<string>('1/2')
   const [issues, setIssues] = useState('')
   const [belongings, setBelongings] = useState<readonly string[]>([])
+  const [saving, setSaving] = useState(false)
 
   const hideContact = fieldHidden('Customer contact details')
 
-  function complete() {
-    toast.show({ title: t('Check-In'), description: t('Vehicle Checked In') })
-    setTimeout(() => navigate('/workshop-inspection'), 700)
+  /** Opens the job card through the repository write seam in the shape
+   *  GET /jobs returns, then advances to inspection. Under the mock repo the
+   *  write throws `MockWriteError` — demo mode, so the flow still proceeds; a
+   *  real API failure surfaces an error toast and stays on this screen. The
+   *  odometer/fuel/issues capture has no field in the served job row, so it
+   *  stays on the check-in form only. */
+  async function complete() {
+    const job = {
+      id: 'A3F8B2C1',
+      cust: 'Ahmed Al-Rashid',
+      veh: 'Toyota Camry 2022',
+      svc: 'maintenance',
+      st: 'in_progress',
+      pr: 'medium',
+    }
+
+    setSaving(true)
+    try {
+      await create(job)
+      toast.show({ title: t('Check-In'), description: t('Vehicle Checked In') })
+      setTimeout(() => navigate('/workshop-inspection'), 700)
+    } catch (error) {
+      if (error instanceof MockWriteError) {
+        toast.show({ title: t('Check-In'), description: t('Vehicle Checked In') })
+        setTimeout(() => navigate('/workshop-inspection'), 700)
+        return
+      }
+      toast.show({
+        title: t('Could not check in vehicle'),
+        description: (error as Error).message,
+        error: true,
+      })
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -187,9 +223,9 @@ export function WorkshopCheckIn() {
             </div>
           </Panel>
 
-          <Button size="lg" className="w-full" onClick={complete}>
+          <Button size="lg" className="w-full" onClick={complete} disabled={saving}>
             <Icon name="Check" size={18} />
-            {t('Complete Check-In')}
+            {saving ? t('Checking in...') : t('Complete Check-In')}
           </Button>
         </div>
       </div>

@@ -5,7 +5,10 @@ import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Money } from '@/components/ui/Money'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollectionWrite } from '@/data/useCollectionWrite'
+import { MockWriteError } from '@/data/repository'
 
 /** Standalone customer portal — CustomerPortal.dc.html (home) and
  *  CustomerPortal.Booking.dc.html (booking). A 430px phone-frame surface with
@@ -328,11 +331,60 @@ const BOOKED_TIMES = new Set(['11:00 AM', '2:00 PM'])
 
 export function CustomerPortalBooking() {
   const { t } = usePreferences()
+  const toast = useToast()
+  const { create } = useCollectionWrite('appointments')
   const [vehicle, setVehicle] = useState(BOOKING_VEHICLES[0].make)
   const [service, setService] = useState('Maintenance')
   const [dateIndex, setDateIndex] = useState(2)
   const [time, setTime] = useState('9:00 AM')
   const [notes, setNotes] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  /** Books the appointment through the repository write seam in the shape
+   *  GET /appointments returns. Under the mock repo the write throws
+   *  `MockWriteError` — that's demo mode, so the booking still confirms; a real
+   *  API failure surfaces an error toast and keeps the wizard in place. */
+  async function confirmBooking() {
+    const plate = BOOKING_VEHICLES.find((v) => v.make === vehicle)?.plate ?? ''
+    // Full served appointment shape { time, cust, veh, plate, svc, status, bay,
+    // tech, mins } — the API requires every column. Bay/tech are assigned by
+    // staff after booking, so they start unassigned ('—').
+    const appointment = {
+      time,
+      cust: CUSTOMER_NAME,
+      veh: vehicle,
+      plate,
+      svc: service,
+      status: 'awaiting',
+      bay: '—',
+      tech: '—',
+      mins: 30,
+    }
+
+    setSaving(true)
+    try {
+      await create(appointment)
+      toast.show({
+        title: t('Booking confirmed'),
+        description: t('Your appointment has been booked.'),
+      })
+    } catch (error) {
+      if (error instanceof MockWriteError) {
+        toast.show({
+          title: t('Booking confirmed'),
+          description: t('Demo mode — connect the API to persist.'),
+        })
+        return
+      }
+      toast.show({
+        title: t('Could not book appointment'),
+        description: (error as Error).message,
+        error: true,
+      })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   return (
     <PortalChrome title={t('Book Appointment')} back="/customer-portal">
@@ -490,9 +542,9 @@ export function CustomerPortalBooking() {
         />
       </div>
 
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={confirmBooking} disabled={saving}>
         <Icon name="CalendarCheck" size={18} />
-        {t('Confirm Booking')}
+        {saving ? t('Booking...') : t('Confirm Booking')}
       </Button>
     </PortalChrome>
   )

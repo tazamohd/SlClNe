@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { CircleCheckBig } from 'lucide-react'
 import { Icon } from '@/components/ui/Icon'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollectionWrite } from '@/data/useCollectionWrite'
+import { MockWriteError } from '@/data/repository'
 import { cn } from '@/lib/cn'
 
 type Translate = (source: string) => string
@@ -38,16 +41,57 @@ function formatTime(date: Date): string {
  *  the next car. */
 export function KioskCheckIn() {
   const { t, rtl, toggleLanguage } = usePreferences()
+  const toast = useToast()
+  const { create } = useCollectionWrite('appointments')
   const [step, setStep] = useState<Step>('checkin')
   const [plate, setPlate] = useState('')
   const [phone, setPhone] = useState('')
   const [service, setService] = useState<string>('Maintenance')
   const [time, setTime] = useState(() => formatTime(new Date()))
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => setTime(formatTime(new Date())), 1000)
     return () => clearInterval(timer)
   }, [])
+
+  /** Registers the walk-in through the repository write seam in the full shape
+   *  GET /appointments returns (the API requires every column), then shows the
+   *  queue ticket. Under the mock repo the write throws `MockWriteError` — demo
+   *  mode, so it still confirms; a real API failure surfaces an error toast and
+   *  stays on the form. A walk-in has no account, so cust/veh/bay/tech start as
+   *  placeholders; the phone has no served appointment field, so it isn't sent. */
+  async function handleCheckIn() {
+    const appointment = {
+      time,
+      cust: 'Walk-in',
+      veh: '—',
+      plate,
+      svc: service,
+      status: 'awaiting',
+      bay: '—',
+      tech: '—',
+      mins: 30,
+    }
+
+    setSaving(true)
+    try {
+      await create(appointment)
+      setStep('confirmation')
+    } catch (error) {
+      if (error instanceof MockWriteError) {
+        setStep('confirmation')
+        return
+      }
+      toast.show({
+        title: t('Could not check in'),
+        description: (error as Error).message,
+        error: true,
+      })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   function startOver() {
     setPlate('')
@@ -110,7 +154,8 @@ export function KioskCheckIn() {
             setPhone={setPhone}
             service={service}
             setService={setService}
-            onCheckIn={() => setStep('confirmation')}
+            onCheckIn={handleCheckIn}
+            saving={saving}
           />
         ) : (
           <ConfirmationStep
@@ -139,6 +184,7 @@ function CheckinStep({
   service,
   setService,
   onCheckIn,
+  saving,
 }: {
   t: Translate
   plate: string
@@ -148,6 +194,7 @@ function CheckinStep({
   service: string
   setService: (value: string) => void
   onCheckIn: () => void
+  saving: boolean
 }) {
   const canCheckIn = plate.trim().length > 0
 
@@ -209,11 +256,11 @@ function CheckinStep({
           <button
             type="button"
             onClick={onCheckIn}
-            disabled={!canCheckIn}
+            disabled={!canCheckIn || saving}
             className="flex h-14 cursor-pointer items-center justify-center gap-2 rounded-xl border-none bg-salis-gradient font-action text-base font-bold tracking-wide text-white shadow-[0_8px_24px_rgba(10,94,215,.4)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Icon name="Check" size={20} />
-            {t('Check-In')}
+            {saving ? t('Checking in...') : t('Check-In')}
           </button>
         </div>
       </div>

@@ -963,4 +963,20 @@ export const AR_OVERRIDES: Record<string, string> = {
   'Sending...': 'جارٍ الإرسال...',
   'Could not send invoice': 'تعذّر إرسال الفاتورة',
   'Demo mode — connect the API to persist.': 'الوضع التجريبي — اربط واجهة برمجة التطبيقات للحفظ.',
+
+  // Create/booking forms wired to the write seam.
+  'Booking confirmed': 'تم تأكيد الحجز',
+  'Your appointment has been booked.': 'تم حجز موعدك.',
+  'Could not book appointment': 'تعذّر حجز الموعد',
+  'Booking...': 'جارٍ الحجز...',
+  'Checking in...': 'جارٍ تسجيل الدخول...',
+  'Could not check in vehicle': 'تعذّر تسجيل دخول المركبة',
+  'Could not check in': 'تعذّر تسجيل الدخول',
+  'Saving...': 'جارٍ الحفظ...',
+  'Customer added': 'تمت إضافة العميل',
+  'Could not add customer': 'تعذّرت إضافة العميل',
+  'Vehicle added': 'تمت إضافة المركبة',
+  'Could not add vehicle': 'تعذّرت إضافة المركبة',
+  'Expense recorded': 'تم تسجيل المصروف',
+  'Could not record expense': 'تعذّر تسجيل المصروف',
 }

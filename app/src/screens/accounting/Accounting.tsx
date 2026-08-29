@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
@@ -6,9 +6,14 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
+import { FormModal } from '@/components/ui/FormModal'
+import { Input } from '@/components/ui/Input'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { useCollectionWrite } from '@/data/useCollectionWrite'
+import { MockWriteError } from '@/data/repository'
 
 /** The accounting ledger screens. Each pairs its title with the module name,
  *  as the design does ("Chart of Accounts" above "Accounting").
@@ -60,6 +65,52 @@ function useFilter<TRow>(rows: readonly TRow[], fields: (row: TRow) => (string |
     )
   }, [rows, query, fields])
   return { query, setQuery, filtered }
+}
+
+/** A labelled field row for the create modal — the `<label>` wraps its control
+ *  so the association is implicit and needs no id wiring. */
+function Field({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <label className="flex flex-col gap-1.5">
+      <span className="font-action text-[11px] font-medium text-heading">{label}</span>
+      {children}
+    </label>
+  )
+}
+
+interface CreateOpts {
+  t: (s: string) => string
+  toast: ReturnType<typeof useToast>
+  successTitle: string
+  errorTitle: string
+  setSaving: (v: boolean) => void
+  /** Closes the modal and resets its fields; called on any success (incl. the
+   *  read-only mock), never on a live failure so nothing entered is lost. */
+  close: () => void
+}
+
+/** Shared submit path for the create modal: runs the write, and degrades to a
+ *  demo-mode toast under the read-only mock repository — same contract as
+ *  `InvoiceCreate.send`. */
+async function runCreate(run: () => Promise<unknown>, o: CreateOpts) {
+  o.setSaving(true)
+  try {
+    await run()
+    o.toast.show({ title: o.successTitle })
+    o.close()
+  } catch (err) {
+    if (err instanceof MockWriteError) {
+      o.toast.show({
+        title: o.successTitle,
+        description: o.t('Demo mode — connect the API to persist.'),
+      })
+      o.close()
+      return
+    }
+    o.toast.show({ title: o.errorTitle, description: (err as Error).message, error: true })
+  } finally {
+    o.setSaving(false)
+  }
 }
 
 // ── Chart of accounts ───────────────────────────────────────────────────────
@@ -228,8 +279,46 @@ type Expense = RowOf<'expenses'>
 export function Expenses() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const toast = useToast()
   const { data: expenses = [], isLoading } = useCollection('expenses')
+  const { create } = useCollectionWrite('expenses')
   const { query, setQuery, filtered } = useFilter(expenses, (e) => [e.id, e.category, e.vendor])
+
+  const [open, setOpen] = useState(false)
+  const [category, setCategory] = useState('')
+  const [amount, setAmount] = useState('')
+  const [date, setDate] = useState('')
+  const [vendor, setVendor] = useState('')
+  const [saving, setSaving] = useState(false)
+  const invalid = !category.trim() || Number(amount) <= 0 || !date.trim() || !vendor.trim()
+
+  function addExpense() {
+    // Shaped like the EXPENSES_DATA rows; the amount is stored in the design's
+    // "SAR 450" display form and a new expense starts pending. Expenses are a
+    // natural-id resource, so the id is supplied on create (the API requires it).
+    const body = {
+      id: `EX-${Date.now().toString().slice(-6)}`,
+      date: date.trim(),
+      category: category.trim(),
+      vendor: vendor.trim(),
+      amount: `SAR ${amount.trim()}`,
+      status: 'pending',
+    }
+    runCreate(() => create(body), {
+      t,
+      toast,
+      successTitle: t('Expense recorded'),
+      errorTitle: t('Could not record expense'),
+      setSaving,
+      close: () => {
+        setOpen(false)
+        setCategory('')
+        setAmount('')
+        setDate('')
+        setVendor('')
+      },
+    })
+  }
 
   const columns: Column<Expense>[] = [
     { header: 'Expense #', cell: (e) => e.id, code: true },
@@ -248,7 +337,7 @@ export function Expenses() {
         search={{ value: query, onChange: setQuery }}
         actions={
           can('accounting', 'c') ? (
-            <Button size="md">
+            <Button size="md" onClick={() => setOpen(true)}>
               <Icon name="Plus" size={16} />
               {t('New Expense')}
             </Button>
@@ -272,6 +361,50 @@ export function Expenses() {
         )}
         empty={<EmptyState icon="Receipt" title={t('No expenses recorded')} />}
       />
+      <FormModal
+        open={open}
+        onClose={() => setOpen(false)}
+        onSubmit={addExpense}
+        title={t('New Expense')}
+        submitLabel={t('New Expense')}
+        savingLabel={t('Saving...')}
+        cancelLabel={t('Cancel')}
+        closeLabel={t('Close')}
+        saving={saving}
+        submitDisabled={invalid}
+      >
+        <Field label={t('Category')}>
+          <Input
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            icon={<Icon name="Tag" size={15} />}
+          />
+        </Field>
+        <Field label={t('Amount')}>
+          <Input
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            dir="ltr"
+            inputMode="decimal"
+            icon={<Icon name="Banknote" size={15} />}
+          />
+        </Field>
+        <Field label={t('Date')}>
+          <Input
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            dir="ltr"
+            icon={<Icon name="Calendar" size={15} />}
+          />
+        </Field>
+        <Field label={t('Vendor')}>
+          <Input
+            value={vendor}
+            onChange={(e) => setVendor(e.target.value)}
+            icon={<Icon name="Store" size={15} />}
+          />
+        </Field>
+      </FormModal>
     </>
   )
 }
