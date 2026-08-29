@@ -79,7 +79,7 @@ export async function listRows(
   }
 
   if (query.q) {
-    const term = `%${query.q.replace(/[%_]/g, (m) => `\\${m}`)}%`
+    const term = `%${query.q.replace(/[%_]/g, (m: string) => `\\${m}`)}%`
     const matches = def.search
       .map((name) => cols[name])
       .filter((col): col is PgColumn => Boolean(col))
@@ -95,7 +95,7 @@ export async function listRows(
       throw badRequest(`"${field}" cannot be filtered on this collection.`, field)
     }
     const col = column(def, field)
-    conditions.push(eq(col, coerce(col, value)))
+    conditions.push(eq(col, coerce(col, value as string | number | boolean)))
   }
 
   const where = conditions.length > 0 ? and(...conditions) : undefined

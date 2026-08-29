@@ -123,6 +123,9 @@ jobs:
           cache-dependency-path: server/package-lock.json
 
       - run: npm ci
+        working-directory: packages/contract
+
+      - run: npm ci
         working-directory: server
 
       - run: npm run typecheck
@@ -131,6 +134,23 @@ jobs:
   server-test:
     name: Server / Unit Tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: salis
+          POSTGRES_PASSWORD: salis
+          POSTGRES_DB: salis_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U salis"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://salis:salis@localhost:5432/salis_test
+      JWT_SECRET: ci-test-secret
     steps:
       - uses: actions/checkout@v4
 
@@ -139,6 +159,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: server/package-lock.json
+
+      - run: npm ci
+        working-directory: packages/contract
 
       - run: npm ci
         working-directory: server
