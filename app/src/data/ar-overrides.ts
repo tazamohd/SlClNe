@@ -958,4 +958,9 @@ export const AR_OVERRIDES: Record<string, string> = {
   'Coverage': 'التغطية',
   'No warranties recorded yet': 'لا توجد ضمانات مسجّلة بعد',
   'Register a warranty to start tracking coverage and claims.': 'سجّل ضمانًا لبدء تتبّع التغطية والمطالبات.',
+
+  // Write-through copy (InvoiceCreate persists via the repository when live).
+  'Sending...': 'جارٍ الإرسال...',
+  'Could not send invoice': 'تعذّر إرسال الفاتورة',
+  'Demo mode — connect the API to persist.': 'الوضع التجريبي — اربط واجهة برمجة التطبيقات للحفظ.',
 }

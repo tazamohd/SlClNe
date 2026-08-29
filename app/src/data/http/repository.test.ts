@@ -2,12 +2,33 @@ import { describe, it, expect } from 'vitest'
 import { ApiClient } from './client'
 import { createHttpRepository, MissingEndpointError } from './repository'
 import { ENDPOINTS, servedByApi } from './endpoints'
-import { mockRepository, type CollectionKey } from '../repository'
+import { mockRepository, MockWriteError, type CollectionKey } from '../repository'
 
 function clientReturning(body: unknown, seen?: { url?: string }) {
   const impl = (async (url: string) => {
     if (seen) seen.url = url
     return { ok: true, status: 200, json: async () => body } as unknown as Response
+  }) as unknown as typeof fetch
+  return new ApiClient({ baseUrl: 'https://api.test', fetchImpl: impl })
+}
+
+/** A fetch stub that records the method, URL and parsed JSON body of the last
+ *  request, so a write test can assert the exact call the seam made. */
+interface Seen {
+  method?: string
+  url?: string
+  body?: unknown
+}
+function recordingClient(responseBody: unknown, seen: Seen, status = 200) {
+  const impl = (async (url: string, init: RequestInit = {}) => {
+    seen.method = init.method
+    seen.url = url
+    seen.body = init.body ? JSON.parse(init.body as string) : undefined
+    return {
+      ok: status < 400,
+      status,
+      json: async () => responseBody,
+    } as unknown as Response
   }) as unknown as typeof fetch
   return new ApiClient({ baseUrl: 'https://api.test', fetchImpl: impl })
 }
@@ -77,5 +98,78 @@ describe('http repository — collections the contract does not cover', () => {
   it('agrees with servedByApi about which collections are live', () => {
     expect(servedByApi('jobs')).toBe(true)
     expect(servedByApi('invoiceLines')).toBe(false)
+  })
+})
+
+describe('http repository — writing', () => {
+  it('create POSTs the body to the collection path and returns the row', async () => {
+    const seen: Seen = {}
+    const created = { id: 'INV-9', cust: 'X', amount: 'SAR 1', due: 'now', status: 'unpaid' }
+    const repo = createHttpRepository(recordingClient(created, seen, 201))
+    const row = await repo.invoices.create!(created)
+    expect(seen.method).toBe('POST')
+    expect(seen.url).toBe('https://api.test/invoices')
+    expect(seen.body).toEqual(created)
+    expect(row).toEqual(created)
+  })
+
+  it('update PATCHes the id path with the partial body', async () => {
+    const seen: Seen = {}
+    const repo = createHttpRepository(recordingClient({ id: 'INV-9', status: 'paid' }, seen))
+    await repo.invoices.update!('INV-9', { status: 'paid' })
+    expect(seen.method).toBe('PATCH')
+    expect(seen.url).toBe('https://api.test/invoices/INV-9')
+    expect(seen.body).toEqual({ status: 'paid' })
+  })
+
+  it('remove DELETEs the id path', async () => {
+    const seen: Seen = {}
+    const repo = createHttpRepository(recordingClient(undefined, seen, 204))
+    await repo.invoices.remove!('INV-9')
+    expect(seen.method).toBe('DELETE')
+    expect(seen.url).toBe('https://api.test/invoices/INV-9')
+  })
+
+  it('url-encodes an id so a slash or space cannot escape its path segment', async () => {
+    const seen: Seen = {}
+    const repo = createHttpRepository(recordingClient({}, seen))
+    await repo.invoices.update!('INV 1/2', { status: 'paid' })
+    expect(seen.url).toBe('https://api.test/invoices/INV%201%2F2')
+  })
+
+  it('writes to a namespaced collection use its namespaced path', async () => {
+    const seen: Seen = {}
+    const repo = createHttpRepository(recordingClient({}, seen, 201))
+    await repo.leads.create!({ name: 'A' } as never)
+    expect(seen.url).toBe('https://api.test/crm/leads')
+  })
+
+  it('writing a collection with no contract route rejects loudly', async () => {
+    const repo = createHttpRepository(clientReturning([]))
+    await expect(repo.invoiceLines.create!({} as never)).rejects.toBeInstanceOf(MissingEndpointError)
+  })
+})
+
+describe('mock repository — refuses to fake persistence', () => {
+  it('create/update/remove all throw MockWriteError instead of pretending to save', async () => {
+    await expect(mockRepository.invoices.create!({} as never)).rejects.toBeInstanceOf(MockWriteError)
+    await expect(mockRepository.invoices.update!('INV-1', {} as never)).rejects.toBeInstanceOf(MockWriteError)
+    await expect(mockRepository.invoices.remove!('INV-1')).rejects.toBeInstanceOf(MockWriteError)
+  })
+
+  it('the error names the collection and the operation', async () => {
+    try {
+      await mockRepository.customers.create!({} as never)
+      throw new Error('expected a throw')
+    } catch (error) {
+      expect(error).toBeInstanceOf(MockWriteError)
+      expect((error as MockWriteError).collection).toBe('customers')
+      expect((error as MockWriteError).op).toBe('create')
+      expect((error as Error).message).toContain('VITE_API_BASE_URL')
+    }
+  })
+
+  it('reads still work on the mock', async () => {
+    expect((await mockRepository.invoices.list()).length).toBeGreaterThan(0)
   })
 })

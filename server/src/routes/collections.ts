@@ -16,7 +16,7 @@ import { requireAuth, requireModule, handler } from '../auth/middleware.js'
 import { errors } from '../http.js'
 import { escapeIlike } from '../security.js'
 
-interface CollectionDef {
+export interface CollectionDef {
   /** Path relative to the API root, matching ENDPOINTS in the frontend. */
   path: string
   /** RBAC permission module gating the collection. */
@@ -28,27 +28,31 @@ interface CollectionDef {
   searchable: string[]
   /** Natural id column for the optional detail route, when one exists. */
   idField?: string
+  /** When true, the WRITE half (POST/PATCH/DELETE) is mounted for this
+   *  resource by writesRouter(). Resources without a `writable` flag are
+   *  read-only through the API (matches the contract's coverage today). */
+  writable?: boolean
 }
 
-const COLLECTIONS: CollectionDef[] = [
-  { path: '/jobs', module: 'jobcards', table: schema.jobs, columns: ['id', 'cust', 'veh', 'svc', 'st', 'pr'], searchable: ['id', 'cust', 'veh'], idField: 'id' },
-  { path: '/appointments', module: 'appointments', table: schema.appointments, columns: ['time', 'cust', 'veh', 'plate', 'svc', 'status', 'bay', 'tech', 'mins'], searchable: ['cust', 'veh', 'plate', 'tech'] },
-  { path: '/estimates', module: 'estimates', table: schema.estimates, columns: ['id', 'cust', 'veh', 'amount', 'status'], searchable: ['id', 'cust', 'veh'], idField: 'id' },
-  { path: '/invoices', module: 'invoices', table: schema.invoices, columns: ['id', 'cust', 'amount', 'due', 'status'], searchable: ['id', 'cust'], idField: 'id' },
+export const COLLECTIONS: CollectionDef[] = [
+  { path: '/jobs', module: 'jobcards', table: schema.jobs, columns: ['id', 'cust', 'veh', 'svc', 'st', 'pr'], searchable: ['id', 'cust', 'veh'], idField: 'id', writable: true },
+  { path: '/appointments', module: 'appointments', table: schema.appointments, columns: ['time', 'cust', 'veh', 'plate', 'svc', 'status', 'bay', 'tech', 'mins'], searchable: ['cust', 'veh', 'plate', 'tech'], writable: true },
+  { path: '/estimates', module: 'estimates', table: schema.estimates, columns: ['id', 'cust', 'veh', 'amount', 'status'], searchable: ['id', 'cust', 'veh'], idField: 'id', writable: true },
+  { path: '/invoices', module: 'invoices', table: schema.invoices, columns: ['id', 'cust', 'amount', 'due', 'status'], searchable: ['id', 'cust'], idField: 'id', writable: true },
   { path: '/receipts', module: 'payments', table: schema.receipts, columns: ['id', 'date', 'customer', 'invoice', 'method', 'amount', 'status'], searchable: ['id', 'customer', 'invoice'], idField: 'id' },
-  { path: '/customers', module: 'customers', table: schema.customers, columns: ['name', 'phone', 'vehicles', 'spent', 'last'], searchable: ['name', 'phone'] },
-  { path: '/vehicles', module: 'vehicles', table: schema.vehicles, columns: ['plate', 'make', 'owner', 'mileage', 'last', 'status'], searchable: ['plate', 'make', 'owner'] },
+  { path: '/customers', module: 'customers', table: schema.customers, columns: ['name', 'phone', 'vehicles', 'spent', 'last'], searchable: ['name', 'phone'], writable: true },
+  { path: '/vehicles', module: 'vehicles', table: schema.vehicles, columns: ['plate', 'make', 'owner', 'mileage', 'last', 'status'], searchable: ['plate', 'make', 'owner'], writable: true },
   { path: '/fleets', module: 'vehicles', table: schema.fleets, columns: ['name', 'vehicles', 'active', 'contract'], searchable: ['name'] },
-  { path: '/inventory', module: 'inventory', table: schema.parts, columns: ['name', 'sku', 'stock', 'reorder', 'price'], searchable: ['name', 'sku'] },
+  { path: '/inventory', module: 'inventory', table: schema.parts, columns: ['name', 'sku', 'stock', 'reorder', 'price'], searchable: ['name', 'sku'], writable: true },
   { path: '/technicians', module: 'technicians', table: schema.technicians, columns: ['name', 'specialty', 'jobs', 'rating'], searchable: ['name', 'specialty'] },
-  { path: '/crm/leads', module: 'crm', table: schema.leads, columns: ['name', 'company', 'value', 'source', 'stage', 'date', 'score'], searchable: ['name', 'company'] },
-  { path: '/crm/opportunities', module: 'crm', table: schema.opportunities, columns: ['name', 'company', 'value', 'stage', 'prob', 'close', 'owner'], searchable: ['name', 'company', 'owner'] },
-  { path: '/crm/tasks', module: 'crm', table: schema.crmTasks, columns: ['title', 'assigned', 'due', 'priority', 'status', 'type'], searchable: ['title', 'assigned'] },
-  { path: '/crm/segments', module: 'crm', table: schema.segments, columns: ['name', 'count', 'rules', 'lastUpdated'], searchable: ['name', 'rules'] },
-  { path: '/crm/campaigns', module: 'crm', table: schema.campaigns, columns: ['name', 'type', 'status', 'reach', 'opens', 'clicks', 'conversions', 'budget', 'spent'], searchable: ['name'] },
-  { path: '/accounting/coa', module: 'accounting', table: schema.chartOfAccounts, columns: ['code', 'name', 'type', 'balance', 'children'], searchable: ['code', 'name', 'type'], idField: 'code' },
-  { path: '/accounting/journal-entries', module: 'accounting', table: schema.journalEntries, columns: ['id', 'date', 'ref', 'narration', 'debit', 'credit', 'status'], searchable: ['id', 'ref', 'narration'], idField: 'id' },
-  { path: '/accounting/expenses', module: 'accounting', table: schema.expenses, columns: ['id', 'date', 'category', 'vendor', 'amount', 'status'], searchable: ['id', 'category', 'vendor'], idField: 'id' },
+  { path: '/crm/leads', module: 'crm', table: schema.leads, columns: ['name', 'company', 'value', 'source', 'stage', 'date', 'score'], searchable: ['name', 'company'], writable: true },
+  { path: '/crm/opportunities', module: 'crm', table: schema.opportunities, columns: ['name', 'company', 'value', 'stage', 'prob', 'close', 'owner'], searchable: ['name', 'company', 'owner'], writable: true },
+  { path: '/crm/tasks', module: 'crm', table: schema.crmTasks, columns: ['title', 'assigned', 'due', 'priority', 'status', 'type'], searchable: ['title', 'assigned'], writable: true },
+  { path: '/crm/segments', module: 'crm', table: schema.segments, columns: ['name', 'count', 'rules', 'lastUpdated'], searchable: ['name', 'rules'], writable: true },
+  { path: '/crm/campaigns', module: 'crm', table: schema.campaigns, columns: ['name', 'type', 'status', 'reach', 'opens', 'clicks', 'conversions', 'budget', 'spent'], searchable: ['name'], writable: true },
+  { path: '/accounting/coa', module: 'accounting', table: schema.chartOfAccounts, columns: ['code', 'name', 'type', 'balance', 'children'], searchable: ['code', 'name', 'type'], idField: 'code', writable: true },
+  { path: '/accounting/journal-entries', module: 'accounting', table: schema.journalEntries, columns: ['id', 'date', 'ref', 'narration', 'debit', 'credit', 'status'], searchable: ['id', 'ref', 'narration'], idField: 'id', writable: true },
+  { path: '/accounting/expenses', module: 'accounting', table: schema.expenses, columns: ['id', 'date', 'category', 'vendor', 'amount', 'status'], searchable: ['id', 'category', 'vendor'], idField: 'id', writable: true },
   { path: '/ai/agents', module: 'ai', table: schema.aiAgents, columns: ['name', 'role', 'model', 'status', 'tasks', 'success', 'icon'], searchable: ['name', 'role', 'model'] },
   { path: '/ai/conversations', module: 'ai', table: schema.conversations, columns: ['title', 'user', 'msgs', 'date', 'tokens'], searchable: ['title', 'user'] },
   { path: '/kb/procedures', module: 'ai', table: schema.kbProcedures, columns: ['id', 'title', 'ar', 'cat', 'make', 'mins', 'torque', 'ar_torque', 'steps', 'views', 'tsb', 'media'], searchable: ['id', 'title', 'cat', 'make'], idField: 'id' },
@@ -62,7 +66,7 @@ const listQuerySchema = z.object({
   filter: z.record(z.string(), z.string()).optional(),
 })
 
-function selectMap(def: CollectionDef): Record<string, PgColumn> {
+export function selectMap(def: CollectionDef): Record<string, PgColumn> {
   return Object.fromEntries(def.columns.map((c) => [c, def.table[c] as PgColumn]))
 }
 

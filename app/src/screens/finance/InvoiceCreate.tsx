@@ -7,6 +7,8 @@ import { Money } from '@/components/ui/Money'
 import { Panel, FieldGrid, ReadField } from '@/components/ui/FieldGrid'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useRepository } from '@/providers/RepositoryProvider'
+import { MockWriteError } from '@/data/repository'
 
 const VAT_RATE = 0.15
 
@@ -38,8 +40,10 @@ export function InvoiceCreate() {
   const { t, rtl } = usePreferences()
   const toast = useToast()
   const navigate = useNavigate()
+  const repo = useRepository()
   const [lines, setLines] = useState<Line[]>(INITIAL_LINES)
   const [notes, setNotes] = useState('')
+  const [saving, setSaving] = useState(false)
 
   const subtotal = lines.reduce((sum, line) => sum + line.qty * line.unit, 0)
   const vat = subtotal * VAT_RATE
@@ -56,7 +60,12 @@ export function InvoiceCreate() {
     ])
   }
 
-  function send() {
+  /** Persists the invoice through the repository seam, then returns to the
+   *  list. Under the mock repository the write throws `MockWriteError` (it will
+   *  not fake persistence) — that's the design/demo mode, so the flow still
+   *  completes with a toast; a real API failure is surfaced as an error and the
+   *  screen stays put so nothing is silently lost. */
+  async function send() {
     if (!lines.length || subtotal <= 0) {
       toast.show({
         title: t('Error'),
@@ -65,8 +74,37 @@ export function InvoiceCreate() {
       })
       return
     }
-    toast.show({ title: t('Invoice sent'), description: t('Sent to the customer for payment.') })
-    setTimeout(() => navigate('/invoices'), 700)
+
+    // The served invoice shape is { id, cust, amount, due, status } — the same
+    // row GET /invoices returns, formatted at the API boundary.
+    const invoice = {
+      id: 'INV-2026-0143',
+      cust: 'Ahmed Al-Rashid',
+      amount: `SAR ${total.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+      due: 'Aug 21, 2026',
+      status: 'unpaid',
+    }
+
+    setSaving(true)
+    try {
+      await repo.invoices.create?.(invoice)
+      toast.show({ title: t('Invoice sent'), description: t('Sent to the customer for payment.') })
+      setTimeout(() => navigate('/invoices'), 700)
+    } catch (error) {
+      if (error instanceof MockWriteError) {
+        // No live API wired — demo mode. Keep the prototype flow moving.
+        toast.show({ title: t('Invoice sent'), description: t('Demo mode — connect the API to persist.') })
+        setTimeout(() => navigate('/invoices'), 700)
+        return
+      }
+      toast.show({
+        title: t('Could not send invoice'),
+        description: (error as Error).message,
+        error: true,
+      })
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -260,9 +298,9 @@ export function InvoiceCreate() {
               <Icon name="Save" size={14} />
               {t('Save Draft')}
             </Button>
-            <Button className="h-11 w-full" onClick={send}>
+            <Button className="h-11 w-full" onClick={send} disabled={saving}>
               <Icon name="Send" size={14} />
-              {t('Send Invoice')}
+              {saving ? t('Sending...') : t('Send Invoice')}
             </Button>
           </div>
 
