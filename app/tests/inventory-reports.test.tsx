@@ -63,8 +63,8 @@ describe('Inventory Reports over the real parts data', () => {
     renderWithProviders(<InventoryReports api={null} />)
     await waitFor(() => expect(screen.getAllByText(PARTS[0]!.name).length).toBeGreaterThan(0))
 
-    expect(screen.getByRole('tab', { name: /this week/i })).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: /this month/i })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: /this week/i })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: /this month/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /export report/i })).toBeInTheDocument()
   })
 

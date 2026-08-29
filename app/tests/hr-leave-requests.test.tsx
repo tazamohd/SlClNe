@@ -77,7 +77,7 @@ describe('the live leave list', () => {
 
   it('filters the list by status', () => {
     renderScreen(LeaveRequests, { role: 'hr' })
-    fireEvent.click(screen.getByRole('tab', { name: 'approved' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'approved' }))
     expect(screen.queryByText('Faisal Al-Harbi')).not.toBeInTheDocument()
     expect(screen.getByText('No requests match this status.')).toBeInTheDocument()
   })

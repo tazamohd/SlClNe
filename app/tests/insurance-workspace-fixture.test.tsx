@@ -27,14 +27,14 @@ describe('the fixture build is honest about the missing API', () => {
 
   it('names the policies collection on the Policies tab', () => {
     renderScreen(InsuranceClaims, { role: 'accountant' })
-    fireEvent.click(screen.getByRole('tab', { name: 'Policies' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Policies' }))
     expect(screen.getByText('No policies to show')).toBeInTheDocument()
     expect(screen.getByText('insurancePolicies')).toBeInTheDocument()
   })
 
   it('names the loan-contracts collection on the Loans tab', () => {
     renderScreen(InsuranceClaims, { role: 'accountant' })
-    fireEvent.click(screen.getByRole('tab', { name: 'Loans' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Loans' }))
     expect(screen.getByText('No finance to show')).toBeInTheDocument()
     expect(screen.getByText('loanContracts')).toBeInTheDocument()
   })

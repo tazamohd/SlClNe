@@ -159,18 +159,18 @@ describe('ProcurementRequisitions — the design fixture on a build with no API'
     await waitFor(() => expect(screen.getByText('REQ-0518')).toBeInTheDocument())
     expect(screen.getByText('REQ-0517')).toBeInTheDocument()
     expect(screen.queryByText('REQ-0509')).not.toBeInTheDocument() // approved, other tab
-    const all = screen.getByRole('tab', { name: /All/ })
+    const all = screen.getByRole('radio', { name: /All/ })
     expect(all).toHaveTextContent('7')
-    expect(screen.getByRole('tab', { name: /Pending/ })).toHaveTextContent('4')
+    expect(screen.getByRole('radio', { name: /Pending/ })).toHaveTextContent('4')
   })
 
   it('the PO Raised and Rejected tabs carry the design rows the old fixture dropped', async () => {
     const user = userEvent.setup()
     renderWithProviders(<ProcurementRequisitions api={null} />, { role: 'procurement' })
     await waitFor(() => expect(screen.getByText('REQ-0518')).toBeInTheDocument())
-    await user.click(screen.getByRole('tab', { name: /PO Raised/ }))
+    await user.click(screen.getByRole('radio', { name: /PO Raised/ }))
     expect(screen.getByText('REQ-0504')).toBeInTheDocument()
-    await user.click(screen.getByRole('tab', { name: /Rejected/ }))
+    await user.click(screen.getByRole('radio', { name: /Rejected/ }))
     expect(screen.getByText('REQ-0498')).toBeInTheDocument()
   })
 
@@ -278,7 +278,7 @@ describe('ProcurementRequisitions — lifecycle against an injected transport', 
     const api = fakeApi({ requisitions: [reqRow({ status: 'draft' })] })
     const user = userEvent.setup()
     renderWithProviders(<ProcurementRequisitions api={api} />, { role: 'procurement' })
-    await user.click(screen.getByRole('tab', { name: /Draft/ }))
+    await user.click(screen.getByRole('radio', { name: /Draft/ }))
     await user.click(await screen.findByText('REQ-1000'))
     await user.click(topDialog().getByRole('button', { name: /^Submit$/ }))
     await user.click(topDialog().getByRole('button', { name: /^Submit$/ })) // confirm

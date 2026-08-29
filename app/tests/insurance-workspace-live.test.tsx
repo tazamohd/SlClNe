@@ -115,7 +115,7 @@ describe('the claims list', () => {
 
   it('filters the list by status', () => {
     renderScreen(InsuranceClaims, { role: 'accountant' })
-    fireEvent.click(screen.getByRole('tab', { name: 'paid' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'paid' }))
     expect(screen.queryByText('CLM-2026-0007')).not.toBeInTheDocument()
     expect(screen.getByText('No claims match this status.')).toBeInTheDocument()
   })
@@ -232,7 +232,7 @@ describe('the role gate is UX, honestly surfaced', () => {
 
   it('shows policies as read-only context in the Policies tab', () => {
     renderScreen(InsuranceClaims, { role: 'accountant' })
-    fireEvent.click(screen.getByRole('tab', { name: 'Policies' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Policies' }))
     const table = screen.getByRole('table')
     expect(within(table).getByText('POL-2026-0003')).toBeInTheDocument()
     expect(within(table).getByText('Comprehensive')).toBeInTheDocument()

@@ -65,7 +65,7 @@ describe('the live timesheets', () => {
 
   it('filters by status', () => {
     renderScreen(Timesheets, { role: 'hr' })
-    fireEvent.click(screen.getByRole('tab', { name: 'approved' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'approved' }))
     expect(screen.queryByRole('table')).not.toBeInTheDocument()
     expect(screen.getByText('No records match the current search and filter.')).toBeInTheDocument()
   })
