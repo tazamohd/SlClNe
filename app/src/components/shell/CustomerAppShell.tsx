@@ -28,7 +28,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen justify-center bg-page-alt font-ui">
       <a
         href="#customer-main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:left-4 focus:top-4 focus:rounded focus:bg-salis-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:start-4 focus:top-4 focus:rounded focus:bg-salis-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
       >
         {t('Skip to content')}
       </a>

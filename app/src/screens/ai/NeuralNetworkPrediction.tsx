@@ -20,7 +20,7 @@ interface Prediction {
 
 const PREDICTIONS: Prediction[] = [
   {
-    id: 'pr-1',
+    id: 'pred-1',
     model: 'Revenue Forecast',
     metric: 'Monthly Revenue',
     currentValue: 'SAR 485K',
@@ -32,7 +32,7 @@ const PREDICTIONS: Prediction[] = [
     tone: ['rgba(10,94,215,.1)', '#0A5ED7'],
   },
   {
-    id: 'pr-2',
+    id: 'pred-2',
     model: 'Demand Forecast',
     metric: 'Service Appointments',
     currentValue: '342',
@@ -44,7 +44,7 @@ const PREDICTIONS: Prediction[] = [
     tone: ['rgba(11,179,255,.1)', '#0BB3FF'],
   },
   {
-    id: 'pr-3',
+    id: 'pred-3',
     model: 'Parts Demand',
     metric: 'Oil Filters (stock units)',
     currentValue: '145',
@@ -56,7 +56,7 @@ const PREDICTIONS: Prediction[] = [
     tone: ['rgba(249,115,22,.1)', '#F97316'],
   },
   {
-    id: 'pr-4',
+    id: 'pred-4',
     model: 'Customer Churn',
     metric: 'At-risk Customers',
     currentValue: '18',
@@ -68,7 +68,7 @@ const PREDICTIONS: Prediction[] = [
     tone: ['rgba(11,31,59,.1)', '#0B1F3B'],
   },
   {
-    id: 'pr-5',
+    id: 'pred-5',
     model: 'Staffing Needs',
     metric: 'Technicians Required',
     currentValue: '12',
