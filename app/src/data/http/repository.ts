@@ -30,15 +30,27 @@ function rowsOf<TRow>(payload: ListResponse<TRow>): readonly TRow[] {
   return (payload as readonly TRow[]) ?? []
 }
 
+/** Appends an id segment to a collection path, e.g. `/invoices` + `INV-1` →
+ *  `/invoices/INV-1`. The id is URL-encoded so a natural id with a slash or
+ *  space (an invoice number, a plate) can't break out of its path segment. */
+function itemPath(path: string, id: string | number): string {
+  return `${path}/${encodeURIComponent(String(id))}`
+}
+
 function collectionFor<TRow>(client: ApiClient, key: CollectionKey, query?: ListQuery): Collection<TRow> {
   const path = ENDPOINTS[key]
   if (path === null) {
-    return {
-      list: () => Promise.reject(new MissingEndpointError(key)),
-    }
+    // No contract route: every operation rejects loudly, reads and writes alike.
+    const reject = () => Promise.reject(new MissingEndpointError(key))
+    return { list: reject, create: reject, update: reject, remove: reject }
   }
   return {
     list: async () => rowsOf(await client.get<ListResponse<TRow>>(path, query)),
+    create: (body) => client.post<TRow>(path, body),
+    update: (id, body) => client.patch<TRow>(itemPath(path, id), body),
+    remove: async (id) => {
+      await client.delete<void>(itemPath(path, id))
+    },
   }
 }
 

@@ -5,6 +5,7 @@ import cors from 'cors'
 import { corsOrigins } from './env.js'
 import { authRouter } from './routes/auth.js'
 import { collectionsRouter } from './routes/collections.js'
+import { writesRouter } from './routes/writes.js'
 import { AppError, sendError } from './http.js'
 import { securityHeaders, rateLimit } from './security.js'
 
@@ -26,6 +27,7 @@ export function createApp(): Express {
 
   app.use('/', authRouter())
   app.use('/', collectionsRouter())
+  app.use('/', writesRouter())
 
   // Unknown route → the same error envelope the client parses.
   app.use((req, res) => {
