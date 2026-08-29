@@ -8,25 +8,30 @@ import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { ROLES } from '@/data/rbac'
-import { authenticate, apiBaseUrl, demoPassword } from '@/data/auth'
+import { ROLES, destinationFor } from '@/data/rbac'
 import type { Role, RoleId } from '@/data/types'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
-/** Sign-in with the 14 demo role cards.
+/** Sign-in.
  *
- *  Clicking a card fills the credentials; the user still presses Sign In. That
- *  two-step is deliberate — it proves the real form works rather than
- *  side-stepping it, and it's what the role-filtering demo depends on.
+ *  Two paths through the same form, chosen by whether this build has an API:
  *
- *  `authenticate()` posts to `/auth/login` and stores the JWT when
- *  `VITE_API_BASE_URL` is set, or validates the demo role otherwise — the
- *  screen is the same either way. The demo password the cards prefill matches
- *  the active mode (the backend's seeded password vs the design's demo one). */
+ *  - **Live** (`VITE_API_URL` set): the credentials go to `POST /auth/login`,
+ *    which decides. The role arrives in a signed token; nothing on this screen
+ *    picks one. The demo cards are hidden, because a card that filled a
+ *    password no server holds would only be a way to fail.
+ *  - **Demo** (every build until the API is deployed): the design's role
+ *    picker. Clicking a card fills the credentials and the user still presses
+ *    Sign In — the two-step is deliberate, it exercises the real form rather
+ *    than side-stepping it.
+ *
+ *  The demo password is a fixture, not a credential: no server accepts it, and
+ *  the seed deliberately ships no password hashes at all. */
+const DEMO_PASSWORD = 'Demo@1234'
 
 export function Login() {
   const { t, rtl } = usePreferences()
-  const { signIn } = useSession()
+  const { signIn, signInWithPassword, live } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
@@ -36,13 +41,11 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(true)
   const [picked, setPicked] = useState<RoleId | null>(null)
-  const [submitting, setSubmitting] = useState(false)
-
-  const demoPw = demoPassword()
+  const [busy, setBusy] = useState(false)
 
   function fillFrom(role: Role) {
     setEmail(role.demo.email)
-    setPassword(demoPw)
+    setPassword(DEMO_PASSWORD)
     setPicked(role.id as RoleId)
     setShowPassword(false)
     toast.show(
@@ -56,7 +59,6 @@ export function Login() {
 
   async function submit(event: FormEvent) {
     event.preventDefault()
-    if (submitting) return
     const normalized = email.trim().toLowerCase()
 
     if (!normalized || !password) {
@@ -64,26 +66,37 @@ export function Login() {
       return
     }
 
-    setSubmitting(true)
-    try {
-      const session = await authenticate(normalized, password)
-      signIn(session)
-      toast.show({
-        title: t('Signed in'),
-        description: `${rtl ? session.user.ar : session.user.name} · ${session.user.roleLabel}`,
-      })
-      // Brief pause so the confirmation is readable before the route changes.
-      setTimeout(() => navigate(session.user.destination, { replace: true }), 700)
-    } catch {
+    if (live) {
+      setBusy(true)
+      const result = await signInWithPassword(normalized, password)
+      setBusy(false)
+      if (!result.ok) {
+        toast.show({ title: t('Sign in failed'), description: result.message, error: true })
+        return
+      }
+      /* Where they land follows from the role the server returned, never from
+       * anything typed into this form. */
+      navigate(destinationFor(result.role), { replace: true })
+      return
+    }
+
+    const role = (ROLES as readonly Role[]).find((r) => r.demo.email === normalized)
+    if (!role || password !== DEMO_PASSWORD) {
       toast.show({
         title: t('Sign in failed'),
-        description: apiBaseUrl()
-          ? t('Check your email and password and try again.')
-          : t('Pick a demo role to fill valid credentials.'),
+        description: t('Pick a demo role to fill valid credentials.'),
         error: true,
       })
-      setSubmitting(false)
+      return
     }
+
+    signIn(role.id as RoleId)
+    toast.show({
+      title: t('Signed in'),
+      description: `${rtl ? role.demo.ar : role.demo.name} · ${rtl ? role.ar : role.label}`,
+    })
+    // Brief pause so the confirmation is readable before the route changes.
+    setTimeout(() => navigate(destinationFor(role.id), { replace: true }), 700)
   }
 
   return (
@@ -146,8 +159,8 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    aria-label={t("Toggle password visibility")}
-                    className="flex cursor-pointer border-none bg-transparent p-0 text-muted"
+                    aria-label={t('Toggle password visibility')}
+                    className="flex cursor-pointer border-none bg-transparent p-0 text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
                   >
                     <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
                   </button>
@@ -161,7 +174,7 @@ export function Login() {
                 role="checkbox"
                 aria-checked={remember}
                 onClick={() => setRemember((v) => !v)}
-                className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-action text-[13px] text-body"
+                className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-action text-[13px] text-body focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
               >
                 <span
                   className={cn(
@@ -183,8 +196,8 @@ export function Login() {
               </Link>
             </div>
 
-            <Button type="submit" size="lg" className="w-full">
-              {t('Sign In')}
+            <Button type="submit" size="lg" className="w-full" disabled={busy}>
+              {busy ? t('Signing in…') : t('Sign In')}
             </Button>
 
             <p className="text-center font-action text-sm text-muted">
@@ -196,11 +209,17 @@ export function Login() {
           </form>
         </div>
 
-        {/* ── Demo roles ──────────────────────────────────────────────── */}
+        {/* ── Demo roles ──────────────────────────────────────────────────
+            Hidden once an API is configured: against a real server these cards
+            would fill a password nobody holds, and offering a role picker
+            beside a real sign-in form invites the reading that picking a role
+            grants it. It does not — the server decides — but the screen should
+            not suggest otherwise. */}
+        {live ? null : (
         <div className="flex flex-col gap-[13px] rounded-lg border border-border bg-[color-mix(in_srgb,var(--surface-card)_85%,transparent)] p-5 shadow-lg backdrop-blur-[24px]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="flex rounded bg-[rgba(10,94,215,.1)] p-1.5 text-salis-blue">
+              <span className="flex rounded bg-tint-blue p-1.5 text-salis-blue">
                 <Icon name="Users" size={14} />
               </span>
               <p className="font-display text-sm font-bold text-heading">
@@ -228,11 +247,12 @@ export function Login() {
           <p className="flex gap-[7px] border-t border-border pt-[11px] text-[11.5px] leading-[1.5] text-muted">
             <Icon name="Info" size={13} className="mt-px flex-shrink-0 text-salis-blue" />
             <span>
-              {t('Demo accounts only · shared password')}: {demoPw} ·{' '}
+              {t('Demo accounts only · shared password')}: {DEMO_PASSWORD} ·{' '}
               {t('approval limits in SAR')}
             </span>
           </p>
         </div>
+        )}
       </div>
     </AuthLayout>
   )
@@ -260,17 +280,17 @@ function RoleCard({
       onClick={onSelect}
       className={cn(
         'relative flex min-h-[52px] w-full cursor-pointer items-center gap-[9px] rounded-[10px] border px-[11px] py-[9px] text-start',
-        'transition-all duration-150 hover:-translate-y-px hover:border-[rgba(10,94,215,.4)] hover:shadow-lg',
+        'transition-all duration-150 hover:-translate-y-px hover:border-salis-blue/[.4] hover:shadow-lg',
         selected
-          ? 'border-salis-blue bg-[#EFF4FD] shadow-[0_0_0_3px_#D7E5FA] dark:bg-[#10233D] dark:shadow-[0_0_0_3px_#173963]'
-          : 'border-border bg-card'
+          ? 'border-salis-blue bg-salis-blue/5 shadow-[0_0_0_3px_var(--ring-light)] dark:bg-salis-navy dark:shadow-[0_0_0_3px_var(--ring-dark)]'
+          : 'border-border bg-card focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
       )}
     >
       <span
         className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded"
         style={
           selected
-            ? { background: 'var(--salis-gradient)', color: '#fff' }
+            ? { background: 'var(--salis-gradient)', color: 'white' }
             : { background: 'rgba(10,94,215,.09)', color: role.color }
         }
       >
@@ -292,7 +312,7 @@ function RoleCard({
                 ? 'bg-salis-gradient text-white'
                 : role.limit === 0
                   ? 'bg-inset text-muted'
-                  : 'bg-[rgba(10,94,215,.1)] text-salis-blue'
+                  : 'bg-tint-blue text-salis-blue'
             )}
           >
             {limit}

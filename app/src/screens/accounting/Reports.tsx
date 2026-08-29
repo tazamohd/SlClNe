@@ -1,11 +1,18 @@
 import { useMemo } from 'react'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Button } from '@/components/ui/Button'
+import { BarList, CHART_COLORS, Donut } from '@/components/ui/Charts'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
+import { isLive } from '@/data/repository'
+import { fromHalalas } from '@/screens/finance/money'
+import { useTrialBalance } from './useFinanceReports'
 
 /** The reporting screens.
  *
@@ -13,101 +20,15 @@ import { useCollection } from '@/data/useCollection'
  *  the ledger it summarises cannot disagree. The design hardcoded both sides
  *  independently, which is how a P&L ends up not matching its own journal. */
 
-/** Brand-safe chart palette — the five `--chart-*` tokens, no green or red. */
-const CHART_COLORS = ['#0A5ED7', '#0BB3FF', '#38BDF8', '#64748B', '#F97316']
-
-/** Horizontal bar chart. Simple enough to draw inline; avoids pulling a chart
- *  library in for what the design draws as plain bars. */
-function BarList({
-  rows,
-  total,
-}: {
-  rows: readonly { label: string; value: number }[]
-  total?: number
-}) {
-  const { t } = usePreferences()
-  const max = total ?? Math.max(...rows.map((r) => r.value), 1)
-  return (
-    <div className="flex flex-col gap-3">
-      {rows.map((row, index) => (
-        <div key={row.label} className="flex flex-col gap-1.5">
-          <div className="flex items-baseline justify-between gap-3 text-[13px]">
-            <span className="text-body">{t(row.label)}</span>
-            <Money sar={row.value} className="font-semibold text-heading" />
-          </div>
-          <div className="h-2 overflow-hidden rounded-full bg-inset">
-            <div
-              className="h-full rounded-full"
-              style={{
-                width: `${Math.min(100, (row.value / max) * 100)}%`,
-                background: CHART_COLORS[index % CHART_COLORS.length],
-              }}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-/** Donut built from a conic gradient, as the design's Job Status chart is. */
-function Donut({
-  segments,
-  centerValue,
-  centerLabel,
-}: {
-  segments: readonly { label: string; value: number }[]
-  centerValue: string
-  centerLabel: string
-}) {
-  const { t } = usePreferences()
-  const total = segments.reduce((sum, s) => sum + s.value, 0) || 1
-  let cursor = 0
-  const stops = segments
-    .map((segment, index) => {
-      const start = (cursor / total) * 100
-      cursor += segment.value
-      const end = (cursor / total) * 100
-      return `${CHART_COLORS[index % CHART_COLORS.length]} ${start}% ${end}%`
-    })
-    .join(',')
-
-  return (
-    <div className="flex flex-wrap items-center gap-6">
-      <div
-        className="relative h-[180px] w-[180px] flex-shrink-0 rounded-full"
-        style={{ background: `conic-gradient(${stops})` }}
-      >
-        <div className="absolute inset-9 flex flex-col items-center justify-center rounded-full bg-card">
-          <span className="font-display text-2xl font-black text-heading">{centerValue}</span>
-          <span className="text-[11px] text-muted">{t(centerLabel)}</span>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2">
-        {segments.map((segment, index) => (
-          <div key={segment.label} className="flex items-center gap-2 text-[13px]">
-            <span
-              className="h-2.5 w-2.5 flex-shrink-0 rounded-[3px]"
-              style={{ background: CHART_COLORS[index % CHART_COLORS.length] }}
-            />
-            <span className="min-w-[120px] text-body">{t(segment.label)}</span>
-            <Money sar={segment.value} className="text-muted" />
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 function ExportButtons() {
   const { t } = usePreferences()
   return (
     <>
-      <Button variant="subtle" size="md">
+      <Button variant="subtle" size="md" disabled={!isLive}>
         <Icon name="FileDown" size={15} />
         {t('Export')}
       </Button>
-      <Button variant="subtle" size="md">
+      <Button variant="subtle" size="md" onClick={() => window.print()}>
         <Icon name="Printer" size={15} />
         {t('Print')}
       </Button>
@@ -117,11 +38,16 @@ function ExportButtons() {
 
 /** Aggregates the ledger once, for every report that needs it. */
 function useLedgerTotals() {
-  const { data: accounts = [] } = useCollection('chartOfAccounts')
-  const { data: expenses = [] } = useCollection('expenses')
-  const { data: invoices = [] } = useCollection('invoices')
+  const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
+  const { data: expenses = [], isLoading: eL } = useCollection('expenses')
+  const { data: invoices = [], isLoading: iL } = useCollection('invoices')
 
-  return useMemo(() => {
+  const isLoading = aL || eL || iL
+  const isError = aE
+  const error = aErr
+  const refetch = aR
+
+  const totals = useMemo(() => {
     const byType = (type: string) =>
       accounts.filter((a) => a.type === type).reduce((sum, a) => sum + parseSar(a.balance), 0)
 
@@ -149,12 +75,15 @@ function useLedgerTotals() {
       profit: revenue - expenseAccounts,
     }
   }, [accounts, expenses, invoices])
+
+  return { ...totals, isLoading, isError, error, refetch }
 }
 
 // ── Financial reports ───────────────────────────────────────────────────────
 export function FinancialReports() {
   const { t } = usePreferences()
-  const totals = useLedgerTotals()
+  const isMobile = useIsMobile()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
 
   const stats: Stat[] = [
     { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
@@ -172,6 +101,46 @@ export function FinancialReports() {
       .map(([label, value]) => ({ label, value }))
       .sort((a, b) => b.value - a.value)
   }, [totals.expenses])
+
+  if (isLoading) return <Loading label={t('Loading reports...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="TrendingUp" title={t('Financial Reports')} />
+        <StatRow stats={stats} />
+        <Section title={t('Profit & Loss')} subtitle={t('Derived from the chart of accounts')}>
+          <BarList
+            rows={[
+              { label: 'Revenue', value: totals.revenue },
+              { label: 'Expense', value: totals.expenseAccounts },
+              { label: 'Net Profit', value: Math.max(0, totals.profit) },
+            ]}
+          />
+        </Section>
+        <Section title={t('Expenses by Category')} subtitle={t('Approved and pending claims')}>
+          {byCategory.length ? (
+            <BarList rows={byCategory} />
+          ) : (
+            <p className="text-[13px] text-muted">{t('No expenses recorded')}</p>
+          )}
+        </Section>
+        <Section title={t('Balance Sheet')} subtitle={t('Assets against liabilities and equity')}>
+          <Donut
+            segments={[
+              { label: 'Assets', value: totals.assets },
+              { label: 'Liabilities', value: totals.liabilities },
+              { label: 'Equity', value: totals.equity },
+            ]}
+            centerValue={formatSar(totals.assets).replace('SAR ', '')}
+            centerLabel="Assets"
+          />
+        </Section>
+        {isLive ? <ServerLedgerSummary /> : null}
+      </>
+    )
+  }
 
   return (
     <>
@@ -216,20 +185,98 @@ export function FinancialReports() {
         {/* Assets must equal liabilities plus equity. Saying so where it fails
             beats letting it pass silently into a statement. */}
         {Math.abs(totals.assets - (totals.liabilities + totals.equity)) > 0.005 ? (
-          <p className="flex items-center gap-2 rounded border border-salis-orange/30 bg-[rgba(249,115,22,.06)] px-3 py-2 text-[13px] text-body">
+          <p className="flex items-center gap-2 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-[13px] text-body">
             <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
             {t('Assets do not equal liabilities plus equity in the seeded ledger.')}
           </p>
         ) : null}
       </Section>
+
+      {isLive ? <ServerLedgerSummary /> : null}
     </>
+  )
+}
+
+/** The server-computed trial balance and balance sheet, live only (F-028).
+ *
+ *  The charts above derive from the chart-of-accounts rows the client holds;
+ *  this section shows what `GET /accounting/reports/trial-balance` summed in
+ *  SQL over the whole tenant scope — the P&L roll-up, the debit/credit totals,
+ *  and the balance-sheet identity, which carries F-008's real imbalance
+ *  (`balanced:false`). It is rendered honestly, not tied off; the imbalance
+ *  banner above stays visible either way. `financeReports` is null on the
+ *  fixtures, so this never mounts there. */
+function ServerLedgerSummary() {
+  const { t } = usePreferences()
+  const query = useTrialBalance()
+
+  if (query.isLoading) {
+    return (
+      <Section title={t('Trial balance (server-computed)')}>
+        <Loading label={t('Loading the ledger roll-up…')} />
+      </Section>
+    )
+  }
+  if (query.error || !query.data) {
+    return (
+      <Section title={t('Trial balance (server-computed)')}>
+        <ErrorState description={query.error?.message} onRetry={() => void query.refetch()} />
+      </Section>
+    )
+  }
+
+  const tb = query.data
+  const bs = tb.balanceSheet
+  const rows: readonly { label: string; halalas: number; strong?: boolean; warn?: boolean }[] = [
+    { label: t('Total debits'), halalas: tb.totals.debitHalalas },
+    { label: t('Total credits'), halalas: tb.totals.creditHalalas },
+    { label: t('Assets'), halalas: bs.assetsHalalas },
+    { label: t('Liabilities + equity'), halalas: bs.liabilitiesPlusEquityHalalas },
+    {
+      label: t('Balance-sheet difference'),
+      halalas: bs.differenceHalalas,
+      strong: true,
+      warn: !bs.balanced,
+    },
+  ]
+
+  return (
+    <Section
+      title={t('Trial balance (server-computed)')}
+      subtitle={t('Summed by the server over your organization, not in the browser')}
+    >
+      <div className="flex flex-col">
+        {rows.map((row) => (
+          <div
+            key={row.label}
+            className={
+              'flex items-center justify-between border-0 border-b border-solid border-border py-3 last:border-b-0 ' +
+              (row.strong ? 'text-base font-bold text-heading' : 'text-[13px] text-body')
+            }
+          >
+            <span>{row.label}</span>
+            <Money
+              sar={fromHalalas(row.halalas)}
+              className={row.warn ? 'font-semibold text-salis-orange' : row.strong ? 'font-bold' : ''}
+            />
+          </div>
+        ))}
+      </div>
+      {bs.balanced ? null : (
+        <p className="mt-2 flex items-center gap-2 rounded border border-salis-orange/30 bg-salis-orange/[.06] px-3 py-2 text-[13px] text-body">
+          <Icon name="AlertTriangle" size={15} className="flex-shrink-0 text-salis-orange" />
+          {t('The server confirms assets do not equal liabilities plus equity — the books are not tied off.')}
+        </p>
+      )}
+    </Section>
   )
 }
 
 // ── Financial statements ────────────────────────────────────────────────────
 export function FinancialStatements() {
   const { t } = usePreferences()
-  const totals = useLedgerTotals()
+  const isMobile = useIsMobile()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
 
   const rows: readonly { label: string; value: number; strong?: boolean }[] = [
     { label: 'Revenue', value: totals.revenue },
@@ -239,6 +286,33 @@ export function FinancialStatements() {
     { label: 'Liabilities', value: totals.liabilities },
     { label: 'Equity', value: totals.equity, strong: true },
   ]
+
+  if (isLoading) return <Loading label={t('Loading statements...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="FileText" title={t('Financial Statements')} />
+        <Section title={t('Statement Summary')} subtitle={t('Figures derive from the chart of accounts')}>
+          <div className="flex flex-col">
+            {rows.map((row) => (
+              <div
+                key={row.label}
+                className={
+                  'flex items-center justify-between border-b border-border py-3 last:border-b-0 ' +
+                  (row.strong ? 'text-base font-bold text-heading' : 'text-[13px] text-body')
+                }
+              >
+                <span>{t(row.label)}</span>
+                <Money sar={row.value} className={row.strong ? 'font-bold' : ''} />
+              </div>
+            ))}
+          </div>
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>
@@ -272,17 +346,42 @@ export function FinancialStatements() {
 export function ExecutiveReports() {
   const { t } = usePreferences()
   const { fieldHidden } = useSession()
-  const totals = useLedgerTotals()
+  const isMobile = useIsMobile()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: customers = [] } = useCollection('customers')
 
-  // Defence in depth. Today this never fires: every role in the Branch P&L
-  // hidden list (advisor, technician, qc, parts, frontdesk, callcenter,
-  // procurement, supplier, customer) is already denied `execreports` view by
-  // the module gate, so they are redirected to Unauthorized before reaching
-  // this screen. Kept so that widening execreports in PERMS can't silently
-  // expose P&L figures — the field rule would then start applying here.
   const hidePnl = fieldHidden('Branch P&L')
+
+  if (isLoading) return <Loading label={t('Loading reports...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="BarChart3" title={t('Executive Reports')} />
+        <StatRow stats={[
+          { label: 'Revenue', value: hidePnl ? '---' : formatSar(totals.revenue), caption: 'Period to date', highlight: true },
+          { label: 'Net Profit', value: hidePnl ? '---' : formatSar(totals.profit), caption: 'Revenue less expenses', tone: 'info' },
+        ]} />
+        {hidePnl ? (
+          <Section title={t('Branch P&L')}>
+            <p className="flex items-center gap-2 text-[13px] text-muted">
+              <Icon name="Lock" size={15} className="text-salis-blue" />
+              {t('Branch P&L is not visible to your role.')}
+            </p>
+          </Section>
+        ) : (
+          <Section title={t('Revenue vs Expense')} subtitle={t('Across the reporting period')}>
+            <BarList rows={[
+              { label: 'Revenue', value: totals.revenue },
+              { label: 'Expense', value: totals.expenseAccounts },
+            ]} />
+          </Section>
+        )}
+      </>
+    )
+  }
 
   return (
     <>
@@ -334,6 +433,7 @@ export function ExecutiveReports() {
 
 export function OperationalReports() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
   const { data: jobs = [] } = useCollection('jobs')
   const { data: appointments = [] } = useCollection('appointments')
   const { data: technicians = [] } = useCollection('technicians')
@@ -346,6 +446,67 @@ export function OperationalReports() {
       value,
     }))
   }, [jobs])
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="ClipboardList" title={t('Operational Reports')} />
+        <StatRow
+          stats={[
+            { label: 'Job Cards', value: jobs.length, caption: 'In this period', highlight: true },
+            { label: 'Appointments', value: appointments.length, caption: 'Booked', tone: 'info' },
+            { label: 'Technicians', value: technicians.length, caption: 'On strength' },
+          ]}
+        />
+        <Section title={t('Jobs by Status')}>
+          <div className="flex flex-col gap-3">
+            {byStatus.map((row, index) => (
+              <div key={row.label} className="flex flex-col gap-1.5">
+                <div className="flex items-baseline justify-between gap-3 text-[13px]">
+                  <span className="capitalize text-body">{t(row.label)}</span>
+                  <span className="font-mono font-semibold text-heading" dir="ltr">
+                    {row.value}
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-inset">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${(row.value / Math.max(1, jobs.length)) * 100}%`,
+                      background: CHART_COLORS[index % CHART_COLORS.length],
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+        <Section title={t('Technician Load')}>
+          <div className="flex flex-col gap-3">
+            {technicians.map((tech, index) => (
+              <div key={tech.name} className="flex flex-col gap-1.5">
+                <div className="flex items-baseline justify-between gap-3 text-[13px]">
+                  <span className="text-body">{tech.name}</span>
+                  <span className="font-mono font-semibold text-heading" dir="ltr">
+                    {tech.jobs}
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-inset">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${(tech.jobs / Math.max(...technicians.map((x) => x.jobs), 1)) * 100}%`,
+                      background: CHART_COLORS[index % CHART_COLORS.length],
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>
@@ -422,7 +583,8 @@ export function OperationalReports() {
 // ── BI dashboard ────────────────────────────────────────────────────────────
 export function BIDashboard() {
   const { t } = usePreferences()
-  const totals = useLedgerTotals()
+  const isMobile = useIsMobile()
+  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
   const { data: jobs = [] } = useCollection('jobs')
 
   const bySvc = useMemo(() => {
@@ -430,6 +592,33 @@ export function BIDashboard() {
     for (const job of jobs) map.set(job.svc.replace(/_/g, ' '), (map.get(job.svc.replace(/_/g, ' ')) ?? 0) + 1)
     return [...map.entries()].map(([label, value]) => ({ label, value }))
   }, [jobs])
+
+  if (isLoading) return <Loading label={t('Loading dashboard...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="PieChart" title={t('BI Dashboard')} />
+        <StatRow stats={[
+          { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
+          { label: 'Receivable', value: formatSar(totals.receivable), caption: 'Outstanding', tone: 'warning' },
+        ]} />
+        <Section title={t('Jobs by Service')}>
+          <Donut segments={bySvc} centerValue={String(jobs.length)} centerLabel="jobs" />
+        </Section>
+        <Section title={t('Ledger Composition')}>
+          <BarList rows={[
+            { label: 'Assets', value: totals.assets },
+            { label: 'Liabilities', value: totals.liabilities },
+            { label: 'Equity', value: totals.equity },
+            { label: 'Revenue', value: totals.revenue },
+            { label: 'Expense', value: totals.expenseAccounts },
+          ]} />
+        </Section>
+      </>
+    )
+  }
 
   return (
     <>

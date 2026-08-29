@@ -1,10 +1,12 @@
 import { defineConfig } from 'drizzle-kit'
 
-/** Drizzle Kit config. Dialect is Postgres for both drivers (PGlite is
- *  Postgres-in-WASM, real Postgres via node-postgres). Migrations are generated
- *  into ./drizzle and applied by src/db/migrate.ts / at server start. */
 export default defineConfig({
-  dialect: 'postgresql',
   schema: './src/db/schema.ts',
   out: './drizzle',
+  dialect: 'postgresql',
+  dbCredentials: {
+    url: process.env.DATABASE_ADMIN_URL ?? process.env.DATABASE_URL ?? '',
+  },
+  strict: true,
+  verbose: true,
 })

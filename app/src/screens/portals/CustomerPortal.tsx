@@ -1,499 +1,386 @@
-import { useState, type ReactNode } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { CheckCircle, Home as HomeIcon } from 'lucide-react'
-import { cn } from '@/lib/cn'
+import { Link } from 'react-router-dom'
+import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { Button } from '@/components/ui/Button'
-import { Money } from '@/components/ui/Money'
+import { Money, parseSar } from '@/components/ui/Money'
+import { StatusBadge } from '@/components/ui/Badge'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
+import { useCollection } from '@/data/useCollection'
+import { railIndexFor, type JobRow } from '@/screens/workshop/stages'
+import {
+  isDone,
+  isInProgress,
+  todayIso,
+  type AppointmentRow,
+  type EstimateRow,
+  type InvoiceRow,
+  type VehicleRow,
+} from './portal-data'
 
-/** Standalone customer portal — CustomerPortal.dc.html (home) and
- *  CustomerPortal.Booking.dc.html (booking). A 430px phone-frame surface with
- *  its own header and bottom nav, exactly as the design draws it: a customer
- *  reaches these without a SALIS AUTO staff session, so there is no
- *  `useSession`/RBAC here, no `AppShell` — `PortalChrome` below is the whole
- *  page frame, shared by both routes so the header/nav markup lives once. */
+/** The customer's home — `CustomerPortal.dc.html`: the active service with its
+ *  stage rail, quick actions, the pending estimate, their vehicles, upcoming
+ *  appointments and recent invoices with real balances.
+ *
+ *  Own-scope does the filtering: a customer principal reads their records and
+ *  nothing else, because the server's RLS says so — this screen never trims a
+ *  list by identity itself. Staff roles holding `portalcustomer: v` see the
+ *  same screen over the rows their own scope returns.
+ *
+ *  The design's "Approve" button on the pending estimate is deliberately not
+ *  here: `POST /estimates/:id/approve` demands `estimates: a`, which the
+ *  customer role does not hold, so the button would 403 for the exact audience
+ *  it is drawn for. The estimate shows with its amount and status; the approve
+ *  affordance returns when the server grows a customer-approval path (recorded
+ *  in the tranche report). */
+export function CustomerPortal() {
+  const { t } = usePreferences()
+  const { userName } = useSession()
 
-const CUSTOMER_NAME = 'Ahmed Al-Rashid'
-const ACTIVE_TICKET = 'JC-A3F8B2C1'
+  const vehicles = useCollection('vehicles')
+  const appointments = useCollection('appointments')
+  const invoices = useCollection('invoices')
+  const jobs = useCollection('jobs')
+  const estimates = useCollection('estimates')
 
-const TABS: readonly { to?: string; icon: string; label: string }[] = [
-  { to: '/customer-portal', icon: 'Home', label: 'Home' },
-  { icon: 'Car', label: 'Vehicles' },
-  { to: '/customer-portal/booking', icon: 'Calendar', label: 'Book' },
-  { icon: 'User', label: 'Profile' },
-]
+  const jobRows = (jobs.data ?? []) as readonly JobRow[]
+  const active = jobRows.find(isInProgress) ?? jobRows.find((row) => !isDone(row))
 
-// ── Portal chrome (header + bottom nav), shared by both routes ─────────────
-function PortalChrome({
-  title,
-  back,
-  nav = false,
-  children,
-}: {
-  /** Booking screen's header title; home screen omits it for the greeting. */
-  title?: string
-  /** Route the back chevron returns to. Home has none. */
-  back?: string
-  /** The design only draws the bottom tab bar on the home screen. */
-  nav?: boolean
-  children: ReactNode
-}) {
-  const { t, rtl, theme, toggleTheme } = usePreferences()
-  const { pathname } = useLocation()
+  /* "Pending" for a customer is an estimate that has been *sent* to them and
+   * not yet approved — the vocabulary the estimates collection actually uses. */
+  const pending = ((estimates.data ?? []) as readonly EstimateRow[]).find(
+    (row) => row.status === 'sent'
+  )
+
+  const today = todayIso()
+  const upcoming = ((appointments.data ?? []) as readonly AppointmentRow[]).filter(
+    (row) => !row.scheduledDate || row.scheduledDate >= today
+  )
+
+  const vehicleRows = (vehicles.data ?? []) as readonly VehicleRow[]
+  const invoiceRows = ((invoices.data ?? []) as readonly InvoiceRow[]).slice(0, 5)
 
   return (
-    <div className="flex min-h-screen justify-center bg-page-alt font-ui">
-      <div className="flex h-screen w-full max-w-[430px] flex-col border-x border-border bg-page">
-        <header className="flex flex-shrink-0 items-center gap-2.5 border-b border-border bg-sidebar px-4 py-3">
-          {back ? (
-            <Link
-              to={back}
-              aria-label={t('Back')}
-              className="flex flex-shrink-0 text-muted no-underline hover:no-underline"
-            >
-              <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={20} />
-            </Link>
-          ) : (
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-sm font-bold text-white">
-              {CUSTOMER_NAME.trim()[0]}
-            </span>
-          )}
-          <div className="min-w-0 flex-1">
-            {title ? (
-              <h1 className="truncate font-display text-[17px] font-extrabold text-heading">{title}</h1>
-            ) : (
-              <>
-                <p className="truncate text-sm font-bold text-heading">
-                  {t('Hi,')} {CUSTOMER_NAME.split(' ')[0]}
-                </p>
-                <p className="truncate text-[11px] text-muted">{t('Your service journey')}</p>
-              </>
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={t('Toggle theme')}
-            className="flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted"
-          >
-            <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
-          </button>
-        </header>
-
-        <main className="flex-1 overflow-y-auto">
-          <div className="flex animate-fade-up flex-col gap-4 p-4">{children}</div>
-        </main>
-
-        {nav ? (
-          <nav className="flex flex-shrink-0 border-t border-border bg-sidebar py-2">
-            {TABS.map((tab) => {
-              const active = tab.to === pathname
-              const body = (
-                <>
-                  {tab.icon === 'Home' ? <HomeIcon size={19} /> : <Icon name={tab.icon} size={19} />}
-                  <span className="font-action text-[10px] font-semibold">{t(tab.label)}</span>
-                </>
-              )
-              return tab.to ? (
-                <Link
-                  key={tab.label}
-                  to={tab.to}
-                  className={cn(
-                    'flex flex-1 flex-col items-center gap-1 no-underline transition-colors hover:no-underline',
-                    active ? 'text-salis-blue' : 'text-muted'
-                  )}
-                >
-                  {body}
-                </Link>
-              ) : (
-                <span key={tab.label} aria-disabled className="flex flex-1 flex-col items-center gap-1 text-muted opacity-60">
-                  {body}
-                </span>
-              )
-            })}
-          </nav>
-        ) : null}
+    <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-4">
+      <div>
+        <h1 className="font-display text-[15px] font-bold text-heading">
+          {t('Hi')}, {userName}
+        </h1>
+        <p className="mt-0.5 text-[11px] text-muted">{t('Your service journey')}</p>
       </div>
+
+      {/* Active service — the gradient hero with the six-step rail. */}
+      {jobs.isLoading ? (
+        <Loading label="Loading your service..." />
+      ) : jobs.isError ? (
+        <ErrorState description={jobs.error?.message} onRetry={() => void jobs.refetch()} />
+      ) : active ? (
+        <ActiveServiceCard job={active} />
+      ) : (
+        <Card className="p-5">
+          <EmptyState
+            icon="Car"
+            title={t('No active service')}
+            description={t('When your vehicle is in the workshop, its progress appears here.')}
+            action={
+              <Link
+                to="/customer-portal/booking"
+                className="font-action text-[13px] font-medium"
+              >
+                {t('Book Appointment')}
+              </Link>
+            }
+          />
+        </Card>
+      )}
+
+      {/* Quick actions — every tile leads somewhere real. */}
+      <nav aria-label={t('Quick Actions')} className="grid grid-cols-3 gap-2">
+        <QuickAction to="/customer-portal/booking" icon="Calendar" label="Book" />
+        <QuickAction to="#vehicles" icon="Car" label="Vehicles" />
+        <QuickAction to="#invoices" icon="Receipt" label="Invoices" />
+      </nav>
+
+      {/* Pending estimate, when there is one. */}
+      {pending ? (
+        <Card className="flex items-center gap-3 border-salis-orange/20 p-3.5">
+          <span className="flex flex-shrink-0 rounded-[10px] bg-tint-orange p-2.5 text-salis-orange">
+            <Icon name="Receipt" size={18} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-bold text-heading">{t('Pending Estimate')}</p>
+            <p className="mt-0.5 truncate text-[11px] text-muted">
+              {pending.veh} · <span dir="ltr">{pending.id}</span>
+            </p>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <Money
+              sar={pending.totalHalalas !== undefined ? pending.totalHalalas / 100 : parseSar(pending.amount)}
+              className="text-sm font-extrabold text-heading"
+            />
+            <span className="text-[10px] text-muted">
+              {t('Your advisor will confirm approval with you.')}
+            </span>
+          </div>
+        </Card>
+      ) : null}
+
+      {/* My vehicles — the design's horizontal card strip. */}
+      <h2 id="vehicles" className="scroll-mt-16 font-display text-[13px] font-bold text-heading">
+        {t('My Vehicles')}
+      </h2>
+      {vehicles.isLoading ? (
+        <Loading inline label="Loading vehicles..." />
+      ) : vehicles.isError ? (
+        <ErrorState
+          description={vehicles.error?.message}
+          onRetry={() => void vehicles.refetch()}
+        />
+      ) : vehicleRows.length === 0 ? (
+        <Card className="p-5">
+          <EmptyState
+            icon="Car"
+            title={t('No vehicles on file')}
+            description={t('Vehicles registered to you appear here.')}
+          />
+        </Card>
+      ) : (
+        <ul className="-mx-1 m-0 flex list-none gap-2.5 overflow-x-auto p-0 px-1 pb-1">
+          {vehicleRows.map((vehicle, index) => (
+            <li
+              key={vehicle._id ?? `${vehicle.plate}-${index}`}
+              className="flex min-w-[200px] flex-shrink-0 flex-col gap-2 rounded-xl border border-border bg-card p-3.5"
+            >
+              <div className="flex items-center gap-2">
+                <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
+                  <Icon name="Car" size={14} />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-semibold text-heading">{vehicle.make}</p>
+                  <p className="font-mono text-[10px] text-muted" dir="ltr">
+                    {vehicle.plate}
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-between gap-2 text-[11px]">
+                <span className="text-muted">{t('Last Service')}</span>
+                <span className="text-body">{vehicle.last || '—'}</span>
+              </div>
+              <div className="flex justify-between gap-2 text-[11px]">
+                <span className="text-muted">{t('Mileage')}</span>
+                <span className="text-body" dir="ltr">
+                  {vehicle.mileage}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Upcoming appointments. */}
+      <h2 className="font-display text-[13px] font-bold text-heading">
+        {t('Upcoming Appointments')}
+      </h2>
+      {appointments.isLoading ? (
+        <Loading inline label="Loading appointments..." />
+      ) : appointments.isError ? (
+        <ErrorState
+          description={appointments.error?.message}
+          onRetry={() => void appointments.refetch()}
+        />
+      ) : upcoming.length === 0 ? (
+        <Card className="p-5">
+          <EmptyState
+            icon="Calendar"
+            title={t('Nothing booked yet')}
+            description={t('Your next visit appears here once you book it.')}
+            action={
+              <Link
+                to="/customer-portal/booking"
+                className="font-action text-[13px] font-medium"
+              >
+                {t('Book Appointment')}
+              </Link>
+            }
+          />
+        </Card>
+      ) : (
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {upcoming.map((slot, index) => (
+            <li
+              key={slot._id ?? `${slot.time}-${index}`}
+              className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3"
+            >
+              <span className="flex flex-shrink-0 rounded-lg bg-tint-blue p-1.5 text-salis-blue">
+                <Icon name="Calendar" size={14} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-semibold text-heading">
+                  {slot.svc}
+                </span>
+                <span className="mt-0.5 block truncate text-[11px] text-muted">{slot.veh}</span>
+              </span>
+              <span className="flex flex-col items-end gap-1">
+                <span className="font-mono text-[11px] font-semibold text-heading" dir="ltr">
+                  {slot.scheduledDate ? `${slot.scheduledDate} · ${slot.time}` : slot.time}
+                </span>
+                <StatusBadge value={slot.status} label={t(slot.status.replace(/_/g, ' '))} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Recent invoices, with the balance the server computed. */}
+      <h2 id="invoices" className="scroll-mt-16 font-display text-[13px] font-bold text-heading">
+        {t('Recent Invoices')}
+      </h2>
+      {invoices.isLoading ? (
+        <Loading inline label="Loading invoices..." />
+      ) : invoices.isError ? (
+        <ErrorState
+          description={invoices.error?.message}
+          onRetry={() => void invoices.refetch()}
+        />
+      ) : invoiceRows.length === 0 ? (
+        <Card className="p-5">
+          <EmptyState
+            icon="Receipt"
+            title={t('No invoices yet')}
+            description={t('Invoices for your services appear here.')}
+          />
+        </Card>
+      ) : (
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {invoiceRows.map((invoice, index) => {
+            const total =
+              invoice.totalHalalas !== undefined
+                ? invoice.totalHalalas / 100
+                : parseSar(invoice.amount)
+            const balance =
+              invoice.balanceHalalas !== undefined ? invoice.balanceHalalas / 100 : undefined
+            return (
+              <li
+                key={invoice._id ?? `${invoice.id}-${index}`}
+                className="flex items-center gap-2.5 rounded-xl border border-border bg-card p-3"
+              >
+                <span className="flex flex-shrink-0 rounded-lg bg-tint-bright p-1.5 text-salis-bright">
+                  <Icon name="Receipt" size={14} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-mono text-[12px] font-semibold text-heading" dir="ltr">
+                    {invoice.id}
+                  </span>
+                  <span className="mt-0.5 block text-[11px] text-muted">
+                    {t('Due')} <span dir="ltr">{invoice.due}</span>
+                  </span>
+                </span>
+                <span className="flex flex-col items-end gap-1">
+                  <Money sar={total} className="text-[13px] font-bold text-heading" />
+                  {balance !== undefined && balance > 0 ? (
+                    <span className="text-[10px] font-semibold text-salis-orange">
+                      {t('Balance')} <Money sar={balance} bare className="text-[10px]" />
+                    </span>
+                  ) : (
+                    <StatusBadge value={invoice.status} label={t(invoice.status)} />
+                  )}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }
 
-// ── /customer-portal — service tracking home ────────────────────────────────
-type StepState = 'done' | 'current' | 'pending'
-const TIMELINE: readonly { label: string; num: string; state: StepState }[] = [
-  { label: 'Check-In', num: '1', state: 'done' },
-  { label: 'Inspect', num: '2', state: 'done' },
-  { label: 'Repair', num: '4', state: 'current' },
-  { label: 'QC', num: '5', state: 'pending' },
-  { label: 'Delivery', num: '6', state: 'pending' },
-]
-
-const QUICK_ACTIONS: readonly { icon: string; label: string; color: string; to?: string }[] = [
-  { icon: 'Calendar', label: 'Book', color: '#0A5ED7', to: '/customer-portal/booking' },
-  { icon: 'Receipt', label: 'Invoices', color: '#0BB3FF' },
-  { icon: 'Car', label: 'Vehicles', color: '#0A5ED7' },
-  { icon: 'Headphones', label: 'Support', color: '#F97316' },
-]
-
-const MY_VEHICLES: readonly { make: string; plate: string; lastDate: string; nextDate: string }[] = [
-  { make: 'Toyota Camry 2022', plate: 'RUH 4821', lastDate: 'Jul 15', nextDate: 'Oct 15' },
-  { make: 'Lexus ES 350 2020', plate: 'RUH 7743', lastDate: 'Jun 3', nextDate: 'Sep 3' },
-]
-
-const HISTORY: readonly { icon: string; service: string; date: string; vehicle: string; cost: number; color: string }[] = [
-  { icon: 'Cog', service: 'Oil Change', date: 'Jul 15', vehicle: 'Camry', cost: 590, color: '#0A5ED7' },
-  { icon: 'Disc', service: 'Brake Pads (Front)', date: 'May 22', vehicle: 'Camry', cost: 535, color: '#0BB3FF' },
-  { icon: 'SearchCheck', service: 'Multi-Point Inspection', date: 'Apr 8', vehicle: 'Lexus', cost: 170, color: '#0A5ED7' },
-]
-
-export function CustomerPortal() {
+/** The gradient hero with the six-step rail, filled to the record's stage. */
+function ActiveServiceCard({ job }: { job: JobRow }) {
   const { t } = usePreferences()
+  const reached = railIndexFor(job.stage)
+  const steps = ['Check-In', 'Inspection', 'Estimate', 'Repair', 'QC', 'Pickup'] as const
 
   return (
-    <PortalChrome nav>
-      {/* Active service */}
-      <div className="flex flex-col gap-3.5 rounded-2xl bg-salis-gradient p-[18px] text-white shadow-[0_8px_24px_rgba(10,94,215,.3)]">
-        <div className="flex items-center gap-2">
-          <Icon name="Car" size={18} />
-          <span className="text-sm font-bold">{t('Active Service')}</span>
-          <span className="flex-1" />
-          <span className="text-[11px] opacity-80" dir="ltr">
-            {ACTIVE_TICKET}
-          </span>
-        </div>
-        <div>
-          <p className="text-base font-extrabold">Toyota Camry 2022</p>
-          <p className="mt-0.5 text-xs opacity-80" dir="ltr">
-            RUH 4821 · {t('Maintenance')} &amp; {t('Repair')}
-          </p>
-        </div>
-        <div className="flex items-center gap-0">
-          {TIMELINE.map((step, i) => (
-            <div key={step.label} className="flex flex-1 items-center gap-0 last:flex-none">
-              <div className="flex flex-col items-center gap-0.5">
-                <span
-                  className={cn(
-                    'flex items-center justify-center rounded-full font-bold',
-                    step.state === 'current' ? 'h-[22px] w-[22px] bg-white text-[10px] text-salis-blue shadow-[0_2px_8px_rgba(0,0,0,.2)]' : 'h-5 w-5 text-[9px]',
-                    step.state === 'done' && 'bg-white/30',
-                    step.state === 'pending' && 'bg-white/15 opacity-50'
-                  )}
-                >
-                  {step.state === 'done' ? <Icon name="Check" size={10} strokeWidth={3} /> : step.num}
-                </span>
-                <span className={cn('text-[8px]', step.state === 'current' ? 'font-bold' : 'opacity-70')}>{t(step.label)}</span>
-              </div>
-              {i < TIMELINE.length - 1 ? (
-                <div className={cn('h-0.5 flex-1', step.state === 'pending' ? 'bg-white/15' : 'bg-white/30')} />
-              ) : null}
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center gap-1.5 text-xs">
-          <Icon name="Clock" size={13} />
-          <span>{t('Est. ready: Today 5:00 PM')}</span>
-        </div>
+    <section
+      aria-label={t('Active Service')}
+      className="flex flex-col gap-3.5 rounded-2xl bg-salis-gradient p-[18px] text-white shadow-[0_8px_24px_rgba(10,94,215,.3)]"
+    >
+      <div className="flex items-center gap-2">
+        <Icon name="Car" size={18} />
+        <span className="text-sm font-bold">{t('Active Service')}</span>
+        <span className="flex-1" />
+        <span className="font-mono text-[11px] opacity-80" dir="ltr">
+          {job.id}
+        </span>
       </div>
-
-      {/* Quick actions */}
-      <div className="grid grid-cols-4 gap-2">
-        {QUICK_ACTIONS.map((qa) => {
-          const inner = (
-            <>
-              <span className="flex rounded-[10px] p-2" style={{ background: `${qa.color}1a`, color: qa.color }}>
-                <Icon name={qa.icon} size={16} />
+      <div>
+        <p className="text-base font-extrabold">{job.veh}</p>
+        <p className="mt-0.5 text-xs capitalize opacity-80">{t(job.svc.replace(/_/g, ' '))}</p>
+      </div>
+      <ol className="m-0 flex list-none items-center p-0" aria-label={t('Stage')}>
+        {steps.map((label, index) => {
+          const done = index < reached
+          const currentStep = index === reached
+          return (
+            <li key={label} className="contents">
+              {index > 0 ? (
+                <span
+                  aria-hidden
+                  className={done || currentStep ? 'h-0.5 flex-1 bg-white/40' : 'h-0.5 flex-1 bg-white/15'}
+                />
+              ) : null}
+              <span
+                className="flex flex-col items-center gap-0.5"
+                aria-current={currentStep ? 'step' : undefined}
+              >
+                <span
+                  className={
+                    currentStep
+                      ? 'flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white text-[10px] font-extrabold text-salis-blue shadow'
+                      : done
+                        ? 'flex h-5 w-5 items-center justify-center rounded-full bg-white/30'
+                        : 'flex h-5 w-5 items-center justify-center rounded-full bg-white/15 text-[9px] opacity-60'
+                  }
+                >
+                  {done ? <Icon name="Check" size={10} strokeWidth={3} aria-label={t('Completed')} /> : index + 1}
+                </span>
+                <span className={currentStep ? 'text-[8px] font-bold' : 'text-[8px] opacity-70'}>
+                  {t(label)}
+                </span>
               </span>
-              <span className="text-center text-[10px] font-semibold text-body">{t(qa.label)}</span>
-            </>
-          )
-          return qa.to ? (
-            <Link
-              key={qa.label}
-              to={qa.to}
-              className="flex flex-col items-center gap-1.5 rounded-xl border border-border bg-card p-3.5 no-underline hover:border-salis-blue hover:no-underline"
-            >
-              {inner}
-            </Link>
-          ) : (
-            <button
-              key={qa.label}
-              type="button"
-              className="flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border border-border bg-card p-3.5"
-            >
-              {inner}
-            </button>
+            </li>
           )
         })}
-      </div>
-
-      {/* Pending estimate */}
-      <div className="flex items-center gap-3 rounded-xl border border-[rgba(249,115,22,.2)] bg-card p-3.5">
-        <span className="flex flex-shrink-0 rounded-[10px] bg-[rgba(249,115,22,.1)] p-2.5 text-salis-orange">
-          <Icon name="Receipt" size={18} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[13px] font-bold text-heading">{t('Pending Estimate')}</p>
-          <p className="truncate text-[11px] text-muted">
-            {t('Maintenance')} &amp; {t('Repair')} — Toyota Camry
-          </p>
-        </div>
-        <div className="flex flex-shrink-0 flex-col items-end gap-1">
-          <Money sar={1546} className="text-sm font-extrabold text-heading" />
-          <Button size="sm" className="h-7 px-3 text-[11px]">
-            {t('Approve')}
-          </Button>
-        </div>
-      </div>
-
-      {/* My vehicles */}
-      <h3 className="text-[13px] font-bold text-heading">{t('My Vehicles')}</h3>
-      <div className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-1">
-        {MY_VEHICLES.map((vehicle) => (
-          <div
-            key={vehicle.plate}
-            className="flex w-[200px] flex-shrink-0 flex-col gap-2 rounded-xl border border-border bg-card p-3.5"
-          >
-            <div className="flex items-center gap-2">
-              <span className="flex rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
-                <Icon name="Car" size={14} />
-              </span>
-              <div className="min-w-0">
-                <p className="truncate text-[13px] font-semibold text-heading">{vehicle.make}</p>
-                <p className="truncate text-[10px] text-muted" dir="ltr">
-                  {vehicle.plate}
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-between text-[11px] text-muted">
-              <span>{t('Last Service')}</span>
-              <span className="text-body" dir="ltr">
-                {vehicle.lastDate}
-              </span>
-            </div>
-            <div className="flex justify-between text-[11px] text-muted">
-              <span>{t('Next Due')}</span>
-              <span className="font-semibold text-salis-blue" dir="ltr">
-                {vehicle.nextDate}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Recent history */}
-      <h3 className="text-[13px] font-bold text-heading">{t('Recent History')}</h3>
-      {HISTORY.map((row) => (
-        <div
-          key={`${row.service}-${row.date}`}
-          className="flex items-center gap-2.5 rounded-[10px] border border-border bg-card p-3"
-        >
-          <span className="flex flex-shrink-0 rounded-lg p-1.5" style={{ background: `${row.color}1a`, color: row.color }}>
-            <Icon name={row.icon} size={14} />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-semibold text-heading">{t(row.service)}</p>
-            <p className="truncate text-[10px] text-muted">
-              {row.date} · {row.vehicle}
-            </p>
-          </div>
-          <Money sar={row.cost} className="flex-shrink-0 text-xs font-semibold text-heading" />
-        </div>
-      ))}
-    </PortalChrome>
+      </ol>
+    </section>
   )
 }
 
-// ── /customer-portal/booking — appointment booking ──────────────────────────
-const BOOKING_STEPS = ['Vehicle', 'Service', 'Time', 'Confirm'] as const
-
-const BOOKING_VEHICLES: readonly { make: string; plate: string }[] = [
-  { make: 'Toyota Camry 2022', plate: 'RUH 4821' },
-  { make: 'Lexus ES 350 2020', plate: 'RUH 7743' },
-]
-
-const BOOKING_SERVICES: readonly { icon: string; label: string }[] = [
-  { icon: 'Wrench', label: 'Maintenance' },
-  { icon: 'Cog', label: 'Repair' },
-  { icon: 'SearchCheck', label: 'Inspection' },
-  { icon: 'CircleDot', label: 'Tire Service' },
-  { icon: 'Droplets', label: 'Oil Change' },
-]
-
-const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu'] as const
-const DATE_PILLS = DAY_LABELS.map((day, i) => ({ day, num: String(20 + i) }))
-
-const TIME_SLOTS = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM']
-const BOOKED_TIMES = new Set(['11:00 AM', '2:00 PM'])
-
-export function CustomerPortalBooking() {
+function QuickAction({ to, icon, label }: { to: string; icon: string; label: string }) {
   const { t } = usePreferences()
-  const [vehicle, setVehicle] = useState(BOOKING_VEHICLES[0].make)
-  const [service, setService] = useState('Maintenance')
-  const [dateIndex, setDateIndex] = useState(2)
-  const [time, setTime] = useState('9:00 AM')
-  const [notes, setNotes] = useState('')
+  const inPage = to.startsWith('#')
 
-  return (
-    <PortalChrome title={t('Book Appointment')} back="/customer-portal">
-      {/* Step indicator */}
-      <div className="flex items-center gap-0">
-        {BOOKING_STEPS.map((label, i) => {
-          const state: StepState = i < 2 ? 'done' : i === 2 ? 'current' : 'pending'
-          return (
-            <div key={label} className="flex flex-1 items-center gap-0 last:flex-none">
-              <div className="flex flex-shrink-0 flex-col items-center gap-1">
-                <span
-                  className={cn(
-                    'flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold',
-                    state === 'current' && 'bg-salis-gradient text-white',
-                    state === 'done' && 'bg-salis-blue text-white',
-                    state === 'pending' && 'border-[1.5px] border-border-strong bg-inset text-muted'
-                  )}
-                >
-                  {i + 1}
-                </span>
-                <span className={cn('whitespace-nowrap text-[9px] font-semibold', state === 'current' ? 'text-salis-blue' : state === 'done' ? 'text-heading' : 'text-muted')}>
-                  {t(label)}
-                </span>
-              </div>
-              {i < BOOKING_STEPS.length - 1 ? (
-                <div className={cn('mb-3.5 h-0.5 flex-1', state === 'done' ? 'bg-salis-blue' : 'bg-border')} />
-              ) : null}
-            </div>
-          )
-        })}
-      </div>
+  const body = (
+    <>
+      <span className="flex rounded-[10px] bg-tint-blue p-2 text-salis-blue">
+        <Icon name={icon} size={16} />
+      </span>
+      <span className="text-center font-action text-[10px] font-semibold text-body">
+        {t(label)}
+      </span>
+    </>
+  )
+  const frame =
+    'flex flex-col items-center gap-1.5 rounded-xl border border-border bg-card px-1 py-3.5 no-underline transition-colors hover:border-salis-blue hover:no-underline'
 
-      {/* Vehicle */}
-      <div className="flex flex-col gap-2.5 rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-1.5">
-          <Icon name="Car" size={14} className="text-salis-blue" />
-          <h3 className="text-[13px] font-bold text-heading">{t('Select Vehicle')}</h3>
-        </div>
-        {BOOKING_VEHICLES.map((v) => {
-          const picked = vehicle === v.make
-          return (
-            <button
-              key={v.make}
-              type="button"
-              onClick={() => setVehicle(v.make)}
-              className={cn(
-                'flex w-full items-center gap-2.5 rounded-[10px] border-none p-2.5 text-start font-action',
-                picked ? 'bg-[rgba(10,94,215,.06)] text-salis-blue' : 'bg-inset text-body'
-              )}
-            >
-              <span className="flex rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
-                <Icon name="Car" size={14} />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[13px] font-semibold">{v.make}</span>
-                <span className="block text-[10px] opacity-70" dir="ltr">
-                  {v.plate}
-                </span>
-              </span>
-              {picked ? <CheckCircle size={16} className="flex-shrink-0 text-salis-blue" /> : null}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Service */}
-      <div className="flex flex-col gap-2.5 rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-1.5">
-          <Icon name="Wrench" size={14} className="text-salis-blue" />
-          <h3 className="text-[13px] font-bold text-heading">{t('Select Service')}</h3>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {BOOKING_SERVICES.map((svc) => {
-            const picked = service === svc.label
-            return (
-              <button
-                key={svc.label}
-                type="button"
-                onClick={() => setService(svc.label)}
-                className={cn(
-                  'flex cursor-pointer items-center gap-1.5 rounded-lg border-none px-3.5 py-2 font-action text-xs font-semibold',
-                  picked ? 'bg-salis-gradient text-white' : 'bg-inset text-body'
-                )}
-              >
-                <Icon name={svc.icon} size={14} />
-                <span>{t(svc.label)}</span>
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Date & time */}
-      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center gap-1.5">
-          <Icon name="Calendar" size={14} className="text-salis-blue" />
-          <h3 className="text-[13px] font-bold text-heading">{t('Date & Time')}</h3>
-        </div>
-        <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1">
-          {DATE_PILLS.map((pill, i) => {
-            const picked = dateIndex === i
-            return (
-              <button
-                key={pill.num}
-                type="button"
-                onClick={() => setDateIndex(i)}
-                className={cn(
-                  'flex min-w-[48px] flex-shrink-0 cursor-pointer flex-col items-center gap-0.5 rounded-[10px] border-none px-3 py-2',
-                  picked ? 'bg-salis-gradient text-white' : 'bg-inset text-body'
-                )}
-              >
-                <span className="text-[10px] opacity-70">{t(pill.day)}</span>
-                <span className="text-base font-bold">{pill.num}</span>
-              </button>
-            )
-          })}
-        </div>
-        <div className="grid grid-cols-3 gap-1.5">
-          {TIME_SLOTS.map((slot) => {
-            const booked = BOOKED_TIMES.has(slot)
-            const picked = time === slot
-            return (
-              <button
-                key={slot}
-                type="button"
-                dir="ltr"
-                disabled={booked}
-                onClick={() => setTime(slot)}
-                className={cn(
-                  'h-[38px] rounded-lg border-none font-mono text-xs font-semibold',
-                  booked && 'cursor-default bg-inset text-faint opacity-50',
-                  !booked && picked && 'cursor-pointer bg-salis-gradient text-white',
-                  !booked && !picked && 'cursor-pointer bg-inset text-body'
-                )}
-              >
-                {slot}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Notes */}
-      <div className="flex flex-col gap-1.5 rounded-xl border border-border bg-card p-4">
-        <label htmlFor="booking-notes" className="font-action text-[11px] font-medium text-body">
-          {t('Notes')}
-        </label>
-        <textarea
-          id="booking-notes"
-          rows={2}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder={t('Any additional notes...')}
-          className="resize-none rounded-lg border border-border bg-inset px-3 py-2.5 font-ui text-[13px] text-body outline-none focus:border-salis-blue focus:ring-2 focus:ring-[rgba(10,94,215,.15)]"
-        />
-      </div>
-
-      <Button size="lg" className="w-full">
-        <Icon name="CalendarCheck" size={18} />
-        {t('Confirm Booking')}
-      </Button>
-    </PortalChrome>
+  /* In-page anchors use a plain <a>: react-router treats `#…` as a route. */
+  return inPage ? (
+    <a href={to} className={frame}>
+      {body}
+    </a>
+  ) : (
+    <Link to={to} className={frame}>
+      {body}
+    </Link>
   )
 }

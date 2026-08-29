@@ -1,42 +1,72 @@
-import type { ReactNode } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { TriangleAlert } from 'lucide-react'
-import { Card } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
+import { cn } from '@/lib/cn'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { Icon } from '@/components/ui/Icon'
-import { EmptyState } from '@/components/ui/DataTable'
-import { FieldGrid, Panel, ReadField } from '@/components/ui/FieldGrid'
-import { Money, parseSar } from '@/components/ui/Money'
-import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
+import { Panel } from '@/components/ui/FieldGrid'
+import { Money, SummaryRow } from '@/components/ui/Money'
+import { Avatar } from '@/components/ui/Avatar'
+import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
+import { WORKSHOP_STAGES, WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection } from '@/data/useCollection'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { railIndexFor, railLabelFor, type JobRow } from './stages'
 
-/** JobCard-Detail — the print-oriented, single-page view of one job card:
- *  header pills, stage rail, customer & vehicle, assignment & schedule,
- *  service lines, parts and the cost summary.
+/** The job card as one record: who, what vehicle, which stage, what it costs.
  *
- *  Separate from `JobDetail` (the timeline deep-dive) — this design fronts the
- *  workshop paperwork instead. Costs follow the same FIELD_RULES redaction:
- *  part prices render an em dash and the totals card is dropped entirely for
- *  roles that may not see cost/margin. */
+ *  `JobCardDetail.dc.html` and `JobCardDetail.Mobile.dc.html` are two different
+ *  layouts, not one layout at two widths — the phone drops the sidebar for a
+ *  56px bar, turns the six-step rail into a horizontally scrolling strip of
+ *  16px dots, and stacks every panel into a single column. Both are here.
+ *
+ *  **Where this screen deviates from the design, and why.** The prototype fills
+ *  its panels with figures that no column in `job_cards` holds — an estimated
+ *  completion time, a service advisor, a bay, a fuel level, four invented part
+ *  lines and a parts/labour split of the total. Rendering those from constants
+ *  is the fake-completion this codebase gates against, and computing the money
+ *  split in the browser is what Part 5b forbids outright ("the server computes,
+ *  the client displays"). So each panel renders what the API actually returns
+ *  and says plainly when there is nothing: an empty parts list is a fact about
+ *  this job card, not a hole in the screen. The gaps are filed as requests
+ *  rather than papered over.
+ */
 export function JobCardDetail() {
   const { t, rtl } = usePreferences()
   const { fieldHidden } = useSession()
+  const isMobile = useIsMobile()
   const [params] = useSearchParams()
 
-  const jobsQuery = useCollection('jobs')
-  const { data: jobs = [] } = jobsQuery
-  const { data: vehicles = [] } = useCollection('vehicles')
-  const { data: customers = [] } = useCollection('customers')
-  const { data: technicians = [] } = useCollection('technicians')
-  const { data: parts = [] } = useCollection('parts')
+  const jobs = useCollection('jobs')
+  const requested = params.get('id')
 
-  const jobId = params.get('id')
-  const job = jobId ? jobs.find((row) => row.id === jobId) : jobs[0]
+  const rows = (jobs.data ?? []) as readonly JobRow[]
+  const job = requested ? rows.find((row) => row.id === requested) : rows[0]
 
-  if (jobsQuery.isLoading) {
-    return <p className="text-sm text-muted">{t('Loading...')}</p>
+  /* The links the API models: an invoice names its job card, a line names its
+   * invoice. Both are server-side filters rather than a list fetched and sieved
+   * in the browser. An empty id matches nothing, which is the right answer
+   * while there is no job to ask about. */
+  const invoices = useCollection('invoices', { filter: { jobCardId: job?._id ?? '' } })
+  const invoice = invoices.data?.[0] as InvoiceRow | undefined
+  const lines = useCollection('invoiceLines', { filter: { invoiceId: invoice?._id ?? '' } })
+
+  const customers = useCollection('customers')
+  const vehicles = useCollection('vehicles')
+  const technicians = useCollection('technicians')
+
+  if (jobs.isLoading) return <Loading label="Loading job card..." />
+
+  if (jobs.isError) {
+    return (
+      <ErrorState
+        title={t("Couldn't load this")}
+        description={jobs.error?.message}
+        onRetry={() => void jobs.refetch()}
+      />
+    )
   }
 
   if (!job) {
@@ -56,30 +86,36 @@ export function JobCardDetail() {
     )
   }
 
-  const vehicle = vehicles.find((row) => row.make === job.veh)
-  const customer = customers.find((row) => row.name === job.cust)
-  // The design's lead tech is the first technician on the roster; the job rows
-  // don't carry an assignment yet, so that stays the display rule here too.
-  const technician = technicians.find((row) => row.name === LEAD_TECH) ?? technicians[0]
+  const customer = (customers.data as readonly CustomerRow[] | undefined)?.find(
+    (row) => row.name === job.cust
+  )
+  const vehicle = (vehicles.data as readonly VehicleRow[] | undefined)?.find(
+    (row) => row.make === job.veh && row.owner === job.cust
+  )
+  const technician = job.assignedTechId
+    ? (technicians.data as readonly TechnicianRow[] | undefined)?.find(
+        (row) => row._id === job.assignedTechId
+      )
+    : undefined
 
-  const status = STATUS_PILLS[job.st] ?? STATUS_PILLS.pending
-  const priority = PRIORITY_PILLS[job.pr] ?? PRIORITY_PILLS.medium
-  const stage = STAGE_BY_STATUS[job.st] ?? 'Check-In'
+  const hideContact = fieldHidden('Customer contact details')
+  const stageLabel = railLabelFor(job.stage)
 
-  const hideCosts = fieldHidden('Part cost / margin')
+  const shared = {
+    job,
+    customer,
+    vehicle,
+    technician,
+    invoice,
+    lines: (lines.data ?? []) as readonly LineRow[],
+    linesLoading: lines.isLoading,
+    hideContact,
+  }
 
-  // Totals fall out of the arithmetic instead of being restated — the design's
-  // figures (590 / 755 / 201.75 / 1,546.75) reproduce exactly.
-  const partsTotal = parts.reduce((sum, part) => sum + parseSar(part.price), 0)
-  const vat = (partsTotal + LABOR_TOTAL) * 0.15
-  const grandTotal = partsTotal + LABOR_TOTAL + vat
-
-  // Contact e-mail isn't in the customer table; the design derives it from the
-  // first name ("ahmed@email.com"), so this reproduces that display rule.
-  const email = customer ? `${customer.name.split(' ')[0]?.toLowerCase()}@email.com` : null
+  if (isMobile) return <MobileLayout {...shared} stageLabel={stageLabel} />
 
   return (
-    <div className="flex max-w-[1200px] flex-col gap-6">
+    <div className="flex max-w-[1200px] animate-fade-up motion-reduce:animate-none flex-col gap-6">
       <div>
         <Link
           to="/job-cards"
@@ -90,310 +126,531 @@ export function JobCardDetail() {
         </Link>
       </div>
 
-      {/* Header — gradient chip, job number, status/priority pills, print. */}
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
+            <div
+              className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg"
+              aria-hidden
+            />
+            <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
               <Icon name="ClipboardList" size={28} />
             </div>
           </div>
           <div>
-            <h1 className="m-0 font-display text-[26px] font-black text-heading" dir="ltr">
-              JC-{job.id}
+            <h1 className="font-display text-[26px] font-black text-heading" dir="ltr">
+              {job.id}
             </h1>
             <p className="mt-0.5 text-sm text-muted">
-              {t('Created')}: <span dir="ltr">{CREATED_AT}</span>
+              {t('Created')}: <CreatedAt value={job._createdAt} />
             </p>
           </div>
         </div>
-        <div className="flex-1" />
-        <HeaderPill background={status.bg} color={status.fg}>
-          <Icon name={status.icon} size={14} />
-          {t(status.label)}
-        </HeaderPill>
-        <HeaderPill background={priority.bg} color={priority.fg}>
-          {priority.warn ? (
-            <TriangleAlert size={14} aria-hidden />
-          ) : (
-            <Icon name="CircleDot" size={14} />
-          )}
-          {t(priority.label)}
-        </HeaderPill>
+        <span className="flex-1" />
+        <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
+        <PriorityBadge value={job.pr} label={`${t(job.pr)} ${t('Priority')}`} />
         <Button variant="subtle" size="md" onClick={() => window.print()}>
           <Icon name="Printer" size={14} />
           {t('Print')}
         </Button>
       </div>
 
-      <WorkflowStepper current={stage} />
+      <WorkflowStepper current={stageLabel} />
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Customer & Vehicle */}
-        <Panel icon="User" title={t('Customer & Vehicle')}>
-          <div className="flex items-center gap-3 rounded-[10px] border border-border bg-inset p-3">
-            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-sm font-bold text-white">
-              {job.cust.charAt(0)}
-            </span>
-            <div className="min-w-0">
-              <p className="m-0 text-sm font-bold text-heading">{job.cust}</p>
-              {customer ? (
-                <p className="mt-0.5 truncate text-xs text-muted" dir="ltr">
-                  {customer.phone} · {email}
-                </p>
-              ) : null}
-            </div>
-          </div>
-          <FieldGrid>
-            <ReadField label={t('Vehicle')} value={job.veh} emphasis />
-            <ReadField label={t('Plate')} value={vehicle?.plate ?? '—'} code emphasis />
-            <ReadField label={t('Odometer Reading')} value={vehicle?.mileage ?? '—'} code emphasis />
-            <ReadField label={t('Fuel Level')} value={FUEL_LEVEL} emphasis />
-          </FieldGrid>
-        </Panel>
-
-        {/* Assignment & Schedule */}
-        <Panel icon="Users" title={t('Assignment & Schedule')}>
-          <div className="flex items-center gap-2.5 rounded-[10px] border border-border bg-inset p-3">
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[13px] font-bold text-white">
-              {technician ? technician.name.charAt(0) : '—'}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="m-0 text-[13px] font-semibold text-heading">
-                {technician?.name ?? '—'}
-              </p>
-              <p className="mt-px text-[11px] text-muted">{t('Lead Technician')}</p>
-            </div>
-            {technician ? (
-              <span className="text-[11px] font-semibold text-salis-blue" dir="ltr">
-                ★ {technician.rating}
-              </span>
-            ) : null}
-          </div>
-          <FieldGrid>
-            <ReadField label={t('Check-In Time')} value={<span dir="ltr">{SCHEDULE.checkIn}</span>} />
-            <div>
-              <span className="font-action text-[11px] font-medium text-muted">
-                {t('Est. Completion')}
-              </span>
-              <p className="mt-1 text-sm font-semibold text-salis-blue" dir="ltr">
-                {SCHEDULE.estCompletion}
-              </p>
-            </div>
-            <ReadField label={t('Service Advisor')} value={SCHEDULE.advisor} />
-            <ReadField label={t('Bay')} value={<span dir="ltr">{SCHEDULE.bay}</span>} />
-          </FieldGrid>
-        </Panel>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <CustomerPanel
+          job={job}
+          customer={customer}
+          vehicle={vehicle}
+          hideContact={hideContact}
+        />
+        <AssignmentPanel job={job} technician={technician} />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Services */}
-        <Panel icon="Wrench" title={t('Services')} className="gap-3">
-          <div className="flex flex-col">
-            {SERVICE_LINES.map((line) => {
-              const tone = SERVICE_TONES[line.tone]
-              return (
-                <div key={line.label} className="flex items-center gap-2.5 border-b border-border py-2.5">
-                  <span
-                    className="flex flex-shrink-0 rounded-lg p-1.5"
-                    style={{ background: tone.iconBg, color: tone.iconFg }}
-                  >
-                    <Icon name={line.icon} size={14} />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="m-0 text-[13px] font-medium text-body">
-                      {t(line.label)}
-                      {line.kind ? ` — ${t(line.kind)}` : ''}
-                    </p>
-                    <p className="mt-px text-[11px] text-muted">{t(line.detail)}</p>
-                  </div>
-                  <span
-                    className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
-                    style={{ background: tone.pillBg, color: tone.pillFg }}
-                  >
-                    {t(line.status)}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        </Panel>
-
-        {/* Parts */}
-        <Panel icon="Package" title={t('Parts')} className="gap-3">
-          <div className="flex flex-col">
-            {parts.map((part) => (
-              <div key={part.sku} className="flex items-center gap-2.5 border-b border-border py-2">
-                <div className="min-w-0 flex-1">
-                  <p className="m-0 text-[13px] font-medium text-body">{t(part.name)}</p>
-                  <p className="mt-px text-[11px] text-muted" dir="ltr">
-                    {part.sku}
-                  </p>
-                </div>
-                <span className="font-mono text-xs text-muted" dir="ltr">
-                  ×1
-                </span>
-                {hideCosts ? (
-                  <span className="text-[13px] text-faint" title={t('Hidden for your role')}>
-                    —
-                  </span>
-                ) : (
-                  <Money sar={parseSar(part.price)} className="text-[13px] font-semibold text-heading" />
-                )}
-              </div>
-            ))}
-          </div>
-        </Panel>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <ServicesPanel job={job} />
+        <PartsPanel lines={shared.lines} loading={shared.linesLoading} invoice={invoice} />
       </div>
 
-      {/* Cost summary — dropped, not blanked, for cost-redacted roles. */}
-      {hideCosts ? null : (
-        <Card className="flex w-full flex-col gap-2 p-5 sm:ms-auto sm:w-80">
-          <SummaryRow label={t('Parts')} sar={partsTotal} />
-          <SummaryRow label={t('Labor')} sar={LABOR_TOTAL} />
-          <SummaryRow label={t('VAT (15%)')} sar={vat} />
-          <div className="h-px bg-border" />
-          <div className="flex items-center justify-between text-xl font-extrabold text-heading">
-            <span>{t('Grand Total')}</span>
-            <Money sar={grandTotal} />
+      <div className="flex justify-end">
+        <CostSummary invoice={invoice} className="w-full sm:w-[320px]" />
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ mobile */
+
+/** `JobCardDetail.Mobile.dc.html`: a 56px bar with the code and both pills, a
+ *  scrolling stage strip under it, then one column of cards at 16px padding. */
+function MobileLayout({
+  job,
+  customer,
+  vehicle,
+  technician,
+  invoice,
+  lines,
+  linesLoading,
+  hideContact,
+  stageLabel,
+}: SharedProps & { stageLabel: string }) {
+  const { t, rtl } = usePreferences()
+
+  return (
+    <div className="-mx-4 -my-4 flex flex-col">
+      <div className="flex items-center gap-2.5 border-b border-border bg-sidebar px-4 py-3.5">
+        <Link to="/job-cards" aria-label={t('Back to Job Cards')} className="flex text-muted">
+          <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={20} />
+        </Link>
+        <h1
+          className="min-w-0 flex-1 truncate font-display text-[17px] font-extrabold text-heading"
+          dir="ltr"
+        >
+          {job.id}
+        </h1>
+        <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
+        <PriorityBadge value={job.pr} label={t(job.pr)} />
+      </div>
+
+      <MobileStageStrip current={stageLabel} />
+
+      <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3 p-4">
+        <Card className="flex items-center gap-2.5 rounded-xl p-3.5">
+          <Avatar name={job.cust} size={38} />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-bold text-heading">{job.cust}</p>
+            <p className="mt-px truncate text-[11px] text-muted">
+              {job.veh}
+              {vehicle ? ` · ${vehicle.plate}` : ''}
+            </p>
           </div>
         </Card>
-      )}
+
+        <div className="grid grid-cols-2 gap-2">
+          <Stat label={t('Check-In')} value={<CreatedAt value={job._createdAt} short />} />
+          <Stat
+            label={t('Odometer Reading')}
+            value={vehicle ? <span dir="ltr">{vehicle.mileage}</span> : NOT_RECORDED}
+          />
+        </div>
+
+        <Card className="flex items-center gap-2.5 rounded-[10px] p-3">
+          {technician ? (
+            <>
+              <Avatar name={technician.name} size={32} />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold text-heading">{technician.name}</p>
+                <p className="mt-px text-[10px] text-muted">{t('Assigned Technician')}</p>
+              </div>
+              {technician.rating ? (
+                <span className="text-[11px] font-semibold text-salis-blue" dir="ltr">
+                  ★ {technician.rating}
+                </span>
+              ) : null}
+            </>
+          ) : (
+            <p className="text-xs text-muted">{t('No technician assigned yet')}</p>
+          )}
+        </Card>
+
+        <ServicesPanel job={job} />
+        <PartsPanel lines={lines} loading={linesLoading} invoice={invoice} />
+        <CostSummary invoice={invoice} />
+
+        {hideContact || !customer ? null : (
+          <Card className="flex flex-col gap-1 rounded-xl p-3.5">
+            <span className="font-action text-[11px] font-medium text-muted">{t('Phone')}</span>
+            <a
+              href={`tel:${customer.phone.replace(/\s/g, '')}`}
+              dir="ltr"
+              className="font-mono text-[13px]"
+            >
+              {customer.phone}
+            </a>
+          </Card>
+        )}
+      </div>
     </div>
   )
 }
 
-function HeaderPill({
-  background,
-  color,
-  children,
+/** The phone's stage rail: 16px dots, 9px labels, scrolls sideways rather than
+ *  compressing six steps into 390px. */
+function MobileStageStrip({ current }: { current: string }) {
+  const { t } = usePreferences()
+  const currentIndex = WORKSHOP_STAGES.indexOf(current as (typeof WORKSHOP_STAGES)[number])
+
+  return (
+    <ol className="flex list-none items-center overflow-x-auto border-b border-border bg-card px-4 py-2">
+      {WORKSHOP_STAGES.map((stage, index) => {
+        const isCurrent = index === currentIndex
+        const isDone = index < currentIndex
+        return (
+          <li key={stage} className="flex flex-shrink-0 items-center">
+            <span
+              className="flex items-center gap-[3px]"
+              aria-current={isCurrent ? 'step' : undefined}
+            >
+              <span
+                className={cn(
+                  'flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-[8px] font-bold',
+                  isCurrent
+                    ? 'bg-salis-gradient text-white'
+                    : isDone
+                      ? 'bg-salis-blue text-white'
+                      : 'border border-border bg-inset text-muted'
+                )}
+              >
+                {isDone ? <Icon name="Check" size={9} strokeWidth={3} aria-label={t('Completed')} /> : index + 1}
+              </span>
+              <span
+                className={cn(
+                  'whitespace-nowrap font-action text-[9px] font-semibold',
+                  isCurrent ? 'text-salis-blue' : isDone ? 'text-heading' : 'text-muted'
+                )}
+              >
+                {t(stage)}
+              </span>
+            </span>
+            {index < WORKSHOP_STAGES.length - 1 ? (
+              <span
+                className={cn(
+                  'mx-0.5 h-0.5 w-2.5 flex-shrink-0 rounded-sm',
+                  isDone ? 'bg-salis-blue' : 'bg-border'
+                )}
+              />
+            ) : null}
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
+
+/* ------------------------------------------------------------------ panels */
+
+function CustomerPanel({
+  job,
+  customer,
+  vehicle,
+  hideContact,
 }: {
-  background: string
-  color: string
-  children: ReactNode
+  job: JobRow
+  customer?: CustomerRow
+  vehicle?: VehicleRow
+  hideContact: boolean
+}) {
+  const { t, rtl } = usePreferences()
+  const contact = [customer?.phone, customer?.email].filter(Boolean).join(' · ')
+
+  return (
+    <Panel icon="User" title={rtl ? AR.customerVehicle : 'Customer & Vehicle'}>
+      <div className="flex items-center gap-3 rounded-[10px] border border-border bg-inset p-3">
+        <Avatar name={job.cust} size={40} />
+        <div className="min-w-0">
+          <p className="truncate text-sm font-bold text-heading">{job.cust}</p>
+          {hideContact ? (
+            <p className="mt-0.5 text-xs text-faint" title={t('Hidden for your role')}>
+              —
+            </p>
+          ) : (
+            <p className="mt-0.5 truncate text-xs text-muted" dir="ltr">
+              {contact || '—'}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2.5">
+        <Cell label={t('Vehicle')} value={job.veh} />
+        <Cell label={t('Plate')} value={vehicle?.plate ?? NOT_RECORDED} code />
+        <Cell label={t('Odometer Reading')} value={vehicle?.mileage ?? NOT_RECORDED} code />
+        {/* The design's fourth cell is Fuel Level. Check-In captures it, no
+            column stores it, and inventing "3/4" here would be exactly the
+            fabricated data this rebuild exists to remove — so the cell carries
+            the VIN, which the vehicle record really holds. */}
+        <Cell label="VIN" value={vehicle?.vin ?? NOT_RECORDED} code />
+      </div>
+    </Panel>
+  )
+}
+
+function AssignmentPanel({ job, technician }: { job: JobRow; technician?: TechnicianRow }) {
+  const { t, rtl } = usePreferences()
+
+  return (
+    <Panel icon="Users" title={rtl ? AR.assignment : 'Assignment & Schedule'}>
+      {technician ? (
+        <div className="flex items-center gap-2.5 rounded-[10px] border border-border bg-inset p-3">
+          <Avatar name={technician.name} size={36} />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[13px] font-semibold text-heading">{technician.name}</p>
+            <p className="mt-px text-[11px] text-muted">
+              {technician.specialty || (rtl ? AR.leadTechnician : 'Lead Technician')}
+            </p>
+          </div>
+          {technician.rating ? (
+            <span className="text-[11px] font-semibold text-salis-blue" dir="ltr">
+              ★ {technician.rating}
+            </span>
+          ) : null}
+        </div>
+      ) : (
+        <div className="rounded-[10px] border border-border bg-inset p-3">
+          <EmptyState
+            icon="Users"
+            title={t('No technician assigned yet')}
+            description={t('Assign one from the technician schedule.')}
+          />
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-2.5">
+        {/* Check-In Time is the record's own creation stamp. The design's other
+            three cells — Est. Completion, Service Advisor, Bay — have no column
+            in `job_cards`; service and priority are what the record does carry. */}
+        <Cell label={rtl ? AR.checkInTime : 'Check-In Time'} value={<CreatedAt value={job._createdAt} />} />
+        <Cell label={t('Last Updated')} value={<CreatedAt value={job._updatedAt} />} />
+        <Cell
+          label={t('Service')}
+          value={<ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />}
+        />
+        <Cell
+          label={t('Priority')}
+          value={<PriorityBadge value={job.pr} label={t(job.pr)} />}
+        />
+      </div>
+    </Panel>
+  )
+}
+
+/** The job's service line, with its position on the rail read as its state.
+ *
+ *  A job card carries exactly one service in this schema, so this is one row —
+ *  the prototype's three were three different jobs' worth of work drawn onto
+ *  one card. */
+function ServicesPanel({ job }: { job: JobRow }) {
+  const { t, rtl } = usePreferences()
+  const index = railIndexFor(job.stage)
+  const state = index >= 5 ? 'Completed' : index === 0 ? 'Pending' : 'In Progress'
+
+  return (
+    <Panel icon="Wrench" title={rtl ? AR.services : 'Services'}>
+      <div className="flex items-center gap-2.5 py-2.5">
+        <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-1.5 text-salis-blue">
+          <Icon name="Wrench" size={14} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[13px] font-medium text-body">
+            {t(job.svc.replace(/_/g, ' '))}
+          </p>
+          <p className="mt-px text-[11px] text-muted">{t(railLabelFor(job.stage))}</p>
+        </div>
+        <StatusBadge value={index >= 5 ? 'completed' : index === 0 ? 'pending' : 'in_progress'} label={t(state)} />
+      </div>
+    </Panel>
+  )
+}
+
+/** Parts consumed, read from the job's invoice lines — the only place the API
+ *  records what a job actually used. */
+function PartsPanel({
+  lines,
+  loading,
+  invoice,
+}: {
+  lines: readonly LineRow[]
+  loading: boolean
+  invoice?: InvoiceRow
+}) {
+  const { t } = usePreferences()
+  const parts = lines.filter((line) => line.kind === 'part')
+
+  return (
+    <Panel icon="Package" title={t('Parts')}>
+      {loading ? (
+        <Loading inline label="Loading parts..." />
+      ) : parts.length === 0 ? (
+        <EmptyState
+          icon="Package"
+          title={t('No parts recorded')}
+          description={
+            invoice
+              ? t('This job card has an invoice, but no part lines on it yet.')
+              : t('Parts appear here once they are billed to this job card.')
+          }
+        />
+      ) : (
+        <ul className="flex list-none flex-col p-0">
+          {parts.map((line, index) => (
+            <li
+              key={line._id ?? `${line.part}-${index}`}
+              className="flex items-center gap-2.5 border-b border-border py-2 last:border-b-0"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[13px] font-medium text-body">{line.desc}</p>
+                {line.part ? (
+                  <p className="mt-px font-mono text-[11px] text-muted" dir="ltr">
+                    {line.part}
+                  </p>
+                ) : null}
+              </div>
+              <span className="flex-shrink-0 font-mono text-xs text-muted" dir="ltr">
+                ×{line.qty}
+              </span>
+              <Money sar={line.unit} className="flex-shrink-0 text-[13px] font-semibold text-heading" />
+            </li>
+          ))}
+        </ul>
+      )}
+    </Panel>
+  )
+}
+
+/** The money, exactly as the server computed it.
+ *
+ *  The design splits the total into parts and labour. Deriving that split in
+ *  the browser would be a frontend financial calculation, which Part 5b forbids
+ *  — `invoices` exposes subtotal, tax and total, so those are the three rows. */
+function CostSummary({ invoice, className }: { invoice?: InvoiceRow; className?: string }) {
+  const { t } = usePreferences()
+
+  if (!invoice) {
+    return (
+      <Card className={cn('p-5', className)}>
+        <EmptyState
+          icon="Receipt"
+          title={t('Not invoiced yet')}
+          description={t('Totals appear once this job card is invoiced.')}
+        />
+      </Card>
+    )
+  }
+
+  return (
+    <Card className={cn('flex flex-col gap-2 p-5', className)}>
+      <SummaryRow label={t('Subtotal')} halalas={invoice.subtotalHalalas} />
+      <SummaryRow label={t('VAT (15%)')} halalas={invoice.taxHalalas} />
+      <div className="h-px bg-border" />
+      <div className="flex items-center justify-between gap-3 text-xl font-extrabold text-heading">
+        <span>{t('Grand Total')}</span>
+        <Money sar={halalas(invoice.totalHalalas)} className="font-extrabold" />
+      </div>
+      <p className="text-[11px] text-muted">
+        {t('Invoice')} <span dir="ltr" className="font-mono">{invoice.id}</span> ·{' '}
+        {t(invoice.status)}
+      </p>
+    </Card>
+  )
+}
+
+/* ------------------------------------------------------------------ pieces */
+
+/** Halalas on the wire, SAR at the boundary — never the other way round. */
+function halalas(value: number | undefined): number {
+  return (value ?? 0) / 100
+}
+
+const NOT_RECORDED = '—'
+
+function Cell({
+  label,
+  value,
+  code,
+}: {
+  label: string
+  value: React.ReactNode
+  code?: boolean
 }) {
   return (
-    <span
-      className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 font-action text-xs font-semibold"
-      style={{ background, color }}
-    >
-      {children}
-    </span>
-  )
-}
-
-function SummaryRow({ label, sar }: { label: string; sar: number }) {
-  return (
-    <div className="flex items-center justify-between text-sm text-body">
-      <span>{label}</span>
-      <Money sar={sar} className="font-semibold" />
+    <div className="min-w-0">
+      <span className="font-action text-[11px] text-muted">{label}</span>
+      <p
+        dir={code ? 'ltr' : undefined}
+        className={cn(
+          'mt-0.5 truncate font-semibold text-heading',
+          code ? 'font-mono text-[13px]' : 'text-[13px]'
+        )}
+      >
+        {value}
+      </p>
     </div>
   )
 }
 
-/** Header pill per job status — the design's palette (cyan = in progress,
- *  orange = pending/cancelled), icons limited to the generated registry. */
-const STATUS_PILLS: Record<string, { icon: string; bg: string; fg: string; label: string }> = {
-  pending: { icon: 'Clock', bg: 'rgba(249,115,22,.1)', fg: '#F97316', label: 'Pending' },
-  assigned: { icon: 'User', bg: 'rgba(11,179,255,.1)', fg: '#0BB3FF', label: 'Assigned' },
-  in_progress: { icon: 'Clock', bg: 'rgba(11,179,255,.1)', fg: '#0BB3FF', label: 'In Progress' },
-  completed: { icon: 'Check', bg: 'rgba(10,94,215,.1)', fg: '#0A5ED7', label: 'Completed' },
-  delivered: { icon: 'Car', bg: 'rgba(11,31,59,.1)', fg: '#0B1F3B', label: 'Delivered' },
-  cancelled: { icon: 'CalendarX', bg: 'rgba(249,115,22,.1)', fg: '#F97316', label: 'Cancelled' },
+function Stat({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <Card className="rounded-[10px] p-2.5">
+      <span className="text-[10px] text-muted">{label}</span>
+      <p className="mt-0.5 truncate text-xs font-semibold text-heading">{value}</p>
+    </Card>
+  )
 }
 
-/** Priority pill — orange + warning triangle for high/urgent (the design's
- *  "High Priority" treatment), calmer blues below that per the badge tables. */
-const PRIORITY_PILLS: Record<
-  string,
-  { bg: string; fg: string; label: string; warn: boolean }
-> = {
-  urgent: { bg: 'rgba(249,115,22,.1)', fg: '#F97316', label: 'Urgent Priority', warn: true },
-  high: { bg: 'rgba(249,115,22,.1)', fg: '#F97316', label: 'High Priority', warn: true },
-  medium: { bg: 'rgba(11,179,255,.1)', fg: '#0BB3FF', label: 'Medium Priority', warn: false },
-  low: { bg: 'rgba(10,94,215,.1)', fg: '#0A5ED7', label: 'Low Priority', warn: false },
+
+/** An ISO stamp from the API, or an em dash when the row has none — which is
+ *  every fixture row, because the design bundle has no timestamps. */
+function CreatedAt({ value, short }: { value?: string; short?: boolean }) {
+  if (!value) return <>{NOT_RECORDED}</>
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return <>{NOT_RECORDED}</>
+  return (
+    <span dir="ltr">{(short ? SHORT_STAMP : STAMP).format(date)}</span>
+  )
 }
 
-/** Where each job status sits on the six-stage rail. The seeded in-progress
- *  job lands on Repair, matching the design's stepper. */
-const STAGE_BY_STATUS: Record<string, string> = {
-  pending: 'Check-In',
-  assigned: 'Check-In',
-  in_progress: 'Repair',
-  completed: 'Delivery',
-  delivered: 'Delivery',
-  cancelled: 'Check-In',
+/* Latin dates, pinned LTR, matching the server's own `dateUS` presentation so
+ * one record does not read two ways depending on which endpoint served it. */
+const STAMP = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+})
+
+const SHORT_STAMP = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+})
+
+/** Five labels the design writes in Arabic that `data/generated/ar.ts` does not
+ *  carry. That file belongs to the Arabic agent, so the strings live here, taken
+ *  verbatim from `JobCardDetail.dc.html` rather than translated by guess — and
+ *  they are a standing request to fold into the generated dictionary. */
+const AR = {
+  customerVehicle: 'العميل والمركبة',
+  assignment: 'التعيين والجدول',
+  leadTechnician: 'الفني الرئيسي',
+  checkInTime: 'وقت الاستلام',
+  services: 'الخدمات',
+} as const
+
+/* ------------------------------------------------------------------- types */
+
+interface SharedProps {
+  job: JobRow
+  customer?: CustomerRow
+  vehicle?: VehicleRow
+  technician?: TechnicianRow
+  invoice?: InvoiceRow
+  lines: readonly LineRow[]
+  linesLoading: boolean
+  hideContact: boolean
 }
 
-type ServiceTone = 'done' | 'active' | 'pending'
-
-const SERVICE_TONES: Record<
-  ServiceTone,
-  { iconBg: string; iconFg: string; pillBg: string; pillFg: string }
-> = {
-  done: {
-    iconBg: 'rgba(10,94,215,.08)',
-    iconFg: 'var(--salis-blue)',
-    pillBg: 'rgba(10,94,215,.1)',
-    pillFg: '#0A5ED7',
-  },
-  active: {
-    iconBg: 'rgba(11,179,255,.08)',
-    iconFg: '#0BB3FF',
-    pillBg: 'rgba(11,179,255,.1)',
-    pillFg: '#0BB3FF',
-  },
-  pending: {
-    iconBg: 'rgba(100,116,139,.06)',
-    iconFg: '#64748B',
-    pillBg: 'rgba(100,116,139,.1)',
-    pillFg: '#64748B',
-  },
+/** The API adds columns the design fixtures never had (`email`, `vin`, entity
+ *  metadata). Both shapes reach this screen, so the extras are optional. */
+type CustomerRow = RowOf<'customers'> & { email?: string | null; _id?: string }
+type VehicleRow = RowOf<'vehicles'> & { vin?: string | null; _id?: string }
+type TechnicianRow = RowOf<'technicians'> & { _id?: string }
+type InvoiceRow = RowOf<'invoices'> & {
+  _id?: string
+  jobCardId?: string | null
+  subtotalHalalas?: number
+  taxHalalas?: number
+  totalHalalas?: number
 }
-
-/** The design's three service lines on this job card. */
-const SERVICE_LINES: {
-  icon: string
-  label: string
-  kind: string | null
-  detail: string
-  status: string
-  tone: ServiceTone
-}[] = [
-  {
-    icon: 'Cog',
-    label: 'Oil Change',
-    kind: null,
-    detail: 'Scheduled maintenance — 1h',
-    status: 'Completed',
-    tone: 'done',
-  },
-  {
-    icon: 'Disc',
-    label: 'Brake Pads (Front)',
-    kind: 'Replace',
-    detail: 'Repair — 1.5h',
-    status: 'In Progress',
-    tone: 'active',
-  },
-  {
-    icon: 'SearchCheck',
-    label: 'Multi-Point Inspection',
-    kind: null,
-    detail: 'Full inspection — 1h',
-    status: 'Pending',
-    tone: 'pending',
-  },
-]
-
-const LEAD_TECH = 'Yousef Al-Otaibi'
-const LABOR_TOTAL = 755
-const CREATED_AT = 'Jul 22, 2026, 8:30 AM'
-const FUEL_LEVEL = '3/4'
-const SCHEDULE = {
-  checkIn: 'Jul 22, 8:30 AM',
-  estCompletion: 'Jul 22, 5:00 PM',
-  advisor: 'Khalid Al-Amri',
-  bay: 'Bay 3',
-}
+type LineRow = RowOf<'invoiceLines'> & { _id?: string; invoiceId?: string }

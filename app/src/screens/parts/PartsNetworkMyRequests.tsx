@@ -1,0 +1,101 @@
+import { Icon } from '@/components/ui/Icon'
+import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
+
+interface PartsRequest {
+  id: string
+  partName: string
+  partNumber: string
+  quantity: number
+  urgency: 'Low' | 'Medium' | 'High' | 'Critical'
+  status: 'Open' | 'Quoted' | 'Ordered' | 'Fulfilled' | 'Cancelled'
+  responses: number
+  createdAt: string
+  vehicle: string
+}
+
+const MY_REQUESTS: PartsRequest[] = [
+  { id: 'PR-1201', partName: 'Brake Disc Set - Front', partNumber: '43512-06140', quantity: 2, urgency: 'High', status: 'Quoted', responses: 3, createdAt: 'Aug 18, 2026', vehicle: 'Toyota Camry 2024' },
+  { id: 'PR-1200', partName: 'Air Filter', partNumber: '17801-21060', quantity: 5, urgency: 'Low', status: 'Open', responses: 1, createdAt: 'Aug 17, 2026', vehicle: 'Toyota Corolla 2023' },
+  { id: 'PR-1199', partName: 'Radiator Assembly', partNumber: '25310-D3500', quantity: 1, urgency: 'Critical', status: 'Ordered', responses: 4, createdAt: 'Aug 16, 2026', vehicle: 'Hyundai Tucson 2025' },
+  { id: 'PR-1198', partName: 'Timing Belt Kit', partNumber: '24312-23002', quantity: 1, urgency: 'Medium', status: 'Fulfilled', responses: 2, createdAt: 'Aug 15, 2026', vehicle: 'Hyundai Sonata 2023' },
+  { id: 'PR-1197', partName: 'Alternator', partNumber: '31100-RNA-A01', quantity: 1, urgency: 'High', status: 'Quoted', responses: 5, createdAt: 'Aug 14, 2026', vehicle: 'Honda Accord 2024' },
+  { id: 'PR-1196', partName: 'Headlight Assembly - Left', partNumber: '26060-JM00A', quantity: 1, urgency: 'Medium', status: 'Cancelled', responses: 0, createdAt: 'Aug 13, 2026', vehicle: 'Nissan Altima 2023' },
+]
+
+const URGENCY_STYLES: Record<string, { bg: string; fg: string }> = {
+  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Medium: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Critical: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+}
+
+const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  Open: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  Quoted: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  Ordered: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
+  Fulfilled: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+}
+
+export function PartsNetworkMyRequests() {
+  const { t } = usePreferences()
+  const isMobile = useIsMobile()
+
+  const columns: Column<PartsRequest>[] = [
+    { header: 'ID', cell: (req) => req.id, code: true },
+    { header: 'Part', cell: (req) => req.partName },
+    { header: 'Part Number', cell: (req) => req.partNumber, code: true },
+    { header: 'Vehicle', cell: (req) => req.vehicle },
+    { header: 'Qty', cell: (req) => req.quantity },
+    { header: 'Urgency', cell: (req) => <Badge background={URGENCY_STYLES[req.urgency].bg} color={URGENCY_STYLES[req.urgency].fg}>{t(req.urgency)}</Badge> },
+    {
+      header: 'Responses',
+      cell: (req) => (
+        <div className="flex items-center gap-1">
+          <Icon name="MessagesSquare" size={14} className="text-muted" />
+          <span className="text-body">{req.responses}</span>
+        </div>
+      ),
+    },
+    { header: 'Status', cell: (req) => <Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge> },
+  ]
+
+  const table = (
+    <DataTable
+      caption="My parts requests"
+      columns={columns}
+      rows={MY_REQUESTS}
+      rowKey={(req) => req.id}
+      mobileCard={(req) => (
+        <>
+          <MobileCardHeader title={req.id} code trailing={<Badge background={STATUS_STYLES[req.status].bg} color={STATUS_STYLES[req.status].fg}>{t(req.status)}</Badge>} />
+          <MobileCardRow label={t('Part')} value={req.partName} />
+          <MobileCardRow label={t('Vehicle')} value={req.vehicle} />
+          <MobileCardRow label={t('Responses')} value={req.responses} />
+        </>
+      )}
+    />
+  )
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="PackageSearch" title={t('My Requests')} subtitle={t('Parts network requests')} />
+        {table}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <PageHeader icon="PackageSearch" title={t('My Parts Requests')} subtitle={t('Track your parts network requests and quotes')} />
+
+      {table}
+    </div>
+  )
+}

@@ -1,25 +1,28 @@
-/** Server entrypoint. Initialises the DB (migrations + seed), then listens. */
-import { createApp } from './app.js'
-import { initDb } from './db/index.js'
-import { seed } from './db/seed.js'
-import { env, usesPostgres } from './env.js'
+/** Process entry point. */
+import { assertNotSuperuser, createDb } from './db/client'
+import { env } from './env'
+import { buildApp } from './app'
 
 async function main(): Promise<void> {
-  const db = await initDb()
-  await seed(db)
+  const config = env()
+  const handle = createDb(config.DATABASE_URL, config.DATABASE_POOL_MAX)
+  await assertNotSuperuser(handle.db)
 
-  const app = createApp()
-  app.listen(env.PORT, () => {
-    const driver = usesPostgres ? 'Postgres (DATABASE_URL)' : 'PGlite (in-memory, zero-setup)'
-    // eslint-disable-next-line no-console
-    console.log(`SALIS AUTO server on http://localhost:${env.PORT}  ·  driver: ${driver}`)
-    // eslint-disable-next-line no-console
-    console.log(`Frontend: set VITE_API_BASE_URL=http://localhost:${env.PORT}`)
-  })
+  const app = await buildApp({ db: handle.db, env: config })
+
+  const shutdown = async (signal: string) => {
+    app.log.info({ signal }, 'shutting down')
+    await app.close()
+    await handle.close()
+    process.exit(0)
+  }
+  process.on('SIGTERM', () => void shutdown('SIGTERM'))
+  process.on('SIGINT', () => void shutdown('SIGINT'))
+
+  await app.listen({ port: config.PORT, host: config.HOST })
 }
 
-main().catch((err) => {
-  // eslint-disable-next-line no-console
-  console.error('Failed to start server:', err instanceof Error ? err.message : err)
+main().catch((error) => {
+  process.stderr.write(`${(error as Error).stack ?? String(error)}\n`)
   process.exit(1)
 })

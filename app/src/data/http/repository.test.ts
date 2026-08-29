@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { ApiClient } from './client'
 import { createHttpRepository, MissingEndpointError } from './repository'
 import { ENDPOINTS, servedByApi } from './endpoints'
-import { mockRepository, MockWriteError, type CollectionKey } from '../repository'
+import { mockRepository, RepositoryError, type CollectionKey } from '../repository'
 
 function clientReturning(body: unknown, seen?: { url?: string }) {
   const impl = (async (url: string) => {
@@ -12,8 +12,6 @@ function clientReturning(body: unknown, seen?: { url?: string }) {
   return new ApiClient({ baseUrl: 'https://api.test', fetchImpl: impl })
 }
 
-/** A fetch stub that records the method, URL and parsed JSON body of the last
- *  request, so a write test can assert the exact call the seam made. */
 interface Seen {
   method?: string
   url?: string
@@ -61,19 +59,22 @@ describe('http repository — reading', () => {
     expect(seen.url).toBe('https://api.test/crm/leads')
   })
 
-  it('accepts a bare array', async () => {
+  it('accepts a bare array and wraps it into a Paged envelope', async () => {
     const repo = createHttpRepository(clientReturning([{ id: 'A1' }]))
-    expect(await repo.jobs.list()).toEqual([{ id: 'A1' }])
+    const result = await repo.jobs.list()
+    expect(result.rows).toEqual([{ id: 'A1' }])
   })
 
   it('unwraps a paginated {data} envelope', async () => {
     const repo = createHttpRepository(clientReturning({ data: [{ id: 'A1' }], total: 1 }))
-    expect(await repo.jobs.list()).toEqual([{ id: 'A1' }])
+    const result = await repo.jobs.list()
+    expect(result.rows).toEqual([{ id: 'A1' }])
   })
 
   it('yields an empty list rather than undefined when the payload is empty', async () => {
     const repo = createHttpRepository(clientReturning({ data: null }))
-    expect(await repo.jobs.list()).toEqual([])
+    const result = await repo.jobs.list()
+    expect(result.rows).toEqual([])
   })
 })
 
@@ -106,7 +107,7 @@ describe('http repository — writing', () => {
     const seen: Seen = {}
     const created = { id: 'INV-9', cust: 'X', amount: 'SAR 1', due: 'now', status: 'unpaid' }
     const repo = createHttpRepository(recordingClient(created, seen, 201))
-    const row = await repo.invoices.create!(created)
+    const row = await repo.invoices.create(created as never)
     expect(seen.method).toBe('POST')
     expect(seen.url).toBe('https://api.test/invoices')
     expect(seen.body).toEqual(created)
@@ -116,16 +117,16 @@ describe('http repository — writing', () => {
   it('update PATCHes the id path with the partial body', async () => {
     const seen: Seen = {}
     const repo = createHttpRepository(recordingClient({ id: 'INV-9', status: 'paid' }, seen))
-    await repo.invoices.update!('INV-9', { status: 'paid' })
+    await repo.invoices.update('INV-9', { status: 'paid' } as never)
     expect(seen.method).toBe('PATCH')
     expect(seen.url).toBe('https://api.test/invoices/INV-9')
     expect(seen.body).toEqual({ status: 'paid' })
   })
 
-  it('remove DELETEs the id path', async () => {
+  it('delete DELETEs the id path', async () => {
     const seen: Seen = {}
     const repo = createHttpRepository(recordingClient(undefined, seen, 204))
-    await repo.invoices.remove!('INV-9')
+    await repo.invoices.delete('INV-9')
     expect(seen.method).toBe('DELETE')
     expect(seen.url).toBe('https://api.test/invoices/INV-9')
   })
@@ -133,43 +134,42 @@ describe('http repository — writing', () => {
   it('url-encodes an id so a slash or space cannot escape its path segment', async () => {
     const seen: Seen = {}
     const repo = createHttpRepository(recordingClient({}, seen))
-    await repo.invoices.update!('INV 1/2', { status: 'paid' })
+    await repo.invoices.update('INV 1/2', { status: 'paid' } as never)
     expect(seen.url).toBe('https://api.test/invoices/INV%201%2F2')
   })
 
   it('writes to a namespaced collection use its namespaced path', async () => {
     const seen: Seen = {}
     const repo = createHttpRepository(recordingClient({}, seen, 201))
-    await repo.leads.create!({ name: 'A' } as never)
+    await repo.leads.create({ name: 'A' } as never)
     expect(seen.url).toBe('https://api.test/crm/leads')
   })
 
   it('writing a collection with no contract route rejects loudly', async () => {
     const repo = createHttpRepository(clientReturning([]))
-    await expect(repo.invoiceLines.create!({} as never)).rejects.toBeInstanceOf(MissingEndpointError)
+    await expect(repo.invoiceLines.create({} as never)).rejects.toBeInstanceOf(MissingEndpointError)
   })
 })
 
 describe('mock repository — refuses to fake persistence', () => {
-  it('create/update/remove all throw MockWriteError instead of pretending to save', async () => {
-    await expect(mockRepository.invoices.create!({} as never)).rejects.toBeInstanceOf(MockWriteError)
-    await expect(mockRepository.invoices.update!('INV-1', {} as never)).rejects.toBeInstanceOf(MockWriteError)
-    await expect(mockRepository.invoices.remove!('INV-1')).rejects.toBeInstanceOf(MockWriteError)
+  it('create/update/delete all throw RepositoryError instead of pretending to save', async () => {
+    await expect(mockRepository.invoices.create({} as never)).rejects.toBeInstanceOf(RepositoryError)
+    await expect(mockRepository.invoices.update('INV-1', {} as never)).rejects.toBeInstanceOf(RepositoryError)
+    await expect(mockRepository.invoices.delete('INV-1')).rejects.toBeInstanceOf(RepositoryError)
   })
 
-  it('the error names the collection and the operation', async () => {
+  it('the error names the operation', async () => {
     try {
-      await mockRepository.customers.create!({} as never)
+      await mockRepository.customers.create({} as never)
       throw new Error('expected a throw')
     } catch (error) {
-      expect(error).toBeInstanceOf(MockWriteError)
-      expect((error as MockWriteError).collection).toBe('customers')
-      expect((error as MockWriteError).op).toBe('create')
-      expect((error as Error).message).toContain('VITE_API_BASE_URL')
+      expect(error).toBeInstanceOf(RepositoryError)
+      expect((error as RepositoryError).code).toBe('unsupported')
     }
   })
 
   it('reads still work on the mock', async () => {
-    expect((await mockRepository.invoices.list()).length).toBeGreaterThan(0)
+    const result = await mockRepository.invoices.list()
+    expect(result.rows.length).toBeGreaterThan(0)
   })
 })

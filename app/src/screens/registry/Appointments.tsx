@@ -1,14 +1,16 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { cn } from '@/lib/cn'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { useCollection, type RowOf } from '@/data/useCollection'
 
 type Appointment = RowOf<'appointments'>
@@ -16,9 +18,9 @@ type Appointment = RowOf<'appointments'>
 /** Booking status palette. No-show is the one that needs chasing, so it takes
  *  the warning orange; confirmed and awaiting sit on the blue scale. */
 const STATUS: Record<string, readonly [string, string]> = {
-  confirmed: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  awaiting: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  'no-show': ['rgba(249,115,22,.1)', '#F97316'],
+  confirmed: ['var(--tint-blue)', 'var(--salis-blue)'],
+  awaiting: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  'no-show': ['var(--tint-orange)', 'var(--salis-orange)'],
 }
 
 const FILTERS = ['all', 'confirmed', 'awaiting', 'no-show'] as const
@@ -26,14 +28,17 @@ const FILTERS = ['all', 'confirmed', 'awaiting', 'no-show'] as const
 export function Appointments() {
   const { t } = usePreferences()
   const { can } = useSession()
+  const isMobile = useIsMobile()
   const navigate = useNavigate()
-  const { data: appointments = [], isLoading } = useCollection('appointments')
+  const { data: appointments = [], isLoading, isError, error, refetch } = useCollection('appointments')
   const [filter, setFilter] = useState<string>('all')
 
   const filtered = useMemo(
     () => (filter === 'all' ? appointments : appointments.filter((a) => a.status === filter)),
     [appointments, filter]
   )
+
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const statusBadge = (value: string) => {
     const [bg, fg] = STATUS[value] ?? STATUS.awaiting
@@ -63,6 +68,45 @@ export function Appointments() {
     { header: 'Status', cell: (a) => statusBadge(a.status) },
   ]
 
+  if (isMobile) {
+    return (
+      <>
+        <MobilePageHeader icon="Calendar" title={t('Appointments')} />
+        <ChipGroup label={t('Status')}>
+          {FILTERS.map((option) => {
+            const count = option === 'all' ? appointments.length : appointments.filter((a) => a.status === option).length
+            const label = option === 'all' ? 'All' : option === 'no-show' ? 'No Show' : option[0].toUpperCase() + option.slice(1)
+            return (
+              <Chip
+                key={option}
+                label={`${t(label)} ${count}`}
+                selected={filter === option}
+                onToggle={() => setFilter(option)}
+              />
+            )
+          })}
+        </ChipGroup>
+        <DataTable
+          caption="Appointments"
+          columns={columns}
+          rows={filtered}
+          rowKey={(a, index) => `${a.plate}-${index}`}
+          loading={isLoading}
+          mobileCard={(a) => (
+            <>
+              <MobileCardHeader title={a.time} code trailing={statusBadge(a.status)} />
+              <MobileCardRow>{a.cust}</MobileCardRow>
+              <MobileCardRow>{a.veh} · <span className="font-mono" dir="ltr">{a.plate}</span></MobileCardRow>
+              <MobileCardRow label={t('Service')}>{t(a.svc)}</MobileCardRow>
+              <MobileCardRow label={t('Bay')}>{a.bay} · {a.tech}</MobileCardRow>
+            </>
+          )}
+          empty={<EmptyState icon="CalendarX" title={t('No appointments in this view')} description={t('Try another status filter, or add a booking.')} />}
+        />
+      </>
+    )
+  }
+
   return (
     <>
       <ListPageHeader
@@ -83,48 +127,26 @@ export function Appointments() {
         }
       />
 
-      {/* Status filter. The design shipped these as static chips; here they
-          actually filter, and the count makes the current view legible. */}
-      <div role="tablist" aria-label={t('Status')} className="flex flex-wrap gap-2">
+      <ChipGroup label={t('Status')}>
         {FILTERS.map((option) => {
-          const on = filter === option
           const count =
             option === 'all'
               ? appointments.length
               : appointments.filter((a) => a.status === option).length
+          const label = option === 'all' ? 'All' : option === 'no-show' ? 'No Show' : option[0].toUpperCase() + option.slice(1)
           return (
-            <button
+            <Chip
               key={option}
-              type="button"
-              role="tab"
-              aria-selected={on}
-              onClick={() => setFilter(option)}
-              className={cn(
-                'flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5',
-                'font-action text-[13px] font-medium transition-all duration-150',
-                on
-                  ? 'border-salis-blue bg-[rgba(10,94,215,.08)] text-salis-blue'
-                  : 'border-border bg-card text-muted hover:border-border-strong'
-              )}
-            >
-              <span>
-                {t(
-                  option === 'all'
-                    ? 'All'
-                    : option === 'no-show'
-                      ? 'No Show'
-                      : option[0].toUpperCase() + option.slice(1)
-                )}
-              </span>
-              <span className="font-mono text-[11px] opacity-70" dir="ltr">
-                {count}
-              </span>
-            </button>
+              label={`${t(label)} ${count}`}
+              selected={filter === option}
+              onToggle={() => setFilter(option)}
+            />
           )
         })}
-      </div>
+      </ChipGroup>
 
       <DataTable
+        caption="Appointments"
         columns={columns}
         rows={filtered}
         rowKey={(a, index) => `${a.plate}-${index}`}

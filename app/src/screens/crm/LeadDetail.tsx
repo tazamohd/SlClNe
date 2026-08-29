@@ -1,273 +1,300 @@
-import { Link, useSearchParams } from 'react-router-dom'
-import { Card } from '@/components/ui/Card'
+import { useState, type ReactNode } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { DetailPage, type DetailSection, type DetailStat } from '@/components/shell/DetailPage'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { EmptyState } from '@/components/ui/States'
 import { Money, parseSar } from '@/components/ui/Money'
-import { EmptyState } from '@/components/ui/DataTable'
-import { usePreferences } from '@/providers/PreferencesProvider'
+import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
+import { rowId } from '../registry/writes'
+import { LeadStageBadge } from './crm-badges'
+import { LeadFormModal } from './LeadForm'
+import { ConvertLeadModal } from './ConvertLeadModal'
 
-/** CRM lead deep-dive: contact + deal info, activity timeline and notes for
- *  one lead. Mirrors the Kanban card opened from LeadPipeline.
+/** Lead 360 — `LeadDetail.dc.html` and `.Mobile.dc.html`, on the shared
+ *  `DetailPage` frame.
  *
- *  Contact details, the deal's probability/close-date and the activity feed
- *  aren't part of the `leads` collection yet (it only carries the pipeline
- *  card fields), so — same call as JobDetail's assigned technician and parts
- *  list — they're demo constants here rather than placeholders that vary
- *  with the selected lead. */
+ *  The design leads with the contact (name, company), a status pill, two info
+ *  panels — Contact and Deal — an activity timeline and a notes thread, with
+ *  Edit / Convert to Opportunity / Add note actions.
+ *
+ *  What the `leads` collection actually carries is `name, company, value,
+ *  source, stage, date, score`. So the honest joins are:
+ *
+ *  - **Contact panel** keeps only what exists: company, source, created date.
+ *    Email, phone and location are drawn in the prototype but are on no lead
+ *    row anywhere in the schema, so they are omitted rather than invented.
+ *  - **Deal panel** shows the deal value, the lead score with its meter, and
+ *    the stage — every field real.
+ *  - **Conversion path** is the design's promise made honest: a read-only
+ *    stage rail derived from `stage`, not a mutation. The pipeline runs
+ *    New → Qualified → Proposal → Negotiation → Won; a `lost` lead sits off the
+ *    rail and says so.
+ *  - **Activity timeline** and **notes** have no server source — there is no
+ *    lead-activity or lead-note collection, endpoint or table — so each renders
+ *    an honest empty state. `crm-gaps` still pins those two missing endpoints.
+ *
+ *  **Writes (F-027).** `leads` is now writable and a lead→opportunity conversion
+ *  route exists, so Edit and Convert to Opportunity are real controls, gated on
+ *  the caller's `crm` grants:
+ *
+ *  - **Edit** patches the lead through `useUpdate('leads')` (`LeadFormModal`).
+ *  - **Convert to Opportunity** posts `POST /crm/leads/:id/convert`
+ *    (`ConvertLeadModal`), which creates the opportunity and moves the lead to
+ *    `converted` in one server transaction. A lead already `converted` shows the
+ *    converted state instead of the action — the route is idempotent, but
+ *    offering "convert" on a converted lead would misdescribe what it does.
+ *
+ *  The Send-note button is still absent: notes have no server home, so a note
+ *  control would be a write that cannot land. Against the fixtures both real
+ *  controls refuse honestly with the "set VITE_API_URL" state rather than
+ *  faking a save. */
+type Lead = RowOf<'leads'> & { _id?: string; _createdAt?: string }
 
-type Lead = RowOf<'leads'>
+const PIPELINE = ['New', 'Qualified', 'Proposal', 'Negotiation', 'Won'] as const
 
-const STAGE_TONE: Record<string, readonly [string, string]> = {
-  new: ['rgba(100,116,139,.12)', '#64748B'],
-  qualified: ['rgba(11,179,255,.12)', '#0BB3FF'],
-  proposal: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  negotiation: ['rgba(10,94,215,.16)', '#0A5ED7'],
-  won: ['rgba(11,31,59,.12)', '#0B1F3B'],
-  lost: ['rgba(100,116,139,.1)', '#64748B'],
+/** `qualified` / `Proposal` → `Qualified` / `Proposal`. The seed carries a mix
+ *  of cases; the rail and the badge want one. */
+function titleCase(stage: string): string {
+  const s = stage.toLowerCase()
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 export function LeadDetail() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
+  const { can } = useSession()
+  const isMobile = useIsMobile()
   const [params] = useSearchParams()
-  const { data: leads = [], isLoading } = useCollection('leads')
+  const [editing, setEditing] = useState(false)
+  const [converting, setConverting] = useState(false)
+  const ref = params.get('id') ?? params.get('name') ?? ''
 
-  const key = params.get('id') ?? params.get('name')
-  const lead: Lead | undefined = key ? leads.find((row) => row.name === key) : leads[0]
+  const leads = useCollection('leads')
 
-  if (isLoading) {
-    return <p className="text-sm text-muted">{t('Loading...')}</p>
+  const rows = (leads.data ?? []) as readonly Lead[]
+  const lead = ref ? rows.find((row) => rowId(row) === ref || row.name === ref) : rows[0]
+
+  if (leads.isLoading) return <DetailPage title={t('Lead')} loading />
+
+  if (leads.isError) {
+    return (
+      <DetailPage
+        title={t('Lead')}
+        back={{ to: '/lead-pipeline', label: 'Lead Pipeline' }}
+        error={{ message: leads.error?.message, onRetry: () => void leads.refetch() }}
+      />
+    )
   }
 
   if (!lead) {
     return (
-      <Card className="p-6">
-        <EmptyState
-          icon="SearchX"
-          title={t('Lead not found')}
-          description={t('It may have been deleted, or the link is out of date.')}
-          action={
-            <Link to="/lead-pipeline" className="font-action text-[13px] font-medium">
-              {t('Back to Lead Pipeline')}
-            </Link>
-          }
-        />
-      </Card>
+      <DetailPage
+        title={t('Lead')}
+        back={{ to: '/lead-pipeline', label: 'Lead Pipeline' }}
+        notFound={{
+          title: 'Lead not found',
+          description: 'It may have converted or been removed, or the link is out of date.',
+        }}
+      />
     )
   }
 
-  const [stageBg, stageFg] = STAGE_TONE[lead.stage] ?? STAGE_TONE.new
-  const stageLabel = lead.stage.replace(/_/g, ' ')
+  const stage = lead.stage.toLowerCase()
+  const isLost = stage === 'lost'
+  const isConverted = stage === 'converted'
+  const score = Number(lead.score ?? 0)
+  const memberSince = lead._createdAt ? lead._createdAt.slice(0, 10) : undefined
+  const leadRef = rowId(lead) ?? lead.name
+  // Convert needs both grants because the server does: it creates an
+  // opportunity and edits the lead. A converted lead is past the action.
+  const canConvert = can('crm', 'c') && can('crm', 'e') && !isConverted
+  const canEdit = can('crm', 'e')
 
-  return (
-    <div className="flex max-w-[960px] flex-col gap-6">
-      <div>
-        <Link
-          to="/lead-pipeline"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Back to Lead Pipeline')}
-        </Link>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-4">
-        <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[22px] font-bold text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
-          {lead.name.trim()[0] ?? '?'}
-        </span>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-display text-2xl font-black text-heading">{lead.name}</h1>
-          <p className="mt-0.5 text-sm text-muted">{lead.company}</p>
-        </div>
-        <Badge background={stageBg} color={stageFg}>
-          {t(stageLabel[0].toUpperCase() + stageLabel.slice(1))}
-        </Badge>
-        <div className="flex gap-2">
-          <Button variant="outline" size="md">
+  const actions =
+    canEdit || canConvert ? (
+      <div className={isMobile ? 'flex flex-wrap gap-2' : 'flex gap-2'}>
+        {canConvert ? (
+          <Button onClick={() => setConverting(true)}>
+            <Icon name="GitBranch" size={14} />
+            {t('Convert to Opportunity')}
+          </Button>
+        ) : null}
+        {canEdit ? (
+          <Button variant="subtle" onClick={() => setEditing(true)}>
             <Icon name="Pencil" size={14} />
             {t('Edit')}
           </Button>
-          <Button size="md">
-            <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
-            {t('Convert to Opportunity')}
-          </Button>
-        </div>
+        ) : null}
       </div>
+    ) : undefined
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Card className="p-6">
-          <h3 className="mb-4 text-[17px] font-bold text-heading">{t('Contact Information')}</h3>
-          <div className="flex flex-col gap-3.5">
-            <ContactRow icon="Mail" label={t('Email')} value={CONTACT.email} dir="ltr" />
-            <ContactRow icon="Phone" label={t('Phone')} value={CONTACT.phone} mono dir="ltr" />
-            <ContactRow icon="MapPin" label={t('Location')} value={CONTACT.location} />
-            <ContactRow icon="Globe" label={t('Lead Source')} value={t(lead.source)} />
-          </div>
-        </Card>
+  const summary: DetailStat[] = [
+    { label: 'Deal Value', value: <Money sar={parseSar(lead.value ?? '')} />, icon: 'DollarSign' },
+    {
+      label: 'Lead Score',
+      value: (
+        <span dir="ltr" className="font-mono">
+          {score || '—'}
+        </span>
+      ),
+      icon: 'Gauge',
+    },
+    { label: 'Lead Source', value: lead.source ? t(lead.source) : '—', icon: 'Compass' },
+  ]
 
-        <Card className="p-6">
-          <h3 className="mb-4 text-[17px] font-bold text-heading">{t('Deal Information')}</h3>
-          <div className="flex flex-col gap-3.5">
-            <div className="flex justify-between text-[13px]">
-              <span className="text-muted">{t('Deal Value')}</span>
-              <Money sar={parseSar(lead.value)} className="text-sm font-bold text-heading" />
-            </div>
-            <div className="flex justify-between text-[13px]">
-              <span className="text-muted">{t('Probability')}</span>
-              <span className="font-mono text-sm font-bold text-salis-blue" dir="ltr">
-                {DEAL.probability}
+  const sections: DetailSection[] = [
+    {
+      id: 'contact',
+      title: 'Contact Information',
+      icon: 'User',
+      span: 'half',
+      children: (
+        <dl className="m-0 flex flex-col gap-3">
+          <Field label={t('Company')} value={lead.company || '—'} />
+          <Field label={t('Lead Source')} value={lead.source ? t(lead.source) : '—'} />
+          <Field
+            label={t('Created')}
+            value={
+              memberSince ? (
+                <span dir="ltr" className="font-mono">
+                  {memberSince}
+                </span>
+              ) : (
+                lead.date || '—'
+              )
+            }
+          />
+        </dl>
+      ),
+    },
+    {
+      id: 'deal',
+      title: 'Deal Information',
+      icon: 'Briefcase',
+      span: 'half',
+      children: (
+        <div className="flex flex-col gap-4">
+          <dl className="m-0 flex flex-col gap-3">
+            <Field
+              label={t('Deal Value')}
+              value={
+                <Money
+                  sar={parseSar(lead.value ?? '')}
+                  className="font-mono text-[13px] font-bold text-heading"
+                />
+              }
+            />
+            <Field label={t('Stage')} value={<LeadStageBadge value={stage} />} />
+          </dl>
+          <div className="flex flex-col gap-1.5">
+            <p className="m-0 text-[11px] text-muted">{t('Lead Score')}</p>
+            <div className="flex items-center gap-2.5">
+              <div
+                role="progressbar"
+                aria-valuenow={score}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={t('Lead Score')}
+                className="h-1.5 flex-1 overflow-hidden rounded-full bg-inset"
+              >
+                <div
+                  className="h-full rounded-full bg-salis-gradient"
+                  style={{ inlineSize: `${Math.min(Math.max(score, 0), 100)}%` }}
+                />
+              </div>
+              <span dir="ltr" className="font-mono text-[13px] font-bold text-salis-blue">
+                {score || '—'}
               </span>
             </div>
-            <div className="flex justify-between text-[13px]">
-              <span className="text-muted">{t('Expected Close')}</span>
-              <span className="text-sm text-body">{DEAL.expectedClose}</span>
-            </div>
-            <div className="flex justify-between text-[13px]">
-              <span className="text-muted">{t('Last Contact')}</span>
-              <span className="text-sm text-body">{lead.date}</span>
-            </div>
-            <div>
-              <p className="mb-1 text-[13px] text-muted">{t('Lead Score')}</p>
-              <div className="flex items-center gap-2">
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[rgba(10,94,215,.08)]">
-                  <div
-                    className="h-full rounded-full bg-salis-gradient-r"
-                    style={{ width: `${Math.min(lead.score, 100)}%` }}
-                  />
-                </div>
-                <span className="font-mono text-sm font-bold text-salis-blue" dir="ltr">
-                  {lead.score}
-                </span>
-              </div>
-            </div>
           </div>
-        </Card>
-      </div>
-
-      <Card className="p-6">
-        <h3 className="mb-4 text-[17px] font-bold text-heading">{t('Activity Timeline')}</h3>
-        <div className="flex flex-col gap-0 border-s-2 border-border ps-5">
-          {ACTIVITY.map((event) => (
-            <div key={event.title} className="relative pb-5">
-              <span
-                className="absolute top-0.5 h-3 w-3 rounded-full border-2 border-card"
-                style={{ insetInlineStart: '-27px', background: event.color }}
-              />
-              <div className="mb-1 flex items-center gap-2">
-                <span className="text-[13px] font-semibold text-heading">{t(event.title)}</span>
-                <span className="text-[11px] text-muted">{event.date}</span>
-              </div>
-              <p className="m-0 text-[13px] text-muted">{t(event.desc)}</p>
-            </div>
-          ))}
         </div>
-      </Card>
+      ),
+    },
+    {
+      id: 'conversion',
+      title: 'Conversion Path',
+      icon: 'GitBranch',
+      span: 'full',
+      children: isConverted ? (
+        <EmptyState
+          icon="CheckCircle"
+          title={t('Lead converted')}
+          description={t('This lead became an opportunity and has left the active pipeline.')}
+        />
+      ) : isLost ? (
+        <EmptyState
+          icon="XCircle"
+          title={t('Lead lost')}
+          description={t('This lead did not convert and has left the active pipeline.')}
+        />
+      ) : (
+        <WorkflowStepper current={titleCase(stage)} stages={PIPELINE} />
+      ),
+    },
+    {
+      id: 'activity',
+      title: 'Activity Timeline',
+      icon: 'Activity',
+      span: 'full',
+      children: (
+        <EmptyState
+          icon="Activity"
+          title={t('No activity yet')}
+          description={t('Calls, meetings and emails logged against this lead will appear here.')}
+        />
+      ),
+    },
+    {
+      id: 'notes',
+      title: 'Notes',
+      icon: 'StickyNote',
+      span: 'full',
+      children: (
+        <EmptyState
+          icon="StickyNote"
+          title={t('No notes yet')}
+          description={t('Notes your team records on this lead will appear here.')}
+        />
+      ),
+    },
+  ]
 
-      <Card className="p-6">
-        <h3 className="mb-4 text-[17px] font-bold text-heading">{t('Notes')}</h3>
-        <div className="flex flex-col gap-3">
-          {NOTES.map((note) => (
-            <div key={note.date} className="rounded-[10px] border border-border bg-inset p-3">
-              <p className="m-0 text-[13px] text-body">{t(note.text)}</p>
-              <p className="mt-1.5 text-[11px] text-muted">
-                {note.author} · {note.date}
-              </p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 flex gap-2">
-          <input
-            placeholder={t('Add a note...')}
-            aria-label={t('Add a note...')}
-            className="h-10 flex-1 rounded-lg border border-border bg-inset px-3 text-[13px] text-heading outline-none"
-          />
-          <Button size="md">
-            <Icon name="Send" size={14} />
-            {t('Send')}
-          </Button>
-        </div>
-      </Card>
-    </div>
-  )
-}
-
-function ContactRow({
-  icon,
-  label,
-  value,
-  mono,
-  dir,
-}: {
-  icon: string
-  label: string
-  value: string
-  mono?: boolean
-  dir?: 'ltr' | 'rtl'
-}) {
   return (
-    <div className="flex items-center gap-2.5">
-      <span className="flex flex-shrink-0 rounded-lg bg-[rgba(10,94,215,.08)] p-1.5 text-salis-blue">
-        <Icon name={icon} size={14} />
-      </span>
-      <div className="min-w-0">
-        <p className="m-0 text-[11px] text-muted">{label}</p>
-        <p className={`m-0 text-[13px] text-body ${mono ? 'font-mono' : ''}`} dir={dir}>
-          {value}
-        </p>
-      </div>
-    </div>
+    <>
+      <DetailPage
+        back={{ to: '/lead-pipeline', label: 'Lead Pipeline' }}
+        title={lead.name}
+        avatar={{ initial: lead.name.trim()[0] ?? '?' }}
+        subtitle={lead.company || undefined}
+        status={<LeadStageBadge value={stage} />}
+        actions={actions}
+        summary={summary}
+        sections={sections}
+      />
+
+      {editing ? <LeadFormModal open onClose={() => setEditing(false)} lead={lead} /> : null}
+
+      {converting ? (
+        <ConvertLeadModal
+          open
+          onClose={() => setConverting(false)}
+          leadRef={leadRef}
+          leadName={lead.name}
+        />
+      ) : null}
+    </>
   )
 }
 
-// Demo contact/deal fields the `leads` collection doesn't carry yet.
-const CONTACT = {
-  email: 'huda@riyadhmotors.sa',
-  phone: '+966 50 445 7821',
-  location: 'Riyadh, Saudi Arabia',
+function Field({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <dt className="text-[13px] text-muted">{label}</dt>
+      <dd className="m-0 text-[13px] text-body">{value}</dd>
+    </div>
+  )
 }
-
-const DEAL = {
-  probability: '75%',
-  expectedClose: 'Sep 1, 2026',
-}
-
-const ACTIVITY = [
-  {
-    title: 'Proposal Sent',
-    date: 'Jul 18, 2026',
-    desc: 'Sent comprehensive service agreement proposal via email',
-    color: '#0A5ED7',
-  },
-  {
-    title: 'Meeting',
-    date: 'Jul 15, 2026',
-    desc: 'On-site visit at Riyadh Motors Group headquarters',
-    color: '#0BB3FF',
-  },
-  {
-    title: 'Phone Call',
-    date: 'Jul 12, 2026',
-    desc: 'Initial discovery call — discussed fleet size and requirements',
-    color: '#0BB3FF',
-  },
-  {
-    title: 'Lead Created',
-    date: 'Jul 10, 2026',
-    desc: 'Referred by Ahmed Al-Rashid (existing customer)',
-    color: '#64748B',
-  },
-]
-
-const NOTES = [
-  {
-    text: 'Interested in comprehensive fleet maintenance package. Has 45+ vehicles across 3 locations. Decision maker confirmed. Budget approved for Q3.',
-    author: 'Khalid Al-Amri',
-    date: 'Jul 18, 2026',
-  },
-  {
-    text: 'Initial meeting went well. They need customized reporting. Pricing discussion scheduled for next week.',
-    author: 'Khalid Al-Amri',
-    date: 'Jul 12, 2026',
-  },
-]

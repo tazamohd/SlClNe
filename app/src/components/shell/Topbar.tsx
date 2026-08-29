@@ -20,8 +20,8 @@ export function Topbar() {
           className="pointer-events-none absolute z-[1] text-muted start-2.5"
         />
         <input
+          aria-label={t('Search customers, vehicles, parts...')}
           placeholder={t('Search customers, vehicles, parts...')}
-          aria-label={t('Search')}
           onFocus={() => navigate('/global-search')}
           className="h-9 w-[260px] rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
         />
@@ -29,7 +29,7 @@ export function Topbar() {
 
       <button
         type="button"
-        className="hidden h-9 cursor-pointer items-center gap-2 whitespace-nowrap rounded border border-border bg-card px-3 font-action text-xs text-heading transition-all duration-200 hover:border-transparent hover:bg-salis-gradient hover:text-white md:inline-flex"
+        className="hidden h-9 cursor-pointer items-center gap-2 whitespace-nowrap rounded border border-border bg-card px-3 font-action text-xs text-heading transition-all duration-200 hover:border-transparent hover:bg-salis-gradient hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue md:inline-flex"
       >
         <Icon name="Zap" size={14} />
         <span>{t('Quick Actions')}</span>
@@ -39,17 +39,17 @@ export function Topbar() {
       </button>
 
       <IconButton
-        label={t("Toggle theme")}
+        label="Toggle theme"
         icon={theme === 'dark' ? 'Sun' : 'Moon'}
         onClick={toggleTheme}
       />
       <IconButton
-        label={t("Notifications")}
+        label="Notifications"
         icon="Bell"
         onClick={() => navigate('/notification-center')}
         badge
       />
-      <IconButton label={t("Chat")} icon="MessageSquare" onClick={() => navigate('/aiassistant')} />
+      <IconButton label="Chat" icon="MessageSquare" onClick={() => navigate('/aiassistant')} />
     </header>
   )
 }
@@ -71,7 +71,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-[rgba(10,94,215,.1)] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar"
+      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
     >
       <Icon name={icon} size={16} />
       {badge ? (

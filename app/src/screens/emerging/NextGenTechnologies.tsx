@@ -1,0 +1,85 @@
+import { KpiCard } from '@/components/ui/KpiCard'
+import { Badge } from '@/components/ui/Badge'
+import { DataTable, type Column } from '@/components/ui/DataTable'
+import { usePreferences } from '@/providers/PreferencesProvider'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
+
+const MOCK_ROADMAP = [
+  { id: 'NG-001', name: 'Autonomous Diagnostics', phase: 'Phase 1', timeline: 'Q4 2026', status: 'In Progress', team: 'AI Lab', budget: 'SAR 450K', completion: 65 },
+  { id: 'NG-002', name: 'Voice-Controlled Workshop', phase: 'Phase 1', timeline: 'Q1 2027', status: 'Planned', team: 'R&D', budget: 'SAR 280K', completion: 20 },
+  { id: 'NG-003', name: 'Robotic Parts Handling', phase: 'Phase 2', timeline: 'Q2 2027', status: 'Research', team: 'Automation', budget: 'SAR 1.2M', completion: 8 },
+  { id: 'NG-004', name: '5G Connected Fleet', phase: 'Phase 1', timeline: 'Q4 2026', status: 'In Progress', team: 'Network', budget: 'SAR 380K', completion: 45 },
+  { id: 'NG-005', name: 'Quantum-Safe Security', phase: 'Phase 3', timeline: 'Q4 2027', status: 'Research', team: 'Security', budget: 'SAR 200K', completion: 5 },
+  { id: 'NG-006', name: 'Biometric Access Control', phase: 'Phase 2', timeline: 'Q3 2027', status: 'Planned', team: 'Security', budget: 'SAR 320K', completion: 12 },
+] as const
+
+const STATUS_COLORS: Record<string, readonly [string, string]> = {
+  'In Progress': ['var(--tint-blue)', 'var(--salis-blue)'],
+  Planned: ['var(--tint-orange)', 'var(--salis-orange)'],
+  Research: ['var(--tint-neutral)', 'var(--text-muted)'],
+}
+
+type RoadmapRow = (typeof MOCK_ROADMAP)[number]
+
+export function NextGenTechnologies() {
+  const { t } = usePreferences()
+
+  const inProgress = MOCK_ROADMAP.filter(r => r.status === 'In Progress').length
+  const avgCompletion = Math.round(MOCK_ROADMAP.reduce((a, r) => a + r.completion, 0) / MOCK_ROADMAP.length)
+
+  const kpis = [
+    { label: t('Initiatives'), value: String(MOCK_ROADMAP.length), icon: 'Layers', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Progress'), value: String(inProgress), icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Avg Progress'), value: `${avgCompletion}%`, icon: 'TrendingUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Teams'), value: '5', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  ]
+
+  const columns: Column<RoadmapRow>[] = [
+    { header: 'Initiative', cell: (r) => t(r.name) },
+    { header: 'Phase', cell: (r) => r.phase },
+    { header: 'Timeline', cell: (r) => r.timeline },
+    { header: 'Status', cell: (r) => { const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Research; return <Badge background={bg} color={fg}>{t(r.status)}</Badge> } },
+    { header: 'Team', cell: (r) => r.team },
+    { header: 'Progress', cell: (r) => (
+      <div className="flex items-center gap-2">
+        <div className="h-1.5 w-20 rounded-full bg-border">
+          <div className="h-full rounded-full bg-salis-blue" style={{ width: `${r.completion}%` }} />
+        </div>
+        <span className="text-[12px] text-muted">{r.completion}%</span>
+      </div>
+    ) },
+    { header: 'Budget', cell: (r) => r.budget },
+  ]
+
+  return (
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <PageHeader icon="Layers" title={t('Next-Gen Technologies')} subtitle={t('Technology roadmap and innovation pipeline')} />
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        {kpis.map(k => (
+          <KpiCard key={k.label} {...k} />
+        ))}
+      </div>
+
+      <h2 className="text-[15px] font-bold text-heading">{t('Innovation Roadmap')}</h2>
+      <DataTable
+        caption="Next-gen technology roadmap"
+        columns={columns}
+        rows={[...MOCK_ROADMAP]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Research
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Phase')}>{row.phase}</MobileCardRow>
+              <MobileCardRow label={t('Timeline')}>{row.timeline}</MobileCardRow>
+              <MobileCardRow label={t('Progress')}>{row.completion}%</MobileCardRow>
+            </>
+          )
+        }}
+      />
+    </div>
+  )
+}

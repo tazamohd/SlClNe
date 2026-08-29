@@ -247,24 +247,24 @@ export const REQUISITIONS: readonly Requisition[] = [
 /** Priority palette. Urgent and high take the warning orange; medium and low
  *  sit on the blue scale (README §7 — no red, no green). */
 export const PRIORITY_TONE: Record<string, readonly [string, string]> = {
-  urgent: ['rgba(249,115,22,.12)', '#F97316'],
-  high: ['rgba(249,115,22,.08)', '#F97316'],
-  normal: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  medium: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  low: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  urgent: ['var(--tint-orange)', 'var(--salis-orange)'],
+  high: ['var(--tint-orange)', 'var(--salis-orange)'],
+  normal: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  medium: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  low: ['var(--tint-blue)', 'var(--salis-blue)'],
 }
 
 /** Request / order lifecycle palette. */
 export const NETWORK_STATUS: Record<string, readonly [string, string]> = {
-  open: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  reviewing: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  ordered: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  processing: ['rgba(249,115,22,.1)', '#F97316'],
-  shipped: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  delivered: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  pending: ['rgba(249,115,22,.1)', '#F97316'],
-  approved: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  converted: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  rejected: ['rgba(100,116,139,.1)', '#64748B'],
-  paid: ['rgba(10,94,215,.1)', '#0A5ED7'],
+  open: ['var(--tint-blue)', 'var(--salis-blue)'],
+  reviewing: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  ordered: ['var(--tint-navy)', 'var(--salis-navy)'],
+  processing: ['var(--tint-orange)', 'var(--salis-orange)'],
+  shipped: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
+  delivered: ['var(--tint-blue)', 'var(--salis-blue)'],
+  pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  approved: ['var(--tint-blue)', 'var(--salis-blue)'],
+  converted: ['var(--tint-navy)', 'var(--salis-navy)'],
+  rejected: ['var(--tint-neutral)', 'var(--text-muted)'],
+  paid: ['var(--tint-blue)', 'var(--salis-blue)'],
 }

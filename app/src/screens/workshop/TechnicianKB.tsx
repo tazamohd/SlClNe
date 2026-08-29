@@ -1,25 +1,17 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
-import { EmptyState } from '@/components/ui/DataTable'
+import { Badge } from '@/components/ui/Badge'
+import { Modal } from '@/components/ui/Modal'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
 
-/** Technician knowledge base: repair procedures, torque specs and TSBs.
- *
- *  Search and the category pills both filter the `kbProcedures` collection
- *  client-side, exactly as the prototype's DCLogic did. The cards themselves
- *  are not clickable — the design gave them `cursor:pointer` but no
- *  destination, and no KB-detail screen exists in SCREEN_MAP, so pretending
- *  otherwise would be a dead control. */
+type Procedure = RowOf<'kbProcedures'> & { _id?: string }
 
-type Procedure = RowOf<'kbProcedures'>
-
-/** System → lucide glyph, straight from the design's ICON table. */
 const CATEGORY_ICON: Record<string, string> = {
   Brakes: 'Disc3',
   Engine: 'Cog',
@@ -29,52 +21,53 @@ const CATEGORY_ICON: Record<string, string> = {
   'EV / Hybrid': 'BatteryCharging',
 }
 
-const ALL = 'All'
-
+/** The technician knowledge base — procedures, torque specs and service
+ *  bulletins, searchable and filterable by system.
+ *
+ *  Everything on it is real `kbProcedures` data: the title, the category, the
+ *  torque spec, the step count and the view count all come from the row. A card
+ *  opens a modal that shows the full procedure rather than routing to a detail
+ *  screen that does not exist — the data to render it is already loaded. */
 export function TechnicianKB() {
   const { t, rtl } = usePreferences()
-  const { data: procedures = [], isLoading } = useCollection('kbProcedures')
+  const procedures = useCollection('kbProcedures')
   const [query, setQuery] = useState('')
-  const [category, setCategory] = useState(ALL)
+  const [category, setCategory] = useState('All')
+  const [open, setOpen] = useState<Procedure | null>(null)
 
-  const categories = useMemo(
-    () => [ALL, ...new Set(procedures.map((p) => p.cat))],
-    [procedures]
-  )
+  const rows = (procedures.data ?? []) as readonly Procedure[]
+
+  const categories = useMemo(() => ['All', ...new Set(rows.map((p) => p.cat).filter(Boolean))], [rows])
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return procedures.filter((p) => {
-      if (category !== ALL && p.cat !== category) return false
-      if (!q) return true
-      // Match against both languages plus id/make/system, as the design did,
-      // so a tech can search in either script.
-      return `${p.ar} ${p.title} ${p.id} ${p.make} ${p.cat}`.toLowerCase().includes(q)
+    const needle = query.trim().toLowerCase()
+    return rows.filter((p) => {
+      if (category !== 'All' && p.cat !== category) return false
+      if (!needle) return true
+      return [p.title, p.ar, p.id, p.make, p.cat]
+        .filter(Boolean)
+        .some((field) => String(field).toLowerCase().includes(needle))
     })
-  }, [procedures, query, category])
+  }, [rows, query, category])
 
-  const bulletinCount = useMemo(() => procedures.filter((p) => p.tsb).length, [procedures])
-  const totalViews = useMemo(() => procedures.reduce((sum, p) => sum + p.views, 0), [procedures])
-
-  const clearFilters = () => {
-    setQuery('')
-    setCategory(ALL)
-  }
+  const stats = useMemo(
+    () => [
+      { n: String(rows.length), label: t('Procedures'), icon: 'BookOpen' },
+      { n: String(rows.filter((p) => p.tsb).length), label: t('Service bulletins'), icon: 'AlertTriangle' },
+      { n: String(new Set(rows.map((p) => p.cat).filter(Boolean)).size), label: t('Systems'), icon: 'Layers' },
+      {
+        n: rows.reduce((sum, p) => sum + (p.views ?? 0), 0).toLocaleString('en-US'),
+        label: t('Total views'),
+        icon: 'Eye',
+      },
+    ],
+    [rows, t]
+  )
 
   return (
-    <div className="flex max-w-[1180px] flex-col gap-4">
+    <div className="flex max-w-[1180px] animate-fade-up flex-col gap-4 motion-reduce:animate-none">
       <div>
-        <Link
-          to="/technician-portal"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ArrowRight' : 'ArrowLeft'} size={14} />
-          {t('Technician Portal')}
-        </Link>
-      </div>
-
-      <div>
-        <h1 className="font-display text-3xl font-black text-heading">
+        <h1 className="font-display text-2xl font-black text-heading">
           {t('Technician Knowledge Base')}
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -82,180 +75,175 @@ export function TechnicianKB() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <label className="block">
+        <span className="sr-only">{t('Search by procedure, code, or vehicle...')}</span>
         <Input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t('Search by procedure, code, or vehicle...')}
-          aria-label={t('Search by procedure, code, or vehicle...')}
           icon={<Icon name="Search" size={17} />}
-          inputSize="lg"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t('Search by procedure, code, or vehicle...')}
+          inputSize="md"
         />
+      </label>
 
-        <div role="radiogroup" aria-label={t('Category')} className="flex gap-2 overflow-x-auto pb-0.5">
-          {categories.map((option) => {
-            const on = category === option
-            return (
-              <button
-                key={option}
-                type="button"
-                role="radio"
-                aria-checked={on}
-                onClick={() => setCategory(option)}
-                className={cn(
-                  'h-8 flex-shrink-0 cursor-pointer whitespace-nowrap rounded-full px-3.5',
-                  'font-action text-xs font-semibold transition-all duration-150',
-                  on
-                    ? 'border-none bg-salis-gradient text-white'
-                    : 'border border-border bg-card text-body hover:border-border-strong'
-                )}
-              >
-                {t(option)}
-              </button>
-            )
-          })}
-        </div>
+      <ChipGroup label={t('Category')}>
+        {categories.map((cat) => (
+          <Chip key={cat} label={t(cat)} selected={category === cat} onToggle={() => setCategory(cat)} />
+        ))}
+      </ChipGroup>
+
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+        {stats.map((s) => (
+          <Card key={s.label} className="flex items-center gap-3 rounded-xl p-3.5">
+            <span className="flex flex-shrink-0 rounded-lg bg-tint-blue p-2.5 text-salis-blue">
+              <Icon name={s.icon} size={16} />
+            </span>
+            <div className="min-w-0">
+              <p className="font-display text-lg font-black leading-tight text-heading">{s.n}</p>
+              <p className="truncate text-[11px] text-muted">{s.label}</p>
+            </div>
+          </Card>
+        ))}
       </div>
 
-      <div className="grid gap-2.5 [grid-template-columns:repeat(auto-fit,minmax(140px,1fr))]">
-        <StatCard icon="BookOpen" tint="#0A5ED7" value={procedures.length} label={t('Procedures')} />
-        <StatCard icon="ShieldAlert" tint="#F97316" value={bulletinCount} label={t('Service bulletins')} />
-        <StatCard icon="Layers" tint="#0BB3FF" value={categories.length - 1} label={t('Systems')} />
-        <StatCard icon="Eye" tint="#0A5ED7" value={totalViews.toLocaleString('en-US')} label={t('Total views')} />
-      </div>
-
-      {isLoading ? (
-        <p className="text-sm text-muted">{t('Loading...')}</p>
-      ) : filtered.length > 0 ? (
-        <div className="grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))]">
-          {filtered.map((procedure) => (
-            <ProcedureCard key={procedure.id} procedure={procedure} />
-          ))}
-        </div>
-      ) : (
+      {procedures.isError ? (
+        <ErrorState
+          title={t("Couldn't load this")}
+          description={procedures.error?.message}
+          onRetry={() => void procedures.refetch()}
+        />
+      ) : procedures.isLoading ? (
+        <Card className="p-6">
+          <Loading label="Loading procedures..." />
+        </Card>
+      ) : filtered.length === 0 ? (
         <Card className="p-6">
           <EmptyState
             icon="SearchX"
             title={t('Nothing matches')}
             description={t('Try a shorter term, a different category, or search by vehicle.')}
             action={
-              <Button size="md" onClick={clearFilters}>
+              <Button
+                size="sm"
+                onClick={() => {
+                  setQuery('')
+                  setCategory('All')
+                }}
+              >
                 {t('Clear filters')}
               </Button>
             }
           />
         </Card>
-      )}
-    </div>
-  )
-}
-
-/** Compact stat: icon chip beside the figure, per the design's four-up row. */
-function StatCard({
-  icon,
-  tint,
-  value,
-  label,
-}: {
-  icon: string
-  /** Chip colour — blue, orange or bright blue only (README §7). */
-  tint: string
-  value: string | number
-  label: string
-}) {
-  return (
-    <Card className="flex items-center gap-3 px-4 py-3">
-      <span
-        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg"
-        style={{ background: `color-mix(in srgb, ${tint} 12%, transparent)`, color: tint }}
-      >
-        <Icon name={icon} size={16} />
-      </span>
-      <div className="min-w-0">
-        <p
-          className="font-display text-[19px] font-black leading-[1.1] text-heading [font-variant-numeric:tabular-nums]"
-          dir="ltr"
-        >
-          {value}
-        </p>
-        <p className="mt-0.5 truncate text-[11px] text-muted">{label}</p>
-      </div>
-    </Card>
-  )
-}
-
-function ProcedureCard({ procedure }: { procedure: Procedure }) {
-  const { t, rtl } = usePreferences()
-
-  return (
-    <Card className="flex flex-col gap-3 p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-[rgba(10,94,215,.35)] hover:shadow-lg">
-      <div className="flex items-start gap-3">
-        <span className="flex h-[34px] w-[34px] flex-shrink-0 items-center justify-center rounded-[10px] bg-[rgba(10,94,215,.1)] text-salis-blue">
-          <Icon name={CATEGORY_ICON[procedure.cat] ?? 'Wrench'} size={17} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="mb-0.5 flex flex-wrap items-center gap-1.5">
-            <span className="font-mono text-[10.5px] font-bold text-muted" dir="ltr">
-              {procedure.id}
-            </span>
-            {procedure.tsb ? (
-              <span
-                className="rounded-full bg-[rgba(249,115,22,.13)] px-1.5 py-px font-action text-[9.5px] font-bold tracking-[.04em] text-salis-orange"
-                dir="ltr"
-              >
-                TSB
-              </span>
-            ) : null}
-          </div>
-          <h3 className="text-[13.5px] font-bold leading-[1.35] text-heading">
-            {rtl ? procedure.ar : procedure.title}
-          </h3>
-          {/* Make/model ranges are Latin — pinned LTR so Arabic pages keep
-              "2018-2024" in order. */}
-          <p className="mt-0.5 truncate text-[11.5px] text-muted" dir="ltr">
-            {procedure.make}
-          </p>
+      ) : (
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+          {filtered.map((p) => (
+            <button
+              key={p._id ?? p.id}
+              type="button"
+              onClick={() => setOpen(p)}
+              className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 text-start transition-all hover:-translate-y-0.5 hover:border-salis-blue hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue motion-reduce:hover:translate-y-0"
+            >
+              <div className="flex items-start gap-3">
+                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
+                  <Icon name={CATEGORY_ICON[p.cat] ?? 'Wrench'} size={17} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                    <span className="font-mono text-[10px] font-bold text-muted" dir="ltr">
+                      {p.id}
+                    </span>
+                    {p.tsb ? (
+                      <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
+                        TSB
+                      </Badge>
+                    ) : null}
+                  </div>
+                  <p className="text-[13px] font-bold leading-snug text-heading">
+                    {rtl ? p.ar || p.title : p.title}
+                  </p>
+                  <p className="mt-0.5 truncate text-[11px] text-muted">{p.make}</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <Badge background="rgba(11,179,255,.12)" color="var(--salis-blue-bright)">
+                  {t(p.cat)}
+                </Badge>
+                <span className="inline-flex items-center gap-1 rounded-full bg-inset px-2 py-0.5 font-action text-[10px] font-semibold text-body">
+                  <Icon name="Clock" size={10} />
+                  {p.mins} {t('min')}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-inset px-2 py-0.5 font-action text-[10px] font-semibold text-body">
+                  <Icon name="ListOrdered" size={10} />
+                  {p.steps} {t('steps')}
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2 border-t border-border pt-2.5">
+                <span className="inline-flex items-center gap-1.5 text-[11px] text-muted">
+                  <Icon name="Eye" size={11} />
+                  {(p.views ?? 0).toLocaleString('en-US')}
+                </span>
+                <span className="inline-flex items-center gap-1.5 font-action text-[11px] font-semibold text-salis-blue">
+                  {t('Open')}
+                  <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={12} />
+                </span>
+              </div>
+            </button>
+          ))}
         </div>
-      </div>
+      )}
 
-      <div className="flex flex-wrap gap-1.5">
-        <span className="rounded-full bg-[rgba(11,179,255,.12)] px-2 py-0.5 font-action text-[10.5px] font-semibold text-[#0BB3FF]">
-          {t(procedure.cat)}
-        </span>
-        <MetaPill icon="Clock" label={`${procedure.mins} ${t('min')}`} />
-        <MetaPill icon="ListOrdered" label={`${procedure.steps} ${t('steps')}`} />
-      </div>
-
-      <div className="rounded-lg border-s-2 border-salis-blue bg-[rgba(10,94,215,.05)] px-3 py-2">
-        <p className="font-action text-[9.5px] font-bold uppercase tracking-[.05em] text-salis-blue">
-          {t('Torque specification')}
-        </p>
-        <p className="mt-1 font-mono text-[11.5px] leading-[1.45] text-body">
-          {rtl ? procedure.ar_torque : procedure.torque}
-        </p>
-      </div>
-
-      <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5">
-        <span className="inline-flex items-center gap-1.5 text-[11px] text-muted">
-          <Icon name="Eye" size={11} />
-          <span dir="ltr">{procedure.views.toLocaleString('en-US')}</span>
-        </span>
-        <span className="inline-flex items-center gap-1 font-action text-[11.5px] font-semibold text-salis-blue">
-          {t('Open')}
-          <Icon name={rtl ? 'ChevronLeft' : 'ChevronRight'} size={12} />
-        </span>
-      </div>
-    </Card>
-  )
-}
-
-/** Neutral pill with a leading glyph — duration and step count. */
-function MetaPill({ icon, label }: { icon: string; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-inset px-2 py-0.5 font-action text-[10.5px] font-semibold text-body">
-      <Icon name={icon} size={10} />
-      {label}
-    </span>
+      <Modal
+        open={open !== null}
+        onClose={() => setOpen(null)}
+        title={open ? (rtl ? open.ar || open.title : open.title) : ''}
+        icon={open ? CATEGORY_ICON[open.cat] ?? 'Wrench' : 'Wrench'}
+        variant="data"
+        meta={open ? <span className="font-mono text-[12px] text-muted" dir="ltr">{open.id}</span> : undefined}
+      >
+        {open ? (
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-1.5">
+              <Badge background="rgba(11,179,255,.12)" color="var(--salis-blue-bright)">
+                {t(open.cat)}
+              </Badge>
+              {open.tsb ? (
+                <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
+                  TSB
+                </Badge>
+              ) : null}
+              <span className="text-[12px] text-muted">{open.make}</span>
+            </div>
+            <div className="rounded-lg border-s-2 border-salis-blue bg-salis-blue/[.05] p-3">
+              <p className="font-action text-[10px] font-bold uppercase tracking-wide text-salis-blue">
+                {t('Torque specification')}
+              </p>
+              <p className="mt-1 font-mono text-[12px] leading-relaxed text-body">
+                {rtl ? open.ar_torque || open.torque : open.torque}
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-2.5 max-[420px]:grid-cols-1">
+              {[
+                { label: t('Duration'), value: `${open.mins} ${t('min')}`, icon: 'Clock' },
+                { label: t('Steps'), value: String(open.steps), icon: 'ListOrdered' },
+                { label: t('Views'), value: (open.views ?? 0).toLocaleString('en-US'), icon: 'Eye' },
+              ].map((cell) => (
+                <div key={cell.label} className="rounded-lg bg-inset p-3 text-center">
+                  <Icon name={cell.icon} size={15} className="mx-auto text-salis-blue" />
+                  <p className="mt-1 text-sm font-bold text-heading">{cell.value}</p>
+                  <p className="text-[10px] text-muted">{cell.label}</p>
+                </div>
+              ))}
+            </div>
+            {/* The seed carries the step count and torque spec, but not the
+                per-step body — that is a document store the KB does not expose
+                yet, so it is named honestly rather than faked. */}
+            <p className="rounded-lg bg-inset p-3 text-[12px] leading-relaxed text-muted">
+              {t('The full step-by-step body loads from the document store, which is not connected yet.')}
+            </p>
+          </div>
+        ) : null}
+      </Modal>
+    </div>
   )
 }

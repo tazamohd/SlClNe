@@ -45,20 +45,40 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
   conversations: '/ai/conversations',
   kbProcedures: '/kb/procedures',
 
+  // ─── HR & Payroll ────────────────────────────────────────────────────────
+  employees: '/hr/employees',
+  payrollRuns: '/hr/payroll-runs',
+  payrollLines: '/hr/payroll-lines',
+  leaveRequests: '/hr/leave-requests',
+  timesheets: '/hr/timesheets',
+
+  // ─── Insurance & Loans ──────────────────────────────────────────────────
+  insuranceClaims: '/insurance/claims',
+  insurancePolicies: '/insurance/policies',
+  loanContracts: '/loans/contracts',
+  loanRepayments: '/loans/repayments',
+
+  // ─── Procurement ────────────────────────────────────────────────────────
+  suppliers: '/procurement/suppliers',
+  requisitions: '/procurement/requisitions',
+  purchaseOrders: '/procurement/purchase-orders',
+
+  // ─── Other ──────────────────────────────────────────────────────────────
+  branches: '/branches',
+  feedback: '/feedback',
+  bankStatements: '/accounting/bank-statements',
+  savedReports: '/accounting/saved-reports',
+  obdReadings: null,
+
   // ─── Not in the contract ─────────────────────────────────────────────────
-  // Expansions of their parent resource, returned by the detail endpoint:
   invoiceLines: null,
   invoicePayments: null,
-  // A diagnostic session's sub-resources (`/diagnostics/sessions/:id/…`);
-  // there is no tenant-wide list of them.
   diagStages: null,
   diagFindings: null,
   diagParts: null,
   diagLabour: null,
   diagCopies: null,
   approvalLines: null,
-  // Reference data the contract has no endpoint for yet. `GET /kb/dtc/:code`
-  // exists, but only per code — there is no list.
   dtcCodes: null,
   obdDevices: null,
   oemTools: null,

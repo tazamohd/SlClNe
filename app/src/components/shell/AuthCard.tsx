@@ -36,10 +36,10 @@ export function AuthCard({
     >
       <div className={cn('mb-4 flex flex-col gap-2.5', center ? 'items-center' : 'items-center')}>
         {logo ? (
-          <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" className="h-auto w-[120px]" />
+          <img src="/assets/logo-blue-orange.png" alt="SALIS AUTO" width={1024} height={1024} className="h-auto w-[120px]" />
         ) : null}
         {icon ? (
-          <span className="mb-3.5 inline-flex rounded-full bg-[rgba(10,94,215,.1)] p-3.5 text-salis-blue">
+          <span className="mb-3.5 inline-flex rounded-full bg-tint-blue p-3.5 text-salis-blue">
             <Icon name={icon} size={26} />
           </span>
         ) : null}

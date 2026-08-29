@@ -7,24 +7,15 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { AR } from '@/data/generated/ar'
+import { AR_OVERRIDES } from '@/data/ar-overrides'
 import type { Language, Theme } from '@/data/types'
 import { readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
 
-type Dict = Record<string, string>
-type ArBundle = { ar: Dict; overrides: Dict }
-
-let arCache: ArBundle | null = null
-
-function loadArabic(): Promise<ArBundle> {
-  if (arCache) return Promise.resolve(arCache)
-  return Promise.all([
-    import('@/data/generated/ar').then((m) => m.AR),
-    import('@/data/ar-overrides').then((m) => m.AR_OVERRIDES),
-  ]).then(([ar, overrides]) => {
-    arCache = { ar, overrides }
-    return arCache
-  })
-}
+// Generated dictionary first, hand-maintained supplement last: overrides win,
+// so a gap the generator missed is filled and a bad generated string can be
+// corrected without editing the generated file. See src/data/ar-overrides.ts.
+const AR_LOOKUP: Record<string, string> = { ...AR, ...AR_OVERRIDES }
 
 /** Theme + language, persisted and applied to <html>.
  *
@@ -76,7 +67,6 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotificationsState] = useState(
     () => (readStored(STORAGE_KEYS.notifications) ?? 'on') === 'on'
   )
-  const [arBundle, setArBundle] = useState<ArBundle | null>(arCache)
 
   // The design system keys dark mode off a `dark` class and RTL off `dir`.
   // Both belong on <html> so portals and overlays inherit them too.
@@ -88,12 +78,6 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = language
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
   }, [language])
-
-  useEffect(() => {
-    if (language === 'ar' && !arBundle) {
-      loadArabic().then(setArBundle)
-    }
-  }, [language, arBundle])
 
   const setTheme = useCallback((next: Theme) => {
     writeStored(STORAGE_KEYS.theme, next)
@@ -123,12 +107,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       setLanguage,
       toggleLanguage: () => setLanguage(rtl ? 'en' : 'ar'),
       setNotifications,
-      t: (source: string) =>
-        rtl && arBundle
-          ? (arBundle.overrides[source] ?? arBundle.ar[source] ?? source)
-          : source,
+      t: (source: string) => (rtl ? (AR_LOOKUP[source] ?? source) : source),
     }
-  }, [theme, language, notifications, arBundle, setTheme, setLanguage, setNotifications])
+  }, [theme, language, notifications, setTheme, setLanguage, setNotifications])
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>
 }

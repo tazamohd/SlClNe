@@ -1,67 +1,114 @@
+# SALIS AUTO — continuous integration.
+#
+# The pipeline only runs checks that exist. Suites still being built (unit,
+# component, API, mobile, RTL, a11y, visual, golden paths) are absent rather
+# than stubbed green — a job that reports success without running anything is
+# the CI equivalent of a screen that renders a total it did not compute. They
+# are added as each wave lands them; docs/MASTER_TEST_STRATEGY.md tracks who
+# owns which.
 name: CI
 
 on:
+  push:
+    branches: ['**']
   pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.head_ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: '20'
+
 jobs:
-  app-typecheck:
-    name: App / Typecheck
+  build:
+    name: Typecheck, build and gates
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: app/package-lock.json
 
-      - run: npm ci
-        working-directory: app
+      - name: Install
+        run: npm ci
 
-      - run: npm run typecheck
-        working-directory: app
+      - name: Typecheck
+        run: npm run typecheck
 
-  app-test:
-    name: App / Unit Tests
+      - name: Unit, component and integration tests
+        run: npm run test --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Registry is current
+        run: |
+          npm run registry
+          cd ..
+          git diff --exit-code -- project-control/ docs/ app/src/data/generated/master-registry.ts \
+            || { echo "::error::The committed registry is stale. Run 'npm run registry' in app/ and commit the result."; exit 1; }
+
+      - name: No placeholders or fake completion
+        run: npm run check-no-fake
+
+      - name: Design tokens and brand palette
+        run: npm run check-tokens
+
+      - name: Upload the gap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gap-report
+          path: |
+            project-control/MASTER_REGISTRY.json
+            project-control/BLOCKERS.json
+            docs/MASTER_GAP_REPORT.md
+          retention-days: 14
+
+  e2e:
+    name: Route, behaviour and brand checks
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build
+    defaults:
+      run:
+        working-directory: app
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: app/package-lock.json
 
-      - run: npm ci
-        working-directory: app
+      - name: Install
+        run: npm ci
 
-      - run: npx vitest run --reporter=verbose
-        working-directory: app
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
 
-  app-build:
-    name: App / Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: Build
+        run: npm run build
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: app/package-lock.json
+      - name: Start preview
+        run: |
+          npx vite preview --port 4173 &
+          npx wait-on http://localhost:4173 --timeout 60000
 
-      - run: npm ci
-        working-directory: app
-
-      - run: npm run build
-        working-directory: app
+      - name: Smoke — routes, behaviour, mobile, brand guard
+        run: npm run smoke
 
   server-typecheck:
     name: Server / Typecheck
@@ -71,7 +118,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: server/package-lock.json
 
@@ -89,7 +136,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: server/package-lock.json
 
@@ -98,3 +145,28 @@ jobs:
 
       - run: npx vitest run --reporter=verbose
         working-directory: server
+
+  security:
+    name: Secrets and dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Audit dependencies
+        working-directory: app
+        run: npm audit --audit-level=high

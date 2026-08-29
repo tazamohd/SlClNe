@@ -1,214 +1,87 @@
 import { useState } from 'react'
-import { FeatureHeader, Section, StatRow, SearchField, TabBar } from '@/components/shell/FeatureScreen'
-import { Card } from '@/components/ui/Card'
+import { KpiCard } from '@/components/ui/KpiCard'
 import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
-import { Icon } from '@/components/ui/Icon'
+import { Select } from '@/components/ui/Select'
+import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PageHeader } from '@/components/ui/PageHeader'
 
-interface Trigger {
-  id: string
-  name: string
-  event: string
-  conditions: string[]
-  actions: string[]
-  status: 'active' | 'paused' | 'draft'
-  runs: number
-  lastRun: string
-  icon: string
-  tone: readonly [string, string]
-}
-
-const TRIGGERS: Trigger[] = [
-  {
-    id: 'tr-1',
-    name: 'Service Due Reminder',
-    event: 'Vehicle mileage threshold',
-    conditions: ['Mileage > last service + 10,000 km', 'Customer opt-in = true'],
-    actions: ['Send SMS reminder', 'Create follow-up task'],
-    status: 'active',
-    runs: 342,
-    lastRun: '2 hours ago',
-    icon: 'Bell',
-    tone: ['rgba(10,94,215,.1)', '#0A5ED7'],
-  },
-  {
-    id: 'tr-2',
-    name: 'Parts Auto-Reorder',
-    event: 'Inventory level change',
-    conditions: ['Stock qty < reorder point', 'Supplier active = true'],
-    actions: ['Generate purchase order', 'Notify procurement manager'],
-    status: 'active',
-    runs: 89,
-    lastRun: '4 hours ago',
-    icon: 'Package',
-    tone: ['rgba(249,115,22,.1)', '#F97316'],
-  },
-  {
-    id: 'tr-3',
-    name: 'Job Escalation',
-    event: 'Job duration exceeded',
-    conditions: ['Elapsed time > estimated + 2h', 'Status = In Progress'],
-    actions: ['Alert workshop manager', 'Update job priority to High'],
-    status: 'active',
-    runs: 56,
-    lastRun: '1 day ago',
-    icon: 'AlertTriangle',
-    tone: ['rgba(11,179,255,.1)', '#0BB3FF'],
-  },
-  {
-    id: 'tr-4',
-    name: 'Customer Satisfaction Survey',
-    event: 'Job status = Delivered',
-    conditions: ['Invoice paid = true', 'Survey not yet sent'],
-    actions: ['Send survey email', 'Schedule follow-up in 48h'],
-    status: 'paused',
-    runs: 215,
-    lastRun: '3 days ago',
-    icon: 'MessageSquare',
-    tone: ['rgba(100,116,139,.1)', '#64748B'],
-  },
-  {
-    id: 'tr-5',
-    name: 'Warranty Claim Processor',
-    event: 'Warranty claim submitted',
-    conditions: ['Vehicle in warranty period', 'Claim amount < threshold'],
-    actions: ['Auto-approve claim', 'Notify accounts'],
-    status: 'draft',
-    runs: 0,
-    lastRun: 'Never',
-    icon: 'Shield',
-    tone: ['rgba(11,31,59,.1)', '#0B1F3B'],
-  },
-]
-
-const TABS = [
-  { id: 'all', label: 'All Rules', icon: 'List' },
-  { id: 'active', label: 'Active', icon: 'Zap' },
-  { id: 'paused', label: 'Paused', icon: 'Pause' },
-  { id: 'draft', label: 'Drafts', icon: 'FileEdit' },
+const MOCK_RULES = [
+  { id: 'AUT-001', name: 'Auto-Schedule Follow-Up', trigger: 'Job Completed', action: 'Send SMS after 3 days', status: 'Active', executions: 1245, lastRun: '2026-08-17 14:32' },
+  { id: 'AUT-002', name: 'Low Inventory Alert', trigger: 'Stock < Min Level', action: 'Notify procurement team', status: 'Active', executions: 342, lastRun: '2026-08-17 09:15' },
+  { id: 'AUT-003', name: 'VIP Customer Priority', trigger: 'VIP Booking', action: 'Assign senior technician', status: 'Active', executions: 89, lastRun: '2026-08-16 16:45' },
+  { id: 'AUT-004', name: 'Invoice Overdue Reminder', trigger: 'Invoice > 30 days', action: 'Send reminder email', status: 'Active', executions: 567, lastRun: '2026-08-17 08:00' },
+  { id: 'AUT-005', name: 'Warranty Expiry Notice', trigger: '30 days before expiry', action: 'Notify customer', status: 'Paused', executions: 213, lastRun: '2026-08-10 10:00' },
+  { id: 'AUT-006', name: 'Performance Report', trigger: 'End of week', action: 'Generate & email report', status: 'Active', executions: 34, lastRun: '2026-08-15 23:59' },
 ] as const
 
-const STATUS_TONES: Record<string, { bg: string; fg: string }> = {
-  active: { bg: 'rgba(10,94,215,.1)', fg: '#0A5ED7' },
-  paused: { bg: 'rgba(249,115,22,.1)', fg: '#F97316' },
-  draft: { bg: 'rgba(100,116,139,.1)', fg: '#64748B' },
+const STATUS_COLORS: Record<string, readonly [string, string]> = {
+  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  Paused: ['var(--tint-orange)', 'var(--salis-orange)'],
 }
+
+type RuleRow = (typeof MOCK_RULES)[number]
 
 export function AIAutomation() {
   const { t } = usePreferences()
-  const [tab, setTab] = useState('all')
-  const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState('All')
 
-  const filtered = TRIGGERS.filter((tr) => {
-    if (tab !== 'all' && tr.status !== tab) return false
-    if (query && !tr.name.toLowerCase().includes(query.toLowerCase())) return false
-    return true
-  })
+  const filtered = filter === 'All' ? MOCK_RULES : MOCK_RULES.filter(r => r.status === filter)
+  const totalExecutions = MOCK_RULES.reduce((a, r) => a + r.executions, 0)
+
+  const kpis = [
+    { label: t('Total Rules'), value: String(MOCK_RULES.length), icon: 'Workflow', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Active'), value: String(MOCK_RULES.filter(r => r.status === 'Active').length), icon: 'Zap', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Executions'), value: totalExecutions.toLocaleString(), icon: 'Activity', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Success Rate'), value: '98.7%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  ]
+
+  const columns: Column<RuleRow>[] = [
+    { header: 'ID', cell: (r) => r.id, code: true },
+    { header: 'Rule', cell: (r) => t(r.name) },
+    { header: 'Trigger', cell: (r) => t(r.trigger) },
+    { header: 'Action', cell: (r) => t(r.action) },
+    { header: 'Status', cell: (r) => { const [bg, fg] = STATUS_COLORS[r.status] ?? STATUS_COLORS.Paused; return <Badge background={bg} color={fg}>{t(r.status)}</Badge> } },
+    { header: 'Executions', cell: (r) => r.executions.toLocaleString() },
+    { header: 'Last Run', cell: (r) => r.lastRun },
+  ]
 
   return (
-    <>
-      <FeatureHeader
-        icon="Cpu"
-        title={t('AI Automation')}
-        subtitle={t('Rule engine & trigger builder')}
-        actions={
-          <Button size="md">
-            <Icon name="Plus" size={16} />
-            {t('New Automation')}
-          </Button>
-        }
+    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+      <PageHeader icon="Workflow" title={t('AI Automation')} subtitle={t('Automation rules and triggers')} />
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        {kpis.map(k => (
+          <KpiCard key={k.label} {...k} />
+        ))}
+      </div>
+
+      <div className="flex items-center justify-between">
+        <h2 className="text-[15px] font-bold text-heading">{t('Automation Rules')}</h2>
+        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
+          <option value="All">{t('All')}</option>
+          <option value="Active">{t('Active')}</option>
+          <option value="Paused">{t('Paused')}</option>
+        </Select>
+      </div>
+      <DataTable
+        caption="AI automation rules"
+        columns={columns}
+        rows={[...filtered]}
+        rowKey={(row) => row.id}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Paused
+          return (
+            <>
+              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Trigger')}>{t(row.trigger)}</MobileCardRow>
+              <MobileCardRow label={t('Executions')}>{row.executions.toLocaleString()}</MobileCardRow>
+              <MobileCardRow label={t('Last Run')}>{row.lastRun}</MobileCardRow>
+            </>
+          )
+        }}
       />
-
-      <StatRow
-        stats={[
-          { label: 'Total Rules', value: TRIGGERS.length, highlight: true, icon: 'Zap' },
-          { label: 'Active Rules', value: TRIGGERS.filter((r) => r.status === 'active').length, tone: 'info', icon: 'Play' },
-          { label: 'Total Executions', value: '702', icon: 'Activity' },
-          { label: 'Success Rate', value: '98.6%', icon: 'CheckCircle' },
-        ]}
-      />
-
-      <TabBar tabs={TABS} value={tab} onChange={setTab} />
-
-      <Section
-        title={t('Automation Rules')}
-        toolbar={<SearchField value={query} onChange={setQuery} placeholder={t('Search rules...')} />}
-      >
-        <div className="flex flex-col gap-3">
-          {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-12 text-center">
-              <Icon name="Search" size={32} className="text-muted" />
-              <p className="text-sm text-muted">{t('No matching rules found')}</p>
-            </div>
-          ) : (
-            filtered.map((tr) => {
-              const [bg, fg] = tr.tone
-              const status = STATUS_TONES[tr.status]
-              return (
-                <Card key={tr.id} className="flex flex-col gap-3 rounded-2xl p-5">
-                  <div className="flex items-center gap-3.5">
-                    <span
-                      className="flex flex-shrink-0 rounded-[10px] p-2"
-                      style={{ background: bg, color: fg }}
-                    >
-                      <Icon name={tr.icon} size={18} />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="truncate font-display text-base font-bold text-heading">
-                        {t(tr.name)}
-                      </h3>
-                      <p className="mt-0.5 text-xs text-muted">
-                        {t('Event')}: {t(tr.event)}
-                      </p>
-                    </div>
-                    <Badge background={status.bg} color={status.fg}>
-                      {t(tr.status.charAt(0).toUpperCase() + tr.status.slice(1))}
-                    </Badge>
-                    <div className="hidden text-end text-xs text-muted sm:block">
-                      <p>
-                        {tr.runs} {t('runs')}
-                      </p>
-                      <p>{t(tr.lastRun)}</p>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[10px] border border-border bg-inset p-3">
-                    <div className="mb-2 flex flex-wrap items-center gap-2 text-[13px]">
-                      <span className="font-semibold text-salis-blue">{t('When')}</span>
-                      <span className="text-body">{t(tr.event)}</span>
-                    </div>
-                    {tr.conditions.length > 0 && (
-                      <div className="mb-2 flex flex-wrap items-center gap-2 text-[13px]">
-                        <span className="font-semibold text-muted">{t('If')}</span>
-                        {tr.conditions.map((c, i) => (
-                          <span key={i} className="text-body">
-                            {i > 0 && <span className="mx-1 text-muted">&</span>}
-                            {t(c)}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    <div className="flex flex-wrap items-center gap-2 text-[13px]">
-                      <span className="font-semibold text-salis-orange">{t('Then')}</span>
-                      {tr.actions.map((a, i) => (
-                        <span key={i} className="text-body">
-                          {i > 0 && (
-                            <>
-                              <Icon name="ArrowRight" size={12} className="mx-1 inline text-muted" />
-                            </>
-                          )}
-                          {t(a)}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </Card>
-              )
-            })
-          )}
-        </div>
-      </Section>
-    </>
+    </div>
   )
 }

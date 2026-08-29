@@ -32,8 +32,20 @@ export type ModuleId =
   | 'portalsupplier' | 'portalprocure' | 'ai' | 'admin' | 'settings'
   | 'audit' | 'network'
 
-/** v=view, c=create, e=edit, x=delete, a=approve. */
-export type Action = 'v' | 'c' | 'e' | 'x' | 'a'
+/** v=view, c=create, e=edit, d=delete, a=approve, x=export.
+ *
+ *  `handoff/RBAC.md` documents five letters and calls `x` delete. The matrix
+ *  uses six, and the data says otherwise: `dashboard/owner`, `hr/manager` and
+ *  `accounting/manager` are all `vx`, and nobody deletes a dashboard. `x` is
+ *  export — view-plus-download, which is exactly what those roles need — while
+ *  `d` is delete, appearing as `vced` for the roles that may remove an
+ *  appointment and `vcedax` for the full set.
+ *
+ *  This matters beyond documentation: under the old reading the server would
+ *  have granted accountants delete on the audit log (`audit/accountant = vx`),
+ *  which the audit standard requires to be immutable. No caller passed `'x'`
+ *  when this was corrected, so nothing depended on the wrong meaning. */
+export type Action = 'v' | 'c' | 'e' | 'd' | 'a' | 'x'
 
 export interface Role {
   id: string

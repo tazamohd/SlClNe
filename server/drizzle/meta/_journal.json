@@ -5,8 +5,78 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1787923683486,
-      "tag": "0000_lonely_black_widow",
+      "when": 1786465088999,
+      "tag": "0000_init",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786465089928,
+      "tag": "0001_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786465090900,
+      "tag": "0002_own_scope_tech",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786465091900,
+      "tag": "0003_transfer_pair_branches",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786465092900,
+      "tag": "0004_crm_fleet_feedback",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786465093900,
+      "tag": "0005_bank_statements_saved_reports",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786465094900,
+      "tag": "0006_obd_dtc_readings",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786465095900,
+      "tag": "0007_insurance",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1786465096900,
+      "tag": "0008_loans",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1786465097900,
+      "tag": "0009_hr",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1786465098900,
+      "tag": "0010_procurement",
       "breakpoints": true
     }
   ]

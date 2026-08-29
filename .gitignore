@@ -1,8 +1,18 @@
+# Dependencies and build output, wherever they appear.
 node_modules/
 .vite/
 dist/
+build/
+coverage/
+.turbo/
+
+# Secrets. `.env.example` is committed; values never are.
+.env
+.env.*
+!.env.example
+
+# Local tooling noise
+*.log
 *.local
 .DS_Store
 *.tsbuildinfo
-.env
-.env.*
