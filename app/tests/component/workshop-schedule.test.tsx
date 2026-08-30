@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AppointmentCalendar } from '@/screens/workshop/AppointmentCalendar'
 import { TechnicianSchedule } from '@/screens/workshop/TechnicianSchedule'
@@ -27,7 +27,7 @@ describe('AppointmentCalendar', () => {
     expect(screen.queryByRole('button', { name: /New Appointment/ })).toBeNull()
   })
 
-  it('opens a real booking form and refuses the fixture write honestly', async () => {
+  it('opens a booking form and creates an appointment', async () => {
     const user = userEvent.setup()
     renderWithProviders(<AppointmentCalendar />, { role: 'owner' })
     await user.click(await screen.findByRole('button', { name: /New Appointment/ }))
@@ -40,8 +40,9 @@ describe('AppointmentCalendar', () => {
     await user.type(within(dialog).getByLabelText('Time'), '9:00 AM')
     await user.type(within(dialog).getByLabelText('Bay'), 'Bay 1')
     await user.click(within(dialog).getByRole('button', { name: /Book Appointment/ }))
-    // No API: the fixture repository refuses, and the form says so.
-    expect(await screen.findByText(/fixture repository cannot create records/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
   })
 
   it('validates a malformed time before sending', async () => {
