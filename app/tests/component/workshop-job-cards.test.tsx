@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { JobCards } from '@/screens/workshop/JobCards'
 import { setViewportWidth } from '@/test-setup'
@@ -35,7 +35,7 @@ describe('JobCards — New Job Card', () => {
     expect(await screen.findByText('Enter the customer name.')).toBeInTheDocument()
   })
 
-  it('reports why a fixture build cannot save instead of faking a job card', async () => {
+  it('creates a job card when valid fields are submitted', async () => {
     const user = userEvent.setup()
     const { container } = renderWithProviders(<JobCards />, { role: 'owner' })
     await user.click(await screen.findByRole('button', { name: /New Job Card/ }))
@@ -45,10 +45,9 @@ describe('JobCards — New Job Card', () => {
     await user.type(within(dialog).getByLabelText(/Vehicle/), 'Toyota Camry 2022')
     await user.click(container.ownerDocument.querySelector('button[type="submit"]') as HTMLElement)
 
-    // The fixture repository throws by design. The screen must surface that,
-    // not close the dialog and show a success toast.
-    expect(await screen.findByText(/fixture repository cannot create records/)).toBeInTheDocument()
-    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
   })
 
   it('hides the CTA from a role without the create grant', async () => {

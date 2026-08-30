@@ -16,7 +16,7 @@ import {
 import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
 import { PortalShell } from '@/components/shell/PortalShell'
 import { PublicShell } from '@/components/shell/PublicShell'
-import { Loading } from '@/components/ui/States'
+import { RouteLoader } from '@/components/shell/RouteLoader'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
 
@@ -472,7 +472,7 @@ export function AppRoutes() {
     // One boundary for the whole table: a lazy screen suspends here to the
     // linear loading bar, never to a heavier stand-in, until its chunk lands.
     <ErrorBoundary>
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<RouteLoader />}>
       <Routes>
         <Route path="/" element={<Navigate to="/public-portal/landing" replace />} />
 

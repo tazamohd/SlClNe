@@ -46,12 +46,12 @@ export function JobCards() {
     { header: 'Vehicle', cell: (job) => job.veh },
     {
       header: 'Service',
-      cell: (job) => <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />,
+      cell: (job) => <ServiceBadge value={job.svc} label={t((job.svc ?? '').replace(/_/g, ' '))} />,
     },
     { header: 'Priority', cell: (job) => <PriorityBadge value={job.pr} label={t(job.pr)} /> },
     {
       header: 'Status',
-      cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />,
+      cell: (job) => <StatusBadge value={job.st} label={t((job.st ?? '').replace(/_/g, ' '))} />,
     },
   ]
 
@@ -110,12 +110,12 @@ export function JobCards() {
                   <MobileCardHeader
                     title={job.id}
                     code
-                    trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+                    trailing={<StatusBadge value={job.st} label={t((job.st ?? '').replace(/_/g, ' '))} />}
                   />
                   <MobileCardRow>{job.cust}</MobileCardRow>
                   <MobileCardRow>{job.veh}</MobileCardRow>
                   <div className="flex items-center gap-2">
-                    <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+                    <ServiceBadge value={job.svc} label={t((job.svc ?? '').replace(/_/g, ' '))} />
                     <PriorityBadge value={job.pr} label={t(job.pr)} />
                   </div>
                 </MobileCard>
@@ -165,12 +165,12 @@ export function JobCards() {
             <MobileCardHeader
               title={job.id}
               code
-              trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+              trailing={<StatusBadge value={job.st} label={t((job.st ?? '').replace(/_/g, ' '))} />}
             />
             <MobileCardRow>{job.cust}</MobileCardRow>
             <MobileCardRow>{job.veh}</MobileCardRow>
             <div className="flex items-center gap-2">
-              <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+              <ServiceBadge value={job.svc} label={t((job.svc ?? '').replace(/_/g, ' '))} />
               <PriorityBadge value={job.pr} label={t(job.pr)} />
             </div>
           </>
