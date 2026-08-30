@@ -10,6 +10,12 @@
 import '@testing-library/jest-dom/vitest'
 import { afterEach, beforeEach } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import { preloadArabic } from '@/providers/PreferencesProvider'
+
+// The Arabic dictionary is lazy-loaded in production (it's a 350KB chunk the
+// English-only visitor never pays for). Tests assert on translated text right
+// after render, so warm the cache once before any test mounts the provider.
+await preloadArabic()
 
 type Listener = (event: MediaQueryListEvent) => void
 

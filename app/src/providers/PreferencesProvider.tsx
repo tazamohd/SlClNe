@@ -64,6 +64,13 @@ async function loadArabic(): Promise<Record<string, string>> {
   return arCache
 }
 
+/** Warms the dictionary cache so the first Arabic render is already translated.
+ *  The test harness awaits this in setup: assertions run synchronously after
+ *  render, so they cannot wait out the lazy chunk the way a user does. */
+export async function preloadArabic(): Promise<void> {
+  await loadArabic()
+}
+
 export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(initialTheme)
   const [language, setLanguageState] = useState<Language>(initialLanguage)
