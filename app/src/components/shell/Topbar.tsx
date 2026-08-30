@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
 
 /** 56px desktop header: search, command palette hint, theme, notifications,
  *  chat. Below 860px `AppShell` renders `MobileHeader` instead — the design's
@@ -8,6 +9,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 export function Topbar() {
   const { t, theme, toggleTheme } = usePreferences()
   const navigate = useNavigate()
+  const { open: searchOpen, setOpen: setSearchOpen } = useGlobalSearch()
 
   return (
     <header className="relative z-[5] flex h-topbar flex-shrink-0 items-center gap-3 border-b border-border bg-sidebar px-6 shadow-sm">
@@ -22,13 +24,15 @@ export function Topbar() {
         <input
           aria-label={t('Search customers, vehicles, parts...')}
           placeholder={t('Search customers, vehicles, parts...')}
-          onFocus={() => navigate('/global-search')}
-          className="h-9 w-[260px] rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+          onFocus={(e) => { e.target.blur(); setSearchOpen(true) }}
+          readOnly
+          className="h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
         />
       </span>
 
       <button
         type="button"
+        onClick={() => setSearchOpen(true)}
         className="hidden h-9 cursor-pointer items-center gap-2 whitespace-nowrap rounded border border-border bg-card px-3 font-action text-xs text-heading transition-all duration-200 hover:border-transparent hover:bg-salis-gradient hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue md:inline-flex"
       >
         <Icon name="Zap" size={14} />
@@ -37,6 +41,8 @@ export function Topbar() {
           ⌘K
         </kbd>
       </button>
+
+      <GlobalSearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <IconButton
         label="Toggle theme"

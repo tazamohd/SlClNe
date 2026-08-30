@@ -358,7 +358,7 @@ describe('recording a movement', () => {
     expect(api.recorded).toHaveLength(0)
   })
 
-  it('shows the server’s own words when the server refuses, and records nothing', async () => {
+  it("shows the server's own words when the server refuses, and records nothing", async () => {
     const { RepositoryError } = await import('@/data/repository')
     const api = fakeApi({
       fail: new RepositoryError(
@@ -520,7 +520,7 @@ describe('recording a movement', () => {
     expect(api.recorded[0]!.input).toMatchObject({ type: 'return', qty: 4 })
   })
 
-  it('shows the server’s own words when it refuses a return, and records nothing', async () => {
+  it("shows the server's own words when it refuses a return, and records nothing", async () => {
     const { RepositoryError } = await import('@/data/repository')
     const user = userEvent.setup()
     const api = fakeApi({
@@ -545,7 +545,7 @@ describe('recording a movement', () => {
     expect(screen.queryByText(/movement recorded/i)).not.toBeInTheDocument()
   })
 
-  it('maps the server’s refusal of an over-large adjust_down onto the quantity field', async () => {
+  it("maps the server's refusal of an over-large adjust_down onto the quantity field", async () => {
     const { RepositoryError } = await import('@/data/repository')
     const user = userEvent.setup()
     // A shortfall the client's own mirror would pass (small qty) but the server
