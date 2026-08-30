@@ -133,13 +133,47 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
     trustProxy: true,
   })
 
-  await app.register(helmet, { contentSecurityPolicy: false })
+  /** This process serves JSON and nothing else — no HTML, no static files, no
+   *  view engine — so the strictest policy is also the cheapest: deny every
+   *  fetch directive outright. `useDefaults` is off because helmet's defaults
+   *  are written for a page that loads scripts and styles; an API needs none of
+   *  them. `frameguard: deny` over the SAMEORIGIN default for the same reason:
+   *  nothing here is ever meant to be framed. */
+  await app.register(helmet, {
+    contentSecurityPolicy: {
+      useDefaults: false,
+      directives: {
+        defaultSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        baseUri: ["'none'"],
+        formAction: ["'none'"],
+      },
+    },
+    frameguard: { action: 'deny' },
+  })
   await app.register(cors, {
     origin: deps.env.corsOrigins.length > 0 ? deps.env.corsOrigins : false,
     credentials: true,
-    exposedHeaders: ['x-request-id'],
+    /** A header the browser cannot read is a header the client does not have.
+     *  `retry-after` and the rate-limit trio are answers to the caller — how
+     *  long to wait, how much budget is left — and the resend countdown on the
+     *  verification screens already reads `retry-after`; unlisted here, every
+     *  cross-origin read of them is `null`. */
+    exposedHeaders: [
+      'x-request-id',
+      'retry-after',
+      'ratelimit-limit',
+      'ratelimit-remaining',
+      'ratelimit-reset',
+    ],
   })
   await app.register(rateLimit, {
+    /** Emit `RateLimit-Limit` / `-Remaining` / `-Reset`: the names
+     *  `docs/security-report.md` documents this API as returning, and the ones
+     *  the IETF draft defines. Left off, `@fastify/rate-limit` emits its legacy
+     *  `X-RateLimit-*` spelling instead, so a client following the documented
+     *  contract saw no budget headers at all. Nothing reads the `x-` names. */
+    enableDraftSpec: true,
     max: deps.env.RATE_LIMIT_MAX,
     timeWindow: '1 minute',
     /** The tenant, not just the address — one noisy branch behind a NAT must
@@ -192,12 +226,17 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
     /* Matched by name rather than `instanceof`: the contract package carries
      * its own Zod instance, and an `instanceof` check across the two would
      * miss the very errors this branch exists for. */
+    /* 400, not 422, and the distinction is the one `docs/api.md` draws: a Zod
+     * failure means the body never matched the schema, so no domain rule was
+     * ever consulted. Every route that parses a body explicitly answers 400
+     * here; this fallback answered 422, so the same malformed request got two
+     * different codes depending on whether the route remembered to catch. */
     if (isZodError(error)) {
       const issue = error.issues[0]
-      reply.code(422)
+      reply.code(400)
       return reply.send({
         error: {
-          code: 'validation_failed',
+          code: 'bad_request',
           message: issue?.message ?? 'The request failed validation.',
           ...(issue?.path.length ? { field: issue.path.join('.') } : {}),
           requestId: request.id,

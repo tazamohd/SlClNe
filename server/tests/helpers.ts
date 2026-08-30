@@ -1,10 +1,14 @@
+import { SignJWT } from 'jose'
 import { buildApp } from '../src/app.js'
 import { createDb, type DbHandle } from '../src/db/client.js'
-import { loadDotEnvFile, loadEnv } from '../src/env.js'
 import type { FastifyInstance, InjectOptions, HTTPMethods } from 'fastify'
+import type { Env } from '../src/env.js'
+import { resetDatabase } from './harness.js'
+import { SEED } from '../scripts/seed.js'
 
 let appInstance: FastifyInstance
 let dbHandle: DbHandle
+let envInstance: Env
 
 interface TestResponse {
   status: number
@@ -63,8 +67,13 @@ let apiInstance: Api
 export { apiInstance as api }
 
 export async function setupDb(): Promise<void> {
-  loadDotEnvFile()
-  const envConfig = loadEnv()
+  /** Build the schema the same way every other suite does. This used to call
+   *  `loadEnv()` and connect straight to DATABASE_URL, which has no tables:
+   *  the two suites on this helper died at login with `relation "users" does
+   *  not exist`, and vitest reported their assertions as skipped rather than
+   *  failed — so they looked switched off rather than broken. */
+  const envConfig = await resetDatabase()
+  envInstance = envConfig
   dbHandle = createDb(envConfig.DATABASE_URL)
   appInstance = await buildApp({ db: dbHandle.db, env: envConfig })
   await appInstance.ready()
@@ -76,10 +85,34 @@ export async function teardownDb(): Promise<void> {
   if (dbHandle) await dbHandle.close()
 }
 
-export async function login(email: string, password = 'salis1234'): Promise<string> {
-  const res = await apiInstance.post('/api/v1/auth/login').send({ email, password })
-  if (res.status !== 200) throw new Error(`login failed for ${email}: ${res.status} ${JSON.stringify(res.body)}`)
-  return (res.body as Record<string, unknown>).accessToken as string
+/** Mints a token directly rather than posting credentials.
+ *
+ *  `scripts/seed.ts` sets no passwords on purpose — "a seeded password hash in
+ *  a repository is a credential in a repository" — so there was never a
+ *  password this could send, and every caller died at 401 before reaching what
+ *  it meant to assert. `harness.ts` has always signed its own tokens for the
+ *  same reason; this is that approach, for the two suites still on this helper.
+ *
+ *  The role travels with the address because the seeded identities are fixed by
+ *  `RBAC.md`; `EMAILS` maps each to the role the token must carry. */
+export async function login(email: string): Promise<string> {
+  const role = ROLE_BY_EMAIL[email]
+  if (!role) throw new Error(`no seeded role for ${email} — add it to EMAILS`)
+  const secret = new TextEncoder().encode(envInstance.JWT_SECRET as string)
+  return new SignJWT({
+    role,
+    org_id: SEED.orgId,
+    branch_id: SEED.mainBranchId,
+    name: `${role} tester`,
+    scope: 'platform',
+  })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setSubject(`01JUSER${role.toUpperCase().padEnd(18, 'X').slice(0, 18)}`)
+    .setIssuer(envInstance.JWT_ISSUER)
+    .setAudience(envInstance.JWT_AUDIENCE)
+    .setIssuedAt()
+    .setExpirationTime('15m')
+    .sign(secret)
 }
 
 export const EMAILS = {
@@ -87,4 +120,11 @@ export const EMAILS = {
   technician: 'tech@salisauto.sa',
   accountant: 'finance@salisauto.sa',
   advisor: 'advisor@salisauto.sa',
+}
+
+const ROLE_BY_EMAIL: Record<string, string> = {
+  [EMAILS.owner]: 'owner',
+  [EMAILS.technician]: 'technician',
+  [EMAILS.accountant]: 'accountant',
+  [EMAILS.advisor]: 'advisor',
 }

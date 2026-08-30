@@ -78,6 +78,13 @@
       "when": 1786465098900,
       "tag": "0010_procurement",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1786465099900,
+      "tag": "0011_audit_log_statement_immutability",
+      "breakpoints": true
     }
   ]
 }

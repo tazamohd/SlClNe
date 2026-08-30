@@ -291,14 +291,34 @@ All API errors follow a consistent envelope format:
 
 ### Error Codes
 
+The line between 400 and 422 is whether the server could form a domain question
+out of the request at all. A body that does not match the schema is a 400 — the
+server never got as far as asking. A body that matches the schema and is then
+refused by a rule is a 422. Both carry `field` where one field is to blame, so
+`field` does not distinguish them.
+
 | HTTP Status | Code | When |
 |-------------|------|------|
-| 400 | `bad_request` | Malformed request |
+| 400 | `bad_request` | The request does not match the schema: a required field is missing, an unknown field is present, a value is the wrong type or outside the enum, or a required header (`Idempotency-Key`) is absent. Includes `field`. |
 | 401 | `unauthorized` | Missing/invalid/expired token |
 | 401 | `invalid_credentials` | Wrong email or password |
 | 403 | `forbidden` | Role lacks required permission |
 | 404 | `not_found` | Resource does not exist |
-| 422 | `validation_error` | Input fails Zod validation (includes `field`) |
+| 409 | `conflict` | The resource is in a state that refuses the operation — issuing an already-issued invoice, a stale `_version` |
+| 422 | `rule_violated` | Schema-valid, refused by a domain rule: a transfer to a branch outside the org, stock that would go negative, a stage transition the machine does not allow. Includes `field`. |
+| 422 | `validation_failed` | Reserved for the same class as `rule_violated`; carried by the contract enum and used where a rule refusal is better described as validation. |
+
+Worked example, both against `POST /parts/:id/movements`:
+
+```
+{ "type": "transfer", "qty": 2 }                       → 400  field: toBranchId
+{ "type": "transfer", "qty": 2, "toBranchId": "<other org's branch>" }
+                                                       → 422  field: toBranchId
+```
+
+The first is missing a field. The second is a complete, well-formed request that
+names a branch the caller may not transfer to — the server understood it and
+refused.
 
 ---
 

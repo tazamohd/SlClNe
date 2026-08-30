@@ -815,11 +815,63 @@ describe('audit', () => {
     expect((entry.after as { name: string }).name).toBe('Audited Customer')
   })
 
-  it('cannot be edited or deleted, even by the application role', async () => {
+  /** Runs outside a tenant context, which is the case that used to slip
+   *  through. The guard triggers were FOR EACH ROW, and RLS decides row
+   *  visibility before a row trigger is consulted: with `app.org_id` unset
+   *  `p_tenant_read` matched nothing, so these statements touched no rows,
+   *  fired no trigger and returned success. Nothing was altered — there was
+   *  nothing visible to alter — but a refusal and a no-op are not the same
+   *  guarantee, and the difference would matter the moment a policy widened.
+   *  The triggers are FOR EACH STATEMENT now, so the refusal does not depend
+   *  on how much the caller can see. */
+  it('cannot be edited, deleted or truncated, even by the application role', async () => {
     const { sql } = await import('drizzle-orm')
+    /* Either defence may answer first, and which one does is a property of the
+     * deployment rather than of the guarantee:
+     *
+     *  - where the API role differs from the migration role, `scripts/migrate.ts`
+     *    revokes update and delete on this table, so the privilege check refuses
+     *    with "permission denied" before a trigger is reached;
+     *  - where the two roles are the same, that revoke is skipped and the
+     *    trigger answers with "append-only".
+     *
+     * TRUNCATE is covered by the trigger in both, no revoke naming it. Asserting
+     * one wording would pin the test to one deployment shape, so both are
+     * accepted and what is actually asserted is that the write is refused. */
+    const refused = /append-only|permission denied/
     await expect(
       harness.handle.db.execute(sql`update audit_log set action = 'tampered'`),
-    ).rejects.toThrow()
-    await expect(harness.handle.db.execute(sql`delete from audit_log`)).rejects.toThrow()
+    ).rejects.toThrow(refused)
+    await expect(harness.handle.db.execute(sql`delete from audit_log`)).rejects.toThrow(refused)
+    /* TRUNCATE is neither an UPDATE nor a DELETE and produces no rows for a
+     * row-level trigger to see, so it would have emptied the table in one
+     * statement regardless of how the other two were written. */
+    await expect(harness.handle.db.execute(sql`truncate audit_log`)).rejects.toThrow(refused)
+  })
+
+  it('still accepts the inserts it exists to record', async () => {
+    /* The counterpart to the test above: append-only has to keep allowing the
+     * append, and a guard broad enough to catch TRUNCATE is broad enough to be
+     * worth proving does not also catch INSERT. */
+    const token = await harness.token('owner', { sub: '01JUSERAUDIT000000000002B' })
+    const created = await harness.app.inject({
+      method: 'POST',
+      url: '/api/v1/customers',
+      ...json(token, { name: 'Audit Insert Probe', phone: '+966 55 123 4568' }),
+    })
+    expect(created.statusCode).toBe(201)
+    const id = created.json()._id
+
+    const rows = await harness.handle.db.transaction(async (tx) => {
+      const { sql } = await import('drizzle-orm')
+      await tx.execute(
+        sql`select set_config('app.org_id', ${SEED.orgId}, true), set_config('app.scope', 'all', true)`,
+      )
+      return tx
+        .select()
+        .from(auditLog)
+        .where(and(eq(auditLog.entity, 'customer'), eq(auditLog.entityId, id)))
+    })
+    expect(rows).toHaveLength(1)
   })
 })

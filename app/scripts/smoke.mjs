@@ -1816,9 +1816,23 @@ const failures = []
   await page.goto(BASE + '/language-selection', { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: /Arabic|العربية/ }).click()
   const dir = await page.evaluate(() => document.documentElement.dir)
-  const text = await page.locator('body').innerText()
+  /* The direction flips synchronously, the words do not: the Arabic dictionary
+   * is a lazy chunk, so reading innerText straight after the click caught the
+   * page mid-load and reported "Arabic heading not rendered" for a switch that
+   * works. Waiting is not a weaker assertion — the text still has to arrive,
+   * and a switch that never loads its dictionary still fails here, on the
+   * timeout. It is bounded so that failure stays a failure rather than a hang. */
+  const arabicHeading = 'اختر لغتك'
+  let arabicRendered = true
+  try {
+    await page.waitForFunction((needle) => document.body.innerText.includes(needle), arabicHeading, {
+      timeout: 10_000,
+    })
+  } catch {
+    arabicRendered = false
+  }
   if (dir !== 'rtl') failures.push({ route: 'lang switch', problems: [`dir was ${dir}, expected rtl`] })
-  else if (!text.includes('اختر لغتك'))
+  else if (!arabicRendered)
     failures.push({ route: 'lang switch', problems: ['Arabic heading not rendered'] })
   else console.log('  ok  language switch → RTL + Arabic')
   await context.close()
