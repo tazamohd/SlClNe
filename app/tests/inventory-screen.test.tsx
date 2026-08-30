@@ -709,26 +709,26 @@ describe('adding a part', () => {
     spy.mockRestore()
   })
 
-  it(‘sends the price in halalas and creates the part’, async () => {
+  it('sends the price in halalas and creates the part', async () => {
     const user = userEvent.setup()
-    const repository = (await import(‘@/data/repository’)).repository
-    const spy = vi.spyOn(repository.parts, ‘create’)
-    renderWithProviders(<Inventory api={null} />, { role: ‘parts’ })
+    const repository = (await import('@/data/repository')).repository
+    const spy = vi.spyOn(repository.parts, 'create')
+    renderWithProviders(<Inventory api={null} />, { role: 'parts' })
     await waitFor(() => expect(screen.getByText(PARTS[0]!.name)).toBeInTheDocument())
 
-    await user.click(screen.getByRole(‘button’, { name: /add part/i }))
-    const dialog = await screen.findByRole(‘dialog’)
-    await user.type(within(dialog).getByLabelText(/part name/i), ‘Cabin Filter’)
-    await user.type(within(dialog).getByLabelText(/sku/i), ‘CF-UN-001’)
-    await user.type(within(dialog).getByLabelText(/sell price/i), ‘75’)
-    await user.type(within(dialog).getByLabelText(/reorder at/i), ‘5’)
-    await user.type(within(dialog).getByLabelText(/opening quantity/i), ‘12’)
-    await user.click(within(dialog).getByRole(‘button’, { name: /add part/i }))
+    await user.click(screen.getByRole('button', { name: /add part/i }))
+    const dialog = await screen.findByRole('dialog')
+    await user.type(within(dialog).getByLabelText(/part name/i), 'Cabin Filter')
+    await user.type(within(dialog).getByLabelText(/sku/i), 'CF-UN-001')
+    await user.type(within(dialog).getByLabelText(/sell price/i), '75')
+    await user.type(within(dialog).getByLabelText(/reorder at/i), '5')
+    await user.type(within(dialog).getByLabelText(/opening quantity/i), '12')
+    await user.click(within(dialog).getByRole('button', { name: /add part/i }))
 
     await waitFor(() => expect(spy).toHaveBeenCalledTimes(1))
     expect(spy.mock.calls[0]![0]).toMatchObject({
-      name: ‘Cabin Filter’,
-      sku: ‘CF-UN-001’,
+      name: 'Cabin Filter',
+      sku: 'CF-UN-001',
       priceHalalas: 7500,
       reorderLevel: 5,
       openingStock: 12,
@@ -736,7 +736,7 @@ describe('adding a part', () => {
     expect(spy.mock.calls[0]![1]?.idempotencyKey).toBeTruthy()
 
     await waitFor(() => {
-      expect(screen.queryByRole(‘dialog’)).not.toBeInTheDocument()
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
     spy.mockRestore()
   })
