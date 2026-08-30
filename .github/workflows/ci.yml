@@ -166,6 +166,15 @@ jobs:
       - run: npm ci
         working-directory: server
 
+      # The postgres image makes POSTGRES_USER a superuser, and a superuser
+      # bypasses row-level security even where the migrations set FORCE ROW
+      # LEVEL SECURITY. Connecting the app as one silently disabled every
+      # tenant boundary, so the ~48 isolation assertions failed on every run.
+      # Demote it: still the database owner (so migrations and the per-run test
+      # database it creates keep working), no longer exempt from RLS.
+      - name: Demote the app role so row-level security applies
+        run: psql "$DATABASE_URL" -c 'ALTER ROLE salis NOSUPERUSER CREATEDB'
+
       - run: npx vitest run --reporter=verbose
         working-directory: server
 

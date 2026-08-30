@@ -121,14 +121,37 @@ describe('the mutation surface the hooks are built on', () => {
   })
 })
 
-describe('the fixture repository refuses writes instead of faking them', () => {
-  it('throws a typed unsupported error', async () => {
-    await expect(mockRepository.customers.create({} as never)).rejects.toMatchObject({
-      code: 'unsupported',
-    })
-    await expect(mockRepository.customers.delete('anything')).rejects.toMatchObject({
-      code: 'unsupported',
-    })
+/** This block used to assert that the fixture repository *refused* writes, on
+ *  the principle that a screen reporting success over a write that went nowhere
+ *  is a lie. The in-memory CRUD work changed the answer without changing that
+ *  principle: the row is now really stored and really readable back, for the
+ *  life of the process. That is a small store, not a pretend one.
+ *
+ *  So the assertion moves rather than relaxes. Checking that `create` resolves
+ *  would be worth nothing — resolving is exactly what a faked write does too.
+ *  What distinguishes the two is whether the row is there afterwards, so that
+ *  is what is checked: create it, find it, delete it, confirm it is gone. */
+describe('the fixture repository stores writes in memory rather than faking them', () => {
+  it('round-trips a create and a delete', async () => {
+    /* The row types describe the fixture columns; `_id` and the rest of the
+     * envelope are stamped at runtime and are not on the declared shape, so
+     * reading one back goes through `unknown` rather than pretending the
+     * declared type carries it. */
+    const idOf = (row: unknown) => (row as { _id?: string })._id
+
+    const created = await mockRepository.customers.create({
+      name: 'In-Memory Customer',
+      phone: '+966 55 000 2222',
+    } as never)
+    const id = idOf(created)
+    expect(id).toBeTruthy()
+
+    const found = await mockRepository.customers.list({ q: 'In-Memory Customer' })
+    expect(found.rows.some((row) => idOf(row) === id)).toBe(true)
+
+    await mockRepository.customers.delete(id as string)
+    const afterDelete = await mockRepository.customers.list({ q: 'In-Memory Customer' })
+    expect(afterDelete.rows.some((row) => idOf(row) === id)).toBe(false)
   })
 
   it('still filters, sorts and paginates in memory', async () => {
