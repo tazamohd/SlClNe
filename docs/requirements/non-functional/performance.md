@@ -144,18 +144,93 @@ Maximum page size is 200 rows per request (`MAX_PAGE_SIZE` in `@salis/contract`)
 
 PostgreSQL connection pooling via the database client to prevent connection exhaustion under concurrent multi-tenant workload. Each tenant transaction runs within the same connection, with RLS set at session level.
 
-## 7. Monitoring and Measurement
+## 7. Workshop-Specific Performance
 
-### 7.1 Metrics to Track
+### 7.1 State Transition Latency
+
+Job card stage transitions (checkin, inspection, estimate, repair, qc, delivery, invoiced, closed) are the most time-sensitive operations in the workshop. Each transition involves:
+
+1. Optimistic concurrency check (`version` column)
+2. Business rule validation (stage ordering, assigned technician)
+3. QC independence check via segregation of duties (`requireSodClear()`)
+4. Audit row insertion (same transaction)
+5. Status field derivation from stage
+
+| Transition           | Target Latency | Notes                                      |
+|----------------------|----------------|--------------------------------------------|
+| checkin → inspection | < 150ms        | Simple stage advance                       |
+| repair → qc         | < 200ms        | Includes SoD check against audit trail     |
+| qc → delivery       | < 200ms        | Includes SoD check for QC independence     |
+| delivery → invoiced  | < 300ms        | Triggers invoice creation in same request  |
+
+### 7.2 Peak Hour Handling
+
+Workshop peak hours (8:00-10:00 AM, service drop-off) generate 3-5x the normal write volume. The system must maintain response time targets during these peaks without degrading read performance for other users.
+
+### 7.3 Appointment Calendar
+
+The appointment calendar queries `appointments` indexed on `(org_id, scheduled_date)`. Calendar views spanning a month must load within 300ms for branches with up to 50 daily appointments.
+
+## 8. CSV Export Performance
+
+### 8.1 Export Pipeline
+
+CSV exports follow a streaming pattern to avoid memory pressure:
+
+1. Query rows in pages of 200 (`MAX_PAGE_SIZE`)
+2. Apply formula injection protection (prefix cells starting with `=`, `+`, `-`, `@` with a tab character)
+3. Stream CSV rows to the response
+4. Cap at `MAX_EXPORT_ROWS` (50,000 rows) with `X-Export-Truncated: true` header when exceeded
+
+### 8.2 Export Performance Targets
+
+| Export Size     | Target     | Maximum    | Notes                          |
+|-----------------|------------|------------|--------------------------------|
+| < 1,000 rows   | < 500ms    | 1s         | Typical daily report           |
+| 1,000-10,000   | < 2s       | 4s         | Monthly report                 |
+| 10,000-50,000  | < 5s       | 10s        | Full data extract              |
+
+### 8.3 Export Rate Limiting
+
+Export endpoints are rate-limited to 5 requests per minute per user to prevent resource exhaustion from concurrent large exports.
+
+## 9. Mobile Performance
+
+### 9.1 Rendering at the 860px Breakpoint
+
+Below the 860px breakpoint, the `DataTable` component switches from an HTML table to `MobileCard` rendering via `MobileList`. This dual-layout approach has specific performance considerations:
+
+- The `useMediaQuery` hook (`MOBILE_QUERY = '(max-width: 860px)'`) must not cause layout thrashing on resize
+- `MobileCard` render functions provided per-screen must execute within 5ms per card
+- Card lists of 50+ items must render without visible jank (< 16ms per frame)
+
+### 9.2 Mobile Network Targets
+
+| Metric                  | 4G Target | 3G Target | Measurement                |
+|-------------------------|-----------|-----------|----------------------------|
+| Time to First Byte      | < 400ms   | < 800ms   | Server + network           |
+| First Contentful Paint  | < 1.5s    | < 3s      | Initial visible content    |
+| Time to Interactive     | < 3s      | < 6s      | Fully interactive          |
+| Arabic translation load | < 200ms   | < 500ms   | Lazy import of ~2,122 keys |
+
+### 9.3 Translation Loading Impact
+
+Arabic translations are lazily loaded via dynamic import (`import('@/data/generated/ar')`). The ~2,122-entry translation map plus manual overrides from `ar-overrides.ts` are cached after first load (`arCache`), so the performance cost is incurred only once per session.
+
+## 10. Monitoring and Measurement
+
+### 10.1 Metrics to Track
 
 - API response time percentiles (p50, p95, p99)
 - Error rate per endpoint
-- Database query duration
+- Database query duration per tenant
 - React Query cache hit ratio
 - Bundle size per release
 - Core Web Vitals (LCP, FID, CLS)
+- State transition duration (workshop-specific)
+- CSV export duration and row count
 
-### 7.2 System Health
+### 10.2 System Health
 
 The `system_health` table tracks:
 
@@ -165,7 +240,19 @@ The `system_health` table tracks:
 - Database size (GB)
 - Active session count
 
-## 8. Cross-References
+### 10.3 Performance Budgets
+
+Performance budgets are enforced at build and deploy time:
+
+| Budget Type        | Threshold  | Enforcement                          |
+|--------------------|------------|--------------------------------------|
+| Initial JS bundle  | 350KB gz   | Build fails if exceeded              |
+| Per-route chunk    | 200KB gz   | Build warning                        |
+| Total CSS          | 100KB gz   | Build warning                        |
+| LCP regression     | +500ms     | Alert on deployment                  |
+| API p95 regression | +100ms     | Alert on deployment                  |
+
+## 11. Cross-References
 
 - [Scalability](./scalability.md) — Horizontal scaling and connection pooling
 - [Reliability](./reliability.md) — Error handling and degradation strategies
