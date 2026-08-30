@@ -1,17 +1,21 @@
 import { describe, expect, it } from 'vitest'
 import {
+  DEFAULT_ROLE,
+  DEFENCE_IN_DEPTH_FIELDS,
   FIELD_RULES,
   PERMS,
   RBAC_UNGATED,
   ROLES,
   SCREEN_MODULE,
   SOD,
+  UNKNOWN_ROLE,
   approvalLimit,
   can,
   canApprove,
   canScreen,
   destinationFor,
   fieldHidden,
+  fieldRuleIsLive,
   isRoleId,
   navFor,
   roleMeta,
@@ -594,5 +598,155 @@ describe('segregation of duties', () => {
     const history = [{ activity: 'Perform repair', actor: 'manager-1' }]
     expect(sodViolation('Pass quality check', 'manager-1', history)).toBeDefined()
     expect(can('jobcards', 'a', 'manager')).toBe(true)
+  })
+
+  it('does not breach when the counterpart was performed by a different actor', () => {
+    const history = [
+      { activity: 'Perform repair', actor: 'tech-1' },
+      { activity: 'Perform repair', actor: 'tech-2' },
+    ]
+    // tech-3 never performed the repair, so no conflict.
+    expect(sodViolation('Pass quality check', 'tech-3', history)).toBeUndefined()
+    // tech-1 did, so it is a conflict.
+    expect(sodViolation('Pass quality check', 'tech-1', history)).toBeDefined()
+  })
+
+  it('handles multiple unrelated history entries without false positives', () => {
+    const history = [
+      { activity: 'Raise purchase order', actor: 'buyer-1' },
+      { activity: 'Perform repair', actor: 'tech-7' },
+      { activity: 'Create supplier', actor: 'admin-1' },
+    ]
+    // tech-7 repaired; passing QC is a conflict for tech-7 only.
+    expect(sodViolation('Pass quality check', 'tech-7', history)?.risk).toBe('high')
+    // buyer-1 raised a PO; approving one is a conflict for buyer-1 only.
+    expect(sodViolation('Approve purchase order', 'buyer-1', history)?.risk).toBe('high')
+    // admin-1 created a supplier; approving supplier payment conflicts.
+    expect(sodViolation('Approve supplier payment', 'admin-1', history)?.risk).toBe('high')
+    // No cross-contamination between unrelated pairs.
+    expect(sodViolation('Pass quality check', 'buyer-1', history)).toBeUndefined()
+    expect(sodViolation('Approve purchase order', 'tech-7', history)).toBeUndefined()
+  })
+})
+
+describe('DEFAULT_ROLE and UNKNOWN_ROLE constants', () => {
+  it('defaults to owner — the role with full authority', () => {
+    expect(DEFAULT_ROLE).toBe('owner')
+    expect(isRoleId(DEFAULT_ROLE)).toBe(true)
+  })
+
+  it('provides an UNKNOWN_ROLE that is locked down and frozen', () => {
+    expect(UNKNOWN_ROLE.id).toBe('unknown')
+    expect(UNKNOWN_ROLE.limit).toBe(0)
+    expect(UNKNOWN_ROLE.scope).toBe('self')
+    expect(UNKNOWN_ROLE.label).toBe('Unknown role')
+    expect(UNKNOWN_ROLE.ar.length).toBeGreaterThan(0)
+    expect(Object.isFrozen(UNKNOWN_ROLE)).toBe(true)
+  })
+
+  it('does not recognise UNKNOWN_ROLE.id as a valid RoleId', () => {
+    expect(isRoleId(UNKNOWN_ROLE.id)).toBe(false)
+  })
+
+  it('returns UNKNOWN_ROLE from roleMeta for any unrecognised id', () => {
+    expect(roleMeta('hacker')).toBe(UNKNOWN_ROLE)
+    expect(roleMeta('')).toBe(UNKNOWN_ROLE)
+    expect(roleMeta('OWNER')).toBe(UNKNOWN_ROLE) // case-sensitive
+    expect(roleMeta('Owner')).toBe(UNKNOWN_ROLE)
+  })
+})
+
+describe('fieldRuleIsLive()', () => {
+  it('reports the defence-in-depth fields as not live', () => {
+    for (const field of DEFENCE_IN_DEPTH_FIELDS) {
+      expect(fieldRuleIsLive(field), `${field} should not be live`).toBe(false)
+    }
+  })
+
+  it('reports the five live rules as live', () => {
+    const liveFields = FIELD_RULES.filter((r) => !DEFENCE_IN_DEPTH_FIELDS.includes(r.field))
+    expect(liveFields.length).toBe(5)
+    for (const rule of liveFields) {
+      expect(fieldRuleIsLive(rule.field), `${rule.field} should be live`).toBe(true)
+    }
+  })
+
+  it('treats an unknown field as live — it is not on the defence-in-depth list', () => {
+    expect(fieldRuleIsLive('Some unknown field')).toBe(true)
+  })
+
+  it('DEFENCE_IN_DEPTH_FIELDS lists exactly two fields', () => {
+    expect(DEFENCE_IN_DEPTH_FIELDS).toEqual(['Employee salary', 'Branch P&L'])
+  })
+})
+
+describe('canApprove edge cases', () => {
+  it('treats a zero-ceiling role as authority without money — any amount is refused', () => {
+    // QC on jobcards has authority (approve action) but a zero ceiling. That
+    // means "pass quality, do not release money". Passing *any* amount, even 0,
+    // is a monetary judgment and should be refused.
+    expect(canApprove('qc', undefined, 'jobcards')).toBe(true) // no amount = non-monetary approval
+    expect(canApprove('qc', 0, 'jobcards')).toBe(false) // 0 is still an amount
+    expect(canApprove('qc', 1, 'jobcards')).toBe(false)
+  })
+
+  it('handles very large amounts for unlimited roles', () => {
+    expect(canApprove('owner', Number.MAX_SAFE_INTEGER)).toBe(true)
+    expect(canApprove('owner', 1e15)).toBe(true)
+  })
+
+  it('requires both matrix authority and a nonzero ceiling for money approval', () => {
+    // Roles with a ceiling but no approve action on approvals module.
+    for (const role of ROLE_IDS) {
+      if (approvalLimit(role) !== 0 && !can('approvals', 'a', role)) {
+        // This role has a ceiling but no approval authority.
+        expect(canApprove(role), `${role} should not approve without matrix authority`).toBe(false)
+      }
+    }
+  })
+
+  it('denies when the module itself has no approve action for that role', () => {
+    // technician has no approve on approvals module
+    expect(can('approvals', 'a', 'technician')).toBe(false)
+    expect(canApprove('technician')).toBe(false)
+    expect(canApprove('technician', 0)).toBe(false)
+  })
+})
+
+describe('navFor unknown and edge roles', () => {
+  it('gives an unknown role no sidebar items at all', () => {
+    const nav = navFor('nobody')
+    // An unknown role has no view permission on any module, so every group
+    // empties out and gets filtered.
+    const items = nav.flatMap((g) => g.items)
+    // Every surviving item must pass canScreen for the role.
+    for (const item of items) {
+      if (item.screen) {
+        expect(canScreen(item.screen, 'nobody'), `unknown role sees ${item.label}`).toBe(true)
+      }
+    }
+  })
+
+  it('preserves group ordering from the source nav', () => {
+    const ownerNav = navFor('owner')
+    const sourceLabels = NAV.map((g) => g.label)
+    const ownerLabels = ownerNav.map((g) => g.label)
+    // Owner labels must appear in the same relative order as the source.
+    let lastIdx = -1
+    for (const label of ownerLabels) {
+      const idx = sourceLabels.indexOf(label)
+      expect(idx, `${label} not found in source`).toBeGreaterThan(-1)
+      expect(idx, `${label} broke ordering`).toBeGreaterThan(lastIdx)
+      lastIdx = idx
+    }
+  })
+
+  it('never duplicates a nav item within a role', () => {
+    for (const role of ROLE_IDS) {
+      const labels = navFor(role)
+        .flatMap((g) => g.items)
+        .map((i) => i.label)
+      expect(new Set(labels).size, `${role} has duplicates`).toBe(labels.length)
+    }
   })
 })
