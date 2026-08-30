@@ -12,6 +12,7 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { AR } from '@/data/generated/ar'
+import { AR_OVERRIDES } from '@/data/ar-overrides'
 import { renderWithProviders } from '../helpers/render'
 
 /** Form behaviour, against the same zod schema that will guard the endpoint.
@@ -263,7 +264,7 @@ describe('field kinds', () => {
 
   it('pins Latin runs LTR so Arabic cannot reorder a phone number or a date', () => {
     // Labels are translated, so ask for them the way an Arabic user sees them.
-    const ar = (source: string) => AR[source] ?? source
+    const ar = (source: string) => AR_OVERRIDES[source] ?? AR[source] ?? source
     renderWithProviders(<KindsForm />, { language: 'ar' })
     expect(screen.getByLabelText(ar('Phone'))).toHaveAttribute('dir', 'ltr')
     expect(screen.getByLabelText(ar('Due Date'))).toHaveAttribute('dir', 'ltr')

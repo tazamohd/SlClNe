@@ -68,6 +68,20 @@ function lazyBarrel(
   )
 }
 
+// Print views — lazy loaded, rendered without the app shell.
+const InvoicePrint = lazyNamed(
+  () => import('@/screens/workshop/InvoicePrint'),
+  'InvoicePrint'
+)
+const EstimatePrint = lazyNamed(
+  () => import('@/screens/workshop/EstimatePrint'),
+  'EstimatePrint'
+)
+const JobCardPrint = lazyNamed(
+  () => import('@/screens/workshop/JobCardPrint'),
+  'JobCardPrint'
+)
+
 // Also routed on its own below, so it gets a name of its own.
 const LogoutConfirmation = lazyNamed(
   () => import('@/screens/auth/StatusScreens'),
@@ -552,6 +566,32 @@ export function AppRoutes() {
             />
           )
         })}
+
+        {/* Print views — clean A4 layouts triggered from detail screens. */}
+        <Route
+          path="/invoice-print"
+          element={
+            <RequireAccess screen="InvoiceDetail">
+              <InvoicePrint />
+            </RequireAccess>
+          }
+        />
+        <Route
+          path="/estimate-print"
+          element={
+            <RequireAccess screen="EstimateDetail">
+              <EstimatePrint />
+            </RequireAccess>
+          }
+        />
+        <Route
+          path="/job-card-print"
+          element={
+            <RequireAccess screen="JobDetail">
+              <JobCardPrint />
+            </RequireAccess>
+          }
+        />
 
         {/* Routes the design references but SCREEN_MAP doesn't list. */}
         <Route path="/customer-app" element={<Navigate to="/customer-app/home" replace />} />

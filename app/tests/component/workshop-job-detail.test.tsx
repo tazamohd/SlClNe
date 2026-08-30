@@ -33,14 +33,18 @@ describe('JobDetail', () => {
     expect(within(timeline).queryByText(/9:02 AM/)).toBeNull()
   })
 
-  it('prints from the print button instead of doing nothing', async () => {
-    const print = vi.fn()
-    vi.stubGlobal('print', print)
+  it('opens the print view from the print button', async () => {
+    const open = vi.fn()
+    vi.stubGlobal('open', open)
     const user = userEvent.setup()
     renderWithProviders(<JobDetail />, { route: '/job-detail' })
 
     await user.click(await screen.findByRole('button', { name: /Print Job Card/ }))
-    expect(print).toHaveBeenCalledTimes(1)
+    expect(open).toHaveBeenCalledTimes(1)
+    expect(open).toHaveBeenCalledWith(
+      expect.stringContaining('/job-card-print?id='),
+      '_blank',
+    )
   })
 
   it('asks before deleting, and only offers it to a role holding the grant', async () => {

@@ -3,6 +3,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
 
 /** Mobile chrome: 56px header with the drawer trigger, user chip and controls.
  *
@@ -13,6 +14,7 @@ import { useSession } from '@/providers/SessionProvider'
 export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
   const { t, theme, toggleTheme } = usePreferences()
   const { userName } = useSession()
+  const { open: searchOpen, setOpen: setSearchOpen } = useGlobalSearch()
 
   return (
     <header className="relative z-[5] flex h-14 flex-shrink-0 items-center gap-2 border-b border-border bg-sidebar px-3 shadow-sm">
@@ -26,6 +28,14 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
       </button>
       <Avatar name={userName} size={26} />
       <p className="flex-1 truncate text-[13px] font-semibold text-heading">{userName}</p>
+      <button
+        type="button"
+        onClick={() => setSearchOpen(true)}
+        aria-label={t('Search')}
+        className="inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+      >
+        <Icon name="Search" size={16} />
+      </button>
       <button
         type="button"
         onClick={toggleTheme}
@@ -42,6 +52,7 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
         <Icon name="Bell" size={16} />
         <span className="absolute top-1.5 h-[7px] w-[7px] rounded-full border-2 border-sidebar bg-salis-orange end-[7px]" />
       </button>
+      <GlobalSearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   )
 }

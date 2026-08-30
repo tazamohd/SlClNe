@@ -158,7 +158,10 @@ export function InvoiceDetail() {
             <Icon name="Bell" size={15} />
             {t('Send reminder')}
           </Button>
-          <Button size="md" onClick={() => window.print()}>
+          <Button
+            size="md"
+            onClick={() => window.open(`/invoice-print?id=${encodeURIComponent(invoice.id)}`, '_blank')}
+          >
             <Icon name="Printer" size={15} />
             {t('Print')}
           </Button>

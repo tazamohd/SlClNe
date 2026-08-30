@@ -391,7 +391,11 @@ export function EstimateDetail() {
             </>
           ) : null}
           {!isMobile && (
-            <Button variant="subtle" size="md" onClick={() => window.print()}>
+            <Button
+              variant="subtle"
+              size="md"
+              onClick={() => window.open(`/estimate-print?id=${encodeURIComponent(estimate.id)}`, '_blank')}
+            >
               <Icon name="Printer" size={15} />
               {t('Print')}
             </Button>

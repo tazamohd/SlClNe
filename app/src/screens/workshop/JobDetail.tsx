@@ -185,7 +185,10 @@ export function JobDetail() {
               {t(remove.isPending ? 'Saving...' : 'Delete')}
             </Button>
           ) : null}
-          <Button size="md" onClick={() => window.print()}>
+          <Button
+            size="md"
+            onClick={() => window.open(`/job-card-print?id=${encodeURIComponent(job.id)}`, '_blank')}
+          >
             <Icon name="Printer" size={15} />
             {t('Print Job Card')}
           </Button>
