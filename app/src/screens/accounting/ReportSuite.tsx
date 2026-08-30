@@ -8,7 +8,7 @@ import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Money, formatSar } from '@/components/ui/Money'
-import { BarList, CHART_COLORS } from '@/components/ui/Charts'
+import { BarList, CountBars } from '@/components/ui/Charts'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import {
@@ -739,36 +739,8 @@ function ImbalanceNotice({ text }: { text: string }) {
   )
 }
 
-/** Bars for a count distribution. Distinct from `BarList`, which renders its
- *  value as a SAR amount — a count is a tally of records, so it is shown as a
- *  plain LTR integer, never money. */
-function CountBars({ rows }: { rows: readonly { label: string; value: number }[] }) {
-  const { t } = usePreferences()
-  const max = Math.max(...rows.map((row) => row.value), 1)
-  return (
-    <div className="flex flex-col gap-3">
-      {rows.map((row, index) => (
-        <div key={row.label} className="flex flex-col gap-1.5">
-          <div className="flex items-baseline justify-between gap-3 text-[13px]">
-            <span className="capitalize text-body">{t(row.label)}</span>
-            <span className="font-mono font-semibold text-heading" dir="ltr">
-              {row.value}
-            </span>
-          </div>
-          <div className="h-2 overflow-hidden rounded-full bg-inset">
-            <div
-              className="h-full rounded-full"
-              style={{
-                width: `${(row.value / max) * 100}%`,
-                background: CHART_COLORS[index % CHART_COLORS.length],
-              }}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+/* CountBars is now exported from @/components/ui/Charts — the count-based
+ * bar chart that `BarList` is for money. Imported at the top of this file. */
 
 /** Count rows by a key. A count of records, never a sum of money. */
 function countBy<T>(rows: readonly T[], key: (row: T) => string): { label: string; value: number }[] {

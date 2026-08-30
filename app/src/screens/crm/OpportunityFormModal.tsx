@@ -1,7 +1,8 @@
 import { z } from 'zod'
 import { opportunityCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
-import { Modal } from '@/components/ui/Modal'
+import { Icon } from '@/components/ui/Icon'
+import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
 import {
   Field,
   Form,
@@ -10,7 +11,7 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { useToast } from '@/components/ui/Toast'
-import { RepositoryError, useCreate, useUpdate, type RowOf } from '@/data/useCollection'
+import { RepositoryError, useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { NoWritesNotice, asPatch, rowId, serverFieldError } from '../registry/writes'
 
@@ -65,8 +66,10 @@ export function OpportunityFormModal({
 }) {
   const { t } = usePreferences()
   const toast = useToast()
+  const { confirm } = useModal()
   const create = useCreate('opportunities')
   const update = useUpdate('opportunities')
+  const remove = useDelete('opportunities')
   const editing = Boolean(existingRecord)
 
   const form = useZodForm({
@@ -110,6 +113,34 @@ export function OpportunityFormModal({
     onClose()
   }
 
+  const handleDelete = async () => {
+    const id = rowId(existingRecord)
+    if (!id) return
+    const agreed = await confirm({
+      title: t('Delete Opportunity?'),
+      description: `${existingRecord?.name ?? ''}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Opportunity deleted'), description: existingRecord?.name ?? '' })
+    onClose()
+  }
+
+  const busy = form.pending || remove.isPending
+
   return (
     <Modal
       open={open}
@@ -117,13 +148,26 @@ export function OpportunityFormModal({
       variant="crud"
       icon={editing ? 'Pencil' : 'Target'}
       title={t(editing ? 'Edit Opportunity' : 'New Opportunity')}
-      dismissible={!form.pending}
+      dismissible={!busy}
       footer={
         <>
-          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={form.pending}>
+          {editing && rowId(existingRecord) ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
+          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={busy}>
             {t('Cancel')}
           </Button>
-          <Button size="lg" onClick={() => form.submit()} disabled={form.pending}>
+          <Button size="lg" onClick={() => form.submit()} disabled={busy}>
             {form.pending ? t('Saving...') : t(editing ? 'Save Changes' : 'Add Opportunity')}
           </Button>
         </>
@@ -139,7 +183,7 @@ export function OpportunityFormModal({
         <Field name="probabilityPct" label="Probability %" placeholder="0-100" />
         <Field name="closeDate" label="Close Date" kind="date" />
         <Field name="ownerName" label="Owner" placeholder={t('Khalid Al-Amri')} />
-        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
+        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
           {t(editing ? 'Save Changes' : 'Add Opportunity')}
         </button>
       </Form>
