@@ -564,78 +564,141 @@ function compare(a: unknown, b: unknown): number {
   return String(a ?? '').localeCompare(String(b ?? ''))
 }
 
-function unsupported(operation: string): never {
-  throw new RepositoryError(
-    'unsupported',
-    `The fixture repository cannot ${operation}. Set VITE_API_URL to run against the API.`,
-  )
+let nextSeq = 1
+function generateId(): string {
+  return `demo_${Date.now()}_${nextSeq++}`
 }
 
-/** Reads over the design bundle's fixtures.
+function applyMeta<TRow>(row: TRow, id: string, version: number): TRow & EntityMeta {
+  const now = new Date().toISOString()
+  return { ...row, _id: id, _version: version, _createdAt: now, _updatedAt: now }
+}
+
+function rowId(row: unknown): string {
+  const r = row as Record<string, unknown> & EntityMeta
+  return r._id ?? String(r.id ?? '')
+}
+
+function listSlice<TRow>(data: TRow[], query: Query) {
+  let result = data.slice()
+  if (query.q) result = result.filter((row) => matchesSearch(row, query.q as string))
+  if (query.filter) {
+    result = result.filter((row) => matchesFilter(row, query.filter as Record<string, string>))
+  }
+  if (query.sort) {
+    const [field = '', dir = 'asc'] = query.sort.split(':')
+    result.sort((a, b) => {
+      const order = compare(
+        (a as Record<string, unknown>)[field],
+        (b as Record<string, unknown>)[field],
+      )
+      return dir === 'desc' ? -order : order
+    })
+  }
+  const total = result.length
+  const pageSize = query.pageSize ?? Math.max(total, 1)
+  const page = query.page ?? 1
+  const start = (page - 1) * pageSize
+  return {
+    rows: result.slice(start, start + pageSize),
+    page: { page, pageSize, total, totalPages: Math.max(1, Math.ceil(total / pageSize)) },
+  }
+}
+
+/** In-memory collection seeded from the design bundle.
  *
- *  Writes throw. A fixture repository that accepted a write and mutated an
- *  array would report success for something that did not happen — the exact
- *  fake-completion this codebase gates against — and the first reload would
- *  contradict it. */
-function fixture<TRow>(rows: readonly TRow[]): Collection<TRow> {
+ *  Reads work identically to the old fixture. Writes mutate a session-local
+ *  copy — data resets on reload, which is honest: no fake persistence, no
+ *  silent data loss. This lets every screen with mutation hooks work in demo
+ *  mode without a backend. */
+function fixture<TRow>(seed: readonly TRow[]): Collection<TRow> {
+  const data: TRow[] = seed.slice()
+
+  const idempotencyLog = new Map<string, TRow | TRow[] | void>()
+
   return {
     async list(query = {}) {
-      let result = rows.slice()
-      if (query.q) result = result.filter((row) => matchesSearch(row, query.q as string))
-      if (query.filter) {
-        result = result.filter((row) => matchesFilter(row, query.filter as Record<string, string>))
-      }
-      if (query.sort) {
-        const [field = '', dir = 'asc'] = query.sort.split(':')
-        result.sort((a, b) => {
-          const order = compare(
-            (a as Record<string, unknown>)[field],
-            (b as Record<string, unknown>)[field],
-          )
-          return dir === 'desc' ? -order : order
-        })
-      }
-      const total = result.length
-      const pageSize = query.pageSize ?? Math.max(total, 1)
-      const page = query.page ?? 1
-      const start = (page - 1) * pageSize
-      return {
-        rows: result.slice(start, start + pageSize),
-        page: {
-          page,
-          pageSize,
-          total,
-          totalPages: Math.max(1, Math.ceil(total / pageSize)),
-        },
-      }
+      return listSlice(data, query)
     },
 
     async get(id) {
-      const found = rows.find((row) => {
-        const candidate = row as Record<string, unknown> & EntityMeta
-        return candidate._id === id || String(candidate.id ?? '') === id
-      })
+      const found = data.find((row) => rowId(row) === id)
       if (!found) throw new RepositoryError('not_found', `No record with id "${id}".`)
       return found
     },
 
-    async create() {
-      return unsupported('create records')
+    async create(input, options) {
+      if (options?.idempotencyKey && idempotencyLog.has(options.idempotencyKey)) {
+        return idempotencyLog.get(options.idempotencyKey) as TRow
+      }
+      const id = generateId()
+      const created = applyMeta(input as TRow, id, 1)
+      data.unshift(created)
+      if (options?.idempotencyKey) idempotencyLog.set(options.idempotencyKey, created)
+      return created
     },
-    async update() {
-      return unsupported('update records')
+
+    async update(id, patch, options) {
+      const idx = data.findIndex((row) => rowId(row) === id)
+      if (idx === -1) throw new RepositoryError('not_found', `No record with id "${id}".`)
+      const existing = data[idx] as TRow & EntityMeta
+      if (options?.version !== undefined && existing._version !== undefined
+          && options.version !== existing._version) {
+        throw new RepositoryError('version_conflict', 'Record was modified by another user.')
+      }
+      const updated = {
+        ...existing,
+        ...patch,
+        _id: existing._id ?? id,
+        _version: (existing._version ?? 0) + 1,
+        _updatedAt: new Date().toISOString(),
+      }
+      data[idx] = updated
+      return updated
     },
-    async delete() {
-      return unsupported('delete records')
+
+    async delete(id) {
+      const idx = data.findIndex((row) => rowId(row) === id)
+      if (idx === -1) throw new RepositoryError('not_found', `No record with id "${id}".`)
+      data.splice(idx, 1)
     },
-    async bulkCreate() {
-      return unsupported('create records')
+
+    async bulkCreate(inputs) {
+      const results: TRow[] = []
+      for (const input of inputs) {
+        const id = generateId()
+        const created = applyMeta(input as TRow, id, 1)
+        data.unshift(created)
+        results.push(created)
+      }
+      return results
     },
-    async bulkUpdate() {
-      return unsupported('update records')
+
+    async bulkUpdate(ids, patch) {
+      const results: TRow[] = []
+      for (const id of ids) {
+        const idx = data.findIndex((row) => rowId(row) === id)
+        if (idx === -1) throw new RepositoryError('not_found', `No record with id "${id}".`)
+        const existing = data[idx] as TRow & EntityMeta
+        const updated = {
+          ...existing,
+          ...patch,
+          _id: existing._id ?? id,
+          _version: (existing._version ?? 0) + 1,
+          _updatedAt: new Date().toISOString(),
+        }
+        data[idx] = updated
+        results.push(updated)
+      }
+      return results
     },
-    async bulkDelete() {
-      return unsupported('delete records')
+
+    async bulkDelete(ids) {
+      for (const id of ids) {
+        const idx = data.findIndex((row) => rowId(row) === id)
+        if (idx === -1) throw new RepositoryError('not_found', `No record with id "${id}".`)
+        data.splice(idx, 1)
+      }
     },
   }
 }

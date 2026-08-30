@@ -12,7 +12,6 @@ Computed from the registry. Every line is a query, not an opinion.
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
 | BLK-004 | CRITICAL | 384 rendered capabilities are mock-only | 05 | W2 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
-| BLK-010 | MEDIUM | 63 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
@@ -30,69 +29,7 @@ _None — the registry covers every design file._
 
 ## Screen files no route reaches
 
-- `app/src/screens/accounting/BankReconciliation.tsx`
-- `app/src/screens/accounting/CustomReports.tsx`
-- `app/src/screens/accounting/InsuranceReports.tsx`
-- `app/src/screens/accounting/InventoryReports.tsx`
-- `app/src/screens/accounting/InvoicePreview.tsx`
-- `app/src/screens/accounting/LoanReports.tsx`
-- `app/src/screens/accounting/ReportsAnalytics.tsx`
-- `app/src/screens/accounting/ReportsHub.tsx`
-- `app/src/screens/accounting/SalesReports.tsx`
-- `app/src/screens/accounting/TaxManagement.tsx`
-- `app/src/screens/admin/ComplianceScreens.tsx`
-- `app/src/screens/admin/HRPayroll.tsx`
-- `app/src/screens/admin/HRScreens.tsx`
-- `app/src/screens/admin/OrganizationScreens.tsx`
-- `app/src/screens/admin/SettingsScreens.tsx`
-- `app/src/screens/admin/SystemScreens.tsx`
-- `app/src/screens/ai/AutomationRules.tsx`
-- `app/src/screens/ai/VoiceCommandInterface.tsx`
-- `app/src/screens/ai/VoiceCommands.tsx`
-- `app/src/screens/ai/WorkflowBuilder.tsx`
-- `app/src/screens/auth/PrivacyPolicy.tsx`
-- `app/src/screens/auth/TermsConditions.tsx`
-- `app/src/screens/callcenter/CallCenter.tsx`
-- `app/src/screens/comms/CommunicationScreens.tsx`
-- `app/src/screens/compliance/ComplianceScreens.tsx`
-- `app/src/screens/crm/CustomerFeedback.tsx`
-- `app/src/screens/emerging/EmergingTechScreens.tsx`
-- `app/src/screens/enterprise/EnterpriseScreens.tsx`
-- `app/src/screens/fleet/FleetTracking.tsx`
-- `app/src/screens/fleet/LoanerVehicles.tsx`
-- `app/src/screens/fleet/TowingAssistance.tsx`
-- `app/src/screens/fleet/TowingServices.tsx`
-- `app/src/screens/infra/InfraScreens.tsx`
-- `app/src/screens/insurance/ContractManagement.tsx`
-- `app/src/screens/insurance/WarrantyManagement.tsx`
-- `app/src/screens/marketing/MarketingScreens.tsx`
-- `app/src/screens/meta/Native.tsx`
-- `app/src/screens/meta/Specs.tsx`
-- `app/src/screens/network/NetworkScreens.tsx`
-- `app/src/screens/network/PurchaseOrder.tsx`
-- `app/src/screens/procurement/ProcurementScreens.tsx`
-- `app/src/screens/productivity/ProductivityScreens.tsx`
-- `app/src/screens/reporting/ReportingScreens.tsx`
-- `app/src/screens/settings/SettingsScreens.tsx`
-- `app/src/screens/ui/Collaboration.tsx`
-- `app/src/screens/ui/Insights.tsx`
-- `app/src/screens/ui/Media.tsx`
-- `app/src/screens/ui/ModalsCore.tsx`
-- `app/src/screens/ui/ModalsFlow.tsx`
-- `app/src/screens/ui/States.tsx`
-- `app/src/screens/ui/Transfer.tsx`
-- `app/src/screens/ui/Views.tsx`
-- `app/src/screens/ui/ViewsAlt.tsx`
-- `app/src/screens/website/About.tsx`
-- `app/src/screens/website/Blog.tsx`
-- `app/src/screens/website/Contact.tsx`
-- `app/src/screens/website/FAQ.tsx`
-- `app/src/screens/website/Insurance.tsx`
-- `app/src/screens/website/Landing.tsx`
-- `app/src/screens/website/Loans.tsx`
-- `app/src/screens/website/Marketplace.tsx`
-- `app/src/screens/website/Services.tsx`
-- `app/src/screens/website/Support.tsx`
+_None._
 
 ## Placeholder routes by domain
 
