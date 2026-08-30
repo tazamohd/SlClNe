@@ -1,7 +1,8 @@
 import { z } from 'zod'
 import { customerCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
-import { Modal } from '@/components/ui/Modal'
+import { Icon } from '@/components/ui/Icon'
+import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
 import {
   Field,
   Form,
@@ -10,7 +11,7 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { useToast } from '@/components/ui/Toast'
-import { RepositoryError, useCreate, useUpdate, type RowOf } from '@/data/useCollection'
+import { RepositoryError, useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { NoWritesNotice, asPatch, rowId, serverFieldError } from './writes'
 
@@ -62,8 +63,10 @@ export function CustomerFormModal({
 }) {
   const { t } = usePreferences()
   const toast = useToast()
+  const { confirm } = useModal()
   const create = useCreate('customers')
   const update = useUpdate('customers')
+  const remove = useDelete('customers')
   const editing = Boolean(customer)
 
   const form = useZodForm({
@@ -105,20 +108,61 @@ export function CustomerFormModal({
     onClose()
   }
 
+  const handleDelete = async () => {
+    const id = rowId(customer)
+    if (!id) return
+    const agreed = await confirm({
+      title: t('Delete Customer?'),
+      description: `${customer?.name ?? ''}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Customer deleted'), description: customer?.name ?? '' })
+    onClose()
+  }
+
+  const busy = form.pending || remove.isPending
+
   return (
     <Modal
       open={open}
       onClose={() => void close()}
       variant="crud"
       icon={editing ? 'Pencil' : 'UserPlus'}
-      title={editing ? 'Edit Customer' : 'Add New Customer'}
-      dismissible={!form.pending}
+      title={t(editing ? 'Edit Customer' : 'Add New Customer')}
+      dismissible={!busy}
       footer={
         <>
-          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={form.pending}>
+          {editing && rowId(customer) ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
+          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={busy}>
             {t('Cancel')}
           </Button>
-          <Button size="lg" onClick={() => form.submit()} disabled={form.pending}>
+          <Button size="lg" onClick={() => form.submit()} disabled={busy}>
             {form.pending ? t('Saving...') : t(editing ? 'Save Changes' : 'Add Customer')}
           </Button>
         </>
@@ -134,7 +178,7 @@ export function CustomerFormModal({
             draws them. This keeps Enter working from any field — a form with no
             submit control inside it does not submit from the keyboard. It is
             aria-hidden, which also takes it out of the dialog's focus trap. */}
-        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
+        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
           {t(editing ? 'Save Changes' : 'Add Customer')}
         </button>
       </Form>

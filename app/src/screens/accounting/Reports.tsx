@@ -3,7 +3,7 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Button } from '@/components/ui/Button'
-import { BarList, CHART_COLORS, Donut } from '@/components/ui/Charts'
+import { BarList, CountBars, Donut } from '@/components/ui/Charts'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { ErrorState, Loading } from '@/components/ui/States'
@@ -447,6 +447,11 @@ export function OperationalReports() {
     }))
   }, [jobs])
 
+  const techRows = useMemo(
+    () => technicians.map((tech) => ({ label: tech.name, value: tech.jobs })),
+    [technicians],
+  )
+
   if (isMobile) {
     return (
       <>
@@ -459,50 +464,10 @@ export function OperationalReports() {
           ]}
         />
         <Section title={t('Jobs by Status')}>
-          <div className="flex flex-col gap-3">
-            {byStatus.map((row, index) => (
-              <div key={row.label} className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between gap-3 text-[13px]">
-                  <span className="capitalize text-body">{t(row.label)}</span>
-                  <span className="font-mono font-semibold text-heading" dir="ltr">
-                    {row.value}
-                  </span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-inset">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${(row.value / Math.max(1, jobs.length)) * 100}%`,
-                      background: CHART_COLORS[index % CHART_COLORS.length],
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+          <CountBars rows={byStatus} total={Math.max(1, jobs.length)} />
         </Section>
         <Section title={t('Technician Load')}>
-          <div className="flex flex-col gap-3">
-            {technicians.map((tech, index) => (
-              <div key={tech.name} className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between gap-3 text-[13px]">
-                  <span className="text-body">{tech.name}</span>
-                  <span className="font-mono font-semibold text-heading" dir="ltr">
-                    {tech.jobs}
-                  </span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-inset">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${(tech.jobs / Math.max(...technicians.map((x) => x.jobs), 1)) * 100}%`,
-                      background: CHART_COLORS[index % CHART_COLORS.length],
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+          <CountBars rows={techRows} />
         </Section>
       </>
     )
@@ -530,51 +495,11 @@ export function OperationalReports() {
       />
 
       <Section title={t('Jobs by Status')} subtitle={t('Current distribution')}>
-        <div className="flex flex-col gap-3">
-          {byStatus.map((row, index) => (
-            <div key={row.label} className="flex flex-col gap-1.5">
-              <div className="flex items-baseline justify-between gap-3 text-[13px]">
-                <span className="capitalize text-body">{t(row.label)}</span>
-                <span className="font-mono font-semibold text-heading" dir="ltr">
-                  {row.value}
-                </span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-inset">
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${(row.value / Math.max(1, jobs.length)) * 100}%`,
-                    background: CHART_COLORS[index % CHART_COLORS.length],
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        <CountBars rows={byStatus} total={Math.max(1, jobs.length)} />
       </Section>
 
       <Section title={t('Technician Load')} subtitle={t('Active jobs per technician')}>
-        <div className="flex flex-col gap-3">
-          {technicians.map((tech, index) => (
-            <div key={tech.name} className="flex flex-col gap-1.5">
-              <div className="flex items-baseline justify-between gap-3 text-[13px]">
-                <span className="text-body">{tech.name}</span>
-                <span className="font-mono font-semibold text-heading" dir="ltr">
-                  {tech.jobs}
-                </span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-inset">
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${(tech.jobs / Math.max(...technicians.map((x) => x.jobs), 1)) * 100}%`,
-                    background: CHART_COLORS[index % CHART_COLORS.length],
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        <CountBars rows={techRows} />
       </Section>
     </>
   )

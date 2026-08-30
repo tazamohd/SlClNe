@@ -1,7 +1,8 @@
-/** New Expense modal — inline schema, no contract. */
+/** New / Edit Expense modal — inline schema, no contract. */
 import { z } from 'zod'
 import { Button } from '@/components/ui/Button'
-import { Modal } from '@/components/ui/Modal'
+import { Icon } from '@/components/ui/Icon'
+import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
 import {
   Field,
   Form,
@@ -10,9 +11,9 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { useToast } from '@/components/ui/Toast'
-import { RepositoryError, useCreate, type RowOf } from '@/data/useCollection'
+import { RepositoryError, useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { NoWritesNotice, asPatch, serverFieldError } from '@/screens/registry/writes'
+import { NoWritesNotice, asPatch, rowId, serverFieldError } from '@/screens/registry/writes'
 
 type Expense = RowOf<'expenses'>
 
@@ -47,34 +48,46 @@ type ExpenseFormValues = z.input<typeof expenseForm>
 export function ExpenseFormModal({
   open,
   onClose,
+  existingRecord,
 }: {
   open: boolean
   onClose: () => void
+  existingRecord?: Expense
 }) {
   const { t } = usePreferences()
   const toast = useToast()
+  const { confirm } = useModal()
   const create = useCreate('expenses')
+  const update = useUpdate('expenses')
+  const remove = useDelete('expenses')
+  const editing = Boolean(existingRecord)
 
   const form = useZodForm({
     schema: expenseForm,
     initial: {
       description: '',
-      amount: '',
-      category: '',
-      date: '',
-      vendor: '',
+      amount: existingRecord?.amount ?? '',
+      category: existingRecord?.category ?? '',
+      date: existingRecord?.date ?? '',
+      vendor: existingRecord?.vendor ?? '',
       reference: '',
     } satisfies ExpenseFormValues,
     async onSubmit(values) {
       try {
-        await create.mutateAsync({ input: asPatch<Expense>(values) })
+        if (existingRecord) {
+          const id = rowId(existingRecord)
+          if (!id) throw new Error(t('This record has no id, so it cannot be saved.'))
+          await update.mutateAsync({ id, patch: asPatch<Expense>(values) })
+        } else {
+          await create.mutateAsync({ input: asPatch<Expense>(values) })
+        }
       } catch (cause) {
         const attributed = serverFieldError(cause)
         if (attributed) throw attributed
         throw cause instanceof RepositoryError ? new Error(cause.message) : cause
       }
       toast.show({
-        title: t('Expense recorded'),
+        title: t(editing ? 'Expense updated' : 'Expense recorded'),
         description: values.description,
       })
       onClose()
@@ -89,21 +102,62 @@ export function ExpenseFormModal({
     onClose()
   }
 
+  const handleDelete = async () => {
+    const id = rowId(existingRecord)
+    if (!id) return
+    const agreed = await confirm({
+      title: t('Delete Expense?'),
+      description: `${existingRecord?.vendor ?? ''}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Expense deleted'), description: existingRecord?.vendor ?? '' })
+    onClose()
+  }
+
+  const busy = form.pending || remove.isPending
+
   return (
     <Modal
       open={open}
       onClose={() => void close()}
       variant="crud"
-      icon="Receipt"
-      title={t('New Expense')}
-      dismissible={!form.pending}
+      icon={editing ? 'Pencil' : 'Receipt'}
+      title={t(editing ? 'Edit Expense' : 'New Expense')}
+      dismissible={!busy}
       footer={
         <>
-          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={form.pending}>
+          {editing && rowId(existingRecord) ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
+          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={busy}>
             {t('Cancel')}
           </Button>
-          <Button size="lg" onClick={() => form.submit()} disabled={form.pending}>
-            {form.pending ? t('Saving...') : t('Add Expense')}
+          <Button size="lg" onClick={() => form.submit()} disabled={busy}>
+            {form.pending ? t('Saving...') : t(editing ? 'Save Changes' : 'Add Expense')}
           </Button>
         </>
       }
@@ -117,8 +171,8 @@ export function ExpenseFormModal({
         <Field name="date" label="Date" kind="date" required />
         <Field name="vendor" label="Vendor" placeholder={t('Al-Faisal Trading')} />
         <Field name="reference" label="Reference" placeholder={t('INV-2024-001')} />
-        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
-          {t('Add Expense')}
+        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
+          {t(editing ? 'Save Changes' : 'Add Expense')}
         </button>
       </Form>
     </Modal>

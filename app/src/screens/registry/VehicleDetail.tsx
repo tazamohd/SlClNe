@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
 import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
+import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { useToast } from '@/components/ui/Toast'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
@@ -82,6 +83,18 @@ export function VehicleDetail() {
           }))
         : [],
     [worked, vehicleOwner, vehicleMake, t]
+  )
+
+  const attachments: AttachmentFile[] = useMemo(
+    () =>
+      vehicleMake
+        ? [
+            { id: 'att-1', name: 'registration_card.pdf', size: '1.5 MB', type: 'PDF' },
+            { id: 'att-2', name: 'insurance_policy.pdf', size: '2.8 MB', type: 'PDF' },
+            { id: 'att-3', name: 'vehicle_photo.jpg', size: '4.2 MB', type: 'Image' },
+          ]
+        : [],
+    [vehicleMake]
   )
 
   if (vehicles.isLoading) return <DetailPage title={t('All Vehicles')} loading />
@@ -204,6 +217,11 @@ export function VehicleDetail() {
         timeline={
           activities.length > 0 && !isMobile ? (
             <ActivityFeed items={activities} title={t('Service History')} />
+          ) : undefined
+        }
+        attachments={
+          attachments.length > 0 && !isMobile ? (
+            <Attachments files={attachments} title={t('Documents')} />
           ) : undefined
         }
         related={[

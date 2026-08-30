@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { Modal } from '@/components/ui/Modal'
+import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
 import { ReadOnlyNotice } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
 import {
@@ -14,7 +14,7 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useCreate, useUpdate, type RowOf } from '@/data/useCollection'
+import { useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { RepositoryError, isLive } from '@/data/repository'
 import type { JobRow } from './stages'
 
@@ -78,9 +78,11 @@ export function JobCardForm({
 }) {
   const { t } = usePreferences()
   const toast = useToast()
+  const { confirm } = useModal()
   const navigate = useNavigate()
   const create = useCreate('jobs')
   const update = useUpdate('jobs')
+  const remove = useDelete('jobs')
   const editing = Boolean(job)
 
   const form = useZodForm({
@@ -135,6 +137,35 @@ export function JobCardForm({
     onClose()
   }
 
+  const handleDelete = async () => {
+    if (!job) return
+    const id = job._id ?? job.id
+    const agreed = await confirm({
+      title: t('Delete Job Card?'),
+      description: `${job.id} — ${job.cust}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Job card deleted'), description: job.id })
+    onClose()
+    navigate('/job-cards')
+  }
+
+  const busy = form.pending || remove.isPending
+
   return (
     <Modal
       open={open}
@@ -147,13 +178,26 @@ export function JobCardForm({
           ? 'Stage and status are not editable here — they move through the workflow.'
           : 'Opens the card at Check-In. The stage moves as the work does.'
       }
-      dismissible={!form.pending}
+      dismissible={!busy}
       footer={
         <>
-          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={form.pending}>
+          {editing && job ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
+          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={busy}>
             {t('Cancel')}
           </Button>
-          <Button size="lg" onClick={() => form.submit()} disabled={form.pending || !isLive}>
+          <Button size="lg" onClick={() => form.submit()} disabled={busy || !isLive}>
             {form.pending ? (
               t('Saving...')
             ) : (

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { DetailPage, type DetailSection } from '@/components/shell/DetailPage'
+import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { StatusBadge } from '@/components/ui/Badge'
@@ -169,6 +170,12 @@ export function EstimateDetail() {
   const mayApprove = can('estimates', 'a') && canApprove(role, amount, 'estimates') && !decided
 
   const lineRows = lines.data?.rows ?? []
+
+  const demoAttachments: AttachmentFile[] = [
+    { id: 'att-1', name: 'estimate_breakdown.pdf', size: '1.3 MB', type: 'PDF' },
+    { id: 'att-2', name: 'parts_quotation.xlsx', size: '0.9 MB', type: 'Spreadsheet' },
+    { id: 'att-3', name: 'inspection_photo.jpg', size: '2.7 MB', type: 'Image' },
+  ]
 
   const sections: DetailSection[] = [
     {
@@ -393,6 +400,9 @@ export function EstimateDetail() {
       }
       readOnly={decided ? `${t('This estimate is')} ${t(estimate.status)}.` : undefined}
       sections={sections}
+      attachments={
+        <Attachments files={demoAttachments} title={t('Documents')} />
+      }
     />
   )
 }

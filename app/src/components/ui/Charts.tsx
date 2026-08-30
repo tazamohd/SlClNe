@@ -44,6 +44,46 @@ export function BarList({
   )
 }
 
+/** Bars for a count distribution. Distinct from `BarList`, which renders its
+ *  value as a SAR amount — a count is a tally of records, so it is shown as a
+ *  plain LTR integer, never money.
+ *
+ *  `total`, when given, is the denominator every bar is scaled against (e.g.
+ *  the sum of all rows). When omitted, the largest individual value is used. */
+export function CountBars({
+  rows,
+  total,
+}: {
+  rows: readonly { label: string; value: number }[]
+  total?: number
+}) {
+  const { t } = usePreferences()
+  const max = total ?? Math.max(...rows.map((row) => row.value), 1)
+  return (
+    <div className="flex flex-col gap-3">
+      {rows.map((row, index) => (
+        <div key={row.label} className="flex flex-col gap-1.5">
+          <div className="flex items-baseline justify-between gap-3 text-[13px]">
+            <span className="capitalize text-body">{t(row.label)}</span>
+            <span className="font-mono font-semibold text-heading" dir="ltr">
+              {row.value}
+            </span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-inset">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${Math.min(100, (row.value / max) * 100)}%`,
+                background: CHART_COLORS[index % CHART_COLORS.length],
+              }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 /** Donut built from a conic gradient, as the design's Job Status chart is. */
 export function Donut({
   segments,

@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { BackLink } from '@/components/ui/BackLink'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Comments, type Comment } from '@/components/ui/Comments'
 import { Icon } from '@/components/ui/Icon'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
@@ -102,6 +104,27 @@ export function InvoiceDetail() {
   const subtotalDisagrees =
     money.fromServer && lines.length > 0 && lineSumHalalas !== money.subtotalHalalas
   const paidDisagrees = money.fromServer && paidFromPayments !== money.paidHalalas
+
+  const demoAttachments: AttachmentFile[] = [
+    { id: 'att-1', name: 'signed_invoice.pdf', size: '1.8 MB', type: 'PDF' },
+    { id: 'att-2', name: 'payment_receipt.pdf', size: '0.5 MB', type: 'PDF' },
+  ]
+
+  const demoComments: Comment[] = [
+    {
+      id: 'cmt-1',
+      author: invoice.cust,
+      text: t('Payment sent via bank transfer.'),
+      time: '2:30 PM',
+    },
+    {
+      id: 'cmt-2',
+      author: t('Accountant'),
+      role: t('Finance'),
+      text: t('Payment confirmed and recorded.'),
+      time: '3:15 PM',
+    },
+  ]
 
   return (
     <div className="flex max-w-[1100px] flex-col gap-6">
@@ -345,6 +368,10 @@ export function InvoiceDetail() {
               )}
             </div>
           </Card>
+
+          <Comments items={demoComments} title={t('Invoice Notes')} />
+
+          <Attachments files={demoAttachments} title={t('Attachments')} />
         </div>
       </div>
 
