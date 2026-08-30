@@ -128,7 +128,79 @@ Risk Score = Probability x Impact. Classification:
 
 ---
 
-## 6. Escalation Thresholds
+## 6. Risk Response Strategies
+
+### 6.1 Avoid
+
+Eliminate the threat by changing the project plan. Used when the risk is unacceptable and can be prevented.
+
+- **R-T01 (ZATCA spec changes):** Cannot be fully avoided since ZATCA controls the specification, but the adapter pattern isolates blast radius.
+
+### 6.2 Mitigate
+
+Reduce probability or impact to an acceptable level. This is the primary strategy for most SALIS AUTO risks.
+
+| Risk ID | Mitigation Action                                      | Cost (SP) | Owner       |
+|---------|-------------------------------------------------------|-----------|-------------|
+| R-T01   | Adapter interface for ZATCA logic; nightly sandbox CI | 8         | Tech Lead   |
+| R-T02   | Weekly migration rehearsals from Sprint 6 onward      | 3/sprint  | DBA         |
+| R-T03   | Benchmark RLS in Sprint 3; permission caching         | 5         | Tech Lead   |
+| R-T05   | Formal state machine definition with guard conditions | 8         | Tech Lead   |
+| R-T07   | CI lint rule for missing i18n keys                    | 3         | Frontend    |
+| R-C01   | ZATCA consultant pre-audit; 50+ invoice test suite    | 13        | Finance     |
+| R-O01   | Pair programming on critical modules; docs            | 5/sprint  | PM          |
+| R-O03   | Scope change control process; CCB enforcement         | 0         | PM          |
+| R-D02   | 3x migration rehearsals; automated rollback script    | 8         | DBA         |
+| R-D03   | k6 load test at 2x expected; perf budget per endpoint | 8         | DevOps      |
+
+### 6.3 Transfer
+
+Shift the risk impact to a third party.
+
+- **R-I01 (SMS gateway disruption):** Contract with SMS provider includes SLA guarantees and credits; configure backup provider for failover.
+- **R-C04 (Data residency):** Cloud provider contractually guarantees data stays in designated region.
+
+### 6.4 Accept
+
+Acknowledge the risk and prepare a contingency plan without proactive action.
+
+- **R-T06 (React Query stale cache):** Low score (4). Document query key conventions; fix reactively if encountered.
+- **R-C02 (VAT rate change):** VAT is parameterized in config; change requires a config update, not code change.
+
+---
+
+## 7. Risk Monitoring Indicators
+
+Early warning indicators that a risk is materializing:
+
+| Risk ID | Leading Indicator                                        | Monitoring Method          |
+|---------|----------------------------------------------------------|----------------------------|
+| R-T01   | ZATCA publishes draft specification update               | ZATCA developer portal RSS |
+| R-T03   | RLS query times exceeding 200ms in staging               | APM dashboard              |
+| R-T05   | QA reports orphaned jobs or unexpected state transitions  | Playwright E2E failures    |
+| R-T07   | i18n CI lint warnings trending upward                    | Sprint metrics             |
+| R-C01   | ZATCA sandbox returns new validation error codes         | Nightly CI report          |
+| R-O01   | Team member gives notice or requests transfer             | HR notification            |
+| R-O03   | Informal feature requests increasing in Slack            | Scrum Master observation   |
+| R-D03   | API P95 response time increasing sprint over sprint      | APM trend charts           |
+
+---
+
+## 8. Contingency Budget
+
+A risk contingency reserve of 15% of the total project budget (SAR 249,150) is allocated. Drawdowns require PM approval for Medium risks and Sponsor approval for High/Critical risks.
+
+| Reserve Allocation          | Amount (SAR) | Trigger                                 |
+|-----------------------------|--------------|----------------------------------------|
+| ZATCA re-certification      | 60,000       | Spec change requiring rework            |
+| Staff augmentation          | 80,000       | Key developer departure                 |
+| Infrastructure scaling      | 40,000       | Performance issues requiring upgrade    |
+| Security remediation        | 30,000       | Pen test findings requiring rework      |
+| Unallocated                 | 39,150       | Unanticipated risks                     |
+
+---
+
+## 9. Escalation Thresholds
 
 | Risk Score | Escalation Target      | Response Time |
 |------------|------------------------|---------------|
@@ -139,7 +211,7 @@ Risk Score = Probability x Impact. Classification:
 
 ---
 
-## 7. References
+## 10. References
 
 - [Project Charter](project-charter.md)
 - [Scope Statement](scope-statement.md)

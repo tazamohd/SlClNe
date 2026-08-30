@@ -188,7 +188,37 @@ These items span multiple epics and are tracked as standalone backlog items:
 
 ---
 
-## 8. References
+## 8. Technical Debt Backlog
+
+Technical debt items are tracked alongside feature stories and given explicit priority.
+
+| Debt ID  | Title                                          | Impact                                 | Points | Sprint Target |
+|----------|------------------------------------------------|----------------------------------------|--------|---------------|
+| TD-001   | Replace mock notification adapter with gateway | Blocks SMS/WhatsApp testing            | 5      | S13           |
+| TD-002   | Add database indexes for common query patterns | Slow queries in job search, customer lookup | 3  | S12           |
+| TD-003   | Refactor i18n namespace loading for lazy chunks| Oversized initial bundle               | 5      | S15           |
+| TD-004   | Consolidate form validation schemas (Zod)      | Duplicated validation logic across domains | 8   | S14           |
+| TD-005   | Extract shared approval chain logic into service| Duplicated in Finance, Parts, HR      | 5      | S19           |
+| TD-006   | Add structured logging (replace console calls) | Debugging difficulty in production     | 3      | S18           |
+| TD-007   | RTL stylesheet audit and logical property migration | CSS hacks for RTL instead of logical props | 5 | S17       |
+
+Technical debt must not exceed 15% of any sprint's committed points.
+
+---
+
+## 9. Backlog Health Metrics
+
+| Metric                        | Healthy Range        | Current  |
+|-------------------------------|----------------------|----------|
+| Stories refined and ready     | >= 2 sprints ahead   |          |
+| Stories without acceptance criteria | 0              |          |
+| Average story age (in backlog)| < 6 sprints          |          |
+| Epics with zero progress      | Decreasing over time |          |
+| Technical debt ratio          | < 15% of sprint      |          |
+
+---
+
+## 10. References
 
 - [Epic Breakdown](epic-breakdown.md)
 - [User Stories](user-stories.md)
