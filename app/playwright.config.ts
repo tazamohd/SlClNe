@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test'
+import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './e2e',
@@ -9,10 +9,30 @@ export default defineConfig({
   reporter: 'list',
   timeout: 30_000,
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
     launchOptions: {
       executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
     },
   },
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 30_000,
+  },
+  projects: [
+    {
+      name: 'desktop',
+      use: {
+        viewport: { width: 1280, height: 720 },
+      },
+    },
+    {
+      name: 'mobile',
+      use: {
+        viewport: { width: 390, height: 844 },
+      },
+    },
+  ],
 })
