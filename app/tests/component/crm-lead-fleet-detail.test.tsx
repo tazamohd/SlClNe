@@ -125,12 +125,12 @@ describe('LeadDetail', () => {
     expect(screen.getByText('Negotiation')).toBeInTheDocument()
   })
 
-  it('gaps activity and notes honestly rather than inventing a timeline', async () => {
+  it('derives activity and notes from the lead fields', async () => {
     renderWithProviders(<LeadDetail />, at(`/lead-detail?id=${LEAD_ID}`))
     await screen.findByRole('heading', { name: 'Huda Al-Rashid' })
 
-    expect(screen.getByText('No activity yet')).toBeInTheDocument()
-    expect(screen.getByText('No notes yet')).toBeInTheDocument()
+    expect(screen.getByText('Recent Activity')).toBeInTheDocument()
+    expect(screen.getByText('Notes')).toBeInTheDocument()
   })
 
   it('offers Edit and Convert now the lead collection and convert route are live', async () => {

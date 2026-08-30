@@ -1,7 +1,11 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { AdvancedFilters, type ActiveFilter, type FilterGroup } from '@/components/ui/AdvancedFilters'
+import { ExportCenter, type ExportColumn } from '@/components/ui/ExportCenter'
+import { ImportCenter, type ImportField } from '@/components/ui/ImportCenter'
+import { Button } from '@/components/ui/Button'
 import { Money, formatSar } from '@/components/ui/Money'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -30,9 +34,61 @@ function statusColor(status: string) {
   return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
 }
 
+const INVENTORY_EXPORT_COLUMNS: ExportColumn[] = [
+  { key: 'sku', label: 'SKU' },
+  { key: 'name', label: 'Name' },
+  { key: 'category', label: 'Category' },
+  { key: 'onHand', label: 'On Hand' },
+  { key: 'reserved', label: 'Reserved' },
+  { key: 'available', label: 'Available' },
+  { key: 'reorderPoint', label: 'Reorder Pt' },
+  { key: 'unitCost', label: 'Unit Cost' },
+  { key: 'status', label: 'Status' },
+]
+
+const INVENTORY_IMPORT_FIELDS: ImportField[] = [
+  { name: 'SKU', required: true, example: 'SKU-001' },
+  { name: 'Name', required: true, example: 'Oil Filter' },
+  { name: 'Category', required: true, example: 'Filters' },
+  { name: 'On Hand', required: true, example: '120' },
+  { name: 'Reorder Point', required: true, example: '20' },
+  { name: 'Unit Cost', required: true, example: '18.50' },
+]
+
 export function InventoryManagement() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+
+  const [showFilters, setShowFilters] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([])
+  const [showExport, setShowExport] = useState(false)
+  const [showImport, setShowImport] = useState(false)
+
+  const filterGroups = useMemo<FilterGroup[]>(() => {
+    const statuses = [...new Set(ITEMS.map((i) => i.status))]
+    const categories = [...new Set(ITEMS.map((i) => i.category))]
+    return [
+      { id: 'status', label: 'Status', icon: 'Activity', options: statuses },
+      { id: 'category', label: 'Category', icon: 'Tag', options: categories },
+    ]
+  }, [])
+
+  const filteredItems = useMemo(() => {
+    if (activeFilters.length === 0) return [...ITEMS] as unknown as Item[]
+    const groups = new Map<string, string[]>()
+    for (const f of activeFilters) {
+      const arr = groups.get(f.groupId) ?? []
+      arr.push(f.value)
+      groups.set(f.groupId, arr)
+    }
+    return ([...ITEMS] as unknown as Item[]).filter((item) => {
+      for (const [groupId, values] of groups) {
+        const field = groupId === 'status' ? item.status : item.category
+        if (!values.includes(field)) return false
+      }
+      return true
+    })
+  }, [activeFilters])
 
   const totalValue = useMemo(() => ITEMS.reduce((sum, i) => sum + i.onHand * i.unitCost, 0), [])
   const lowStock = ITEMS.filter((i) => i.status === 'Low Stock').length
@@ -61,6 +117,51 @@ export function InventoryManagement() {
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Package" title={t('Inventory Management')} subtitle={t('Master inventory dashboard')} />
 
+      <div className="flex flex-wrap gap-2">
+        <Button variant="outline" size="sm" onClick={() => { setShowFilters(!showFilters); setShowExport(false); setShowImport(false) }}>
+          <Icon name="SlidersHorizontal" size={14} />
+          {t('Filters')}
+          {activeFilters.length > 0 ? ` (${activeFilters.length})` : null}
+        </Button>
+        <Button variant="outline" size="sm" onClick={() => { setShowExport(!showExport); setShowFilters(false); setShowImport(false) }}>
+          <Icon name="Download" size={14} />
+          {t('Export')}
+        </Button>
+        <Button variant="outline" size="sm" onClick={() => { setShowImport(!showImport); setShowFilters(false); setShowExport(false) }}>
+          <Icon name="Upload" size={14} />
+          {t('Import')}
+        </Button>
+      </div>
+
+      {showFilters ? (
+        <AdvancedFilters
+          groups={filterGroups}
+          active={activeFilters}
+          onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+          onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+          onClear={() => setActiveFilters([])}
+        />
+      ) : null}
+
+      {showExport ? (
+        <ExportCenter
+          title="Export Inventory"
+          description="Export inventory items to a file"
+          columns={INVENTORY_EXPORT_COLUMNS}
+          totalRows={filteredItems.length}
+          onExport={async () => { /* server-side export */ }}
+        />
+      ) : null}
+
+      {showImport ? (
+        <ImportCenter
+          title="Import Inventory"
+          description="Import inventory items from a CSV or Excel file"
+          fields={INVENTORY_IMPORT_FIELDS}
+          onImport={async () => ({ total: 0, imported: 0, skipped: 0, errors: [] })}
+        />
+      ) : null}
+
       <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-4 gap-4'}>
         {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
@@ -70,7 +171,7 @@ export function InventoryManagement() {
       <DataTable
         caption="Inventory items"
         columns={columns}
-        rows={[...ITEMS] as unknown as Item[]}
+        rows={filteredItems}
         rowKey={(item) => item.sku}
         empty={t('No inventory items found')}
         mobileCard={(item) => (

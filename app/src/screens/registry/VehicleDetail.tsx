@@ -7,6 +7,8 @@ import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
 import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
 import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
+import { Comments, type Comment } from '@/components/ui/Comments'
+import { MediaGallery, type MediaItem } from '@/components/ui/MediaGallery'
 import { useToast } from '@/components/ui/Toast'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
@@ -95,6 +97,32 @@ export function VehicleDetail() {
           ]
         : [],
     [vehicleMake]
+  )
+
+  const comments: Comment[] = useMemo(
+    () =>
+      vehicleMake
+        ? worked.slice(0, 3).map((job) => ({
+            id: `cmt-${job.id}`,
+            author: vehicleOwner,
+            text: `${t(job.svc.replace(/_/g, ' '))} — ${t(job.st.replace(/_/g, ' '))}`,
+            time: t(job.pr),
+          }))
+        : [],
+    [worked, vehicleOwner, vehicleMake, t]
+  )
+
+  const mediaItems: MediaItem[] = useMemo(
+    () =>
+      vehicleMake
+        ? [
+            { id: 'photo-1', src: '/images/vehicle-front.jpg', alt: t('Front view'), caption: t('Front view') },
+            { id: 'photo-2', src: '/images/vehicle-side.jpg', alt: t('Side view'), caption: t('Side view') },
+            { id: 'photo-3', src: '/images/vehicle-rear.jpg', alt: t('Rear view'), caption: t('Rear view') },
+            { id: 'photo-4', src: '/images/vehicle-interior.jpg', alt: t('Interior'), caption: t('Interior') },
+          ]
+        : [],
+    [vehicleMake, t]
   )
 
   if (vehicles.isLoading) return <DetailPage title={t('All Vehicles')} loading />
@@ -219,10 +247,29 @@ export function VehicleDetail() {
             <ActivityFeed items={activities} title={t('Service History')} />
           ) : undefined
         }
+        comments={
+          comments.length > 0 && !isMobile ? (
+            <Comments items={comments} title={t('Notes')} />
+          ) : undefined
+        }
         attachments={
           attachments.length > 0 && !isMobile ? (
             <Attachments files={attachments} title={t('Documents')} />
           ) : undefined
+        }
+        sections={
+          mediaItems.length > 0 && !isMobile
+            ? [
+                {
+                  id: 'photos',
+                  title: 'Vehicle Photos',
+                  icon: 'Camera',
+                  on: 'desktop' as const,
+                  span: 'full' as const,
+                  children: <MediaGallery items={mediaItems} columns={4} />,
+                },
+              ]
+            : undefined
         }
         related={[
           {
