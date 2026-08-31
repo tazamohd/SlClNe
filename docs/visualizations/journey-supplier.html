@@ -247,6 +247,95 @@
     </div>
   </div>
 
+  <!-- Three-Way Match Detail -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text);">Three-Way Match Process</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6ba4d9" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        <h4 style="font-size: 14px; color: var(--blue); margin-bottom: 6px;">1. Purchase Order</h4>
+        <p style="font-size: 12px; color: var(--muted);">Original PO with agreed parts, quantities, and unit prices in SAR.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7dbb7d" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="3" y="7" width="18" height="10" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8,16 12,19 16,16"/></svg>
+        <h4 style="font-size: 14px; color: var(--green); margin-bottom: 6px;">2. Delivery Note</h4>
+        <p style="font-size: 12px; color: var(--muted);">Packing list confirming items shipped. Verified at workshop goods receipt.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d9b86b" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><text x="12" y="18" text-anchor="middle" fill="#d9b86b" font-size="6" font-weight="700">SAR</text></svg>
+        <h4 style="font-size: 14px; color: var(--gold); margin-bottom: 6px;">3. Supplier Invoice</h4>
+        <p style="font-size: 12px; color: var(--muted);">Invoice amounts validated against PO prices and received quantities.</p>
+      </div>
+    </div>
+    <div style="background: rgba(217,184,107,0.05); border: 1px solid rgba(217,184,107,0.15); border-radius: 10px; padding: 16px 20px; opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+      <p style="font-size: 13px; color: var(--muted);">All three documents must match in quantities and pricing before payment is approved. Discrepancies are flagged for manual review and resolution between supplier and workshop procurement.</p>
+    </div>
+  </section>
+
+  <!-- Supplier Portal Limitations -->
+  <section style="padding: 0 0 40px;">
+    <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; overflow-x: auto; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+      <h3 style="font-size: 16px; color: var(--blue); margin-bottom: 16px;">Supplier Portal Scope</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--card-border);">
+            <th style="text-align: left; padding: 8px 12px; color: var(--muted); font-weight: 600;">Data</th>
+            <th style="text-align: center; padding: 8px 12px; color: var(--green);">Visible</th>
+            <th style="text-align: center; padding: 8px 12px; color: var(--accent);">Hidden</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Own purchase orders</td>
+            <td style="text-align: center; color: var(--green);">Yes</td>
+            <td style="text-align: center;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Own payment history</td>
+            <td style="text-align: center; color: var(--green);">Yes</td>
+            <td style="text-align: center;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Other suppliers' POs</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Workshop operations</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Customer data</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 12px; color: var(--text);">Financial reports</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Payment Status Legend -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text);">Payment Status Lifecycle</h2>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(107,164,217,0.08); border: 1px solid rgba(107,164,217,0.25); font-size: 12px; color: var(--blue); font-weight: 600;">Invoice Submitted</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(217,184,107,0.08); border: 1px solid rgba(217,184,107,0.25); font-size: 12px; color: var(--gold); font-weight: 600;">Pending Approval</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(169,142,224,0.08); border: 1px solid rgba(169,142,224,0.25); font-size: 12px; color: var(--purple); font-weight: 600;">Approved</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(218,119,86,0.08); border: 1px solid rgba(218,119,86,0.25); font-size: 12px; color: var(--accent); font-weight: 600;">Scheduled</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(125,187,125,0.08); border: 1px solid rgba(125,187,125,0.25); font-size: 12px; color: var(--green); font-weight: 600;">Paid</div>
+    </div>
+  </section>
+
   <div class="info-grid">
     <div class="info-card" data-reveal>
       <h3 style="color:var(--blue)">PO Management</h3>
