@@ -1717,6 +1717,39 @@ const failures = []
       }, null, { timeout: 10_000 })
       .catch(() => problems.push('page rendered blank'))
 
+    /* The wait above only proves the page is not blank, and a data-backed
+     * screen clears twenty characters on its shell and loading state alone —
+     * so the capture below could read the page before its rows arrived. That
+     * made the content assertion race the fetch: `/integrations` and
+     * `/financial-statements` failed on one CI run and passed on the next, on
+     * the same commit. Wiring screens to the repository seam is what surfaced
+     * it, by turning more routes async.
+     *
+     * Waiting for the text this route is checked for is not a weaker
+     * assertion. Nothing is suppressed here: the check still runs on the
+     * captured text below, so a route that never renders its text fails
+     * exactly as before, just after a bounded wait rather than immediately. */
+    const awaited = EXPECTED_TEXT[entry.route]
+    if (awaited) {
+      const spacedAwaited = awaited
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+      await page
+        .waitForFunction(
+          (needles) => {
+            const text = document.body.innerText
+            return needles.some((n) => text.includes(n))
+          },
+          [awaited, spacedAwaited],
+          { timeout: 5_000 },
+        )
+        .catch(() => {
+          /* Deliberately swallowed: the assertion below is the one that
+           * reports, so a genuine absence is still a failure with its usual
+           * message rather than a timeout stack. */
+        })
+    }
+
     const rendered = await page.evaluate((marker) => {
       const main = document.querySelector('main')
       return {
