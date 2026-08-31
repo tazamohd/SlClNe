@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-001 — Full-Stack Data Flow</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero {
+    padding: 60px 24px 32px;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+
+  /* Caption bar */
+  .caption-bar {
+    max-width: 960px;
+    margin: 0 auto 24px;
+    padding: 14px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .caption-bar .desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  /* Diagram section */
+  .diagram-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 16px;
+  }
+  .diagram-section svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Supporting section */
+  .supporting {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 0 24px 80px;
+  }
+  .supporting h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .info-card h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .info-card p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+
+  /* Flow animation */
+  @keyframes flowDash {
+    to { stroke-dashoffset: -28; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.55; }
+  }
+
+  /* SVG hover */
+  .node-group { cursor: pointer; }
+  .node-group rect, .node-group circle {
+    transition: transform 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+  }
+  .node-group:hover rect {
+    filter: brightness(1.3) drop-shadow(0 0 6px rgba(218,119,86,0.3));
+    transform: scale(1.04);
+  }
+  .node-group text {
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SA-VIZ-001</div>
+  <h1>Full-Stack <span>Data Flow</span></h1>
+  <p>How data moves from a React component through TanStack Query, the repository seam, and down to PostgreSQL with RLS enforcement.</p>
+</section>
+
+<div class="caption-bar" id="captionBar">
+  <span class="label">Hover a node</span>
+  <span class="desc" id="captionText">Interact with the diagram below to explore each layer of the data pipeline.</span>
+</div>
+
+<section class="diagram-section">
+  <svg viewBox="0 0 1040 620" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/>
+      </marker>
+      <marker id="arrowBlue" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--blue)"/>
+      </marker>
+      <marker id="arrowGreen" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--green)"/>
+      </marker>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="8" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Connectors (behind nodes) -->
+    <!-- React -> TanStack -->
+    <path d="M 175 145 C 230 145, 250 145, 305 145" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+    <text x="240" y="132" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">queries</text>
+
+    <!-- TanStack -> Repository Seam -->
+    <path d="M 445 145 C 490 145, 480 215, 520 235" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+    <text x="470" y="175" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">invoke</text>
+
+    <!-- Repository Seam -> Mock (dev fork) -->
+    <path d="M 520 268 C 460 290, 300 330, 200 370" stroke="var(--green)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.4s linear infinite" marker-end="url(#arrowGreen)"/>
+    <text x="340" y="310" fill="var(--green)" font-size="9" font-family="var(--font)" text-anchor="middle">dev mode</text>
+
+    <!-- Repository Seam -> HTTP (prod fork) -->
+    <path d="M 660 255 C 720 260, 740 300, 780 350" stroke="var(--blue)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.4s linear infinite" marker-end="url(#arrowBlue)"/>
+    <text x="730" y="295" fill="var(--blue)" font-size="9" font-family="var(--font)" text-anchor="middle">production</text>
+
+    <!-- HTTP -> Fastify -->
+    <path d="M 860 405 C 870 430, 740 450, 680 470" stroke="var(--blue)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowBlue)"/>
+    <text x="790" y="442" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">fetch()</text>
+
+    <!-- Fastify -> Drizzle -->
+    <path d="M 570 490 C 500 495, 440 495, 380 490" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+    <text x="475" y="480" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">ORM call</text>
+
+    <!-- Drizzle -> PostgreSQL -->
+    <path d="M 270 510 C 220 535, 200 555, 200 570" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <!-- FORK indicator -->
+    <circle cx="590" cy="255" r="16" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="590" y="259" fill="var(--gold)" font-size="11" font-family="var(--font)" text-anchor="middle" font-weight="600">?</text>
+    <text x="590" y="220" fill="var(--gold)" font-size="9" font-family="var(--font)" text-anchor="middle">VITE_API_BASE_URL</text>
+
+    <!-- NODE: React Component -->
+    <g class="node-group" data-caption="React Component|UI layer handling user interactions, form state, and rendering. Dispatches queries and mutations via TanStack Query hooks.">
+      <circle cx="100" cy="145" r="30" fill="rgba(218,119,86,0.08)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+      <rect x="65" y="115" width="110" height="58" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- React icon -->
+      <ellipse cx="120" cy="135" rx="12" ry="5" fill="none" stroke="var(--accent)" stroke-width="1.5" transform="rotate(-30 120 135)"/>
+      <ellipse cx="120" cy="135" rx="12" ry="5" fill="none" stroke="var(--accent)" stroke-width="1.5" transform="rotate(30 120 135)"/>
+      <ellipse cx="120" cy="135" rx="12" ry="5" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+      <circle cx="120" cy="135" r="2" fill="var(--accent)"/>
+      <text x="120" y="162" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">React</text>
+    </g>
+
+    <!-- NODE: TanStack Query -->
+    <g class="node-group" data-caption="TanStack Query|Manages server state with automatic caching, request deduplication, background refetching, and optimistic updates. useQuery for reads, useMutation for writes.">
+      <rect x="305" y="115" width="140" height="58" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+      <!-- Cache icon -->
+      <line x1="355" y1="133" x2="355" y2="147" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="348" y1="140" x2="362" y2="140" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="364" y="131" width="16" height="16" rx="3" fill="none" stroke="var(--purple)" stroke-width="1.5"/>
+      <line x1="368" y1="137" x2="376" y2="137" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="368" y1="142" x2="374" y2="142" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="375" y="162" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">TanStack Query</text>
+    </g>
+
+    <!-- NODE: Repository Seam -->
+    <g class="node-group" data-caption="Repository Seam|Interface pattern that abstracts data access. The VITE_API_BASE_URL environment variable switches between Mock (PGlite) and HTTP implementations at build time.">
+      <circle cx="590" cy="255" r="40" fill="rgba(217,184,107,0.06)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+      <rect x="520" y="230" width="140" height="50" rx="10" fill="var(--card-bg)" stroke="var(--gold)" stroke-width="1.8"/>
+      <!-- Interface icon: diamond -->
+      <polygon points="555,248 565,240 575,248 565,256" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/>
+      <text x="590" y="262" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Repository Seam</text>
+    </g>
+
+    <!-- NODE: Mock Repository (PGlite) -->
+    <g class="node-group" data-caption="Mock Repository (PGlite)|In-browser PostgreSQL via PGlite for offline-first development. Runs full SQL queries client-side with no server dependency.">
+      <rect x="90" y="355" width="150" height="56" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+      <!-- DB icon -->
+      <ellipse cx="140" cy="374" rx="12" ry="5" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+      <line x1="128" y1="374" x2="128" y2="388" stroke="var(--green)" stroke-width="1.5"/>
+      <line x1="152" y1="374" x2="152" y2="388" stroke="var(--green)" stroke-width="1.5"/>
+      <ellipse cx="140" cy="388" rx="12" ry="5" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+      <text x="165" y="393" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">PGlite (Dev)</text>
+    </g>
+
+    <!-- NODE: HTTP Repository -->
+    <g class="node-group" data-caption="HTTP Repository|Production data layer using fetch() to call the Fastify API. Handles request serialization, error mapping, and authentication headers.">
+      <rect x="770" y="355" width="150" height="56" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+      <!-- HTTP icon -->
+      <polyline points="810,375 820,368 830,382 840,372" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="845" y="398" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">HTTP Repo</text>
+    </g>
+
+    <!-- NODE: Fastify API -->
+    <g class="node-group" data-caption="Fastify API|Server middleware pipeline: JWT authentication, RBAC authorization, Zod request validation, tenant context extraction, and route handlers.">
+      <rect x="570" y="465" width="140" height="56" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Server icon -->
+      <rect x="615" y="478" width="20" height="14" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+      <line x1="622" y1="492" x2="622" y2="498" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="628" y1="492" x2="628" y2="498" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="620" cy="484" r="1.5" fill="var(--accent)"/>
+      <text x="640" y="508" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Fastify API</text>
+    </g>
+
+    <!-- NODE: Drizzle ORM -->
+    <g class="node-group" data-caption="Drizzle ORM|Type-safe SQL query builder with full TypeScript inference. Defines schemas as code, supports migrations, and generates parameterized queries to prevent injection.">
+      <rect x="270" y="470" width="130" height="50" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+      <!-- Code icon -->
+      <polyline points="305,488 295,495 305,502" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="355,488 365,495 355,502" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="335" y="508" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Drizzle ORM</text>
+    </g>
+
+    <!-- NODE: PostgreSQL + RLS -->
+    <g class="node-group" data-caption="PostgreSQL + RLS|Production database with Row-Level Security policies enforcing tenant isolation. Every query is automatically filtered by org_id at the database level.">
+      <circle cx="200" cy="575" r="35" fill="rgba(107,164,217,0.06)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+      <rect x="130" y="555" width="140" height="50" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.8"/>
+      <!-- Lock icon -->
+      <rect x="168" y="572" width="14" height="10" rx="2" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+      <path d="M171 572 L171 568 A4 4 0 0 1 179 568 L179 572" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="200" y="594" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">PostgreSQL + RLS</text>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(820, 540)">
+      <text x="0" y="0" fill="var(--muted)" font-size="9" font-family="var(--font)" font-weight="600">LEGEND</text>
+      <line x1="0" y1="14" x2="24" y2="14" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="6 8"/>
+      <text x="30" y="18" fill="var(--muted)" font-size="8.5" font-family="var(--font)">Dev path</text>
+      <line x1="0" y1="30" x2="24" y2="30" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="6 8"/>
+      <text x="30" y="34" fill="var(--muted)" font-size="8.5" font-family="var(--font)">Prod path</text>
+      <line x1="0" y1="46" x2="24" y2="46" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 8"/>
+      <text x="30" y="50" fill="var(--muted)" font-size="8.5" font-family="var(--font)">Shared path</text>
+    </g>
+  </svg>
+</section>
+
+<section class="supporting reveal">
+  <h2>The Repository <span>Seam Pattern</span></h2>
+  <p>SALIS AUTO decouples UI code from data fetching by introducing a repository interface — a "seam" — between TanStack Query hooks and the actual data source. This allows the same React components and business logic to run against two entirely different backends without modification.</p>
+  <p>In development, <code style="color:var(--green)">VITE_API_BASE_URL</code> is unset, and the app resolves to a <strong>Mock Repository</strong> backed by PGlite — a full PostgreSQL engine running in the browser via WebAssembly. This provides offline-first development, instant feedback loops, and deterministic test data without a running server.</p>
+  <p>In production, <code style="color:var(--blue)">VITE_API_BASE_URL</code> points to the Fastify API, and the app resolves to an <strong>HTTP Repository</strong> that serializes requests as fetch() calls, attaching JWT tokens and tenant context headers.</p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h3 style="color:var(--accent)">Zero Config Switching</h3>
+      <p>A single environment variable toggles the entire data layer. No conditional imports, no feature flags in components.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--green)">PGlite Advantage</h3>
+      <p>Full SQL compatibility in-browser means dev data fixtures use the same schema and queries as production.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--blue)">Type Safety End-to-End</h3>
+      <p>Drizzle ORM schemas generate TypeScript types shared by both client and server, catching mismatches at compile time.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--purple)">Optimistic Updates</h3>
+      <p>TanStack Query manages cache invalidation and optimistic mutations, giving users instant UI feedback while writes propagate.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Caption bar hover
+  const captionBar = document.getElementById('captionBar');
+  const captionText = document.getElementById('captionText');
+  const captionLabel = captionBar.querySelector('.label');
+
+  document.querySelectorAll('.node-group').forEach(g => {
+    g.addEventListener('mouseenter', () => {
+      const raw = g.getAttribute('data-caption');
+      if (!raw) return;
+      const [label, desc] = raw.split('|');
+      captionLabel.textContent = label;
+      captionText.textContent = desc;
+      captionBar.style.borderColor = 'rgba(218,119,86,0.25)';
+    });
+    g.addEventListener('mouseleave', () => {
+      captionLabel.textContent = 'Hover a node';
+      captionText.textContent = 'Interact with the diagram below to explore each layer of the data pipeline.';
+      captionBar.style.borderColor = '';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
