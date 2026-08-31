@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { AdvancedFilters, type ActiveFilter, type FilterGroup } from '@/components/ui/AdvancedFilters'
+import { ExportCenter, type ExportColumn } from '@/components/ui/ExportCenter'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -57,6 +59,15 @@ function payable(invoice: Invoice): PayableInvoice {
  *  configured falls back to the fixture's display string, which carries a total
  *  and nothing else — so the balance column is honestly blank rather than
  *  guessed. */
+const INVOICE_EXPORT_COLUMNS: ExportColumn[] = [
+  { key: 'id', label: 'Invoice #' },
+  { key: 'cust', label: 'Customer' },
+  { key: 'due', label: 'Due Date' },
+  { key: 'amount', label: 'Amount' },
+  { key: 'balance', label: 'Balance' },
+  { key: 'status', label: 'Status' },
+]
+
 export function Invoices() {
   const { t } = usePreferences()
   const { can } = useSession()
@@ -65,14 +76,33 @@ export function Invoices() {
   const { data: invoices = [], isLoading, error, refetch } = useCollection('invoices')
   const [query, setQuery] = useState('')
   const [paying, setPaying] = useState<PayableInvoice | null>(null)
+  const [showFilters, setShowFilters] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([])
+  const [showExport, setShowExport] = useState(false)
+
+  const filterGroups = useMemo<FilterGroup[]>(() => {
+    const statuses = [...new Set(invoices.map((inv) => inv.status))].filter(Boolean)
+    return [
+      { id: 'status', label: 'Status', icon: 'Activity', options: statuses },
+    ]
+  }, [invoices])
 
   const filtered = useMemo(() => {
+    let result = invoices
     const needle = query.trim().toLowerCase()
-    if (!needle) return invoices
-    return invoices.filter((invoice) =>
-      [invoice.id, invoice.cust].some((field) => field.toLowerCase().includes(needle))
-    )
-  }, [invoices, query])
+    if (needle) {
+      result = result.filter((invoice) =>
+        [invoice.id, invoice.cust].some((field) => field.toLowerCase().includes(needle))
+      )
+    }
+    if (activeFilters.length > 0) {
+      const values = activeFilters.filter((f) => f.groupId === 'status').map((f) => f.value)
+      if (values.length > 0) {
+        result = result.filter((invoice) => values.includes(invoice.status))
+      }
+    }
+    return result
+  }, [invoices, query, activeFilters])
 
   const columns: Column<Invoice>[] = [
     { header: 'Invoice #', cell: (invoice) => invoice.id, code: true },
@@ -117,14 +147,30 @@ export function Invoices() {
               ) : null
             }
           />
-          <Input
-            type="search"
-            aria-label={t('Search invoices...')}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('Search invoices...')}
-            inputSize="sm"
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              type="search"
+              aria-label={t('Search invoices...')}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t('Search invoices...')}
+              inputSize="sm"
+              className="flex-1"
+            />
+            <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)}>
+              <Icon name="SlidersHorizontal" size={14} />
+              {activeFilters.length > 0 ? `(${activeFilters.length})` : null}
+            </Button>
+          </div>
+          {showFilters ? (
+            <AdvancedFilters
+              groups={filterGroups}
+              active={activeFilters}
+              onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+              onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+              onClear={() => setActiveFilters([])}
+            />
+          ) : null}
           {error ? (
             <Card className="p-4">
               <ErrorState
@@ -186,14 +232,46 @@ export function Invoices() {
         title={t('Invoices')}
         search={{ value: query, onChange: setQuery, placeholder: t('Search invoices...') }}
         actions={
-          can('invoices', 'c') ? (
-            <Button size="md" onClick={() => navigate('/invoice-create')}>
-              <Icon name="Plus" size={16} />
-              {t('New Invoice')}
+          <>
+            <Button variant="outline" size="md" onClick={() => setShowFilters(!showFilters)}>
+              <Icon name="SlidersHorizontal" size={16} />
+              {t('Filters')}
+              {activeFilters.length > 0 ? ` (${activeFilters.length})` : null}
             </Button>
-          ) : null
+            <Button variant="outline" size="md" onClick={() => { setShowExport(!showExport) }}>
+              <Icon name="Download" size={16} />
+              {t('Export')}
+            </Button>
+            {can('invoices', 'c') ? (
+              <Button size="md" onClick={() => navigate('/invoice-create')}>
+                <Icon name="Plus" size={16} />
+                {t('New Invoice')}
+              </Button>
+            ) : null}
+          </>
         }
       />
+
+      {showFilters ? (
+        <AdvancedFilters
+          groups={filterGroups}
+          active={activeFilters}
+          onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+          onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+          onClear={() => setActiveFilters([])}
+        />
+      ) : null}
+
+      {showExport ? (
+        <ExportCenter
+          title="Export Invoices"
+          description="Export invoice records to a file"
+          columns={INVOICE_EXPORT_COLUMNS}
+          totalRows={filtered.length}
+          onExport={async () => { /* server-side export */ }}
+          className="mb-4"
+        />
+      ) : null}
 
       {error ? (
         <Card className="p-6">

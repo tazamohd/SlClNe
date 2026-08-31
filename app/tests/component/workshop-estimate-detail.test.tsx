@@ -11,7 +11,7 @@ describe('EstimateDetail', () => {
   it('renders the estimate header and the server total', async () => {
     renderWithProviders(<EstimateDetail />, { role: 'owner', route: '/estimate-detail?id=EST-0231' })
     expect(await screen.findByRole('heading', { name: 'EST-0231' })).toBeInTheDocument()
-    expect(screen.getByText(/Ahmed Al-Rashid/)).toBeInTheDocument()
+    expect(screen.getAllByText(/Ahmed Al-Rashid/).length).toBeGreaterThan(0)
     // The total is the server figure, formatted not computed.
     expect(screen.getAllByText(/SAR\s*1,250/).length).toBeGreaterThan(0)
   })

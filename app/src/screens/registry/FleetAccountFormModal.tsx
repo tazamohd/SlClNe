@@ -35,6 +35,7 @@ const fleetAccountForm = z
   .object({
     name: z.string(),
     contractType: z.string(),
+    contractPeriod: z.string(),
     contactName: z.string(),
     contactPhone: z.string(),
     contactEmail: z.string(),
@@ -44,9 +45,12 @@ const fleetAccountForm = z
     const contactName = values.contactName.trim()
     const contactPhone = values.contactPhone.trim()
     const contactEmail = values.contactEmail.trim()
+    const [contractStart, contractEnd] = values.contractPeriod.split('|')
     return {
       name: values.name.trim(),
       ...(contractType ? { contractType } : {}),
+      ...(contractStart?.trim() ? { contractStartDate: contractStart.trim() } : {}),
+      ...(contractEnd?.trim() ? { contractEndDate: contractEnd.trim() } : {}),
       ...(contactName ? { contactName } : {}),
       ...(contactPhone ? { contactPhone } : {}),
       ...(contactEmail ? { contactEmail } : {}),
@@ -78,6 +82,7 @@ export function FleetAccountFormModal({
     initial: {
       name: existingRecord?.name ?? '',
       contractType: existingRecord?.contract ?? '',
+      contractPeriod: '',
       contactName: '',
       contactPhone: '',
       contactEmail: '',
@@ -177,6 +182,7 @@ export function FleetAccountFormModal({
         <FormErrorSummary />
         <Field name="name" label="Fleet Account Name" required />
         <Field name="contractType" label="Contract Type" kind="select" options={CONTRACT_TYPE_OPTIONS} placeholder={t('Select contract type')} />
+        <Field name="contractPeriod" label="Contract Period" kind="daterange" hint="Start and end dates for this contract." />
         <Field name="contactName" label="Contact Person" />
         <Field name="contactPhone" label="Contact Phone" kind="phone" placeholder="+966 55 210 4471" />
         <Field name="contactEmail" label="Contact Email" kind="email" />

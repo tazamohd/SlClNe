@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Card, CardHeader } from '@/components/ui/Card'
+import { CHART_COLORS } from '@/components/ui/Charts'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
@@ -21,6 +22,15 @@ export function Dashboard() {
 
   if (isLoading) return <Loading label="Loading dashboard..." />
   if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  const donutTotal = LEGEND.reduce((sum, [, count]) => sum + (count as number), 0)
+  let cursor = 0
+  const donutGradient = LEGEND.map(([, count], index) => {
+    const start = (cursor / donutTotal) * 100
+    cursor += count as number
+    const end = (cursor / donutTotal) * 100
+    return `${CHART_COLORS[index % CHART_COLORS.length]} ${start.toFixed(2)}% ${end.toFixed(2)}%`
+  }).join(',')
 
   const jobColumns: Column<(typeof jobs)[number]>[] = [
     { header: 'Job Card', cell: (job) => job.id, code: true },
@@ -206,22 +216,19 @@ export function Dashboard() {
           <div className="flex flex-wrap items-center gap-6">
             <div
               className="relative h-[180px] w-[180px] flex-shrink-0 rounded-full"
-              style={{
-                background:
-                  'conic-gradient(var(--salis-blue) 0% 22.22%,var(--salis-blue-bright) 22.22% 55.56%,var(--salis-orange) 55.56% 74.07%,var(--salis-navy) 74.07% 88.89%,var(--text-muted) 88.89% 100%)',
-              }}
+              style={{ background: `conic-gradient(${donutGradient})` }}
             >
               <div className="absolute inset-9 flex flex-col items-center justify-center rounded-full bg-card">
-                <span className="font-display text-[28px] font-black text-heading">27</span>
+                <span className="font-display text-[28px] font-black text-heading">{donutTotal}</span>
                 <span className="text-[11px] text-muted">{t('jobs')}</span>
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              {LEGEND.map(([label, count, color]) => (
+              {LEGEND.map(([label, count], index) => (
                 <div key={label} className="flex items-center gap-2 text-[13px]">
                   <span
                     className="h-2.5 w-2.5 flex-shrink-0 rounded-[3px]"
-                    style={{ background: color as string }}
+                    style={{ background: CHART_COLORS[index % CHART_COLORS.length] }}
                   />
                   <span className="min-w-[90px] text-body">{t(label as string)}</span>
                   <span className="font-mono text-xs text-muted">{count}</span>
@@ -404,11 +411,11 @@ const PIPELINE = [
 ] as const
 
 const LEGEND = [
-  ['Completed', 6, 'var(--salis-blue)'],
-  ['In Progress', 9, 'var(--salis-blue-bright)'],
-  ['Pending', 5, 'var(--salis-orange)'],
-  ['Delivered', 4, 'var(--salis-navy)'],
-  ['Cancelled', 3, 'var(--text-muted)'],
+  ['Completed', 6],
+  ['In Progress', 9],
+  ['Pending', 5],
+  ['Delivered', 4],
+  ['Cancelled', 3],
 ] as const
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] as const

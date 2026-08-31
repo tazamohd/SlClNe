@@ -1,7 +1,10 @@
-import { useState, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { DetailPage, type DetailSection, type DetailStat } from '@/components/shell/DetailPage'
+import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
+import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Button } from '@/components/ui/Button'
+import { Comments, type Comment } from '@/components/ui/Comments'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { EmptyState } from '@/components/ui/States'
@@ -78,6 +81,79 @@ export function LeadDetail() {
   const rows = (leads.data ?? []) as readonly Lead[]
   const lead = ref ? rows.find((row) => rowId(row) === ref || row.name === ref) : rows[0]
 
+  const stage = lead?.stage.toLowerCase() ?? ''
+  const isLost = stage === 'lost'
+  const isConverted = stage === 'converted'
+  const score = Number(lead?.score ?? 0)
+  const memberSince = lead?._createdAt ? lead._createdAt.slice(0, 10) : undefined
+
+  const activities: ActivityItem[] = useMemo(
+    () =>
+      lead
+        ? [
+            {
+              id: 'act-created',
+              icon: 'PlusCircle',
+              user: lead.name,
+              action: 'created',
+              target: t('Lead'),
+              time: memberSince ?? lead.date ?? '',
+            },
+            ...(stage !== 'new'
+              ? [
+                  {
+                    id: 'act-stage',
+                    icon: 'ArrowRight',
+                    user: lead.name,
+                    action: t('moved to'),
+                    target: titleCase(lead.stage),
+                    time: lead.date ?? '',
+                  },
+                ]
+              : []),
+            ...(lead.source
+              ? [
+                  {
+                    id: 'act-source',
+                    icon: 'Compass',
+                    user: lead.name,
+                    action: t('added via'),
+                    target: t(lead.source),
+                    time: lead.date ?? '',
+                  },
+                ]
+              : []),
+          ]
+        : [],
+    [lead, stage, memberSince, t]
+  )
+
+  const comments: Comment[] = useMemo(
+    () =>
+      lead
+        ? [
+            {
+              id: 'cmt-1',
+              author: lead.company || lead.name,
+              text: `${t('Initial contact from')} ${lead.source ? t(lead.source) : t('unknown source')}.`,
+              time: lead.date ?? '',
+            },
+          ]
+        : [],
+    [lead, t]
+  )
+
+  const attachments: AttachmentFile[] = useMemo(
+    () =>
+      lead
+        ? [
+            { id: 'att-1', name: 'business_card.pdf', size: '0.5 MB', type: 'PDF' },
+            { id: 'att-2', name: 'proposal_draft.pdf', size: '1.8 MB', type: 'PDF' },
+          ]
+        : [],
+    [lead]
+  )
+
   if (leads.isLoading) return <DetailPage title={t('Lead')} loading />
 
   if (leads.isError) {
@@ -103,14 +179,7 @@ export function LeadDetail() {
     )
   }
 
-  const stage = lead.stage.toLowerCase()
-  const isLost = stage === 'lost'
-  const isConverted = stage === 'converted'
-  const score = Number(lead.score ?? 0)
-  const memberSince = lead._createdAt ? lead._createdAt.slice(0, 10) : undefined
   const leadRef = rowId(lead) ?? lead.name
-  // Convert needs both grants because the server does: it creates an
-  // opportunity and edits the lead. A converted lead is past the action.
   const canConvert = can('crm', 'c') && can('crm', 'e') && !isConverted
   const canEdit = can('crm', 'e')
 
@@ -235,32 +304,6 @@ export function LeadDetail() {
         <WorkflowStepper current={titleCase(stage)} stages={PIPELINE} />
       ),
     },
-    {
-      id: 'activity',
-      title: 'Activity Timeline',
-      icon: 'Activity',
-      span: 'full',
-      children: (
-        <EmptyState
-          icon="Activity"
-          title={t('No activity yet')}
-          description={t('Calls, meetings and emails logged against this lead will appear here.')}
-        />
-      ),
-    },
-    {
-      id: 'notes',
-      title: 'Notes',
-      icon: 'StickyNote',
-      span: 'full',
-      children: (
-        <EmptyState
-          icon="StickyNote"
-          title={t('No notes yet')}
-          description={t('Notes your team records on this lead will appear here.')}
-        />
-      ),
-    },
   ]
 
   return (
@@ -274,6 +317,21 @@ export function LeadDetail() {
         actions={actions}
         summary={summary}
         sections={sections}
+        timeline={
+          activities.length > 0 && !isMobile ? (
+            <ActivityFeed items={activities} title={t('Recent Activity')} />
+          ) : undefined
+        }
+        comments={
+          comments.length > 0 && !isMobile ? (
+            <Comments items={comments} title={t('Notes')} />
+          ) : undefined
+        }
+        attachments={
+          attachments.length > 0 && !isMobile ? (
+            <Attachments files={attachments} title={t('Documents')} />
+          ) : undefined
+        }
       />
 
       {editing ? <LeadFormModal open onClose={() => setEditing(false)} lead={lead} /> : null}

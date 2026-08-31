@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { AdvancedFilters, type ActiveFilter, type FilterGroup } from '@/components/ui/AdvancedFilters'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -31,14 +32,43 @@ export function JobCards() {
   const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
   const [query, setQuery] = useState('')
   const [creating, setCreating] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([])
+
+  const filterGroups = useMemo<FilterGroup[]>(() => {
+    const unique = (fn: (job: Job) => string) => [...new Set(jobs.map(fn))].filter(Boolean)
+    return [
+      { id: 'status', label: 'Status', icon: 'Activity', options: unique((j) => j.st) },
+      { id: 'priority', label: 'Priority', icon: 'Flag', options: unique((j) => j.pr) },
+      { id: 'service', label: 'Service Type', icon: 'Wrench', options: unique((j) => j.svc) },
+    ]
+  }, [jobs])
 
   const filtered = useMemo(() => {
+    let result = jobs
     const needle = query.trim().toLowerCase()
-    if (!needle) return jobs
-    return jobs.filter((job) =>
-      [job.id, job.cust, job.veh].some((field) => field.toLowerCase().includes(needle))
-    )
-  }, [jobs, query])
+    if (needle) {
+      result = result.filter((job) =>
+        [job.id, job.cust, job.veh].some((field) => field.toLowerCase().includes(needle))
+      )
+    }
+    if (activeFilters.length > 0) {
+      const groups = new Map<string, string[]>()
+      for (const f of activeFilters) {
+        const arr = groups.get(f.groupId) ?? []
+        arr.push(f.value)
+        groups.set(f.groupId, arr)
+      }
+      result = result.filter((job) => {
+        for (const [groupId, values] of groups) {
+          const field = groupId === 'status' ? job.st : groupId === 'priority' ? job.pr : job.svc
+          if (!values.includes(field)) return false
+        }
+        return true
+      })
+    }
+    return result
+  }, [jobs, query, activeFilters])
 
   const columns: Column<Job>[] = [
     { header: 'Job Card', cell: (job) => job.id, code: true },
@@ -75,14 +105,30 @@ export function JobCards() {
               ) : null
             }
           />
-          <Input
-            type="search"
-            aria-label={t('Search job cards...')}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('Search job cards...')}
-            inputSize="sm"
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              type="search"
+              aria-label={t('Search job cards...')}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t('Search job cards...')}
+              inputSize="sm"
+              className="flex-1"
+            />
+            <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)}>
+              <Icon name="SlidersHorizontal" size={14} />
+              {activeFilters.length > 0 ? `(${activeFilters.length})` : null}
+            </Button>
+          </div>
+          {showFilters ? (
+            <AdvancedFilters
+              groups={filterGroups}
+              active={activeFilters}
+              onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+              onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+              onClear={() => setActiveFilters([])}
+            />
+          ) : null}
           {isError ? (
             <Card className="p-4">
               <ErrorState
@@ -134,14 +180,31 @@ export function JobCards() {
         title={t('Job Cards')}
         search={{ value: query, onChange: setQuery }}
         actions={
-          can('jobcards', 'c') ? (
-            <Button size="md" onClick={() => setCreating(true)}>
-              <Icon name="Plus" size={16} />
-              {t('New Job Card')}
+          <>
+            <Button variant="outline" size="md" onClick={() => setShowFilters(!showFilters)}>
+              <Icon name="SlidersHorizontal" size={16} />
+              {t('Filters')}
+              {activeFilters.length > 0 ? ` (${activeFilters.length})` : null}
             </Button>
-          ) : null
+            {can('jobcards', 'c') ? (
+              <Button size="md" onClick={() => setCreating(true)}>
+                <Icon name="Plus" size={16} />
+                {t('New Job Card')}
+              </Button>
+            ) : null}
+          </>
         }
       />
+
+      {showFilters ? (
+        <AdvancedFilters
+          groups={filterGroups}
+          active={activeFilters}
+          onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+          onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+          onClear={() => setActiveFilters([])}
+        />
+      ) : null}
 
       {isError ? (
         <ErrorState

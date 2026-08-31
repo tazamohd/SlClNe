@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { DetailPage, type DetailSection } from '@/components/shell/DetailPage'
 import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Button } from '@/components/ui/Button'
+import { Comments, type Comment } from '@/components/ui/Comments'
 import { Icon } from '@/components/ui/Icon'
 import { StatusBadge } from '@/components/ui/Badge'
 import { Money, parseSar } from '@/components/ui/Money'
@@ -175,6 +176,23 @@ export function EstimateDetail() {
     { id: 'att-1', name: 'estimate_breakdown.pdf', size: '1.3 MB', type: 'PDF' },
     { id: 'att-2', name: 'parts_quotation.xlsx', size: '0.9 MB', type: 'Spreadsheet' },
     { id: 'att-3', name: 'inspection_photo.jpg', size: '2.7 MB', type: 'Image' },
+  ]
+
+  const demoComments: Comment[] = [
+    {
+      id: 'cmt-1',
+      author: estimate.cust,
+      role: t('Customer'),
+      text: t('Please include the alignment check in the estimate.'),
+      time: '9:45 AM',
+    },
+    {
+      id: 'cmt-2',
+      author: estimate.submittedBy ?? t('Advisor'),
+      role: t('Service Advisor'),
+      text: t('Estimate updated with requested items.'),
+      time: '10:20 AM',
+    },
   ]
 
   const sections: DetailSection[] = [
@@ -404,6 +422,9 @@ export function EstimateDetail() {
       }
       readOnly={decided ? `${t('This estimate is')} ${t(estimate.status)}.` : undefined}
       sections={sections}
+      comments={
+        <Comments items={demoComments} title={t('Notes')} />
+      }
       attachments={
         <Attachments files={demoAttachments} title={t('Documents')} />
       }
