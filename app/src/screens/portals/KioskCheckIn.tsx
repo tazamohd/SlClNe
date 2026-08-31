@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive } from '@/data/repository'
+import { useCreate, type RowOf } from '@/data/useCollection'
+import { todayIso } from './portal-data'
 
 type Step = 'identify' | 'vehicle' | 'service' | 'done'
 const STEPS: Step[] = ['identify', 'vehicle', 'service', 'done']
@@ -35,11 +37,13 @@ const FIXTURE_SERVICES = [
 export function KioskCheckIn() {
   const { t } = usePreferences()
 
+  const create = useCreate('appointments')
   const [step, setStep] = useState<Step>('identify')
   const [phone, setPhone] = useState('')
   const [plate, setPlate] = useState('')
-  const [, setSelectedVehicle] = useState<string | null>(null)
+  const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null)
   const [selectedService, setSelectedService] = useState<string | null>(null)
+  const [confirmError, setConfirmError] = useState<string | null>(null)
 
   const stepIndex = STEPS.indexOf(step)
 
@@ -57,9 +61,36 @@ export function KioskCheckIn() {
     setSelectedService(id)
   }
 
-  function handleConfirm() {
+  /** Registers the walk-in as an appointment through the same create seam the
+   *  portal booking uses (`useCreate('appointments')`), then shows the ticket.
+   *  The create schema's keys differ from the display row's — see
+   *  CustomerPortalBooking. Works in demo (in-memory) and live (API) alike. */
+  async function handleConfirm() {
     if (!selectedService) return
-    setStep('done')
+    const vehicle = FIXTURE_VEHICLES.find((v) => v.id === selectedVehicle)
+    const service = FIXTURE_SERVICES.find((s) => s.id === selectedService)
+    const now = new Date()
+    const timeLabel = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    setConfirmError(null)
+    try {
+      await create.mutateAsync({
+        input: {
+          scheduledDate: todayIso(),
+          timeLabel,
+          startMinute: now.getHours() * 60 + now.getMinutes(),
+          durationMins: 60,
+          customerName: phone.trim() || 'Walk-in',
+          vehicleLabel: vehicle?.make ?? plate.trim(),
+          plate: vehicle?.plate ?? plate.trim(),
+          serviceLabel: service?.label ?? '',
+          bay: 'Bay 1',
+          status: 'awaiting',
+        } as unknown as Partial<RowOf<'appointments'>>,
+      })
+      setStep('done')
+    } catch (cause) {
+      setConfirmError((cause as Error).message)
+    }
   }
 
   function handleRestart() {
@@ -68,6 +99,7 @@ export function KioskCheckIn() {
     setPlate('')
     setSelectedVehicle(null)
     setSelectedService(null)
+    setConfirmError(null)
   }
 
   return (
@@ -150,8 +182,10 @@ export function KioskCheckIn() {
             <ServiceStep
               selected={selectedService}
               onSelect={handleSelectService}
-              onConfirm={handleConfirm}
+              onConfirm={() => void handleConfirm()}
               onBack={() => setStep('vehicle')}
+              pending={create.isPending}
+              error={confirmError}
             />
           ) : (
             <DoneStep onRestart={handleRestart} />
@@ -310,11 +344,15 @@ function ServiceStep({
   onSelect,
   onConfirm,
   onBack,
+  pending,
+  error,
 }: {
   selected: string | null
   onSelect: (id: string) => void
   onConfirm: () => void
   onBack: () => void
+  pending: boolean
+  error: string | null
 }) {
   const { t } = usePreferences()
 
@@ -344,14 +382,20 @@ function ServiceStep({
         ))}
       </div>
 
+      {error ? (
+        <p className="text-center font-action text-sm text-salis-orange" role="alert">
+          {error}
+        </p>
+      ) : null}
+
       <Button
         size="lg"
         className="h-14 w-full text-base"
-        disabled={!selected || !isLive}
+        disabled={!selected || pending || !isLive}
         onClick={onConfirm}
       >
         <Icon name="CheckCircle" size={20} />
-        {t('Confirm Check-In')}
+        {pending ? t('Checking in...') : t('Confirm Check-In')}
       </Button>
 
       <button
