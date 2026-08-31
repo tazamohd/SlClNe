@@ -341,63 +341,22 @@ SALIS AUTO: [Name], [Email], [Phone]
 
 ---
 
-## 9. Photography and Image Guidelines
+## 9. Visual and Social Media Guidelines
 
-### 9.1 Image Style
+### 9.1 Photography
 
-| Attribute            | Guideline                                             |
-|----------------------|-------------------------------------------------------|
-| Style                | Clean, professional, well-lit                        |
-| Subjects             | Real workshop environments, diverse Saudi workforce  |
-| Technology           | Show platform screens on modern devices              |
-| Tone                 | Professional yet approachable                        |
-| Filters              | Minimal -- maintain natural colors                   |
-| Resolution           | Minimum 300 DPI for print, 72 DPI for web            |
+All imagery should be clean, professional, and well-lit, showing real workshop environments and the Saudi workforce. Use platform screenshots cropped from the demo environment (never showing identifiable customer data). Minimum resolution: 300 DPI (print), 72 DPI (web). Always obtain consent for photographs featuring identifiable individuals. Do not use stock photos that feel generic, images from competitor platforms, or images that do not reflect the Saudi market context.
 
-### 9.2 Image Categories
+### 9.2 Social Media
 
-| Category             | Description                                           |
-|----------------------|-------------------------------------------------------|
-| Platform Screenshots | Cropped and annotated screens from demo environment  |
-| Workshop Photography | Professional photos of workshop operations           |
-| Team Photography     | Executive headshots and team photos                  |
-| Iconography          | Custom icons for features and capabilities           |
-| Infographics         | Data visualizations and process diagrams             |
+| Platform        | Handle              | Content Focus                        |
+|-----------------|----------------------|--------------------------------------|
+| LinkedIn        | SALIS AUTO           | Industry insights, product updates   |
+| Twitter/X       | @SalisAuto           | News, tips, engagement               |
+| Instagram       | @salisauto           | Visual content, customer stories     |
+| YouTube         | SALIS AUTO           | Demos, tutorials, webinars           |
 
-### 9.3 Image Restrictions
-
-| Restriction                                                               |
-|---------------------------------------------------------------------------|
-| Do not use stock photos that feel generic or inauthentic                  |
-| Do not show identifiable customer data in screenshots                    |
-| Do not use images from competitor platforms                               |
-| Do not use images that do not reflect the Saudi market context            |
-| Always obtain consent for photographs featuring identifiable individuals  |
-
----
-
-## 10. Social Media Guidelines
-
-### 10.1 Platform Presence
-
-| Platform        | Handle/URL                | Content Focus                        |
-|-----------------|---------------------------|--------------------------------------|
-| LinkedIn        | SALIS AUTO                | Industry insights, product updates   |
-| Twitter/X       | @SalisAuto                | News, tips, engagement               |
-| Instagram       | @salisauto                | Visual content, customer stories     |
-| YouTube         | SALIS AUTO                | Demos, tutorials, webinars           |
-
-### 10.2 Content Guidelines
-
-| Guideline                                                                 |
-|---------------------------------------------------------------------------|
-| Maintain professional tone aligned with brand voice                       |
-| Post in both English and Arabic where applicable                          |
-| Use approved hashtags: #SalisAuto #WorkshopManagement #ZATCA #Vision2030  |
-| Respond to comments and messages within 4 business hours                  |
-| Do not engage in competitive bashing or negative commentary               |
-| Do not share unannounced product features or roadmap items                |
-| Get approval before posting customer names or logos                       |
+Maintain professional tone. Post in both English and Arabic. Use hashtags: #SalisAuto #WorkshopManagement #ZATCA #Vision2030. Do not share unannounced features or engage in competitive commentary. Get approval before posting customer names or logos.
 
 ---
 
@@ -416,25 +375,9 @@ SALIS AUTO: [Name], [Email], [Phone]
 
 ### 11.2 Spokesperson Authorization
 
-| Topic                      | Authorized Spokesperson                              |
-|----------------------------|------------------------------------------------------|
-| Company Strategy           | CEO only                                             |
-| Product Announcements      | CEO or VP Product                                    |
-| Financial Information      | CEO or CFO only                                      |
-| Customer Relationships     | VP Sales (with customer consent)                     |
-| Technical Architecture     | CTO or VP Engineering                                |
-| Partnerships               | VP Business Development                              |
+Company strategy and financials: CEO or CFO only. Product announcements: CEO or VP Product. Customer relationships: VP Sales (with customer consent). Technical architecture: CTO or VP Engineering. Partnerships: VP Business Development.
 
-### 11.3 Off-Limits Topics
-
-| Topic                                                                     |
-|---------------------------------------------------------------------------|
-| Unannounced product features or roadmap                                   |
-| Revenue, valuation, or detailed financial performance                     |
-| Specific customer names without written consent                           |
-| Competitor criticisms or disparaging remarks                              |
-| Speculative comments on regulations or government policy                  |
-| Internal personnel matters                                                |
+Off-limits topics for all spokespeople: unannounced product features or roadmap, revenue/valuation details, specific customer names without consent, competitor criticisms, speculation on regulations or government policy, and internal personnel matters.
 
 ---
 
