@@ -43,22 +43,10 @@ platform's 13 operational domains, 191+ screens, and 28 RBAC modules.
 
 ### 2.1 Hub-and-Spoke Model
 
-SALIS AUTO operates as the central hub. All external systems connect as
-spokes through a unified integration layer.
-
-```
-                          ┌──────────────┐
-                          │   ZATCA API  │
-                          └──────┬───────┘
-                                 │
-┌──────────────┐          ┌──────┴───────┐          ┌──────────────┐
-│ Stripe API   ├──────────┤  SALIS AUTO  ├──────────┤ SMS Gateway  │
-└──────────────┘          │  Integration │          └──────────────┘
-                          │    Layer     │
-┌──────────────┐          └──┬───────┬───┘          ┌──────────────┐
-│ WhatsApp API ├─────────────┘       └──────────────┤ Email SMTP   │
-└──────────────┘                                    └──────────────┘
-```
+SALIS AUTO operates as the central hub. All external systems (ZATCA,
+Stripe, SMS, WhatsApp, Email) connect as spokes through a unified
+integration layer that handles authentication, rate limiting, queuing,
+circuit breaking, and tenant-scoped configuration.
 
 ### 2.2 Integration Layer Components
 
@@ -72,16 +60,13 @@ spokes through a unified integration layer.
 
 ### 2.3 Design Principles
 
-1. **Asynchronous by default** -- webhook and queue-based communication
-   wherever the external API supports it
-2. **Idempotent operations** -- every outbound call carries an idempotency
-   key; every inbound webhook is deduplicated
-3. **Fail-safe degradation** -- if an integration is down, core workshop
-   operations (Check-In, Inspection, Estimate, Repair, QC, Delivery)
-   continue; the integration catches up when restored
-4. **Tenant isolation** -- each tenant's integration credentials and
-   configuration are stored separately; one tenant's API quota exhaustion
-   does not affect another
+1. **Asynchronous by default** -- webhook and queue-based wherever possible
+2. **Idempotent operations** -- idempotency keys outbound, deduplication inbound
+3. **Fail-safe degradation** -- core workshop operations (Check-In →
+   Inspection → Estimate → Repair → QC → Delivery) continue if an
+   integration is down; the integration catches up when restored
+4. **Tenant isolation** -- credentials stored separately per tenant; one
+   tenant's quota exhaustion does not affect another
 
 ---
 
@@ -105,12 +90,9 @@ tenant operating in Saudi Arabia with 15% VAT.
 
 ### 3.3 Technical Implementation
 
-**UBL 2.1 XML Generation**
-
-- All invoices are generated in UBL 2.1 XML format per ZATCA schema v2.3
-- Fields include seller/buyer TIN, invoice line items, VAT breakdown by
-  category (standard 15%, zero-rated, exempt), and payment means
-- Arabic and English descriptions are embedded for bilingual compliance
+**UBL 2.1 XML Generation**: all invoices use UBL 2.1 XML per ZATCA
+schema v2.3 with seller/buyer TIN, line items, VAT breakdown (standard
+15%, zero-rated, exempt), payment means, and bilingual AR/EN descriptions.
 
 **QR Code (TLV Encoding)**
 
@@ -174,10 +156,9 @@ tamper-evident chain:
 | 429         | Rate limit exceeded        | Exponential backoff, queue      |
 | 500/503     | ZATCA service unavailable  | Queue for retry, alert if >30m  |
 
-**Offline Queue**: If ZATCA is unreachable, invoices are queued in the
-database with status `PENDING_SUBMISSION`. A background worker retries
-every 5 minutes with exponential backoff (max 1 hour). Invoices older
-than 24 hours without submission trigger a P2 alert.
+**Offline Queue**: If ZATCA is unreachable, invoices are queued with status
+`PENDING_SUBMISSION`. A background worker retries every 5 minutes with
+exponential backoff (max 1 hour). Invoices >24 hours old trigger a P2 alert.
 
 ### 3.7 Timeline
 
@@ -300,28 +281,11 @@ Customer Invoice → Checkout Initiated → Stripe Session Created
 
 ## 6. OBD/Telematics Integration (Priority 4 -- Future)
 
-### 6.1 OBD-II Device Integration
-
-Planned for post-launch phases, OBD-II integration will allow workshops
-to read diagnostic trouble codes (DTCs) directly from connected vehicles.
-
-| Feature                   | Details                              |
-|---------------------------|--------------------------------------|
-| Protocol                  | OBD-II (ISO 15765-4 / CAN)          |
-| Device type               | Bluetooth ELM327-compatible dongles  |
-| Data captured             | DTCs, live sensor data, freeze frame |
-| Integration method        | Mobile app BLE → API upload          |
-
-### 6.2 Telematics for Fleet Customers
-
-| Feature                   | Details                              |
-|---------------------------|--------------------------------------|
-| Tracking                  | GPS location, mileage, fuel level    |
-| Predictive maintenance    | Oil life, brake wear, tire pressure  |
-| Alerts                    | Geofencing, speed, engine warning    |
-| API                       | REST webhook from telematics provider|
-
-### 6.3 Roadmap
+Planned for post-launch phases. OBD-II integration (ISO 15765-4 / CAN
+via Bluetooth ELM327 dongles) will capture DTCs, live sensor data, and
+freeze frame data. Telematics for fleet customers adds GPS tracking,
+mileage, predictive maintenance (oil life, brake wear, tire pressure),
+and geofencing alerts via REST webhooks from telematics providers.
 
 | Phase     | Capability                        | Target      |
 |-----------|-----------------------------------|-------------|
@@ -362,32 +326,21 @@ schema, the contract test fails before the change reaches production.
 
 ### 7.4 Mock Services
 
-For offline development, each integration has a mock service:
-
-```
-/src/integrations/
-  ├── zatca/
-  │   ├── client.ts           # Real ZATCA API client
-  │   ├── mock-client.ts      # Mock for local dev
-  │   └── contract.json       # Response schema
-  ├── stripe/
-  │   ├── client.ts
-  │   ├── mock-client.ts
-  │   └── contract.json
-  └── comms/
-      ├── sms-client.ts
-      ├── whatsapp-client.ts
-      ├── email-client.ts
-      └── mock-comms-client.ts
-```
+For offline development, each integration has a mock service located at
+`/src/integrations/<provider>/mock-client.ts`. Mock clients implement the
+same interface as real clients and are selected via environment variable
+`INTEGRATION_MODE=mock`. Each mock validates requests against the contract
+schema in `contract.json` so integration drift is caught without network.
 
 ---
 
 ## 8. Monitoring and Alerting
 
-### 8.1 Health Checks
+### 8.1 Health Checks and Circuit Breaker
 
-Every integration exposes a health check endpoint polled every 60 seconds:
+Every integration exposes a health check endpoint polled every 60 seconds.
+Each client implements a circuit breaker (Closed → Open after 5 failures →
+Half-Open after 60s → probe → Closed on success).
 
 | Integration   | Health Check Method         | Healthy Criteria          |
 |---------------|-----------------------------|---------------------------|
@@ -397,17 +350,7 @@ Every integration exposes a health check endpoint polled every 60 seconds:
 | WhatsApp      | Template status check       | Templates approved        |
 | Email         | SMTP connection test        | Connection established    |
 
-### 8.2 Circuit Breaker Pattern
-
-Each integration client implements a circuit breaker with three states:
-
-| State       | Behavior                                         | Transition             |
-|-------------|--------------------------------------------------|------------------------|
-| Closed      | Requests pass through normally                   | 5 failures → Open      |
-| Open        | Requests fail immediately, return cached/queued   | 60s timeout → Half-Open|
-| Half-Open   | 1 probe request allowed                          | Success → Closed       |
-
-### 8.3 Alerting Rules
+### 8.2 Alerting Rules
 
 | Condition                          | Severity | Channel          | Recipient     |
 |------------------------------------|----------|------------------|---------------|
@@ -417,37 +360,23 @@ Each integration client implements a circuit breaker with three states:
 | Circuit breaker open >5 min        | P2       | PagerDuty        | On-call       |
 | Integration certificate expiry <30d| P3       | Email            | DevOps lead   |
 
-### 8.4 Integration Dashboard Metrics
+### 8.3 Dashboard Metrics
 
-- Requests per minute (RPM) per integration
-- Error rate (%) and error code distribution
-- Latency p50 / p95 / p99 per integration
-- Queue depth (pending items awaiting submission)
-- Circuit breaker state history
-- Certificate expiry countdown
+RPM per integration, error rate and code distribution, latency (p50/p95/p99),
+queue depth, circuit breaker state history, certificate expiry countdown.
 
 ---
 
 ## 9. Security Considerations
 
-### 9.1 Credential Management
-
-- All API keys and secrets stored in environment variables, never in code
-- Production credentials rotated quarterly
+- All API keys and secrets stored in environment variables, never in code;
+  production credentials rotated quarterly
 - Separate credentials per environment (dev, staging, production)
 - Access to credentials restricted to DevOps role (1 of 14 RBAC roles)
-
-### 9.2 Data in Transit
-
-- All integration traffic over TLS 1.3
-- Certificate pinning for ZATCA API endpoints
+- All integration traffic over TLS 1.3; certificate pinning for ZATCA
 - Webhook payloads validated against provider signatures
-
-### 9.3 Tenant Data Isolation
-
-- Each tenant's integration credentials stored in tenant-scoped config
-- API calls include tenant identifier for audit trail
-- Rate limiting applied per-tenant to prevent noisy-neighbor issues
+- Each tenant's integration credentials stored in tenant-scoped config;
+  rate limiting applied per-tenant to prevent noisy-neighbor issues
 
 ---
 
