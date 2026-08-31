@@ -64,6 +64,19 @@ async function loadArabic(): Promise<Record<string, string>> {
   return arCache
 }
 
+/** Warm the Arabic chunk before anything renders.
+ *
+ *  The dictionary is a lazy chunk so an English session never downloads 380 KB
+ *  it will not read. The cost is that `t()` falls back to the English source
+ *  until the chunk resolves — invisible on a mid-session toggle, but a visible
+ *  English flash for a returning Arabic user whose stored preference is `ar`.
+ *  Callers that know the session is Arabic before the first paint (`main.tsx`,
+ *  and the test harness) await this, which fills `arCache` so the provider's
+ *  `useState` initialiser picks the dictionary up synchronously. */
+export function preloadArabic(): Promise<Record<string, string>> {
+  return loadArabic()
+}
+
 export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(initialTheme)
   const [language, setLanguageState] = useState<Language>(initialLanguage)

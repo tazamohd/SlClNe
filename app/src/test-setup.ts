@@ -10,6 +10,16 @@
 import '@testing-library/jest-dom/vitest'
 import { afterEach, beforeEach } from 'vitest'
 import { cleanup } from '@testing-library/react'
+import { preloadArabic } from '@/providers/PreferencesProvider'
+
+/** The Arabic dictionary is a lazy chunk in the browser, which means `t()`
+ *  returns the English source for the frame or two before it resolves. A test
+ *  that renders in Arabic and asserts synchronously would read that gap as a
+ *  missing translation. Warming the module cache here — once per worker,
+ *  before any test file runs — makes the provider pick the dictionary up in its
+ *  `useState` initialiser, so Arabic renders on the first pass exactly as it
+ *  does for a real user whose language was known before the first paint. */
+await preloadArabic()
 
 type Listener = (event: MediaQueryListEvent) => void
 
