@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-010 Technician Journey - SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --bg-alt: #0e0e11; --text: #f5f5f7; --muted: #8a8a93;
+    --accent: #DA7756; --blue: #6ba4d9; --green: #7dbb7d; --purple: #a98ee0; --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04); --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+
+  /* Dot grid */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* Hero */
+  .hero { padding: 80px 0 40px; text-align: center; }
+  .hero .badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(218,119,86,0.3); background: rgba(218,119,86,0.08); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 17px; max-width: 600px; margin: 0 auto; }
+
+  /* Diagram section */
+  .diagram-section { padding: 40px 0 80px; }
+  .diagram-wrapper {
+    background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 32px; overflow-x: auto;
+  }
+  .diagram-wrapper svg { display: block; margin: 0 auto; }
+
+  /* Caption bar */
+  .caption-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(14,14,17,0.95); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--card-border); padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+  }
+  .caption-bar.active { transform: translateY(0); }
+  .caption-bar .node-name { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .caption-bar .node-desc { color: var(--muted); font-size: 14px; }
+
+  /* Info cards */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 40px 0 80px; }
+  .info-card {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px;
+    opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .info-card.visible { opacity: 1; transform: translateY(0); }
+  .info-card h3 { font-size: 15px; color: var(--accent); margin-bottom: 8px; }
+  .info-card p { font-size: 14px; color: var(--muted); }
+
+  /* SOD Banner */
+  .sod-banner {
+    background: rgba(169,142,224,0.08); border: 1px solid rgba(169,142,224,0.25); border-radius: 12px;
+    padding: 20px 28px; margin: 32px 0; display: flex; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .sod-banner.visible { opacity: 1; transform: translateY(0); }
+  .sod-banner svg { flex-shrink: 0; margin-top: 2px; }
+  .sod-banner h4 { color: var(--purple); font-size: 15px; margin-bottom: 4px; }
+  .sod-banner p { color: var(--muted); font-size: 14px; }
+
+  /* Animations */
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .flow-line { animation: flowDash 1.2s linear infinite; }
+  .glow { animation: glowPulse 2.5s ease-in-out infinite; }
+
+  /* Node hover */
+  .journey-node { cursor: pointer; transition: filter 0.2s ease; }
+  .journey-node:hover { filter: brightness(1.3); }
+  .journey-node:hover .node-bg { stroke: var(--accent) !important; stroke-width: 2 !important; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <section class="hero">
+    <div class="badge">SA-VIZ-010</div>
+    <h1>Technician <span>User Journey</span></h1>
+    <p>Workshop repair workflow from job acceptance through QC handoff, with Segregation of Duties enforcement.</p>
+  </section>
+
+  <section class="diagram-section">
+    <div class="diagram-wrapper">
+      <svg viewBox="0 0 1100 520" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Technician user journey diagram">
+        <defs>
+          <marker id="arrowAccent" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+          </marker>
+          <marker id="arrowBlue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </marker>
+          <marker id="arrowPurple" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#a98ee0" stroke-width="1.2"/>
+          </marker>
+          <filter id="glow1">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Flow connectors (curved Bezier) -->
+        <!-- Login -> My Jobs -->
+        <path d="M175,100 C230,100 230,100 285,100" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowAccent)"/>
+        <!-- My Jobs -> Accept Job -->
+        <path d="M425,100 C480,100 480,100 535,100" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowAccent)"/>
+        <!-- Accept Job -> View Details -->
+        <path d="M675,100 C740,100 770,100 770,150 C770,200 770,210 770,260" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowAccent)"/>
+        <!-- View Details -> Parts Request -->
+        <path d="M700,300 C640,300 600,300 535,300" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowBlue)"/>
+        <!-- Parts Request -> Perform Repair -->
+        <path d="M395,300 C330,300 300,300 235,300" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowAccent)"/>
+        <!-- Perform Repair -> Handoff to QC (with SOD boundary) -->
+        <path d="M165,340 C165,380 165,400 165,420 C165,450 300,460 430,460" fill="none" stroke="#a98ee0" stroke-width="2" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowPurple)"/>
+        <!-- QC Handoff -> Next Job -->
+        <path d="M570,460 C680,460 750,460 830,460" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrowAccent)"/>
+
+        <!-- Node 1: Login -->
+        <g class="journey-node" data-name="Login" data-desc="Technician authenticates with technician@salisauto.sa credentials. Role-based dashboard loads.">
+          <rect class="node-bg" x="60" y="65" width="115" height="70" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1"/>
+          <!-- Key icon -->
+          <g transform="translate(100,82)">
+            <circle cx="0" cy="0" r="5" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <line x1="5" y1="0" x2="18" y2="0" stroke="#DA7756" stroke-width="1.5"/>
+            <line x1="14" y1="0" x2="14" y2="5" stroke="#DA7756" stroke-width="1.5"/>
+            <line x1="18" y1="0" x2="18" y2="5" stroke="#DA7756" stroke-width="1.5"/>
+          </g>
+          <text x="117" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Login</text>
+        </g>
+
+        <!-- Node 2: My Jobs Queue -->
+        <g class="journey-node" data-name="My Jobs Queue" data-desc="View assigned job cards with vehicle details, service type, and priority. Jobs sorted by urgency.">
+          <rect class="node-bg" x="290" y="65" width="135" height="70" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1"/>
+          <g transform="translate(340,82)">
+            <rect x="-10" y="-8" width="20" height="16" rx="2" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <line x1="-6" y1="-3" x2="6" y2="-3" stroke="#DA7756" stroke-width="1.2"/>
+            <line x1="-6" y1="1" x2="6" y2="1" stroke="#DA7756" stroke-width="1.2"/>
+            <line x1="-6" y1="5" x2="3" y2="5" stroke="#DA7756" stroke-width="1.2"/>
+          </g>
+          <text x="357" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">My Jobs Queue</text>
+        </g>
+
+        <!-- Node 3: Accept Job -->
+        <g class="journey-node" data-name="Accept Job" data-desc="Accept job assignment. View customer info, vehicle make/model, and requested service type.">
+          <rect class="node-bg" x="540" y="65" width="135" height="70" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1"/>
+          <g transform="translate(590,84)">
+            <circle cx="0" cy="0" r="8" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <polyline points="-4,0 -1,4 5,-4" fill="none" stroke="#7dbb7d" stroke-width="1.8"/>
+          </g>
+          <text x="607" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Accept Job</text>
+        </g>
+
+        <!-- Node 4: View Details -->
+        <g class="journey-node" data-name="View Job Details" data-desc="Full job details: customer name, phone, vehicle plate/VIN, mileage, service history, and requested work.">
+          <rect class="node-bg" x="710" y="260" width="130" height="70" rx="12" fill="rgba(107,164,217,0.1)" stroke="rgba(107,164,217,0.35)" stroke-width="1"/>
+          <g transform="translate(758,278)">
+            <rect x="-10" y="-9" width="20" height="18" rx="2" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <circle cx="0" cy="-2" r="3.5" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+            <path d="M-6,7 C-6,2 6,2 6,7" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </g>
+          <text x="775" y="313" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">View Details</text>
+        </g>
+
+        <!-- Node 5: Parts Request -->
+        <g class="journey-node" data-name="Parts Request" data-desc="Request parts from inventory. SOD: Technician cannot approve own parts request. SAR 0 approval ceiling.">
+          <rect class="node-bg" x="400" y="265" width="135" height="70" rx="12" fill="rgba(107,164,217,0.1)" stroke="rgba(107,164,217,0.35)" stroke-width="1"/>
+          <g transform="translate(452,282)">
+            <rect x="-9" y="-7" width="18" height="14" rx="2" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <line x1="0" y1="-7" x2="0" y2="7" stroke="#6ba4d9" stroke-width="1.2"/>
+            <line x1="-9" y1="0" x2="9" y2="0" stroke="#6ba4d9" stroke-width="1.2"/>
+          </g>
+          <text x="467" y="318" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Parts Request</text>
+          <text x="467" y="330" text-anchor="middle" fill="#d9b86b" font-size="9">SAR 0 ceiling</text>
+        </g>
+
+        <!-- Node 6: Perform Repair -->
+        <g class="journey-node" data-name="Perform Repair" data-desc="Execute repair work. Update job status in real-time, log time spent, add technician notes and photos.">
+          <rect class="node-bg" x="95" y="265" width="140" height="70" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1" filter="url(#glow1)"/>
+          <circle cx="165" cy="260" r="18" fill="rgba(218,119,86,0.12)" class="glow"/>
+          <g transform="translate(148,282)">
+            <path d="M-6,-6 L0,-10 L6,-6 L6,6 L-6,6 Z" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <circle cx="0" cy="0" r="3" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+          </g>
+          <text x="165" y="318" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">Perform Repair</text>
+        </g>
+
+        <!-- SOD Boundary line -->
+        <line x1="320" y1="390" x2="320" y2="490" stroke="#a98ee0" stroke-width="2" stroke-dasharray="4 6" opacity="0.5"/>
+        <text x="330" y="398" fill="#a98ee0" font-size="10" font-weight="600">SOD BOUNDARY</text>
+
+        <!-- Lock icon on SOD boundary -->
+        <g transform="translate(312,420)">
+          <rect x="-7" y="0" width="14" height="11" rx="2" fill="rgba(169,142,224,0.2)" stroke="#a98ee0" stroke-width="1.5"/>
+          <path d="M-4,0 C-4,-8 4,-8 4,0" fill="none" stroke="#a98ee0" stroke-width="1.5"/>
+        </g>
+
+        <!-- Node 7: Handoff to QC -->
+        <g class="journey-node" data-name="Handoff to QC" data-desc="SOD enforced: The technician who performed the repair CANNOT perform QC. Job assigned to a different QC inspector.">
+          <rect class="node-bg" x="430" y="430" width="140" height="60" rx="12" fill="rgba(169,142,224,0.1)" stroke="rgba(169,142,224,0.4)" stroke-width="1.5"/>
+          <g transform="translate(480,448)">
+            <path d="M-8,-5 L0,-9 L8,-5 L8,5 L-8,5 Z" fill="none" stroke="#a98ee0" stroke-width="1.5"/>
+            <line x1="-3" y1="0" x2="3" y2="0" stroke="#a98ee0" stroke-width="1.5"/>
+            <line x1="0" y1="-3" x2="0" y2="3" stroke="#a98ee0" stroke-width="1.5"/>
+          </g>
+          <text x="500" y="478" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Handoff to QC</text>
+        </g>
+
+        <!-- Node 8: View Next Job -->
+        <g class="journey-node" data-name="View Next Job" data-desc="Return to My Jobs queue. Pick up the next assigned job card and begin the cycle again.">
+          <rect class="node-bg" x="835" y="430" width="125" height="60" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.35)" stroke-width="1"/>
+          <g transform="translate(882,448)">
+            <polyline points="-6,-5 6,0 -6,5" fill="none" stroke="#7dbb7d" stroke-width="1.8"/>
+            <line x1="-8" y1="0" x2="6" y2="0" stroke="#7dbb7d" stroke-width="1.5"/>
+          </g>
+          <text x="897" y="478" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Next Job</text>
+        </g>
+
+        <!-- Loop-back arrow from Next Job to My Jobs Queue -->
+        <path d="M960,450 C1010,450 1050,350 1050,200 C1050,80 500,30 357,60" fill="none" stroke="rgba(125,187,125,0.3)" stroke-width="1.2" stroke-dasharray="4 6" class="flow-line" marker-end="url(#arrowAccent)"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- SOD Banner -->
+  <div class="sod-banner" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a98ee0" stroke-width="1.8">
+      <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8,11 V7 a4,4 0 0,1 8,0 v4"/>
+    </svg>
+    <div>
+      <h4>Segregation of Duties Enforcement</h4>
+      <p>The technician who performs a repair is blocked from conducting Quality Control on the same job. The system enforces this at the role level. Additionally, technicians have a SAR 0 approval ceiling -- they cannot approve any financial transactions, including their own parts requests.</p>
+    </div>
+  </div>
+
+  <!-- Workflow Detail Section -->
+  <section class="workflow-detail" style="padding: 20px 0 40px;">
+    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text);">Workflow Breakdown</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 40px;">
+      <!-- Step 1 -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(218,119,86,0.12); border: 1px solid rgba(218,119,86,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--accent);">1</div>
+          <h3 style="font-size: 15px; color: var(--accent);">Authentication & Queue</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--muted);">Technician logs in with workshop credentials. Dashboard shows assigned jobs sorted by priority. Each card displays vehicle info, service type, and estimated duration. Overdue jobs are flagged in red.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(107,164,217,0.12); border: 1px solid rgba(107,164,217,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--blue);">2</div>
+          <h3 style="font-size: 15px; color: var(--blue);">Job Acceptance & Details</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--muted);">Accept the job to lock it in. View full details: customer contact, vehicle plate and VIN, mileage, service history, inspection photos from the service advisor, and the specific work requested.</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(107,164,217,0.12); border: 1px solid rgba(107,164,217,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--blue);">3</div>
+          <h3 style="font-size: 15px; color: var(--blue);">Parts Request (SOD)</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--muted);">Request required parts from inventory. The technician cannot approve this request (SAR 0 ceiling). A Parts Manager or Service Advisor with a higher approval ceiling must authorize the release. This is a core SOD control.</p>
+      </div>
+
+      <!-- Step 4 -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(218,119,86,0.12); border: 1px solid rgba(218,119,86,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--accent);">4</div>
+          <h3 style="font-size: 15px; color: var(--accent);">Repair Execution</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--muted);">Perform the repair. Update job status to In Progress. Log time spent with start/stop timer. Add detailed technician notes describing work done. Capture before/after photos as evidence.</p>
+      </div>
+
+      <!-- Step 5 -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(169,142,224,0.12); border: 1px solid rgba(169,142,224,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--purple);">5</div>
+          <h3 style="font-size: 15px; color: var(--purple);">QC Handoff (SOD)</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--muted);">Mark repair complete. Job moves to QC queue automatically. The system enforces that a different person must perform quality control. If QC fails, the technician receives rework notes.</p>
+      </div>
+
+      <!-- Step 6 -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(125,187,125,0.12); border: 1px solid rgba(125,187,125,0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--green);">6</div>
+          <h3 style="font-size: 15px; color: var(--green);">Next Job Cycle</h3>
+        </div>
+        <p style="font-size: 14px; color: var(--muted);">After QC handoff, return to the job queue to accept the next assignment. Performance metrics (jobs/day, rework rate, avg time per job) are tracked and visible to the Branch Manager.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Role Permissions Table -->
+  <section style="padding: 0 0 40px;">
+    <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; overflow-x: auto; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+      <h3 style="font-size: 16px; color: var(--accent); margin-bottom: 16px;">Technician Role Boundaries</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--card-border);">
+            <th style="text-align: left; padding: 8px 12px; color: var(--muted); font-weight: 600;">Capability</th>
+            <th style="text-align: center; padding: 8px 12px; color: var(--green);">Allowed</th>
+            <th style="text-align: center; padding: 8px 12px; color: var(--accent);">Blocked</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">View assigned jobs</td>
+            <td style="text-align: center; padding: 8px 12px; color: var(--green);">Yes</td>
+            <td style="text-align: center; padding: 8px 12px;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Update repair status</td>
+            <td style="text-align: center; padding: 8px 12px; color: var(--green);">Yes</td>
+            <td style="text-align: center; padding: 8px 12px;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Request parts</td>
+            <td style="text-align: center; padding: 8px 12px; color: var(--green);">Yes</td>
+            <td style="text-align: center; padding: 8px 12px;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Approve parts request</td>
+            <td style="text-align: center; padding: 8px 12px;">--</td>
+            <td style="text-align: center; padding: 8px 12px; color: var(--accent);">SAR 0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Perform QC on own repair</td>
+            <td style="text-align: center; padding: 8px 12px;">--</td>
+            <td style="text-align: center; padding: 8px 12px; color: var(--accent);">SOD</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 12px; color: var(--text);">View financial data</td>
+            <td style="text-align: center; padding: 8px 12px;">--</td>
+            <td style="text-align: center; padding: 8px 12px; color: var(--accent);">No access</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Info Cards -->
+  <div class="info-grid">
+    <div class="info-card" data-reveal>
+      <h3>Job Queue Management</h3>
+      <p>Technicians see only jobs assigned to them by the Service Advisor. Jobs are prioritized by urgency and estimated completion time. Real-time status updates visible to all stakeholders.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3>Parts Request Workflow</h3>
+      <p>Technicians can request parts from inventory but cannot approve the request (SAR 0 ceiling). A Parts Manager or Service Advisor with appropriate approval limits must authorize the release.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3>Time & Photo Logging</h3>
+      <p>All repair work is time-tracked. Technicians capture before/after photos and add detailed notes. This documentation supports quality assurance and customer transparency.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3>QC Handoff Protocol</h3>
+      <p>Upon completing repairs, the job automatically enters the QC queue and is assigned to a different inspector. The technician receives notification when QC passes or if rework is needed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Caption Bar -->
+<div class="caption-bar" id="captionBar">
+  <span class="node-name" id="captionName">--</span>
+  <span class="node-desc" id="captionDesc">Hover a node for details</span>
+</div>
+
+<script>
+(function() {
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-reveal], .info-card, .sod-banner').forEach(el => obs.observe(el));
+
+  // Node hover -> caption bar
+  const bar = document.getElementById('captionBar');
+  const nameEl = document.getElementById('captionName');
+  const descEl = document.getElementById('captionDesc');
+  let hideTimer;
+
+  document.querySelectorAll('.journey-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimer);
+      nameEl.textContent = node.dataset.name;
+      descEl.textContent = node.dataset.desc;
+      bar.classList.add('active');
+    });
+    node.addEventListener('mouseleave', () => {
+      hideTimer = setTimeout(() => bar.classList.remove('active'), 1500);
+    });
+  });
+})();
+</script>
+</body>
+</html>
