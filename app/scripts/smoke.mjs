@@ -1815,6 +1815,12 @@ const failures = []
   const page = await context.newPage()
   await page.goto(BASE + '/language-selection', { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: /Arabic|العربية/ }).click()
+  // The Arabic dictionary is a lazy chunk, so the click fires an async import()
+  // before t() can resolve the heading. Wait for it to apply rather than reading
+  // synchronously — a genuine failure (chunk never loads) still fails the check below.
+  await page
+    .waitForFunction(() => document.body.innerText.includes('اختر لغتك'), { timeout: 5000 })
+    .catch(() => {})
   const dir = await page.evaluate(() => document.documentElement.dir)
   const text = await page.locator('body').innerText()
   if (dir !== 'rtl') failures.push({ route: 'lang switch', problems: [`dir was ${dir}, expected rtl`] })
