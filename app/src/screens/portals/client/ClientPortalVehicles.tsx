@@ -1,63 +1,83 @@
-import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { EmptyState, ErrorState } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { VehicleStatusBadge } from '@/screens/registry/badges'
+import { derived } from '@/screens/registry/writes'
 
-interface Vehicle {
-  plate: string
-  make: string
-  model: string
-  year: number
-  vin: string
-  color: string
-  mileage: number
-  status: 'Active' | 'In Service' | 'Pending Pickup'
-}
-
-const VEHICLES: Vehicle[] = [
-  { plate: 'RJD 4821', make: 'Toyota', model: 'Camry', year: 2022, vin: '1HGBH41JXMN109186', color: 'White', mileage: 34200, status: 'Active' },
-  { plate: 'KSA 7193', make: 'Honda', model: 'Accord', year: 2021, vin: '2HGFC2F59MH512345', color: 'Silver', mileage: 48700, status: 'In Service' },
-  { plate: 'DMM 2856', make: 'Hyundai', model: 'Tucson', year: 2023, vin: '5NMS3DAJ8PH123456', color: 'Black', mileage: 12100, status: 'Active' },
-  { plate: 'JED 5034', make: 'Nissan', model: 'Altima', year: 2020, vin: '1N4BL4BV0LC123456', color: 'Blue', mileage: 67300, status: 'Pending Pickup' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'In Service': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'Pending Pickup': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+/** The customer's own vehicles, read through the repository seam.
+ *
+ *  Scope is the server's, not this screen's: the customer portal reads
+ *  `vehicles` exactly as `CustomerPortal` does and never trims a list by
+ *  identity in the browser — a client-side filter is not an access control, and
+ *  the rows a portal principal is allowed to see are decided by the API's
+ *  row-level security before they are sent.
+ *
+ *  ### What the collection does and does not carry
+ *
+ *  `plate`, `make` (the API's `make_model`, one string), `mileage`, `last` and
+ *  `status` come from every build; `vin` is served by the API and absent from
+ *  the design fixtures. **Colour is not a column of `vehicles` in any build** —
+ *  not in the schema, not in the projection — so the column renders the em dash
+ *  `derived()` uses for "this record does not know", rather than a value made up
+ *  to fill it. If the API grows the field the cell fills itself.
+ */
+type Vehicle = RowOf<'vehicles'> & {
+  _id?: string
+  /** API-only; the design fixtures carry no VIN. */
+  vin?: string | null
+  /** Not projected by any build today — see the note above. */
+  color?: string | null
 }
 
 export function ClientPortalVehicles() {
   const { t } = usePreferences()
+  const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
+  const rows = vehicles as readonly Vehicle[]
 
   const columns: Column<Vehicle>[] = [
-    { header: t('Vehicle'), cell: (v) => `${v.year} ${v.make} ${v.model}` },
-    { header: t('Plate'), cell: (v) => v.plate },
-    { header: t('Color'), cell: (v) => v.color },
-    { header: t('Mileage'), cell: (v) => `${v.mileage.toLocaleString()} km` },
-    { header: t('VIN'), cell: (v) => v.vin },
-    { header: t('Status'), cell: (v) => <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge> },
+    { header: t('Vehicle'), cell: (v) => derived(v.make) },
+    { header: t('Plate'), cell: (v) => v.plate, code: true },
+    { header: t('Color'), cell: (v) => derived(v.color) },
+    { header: t('Mileage'), cell: (v) => derived(v.mileage) },
+    { header: t('VIN'), cell: (v) => derived(v.vin), code: true },
+    { header: t('Last Service'), cell: (v) => derived(v.last && t(v.last)) },
+    { header: t('Status'), cell: (v) => <VehicleStatusBadge value={v.status} /> },
   ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Car" title={t('My Vehicles')} subtitle={t('Registered vehicles and status')} />
 
-      <DataTable
-        caption="Client vehicle registry"
-        columns={columns}
-        rows={VEHICLES}
-        rowKey={(v) => v.plate}
-        mobileCard={(v) => (
-          <>
-            <MobileCardHeader title={`${v.year} ${v.make} ${v.model}`} trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>} />
-            <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
-            <MobileCardRow label={t('Mileage')}>{v.mileage.toLocaleString()} km</MobileCardRow>
-            <MobileCardRow label={t('VIN')}>{v.vin}</MobileCardRow>
-          </>
-        )}
-      />
+      {isError ? (
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      ) : (
+        <DataTable
+          caption="Client vehicle registry"
+          columns={columns}
+          rows={rows}
+          rowKey={(v, index) => v._id ?? `${v.plate}-${index}`}
+          loading={isLoading}
+          empty={
+            <EmptyState
+              icon="Car"
+              title={t('No vehicles on file')}
+              description={t('Vehicles registered to you appear here.')}
+            />
+          }
+          mobileCard={(v) => (
+            <>
+              <MobileCardHeader title={derived(v.make)} trailing={<VehicleStatusBadge value={v.status} />} />
+              <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
+              <MobileCardRow label={t('Mileage')}>{derived(v.mileage)}</MobileCardRow>
+              <MobileCardRow label={t('VIN')}>{derived(v.vin)}</MobileCardRow>
+              <MobileCardRow label={t('Color')}>{derived(v.color)}</MobileCardRow>
+            </>
+          )}
+        />
+      )}
     </div>
   )
 }
