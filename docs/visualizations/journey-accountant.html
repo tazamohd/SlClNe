@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-012 Accountant Journey - SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --bg-alt: #0e0e11; --text: #f5f5f7; --muted: #8a8a93;
+    --accent: #DA7756; --blue: #6ba4d9; --green: #7dbb7d; --purple: #a98ee0; --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04); --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .hero { padding: 80px 0 40px; text-align: center; }
+  .hero .badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(217,184,107,0.3); background: rgba(217,184,107,0.08); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { color: var(--muted); font-size: 17px; max-width: 640px; margin: 0 auto; }
+  .diagram-section { padding: 40px 0 60px; }
+  .diagram-wrapper {
+    background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 32px; overflow-x: auto;
+  }
+  .caption-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(14,14,17,0.95); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--card-border); padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+  }
+  .caption-bar.active { transform: translateY(0); }
+  .caption-bar .node-name { font-weight: 600; color: var(--gold); white-space: nowrap; }
+  .caption-bar .node-desc { color: var(--muted); font-size: 14px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px 0 80px; }
+  .info-card {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px;
+    opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .info-card.visible { opacity: 1; transform: translateY(0); }
+  .info-card h3 { font-size: 15px; margin-bottom: 8px; }
+  .info-card p { font-size: 14px; color: var(--muted); }
+  .banner {
+    border-radius: 12px; padding: 20px 28px; margin: 0 0 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .banner.visible { opacity: 1; transform: translateY(0); }
+  .banner h4 { font-size: 15px; margin-bottom: 4px; }
+  .banner p { color: var(--muted); font-size: 14px; }
+  .banner-zatca { background: rgba(107,164,217,0.08); border: 1px solid rgba(107,164,217,0.25); }
+  .banner-zatca h4 { color: var(--blue); }
+  .banner-sod { background: rgba(169,142,224,0.08); border: 1px solid rgba(169,142,224,0.25); }
+  .banner-sod h4 { color: var(--purple); }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .flow-line { animation: flowDash 1.2s linear infinite; }
+  .glow { animation: glowPulse 2.5s ease-in-out infinite; }
+  .journey-node { cursor: pointer; transition: filter 0.2s ease; }
+  .journey-node:hover { filter: brightness(1.3); }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <div class="badge">SA-VIZ-012</div>
+    <h1>Accountant <span>User Journey</span></h1>
+    <p>Financial workflow spanning invoicing, ZATCA e-invoicing compliance, payment recording, journal management, and month-end close.</p>
+  </section>
+
+  <section class="diagram-section">
+    <div class="diagram-wrapper">
+      <svg viewBox="0 0 1100 680" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Accountant journey diagram">
+        <defs>
+          <marker id="aG" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+          </marker>
+          <marker id="aB" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </marker>
+          <marker id="aP" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#a98ee0" stroke-width="1.2"/>
+          </marker>
+          <marker id="aGn" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+          </marker>
+          <filter id="glZ"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Row 1 connectors -->
+        <path d="M180,100 C230,100 250,100 300,100" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aG)"/>
+        <path d="M440,100 C490,100 510,100 560,100" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aG)"/>
+        <path d="M700,100 C740,100 760,100 800,100" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aB)"/>
+
+        <!-- Row 1 to Row 2 -->
+        <path d="M900,135 C900,180 900,210 900,240 C900,280 800,280 740,280" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aG)"/>
+
+        <!-- Row 2 connectors -->
+        <path d="M600,280 C540,280 500,280 440,280" fill="none" stroke="#a98ee0" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aP)"/>
+        <path d="M300,280 C240,280 200,280 160,280" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aG)"/>
+
+        <!-- Row 2 to Row 3 -->
+        <path d="M95,315 C95,360 95,390 95,420 C95,450 200,450 280,450" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aGn)"/>
+
+        <!-- Row 3 connectors -->
+        <path d="M420,450 C480,450 520,450 580,450" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aGn)"/>
+        <path d="M720,450 C780,450 820,450 870,450" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aG)"/>
+
+        <!-- Approval ceiling label -->
+        <rect x="40" y="580" width="180" height="50" rx="8" fill="rgba(217,184,107,0.06)" stroke="rgba(217,184,107,0.2)" stroke-width="1"/>
+        <text x="130" y="602" text-anchor="middle" fill="#d9b86b" font-size="12" font-weight="700">SAR 25,000</text>
+        <text x="130" y="618" text-anchor="middle" fill="var(--muted)" font-size="10">Approval Ceiling</text>
+
+        <!-- Node 1: Login -->
+        <g class="journey-node" data-name="Login" data-desc="Accountant authenticates with accountant@salisauto.sa. Finance dashboard loads with pending items, overdue invoices, and ZATCA status.">
+          <rect x="60" y="65" width="120" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(105,85)">
+            <circle cx="0" cy="0" r="5" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="5" y1="0" x2="16" y2="0" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="12" y1="0" x2="12" y2="5" stroke="#d9b86b" stroke-width="1.5"/>
+          </g>
+          <text x="120" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Login</text>
+        </g>
+
+        <!-- Node 2: Finance Dashboard -->
+        <g class="journey-node" data-name="Finance Dashboard" data-desc="Overview: outstanding invoices, revenue this month, ZATCA submission status, pending approvals, AR aging summary.">
+          <rect x="305" y="65" width="135" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(355,85)">
+            <rect x="-10" y="-7" width="20" height="14" rx="2" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <polyline points="-6,4 -3,-2 1,2 5,-5" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+          </g>
+          <text x="372" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Dashboard</text>
+        </g>
+
+        <!-- Node 3: Invoice Management -->
+        <g class="journey-node" data-name="Invoice Management" data-desc="Create/view invoices. Add line items with SAR amounts. System calculates 15% VAT automatically. Generate customer-facing invoice PDF.">
+          <rect x="565" y="65" width="135" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.4)" stroke-width="1"/>
+          <g transform="translate(615,85)">
+            <rect x="-8" y="-8" width="16" height="17" rx="2" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="-4" y1="-3" x2="4" y2="-3" stroke="#d9b86b" stroke-width="1.2"/>
+            <line x1="-4" y1="0" x2="4" y2="0" stroke="#d9b86b" stroke-width="1.2"/>
+            <line x1="-4" y1="3" x2="2" y2="3" stroke="#d9b86b" stroke-width="1.2"/>
+            <text x="0" y="7" text-anchor="middle" fill="#d9b86b" font-size="5" font-weight="700">SAR</text>
+          </g>
+          <text x="632" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Invoices</text>
+          <text x="632" y="130" text-anchor="middle" fill="#d9b86b" font-size="9">15% VAT</text>
+        </g>
+
+        <!-- Node 4: ZATCA Submission (prominent) -->
+        <g class="journey-node" data-name="ZATCA Submission" data-desc="Generate ZATCA Phase 2 compliant XML. Create QR code and hash chain. Submit for clearance. Track submission status (pending/cleared/rejected).">
+          <rect x="805" y="65" width="150" height="70" rx="12" fill="rgba(107,164,217,0.12)" stroke="rgba(107,164,217,0.5)" stroke-width="1.5" filter="url(#glZ)"/>
+          <circle cx="880" cy="60" r="18" fill="rgba(107,164,217,0.1)" class="glow"/>
+          <g transform="translate(862,85)">
+            <rect x="-7" y="-8" width="14" height="14" rx="1" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <line x1="-4" y1="-4" x2="4" y2="-4" stroke="#6ba4d9" stroke-width="1"/>
+            <line x1="-4" y1="-1" x2="4" y2="-1" stroke="#6ba4d9" stroke-width="1"/>
+            <line x1="-4" y1="2" x2="4" y2="2" stroke="#6ba4d9" stroke-width="1"/>
+            <rect x="-3" y="-3" width="6" height="6" rx="0" fill="none" stroke="#6ba4d9" stroke-width="0.8" transform="translate(14,0)"/>
+            <rect x="-1.5" y="-1.5" width="3" height="3" fill="#6ba4d9" transform="translate(14,0)"/>
+          </g>
+          <text x="880" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">ZATCA</text>
+          <text x="880" y="130" text-anchor="middle" fill="#6ba4d9" font-size="9">Phase 2 E-Invoice</text>
+        </g>
+
+        <!-- Node 5: Payment Recording -->
+        <g class="journey-node" data-name="Payment Recording" data-desc="Record payments received. Match payments to outstanding invoices. Create payment receipts. Support partial payments and overpayments.">
+          <rect x="605" y="245" width="135" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(655,265)">
+            <circle cx="0" cy="0" r="7" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <text x="0" y="3" text-anchor="middle" fill="#d9b86b" font-size="8" font-weight="700">$</text>
+          </g>
+          <text x="672" y="300" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Payments</text>
+        </g>
+
+        <!-- Node 6: Journal Entries (with SOD) -->
+        <g class="journey-node" data-name="Journal Entries" data-desc="Auto-generated from invoices and payments. Manual adjustments allowed. SOD enforced: person who posts a journal cannot approve it.">
+          <rect x="305" y="245" width="135" height="70" rx="12" fill="rgba(169,142,224,0.1)" stroke="rgba(169,142,224,0.4)" stroke-width="1.5"/>
+          <g transform="translate(355,265)">
+            <path d="M-8,-6 L-2,-8 L8,-6 L8,6 L2,8 L-8,6 Z" fill="none" stroke="#a98ee0" stroke-width="1.5"/>
+            <line x1="-3" y1="-2" x2="4" y2="-2" stroke="#a98ee0" stroke-width="1.2"/>
+            <line x1="-3" y1="2" x2="4" y2="2" stroke="#a98ee0" stroke-width="1.2"/>
+          </g>
+          <text x="372" y="300" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Journals</text>
+          <text x="372" y="312" text-anchor="middle" fill="#a98ee0" font-size="9">SOD: post != approve</text>
+        </g>
+
+        <!-- SOD lock icon between post/approve -->
+        <g transform="translate(372,330)">
+          <rect x="-7" y="0" width="14" height="10" rx="2" fill="rgba(169,142,224,0.15)" stroke="#a98ee0" stroke-width="1.3"/>
+          <path d="M-4,0 C-4,-7 4,-7 4,0" fill="none" stroke="#a98ee0" stroke-width="1.3"/>
+        </g>
+
+        <!-- Node 7: Financial Reports -->
+        <g class="journey-node" data-name="Financial Reports" data-desc="Generate trial balance, P&L statement, balance sheet, AR/AP aging reports. Filter by date range, branch, and currency (SAR).">
+          <rect x="60" y="245" width="140" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(110,265)">
+            <rect x="-10" y="-7" width="20" height="14" rx="2" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <rect x="-7" y="-4" width="4" height="8" rx="1" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+            <rect x="-1" y="-1" width="4" height="5" rx="1" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+            <rect x="5" y="-6" width="4" height="10" rx="1" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+          </g>
+          <text x="130" y="300" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Reports</text>
+        </g>
+
+        <!-- Node 8: Trial Balance -->
+        <g class="journey-node" data-name="Trial Balance" data-desc="Summary of all account balances. Debit and credit columns must balance. Foundation for P&L and balance sheet generation.">
+          <rect x="285" y="420" width="135" height="60" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.3)" stroke-width="1"/>
+          <g transform="translate(335,438)">
+            <line x1="-8" y1="0" x2="8" y2="0" stroke="#7dbb7d" stroke-width="1.5"/>
+            <line x1="0" y1="-8" x2="0" y2="8" stroke="#7dbb7d" stroke-width="1.5"/>
+            <text x="-5" y="-2" fill="#7dbb7d" font-size="7">Dr</text>
+            <text x="2" y="-2" fill="#7dbb7d" font-size="7">Cr</text>
+          </g>
+          <text x="352" y="468" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">Trial Balance</text>
+        </g>
+
+        <!-- Node 9: P&L -->
+        <g class="journey-node" data-name="Profit & Loss" data-desc="Revenue minus expenses. Shows workshop profitability by service type, technician, and branch. Monthly and quarterly views.">
+          <rect x="585" y="420" width="135" height="60" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.3)" stroke-width="1"/>
+          <g transform="translate(635,438)">
+            <polyline points="-7,4 -3,-2 1,1 7,-5" fill="none" stroke="#7dbb7d" stroke-width="1.8"/>
+          </g>
+          <text x="652" y="468" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">P&L Statement</text>
+        </g>
+
+        <!-- Node 10: Month-End Close -->
+        <g class="journey-node" data-name="Month-End Close" data-desc="Close accounting period. Verify all journals posted and approved. Reconcile bank statements. Lock period to prevent backdated entries.">
+          <rect x="875" y="420" width="140" height="60" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1"/>
+          <g transform="translate(928,438)">
+            <circle cx="0" cy="0" r="8" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <line x1="0" y1="-4" x2="0" y2="1" stroke="#DA7756" stroke-width="1.5"/>
+            <line x1="0" y1="1" x2="4" y2="3" stroke="#DA7756" stroke-width="1.5"/>
+          </g>
+          <text x="945" y="468" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">Month-End Close</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ZATCA Banner -->
+  <div class="banner banner-zatca" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6ba4d9" stroke-width="1.8">
+      <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7,8 h10 M7,12 h10 M7,16 h6"/>
+      <rect x="16" y="14" width="5" height="5" rx="0.5" stroke-width="1.2"/>
+    </svg>
+    <div>
+      <h4>ZATCA Phase 2 E-Invoicing Integration</h4>
+      <p>Every invoice generates a ZATCA-compliant XML document with QR code and cryptographic hash chain. Invoices are submitted to ZATCA for clearance before delivery to customers. The system tracks submission status and handles rejections with resubmission workflow.</p>
+    </div>
+  </div>
+
+  <!-- SOD Banner -->
+  <div class="banner banner-sod" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a98ee0" stroke-width="1.8">
+      <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8,11 V7 a4,4 0 0,1 8,0 v4"/>
+    </svg>
+    <div>
+      <h4>SOD: Journal Posting vs. Approval</h4>
+      <p>The accountant who posts a journal entry cannot approve it. A different authorized user (Finance Manager or Branch Owner) must review and approve. Approval ceiling for accountants is SAR 25,000 -- amounts above require Finance Manager approval.</p>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--gold)">VAT Calculation</h3>
+      <p>15% VAT applied automatically to all taxable line items. Separate tracking of exempt items. VAT return preparation with ZATCA-compliant reporting periods.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--blue)">ZATCA QR & Hash Chain</h3>
+      <p>Each cleared invoice carries a unique QR code with seller info, VAT number, timestamp, and amounts. Cryptographic hash chain ensures tamper-proof invoice sequencing.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--green)">AR Aging Reports</h3>
+      <p>Track outstanding receivables by 30/60/90/120+ day buckets. Identify overdue accounts. Support collection workflows with automated reminders.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--accent)">Month-End Close</h3>
+      <p>Structured close process: verify journals, reconcile banks, review accruals, lock period. Prevents backdated entries after close. Generates close checklist for audit trail.</p>
+    </div>
+  </div>
+</div>
+
+<div class="caption-bar" id="captionBar">
+  <span class="node-name" id="captionName">--</span>
+  <span class="node-desc" id="captionDesc">Hover a node for details</span>
+</div>
+
+<script>
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-reveal], .info-card, .banner').forEach(el => obs.observe(el));
+
+  const bar = document.getElementById('captionBar');
+  const nameEl = document.getElementById('captionName');
+  const descEl = document.getElementById('captionDesc');
+  let hideTimer;
+  document.querySelectorAll('.journey-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimer);
+      nameEl.textContent = node.dataset.name;
+      descEl.textContent = node.dataset.desc;
+      bar.classList.add('active');
+    });
+    node.addEventListener('mouseleave', () => {
+      hideTimer = setTimeout(() => bar.classList.remove('active'), 1500);
+    });
+  });
+})();
+</script>
+</body>
+</html>

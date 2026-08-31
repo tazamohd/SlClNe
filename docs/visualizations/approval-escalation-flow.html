@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-019 — Approval Escalation Flow</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero {
+    padding: 60px 24px 32px;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+  .caption-bar {
+    max-width: 960px;
+    margin: 0 auto 24px;
+    padding: 14px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .caption-bar .desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .diagram-section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 16px;
+  }
+  .diagram-section svg { width: 100%; height: auto; display: block; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  /* Slider control */
+  .slider-control {
+    max-width: 600px;
+    margin: 32px auto;
+    padding: 24px 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .slider-control label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .slider-control .amount-display {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .slider-control input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #7dbb7d 0%, #6ba4d9 20%, #a98ee0 40%, #d9b86b 60%, #DA7756 80%, #DA7756 100%);
+    outline: none;
+  }
+  .slider-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--text);
+    border: 3px solid var(--accent);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .slider-control input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--text);
+    border: 3px solid var(--accent);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .slider-control .approver-result {
+    margin-top: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .slider-control .approver-result .role-name {
+    color: var(--green);
+  }
+  .supporting {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 0 24px 80px;
+  }
+  .supporting h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p { color: var(--muted); font-size: 0.95rem; margin-bottom: 16px; }
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .info-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes rungGlow {
+    0%, 100% { stroke-opacity: 0.3; }
+    50% { stroke-opacity: 0.8; }
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="badge">SA-VIZ-019</div>
+  <h1><span>Approval</span> Escalation Chain</h1>
+  <p>Interactive SAR approval thresholds showing which role can authorize spending at each financial tier</p>
+</section>
+
+<div class="caption-bar">
+  <span class="label">Interactive</span>
+  <span class="desc" id="captionText">Use the slider below to set a SAR amount and see the escalation path</span>
+</div>
+
+<section class="diagram-section reveal">
+<svg viewBox="0 0 800 620" xmlns="http://www.w3.org/2000/svg" id="ladderSvg">
+  <defs>
+    <marker id="arrowUp" viewBox="0 0 10 8" refX="5" refY="0" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,8 L5,0 L10,8 Z" fill="#DA7756"/></marker>
+    <filter id="glowNode"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#7dbb7d" flood-opacity="0.6"/></filter>
+    <filter id="glowBypass"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#DA7756" flood-opacity="0.4"/></filter>
+    <linearGradient id="ladderGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#7dbb7d" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#d9b86b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#DA7756" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Vertical ladder rails -->
+  <line x1="200" y1="560" x2="200" y2="40" stroke="url(#ladderGrad)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="600" y1="560" x2="600" y2="40" stroke="url(#ladderGrad)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Escalation arrow -->
+  <line x1="130" y1="550" x2="130" y2="60" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowUp)" style="animation: flowDash 1.5s linear infinite;"/>
+  <text x="125" y="310" fill="#DA7756" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" transform="rotate(-90 125 310)" font-weight="600">ESCALATION</text>
+
+  <!-- Rung 1: Advisor - SAR 5K -->
+  <g class="ladder-rung" data-rung="0" data-ceiling="5000">
+    <line x1="200" y1="530" x2="600" y2="530" stroke="rgba(255,255,255,0.08)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="510" width="340" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="rung-bg"/>
+    <!-- User icon -->
+    <circle cx="260" cy="526" r="6" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+    <path d="M252,538 Q260,534 268,538" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+    <text x="280" y="528" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">Service Advisor</text>
+    <text x="280" y="544" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Front-of-house operations</text>
+    <text x="540" y="536" fill="#7dbb7d" font-size="13" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">SAR 5,000</text>
+  </g>
+
+  <!-- Rung 2: Parts Manager - SAR 10K -->
+  <g class="ladder-rung" data-rung="1" data-ceiling="10000">
+    <line x1="200" y1="450" x2="600" y2="450" stroke="rgba(255,255,255,0.08)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="430" width="340" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="rung-bg"/>
+    <!-- Box icon -->
+    <rect x="252" y="440" width="14" height="12" rx="1" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+    <line x1="252" y1="446" x2="266" y2="446" stroke="#6ba4d9" stroke-width="0.8"/>
+    <text x="280" y="448" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">Parts Manager</text>
+    <text x="280" y="464" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Inventory management</text>
+    <text x="540" y="456" fill="#7dbb7d" font-size="13" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">SAR 10,000</text>
+  </g>
+
+  <!-- Rung 3: HR - SAR 15K -->
+  <g class="ladder-rung" data-rung="2" data-ceiling="15000">
+    <line x1="200" y1="370" x2="600" y2="370" stroke="rgba(255,255,255,0.08)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="350" width="340" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="rung-bg"/>
+    <!-- Person icon -->
+    <circle cx="260" cy="366" r="6" fill="none" stroke="#a98ee0" stroke-width="1.2"/>
+    <path d="M252,378 Q260,374 268,378" fill="none" stroke="#a98ee0" stroke-width="1.2"/>
+    <text x="280" y="368" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">HR Manager</text>
+    <text x="280" y="384" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Personnel & admin</text>
+    <text x="540" y="376" fill="#d9b86b" font-size="13" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">SAR 15,000</text>
+  </g>
+
+  <!-- Rung 4: Procurement - SAR 20K -->
+  <g class="ladder-rung" data-rung="3" data-ceiling="20000">
+    <line x1="200" y1="290" x2="600" y2="290" stroke="rgba(255,255,255,0.08)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="270" width="340" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="rung-bg"/>
+    <!-- Cart icon -->
+    <polyline points="252,280 256,280 262,292 272,292" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+    <circle cx="264" cy="296" r="2" fill="#d9b86b"/>
+    <circle cx="270" cy="296" r="2" fill="#d9b86b"/>
+    <text x="280" y="288" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">Procurement</text>
+    <text x="280" y="304" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Purchase orders & vendors</text>
+    <text x="540" y="296" fill="#d9b86b" font-size="13" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">SAR 20,000</text>
+  </g>
+
+  <!-- Rung 5: Accountant - SAR 25K -->
+  <g class="ladder-rung" data-rung="4" data-ceiling="25000">
+    <line x1="200" y1="210" x2="600" y2="210" stroke="rgba(255,255,255,0.08)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="190" width="340" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="rung-bg"/>
+    <!-- Calculator icon -->
+    <rect x="252" y="200" width="14" height="18" rx="2" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+    <line x1="255" y1="206" x2="263" y2="206" stroke="#DA7756" stroke-width="0.8"/>
+    <line x1="255" y1="210" x2="263" y2="210" stroke="#DA7756" stroke-width="0.8"/>
+    <text x="280" y="208" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">Accountant</text>
+    <text x="280" y="224" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Financial operations</text>
+    <text x="540" y="216" fill="#DA7756" font-size="13" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">SAR 25,000</text>
+  </g>
+
+  <!-- Rung 6: Manager - SAR 50K -->
+  <g class="ladder-rung" data-rung="5" data-ceiling="50000">
+    <line x1="200" y1="130" x2="600" y2="130" stroke="rgba(255,255,255,0.08)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="110" width="340" height="44" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" class="rung-bg"/>
+    <!-- Badge icon -->
+    <rect x="252" y="120" width="14" height="16" rx="2" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+    <circle cx="259" cy="126" r="3" fill="none" stroke="#DA7756" stroke-width="0.8"/>
+    <text x="280" y="128" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">Manager</text>
+    <text x="280" y="144" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Branch-level authority</text>
+    <text x="540" y="136" fill="#DA7756" font-size="13" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">SAR 50,000</text>
+  </g>
+
+  <!-- Rung 7: Owner - Unlimited -->
+  <g class="ladder-rung" data-rung="6" data-ceiling="999999">
+    <line x1="200" y1="50" x2="600" y2="50" stroke="rgba(218,119,86,0.2)" stroke-width="2" class="rung-line"/>
+    <rect x="230" y="30" width="340" height="44" rx="10" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.3)" stroke-width="1.5" class="rung-bg"/>
+    <!-- Crown icon -->
+    <polyline points="250,44 256,36 262,48 268,36 274,44" fill="none" stroke="#DA7756" stroke-width="1.3"/>
+    <line x1="250" y1="44" x2="274" y2="44" stroke="#DA7756" stroke-width="1.3"/>
+    <text x="284" y="48" fill="#f5f5f7" font-size="12" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-label">Owner / Super Admin</text>
+    <text x="284" y="64" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Full organizational authority</text>
+    <text x="540" y="56" fill="#DA7756" font-size="14" font-weight="700" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" class="rung-sar">UNLIMITED</text>
+  </g>
+
+  <!-- Threshold marker (animated) -->
+  <g id="thresholdMarker" style="display:none;">
+    <line x1="160" y1="530" x2="640" y2="530" stroke="#7dbb7d" stroke-width="2" stroke-dasharray="4 4" id="threshLine"/>
+    <rect x="640" y="520" width="100" height="24" rx="6" fill="rgba(125,187,125,0.2)" stroke="#7dbb7d" stroke-width="1" id="threshBadge"/>
+    <text x="690" y="536" fill="#7dbb7d" font-size="10" font-weight="600" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" id="threshText">SAR 0</text>
+  </g>
+</svg>
+</section>
+
+<div class="slider-control reveal">
+  <label>Set a SAR amount to see which role can approve it</label>
+  <div class="amount-display" id="amountDisplay">SAR 0</div>
+  <input type="range" id="sarSlider" min="0" max="60000" step="500" value="0"/>
+  <div class="approver-result" id="approverResult">
+    Move the slider to begin
+  </div>
+</div>
+
+<section class="supporting reveal">
+  <h2>Escalation <span>Rules</span></h2>
+  <p>Financial approvals escalate up the chain until reaching a role with sufficient SAR ceiling. Requests exceeding all role limits require Owner/SuperAdmin authorization.</p>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>7 Approval Tiers</h3>
+      <p>From SAR 5,000 (Advisor) to unlimited (Owner), each tier represents increasing financial authority</p>
+    </div>
+    <div class="info-card">
+      <h3>Automatic Escalation</h3>
+      <p>When a request exceeds a role's ceiling, it automatically routes to the next tier in the approval chain</p>
+    </div>
+    <div class="info-card">
+      <h3>Audit Trail</h3>
+      <p>Every approval/rejection is logged with timestamp, role, user ID, and SAR amount for compliance</p>
+    </div>
+    <div class="info-card">
+      <h3>Branch Scoping</h3>
+      <p>Approval authority is scoped per branch for Manager and below; Owner/SuperAdmin approve cross-branch</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const rungs = [
+  { ceiling: 5000, label: 'Service Advisor', y: 530 },
+  { ceiling: 10000, label: 'Parts Manager', y: 450 },
+  { ceiling: 15000, label: 'HR Manager', y: 370 },
+  { ceiling: 20000, label: 'Procurement', y: 290 },
+  { ceiling: 25000, label: 'Accountant', y: 210 },
+  { ceiling: 50000, label: 'Manager', y: 130 },
+  { ceiling: Infinity, label: 'Owner / Super Admin', y: 50 }
+];
+
+const slider = document.getElementById('sarSlider');
+const display = document.getElementById('amountDisplay');
+const result = document.getElementById('approverResult');
+const marker = document.getElementById('thresholdMarker');
+const threshLine = document.getElementById('threshLine');
+const threshBadge = document.getElementById('threshBadge');
+const threshText = document.getElementById('threshText');
+const caption = document.getElementById('captionText');
+const rungEls = document.querySelectorAll('.ladder-rung');
+
+slider.addEventListener('input', function() {
+  const val = parseInt(this.value);
+  const formatted = val === 0 ? 'SAR 0' : 'SAR ' + val.toLocaleString();
+  display.textContent = formatted;
+
+  if (val === 0) {
+    marker.style.display = 'none';
+    rungEls.forEach(r => {
+      r.querySelector('.rung-bg').style.fill = 'rgba(255,255,255,0.03)';
+      r.querySelector('.rung-bg').style.stroke = 'rgba(255,255,255,0.08)';
+      r.style.opacity = '1';
+    });
+    result.innerHTML = 'Move the slider to begin';
+    caption.textContent = 'Use the slider below to set a SAR amount and see the escalation path';
+    return;
+  }
+
+  marker.style.display = 'block';
+
+  let approverIdx = -1;
+  for (let i = 0; i < rungs.length; i++) {
+    if (val <= rungs[i].ceiling) { approverIdx = i; break; }
+  }
+  if (approverIdx === -1) approverIdx = rungs.length - 1;
+
+  const approverY = rungs[approverIdx].y;
+  const interpY = approverIdx === 0 ? 530 : rungs[approverIdx].y + (rungs[approverIdx - 1] ? (rungs[approverIdx - 1].y - rungs[approverIdx].y) * (1 - (val - (rungs[approverIdx - 1]?.ceiling || 0)) / (rungs[approverIdx].ceiling - (rungs[approverIdx - 1]?.ceiling || 0))) : 0);
+
+  threshLine.setAttribute('y1', approverY);
+  threshLine.setAttribute('y2', approverY);
+  threshBadge.setAttribute('y', approverY - 12);
+  threshText.setAttribute('y', approverY + 4);
+  threshText.textContent = formatted;
+
+  rungEls.forEach((r, i) => {
+    const bg = r.querySelector('.rung-bg');
+    if (i < approverIdx) {
+      bg.style.fill = 'rgba(218,119,86,0.06)';
+      bg.style.stroke = 'rgba(218,119,86,0.15)';
+      r.style.opacity = '0.35';
+    } else if (i === approverIdx) {
+      bg.style.fill = 'rgba(125,187,125,0.12)';
+      bg.style.stroke = 'rgba(125,187,125,0.4)';
+      r.style.opacity = '1';
+      r.querySelector('.rung-bg').setAttribute('filter', 'url(#glowNode)');
+    } else {
+      bg.style.fill = 'rgba(255,255,255,0.03)';
+      bg.style.stroke = 'rgba(255,255,255,0.08)';
+      r.style.opacity = '0.5';
+      bg.removeAttribute('filter');
+    }
+  });
+
+  const bypassed = approverIdx > 0 ? rungs.slice(0, approverIdx).map(r => r.label).join(', ') : 'none';
+  result.innerHTML = 'Approved by: <span class="role-name">' + rungs[approverIdx].label + '</span>' + (approverIdx > 0 ? ' (bypasses: ' + bypassed + ')' : '');
+  caption.textContent = formatted + ' requires approval from ' + rungs[approverIdx].label + (approverIdx > 0 ? ', escalating past ' + approverIdx + ' lower tier(s)' : ' at the first tier');
+});
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelector('.hero').classList.add('visible');
+</script>
+</body>
+</html>

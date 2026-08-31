@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-013 Customer Journey - SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --bg-alt: #0e0e11; --text: #f5f5f7; --muted: #8a8a93;
+    --accent: #DA7756; --blue: #6ba4d9; --green: #7dbb7d; --purple: #a98ee0; --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04); --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .hero { padding: 80px 0 40px; text-align: center; }
+  .hero .badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(218,119,86,0.3); background: rgba(218,119,86,0.08); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 17px; max-width: 640px; margin: 0 auto; }
+  .diagram-section { padding: 40px 0 60px; }
+
+  /* Mobile frame wrapper */
+  .mobile-frame-area {
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; align-items: flex-start;
+  }
+  .diagram-wrapper {
+    background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 32px; overflow-x: auto; width: 100%;
+  }
+  .caption-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(14,14,17,0.95); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--card-border); padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+  }
+  .caption-bar.active { transform: translateY(0); }
+  .caption-bar .node-name { font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .caption-bar .node-desc { color: var(--muted); font-size: 14px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px 0 80px; }
+  .info-card {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px;
+    opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .info-card.visible { opacity: 1; transform: translateY(0); }
+  .info-card h3 { font-size: 15px; margin-bottom: 8px; }
+  .info-card p { font-size: 14px; color: var(--muted); }
+  .portal-note {
+    background: rgba(218,119,86,0.06); border: 1px solid rgba(218,119,86,0.2); border-radius: 12px;
+    padding: 20px 28px; margin: 0 0 32px; display: flex; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .portal-note.visible { opacity: 1; transform: translateY(0); }
+  .portal-note h4 { color: var(--accent); font-size: 15px; margin-bottom: 4px; }
+  .portal-note p { color: var(--muted); font-size: 14px; }
+  .stages-bar {
+    display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; margin: 0 0 32px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .stages-bar.visible { opacity: 1; transform: translateY(0); }
+  .stage-chip {
+    padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    background: var(--card-bg); border: 1px solid var(--card-border); color: var(--muted);
+  }
+  .stage-chip.active { border-color: rgba(125,187,125,0.4); color: var(--green); background: rgba(125,187,125,0.08); }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .flow-line { animation: flowDash 1.2s linear infinite; }
+  .glow { animation: glowPulse 2.5s ease-in-out infinite; }
+  .journey-node { cursor: pointer; transition: filter 0.2s ease; }
+  .journey-node:hover { filter: brightness(1.3); }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <div class="badge">SA-VIZ-013</div>
+    <h1>Customer App <span>Journey</span></h1>
+    <p>Mobile-first customer experience from booking to payment. Real-time service tracking through every workshop stage.</p>
+  </section>
+
+  <!-- Live tracking stage chips -->
+  <div class="stages-bar" data-reveal>
+    <div class="stage-chip">Check-In</div>
+    <div class="stage-chip">Inspection</div>
+    <div class="stage-chip active">Estimate</div>
+    <div class="stage-chip">Repair</div>
+    <div class="stage-chip">QC</div>
+    <div class="stage-chip">Delivery</div>
+  </div>
+
+  <section class="diagram-section">
+    <div class="diagram-wrapper">
+      <svg viewBox="0 0 1100 880" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Customer app journey diagram - vertical mobile flow">
+        <defs>
+          <marker id="aA" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+          </marker>
+          <marker id="aBl" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </marker>
+          <marker id="aGr" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+          </marker>
+          <marker id="aGo" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+          </marker>
+          <filter id="glM"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Mobile phone frame (left column) -->
+        <rect x="60" y="30" width="280" height="830" rx="28" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+        <rect x="155" y="40" width="90" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+        <text x="200" y="72" text-anchor="middle" fill="var(--muted)" font-size="10" font-weight="600" letter-spacing="1">CUSTOMER APP</text>
+
+        <!-- Right side: detail flow -->
+        <text x="550" y="55" fill="var(--muted)" font-size="11" font-weight="600" letter-spacing="1.5" text-transform="uppercase">JOURNEY FLOW</text>
+
+        <!-- ===== Vertical flow inside phone frame ===== -->
+
+        <!-- Node 1: Open App / Home -->
+        <g class="journey-node" data-name="Home Screen" data-desc="Hero card shows active service status. Quick actions: book service, view garage, check invoices. Push notification badge for updates.">
+          <rect x="90" y="90" width="220" height="65" rx="12" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.3)" stroke-width="1"/>
+          <g transform="translate(120,112)">
+            <rect x="-8" y="-8" width="16" height="16" rx="4" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <circle cx="0" cy="-2" r="3" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+            <line x1="0" y1="1" x2="0" y2="5" stroke="#DA7756" stroke-width="1.2"/>
+          </g>
+          <text x="210" y="118" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Home</text>
+          <text x="210" y="133" text-anchor="middle" fill="var(--muted)" font-size="10">Active status + quick actions</text>
+        </g>
+
+        <!-- Connector down -->
+        <path d="M200,155 C200,170 200,180 200,195" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aA)"/>
+
+        <!-- Node 2: My Garage -->
+        <g class="journey-node" data-name="My Garage" data-desc="List of registered vehicles with plate number, VIN, make/model. Add new vehicle. View service history per vehicle.">
+          <rect x="90" y="200" width="220" height="65" rx="12" fill="rgba(107,164,217,0.08)" stroke="rgba(107,164,217,0.3)" stroke-width="1"/>
+          <g transform="translate(120,222)">
+            <rect x="-9" y="-5" width="18" height="10" rx="3" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <circle cx="-4" cy="5" r="2.5" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+            <circle cx="4" cy="5" r="2.5" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </g>
+          <text x="210" y="228" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">My Garage</text>
+          <text x="210" y="243" text-anchor="middle" fill="var(--muted)" font-size="10">Plate / VIN / service history</text>
+        </g>
+
+        <path d="M200,265 C200,280 200,290 200,305" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aBl)"/>
+
+        <!-- Node 3: Book Appointment -->
+        <g class="journey-node" data-name="Book Appointment" data-desc="Select service type, preferred date and time slot, and branch location. Receive booking confirmation with reference number.">
+          <rect x="90" y="310" width="220" height="65" rx="12" fill="rgba(125,187,125,0.08)" stroke="rgba(125,187,125,0.3)" stroke-width="1"/>
+          <g transform="translate(120,332)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <line x1="-8" y1="-3" x2="8" y2="-3" stroke="#7dbb7d" stroke-width="1.2"/>
+            <line x1="-4" y1="1" x2="-4" y2="1" stroke="#7dbb7d" stroke-width="3" stroke-linecap="round"/>
+            <line x1="0" y1="1" x2="0" y2="1" stroke="#7dbb7d" stroke-width="3" stroke-linecap="round"/>
+            <line x1="4" y1="1" x2="4" y2="1" stroke="#7dbb7d" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <text x="210" y="338" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Book Appointment</text>
+          <text x="210" y="353" text-anchor="middle" fill="var(--muted)" font-size="10">Service, date, time, branch</text>
+        </g>
+
+        <path d="M200,375 C200,390 200,400 200,415" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aGr)"/>
+
+        <!-- Node 4: Receive Estimate -->
+        <g class="journey-node" data-name="Receive Estimate" data-desc="Push notification when estimate is ready. View line items, parts, labor, 15% VAT breakdown. Total in SAR.">
+          <rect x="90" y="420" width="220" height="65" rx="12" fill="rgba(217,184,107,0.08)" stroke="rgba(217,184,107,0.3)" stroke-width="1"/>
+          <g transform="translate(120,442)">
+            <path d="M-6,-7 L6,-7 L8,0 L-8,0 Z" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <circle cx="0" cy="4" r="4" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+            <line x1="0" y1="2" x2="0" y2="5" stroke="#d9b86b" stroke-width="1.2"/>
+          </g>
+          <text x="210" y="448" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Receive Estimate</text>
+          <text x="210" y="463" text-anchor="middle" fill="var(--muted)" font-size="10">Notification + SAR breakdown</text>
+        </g>
+
+        <path d="M200,485 C200,500 200,510 200,525" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aGo)"/>
+
+        <!-- Node 5: E-signature Approval -->
+        <g class="journey-node" data-name="E-Signature Approval" data-desc="Review estimate details. Tap to approve or reject with optional comments. Digital signature captured. Triggers repair start upon approval.">
+          <rect x="90" y="530" width="220" height="65" rx="12" fill="rgba(169,142,224,0.08)" stroke="rgba(169,142,224,0.3)" stroke-width="1" filter="url(#glM)"/>
+          <circle cx="200" cy="525" r="16" fill="rgba(169,142,224,0.08)" class="glow"/>
+          <g transform="translate(120,552)">
+            <path d="M-4,5 C-2,-2 4,-6 7,-3 C4,0 0,4 -4,5 Z" fill="none" stroke="#a98ee0" stroke-width="1.5"/>
+            <line x1="8" y1="-4" x2="10" y2="-6" stroke="#a98ee0" stroke-width="1.5"/>
+          </g>
+          <text x="210" y="558" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">E-Signature</text>
+          <text x="210" y="573" text-anchor="middle" fill="var(--muted)" font-size="10">Approve / Reject estimate</text>
+        </g>
+
+        <path d="M200,595 C200,610 200,620 200,635" fill="none" stroke="#a98ee0" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aA)"/>
+
+        <!-- Node 6: Live Service Tracking -->
+        <g class="journey-node" data-name="Live Service Tracking" data-desc="Real-time progress through 6 stages: Check-In, Inspection, Estimate, Repair, QC, Delivery. Push updates at each transition.">
+          <rect x="90" y="640" width="220" height="65" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.4)" stroke-width="1.5" filter="url(#glM)"/>
+          <circle cx="200" cy="635" r="16" fill="rgba(218,119,86,0.08)" class="glow"/>
+          <g transform="translate(120,660)">
+            <circle cx="0" cy="0" r="3" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <circle cx="0" cy="0" r="7" fill="none" stroke="#DA7756" stroke-width="1" opacity="0.5"/>
+            <line x1="5" y1="5" x2="9" y2="9" stroke="#DA7756" stroke-width="1.5"/>
+          </g>
+          <text x="210" y="668" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">Live Tracking</text>
+          <text x="210" y="683" text-anchor="middle" fill="var(--muted)" font-size="10">6 stages real-time</text>
+        </g>
+
+        <path d="M200,705 C200,720 200,730 200,745" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#aA)"/>
+
+        <!-- Node 7: Payment -->
+        <g class="journey-node" data-name="Payment" data-desc="Receive invoice via app. Pay online via Stripe integration: credit card, mada debit, or Apple Pay. Receive digital receipt with ZATCA QR.">
+          <rect x="90" y="750" width="105" height="65" rx="12" fill="rgba(125,187,125,0.08)" stroke="rgba(125,187,125,0.3)" stroke-width="1"/>
+          <g transform="translate(120,770)">
+            <rect x="-8" y="-5" width="16" height="11" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <line x1="-8" y1="-1" x2="8" y2="-1" stroke="#7dbb7d" stroke-width="1.2"/>
+          </g>
+          <text x="142" y="793" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">Payment</text>
+        </g>
+
+        <!-- Node 8: Rate & Review -->
+        <g class="journey-node" data-name="Rate & Review" data-desc="Post-service feedback. Star rating, written review, NPS score. Helps workshop improve service quality and track customer satisfaction.">
+          <rect x="205" y="750" width="105" height="65" rx="12" fill="rgba(217,184,107,0.08)" stroke="rgba(217,184,107,0.3)" stroke-width="1"/>
+          <g transform="translate(238,770)">
+            <polygon points="0,-7 2,-2 7,-2 3,1 5,6 0,3 -5,6 -3,1 -7,-2 -2,-2" fill="none" stroke="#d9b86b" stroke-width="1.3"/>
+          </g>
+          <text x="257" y="793" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">Rate & Review</text>
+        </g>
+
+        <!-- Right column: expanded detail nodes -->
+
+        <!-- Connector from Home to right detail -->
+        <path d="M310,122 C360,122 380,122 430,122" fill="none" stroke="rgba(218,119,86,0.3)" stroke-width="1" stroke-dasharray="4 6"/>
+
+        <g class="journey-node" data-name="Quick Actions" data-desc="One-tap access to: Book Service, Track Status, View Invoices, Contact Workshop. Personalized based on active services.">
+          <rect x="435" y="90" width="200" height="55" rx="10" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="1"/>
+          <text x="535" y="114" text-anchor="middle" fill="var(--accent)" font-size="11" font-weight="600">Quick Actions</text>
+          <text x="535" y="130" text-anchor="middle" fill="var(--muted)" font-size="10">Book / Track / Invoices / Contact</text>
+        </g>
+
+        <path d="M310,232 C360,232 380,232 430,232" fill="none" stroke="rgba(107,164,217,0.3)" stroke-width="1" stroke-dasharray="4 6"/>
+
+        <g class="journey-node" data-name="Add Vehicle" data-desc="Register a vehicle: Saudi plate number format, VIN, make, model, year, color. Optional: upload registration card photo.">
+          <rect x="435" y="200" width="200" height="55" rx="10" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="1"/>
+          <text x="535" y="224" text-anchor="middle" fill="var(--blue)" font-size="11" font-weight="600">Add Vehicle</text>
+          <text x="535" y="240" text-anchor="middle" fill="var(--muted)" font-size="10">Plate / VIN / make / model</text>
+        </g>
+
+        <!-- Live tracking detail -->
+        <path d="M310,672 C380,672 400,672 430,672" fill="none" stroke="rgba(218,119,86,0.3)" stroke-width="1" stroke-dasharray="4 6"/>
+
+        <g class="journey-node" data-name="Stage Progress" data-desc="Visual progress bar through 6 stages. Current stage highlighted with estimated time remaining. Technician name visible during repair.">
+          <rect x="435" y="585" width="240" height="170" rx="12" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="1"/>
+          <text x="555" y="608" text-anchor="middle" fill="var(--accent)" font-size="12" font-weight="700">Service Progress</text>
+          <!-- Mini stage indicators -->
+          <g transform="translate(460,625)">
+            <circle cx="0" cy="0" r="6" fill="rgba(125,187,125,0.3)" stroke="#7dbb7d" stroke-width="1.2"/>
+            <text x="0" y="16" text-anchor="middle" fill="var(--muted)" font-size="8">Check-In</text>
+            <line x1="6" y1="0" x2="30" y2="0" stroke="rgba(125,187,125,0.3)" stroke-width="1"/>
+            <circle cx="36" cy="0" r="6" fill="rgba(125,187,125,0.3)" stroke="#7dbb7d" stroke-width="1.2"/>
+            <text x="36" y="16" text-anchor="middle" fill="var(--muted)" font-size="8">Inspect</text>
+            <line x1="42" y1="0" x2="66" y2="0" stroke="rgba(125,187,125,0.3)" stroke-width="1"/>
+            <circle cx="72" cy="0" r="6" fill="rgba(125,187,125,0.3)" stroke="#7dbb7d" stroke-width="1.2"/>
+            <text x="72" y="16" text-anchor="middle" fill="var(--muted)" font-size="8">Estimate</text>
+          </g>
+          <g transform="translate(460,660)">
+            <circle cx="0" cy="0" r="7" fill="rgba(218,119,86,0.2)" stroke="#DA7756" stroke-width="1.8"/>
+            <text x="0" y="16" text-anchor="middle" fill="var(--accent)" font-size="8" font-weight="700">Repair</text>
+            <line x1="7" y1="0" x2="30" y2="0" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="36" cy="0" r="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="36" y="16" text-anchor="middle" fill="var(--muted)" font-size="8">QC</text>
+            <line x1="42" y1="0" x2="66" y2="0" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            <circle cx="72" cy="0" r="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <text x="72" y="16" text-anchor="middle" fill="var(--muted)" font-size="8">Delivery</text>
+          </g>
+          <text x="555" y="730" text-anchor="middle" fill="var(--muted)" font-size="10">Est. remaining: 2h 15m</text>
+        </g>
+
+        <!-- Payment detail -->
+        <path d="M310,782 C370,782 400,810 430,810" fill="none" stroke="rgba(125,187,125,0.3)" stroke-width="1" stroke-dasharray="4 6"/>
+
+        <g class="journey-node" data-name="Payment Methods" data-desc="Stripe integration: Visa/Mastercard, mada (Saudi debit network), Apple Pay. Invoice shows 15% VAT and ZATCA QR code.">
+          <rect x="435" y="780" width="220" height="60" rx="10" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="1"/>
+          <text x="545" y="804" text-anchor="middle" fill="var(--green)" font-size="11" font-weight="600">Stripe: Card / mada / Apple Pay</text>
+          <text x="545" y="822" text-anchor="middle" fill="var(--muted)" font-size="10">15% VAT + ZATCA QR receipt</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Portal Note -->
+  <div class="portal-note" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#DA7756" stroke-width="1.8">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <div>
+      <h4>Customer Portal Access Only</h4>
+      <p>Customers have no RBAC module access. They interact exclusively through the customer portal, seeing only their own vehicles, bookings, estimates, invoices, and service history. No workshop internal data is exposed.</p>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--accent)">Real-Time Tracking</h3>
+      <p>Push notifications at every stage transition. Visual progress bar shows current stage with estimated time remaining. Technician name visible during active repair.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--green)">Stripe Payment</h3>
+      <p>Integrated payment via Stripe supporting credit cards (Visa/MC), mada (Saudi debit network), and Apple Pay. Automatic receipt generation with ZATCA-compliant QR code.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--purple)">E-Signature</h3>
+      <p>Estimate approval via digital signature. Customers review line-item details and VAT breakdown before signing. Rejection option with free-text comments for negotiation.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--gold)">NPS & Reviews</h3>
+      <p>Post-service Net Promoter Score survey and written review. Feedback feeds into workshop performance analytics and technician quality metrics.</p>
+    </div>
+  </div>
+</div>
+
+<div class="caption-bar" id="captionBar">
+  <span class="node-name" id="captionName">--</span>
+  <span class="node-desc" id="captionDesc">Hover a node for details</span>
+</div>
+
+<script>
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('[data-reveal], .info-card, .portal-note, .stages-bar').forEach(el => obs.observe(el));
+
+  const bar = document.getElementById('captionBar');
+  const nameEl = document.getElementById('captionName');
+  const descEl = document.getElementById('captionDesc');
+  let hideTimer;
+  document.querySelectorAll('.journey-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimer);
+      nameEl.textContent = node.dataset.name;
+      descEl.textContent = node.dataset.desc;
+      bar.classList.add('active');
+    });
+    node.addEventListener('mouseleave', () => {
+      hideTimer = setTimeout(() => bar.classList.remove('active'), 1500);
+    });
+  });
+})();
+</script>
+</body>
+</html>

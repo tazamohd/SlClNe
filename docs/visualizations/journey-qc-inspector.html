@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-011 QC Inspector Journey - SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --bg-alt: #0e0e11; --text: #f5f5f7; --muted: #8a8a93;
+    --accent: #DA7756; --blue: #6ba4d9; --green: #7dbb7d; --purple: #a98ee0; --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04); --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .hero { padding: 80px 0 40px; text-align: center; }
+  .hero .badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); border: 1px solid rgba(125,187,125,0.3); background: rgba(125,187,125,0.08); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+  .hero h1 span { color: var(--green); }
+  .hero p { color: var(--muted); font-size: 17px; max-width: 620px; margin: 0 auto; }
+  .diagram-section { padding: 40px 0 60px; }
+  .diagram-wrapper {
+    background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 32px; overflow-x: auto;
+  }
+  .caption-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(14,14,17,0.95); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--card-border); padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+  }
+  .caption-bar.active { transform: translateY(0); }
+  .caption-bar .node-name { font-weight: 600; color: var(--green); white-space: nowrap; }
+  .caption-bar .node-desc { color: var(--muted); font-size: 14px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px 0 80px; }
+  .info-card {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px;
+    opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .info-card.visible { opacity: 1; transform: translateY(0); }
+  .info-card h3 { font-size: 15px; color: var(--green); margin-bottom: 8px; }
+  .info-card p { font-size: 14px; color: var(--muted); }
+  .sod-banner {
+    background: rgba(169,142,224,0.08); border: 1px solid rgba(169,142,224,0.25); border-radius: 12px;
+    padding: 20px 28px; margin: 0 0 32px; display: flex; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .sod-banner.visible { opacity: 1; transform: translateY(0); }
+  .sod-banner h4 { color: var(--purple); font-size: 15px; margin-bottom: 4px; }
+  .sod-banner p { color: var(--muted); font-size: 14px; }
+  .quality-gate {
+    background: rgba(125,187,125,0.06); border: 1px solid rgba(125,187,125,0.2); border-radius: 12px;
+    padding: 20px 28px; margin: 0 0 32px; display: flex; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .quality-gate.visible { opacity: 1; transform: translateY(0); }
+  .quality-gate h4 { color: var(--green); font-size: 15px; margin-bottom: 4px; }
+  .quality-gate p { color: var(--muted); font-size: 14px; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .flow-line { animation: flowDash 1.2s linear infinite; }
+  .glow { animation: glowPulse 2.5s ease-in-out infinite; }
+  .journey-node { cursor: pointer; transition: filter 0.2s ease; }
+  .journey-node:hover { filter: brightness(1.3); }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <div class="badge">SA-VIZ-011</div>
+    <h1>QC Inspector <span>User Journey</span></h1>
+    <p>Quality control workflow ensuring every repair meets standards before customer delivery. The last gate in the workshop lifecycle.</p>
+  </section>
+
+  <section class="diagram-section">
+    <div class="diagram-wrapper">
+      <svg viewBox="0 0 1100 600" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="QC Inspector journey diagram">
+        <defs>
+          <marker id="arrG" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+          </marker>
+          <marker id="arrP" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#a98ee0" stroke-width="1.2"/>
+          </marker>
+          <marker id="arrR" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+          </marker>
+          <filter id="glowG"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- SOD enforcement zone background -->
+        <rect x="30" y="30" width="200" height="80" rx="8" fill="rgba(169,142,224,0.05)" stroke="rgba(169,142,224,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="40" y="50" fill="#a98ee0" font-size="10" font-weight="600" opacity="0.7">SOD ZONE</text>
+        <text x="40" y="64" fill="#a98ee0" font-size="9" opacity="0.5">Must differ from technician</text>
+
+        <!-- Connectors -->
+        <path d="M185,160 C240,160 260,160 305,160" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+        <path d="M445,160 C500,160 520,160 565,160" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+        <path d="M695,160 C750,160 770,160 810,160" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+        <!-- Review Details -> Checklist -->
+        <path d="M920,195 C920,240 920,260 920,290 C920,310 800,320 680,320" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+        <!-- Checklist -> Decision diamond -->
+        <path d="M540,320 C480,320 440,320 400,320" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+
+        <!-- Decision: Pass path -->
+        <path d="M340,355 C340,400 340,420 340,440 C340,470 460,475 560,475" fill="none" stroke="#7dbb7d" stroke-width="2" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+        <!-- Decision: Fail path -->
+        <path d="M300,320 C240,320 200,320 140,320 C100,320 80,370 80,420 C80,470 130,490 180,490" fill="none" stroke="#DA7756" stroke-width="2" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrR)"/>
+
+        <!-- Sign-off to Delivery -->
+        <path d="M700,475 C760,475 800,475 860,475" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#arrG)"/>
+
+        <!-- Node 1: Login -->
+        <g class="journey-node" data-name="QC Login" data-desc="QC Inspector logs in with qc@salisauto.sa. SOD enforcement: system verifies inspector identity differs from technician on queued jobs.">
+          <rect x="65" y="125" width="120" height="70" rx="12" fill="rgba(169,142,224,0.1)" stroke="rgba(169,142,224,0.35)" stroke-width="1"/>
+          <g transform="translate(110,145)">
+            <circle cx="0" cy="0" r="5" fill="none" stroke="#a98ee0" stroke-width="1.5"/>
+            <line x1="5" y1="0" x2="16" y2="0" stroke="#a98ee0" stroke-width="1.5"/>
+            <line x1="12" y1="0" x2="12" y2="5" stroke="#a98ee0" stroke-width="1.5"/>
+          </g>
+          <text x="125" y="178" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Login</text>
+        </g>
+
+        <!-- Node 2: QC Queue -->
+        <g class="journey-node" data-name="QC Queue" data-desc="Jobs awaiting quality check, filtered to show only jobs where inspector differs from technician. Sorted by priority.">
+          <rect x="310" y="125" width="135" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.35)" stroke-width="1"/>
+          <g transform="translate(360,145)">
+            <rect x="-10" y="-8" width="20" height="16" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <line x1="-6" y1="-3" x2="6" y2="-3" stroke="#7dbb7d" stroke-width="1.2"/>
+            <line x1="-6" y1="1" x2="6" y2="1" stroke="#7dbb7d" stroke-width="1.2"/>
+            <line x1="-6" y1="5" x2="2" y2="5" stroke="#7dbb7d" stroke-width="1.2"/>
+          </g>
+          <text x="377" y="178" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">QC Queue</text>
+        </g>
+
+        <!-- Node 3: Select Job -->
+        <g class="journey-node" data-name="Select Job" data-desc="Pick a job from the queue. View summary: vehicle info, service type, technician name, and repair duration.">
+          <rect x="570" y="125" width="125" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.35)" stroke-width="1"/>
+          <g transform="translate(618,145)">
+            <rect x="-8" y="-8" width="16" height="16" rx="3" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <polyline points="-4,0 -1,4 5,-3" fill="none" stroke="#7dbb7d" stroke-width="1.8"/>
+          </g>
+          <text x="632" y="178" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Select Job</text>
+        </g>
+
+        <!-- Node 4: View Repair Details -->
+        <g class="journey-node" data-name="Review Repair Details" data-desc="Review technician notes, photos, parts used, time logged, and original service request. Compare actual vs. estimated work.">
+          <rect x="815" y="125" width="145" height="70" rx="12" fill="rgba(107,164,217,0.1)" stroke="rgba(107,164,217,0.35)" stroke-width="1"/>
+          <g transform="translate(870,145)">
+            <path d="M-9,-7 L9,-7 L9,7 L-9,7 Z" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <circle cx="-3" cy="-1" r="3" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+            <path d="M2,3 L7,-2 L9,0 L4,5 Z" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </g>
+          <text x="887" y="178" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Review Details</text>
+        </g>
+
+        <!-- Node 5: Inspection Checklist -->
+        <g class="journey-node" data-name="Inspection Checklist" data-desc="Multi-point checklist with pass/fail toggles per item. Categories: safety, functionality, cosmetic, fluid levels, test drive results.">
+          <rect x="545" y="285" width="135" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.4)" stroke-width="1.5" filter="url(#glowG)"/>
+          <circle cx="612" cy="280" r="18" fill="rgba(125,187,125,0.1)" class="glow"/>
+          <g transform="translate(595,303)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <line x1="-4" y1="-3" x2="4" y2="-3" stroke="#7dbb7d" stroke-width="1.2"/>
+            <polyline points="-5,1 -3,3 0,0" fill="none" stroke="#7dbb7d" stroke-width="1.4"/>
+            <line x1="2" y1="1" x2="5" y2="1" stroke="#7dbb7d" stroke-width="1.2"/>
+            <line x1="-4" y1="5" x2="4" y2="5" stroke="#7dbb7d" stroke-width="1.2"/>
+          </g>
+          <text x="612" y="340" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">Checklist</text>
+        </g>
+
+        <!-- Node 6: Decision Diamond -->
+        <g class="journey-node" data-name="Pass / Fail Decision" data-desc="QC inspector decides: PASS moves job to delivery clearance. FAIL returns to repair queue with detailed failure notes.">
+          <polygon points="355,290 400,320 355,350 310,320" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.5)" stroke-width="1.5"/>
+          <text x="355" y="316" text-anchor="middle" fill="#d9b86b" font-size="10" font-weight="700">PASS</text>
+          <text x="355" y="328" text-anchor="middle" fill="#d9b86b" font-size="10" font-weight="700">FAIL?</text>
+        </g>
+
+        <!-- Pass label -->
+        <text x="380" y="408" fill="#7dbb7d" font-size="11" font-weight="600">PASS</text>
+        <!-- Fail label -->
+        <text x="130" y="360" fill="#DA7756" font-size="11" font-weight="600">FAIL</text>
+
+        <!-- Node 7: Return to Repair (fail path) -->
+        <g class="journey-node" data-name="Return to Repair" data-desc="Job returned to repair queue with QC failure notes. Technician receives notification with specific items requiring rework.">
+          <rect x="185" y="460" width="145" height="60" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1"/>
+          <g transform="translate(238,477)">
+            <polyline points="5,-5 -5,0 5,5" fill="none" stroke="#DA7756" stroke-width="1.8"/>
+            <line x1="-5" y1="0" x2="8" y2="0" stroke="#DA7756" stroke-width="1.5"/>
+          </g>
+          <text x="257" y="505" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Return to Repair</text>
+        </g>
+
+        <!-- Node 8: Sign Off (pass path) -->
+        <g class="journey-node" data-name="QC Sign-Off" data-desc="Inspector signs off on quality. Digital signature recorded. Job status updated to 'QC Passed' and moved to delivery stage.">
+          <rect x="565" y="445" width="135" height="60" rx="12" fill="rgba(125,187,125,0.12)" stroke="rgba(125,187,125,0.4)" stroke-width="1.5"/>
+          <g transform="translate(615,463)">
+            <circle cx="0" cy="0" r="8" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <polyline points="-4,0 -1,4 5,-4" fill="none" stroke="#7dbb7d" stroke-width="2"/>
+          </g>
+          <text x="632" y="493" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Sign Off</text>
+        </g>
+
+        <!-- Node 9: Delivery Stage -->
+        <g class="journey-node" data-name="Delivery Stage" data-desc="Job enters delivery stage. Customer is notified vehicle is ready for pickup. Service advisor prepares final documentation.">
+          <rect x="865" y="445" width="130" height="60" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(915,463)">
+            <rect x="-9" y="-6" width="18" height="12" rx="3" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <circle cx="-4" cy="6" r="3" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+            <circle cx="4" cy="6" r="3" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+          </g>
+          <text x="930" y="493" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Delivery</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Quality Gate banner -->
+  <div class="quality-gate" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7dbb7d" stroke-width="1.8">
+      <path d="M12,2 L22,8.5 L22,15.5 L12,22 L2,15.5 L2,8.5 Z"/><polyline points="8,12 11,15 16,9"/>
+    </svg>
+    <div>
+      <h4>Quality Gate -- Last Line of Defense</h4>
+      <p>QC is the final checkpoint before customer delivery. No vehicle leaves the workshop without QC sign-off. The multi-point checklist covers safety, functionality, cosmetics, and test drive results. Failed items generate rework orders automatically.</p>
+    </div>
+  </div>
+
+  <!-- SOD Banner -->
+  <div class="sod-banner" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#a98ee0" stroke-width="1.8">
+      <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8,11 V7 a4,4 0 0,1 8,0 v4"/>
+    </svg>
+    <div>
+      <h4>SOD: Technician cannot equal QC Inspector</h4>
+      <p>The system enforces that the person performing QC on a job must be different from the technician who performed the repair. This prevents self-certification and ensures independent quality validation.</p>
+    </div>
+  </div>
+
+  <!-- Checklist Detail -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text);">Inspection Checklist Categories</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px;">
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10,2 L12,8 L18,8 L13,12 L15,18 L10,14 L5,18 L7,12 L2,8 L8,8 Z" stroke="#DA7756" stroke-width="1.3" fill="none"/></svg>
+          <span style="font-size: 14px; font-weight: 600; color: var(--accent);">Safety</span>
+        </div>
+        <p style="font-size: 13px; color: var(--muted);">Brakes, seatbelts, airbag indicators, tire condition, lights, horn, steering response.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#6ba4d9" stroke-width="1.3"/><path d="M7,10 L10,7 L13,10 L10,13 Z" stroke="#6ba4d9" stroke-width="1.2"/></svg>
+          <span style="font-size: 14px; font-weight: 600; color: var(--blue);">Mechanical</span>
+        </div>
+        <p style="font-size: 13px; color: var(--muted);">Engine performance, transmission, suspension, exhaust, cooling system, belt tensions.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6,14 L6,6 L14,6 L14,14 Z" stroke="#7dbb7d" stroke-width="1.3"/><circle cx="10" cy="10" r="2" stroke="#7dbb7d" stroke-width="1.2"/></svg>
+          <span style="font-size: 14px; font-weight: 600; color: var(--green);">Electrical</span>
+        </div>
+        <p style="font-size: 13px; color: var(--muted);">Battery, alternator, wiring, dashboard indicators, A/C, infotainment, sensors, OBD codes.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" stroke="#d9b86b" stroke-width="1.3"/><line x1="4" y1="10" x2="16" y2="10" stroke="#d9b86b" stroke-width="1"/></svg>
+          <span style="font-size: 14px; font-weight: 600; color: var(--gold);">Cosmetic</span>
+        </div>
+        <p style="font-size: 13px; color: var(--muted);">Paint finish, panel alignment, trim condition, glass integrity, interior cleanliness post-repair.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4,14 L10,6 L16,14" stroke="#a98ee0" stroke-width="1.3" fill="none"/><circle cx="10" cy="14" r="2" stroke="#a98ee0" stroke-width="1.2"/></svg>
+          <span style="font-size: 14px; font-weight: 600; color: var(--purple);">Fluids</span>
+        </div>
+        <p style="font-size: 13px; color: var(--muted);">Oil level, coolant, brake fluid, power steering, windshield washer, transmission fluid levels and condition.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="6" rx="2" stroke="#DA7756" stroke-width="1.3"/><circle cx="7" cy="14" r="2" stroke="#DA7756" stroke-width="1.1"/><circle cx="13" cy="14" r="2" stroke="#DA7756" stroke-width="1.1"/></svg>
+          <span style="font-size: 14px; font-weight: 600; color: var(--accent);">Road Test</span>
+        </div>
+        <p style="font-size: 13px; color: var(--muted);">Test drive verification: noise, vibration, shifting, braking distance, alignment tracking, acceleration response.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pass/Fail outcome detail -->
+  <section style="padding: 0 0 40px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" data-reveal>
+      <div style="background: rgba(125,187,125,0.05); border: 1px solid rgba(125,187,125,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--green); font-size: 15px; margin-bottom: 8px;">Pass Outcome</h4>
+        <ul style="list-style: none; font-size: 13px; color: var(--muted);">
+          <li style="padding: 4px 0;">Inspector digital signature recorded</li>
+          <li style="padding: 4px 0;">Job status set to "QC Passed"</li>
+          <li style="padding: 4px 0;">Job moves to Delivery stage</li>
+          <li style="padding: 4px 0;">Customer notified: vehicle ready for pickup</li>
+          <li style="padding: 4px 0;">Service advisor prepares final documentation</li>
+        </ul>
+      </div>
+      <div style="background: rgba(218,119,86,0.05); border: 1px solid rgba(218,119,86,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--accent); font-size: 15px; margin-bottom: 8px;">Fail Outcome</h4>
+        <ul style="list-style: none; font-size: 13px; color: var(--muted);">
+          <li style="padding: 4px 0;">Failed items documented with notes</li>
+          <li style="padding: 4px 0;">Job returns to Repair queue</li>
+          <li style="padding: 4px 0;">Technician receives rework notification</li>
+          <li style="padding: 4px 0;">Rework counter incremented (analytics)</li>
+          <li style="padding: 4px 0;">After rework, job returns to QC queue</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="info-grid">
+    <div class="info-card" data-reveal>
+      <h3>Multi-Point Checklist</h3>
+      <p>Configurable checklist per service type. Each item has pass/fail toggle with mandatory notes on failure. Categories cover safety, mechanical, electrical, cosmetic, and road-test criteria.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3>Photo Documentation</h3>
+      <p>QC inspector can capture photos of completed work, comparing against technician's before-photos. Visual evidence supports customer transparency and dispute resolution.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3>Rework Tracking</h3>
+      <p>Failed QC items generate rework orders with specific failure details. The system tracks rework count per technician for performance analytics and training needs assessment.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3>Digital Sign-Off</h3>
+      <p>QC sign-off is a formal digital signature creating an audit trail. The inspector's identity, timestamp, and checklist results are permanently recorded for regulatory compliance.</p>
+    </div>
+  </div>
+</div>
+
+<div class="caption-bar" id="captionBar">
+  <span class="node-name" id="captionName">--</span>
+  <span class="node-desc" id="captionDesc">Hover a node for details</span>
+</div>
+
+<script>
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-reveal], .info-card, .sod-banner, .quality-gate').forEach(el => obs.observe(el));
+
+  const bar = document.getElementById('captionBar');
+  const nameEl = document.getElementById('captionName');
+  const descEl = document.getElementById('captionDesc');
+  let hideTimer;
+  document.querySelectorAll('.journey-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimer);
+      nameEl.textContent = node.dataset.name;
+      descEl.textContent = node.dataset.desc;
+      bar.classList.add('active');
+    });
+    node.addEventListener('mouseleave', () => {
+      hideTimer = setTimeout(() => bar.classList.remove('active'), 1500);
+    });
+  });
+})();
+</script>
+</body>
+</html>
