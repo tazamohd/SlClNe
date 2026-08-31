@@ -29,15 +29,7 @@ This document provides a structured 45-minute demonstration script for the SALIS
 
 ### 1.3 Pre-Demo Checklist
 
-| #  | Task                                                        | Status |
-|----|-------------------------------------------------------------|--------|
-| 1  | Verify demo environment is accessible and data is current   | [ ]    |
-| 2  | Test all demo account logins                                | [ ]    |
-| 3  | Prepare two browser profiles (one EN, one AR)               | [ ]    |
-| 4  | Clear browser cache and close unnecessary tabs              | [ ]    |
-| 5  | Prepare a test mobile device for Customer App               | [ ]    |
-| 6  | Review prospect's specific pain points from discovery call  | [ ]    |
-| 7  | Queue prospect-relevant talking points per scene            | [ ]    |
+Before each demo: verify demo environment and logins, prepare two browser profiles (EN and AR), prepare a mobile device for the Customer App, and review the prospect's pain points from the discovery call to customize talking points per scene.
 
 ---
 
