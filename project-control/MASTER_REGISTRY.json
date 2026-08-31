@@ -9,16 +9,16 @@
     "externalDependency": 12,
     "rendered": 424,
     "placeholder": 0,
-    "designedMobileOwed": 0,
+    "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 318,
-    "dataBacked": 66,
+    "mockOnly": 289,
+    "dataBacked": 95,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 101,
-    "hasErrorState": 69,
-    "hasEmptyState": 97,
+    "hasLoadingState": 129,
+    "hasErrorState": 97,
+    "hasEmptyState": 147,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -2899,13 +2899,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "services",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2935,8 +2939,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3200,8 +3203,8 @@
       "purpose": "Role-adaptive KPI home",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "DONE",
-      "responsive": "DONE",
+      "mobile": "MISSING",
+      "responsive": "MISSING",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
@@ -3240,6 +3243,8 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN"
@@ -6484,13 +6489,15 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "oemTools"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -6520,8 +6527,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10428,8 +10434,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "savedReports"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10459,8 +10467,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11471,13 +11478,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11507,8 +11516,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11541,13 +11549,15 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "integrations"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11577,8 +11587,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11837,13 +11846,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoices",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11873,8 +11886,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14996,13 +15008,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "customers",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15033,7 +15049,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15130,13 +15145,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15167,7 +15185,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15197,13 +15214,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15234,7 +15253,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15734,13 +15752,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15771,7 +15791,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16002,13 +16021,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -16039,7 +16060,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17946,7 +17966,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18415,7 +18435,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18549,7 +18569,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18615,13 +18635,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -18652,7 +18674,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19687,13 +19708,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "suppliers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -19724,7 +19747,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21295,13 +21317,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21332,7 +21356,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21362,13 +21385,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21399,7 +21424,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21429,13 +21453,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21466,7 +21492,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21898,13 +21923,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21935,7 +21962,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21966,7 +21992,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -22099,13 +22125,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22136,7 +22164,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22166,13 +22193,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22203,7 +22232,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22233,13 +22261,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22270,7 +22300,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22769,13 +22798,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "departments",
+        "employees"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22806,7 +22838,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22836,13 +22867,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "departments",
+        "employees"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22873,7 +22907,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23037,13 +23070,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "timesheets"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23074,7 +23109,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23104,13 +23138,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "timesheets"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23141,7 +23177,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23171,13 +23206,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "employees",
+        "payrollLines",
+        "payrollRuns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23208,7 +23247,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23238,13 +23276,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "leaveRequests"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23275,7 +23315,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23440,7 +23479,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23507,7 +23546,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23775,7 +23814,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23842,7 +23881,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23909,7 +23948,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23976,7 +24015,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24043,7 +24082,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24110,7 +24149,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24177,7 +24216,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24244,7 +24283,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24311,7 +24350,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24378,7 +24417,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24445,7 +24484,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24512,7 +24551,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24579,7 +24618,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24645,13 +24684,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "expenses"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -24682,7 +24723,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24713,7 +24753,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24914,7 +24954,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24981,7 +25021,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -25047,13 +25087,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insuranceClaims",
+        "insurancePolicies"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -25084,7 +25127,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25248,13 +25290,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "campaigns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -25285,7 +25329,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26254,7 +26297,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -28130,7 +28173,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",

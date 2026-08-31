@@ -7,16 +7,16 @@
     "externalDependency": 12,
     "rendered": 424,
     "placeholder": 0,
-    "designedMobileOwed": 0,
+    "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 318,
-    "dataBacked": 66,
+    "mockOnly": 289,
+    "dataBacked": 95,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 101,
-    "hasErrorState": 69,
-    "hasEmptyState": 97,
+    "hasLoadingState": 129,
+    "hasErrorState": 97,
+    "hasEmptyState": 147,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -34,9 +34,9 @@
       "total": 313,
       "rendered": 313,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 313,
-      "dataBacked": 63
+      "dataBacked": 89
     },
     "call-center": {
       "total": 2,
@@ -60,7 +60,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 8,
-      "dataBacked": 3
+      "dataBacked": 6
     },
     "reference": {
       "total": 28,
@@ -110,7 +110,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 18,
-      "dataBacked": 2
+      "dataBacked": 4
     },
     "ai": {
       "total": 10,
@@ -124,7 +124,7 @@
       "total": 22,
       "rendered": 22,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 22,
       "dataBacked": 18
     },
@@ -134,7 +134,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 23,
-      "dataBacked": 18
+      "dataBacked": 19
     },
     "portals": {
       "total": 13,
@@ -142,7 +142,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 13,
-      "dataBacked": 3
+      "dataBacked": 6
     },
     "crm": {
       "total": 17,
@@ -206,7 +206,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 1
+      "dataBacked": 24
     }
   },
   "byModule": {
@@ -224,7 +224,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 7,
-      "dataBacked": 0
+      "dataBacked": 2
     },
     "ai": {
       "total": 10,
@@ -320,7 +320,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
-      "dataBacked": 1
+      "dataBacked": 2
     },
     "reports": {
       "total": 6,
@@ -328,13 +328,13 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 6,
-      "dataBacked": 5
+      "dataBacked": 6
     },
     "dashboard": {
       "total": 4,
       "rendered": 4,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 4,
       "dataBacked": 1
     },
@@ -424,7 +424,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
-      "dataBacked": 1
+      "dataBacked": 2
     },
     "technicians": {
       "total": 3,
@@ -440,7 +440,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
-      "dataBacked": 1
+      "dataBacked": 2
     }
   }
 }

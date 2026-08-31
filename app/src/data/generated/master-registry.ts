@@ -977,8 +977,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": false,
     "designSource": "project/CustomerPortal.Booking.dc.html",
@@ -1068,6 +1067,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN"
@@ -2125,8 +2126,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": true,
     "designSource": "project/OEMIntegrations.dc.html",
@@ -3517,8 +3517,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": true,
     "designSource": "project/Reports.dc.html",
@@ -3873,8 +3872,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": false,
     "designSource": "project/SupplierPortal.Orders.dc.html",
@@ -3897,8 +3895,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": true,
     "designSource": "project/SystemIntegrations.dc.html",
@@ -3990,8 +3987,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": false,
     "designSource": "project/TechnicianPortal.JobDetail.dc.html",
@@ -5062,7 +5058,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5112,7 +5107,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5137,7 +5131,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5336,7 +5329,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5436,7 +5428,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6411,7 +6402,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6811,7 +6801,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7411,7 +7400,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7436,7 +7424,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7461,7 +7448,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7636,7 +7622,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7711,7 +7696,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7736,7 +7720,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7761,7 +7744,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7961,7 +7943,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7986,7 +7967,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8061,7 +8041,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8086,7 +8065,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8111,7 +8089,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8136,7 +8113,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8659,7 +8635,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8809,7 +8784,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8884,7 +8858,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "TABLET_MISSING",
       "ARABIC_MISSING",
       "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

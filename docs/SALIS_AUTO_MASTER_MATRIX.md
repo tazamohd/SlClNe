@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-424 capabilities · 424 rendering · 0 placeholder · 66 data-backed.
+424 capabilities · 424 rendering · 0 placeholder · 95 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -46,11 +46,11 @@
 | CustomerDetail | `/customer-detail` | app | customers | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | CustomerFeedback | `/customer-feedback` | app | customers | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | CustomerPortal | `/customer-portal` | portal | portalcustomer | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
-| CustomerPortal · Booking | `/customer-portal/booking` | portal | portalcustomer | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
+| CustomerPortal · Booking | `/customer-portal/booking` | portal | portalcustomer | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
 | Customers | `/customers` | app | customers | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | CustomerSegments | `/customer-segments` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | CustomReports | `/custom-reports` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
-| Dashboard | `/dashboard` | app | dashboard | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 12 roles | route | IMPLEMENTED |
+| Dashboard | `/dashboard` | app | dashboard | DONE | MISSING | MISSING | PARTIAL | PARTIAL | DONE | 12 roles | route | IMPLEMENTED |
 | Departments | `/departments` | app | hr | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | DiagnosticReport | `/diagnostic-report` | app | jobcards | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | EmailMarketing | `/email-marketing` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
@@ -95,7 +95,7 @@
 | Native · iOS | `/native/i-os` | native | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | NotificationCenter | `/notification-center` | app | dashboard | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 12 roles | route | IMPLEMENTED |
 | OBDDiagnostics | `/obddiagnostics` | app | jobcards | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
-| OEMIntegrations | `/oemintegrations` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
+| OEMIntegrations | `/oemintegrations` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 3 roles | route | IMPLEMENTED |
 | Onboarding | `/onboarding` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | OperationalReports | `/operational-reports` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | Opportunities | `/opportunities` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
@@ -153,7 +153,7 @@
 | Receipts | `/receipts` | app | payments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | RegionSelection | `/region-selection` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Register | `/register` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Reports | `/reports` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 9 roles | route | IMPLEMENTED |
+| Reports | `/reports` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | ReportsAnalytics | `/reports-analytics` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | ResetPassword | `/reset-password` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | RoleSelection | `/role-selection` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -168,12 +168,12 @@
 | Subscription | `/subscription` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | SuperAdmin | `/super-admin` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | SupplierPortal | `/supplier-portal` | portal | portalsupplier | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
-| SupplierPortal · Orders | `/supplier-portal/orders` | portal | portalsupplier | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
-| SystemIntegrations | `/system-integrations` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
+| SupplierPortal · Orders | `/supplier-portal/orders` | portal | portalsupplier | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
+| SystemIntegrations | `/system-integrations` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 3 roles | route | IMPLEMENTED |
 | TaxManagement | `/tax-management` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
 | TechnicianKB | `/technician-kb` | app | technicians | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | TechnicianPortal | `/technician-portal` | portal | portaltech | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
-| TechnicianPortal · JobDetail | `/technician-portal/job-detail` | portal | portaltech | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| TechnicianPortal · JobDetail | `/technician-portal/job-detail` | portal | portaltech | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Technicians | `/technicians` | app | technicians | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | TechnicianSchedule | `/technician-schedule` | app | technicians | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | Templates | `/templates` | app | admin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
@@ -219,10 +219,10 @@
 | WorkshopReports | `/workshop-reports` | app | reports | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | WorkshopSignature | `/workshop-signature` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 10 roles | route | IMPLEMENTED |
 | WorkspaceSelection | `/workspace-selection` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Dashboard Home | `/dashboard-home` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Dashboard Home | `/dashboard-home` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Welcome Page | `/welcome-page` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Dashboard Main | `/dashboard-main` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Customers List | `/customers-list` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Dashboard Main | `/dashboard-main` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Customers List | `/customers-list` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Customer Loyalty | `/customer-loyalty` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Customer Reviews Ratings | `/customer-reviews-ratings` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Referral Program | `/referral-program` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -230,11 +230,11 @@
 | Customer LTV Analysis | `/customer-ltv-analysis` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Appointment Reminders | `/appointment-reminders` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Calendar | `/calendar` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| Workshop Calendar | `/workshop-calendar` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Workshop Calendar | `/workshop-calendar` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | AI Scheduling | `/ai-scheduling` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Smart Assignment | `/smart-assignment` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Routing Optimizer | `/routing-optimizer` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Vehicles List | `/vehicles-list` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Vehicles List | `/vehicles-list` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Vehicle Inspections | `/vehicle-inspections` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Vehicle Checklist | `/vehicle-checklist` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Vehicle History | `/vehicle-history` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -273,7 +273,7 @@
 | Spare Parts | `/spare-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Barcode Scanner | `/barcode-scanner` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Internal Warehouse | `/internal-warehouse` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Interactive 3D Parts | `/interactive-3-d-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Interactive 3D Parts | `/interactive-3-d-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Parts Marketplace | `/parts-marketplace` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Dynamic Pricing | `/dynamic-pricing` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Intelligent Price Optimizer | `/intelligent-price-optimizer` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -289,7 +289,7 @@
 | Purchase Agent Payments | `/purchase-agent-payments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Purchase Agent Delivery | `/purchase-agent-delivery` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Purchase Agent Orders | `/purchase-agent-orders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Purchase Agent Suppliers | `/purchase-agent-suppliers` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Purchase Agent Suppliers | `/purchase-agent-suppliers` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Purchase Agent Inventory | `/purchase-agent-inventory` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Purchase Agent Price Compare | `/purchase-agent-price-compare` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Purchase Agent Tracking | `/purchase-agent-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -313,21 +313,21 @@
 | Technician App Lookup | `/technician-app-lookup` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician App Profile | `/technician-app-profile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Client Portal Dashboard | `/client-portal-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Client Portal Vehicles | `/client-portal-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Client Portal Appointments | `/client-portal-appointments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Client Portal Invoices | `/client-portal-invoices` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Client Portal Vehicles | `/client-portal-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Client Portal Appointments | `/client-portal-appointments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Client Portal Invoices | `/client-portal-invoices` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Client Portal Profile | `/client-portal-profile` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Client Portal Service History | `/client-portal-service-history` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Client Portal Live Tracking | `/client-portal-live-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Client Portal Reminders | `/client-portal-reminders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Client Portal Review Chat | `/client-portal-review-chat` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Customer App Booking | `/customer-app-booking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Customer App Vehicles | `/customer-app-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Customer App Vehicles | `/customer-app-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Customer App Payments | `/customer-app-payments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Portal Dashboard | `/portal-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Portal Appointments | `/portal-appointments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Portal Invoices | `/portal-invoices` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Portal Vehicles | `/portal-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Portal Appointments | `/portal-appointments` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Portal Invoices | `/portal-invoices` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Portal Vehicles | `/portal-vehicles` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Portal Communications | `/portal-communications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Business Intelligence | `/business-intelligence` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Business Intelligence Dashboard | `/business-intelligence-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -335,14 +335,14 @@
 | Profit Analysis | `/profit-analysis` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | KPI Dashboard | `/kpi-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Productivity Tracker | `/productivity-tracker` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| HR Management | `/hr-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Staff Directory | `/staff-directory` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| HR Management | `/hr-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Staff Directory | `/staff-directory` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Staff Scheduling | `/staff-scheduling` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Staff Performance Review | `/staff-performance-review` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Timesheet Management | `/timesheet-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Timeclock Payroll | `/timeclock-payroll` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Payroll Management | `/payroll-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Leave Requests | `/leave-requests` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Timesheet Management | `/timesheet-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Timeclock Payroll | `/timeclock-payroll` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Payroll Management | `/payroll-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Leave Requests | `/leave-requests` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Training LMS | `/training-lms` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Wearable Integration | `/wearable-integration` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | General Ledger | `/general-ledger` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -363,16 +363,16 @@
 | Loss Account | `/loss-account` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Partners Current Account | `/partners-current-account` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Expense Tracking | `/expense-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Expenses Management | `/expenses-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Expenses Management | `/expenses-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Sales Management | `/sales-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Accounting Integration | `/accounting-integration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Financial Settings | `/financial-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Warranty Management | `/warranty-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Contract Management | `/contract-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Insurance Claims | `/insurance-claims` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Insurance Claims | `/insurance-claims` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Marketing Hub | `/marketing-hub` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Marketing Automation | `/marketing-automation` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Email Marketing Campaigns | `/email-marketing-campaigns` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Email Marketing Campaigns | `/email-marketing-campaigns` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Social Media Integration | `/social-media-integration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Social Media Monitoring | `/social-media-monitoring` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Google My Business | `/google-my-business` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
