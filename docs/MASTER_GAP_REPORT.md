@@ -9,7 +9,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 289 rendered capabilities are mock-only | 05 | W2 |
+| BLK-004 | CRITICAL | 288 rendered capabilities are mock-only | 05 | W2 |
 | BLK-006 | HIGH | 1 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
 
@@ -20,7 +20,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | TABLET_MISSING | 424 | never verified at 768–1024 |
 | ARABIC_MISSING | 424 | Arabic not certified |
 | RTL_BROKEN | 424 | RTL not certified |
-| MOCK_ONLY | 289 | renders, but from fixtures rather than an API |
+| MOCK_ONLY | 288 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
 | MOBILE_MISSING | 1 | a .Mobile design exists and is not built |
 | DESKTOP_ONLY | 1 | renders on desktop with no mobile treatment |

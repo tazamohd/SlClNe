@@ -1791,8 +1791,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY"
+      "RTL_BROKEN"
     ],
     "inNav": true,
     "designSource": "project/KioskCheckIn.dc.html",

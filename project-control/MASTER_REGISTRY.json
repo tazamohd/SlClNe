@@ -11,8 +11,8 @@
     "placeholder": 0,
     "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 289,
-    "dataBacked": 95,
+    "mockOnly": 288,
+    "dataBacked": 96,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
@@ -5507,8 +5507,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5538,8 +5540,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
