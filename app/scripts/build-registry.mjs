@@ -521,7 +521,39 @@ function reachableScreenFiles() {
   return { all, reached }
 }
 const { all: screenFiles, reached } = reachableScreenFiles()
-const orphanFiles = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
+
+/** Unreachable on purpose, and reviewed as such.
+ *
+ *  Each file here is the pre-kit implementation of feature-map routes that
+ *  render the generic `FeatureScreenView` today, kept as the reference for
+ *  building the real screen. It stays unwired deliberately: routing one would
+ *  put a legacy screen back in front of users. Removing an entry is how that
+ *  reference retires; adding one needs the same argument, or this list becomes
+ *  where dead code hides. Every other unreachable file is a bug.
+ *
+ *      admin/SystemScreens           /security-cameras, /digital-signage
+ *      emerging/EmergingTechScreens  /drone-inspection, /ar-repair-guide, /ar-overlay,
+ *                                    /vr-showroom, /blockchain-service-history,
+ *                                    /smart-contracts, /quantum-computing
+ *      enterprise/EnterpriseScreens  /wearable-integration
+ */
+const RETAINED_REFERENCE = [
+  'src/screens/admin/SystemScreens.tsx',
+  'src/screens/emerging/EmergingTechScreens.tsx',
+  'src/screens/enterprise/EnterpriseScreens.tsx',
+].map((f) => path.normalize(f))
+
+const unreached = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
+const retainedFiles = unreached.filter((f) => RETAINED_REFERENCE.includes(f))
+const orphanFiles = unreached.filter((f) => !RETAINED_REFERENCE.includes(f))
+
+// A path that stops existing should fail loudly rather than sit in the list
+// forever pretending to protect something.
+const staleRetained = RETAINED_REFERENCE.filter((f) => !fs.existsSync(path.join(APP, f)))
+if (staleRetained.length) {
+  console.error(`  RETAINED_REFERENCE names files that no longer exist: ${staleRetained.join(', ')}`)
+  process.exitCode = 1
+}
 
 // ── rollups ──────────────────────────────────────────────────────────────────
 
@@ -775,7 +807,8 @@ written.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
     NO_RBAC_MODULE: 'no RBAC module maps to this screen',
   })[f] ?? '—'} |`).join('\n') +
   `\n\n## Designs not in the registry\n\n${unregistered.length ? unregistered.map((u) => `- \`project/${u}.dc.html\``).join('\n') : '_None — the registry covers every design file._'}` +
-  `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o}\``).join('\n') : '_None._'}` +
+  `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o.split(path.sep).join('/')}\``).join('\n') : '_None._'}` +
+  `\n\n## Retained as reference, deliberately not routed\n\nPre-kit implementations of feature-map routes that render \`FeatureScreenView\` today. Kept as the reference for building the real screen; routing one would put a legacy screen back in front of users. See \`RETAINED_REFERENCE\` in \`app/scripts/build-registry.mjs\`.\n\n${retainedFiles.length ? retainedFiles.map((o) => `- \`app/${o.split(path.sep).join('/')}\``).join('\n') : '_None._'}` +
   `\n\n## Placeholder routes by domain\n\n| Domain | Placeholder | Total |\n|---|---|---|\n` +
   Object.entries(byDomain).filter(([, v]) => v.placeholder).sort((a, b) => b[1].placeholder - a[1].placeholder)
     .map(([k, v]) => `| ${DOMAIN_LABEL[k] ?? k} | ${v.placeholder} | ${v.total} |`).join('\n') + '\n'))
@@ -837,4 +870,5 @@ console.log(`registry: ${totals.capabilities} capabilities · ${totals.rendered}
   `${totals.placeholder} placeholder · ${totals.designedMobileOwed} mobile owed · ${blockers.length} blockers`)
 if (unregistered.length) console.log(`  unregistered designs: ${unregistered.join(', ')}`)
 if (orphanFiles.length) console.log(`  orphan screen files: ${orphanFiles.join(', ')}`)
+if (retainedFiles.length) console.log(`  retained as reference, not routed: ${retainedFiles.length}`)
 for (const w of written) console.log(`  wrote ${w}`)

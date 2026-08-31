@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-08-31",
-  "open": 5,
+  "open": 4,
   "blockers": [
     {
       "id": "BLK-002",
@@ -33,14 +33,6 @@
       "detail": "768/820/834/1024, portrait and landscape, has never been checked.",
       "owner": "18",
       "wave": "W3"
-    },
-    {
-      "id": "BLK-010",
-      "severity": "MEDIUM",
-      "title": "59 screen files are unreachable from any route",
-      "detail": "src\\screens\\accounting\\BankReconciliation.tsx, src\\screens\\accounting\\CustomReports.tsx, src\\screens\\accounting\\InsuranceReports.tsx, src\\screens\\accounting\\InventoryReports.tsx, src\\screens\\accounting\\InvoicePreview.tsx, src\\screens\\accounting\\LoanReports.tsx, src\\screens\\accounting\\ReportsAnalytics.tsx, src\\screens\\accounting\\ReportsHub.tsx, src\\screens\\accounting\\SalesReports.tsx, src\\screens\\accounting\\TaxManagement.tsx, src\\screens\\admin\\ComplianceScreens.tsx, src\\screens\\admin\\HRPayroll.tsx, src\\screens\\admin\\HRScreens.tsx, src\\screens\\admin\\OrganizationScreens.tsx, src\\screens\\admin\\SettingsScreens.tsx, src\\screens\\admin\\SystemScreens.tsx, src\\screens\\ai\\AutomationRules.tsx, src\\screens\\ai\\WorkflowBuilder.tsx, src\\screens\\auth\\PrivacyPolicy.tsx, src\\screens\\auth\\TermsConditions.tsx, src\\screens\\callcenter\\CallCenter.tsx, src\\screens\\comms\\CommunicationScreens.tsx, src\\screens\\compliance\\ComplianceScreens.tsx, src\\screens\\crm\\CustomerFeedback.tsx, src\\screens\\emerging\\EmergingTechScreens.tsx, src\\screens\\enterprise\\EnterpriseScreens.tsx, src\\screens\\fleet\\FleetTracking.tsx, src\\screens\\fleet\\TowingAssistance.tsx, src\\screens\\infra\\InfraScreens.tsx, src\\screens\\insurance\\ContractManagement.tsx, src\\screens\\insurance\\WarrantyManagement.tsx, src\\screens\\marketing\\MarketingScreens.tsx, src\\screens\\meta\\Native.tsx, src\\screens\\meta\\Specs.tsx, src\\screens\\network\\NetworkScreens.tsx, src\\screens\\network\\PurchaseOrder.tsx, src\\screens\\procurement\\ProcurementScreens.tsx, src\\screens\\productivity\\ProductivityScreens.tsx, src\\screens\\reporting\\ReportingScreens.tsx, src\\screens\\settings\\SettingsScreens.tsx, src\\screens\\ui\\Collaboration.tsx, src\\screens\\ui\\Insights.tsx, src\\screens\\ui\\Media.tsx, src\\screens\\ui\\ModalsCore.tsx, src\\screens\\ui\\ModalsFlow.tsx, src\\screens\\ui\\States.tsx, src\\screens\\ui\\Transfer.tsx, src\\screens\\ui\\Views.tsx, src\\screens\\ui\\ViewsAlt.tsx, src\\screens\\website\\About.tsx, src\\screens\\website\\Blog.tsx, src\\screens\\website\\Contact.tsx, src\\screens\\website\\FAQ.tsx, src\\screens\\website\\Insurance.tsx, src\\screens\\website\\Landing.tsx, src\\screens\\website\\Loans.tsx, src\\screens\\website\\Marketplace.tsx, src\\screens\\website\\Services.tsx, src\\screens\\website\\Support.tsx",
-      "owner": "02",
-      "wave": "W0"
     }
   ]
 }
