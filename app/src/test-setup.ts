@@ -15,10 +15,21 @@ import { preloadArabic } from '@/providers/PreferencesProvider'
 /** The Arabic dictionary is a lazy chunk in the browser, which means `t()`
  *  returns the English source for the frame or two before it resolves. A test
  *  that renders in Arabic and asserts synchronously would read that gap as a
- *  missing translation. Warming the module cache here — once per worker,
- *  before any test file runs — makes the provider pick the dictionary up in its
- *  `useState` initialiser, so Arabic renders on the first pass exactly as it
- *  does for a real user whose language was known before the first paint. */
+ *  missing translation. Warming the module cache here makes the provider pick
+ *  the dictionary up in its `useState` initialiser, so Arabic renders on the
+ *  first pass exactly as it does for a real user whose language was known
+ *  before the first paint.
+ *
+ *  Setup files run once per *test file*, not once per worker, and `isolate`
+ *  leaves each file its own module registry — so this resolves 77 times a run,
+ *  not once. That is cheap enough to ignore (the dictionary modules stay in
+ *  Vite's transform cache; the measured setup total moves by under a second
+ *  across the suite) but it is not the one-shot the placement suggests.
+ *
+ *  It also means no test sees the un-warmed dictionary. The path where `t()`
+ *  falls back while the chunk is still in flight — what a real user hits
+ *  toggling language mid-session — is covered explicitly in
+ *  `tests/i18n-dictionary-load.test.tsx`, which resets the cache first. */
 await preloadArabic()
 
 type Listener = (event: MediaQueryListEvent) => void

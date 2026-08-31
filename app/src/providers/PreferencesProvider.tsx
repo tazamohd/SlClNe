@@ -47,14 +47,28 @@ function initialTheme(): Theme {
   return prefersLight ? 'light' : 'dark'
 }
 
-function initialLanguage(): Language {
+/** The language a session starts in, read from storage.
+ *
+ *  Exported because `main.tsx` has to answer the same question before it can
+ *  decide whether to wait for the dictionary, and two copies of the rule would
+ *  drift the moment the stored value grows a third case. */
+export function initialLanguage(): Language {
   const stored = readStored(STORAGE_KEYS.lang)
   return stored === 'ar' ? 'ar' : 'en'
 }
 
 let arCache: Record<string, string> | null = null
 
-async function loadArabic(): Promise<Record<string, string>> {
+/** Resolve the Arabic dictionary, once per module instance.
+ *
+ *  The two dictionary modules are lazy so an English session never downloads a
+ *  dictionary it will not read. The cost is that `t()` falls back to the
+ *  English source until they resolve — invisible on a mid-session toggle, but a
+ *  visible English flash for a returning Arabic user whose stored preference is
+ *  `ar`. Callers that know the session is Arabic before the first paint
+ *  (`main.tsx`, and the test harness) await this, which fills `arCache` so the
+ *  `useState` initialiser below picks the dictionary up synchronously. */
+export async function preloadArabic(): Promise<Record<string, string>> {
   if (arCache) return arCache
   const [{ AR }, { AR_OVERRIDES }] = await Promise.all([
     import('@/data/generated/ar'),
@@ -64,17 +78,11 @@ async function loadArabic(): Promise<Record<string, string>> {
   return arCache
 }
 
-/** Warm the Arabic chunk before anything renders.
- *
- *  The dictionary is a lazy chunk so an English session never downloads 380 KB
- *  it will not read. The cost is that `t()` falls back to the English source
- *  until the chunk resolves — invisible on a mid-session toggle, but a visible
- *  English flash for a returning Arabic user whose stored preference is `ar`.
- *  Callers that know the session is Arabic before the first paint (`main.tsx`,
- *  and the test harness) await this, which fills `arCache` so the provider's
- *  `useState` initialiser picks the dictionary up synchronously. */
-export function preloadArabic(): Promise<Record<string, string>> {
-  return loadArabic()
+/** Drops the cached dictionary so the next load goes back through the lazy
+ *  import. Only the test that covers the un-warmed path needs this — the app
+ *  itself wants the cache to live for the session. */
+export function resetArabicCacheForTests(): void {
+  arCache = null
 }
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
@@ -87,7 +95,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (language === 'ar' && !arLookup) {
-      loadArabic().then(setArLookup)
+      preloadArabic().then(setArLookup)
     }
   }, [language, arLookup])
 
