@@ -375,16 +375,7 @@ Recap the key points aligned to the prospect's stated pain points:
 
 ### 11.3 Q&A Preparation
 
-Common questions and prepared responses:
-
-| Question                                     | Response Key Points                                  |
-|----------------------------------------------|------------------------------------------------------|
-| "How long does implementation take?"         | 4-8 weeks depending on scope and data migration      |
-| "Can we import our existing data?"           | Yes -- customer, vehicle, and financial data migration|
-| "What about internet outages?"               | Cloud-based; recommend reliable connection           |
-| "Is our data secure?"                        | PostgreSQL RLS, JWT auth, audit logging, KSA hosting |
-| "Can we customize workflows?"               | Configurable stages, fields, and approval rules      |
-| "What training is included?"                 | Role-based training included in implementation       |
+Prepare for common questions: implementation takes 4-8 weeks; data import is supported for customers, vehicles, and financials; the platform is cloud-based requiring internet; data security uses PostgreSQL RLS, JWT auth, and audit logging with KSA hosting; workflows are configurable; and role-based training is included in implementation. See SA-MKT-007 (Sales Playbook) for extended objection handling.
 
 ---
 
