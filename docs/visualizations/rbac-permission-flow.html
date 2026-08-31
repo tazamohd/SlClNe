@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-015 — RBAC Permission Matrix</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero {
+    padding: 60px 24px 32px;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+  .caption-bar {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding: 14px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .caption-bar .desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .diagram-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 16px;
+    overflow-x: auto;
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .matrix-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+  }
+  .matrix-table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    width: 100%;
+    min-width: 900px;
+    font-size: 0.78rem;
+  }
+  .matrix-table th {
+    background: var(--bg-alt);
+    color: var(--muted);
+    font-weight: 600;
+    padding: 10px 6px;
+    text-align: center;
+    border-radius: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-transform: capitalize;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+  }
+  .matrix-table th:hover { color: var(--text); }
+  .matrix-table th:first-child {
+    text-align: left;
+    min-width: 120px;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+  }
+  .matrix-table td {
+    text-align: center;
+    padding: 8px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 0.72rem;
+  }
+  .matrix-table td:first-child {
+    text-align: left;
+    background: var(--bg-alt);
+    font-weight: 600;
+    color: var(--text);
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+    padding-left: 10px;
+  }
+  .matrix-table tr { transition: opacity 0.3s; }
+  .matrix-table tr.dimmed { opacity: 0.2; }
+  .matrix-table tr.highlighted td:first-child { color: var(--accent); }
+  .matrix-table th.highlighted { color: var(--accent) !important; }
+  .cell-full { background: rgba(125,187,125,0.22); color: var(--green); }
+  .cell-partial { background: rgba(107,164,217,0.18); color: var(--blue); }
+  .cell-read { background: rgba(217,184,107,0.15); color: var(--gold); }
+  .cell-none { background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.12); }
+  .detail-panel {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    display: none;
+    gap: 20px;
+  }
+  .detail-panel.active { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .detail-item h4 { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .detail-item p { font-size: 1.1rem; font-weight: 600; }
+  .detail-item .sar { color: var(--green); }
+  .legend {
+    max-width: 1100px;
+    margin: 20px auto;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 0 24px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .supporting {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 0 24px 80px;
+  }
+  .supporting h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .info-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @media (max-width: 768px) {
+    .detail-panel.active { grid-template-columns: 1fr; }
+    .legend { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="badge">SA-VIZ-015</div>
+  <h1><span>RBAC</span> Permission Matrix</h1>
+  <p>Interactive role-based access control matrix showing 14 roles across 15 key modules with SAR approval ceilings</p>
+</section>
+
+<div class="caption-bar" id="captionBar">
+  <span class="label">Hover</span>
+  <span class="desc" id="captionText">Click a role row or module column to explore permissions</span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:rgba(125,187,125,0.35)"></div>Full CRUD</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:rgba(107,164,217,0.3)"></div>Read + Limited Write</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:rgba(217,184,107,0.25)"></div>Read Only</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,255,255,0.04)"></div>No Access</div>
+</div>
+
+<section class="diagram-section reveal">
+  <div class="matrix-wrap">
+    <table class="matrix-table" id="matrixTable">
+      <thead><tr id="headerRow"></tr></thead>
+      <tbody id="matrixBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<div class="detail-panel" id="detailPanel">
+  <div class="detail-item"><h4>Role</h4><p id="detailRole">-</p></div>
+  <div class="detail-item"><h4>SAR Approval Ceiling</h4><p class="sar" id="detailSAR">-</p></div>
+  <div class="detail-item"><h4>Scope</h4><p id="detailScope">-</p></div>
+</div>
+
+<section class="supporting reveal">
+  <h2>Access <span>Control</span> Design</h2>
+  <p>SALIS AUTO enforces role-based access with financial approval limits tied to organizational hierarchy. Each role maps to specific module permissions and SAR spending ceilings.</p>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>14 System Roles</h3>
+      <p>From Owner with unlimited authority to Customer with self-service-only portal access</p>
+    </div>
+    <div class="info-card">
+      <h3>28 RBAC Modules</h3>
+      <p>Fine-grained permission control across workshop, finance, HR, IT, and CRM operations</p>
+    </div>
+    <div class="info-card">
+      <h3>SAR Approval Chain</h3>
+      <p>Financial thresholds from SAR 0 to unlimited ensure multi-level spending oversight</p>
+    </div>
+    <div class="info-card">
+      <h3>Multi-Tenant Isolation</h3>
+      <p>Row-level security ensures roles are scoped per-tenant with branch-level granularity</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const modules = ['jobcards','estimates','invoices','payments','accounting','inventory','procurement','customers','vehicles','admin','settings','reports','hr','crm','ai'];
+const roles = [
+  { id:'owner', label:'Owner', sar:'Unlimited', scope:'All branches, all tenants', perms:[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3] },
+  { id:'superadmin', label:'Super Admin', sar:'Unlimited', scope:'All branches (single tenant)', perms:[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3] },
+  { id:'manager', label:'Manager', sar:'SAR 50,000', scope:'Assigned branch(es)', perms:[3,3,3,3,2,3,3,3,3,2,2,3,2,3,2] },
+  { id:'accountant', label:'Accountant', sar:'SAR 25,000', scope:'Financial operations, assigned branch', perms:[1,2,3,3,3,2,2,2,1,0,1,3,1,1,1] },
+  { id:'procurement', label:'Procurement', sar:'SAR 20,000', scope:'Procurement & inventory, assigned branch', perms:[1,2,2,2,1,3,3,2,1,0,0,2,0,1,1] },
+  { id:'hr', label:'HR Manager', sar:'SAR 15,000', scope:'HR & personnel, assigned branch', perms:[0,0,1,1,1,0,0,1,0,1,1,2,3,1,0] },
+  { id:'parts_manager', label:'Parts Manager', sar:'SAR 10,000', scope:'Inventory, assigned branch', perms:[2,2,1,1,0,3,2,1,1,0,0,2,0,0,1] },
+  { id:'advisor', label:'Service Advisor', sar:'SAR 5,000', scope:'Front-of-house, assigned branch', perms:[3,3,2,2,0,1,1,3,3,0,0,1,0,2,2] },
+  { id:'technician', label:'Technician', sar:'SAR 0', scope:'Assigned job cards only', perms:[2,1,0,0,0,1,0,1,2,0,0,0,0,0,1] },
+  { id:'qc_inspector', label:'QC Inspector', sar:'SAR 0', scope:'QC stage, assigned branch', perms:[2,1,0,0,0,1,0,1,2,0,0,1,0,0,1] },
+  { id:'front_desk', label:'Front Desk', sar:'SAR 0', scope:'Reception, assigned branch', perms:[1,1,1,1,0,0,0,3,3,0,0,0,0,2,0] },
+  { id:'call_center', label:'Call Center', sar:'SAR 0', scope:'CRM & communication', perms:[1,0,0,0,0,0,0,2,1,0,0,0,0,3,0] },
+  { id:'customer', label:'Customer', sar:'SAR 0', scope:'Own records only (portal)', perms:[1,1,1,1,0,0,0,0,1,0,0,0,0,0,0] },
+  { id:'supplier', label:'Supplier', sar:'SAR 0', scope:'Own POs and invoices (portal)', perms:[0,0,1,1,0,1,1,0,0,0,0,0,0,0,0] }
+];
+const permLabels = ['--','R','R/W','CRUD'];
+const permClasses = ['cell-none','cell-read','cell-partial','cell-full'];
+let activeRole = null;
+let activeCol = null;
+
+function buildMatrix() {
+  const hr = document.getElementById('headerRow');
+  let hh = '<th>Role</th>';
+  modules.forEach((m, i) => {
+    hh += '<th data-col="' + i + '">' + m + '</th>';
+  });
+  hr.innerHTML = hh;
+  const tb = document.getElementById('matrixBody');
+  let rows = '';
+  roles.forEach((r, ri) => {
+    rows += '<tr data-role="' + ri + '">';
+    rows += '<td>' + r.label + '</td>';
+    r.perms.forEach((p, ci) => {
+      rows += '<td class="' + permClasses[p] + '" data-col="' + ci + '">' + permLabels[p] + '</td>';
+    });
+    rows += '</tr>';
+  });
+  tb.innerHTML = rows;
+}
+buildMatrix();
+
+const table = document.getElementById('matrixTable');
+const detail = document.getElementById('detailPanel');
+const caption = document.getElementById('captionText');
+
+table.addEventListener('click', function(e) {
+  const th = e.target.closest('th[data-col]');
+  const td = e.target.closest('td');
+  const tr = e.target.closest('tr[data-role]');
+
+  if (th) {
+    const ci = parseInt(th.dataset.col);
+    if (activeCol === ci) { clearHighlights(); return; }
+    clearHighlights();
+    activeCol = ci;
+    document.querySelectorAll('#headerRow th[data-col]').forEach(t => {
+      t.classList.toggle('highlighted', parseInt(t.dataset.col) === ci);
+    });
+    const rows = document.querySelectorAll('#matrixBody tr');
+    const mod = modules[ci];
+    let accessList = [];
+    rows.forEach(r => {
+      const cells = r.querySelectorAll('td');
+      const cell = cells[ci + 1];
+      const ri = parseInt(r.dataset.role);
+      if (roles[ri].perms[ci] === 0) {
+        r.classList.add('dimmed');
+      } else {
+        r.classList.remove('dimmed');
+        accessList.push(roles[ri].label + ' (' + permLabels[roles[ri].perms[ci]] + ')');
+      }
+    });
+    caption.textContent = mod.toUpperCase() + ' module: ' + accessList.join(', ');
+    detail.classList.remove('active');
+    return;
+  }
+
+  if (tr) {
+    const ri = parseInt(tr.dataset.role);
+    if (activeRole === ri) { clearHighlights(); return; }
+    clearHighlights();
+    activeRole = ri;
+    const rows = document.querySelectorAll('#matrixBody tr');
+    rows.forEach(r => {
+      if (parseInt(r.dataset.role) !== ri) r.classList.add('dimmed');
+      else r.classList.add('highlighted');
+    });
+    const r = roles[ri];
+    document.getElementById('detailRole').textContent = r.label;
+    document.getElementById('detailSAR').textContent = r.sar;
+    document.getElementById('detailScope').textContent = r.scope;
+    detail.classList.add('active');
+    caption.textContent = r.label + ' — ' + r.sar + ' ceiling, scoped to ' + r.scope;
+  }
+});
+
+function clearHighlights() {
+  activeRole = null;
+  activeCol = null;
+  document.querySelectorAll('#matrixBody tr').forEach(r => {
+    r.classList.remove('dimmed', 'highlighted');
+  });
+  document.querySelectorAll('#headerRow th').forEach(t => t.classList.remove('highlighted'));
+  detail.classList.remove('active');
+  caption.textContent = 'Click a role row or module column to explore permissions';
+}
+
+/* Scroll reveal */
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelector('.hero').classList.add('visible');
+</script>
+</body>
+</html>

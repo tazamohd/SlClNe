@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-003 Workshop Lifecycle Flow — SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* Hero */
+  .hero { padding: 64px 0 32px; text-align: center; }
+  .hero .badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    background: rgba(218,119,86,0.08);
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 640px; margin: 0 auto; }
+
+  /* Sections */
+  .section { padding: 48px 0; }
+  .section-alt { background: var(--bg-alt); }
+  .section-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+  /* Caption bar */
+  .caption-bar {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-top: 24px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label { color: var(--accent); font-weight: 600; }
+
+  /* SVG container */
+  .diagram-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 32px 24px;
+    overflow-x: auto;
+  }
+
+  /* Animations */
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+  @keyframes fadeRise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Tables */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .role-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag-advisor { background: rgba(218,119,86,0.15); color: var(--accent); }
+  .tag-tech { background: rgba(107,164,217,0.15); color: var(--blue); }
+  .tag-qc { background: rgba(125,187,125,0.15); color: var(--green); }
+  .tag-manager { background: rgba(169,142,224,0.15); color: var(--purple); }
+  .tag-owner { background: rgba(217,184,107,0.15); color: var(--gold); }
+
+  .threshold-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .threshold-card .amount { font-size: 22px; font-weight: 700; color: var(--accent); min-width: 140px; }
+  .threshold-card .role-name { font-weight: 600; margin-bottom: 2px; }
+  .threshold-card .desc { font-size: 13px; color: var(--muted); }
+
+  /* SVG node hover */
+  .stage-node { cursor: pointer; transition: transform 0.2s ease; }
+  .stage-node:hover { transform: scale(1.05); }
+  .stage-node:hover .node-stroke { stroke-width: 2.5; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="badge">SA-VIZ-003</div>
+    <h1>Workshop Lifecycle Flow</h1>
+    <p>Six-stage vehicle service pipeline with role handoffs, approval gates, and Separation of Duties enforcement</p>
+  </div>
+
+  <!-- Main Pipeline Diagram -->
+  <div class="section">
+    <div class="diagram-wrap">
+      <svg id="pipelineSvg" viewBox="0 0 1220 420" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <defs>
+          <marker id="arrowAccent" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#DA7756"/>
+          </marker>
+          <marker id="arrowBlue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#6ba4d9"/>
+          </marker>
+          <marker id="arrowRed" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#e06b6b"/>
+          </marker>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glowSoft">
+            <feGaussianBlur stdDeviation="12" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Forward flow connectors -->
+        <path d="M228,145 C268,145 268,145 308,145" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+        <path d="M428,145 C468,145 468,145 508,145" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+        <path d="M628,145 C668,145 668,145 708,145" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+        <path d="M828,145 C868,145 868,145 908,145" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+        <path d="M1028,145 C1068,145 1068,145 1108,145" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Rejection path: Estimate rejected → back -->
+        <path d="M568,190 C568,260 368,280 368,190" stroke="#e06b6b" stroke-width="1.2" fill="none" stroke-dasharray="4 6" marker-end="url(#arrowRed)" opacity="0.7" style="animation: flowDash 1.5s linear infinite;"/>
+        <text x="468" y="278" text-anchor="middle" fill="#e06b6b" font-size="10" font-weight="500">Estimate Rejected</text>
+
+        <!-- QC fail → back to Repair -->
+        <path d="M968,190 C968,280 768,300 768,190" stroke="#e06b6b" stroke-width="1.2" fill="none" stroke-dasharray="4 6" marker-end="url(#arrowRed)" opacity="0.7" style="animation: flowDash 1.5s linear infinite;"/>
+        <text x="868" y="298" text-anchor="middle" fill="#e06b6b" font-size="10" font-weight="500">QC Failed</text>
+
+        <!-- SOD enforcement between Repair and QC -->
+        <g transform="translate(868,90)">
+          <circle cx="0" cy="0" r="22" fill="rgba(218,119,86,0.15)" stroke="#DA7756" stroke-width="1.5">
+            <animate attributeName="r" values="22;25;22" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Shield/lock icon -->
+          <path d="M0,-10 L8,-6 L8,4 C8,10 0,14 0,14 C0,14 -8,10 -8,4 L-8,-6 Z" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="-3" y="-2" width="6" height="5" rx="1" stroke="#DA7756" stroke-width="1.2" fill="none"/>
+          <line x1="0" y1="0" x2="0" y2="2" stroke="#DA7756" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <text x="868" y="60" text-anchor="middle" fill="#DA7756" font-size="10" font-weight="600">SOD ENFORCED</text>
+        <text x="868" y="72" text-anchor="middle" fill="#8a8a93" font-size="9">Repairer cannot QC</text>
+
+        <!-- Approval gate between Estimate and Repair -->
+        <g transform="translate(668,95)">
+          <rect x="-30" y="-12" width="60" height="24" rx="12" fill="rgba(107,164,217,0.12)" stroke="#6ba4d9" stroke-width="1"/>
+          <text x="0" y="4" text-anchor="middle" fill="#6ba4d9" font-size="9" font-weight="600">APPROVAL</text>
+        </g>
+        <text x="668" y="72" text-anchor="middle" fill="#8a8a93" font-size="9">Customer e-sign</text>
+
+        <!-- Stage 1: CHECK-IN -->
+        <g class="stage-node" data-stage="checkin" transform="translate(108,145)">
+          <circle cx="0" cy="0" r="50" fill="rgba(218,119,86,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-50" width="120" height="100" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <!-- Clipboard icon -->
+          <g transform="translate(0,-14)">
+            <rect x="-8" y="-10" width="16" height="20" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <rect x="-4" y="-14" width="8" height="6" rx="1.5" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <line x1="-4" y1="-2" x2="4" y2="-2" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-4" y1="3" x2="4" y2="3" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-4" y1="8" x2="2" y2="8" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">CHECK-IN</text>
+          <text x="0" y="36" text-anchor="middle" fill="#DA7756" font-size="9" font-weight="500">Advisor</text>
+          <text x="0" y="48" text-anchor="middle" fill="#8a8a93" font-size="8">~15 min</text>
+        </g>
+
+        <!-- Stage 2: INSPECTION -->
+        <g class="stage-node" data-stage="inspection" transform="translate(368,145)">
+          <circle cx="0" cy="0" r="50" fill="rgba(107,164,217,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-50" width="120" height="100" rx="14" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <!-- Magnifying glass icon -->
+          <g transform="translate(0,-14)">
+            <circle cx="-2" cy="-2" r="8" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <line x1="4" y1="4" x2="10" y2="10" stroke="#6ba4d9" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">INSPECTION</text>
+          <text x="0" y="36" text-anchor="middle" fill="#6ba4d9" font-size="9" font-weight="500">Technician</text>
+          <text x="0" y="48" text-anchor="middle" fill="#8a8a93" font-size="8">~30 min</text>
+        </g>
+
+        <!-- Stage 3: ESTIMATE -->
+        <g class="stage-node" data-stage="estimate" transform="translate(568,145)">
+          <circle cx="0" cy="0" r="50" fill="rgba(218,119,86,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-50" width="120" height="100" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <!-- Calculator icon -->
+          <g transform="translate(0,-14)">
+            <rect x="-8" y="-10" width="16" height="20" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <rect x="-5" y="-7" width="10" height="5" rx="1" stroke="#DA7756" stroke-width="1" fill="none"/>
+            <circle cx="-3" cy="3" r="1" fill="#DA7756"/>
+            <circle cx="3" cy="3" r="1" fill="#DA7756"/>
+            <circle cx="-3" cy="7" r="1" fill="#DA7756"/>
+            <circle cx="3" cy="7" r="1" fill="#DA7756"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">ESTIMATE</text>
+          <text x="0" y="36" text-anchor="middle" fill="#DA7756" font-size="9" font-weight="500">Advisor</text>
+          <text x="0" y="48" text-anchor="middle" fill="#8a8a93" font-size="8">~20 min</text>
+        </g>
+
+        <!-- Stage 4: REPAIR -->
+        <g class="stage-node" data-stage="repair" transform="translate(768,145)">
+          <circle cx="0" cy="0" r="50" fill="rgba(107,164,217,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-50" width="120" height="100" rx="14" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <!-- Wrench icon -->
+          <g transform="translate(0,-14)">
+            <path d="M-8,8 L2,-2 M2,-2 C2,-2 4,-6 2,-8 C0,-10 -4,-10 -6,-8 L2,-2 M2,-2 L6,-6 C7,-7 9,-7 10,-6 C11,-5 11,-3 10,-2 L6,2 L2,-2" stroke="#6ba4d9" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">REPAIR</text>
+          <text x="0" y="36" text-anchor="middle" fill="#6ba4d9" font-size="9" font-weight="500">Technician</text>
+          <text x="0" y="48" text-anchor="middle" fill="#8a8a93" font-size="8">Varies</text>
+        </g>
+
+        <!-- Stage 5: QC -->
+        <g class="stage-node" data-stage="qc" transform="translate(968,145)">
+          <circle cx="0" cy="0" r="50" fill="rgba(125,187,125,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-50" width="120" height="100" rx="14" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1.5"/>
+          <!-- Shield-check icon -->
+          <g transform="translate(0,-14)">
+            <path d="M0,-10 L9,-6 L9,3 C9,9 0,13 0,13 C0,13 -9,9 -9,3 L-9,-6 Z" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="-4,1 -1,4 5,-3" stroke="#7dbb7d" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">QC</text>
+          <text x="0" y="36" text-anchor="middle" fill="#7dbb7d" font-size="9" font-weight="500">QC Inspector</text>
+          <text x="0" y="48" text-anchor="middle" fill="#8a8a93" font-size="8">~20 min</text>
+        </g>
+
+        <!-- Stage 6: DELIVERY -->
+        <g class="stage-node" data-stage="delivery" transform="translate(1158,145)">
+          <circle cx="0" cy="0" r="50" fill="rgba(217,184,107,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-50" width="120" height="100" rx="14" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <!-- Key icon -->
+          <g transform="translate(0,-14)">
+            <circle cx="-4" cy="-4" r="5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <line x1="0" y1="0" x2="10" y2="10" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="7" x2="10" y2="5" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="5" y1="5" x2="7" y2="3" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">DELIVERY</text>
+          <text x="0" y="36" text-anchor="middle" fill="#d9b86b" font-size="9" font-weight="500">Advisor</text>
+          <text x="0" y="48" text-anchor="middle" fill="#8a8a93" font-size="8">~10 min</text>
+        </g>
+
+        <!-- Flow labels -->
+        <text x="268" y="132" text-anchor="middle" fill="#8a8a93" font-size="9">Handoff</text>
+        <text x="468" y="132" text-anchor="middle" fill="#8a8a93" font-size="9">Findings</text>
+        <text x="698" y="132" text-anchor="middle" fill="#8a8a93" font-size="9">Approved</text>
+        <text x="1068" y="132" text-anchor="middle" fill="#8a8a93" font-size="9">Passed</text>
+
+        <!-- Vehicle icon moving along top -->
+        <g opacity="0.5">
+          <animateTransform attributeName="transform" type="translate" values="80,350;1180,350" dur="8s" repeatCount="indefinite"/>
+          <rect x="-12" y="-6" width="24" height="10" rx="3" stroke="#DA7756" stroke-width="1" fill="none"/>
+          <circle cx="-6" cy="6" r="3" stroke="#DA7756" stroke-width="1" fill="none"/>
+          <circle cx="6" cy="6" r="3" stroke="#DA7756" stroke-width="1" fill="none"/>
+        </g>
+
+        <!-- Legend -->
+        <g transform="translate(30,380)">
+          <line x1="0" y1="0" x2="30" y2="0" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8"/>
+          <text x="38" y="4" fill="#8a8a93" font-size="10">Forward flow</text>
+          <line x1="150" y1="0" x2="180" y2="0" stroke="#e06b6b" stroke-width="1.2" stroke-dasharray="4 6"/>
+          <text x="188" y="4" fill="#8a8a93" font-size="10">Rejection loop</text>
+          <circle cx="320" cy="0" r="6" fill="rgba(218,119,86,0.15)" stroke="#DA7756" stroke-width="1"/>
+          <text x="334" y="4" fill="#8a8a93" font-size="10">Gate / Enforcement</text>
+        </g>
+      </svg>
+    </div>
+    <div class="caption-bar" id="captionBar">
+      <span class="label">Hover a stage</span>
+      <span>to see details about that phase of the workshop lifecycle</span>
+    </div>
+  </div>
+
+  <!-- Role Handoff Table -->
+  <div class="section section-alt reveal">
+    <div class="container">
+      <h2 class="section-title">Role Handoff Matrix</h2>
+      <p class="section-sub">Which role owns each stage, and what they hand off to the next</p>
+      <div class="diagram-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Owner</th>
+              <th>Key Actions</th>
+              <th>Handoff To</th>
+              <th>Data Passed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600">Check-In</td>
+              <td><span class="role-tag tag-advisor">Advisor</span></td>
+              <td>Register vehicle, capture customer complaint, photo documentation</td>
+              <td><span class="role-tag tag-tech">Technician</span></td>
+              <td>Job card with VIN, mileage, complaint description</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Inspection</td>
+              <td><span class="role-tag tag-tech">Technician</span></td>
+              <td>Multi-point inspection, diagnose faults, photo evidence</td>
+              <td><span class="role-tag tag-advisor">Advisor</span></td>
+              <td>Inspection report, fault codes, recommended repairs</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Estimate</td>
+              <td><span class="role-tag tag-advisor">Advisor</span></td>
+              <td>Price parts + labor, generate estimate, send to customer</td>
+              <td><span class="role-tag tag-tech">Technician</span></td>
+              <td>Approved estimate with authorized line items</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Repair</td>
+              <td><span class="role-tag tag-tech">Technician</span></td>
+              <td>Execute repairs, log time, record parts used</td>
+              <td><span class="role-tag tag-qc">QC Inspector</span></td>
+              <td>Completed job card, actual time + parts log</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">QC</td>
+              <td><span class="role-tag tag-qc">QC Inspector</span></td>
+              <td>Verify repairs, test drive, sign-off (SOD enforced)</td>
+              <td><span class="role-tag tag-advisor">Advisor</span></td>
+              <td>QC pass certificate, final inspection checklist</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Delivery</td>
+              <td><span class="role-tag tag-advisor">Advisor</span></td>
+              <td>Generate invoice, collect payment, return vehicle</td>
+              <td>Customer</td>
+              <td>Invoice, warranty card, service summary</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approval Thresholds -->
+  <div class="section reveal">
+    <div class="container">
+      <h2 class="section-title">Estimate Approval Thresholds</h2>
+      <p class="section-sub">Role-based authorization limits for estimate approval (SAR)</p>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--accent);">< SAR 5,000</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-advisor">Service Advisor</span></div>
+          <div class="desc">Can approve standard service estimates within this range without escalation</div>
+        </div>
+      </div>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--purple);">< SAR 50,000</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-manager">Branch Manager</span></div>
+          <div class="desc">Approves estimates exceeding advisor limit. Customer e-signature required above SAR 5K threshold</div>
+        </div>
+      </div>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--gold);">Unlimited</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-owner">Owner / Admin</span></div>
+          <div class="desc">No upper limit. Full authorization on any estimate amount. Audit trail maintained</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Caption bar interaction
+  const captions = {
+    checkin: { label: 'Check-In', text: 'Vehicle registration, customer complaint capture, VIN scan, mileage recording, and photo documentation. Owned by Service Advisor (~15 min).' },
+    inspection: { label: 'Inspection', text: 'Multi-point diagnostic inspection by assigned Technician. Fault codes read, physical inspection, photo evidence attached to job card (~30 min).' },
+    estimate: { label: 'Estimate', text: 'Advisor prices parts + labor from inspection findings. Customer receives estimate for approval. E-signature required for amounts exceeding SAR threshold (~20 min).' },
+    repair: { label: 'Repair', text: 'Technician executes approved repairs. Time logged per operation, parts issued from inventory. Actual vs. estimated variance tracked. Duration varies by job complexity.' },
+    qc: { label: 'Quality Control', text: 'Independent QC Inspector verifies all repairs. SOD enforced: the technician who performed the repair CANNOT be the QC inspector. Includes test drive if applicable (~20 min).' },
+    delivery: { label: 'Delivery', text: 'Advisor generates ZATCA-compliant invoice, collects payment (card/cash/transfer), prints service summary, and returns vehicle with warranty documentation (~10 min).' }
+  };
+  const bar = document.getElementById('captionBar');
+  document.querySelectorAll('.stage-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      const key = node.getAttribute('data-stage');
+      if(captions[key]) {
+        bar.innerHTML = '<span class="label">' + captions[key].label + '</span><span>' + captions[key].text + '</span>';
+        bar.style.borderColor = 'rgba(218,119,86,0.3)';
+      }
+    });
+    node.addEventListener('mouseleave', () => {
+      bar.innerHTML = '<span class="label">Hover a stage</span><span>to see details about that phase of the workshop lifecycle</span>';
+      bar.style.borderColor = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>

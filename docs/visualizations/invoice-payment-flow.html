@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-005 Invoice Payment Flow — SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+  .hero { padding: 64px 0 32px; text-align: center; }
+  .hero .badge {
+    display: inline-block; padding: 4px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--green); border: 1px solid rgba(125,187,125,0.3); background: rgba(125,187,125,0.08);
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 680px; margin: 0 auto; }
+  .section { padding: 48px 0; }
+  .section-alt { background: var(--bg-alt); }
+  .section-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .diagram-wrap {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 32px 24px; overflow-x: auto;
+  }
+  .caption-bar {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 14px 20px; margin-top: 24px;
+    min-height: 52px; display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: var(--muted); transition: all 0.3s ease;
+  }
+  .caption-bar .label { color: var(--green); font-weight: 600; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .flow-node { cursor: pointer; }
+  .flow-node:hover .node-rect { stroke-width: 2.5; filter: brightness(1.3); }
+  .flow-node:hover text { fill: var(--text); }
+
+  .data-table {
+    width: 100%; border-collapse: collapse; font-size: 14px;
+  }
+  .data-table th {
+    text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--card-border);
+    color: var(--muted); font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .data-table td {
+    padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
+  .req-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; margin: 2px 4px 2px 0;
+  }
+  .req-mandatory { background: rgba(218,119,86,0.15); color: var(--accent); }
+  .req-optional { background: rgba(107,164,217,0.15); color: var(--blue); }
+
+  /* Detail popover */
+  .detail-panel {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95);
+    background: #16161a; border: 1px solid var(--card-border); border-radius: 14px;
+    padding: 28px 32px; max-width: 420px; width: 90%; z-index: 100;
+    opacity: 0; pointer-events: none; transition: all 0.25s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .detail-panel.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+  .detail-panel h3 { font-size: 16px; margin-bottom: 12px; }
+  .detail-panel .close-btn {
+    position: absolute; top: 12px; right: 16px; background: none; border: none;
+    color: var(--muted); font-size: 18px; cursor: pointer;
+  }
+  .detail-panel .close-btn:hover { color: var(--text); }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .overlay.active { opacity: 1; pointer-events: auto; }
+  .detail-list { list-style: none; font-size: 13px; }
+  .detail-list li { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; }
+  .detail-list li:last-child { border-bottom: none; }
+  .detail-list .dl-label { color: var(--muted); min-width: 100px; flex-shrink: 0; }
+  .detail-list .dl-value { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">SA-VIZ-005</div>
+    <h1>Invoice &amp; Payment Flow</h1>
+    <p>End-to-end financial data flow from estimate approval through ZATCA Phase 2 e-invoicing, payment collection, and general ledger posting</p>
+  </div>
+
+  <!-- Invoice Generation Flow -->
+  <div class="section">
+    <h2 class="section-title">Invoice Generation &amp; ZATCA Integration</h2>
+    <p class="section-sub">From approved estimate to ZATCA-cleared e-invoice with QR code and hash chain</p>
+    <div class="diagram-wrap">
+      <svg id="invoiceSvg" viewBox="0 0 1220 520" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <defs>
+          <marker id="arrGreen" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#7dbb7d"/>
+          </marker>
+          <marker id="arrAccent" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#DA7756"/>
+          </marker>
+          <marker id="arrBlue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#6ba4d9"/>
+          </marker>
+          <marker id="arrPurple" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#a98ee0"/>
+          </marker>
+          <marker id="arrGold" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#d9b86b"/>
+          </marker>
+          <filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glowSoft"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Row 1: Invoice creation flow -->
+        <!-- Node: Estimate Approved -->
+        <g class="flow-node" data-node="estimate">
+          <rect class="node-rect" x="20" y="40" width="130" height="70" rx="12" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <g transform="translate(50,62)">
+            <polyline points="-6,-6 0,0 8,-8" stroke="#DA7756" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="-10" y="-10" width="20" height="18" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+          </g>
+          <text x="85" y="68" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Estimate</text>
+          <text x="85" y="82" text-anchor="middle" fill="#DA7756" font-size="9">Approved</text>
+        </g>
+        <path d="M150,75 C175,75 180,75 200,75" stroke="#DA7756" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Create Invoice -->
+        <g class="flow-node" data-node="create">
+          <rect class="node-rect" x="200" y="40" width="130" height="70" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(232,62)">
+            <rect x="-10" y="-10" width="18" height="20" rx="2" stroke="#6ba4d9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <line x1="-6" y1="-3" x2="4" y2="-3" stroke="#6ba4d9" stroke-width="1" stroke-linecap="round"/>
+            <line x1="-6" y1="1" x2="4" y2="1" stroke="#6ba4d9" stroke-width="1" stroke-linecap="round"/>
+            <line x1="-6" y1="5" x2="0" y2="5" stroke="#6ba4d9" stroke-width="1" stroke-linecap="round"/>
+          </g>
+          <text x="265" y="68" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Create</text>
+          <text x="265" y="82" text-anchor="middle" fill="#6ba4d9" font-size="9">Invoice</text>
+        </g>
+        <path d="M330,75 C355,75 360,75 380,75" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Line Items -->
+        <g class="flow-node" data-node="lineitems">
+          <rect class="node-rect" x="380" y="40" width="130" height="70" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(412,62)">
+            <line x1="-8" y1="-6" x2="-8" y2="8" stroke="#6ba4d9" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="-4" y1="-6" x2="6" y2="-6" stroke="#6ba4d9" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-4" y1="0" x2="6" y2="0" stroke="#6ba4d9" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-4" y1="6" x2="4" y2="6" stroke="#6ba4d9" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <text x="445" y="68" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Line Items</text>
+          <text x="445" y="82" text-anchor="middle" fill="#6ba4d9" font-size="9">Parts + Labor</text>
+        </g>
+        <path d="M510,75 C535,75 540,75 560,75" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Calculate VAT -->
+        <g class="flow-node" data-node="vat">
+          <circle cx="625" cy="75" r="44" fill="rgba(125,187,125,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="560" y="40" width="130" height="70" rx="12" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1.8"/>
+          <text x="625" y="66" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="700">VAT 15%</text>
+          <text x="625" y="82" text-anchor="middle" fill="#7dbb7d" font-size="9">Calculate Tax</text>
+        </g>
+        <path d="M690,75 C715,75 720,75 740,75" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: ZATCA XML -->
+        <g class="flow-node" data-node="zatca">
+          <circle cx="805" cy="75" r="50" fill="rgba(218,119,86,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="740" y="35" width="130" height="80" rx="12" fill="rgba(218,119,86,0.08)" stroke="#DA7756" stroke-width="2"/>
+          <g transform="translate(772,60)">
+            <polyline points="-6,-8 -6,8 6,8 6,-2 0,-8 -6,-8" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="0,-8 0,-2 6,-2" stroke="#DA7756" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="12" y="0" fill="#DA7756" font-size="7" font-weight="600">XML</text>
+          </g>
+          <text x="805" y="78" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">ZATCA XML</text>
+          <text x="805" y="92" text-anchor="middle" fill="#DA7756" font-size="9">UBL 2.1</text>
+        </g>
+
+        <!-- Row 1 to Row 2 connector -->
+        <path d="M870,75 C910,75 910,75 940,75 C960,75 960,105 960,130 C960,155 940,175 920,175" stroke="#DA7756" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Row 2: QR + Hash + Sign + Submit + Clearance -->
+        <!-- Node: QR Code -->
+        <g class="flow-node" data-node="qrcode">
+          <rect class="node-rect" x="790" y="145" width="130" height="70" rx="12" fill="rgba(169,142,224,0.06)" stroke="#a98ee0" stroke-width="1.5"/>
+          <g transform="translate(822,172)">
+            <rect x="-8" y="-8" width="16" height="16" rx="1" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+            <rect x="-5" y="-5" width="4" height="4" fill="#a98ee0"/>
+            <rect x="1" y="-5" width="4" height="4" fill="#a98ee0"/>
+            <rect x="-5" y="1" width="4" height="4" fill="#a98ee0"/>
+            <rect x="2" y="2" width="2" height="2" fill="#a98ee0"/>
+          </g>
+          <text x="855" y="172" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">QR Code</text>
+          <text x="855" y="186" text-anchor="middle" fill="#a98ee0" font-size="9">TLV Encoded</text>
+        </g>
+        <path d="M790,180 C760,180 740,180 720,180" stroke="#a98ee0" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrPurple)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Hash Chain -->
+        <g class="flow-node" data-node="hashchain">
+          <rect class="node-rect" x="590" y="145" width="130" height="70" rx="12" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <g transform="translate(622,170)">
+            <circle cx="-4" cy="-4" r="5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <circle cx="4" cy="4" r="5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <line x1="0" y1="-1" x2="1" y2="1" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="655" y="174" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Hash Chain</text>
+          <text x="655" y="188" text-anchor="middle" fill="#d9b86b" font-size="9">SHA-256</text>
+        </g>
+        <path d="M590,180 C560,180 540,180 520,180" stroke="#d9b86b" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGold)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Digital Sign -->
+        <g class="flow-node" data-node="sign">
+          <rect class="node-rect" x="390" y="145" width="130" height="70" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(422,170)">
+            <path d="M-6,6 C-2,-4 4,-2 8,2" stroke="#6ba4d9" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="8" cy="-6" r="4" stroke="#6ba4d9" stroke-width="1.3" fill="none"/>
+            <line x1="10" y1="-3" x2="12" y2="0" stroke="#6ba4d9" stroke-width="1.3" stroke-linecap="round"/>
+          </g>
+          <text x="455" y="174" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Digital Sign</text>
+          <text x="455" y="188" text-anchor="middle" fill="#6ba4d9" font-size="9">X.509 Cert</text>
+        </g>
+        <path d="M390,180 C360,180 340,180 320,180" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Submit to ZATCA -->
+        <g class="flow-node" data-node="submit">
+          <circle cx="255" cy="180" r="50" fill="rgba(125,187,125,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="190" y="145" width="130" height="70" rx="12" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="2"/>
+          <g transform="translate(222,170)">
+            <polyline points="-6,-6 0,-10 6,-6" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="0" y1="-10" x2="0" y2="4" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M-8,8 L8,8" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="255" y="174" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Submit</text>
+          <text x="255" y="188" text-anchor="middle" fill="#7dbb7d" font-size="9">ZATCA API</text>
+        </g>
+        <path d="M190,180 C160,180 140,180 120,180" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Clearance -->
+        <g class="flow-node" data-node="clearance">
+          <circle cx="55" cy="180" r="44" fill="rgba(125,187,125,0.1)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="0" y="145" width="120" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="#7dbb7d" stroke-width="2"/>
+          <g transform="translate(28,172)">
+            <circle cx="0" cy="0" r="8" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+            <polyline points="-4,0 -1,3 5,-4" stroke="#7dbb7d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="60" y="174" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="700">Cleared</text>
+          <text x="60" y="188" text-anchor="middle" fill="#7dbb7d" font-size="9">ZATCA OK</text>
+        </g>
+
+        <!-- Divider line -->
+        <line x1="20" y1="250" x2="1200" y2="250" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <text x="610" y="275" text-anchor="middle" fill="#8a8a93" font-size="11" font-weight="600" letter-spacing="2">PAYMENT &amp; ACCOUNTING</text>
+
+        <!-- Row 3: Payment Flow -->
+        <!-- Node: Send to Customer -->
+        <g class="flow-node" data-node="sendcust">
+          <rect class="node-rect" x="20" y="300" width="130" height="70" rx="12" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <g transform="translate(52,328)">
+            <rect x="-10" y="-7" width="20" height="14" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <polyline points="-10,-7 0,2 10,-7" stroke="#DA7756" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="85" y="330" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Send Invoice</text>
+          <text x="85" y="344" text-anchor="middle" fill="#DA7756" font-size="9">To Customer</text>
+        </g>
+        <path d="M150,335 C175,335 185,335 200,335" stroke="#DA7756" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Payment Received -->
+        <g class="flow-node" data-node="payment">
+          <rect class="node-rect" x="200" y="300" width="130" height="70" rx="12" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1.5"/>
+          <g transform="translate(232,326)">
+            <circle cx="0" cy="0" r="8" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+            <text x="0" y="4" text-anchor="middle" fill="#7dbb7d" font-size="9" font-weight="700">$</text>
+          </g>
+          <text x="265" y="330" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Payment</text>
+          <text x="265" y="344" text-anchor="middle" fill="#7dbb7d" font-size="9">Card/Cash/Xfer</text>
+        </g>
+        <path d="M330,335 C355,335 365,335 380,335" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Payment Record -->
+        <g class="flow-node" data-node="payrecord">
+          <rect class="node-rect" x="380" y="300" width="130" height="70" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(412,326)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <line x1="-4" y1="-2" x2="4" y2="-2" stroke="#6ba4d9" stroke-width="1" stroke-linecap="round"/>
+            <line x1="-4" y1="2" x2="4" y2="2" stroke="#6ba4d9" stroke-width="1" stroke-linecap="round"/>
+            <line x1="0" y1="-6" x2="0" y2="6" stroke="#6ba4d9" stroke-width="1" stroke-linecap="round"/>
+          </g>
+          <text x="445" y="330" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Record</text>
+          <text x="445" y="344" text-anchor="middle" fill="#6ba4d9" font-size="9">Match Invoice</text>
+        </g>
+        <path d="M510,335 C535,335 545,335 560,335" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Journal Entry -->
+        <g class="flow-node" data-node="journal">
+          <circle cx="625" cy="335" r="50" fill="rgba(169,142,224,0.08)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="560" y="295" width="130" height="80" rx="12" fill="rgba(169,142,224,0.08)" stroke="#a98ee0" stroke-width="2"/>
+          <g transform="translate(592,326)">
+            <rect x="-8" y="-10" width="16" height="20" rx="2" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+            <line x1="-5" y1="-4" x2="5" y2="-4" stroke="#a98ee0" stroke-width="1" stroke-linecap="round"/>
+            <line x1="-5" y1="0" x2="5" y2="0" stroke="#a98ee0" stroke-width="1" stroke-linecap="round"/>
+            <line x1="-5" y1="4" x2="3" y2="4" stroke="#a98ee0" stroke-width="1" stroke-linecap="round"/>
+          </g>
+          <text x="625" y="328" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Journal Entry</text>
+          <text x="625" y="342" text-anchor="middle" fill="#a98ee0" font-size="9">Auto-Generated</text>
+          <text x="625" y="356" text-anchor="middle" fill="#8a8a93" font-size="8">DR: Bank | CR: Rev+VAT</text>
+        </g>
+        <path d="M690,335 C715,335 725,335 740,335" stroke="#a98ee0" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrPurple)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Update GL -->
+        <g class="flow-node" data-node="gl">
+          <rect class="node-rect" x="740" y="300" width="130" height="70" rx="12" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <g transform="translate(772,326)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <line x1="-8" y1="0" x2="8" y2="0" stroke="#d9b86b" stroke-width="1" stroke-linecap="round"/>
+            <line x1="0" y1="-8" x2="0" y2="8" stroke="#d9b86b" stroke-width="1" stroke-linecap="round"/>
+          </g>
+          <text x="805" y="330" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Update GL</text>
+          <text x="805" y="344" text-anchor="middle" fill="#d9b86b" font-size="9">Ledger Post</text>
+        </g>
+        <path d="M870,335 C895,335 905,335 920,335" stroke="#d9b86b" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGold)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: P&L -->
+        <g class="flow-node" data-node="pnl">
+          <circle cx="985" cy="335" r="44" fill="rgba(125,187,125,0.1)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="920" y="300" width="130" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="#7dbb7d" stroke-width="2"/>
+          <g transform="translate(952,326)">
+            <polyline points="-6,6 -2,-2 2,4 8,-6" stroke="#7dbb7d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="985" y="330" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="700">P&amp;L</text>
+          <text x="985" y="344" text-anchor="middle" fill="#7dbb7d" font-size="9">Reflected</text>
+        </g>
+
+        <!-- ZATCA detail bubble -->
+        <g transform="translate(960,60)">
+          <rect x="0" y="0" width="250" height="160" rx="10" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="125" y="22" text-anchor="middle" fill="#DA7756" font-size="11" font-weight="600">ZATCA QR Code (TLV)</text>
+          <line x1="20" y1="32" x2="230" y2="32" stroke="rgba(218,119,86,0.2)" stroke-width="1"/>
+          <text x="30" y="52" fill="#8a8a93" font-size="10">Tag 1</text><text x="80" y="52" fill="#f5f5f7" font-size="10">Seller Name</text>
+          <text x="30" y="72" fill="#8a8a93" font-size="10">Tag 2</text><text x="80" y="72" fill="#f5f5f7" font-size="10">VAT Registration #</text>
+          <text x="30" y="92" fill="#8a8a93" font-size="10">Tag 3</text><text x="80" y="92" fill="#f5f5f7" font-size="10">Timestamp (ISO 8601)</text>
+          <text x="30" y="112" fill="#8a8a93" font-size="10">Tag 4</text><text x="80" y="112" fill="#f5f5f7" font-size="10">Total with VAT</text>
+          <text x="30" y="132" fill="#8a8a93" font-size="10">Tag 5</text><text x="80" y="132" fill="#f5f5f7" font-size="10">VAT Amount</text>
+          <text x="125" y="155" text-anchor="middle" fill="#8a8a93" font-size="9">Base64 TLV-encoded into QR</text>
+        </g>
+
+        <!-- Hash chain illustration -->
+        <g transform="translate(960,240)">
+          <rect x="0" y="0" width="250" height="90" rx="10" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="125" y="22" text-anchor="middle" fill="#d9b86b" font-size="11" font-weight="600">Invoice Hash Chain</text>
+          <g transform="translate(30,50)">
+            <rect x="0" y="-10" width="50" height="20" rx="4" fill="rgba(217,184,107,0.1)" stroke="#d9b86b" stroke-width="1"/>
+            <text x="25" y="-1" text-anchor="middle" fill="#d9b86b" font-size="8">INV-001</text>
+            <text x="25" y="9" text-anchor="middle" fill="#8a8a93" font-size="7">hash: a3f...</text>
+          </g>
+          <path d="M82,50 C92,50 98,50 108,50" stroke="#d9b86b" stroke-width="1" fill="none" marker-end="url(#arrGold)" stroke-dasharray="3 3"/>
+          <g transform="translate(110,50)">
+            <rect x="0" y="-10" width="50" height="20" rx="4" fill="rgba(217,184,107,0.1)" stroke="#d9b86b" stroke-width="1"/>
+            <text x="25" y="-1" text-anchor="middle" fill="#d9b86b" font-size="8">INV-002</text>
+            <text x="25" y="9" text-anchor="middle" fill="#8a8a93" font-size="7">prev: a3f...</text>
+          </g>
+          <path d="M162,50 C172,50 178,50 188,50" stroke="#d9b86b" stroke-width="1" fill="none" marker-end="url(#arrGold)" stroke-dasharray="3 3"/>
+          <g transform="translate(190,50)">
+            <rect x="0" y="-10" width="50" height="20" rx="4" fill="rgba(218,119,86,0.15)" stroke="#DA7756" stroke-width="1.2"/>
+            <text x="25" y="-1" text-anchor="middle" fill="#DA7756" font-size="8" font-weight="600">INV-003</text>
+            <text x="25" y="9" text-anchor="middle" fill="#8a8a93" font-size="7">current</text>
+          </g>
+          <text x="125" y="80" text-anchor="middle" fill="#8a8a93" font-size="9">Each invoice references previous hash (tamper-proof)</text>
+        </g>
+
+        <!-- Legend -->
+        <g transform="translate(20,480)">
+          <line x1="0" y1="0" x2="24" y2="0" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8"/>
+          <text x="32" y="4" fill="#8a8a93" font-size="10">ZATCA flow</text>
+          <line x1="130" y1="0" x2="154" y2="0" stroke="#a98ee0" stroke-width="1.5" stroke-dasharray="6 8"/>
+          <text x="162" y="4" fill="#8a8a93" font-size="10">Accounting</text>
+          <rect x="260" y="-4" width="8" height="8" rx="2" fill="rgba(218,119,86,0.15)" stroke="#DA7756" stroke-width="1"/>
+          <text x="276" y="4" fill="#8a8a93" font-size="10">Focal node (glow)</text>
+          <text x="410" y="4" fill="#8a8a93" font-size="10">Click any node for details</text>
+        </g>
+      </svg>
+    </div>
+    <div class="caption-bar" id="captionBar">
+      <span class="label">Hover a node</span>
+      <span>to see details about each step in the invoice and payment lifecycle</span>
+    </div>
+  </div>
+
+  <!-- ZATCA Phase 2 Requirements -->
+  <div class="section section-alt reveal">
+    <div class="container">
+      <h2 class="section-title">ZATCA Phase 2 Requirements Summary</h2>
+      <p class="section-sub">Fatoora e-invoicing compliance requirements for clearance model</p>
+      <div class="diagram-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Requirement</th>
+              <th>Status</th>
+              <th>Implementation</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600">UBL 2.1 XML Format</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>XML generation engine with UBL schema validation</td>
+              <td>All invoices generated as XML following ZATCA UBL 2.1 specification</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Digital Signature</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>X.509 certificate from ZATCA-approved CSP</td>
+              <td>XMLDSig with SHA-256, certificate stored in HSM or secure key vault</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">QR Code (TLV)</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>Tag-Length-Value encoding, Base64 in QR</td>
+              <td>5 mandatory fields: seller, VAT#, timestamp, total w/VAT, VAT amount</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Hash Chain</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>SHA-256 hash of previous invoice stored in current</td>
+              <td>Prevents tampering and ensures sequential integrity of invoice ledger</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">UUID per Invoice</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>UUIDv4 generated at creation</td>
+              <td>Globally unique identifier, immutable after ZATCA submission</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Clearance Model</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>Real-time API submission to ZATCA</td>
+              <td>Standard invoices (B2B) require clearance before issuance to buyer</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Credit/Debit Notes</td>
+              <td><span class="req-tag req-mandatory">Mandatory</span></td>
+              <td>Reference original invoice UUID</td>
+              <td>Must link back to original cleared invoice, same XML + signing flow</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600">Bilingual Display</td>
+              <td><span class="req-tag req-optional">Recommended</span></td>
+              <td>EN/AR dual-language invoice rendering</td>
+              <td>Arabic mandatory for local tax invoices; English for export or bilingual</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail panel overlay -->
+<div class="overlay" id="overlay"></div>
+<div class="detail-panel" id="detailPanel">
+  <button class="close-btn" id="closeDetail">&times;</button>
+  <h3 id="detailTitle"></h3>
+  <ul class="detail-list" id="detailList"></ul>
+</div>
+
+<script>
+(function(){
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Caption bar
+  const captions = {
+    estimate: { label: 'Estimate Approved', text: 'Customer has approved the repair estimate. Triggers invoice generation workflow. E-signature captured for amounts above SAR threshold.' },
+    create: { label: 'Create Invoice', text: 'System generates a new invoice record with a unique UUID (v4). Links to the approved estimate and job card. Sequential invoice number assigned per tenant.' },
+    lineitems: { label: 'Line Items', text: 'Parts and labor lines imported from approved estimate. Each line includes: item code, description, quantity, unit price, discount, and tax category (Standard 15% or Exempt).' },
+    vat: { label: 'VAT Calculation', text: 'VAT at 15% applied per line item based on tax category. Taxable amount, tax amount, and total calculated. Rounding per ZATCA specification (2 decimal places).' },
+    zatca: { label: 'ZATCA XML Generation', text: 'Invoice converted to UBL 2.1 XML format per ZATCA specification. Includes all mandatory fields, tax breakdown, and business identifiers (CR number, VAT registration).' },
+    qrcode: { label: 'QR Code (TLV)', text: 'Tag-Length-Value encoded QR: Tag 1 (Seller Name), Tag 2 (VAT Registration Number), Tag 3 (Timestamp), Tag 4 (Invoice Total with VAT), Tag 5 (VAT Amount). Base64 encoded.' },
+    hashchain: { label: 'Hash Chain', text: 'SHA-256 hash of the previous invoice XML is embedded in the current invoice. Creates an immutable chain ensuring sequential integrity. First invoice uses a null hash.' },
+    sign: { label: 'Digital Signature', text: 'XMLDSig using X.509 certificate issued by ZATCA-approved Cryptographic Service Provider. SHA-256 digest, RSA signature. Certificate stored securely in key vault.' },
+    submit: { label: 'Submit to ZATCA', text: 'Real-time API call to ZATCA Fatoora portal. Clearance model: invoice must be cleared before issuance to buyer. Response includes clearance status and any warnings.' },
+    clearance: { label: 'ZATCA Clearance', text: 'ZATCA validates XML structure, digital signature, hash chain integrity, and business rules. Returns clearance ID. Invoice is now legally valid for issuance.' },
+    sendcust: { label: 'Send to Customer', text: 'Cleared invoice sent to customer via email/SMS/WhatsApp. Includes QR code for verification. PDF and Arabic versions generated per ZATCA display requirements.' },
+    payment: { label: 'Payment Received', text: 'Payment collected via card terminal (mada/Visa/MC), cash register, or bank transfer. Multiple partial payments supported. Payment method recorded for reconciliation.' },
+    payrecord: { label: 'Payment Record', text: 'Payment matched to invoice. Partial payments tracked with running balance. Receipt generated. Overpayment creates credit note. Underpayment leaves invoice partially paid.' },
+    journal: { label: 'Journal Entry', text: 'Auto-generated double-entry: DR Bank/Cash (asset) for payment amount, CR Revenue (income) for net amount, CR VAT Payable (liability) for tax portion. Multi-currency supported.' },
+    gl: { label: 'General Ledger', text: 'Journal entry posted to GL. Account balances updated in real-time. Chart of accounts follows Saudi accounting standards. Multi-branch consolidation supported.' },
+    pnl: { label: 'P&L Impact', text: 'Revenue recognized in profit and loss statement. Cost of goods (parts) and labor costs matched. Gross margin calculated per job card, per branch, per period.' }
+  };
+
+  const bar = document.getElementById('captionBar');
+  document.querySelectorAll('.flow-node').forEach(node => {
+    const key = node.getAttribute('data-node');
+    node.addEventListener('mouseenter', () => {
+      if(captions[key]) {
+        bar.innerHTML = '<span class="label">' + captions[key].label + '</span><span>' + captions[key].text + '</span>';
+        bar.style.borderColor = 'rgba(125,187,125,0.3)';
+      }
+    });
+    node.addEventListener('mouseleave', () => {
+      bar.innerHTML = '<span class="label">Hover a node</span><span>to see details about each step in the invoice and payment lifecycle</span>';
+      bar.style.borderColor = '';
+    });
+
+    // Click for detail panel
+    node.addEventListener('click', () => {
+      const details = {
+        journal: {
+          title: 'Journal Entry — Double-Entry Example',
+          items: [
+            { label: 'Scenario', value: 'Invoice SAR 1,150 (SAR 1,000 net + SAR 150 VAT)' },
+            { label: 'DR', value: 'Bank / Cash Account — SAR 1,150.00' },
+            { label: 'CR', value: 'Service Revenue — SAR 1,000.00' },
+            { label: 'CR', value: 'VAT Payable (15%) — SAR 150.00' },
+            { label: 'Auto-post', value: 'Journal created and posted automatically on payment match' },
+            { label: 'Audit', value: 'Created by SYSTEM, linked to invoice UUID and payment ID' }
+          ]
+        },
+        qrcode: {
+          title: 'ZATCA QR Code — TLV Field Breakdown',
+          items: [
+            { label: 'Tag 1', value: 'Seller Name (UTF-8 string) — e.g., "SALIS AUTO Workshop"' },
+            { label: 'Tag 2', value: 'VAT Registration Number — e.g., "300012345600003"' },
+            { label: 'Tag 3', value: 'Invoice Timestamp — ISO 8601 format with timezone' },
+            { label: 'Tag 4', value: 'Invoice Total (incl. VAT) — e.g., "1150.00"' },
+            { label: 'Tag 5', value: 'VAT Amount — e.g., "150.00"' },
+            { label: 'Encoding', value: 'Each tag: [Tag Number][Length][Value] concatenated, then Base64' }
+          ]
+        },
+        zatca: {
+          title: 'ZATCA XML — UBL 2.1 Structure',
+          items: [
+            { label: 'Root', value: 'Invoice (urn:oasis:names:specification:ubl:schema:xsd:Invoice-2)' },
+            { label: 'Header', value: 'UUID, IssueDate, InvoiceTypeCode, DocumentCurrencyCode (SAR)' },
+            { label: 'Supplier', value: 'AccountingSupplierParty — CR#, VAT#, address' },
+            { label: 'Customer', value: 'AccountingCustomerParty — name, ID, address' },
+            { label: 'Lines', value: 'InvoiceLine[] — ID, quantity, price, tax category, amounts' },
+            { label: 'Tax', value: 'TaxTotal — TaxSubtotal per category with rate and amounts' }
+          ]
+        }
+      };
+      if(details[key]) {
+        document.getElementById('detailTitle').textContent = details[key].title;
+        const list = document.getElementById('detailList');
+        list.innerHTML = details[key].items.map(i =>
+          '<li><span class="dl-label">' + i.label + '</span><span class="dl-value">' + i.value + '</span></li>'
+        ).join('');
+        document.getElementById('overlay').classList.add('active');
+        document.getElementById('detailPanel').classList.add('active');
+      }
+    });
+  });
+
+  // Close detail panel
+  function closePanel() {
+    document.getElementById('overlay').classList.remove('active');
+    document.getElementById('detailPanel').classList.remove('active');
+  }
+  document.getElementById('closeDetail').addEventListener('click', closePanel);
+  document.getElementById('overlay').addEventListener('click', closePanel);
+})();
+</script>
+</body>
+</html>

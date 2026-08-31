@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-009 Service Advisor Journey — SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  .hero { padding: 64px 0 32px; text-align: center; }
+  .hero .badge {
+    display: inline-block; padding: 4px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(218,119,86,0.3); background: rgba(218,119,86,0.08); margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 660px; margin: 0 auto; }
+
+  .section { padding: 48px 0; }
+  .section-alt { background: var(--bg-alt); }
+  .section-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+  .caption-bar {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px;
+    padding: 14px 20px; margin-top: 24px; min-height: 52px;
+    display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); transition: all 0.3s ease;
+  }
+  .caption-bar .label { color: var(--accent); font-weight: 600; }
+
+  .diagram-wrap {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 32px 24px; overflow-x: auto;
+  }
+
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table th {
+    text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--card-border);
+    color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .data-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .tag-primary { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(218,119,86,0.15); color: var(--accent); }
+  .tag-support { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(107,164,217,0.15); color: var(--blue); }
+  .tag-monitor { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(169,142,224,0.15); color: var(--purple); }
+  .tag-none { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(255,255,255,0.06); color: var(--muted); }
+  .tag-customer { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(125,187,125,0.15); color: var(--green); }
+
+  .stat-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .stat-card {
+    flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 20px; text-align: center;
+  }
+  .stat-card .val { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .stat-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.6px; }
+
+  .stage-node { cursor: pointer; transition: transform 0.2s ease; }
+  .stage-node:hover { transform: scale(1.05); }
+  .stage-node:hover .node-stroke { stroke-width: 2.5; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">SA-VIZ-009</div>
+    <h1>Service Advisor Journey</h1>
+    <p>Customer-facing workflow through the 6-stage vehicle service lifecycle — SAR 5,000 approval ceiling with escalation to Branch Manager</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-row reveal">
+    <div class="stat-card"><div class="val">SAR 5K</div><div class="lbl">Approval Ceiling</div></div>
+    <div class="stat-card"><div class="val">6 Stages</div><div class="lbl">Lifecycle Touchpoints</div></div>
+    <div class="stat-card"><div class="val">15% VAT</div><div class="lbl">Auto-Calculated</div></div>
+    <div class="stat-card"><div class="val">3</div><div class="lbl">Customer Touchpoints</div></div>
+  </div>
+
+  <!-- Hero Diagram: 7-step workflow -->
+  <div class="section">
+    <div class="section-title reveal">Service Advisor Workflow — 6-Stage Lifecycle</div>
+    <div class="section-sub reveal">From vehicle check-in through delivery, the Advisor orchestrates the customer experience and manages approvals within SAR 5,000</div>
+    <div class="diagram-wrap reveal">
+      <svg id="heroSvg" viewBox="0 0 1220 620" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <defs>
+          <marker id="arrowAccent" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#DA7756"/>
+          </marker>
+          <marker id="arrowBlue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#6ba4d9"/>
+          </marker>
+          <marker id="arrowGreen" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#7dbb7d"/>
+          </marker>
+          <marker id="arrowPurple" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#a98ee0"/>
+          </marker>
+          <marker id="arrowGold" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#d9b86b"/>
+          </marker>
+          <marker id="arrowRed" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#e06b6b"/>
+          </marker>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glowSoft">
+            <feGaussianBlur stdDeviation="12" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Dot-grid background -->
+        <pattern id="dotGrid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.06)"/>
+        </pattern>
+        <rect width="1220" height="620" fill="url(#dotGrid)"/>
+
+        <!-- Customer touchpoint markers -->
+        <g opacity="0.7">
+          <circle cx="140" cy="45" r="4" fill="#7dbb7d"/>
+          <text x="150" y="49" fill="#7dbb7d" font-size="10" font-weight="600">Customer-Facing Touchpoint</text>
+        </g>
+
+        <!-- Row 1 flow connectors (Login -> Check-In -> Inspection -> Estimate) -->
+        <path d="M185,160 C225,160 235,160 270,160" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+        <path d="M420,160 C470,160 490,160 530,160" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+        <path d="M670,160 C720,160 740,160 770,160" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Estimate -> Customer Communication (down) -->
+        <path d="M870,210 C870,270 870,290 870,320" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowGreen)" style="animation: flowDash 1.1s linear infinite;"/>
+
+        <!-- Customer Communication -> split: approve or escalate -->
+        <!-- Approve path (left-down to Monitor) -->
+        <path d="M820,410 C740,440 600,445 550,430 C500,415 470,400 440,380" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowGreen)" style="animation: flowDash 1.2s linear infinite;"/>
+        <!-- Escalate path (right to Escalate box) -->
+        <path d="M935,370 C990,370 1020,370 1060,370" stroke="#e06b6b" stroke-width="1.5" fill="none" stroke-dasharray="4 6" marker-end="url(#arrowRed)" style="animation: flowDash 1.3s linear infinite;"/>
+
+        <!-- Monitor -> Delivery (left) -->
+        <path d="M310,370 C260,370 230,370 190,370" stroke="#a98ee0" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowPurple)" style="animation: flowDash 1.4s linear infinite;"/>
+
+        <!-- SAR 5K ceiling badge above Estimate -->
+        <g transform="translate(870,80)">
+          <rect x="-36" y="-14" width="72" height="28" rx="14" fill="rgba(218,119,86,0.12)" stroke="#DA7756" stroke-width="1">
+            <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="0" y="5" text-anchor="middle" fill="#DA7756" font-size="10" font-weight="700">SAR 5,000</text>
+        </g>
+        <text x="870" y="64" text-anchor="middle" fill="#8a8a93" font-size="9">Advisor approval ceiling</text>
+
+        <!-- Customer touchpoint indicators -->
+        <circle cx="345" cy="100" r="5" fill="#7dbb7d" opacity="0.7"/>
+        <circle cx="870" cy="310" r="5" fill="#7dbb7d" opacity="0.7"/>
+        <circle cx="130" cy="310" r="5" fill="#7dbb7d" opacity="0.7"/>
+
+        <!-- Node 1: LOGIN -->
+        <g class="stage-node" data-stage="login" transform="translate(105,160)">
+          <rect class="node-stroke" x="-48" y="-44" width="96" height="88" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <g transform="translate(0,-10)">
+            <circle cx="0" cy="-4" r="5" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <path d="M-8,10 C-8,3 -4,-1 0,-1 C4,-1 8,3 8,10" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="20" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">LOGIN</text>
+          <text x="0" y="32" text-anchor="middle" fill="#DA7756" font-size="7" font-weight="500">advisor@salisauto.sa</text>
+        </g>
+
+        <!-- Node 2: CHECK-IN (customer-facing) -->
+        <g class="stage-node" data-stage="checkin" transform="translate(345,160)">
+          <circle cx="0" cy="0" r="50" fill="rgba(218,119,86,0.08)" stroke="none" filter="url(#glow)" opacity="0.5">
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="2"/>
+          <!-- Clipboard + camera icon -->
+          <g transform="translate(0,-10)">
+            <rect x="-10" y="-10" width="12" height="16" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <rect x="-7" y="-13" width="6" height="4" rx="1" stroke="#DA7756" stroke-width="1.2" fill="none"/>
+            <rect x="4" y="-6" width="10" height="8" rx="1.5" stroke="#DA7756" stroke-width="1.2" fill="none"/>
+            <circle cx="9" cy="-2" r="2.5" stroke="#DA7756" stroke-width="1" fill="none"/>
+          </g>
+          <text x="0" y="20" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">CHECK-IN</text>
+          <text x="0" y="32" text-anchor="middle" fill="#DA7756" font-size="8" font-weight="500">Stage 1</text>
+        </g>
+
+        <!-- Node 3: INSPECTION HANDOFF -->
+        <g class="stage-node" data-stage="inspection" transform="translate(600,160)">
+          <circle cx="0" cy="0" r="42" fill="rgba(107,164,217,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-55" y="-48" width="110" height="96" rx="14" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <!-- Magnifying glass + handoff icon -->
+          <g transform="translate(0,-10)">
+            <circle cx="-3" cy="-3" r="7" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <line x1="2" y1="2" x2="8" y2="8" stroke="#6ba4d9" stroke-width="2" stroke-linecap="round"/>
+            <polyline points="4,4 10,4 10,10" stroke="#6ba4d9" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+          </g>
+          <text x="0" y="20" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">INSPECTION</text>
+          <text x="0" y="32" text-anchor="middle" fill="#6ba4d9" font-size="8" font-weight="500">Stage 2 — Handoff</text>
+        </g>
+
+        <!-- Node 4: ESTIMATE CREATION -->
+        <g class="stage-node" data-stage="estimate" transform="translate(870,160)">
+          <circle cx="0" cy="0" r="48" fill="rgba(218,119,86,0.08)" stroke="none" filter="url(#glow)" opacity="0.5">
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="2"/>
+          <!-- Calculator icon -->
+          <g transform="translate(0,-10)">
+            <rect x="-9" y="-10" width="18" height="22" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <rect x="-6" y="-7" width="12" height="5" rx="1" stroke="#DA7756" stroke-width="1" fill="none"/>
+            <text x="0" y="6" text-anchor="middle" fill="#DA7756" font-size="7" font-weight="700">15%</text>
+            <text x="0" y="12" text-anchor="middle" fill="#8a8a93" font-size="5">VAT</text>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">ESTIMATE</text>
+          <text x="0" y="34" text-anchor="middle" fill="#DA7756" font-size="8" font-weight="500">Stage 3</text>
+        </g>
+
+        <!-- Node 5: CUSTOMER COMMUNICATION (customer-facing) -->
+        <g class="stage-node" data-stage="communication" transform="translate(870,370)">
+          <circle cx="0" cy="0" r="48" fill="rgba(125,187,125,0.08)" stroke="none" filter="url(#glow)" opacity="0.5">
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="2"/>
+          <!-- Chat + signature icon -->
+          <g transform="translate(0,-10)">
+            <rect x="-10" y="-8" width="20" height="14" rx="3" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+            <polyline points="-3,6 -3,10 2,6" stroke="#7dbb7d" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+            <line x1="-5" y1="-2" x2="5" y2="-2" stroke="#7dbb7d" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+            <line x1="-5" y1="1" x2="3" y2="1" stroke="#7dbb7d" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+          </g>
+          <text x="0" y="20" text-anchor="middle" fill="#f5f5f7" font-size="9" font-weight="600">CUSTOMER</text>
+          <text x="0" y="32" text-anchor="middle" fill="#f5f5f7" font-size="9" font-weight="600">COMMUNICATION</text>
+        </g>
+
+        <!-- Approval path labels -->
+        <text x="640" y="425" text-anchor="middle" fill="#7dbb7d" font-size="9" font-weight="500">e-Signature approved (&lt;SAR 5K)</text>
+
+        <!-- Escalation box -->
+        <g transform="translate(1100,370)">
+          <rect x="-48" y="-38" width="96" height="76" rx="10" fill="rgba(224,107,107,0.08)" stroke="#e06b6b" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <g transform="translate(0,-12)">
+            <line x1="0" y1="8" x2="0" y2="-6" stroke="#e06b6b" stroke-width="1.5" stroke-linecap="round"/>
+            <polyline points="-5,-2 0,-8 5,-2" stroke="#e06b6b" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="0" y="10" text-anchor="middle" fill="#e06b6b" font-size="9" font-weight="600">ESCALATE</text>
+          <text x="0" y="22" text-anchor="middle" fill="#8a8a93" font-size="8">to Manager</text>
+          <text x="0" y="32" text-anchor="middle" fill="#e06b6b" font-size="7">&gt; SAR 5,000</text>
+        </g>
+
+        <!-- Node 6: MONITOR REPAIR -->
+        <g class="stage-node" data-stage="monitor" transform="translate(390,370)">
+          <circle cx="0" cy="0" r="42" fill="rgba(169,142,224,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-55" y="-48" width="110" height="96" rx="14" fill="rgba(169,142,224,0.06)" stroke="#a98ee0" stroke-width="1.5"/>
+          <!-- Eye/monitor icon -->
+          <g transform="translate(0,-10)">
+            <ellipse cx="0" cy="0" rx="11" ry="7" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+            <circle cx="0" cy="0" r="3.5" stroke="#a98ee0" stroke-width="1.2" fill="none"/>
+            <circle cx="0" cy="0" r="1.2" fill="#a98ee0"/>
+          </g>
+          <text x="0" y="20" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">MONITOR</text>
+          <text x="0" y="32" text-anchor="middle" fill="#a98ee0" font-size="8" font-weight="500">Stages 4-5</text>
+        </g>
+
+        <!-- Node 7: DELIVERY (customer-facing) -->
+        <g class="stage-node" data-stage="delivery" transform="translate(130,370)">
+          <circle cx="0" cy="0" r="48" fill="rgba(125,187,125,0.08)" stroke="none" filter="url(#glow)" opacity="0.5">
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="2"/>
+          <!-- Key handoff icon -->
+          <g transform="translate(0,-10)">
+            <circle cx="-4" cy="-4" r="5" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+            <line x1="0" y1="0" x2="10" y2="10" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="10" y1="10" x2="10" y2="6" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="7" x2="7" y2="4" stroke="#7dbb7d" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="20" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">DELIVERY</text>
+          <text x="0" y="32" text-anchor="middle" fill="#7dbb7d" font-size="8" font-weight="500">Stage 6</text>
+        </g>
+
+        <!-- Sub-labels -->
+        <text x="345" y="222" text-anchor="middle" fill="#8a8a93" font-size="8">Customer | Vehicle | Services | Photos</text>
+        <text x="600" y="222" text-anchor="middle" fill="#8a8a93" font-size="8">Assign to technician</text>
+        <text x="870" y="222" text-anchor="middle" fill="#8a8a93" font-size="8">Parts + Labor + 15% VAT</text>
+        <text x="870" y="432" text-anchor="middle" fill="#8a8a93" font-size="8">Send estimate | e-Signature</text>
+        <text x="390" y="432" text-anchor="middle" fill="#8a8a93" font-size="8">Track repair progress</text>
+        <text x="130" y="432" text-anchor="middle" fill="#8a8a93" font-size="8">Checklist | Notify customer</text>
+
+        <!-- Stage numbers along bottom -->
+        <g transform="translate(0,560)">
+          <text x="345" y="0" text-anchor="middle" fill="rgba(218,119,86,0.4)" font-size="40" font-weight="800">1</text>
+          <text x="600" y="0" text-anchor="middle" fill="rgba(107,164,217,0.3)" font-size="40" font-weight="800">2</text>
+          <text x="870" y="0" text-anchor="middle" fill="rgba(218,119,86,0.4)" font-size="40" font-weight="800">3</text>
+          <text x="870" y="0" text-anchor="middle" fill="rgba(218,119,86,0.0)" font-size="40" font-weight="800">4</text>
+        </g>
+      </svg>
+    </div>
+    <div class="caption-bar" id="captionBar">
+      <span class="label">Hover a node</span>
+      <span>to see details about the Advisor's interaction at each step</span>
+    </div>
+  </div>
+
+  <!-- SAR 5K Approval Section -->
+  <div class="section section-alt">
+    <div class="container">
+      <div class="section-title reveal">SAR 5,000 Approval Ceiling</div>
+      <div class="section-sub reveal">The Service Advisor can approve estimates and authorize work up to SAR 5,000 with customer e-signature — anything above escalates to the Branch Manager</div>
+      <div class="diagram-wrap reveal">
+        <svg id="approvalSvg" viewBox="0 0 1100 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+          <pattern id="dotGrid2" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+            <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.04)"/>
+          </pattern>
+          <rect width="1100" height="200" fill="url(#dotGrid2)"/>
+
+          <!-- Green zone: 0-5K -->
+          <rect x="80" y="40" width="340" height="50" rx="10" fill="rgba(125,187,125,0.1)" stroke="#7dbb7d" stroke-width="1"/>
+          <g transform="translate(110,65)">
+            <circle cx="0" cy="0" r="8" stroke="#7dbb7d" stroke-width="1.2" fill="none"/>
+            <polyline points="-3,0 -1,3 4,-3" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="250" y="60" text-anchor="middle" fill="#7dbb7d" font-size="13" font-weight="700">ADVISOR APPROVES</text>
+          <text x="250" y="78" text-anchor="middle" fill="#7dbb7d" font-size="11">SAR 0 — 5,000 + customer e-sign</text>
+
+          <!-- Gold zone: 5K-50K (Manager) -->
+          <rect x="440" y="40" width="300" height="50" rx="10" fill="rgba(217,184,107,0.08)" stroke="#d9b86b" stroke-width="1"/>
+          <text x="590" y="60" text-anchor="middle" fill="#d9b86b" font-size="13" font-weight="700">MANAGER APPROVES</text>
+          <text x="590" y="78" text-anchor="middle" fill="#d9b86b" font-size="11">SAR 5,001 — 50,000</text>
+
+          <!-- Red zone: >50K (Owner) -->
+          <rect x="760" y="40" width="260" height="50" rx="10" fill="rgba(224,107,107,0.08)" stroke="#e06b6b" stroke-width="1" stroke-dasharray="6 4"/>
+          <text x="890" y="60" text-anchor="middle" fill="#e06b6b" font-size="13" font-weight="700">OWNER APPROVES</text>
+          <text x="890" y="78" text-anchor="middle" fill="#e06b6b" font-size="11">Above SAR 50,000</text>
+
+          <!-- Divider lines -->
+          <line x1="430" y1="35" x2="430" y2="100" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="430" y="118" text-anchor="middle" fill="#DA7756" font-size="10" font-weight="600">SAR 5,000</text>
+          <line x1="750" y1="35" x2="750" y2="100" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="750" y="118" text-anchor="middle" fill="#d9b86b" font-size="10" font-weight="600">SAR 50,000</text>
+
+          <!-- Examples -->
+          <text x="80" y="155" fill="#8a8a93" font-size="11" font-weight="500">Example workflows:</text>
+          <text x="80" y="178" fill="#f5f5f7" font-size="12">Oil change SAR 350</text>
+          <text x="80" y="195" fill="#7dbb7d" font-size="10">Advisor approves + e-sign</text>
+          <text x="320" y="178" fill="#f5f5f7" font-size="12">Brake overhaul SAR 4,800</text>
+          <text x="320" y="195" fill="#7dbb7d" font-size="10">Advisor approves + e-sign</text>
+          <text x="580" y="178" fill="#f5f5f7" font-size="12">Engine rebuild SAR 18,000</text>
+          <text x="580" y="195" fill="#d9b86b" font-size="10">Escalated to Manager</text>
+          <text x="840" y="178" fill="#f5f5f7" font-size="12">Full respray SAR 65,000</text>
+          <text x="840" y="195" fill="#e06b6b" font-size="10">Escalated to Owner</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Touchpoints Diagram -->
+  <div class="section">
+    <div class="section-title reveal">Customer-Facing Touchpoints</div>
+    <div class="section-sub reveal">The Service Advisor is the sole customer contact throughout the lifecycle — 3 direct touchpoints and 1 update channel</div>
+    <div class="diagram-wrap reveal">
+      <svg id="touchSvg" viewBox="0 0 1100 260" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <pattern id="dotGrid3" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.04)"/>
+        </pattern>
+        <rect width="1100" height="260" fill="url(#dotGrid3)"/>
+
+        <!-- Timeline line -->
+        <line x1="80" y1="100" x2="1020" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+
+        <!-- Stage dots and labels -->
+        <!-- Stage 1: Check-In (customer) -->
+        <circle cx="130" cy="100" r="18" fill="rgba(125,187,125,0.15)" stroke="#7dbb7d" stroke-width="2"/>
+        <text x="130" y="105" text-anchor="middle" fill="#7dbb7d" font-size="12" font-weight="700">1</text>
+        <text x="130" y="75" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">Check-In</text>
+        <text x="130" y="135" text-anchor="middle" fill="#7dbb7d" font-size="9">Customer present</text>
+        <text x="130" y="148" text-anchor="middle" fill="#8a8a93" font-size="8">Vehicle drop-off</text>
+
+        <!-- Stage 2: Inspection (no customer) -->
+        <circle cx="290" cy="100" r="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <text x="290" y="105" text-anchor="middle" fill="#8a8a93" font-size="12" font-weight="600">2</text>
+        <text x="290" y="75" text-anchor="middle" fill="#8a8a93" font-size="11">Inspection</text>
+        <text x="290" y="135" text-anchor="middle" fill="#8a8a93" font-size="9">Internal handoff</text>
+
+        <!-- Stage 3: Estimate (customer via digital) -->
+        <circle cx="450" cy="100" r="18" fill="rgba(125,187,125,0.15)" stroke="#7dbb7d" stroke-width="2"/>
+        <text x="450" y="105" text-anchor="middle" fill="#7dbb7d" font-size="12" font-weight="700">3</text>
+        <text x="450" y="75" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">Estimate</text>
+        <text x="450" y="135" text-anchor="middle" fill="#7dbb7d" font-size="9">Send + e-Signature</text>
+        <text x="450" y="148" text-anchor="middle" fill="#8a8a93" font-size="8">SMS / Email</text>
+
+        <!-- Stage 4: Repair (updates) -->
+        <circle cx="610" cy="100" r="16" fill="rgba(169,142,224,0.12)" stroke="#a98ee0" stroke-width="1.5"/>
+        <text x="610" y="105" text-anchor="middle" fill="#a98ee0" font-size="12" font-weight="600">4</text>
+        <text x="610" y="75" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">Repair</text>
+        <text x="610" y="135" text-anchor="middle" fill="#a98ee0" font-size="9">Status updates</text>
+        <text x="610" y="148" text-anchor="middle" fill="#8a8a93" font-size="8">Progress notifications</text>
+
+        <!-- Stage 5: QC (no customer) -->
+        <circle cx="770" cy="100" r="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <text x="770" y="105" text-anchor="middle" fill="#8a8a93" font-size="12" font-weight="600">5</text>
+        <text x="770" y="75" text-anchor="middle" fill="#8a8a93" font-size="11">QC</text>
+        <text x="770" y="135" text-anchor="middle" fill="#8a8a93" font-size="9">Internal only</text>
+
+        <!-- Stage 6: Delivery (customer) -->
+        <circle cx="930" cy="100" r="18" fill="rgba(125,187,125,0.15)" stroke="#7dbb7d" stroke-width="2"/>
+        <text x="930" y="105" text-anchor="middle" fill="#7dbb7d" font-size="12" font-weight="700">6</text>
+        <text x="930" y="75" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">Delivery</text>
+        <text x="930" y="135" text-anchor="middle" fill="#7dbb7d" font-size="9">Customer present</text>
+        <text x="930" y="148" text-anchor="middle" fill="#8a8a93" font-size="8">Vehicle handover</text>
+
+        <!-- Legend -->
+        <circle cx="100" cy="200" r="8" fill="rgba(125,187,125,0.15)" stroke="#7dbb7d" stroke-width="1.5"/>
+        <text x="115" y="204" fill="#7dbb7d" font-size="11">Direct customer contact</text>
+
+        <circle cx="320" cy="200" r="8" fill="rgba(169,142,224,0.12)" stroke="#a98ee0" stroke-width="1.5"/>
+        <text x="335" y="204" fill="#a98ee0" font-size="11">Digital updates</text>
+
+        <circle cx="500" cy="200" r="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+        <text x="515" y="204" fill="#8a8a93" font-size="11">Internal only (no customer contact)</text>
+
+        <!-- VAT note -->
+        <rect x="80" y="230" width="940" height="24" rx="6" fill="rgba(218,119,86,0.06)" stroke="rgba(218,119,86,0.15)" stroke-width="1"/>
+        <text x="550" y="246" text-anchor="middle" fill="#DA7756" font-size="10">All estimates include automatic 15% VAT calculation per Saudi ZATCA requirements</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Lifecycle Stage Table -->
+  <div class="section section-alt">
+    <div class="container">
+    <div class="section-title reveal">Advisor's Role in Each Lifecycle Stage</div>
+    <div class="section-sub reveal">The Service Advisor is the primary actor in 4 of 6 stages and the customer-facing contact throughout the entire lifecycle</div>
+    <div class="diagram-wrap reveal" style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Name</th>
+            <th>Advisor Role</th>
+            <th>Actions</th>
+            <th>Customer Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Check-In</td><td><span class="tag-primary">Primary Actor</span></td><td>Customer lookup, vehicle info, service selection, photo upload, job card creation</td><td><span class="tag-customer">Direct</span></td></tr>
+          <tr><td>2</td><td>Inspection</td><td><span class="tag-support">Handoff</span></td><td>Assign vehicle to technician, set inspection priority, track handoff</td><td><span class="tag-none">None</span></td></tr>
+          <tr><td>3</td><td>Estimate</td><td><span class="tag-primary">Primary Actor</span></td><td>Parts + labor pricing, 15% VAT calculation, estimate creation, approval within SAR 5K</td><td><span class="tag-customer">Send estimate</span></td></tr>
+          <tr><td>4</td><td>Repair</td><td><span class="tag-monitor">Monitor</span></td><td>Track repair progress, update customer on status, handle additional findings</td><td><span class="tag-customer">Updates</span></td></tr>
+          <tr><td>5</td><td>Quality Control</td><td><span class="tag-monitor">Monitor</span></td><td>Track QC status, receive QC pass/fail notifications</td><td><span class="tag-none">None</span></td></tr>
+          <tr><td>6</td><td>Delivery</td><td><span class="tag-primary">Primary Actor</span></td><td>Completion checklist, customer notification, vehicle handover, payment collection</td><td><span class="tag-customer">Direct</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+  var captions = {
+    'login': { label: 'Login', text: 'Service Advisor authenticates via advisor@salisauto.sa — session scoped to assigned branch with SAR 5,000 approval authority' },
+    'checkin': { label: 'Check-In (Stage 1)', text: 'Customer lookup or creation, vehicle details, service type selection, damage photo upload — creates the job card that flows through all 6 stages' },
+    'inspection': { label: 'Inspection Handoff (Stage 2)', text: 'Advisor assigns the vehicle to a technician for multi-point inspection — the Advisor sets priority and tracks the handoff' },
+    'estimate': { label: 'Estimate Creation (Stage 3)', text: 'Parts + labor pricing with automatic 15% VAT calculation — Advisor can approve estimates up to SAR 5,000, must escalate above' },
+    'communication': { label: 'Customer Communication', text: 'Send estimate to customer via SMS/email, collect e-signature approval for amounts under SAR 5K — escalate to Manager above 5K' },
+    'monitor': { label: 'Monitor Repair (Stages 4-5)', text: 'Track repair and QC progress in real time — Advisor updates the customer on status and handles any additional findings that arise' },
+    'delivery': { label: 'Delivery (Stage 6)', text: 'Completion checklist verification, customer notification, vehicle handover, payment collection — the final customer touchpoint' }
+  };
+  var bar = document.getElementById('captionBar');
+  document.querySelectorAll('.stage-node').forEach(function(node){
+    node.addEventListener('mouseenter', function(){
+      var key = node.getAttribute('data-stage');
+      var c = captions[key];
+      if(c){
+        bar.innerHTML = '<span class="label">' + c.label + '</span><span>' + c.text + '</span>';
+        bar.style.borderColor = 'rgba(218,119,86,0.25)';
+      }
+    });
+    node.addEventListener('mouseleave', function(){
+      bar.innerHTML = '<span class="label">Hover a node</span><span>to see details about the Advisor\'s interaction at each step</span>';
+      bar.style.borderColor = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>

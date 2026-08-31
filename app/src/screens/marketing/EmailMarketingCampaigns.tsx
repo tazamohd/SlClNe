@@ -1,93 +1,180 @@
+import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { DataTable, type Column } from '@/components/ui/DataTable'
+import { Money, parseSar } from '@/components/ui/Money'
+import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
+import { ErrorState } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-const MOCK_CAMPAIGNS = [
-  { id: 'EC-001', name: 'Summer Service Special', subject: '20% Off All AC Services', recipients: 2450, sent: 2380, opened: 1428, clicked: 356, status: 'Completed', date: '2026-07-15' },
-  { id: 'EC-002', name: 'Oil Change Reminder', subject: 'Your Vehicle is Due for Service', recipients: 1800, sent: 1780, opened: 1246, clicked: 534, status: 'Completed', date: '2026-07-28' },
-  { id: 'EC-003', name: 'New Customer Welcome', subject: 'Welcome to SALIS AUTO', recipients: 320, sent: 320, opened: 256, clicked: 128, status: 'Active', date: '2026-08-01' },
-  { id: 'EC-004', name: 'Parts Flash Sale', subject: 'Limited Time: 30% Off Parts', recipients: 3200, sent: 0, opened: 0, clicked: 0, status: 'Scheduled', date: '2026-08-20' },
-  { id: 'EC-005', name: 'Loyalty Points Update', subject: 'Your Rewards Summary', recipients: 1560, sent: 1540, opened: 924, clicked: 231, status: 'Completed', date: '2026-07-01' },
-  { id: 'EC-006', name: 'Workshop Newsletter', subject: 'Monthly Workshop Update', recipients: 4100, sent: 0, opened: 0, clicked: 0, status: 'Draft', date: '—' },
-  { id: 'EC-007', name: 'Insurance Renewal', subject: 'Your Insurance is Expiring Soon', recipients: 680, sent: 670, opened: 469, clicked: 201, status: 'Completed', date: '2026-07-10' },
-  { id: 'EC-008', name: 'Eid Service Offer', subject: 'Prepare Your Car for Eid', recipients: 5200, sent: 0, opened: 0, clicked: 0, status: 'Scheduled', date: '2026-09-15' },
-] as const
+/** Email Marketing Campaigns (`/email-marketing-campaigns`) — the email channel
+ *  of the `campaigns` collection (`GET /crm/campaigns`), read through the
+ *  repository seam and filtered to `type === 'email'`.
+ *
+ *  The collection carries a campaign's name, channel, status, reach, opens,
+ *  clicks, conversions and the budget and spend the server formatted. It does
+ *  not carry a subject line, a per-send delivery count or a send date, so those
+ *  three columns are gone rather than filled with a number nothing produced —
+ *  the gap line names the read that would supply them.
+ *
+ *  Rates are per record: one campaign's opens over its own reach. The KPI row
+ *  counts records and sums audience counts, never money — each campaign's spend
+ *  and budget are shown as the server formatted them and are not added up here.
+ */
 
-type Campaign = (typeof MOCK_CAMPAIGNS)[number]
+type Campaign = RowOf<'campaigns'>
 
 const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Completed: ['var(--tint-neutral)', 'var(--text-muted)'],
-  Scheduled: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Draft: ['var(--tint-navy)', 'var(--salis-navy)'],
+  running: ['var(--tint-blue)', 'var(--salis-blue)'],
+  completed: ['var(--tint-neutral)', 'var(--text-muted)'],
+  scheduled: ['var(--tint-orange)', 'var(--salis-orange)'],
+  draft: ['var(--tint-navy)', 'var(--salis-navy)'],
+}
+
+function StatusBadge({ value }: { value: string }) {
+  const { t } = usePreferences()
+  const [bg, fg] = STATUS_COLORS[value] ?? STATUS_COLORS.draft
+  return (
+    <Badge background={bg} color={fg}>
+      {t(value.charAt(0).toUpperCase() + value.slice(1))}
+    </Badge>
+  )
+}
+
+/** A rate the row itself supports: this campaign's own two counts. Never a
+ *  ratio of one page's sums presented as the campaign's performance. */
+function rate(part: number, whole: number): string {
+  return whole > 0 ? `${Math.round((part / whole) * 100)}%` : '—'
+}
+
+/** What `GET /crm/campaigns` does not return, named rather than invented. */
+function FieldGap() {
+  const { t } = usePreferences()
+  return (
+    <p className="flex items-start gap-1.5 text-[11px] text-muted">
+      <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+      <span>
+        {t('Not recorded in this dataset')}: {t('Subject')}, {t('Sent')}, {t('Date')}.{' '}
+        {t('Endpoint')}:{' '}
+        <span dir="ltr" className="font-mono text-body">
+          GET /crm/campaigns/:id/messages
+        </span>
+      </span>
+    </p>
+  )
 }
 
 export function EmailMarketingCampaigns() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const { data: all = [], isLoading, isError, error, refetch } = useCollection('campaigns')
 
-  const totalSent = MOCK_CAMPAIGNS.reduce((a, c) => a + c.sent, 0)
-  const totalOpened = MOCK_CAMPAIGNS.reduce((a, c) => a + c.opened, 0)
-  const totalClicked = MOCK_CAMPAIGNS.reduce((a, c) => a + c.clicked, 0)
-  const openRate = totalSent > 0 ? Math.round((totalOpened / totalSent) * 100) : 0
-  const clickRate = totalOpened > 0 ? Math.round((totalClicked / totalOpened) * 100) : 0
+  const campaigns = useMemo(() => all.filter((c) => c.type === 'email'), [all])
+
+  /** Audience counts, not money. Summing recipients is arithmetic over counts;
+   *  summing spend would be a period total the server owns, so it is not done. */
+  const totals = useMemo(
+    () => ({
+      reach: campaigns.reduce((sum, c) => sum + c.reach, 0),
+      conversions: campaigns.reduce((sum, c) => sum + c.conversions, 0),
+      scheduled: campaigns.filter((c) => c.status === 'scheduled').length,
+    }),
+    [campaigns],
+  )
 
   const kpis = [
-    { label: t('Total Campaigns'), value: String(MOCK_CAMPAIGNS.length), icon: 'Mail', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Emails Sent'), value: totalSent.toLocaleString(), icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Open Rate'), value: `${openRate}%`, icon: 'Eye', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Click Rate'), value: `${clickRate}%`, icon: 'MousePointerClick', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Campaigns'), value: String(campaigns.length), icon: 'Mail', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Reach'), value: totals.reach.toLocaleString('en-US'), icon: 'Send', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Conversions'), value: totals.conversions.toLocaleString('en-US'), icon: 'MousePointerClick', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Scheduled'), value: String(totals.scheduled), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Campaign>[] = [
-    { header: 'Campaign', cell: (c) => <span className="font-medium text-heading">{c.name}</span> },
-    { header: 'Subject', cell: (c) => <span className="text-[13px] text-muted">{c.subject}</span> },
-    { header: 'Recipients', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.recipients.toLocaleString()}</span> },
-    { header: 'Sent', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.sent.toLocaleString()}</span> },
-    { header: 'Open Rate', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.sent > 0 ? `${Math.round((c.opened / c.sent) * 100)}%` : '--'}</span> },
-    { header: 'Click Rate', cell: (c) => <span className="font-mono text-[13px] text-heading">{c.opened > 0 ? `${Math.round((c.clicked / c.opened) * 100)}%` : '--'}</span> },
+    { header: 'Campaign', cell: (c) => <span className="font-medium text-heading">{t(c.name)}</span> },
     {
-      header: 'Status',
-      cell: (c) => {
-        const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Draft
-        return <Badge background={bg} color={fg}>{t(c.status)}</Badge>
-      },
+      header: 'Recipients',
+      cell: (c) => (
+        <span className="font-mono text-[13px] text-heading" dir="ltr">
+          {c.reach.toLocaleString('en-US')}
+        </span>
+      ),
     },
+    {
+      header: 'Open Rate',
+      cell: (c) => (
+        <span className="font-mono text-[13px] text-heading" dir="ltr">
+          {rate(c.opens, c.reach)}
+        </span>
+      ),
+    },
+    {
+      header: 'Click Rate',
+      cell: (c) => (
+        <span className="font-mono text-[13px] text-heading" dir="ltr">
+          {rate(c.clicks, c.opens)}
+        </span>
+      ),
+    },
+    {
+      header: 'Conversions',
+      cell: (c) => (
+        <span className="font-mono text-[13px] text-heading" dir="ltr">
+          {c.conversions}
+        </span>
+      ),
+    },
+    { header: 'Spent', cell: (c) => <Money sar={parseSar(c.spent)} />, className: 'text-end' },
+    { header: 'Budget', cell: (c) => <Money sar={parseSar(c.budget)} className="text-muted" />, className: 'text-end' },
+    { header: 'Status', cell: (c) => <StatusBadge value={c.status} /> },
   ]
+
+  if (isError) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+        <PageHeader icon="Mail" title={t('Email Campaigns')} subtitle={t('Email marketing campaign management')} />
+        <Card className="p-6">
+          <ErrorState description={error?.message} onRetry={() => void refetch()} />
+        </Card>
+      </div>
+    )
+  }
 
   const table = (
     <DataTable
-      caption="Email campaigns"
+      caption="Marketing campaigns"
       columns={columns}
-      rows={MOCK_CAMPAIGNS as unknown as Campaign[]}
-      rowKey={(c) => c.id}
-      mobileCard={(c) => {
-        const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Draft
-        return (
-          <>
-            <MobileCardHeader
-              leading={
-                <div className="flex items-center gap-2">
-                  <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Mail" size={14} /></span>
-                  <div>
-                    <p className="text-[13px] font-semibold text-heading">{c.name}</p>
-                    <p className="text-xs text-muted">{c.subject}</p>
-                  </div>
+      rows={campaigns}
+      rowKey={(c, index) => `${c.name}-${index}`}
+      loading={isLoading}
+      mobileCard={(c) => (
+        <>
+          <MobileCardHeader
+            leading={
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
+                  <Icon name="Mail" size={14} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-semibold text-heading">{t(c.name)}</p>
+                  <p className="text-xs text-muted">{t('Email Marketing')}</p>
                 </div>
-              }
-              trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>}
-            />
-            <MobileCardRow label={t('Recipients')}>{c.recipients.toLocaleString()}</MobileCardRow>
-            <MobileCardRow label={t('Opened')}>{c.sent > 0 ? `${Math.round((c.opened / c.sent) * 100)}%` : '--'}</MobileCardRow>
-          </>
-        )
-      }}
+              </div>
+            }
+            trailing={<StatusBadge value={c.status} />}
+          />
+          <MobileCardRow label={t('Recipients')}>{c.reach.toLocaleString('en-US')}</MobileCardRow>
+          <MobileCardRow label={t('Opened')}>{rate(c.opens, c.reach)}</MobileCardRow>
+          <MobileCardRow label={t('Spent')}>
+            <Money sar={parseSar(c.spent)} className="font-semibold text-heading" />
+          </MobileCardRow>
+        </>
+      )}
+      empty={<EmptyState icon="Mail" title={t('No campaigns yet')} />}
     />
   )
 
@@ -96,7 +183,7 @@ export function EmailMarketingCampaigns() {
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Mail" title={t('Email Campaigns')} subtitle={t('Marketing')} />
         <div className="grid grid-cols-2 gap-3">
-          {kpis.map(k => (
+          {kpis.map((k) => (
             <Card key={k.label} className="rounded-lg p-3">
               <p className="text-[11px] font-medium text-muted">{k.label}</p>
               <p className="mt-1 font-display text-lg font-black text-heading">{k.value}</p>
@@ -104,6 +191,7 @@ export function EmailMarketingCampaigns() {
           ))}
         </div>
         {table}
+        <FieldGap />
       </div>
     )
   }
@@ -115,12 +203,13 @@ export function EmailMarketingCampaigns() {
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map(k => (
+        {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
 
       {table}
+      <FieldGap />
     </div>
   )
 }

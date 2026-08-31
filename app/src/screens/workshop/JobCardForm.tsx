@@ -44,6 +44,7 @@ const jobCardForm = z.object({
   ]),
   priority: z.enum(['low', 'medium', 'high', 'urgent']),
   complaint: z.string().trim().max(4000).optional(),
+  authorization: z.string().optional(),
 })
 
 type JobCardFormValues = z.input<typeof jobCardForm>
@@ -93,6 +94,7 @@ export function JobCardForm({
       service: (job?.svc ?? 'maintenance') as JobCardFormValues['service'],
       priority: (job?.pr ?? 'medium') as JobCardFormValues['priority'],
       complaint: '',
+      authorization: '',
     } satisfies JobCardFormValues,
     async onSubmit(values) {
       const input = values as unknown as Partial<RowOf<'jobs'>>
@@ -228,6 +230,12 @@ export function JobCardForm({
           label="Reported Issues"
           kind="textarea"
           placeholder={t('Describe reported issues...')}
+        />
+        <Field
+          name="authorization"
+          label="Customer Authorization"
+          kind="signature"
+          hint="Customer signature authorizing the work."
         />
         {/* The footer carries the visible buttons; this keeps Enter working
             from any field, which is what a keyboard user expects. */}

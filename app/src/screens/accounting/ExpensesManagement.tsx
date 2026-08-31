@@ -1,114 +1,180 @@
 import { useMemo } from 'react'
-import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScreen'
-import { Money, formatSar } from '@/components/ui/Money'
+import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
+import { Money, parseSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
+import { Card } from '@/components/ui/Card'
+import { CountBars } from '@/components/ui/Charts'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
+import { Icon } from '@/components/ui/Icon'
+import { ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import {
-  MobileCardHeader,
-  MobileCardRow,
-} from '@/components/shell/MobileShell'
+import { usePagedCollection, type RowOf } from '@/data/useCollection'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 
-interface ExpenseCategory {
-  name: string
-  budget: number
-  spent: number
-  remaining: number
-  transactions: number
-  status: string
-}
+/** Expenses Management (`/expenses-management`) — the expense ledger, read from
+ *  `expenses` (`GET /accounting/expenses`) through the repository seam.
+ *
+ *  ── Why this screen no longer shows a budget ──────────────────────────────
+ *
+ *  It used to render eight categories with a budget, a spend, a remaining
+ *  balance and a utilisation bar, all from a local array. None of that exists on
+ *  the server: there is no budget collection, and no endpoint sums expense spend
+ *  by category. Keeping those columns against live rows would have meant either
+ *  inventing a budget or adding up a page of rows and calling it the month —
+ *  and a fabricated figure on a finance screen reads as real. So the money
+ *  columns the server owns are gone, the gap names the read that would supply
+ *  them, and every amount shown is one record's own server figure, displayed and
+ *  never re-derived (§A10: the server computes, the client displays).
+ *
+ *  What is left is honest and still useful: the record count the server reports
+ *  for the collection, the categories present with a count of claims in each
+ *  (counting records is not a financial calculation), and the expense rows
+ *  themselves.
+ */
 
-const MOCK_CATEGORIES: readonly ExpenseCategory[] = [
-  { name: 'Salaries & Wages', budget: 90000_00, spent: 85000_00, remaining: 5000_00, transactions: 12, status: 'At Limit' },
-  { name: 'Parts & Materials', budget: 60000_00, spent: 48000_00, remaining: 12000_00, transactions: 34, status: 'Under Budget' },
-  { name: 'Rent & Lease', budget: 35000_00, spent: 35000_00, remaining: 0, transactions: 1, status: 'At Limit' },
-  { name: 'Utilities', budget: 8000_00, spent: 6200_00, remaining: 1800_00, transactions: 4, status: 'Under Budget' },
-  { name: 'Vehicle Expenses', budget: 15000_00, spent: 17500_00, remaining: -2500_00, transactions: 8, status: 'Over Budget' },
-  { name: 'Insurance', budget: 12000_00, spent: 12000_00, remaining: 0, transactions: 2, status: 'At Limit' },
-  { name: 'Marketing', budget: 10000_00, spent: 6500_00, remaining: 3500_00, transactions: 5, status: 'Under Budget' },
-  { name: 'Miscellaneous', budget: 5000_00, spent: 3200_00, remaining: 1800_00, transactions: 7, status: 'Under Budget' },
-]
+type Expense = RowOf<'expenses'>
 
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  'Under Budget': ['var(--tint-blue)', 'var(--salis-blue)'],
-  'Over Budget': ['var(--tint-orange)', 'var(--salis-orange)'],
-  'At Limit': ['var(--tint-navy)', 'var(--salis-navy)'],
+  approved: ['var(--tint-blue)', 'var(--salis-blue)'],
+  pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  rejected: ['var(--tint-neutral)', 'var(--text-muted)'],
+}
+
+function ExpenseStatus({ value }: { value: string }) {
+  const { t } = usePreferences()
+  const [bg, fg] = STATUS_PALETTE[value] ?? STATUS_PALETTE.pending
+  return (
+    <Badge background={bg} color={fg}>
+      {t(value.charAt(0).toUpperCase() + value.slice(1))}
+    </Badge>
+  )
+}
+
+/** The budget side of "budget tracking", named as absent rather than invented.
+ *  `GET /accounting/expenses` returns claims, not budgets, and no endpoint rolls
+ *  spend up against one. */
+function BudgetGap() {
+  const { t } = usePreferences()
+  return (
+    <p className="flex items-start gap-1.5 text-[11px] text-muted">
+      <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+      <span>
+        {t('Not recorded in this dataset')}: {t('Budget')}, {t('Remaining')}, {t('Progress')}.{' '}
+        {t('Server aggregate:')}{' '}
+        <span dir="ltr" className="font-mono text-body">
+          GET /accounting/expenses/summary
+        </span>
+      </span>
+    </p>
+  )
+}
+
+function countByCategory(rows: readonly Expense[]): { label: string; value: number }[] {
+  const counts = new Map<string, number>()
+  for (const row of rows) {
+    const key = row.category || '—'
+    counts.set(key, (counts.get(key) ?? 0) + 1)
+  }
+  return [...counts.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value)
 }
 
 export function ExpensesManagement() {
   const { t } = usePreferences()
+  const { data, isLoading, isError, error, refetch } = usePagedCollection('expenses')
 
-  const totals = useMemo(() => {
-    let budget = 0
-    let spent = 0
-    let overBudget = 0
-    let underBudget = 0
-    for (const c of MOCK_CATEGORIES) {
-      budget += c.budget
-      spent += c.spent
-      if (c.status === 'Over Budget') overBudget++
-      if (c.status === 'Under Budget') underBudget++
-    }
-    return { budget, spent, remaining: budget - spent, overBudget, underBudget, count: MOCK_CATEGORIES.length }
-  }, [])
+  const rows = useMemo(() => (data?.rows ?? []) as readonly Expense[], [data])
+  const byCategory = useMemo(() => countByCategory(rows), [rows])
+
+  /** Counts, not sums. The server's own record total for the collection where
+   *  it reports one; otherwise the rows in hand, which is what is on screen. */
+  const serverTotal = data?.page.total
+  const approved = rows.filter((row) => row.status === 'approved').length
+  const pending = rows.filter((row) => row.status === 'pending').length
 
   const stats: Stat[] = [
-    { label: 'Total Budget', value: formatSar(totals.budget), caption: 'Monthly budget', highlight: true },
-    { label: 'Total Spent', value: formatSar(totals.spent), caption: `${Math.round((totals.spent / totals.budget) * 100)}% utilized` },
-    { label: 'Remaining', value: formatSar(totals.remaining), caption: 'Available balance', tone: 'info' },
-    { label: 'Over Budget', value: totals.overBudget, caption: 'Categories exceeded', tone: 'warning' },
+    {
+      label: 'Expenses',
+      value: serverTotal ?? rows.length,
+      caption: 'records on the server',
+      highlight: true,
+    },
+    { label: 'Expense Categories', value: byCategory.length, caption: 'Expenses by category' },
+    { label: 'Approved', value: approved, caption: 'Processed' },
+    { label: 'Pending', value: pending, caption: 'Count of expense claims', tone: 'warning' },
   ]
 
-  const columns: Column<ExpenseCategory>[] = [
-    { header: 'Category', cell: (c) => <span className="font-medium text-heading">{t(c.name)}</span> },
-    { header: 'Budget', cell: (c) => <Money sar={c.budget} />, className: 'text-end' },
-    { header: 'Spent', cell: (c) => <Money sar={c.spent} className="font-semibold" />, className: 'text-end' },
-    { header: 'Remaining', cell: (c) => <Money sar={c.remaining} className={c.remaining < 0 ? 'text-salis-orange' : ''} />, className: 'text-end' },
-    { header: 'Transactions', cell: (c) => c.transactions, className: 'text-end' },
-    { header: 'Progress', cell: (c) => {
-      const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
-      return (
-        <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]" style={{ minWidth: 100 }}>
-          <div className={`h-full rounded-full ${pct > 100 ? 'bg-salis-orange' : 'bg-salis-blue'}`} style={{ width: `${Math.min(pct, 100)}%` }} />
-        </div>
-      )
-    } },
-    { header: 'Status', cell: (c) => {
-      const [bg, fg] = STATUS_PALETTE[c.status] ?? STATUS_PALETTE['Under Budget']
-      return <Badge background={bg} color={fg}>{t(c.status)}</Badge>
-    } },
+  const columns: Column<Expense>[] = [
+    { header: 'Expense #', cell: (e) => e.id, code: true },
+    {
+      header: 'Date',
+      cell: (e) => (
+        <span dir="ltr" className="text-muted">
+          {e.date}
+        </span>
+      ),
+    },
+    { header: 'Category', cell: (e) => t(e.category) },
+    { header: 'Vendor', cell: (e) => e.vendor },
+    {
+      header: 'Amount',
+      cell: (e) => <Money sar={parseSar(e.amount)} className="font-semibold" />,
+      className: 'text-end',
+    },
+    { header: 'Status', cell: (e) => <ExpenseStatus value={e.status} /> },
   ]
+
+  if (isError) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+        <FeatureHeader
+          icon="CreditCard"
+          title={t('Expenses Management')}
+          subtitle={t('All expense submissions with approval status')}
+        />
+        <Card className="p-6">
+          <ErrorState description={error?.message} onRetry={() => void refetch()} />
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <FeatureHeader
         icon="CreditCard"
         title={t('Expenses Management')}
-        subtitle={t('Expense categories with budget tracking')}
+        subtitle={t('All expense submissions with approval status')}
       />
       <StatRow stats={stats} />
+      <BudgetGap />
+
+      <Section title={t('Expenses by category')} subtitle={t('Count of expense claims')}>
+        {byCategory.length ? (
+          <CountBars rows={byCategory} />
+        ) : (
+          <EmptyState icon="Receipt" title={t('No expenses')} />
+        )}
+      </Section>
 
       <DataTable
-        caption="Expense categories"
+        caption="Expenses"
         columns={columns}
-        rows={MOCK_CATEGORIES as ExpenseCategory[]}
-        rowKey={(c) => c.name}
-        mobileCard={(c) => {
-          const pct = c.budget > 0 ? Math.round((c.spent / c.budget) * 100) : 0
-          const [bg, fg] = STATUS_PALETTE[c.status] ?? STATUS_PALETTE['Under Budget']
-          return (
-            <>
-              <MobileCardHeader title={t(c.name)} trailing={<Badge background={bg} color={fg}>{t(c.status)}</Badge>} />
-              <MobileCardRow label={t('Spent / Budget')}>
-                <span dir="ltr" className="text-[12px]">
-                  <Money sar={c.spent} bare /> / <Money sar={c.budget} bare />
-                </span>
-              </MobileCardRow>
-              <MobileCardRow label={t('Progress')}>{pct}%</MobileCardRow>
-            </>
-          )
-        }}
-        empty={<EmptyState icon="CreditCard" title={t('No expense categories found')} />}
+        rows={rows}
+        rowKey={(e, index) => String(e.id ?? index)}
+        loading={isLoading}
+        mobileCard={(e) => (
+          <>
+            <MobileCardHeader title={e.id} code trailing={<ExpenseStatus value={e.status} />} />
+            <MobileCardRow>{e.vendor}</MobileCardRow>
+            <MobileCardRow label={t('Category')}>{t(e.category)}</MobileCardRow>
+            <MobileCardRow label={t('Amount')}>
+              <Money sar={parseSar(e.amount)} className="font-semibold text-heading" />
+            </MobileCardRow>
+          </>
+        )}
+        empty={<EmptyState icon="CreditCard" title={t('No expenses recorded')} />}
       />
     </div>
   )

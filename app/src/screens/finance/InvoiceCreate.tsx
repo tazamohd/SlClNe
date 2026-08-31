@@ -129,6 +129,7 @@ export function InvoiceCreate() {
             customerName: z.string().trim().min(1, 'Name the customer this invoice bills.'),
             dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Give a due date.'),
             discount: z.string(),
+            discountPercent: z.string(),
             buyerVatNumber: z.string(),
             notes: z.string(),
             lines: z.array(lineSchema).min(1, 'Add at least one line item before sending.'),
@@ -140,6 +141,16 @@ export function InvoiceCreate() {
                 path: ['discount'],
                 message: 'That is not an amount.',
               })
+            }
+            if (values.discountPercent.trim()) {
+              const pct = Number(values.discountPercent)
+              if (!Number.isFinite(pct) || pct < 0 || pct > 100) {
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  path: ['discountPercent'],
+                  message: 'Enter a value between 0 and 100.',
+                })
+              }
             }
             if (values.buyerVatNumber.trim() && !/^3\d{13}3$/.test(values.buyerVatNumber.trim())) {
               ctx.addIssue({
@@ -155,6 +166,7 @@ export function InvoiceCreate() {
       customerName: '',
       dueDate: dueInDays(30),
       discount: '',
+      discountPercent: '',
       buyerVatNumber: '',
       notes: '',
       lines: INITIAL_LINES,
@@ -169,6 +181,9 @@ export function InvoiceCreate() {
             lines: values.lines.map(toLineInput),
             ...(values.discount.trim()
               ? { discountHalalas: Math.max(0, toHalalas(values.discount) ?? 0) }
+              : {}),
+            ...(values.discountPercent.trim()
+              ? { discountPercent: Number(values.discountPercent) }
               : {}),
             ...(values.buyerVatNumber.trim()
               ? { buyerVatNumber: values.buyerVatNumber.trim() }
@@ -323,6 +338,7 @@ export function InvoiceCreate() {
                 <Field
                   name="buyerVatNumber"
                   label="VAT registration"
+                  kind="vat"
                   placeholder="310456789012345"
                   hint="Optional. Required only for VAT-registered customers."
                   readOnly={Boolean(saved)}
@@ -332,7 +348,15 @@ export function InvoiceCreate() {
                   label="Discount"
                   kind="currency"
                   placeholder="0.00"
-                  hint="Applied before VAT, by the server."
+                  hint="Fixed amount applied before VAT, by the server."
+                  readOnly={Boolean(saved)}
+                />
+                <Field
+                  name="discountPercent"
+                  label="Discount %"
+                  kind="percentage"
+                  placeholder="0"
+                  hint="Percentage discount. The server applies whichever is greater."
                   readOnly={Boolean(saved)}
                 />
               </div>

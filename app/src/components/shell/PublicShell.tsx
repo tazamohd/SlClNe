@@ -62,9 +62,13 @@ export function PublicShell({ children }: { children: ReactNode }) {
           className="flex items-center gap-2 no-underline hover:no-underline"
           aria-label={t('SALIS AUTO home')}
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-salis-gradient text-white">
-            <Icon name="Car" size={16} />
-          </span>
+          <img
+            src="/assets/logo-blue-orange.png"
+            alt=""
+            width={500}
+            height={500}
+            className="h-10 w-10 object-contain"
+          />
           <span dir="ltr" className="font-display text-base font-extrabold text-heading">
             SALIS AUTO
           </span>

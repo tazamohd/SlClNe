@@ -242,12 +242,12 @@ export function VehicleFormModal({
         <Field
           name="ownerRef"
           label="Owner"
-          kind="select"
+          kind="searchselect"
           options={owners.map((owner) => ({ value: owner.value, label: owner.name }))}
           placeholder={t('No owner on record')}
         />
         <Field name="mileage" label="Mileage" placeholder="42180" hint="Kilometres on the odometer." />
-        <Field name="vin" label="VIN" hint="Optional. 17 characters." />
+        <Field name="vin" label="VIN" kind="vin" hint="Optional. 17 characters." />
         <Field name="status" label="Status" kind="select" options={STATUS_OPTIONS} required />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
           {t(editing ? 'Save Changes' : 'Add Vehicle')}

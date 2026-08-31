@@ -34,7 +34,55 @@ const DOCS = path.join(REPO, 'docs')
 
 const read = (p) => fs.readFileSync(p, 'utf8')
 const readApp = (rel) => read(path.join(APP, rel))
+/** The three shapes the date stamp is written in. Each captures the date, so
+ *  the same list both locates a stamp and bounds what may be masked out of it. */
+const STAMP_PATTERNS = [
+  /"generatedAt":\s*"(\d{4}-\d{2}-\d{2})"/,
+  /REGISTRY_GENERATED_AT = '(\d{4}-\d{2}-\d{2})'/,
+  /build-registry\.mjs on (\d{4}-\d{2}-\d{2})/,
+]
+
+/** Replaces the date *inside each stamp* with a fixed placeholder, leaving any
+ *  other date in the file alone. Anchoring to the stamp shapes rather than
+ *  replacing the bare date value matters both ways: a data field that happens
+ *  to hold the old stamp's date must not be masked away (that would hide real
+ *  drift), and one holding a date the stamp has since moved past must not be
+ *  left unmasked on one side only (that would put the churn back). */
+const maskStamps = (text) =>
+  STAMP_PATTERNS.reduce((t, re) => t.replace(re, (m, d) => m.replace(d, '0000-00-00')), text)
+
+/** A checkout's line endings are the reader's, not the generator's: git's
+ *  Windows default hands back CRLF for blobs stored as LF. Comparing raw would
+ *  make every file differ on those machines and defeat the guard entirely. */
+const normalise = (text) => text.replace(/\r\n/g, '\n')
+
+/** Writes only when something other than the date changed, and reports whether
+ *  it did — `null` for a file left alone.
+ *
+ *  Every generated file carries `generatedAt`, so a regeneration on a later day
+ *  rewrote all twelve of them with one line different and nothing else. CI's
+ *  "registry is current" step is a `git diff --exit-code`, so that turned a
+ *  content check into a calendar check — red on any run dated after the last
+ *  regeneration, for a diff of twelve identical date lines.
+ *
+ *  Deriving the stamp from the last commit rather than the wall clock narrowed
+ *  it but did not close it: the stamp then moves on *every* commit, including
+ *  the ones that touch nothing this script reads, so an unrelated commit a day
+ *  later still reddened the step. Filtering `git log` by input path would fix
+ *  that locally and break it on CI, where `actions/checkout` clones to depth 1
+ *  and there is no history to filter.
+ *
+ *  So the guard is content, not history, and needs neither. Compare the new
+ *  body against the old with the stamps masked out: identical means only the
+ *  date moved, and the file on disk is left exactly as it is. The stamp
+ *  therefore records when the content last changed, which is what a reader
+ *  wants from it anyway, and regeneration is idempotent everywhere — shallow
+ *  clone, deep clone, CRLF checkout, or no git at all. */
 const write = (abs, body) => {
+  if (fs.existsSync(abs)) {
+    const prev = fs.readFileSync(abs, 'utf8')
+    if (normalise(maskStamps(prev)) === normalise(maskStamps(body))) return null
+  }
   fs.mkdirSync(path.dirname(abs), { recursive: true })
   fs.writeFileSync(abs, body)
   return path.relative(REPO, abs)
@@ -155,6 +203,44 @@ const designFiles = fs.existsSync(PROJECT)
 const designDesktop = new Set(designFiles.filter((f) => !f.includes('.Mobile.')).map((f) => f.replace('.dc.html', '')))
 const designMobile = new Set(designFiles.filter((f) => f.includes('.Mobile.')).map((f) => f.replace('.Mobile.dc.html', '')))
 
+/** `[registryName, componentName]` for every entry in a domain barrel.
+ *
+ *  A barrel maps the registry's name for a screen onto the component that
+ *  renders it — `'General-Ledger': GeneralLedger` — and the two are spelled
+ *  differently on purpose: the registry name comes from the spec, the component
+ *  name is a JS identifier. Anything that detects a fact by reading a component
+ *  therefore has to come back through this table, or it reports on a name the
+ *  registry never asks about.
+ *
+ *  Two things had to be right for that to work. The key charset is `[\w.-]`,
+ *  not `\w`: over half the registry is hyphenated — 205 of 424 entries — and a
+ *  word class stops at the first hyphen, so those keys matched a fragment or
+ *  nothing, silently capping three detectors at once. And barrels declare a
+ *  screen in two shapes; 56 entries use the object form to name a shell beside
+ *  the component, where the bare pattern matches the inner `component:` pair
+ *  instead and leaves the real screen name unmapped. */
+const BARREL_ALIASES = (() => {
+  const pairs = []
+  const domainsDir = path.join(APP, 'src/screens/domains')
+  if (!fs.existsSync(domainsDir)) return pairs
+  const OBJECT_FORM = /['"]?([\w.-]+?)['"]?\s*:\s*\{\s*component\s*:\s*(\w+)/g
+  //  ScreenName: wrapper(ImportedName)   or   ScreenName: ImportedName,
+  const BARE_FORM = /['"]?([\w.-]+?)['"]?\s*:\s*(?:\w+\()?\s*([A-Z]\w*)\s*\)?\s*[,}]/g
+  const STRUCTURAL = new Set(['component', 'shell'])
+  for (const f of fs.readdirSync(domainsDir).filter((n) => n.endsWith('.ts'))) {
+    try {
+      const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
+      for (const re of [OBJECT_FORM, BARE_FORM]) {
+        for (const m of src.matchAll(re)) {
+          if (STRUCTURAL.has(m[1])) continue
+          pairs.push([m[1], m[2]])
+        }
+      }
+    } catch (_) { /* skip unreadable */ }
+  }
+  return pairs
+})()
+
 /** Screens whose source file already contains a useIsMobile / isMobile branch.
  *  This is how the builder upgrades a designed-mobile screen from MISSING → DONE
  *  once an agent has actually wired up the mobile layout. */
@@ -180,21 +266,8 @@ const mobileImplemented = (() => {
 
   // Also resolve domain barrel aliases: a barrel maps ScreenName → ImportedComponent,
   // so if the ImportedComponent is in our set, the ScreenName should be too.
-  const domainsDir = path.join(screensDir, 'domains')
-  if (fs.existsSync(domainsDir)) {
-    for (const f of fs.readdirSync(domainsDir).filter(n => n.endsWith('.ts'))) {
-      try {
-        const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
-        // Match patterns like:  ScreenName: wrapper(ImportedName)  or  ScreenName: ImportedName,
-        for (const m of src.matchAll(/['"]?(\w[\w.]*?)['"]?\s*:\s*(?:\w+\()?\s*(\w+)\s*\)?\s*[,}]/g)) {
-          const screenName = m[1]
-          const componentName = m[2]
-          if (names.has(componentName) && !names.has(screenName)) {
-            names.add(screenName)
-          }
-        }
-      } catch (_) { /* skip unreadable */ }
-    }
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (names.has(componentName)) names.add(screenName)
   }
 
   return names
@@ -225,20 +298,97 @@ const stateImplemented = (() => {
   }
   walk(screensDir)
 
-  const domainsDir = path.join(screensDir, 'domains')
-  if (fs.existsSync(domainsDir)) {
-    for (const f of fs.readdirSync(domainsDir).filter(n => n.endsWith('.ts'))) {
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+
+  return map
+})()
+
+/** Screens that read through the repository seam, and the collections they ask
+ *  for. Maps component name → { keys: string[] }.
+ *
+ *  `dataBacked` and `dataSource` were a hardcoded `false` and `[]`, so every
+ *  product screen carried MOCK_ONLY — "renders, but from fixtures rather than
+ *  an API" — whatever it actually did, the total read 0, and BLK-002 ("no
+ *  capability is backed by real data") could never close. A flag that cannot
+ *  clear says nothing about the thing it names.
+ *
+ *  What makes a screen data-backed is concrete here: `repository.ts` resolves
+ *  to the HTTP client when VITE_API_URL is set and to fixtures when it is not,
+ *  and the hooks below are the only way through that seam. A screen that calls
+ *  one shows real rows against a real server; a screen that does not renders
+ *  local constants and will not, however the build is configured. Nothing in
+ *  `components/` calls the seam — the shared pieces take their data as props —
+ *  so reading the screen's own source is the whole answer rather than a
+ *  first approximation of it.
+ *
+ *  This measures wiring, not correctness: it says a screen asks the repository
+ *  for a collection, not that what it renders is right. */
+const SEAM_CALL =
+  /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
+const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk|Repository)\b/
+
+const dataBackedScreens = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+
+  /** Attributed per exported function, not per file. `crm/Crm.tsx` exports ten
+   *  screens and each fetches its own collection, so crediting the file's whole
+   *  set to all of them would have said LeadPipeline reads aiAgents. Each
+   *  export owns the source from its own signature to the next one. */
+  const scan = (src) => {
+    const starts = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
+    const direct = new Map()
+    starts.forEach((m, i) => {
+      const body = src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length)
+      direct.set(m[1], {
+        body,
+        keys: [...new Set([...body.matchAll(SEAM_CALL)].map((k) => k[1]))].sort(),
+      })
+    })
+    /* A screen that renders a sibling from the same file rather than fetching
+     * for itself — the three Campaigns wrappers are exactly this — is backed by
+     * whatever that sibling reads. One level only: this resolves the wrapper
+     * case without pretending to be a call graph. */
+    for (const [name, own] of direct) {
+      if (own.keys.length) continue
+      const inherited = new Set()
+      for (const [other, sib] of direct) {
+        if (other === name || !sib.keys.length) continue
+        if (new RegExp(`<${other}\\b|\\b${other}\\s*\\(`).test(own.body)) {
+          for (const k of sib.keys) inherited.add(k)
+        }
+      }
+      if (inherited.size) own.keys = [...inherited].sort()
+    }
+    return direct
+  }
+
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
       try {
-        const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
-        for (const m of src.matchAll(/['"]?(\w[\w.]*?)['"]?\s*:\s*(?:\w+\()?\s*(\w+)\s*\)?\s*[,}]/g)) {
-          const screenName = m[1]
-          const componentName = m[2]
-          if (map.has(componentName) && !map.has(screenName)) {
-            map.set(screenName, map.get(componentName))
-          }
+        const src = fs.readFileSync(full, 'utf8')
+        if (!SEAM_ANY.test(src)) continue
+        for (const [name, { keys }] of scan(src)) {
+          if (!keys.length) continue
+          const prev = map.get(name)?.keys ?? []
+          map.set(name, { keys: [...new Set([...prev, ...keys])].sort() })
         }
       } catch (_) { /* skip unreadable */ }
     }
+  }
+  walk(screensDir)
+
+  /* Through the barrel, same as the detectors above. Without this the registry
+   * asks about `Customers-List` while this map only knows `CustomersList`, so a
+   * wired screen registered under a spec name reads as unwired for ever. */
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
   }
 
   return map
@@ -376,8 +526,8 @@ for (const s of SCREENS) {
     errorState: built && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
     successState: 'MISSING',
     accessibility: 'MISSING',
-    dataBacked: false,
-    dataSource: [],
+    dataBacked: built && dataBackedScreens.has(s.name),
+    dataSource: (built && dataBackedScreens.get(s.name)?.keys) || [],
     crud: { create: false, read: built, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
@@ -427,8 +577,8 @@ for (const s of SPEC_SCREENS) {
     errorState: (owned || kit) && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
     successState: 'MISSING',
     accessibility: 'MISSING',
-    dataBacked: false,
-    dataSource: [],
+    dataBacked: (owned || kit) && dataBackedScreens.has(s.name),
+    dataSource: ((owned || kit) && dataBackedScreens.get(s.name)?.keys) || [],
     crud: { create: false, read: owned || kit, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
@@ -594,9 +744,9 @@ function inputDate() {
   }
 }
 const stamp = inputDate()
-const written = []
+const outputs = []
 
-written.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
   generatedAt: stamp,
   generator: 'app/scripts/build-registry.mjs',
   note: 'Discovered from the repository. Never hand-edit; re-run the generator.',
@@ -606,11 +756,11 @@ written.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
   entries,
 }, null, 2) + '\n'))
 
-written.push(write(path.join(CONTROL, 'STATUS.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'STATUS.json'), JSON.stringify({
   generatedAt: stamp, totals, bySurface, byDomain, byModule,
 }, null, 2) + '\n'))
 
-written.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
   generatedAt: stamp,
   suites: {
     unit:        { runner: 'vitest',     present: false, covered: 0, of: entries.length, note: 'W1 — Agent 07' },
@@ -666,7 +816,7 @@ const blockers = [
     detail: 'The brand permits blue and orange only. Run scripts/check-tokens.mjs for the offenders.', owner: '04', wave: 'W1' },
 ].filter(Boolean)
 
-written.push(write(path.join(CONTROL, 'BLOCKERS.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'BLOCKERS.json'), JSON.stringify({
   generatedAt: stamp, open: blockers.length, blockers,
 }, null, 2) + '\n'))
 
@@ -691,7 +841,7 @@ const trackerDomains = domainOrder
       category: e.category,
     })),
   }))
-written.push(write(path.join(CONTROL, 'tracker/tracker-data.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'tracker/tracker-data.json'), JSON.stringify({
   generatedAt: stamp,
   domains: trackerDomains,
   totals: { total: entries.length, built: totals.rendered, designedMobile: count(entries, (e) => e.mobileType === 'A-designed') },
@@ -699,7 +849,7 @@ written.push(write(path.join(CONTROL, 'tracker/tracker-data.json'), JSON.stringi
 
 /** The typed slice the app itself reads — routes and generated tests bind to
  *  this, so adding a capability to the registry adds its route check for free. */
-written.push(write(path.join(APP, 'src/data/generated/master-registry.ts'),
+outputs.push(write(path.join(APP, 'src/data/generated/master-registry.ts'),
 `// GENERATED by scripts/build-registry.mjs — do not edit by hand.
 // The authoritative capability inventory. Routes and route tests are derived
 // from this, so a capability cannot exist without appearing in coverage.
@@ -727,7 +877,7 @@ const bar = (a, b) => {
 const genHeader = (title, sub) =>
   `<!-- GENERATED by app/scripts/build-registry.mjs on ${stamp}. Do not edit by hand. -->\n\n# ${title}\n\n${sub}\n`
 
-written.push(write(path.join(DOCS, 'SALIS_AUTO_MASTER_MATRIX.md'),
+outputs.push(write(path.join(DOCS, 'SALIS_AUTO_MASTER_MATRIX.md'),
   genHeader('SALIS AUTO — Master Capability Matrix',
     `${totals.capabilities} capabilities · ${totals.rendered} rendering · ${totals.placeholder} placeholder · ${totals.dataBacked} data-backed.`) +
   '\n| Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |\n' +
@@ -741,7 +891,7 @@ written.push(write(path.join(DOCS, 'SALIS_AUTO_MASTER_MATRIX.md'),
     e.category === 'PRODUCT' ? e.status : e.category,
   ].join(' | ')).map((r) => `| ${r} |`).join('\n') + '\n'))
 
-written.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
   genHeader('SALIS AUTO — Scope Registry',
     'Every capability the product must ship, by surface and domain. Regenerate rather than edit.') +
   `\n## Totals\n\n| Metric | Count |\n|---|---|\n` +
@@ -756,7 +906,7 @@ written.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
   Object.entries(byModule).sort().map(([k, v]) => `| ${k} | ${v.total} | ${v.rendered} |`).join('\n') + '\n'))
 
 const flagCounts = entries.flatMap((e) => e.flags).reduce((a, f) => ((a[f] = (a[f] ?? 0) + 1), a), {})
-written.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
   genHeader('SALIS AUTO — Master Gap Report',
     'Computed from the registry. Every line is a query, not an opinion.') +
   `\n## Open blockers\n\n| ID | Severity | Title | Owner | Wave |\n|---|---|---|---|---|\n` +
@@ -781,7 +931,7 @@ written.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
     .map(([k, v]) => `| ${DOMAIN_LABEL[k] ?? k} | ${v.placeholder} | ${v.total} |`).join('\n') + '\n'))
 
 const MODULES = [...new Set(Object.keys(PERMS))].sort()
-written.push(write(path.join(DOCS, 'MASTER_RBAC_MATRIX.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_RBAC_MATRIX.md'),
   genHeader('SALIS AUTO — RBAC Matrix (live)',
     `${ROLES.length} roles × ${MODULES.length} modules, read from \`PERMS\` in the generated data layer. ` +
     'Actions: v=view, c=create, e=edit, x=delete, a=approve. This is the matrix the app enforces — ' +
@@ -797,7 +947,7 @@ const OWNERSHIP = JSON.parse(read(path.join(CONTROL, 'OWNERSHIP.json')))
 const DEPS = JSON.parse(read(path.join(CONTROL, 'DEPENDENCIES.json')))
 
 const capsFor = (agentId) => entries.filter((e) => e.owner === agentId).length
-written.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
   genHeader('SALIS AUTO — Agent Ownership',
     'Who owns which paths. An agent does not edit another agent\'s files; a needed change outside your boundary is a request, not an edit.') +
   `\n## Serialised through Agent ${OWNERSHIP.shared.arbiter}\n\n${OWNERSHIP.shared.rule}\n\n` +
@@ -820,7 +970,7 @@ written.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
       : '')
   + '\n'))
 
-written.push(write(path.join(DOCS, 'MASTER_DEPENDENCY_GRAPH.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_DEPENDENCY_GRAPH.md'),
   genHeader('SALIS AUTO — Dependency Graph',
     'What must land before what. Every edge is a technical dependency with its reason, not a preference.') +
   `\n## Waves\n\n| Wave | Name | Requires | Agents | Exit condition |\n|---|---|---|---|---|\n` +
@@ -837,4 +987,7 @@ console.log(`registry: ${totals.capabilities} capabilities · ${totals.rendered}
   `${totals.placeholder} placeholder · ${totals.designedMobileOwed} mobile owed · ${blockers.length} blockers`)
 if (unregistered.length) console.log(`  unregistered designs: ${unregistered.join(', ')}`)
 if (orphanFiles.length) console.log(`  orphan screen files: ${orphanFiles.join(', ')}`)
-for (const w of written) console.log(`  wrote ${w}`)
+const changed = outputs.filter(Boolean)
+for (const w of changed) console.log(`  wrote ${w}`)
+const unchanged = outputs.length - changed.length
+if (unchanged) console.log(`  ${unchanged} unchanged`)

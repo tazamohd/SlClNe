@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-020 — CRM Pipeline Flow</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero {
+    padding: 60px 24px 32px;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+  .caption-bar {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding: 14px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .caption-bar .desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .diagram-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 16px;
+    overflow-x: auto;
+  }
+  .diagram-section svg { width: 100%; height: auto; display: block; min-width: 1000px; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .supporting {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 0 24px 80px;
+  }
+  .supporting h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p { color: var(--muted); font-size: 0.95rem; margin-bottom: 16px; }
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .info-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes funnelPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="badge">SA-VIZ-020</div>
+  <h1><span>CRM</span> Pipeline Flow</h1>
+  <p>End-to-end sales pipeline from lead capture through qualification, proposal, and close with conversion rates at each stage</p>
+</section>
+
+<div class="caption-bar">
+  <span class="label">Hover</span>
+  <span class="desc" id="captionText">Hover on any pipeline stage to see details, conversion rates, and key metrics</span>
+</div>
+
+<section class="diagram-section reveal">
+<svg viewBox="0 0 1100 580" xmlns="http://www.w3.org/2000/svg" id="pipelineSvg">
+  <defs>
+    <marker id="arrowA" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#DA7756"/></marker>
+    <marker id="arrowG" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#7dbb7d"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <!-- Funnel visualization (background) -->
+  <polygon points="50,60 1050,60 950,160 150,160" fill="rgba(218,119,86,0.04)" stroke="rgba(218,119,86,0.08)" stroke-width="1"/>
+  <polygon points="150,170 950,170 870,270 230,270" fill="rgba(107,164,217,0.04)" stroke="rgba(107,164,217,0.06)" stroke-width="1"/>
+  <polygon points="230,280 870,280 800,380 300,380" fill="rgba(169,142,224,0.04)" stroke="rgba(169,142,224,0.06)" stroke-width="1"/>
+  <polygon points="300,390 800,390 740,490 360,490" fill="rgba(125,187,125,0.04)" stroke="rgba(125,187,125,0.06)" stroke-width="1"/>
+
+  <!-- Stage 1: Lead Capture -->
+  <g class="pipeline-stage" data-stage="capture" cursor="pointer">
+    <rect x="60" y="72" width="150" height="72" rx="10" fill="rgba(218,119,86,0.12)" stroke="#DA7756" stroke-width="1.5"/>
+    <!-- Magnet icon -->
+    <path d="M85,94 Q85,84 95,84 Q105,84 105,94" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="85" y1="94" x2="85" y2="104" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="105" y1="94" x2="105" y2="104" stroke="#DA7756" stroke-width="1.5"/>
+    <text x="115" y="98" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Lead</text>
+    <text x="115" y="112" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Capture</text>
+    <text x="80" y="134" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Website / Referral / Cold</text>
+  </g>
+
+  <!-- Conversion arrow 1: 40% -->
+  <path d="M210,108 C230,108 240,108 260,108" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowA)" style="animation: flowDash 1s linear infinite;"/>
+  <rect x="222" y="86" width="36" height="18" rx="4" fill="rgba(218,119,86,0.15)" stroke="rgba(218,119,86,0.3)" stroke-width="0.5"/>
+  <text x="240" y="98" fill="#DA7756" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">40%</text>
+
+  <!-- Stage 2: Lead Qualification -->
+  <g class="pipeline-stage" data-stage="qualification" cursor="pointer">
+    <rect x="265" y="72" width="150" height="72" rx="10" fill="rgba(218,119,86,0.1)" stroke="#DA7756" stroke-width="1.5"/>
+    <!-- Funnel icon -->
+    <polygon points="290,88 310,88 304,100 296,100" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+    <line x1="300" y1="100" x2="300" y2="108" stroke="#DA7756" stroke-width="1.2"/>
+    <text x="316" y="98" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Qualification</text>
+    <text x="316" y="112" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">BANT scoring</text>
+    <text x="285" y="134" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Budget/Authority/Need/Time</text>
+  </g>
+
+  <!-- Conversion arrow 2: 60% -->
+  <path d="M415,108 C435,108 445,108 465,108" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowA)" style="animation: flowDash 1s linear infinite;"/>
+  <rect x="427" y="86" width="36" height="18" rx="4" fill="rgba(218,119,86,0.15)" stroke="rgba(218,119,86,0.3)" stroke-width="0.5"/>
+  <text x="445" y="98" fill="#DA7756" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">60%</text>
+
+  <!-- Stage 3: Opportunity Created -->
+  <g class="pipeline-stage" data-stage="opportunity" cursor="pointer">
+    <rect x="470" y="72" width="150" height="72" rx="10" fill="rgba(107,164,217,0.1)" stroke="#6ba4d9" stroke-width="1.5"/>
+    <!-- Star icon -->
+    <polygon points="498,88 502,96 510,96 504,102 506,110 498,106 490,110 492,102 486,96 494,96" fill="none" stroke="#6ba4d9" stroke-width="1"/>
+    <text x="516" y="98" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Opportunity</text>
+    <text x="516" y="112" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Value & probability</text>
+    <text x="490" y="134" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Close date estimated</text>
+  </g>
+
+  <!-- Vertical drop to Demo -->
+  <path d="M545,144 C545,170 545,185 545,200" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowA)" style="animation: flowDash 1s linear infinite;"/>
+
+  <!-- Stage 4: Demo Scheduled -->
+  <g class="pipeline-stage" data-stage="demo" cursor="pointer">
+    <rect x="400" y="205" width="160" height="72" rx="10" fill="rgba(107,164,217,0.1)" stroke="#6ba4d9" stroke-width="1.5"/>
+    <!-- Monitor icon -->
+    <rect x="425" y="222" width="20" height="14" rx="2" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+    <line x1="435" y1="236" x2="435" y2="242" stroke="#6ba4d9" stroke-width="1.2"/>
+    <line x1="429" y1="242" x2="441" y2="242" stroke="#6ba4d9" stroke-width="1.2"/>
+    <text x="452" y="234" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Demo</text>
+    <text x="452" y="248" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">45-min session</text>
+    <text x="420" y="268" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Using demo accounts</text>
+  </g>
+
+  <!-- Conversion arrow: 50% to Proposal -->
+  <path d="M560,241 C590,241 620,241 650,241" fill="none" stroke="#a98ee0" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowA)" style="animation: flowDash 1s linear infinite;"/>
+  <rect x="592" y="219" width="36" height="18" rx="4" fill="rgba(169,142,224,0.15)" stroke="rgba(169,142,224,0.3)" stroke-width="0.5"/>
+  <text x="610" y="231" fill="#a98ee0" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">50%</text>
+
+  <!-- Stage 5: Proposal Sent -->
+  <g class="pipeline-stage" data-stage="proposal" cursor="pointer">
+    <rect x="655" y="205" width="160" height="72" rx="10" fill="rgba(169,142,224,0.1)" stroke="#a98ee0" stroke-width="1.5"/>
+    <!-- Document icon -->
+    <rect x="678" y="220" width="16" height="20" rx="2" fill="none" stroke="#a98ee0" stroke-width="1.2"/>
+    <line x1="682" y1="226" x2="690" y2="226" stroke="#a98ee0" stroke-width="0.8"/>
+    <line x1="682" y1="230" x2="690" y2="230" stroke="#a98ee0" stroke-width="0.8"/>
+    <line x1="682" y1="234" x2="688" y2="234" stroke="#a98ee0" stroke-width="0.8"/>
+    <text x="700" y="234" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Proposal</text>
+    <text x="700" y="248" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Pricing tiers</text>
+    <text x="675" y="268" fill="#d9b86b" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Starter 999/Pro 2,499/Enterprise</text>
+  </g>
+
+  <!-- Vertical drop to Negotiation -->
+  <path d="M735,277 C735,305 735,320 735,335" fill="none" stroke="#a98ee0" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowA)" style="animation: flowDash 1s linear infinite;"/>
+
+  <!-- Stage 6: Negotiation -->
+  <g class="pipeline-stage" data-stage="negotiation" cursor="pointer">
+    <rect x="610" y="340" width="160" height="60" rx="10" fill="rgba(169,142,224,0.08)" stroke="#a98ee0" stroke-width="1.5"/>
+    <!-- Handshake icon -->
+    <path d="M636,362 L644,356 L652,362" fill="none" stroke="#a98ee0" stroke-width="1.3"/>
+    <path d="M636,372 L644,378 L652,372" fill="none" stroke="#a98ee0" stroke-width="1.3"/>
+    <text x="660" y="370" fill="#f5f5f7" font-size="11" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Negotiation</text>
+    <text x="660" y="384" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Terms & pricing</text>
+  </g>
+
+  <!-- Fork: Close Won vs Close Lost -->
+  <!-- Conversion arrow: 70% -->
+  <path d="M610,370 C560,370 510,370 470,410" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowG)" style="animation: flowDash 1s linear infinite;"/>
+  <rect x="520" y="378" width="36" height="18" rx="4" fill="rgba(125,187,125,0.15)" stroke="rgba(125,187,125,0.3)" stroke-width="0.5"/>
+  <text x="538" y="390" fill="#7dbb7d" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">70%</text>
+
+  <path d="M770,370 C820,370 860,370 900,410" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.5s linear infinite;" opacity="0.5"/>
+
+  <!-- Stage 7a: Close Won -->
+  <g class="pipeline-stage" data-stage="won" cursor="pointer">
+    <rect x="340" y="415" width="160" height="60" rx="10" fill="rgba(125,187,125,0.12)" stroke="#7dbb7d" stroke-width="2"/>
+    <!-- Checkmark icon -->
+    <circle cx="368" cy="440" r="10" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+    <polyline points="362,440 366,444 374,436" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+    <text x="384" y="440" fill="#f5f5f7" font-size="12" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Close Won</text>
+    <text x="384" y="456" fill="#7dbb7d" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Contract signed</text>
+  </g>
+
+  <!-- Stage 7b: Close Lost -->
+  <g class="pipeline-stage" data-stage="lost" cursor="pointer">
+    <rect x="840" y="415" width="160" height="60" rx="10" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.4)" stroke-width="1.5"/>
+    <!-- X icon -->
+    <circle cx="868" cy="440" r="10" fill="none" stroke="#DA7756" stroke-width="1.5" opacity="0.6"/>
+    <line x1="863" y1="435" x2="873" y2="445" stroke="#DA7756" stroke-width="1.5" opacity="0.6"/>
+    <line x1="873" y1="435" x2="863" y2="445" stroke="#DA7756" stroke-width="1.5" opacity="0.6"/>
+    <text x="884" y="440" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">Close Lost</text>
+    <text x="884" y="456" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Reason tracked</text>
+  </g>
+
+  <!-- Arrow from Won to Onboarding -->
+  <path d="M420,475 C420,500 420,510 420,525" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowG)" style="animation: flowDash 1s linear infinite;"/>
+
+  <!-- Stage 8: Onboarding -->
+  <g class="pipeline-stage" data-stage="onboarding" cursor="pointer">
+    <rect x="300" y="530" width="240" height="42" rx="10" fill="rgba(125,187,125,0.1)" stroke="#7dbb7d" stroke-width="1.5"/>
+    <!-- Rocket icon -->
+    <path d="M325,545 L332,538 L339,545" fill="none" stroke="#7dbb7d" stroke-width="1.3"/>
+    <line x1="332" y1="538" x2="332" y2="558" stroke="#7dbb7d" stroke-width="1.3"/>
+    <text x="348" y="552" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Onboarding</text>
+    <text x="440" y="552" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Setup, training, go-live</text>
+  </g>
+
+  <!-- Lead sources (top-left inset) -->
+  <g transform="translate(720,65)" opacity="0.7">
+    <text x="0" y="0" fill="#8a8a93" font-size="9" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" letter-spacing="0.06em">LEAD SOURCES</text>
+    <rect x="0" y="8" width="80" height="18" rx="4" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.2)" stroke-width="0.5"/>
+    <text x="40" y="20" fill="#DA7756" font-size="8" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Website</text>
+    <rect x="86" y="8" width="80" height="18" rx="4" fill="rgba(107,164,217,0.08)" stroke="rgba(107,164,217,0.2)" stroke-width="0.5"/>
+    <text x="126" y="20" fill="#6ba4d9" font-size="8" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Referral</text>
+    <rect x="172" y="8" width="80" height="18" rx="4" fill="rgba(169,142,224,0.08)" stroke="rgba(169,142,224,0.2)" stroke-width="0.5"/>
+    <text x="212" y="20" fill="#a98ee0" font-size="8" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Trade Show</text>
+    <rect x="258" y="8" width="80" height="18" rx="4" fill="rgba(217,184,107,0.08)" stroke="rgba(217,184,107,0.2)" stroke-width="0.5"/>
+    <text x="298" y="20" fill="#d9b86b" font-size="8" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Cold Call</text>
+  </g>
+
+  <!-- Pricing tiers (right inset) -->
+  <g transform="translate(860,200)" opacity="0.7">
+    <text x="0" y="0" fill="#8a8a93" font-size="9" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif" letter-spacing="0.06em">PRICING TIERS</text>
+    <rect x="0" y="10" width="180" height="24" rx="4" fill="rgba(125,187,125,0.06)" stroke="rgba(125,187,125,0.15)" stroke-width="0.5"/>
+    <text x="10" y="26" fill="#7dbb7d" font-size="9" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Starter</text>
+    <text x="130" y="26" fill="#8a8a93" font-size="9" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif">SAR 999/mo</text>
+    <rect x="0" y="40" width="180" height="24" rx="4" fill="rgba(107,164,217,0.06)" stroke="rgba(107,164,217,0.15)" stroke-width="0.5"/>
+    <text x="10" y="56" fill="#6ba4d9" font-size="9" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Pro</text>
+    <text x="130" y="56" fill="#8a8a93" font-size="9" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif">SAR 2,499/mo</text>
+    <rect x="0" y="70" width="180" height="24" rx="4" fill="rgba(169,142,224,0.06)" stroke="rgba(169,142,224,0.15)" stroke-width="0.5"/>
+    <text x="10" y="86" fill="#a98ee0" font-size="9" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Enterprise</text>
+    <text x="130" y="86" fill="#8a8a93" font-size="9" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Custom</text>
+  </g>
+</svg>
+</section>
+
+<section class="supporting reveal">
+  <h2>Pipeline <span>Metrics</span></h2>
+  <p>The SALIS AUTO CRM pipeline tracks leads from first touch through onboarding with conversion metrics at each stage gate to optimize sales performance.</p>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>BANT Qualification</h3>
+      <p>Leads scored on Budget, Authority, Need, and Timeline to prioritize high-value opportunities</p>
+    </div>
+    <div class="info-card">
+      <h3>3 Pricing Tiers</h3>
+      <p>Starter at SAR 999/mo, Pro at SAR 2,499/mo, and custom Enterprise pricing for large fleets</p>
+    </div>
+    <div class="info-card">
+      <h3>45-Min Demo Sessions</h3>
+      <p>Structured demos using dedicated demo accounts with sample data for each prospect's industry vertical</p>
+    </div>
+    <div class="info-card">
+      <h3>Close Rate Tracking</h3>
+      <p>Stage-by-stage conversion rates (40% > 60% > 50% > 70%) identify bottlenecks and coaching opportunities</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const stageDetails = {
+  capture: 'Lead Capture: Multi-channel lead acquisition from website forms, referrals, trade shows, and cold outreach. Each lead tagged with source, date, and initial interest.',
+  qualification: 'Lead Qualification: BANT scoring framework evaluates Budget (can they afford it?), Authority (are they the decision maker?), Need (do they have the pain point?), Timeline (when do they plan to buy?). 40% of leads pass qualification.',
+  opportunity: 'Opportunity Created: Qualified leads become opportunities with estimated value, win probability, and projected close date. Assigned to account executive.',
+  demo: 'Demo Scheduled: 45-minute structured demo using SALIS AUTO demo accounts with sample workshop data. Covers key workflows: job cards, invoicing, ZATCA compliance, and reporting.',
+  proposal: 'Proposal Sent: Formal pricing proposal with tier recommendation. Starter SAR 999/mo (single branch), Pro SAR 2,499/mo (multi-branch), Enterprise custom (fleet + API access). 50% of demos convert to proposals.',
+  negotiation: 'Negotiation: Terms discussion covering pricing, contract length, implementation timeline, training, and support SLA. Average negotiation cycle: 2-4 weeks.',
+  won: 'Close Won: Contract signed, payment processed. Triggers onboarding workflow: tenant provisioning, data migration, user setup, and training schedule. 70% of proposals close successfully.',
+  lost: 'Close Lost: Reason captured (price, timing, competitor, no decision). Leads enter nurture sequence for potential re-engagement. Lost reason analytics inform product and pricing strategy.',
+  onboarding: 'Onboarding: 4-6 week structured program: Week 1-2 setup & migration, Week 3-4 training, Week 5-6 go-live support. Dedicated success manager assigned.'
+};
+
+const caption = document.getElementById('captionText');
+document.querySelectorAll('.pipeline-stage').forEach(node => {
+  node.addEventListener('mouseenter', function() {
+    const key = this.dataset.stage;
+    caption.textContent = stageDetails[key] || '';
+    document.querySelectorAll('.pipeline-stage').forEach(n => { if (n !== this) n.style.opacity = '0.25'; });
+    this.style.opacity = '1';
+  });
+  node.addEventListener('mouseleave', function() {
+    caption.textContent = 'Hover on any pipeline stage to see details, conversion rates, and key metrics';
+    document.querySelectorAll('.pipeline-stage').forEach(n => n.style.opacity = '1');
+  });
+});
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelector('.hero').classList.add('visible');
+</script>
+</body>
+</html>

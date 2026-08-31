@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30",
+  "generatedAt": "2026-08-31",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -9,16 +9,16 @@
     "externalDependency": 12,
     "rendered": 424,
     "placeholder": 0,
-    "designedMobileOwed": 0,
+    "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 384,
-    "dataBacked": 0,
+    "mockOnly": 289,
+    "dataBacked": 95,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 101,
-    "hasErrorState": 69,
-    "hasEmptyState": 97,
+    "hasLoadingState": 129,
+    "hasErrorState": 97,
+    "hasEmptyState": 147,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -199,8 +199,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "aiAgents"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -230,8 +232,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -271,8 +272,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "aiAgents"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -302,8 +305,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -489,8 +491,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -520,8 +524,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -563,8 +566,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -594,8 +599,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -638,8 +642,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "estimates"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -669,8 +675,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -922,8 +927,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "bankStatements",
+        "receipts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -953,8 +961,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -993,8 +1000,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1024,8 +1033,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -1129,8 +1137,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "branches"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1160,8 +1170,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -1347,8 +1356,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "campaigns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1378,8 +1389,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -1418,8 +1428,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1449,8 +1461,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -1490,8 +1501,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "conversations"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1521,8 +1534,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -1695,8 +1707,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "crmTasks"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1726,8 +1740,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -1767,8 +1780,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "crmTasks"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1798,8 +1813,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -2580,8 +2594,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "approvalLines"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2611,8 +2627,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -2655,8 +2670,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers",
+        "invoices",
+        "jobs",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2686,8 +2706,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -2730,8 +2749,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "feedback",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2761,8 +2783,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -2804,8 +2825,14 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "estimates",
+        "invoices",
+        "jobs",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2835,8 +2862,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -2873,13 +2899,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "services",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2909,8 +2939,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -2953,8 +2982,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2984,8 +3015,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3025,8 +3055,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "segments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3056,8 +3088,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3101,8 +3132,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "savedReports"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3132,8 +3165,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3171,8 +3203,8 @@
       "purpose": "Role-adaptive KPI home",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "DONE",
-      "responsive": "DONE",
+      "mobile": "MISSING",
+      "responsive": "MISSING",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
@@ -3180,8 +3212,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3209,10 +3243,11 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "MOBILE_MISSING",
+        "DESKTOP_ONLY",
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3252,8 +3287,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "departments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3283,8 +3320,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3329,8 +3365,14 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "diagCopies",
+        "diagFindings",
+        "diagLabour",
+        "diagParts",
+        "diagStages"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3360,8 +3402,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3401,8 +3442,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "campaigns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3432,8 +3475,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3543,8 +3585,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "estimates"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3574,8 +3618,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3619,8 +3662,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "estimates"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3650,8 +3695,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3690,8 +3734,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3721,8 +3768,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3761,8 +3807,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "expenses"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -3792,8 +3840,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -3979,8 +4026,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers",
+        "fleets",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4010,8 +4061,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4055,8 +4105,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "fleets"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4086,8 +4138,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4337,8 +4388,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "employees",
+        "leaveRequests",
+        "payrollRuns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4368,8 +4423,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4543,8 +4597,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "integrations"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4574,8 +4630,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4618,8 +4673,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4649,8 +4706,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4694,8 +4750,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4725,8 +4783,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4834,8 +4891,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4865,8 +4924,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4908,8 +4966,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoicePayments",
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -4939,8 +5001,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -4982,8 +5043,11 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5013,8 +5077,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5056,8 +5119,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5087,8 +5152,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5133,8 +5197,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers",
+        "invoiceLines",
+        "invoices",
+        "jobs",
+        "technicians",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5164,8 +5235,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5210,8 +5280,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5241,8 +5313,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5287,8 +5358,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoices",
+        "jobs",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5318,8 +5394,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5358,8 +5433,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "journalEntries"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5389,8 +5466,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5641,8 +5717,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "leads"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5672,8 +5750,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -5713,8 +5790,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "leads"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -5744,8 +5823,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -6344,8 +6422,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "dtcCodes",
+        "obdDevices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -6375,8 +6456,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -6409,13 +6489,15 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "oemTools"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -6445,8 +6527,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -6556,8 +6637,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "jobs",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -6587,8 +6672,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -6628,8 +6712,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "opportunities"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -6659,8 +6745,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -7451,8 +7536,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -7482,8 +7569,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10000,8 +10086,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10031,8 +10119,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10138,8 +10225,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "receipts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10169,8 +10258,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10346,8 +10434,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "savedReports"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10377,8 +10467,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10422,8 +10511,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10453,8 +10546,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10695,8 +10787,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10726,8 +10820,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -10903,8 +10996,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "campaigns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -10934,8 +11029,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11314,8 +11408,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders",
+        "suppliers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11345,8 +11442,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11382,13 +11478,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11418,8 +11516,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11452,13 +11549,15 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "integrations"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11488,8 +11587,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11528,8 +11626,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11559,8 +11659,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11603,8 +11702,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "kbProcedures"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11634,8 +11735,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11676,8 +11776,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11707,8 +11810,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11744,13 +11846,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoices",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11780,8 +11886,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11824,8 +11929,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11855,8 +11962,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -11899,8 +12005,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -11930,8 +12039,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -13938,8 +14046,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "estimates",
+        "jobs",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -13969,8 +14081,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14014,8 +14125,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -14045,8 +14158,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14152,8 +14264,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "campaigns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -14183,8 +14297,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14301,8 +14414,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -14332,8 +14448,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14608,8 +14723,12 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoices",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -14639,8 +14758,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14684,8 +14802,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -14715,8 +14836,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY"
+        "RTL_BROKEN"
       ]
     },
     {
@@ -14888,13 +15008,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "customers",
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -14925,7 +15049,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15022,13 +15145,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs",
+        "technicians"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15059,7 +15185,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15089,13 +15214,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15126,7 +15253,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15563,8 +15689,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15595,7 +15723,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15625,13 +15752,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15662,7 +15791,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15893,13 +16021,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -15930,7 +16060,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17837,7 +17966,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18306,7 +18435,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18440,7 +18569,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18506,13 +18635,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -18543,7 +18674,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19578,13 +19708,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "suppliers"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -19615,7 +19747,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21186,13 +21317,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21223,7 +21356,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21253,13 +21385,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21290,7 +21424,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21320,13 +21453,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21357,7 +21492,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21789,13 +21923,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -21826,7 +21962,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21857,7 +21992,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21990,13 +22125,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22027,7 +22164,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22057,13 +22193,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22094,7 +22232,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22124,13 +22261,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22161,7 +22300,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22660,13 +22798,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "departments",
+        "employees"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22697,7 +22838,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22727,13 +22867,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "departments",
+        "employees"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22764,7 +22907,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22928,13 +23070,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "timesheets"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -22965,7 +23109,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22995,13 +23138,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "timesheets"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23032,7 +23177,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23062,13 +23206,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "employees",
+        "payrollLines",
+        "payrollRuns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23099,7 +23247,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23129,13 +23276,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "leaveRequests"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -23166,7 +23315,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23331,7 +23479,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23398,7 +23546,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23666,7 +23814,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23733,7 +23881,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23800,7 +23948,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23867,7 +24015,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23934,7 +24082,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24001,7 +24149,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24068,7 +24216,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24135,7 +24283,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24202,7 +24350,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24269,7 +24417,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24336,7 +24484,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24403,7 +24551,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24470,7 +24618,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24536,13 +24684,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "expenses"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -24573,7 +24723,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24604,7 +24753,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24805,7 +24954,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24872,7 +25021,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24938,13 +25087,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insuranceClaims",
+        "insurancePolicies"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -24975,7 +25127,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25139,13 +25290,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "campaigns"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -25176,7 +25329,6 @@
         "TABLET_MISSING",
         "ARABIC_MISSING",
         "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26145,7 +26297,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -28021,7 +28173,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",

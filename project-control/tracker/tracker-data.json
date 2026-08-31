@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30",
+  "generatedAt": "2026-08-31",
   "domains": [
     {
       "id": "workshop",
@@ -48,7 +48,7 @@
           "route": "/dashboard",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
