@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-006 Inventory Procurement Flow — SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --red: #e06b6b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+  .hero { padding: 64px 0 32px; text-align: center; }
+  .hero .badge {
+    display: inline-block; padding: 4px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--blue); border: 1px solid rgba(107,164,217,0.3); background: rgba(107,164,217,0.08);
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 680px; margin: 0 auto; }
+  .section { padding: 48px 0; }
+  .section-alt { background: var(--bg-alt); }
+  .section-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .diagram-wrap {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 32px 24px; overflow-x: auto;
+  }
+  .caption-bar {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 14px 20px; margin-top: 24px;
+    min-height: 52px; display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: var(--muted); transition: all 0.3s ease;
+  }
+  .caption-bar .label { color: var(--blue); font-weight: 600; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .inv-node { cursor: pointer; }
+  .inv-node:hover .node-rect { stroke-width: 2.5; }
+  .inv-node:hover .node-diamond { stroke-width: 2.5; }
+
+  .data-table {
+    width: 100%; border-collapse: collapse; font-size: 14px;
+  }
+  .data-table th {
+    text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--card-border);
+    color: var(--muted); font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .data-table td {
+    padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .role-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 500;
+  }
+  .tag-parts { background: rgba(107,164,217,0.15); color: var(--blue); }
+  .tag-proc { background: rgba(169,142,224,0.15); color: var(--purple); }
+  .tag-mgr { background: rgba(218,119,86,0.15); color: var(--accent); }
+  .tag-owner { background: rgba(217,184,107,0.15); color: var(--gold); }
+
+  .threshold-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
+  }
+  .threshold-card .amount { font-size: 22px; font-weight: 700; min-width: 140px; }
+  .threshold-card .role-name { font-weight: 600; margin-bottom: 2px; }
+  .threshold-card .desc { font-size: 13px; color: var(--muted); }
+
+  /* Stock indicators */
+  .stock-row { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .stock-card {
+    flex: 1; min-width: 200px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 20px 24px; position: relative; overflow: hidden;
+  }
+  .stock-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .stock-card.stock-green::before { background: var(--green); }
+  .stock-card.stock-yellow::before { background: var(--gold); }
+  .stock-card.stock-red::before { background: var(--red); }
+  .stock-card .stock-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .stock-card .stock-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .stock-card .stock-desc { font-size: 12px; color: var(--muted); }
+  .stock-card .stock-icon { font-size: 24px; margin-bottom: 8px; }
+
+  /* Feature flag toggle */
+  .ff-toggle-wrap {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 20px 24px; margin-top: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ff-toggle {
+    position: relative; width: 48px; height: 26px;
+    background: rgba(255,255,255,0.1); border-radius: 13px;
+    cursor: pointer; transition: background 0.3s;
+    border: none; outline: none;
+  }
+  .ff-toggle.active { background: rgba(125,187,125,0.4); }
+  .ff-toggle .knob {
+    position: absolute; top: 3px; left: 3px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--muted); transition: all 0.3s;
+  }
+  .ff-toggle.active .knob { left: 25px; background: var(--green); }
+  .ff-info { flex: 1; }
+  .ff-info .ff-name { font-weight: 600; font-size: 14px; }
+  .ff-info .ff-desc { font-size: 13px; color: var(--muted); }
+  .ff-status {
+    padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;
+  }
+  .ff-status.on { background: rgba(125,187,125,0.15); color: var(--green); }
+  .ff-status.off { background: rgba(224,107,107,0.15); color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">SA-VIZ-006</div>
+    <h1>Inventory &amp; Procurement Flow</h1>
+    <p>End-to-end parts lifecycle from job card requirement through stock check, procurement with SOD approval, and automated reorder</p>
+  </div>
+
+  <!-- Main Procurement Flow -->
+  <div class="section">
+    <h2 class="section-title">Parts Procurement Lifecycle</h2>
+    <p class="section-sub">From job card creation through stock check, procurement, and inventory update</p>
+    <div class="diagram-wrap">
+      <svg id="procSvg" viewBox="0 0 1220 620" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <defs>
+          <marker id="arrBlue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#6ba4d9"/>
+          </marker>
+          <marker id="arrGreen" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#7dbb7d"/>
+          </marker>
+          <marker id="arrAccent" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#DA7756"/>
+          </marker>
+          <marker id="arrPurple" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#a98ee0"/>
+          </marker>
+          <marker id="arrGold" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#d9b86b"/>
+          </marker>
+          <filter id="glow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glowSoft"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- === ROW 1: Job Card → Parts Required → Check Stock → Decision === -->
+
+        <!-- Node: Job Card Created -->
+        <g class="inv-node" data-node="jobcard">
+          <rect class="node-rect" x="20" y="50" width="140" height="70" rx="12" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <g transform="translate(52,74)">
+            <rect x="-10" y="-10" width="20" height="20" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <line x1="-6" y1="-4" x2="6" y2="-4" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-6" y1="0" x2="6" y2="0" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-6" y1="4" x2="3" y2="4" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <text x="90" y="78" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Job Card</text>
+          <text x="90" y="92" text-anchor="middle" fill="#DA7756" font-size="9">Created</text>
+        </g>
+        <path d="M160,85 C185,85 195,85 215,85" stroke="#DA7756" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Parts Required -->
+        <g class="inv-node" data-node="partsreq">
+          <rect class="node-rect" x="215" y="50" width="140" height="70" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(247,74)">
+            <path d="M-8,-8 L-8,8 L8,8 L8,-8 Z" stroke="#6ba4d9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <line x1="-4" y1="-2" x2="4" y2="-2" stroke="#6ba4d9" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="-4" y1="3" x2="4" y2="3" stroke="#6ba4d9" stroke-width="1.2" stroke-linecap="round"/>
+            <polyline points="-6,-6 -2,-6 -2,-10" stroke="#6ba4d9" stroke-width="1" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="285" y="78" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Parts Required</text>
+          <text x="285" y="92" text-anchor="middle" fill="#6ba4d9" font-size="9">From Estimate</text>
+        </g>
+        <path d="M355,85 C380,85 390,85 410,85" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Check Stock -->
+        <g class="inv-node" data-node="checkstock">
+          <rect class="node-rect" x="410" y="50" width="140" height="70" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(442,74)">
+            <circle cx="0" cy="-2" r="7" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <line x1="5" y1="3" x2="10" y2="8" stroke="#6ba4d9" stroke-width="2" stroke-linecap="round"/>
+            <rect x="-3" y="-5" width="6" height="6" rx="1" stroke="#6ba4d9" stroke-width="1" fill="none"/>
+          </g>
+          <text x="480" y="78" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Check Stock</text>
+          <text x="480" y="92" text-anchor="middle" fill="#6ba4d9" font-size="9">Availability</text>
+        </g>
+
+        <!-- Decision diamond: In Stock? -->
+        <path d="M550,85 C575,85 585,85 610,85" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+        <g class="inv-node" data-node="decision">
+          <polygon class="node-diamond" points="680,45 740,85 680,125 620,85" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <text x="680" y="82" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">In</text>
+          <text x="680" y="94" text-anchor="middle" fill="#d9b86b" font-size="10" font-weight="600">Stock?</text>
+        </g>
+
+        <!-- === YES PATH (top): Reserve → Issue → Deduct → Update Cost === -->
+        <path d="M680,45 C680,20 680,15 730,15 C760,15 770,15 800,15" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+        <text x="720" y="10" fill="#7dbb7d" font-size="10" font-weight="600">YES</text>
+
+        <!-- Node: Reserve Parts -->
+        <g class="inv-node" data-node="reserve">
+          <rect class="node-rect" x="800" y="-15" width="120" height="60" rx="10" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1.5"/>
+          <g transform="translate(826,12)">
+            <rect x="-7" y="-7" width="14" height="14" rx="2" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+            <polyline points="-3,0 -1,3 4,-3" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="860" y="14" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Reserve</text>
+          <text x="860" y="28" text-anchor="middle" fill="#7dbb7d" font-size="9">Parts</text>
+        </g>
+        <path d="M920,15 C945,15 955,15 975,15" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Issue to Job -->
+        <g class="inv-node" data-node="issue">
+          <rect class="node-rect" x="975" y="-15" width="110" height="60" rx="10" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1.5"/>
+          <g transform="translate(1001,12)">
+            <polyline points="-6,-6 0,0 -6,6" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="-8" y1="0" x2="0" y2="0" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="4" y1="-6" x2="4" y2="6" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="1030" y="14" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Issue</text>
+          <text x="1030" y="28" text-anchor="middle" fill="#7dbb7d" font-size="9">To Job</text>
+        </g>
+
+        <!-- Issue → Deduct (curve down) -->
+        <path d="M1030,45 C1030,65 1030,80 1030,100 C1030,115 1020,125 1000,125" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Deduct Inventory -->
+        <g class="inv-node" data-node="deduct">
+          <rect class="node-rect" x="880" y="100" width="120" height="60" rx="10" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <g transform="translate(906,126)">
+            <line x1="-6" y1="0" x2="6" y2="0" stroke="#DA7756" stroke-width="2" stroke-linecap="round"/>
+            <rect x="-9" y="-8" width="18" height="16" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+          </g>
+          <text x="940" y="128" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Deduct</text>
+          <text x="940" y="142" text-anchor="middle" fill="#DA7756" font-size="9">Inventory</text>
+        </g>
+        <path d="M1000,130 C1025,130 1040,130 1065,130" stroke="#DA7756" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Update Cost -->
+        <g class="inv-node" data-node="updatecost">
+          <circle cx="1140" cy="130" r="40" fill="rgba(217,184,107,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="1065" y="100" width="120" height="60" rx="10" fill="rgba(217,184,107,0.08)" stroke="#d9b86b" stroke-width="1.8"/>
+          <g transform="translate(1091,126)">
+            <polyline points="-6,4 -2,-4 2,2 8,-6" stroke="#d9b86b" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="1125" y="128" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Update</text>
+          <text x="1125" y="142" text-anchor="middle" fill="#d9b86b" font-size="9">Job Cost</text>
+        </g>
+
+        <!-- === NO PATH (bottom): Purchase Requisition → Approval → PO → Supplier → GR === -->
+        <path d="M680,125 C680,170 680,185 730,185 C755,185 760,185 780,185" stroke="#a98ee0" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrPurple)" style="animation: flowDash 1s linear infinite;"/>
+        <text x="720" y="145" fill="#e06b6b" font-size="10" font-weight="600">NO</text>
+
+        <!-- Node: Purchase Requisition -->
+        <g class="inv-node" data-node="purchreq">
+          <rect class="node-rect" x="780" y="165" width="140" height="60" rx="10" fill="rgba(169,142,224,0.06)" stroke="#a98ee0" stroke-width="1.5"/>
+          <g transform="translate(812,190)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+            <line x1="0" y1="-4" x2="0" y2="4" stroke="#a98ee0" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="-4" y1="0" x2="4" y2="0" stroke="#a98ee0" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="850" y="192" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Purchase Req</text>
+          <text x="850" y="206" text-anchor="middle" fill="#a98ee0" font-size="9">Create PR</text>
+        </g>
+
+        <!-- PR → Approval Chain (curve down) -->
+        <path d="M850,225 C850,255 850,265 850,280" stroke="#a98ee0" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrPurple)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- SOD enforcement badge -->
+        <g transform="translate(920,245)">
+          <circle cx="0" cy="0" r="20" fill="rgba(218,119,86,0.15)" stroke="#DA7756" stroke-width="1.5">
+            <animate attributeName="r" values="20;23;20" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <path d="M0,-8 L7,-5 L7,3 C7,8 0,12 0,12 C0,12 -7,8 -7,3 L-7,-5 Z" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="-2.5" y="-1" width="5" height="4" rx="1" stroke="#DA7756" stroke-width="1" fill="none"/>
+          <line x1="0" y1="1" x2="0" y2="2" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+        </g>
+        <text x="920" y="216" fill="#DA7756" font-size="9" font-weight="600" text-anchor="middle">SOD</text>
+        <text x="920" y="278" fill="#8a8a93" font-size="8" text-anchor="middle">Raiser</text>
+        <text x="920" y="288" fill="#DA7756" font-size="8" font-weight="600" text-anchor="middle">cannot approve</text>
+
+        <!-- Node: Approval Chain -->
+        <g class="inv-node" data-node="approval">
+          <circle cx="850" cy="320" r="44" fill="rgba(218,119,86,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="780" y="285" width="140" height="70" rx="12" fill="rgba(218,119,86,0.08)" stroke="#DA7756" stroke-width="2"/>
+          <g transform="translate(812,312)">
+            <path d="M0,-8 L7,-5 L7,3 C7,8 0,11 0,11 C0,11 -7,8 -7,3 L-7,-5 Z" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polyline points="-3,1 -1,3 4,-2" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="850" y="316" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Approval</text>
+          <text x="850" y="330" text-anchor="middle" fill="#DA7756" font-size="9">Chain (SOD)</text>
+          <text x="850" y="344" text-anchor="middle" fill="#8a8a93" font-size="8">Escalation tiers</text>
+        </g>
+
+        <!-- Approval → Generate PO -->
+        <path d="M780,320 C750,320 730,320 700,320" stroke="#DA7756" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrAccent)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Generate PO -->
+        <g class="inv-node" data-node="genpo">
+          <rect class="node-rect" x="580" y="290" width="120" height="60" rx="10" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(612,316)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <text x="0" y="4" text-anchor="middle" fill="#6ba4d9" font-size="8" font-weight="700">PO</text>
+          </g>
+          <text x="640" y="316" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Generate PO</text>
+          <text x="640" y="330" text-anchor="middle" fill="#6ba4d9" font-size="9">Purchase Order</text>
+        </g>
+        <path d="M580,320 C555,320 540,320 520,320" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Send to Supplier -->
+        <g class="inv-node" data-node="supplier">
+          <rect class="node-rect" x="390" y="290" width="130" height="60" rx="10" fill="rgba(169,142,224,0.06)" stroke="#a98ee0" stroke-width="1.5"/>
+          <g transform="translate(422,316)">
+            <rect x="-10" y="-7" width="20" height="14" rx="2" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+            <polyline points="-10,-7 0,2 10,-7" stroke="#a98ee0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="455" y="316" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Send to</text>
+          <text x="455" y="330" text-anchor="middle" fill="#a98ee0" font-size="9">Supplier</text>
+        </g>
+        <path d="M390,320 C365,320 350,320 330,320" stroke="#a98ee0" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrPurple)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Goods Receipt -->
+        <g class="inv-node" data-node="goodsreceipt">
+          <rect class="node-rect" x="200" y="290" width="130" height="60" rx="10" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1.5"/>
+          <g transform="translate(232,316)">
+            <rect x="-8" y="-8" width="16" height="16" rx="2" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+            <polyline points="-4,-2 0,4 6,-4" stroke="#7dbb7d" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="265" y="316" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Goods Receipt</text>
+          <text x="265" y="330" text-anchor="middle" fill="#7dbb7d" font-size="9">GR Note</text>
+        </g>
+        <path d="M200,320 C175,320 160,320 140,320" stroke="#7dbb7d" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGreen)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Update Inventory -->
+        <g class="inv-node" data-node="updateinv">
+          <rect class="node-rect" x="20" y="290" width="120" height="60" rx="10" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1.5"/>
+          <g transform="translate(48,316)">
+            <line x1="-6" y1="0" x2="6" y2="0" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="0" y1="-6" x2="0" y2="6" stroke="#7dbb7d" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="-9" y="-9" width="18" height="18" rx="3" stroke="#7dbb7d" stroke-width="1.5" fill="none"/>
+          </g>
+          <text x="80" y="316" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Update</text>
+          <text x="80" y="330" text-anchor="middle" fill="#7dbb7d" font-size="9">Inventory</text>
+        </g>
+
+        <!-- Update Inventory → Issue to Job (connects back to yes path endpoint) -->
+        <path d="M80,350 C80,380 80,400 200,400 C500,400 900,400 1030,400 C1100,400 1100,380 1100,360 C1100,340 1060,330 1030,330" stroke="#7dbb7d" stroke-width="1" fill="none" stroke-dasharray="4 6" opacity="0.6"/>
+        <text x="540" y="415" text-anchor="middle" fill="#7dbb7d" font-size="9" opacity="0.7">Then: Issue to Job (same as in-stock path)</text>
+
+        <!-- === DIVIDER === -->
+        <line x1="20" y1="450" x2="1200" y2="450" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <text x="610" y="475" text-anchor="middle" fill="#8a8a93" font-size="11" font-weight="600" letter-spacing="2">AUTOMATED REORDER</text>
+
+        <!-- === ROW: Reorder Automation Flow === -->
+        <!-- Node: Daily Stock Check -->
+        <g class="inv-node" data-node="dailycheck">
+          <rect class="node-rect" x="20" y="500" width="140" height="60" rx="10" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <g transform="translate(52,526)">
+            <circle cx="0" cy="0" r="8" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <line x1="0" y1="-4" x2="0" y2="1" stroke="#6ba4d9" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="0" y1="1" x2="4" y2="3" stroke="#6ba4d9" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <text x="90" y="528" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Daily Check</text>
+          <text x="90" y="542" text-anchor="middle" fill="#6ba4d9" font-size="9">Stock Scan</text>
+        </g>
+        <path d="M160,530 C185,530 200,530 225,530" stroke="#6ba4d9" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrBlue)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Decision: Below Reorder? -->
+        <g class="inv-node" data-node="belowreorder">
+          <polygon class="node-diamond" points="310,500 370,530 310,560 250,530" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <text x="310" y="527" text-anchor="middle" fill="#f5f5f7" font-size="9" font-weight="600">Below</text>
+          <text x="310" y="538" text-anchor="middle" fill="#d9b86b" font-size="9" font-weight="600">Reorder?</text>
+        </g>
+        <path d="M370,530 C395,530 410,530 435,530" stroke="#d9b86b" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrGold)" style="animation: flowDash 1s linear infinite;"/>
+        <text x="400" y="520" fill="#7dbb7d" font-size="10" font-weight="600">YES</text>
+
+        <!-- Node: Auto-Generate PO -->
+        <g class="inv-node" data-node="autopo">
+          <circle cx="510" cy="530" r="44" fill="rgba(169,142,224,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-rect" x="435" y="500" width="150" height="60" rx="10" fill="rgba(169,142,224,0.08)" stroke="#a98ee0" stroke-width="1.8"/>
+          <g transform="translate(467,526)">
+            <circle cx="0" cy="0" r="7" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+            <path d="M5,5 L9,9" stroke="#a98ee0" stroke-width="1.5" stroke-linecap="round"/>
+            <polyline points="-2,-3 2,-3 2,2" stroke="#a98ee0" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="510" y="524" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Auto-Gen PO</text>
+          <text x="510" y="538" text-anchor="middle" fill="#a98ee0" font-size="9">ff_auto_po</text>
+          <text x="510" y="550" text-anchor="middle" fill="#8a8a93" font-size="8">Feature Flag</text>
+        </g>
+        <path d="M585,530 C610,530 625,530 650,530" stroke="#a98ee0" stroke-width="1.3" fill="none" stroke-dasharray="6 8" marker-end="url(#arrPurple)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Node: Approval Queue -->
+        <g class="inv-node" data-node="approvalqueue">
+          <rect class="node-rect" x="650" y="500" width="140" height="60" rx="10" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <g transform="translate(682,526)">
+            <rect x="-8" y="-6" width="16" height="12" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <line x1="-8" y1="-2" x2="8" y2="-2" stroke="#DA7756" stroke-width="1" stroke-linecap="round"/>
+            <circle cx="-3" cy="2" r="1.5" fill="#DA7756"/>
+            <circle cx="3" cy="2" r="1.5" fill="#DA7756"/>
+          </g>
+          <text x="720" y="528" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">Approval</text>
+          <text x="720" y="542" text-anchor="middle" fill="#DA7756" font-size="9">Queue</text>
+        </g>
+
+        <!-- Legend -->
+        <g transform="translate(20,590)">
+          <line x1="0" y1="0" x2="24" y2="0" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8"/>
+          <text x="32" y="4" fill="#8a8a93" font-size="10">In-stock path</text>
+          <line x1="140" y1="0" x2="164" y2="0" stroke="#a98ee0" stroke-width="1.5" stroke-dasharray="6 8"/>
+          <text x="172" y="4" fill="#8a8a93" font-size="10">Procurement path</text>
+          <polygon points="310,0 322,-10 334,0 322,10" fill="rgba(217,184,107,0.1)" stroke="#d9b86b" stroke-width="1"/>
+          <text x="344" y="4" fill="#8a8a93" font-size="10">Decision point</text>
+          <circle cx="460" cy="0" r="6" fill="rgba(218,119,86,0.15)" stroke="#DA7756" stroke-width="1"/>
+          <text x="474" y="4" fill="#8a8a93" font-size="10">SOD enforced</text>
+        </g>
+      </svg>
+    </div>
+    <div class="caption-bar" id="captionBar">
+      <span class="label">Hover a node</span>
+      <span>to see details about each step in the inventory and procurement lifecycle</span>
+    </div>
+  </div>
+
+  <!-- Feature Flag Toggle -->
+  <div class="section reveal">
+    <div class="container">
+      <h2 class="section-title">Reorder Automation Feature Flag</h2>
+      <p class="section-sub">Toggle auto-PO generation for items that fall below reorder point</p>
+      <div class="ff-toggle-wrap">
+        <button class="ff-toggle" id="ffToggle" aria-label="Toggle ff_auto_po feature flag">
+          <div class="knob"></div>
+        </button>
+        <div class="ff-info">
+          <div class="ff-name">ff_auto_po</div>
+          <div class="ff-desc">When enabled, the system automatically generates purchase orders for parts that fall below their configured reorder point during the daily stock scan. POs are routed through the standard approval chain.</div>
+        </div>
+        <span class="ff-status off" id="ffStatus">DISABLED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approval Threshold Table -->
+  <div class="section section-alt reveal">
+    <div class="container">
+      <h2 class="section-title">PO Approval Escalation Chain</h2>
+      <p class="section-sub">Role-based authorization limits for purchase order approval (SAR)</p>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--blue);">< SAR 10,000</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-parts">Parts Manager</span></div>
+          <div class="desc">Standard parts orders within this limit. Routine reorder approvals for stock replenishment.</div>
+        </div>
+      </div>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--purple);">< SAR 20,000</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-proc">Procurement</span></div>
+          <div class="desc">Escalated orders exceeding parts manager limit. Bulk purchases and non-standard vendor orders.</div>
+        </div>
+      </div>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--accent);">< SAR 50,000</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-mgr">Branch Manager</span></div>
+          <div class="desc">High-value procurement requiring management review. Capital equipment and specialty parts.</div>
+        </div>
+      </div>
+      <div class="threshold-card">
+        <div class="amount" style="color: var(--gold);">Unlimited</div>
+        <div>
+          <div class="role-name"><span class="role-tag tag-owner">Owner / Admin</span></div>
+          <div class="desc">No upper limit. Full authorization on any procurement amount. Complete audit trail maintained.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Status Indicators -->
+  <div class="section reveal">
+    <div class="container">
+      <h2 class="section-title">Stock Status Indicators</h2>
+      <p class="section-sub">Visual indicators based on current stock level relative to reorder point</p>
+      <div class="stock-row">
+        <div class="stock-card stock-green">
+          <div class="stock-label">Healthy Stock</div>
+          <div class="stock-title" style="color: var(--green);">Above Reorder Point</div>
+          <div class="stock-desc">Current quantity exceeds reorder point by comfortable margin. No action required. Standard monitoring continues.</div>
+          <svg width="80" height="40" viewBox="0 0 80 40" style="margin-top:12px;">
+            <rect x="0" y="0" width="80" height="40" rx="6" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1"/>
+            <rect x="4" y="8" width="60" height="6" rx="3" fill="rgba(125,187,125,0.15)"/>
+            <rect x="4" y="8" width="60" height="6" rx="3" fill="#7dbb7d" opacity="0.6"/>
+            <line x1="40" y1="4" x2="40" y2="18" stroke="#d9b86b" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+            <text x="40" y="28" text-anchor="middle" fill="#8a8a93" font-size="7">Reorder Pt</text>
+          </svg>
+        </div>
+        <div class="stock-card stock-yellow">
+          <div class="stock-label">Warning Level</div>
+          <div class="stock-title" style="color: var(--gold);">Approaching Reorder</div>
+          <div class="stock-desc">Stock is between reorder point and safety stock. Auto-PO triggered if ff_auto_po enabled. Manual review recommended.</div>
+          <svg width="80" height="40" viewBox="0 0 80 40" style="margin-top:12px;">
+            <rect x="0" y="0" width="80" height="40" rx="6" fill="rgba(217,184,107,0.08)" stroke="#d9b86b" stroke-width="1"/>
+            <rect x="4" y="8" width="60" height="6" rx="3" fill="rgba(217,184,107,0.15)"/>
+            <rect x="4" y="8" width="35" height="6" rx="3" fill="#d9b86b" opacity="0.6"/>
+            <line x1="40" y1="4" x2="40" y2="18" stroke="#d9b86b" stroke-width="1" stroke-dasharray="2 2" opacity="0.8"/>
+            <text x="40" y="28" text-anchor="middle" fill="#8a8a93" font-size="7">Reorder Pt</text>
+          </svg>
+        </div>
+        <div class="stock-card stock-red">
+          <div class="stock-label">Critical Stock</div>
+          <div class="stock-title" style="color: var(--red);">Below Safety Stock</div>
+          <div class="stock-desc">Urgent replenishment needed. Jobs may be delayed. Emergency PO escalated to management. SMS alert to parts manager.</div>
+          <svg width="80" height="40" viewBox="0 0 80 40" style="margin-top:12px;">
+            <rect x="0" y="0" width="80" height="40" rx="6" fill="rgba(224,107,107,0.08)" stroke="#e06b6b" stroke-width="1"/>
+            <rect x="4" y="8" width="60" height="6" rx="3" fill="rgba(224,107,107,0.15)"/>
+            <rect x="4" y="8" width="12" height="6" rx="3" fill="#e06b6b" opacity="0.6"/>
+            <line x1="40" y1="4" x2="40" y2="18" stroke="#d9b86b" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+            <line x1="16" y1="4" x2="16" y2="18" stroke="#e06b6b" stroke-width="1" stroke-dasharray="2 2" opacity="0.8"/>
+            <text x="28" y="28" text-anchor="middle" fill="#8a8a93" font-size="7">Safety</text>
+            <text x="52" y="28" text-anchor="middle" fill="#8a8a93" font-size="7">Reorder</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Scroll reveal
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+
+  // Feature flag toggle
+  var ffToggle = document.getElementById('ffToggle');
+  var ffStatus = document.getElementById('ffStatus');
+  var ffEnabled = false;
+  ffToggle.addEventListener('click', function() {
+    ffEnabled = !ffEnabled;
+    ffToggle.classList.toggle('active', ffEnabled);
+    ffStatus.textContent = ffEnabled ? 'ENABLED' : 'DISABLED';
+    ffStatus.className = 'ff-status ' + (ffEnabled ? 'on' : 'off');
+  });
+
+  // Caption bar
+  var captions = {
+    jobcard: { label: 'Job Card Created', text: 'New job card opened for a vehicle. Technician inspects and identifies required parts. Parts list generated from estimate line items.' },
+    partsreq: { label: 'Parts Required', text: 'List of required parts extracted from the approved estimate. Each part has: part number, description, quantity needed, and unit cost.' },
+    checkstock: { label: 'Check Stock', text: 'System checks real-time inventory levels across all warehouse locations. Considers reserved quantities, in-transit stock, and minimum order quantities.' },
+    decision: { label: 'In Stock?', text: 'Decision point: If sufficient unreserved quantity exists, route to in-stock path (reserve and issue). Otherwise, route to procurement path (purchase requisition).' },
+    reserve: { label: 'Reserve Parts', text: 'Available parts reserved against this job card. Reduces available-to-promise quantity without physically moving stock. Reservation expires if job card is cancelled.' },
+    issue: { label: 'Issue to Job', text: 'Parts physically issued from warehouse to workshop bay. Barcode scan confirms part number and quantity. Updates job card with actual parts used.' },
+    deduct: { label: 'Deduct Inventory', text: 'Inventory ledger decremented. FIFO/weighted average cost method applied. Stock movement record created with job card reference for traceability.' },
+    updatecost: { label: 'Update Job Cost', text: 'Parts cost added to job card running total. Actual cost compared against estimated cost. Variance flagged if exceeds threshold (configurable per tenant).' },
+    purchreq: { label: 'Purchase Requisition', text: 'PR created with required parts, quantities, preferred suppliers, and urgency level. Linked to originating job card for cost tracking.' },
+    approval: { label: 'Approval Chain', text: 'SOD enforced: the person who raises the PR CANNOT approve it. Escalation based on PO value: Parts Mgr <SAR 10K, Procurement <SAR 20K, Manager <SAR 50K, Owner unlimited.' },
+    genpo: { label: 'Generate PO', text: 'Approved PR converted to Purchase Order. PO number generated sequentially per tenant. Terms, delivery date, and payment terms set. Supplier notified.' },
+    supplier: { label: 'Send to Supplier', text: 'PO transmitted to supplier via email/EDI. Includes part numbers, quantities, agreed prices, delivery address, and required delivery date.' },
+    goodsreceipt: { label: 'Goods Receipt', text: 'Parts received at warehouse. GR note created with actual quantities received vs. ordered. Quality check performed. Discrepancies flagged for supplier follow-up.' },
+    updateinv: { label: 'Update Inventory', text: 'Inventory ledger incremented with received quantities. Cost updated based on actual purchase price. Parts become available for reservation and issue.' },
+    dailycheck: { label: 'Daily Stock Check', text: 'Automated nightly scan of all inventory items. Compares current on-hand quantity against configured reorder point for each SKU.' },
+    belowreorder: { label: 'Below Reorder Point?', text: 'Decision: If current stock minus reserved quantities falls below the reorder point, trigger auto-PO generation (if ff_auto_po enabled) or alert.' },
+    autopo: { label: 'Auto-Generate PO', text: 'System automatically creates a PO based on economic order quantity (EOQ) and preferred supplier. Only active when ff_auto_po feature flag is enabled per tenant.' },
+    approvalqueue: { label: 'Approval Queue', text: 'Auto-generated PO enters the standard approval workflow. Routed to appropriate approver based on PO value. Dashboard notification and email alert sent.' }
+  };
+  var bar = document.getElementById('captionBar');
+  document.querySelectorAll('.inv-node').forEach(function(node) {
+    var key = node.getAttribute('data-node');
+    node.addEventListener('mouseenter', function() {
+      if(captions[key]) {
+        bar.innerHTML = '<span class="label">' + captions[key].label + '</span><span>' + captions[key].text + '</span>';
+        bar.style.borderColor = 'rgba(107,164,217,0.3)';
+      }
+    });
+    node.addEventListener('mouseleave', function() {
+      bar.innerHTML = '<span class="label">Hover a node</span><span>to see details about each step in the inventory and procurement lifecycle</span>';
+      bar.style.borderColor = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>
