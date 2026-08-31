@@ -191,15 +191,6 @@ The platform supports 14 distinct roles with SAR-denominated approval limits:
 | Gross Margin                   | 75-80%         | SaaS-typical for vertical       |
 | Net Revenue Retention          | 110%           | Upsell offsets churn             |
 
-### 5.2 Customer Lifetime Value Breakdown
-
-| Component              | Starter        | Professional   | Enterprise     |
-|------------------------|----------------|----------------|----------------|
-| Monthly subscription   | SAR 999        | SAR 2,499      | SAR 5,000+     |
-| Avg monthly upsell     | SAR 100        | SAR 300        | SAR 1,000      |
-| Expected tenure        | 36 months      | 48 months      | 60 months      |
-| **Lifetime Value**     | **SAR 39,564** | **SAR 134,352**| **SAR 360,000**|
-
 ---
 
 ## 6. Competitive Landscape
@@ -209,7 +200,6 @@ The platform supports 14 distinct roles with SAR-denominated approval limits:
 | Competitor       | Type           | Strengths              | Weaknesses               |
 |------------------|----------------|------------------------|--------------------------|
 | CDK Global       | International  | Enterprise features    | No Arabic, expensive     |
-| AutoFluent       | International  | Modern UX              | No ZATCA, no Arabic      |
 | Odoo             | Generic ERP    | Flexible, open-source  | Not automotive-specific  |
 | SAP Business One | Generic ERP    | Enterprise-grade       | Over-complex, expensive  |
 | Paper/Excel      | Status quo     | No cost, familiar      | No compliance, no data   |

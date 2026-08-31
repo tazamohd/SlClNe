@@ -161,23 +161,11 @@ revenue figures (presented net) but included in cash flow considerations.
 
 ## 5. Cash Flow Model
 
-### 5.1 Subscription Billing Mechanics
+Billing mix: 60% monthly, 35% annual prepaid, 5% quarterly. Payment terms
+range from prepaid (Starter, auto-charge) to Net 30 (Enterprise, bank transfer).
+Expected DSO: 0-25 days depending on segment.
 
-| Billing Model    | % of Customers | Cash Flow Impact                     |
-|------------------|----------------|--------------------------------------|
-| Monthly billing  | 60%            | Steady monthly inflow                |
-| Annual prepaid   | 35%            | Large upfront, recognized monthly    |
-| Quarterly        | 5%             | Moderate lump sums quarterly         |
-
-### 5.2 Payment Terms and Collection
-
-| Customer Segment | Payment Terms  | Expected DSO | Collection Method         |
-|------------------|----------------|-------------- |---------------------------|
-| Starter          | Prepaid        | 0 days       | Auto-charge (Mada/Visa)   |
-| Professional     | Net 15         | 12 days      | Auto-charge or bank xfer  |
-| Enterprise       | Net 30         | 25 days      | Bank transfer, invoice    |
-
-### 5.3 Monthly Cash Flow -- Year 1
+### 5.1 Monthly Cash Flow -- Year 1
 
 | Month | Cash In    | Cash Out   | Net Cash Flow | Cumulative    |
 |-------|------------|------------|---------------|---------------|
