@@ -26,6 +26,8 @@ import { VehicleHistory } from '../workshop/VehicleHistory'
 import { VehicleInspections } from '../workshop/VehicleInspections'
 import { FleetTracking } from '../workshop/FleetTracking'
 import { TowingAssistance } from '../workshop/TowingAssistance'
+import { LoanerVehicles } from '../fleet/LoanerVehicles'
+import { TowingServices } from '../fleet/TowingServices'
 
 export const SCREENS: DomainScreens = {
   JobCardDetail,
@@ -44,4 +46,8 @@ export const SCREENS: DomainScreens = {
   'Vehicle-Inspections': VehicleInspections,
   'Fleet-Tracking': FleetTracking,
   'Towing-Assistance': TowingAssistance,
+  // Fleet-service feature-map screens graduated from the generic kit to their
+  // real implementations, alongside the Fleet-Tracking / Towing-Assistance family.
+  'Loaner-Vehicles': LoanerVehicles,
+  'Towing-Services': TowingServices,
 }

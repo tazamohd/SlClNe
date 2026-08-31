@@ -24,6 +24,8 @@ import { MLFraudDetection } from '../ai/MLFraudDetection'
 import { NeuralNetworkPrediction } from '../ai/NeuralNetworkPrediction'
 import { SmartPartsRecommendations } from '../ai/SmartPartsRecommendations'
 import { IntelligentPriceOptimizer } from '../ai/IntelligentPriceOptimizer'
+import { VoiceCommands } from '../ai/VoiceCommands'
+import { VoiceCommandInterface } from '../ai/VoiceCommandInterface'
 
 export const SCREENS: DomainScreens = {
   AIAssistant,
@@ -40,4 +42,9 @@ export const SCREENS: DomainScreens = {
   'Neural-Network-Prediction': NeuralNetworkPrediction,
   'Smart-Parts-Recommendations': SmartPartsRecommendations,
   'Intelligent-Price-Optimizer': IntelligentPriceOptimizer,
+  // Feature-map screens graduated from the generic kit to their real
+  // implementations. Both are EXTERNAL_DEPENDENCY (speech provider credential):
+  // they ship the full UI, adapter and failure state, exempt only from live data.
+  'Voice-Commands': VoiceCommands,
+  'Voice-Command-Interface': VoiceCommandInterface,
 }
