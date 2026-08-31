@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-08-31'
+export const REGISTRY_GENERATED_AT = '2026-09-01'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -21,8 +21,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -45,8 +43,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -68,9 +64,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/AgentDashboard.dc.html",
@@ -91,9 +85,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/AgentRegistry.dc.html",
@@ -115,8 +107,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -139,8 +129,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -163,8 +151,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/AppointmentCalendar.dc.html",
@@ -186,8 +173,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Appointments.dc.html",
@@ -209,8 +195,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/ApprovalInbox.dc.html",
@@ -233,7 +218,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -257,7 +241,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -280,8 +263,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -304,8 +285,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/BankReconciliation.dc.html",
@@ -326,9 +306,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/BIDashboard.dc.html",
@@ -350,8 +328,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -374,8 +350,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Branches.dc.html",
@@ -398,7 +373,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -422,7 +396,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -444,9 +417,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Campaigns.dc.html",
@@ -468,8 +439,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/ChartOfAccounts.dc.html",
@@ -490,9 +460,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/ConversationHistory.dc.html",
@@ -514,8 +482,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -539,8 +505,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -562,9 +526,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CRMCalendar.dc.html",
@@ -585,9 +547,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CRMTasks.dc.html",
@@ -610,8 +570,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -635,8 +593,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -660,8 +616,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -685,7 +639,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -710,7 +663,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -735,7 +687,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -760,7 +711,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -785,7 +735,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -810,7 +759,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -835,7 +783,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -860,7 +807,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -883,9 +829,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CustomerApproval.dc.html",
@@ -907,8 +851,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/CustomerDetail.dc.html",
@@ -930,8 +873,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CustomerFeedback.dc.html",
@@ -953,8 +895,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CustomerPortal.dc.html",
@@ -976,8 +917,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/CustomerPortal.Booking.dc.html",
@@ -998,9 +938,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Customers.dc.html",
@@ -1021,9 +959,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CustomerSegments.dc.html",
@@ -1044,9 +980,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/CustomReports.dc.html",
@@ -1069,9 +1003,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "MOBILE_MISSING",
       "DESKTOP_ONLY",
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Dashboard.dc.html",
@@ -1093,8 +1025,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Departments.dc.html",
@@ -1115,9 +1046,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/DiagnosticReport.dc.html",
@@ -1138,9 +1067,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/EmailMarketing.dc.html",
@@ -1162,8 +1089,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1186,8 +1111,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/EstimateDetail.dc.html",
@@ -1209,8 +1133,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Estimates.dc.html",
@@ -1231,9 +1154,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/ExecutiveReports.dc.html",
@@ -1255,8 +1176,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Expenses.dc.html",
@@ -1277,9 +1197,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1301,9 +1219,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1326,8 +1242,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/FleetContract.dc.html",
@@ -1349,8 +1264,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/FleetManagement.dc.html",
@@ -1371,9 +1285,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/FlowSpec.dc.html",
@@ -1395,8 +1307,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1420,7 +1330,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1443,8 +1352,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/HRPayroll.dc.html",
@@ -1465,9 +1373,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/Index.dc.html",
@@ -1490,7 +1396,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1512,9 +1417,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Integrations.dc.html",
@@ -1536,8 +1439,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Inventory.dc.html",
@@ -1558,9 +1460,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/InventoryReports.dc.html",
@@ -1582,8 +1482,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1606,8 +1504,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/InvoiceCreate.dc.html",
@@ -1629,8 +1526,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/InvoiceDetail.dc.html",
@@ -1651,9 +1547,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": "project/InvoicePreview.dc.html",
@@ -1674,9 +1568,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Invoices.dc.html",
@@ -1697,9 +1589,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/JobCardDetail.dc.html",
@@ -1720,9 +1610,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/JobCards.dc.html",
@@ -1744,8 +1632,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/JobDetail.dc.html",
@@ -1767,8 +1654,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/JournalEntries.dc.html",
@@ -1791,7 +1677,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1814,8 +1699,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1838,8 +1721,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1862,8 +1743,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/LeadDetail.dc.html",
@@ -1884,9 +1764,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/LeadPipeline.dc.html",
@@ -1909,7 +1787,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1932,8 +1809,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1956,8 +1831,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1980,8 +1853,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2005,7 +1876,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2029,7 +1899,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2054,7 +1923,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2079,7 +1947,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2101,9 +1968,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/OBDDiagnostics.dc.html",
@@ -2125,8 +1990,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/OEMIntegrations.dc.html",
@@ -2147,9 +2011,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2171,9 +2032,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/OperationalReports.dc.html",
@@ -2194,9 +2053,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Opportunities.dc.html",
@@ -2219,7 +2076,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2242,8 +2098,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2266,8 +2120,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2289,9 +2141,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2313,9 +2163,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2338,9 +2186,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2363,9 +2209,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2388,9 +2232,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2413,9 +2255,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2438,9 +2278,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -2463,9 +2301,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2487,9 +2323,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "TABLET_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Payments.dc.html",
@@ -2511,8 +2345,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2534,9 +2366,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2558,9 +2388,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2583,8 +2411,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2608,7 +2434,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2631,8 +2456,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2654,9 +2477,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2678,9 +2498,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2702,9 +2519,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2726,9 +2540,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2750,9 +2561,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2774,9 +2583,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2798,9 +2605,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2822,9 +2627,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2846,9 +2649,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2870,9 +2670,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2894,9 +2691,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2918,9 +2712,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2942,9 +2733,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2966,9 +2754,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2990,9 +2775,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3014,9 +2797,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3038,9 +2818,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3062,9 +2839,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3086,9 +2861,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3110,9 +2883,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3134,9 +2904,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3158,9 +2926,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3182,9 +2947,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3206,9 +2968,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3230,9 +2990,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3254,9 +3011,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3278,9 +3032,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3302,9 +3053,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3326,9 +3074,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3350,9 +3095,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3374,9 +3116,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3399,8 +3138,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/PurchaseOrder.dc.html",
@@ -3421,9 +3159,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/RBACSpec.dc.html",
@@ -3445,8 +3181,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Receipts.dc.html",
@@ -3469,7 +3204,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3493,7 +3227,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3515,9 +3248,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Reports.dc.html",
@@ -3538,9 +3269,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/ReportsAnalytics.dc.html",
@@ -3562,8 +3291,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3587,7 +3314,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3609,9 +3335,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -3633,9 +3357,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/SalesReports.dc.html",
@@ -3657,8 +3379,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3681,8 +3401,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -3704,9 +3422,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/SMSCampaigns.dc.html",
@@ -3728,8 +3444,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3752,8 +3466,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3777,7 +3489,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3801,7 +3512,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -3824,8 +3534,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -3848,8 +3556,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/SupplierPortal.dc.html",
@@ -3871,8 +3578,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/SupplierPortal.Orders.dc.html",
@@ -3894,8 +3600,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/SystemIntegrations.dc.html",
@@ -3917,8 +3622,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/TaxManagement.dc.html",
@@ -3940,8 +3644,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/TechnicianKB.dc.html",
@@ -3963,8 +3666,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/TechnicianPortal.dc.html",
@@ -3986,8 +3688,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/TechnicianPortal.JobDetail.dc.html",
@@ -4009,8 +3710,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Technicians.dc.html",
@@ -4031,9 +3731,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "TABLET_MISSING"
     ],
     "inNav": true,
     "designSource": "project/TechnicianSchedule.dc.html",
@@ -4055,8 +3753,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -4079,8 +3775,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4103,8 +3797,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4126,9 +3818,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.ActivityFeed.dc.html",
@@ -4149,9 +3839,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.AdvancedFilters.dc.html",
@@ -4172,9 +3860,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Attachments.dc.html",
@@ -4195,9 +3881,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.CalendarView.dc.html",
@@ -4218,9 +3902,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.CardView.dc.html",
@@ -4241,9 +3923,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Charts.dc.html",
@@ -4264,9 +3944,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Comments.dc.html",
@@ -4287,9 +3965,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.EmptyStates.dc.html",
@@ -4310,9 +3986,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.ExportCenter.dc.html",
@@ -4333,9 +4007,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.FormValidation.dc.html",
@@ -4356,9 +4028,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.ImportCenter.dc.html",
@@ -4379,9 +4049,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.KanbanView.dc.html",
@@ -4402,9 +4070,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.ListView.dc.html",
@@ -4425,9 +4091,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.LoadingStates.dc.html",
@@ -4448,9 +4112,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.MapView.dc.html",
@@ -4471,9 +4133,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.MediaGallery.dc.html",
@@ -4494,9 +4154,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Messages.dc.html",
@@ -4517,9 +4175,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Modals.Actions.dc.html",
@@ -4540,9 +4196,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Modals.Capture.dc.html",
@@ -4563,9 +4217,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Modals.CRUD.dc.html",
@@ -4586,9 +4238,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Modals.Data.dc.html",
@@ -4609,9 +4259,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Modals.Lifecycle.dc.html",
@@ -4632,9 +4280,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.Modals.Status.dc.html",
@@ -4655,9 +4301,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.TableView.dc.html",
@@ -4678,9 +4322,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/UI.TimelineView.dc.html",
@@ -4702,8 +4344,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4727,7 +4367,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -4750,8 +4389,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/VehicleDetail.dc.html",
@@ -4773,8 +4411,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Vehicles.dc.html",
@@ -4796,8 +4433,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4819,9 +4454,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/WhatsAppCampaigns.dc.html",
@@ -4844,7 +4477,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -4866,9 +4498,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkshopCheckIn.dc.html",
@@ -4889,9 +4519,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4915,7 +4542,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4937,9 +4563,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4961,9 +4585,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkshopQC.dc.html",
@@ -4984,9 +4606,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/WorkshopReports.dc.html",
@@ -5008,8 +4628,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -5032,8 +4650,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -5055,9 +4671,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5081,7 +4695,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5104,9 +4717,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5129,8 +4740,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5154,7 +4763,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5179,7 +4787,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5204,7 +4811,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5229,7 +4835,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5254,7 +4859,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5279,7 +4883,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5304,7 +4907,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5328,7 +4930,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5352,7 +4953,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5377,7 +4977,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5402,7 +5001,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5426,8 +5024,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -5450,8 +5046,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5476,7 +5070,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5500,8 +5093,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5526,7 +5117,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5551,7 +5141,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5576,7 +5165,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5601,7 +5189,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5625,8 +5212,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5651,7 +5236,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5676,7 +5260,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5700,8 +5283,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5726,7 +5307,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5751,7 +5331,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5776,7 +5355,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5801,7 +5379,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5826,7 +5403,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5851,7 +5427,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5876,7 +5451,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5901,7 +5475,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5926,7 +5499,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5951,7 +5523,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5976,7 +5547,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6001,7 +5571,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6026,7 +5595,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6051,7 +5619,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6076,7 +5643,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6101,7 +5667,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6126,7 +5691,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6151,7 +5715,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6176,7 +5739,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6201,7 +5763,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6226,7 +5787,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6251,7 +5811,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6276,7 +5835,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6301,7 +5859,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6326,7 +5883,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6351,7 +5907,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6376,7 +5931,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6401,7 +5955,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6423,9 +5976,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6450,7 +6001,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6475,7 +6025,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6500,7 +6049,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6525,7 +6073,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6550,7 +6097,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6575,7 +6121,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6600,7 +6145,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6625,7 +6169,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6650,7 +6193,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6675,7 +6217,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6700,7 +6241,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6725,7 +6265,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6750,7 +6289,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6775,7 +6313,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6798,9 +6335,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6824,7 +6358,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6849,7 +6382,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6874,7 +6406,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6899,7 +6430,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6924,7 +6454,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6949,7 +6478,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6974,7 +6502,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -6999,7 +6526,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7024,7 +6550,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7047,9 +6572,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7074,7 +6597,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7099,7 +6621,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7124,7 +6645,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7149,7 +6669,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7174,7 +6693,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7198,8 +6716,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7224,7 +6740,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7248,8 +6763,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7274,7 +6787,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7299,7 +6811,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7324,7 +6835,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7347,9 +6857,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7374,7 +6882,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7399,7 +6906,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7423,7 +6929,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7446,8 +6951,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7469,9 +6972,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7496,7 +6997,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7521,7 +7021,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7546,7 +7045,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7569,9 +7067,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7594,9 +7090,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7619,9 +7113,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7645,7 +7137,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7670,7 +7161,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7695,7 +7185,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7718,8 +7207,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7743,7 +7230,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7767,7 +7253,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7792,7 +7277,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7817,7 +7301,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7842,7 +7325,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7867,7 +7349,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7892,7 +7373,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7917,7 +7397,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -7942,7 +7421,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7966,7 +7444,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7990,7 +7467,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8015,7 +7491,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8040,7 +7515,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8064,7 +7538,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8088,7 +7561,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8112,7 +7584,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8136,7 +7607,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8160,8 +7630,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8184,7 +7653,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8209,7 +7677,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8232,9 +7699,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8257,9 +7722,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8283,8 +7746,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8309,7 +7770,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8334,7 +7794,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8358,8 +7817,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8383,8 +7840,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8408,8 +7863,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8434,7 +7887,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8459,7 +7911,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8484,7 +7935,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8508,8 +7958,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8534,7 +7982,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8559,7 +8006,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8584,7 +8030,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8609,7 +8054,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8634,7 +8078,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8658,7 +8101,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8681,9 +8123,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8708,7 +8148,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8733,7 +8172,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8758,7 +8196,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8783,7 +8220,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8807,7 +8243,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8832,7 +8267,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8857,7 +8291,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8880,8 +8313,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8906,7 +8337,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8930,8 +8360,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8956,7 +8384,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8981,7 +8408,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9006,7 +8432,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9031,7 +8456,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9056,7 +8480,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9080,8 +8503,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9106,7 +8527,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9131,7 +8551,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9156,7 +8575,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9181,7 +8599,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9206,7 +8623,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9231,7 +8647,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9256,7 +8671,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9281,7 +8695,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9306,7 +8719,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9331,7 +8743,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9356,7 +8767,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9381,7 +8791,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9405,8 +8814,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9428,8 +8836,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9452,7 +8859,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9477,7 +8883,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9502,7 +8907,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9527,7 +8931,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9552,7 +8955,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9577,7 +8979,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9602,7 +9003,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9627,7 +9027,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9651,8 +9050,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9674,8 +9072,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9697,8 +9094,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9720,8 +9116,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9743,8 +9138,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9766,8 +9160,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9789,8 +9182,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9813,7 +9205,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9837,8 +9228,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9860,8 +9250,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "RTL_BROKEN"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9884,7 +9273,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9909,7 +9297,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9934,7 +9321,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9959,7 +9345,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -9984,7 +9369,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10009,7 +9393,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10032,9 +9415,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10059,7 +9440,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10084,7 +9464,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10109,7 +9488,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10134,7 +9512,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10159,7 +9536,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10184,7 +9560,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10209,7 +9584,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10234,7 +9608,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -10259,7 +9632,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "RTL_BROKEN",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-01",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -11,14 +11,17 @@
     "placeholder": 0,
     "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 289,
-    "dataBacked": 95,
+    "mockOnly": 286,
+    "dataBacked": 98,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 129,
-    "hasErrorState": 97,
-    "hasEmptyState": 147,
+    "hasLoadingState": 143,
+    "hasErrorState": 111,
+    "hasEmptyState": 166,
+    "tabletVerified": 4,
+    "arabicVerified": 80,
+    "rtlHazards": 0,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -50,7 +53,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -87,8 +90,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -120,7 +121,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -157,8 +158,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -189,7 +188,7 @@
       "mobileType": "A-designed",
       "purpose": "AI agent runtime dashboard",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -230,9 +229,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -262,7 +259,7 @@
       "mobileType": "A-designed",
       "purpose": "Deployed AI agents",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -303,9 +300,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -338,7 +333,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -375,8 +370,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -410,7 +403,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -447,8 +440,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -523,8 +514,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -598,8 +588,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -674,8 +663,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -745,7 +733,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -817,7 +804,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -849,7 +835,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -886,8 +872,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -960,8 +944,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -990,7 +973,7 @@
       "mobileType": "A-designed",
       "purpose": "BI dashboard — executive charts",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -1031,9 +1014,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1060,7 +1041,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -1097,8 +1078,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -1169,8 +1148,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1242,7 +1220,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -1315,7 +1292,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -1346,7 +1322,7 @@
       "mobileType": "A-designed",
       "purpose": "Marketing campaigns",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -1387,9 +1363,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1460,8 +1434,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1491,7 +1464,7 @@
       "mobileType": "A-designed",
       "purpose": "AI conversation logs",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -1532,9 +1505,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1561,7 +1532,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -1598,8 +1569,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -1628,7 +1597,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -1665,8 +1634,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -1697,7 +1664,7 @@
       "mobileType": "A-designed",
       "purpose": "CRM calendar view",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -1738,9 +1705,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1770,7 +1735,7 @@
       "mobileType": "A-designed",
       "purpose": "CRM task queue",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -1811,9 +1776,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -1842,13 +1805,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1878,8 +1843,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -1909,13 +1872,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -1945,8 +1910,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -1976,13 +1939,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "vehicles"
+      ],
       "crud": {
         "create": false,
         "read": true,
@@ -2012,8 +1977,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2043,9 +2006,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2079,7 +2042,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2110,9 +2072,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2146,7 +2108,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2177,9 +2138,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2213,7 +2174,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2244,9 +2204,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2280,7 +2240,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2311,9 +2270,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2347,7 +2306,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2378,9 +2336,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2414,7 +2372,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2445,9 +2402,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2481,7 +2438,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2512,9 +2468,9 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -2548,7 +2504,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -2584,7 +2539,7 @@
       "mobileType": "B-responsive",
       "purpose": "Customer signs off on estimate (e-signature, itemised)",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -2625,9 +2580,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -2705,8 +2658,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -2782,8 +2734,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -2861,8 +2812,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -2938,8 +2888,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -2972,7 +2921,7 @@
       "mobileType": "A-designed",
       "purpose": "Customer directory",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "DONE",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3013,9 +2962,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3045,7 +2992,7 @@
       "mobileType": "A-designed",
       "purpose": "Customer segmentation",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3086,9 +3033,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3122,7 +3067,7 @@
       "mobileType": "A-designed",
       "purpose": "User-built report builder",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3163,9 +3108,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3202,7 +3145,7 @@
       "mobileType": "A-designed",
       "purpose": "Role-adaptive KPI home",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "DONE",
       "mobile": "MISSING",
       "responsive": "MISSING",
       "arabic": "PARTIAL",
@@ -3245,9 +3188,7 @@
       "flags": [
         "MOBILE_MISSING",
         "DESKTOP_ONLY",
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3319,8 +3260,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3355,7 +3295,7 @@
       "mobileType": "B-responsive",
       "purpose": "OBD report generation + share to reception / customer / storekeeper / supervisor",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -3400,9 +3340,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3432,7 +3370,7 @@
       "mobileType": "A-designed",
       "purpose": "Email marketing composer",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3473,9 +3411,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3502,7 +3438,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -3539,8 +3475,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -3617,8 +3551,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3694,8 +3627,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3724,7 +3656,7 @@
       "mobileType": "A-designed",
       "purpose": "Board / CEO KPIs",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3766,9 +3698,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3839,8 +3769,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3869,7 +3798,7 @@
       "mobileType": "A-designed",
       "purpose": "Balance sheet, P&L, cash flow, trial balance",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3908,9 +3837,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -3940,7 +3867,7 @@
       "mobileType": "A-designed",
       "purpose": "IFRS financial statements",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -3979,9 +3906,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -4060,8 +3985,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4137,8 +4061,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4162,7 +4085,7 @@
       "mobileType": "B-responsive",
       "purpose": "Cross-screen workflow specification (approvals, notifications)",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -4201,9 +4124,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4230,7 +4151,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -4267,8 +4188,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -4347,7 +4266,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -4422,8 +4340,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4447,7 +4364,7 @@
       "mobileType": "B-responsive",
       "purpose": "Full screen index for internal navigation",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -4486,9 +4403,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4558,7 +4473,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -4587,7 +4501,7 @@
       "mobileType": "A-designed",
       "purpose": "3rd-party integrations",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -4628,9 +4542,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4705,8 +4617,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4740,7 +4651,7 @@
       "mobileType": "A-designed",
       "purpose": "Stock reports",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -4781,9 +4692,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4810,7 +4719,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -4847,8 +4756,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -4923,8 +4830,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5000,8 +4906,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5036,7 +4941,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -5075,9 +4980,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -5109,7 +5012,7 @@
       "mobileType": "A-designed",
       "purpose": "Invoice ledger",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "DONE",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -5150,9 +5053,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5187,7 +5088,7 @@
       "mobileType": "A-designed",
       "purpose": "Alias for JobDetail",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -5233,9 +5134,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5270,7 +5169,7 @@
       "mobileType": "A-designed",
       "purpose": "List of active job cards",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "DONE",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -5311,9 +5210,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5393,8 +5290,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5465,8 +5361,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5538,7 +5433,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -5572,7 +5466,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -5609,8 +5503,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -5638,8 +5530,8 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "VERIFIED",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
       "errorState": "MISSING",
@@ -5675,8 +5567,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -5749,8 +5639,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5780,7 +5669,7 @@
       "mobileType": "A-designed",
       "purpose": "Kanban lead pipeline",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -5821,9 +5710,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5893,7 +5780,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -5921,7 +5807,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -5958,8 +5844,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -5987,7 +5871,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -6024,8 +5908,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6053,7 +5935,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -6090,8 +5972,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6163,7 +6043,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6229,7 +6108,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -6296,7 +6174,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -6376,7 +6253,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6412,7 +6288,7 @@
       "mobileType": "B-responsive",
       "purpose": "Live vehicle sensor stream + DTC lookup",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -6454,9 +6330,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -6526,8 +6400,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -6551,10 +6424,10 @@
       "mobileType": "A-designed",
       "purpose": "Multi-step onboarding",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -6590,9 +6463,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6627,7 +6497,7 @@
       "mobileType": "A-designed",
       "purpose": "Ops-level reports",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -6670,9 +6540,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -6702,7 +6570,7 @@
       "mobileType": "A-designed",
       "purpose": "CRM opportunities",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -6743,9 +6611,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -6814,7 +6680,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6842,7 +6707,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -6879,8 +6744,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6908,7 +6771,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -6945,8 +6808,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -6978,13 +6839,13 @@
       "mobileType": "B-responsive",
       "purpose": "B2B parts marketplace (RFQ send, quotes in/out, members)",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7017,9 +6878,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7044,13 +6903,13 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7083,9 +6942,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -7111,13 +6968,13 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7150,9 +7007,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -7178,13 +7033,13 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7217,9 +7072,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -7245,14 +7098,14 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -7284,9 +7137,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -7312,13 +7163,13 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7351,9 +7202,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -7379,14 +7228,14 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -7418,9 +7267,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -7453,7 +7300,7 @@
       "mobileType": "B-responsive",
       "purpose": "Admin-side supply-chain view",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7492,9 +7339,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7529,7 +7374,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -7567,9 +7412,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -7596,7 +7439,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -7633,8 +7476,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7666,7 +7507,7 @@
       "mobileType": "B-responsive",
       "purpose": "External procurement view (requisitions)",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7705,9 +7546,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7739,14 +7578,14 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -7778,9 +7617,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7821,7 +7658,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -7858,8 +7695,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7925,7 +7760,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -7959,7 +7793,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -7996,8 +7830,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8022,10 +7854,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — About",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8061,9 +7893,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8088,10 +7917,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Accounting product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8127,9 +7956,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8154,10 +7980,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — AI & Automation product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8193,9 +8019,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8220,10 +8043,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Automation & Workflows",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8259,9 +8082,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8286,7 +8106,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Blog",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8325,9 +8145,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8352,7 +8170,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Book a demo form",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8391,9 +8209,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8418,7 +8234,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Careers",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8457,9 +8273,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8484,7 +8298,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Contact",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8523,9 +8337,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8550,10 +8362,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — CRM product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8589,9 +8401,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8616,10 +8425,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Customer Portal product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8655,9 +8464,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8682,10 +8488,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — FAQ",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8721,9 +8527,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8748,10 +8551,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Features overview",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8787,9 +8590,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8814,10 +8614,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Fleet Management product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8853,9 +8653,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8880,10 +8677,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Industries served",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8919,9 +8716,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -8946,7 +8740,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Insurance",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8985,9 +8779,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9012,10 +8804,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Integration partners",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9051,9 +8843,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9078,10 +8867,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Landing",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9117,9 +8906,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9144,7 +8930,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Loans",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -9183,9 +8969,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9210,7 +8994,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Marketplace",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -9249,9 +9033,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9276,10 +9058,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Mini ERP product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9315,9 +9097,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9342,7 +9121,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Pricing plans",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -9381,9 +9160,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9408,10 +9185,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Product suite overview",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9447,9 +9224,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9474,10 +9248,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Request a demo form",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9513,9 +9287,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9540,7 +9311,7 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Resources & learning hub",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -9579,9 +9350,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9606,10 +9375,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Services",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9645,9 +9414,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9672,10 +9438,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Solutions overview",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9711,9 +9477,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9738,10 +9501,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Spare Parts product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9777,9 +9540,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9804,10 +9564,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Supplier Portal product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9843,9 +9603,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9870,10 +9627,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Support",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9909,9 +9666,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -9936,10 +9690,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Technician Portal product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -9975,9 +9729,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10002,10 +9753,10 @@
       "mobileType": "B-responsive",
       "purpose": "Public website — Workshop Management product page",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -10041,9 +9792,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10118,8 +9866,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10143,7 +9890,7 @@
       "mobileType": "B-responsive",
       "purpose": "Reference specification for the RBAC engine",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -10182,9 +9929,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10257,8 +10002,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10323,7 +10067,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10389,7 +10132,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10424,7 +10166,7 @@
       "mobileType": "A-designed",
       "purpose": "Standard operational reports",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -10465,9 +10207,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10501,7 +10241,7 @@
       "mobileType": "A-designed",
       "purpose": "Analytics overview",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -10544,9 +10284,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10573,7 +10311,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -10610,8 +10348,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10677,7 +10413,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10706,7 +10441,7 @@
       "mobileType": "A-designed",
       "purpose": "Editable RBAC matrix (14 roles × 28 modules)",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -10745,9 +10480,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10777,7 +10510,7 @@
       "mobileType": "A-designed",
       "purpose": "Revenue reports",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -10818,9 +10551,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10847,7 +10578,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -10884,8 +10615,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10917,7 +10646,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -10954,8 +10683,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -10986,7 +10713,7 @@
       "mobileType": "A-designed",
       "purpose": "SMS campaign composer",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -11027,9 +10754,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11056,7 +10781,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -11093,8 +10818,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -11122,7 +10845,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -11159,8 +10882,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -11226,7 +10947,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -11296,7 +11016,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -11328,7 +11047,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -11365,8 +11084,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -11441,8 +11158,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11515,8 +11231,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11586,8 +11301,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11658,8 +11372,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11734,8 +11447,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11809,8 +11521,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11885,8 +11596,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11961,8 +11671,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11998,7 +11707,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -12037,9 +11746,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -12070,7 +11777,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -12107,8 +11814,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -12136,7 +11841,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -12173,8 +11878,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -12202,7 +11905,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -12239,8 +11942,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -12265,7 +11966,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ActivityFeed",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12304,9 +12005,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12330,7 +12029,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — AdvancedFilters",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12369,9 +12068,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12395,7 +12092,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Attachments",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12434,9 +12131,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12460,7 +12155,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — CalendarView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12499,9 +12194,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12525,7 +12218,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — CardView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12564,9 +12257,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12590,7 +12281,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Charts",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12629,9 +12320,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12655,7 +12344,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Comments",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12694,9 +12383,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12720,7 +12407,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — EmptyStates",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12759,9 +12446,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12785,7 +12470,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ExportCenter",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12824,9 +12509,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12850,7 +12533,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — FormValidation",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12889,9 +12572,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12915,7 +12596,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ImportCenter",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -12954,9 +12635,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -12980,7 +12659,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — KanbanView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13019,9 +12698,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13045,7 +12722,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — ListView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13084,9 +12761,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13110,7 +12785,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — LoadingStates",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13149,9 +12824,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13175,7 +12848,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — MapView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13214,9 +12887,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13240,7 +12911,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — MediaGallery",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13279,9 +12950,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13305,7 +12974,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — Messages",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13344,9 +13013,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13370,7 +13037,7 @@
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Actions",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13409,9 +13076,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13435,7 +13100,7 @@
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Capture",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13474,9 +13139,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13500,7 +13163,7 @@
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — CRUD",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13539,9 +13202,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13565,7 +13226,7 @@
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Data",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13604,9 +13265,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13630,7 +13289,7 @@
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Lifecycle",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13669,9 +13328,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13695,7 +13352,7 @@
       "mobileType": "B-responsive",
       "purpose": "Modal pattern reference — Status",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13734,9 +13391,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13760,7 +13415,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — TableView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13799,9 +13454,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13825,7 +13478,7 @@
       "mobileType": "B-responsive",
       "purpose": "UI pattern reference — TimelineView",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -13864,9 +13517,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -13893,7 +13544,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -13930,8 +13581,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14001,7 +13650,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14080,8 +13728,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14157,8 +13804,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14185,7 +13831,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -14222,8 +13868,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14254,7 +13898,7 @@
       "mobileType": "A-designed",
       "purpose": "WhatsApp campaign composer",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -14295,9 +13939,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14368,7 +14010,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14404,7 +14045,7 @@
       "mobileType": "A-designed",
       "purpose": "Vehicle intake at the workshop",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -14446,9 +14087,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14483,10 +14122,10 @@
       "mobileType": "A-designed",
       "purpose": "Handover & final invoice",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -14522,9 +14161,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14600,7 +14236,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14636,7 +14271,7 @@
       "mobileType": "A-designed",
       "purpose": "Multi-point inspection",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -14675,9 +14310,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14713,7 +14346,7 @@
       "mobileType": "A-designed",
       "purpose": "Quality-control checklist",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -14756,9 +14389,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14792,7 +14423,7 @@
       "mobileType": "A-designed",
       "purpose": "Workshop throughput reports",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "DONE",
       "responsive": "DONE",
       "arabic": "PARTIAL",
@@ -14834,9 +14465,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14874,7 +14503,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -14911,8 +14540,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -14940,7 +14567,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -14977,8 +14604,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY"
       ]
     },
@@ -15003,7 +14628,7 @@
       "mobileType": "B-responsive",
       "purpose": "Overview of garage operations and key metrics.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -15046,9 +14671,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15114,7 +14737,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15140,7 +14762,7 @@
       "mobileType": "B-responsive",
       "purpose": "Comprehensive operational overview with real-time data.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -15182,9 +14804,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15212,7 +14832,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -15251,8 +14871,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15318,7 +14936,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15385,7 +15002,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15452,7 +15068,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15519,7 +15134,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15586,7 +15200,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15653,7 +15266,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15722,7 +15334,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15790,7 +15401,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -15856,7 +15466,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15923,7 +15532,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -15990,7 +15598,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16019,7 +15626,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -16058,8 +15665,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16087,7 +15692,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -16124,8 +15729,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16192,7 +15795,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16221,7 +15823,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -16258,8 +15860,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16326,7 +15926,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16393,7 +15992,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16460,7 +16058,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16527,7 +16124,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16556,7 +16152,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -16593,8 +16189,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16661,7 +16255,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16728,7 +16321,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16757,7 +16349,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -16794,8 +16386,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16862,7 +16452,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16929,7 +16518,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16996,7 +16584,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17063,7 +16650,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17130,7 +16716,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17197,7 +16782,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17264,7 +16848,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17331,7 +16914,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17398,7 +16980,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17465,7 +17046,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17532,7 +17112,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17599,7 +17178,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17666,7 +17244,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17733,7 +17310,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17800,7 +17376,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17867,7 +17442,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -17934,7 +17508,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18001,7 +17574,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18068,7 +17640,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18135,7 +17706,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18202,7 +17772,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18269,7 +17838,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18336,7 +17904,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18403,7 +17970,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18470,7 +18036,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18537,7 +18102,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18604,7 +18168,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18673,7 +18236,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18698,7 +18260,7 @@
       "mobileType": "B-responsive",
       "purpose": "B2B portal for buying/selling parts with other garages.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -18737,9 +18299,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18806,7 +18366,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18873,7 +18432,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -18940,7 +18498,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19007,7 +18564,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19074,7 +18630,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19141,7 +18696,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19208,7 +18762,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19275,7 +18828,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19342,7 +18894,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19409,7 +18960,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19476,7 +19026,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19543,7 +19092,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19610,7 +19158,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19677,7 +19224,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19703,10 +19249,10 @@
       "mobileType": "B-responsive",
       "purpose": "Supplier management interface for agents.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -19744,9 +19290,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19812,7 +19355,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19879,7 +19421,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -19946,7 +19487,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20013,7 +19553,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20080,7 +19619,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20147,7 +19685,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20214,7 +19751,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20281,7 +19817,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20348,7 +19883,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20374,7 +19908,7 @@
       "mobileType": "B-responsive",
       "purpose": "Managing certifications and skills.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -20413,9 +19947,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20482,7 +20014,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20549,7 +20080,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20616,7 +20146,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20683,7 +20212,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20750,7 +20278,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20779,7 +20306,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -20816,8 +20343,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20884,7 +20409,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -20913,7 +20437,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -20950,8 +20474,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21018,7 +20540,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21085,7 +20606,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21152,7 +20672,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21178,7 +20697,7 @@
       "mobileType": "B-responsive",
       "purpose": "Managing mobile app settings and profile.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -21217,9 +20736,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21286,7 +20803,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21355,7 +20871,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21423,7 +20938,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21451,7 +20965,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -21490,8 +21004,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21516,7 +21028,7 @@
       "mobileType": "B-responsive",
       "purpose": "Managing contact info and preferences.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -21555,9 +21067,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21624,7 +21134,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21691,7 +21200,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21758,7 +21266,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21784,7 +21291,7 @@
       "mobileType": "B-responsive",
       "purpose": "Post-service reviews and direct communication.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -21823,9 +21330,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21851,7 +21356,7 @@
       "mobileType": "B-responsive",
       "purpose": "Booking appointments via mobile app.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -21890,9 +21395,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -21918,7 +21421,7 @@
       "mobileType": "B-responsive",
       "purpose": "Managing vehicles on mobile.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -21959,9 +21462,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22027,7 +21528,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22094,7 +21594,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22163,7 +21662,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22191,7 +21689,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -22230,8 +21728,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22299,7 +21795,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22365,7 +21860,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22432,7 +21926,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22499,7 +21992,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22566,7 +22058,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22633,7 +22124,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22700,7 +22190,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22767,7 +22256,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -22837,7 +22325,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22906,7 +22393,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22972,7 +22458,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23039,7 +22524,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23108,7 +22592,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23176,7 +22659,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23246,7 +22728,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23314,7 +22795,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23380,7 +22860,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23448,8 +22927,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23514,7 +22992,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23581,7 +23058,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23607,7 +23083,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -23646,9 +23122,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23674,7 +23148,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -23713,9 +23187,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23744,7 +23216,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -23781,8 +23253,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23849,7 +23319,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23916,7 +23385,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -23945,7 +23413,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -23982,8 +23450,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24012,7 +23478,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -24049,8 +23515,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24079,7 +23543,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -24116,8 +23580,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24184,7 +23646,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24251,7 +23712,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24318,7 +23778,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24347,7 +23806,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -24384,8 +23843,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24452,7 +23909,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24519,7 +23975,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24586,7 +24041,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24653,7 +24107,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24722,7 +24175,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24788,7 +24240,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24814,7 +24265,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -24853,9 +24304,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24922,7 +24371,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -24989,7 +24437,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25056,7 +24503,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25126,7 +24572,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25192,7 +24637,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25259,7 +24703,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25328,7 +24771,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25356,7 +24798,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -25393,8 +24835,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25461,7 +24901,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25490,7 +24929,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -25527,8 +24966,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25595,7 +25032,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25662,7 +25098,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25729,7 +25164,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25796,7 +25230,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25863,7 +25296,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25892,7 +25324,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -25929,8 +25361,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -25997,7 +25427,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26064,7 +25493,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26131,7 +25559,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26198,7 +25625,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26265,7 +25691,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26332,7 +25757,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26399,7 +25823,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26466,7 +25889,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26533,7 +25955,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26600,7 +26021,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26667,7 +26087,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26734,7 +26153,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26802,8 +26220,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26869,8 +26286,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26935,7 +26351,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27002,7 +26417,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27069,7 +26483,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27136,7 +26549,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27203,7 +26615,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27270,7 +26681,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27337,7 +26747,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27404,7 +26813,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -27472,8 +26880,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27539,8 +26946,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27606,8 +27012,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27673,8 +27078,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27740,8 +27144,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27807,8 +27210,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27874,8 +27276,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27940,7 +27341,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28008,8 +27408,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -28075,8 +27474,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "RTL_BROKEN"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -28141,7 +27539,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28208,7 +27605,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28275,7 +27671,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28342,7 +27737,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28409,7 +27803,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28476,7 +27869,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28502,7 +27894,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -28541,9 +27933,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28610,7 +28000,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28677,7 +28066,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28744,7 +28132,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28811,7 +28198,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28878,7 +28264,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -28945,7 +28330,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -29012,7 +28396,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -29079,7 +28462,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -29146,7 +28528,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "RTL_BROKEN",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]

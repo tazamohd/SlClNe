@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-01",
   "open": 4,
   "blockers": [
     {
@@ -13,7 +13,7 @@
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "289 rendered capabilities are mock-only",
+      "title": "286 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
@@ -29,8 +29,8 @@
     {
       "id": "BLK-008",
       "severity": "HIGH",
-      "title": "No tablet verification anywhere",
-      "detail": "768/820/834/1024, portrait and landscape, has never been checked.",
+      "title": "420 rendering capabilities have never been checked at 768–1024",
+      "detail": "The smoke suite loads 4 route(s) at a tablet viewport. 768/820/834/1024, portrait and landscape, is unchecked for the rest.",
       "owner": "18",
       "wave": "W3"
     }
