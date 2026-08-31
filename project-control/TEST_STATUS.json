@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-08-31",
   "suites": {
     "unit": {
       "runner": "vitest",
@@ -38,10 +38,10 @@
     },
     "goldenPaths": {
       "runner": "playwright",
-      "present": false,
-      "covered": 0,
+      "present": true,
+      "covered": 23,
       "of": 23,
-      "note": "W4 — Agent 23"
+      "note": "app/e2e/*.spec.ts — all 23 golden paths have real multi-step specs (250 tests, 34 files, playwright --list clean, typecheck green). Browser execution runs in CI (config pins Linux Chromium). Mutating steps assert the mock repo's honest refusal (disabled submit / ReadOnlyNotice / refusal toast) pending BLK-002 live backend."
     },
     "mobile": {
       "runner": "playwright",

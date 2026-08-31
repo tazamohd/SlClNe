@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-08-31",
   "totals": {
     "capabilities": 424,
     "product": 384,
@@ -15,10 +15,10 @@
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 92,
-    "hasErrorState": 64,
+    "hasErrorState": 65,
     "hasEmptyState": 101,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 63,
+    "orphanScreenFiles": 59,
     "productionReady": 0
   },
   "bySurface": {
