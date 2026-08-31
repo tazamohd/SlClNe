@@ -1729,7 +1729,11 @@ const failures = []
      * assertion. Nothing is suppressed here: the check still runs on the
      * captured text below, so a route that never renders its text fails
      * exactly as before, just after a bounded wait rather than immediately. */
-    const awaited = EXPECTED_TEXT[entry.route]
+    /* Only where the assertion will actually run. Feature-map routes render
+     * generic content and their text check is skipped below, so waiting on
+     * them buys nothing and costs the full timeout each — with ~175 of them
+     * that alone took smoke from 2m30 to 7m40. */
+    const awaited = entry.domain === 'featuremap' ? undefined : EXPECTED_TEXT[entry.route]
     if (awaited) {
       const spacedAwaited = awaited
         .replace(/([a-z])([A-Z])/g, '$1 $2')
