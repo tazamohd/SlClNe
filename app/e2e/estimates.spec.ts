@@ -26,10 +26,11 @@ test.describe('Estimates', () => {
     expect(text).toContain('SAR 1,546.75')
   })
 
-  test('customer approval page loads', async ({ page }) => {
+  test('customer approval page loads with real approval lines', async ({ page }) => {
     await gotoReady(page, '/customer-approval')
     const text = await bodyText(page)
-    expect(text).toContain('Customer Approval')
+    expect(text).toContain('What we found')
+    expect(text).toContain('Authorise the work')
   })
 
   test('approval inbox loads', async ({ page }) => {
