@@ -37,12 +37,25 @@ test.describe('Mobile responsiveness', () => {
 })
 
 test.describe('Language and RTL', () => {
-  test('switching to Arabic sets RTL direction', async ({ page }) => {
+  /** The Arabic dictionary is a lazy chunk, and the switch waits for it so the
+   *  direction and the words change together rather than mirroring the layout
+   *  around English text. That makes the click asynchronous by design, so both
+   *  assertions here poll instead of reading once: a snapshot taken in the same
+   *  tick as the click is measuring the download, not the behaviour. */
+  test('switching to Arabic sets RTL direction and Arabic copy together', async ({ page }) => {
     await gotoReady(page, '/language-selection')
     await page.getByRole('button', { name: /Arabic|العربية/ }).click()
-    const dir = await page.evaluate(() => document.documentElement.dir)
-    expect(dir).toBe('rtl')
-    const text = await page.locator('body').innerText()
-    expect(text).toContain('اختر لغتك')
+
+    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl')
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ar')
+    await expect(page.locator('body')).toContainText('اختر لغتك')
+
+    // The pairing is the point: RTL never lands on untranslated English.
+    const flashedEnglish = await page.evaluate(
+      () =>
+        document.documentElement.dir === 'rtl' &&
+        document.body.innerText.includes('Choose your language'),
+    )
+    expect(flashedEnglish).toBe(false)
   })
 })

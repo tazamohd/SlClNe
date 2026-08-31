@@ -105,9 +105,30 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     setThemeState(next)
   }, [])
 
+  /** Switching to Arabic waits for the dictionary, so the language and the
+   *  words it renders change in the same paint.
+   *
+   *  Flipping the state first is what a lazy chunk tempts you into, and it
+   *  reads as a bug: the layout mirrors to RTL while every label is still
+   *  English, for as long as the chunk takes — a blink on a desk, seconds on a
+   *  phone on 3G, with nothing on screen to say the app is working. Waiting
+   *  makes the click cost the download once, then never again. A failed load
+   *  still switches: `t()` falls back to the English source, and a user who
+   *  asked for Arabic should at least get the RTL layout they asked for. */
   const setLanguage = useCallback((next: Language) => {
     writeStored(STORAGE_KEYS.lang, next)
-    setLanguageState(next)
+    if (next !== 'ar' || arCache) {
+      if (arCache) setArLookup(arCache)
+      setLanguageState(next)
+      return
+    }
+    loadArabic().then(
+      (dict) => {
+        setArLookup(dict)
+        setLanguageState(next)
+      },
+      () => setLanguageState(next)
+    )
   }, [])
 
   const setNotifications = useCallback((on: boolean) => {

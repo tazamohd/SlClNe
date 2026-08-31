@@ -555,6 +555,22 @@ if (staleRetained.length) {
   process.exitCode = 1
 }
 
+/** What the tablet sweep actually covers, read from the sweep itself.
+ *
+ *  `e2e/tablet.spec.ts` declares its viewports and its screens as literal
+ *  tables, so the numbers reported here are the numbers that ran rather than a
+ *  figure typed into this file and left to rot. No spec, no coverage. */
+const tabletSpecPath = path.join(APP, 'e2e/tablet.spec.ts')
+const tabletSweep = (() => {
+  if (!fs.existsSync(tabletSpecPath)) return { present: false, viewports: 0, screens: 0 }
+  const src = read(tabletSpecPath)
+  const block = (name) => (new RegExp(`const ${name} = \\[([\\s\\S]*?)\\n\\]`).exec(src) ?? [, ''])[1]
+  const portrait = (block('PORTRAIT').match(/\{\s*name:/g) ?? []).length
+  const screens = (block('SCREENS').match(/\{\s*path:/g) ?? []).length
+  // Landscape is derived from portrait in the spec, so each device is two.
+  return { present: portrait > 0, viewports: portrait * 2, screens }
+})()
+
 // ── rollups ──────────────────────────────────────────────────────────────────
 
 const product = entries.filter((e) => e.category === 'PRODUCT')
@@ -653,7 +669,11 @@ written.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
                    note: 'scripts/smoke.mjs — route checks parsed from the spec' },
     goldenPaths: { runner: 'playwright', present: false, covered: 0, of: 23,             note: 'W4 — Agent 23' },
     mobile:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 18' },
-    tablet:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 18' },
+    tablet:      { runner: 'playwright', present: tabletSweep.present,
+                   covered: tabletSweep.screens, of: entries.length,
+                   note: tabletSweep.present
+                     ? `e2e/tablet.spec.ts — ${tabletSweep.viewports} viewports x ${tabletSweep.screens} screens, one per layout family, plus a rotation across the 860px breakpoint`
+                     : 'W3 — Agent 18' },
     rtl:         { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 19' },
     a11y:        { runner: 'axe',        present: false, covered: 0, of: entries.length, note: 'W3 — Agent 20' },
     visual:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 23' },
@@ -688,8 +708,21 @@ const blockers = [
     detail: 'A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.', owner: '18', wave: 'W3' },
   !fs.existsSync(path.join(APP, 'src/components/ui/Modal.tsx')) && { id: 'BLK-007', severity: 'CRITICAL', title: 'No modal system, so 23 CTAs do nothing',
     detail: 'Blocks every create/edit/delete flow in the ERP.', owner: '04', wave: 'W1' },
-  { id: 'BLK-008', severity: 'HIGH', title: 'No tablet verification anywhere',
-    detail: '768/820/834/1024, portrait and landscape, has never been checked.', owner: '18', wave: 'W3' },
+  (!tabletSweep.present
+    ? { id: 'BLK-008', severity: 'HIGH', title: 'No tablet verification anywhere',
+        detail: '768/820/834/1024, portrait and landscape, has never been checked.', owner: '18', wave: 'W3' }
+    : {
+        id: 'BLK-008', severity: 'MEDIUM',
+        title: `Tablet verification samples ${tabletSweep.screens} screens, not the full inventory`,
+        detail:
+          `e2e/tablet.spec.ts checks ${tabletSweep.viewports} viewports (768/820/834/1024, portrait ` +
+          `and landscape) plus a rotation across the 860px breakpoint, against ${tabletSweep.screens} ` +
+          'screens chosen one per layout family. It asserts no horizontal overflow, the shell the ' +
+          'width implies, and touch-target size. That is a sample, not the inventory: a screen ' +
+          'outside those families can still break at tablet width. Cleared when the sweep runs ' +
+          'over every registered capability.',
+        owner: '18', wave: 'W3',
+      }),
   totals.unregisteredDesigns && { id: 'BLK-009', severity: 'MEDIUM', title: `${totals.unregisteredDesigns} designs are not in the registry`,
     detail: `Design files with no SCREEN_MAP entry: ${unregistered.join(', ')}`, owner: '02', wave: 'W0' },
   totals.orphanScreenFiles && { id: 'BLK-010', severity: 'MEDIUM', title: `${totals.orphanScreenFiles} screen files are unreachable from any route`,

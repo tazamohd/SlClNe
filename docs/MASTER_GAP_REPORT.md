@@ -11,7 +11,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | BLK-002 | BLOCKER | No capability is backed by real data | 05 | W1 |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
 | BLK-004 | CRITICAL | 384 rendered capabilities are mock-only | 05 | W2 |
-| BLK-008 | HIGH | No tablet verification anywhere | 18 | W3 |
+| BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
 
 ## Flags across the inventory
 
