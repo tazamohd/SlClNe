@@ -1,58 +1,58 @@
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { EmptyState, ErrorState } from '@/components/ui/States'
+import { Icon } from '@/components/ui/Icon'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { usePagedCollection, type RowOf } from '@/data/useCollection'
+import { VehicleStatusBadge } from '@/screens/registry/badges'
+import { derived, UNKNOWN } from '@/screens/registry/writes'
 
-interface Vehicle {
-  plate: string
-  make: string
-  model: string
-  year: number
-  vin: string
-  owner: string
-  mileage: string
-  lastService: string
-  status: 'Active' | 'In Service' | 'Awaiting Pickup' | 'Inactive'
-}
-
-const VEHICLES: Vehicle[] = [
-  { plate: 'RUH 4821', make: 'Toyota', model: 'Camry', year: 2022, vin: 'JTDKN3DU5N0..', owner: 'Ahmed Al-Rashid', mileage: '45,200 km', lastService: 'Aug 15, 2026', status: 'Active' },
-  { plate: 'JED 7732', make: 'Hyundai', model: 'Sonata', year: 2024, vin: '5NPE34AF5R0..', owner: 'Khalid Mohammed', mileage: '12,800 km', lastService: 'Aug 10, 2026', status: 'In Service' },
-  { plate: 'RUH 1155', make: 'Nissan', model: 'Patrol', year: 2023, vin: 'JN1TBNT32Z0..', owner: 'Fatima Al-Saud', mileage: '28,400 km', lastService: 'Jul 28, 2026', status: 'In Service' },
-  { plate: 'DMM 3349', make: 'Toyota', model: 'Hilux', year: 2021, vin: 'MR0HZ29G5M0..', owner: 'Omar Hassan', mileage: '72,100 km', lastService: 'Aug 05, 2026', status: 'Awaiting Pickup' },
-  { plate: 'RUH 9081', make: 'Kia', model: 'Sportage', year: 2023, vin: 'KNAPH81A5P0..', owner: 'Nora Al-Fahd', mileage: '18,600 km', lastService: 'Jul 20, 2026', status: 'Active' },
-  { plate: 'JED 5567', make: 'GMC', model: 'Sierra', year: 2020, vin: '1GTP9EEL5L0..', owner: 'Yusuf Ibrahim', mileage: '95,300 km', lastService: 'Aug 12, 2026', status: 'Active' },
-  { plate: 'RUH 2240', make: 'Chevrolet', model: 'Tahoe', year: 2022, vin: '1GNSKBKD3N0..', owner: 'Sara Al-Mutairi', mileage: '38,700 km', lastService: 'Jun 15, 2026', status: 'Inactive' },
-  { plate: 'MKH 8814', make: 'Lexus', model: 'ES350', year: 2024, vin: 'JTHBA1D20R0..', owner: 'Tariq Al-Dosari', mileage: '8,200 km', lastService: 'Aug 14, 2026', status: 'Active' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'In Service': { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-  'Awaiting Pickup': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Inactive: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+/** The portal's vehicle register, read through the repository seam.
+ *
+ *  Unlike the client portal this is a staff-side view — it shows the owner of
+ *  each vehicle — so it reads the collection unfiltered and lets the API decide
+ *  what the signed-in principal may see: `GET /vehicles` is gated on the
+ *  `vehicles` module and narrowed by row-level security per organization,
+ *  branch and scope. Nothing is trimmed in the browser, because a browser-side
+ *  filter would be decoration rather than an access control.
+ *
+ *  The status vocabulary is the contract's — `active`, `service`, `inactive` —
+ *  so the tiles count those rather than the design's "Awaiting Pickup", which no
+ *  build ever returns. "Total Vehicles" is the server's own `page.total`, not a
+ *  count of the page. "New This Month" is a cross-record aggregate no endpoint
+ *  computes, so it shows the em dash and the note names what would supply it.
+ */
+type Vehicle = RowOf<'vehicles'> & {
+  _id?: string
+  /** API-only; the design fixtures carry no VIN. */
+  vin?: string | null
 }
 
 export function PortalVehicles() {
   const { t } = usePreferences()
+  const { data, isLoading, isError, error, refetch } = usePagedCollection('vehicles')
+  const rows = (data?.rows ?? []) as readonly Vehicle[]
+  const total = data?.page.total
+
+  const countOf = (status: string) => rows.filter((v) => v.status === status).length
 
   const kpis = [
-    { label: t('Total Vehicles'), value: '1,842', icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('In Service'), value: '18', icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Awaiting Pickup'), value: '6', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('New This Month'), value: '34', icon: 'Plus', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Vehicles'), value: total === undefined ? UNKNOWN : String(total), icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Service'), value: String(countOf('service')), icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Active'), value: String(countOf('active')), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('New This Month'), value: UNKNOWN, icon: 'Plus', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Vehicle>[] = [
-    { header: t('Plate'), cell: (v) => v.plate },
-    { header: t('Vehicle'), cell: (v) => `${v.make} ${v.model} ${v.year}` },
-    { header: t('Owner'), cell: (v) => v.owner },
-    { header: t('VIN'), cell: (v) => v.vin },
-    { header: t('Mileage'), cell: (v) => v.mileage },
-    { header: t('Last Service'), cell: (v) => v.lastService },
-    { header: t('Status'), cell: (v) => <Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge> },
+    { header: t('Plate'), cell: (v) => v.plate, code: true },
+    { header: t('Vehicle'), cell: (v) => derived(v.make) },
+    { header: t('Owner'), cell: (v) => derived(v.owner) },
+    { header: t('VIN'), cell: (v) => derived(v.vin), code: true },
+    { header: t('Mileage'), cell: (v) => derived(v.mileage) },
+    { header: t('Last Service'), cell: (v) => derived(v.last && t(v.last)) },
+    { header: t('Status'), cell: (v) => <VehicleStatusBadge value={v.status} /> },
   ]
 
   return (
@@ -64,21 +64,34 @@ export function PortalVehicles() {
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
+      <p className="flex items-start gap-1.5 text-[11px] text-muted">
+        <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+        {t('Server aggregate:')}{' '}
+        <span dir="ltr" className="font-mono text-body">GET /vehicles/summary</span>
+      </p>
 
-      <DataTable
-        caption="Portal vehicle registry"
-        columns={columns}
-        rows={VEHICLES}
-        rowKey={(v) => v.plate}
-        mobileCard={(v) => (
-          <>
-            <MobileCardHeader title={`${v.make} ${v.model} ${v.year}`} trailing={<Badge background={STATUS_STYLES[v.status].bg} color={STATUS_STYLES[v.status].fg}>{t(v.status)}</Badge>} />
-            <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
-            <MobileCardRow label={t('Owner')}>{v.owner}</MobileCardRow>
-            <MobileCardRow label={t('Mileage')}>{v.mileage}</MobileCardRow>
-          </>
-        )}
-      />
+      {isError ? (
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      ) : (
+        <DataTable
+          caption="Portal vehicle registry"
+          columns={columns}
+          rows={rows}
+          rowKey={(v, index) => v._id ?? `${v.plate}-${index}`}
+          loading={isLoading}
+          empty={
+            <EmptyState icon="Car" title={t('No vehicles yet')} />
+          }
+          mobileCard={(v) => (
+            <>
+              <MobileCardHeader title={derived(v.make)} trailing={<VehicleStatusBadge value={v.status} />} />
+              <MobileCardRow label={t('Plate')}>{v.plate}</MobileCardRow>
+              <MobileCardRow label={t('Owner')}>{derived(v.owner)}</MobileCardRow>
+              <MobileCardRow label={t('Mileage')}>{derived(v.mileage)}</MobileCardRow>
+            </>
+          )}
+        />
+      )}
     </div>
   )
 }

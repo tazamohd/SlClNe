@@ -3,14 +3,6 @@
   "open": 4,
   "blockers": [
     {
-      "id": "BLK-002",
-      "severity": "BLOCKER",
-      "title": "No capability is backed by real data",
-      "detail": "No server, database, persistence or server-side authorization exists. Gates the Definition of Done for every screen.",
-      "owner": "05",
-      "wave": "W1"
-    },
-    {
       "id": "BLK-003",
       "severity": "BLOCKER",
       "title": "Three GitHub PATs were exposed in chat and are not confirmed rotated",
@@ -21,10 +13,18 @@
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "384 rendered capabilities are mock-only",
+      "title": "289 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
+    },
+    {
+      "id": "BLK-006",
+      "severity": "HIGH",
+      "title": "1 built screens owe their designed mobile layout",
+      "detail": "A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.",
+      "owner": "18",
+      "wave": "W3"
     },
     {
       "id": "BLK-008",

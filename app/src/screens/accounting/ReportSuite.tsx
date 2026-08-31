@@ -157,6 +157,54 @@ export function Reports() {
   const isMobile = useIsMobile()
   const visible = REPORT_LINKS.filter((link) => can(link.module, 'v'))
 
+  /** `REPORT_LINKS` above is navigation, not data — a route, an icon and the
+   *  module the role must hold to see it — so it stays a constant. The reports
+   *  a *user* made are data, and they live on the server: the builder saves a
+   *  definition to `savedReports` (`GET /saved-reports`), and this hub is where
+   *  you would look for one again. Read through the seam like everything else,
+   *  gated on the same accounting grant the builder is, with a real empty state
+   *  — the fixture build persists nothing, so it shows exactly that rather than
+   *  a list of reports nobody saved. */
+  const mayBuild = can('accounting', 'v')
+  const { data: saved = [], isLoading, isError, error, refetch } = useCollection('savedReports')
+
+  const savedSection = mayBuild ? (
+    <Section title={t('Saved reports')} subtitle={t('Persist this definition and reuse it later')}>
+      {isLoading ? (
+        <p className="text-[13px] text-muted">{t('Loading saved reports…')}</p>
+      ) : isError ? (
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      ) : saved.length === 0 ? (
+        <EmptyState
+          icon="Table"
+          title={t('No saved reports yet')}
+          description={t('Save the current definition to reuse it.')}
+        />
+      ) : (
+        <div className="flex flex-col gap-2">
+          {saved.map((row, index) => (
+            <Link
+              key={String((row as { _id?: string })._id ?? `${row.name}-${index}`)}
+              to="/custom-reports"
+              className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3 no-underline transition-colors duration-150 hover:border-salis-blue hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+            >
+              <span className="min-w-0">
+                <span className="block text-[13px] font-semibold text-heading">{row.name}</span>
+                <span className="mt-0.5 block text-[11px] text-muted">
+                  <span dir="ltr" className="font-mono">
+                    {row.source || '—'}
+                  </span>
+                  {row.owner ? ` · ${row.owner}` : ''}
+                </span>
+              </span>
+              <Icon name="ArrowRight" size={15} className="flex-shrink-0 text-muted" />
+            </Link>
+          ))}
+        </div>
+      )}
+    </Section>
+  ) : null
+
   if (isMobile) {
     return (
       <>
@@ -177,6 +225,7 @@ export function Reports() {
           )}
           <ServerScopeNote />
         </Section>
+        {savedSection}
       </>
     )
   }
@@ -207,6 +256,7 @@ export function Reports() {
         )}
         <ServerScopeNote />
       </Section>
+      {savedSection}
     </>
   )
 }

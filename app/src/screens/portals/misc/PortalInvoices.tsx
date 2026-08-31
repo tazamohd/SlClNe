@@ -1,59 +1,92 @@
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { EmptyState, ErrorState } from '@/components/ui/States'
+import { Icon } from '@/components/ui/Icon'
+import { Money } from '@/components/ui/Money'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { usePagedCollection, type RowOf } from '@/data/useCollection'
+import { InvoiceStatusBadge } from '@/screens/registry/badges'
+import { derived, UNKNOWN } from '@/screens/registry/writes'
+import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
+import { AGGREGATE_GAP } from '@/screens/accounting/reporting'
 
-interface Invoice {
-  invoiceId: string
-  customer: string
-  vehicle: string
-  services: string
-  amount: number
-  issueDate: string
-  dueDate: string
-  status: 'Paid' | 'Pending' | 'Overdue' | 'Draft'
+/** The portal's invoice register, read through the repository seam.
+ *
+ *  A staff-side view — it names the customer — so it reads the collection
+ *  unfiltered and lets the API decide what the signed-in principal may see:
+ *  `GET /invoices` is gated on the `invoices` module and narrowed by row-level
+ *  security per organization and branch. Nothing is trimmed in the browser.
+ *
+ *  Every amount is one the server computed for one record (§A10): `totalHalalas`
+ *  and the `balanceHalalas` the API derives from the invoice's payments, shown
+ *  as-is. "Outstanding" and "Collected MTD" are period sums the server owns and
+ *  exposes through `GET /invoices/summary`, which this register does not call —
+ *  so they show the em dash and the note names the endpoint, rather than adding
+ *  up the page the browser happens to hold. "Total Invoices" is the server's own
+ *  `page.total`.
+ *
+ *  The design's "Vehicle" and "Services" columns have no column behind them —
+ *  `invoices` projects the customer, code, amount, due date and status — so they
+ *  render `derived()`'s em dash instead of a value invented to fill the table.
+ */
+type Invoice = RowOf<'invoices'> & {
+  _id?: string
+  totalHalalas?: number
+  paidHalalas?: number
+  balanceHalalas?: number
+  /** Not projected by any build today — see the note above. */
+  veh?: string | null
+  svc?: string | null
 }
 
-const INVOICES: Invoice[] = [
-  { invoiceId: 'INV-2026-1284', customer: 'Ahmed Al-Rashid', vehicle: 'Toyota Camry 2022', services: 'Oil Change + Filter', amount: 285, issueDate: 'Aug 15, 2026', dueDate: 'Aug 30, 2026', status: 'Paid' },
-  { invoiceId: 'INV-2026-1285', customer: 'Khalid Mohammed', vehicle: 'Hyundai Sonata 2024', services: 'Brake Pad Replacement', amount: 1240, issueDate: 'Aug 16, 2026', dueDate: 'Aug 31, 2026', status: 'Pending' },
-  { invoiceId: 'INV-2026-1286', customer: 'Fatima Al-Saud', vehicle: 'Nissan Patrol 2023', services: 'Full Service + AC Check', amount: 2180, issueDate: 'Aug 17, 2026', dueDate: 'Sep 01, 2026', status: 'Pending' },
-  { invoiceId: 'INV-2026-1280', customer: 'Omar Hassan', vehicle: 'Toyota Hilux 2021', services: 'Engine Diagnostic', amount: 450, issueDate: 'Aug 10, 2026', dueDate: 'Aug 25, 2026', status: 'Overdue' },
-  { invoiceId: 'INV-2026-1287', customer: 'Nora Al-Fahd', vehicle: 'Kia Sportage 2023', services: 'Tire Change (4x)', amount: 1850, issueDate: 'Aug 18, 2026', dueDate: 'Sep 02, 2026', status: 'Draft' },
-  { invoiceId: 'INV-2026-1281', customer: 'Yusuf Ibrahim', vehicle: 'GMC Sierra 2020', services: 'Transmission Flush', amount: 680, issueDate: 'Aug 11, 2026', dueDate: 'Aug 26, 2026', status: 'Paid' },
-  { invoiceId: 'INV-2026-1279', customer: 'Sara Al-Mutairi', vehicle: 'Chevrolet Tahoe 2022', services: 'Battery + Alternator', amount: 1420, issueDate: 'Aug 08, 2026', dueDate: 'Aug 23, 2026', status: 'Paid' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Paid: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Overdue: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+/** The balance the server derived from the invoice's payments, or an honest
+ *  blank. A fixture row carries a display total and nothing else, so computing
+ *  `total − paid` there would report every settled invoice as fully
+ *  outstanding — the same rule `finance/Invoices` states for its own column. */
+function BalanceCell({ invoice }: { invoice: Invoice }) {
+  const { t } = usePreferences()
+  const money = invoiceMoney(invoice)
+  if (!money.fromServer) {
+    return (
+      <span className="text-[11px] text-muted" title={t('Needs the API')}>
+        {UNKNOWN}
+      </span>
+    )
+  }
+  return (
+    <Money
+      sar={fromHalalas(money.balanceHalalas)}
+      className={money.balanceHalalas > 0 ? 'font-semibold text-salis-orange' : 'font-semibold text-salis-blue'}
+    />
+  )
 }
 
 export function PortalInvoices() {
   const { t } = usePreferences()
+  const { data, isLoading, isError, error, refetch } = usePagedCollection('invoices')
+  const rows = (data?.rows ?? []) as readonly Invoice[]
+  const total = data?.page.total
 
-  const totalOutstanding = INVOICES.filter((inv) => inv.status === 'Pending' || inv.status === 'Overdue').reduce((sum, inv) => sum + inv.amount, 0)
-  const paidThisMonth = INVOICES.filter((inv) => inv.status === 'Paid').reduce((sum, inv) => sum + inv.amount, 0)
+  const overdue = rows.filter((inv) => inv.status === 'overdue').length
 
   const kpis = [
-    { label: t('Total Invoices'), value: '142', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Outstanding'), value: `${(totalOutstanding / 1000).toFixed(1)}K`, icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Collected MTD'), value: `${(paidThisMonth / 1000).toFixed(1)}K`, icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Overdue'), value: '3', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Invoices'), value: total === undefined ? UNKNOWN : String(total), icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Outstanding'), value: UNKNOWN, icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Collected MTD'), value: UNKNOWN, icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Overdue'), value: String(overdue), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
   const columns: Column<Invoice>[] = [
-    { header: t('Invoice #'), cell: (inv) => inv.invoiceId },
-    { header: t('Customer'), cell: (inv) => inv.customer },
-    { header: t('Vehicle'), cell: (inv) => inv.vehicle },
-    { header: t('Services'), cell: (inv) => inv.services },
-    { header: t('Amount'), cell: (inv) => inv.amount.toLocaleString() },
-    { header: t('Due Date'), cell: (inv) => inv.dueDate },
-    { header: t('Status'), cell: (inv) => <Badge background={STATUS_STYLES[inv.status].bg} color={STATUS_STYLES[inv.status].fg}>{t(inv.status)}</Badge> },
+    { header: t('Invoice #'), cell: (inv) => inv.id, code: true },
+    { header: t('Customer'), cell: (inv) => derived(inv.cust) },
+    { header: t('Vehicle'), cell: (inv) => derived(inv.veh) },
+    { header: t('Services'), cell: (inv) => derived(inv.svc) },
+    { header: t('Amount'), cell: (inv) => <Money sar={fromHalalas(invoiceMoney(inv).totalHalalas)} /> },
+    { header: t('Balance'), cell: (inv) => <BalanceCell invoice={inv} /> },
+    { header: t('Due Date'), cell: (inv) => derived(inv.due) },
+    { header: t('Status'), cell: (inv) => <InvoiceStatusBadge value={inv.status} /> },
   ]
 
   return (
@@ -65,22 +98,39 @@ export function PortalInvoices() {
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
+      <p className="flex items-start gap-1.5 text-[11px] text-muted">
+        <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+        {t('Server aggregate:')}{' '}
+        <span dir="ltr" className="font-mono text-body">{AGGREGATE_GAP.sales}</span>
+      </p>
 
-      <DataTable
-        caption="Portal invoices"
-        columns={columns}
-        rows={INVOICES}
-        rowKey={(inv) => inv.invoiceId}
-        mobileCard={(inv) => (
-          <>
-            <MobileCardHeader title={inv.invoiceId} trailing={<Badge background={STATUS_STYLES[inv.status].bg} color={STATUS_STYLES[inv.status].fg}>{t(inv.status)}</Badge>} />
-            <MobileCardRow label={t('Customer')}>{inv.customer}</MobileCardRow>
-            <MobileCardRow label={t('Services')}>{inv.services}</MobileCardRow>
-            <MobileCardRow label={t('Amount')}>{inv.amount.toLocaleString()} SAR</MobileCardRow>
-            <MobileCardRow label={t('Due Date')}>{inv.dueDate}</MobileCardRow>
-          </>
-        )}
-      />
+      {isError ? (
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      ) : (
+        <DataTable
+          caption="Portal invoices"
+          columns={columns}
+          rows={rows}
+          rowKey={(inv, index) => inv._id ?? `${inv.id}-${index}`}
+          loading={isLoading}
+          empty={
+            <EmptyState icon="Receipt" title={t('No invoices yet')} />
+          }
+          mobileCard={(inv) => (
+            <>
+              <MobileCardHeader title={inv.id} code trailing={<InvoiceStatusBadge value={inv.status} />} />
+              <MobileCardRow label={t('Customer')}>{derived(inv.cust)}</MobileCardRow>
+              <MobileCardRow label={t('Amount')}>
+                <Money sar={fromHalalas(invoiceMoney(inv).totalHalalas)} />
+              </MobileCardRow>
+              <MobileCardRow label={t('Balance')}>
+                <BalanceCell invoice={inv} />
+              </MobileCardRow>
+              <MobileCardRow label={t('Due Date')}>{derived(inv.due)}</MobileCardRow>
+            </>
+          )}
+        />
+      )}
     </div>
   )
 }
