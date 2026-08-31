@@ -354,6 +354,37 @@
       <p>Track payment lifecycle from submission through approval to settlement. View payment terms, expected dates, and historical statements. Export data for supplier-side accounting.</p>
     </div>
   </div>
+
+  <!-- PO Confirmation Detail -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text);">Purchase Order Response Options</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+      <div style="background: rgba(125,187,125,0.05); border: 1px solid rgba(125,187,125,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--green); font-size: 15px; margin-bottom: 8px;">Full Confirmation</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Accept all line items as specified. Confirm delivery date and begin fulfillment preparation.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(125,187,125,0.1); color: var(--green); border: 1px solid rgba(125,187,125,0.2);">All items confirmed</span>
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(125,187,125,0.1); color: var(--green); border: 1px solid rgba(125,187,125,0.2);">Delivery committed</span>
+        </div>
+      </div>
+      <div style="background: rgba(217,184,107,0.05); border: 1px solid rgba(217,184,107,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 8px;">Partial Acceptance</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Confirm available items, mark remaining as backordered with expected restock date. Workshop notified of partial delivery.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(217,184,107,0.1); color: var(--gold); border: 1px solid rgba(217,184,107,0.2);">Some items backordered</span>
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(217,184,107,0.1); color: var(--gold); border: 1px solid rgba(217,184,107,0.2);">Split delivery</span>
+        </div>
+      </div>
+      <div style="background: rgba(218,119,86,0.05); border: 1px solid rgba(218,119,86,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--accent); font-size: 15px; margin-bottom: 8px;">Rejection</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Decline the PO entirely with a reason (out of stock, discontinued, pricing disagreement). Workshop procurement team notified immediately.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(218,119,86,0.1); color: var(--accent); border: 1px solid rgba(218,119,86,0.2);">Reason required</span>
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(218,119,86,0.1); color: var(--accent); border: 1px solid rgba(218,119,86,0.2);">Auto-notify workshop</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <div class="caption-bar" id="captionBar">
