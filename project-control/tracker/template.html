@@ -31,7 +31,7 @@
   colour is painted explicitly; nothing borrows the host page's theme.
 -->
 <div id="deck"></div>
-<style>
+<style id="sahel-css">
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body { background: #060810; }
@@ -139,13 +139,81 @@
     .status .dot { animation: none; }
     svg animate { display: none; }
   }
+  .chatpanel {
+    position: absolute; inset-block: 0; inset-inline-end: 0;
+    width: 380px; background: #080b12ee; border-inline-start: 1px solid #1a1e28;
+    display: flex; flex-direction: column; z-index: 20;
+    transform: translateX(100%); transition: transform 0.22s ease;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .chatpanel.open { transform: translateX(0); }
+  .chathdr {
+    padding: 10px 14px; border-bottom: 1px solid #151a24;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .chathdr .chtitle { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #E8A838; }
+  .chathdr .chsub { font-size: 7px; color: #333; letter-spacing: 1px; margin-top: 2px; }
+  .chathdr button { background: none; border: none; color: #445; cursor: pointer; font-size: 16px; }
+  .chatmsgs {
+    flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .msg {
+    max-width: 90%; padding: 8px 11px; border-radius: 8px; font-size: 11px; line-height: 1.6;
+    animation: msgIn 0.15s ease; white-space: pre-wrap; word-break: break-word;
+  }
+  .msg.bot {
+    align-self: flex-start; background: #0c0f18; border: 1px solid #1a1e28; color: #9aa8b8;
+  }
+  .msg.usr {
+    align-self: flex-end; background: #E8A83815; border: 1px solid #E8A83830; color: #d4a84a;
+  }
+  .msg .mts { font-size: 7px; color: #282c36; margin-top: 4px; font-family: ui-monospace, monospace; }
+  .chatbar {
+    padding: 8px 10px; border-top: 1px solid #151a24; display: flex; gap: 6px; align-items: center;
+  }
+  .chatbar input {
+    flex: 1; padding: 8px 10px; border-radius: 6px; border: 1px solid #1a1e28;
+    background: #0a0d14; color: #f5f5f7; font-size: 11px; outline: none; font-family: inherit;
+  }
+  .chatbar input:focus { border-color: #E8A838; }
+  .cbtn {
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid #1a1e28;
+    background: #0c0f18; color: #556; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; flex-shrink: 0; transition: all 0.12s;
+  }
+  .cbtn:hover { border-color: #E8A838; color: #E8A838; }
+  .cbtn.listening { background: #E8A83825; border-color: #E8A838; color: #E8A838; animation: bl 0.8s infinite; }
+  .chattoggle {
+    position: absolute; inset-block-end: 58px; inset-inline-end: 16px; z-index: 15;
+    width: 42px; height: 42px; border-radius: 50%; border: 2px solid #E8A83844;
+    background: #0a0d14; color: #E8A838; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; font-size: 17px; box-shadow: 0 4px 20px #00000066;
+    transition: all 0.15s;
+  }
+  .chattoggle:hover { background: #E8A83818; border-color: #E8A838; }
+  .chattoggle:focus-visible { outline: 1px solid #E8A838; outline-offset: 2px; }
+  .voicetip {
+    position: absolute; inset-block-start: -28px; inset-inline-start: 50%;
+    transform: translateX(-50%); white-space: nowrap; padding: 3px 8px;
+    background: #E8A838; color: #060810; font-size: 8px; font-weight: 700;
+    border-radius: 4px; letter-spacing: 1px; pointer-events: none; opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .chatbar:has(.listening) .voicetip { opacity: 1; }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 900px) {
+    .chatpanel { width: 100%; }
+  }
 </style>
-<script>
+<script id="d-pipe" type="application/json">{"requests":[]}</script>
+<script id="d-logic">
 'use strict'
 const DATA = __DATA__
 const PLAN = __PLAN__
 const LIVE = __LIVE__
-
+let PIPELINE = { requests: [] }
+try { const pp = document.getElementById('d-pipe'); if (pp) PIPELINE = JSON.parse(pp.textContent) } catch(e) {}
+/* __LOGIC_MARKER__ */
 /* Presentation geometry from the uploaded design: 24 agents on the ring.
  * State comes from AGENTS_LIVE by id; an agent absent there is queued. */
 const RING = [
@@ -183,11 +251,145 @@ try { const s = localStorage.getItem(KEY); if (s) ov = Object.assign(ov, JSON.pa
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(ov)) } catch (e) {} }
 
 let panel = 'track', expDom = null, expWave = null, selAgent = null
+let chatOpen = false
+const CHAT_KEY = 'sahel-chat'
+let chatMsgs = []
+try { const cs = localStorage.getItem(CHAT_KEY); if (cs) chatMsgs = JSON.parse(cs) } catch (e) {}
+const saveChat = () => { try { localStorage.setItem(CHAT_KEY, JSON.stringify(chatMsgs.slice(-100))) } catch (e) {} }
+
+function architectReply(text) {
+  const q = text.toLowerCase().trim()
+  if (q.match(/^(hi|hello|hey|salam|marhaba)/))
+    return `SAHEL Architect online.\n\n${totals.done}/${totals.total} capabilities rendering (${Math.round(totals.done/totals.total*100)}%). ${running.length} running, ${staleAgents.length} unconfirmed. Ask me about any agent, domain, wave, or capability.`
+  if (q.match(/(status|overview|progress|summary|report|how.*(going|are))/)) {
+    const pct = Math.round(totals.done / totals.total * 100)
+    return `STATUS — ${new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false})}\n\nCapabilities: ${totals.done}/${totals.total} (${pct}%)\nGolden Paths: ${gpDone()}/${PLAN.goldenPaths.length}\nWave: ${LIVE.wave} — ${LIVE.waveName}\nAgents: ${running.length} running · ${staleAgents.length} unconfirmed · ${doneAgents.length} done\nBlockers: ${totals.blocked}\nStamp: ${LIVE.asOf}\n\n${LIVE.waveNote}`
+  }
+  const agM = q.match(/agent\s*#?(\d{1,2})/)
+  if (agM) {
+    const id = agM[1].padStart(2,'0'), live = liveById[id], ring = RING.find(r=>r.id===id)
+    if (live) return `AGENT ${id} — ${live.name} [${stateOf(id).toUpperCase()}]\nTeam: ${live.team}\nScope: ${live.scope}\n\n${live.notes||'No notes.'}`
+    if (ring) return `Agent ${id} (${ring.n}) — QUEUED\nNot yet launched.`
+    return `No agent #${id} in the constellation.`
+  }
+  for (const d of DATA.domains) {
+    if (q.includes(d.id) || q.includes(d.label.toLowerCase().split(' ')[0])) {
+      const s = domStat(d)
+      const top = d.items.slice(0,12).map(it => `  ${it.status==='built'||it.status==='kit'?'✓':'○'} ${it.name}`).join('\n')
+      const more = d.items.length > 12 ? `\n  … and ${d.items.length-12} more` : ''
+      return `${d.label.toUpperCase()}\nAgent: ${d.agent} · Group: ${d.group}\n${s.done}/${s.total} (${s.pct}%) · ${s.prog} in-progress · ${s.blocked} blocked\n\n${top}${more}`
+    }
+  }
+  const wM = q.match(/wave\s*(w?\d)/i)
+  if (wM) {
+    const wid = 'W' + wM[1].replace(/w/i,''), w = PLAN.waves.find(v=>v.id===wid)
+    if (w) return `${w.id} — ${w.name}\nDuration: ${w.days}d\nAgents: ${w.agents}\nExit: ${w.exit}\n\nGroups:\n${w.groups.map(g=>`  ${g.id}: ${g.name} (${g.days}d)`).join('\n')}`
+    return `Wave ${wid} not found.`
+  }
+  if (q.match(/(find|search|where|look|locate)/)) {
+    const terms = q.replace(/(find|search|where|look|locate|for|is|the|a|an|screen|capability|route|page)\b/g,'').trim().split(/\s+/).filter(Boolean)
+    const res = []
+    for (const d of DATA.domains) for (const it of d.items) {
+      if (terms.some(t => it.name.toLowerCase().includes(t) || it.route.toLowerCase().includes(t)))
+        res.push({ d: d.label, n: it.name, r: it.route, s: it.status })
+    }
+    if (res.length) return `Found ${res.length}:\n\n${res.slice(0,15).map(r=>`${r.s==='built'||r.s==='kit'?'✓':'○'} ${r.n} (${r.r}) — ${r.d}`).join('\n')}${res.length>15?`\n… +${res.length-15} more`:''}`
+    return `No matches for "${terms.join(' ')}".`
+  }
+  if (q.match(/(blocker|block|risk|gate)/))
+    return `RELEASE GATES (${PLAN.releaseBlockers.length}):\n\n${PLAN.releaseBlockers.map((b,i)=>`${i+1}. ${b}`).join('\n')}`
+  if (q.match(/(golden|path|gp)/))
+    return `GOLDEN PATHS — ${gpDone()}/${PLAN.goldenPaths.length}\n\n${PLAN.goldenPaths.map((g,i)=>`${ov.gp[i]?'✓':'✕'} ${g}`).join('\n')}`
+  if (q.match(/(agents|team|constellation|who)/)) {
+    const r_ = (LIVE.agents||[]).filter(a=>stateOf(a.id)==='running'), s_ = (LIVE.agents||[]).filter(a=>stateOf(a.id)==='stale'), d_ = (LIVE.agents||[]).filter(a=>stateOf(a.id)==='done')
+    return `CONSTELLATION — 24 agents\n\nRunning (${r_.length}):\n${r_.map(a=>`  ◷ ${a.id} ${a.name}`).join('\n')||'  None'}\n\nDone (${d_.length}):\n${d_.map(a=>`  ✓ ${a.id} ${a.name}`).join('\n')||'  None'}\n\nUnconfirmed (${s_.length}):\n${s_.map(a=>`  ⧗ ${a.id} ${a.name} — last seen ${ago(staleAge)} ago`).join('\n')||'  None'}\n\nQueued: ${24-r_.length-s_.length-d_.length}`
+  }
+  if (q.match(/(score|ready|readiness|release|certif)/)) {
+    const av = avgScore()
+    return `READINESS · avg ${av>0?av.toFixed(1):'—'}/10 · gate ≥ 9.5\n\n${PLAN.releaseCategories.map(c=>`  ${ov.score[c]?String(ov.score[c]).padStart(2):'  —'} ${c}`).join('\n')}`
+  }
+  if (q.match(/(help|command|what can|how to|usage|\?$)/))
+    return `ARCHITECT COMMANDS\n\n• status — project overview\n• agent 08 — agent details\n• workshop / crm — domain\n• wave W2 — wave details\n• find [term] — search capabilities\n• blockers — release gates\n• golden paths — GP state\n• agents — constellation\n• score — readiness\n\nPIPELINE (prefix with >):\n• > read src/App.tsx — read & analyze files\n• > suggest login improvements — get recommendations\n• > implement dark mode toggle — request coding\n\nVoice: tap mic and speak.`
+  if (q.match(/(clear|reset) chat/)) { chatMsgs = []; saveChat(); return 'Chat cleared.' }
+  return `I can answer about agents, domains, waves, capabilities, blockers, golden paths, and scores. Try "status" or "help".\n\nTo dispatch requests to the SAHEL session, prefix with > (e.g. "> read src/App.tsx")`
+}
+
+function addChatMsg(role, text) {
+  chatMsgs.push({ role, text, ts: new Date().toISOString() })
+  saveChat()
+}
+function sendChat(text) {
+  if (!text.trim()) return
+  var t = text.trim()
+  addChatMsg('usr', t)
+  if (t.startsWith('>')) {
+    var prompt = t.substring(1).trim()
+    if (!prompt) { addChatMsg('bot', 'Usage: > <request>\nExample: > read src/App.tsx and suggest improvements'); render(); scrollChat(); return }
+    submitRequest(prompt)
+    scrollChat()
+    return
+  }
+  const reply = architectReply(t)
+  setTimeout(() => { addChatMsg('bot', reply); render(); scrollChat() }, 120)
+  render()
+  scrollChat()
+}
+function scrollChat() {
+  requestAnimationFrame(() => { const m = document.getElementById('chatmsgs'); if (m) m.scrollTop = m.scrollHeight })
+}
+
+let recognition = null, isListening = false
+function initVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition
+  if (!SR) return null
+  const rec = new SR()
+  rec.continuous = false; rec.interimResults = false; rec.lang = 'en-US'
+  rec.onresult = (e) => { const t = e.results[0][0].transcript; sendChat(t) }
+  rec.onend = () => { isListening = false; const b = document.getElementById('micbtn'); if (b) b.classList.remove('listening') }
+  rec.onerror = () => { isListening = false; const b = document.getElementById('micbtn'); if (b) b.classList.remove('listening') }
+  return rec
+}
+function toggleVoice() {
+  if (!recognition) recognition = initVoice()
+  if (!recognition) { addChatMsg('bot','Voice not supported in this browser.'); render(); return }
+  const b = document.getElementById('micbtn')
+  if (isListening) { recognition.stop(); isListening = false; if (b) b.classList.remove('listening') }
+  else { try { recognition.start(); isListening = true; if (b) b.classList.add('listening') } catch(e) { isListening = false } }
+}
 
 const liveById = {}
 for (const a of (LIVE.agents || [])) liveById[a.id] = a
-const running = RING.filter(g => (liveById[g.id] || {}).state === 'running')
-const doneAgents = RING.filter(g => (liveById[g.id] || {}).state === 'done')
+/* `running` is a claim about right now, and AGENTS_LIVE is written by the
+ * orchestrator when an agent launches or lands — nothing polls it. Past a day
+ * the claim has expired, so the deck stops treating it as live: no pulse, no
+ * ORCHESTRATING, and the state reads STALE.
+ *
+ * The `as of` stamp alone was not enough. A pulsing core and a glowing spoke
+ * read as activity whatever the date beside them says, and this file's own
+ * header sets the rule they were breaking: a deck that pretends activity is the
+ * same failure as a screen that renders a total it did not compute. Agent 03
+ * had been shown ORCHESTRATING for three weeks. */
+const STALE_AFTER_MS = 24 * 60 * 60 * 1000
+const asOfMs = Date.parse(LIVE.asOf || '')
+const staleAge = Number.isFinite(asOfMs) ? Date.now() - asOfMs : null
+const isStale = staleAge === null || staleAge > STALE_AFTER_MS
+const ago = (ms) => {
+  if (ms === null) return 'unknown'
+  const d = Math.floor(ms / 86400000)
+  if (d > 0) return d + 'd'
+  const h = Math.floor(ms / 3600000)
+  return h > 0 ? h + 'h' : Math.max(1, Math.floor(ms / 60000)) + 'm'
+}
+/* One reader for agent state, so the ring, the core, the detail card, the live
+ * panel and the architect's answers cannot disagree about who is running. */
+const stateOf = (id) => {
+  const st = (liveById[id] || {}).state || 'queued'
+  return isStale && st === 'running' ? 'stale' : st
+}
+const running = RING.filter(g => stateOf(g.id) === 'running')
+const staleAgents = RING.filter(g => stateOf(g.id) === 'stale')
+const doneAgents = RING.filter(g => stateOf(g.id) === 'done')
+const STATE_COL = { running: C.prog, done: C.done, stale: '#6b5a33', queued: '#556' }
 
 function domStat(d) {
   let done = 0, prog = 0, blocked = 0
@@ -232,7 +434,10 @@ function render() {
     <div class="stagehdr">
       ${orches ? `<div class="status" style="background:${coreCol}18;border:1px solid ${coreCol}33">
         <div class="dot" style="background:${coreCol}"></div>
-        <span class="txt" style="color:${coreCol}">ORCHESTRATING · ${running.length}</span></div>` : '<div></div>'}
+        <span class="txt" style="color:${coreCol}">ORCHESTRATING · ${running.length}</span></div>`
+        : staleAgents.length ? `<div class="status" style="background:${STATE_COL.stale}18;border:1px solid ${STATE_COL.stale}33">
+        <div class="dot" style="background:${STATE_COL.stale};animation:none"></div>
+        <span class="txt" style="color:${STATE_COL.stale}">LAST SEEN ${ago(staleAge)} AGO · ${staleAgents.length} UNCONFIRMED</span></div>` : '<div></div>'}
       <div style="font-size:8px;color:#1a1e28;font-family:ui-monospace,monospace">24 AGENTS · ${totals.done}/${totals.total} · as of ${esc(LIVE.asOf || '')}</div>
     </div>
     ${renderConstellation(orches)}
@@ -241,6 +446,22 @@ function render() {
       <div class="footlbl" style="color:${coreCol}">${orches ? 'ORCHESTRATING' : 'STANDBY'}</div>
     </div>
     ${selAgent ? renderAgentDetail() : ''}
+    <button class="chattoggle" id="chattoggle" aria-label="Open architect chat" title="Chat with SAHEL Architect">⌘</button>
+    <div class="chatpanel${chatOpen ? ' open' : ''}" id="chatpanel">
+      <div class="chathdr">
+        <div><div class="chtitle">SAHEL ARCHITECT</div><div class="chsub">QUERY · VOICE · COMMAND</div></div>
+        <button id="chatclose" aria-label="Close chat">×</button>
+      </div>
+      <div class="chatmsgs" id="chatmsgs">${renderChat()}</div>
+      <div class="chatbar">
+        <input id="chatin" placeholder="Ask the architect…" maxlength="500" autocomplete="off">
+        <div style="position:relative">
+          <button class="cbtn${isListening?' listening':''}" id="micbtn" aria-label="Voice input" title="Speak">🎙</button>
+          <div class="voicetip">LISTENING…</div>
+        </div>
+        <button class="cbtn" id="chatsend" aria-label="Send" title="Send">→</button>
+      </div>
+    </div>
   </div>`
   bind()
   tickClock()
@@ -255,13 +476,12 @@ function renderConstellation(orches) {
     return `<line x1="${cx}" y1="${cy}" x2="${cx + Math.cos(rad) * 300}" y2="${cy + Math.sin(rad) * 300}"
       stroke="#5AB0FF" stroke-width="0.25" opacity="0.05" stroke-dasharray="2 16">
       <animate attributeName="stroke-dashoffset" from="0" to="-36" dur="${3 + i * 0.3}s" repeatCount="indefinite"/></line>` }).join('')
-  const links = RING.map(g => { const p = pos(g); const st = (liveById[g.id] || {}).state
+  const links = RING.map(g => { const p = pos(g); const st = stateOf(g.id)
     const on = st === 'running'
     return `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" stroke="${TEAM[g.t]}"
       stroke-width="${on ? 2.2 : 0.4}" opacity="${on ? 0.85 : st === 'done' ? 0.22 : 0.08}" ${on ? '' : 'stroke-dasharray="3 10"'}>
       ${on ? '<animate attributeName="opacity" values="0.45;0.95;0.45" dur="1.6s" repeatCount="indefinite"/>' : ''}</line>` }).join('')
-  const nodes = RING.map(g => { const p = pos(g); const live = liveById[g.id]
-    const st = live ? live.state : 'queued'
+  const nodes = RING.map(g => { const p = pos(g); const st = stateOf(g.id)
     const on = st === 'running', done = st === 'done'
     const col = TEAM[g.t]
     return `<g class="node" data-ag="${g.id}" tabindex="0" role="button" aria-label="Agent ${g.id} ${esc(g.n)}: ${st}">
@@ -289,15 +509,15 @@ function renderConstellation(orches) {
     ${sparks}
     ${nodes}
     <text x="${cx}" y="${cy + 75}" text-anchor="middle" fill="#E8A838" font-size="12" font-weight="700" font-family="ui-monospace,monospace" letter-spacing="5">SAHEL</text>
-    <text x="${cx}" y="${cy + 90}" text-anchor="middle" fill="#334" font-size="8">${totals.done}/${totals.total} · ${gpDone()}/${PLAN.goldenPaths.length} GP · ${running.length} running · ${doneAgents.length} landed</text>
+    <text x="${cx}" y="${cy + 90}" text-anchor="middle" fill="#334" font-size="8">${totals.done}/${totals.total} · ${gpDone()}/${PLAN.goldenPaths.length} GP · ${isStale ? staleAgents.length + ' unconfirmed' : running.length + ' running'} · ${doneAgents.length} landed</text>
   </svg>`
 }
 
 function renderAgentDetail() {
   const g = RING.find(x => x.id === selAgent); if (!g) return ''
   const live = liveById[g.id]
-  const st = live ? live.state : 'queued'
-  const col = st === 'running' ? C.prog : st === 'done' ? C.done : '#556'
+  const st = stateOf(g.id)
+  const col = STATE_COL[st] || '#556'
   return `<div class="agdetail">
     <button data-close="1" aria-label="Close">×</button>
     <div class="nm" style="color:${TEAM[g.t]}">${g.id} · ${esc(live ? live.name : g.n)}
@@ -305,6 +525,15 @@ function renderAgentDetail() {
     <div class="txt">${esc(live ? live.scope : 'Not yet launched. Scope defined in OWNERSHIP.json; joins its wave when the orchestrator opens it.')}</div>
     ${live && live.notes ? `<div class="txt" style="color:#556;border-top:1px solid #151a24;margin-top:6px;padding-top:6px">${esc(live.notes)}</div>` : ''}
   </div>`
+}
+
+function renderChat() {
+  if (!chatMsgs.length) return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0.25">
+    <div style="font-size:28px">⌘</div>
+    <div style="font-size:9px;letter-spacing:2px;font-weight:600">SAHEL ARCHITECT</div>
+    <div style="font-size:8px;color:#445;max-width:200px;text-align:center;line-height:1.5">Type or speak to query project status, agents, domains, waves, and capabilities.</div></div>`
+  return chatMsgs.map(m => `<div class="msg ${m.role}"><div>${esc(m.text)}</div>
+    <div class="mts">${new Date(m.ts).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false})}</div></div>`).join('')
 }
 
 function renderPanel() {
@@ -365,10 +594,12 @@ function renderPanel() {
   }
 
   if (panel === 'live') return `<div class="hint">State as of <b>${esc(LIVE.asOf || '')}</b> — written by the orchestrator when agents launch and land.
-      A published page cannot see the session; this stamp is the honesty line.</div>` +
-    (LIVE.agents || []).map(a => { const col = a.state === 'running' ? C.prog : a.state === 'done' ? C.done : '#556'
+      A published page cannot see the session; this stamp is the honesty line.${isStale
+        ? ` Nothing has written it for <b>${ago(staleAge)}</b>, so anything left mid-run reads STALE rather than running: the record says it started and never says it finished, which is not the same as knowing it is still going.`
+        : ''}</div>` +
+    (LIVE.agents || []).map(a => { const st = stateOf(a.id); const col = STATE_COL[st] || '#556'
       return `<div class="livecard"><div class="top"><span class="nm">${esc(a.id)} · ${esc(a.name)}</span>
-        <span class="pill" style="background:${col}22;color:${col}">${esc(a.state).toUpperCase()}</span></div>
+        <span class="pill" style="background:${col}22;color:${col}">${esc(st).toUpperCase()}</span></div>
         <div class="scope">${esc(a.scope)}</div></div>` }).join('') +
     `<div class="hint" style="margin-top:10px">Suggested commands — copy, run in the repo root:</div>` +
     CMDS.map((c, i) => `<div class="cmd"><code>${esc(c.c)}</code><button data-copy="${i}" title="${esc(c.l)}">COPY</button></div>`).join('')
@@ -402,6 +633,11 @@ function bind() {
   const close = document.querySelector('[data-close]'); if (close) close.onclick = () => { selAgent = null; render() }
   const na = el('noteadd'); if (na) na.onclick = addNote
   const ni = el('notein'); if (ni) ni.onkeydown = (e) => { if (e.key === 'Enter') addNote() }
+  const ct = el('chattoggle'); if (ct) ct.onclick = () => { chatOpen = !chatOpen; render(); if (chatOpen) { scrollChat(); const ci = el('chatin'); if (ci) ci.focus() } }
+  const cc = el('chatclose'); if (cc) cc.onclick = () => { chatOpen = false; render() }
+  const cs = el('chatsend'); if (cs) cs.onclick = () => { const ci = el('chatin'); if (ci) { sendChat(ci.value); ci.value = '' } }
+  const ci = el('chatin'); if (ci) ci.onkeydown = (e) => { if (e.key === 'Enter') { sendChat(ci.value); ci.value = '' } }
+  const mb = el('micbtn'); if (mb) mb.onclick = toggleVoice
 }
 function addNote() { const inp = el('notein'); if (!inp || !inp.value.trim()) return
   ov.notes = [{ text: inp.value.trim(), ts: new Date().toISOString(), id: Date.now() }].concat(ov.notes)
@@ -431,5 +667,78 @@ function drawWave(orches) {
   if (orches && !reduce) waveTimer = setInterval(paint, 140)
 }
 
+function buildPage(pipeline) {
+  var css = document.getElementById('sahel-css').textContent
+  var fullScript = document.getElementById('d-logic').textContent
+  var marker = '/* __LOGIC_MARKER__ */'
+  var mi = fullScript.indexOf(marker)
+  var logic = mi >= 0 ? fullScript.substring(mi) : fullScript
+  return '<!doctype html><html><head><meta charset=utf8>' +
+    '<meta name=viewport content="width=device-width,initial-scale=1">' +
+    '<\/head><body>\n' +
+    '<title>SAHEL Command Deck<\/title>\n' +
+    '<div id="deck"><\/div>\n' +
+    '<style id="sahel-css">' + css + '<\/style>\n' +
+    '<script id="d-pipe" type="application/json">' + JSON.stringify(pipeline).replace(/<\//g,'<\\/') + '<\/script>\n' +
+    '<script id="d-logic">\n' +
+    '"use strict";\n' +
+    'const DATA = ' + JSON.stringify(DATA).replace(/<\//g,'<\\/') + ';\n' +
+    'const PLAN = ' + JSON.stringify(PLAN).replace(/<\//g,'<\\/') + ';\n' +
+    'const LIVE = ' + JSON.stringify(LIVE).replace(/<\//g,'<\\/') + ';\n' +
+    'let PIPELINE = {requests:[]};\n' +
+    'try{var pp=document.getElementById("d-pipe");if(pp)PIPELINE=JSON.parse(pp.textContent)}catch(e){}\n' +
+    marker + '\n' +
+    logic + '\n' +
+    '<\/script>\n<\/body><\/html>'
+}
+
+function submitRequest(prompt) {
+  if (!window.claude || !window.claude.self) {
+    addChatMsg('bot', 'Pipeline unavailable — self-publish not active in this view.\nUse the Claude Code session directly.')
+    render(); return
+  }
+  var req = { id: 'req_' + Date.now(), prompt: prompt, status: 'pending', ts: new Date().toISOString(), response: null }
+  PIPELINE.requests.push(req)
+  addChatMsg('bot', 'REQUEST DISPATCHED\nID: ' + req.id + '\nPrompt: ' + prompt + '\n\nThe watching SAHEL session will process this and publish the response back to this deck.')
+  render()
+  window.claude.self.publish(buildPage(PIPELINE))
+    .then(function() { })
+    .catch(function(e) {
+      if (e.code === 'not_writer' || e.code === 'not_granted') {
+        addChatMsg('bot', 'Read-only view — cannot dispatch. Open the deck as owner.')
+      } else if (e.code === 'conflict') {
+        addChatMsg('bot', 'Version conflict — deck updated by another session. Reloading…')
+      } else {
+        addChatMsg('bot', 'Publish failed: ' + (e.message || e.code))
+      }
+      render()
+    })
+}
+
+function checkPipelineResponses() {
+  var newResponses = PIPELINE.requests.filter(function(r) { return r.status === 'done' && !r._shown })
+  for (var i = 0; i < newResponses.length; i++) {
+    var r = newResponses[i]
+    addChatMsg('bot', 'RESPONSE [' + r.id + ']\n\n' + (r.response || 'No response body.'))
+    r._shown = true
+  }
+  var processing = PIPELINE.requests.filter(function(r) { return r.status === 'processing' && !r._notified })
+  for (var j = 0; j < processing.length; j++) {
+    addChatMsg('bot', 'Processing: ' + processing[j].prompt + '…')
+    processing[j]._notified = true
+  }
+  if (newResponses.length || processing.length) render()
+}
+
 render()
+checkPipelineResponses()
+if (chatMsgs.length === 0) {
+  addChatMsg('bot', 'SAHEL Architect online. ' + totals.done + '/' + totals.total + ' capabilities rendering. ' + running.length + ' agents active, ' + staleAgents.length + ' unconfirmed.\n\nLocal queries: type naturally (status, agents, help)\nPipeline requests: start with > to dispatch to the watching session\n  > analyze app/src/screens/workshop/\n  > read app/src/routes.tsx\n  > suggest improvements for CRM screens')
+}
 </script>
+
+
+
+
+
+
