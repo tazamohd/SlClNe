@@ -3,8 +3,8 @@ import { withAuthPlane } from '../src/auth/context.js'
 import { createDb, type DbHandle } from '../src/db/client.js'
 import { users } from '../src/db/schema.js'
 import { systemPrincipal } from '../src/db/tenant.js'
-import { loadDotEnvFile, loadEnv } from '../src/env.js'
 import { SEED } from '../scripts/seed.js'
+import { resetDatabase } from './harness.js'
 import type { FastifyInstance, InjectOptions, HTTPMethods } from 'fastify'
 
 /** The password the seeded identities get, for this database, at setup time.
@@ -128,11 +128,24 @@ async function grantDemoPasswords(): Promise<void> {
   }
 }
 
+/** Builds the app against a database this run owns.
+ *
+ *  These suites used to connect straight to `DATABASE_URL` — the developer's
+ *  own database — while the other twenty-seven files ran against the ephemeral
+ *  one `resetDatabase` drops and rebuilds. `writes.test.ts` creates rows, so
+ *  the difference was not academic: its customer round-trip answered 201 on a
+ *  fresh database, then 409 on the next run against the same one, and would
+ *  keep answering 409 until somebody re-seeded by hand. A suite whose result
+ *  depends on how many times it has been run before is not measuring the code.
+ *
+ *  `resetDatabase` also rewrites `DATABASE_URL` in the environment, so
+ *  everything built after this call — the pool here, the app, the migrations
+ *  the assertions rely on — agrees on which database it is talking to.
+ *  `fileParallelism` is off, so a reset per file is safe. */
 export async function setupDb(): Promise<void> {
-  loadDotEnvFile()
-  const envConfig = loadEnv()
-  dbHandle = createDb(envConfig.DATABASE_URL)
-  appInstance = await buildApp({ db: dbHandle.db, env: envConfig })
+  const env = await resetDatabase()
+  dbHandle = createDb(env.DATABASE_URL)
+  appInstance = await buildApp({ db: dbHandle.db, env })
   await appInstance.ready()
   await grantDemoPasswords()
   apiInstance = createApi(appInstance)
