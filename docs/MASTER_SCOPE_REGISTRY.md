@@ -16,14 +16,17 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 1 |
 | untested | 0 |
-| mock only | 288 |
-| data backed | 96 |
+| mock only | 285 |
+| data backed | 99 |
 | e2e covered | 424 |
 | content asserted | 424 |
 | rendered without assertion | 0 |
-| has loading state | 129 |
-| has error state | 97 |
-| has empty state | 147 |
+| has loading state | 143 |
+| has error state | 111 |
+| has empty state | 166 |
+| tablet verified | 4 |
+| arabic verified | 80 |
+| rtl hazards | 0 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |

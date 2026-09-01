@@ -9,14 +9,17 @@
     "placeholder": 0,
     "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 288,
-    "dataBacked": 96,
+    "mockOnly": 285,
+    "dataBacked": 99,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 129,
-    "hasErrorState": 97,
-    "hasEmptyState": 147,
+    "hasLoadingState": 143,
+    "hasErrorState": 111,
+    "hasEmptyState": 166,
+    "tabletVerified": 4,
+    "arabicVerified": 80,
+    "rtlHazards": 0,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -52,7 +55,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 0
+      "dataBacked": 3
     },
     "portal": {
       "total": 8,
@@ -158,7 +161,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 0
+      "dataBacked": 3
     },
     "ui": {
       "total": 28,

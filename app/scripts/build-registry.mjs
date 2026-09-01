@@ -25,6 +25,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
+import { recordKeys, scanFile } from './lib/i18n-scan.mjs'
+import { arabicStateFrom, layoutFacts } from './lib/screen-facts.mjs'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
@@ -203,41 +205,52 @@ const designFiles = fs.existsSync(PROJECT)
 const designDesktop = new Set(designFiles.filter((f) => !f.includes('.Mobile.')).map((f) => f.replace('.dc.html', '')))
 const designMobile = new Set(designFiles.filter((f) => f.includes('.Mobile.')).map((f) => f.replace('.Mobile.dc.html', '')))
 
-/** `[registryName, componentName]` for every entry in a domain barrel.
+/** `[registryName, componentName]` for every screen the app declares.
  *
- *  A barrel maps the registry's name for a screen onto the component that
+ *  A declaration maps the registry's name for a screen onto the component that
  *  renders it — `'General-Ledger': GeneralLedger` — and the two are spelled
  *  differently on purpose: the registry name comes from the spec, the component
  *  name is a JS identifier. Anything that detects a fact by reading a component
  *  therefore has to come back through this table, or it reports on a name the
  *  registry never asks about.
  *
- *  Two things had to be right for that to work. The key charset is `[\w.-]`,
- *  not `\w`: over half the registry is hyphenated — 205 of 424 entries — and a
- *  word class stops at the first hyphen, so those keys matched a fragment or
- *  nothing, silently capping three detectors at once. And barrels declare a
- *  screen in two shapes; 56 entries use the object form to name a shell beside
- *  the component, where the bare pattern matches the inner `component:` pair
- *  instead and leaves the real screen name unmapped. */
+ *  Three shapes, because the app uses three. Domain barrels declare a screen
+ *  bare (`'General-Ledger': GeneralLedger`) or as an object naming a shell
+ *  beside the component; the route table declares one as
+ *  `lazyNamed(() => import(…), 'ExportName')`. Each shape missed is a block of
+ *  the registry that reads as a gap because nothing looked, not because
+ *  anything is wrong with the screen — the route-table shape alone accounted
+ *  for all nineteen CustomerApp / PartsNetwork entries.
+ *
+ *  The key charset is `[\w.-]`, not `\w`: over half the registry is
+ *  hyphenated — 205 of 424 entries — and a word class stops at the first
+ *  hyphen, so those keys matched a fragment or nothing, silently capping every
+ *  detector that reads this table. */
 const BARREL_ALIASES = (() => {
   const pairs = []
-  const domainsDir = path.join(APP, 'src/screens/domains')
-  if (!fs.existsSync(domainsDir)) return pairs
   const OBJECT_FORM = /['"]?([\w.-]+?)['"]?\s*:\s*\{\s*component\s*:\s*(\w+)/g
   //  ScreenName: wrapper(ImportedName)   or   ScreenName: ImportedName,
   const BARE_FORM = /['"]?([\w.-]+?)['"]?\s*:\s*(?:\w+\()?\s*([A-Z]\w*)\s*\)?\s*[,}]/g
+  //  ScreenName: lazyNamed(() => import('@/screens/…'), 'ExportName')
+  const LAZY_NAMED = /(?:const\s+)?['"]?([\w.-]+)['"]?\s*[:=]\s*lazyNamed\(\s*\(\)\s*=>\s*import\(\s*'[^']+'\s*\)\s*,\s*'(\w+)'/gs
   const STRUCTURAL = new Set(['component', 'shell'])
-  for (const f of fs.readdirSync(domainsDir).filter((n) => n.endsWith('.ts'))) {
-    try {
-      const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
-      for (const re of [OBJECT_FORM, BARE_FORM]) {
-        for (const m of src.matchAll(re)) {
-          if (STRUCTURAL.has(m[1])) continue
-          pairs.push([m[1], m[2]])
-        }
+  const collect = (src, patterns) => {
+    for (const re of patterns) {
+      for (const m of src.matchAll(re)) {
+        if (STRUCTURAL.has(m[1])) continue
+        pairs.push([m[1], m[2]])
       }
-    } catch (_) { /* skip unreadable */ }
+    }
   }
+  const domainsDir = path.join(APP, 'src/screens/domains')
+  if (fs.existsSync(domainsDir)) {
+    for (const f of fs.readdirSync(domainsDir).filter((n) => n.endsWith('.ts'))) {
+      try {
+        collect(fs.readFileSync(path.join(domainsDir, f), 'utf8'), [OBJECT_FORM, BARE_FORM])
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  collect(routesSrc, [LAZY_NAMED])
   return pairs
 })()
 
@@ -394,6 +407,145 @@ const dataBackedScreens = (() => {
   return map
 })()
 
+/** Routes the smoke suite actually loads at a tablet viewport, read from its
+ *  own table so the two cannot drift. Today that is four routes. */
+const SMOKE_TABLET_ROUTES = new Set(
+  [...smokeSrc.matchAll(/\{\s*w:\s*(\d+)\s*,\s*h:\s*\d+\s*,\s*label:\s*'[^']*'\s*,\s*route:\s*'([^']+)'/g)]
+    .filter((m) => Number(m[1]) >= 768 && Number(m[1]) <= 1024)
+    .map((m) => m[2])
+)
+
+/** Routes the smoke suite actually renders right-to-left, read the same way.
+ *  A route qualifies only where the run asserts `documentElement.dir`, so the
+ *  set is what a browser has confirmed flips, not a list I keep by hand. */
+const RTL_VERIFIED_ROUTES = new Set(
+  [...smokeSrc.matchAll(/BASE\s*\+\s*'([^']+)'/g)]
+    .filter((m, i, all) => {
+      /* Look only as far as the next navigation: an assertion after that one
+       * belongs to the route it loaded, not to this one. */
+      const end = all[i + 1]?.index ?? smokeSrc.length
+      return /documentElement\.dir/.test(smokeSrc.slice(m.index, end))
+    })
+    .map((m) => m[1])
+)
+
+/** Per-screen layout facts — whether the file hard-codes a physical direction,
+ *  and whether it carries a breakpoint in the tablet range — keyed by component
+ *  name. The two predicates live in `lib/screen-facts.mjs` so a test can show
+ *  each firing and not firing; see the note there on why that matters. */
+const screenIntl = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const src = fs.readFileSync(full, 'utf8')
+        const facts = layoutFacts(src)
+        for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
+          const prev = map.get(m[1])
+          map.set(m[1], prev
+            ? { physical: prev.physical || facts.physical,
+                tabletBreakpoints: prev.tabletBreakpoints || facts.tabletBreakpoints }
+            : { ...facts })
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+  return map
+})()
+
+/** Per-screen Arabic state, decided by the same scanner `check-i18n` runs.
+ *
+ *  Deliberately not a regex of my own: my first attempt counted a key as
+ *  untranslated when the gate counted it dynamic, so the registry claimed ten
+ *  Arabic gaps on a codebase the gate reports fully covered. `scanFile` draws
+ *  the literal/dynamic line once, and both readers now sit on that line. */
+const arabicFacts = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+  let covered
+  try {
+    covered = new Set([
+      ...recordKeys(path.join(APP, 'src/data/generated/ar.ts')),
+      ...recordKeys(path.join(APP, 'src/data/ar-overrides.ts')),
+    ])
+  } catch (_) {
+    return map // no dictionary to judge against; leave every screen unclaimed
+  }
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const { literals, dynamic } = scanFile(fs.readFileSync(full, 'utf8'))
+        const facts = {
+          /* A screen with no `t()` at all is not "fully translated" — it is
+           * not translated. Certifying it on an empty set is the same false
+           * clear as the constants this replaced, from the other side. */
+          translated: literals.length > 0,
+          uncovered: literals.some((k) => !covered.has(k)),
+          dynamic: dynamic > 0,
+        }
+        for (const m of fs.readFileSync(full, 'utf8').matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
+          const prev = map.get(m[1])
+          map.set(m[1], prev
+            ? { translated: prev.translated || facts.translated,
+                uncovered: prev.uncovered || facts.uncovered,
+                dynamic: prev.dynamic || facts.dynamic }
+            : { ...facts })
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+  return map
+})()
+
+/** Every spec screen with no component of its own is rendered by the feature
+ *  kit's single view, so that file is what a visitor to one of those routes
+ *  actually sees, and it is what these three facts are true or false of. The
+ *  component's name is read from the route table rather than written here. */
+const KIT_COMPONENT = routesSrc.match(/<(\w+)\s+def=\{/)?.[1] ?? null
+
+/** The source a screen's facts come from: its own component, or the kit view
+ *  where the kit is what renders the route. `undefined` means neither — the
+ *  screen cannot be measured from here, which is not the same as being wrong,
+ *  and the three helpers below must not report it as a gap. */
+const factsFor = (map, name, route) =>
+  map.get(name) ?? (KIT_COMPONENT && KIT_ROUTES.has(route) ? map.get(KIT_COMPONENT) : undefined)
+
+const tabletStateOf = (name, route, built) => {
+  if (!built) return 'MISSING'
+  if (SMOKE_TABLET_ROUTES.has(route)) return 'DONE'
+  const facts = factsFor(screenIntl, name, route)
+  if (!facts) return 'PARTIAL' // built; nothing readable to judge it by
+  return facts.tabletBreakpoints ? 'PARTIAL' : 'MISSING'
+}
+const arabicStateOf = (name, route, built) => {
+  if (!built) return 'MISSING'
+  const facts = factsFor(arabicFacts, name, route)
+  if (!facts) return 'PARTIAL'
+  return arabicStateFrom(facts)
+}
+const rtlStateOf = (name, route, built) => {
+  if (!built) return 'MISSING'
+  if (factsFor(screenIntl, name, route)?.physical) return 'MISSING'
+  return RTL_VERIFIED_ROUTES.has(route) ? 'VERIFIED' : 'PARTIAL'
+}
+
 // ── classification ───────────────────────────────────────────────────────────
 
 /** Surface, shell and owning agent, in priority order. First match wins. */
@@ -516,11 +668,11 @@ for (const s of SCREENS) {
     // Coverage. `built` means the route renders a real component — it is the
     // floor, not the Definition of Done, so nothing above DONE is claimed here.
     desktop: built ? 'DONE' : 'MISSING',
-    tablet: 'MISSING',
+    tablet: tabletStateOf(s.name, s.route, built),
     mobile: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
     responsive: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
-    arabic: built ? 'PARTIAL' : 'MISSING',
-    rtl: built ? 'PARTIAL' : 'MISSING',
+    arabic: arabicStateOf(s.name, s.route, built),
+    rtl: rtlStateOf(s.name, s.route, built),
     loadingState: built && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
     emptyState: built && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
     errorState: built && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
@@ -567,11 +719,11 @@ for (const s of SPEC_SCREENS) {
     mobileType: 'B-responsive',
     purpose: s.purpose,
     desktop: owned ? 'DONE' : kit ? 'PARTIAL' : 'MISSING',
-    tablet: 'MISSING',
+    tablet: tabletStateOf(s.name, s.route, owned || kit),
     mobile: owned || kit ? 'PARTIAL' : 'MISSING',
     responsive: owned || kit ? 'PARTIAL' : 'MISSING',
-    arabic: owned || kit ? 'PARTIAL' : 'MISSING',
-    rtl: owned || kit ? 'PARTIAL' : 'MISSING',
+    arabic: arabicStateOf(s.name, s.route, owned || kit),
+    rtl: rtlStateOf(s.name, s.route, owned || kit),
     loadingState: (owned || kit) && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
     emptyState: (owned || kit) && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
     errorState: (owned || kit) && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
@@ -612,7 +764,10 @@ for (const e of entries) {
   if (rendered && e.mobile === 'MISSING' && e.mobileType !== 'native-frame') f.push('DESKTOP_ONLY')
   if (rendered && e.tablet === 'MISSING') f.push('TABLET_MISSING')
   if (rendered && e.arabic !== 'VERIFIED') f.push('ARABIC_MISSING')
-  if (rendered && e.rtl !== 'VERIFIED') f.push('RTL_BROKEN')
+  /* Only a real hazard, not merely "no RTL run has looked at this". The flag
+   * says broken; firing it on every clean-but-unexercised screen is what made
+   * it meaningless. Absence of verification is carried by `rtl: 'PARTIAL'`. */
+  if (rendered && e.rtl === 'MISSING') f.push('RTL_BROKEN')
   if (product && !e.tests.e2e) f.push('UNTESTED')
   if (product && e.tests.e2e && !e.e2eContent && rendered) f.push('NO_CONTENT_ASSERTION')
   if (product && rendered && !e.dataBacked) f.push('MOCK_ONLY')
@@ -696,6 +851,9 @@ const totals = {
   hasLoadingState: count(entries, (e) => e.loadingState === 'DONE'),
   hasErrorState: count(entries, (e) => e.errorState === 'DONE'),
   hasEmptyState: count(entries, (e) => e.emptyState === 'DONE'),
+  tabletVerified: count(entries, (e) => e.tablet === 'DONE'),
+  arabicVerified: count(entries, (e) => e.arabic === 'VERIFIED'),
+  rtlHazards: count(entries, (e) => e.rtl === 'MISSING'),
   unregisteredDesigns: unregistered.length,
   orphanScreenFiles: orphanFiles.length,
   productionReady: count(entries, (e) => e.status === 'PRODUCTION_READY'),
@@ -806,8 +964,13 @@ const blockers = [
     detail: 'A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.', owner: '18', wave: 'W3' },
   !fs.existsSync(path.join(APP, 'src/components/ui/Modal.tsx')) && { id: 'BLK-007', severity: 'CRITICAL', title: 'No modal system, so 23 CTAs do nothing',
     detail: 'Blocks every create/edit/delete flow in the ERP.', owner: '04', wave: 'W1' },
-  { id: 'BLK-008', severity: 'HIGH', title: 'No tablet verification anywhere',
-    detail: '768/820/834/1024, portrait and landscape, has never been checked.', owner: '18', wave: 'W3' },
+  /* Was an unconditional entry reading "No tablet verification anywhere" — a
+   * blocker that stated its own conclusion and could not close however many
+   * routes a run covered. It now counts what is left. */
+  totals.rendered > totals.tabletVerified && { id: 'BLK-008', severity: 'HIGH',
+    title: `${totals.rendered - totals.tabletVerified} rendering capabilities have never been checked at 768–1024`,
+    detail: `The smoke suite loads ${totals.tabletVerified} route(s) at a tablet viewport. 768/820/834/1024, portrait and landscape, is unchecked for the rest.`,
+    owner: '18', wave: 'W3' },
   totals.unregisteredDesigns && { id: 'BLK-009', severity: 'MEDIUM', title: `${totals.unregisteredDesigns} designs are not in the registry`,
     detail: `Design files with no SCREEN_MAP entry: ${unregistered.join(', ')}`, owner: '02', wave: 'W0' },
   totals.orphanScreenFiles && { id: 'BLK-010', severity: 'MEDIUM', title: `${totals.orphanScreenFiles} screen files are unreachable from any route`,
@@ -905,25 +1068,36 @@ outputs.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
   `\n\n## By RBAC module\n\n| Module | Capabilities | Rendering |\n|---|---|---|\n` +
   Object.entries(byModule).sort().map(([k, v]) => `| ${k} | ${v.total} | ${v.rendered} |`).join('\n') + '\n'))
 
-const flagCounts = entries.flatMap((e) => e.flags).reduce((a, f) => ((a[f] = (a[f] ?? 0) + 1), a), {})
+/** Every flag the generator can raise, and what raises it. Keyed here rather
+ *  than inline in the table so a flag at zero still prints a row: a flag that
+ *  disappears when it clears leaves a reader unable to tell "checked, clear"
+ *  from "no longer checked", which is the same ambiguity as a flag that never
+ *  clears. RTL_BROKEN reads 0 today and that is a result, not an absence. */
+const FLAG_MEANINGS = {
+  PLACEHOLDER: 'product route renders PendingScreen',
+  MOCK_ONLY: 'renders, but from fixtures rather than an API',
+  UNTESTED: 'no route check in the smoke suite',
+  TABLET_MISSING: 'no md:/lg: layout in the source — nothing written for 768–1024',
+  ARABIC_MISSING: 'Arabic not certified: an untranslated key, or keys built dynamically',
+  RTL_BROKEN: 'a hard-coded physical side (ml-/pr-/text-left) the RTL flip will not mirror',
+  MOBILE_MISSING: 'a .Mobile design exists and is not built',
+  DESKTOP_ONLY: 'renders on desktop with no mobile treatment',
+  DUPLICATE: 'two entries claim one route',
+  NO_RBAC_MODULE: 'no RBAC module maps to this screen',
+  NO_CONTENT_ASSERTION: 'the route is visited but nothing is asserted about it',
+}
+const flagCounts = entries.flatMap((e) => e.flags).reduce(
+  (a, f) => ((a[f] = (a[f] ?? 0) + 1), a),
+  Object.fromEntries(Object.keys(FLAG_MEANINGS).map((f) => [f, 0]))
+)
 outputs.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
   genHeader('SALIS AUTO — Master Gap Report',
     'Computed from the registry. Every line is a query, not an opinion.') +
   `\n## Open blockers\n\n| ID | Severity | Title | Owner | Wave |\n|---|---|---|---|---|\n` +
   blockers.map((b) => `| ${b.id} | ${b.severity} | ${b.title} | ${b.owner} | ${b.wave} |`).join('\n') +
   `\n\n## Flags across the inventory\n\n| Flag | Count | Meaning |\n|---|---|---|\n` +
-  Object.entries(flagCounts).sort((a, b) => b[1] - a[1]).map(([f, n]) => `| ${f} | ${n} | ${({
-    PLACEHOLDER: 'product route renders PendingScreen',
-    MOCK_ONLY: 'renders, but from fixtures rather than an API',
-    UNTESTED: 'no route check in the smoke suite',
-    TABLET_MISSING: 'never verified at 768–1024',
-    ARABIC_MISSING: 'Arabic not certified',
-    RTL_BROKEN: 'RTL not certified',
-    MOBILE_MISSING: 'a .Mobile design exists and is not built',
-    DESKTOP_ONLY: 'renders on desktop with no mobile treatment',
-    DUPLICATE: 'two entries claim one route',
-    NO_RBAC_MODULE: 'no RBAC module maps to this screen',
-  })[f] ?? '—'} |`).join('\n') +
+  Object.entries(flagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([f, n]) => `| ${f} | ${n} | ${FLAG_MEANINGS[f] ?? '—'} |`).join('\n') +
   `\n\n## Designs not in the registry\n\n${unregistered.length ? unregistered.map((u) => `- \`project/${u}.dc.html\``).join('\n') : '_None — the registry covers every design file._'}` +
   `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o}\``).join('\n') : '_None._'}` +
   `\n\n## Placeholder routes by domain\n\n| Domain | Placeholder | Total |\n|---|---|---|\n` +
