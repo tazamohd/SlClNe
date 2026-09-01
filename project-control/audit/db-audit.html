@@ -1,0 +1,750 @@
+<title>SALIS AUTO Database Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --ground:      #F4F7F8;
+    --surface:     #FFFFFF;
+    --surface-alt: #EDF2F4;
+    --ink:         #0F171C;
+    --muted:       #566B77;
+    --faint:       #7D909B;
+    --rule:        #D9E3E7;
+    --rule-soft:   #E8EFF1;
+    --accent:      #0B6B78;
+    --accent-soft: #E0F0F1;
+
+    --crit:        #B3241C;
+    --crit-bg:     #FBE9E7;
+    --high:        #A65209;
+    --high-bg:     #FBEEE1;
+    --med:         #7A6212;
+    --med-bg:      #F7F0DC;
+    --ok:          #1F6B44;
+    --ok-bg:       #E4F1E9;
+
+    --f-head: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    --f-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --shell: 74rem;
+    --prose: 63ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0B1216;
+      --surface:     #111B21;
+      --surface-alt: #16232A;
+      --ink:         #E4EDF1;
+      --muted:       #93A7B2;
+      --faint:       #6F8592;
+      --rule:        #21323B;
+      --rule-soft:   #1A2930;
+      --accent:      #56C4CF;
+      --accent-soft: #10333A;
+
+      --crit:        #FF7A6B;
+      --crit-bg:     #351916;
+      --high:        #EDA24C;
+      --high-bg:     #33240F;
+      --med:         #D8BE63;
+      --med-bg:      #2C2612;
+      --ok:          #6FCB97;
+      --ok-bg:       #122E20;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0B1216;
+    --surface:     #111B21;
+    --surface-alt: #16232A;
+    --ink:         #E4EDF1;
+    --muted:       #93A7B2;
+    --faint:       #6F8592;
+    --rule:        #21323B;
+    --rule-soft:   #1A2930;
+    --accent:      #56C4CF;
+    --accent-soft: #10333A;
+
+    --crit:        #FF7A6B;
+    --crit-bg:     #351916;
+    --high:        #EDA24C;
+    --high-bg:     #33240F;
+    --med:         #D8BE63;
+    --med-bg:      #2C2612;
+    --ok:          #6FCB97;
+    --ok-bg:       #122E20;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 1.0625rem;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: var(--shell);
+    margin: 0 auto;
+    padding: clamp(1.75rem, 1rem + 3vw, 4rem) clamp(1.1rem, 0.6rem + 2.4vw, 3rem) 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  }
+
+  /* ---- masthead ---- */
+  .mast { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.1rem;
+  }
+  .eyebrow span::before { content: "— "; color: var(--faint); }
+  .eyebrow span:first-child::before { content: none; }
+
+  h1 {
+    font-family: var(--f-head);
+    font-weight: 700;
+    font-size: clamp(2rem, 1.3rem + 3.1vw, 3.4rem);
+    line-height: 1.03;
+    letter-spacing: -0.024em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    max-width: var(--prose);
+    font-size: clamp(1.06rem, 1rem + 0.3vw, 1.2rem);
+    color: var(--muted);
+    margin: 0;
+  }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  /* ---- section headings ---- */
+  section { display: flex; flex-direction: column; gap: 1.35rem; }
+
+  h2 {
+    font-family: var(--f-head);
+    font-weight: 600;
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.55rem);
+    letter-spacing: -0.014em;
+    margin: 0;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  h2 .count {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  p { margin: 0; max-width: var(--prose); }
+  .stack { display: flex; flex-direction: column; gap: 0.9rem; }
+
+  code, .mono {
+    font-family: var(--f-mono);
+    font-size: 0.855em;
+    font-variant-ligatures: none;
+  }
+  p code, li code, td code {
+    background: var(--surface-alt);
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    padding: 0.06em 0.32em;
+    white-space: nowrap;
+  }
+
+  /* ---- status ledger ---- */
+  .ledger {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .cell {
+    background: var(--surface);
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.42rem;
+  }
+  .cell dt {
+    font-family: var(--f-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .cell dd {
+    margin: 0;
+    font-family: var(--f-head);
+    font-size: 1.02rem;
+    font-weight: 600;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cell p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex: none; }
+  .dot.g { background: var(--ok); }
+  .dot.r { background: var(--crit); }
+  .dot.y { background: var(--med); }
+
+  /* ---- findings ---- */
+  .findings { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  .finding {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--sev, var(--rule));
+    border-radius: 4px;
+    padding: 1.3rem clamp(1.1rem, 0.8rem + 1vw, 1.7rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .finding.critical { --sev: var(--crit); }
+  .finding.high     { --sev: var(--high); }
+  .finding.medium   { --sev: var(--med); }
+  .finding.low      { --sev: var(--faint); }
+
+  .fhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.7rem 0.9rem; }
+  .fhead h3 {
+    font-family: var(--f-head);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.008em;
+    margin: 0;
+    flex: 1 1 18rem;
+  }
+
+  .chip {
+    font-family: var(--f-mono);
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    padding: 0.24em 0.6em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .chip.critical { color: var(--crit); background: var(--crit-bg); }
+  .chip.high     { color: var(--high); background: var(--high-bg); }
+  .chip.medium   { color: var(--med);  background: var(--med-bg); }
+  .chip.low      { color: var(--muted); background: var(--surface-alt); }
+  .chip.ok       { color: var(--ok);   background: var(--ok-bg); }
+  .chip.ghost    { color: var(--faint); background: transparent; border: 1px solid var(--rule); }
+
+  .finding p { max-width: var(--prose); }
+  .finding .why { color: var(--muted); }
+
+  .ref {
+    font-family: var(--f-mono);
+    font-size: 0.74rem;
+    color: var(--faint);
+    letter-spacing: 0.01em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+  }
+
+  pre {
+    margin: 0;
+    background: var(--surface-alt);
+    border: 1px solid var(--rule-soft);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    overflow-x: auto;
+    font-family: var(--f-mono);
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  pre .c { color: var(--faint); }
+  pre .k { color: var(--accent); font-weight: 500; }
+
+  /* ---- tables ---- */
+  .twrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--surface);
+  }
+  table { border-collapse: collapse; width: 100%; font-family: var(--f-head); font-size: 0.875rem; }
+  th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  thead th {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--faint);
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.m { font-family: var(--f-mono); font-size: 0.8rem; white-space: nowrap; }
+  td.n { font-variant-numeric: tabular-nums; }
+  .hot { color: var(--high); font-family: var(--f-mono); font-size: 0.66rem; letter-spacing: 0.1em; font-weight: 600; }
+
+  /* ---- clean list ---- */
+  .clean { display: grid; grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+  .clean > div { background: var(--surface); padding: 1rem 1.15rem; display: flex; flex-direction: column; gap: 0.35rem; }
+  .clean h4 {
+    font-family: var(--f-head); font-size: 0.94rem; font-weight: 600; margin: 0;
+    display: flex; align-items: baseline; gap: 0.5rem;
+  }
+  .clean h4::before { content: "✓"; color: var(--ok); font-size: 0.9em; }
+  .clean p { font-size: 0.86rem; color: var(--muted); line-height: 1.5; }
+
+  /* ---- steps ---- */
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 1rem; }
+  ol.steps > li {
+    counter-increment: s;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0 0.9rem;
+    align-items: start;
+  }
+  ol.steps > li::before {
+    content: counter(s);
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 3px;
+    text-align: center;
+    padding: 0.22rem 0;
+    line-height: 1.3;
+  }
+  ol.steps > li > div { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  ol.steps strong { font-family: var(--f-head); font-weight: 600; }
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 0.85rem 1.1rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.94rem;
+  }
+  .note p { max-width: none; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.3rem;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    color: var(--faint);
+    line-height: 1.8;
+  }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .finding, .cell { transition: border-color 140ms ease; }
+  }
+</style>
+
+<div class="shell">
+
+  <header class="mast">
+    <div class="eyebrow">
+      <span>Static audit</span>
+      <span>PostgreSQL 16 · Drizzle</span>
+      <span>68 tables · 13 migrations</span>
+      <span>Revised 1 Sep 2026</span>
+    </div>
+    <h1>SALIS AUTO Database Audit</h1>
+    <p class="standfirst">
+      The schema is <strong>mature and largely sound</strong> — no drift between <code>schema.ts</code> and the
+      migration SQL, money uniformly in <code>bigint</code> halalas, every timestamp <code>timestamptz</code>,
+      and tenant isolation that holds up under scrutiny. Against a scratch PostgreSQL 16 cluster:
+      <strong>68 tables migrated and the server suite green at 2,473 tests</strong>.
+    </p>
+    <div class="note">
+      <p><strong>This report previously marked its own top finding “fixed”, and it was not.</strong> The snapshot
+      repair it described existed in no commit, branch or worktree of this repository — only in a working tree that
+      was never committed. The defect was still live: <code>meta/</code> held two byte-identical snapshots and
+      <code>drizzle-kit generate</code> still emitted seventeen unguarded <code>ADD COLUMN</code> statements. It has
+      now been repaired for real, and every claim below that says <em>fixed</em> or <em>verified</em> was re-checked
+      against the repository rather than carried forward.</p>
+    </p>
+  </header>
+
+  <section>
+    <h2>Status <span class="count">6 workstreams</span></h2>
+    <dl class="ledger">
+      <div class="cell">
+        <dt>Build</dt>
+        <dd><span class="dot g"></span>Green</dd>
+        <p><code>server</code> and <code>app</code> typecheck and build clean.</p>
+      </div>
+      <div class="cell">
+        <dt>Schema quality</dt>
+        <dd><span class="dot g"></span>Sound</dd>
+        <p>Zero table or column-type drift. One nullable money column is the sole exception.</p>
+      </div>
+      <div class="cell">
+        <dt>Tenant isolation</dt>
+        <dd><span class="dot g"></span>Verified</dd>
+        <p>Transaction-local GUCs, fail-closed policies, RLS forced on 64 of 68 tables.</p>
+      </div>
+      <div class="cell">
+        <dt>Future migrations</dt>
+        <dd><span class="dot g"></span>Repaired</dd>
+        <p>Chain realigned to 68 tables by <code>0012_snapshot_realign</code>. <code>generate</code> answers
+        “no schema changes”.</p>
+      </div>
+      <div class="cell">
+        <dt>Verification</dt>
+        <dd><span class="dot g"></span>Against a live cluster</dd>
+        <p>Scratch PostgreSQL 16 on port 5433. Migrated both the fresh and the upgrade path, then torn down.</p>
+      </div>
+      <div class="cell">
+        <dt>Server suite</dt>
+        <dd><span class="dot g"></span>2473 / 2473</dd>
+        <p>30 of 30 files green. The five failures this report used to list are all resolved.</p>
+      </div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Findings <span class="count">ordered by severity</span></h2>
+    <div class="findings">
+
+      <article class="finding critical">
+        <div class="fhead">
+          <h3>The snapshot chain is frozen — the next generated migration cannot apply</h3>
+          <span class="chip critical">Critical</span>
+          <span class="chip ok">fixed</span>
+        </div>
+        <div class="note"><p><strong>Repaired, on the second attempt.</strong> The previous revision of this report
+        marked this finding fixed and named files — <code>0011_snapshot.json</code>, <code>0011_snapshot_realign.sql</code>
+        — that were in no commit. The repair had been done in a working tree and never committed, so the defect stayed
+        live for anyone who cloned the repository.</p>
+        <p>It is now committed as <code>drizzle/meta/0012_snapshot.json</code> (the true 68-table state) and
+        <code>drizzle/0012_snapshot_realign.sql</code> (deliberately empty, reasoning in its header). Verified on a
+        scratch PostgreSQL 16 cluster: <code>drizzle-kit generate</code> answers <em>“No schema changes, nothing to
+        migrate”</em> and writes no file; the migration applies to an already-migrated database as a clean no-op at
+        68 tables; and the whole chain <code>0000</code>–<code>0012</code> runs on an empty database to 68 tables.
+        Schema work is unblocked.</p></div>
+        <p>
+          <code>drizzle/meta/</code> held two snapshots against twelve journal entries, and both files were
+          <strong>186,405 bytes</strong> — a deep diff showed they differed in exactly two fields, <code>id</code> and
+          <code>prevId</code>. The second is a hand-copied stub, so the recorded state had not moved since
+          <code>0000_init</code>: it still described <strong>51 tables</strong> while the migrations had grown the
+          schema to 68.
+        </p>
+        <p class="why">
+          Nothing errored, which is why it survived eleven migrations. <code>drizzle-kit generate</code> silently
+          diffed <code>schema.ts</code> against that stale base and emitted 492 lines: 17 <code>CREATE TABLE</code>,
+          26 <code>CREATE INDEX</code> and 17 <code>ALTER TABLE … ADD COLUMN</code>. The tables, indexes and foreign
+          keys carry <code>IF NOT EXISTS</code> or a <code>duplicate_object</code> guard. <strong>The seventeen
+          <code>ADD COLUMN</code>s carry nothing</strong>, and drizzle wraps all pending migrations in one transaction,
+          so the first <code>42701 duplicate_column</code> aborts the whole run. No schema change could be added to
+          this project until it was repaired.
+        </p>
+        <p>
+          <strong>No real drift underneath it</strong>, and that was checked rather than inferred. Against a
+          database migrated through <code>0000</code>–<code>0011</code> on a scratch cluster — 68 tables — every
+          statement <code>generate</code> wanted to emit was already true: <strong>17/17 tables, 17/17 columns,
+          26/26 indexes</strong> present. The snapshot was lying, not the schema. The defect itself reproduces just as
+          plainly: the unguarded form fails with <code>column "branch_id" of relation "fleets" already exists</code>.
+        </p>
+        <p class="ref"><span>drizzle/meta/0012_snapshot.json</span><span>drizzle/0012_snapshot_realign.sql</span><span>schema.ts — 68 pgTable</span></p>
+      </article>
+
+      <article class="finding high">
+        <div class="fhead">
+          <h3><code>parts.cost_halalas</code> is the one nullable money column</h3>
+          <span class="chip high">High</span>
+          <span class="chip ghost">verified</span>
+        </div>
+        <p>
+          It sits directly beneath <code>price_halalas bigint DEFAULT 0 NOT NULL</code> and carries no constraint of
+          its own. Across all 68 tables it is the <strong>only</strong> money column that permits NULL.
+        </p>
+        <p class="why">
+          <code>SUM</code> and <code>AVG</code> skip NULLs silently. An inventory valuation over 100 parts with 10
+          nulls returns the total for 90 and presents it as the total — no error, no zero, just a quietly low number
+          that reconciles against nothing. This is the failure mode that costs the most to find later, because
+          nothing about it looks wrong.
+        </p>
+        <p class="ref"><span>src/db/schema.ts:389</span><span>drizzle/0000_init.sql:715</span></p>
+      </article>
+
+      <article class="finding medium">
+        <div class="fhead">
+          <h3>The app role holds unrestricted CRUD over every OTP record</h3>
+          <span class="chip medium">Medium</span>
+        </div>
+        <p>
+          <code>scripts/migrate.ts:63</code> grants <code>select, insert, update, delete on all tables</code>, which
+          sweeps in <code>otp_challenges</code> — every one-time-code hash and destination on the platform, with only
+          route-level RBAC in front of it.
+        </p>
+        <p class="why">
+          Codes are stored hashed, so this is defence-in-depth rather than an exposure. The fix mirrors the treatment
+          <code>audit_log</code> already receives one line below, at <code>:73</code>.
+        </p>
+        <pre><span class="k">REVOKE</span> UPDATE, DELETE <span class="k">ON</span> otp_challenges <span class="k">FROM</span> salis_app;</pre>
+        <p class="ref"><span>scripts/migrate.ts:63</span><span>src/db/schema.ts:1226</span></p>
+      </article>
+
+      <article class="finding medium">
+        <div class="fhead">
+          <h3>Money and quantity columns carry no range constraint</h3>
+          <span class="chip medium">Medium</span>
+        </div>
+        <p>
+          Roughly a dozen <code>*_halalas</code> columns are correctly <code>NOT NULL DEFAULT 0</code> but have no
+          <code>CHECK (… &gt;= 0)</code>. <code>estimate_lines.qty</code> and <code>invoice_lines.qty</code> are
+          <code>double precision NOT NULL</code> with no <code>CHECK (qty &gt; 0)</code>.
+        </p>
+        <p class="why">
+          A sign error writes a negative that sums cleanly and reconciles to the wrong figure. A zero or negative
+          quantity flows through <code>computeInvoiceTotals</code> and produces a plausible-looking wrong subtotal.
+          Status columns are likewise unconstrained <code>varchar</code> holding semantic enums — the database will
+          accept any string the application forgets to validate.
+        </p>
+        <p class="ref"><span>packages/contract/src/rules/money.ts:34-46</span></p>
+      </article>
+
+      <article class="finding low">
+        <div class="fhead">
+          <h3>An orphaned prototype migration sits in the migrations directory</h3>
+          <span class="chip low">Low</span>
+        </div>
+        <p>
+          <code>0000_lonely_black_widow.sql</code> has no journal entry, so it is never applied — Drizzle reads
+          migrations by tag, not by directory listing. It is an early prototype: <code>serial</code> primary keys,
+          <code>amount text</code> money, and two tables (<code>jobs</code>, <code>refresh_tokens</code>) that exist
+          nowhere else.
+        </p>
+        <p class="why">
+          Harmless as it stands. The risk is a bring-up shortcut — <code>psql -f drizzle/*.sql</code> — which glob
+          order would apply, creating those two tables <strong>without RLS</strong>, after which
+          <code>migrate.ts</code> grants the app role full CRUD on them. Delete the file.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Verified sound <span class="count">no action needed</span></h2>
+    <div class="clean">
+      <div>
+        <h4>Tenant context cannot leak across the pool</h4>
+        <p>All four GUCs are set with <code>set_config(…, true)</code> — transaction-local, reverted at commit. 32 call sites across <code>src/</code>, <code>scripts/</code> and <code>tests/</code>, every one local; zero session-local, zero bare <code>SET</code>. Connection reuse at pool size 10 has nothing to carry.</p>
+      </div>
+      <div>
+        <h4>Policies fail closed</h4>
+        <p><code>nullif(current_setting('app.org_id', true), '')</code> yields NULL when unset, and a row-security predicate admits only on TRUE. An unset context returns zero rows, never another tenant's.</p>
+      </div>
+      <div>
+        <h4>The four RLS-exempt tables hold no tenant data</h4>
+        <p><code>garage_applications</code> and <code>supplier_applications</code> are pre-tenant onboarding; <code>system_health</code> is platform telemetry; <code>otp_challenges</code> precedes authentication. None has an <code>org_id</code> to anchor a policy to.</p>
+      </div>
+      <div>
+        <h4>No superuser is required</h4>
+        <p>No <code>CREATE EXTENSION</code>, <code>ALTER SYSTEM</code>, event triggers or <code>SECURITY DEFINER</code> anywhere. IDs are ULIDs minted in JS. A plain owner role with <code>CREATEROLE</code> suffices.</p>
+      </div>
+      <div>
+        <h4>Money and time are modelled correctly</h4>
+        <p>Every amount is <code>bigint</code> halalas — no float money anywhere. Every timestamp is <code>timestamptz</code>, so container-UTC versus Windows-local changes nothing.</p>
+      </div>
+      <div>
+        <h4>Migrations are idempotent</h4>
+        <p><code>CREATE TABLE IF NOT EXISTS</code> throughout; constraints wrapped in <code>DO $$ … EXCEPTION WHEN duplicate_object</code>; policies dropped before recreation. The hand-written chain is disciplined.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Index debt <span class="count">30 unindexed foreign keys</span></h2>
+    <p class="why">
+      Sequencing matters more than the list. These indexes do nothing until <code>listRows</code> and
+      <code>findOne</code> add a redundant <code>org_id = principal.orgId</code> predicate — the policy's column-free
+      left branch (<code>app_scope() = 'platform' OR …</code>) prevents the planner from lifting
+      <code>org_id = app_org()</code> into an index qualifier. <strong>Predicate first, indexes second.</strong>
+    </p>
+    <div class="twrap">
+      <table>
+        <thead>
+          <tr><th>Column</th><th>Load</th><th>Why it matters</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="m">user_sessions.family_id</td><td><span class="hot">HOT</span></td><td>Refresh-token reuse detection, on every token refresh</td></tr>
+          <tr><td class="m">audit_log.entity_id</td><td><span class="hot">HOT</span></td><td>The history-read endpoint's primary lookup</td></tr>
+          <tr><td class="m">job_cards.customer_id</td><td><span class="hot">HOT</span></td><td rowspan="9">The <code>customers → vehicles → job_cards → estimates → invoices</code> spine — what the seed fills and what every workshop and finance list traverses</td></tr>
+          <tr><td class="m">job_cards.vehicle_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">vehicles.customer_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">invoices.customer_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">invoices.vehicle_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">invoices.job_card_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">estimates.customer_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">estimates.vehicle_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">estimates.job_card_id</td><td><span class="hot">HOT</span></td></tr>
+          <tr><td class="m">appointments.technician_id</td><td><span class="hot">HOT</span></td><td>The technician portal's own-scope list</td></tr>
+          <tr><td class="m">appointments.customer_id</td><td><span class="hot">HOT</span></td><td>Scheduling views</td></tr>
+          <tr><td class="m">appointments.vehicle_id</td><td><span class="hot">HOT</span></td><td>Scheduling views</td></tr>
+          <tr><td class="m">audit_log.actor_id</td><td><span class="hot">HOT</span></td><td>Actor-filtered audit queries</td></tr>
+          <tr><td class="m">+ 15 more</td><td></td><td>Thin tables today — <code>customers.fleet_id</code>, <code>payroll_lines.employee_id</code>, <code>employees.department_id</code>, <code>insurance_*</code>, <code>loan_contracts.customer_id</code>, <code>chart_of_accounts.parent_id</code> and others</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="why">A further 22 tables carry no index at all — <code>crm_tasks</code>, <code>opportunities</code>, <code>support_tickets</code>, <code>departments</code>, the <code>diag_*</code> family and others. Low urgency while they stay small.</p>
+  </section>
+
+  <section>
+    <h2>Previously outstanding <span class="count">all five resolved</span></h2>
+    <p class="why">
+      This report used to close with five failing tests, described as contradictions between the application and its
+      own suite. All five have since been settled in the codebase, and the server suite runs 30 files / 2,473 tests
+      green. They are kept here because how each was settled is the useful part.
+    </p>
+    <div class="findings">
+      <article class="finding low">
+        <div class="fhead">
+          <h3>Helmet was configured more loosely than the tests demanded</h3>
+          <span class="chip low">4 tests</span>
+          <span class="chip ok">resolved</span>
+        </div>
+        <p>
+          Settled in the direction the suite asked for rather than by relaxing the assertions:
+          <code>src/app.ts</code> now registers helmet with <code>useDefaults: false</code>, a CSP of
+          <code>default-src 'none'</code>, and <code>frameguard: { action: 'deny' }</code>. The rate limiter emits the
+          <code>RateLimit-*</code> headers, and CORS exposes them.
+        </p>
+        <p class="why">The report was right that this was a posture decision, not a bug. The decision was to take the
+        stricter posture — weakening a security control to make a test pass is the wrong direction of fit.</p>
+      </article>
+      <article class="finding low">
+        <div class="fhead">
+          <h3>An unknown path answered 401 where the test wanted 404</h3>
+          <span class="chip low">1 test</span>
+          <span class="chip ok">resolved</span>
+        </div>
+        <p>
+          Resolved along with the wider 400-versus-422 question: a body that does not match the schema is a
+          <code>400 bad_request</code>; a schema-valid body refused by a domain rule is a
+          <code>422 rule_violated</code>. The 401-before-routing behaviour was kept deliberately — a 404 tells an
+          unauthenticated caller which paths exist.
+        </p>
+      </article>
+      <article class="finding low">
+        <div class="fhead">
+          <h3>Two suites signed in with a password the seed never sets</h3>
+          <span class="chip low">2 suites</span>
+          <span class="chip ok">resolved</span>
+        </div>
+        <p>
+          Fixed in the tests, as the report recommended, not by seeding a credential into the repository:
+          <code>collections</code> and <code>writes</code> now establish their own principal at setup. The seed's
+          rule stands — <em>“a seeded password hash in a repository is a credential in a repository.”</em>
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>How it was brought up <span class="count">no Docker, no admin rights</span></h2>
+    <p>
+      Docker Desktop turned out to be wedged — pipes accepting connections with no engine behind them, its WSL2 VM
+      stopped, <code>dockerd</code> absent, and <code>docker desktop restart</code> timing out past four minutes. The
+      <code>postgres</code> superuser password on the existing 5432 install was also lost. Neither mattered in the end:
+      <code>initdb</code> creates a cluster as an ordinary user, so a <strong>second cluster</strong> was built on port
+      5433 whose superuser we set ourselves. The 5432 service was never touched.
+    </p>
+    <ol class="steps">
+      <li>
+        <div>
+          <strong>Create a cluster we own, from the binaries already installed.</strong>
+          <pre>initdb -D %LOCALAPPDATA%\salis-auto-pg\data -U postgres \
+  --pwfile=… --auth-host=scram-sha-256 --encoding=UTF8 --locale=C</pre>
+          <p class="why">No administrator rights and no service registration — <code>initdb</code> runs as an ordinary user, and creating the cluster is what makes its superuser password ours to set.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Pin it to port 5433, loopback only.</strong>
+          <pre>port = 5433
+listen_addresses = 'localhost'</pre>
+          <p class="why">Appended to <code>postgresql.conf</code> before first start, so it can never collide with the 5432 service and is not reachable off the machine.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Create the owner role explicitly.</strong>
+          <pre><span class="k">CREATE ROLE</span> salis_admin <span class="k">LOGIN PASSWORD</span> '…' CREATEROLE CREATEDB;
+<span class="k">CREATE DATABASE</span> salis_auto <span class="k">OWNER</span> salis_admin;
+<span class="k">GRANT</span> pg_signal_backend <span class="k">TO</span> salis_admin;</pre>
+          <p class="why">Verified after creation: <code>salis_admin</code> is <code>rolsuper=false</code>, <code>rolbypassrls=false</code>. That matters — a superuser bypasses RLS <em>even under FORCE</em>, so migrating as one would make the isolation suite pass vacuously. <code>server/.env.example</code> suggests exactly that for <code>DATABASE_ADMIN_URL</code>, which is a trap worth correcting in the committed file.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Migrate and seed, then check the result against the audit's predictions.</strong>
+          <p class="why">Every prediction held: <strong>68 tables</strong> matching <code>schema.ts</code>, RLS enabled <em>and</em> forced on <strong>64</strong>, <strong>128</strong> policies, <code>salis_app</code> created non-superuser, and the four RLS-exempt tables exactly the four named in this report.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Repair the snapshot chain, now that a live database proves the target state.</strong>
+          <p class="why">Regenerated against the migrated database, kept the corrected snapshot, emptied the SQL. <code>generate</code> now answers <em>"No schema changes"</em>.</p>
+        </div>
+      </li>
+    </ol>
+    <div class="note">
+      <p><strong>RLS caught the author of this report out, which is a good sign.</strong> A plain <code>select count(*) from users</code> as <code>salis_admin</code> returned <strong>0</strong> — and the table has 15 rows. With no tenant GUC set, the policy evaluated to NULL and correctly returned nothing. The rows only appear once <code>app.scope</code> is set to <code>platform</code>. Fail-closed, exactly as designed, demonstrated by accident.</p>
+    </div>
+  </section>
+
+  <footer>
+    Revised 1 Sep 2026 against the repository, not against the previous revision of this report.<br>
+    The snapshot repair was carried out and checked on a scratch PostgreSQL 16 cluster, which was then torn down;
+    no shared database was touched.<br>
+    Findings marked <em>verified</em> or <em>resolved</em> were re-confirmed against the source for this revision.
+    Still open, and re-confirmed open: the nullable <code>parts.cost_halalas</code>, the unrevoked
+    <code>otp_challenges</code> grant, the missing range constraints, the 30 unindexed foreign keys, and the orphaned
+    <code>0000_lonely_black_widow.sql</code>.<br>
+    Separately resolved: 34 <code>TS2740</code> errors in <code>server/src/writers.ts</code>, caused by
+    <code>packages/contract</code> resolving <code>zod@4.4.3</code> from the home directory while
+    <code>server</code> resolved <code>zod@3.25.76</code> locally. Installing the contract's already-declared
+    dependency confines resolution to the repo.
+  </footer>
+
+</div>
+

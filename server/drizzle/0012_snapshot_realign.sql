@@ -1,0 +1,21 @@
+-- Deliberately empty. This migration exists to carry drizzle/meta/0012_snapshot.json,
+-- not to change any database.
+--
+-- meta/ held two snapshots against twelve journal entries, and both were byte-identical
+-- apart from `id` and `prevId` -- 0001 is a hand-copied stub, so the recorded state never
+-- moved past 0000_init and still described 51 tables while the migrations had grown the
+-- schema to 68.
+--
+-- Nothing errored, which is why it went unnoticed. `drizzle-kit generate` silently diffed
+-- schema.ts against that eleven-migration-stale base and emitted 17 CREATE TABLE, 26
+-- CREATE INDEX and 17 ALTER TABLE ... ADD COLUMN. The tables, indexes and foreign keys
+-- carry IF NOT EXISTS or a duplicate_object guard; the seventeen ADD COLUMNs do not. Drizzle
+-- wraps all pending migrations in one transaction, so the first 42701 duplicate_column
+-- would abort the whole run. No schema change could be added until this was repaired.
+--
+-- There was no real drift underneath it. Against a database migrated through 0000-0011 on
+-- a scratch PostgreSQL 16 cluster -- 68 tables -- every statement that generate wanted to
+-- emit was already true: 17/17 tables, 17/17 columns and 26/26 indexes present. The
+-- snapshot was stale, not the schema, so the truthful record is paired with no SQL at all.
+--
+-- After this, `drizzle-kit generate` reports no changes and schema work is unblocked.
