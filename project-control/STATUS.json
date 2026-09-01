@@ -9,8 +9,8 @@
     "placeholder": 0,
     "designedMobileOwed": 1,
     "untested": 0,
-    "mockOnly": 289,
-    "dataBacked": 95,
+    "mockOnly": 288,
+    "dataBacked": 96,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
@@ -76,7 +76,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 1,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "native": {
       "total": 2,
@@ -142,7 +142,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 13,
-      "dataBacked": 6
+      "dataBacked": 7
     },
     "crm": {
       "total": 17,
@@ -384,7 +384,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 1,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "network": {
       "total": 2,

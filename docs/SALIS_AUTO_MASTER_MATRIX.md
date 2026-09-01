@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-424 capabilities · 424 rendering · 0 placeholder · 95 data-backed.
+424 capabilities · 424 rendering · 0 placeholder · 96 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -81,7 +81,7 @@
 | JobCards | `/job-cards` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | JobDetail | `/job-detail` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | JournalEntries | `/journal-entries` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
-| KioskCheckIn | `/kiosk-check-in` | kiosk | kiosk | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| KioskCheckIn | `/kiosk-check-in` | kiosk | kiosk | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | KnowledgeBase | `/knowledge-base` | app | ai | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | LanguageSelection | `/language-selection` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | LeadDetail | `/lead-detail` | app | crm | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
