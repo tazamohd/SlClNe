@@ -29,9 +29,9 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
-| golden paths passing | 0 |
-| golden paths failing | 11 |
-| golden paths unwritten | 12 |
+| golden paths passing | 1 |
+| golden paths failing | 16 |
+| golden paths unwritten | 6 |
 | crud create | 32 |
 | crud read | 98 |
 | crud update | 24 |

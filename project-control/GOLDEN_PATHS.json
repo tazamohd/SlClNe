@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-09-01T23:22:00.934Z",
+  "generatedAt": "2026-09-01T23:33:06.258Z",
   "generator": "app/scripts/golden-paths.mjs",
   "note": "A run record, not a plan. PASSING means a journey walked the product and its assertions held on this run; FAILING means one ran and did not; UNWRITTEN means no journey exists for that path yet. Never hand-edit — re-run the runner.",
-  "base": "http://localhost:4191",
+  "base": "http://localhost:4192",
   "totals": {
     "paths": 23,
-    "passing": 0,
-    "failing": 11,
-    "unwritten": 12,
-    "journeys": 11,
-    "modules": 2,
+    "passing": 1,
+    "failing": 16,
+    "unwritten": 6,
+    "journeys": 17,
+    "modules": 3,
     "errors": 0
   },
   "errors": [],
   "paths": [
     {
       "path": "New customer to paid invoice",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "new-customer-to-paid-invoice",
+      "status": "FAILING",
+      "error": "new-customer-to-paid-invoice: step 3: \"Send Invoice\" did not raise an invoice for Journey Customer MTJAY1QL. The product answered: The fixture repository cannot create invoices. Set VITE_API_URL to run against the API.. No invoice means no paid invoice — the rest of this path is unreachable."
     },
     {
       "path": "Existing customer service",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "existing-customer-service",
+      "status": "FAILING",
+      "error": "existing-customer-service: step 3: the \"New Job Card\" save control is disabled, so no service visit can be opened for Ahmed Al-Rashid. The form itself says: This build reads the design fixtures, which cannot be written to. Point VITE_API_URL at the API to save a job card."
     },
     {
       "path": "Mobile customer booking",
@@ -34,15 +34,15 @@
     },
     {
       "path": "Technician job completion",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "technician-job-completion",
+      "status": "FAILING",
+      "error": "technician-job-completion: step 2: job card C2A9F4E3 is listed as \"Completed\" but the workshop rail puts it at Check-In. The stage the technician works from is not the stage the card is at."
     },
     {
       "path": "Customer estimate approval",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "customer-estimate-approval",
+      "status": "FAILING",
+      "error": "customer-estimate-approval: step 3: approving EST-0231 was refused. The product answered: The fixture repository cannot change a job card. Set VITE_API_URL to run against the API."
     },
     {
       "path": "Parts procurement",
@@ -112,14 +112,14 @@
     },
     {
       "path": "Accounting reconciliation",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "accounting-reconciliation",
+      "status": "FAILING",
+      "error": "accounting-reconciliation: \"Accounting reconciliation\" cannot be completed. 3 step(s) the product does not support today:\n  1. step 2 — there is no bank statement to reconcile against: the screen shows no statement table at all. It says: Reconciliation needs statement lines to match receipts against. The server has no bank-statement collection yet, so no automated match can run. Nothing here is matched or unmatched — it is unreconciled. Missing server collection: bankStatements (imported statement lines and a matching endpoint).\n  2. step 2 — \"Import statement\" is present but disabled, so an accountant cannot supply the statement themselves either.\n  3. step 3 — with no statement lines there is nothing to match a receipt to, so no reconciliation can be performed or recorded."
     },
     {
       "path": "Report generation",
-      "id": null,
-      "status": "UNWRITTEN",
+      "id": "report-generation",
+      "status": "PASSING",
       "error": null
     },
     {

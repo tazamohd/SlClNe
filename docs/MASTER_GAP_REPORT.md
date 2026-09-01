@@ -12,8 +12,8 @@ Computed from the registry. Every line is a query, not an opinion.
 | BLK-004 | CRITICAL | 285 rendered capabilities are mock-only | 05 | W2 |
 | BLK-006 | HIGH | 1 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-008 | HIGH | 420 rendering capabilities have never been checked at 768–1024 | 18 | W3 |
-| BLK-013 | BLOCKER | 11 golden paths fail | 23 | W4 |
-| BLK-014 | HIGH | 12 golden paths have no journey | 23 | W4 |
+| BLK-013 | BLOCKER | 16 golden paths fail | 23 | W4 |
+| BLK-014 | HIGH | 6 golden paths have no journey | 23 | W4 |
 
 ## Flags across the inventory
 
@@ -33,15 +33,15 @@ Computed from the registry. Every line is a query, not an opinion.
 
 ## Golden paths
 
-Measured by `app/scripts/golden-paths.mjs` — 0 passing, 11 failing, 12 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
+Measured by `app/scripts/golden-paths.mjs` — 1 passing, 16 failing, 6 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
 
 | Path | Status | Journey | Detail |
 |---|---|---|---|
-| New customer to paid invoice | UNWRITTEN | — | — |
-| Existing customer service | UNWRITTEN | — | — |
+| New customer to paid invoice | FAILING | `new-customer-to-paid-invoice` | new-customer-to-paid-invoice: step 3: "Send Invoice" did not raise an invoice for Journey Customer MTJAY1QL. The product answered: The fixture repository cannot |
+| Existing customer service | FAILING | `existing-customer-service` | existing-customer-service: step 3: the "New Job Card" save control is disabled, so no service visit can be opened for Ahmed Al-Rashid. The form itself says: Thi |
 | Mobile customer booking | FAILING | `mobile-customer-booking` | mobile-customer-booking: booking step 4: "Confirm Booking": the control is disabled, so the journey cannot complete — the screen explains: "This build has no AP |
-| Technician job completion | UNWRITTEN | — | — |
-| Customer estimate approval | UNWRITTEN | — | — |
+| Technician job completion | FAILING | `technician-job-completion` | technician-job-completion: step 2: job card C2A9F4E3 is listed as "Completed" but the workshop rail puts it at Check-In. The stage the technician works from is  |
+| Customer estimate approval | FAILING | `customer-estimate-approval` | customer-estimate-approval: step 3: approving EST-0231 was refused. The product answered: The fixture repository cannot change a job card. Set VITE_API_URL to r |
 | Parts procurement | FAILING | `parts-procurement` | parts-procurement: step "raise a requisition" — "New Requisition" opened "Creating requisitions is not available yet" instead of the requisition form. The produ |
 | Inventory receiving | FAILING | `inventory-receiving` | inventory-receiving: step "record the receipt" — the part ledger offers no "Receive Stock" action. The product says: Spark Plug Set SP-SET-04 Stock on hand, and |
 | Inventory consumption | FAILING | `inventory-consumption` | inventory-consumption: step "issue stock to a job" — the part ledger offers no "Consume" action. The product says: Oil Filter (Toyota) OF-TY-118 Stock on hand,  |
@@ -53,8 +53,8 @@ Measured by `app/scripts/golden-paths.mjs` — 0 passing, 11 failing, 12 unwritt
 | Employee onboarding | UNWRITTEN | — | — |
 | Organization / branch setup | UNWRITTEN | — | — |
 | User invitation + RBAC | UNWRITTEN | — | — |
-| Accounting reconciliation | UNWRITTEN | — | — |
-| Report generation | UNWRITTEN | — | — |
+| Accounting reconciliation | FAILING | `accounting-reconciliation` | accounting-reconciliation: "Accounting reconciliation" cannot be completed. 3 step(s) the product does not support today: ·   1. step 2 — there is no bank state |
+| Report generation | PASSING | `report-generation` | — |
 | Customer portal | FAILING | `customer-portal` | customer-portal: customer portal: the portal filled its panels without asking anyone for this customer's records — no request was made for vehicles, appointment |
 | Technician portal | FAILING | `technician-portal` | technician-portal: technician job detail: the job the portal handed this technician is not at the Repair stage — it is at "Check-In", so the portal's one write  |
 | Supplier portal | FAILING | `supplier-portal` | supplier-portal: step "read the order book" — the supplier's portal shows no purchase orders at all. The portal reads the `purchaseOrders` collection through th |
