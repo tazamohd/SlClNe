@@ -211,8 +211,40 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-          cache-dependency-path: app/package-lock.json
+          cache-dependency-path: |
+            app/package-lock.json
+            server/package-lock.json
+            packages/contract/package-lock.json
 
-      - name: Audit dependencies
+      # Every lockfile in the repository, not just the client's.
+      #
+      # This step audited `app` alone, so `server`'s tree — the one that holds
+      # the production dependencies, the database driver and the ORM — was
+      # never looked at. It had been carrying a high-severity SQL-injection
+      # advisory against drizzle-orm and a critical one against vitest, and the
+      # pipeline was green throughout: not because the advisories were judged
+      # acceptable, but because nothing ran the check. A gate that covers one
+      # of three lockfiles reports the same colour as one that covers all
+      # three, which is the failure mode worth designing against.
+      #
+      # `--audit-level=high` is the threshold `app` already used, kept so the
+      # three are judged alike. Moderate findings are still printed by every
+      # run — the audit is not filtered, only the exit code is thresholded —
+      # so they stay visible in the log rather than being silenced.
+      #
+      # Each workspace is its own step so a failure names which lockfile it
+      # came from, and `npm audit` reads the lockfile directly, so no install
+      # is needed here.
+      - name: Audit dependencies (app)
         working-directory: app
+        run: npm audit --audit-level=high
+
+      - name: Audit dependencies (server)
+        if: always()
+        working-directory: server
+        run: npm audit --audit-level=high
+
+      - name: Audit dependencies (packages/contract)
+        if: always()
+        working-directory: packages/contract
         run: npm audit --audit-level=high
