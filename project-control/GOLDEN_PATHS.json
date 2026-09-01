@@ -1,0 +1,156 @@
+{
+  "generatedAt": "2026-09-01T23:03:01.028Z",
+  "generator": "app/scripts/golden-paths.mjs",
+  "note": "A run record, not a plan. PASSING means a journey walked the product and its assertions held on this run; FAILING means one ran and did not; UNWRITTEN means no journey exists for that path yet. Never hand-edit — re-run the runner.",
+  "base": "http://localhost:4199",
+  "totals": {
+    "paths": 23,
+    "passing": 0,
+    "failing": 5,
+    "unwritten": 18,
+    "journeys": 5,
+    "modules": 1,
+    "errors": 0
+  },
+  "errors": [],
+  "paths": [
+    {
+      "path": "New customer to paid invoice",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Existing customer service",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Mobile customer booking",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Technician job completion",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Customer estimate approval",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Parts procurement",
+      "id": "parts-procurement",
+      "status": "FAILING",
+      "error": "parts-procurement: step \"raise a requisition\" — \"New Requisition\" opened \"Creating requisitions is not available yet\" instead of the requisition form. The product says: Creating requisitions is not available yet This build is reading design fixtures, which hold no procurement records and refuse writes rather than pretending. Set the API URL to run requisitions and purchase orders against the server. Close — POST /procurement/requisitions is not reachable from this build, so a requisition cannot be raised through the UI"
+    },
+    {
+      "path": "Inventory receiving",
+      "id": "inventory-receiving",
+      "status": "FAILING",
+      "error": "inventory-receiving: step \"record the receipt\" — the part ledger offers no \"Receive Stock\" action. The product says: Spark Plug Set SP-SET-04 Stock on hand, and every movement that produced it. On Hand 12 Reserved — Available 12 Reorder At 20 Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. The stock ledger is unavailable Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. Close — POST /inventory/:id/movement is not reachable from this build, so received stock cannot be booked"
+    },
+    {
+      "path": "Inventory consumption",
+      "id": "inventory-consumption",
+      "status": "FAILING",
+      "error": "inventory-consumption: step \"issue stock to a job\" — the part ledger offers no \"Consume\" action. The product says: Oil Filter (Toyota) OF-TY-118 Stock on hand, and every movement that produced it. On Hand 142 Reserved — Available 142 Reorder At 40 Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. The stock ledger is unavailable Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. Close — POST /inventory/:id/movement is not reachable from this build, so stock cannot be issued"
+    },
+    {
+      "path": "Supplier order",
+      "id": "supplier-order",
+      "status": "FAILING",
+      "error": "supplier-order: step \"choose the supplier\" — the supplier picker is disabled. The product says: Back to Inventory Create Purchase Order / The order number is assigned by the server when the order is saved. / 2 items below reorder level / This build is reading design fixtures, which hold no procurement records and refuse writes rather than pretending. Set the API URL to run requisitions and purchase orders against the server. / Supplier Supplier * Choose a supplier... Order Date 2026-09-01 Ex — GET /procurement/suppliers is not reachable from this build, so no supplier can be named on the order"
+    },
+    {
+      "path": "CRM lead conversion",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Insurance claim",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Fleet contract",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Loan workflow",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Employee onboarding",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Organization / branch setup",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "User invitation + RBAC",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Accounting reconciliation",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Report generation",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Customer portal",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Technician portal",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Supplier portal",
+      "id": "supplier-portal",
+      "status": "FAILING",
+      "error": "supplier-portal: step \"read the order book\" — the supplier's portal shows no purchase orders at all. The portal reads the `purchaseOrders` collection through the repository seam; this build serves it no rows, so a supplier signing in has nothing to work — the path cannot be walked"
+    },
+    {
+      "path": "Call center",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    },
+    {
+      "path": "Kiosk",
+      "id": null,
+      "status": "UNWRITTEN",
+      "error": null
+    }
+  ]
+}

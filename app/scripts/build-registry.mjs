@@ -129,6 +129,33 @@ const routesSrc = readApp('src/routes/index.tsx')
 const featureDefsSrc = readApp('src/screens/feature/definitions.ts')
 const smokeSrc = readApp('scripts/smoke.mjs')
 
+/** The 23 golden paths, and what the runner last measured them to be.
+ *
+ *  The plan names them; `scripts/golden-paths.mjs` runs journeys against them
+ *  and writes `GOLDEN_PATHS.json`. Nothing here counts a path as anything —
+ *  read it from the run record or say it has not been measured. The deck used
+ *  to hold this as `ov.gp`, a checkbox in one browser's localStorage, which is
+ *  why "0/23" could never move for any reason to do with the product.
+ *
+ *  An absent file is *not* zero passing: it is unknown, and `null` is how that
+ *  is carried through the rollups. Twenty-three unwritten is the honest read of
+ *  a run that has never happened. */
+const GOLDEN_PATH_NAMES = JSON.parse(read(path.join(CONTROL, 'tracker/plan-structure.json'))).goldenPaths ?? []
+const goldenRun = (() => {
+  const file = path.join(CONTROL, 'GOLDEN_PATHS.json')
+  if (!fs.existsSync(file)) return null
+  try {
+    const run = JSON.parse(read(file))
+    return Array.isArray(run?.paths) ? run : null
+  } catch (_) {
+    return null // unreadable is unmeasured, never green
+  }
+})()
+const goldenWith = (status) => (goldenRun ? goldenRun.paths.filter((p) => p.status === status) : [])
+const goldenPassing = goldenRun ? goldenWith('PASSING').length : null
+const goldenFailing = goldenRun ? goldenWith('FAILING').length : null
+const goldenUnwritten = goldenRun ? goldenWith('UNWRITTEN').length : GOLDEN_PATH_NAMES.length
+
 /** Which screens are wired to a real component. Read from the lookup tables
  *  rather than guessed from files, so a component that exists but reaches no
  *  route is still counted as missing — which is what it is. */
@@ -339,8 +366,63 @@ const stateImplemented = (() => {
  *  This measures wiring, not correctness: it says a screen asks the repository
  *  for a collection, not that what it renders is right. */
 const SEAM_CALL =
-  /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
+  /\buse(PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
 const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk|Repository)\b/
+
+/** Which letter of CRUD each seam hook is.
+ *
+ *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
+ *  every one of the 424 entries — three constants and a rename of `built`. So
+ *  the registry said no capability anywhere can create, edit or delete
+ *  anything, while thirty screens call these hooks and the server answers
+ *  forty-three write routes. A field that is the same for every row measures
+ *  nothing about any row.
+ *
+ *  These hooks are the only way through the repository seam, so the call is
+ *  the evidence: a screen that calls `useDelete('customers')` can delete a
+ *  customer, and a screen that calls none of them cannot, however the build is
+ *  configured. Read is `useCollection` / `usePagedCollection` / `useEntity` —
+ *  reading real rows, not `built`, which only ever meant "a component
+ *  renders". */
+const CRUD_OF_HOOK = {
+  Collection: 'read', PagedCollection: 'read', Entity: 'read',
+  Create: 'create', Update: 'update', Delete: 'delete',
+}
+const NO_CRUD = { create: false, read: false, update: false, delete: false }
+const mergeCrud = (a, b) => ({
+  create: Boolean(a?.create || b?.create),
+  read: Boolean(a?.read || b?.read),
+  update: Boolean(a?.update || b?.update),
+  delete: Boolean(a?.delete || b?.delete),
+})
+/** `useBulk` is the one hook whose letter is not in its name — the action
+ *  decides, at the call site — so the caller's own body is what says which. */
+const crudFrom = (calls, body) => {
+  const crud = { ...NO_CRUD }
+  for (const call of calls) {
+    const letter = CRUD_OF_HOOK[call[1]]
+    if (letter) { crud[letter] = true; continue }
+    if (/kind:\s*['"]update['"]/.test(body)) crud.update = true
+    if (/kind:\s*['"]delete['"]/.test(body)) crud.delete = true
+  }
+  return crud
+}
+
+/** Each exported function's own source, from its signature to the next one.
+ *  `crm/Crm.tsx` exports ten screens, so a file-wide read would have credited
+ *  every one of them with everything any of them does. */
+const exportBodies = (src) => {
+  const starts = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
+  const bodies = new Map()
+  starts.forEach((m, i) => {
+    bodies.set(m[1], src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length))
+  })
+  return bodies
+}
+
+/** Does this body render or call `name`? The same test the in-file wrapper rule
+ *  uses, lifted out so the cross-file pass cannot answer it differently. */
+const mounts = (body, name) => new RegExp(`<${name}\\b|\\b${name}\\s*\\(`).test(body)
 
 const dataBackedScreens = (() => {
   const map = new Map()
@@ -352,15 +434,15 @@ const dataBackedScreens = (() => {
    *  set to all of them would have said LeadPipeline reads aiAgents. Each
    *  export owns the source from its own signature to the next one. */
   const scan = (src) => {
-    const starts = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
     const direct = new Map()
-    starts.forEach((m, i) => {
-      const body = src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length)
-      direct.set(m[1], {
+    for (const [name, body] of exportBodies(src)) {
+      const calls = [...body.matchAll(SEAM_CALL)]
+      direct.set(name, {
         body,
-        keys: [...new Set([...body.matchAll(SEAM_CALL)].map((k) => k[1]))].sort(),
+        keys: [...new Set(calls.map((c) => c[2]))].sort(),
+        crud: crudFrom(calls, body),
       })
-    })
+    }
     /* A screen that renders a sibling from the same file rather than fetching
      * for itself — the three Campaigns wrappers are exactly this — is backed by
      * whatever that sibling reads. One level only: this resolves the wrapper
@@ -368,13 +450,15 @@ const dataBackedScreens = (() => {
     for (const [name, own] of direct) {
       if (own.keys.length) continue
       const inherited = new Set()
+      let crud = { ...NO_CRUD }
       for (const [other, sib] of direct) {
         if (other === name || !sib.keys.length) continue
-        if (new RegExp(`<${other}\\b|\\b${other}\\s*\\(`).test(own.body)) {
+        if (mounts(own.body, other)) {
           for (const k of sib.keys) inherited.add(k)
+          crud = mergeCrud(crud, sib.crud)
         }
       }
-      if (inherited.size) own.keys = [...inherited].sort()
+      if (inherited.size) { own.keys = [...inherited].sort(); own.crud = crud }
     }
     return direct
   }
@@ -387,10 +471,13 @@ const dataBackedScreens = (() => {
       try {
         const src = fs.readFileSync(full, 'utf8')
         if (!SEAM_ANY.test(src)) continue
-        for (const [name, { keys }] of scan(src)) {
+        for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
-          const prev = map.get(name)?.keys ?? []
-          map.set(name, { keys: [...new Set([...prev, ...keys])].sort() })
+          const prev = map.get(name)
+          map.set(name, {
+            keys: [...new Set([...(prev?.keys ?? []), ...keys])].sort(),
+            crud: mergeCrud(prev?.crud, crud),
+          })
         }
       } catch (_) { /* skip unreadable */ }
     }
@@ -400,6 +487,114 @@ const dataBackedScreens = (() => {
   /* Through the barrel, same as the detectors above. Without this the registry
    * asks about `Customers-List` while this map only knows `CustomersList`, so a
    * wired screen registered under a spec name reads as unwired for ever. */
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+
+  return map
+})()
+
+/** What each screen lets a user *do* — create, read, update, delete — measured
+ *  from the write hooks reachable from the screen.
+ *
+ *  Reading is direct: a screen calls `useCollection` itself, which is why
+ *  `dataSource` above is answered from the screen's own body. Writing is not.
+ *  Every edit in this app happens in a form the screen mounts — `Customers`
+ *  renders `<CustomerFormModal>`, and `useCreate('customers')` and
+ *  `useUpdate('customers')` are inside that modal, in another file. Reading
+ *  only the screen's own body therefore reports zero updates across the whole
+ *  product while seventeen forms patch rows through the seam: a different
+ *  wrong constant, not a measurement.
+ *
+ *  So this follows the edge that actually carries the write — component A
+ *  mounts component B — across files, to a fixpoint. It is deliberately narrow:
+ *  the only files walked are `src/screens`, because nothing in `components/`,
+ *  `providers/` or `lib/` calls a mutation hook at all, and the only edge is a
+ *  JSX mount or a direct call of an imported name. It says a user on this
+ *  screen can reach this write, not that the write is correct.
+ */
+const screenCrud = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+
+  /** `@/screens/...` and relative specifiers only, and only where they land on
+   *  a real file inside `src/screens` — an unresolved import is an edge this
+   *  cannot see, which is a smaller claim than pretending it is not there. */
+  const resolve = (spec, fromFile) => {
+    const base = spec.startsWith('@/screens/') ? path.join(APP, 'src', spec.slice(2))
+      : spec.startsWith('.') ? path.resolve(path.dirname(fromFile), spec)
+      : null
+    if (!base || !base.startsWith(screensDir)) return null
+    for (const cand of [`${base}.tsx`, `${base}.ts`, path.join(base, 'index.tsx'), path.join(base, 'index.ts')]) {
+      if (fs.existsSync(cand)) return cand
+    }
+    return null
+  }
+
+  /** file → { exports: Map<name, {body, crud}>, imports: Map<localName, file> } */
+  const files = new Map()
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      let src
+      try { src = fs.readFileSync(full, 'utf8') } catch (_) { continue }
+      const exports = new Map()
+      for (const [name, body] of exportBodies(src)) {
+        exports.set(name, { body, crud: crudFrom([...body.matchAll(SEAM_CALL)], body) })
+      }
+      const imports = new Map()
+      for (const m of src.matchAll(/import\s*\{([^}]+)\}\s*from\s*'([^']+)'/g)) {
+        const target = resolve(m[2], full)
+        if (!target) continue
+        for (const clause of m[1].split(',')) {
+          const local = clause.trim().split(/\s+as\s+/)
+          const imported = local[0].replace(/^type\s+/, '').trim()
+          if (imported) imports.set((local[1] ?? imported).trim(), { file: target, imported })
+        }
+      }
+      files.set(full, { exports, imports })
+    }
+  }
+  walk(screensDir)
+
+  /* To a fixpoint rather than one hop: a screen mounts a modal which mounts the
+   * form that writes, and stopping at one hop would report the screen as
+   * read-only. Bounded so a cycle cannot spin. */
+  for (let round = 0; round < 8; round++) {
+    let changed = false
+    for (const [file, { exports, imports }] of files) {
+      for (const [, own] of exports) {
+        const merge = (other) => {
+          const next = mergeCrud(own.crud, other)
+          if (JSON.stringify(next) === JSON.stringify(own.crud)) return
+          own.crud = next
+          changed = true
+        }
+        for (const [name, sib] of exports) {
+          if (sib !== own && mounts(own.body, name)) merge(sib.crud)
+        }
+        for (const [local, { file: target, imported }] of imports) {
+          if (target === file || !mounts(own.body, local)) continue
+          const hit = files.get(target)?.exports.get(imported)
+          if (hit) merge(hit.crud)
+        }
+      }
+    }
+    if (!changed) break
+  }
+
+  for (const [, { exports }] of files) {
+    for (const [name, { crud }] of exports) {
+      if (!crud.create && !crud.read && !crud.update && !crud.delete) continue
+      map.set(name, mergeCrud(map.get(name), crud))
+    }
+  }
+
+  /* Through the barrel, same as every other detector: the registry asks about
+   * `Customers-List` while this map knows `CustomersList`. */
   for (const [screenName, componentName] of BARREL_ALIASES) {
     if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
   }
@@ -540,6 +735,11 @@ const arabicStateOf = (name, route, built) => {
   if (!facts) return 'PARTIAL'
   return arabicStateFrom(facts)
 }
+/** What a screen can actually do to a collection. `built` still gates it — a
+ *  screen no route renders cannot do anything — but every letter above that is
+ *  read from the source rather than asserted. */
+const crudOf = (name, built) => (built && screenCrud.get(name)) || { ...NO_CRUD }
+
 const rtlStateOf = (name, route, built) => {
   if (!built) return 'MISSING'
   if (factsFor(screenIntl, name, route)?.physical) return 'MISSING'
@@ -680,7 +880,7 @@ for (const s of SCREENS) {
     accessibility: 'MISSING',
     dataBacked: built && dataBackedScreens.has(s.name),
     dataSource: (built && dataBackedScreens.get(s.name)?.keys) || [],
-    crud: { create: false, read: built, update: false, delete: false },
+    crud: crudOf(s.name, built),
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
     e2eContent: SMOKE_CONTENT_ROUTES.has(s.route),
@@ -731,7 +931,7 @@ for (const s of SPEC_SCREENS) {
     accessibility: 'MISSING',
     dataBacked: (owned || kit) && dataBackedScreens.has(s.name),
     dataSource: ((owned || kit) && dataBackedScreens.get(s.name)?.keys) || [],
-    crud: { create: false, read: owned || kit, update: false, delete: false },
+    crud: crudOf(s.name, owned || kit),
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
     e2eContent: SMOKE_CONTENT_ROUTES.has(s.route),
@@ -854,6 +1054,15 @@ const totals = {
   tabletVerified: count(entries, (e) => e.tablet === 'DONE'),
   arabicVerified: count(entries, (e) => e.arabic === 'VERIFIED'),
   rtlHazards: count(entries, (e) => e.rtl === 'MISSING'),
+  goldenPaths: GOLDEN_PATH_NAMES.length,
+  goldenPathsMeasured: Boolean(goldenRun),
+  goldenPathsPassing: goldenPassing,
+  goldenPathsFailing: goldenFailing,
+  goldenPathsUnwritten: goldenUnwritten,
+  crudCreate: count(entries, (e) => e.crud.create),
+  crudRead: count(entries, (e) => e.crud.read),
+  crudUpdate: count(entries, (e) => e.crud.update),
+  crudDelete: count(entries, (e) => e.crud.delete),
   unregisteredDesigns: unregistered.length,
   orphanScreenFiles: orphanFiles.length,
   productionReady: count(entries, (e) => e.status === 'PRODUCTION_READY'),
@@ -927,7 +1136,11 @@ outputs.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
     api:         { runner: 'supertest',  present: false, covered: 0, of: 0,              note: 'W1 — Agent 05' },
     routeSmoke:  { runner: 'playwright', present: true,  covered: totals.e2eCovered, of: entries.length,
                    note: 'scripts/smoke.mjs — route checks parsed from the spec' },
-    goldenPaths: { runner: 'playwright', present: false, covered: 0, of: 23,             note: 'W4 — Agent 23' },
+    goldenPaths: goldenRun
+      ? { runner: 'playwright', present: true, covered: goldenPassing, of: GOLDEN_PATH_NAMES.length,
+          note: `scripts/golden-paths.mjs — ${goldenFailing} failing, ${goldenUnwritten} unwritten` }
+      : { runner: 'playwright', present: false, covered: null, of: GOLDEN_PATH_NAMES.length,
+          note: 'never run — no project-control/GOLDEN_PATHS.json, so nothing is known, not zero passing' },
     mobile:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 18' },
     tablet:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 18' },
     rtl:         { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 19' },
@@ -975,6 +1188,13 @@ const blockers = [
     detail: `Design files with no SCREEN_MAP entry: ${unregistered.join(', ')}`, owner: '02', wave: 'W0' },
   totals.orphanScreenFiles && { id: 'BLK-010', severity: 'MEDIUM', title: `${totals.orphanScreenFiles} screen files are unreachable from any route`,
     detail: orphanFiles.join(', '), owner: '02', wave: 'W0' },
+  goldenFailing && { id: 'BLK-013', severity: 'BLOCKER', title: `${goldenFailing} golden paths fail`,
+    detail: 'A journey walked the path and the product could not complete it. "No critical golden-path failure" is a release blocker.', owner: '23', wave: 'W4' },
+  goldenUnwritten && { id: 'BLK-014', severity: 'HIGH', title: `${goldenUnwritten} golden paths have no journey`,
+    detail: goldenRun
+      ? 'No journey in app/scripts/journeys walks these paths, so nothing is known about them. Unwritten is not passing.'
+      : 'The runner has never run — project-control/GOLDEN_PATHS.json does not exist. Run `npm run golden`.',
+    owner: '23', wave: 'W4' },
   brandViolations && { id: 'BLK-011', severity: 'MEDIUM', title: `${brandViolations} hardcoded colours sit in a forbidden hue band`,
     detail: 'The brand permits blue and orange only. Run scripts/check-tokens.mjs for the offenders.', owner: '04', wave: 'W1' },
 ].filter(Boolean)
@@ -1058,7 +1278,9 @@ outputs.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
   genHeader('SALIS AUTO — Scope Registry',
     'Every capability the product must ship, by surface and domain. Regenerate rather than edit.') +
   `\n## Totals\n\n| Metric | Count |\n|---|---|\n` +
-  Object.entries(totals).map(([k, v]) => `| ${k.replace(/([A-Z])/g, ' $1').toLowerCase()} | ${v} |`).join('\n') +
+  Object.entries(totals).map(([k, v]) =>
+    `| ${k.replace(/([A-Z])/g, ' $1').toLowerCase()} | ${
+      v === null ? 'unmeasured' : typeof v === 'boolean' ? (v ? 'yes' : 'no') : v} |`).join('\n') +
   `\n\n## By surface\n\n| Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |\n|---|---|---|---|---|---|\n` +
   Object.entries(bySurface).map(([k, v]) =>
     `| ${k} | ${v.total} | ${v.rendered} | ${v.placeholder} | ${v.mobileOwed} | ${v.e2e} |`).join('\n') +
@@ -1098,6 +1320,15 @@ outputs.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
   `\n\n## Flags across the inventory\n\n| Flag | Count | Meaning |\n|---|---|---|\n` +
   Object.entries(flagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([f, n]) => `| ${f} | ${n} | ${FLAG_MEANINGS[f] ?? '—'} |`).join('\n') +
+  `\n\n## Golden paths\n\n${goldenRun
+    ? `Measured by \`app/scripts/golden-paths.mjs\` — ${goldenPassing} passing, ${goldenFailing} failing, ` +
+      `${goldenUnwritten} unwritten of ${GOLDEN_PATH_NAMES.length}. UNWRITTEN means no journey exists yet; ` +
+      'it is not a pass and it is not a failure.\n\n' +
+      '| Path | Status | Journey | Detail |\n|---|---|---|---|\n' +
+      goldenRun.paths.map((g) =>
+        `| ${g.path} | ${g.status} | ${g.id ? `\`${g.id}\`` : '—'} | ${(g.error ?? '').replace(/\n/g, ' · ').slice(0, 160) || '—'} |`).join('\n')
+    : `_Never measured. \`project-control/GOLDEN_PATHS.json\` does not exist, so all ${GOLDEN_PATH_NAMES.length} read UNWRITTEN — ` +
+      'which is "nobody has checked", not "checked and passing" and not "checked and failing". Run `npm run golden`._'}` +
   `\n\n## Designs not in the registry\n\n${unregistered.length ? unregistered.map((u) => `- \`project/${u}.dc.html\``).join('\n') : '_None — the registry covers every design file._'}` +
   `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o}\``).join('\n') : '_None._'}` +
   `\n\n## Placeholder routes by domain\n\n| Domain | Placeholder | Total |\n|---|---|---|\n` +
@@ -1159,6 +1390,11 @@ outputs.push(write(path.join(DOCS, 'MASTER_DEPENDENCY_GRAPH.md'),
 
 console.log(`registry: ${totals.capabilities} capabilities · ${totals.rendered} rendering · ` +
   `${totals.placeholder} placeholder · ${totals.designedMobileOwed} mobile owed · ${blockers.length} blockers`)
+console.log(`  crud measured: ${totals.crudRead} read · ${totals.crudCreate} create · ` +
+  `${totals.crudUpdate} update · ${totals.crudDelete} delete`)
+console.log(goldenRun
+  ? `  golden paths: ${goldenPassing} passing · ${goldenFailing} failing · ${goldenUnwritten} unwritten of ${GOLDEN_PATH_NAMES.length}`
+  : `  golden paths: unmeasured — no GOLDEN_PATHS.json (run \`npm run golden\`); all ${GOLDEN_PATH_NAMES.length} read unwritten`)
 if (unregistered.length) console.log(`  unregistered designs: ${unregistered.join(', ')}`)
 if (orphanFiles.length) console.log(`  orphan screen files: ${orphanFiles.join(', ')}`)
 const changed = outputs.filter(Boolean)

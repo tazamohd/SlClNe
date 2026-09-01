@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-02",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -22,6 +22,15 @@
     "tabletVerified": 4,
     "arabicVerified": 80,
     "rtlHazards": 0,
+    "goldenPaths": 23,
+    "goldenPathsMeasured": true,
+    "goldenPathsPassing": 0,
+    "goldenPathsFailing": 5,
+    "goldenPathsUnwritten": 18,
+    "crudCreate": 32,
+    "crudRead": 98,
+    "crudUpdate": 24,
+    "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -64,7 +73,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -132,7 +141,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -344,7 +353,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -414,7 +423,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -487,10 +496,10 @@
         "appointments"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -706,7 +715,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -777,7 +786,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -846,7 +855,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -1052,7 +1061,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -1193,7 +1202,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -1265,7 +1274,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -1337,10 +1346,10 @@
         "campaigns"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -1407,10 +1416,10 @@
         "chartOfAccounts"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -1543,7 +1552,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -1608,7 +1617,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -1679,10 +1688,10 @@
         "crmTasks"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -1750,10 +1759,10 @@
         "crmTasks"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -2015,7 +2024,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2081,7 +2090,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2147,7 +2156,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2213,7 +2222,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2279,7 +2288,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2345,7 +2354,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2411,7 +2420,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2477,7 +2486,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -2631,10 +2640,10 @@
         "vehicles"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -2707,7 +2716,7 @@
         "jobs"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -2861,7 +2870,7 @@
         "vehicles"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -2936,10 +2945,10 @@
         "customers"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -3007,10 +3016,10 @@
         "segments"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -3082,10 +3091,10 @@
         "savedReports"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
-        "delete": false
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -3233,10 +3242,10 @@
         "departments"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -3385,10 +3394,10 @@
         "campaigns"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -3449,7 +3458,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -3742,10 +3751,10 @@
         "expenses"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -3812,7 +3821,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -3881,7 +3890,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -4034,10 +4043,10 @@
         "fleets"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -4099,7 +4108,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -4162,7 +4171,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -4239,7 +4248,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -4378,7 +4387,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -4446,7 +4455,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -4590,7 +4599,7 @@
         "parts"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -4666,7 +4675,7 @@
         "parts"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -4730,7 +4739,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5184,10 +5193,10 @@
         "jobs"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -5263,10 +5272,10 @@
         "technicians"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -5334,10 +5343,10 @@
         "journalEntries"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -5407,8 +5416,8 @@
         "appointments"
       ],
       "crud": {
-        "create": false,
-        "read": true,
+        "create": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5478,7 +5487,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5542,7 +5551,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5615,7 +5624,7 @@
       "crud": {
         "create": false,
         "read": true,
-        "update": false,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -5685,10 +5694,10 @@
         "leads"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -5754,7 +5763,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5819,7 +5828,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5883,7 +5892,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -5947,7 +5956,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6017,7 +6026,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6082,7 +6091,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6148,7 +6157,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6227,7 +6236,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6439,7 +6448,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6586,10 +6595,10 @@
         "opportunities"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -6654,7 +6663,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6719,7 +6728,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6783,7 +6792,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6854,7 +6863,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6918,7 +6927,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -6983,7 +6992,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7048,7 +7057,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7113,7 +7122,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7178,7 +7187,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7243,7 +7252,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7315,7 +7324,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7451,7 +7460,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7522,7 +7531,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7593,7 +7602,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7670,7 +7679,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7734,7 +7743,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7805,7 +7814,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7869,7 +7878,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7932,7 +7941,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -7995,7 +8004,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8058,7 +8067,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8121,7 +8130,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8185,7 +8194,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8249,7 +8258,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8313,7 +8322,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8377,7 +8386,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8440,7 +8449,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8503,7 +8512,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8566,7 +8575,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8629,7 +8638,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8692,7 +8701,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8755,7 +8764,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8819,7 +8828,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8882,7 +8891,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -8945,7 +8954,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9009,7 +9018,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9073,7 +9082,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9136,7 +9145,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9200,7 +9209,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9263,7 +9272,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9326,7 +9335,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9390,7 +9399,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9453,7 +9462,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9516,7 +9525,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9579,7 +9588,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9642,7 +9651,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9705,7 +9714,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9768,7 +9777,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -9905,7 +9914,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10041,7 +10050,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10106,7 +10115,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10323,7 +10332,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10387,7 +10396,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10456,7 +10465,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10590,7 +10599,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10658,7 +10667,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10729,10 +10738,10 @@
         "campaigns"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -10793,7 +10802,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10857,7 +10866,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10921,7 +10930,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -10990,7 +10999,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -11059,7 +11068,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -11645,10 +11654,10 @@
         "technicians"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -11721,10 +11730,10 @@
         "technicians"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -11789,7 +11798,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -11853,7 +11862,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -11917,7 +11926,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -11981,7 +11990,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12044,7 +12053,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12107,7 +12116,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12170,7 +12179,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12233,7 +12242,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12296,7 +12305,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12359,7 +12368,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12422,7 +12431,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12485,7 +12494,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12548,7 +12557,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12611,7 +12620,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12674,7 +12683,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12737,7 +12746,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12800,7 +12809,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12863,7 +12872,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12926,7 +12935,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -12989,7 +12998,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13052,7 +13061,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13115,7 +13124,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13178,7 +13187,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13241,7 +13250,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13304,7 +13313,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13367,7 +13376,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13430,7 +13439,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13493,7 +13502,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13556,7 +13565,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13624,7 +13633,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13702,10 +13711,10 @@
         "vehicles"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -13778,10 +13787,10 @@
         "vehicles"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -13843,7 +13852,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -13914,10 +13923,10 @@
         "campaigns"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
-        "update": false,
-        "delete": false
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -13984,7 +13993,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14137,7 +14146,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14210,7 +14219,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14286,7 +14295,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14515,7 +14524,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14579,7 +14588,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14711,7 +14720,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14910,7 +14919,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -14976,7 +14985,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15042,7 +15051,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15108,7 +15117,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15174,7 +15183,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15240,7 +15249,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15440,7 +15449,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15506,7 +15515,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15572,7 +15581,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15704,7 +15713,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15769,7 +15778,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15835,7 +15844,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15900,7 +15909,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -15966,7 +15975,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16032,7 +16041,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16098,7 +16107,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16164,7 +16173,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16229,7 +16238,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16295,7 +16304,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16361,7 +16370,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16426,7 +16435,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16492,7 +16501,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16558,7 +16567,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16624,7 +16633,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16690,7 +16699,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16756,7 +16765,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16822,7 +16831,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16888,7 +16897,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -16954,7 +16963,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17020,7 +17029,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17086,7 +17095,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17152,7 +17161,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17218,7 +17227,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17284,7 +17293,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17350,7 +17359,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17416,7 +17425,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17482,7 +17491,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17548,7 +17557,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17614,7 +17623,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17680,7 +17689,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17746,7 +17755,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17812,7 +17821,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17878,7 +17887,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -17944,7 +17953,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18010,7 +18019,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18076,7 +18085,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18142,7 +18151,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18275,7 +18284,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18340,7 +18349,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18406,7 +18415,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18472,7 +18481,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18538,7 +18547,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18604,7 +18613,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18670,7 +18679,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18736,7 +18745,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18802,7 +18811,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18868,7 +18877,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18934,7 +18943,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19000,7 +19009,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19066,7 +19075,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19132,7 +19141,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19198,7 +19207,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19329,7 +19338,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19395,7 +19404,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19461,7 +19470,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19527,7 +19536,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19593,7 +19602,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19659,7 +19668,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19725,7 +19734,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19791,7 +19800,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19857,7 +19866,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19923,7 +19932,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -19988,7 +19997,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20054,7 +20063,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20120,7 +20129,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20186,7 +20195,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20252,7 +20261,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20318,7 +20327,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20383,7 +20392,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20449,7 +20458,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20514,7 +20523,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20580,7 +20589,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20646,7 +20655,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20712,7 +20721,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -20777,7 +20786,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21043,7 +21052,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21108,7 +21117,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21174,7 +21183,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21240,7 +21249,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21306,7 +21315,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21371,7 +21380,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21502,7 +21511,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21568,7 +21577,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21834,7 +21843,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21900,7 +21909,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -21966,7 +21975,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22032,7 +22041,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22098,7 +22107,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22164,7 +22173,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22230,7 +22239,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22298,7 +22307,7 @@
         "employees"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -22366,7 +22375,7 @@
         "employees"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -22432,7 +22441,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22498,7 +22507,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22701,7 +22710,7 @@
         "payrollRuns"
       ],
       "crud": {
-        "create": false,
+        "create": true,
         "read": true,
         "update": false,
         "delete": false
@@ -22834,7 +22843,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22900,7 +22909,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22966,7 +22975,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23032,7 +23041,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23098,7 +23107,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23163,7 +23172,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23228,7 +23237,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23293,7 +23302,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23359,7 +23368,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23425,7 +23434,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23490,7 +23499,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23555,7 +23564,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23620,7 +23629,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23686,7 +23695,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23752,7 +23761,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23818,7 +23827,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23883,7 +23892,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23949,7 +23958,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24015,7 +24024,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24081,7 +24090,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24214,7 +24223,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24280,7 +24289,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24345,7 +24354,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24411,7 +24420,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24477,7 +24486,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24611,7 +24620,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24677,7 +24686,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24810,7 +24819,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24875,7 +24884,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -24941,7 +24950,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25006,7 +25015,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25072,7 +25081,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25138,7 +25147,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25204,7 +25213,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25270,7 +25279,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25336,7 +25345,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25401,7 +25410,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25467,7 +25476,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25533,7 +25542,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25599,7 +25608,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25665,7 +25674,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25731,7 +25740,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25797,7 +25806,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25863,7 +25872,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25929,7 +25938,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -25995,7 +26004,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26061,7 +26070,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26127,7 +26136,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26193,7 +26202,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26259,7 +26268,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26325,7 +26334,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26391,7 +26400,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26457,7 +26466,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26523,7 +26532,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26589,7 +26598,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26655,7 +26664,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26721,7 +26730,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26787,7 +26796,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26853,7 +26862,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26919,7 +26928,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -26985,7 +26994,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27051,7 +27060,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27117,7 +27126,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27183,7 +27192,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27249,7 +27258,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27315,7 +27324,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27381,7 +27390,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27447,7 +27456,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27513,7 +27522,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27579,7 +27588,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27645,7 +27654,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27711,7 +27720,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27777,7 +27786,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27843,7 +27852,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27909,7 +27918,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -27974,7 +27983,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28040,7 +28049,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28106,7 +28115,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28172,7 +28181,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28238,7 +28247,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28304,7 +28313,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28370,7 +28379,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28436,7 +28445,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -28502,7 +28511,7 @@
       "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },

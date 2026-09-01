@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-02",
   "totals": {
     "capabilities": 424,
     "product": 384,
@@ -20,6 +20,15 @@
     "tabletVerified": 4,
     "arabicVerified": 80,
     "rtlHazards": 0,
+    "goldenPaths": 23,
+    "goldenPathsMeasured": true,
+    "goldenPathsPassing": 0,
+    "goldenPathsFailing": 5,
+    "goldenPathsUnwritten": 18,
+    "crudCreate": 32,
+    "crudRead": 98,
+    "crudUpdate": 24,
+    "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
