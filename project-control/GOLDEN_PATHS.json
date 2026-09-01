@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-09-01T23:03:01.028Z",
+  "generatedAt": "2026-09-01T23:22:00.934Z",
   "generator": "app/scripts/golden-paths.mjs",
   "note": "A run record, not a plan. PASSING means a journey walked the product and its assertions held on this run; FAILING means one ran and did not; UNWRITTEN means no journey exists for that path yet. Never hand-edit — re-run the runner.",
-  "base": "http://localhost:4199",
+  "base": "http://localhost:4191",
   "totals": {
     "paths": 23,
     "passing": 0,
-    "failing": 5,
-    "unwritten": 18,
-    "journeys": 5,
-    "modules": 1,
+    "failing": 11,
+    "unwritten": 12,
+    "journeys": 11,
+    "modules": 2,
     "errors": 0
   },
   "errors": [],
@@ -28,9 +28,9 @@
     },
     {
       "path": "Mobile customer booking",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "mobile-customer-booking",
+      "status": "FAILING",
+      "error": "mobile-customer-booking: booking step 4: \"Confirm Booking\": the control is disabled, so the journey cannot complete — the screen explains: \"This build has no API configured, so a booking cannot be saved.\""
     },
     {
       "path": "Technician job completion",
@@ -70,9 +70,9 @@
     },
     {
       "path": "CRM lead conversion",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "crm-lead-conversion",
+      "status": "FAILING",
+      "error": "crm-lead-conversion: convert: the conversion did not complete — the app stayed on the lead. The dialog said: The fixture repository cannot perform this action. Set VITE_API_URL to run against the API."
     },
     {
       "path": "Insurance claim",
@@ -124,15 +124,15 @@
     },
     {
       "path": "Customer portal",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "customer-portal",
+      "status": "FAILING",
+      "error": "customer-portal: customer portal: the portal filled its panels without asking anyone for this customer's records — no request was made for vehicles, appointments, invoices, jobs or estimates. The rows came from the design fixtures bundled into the build, which are the whole workshop's and are identical for every signed-in principal, so nothing on this screen is scoped to the customer looking at it."
     },
     {
       "path": "Technician portal",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "technician-portal",
+      "status": "FAILING",
+      "error": "technician-portal: technician job detail: the job the portal handed this technician is not at the Repair stage — it is at \"Check-In\", so the portal's one write (repair → qc) has nothing to act on. The screen says: \"This job has not reached the repair bay yet — check-in, inspection and the estimate move at the service desk.\""
     },
     {
       "path": "Supplier portal",
@@ -142,15 +142,15 @@
     },
     {
       "path": "Call center",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "call-center",
+      "status": "FAILING",
+      "error": "call-center: call centre: \"Answer\" for Layla Al-Sulaiman: the control is disabled, so the journey cannot complete — and the screen offers no reason for refusing it"
     },
     {
       "path": "Kiosk",
-      "id": null,
-      "status": "UNWRITTEN",
-      "error": null
+      "id": "kiosk",
+      "status": "FAILING",
+      "error": "kiosk: kiosk step 1: \"Find My Vehicle\": the control is disabled, so the journey cannot complete — and the screen offers no reason for refusing it"
     }
   ]
 }

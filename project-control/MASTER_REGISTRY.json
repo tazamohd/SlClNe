@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02",
+  "generatedAt": "2026-09-01",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -25,8 +25,8 @@
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
     "goldenPathsPassing": 0,
-    "goldenPathsFailing": 5,
-    "goldenPathsUnwritten": 18,
+    "goldenPathsFailing": 11,
+    "goldenPathsUnwritten": 12,
     "crudCreate": 32,
     "crudRead": 98,
     "crudUpdate": 24,
