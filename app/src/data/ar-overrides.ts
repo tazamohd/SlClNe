@@ -1155,6 +1155,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Changes in Receivables": "التغيرات في الذمم المدينة",
   "Check-in progress": "تقدّم تسجيل الوصول",
   "Check-In Complete": "اكتمل تسجيل الوصول",
+  "Checking in...": "جارٍ تسجيل الوصول...",
   "Choose how to sign in": "اختر طريقة تسجيل الدخول",
   "Choose the vehicle for this visit": "اختر المركبة لهذه الزيارة",
   "Choose your role in the system": "اختر دورك في النظام",
