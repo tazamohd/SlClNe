@@ -438,7 +438,7 @@ export default [
       /* The invoice has to be able to say what it is charging for. */
       if (issued.includes('No line items')) {
         gaps.push(
-          `step 4 — the invoice just raised from ${previewTotal !== null ? 'its priced lines' : 'its lines'} reports "No line items · This invoice carries no priced lines", so ${invoiceNumber} cannot show the customer what they are being billed for. The screen asks the API for the lines with pageSize=500 (InvoiceDetail.tsx) and the collection endpoint refuses anything above 200, so the request is rejected and the table renders empty.`,
+          `step 4 — ${invoiceNumber} was raised from priced line items and its own screen reports "No line items · This invoice carries no priced lines", so the customer cannot be shown what they are being billed for. On a live build the cause is InvoiceDetail asking for the lines with pageSize=500 while the collection endpoint caps a page at 200: the request is rejected and the table renders empty beside a subtotal the server did compute from those lines.`,
         )
       }
 
@@ -828,7 +828,7 @@ export default [
       check(
         ctx,
         Boolean(undecided),
-        `step 1: every estimate has already been decided, so there is none awaiting approval. The register reads: ${listed
+        `step 1: every estimate has already been decided, so there is none awaiting approval, and the product offers no way to raise another — "New Estimate" on /estimates routes to /workshop-estimate, a job-card stage screen that approves an existing card's estimate rather than creating an estimate record. Once the seeded estimates are decided this path cannot be walked again. The register reads: ${listed
           .map((cells) => line(cells).replace(/\s+/g, ' ').trim())
           .join(' | ')}.`,
       )
@@ -1008,7 +1008,7 @@ export default [
       check(
         ctx,
         outstandingBefore > 0,
-        'step 2: every statement line is already matched, so there is no reconciliation left to perform. Import an unmatched statement to exercise this path.',
+        'step 2: every statement line is already matched, so there is no reconciliation left to perform — and this screen offers no way to import another statement, so once the imported lines are matched the path cannot be walked again. Statement lines have to arrive from outside the product.',
       )
 
       /* — 3. match a line to a receipt ————————————————————————— */
