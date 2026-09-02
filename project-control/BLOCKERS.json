@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-09-02",
-  "open": 4,
+  "open": 5,
   "blockers": [
     {
       "id": "BLK-003",
@@ -33,6 +33,14 @@
       "detail": "e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.",
       "owner": "18",
       "wave": "W3"
+    },
+    {
+      "id": "BLK-013",
+      "severity": "BLOCKER",
+      "title": "16 golden paths fail",
+      "detail": "A journey walked the path and the product could not complete it. \"No critical golden-path failure\" is a release blocker.",
+      "owner": "23",
+      "wave": "W4"
     }
   ]
 }

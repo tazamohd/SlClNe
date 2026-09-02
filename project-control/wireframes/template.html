@@ -1,0 +1,860 @@
+<title>SALIS AUTO — Wireframe Gallery</title>
+<style>
+  :root{
+    --navy:#0B1F3B; --blue:#0A5ED7; --cyan:#0BB3FF; --orange:#F97316;
+    --ink:#0c1626; --ink-soft:#41506a; --line:#d9e1ee; --bg:#f5f8fd; --card:#ffffff;
+    --muted:#6b7a93; --good:#12a150; --warn:#F97316; --crit:#e5484d;
+    --grad:linear-gradient(100deg,var(--blue),var(--cyan));
+    --wire:#eef3fb; --wire-line:#c7d4e8; --wire-block:#dbe6f6; --wire-ink:#9fb0cc;
+    --shadow:0 1px 2px rgba(11,31,59,.06),0 8px 24px rgba(11,31,59,.06);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--ink:#e7eefb;--ink-soft:#a9b7d0;--line:#1e2f4d;--bg:#081426;--card:#0d1e38;
+      --muted:#8294b3;--wire:#0c1d36;--wire-line:#23375a;--wire-block:#152a4b;--wire-ink:#5a6f95;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35)}
+  }
+  :root[data-theme="light"]{--ink:#0c1626;--ink-soft:#41506a;--line:#d9e1ee;--bg:#f5f8fd;--card:#fff;
+    --muted:#6b7a93;--wire:#eef3fb;--wire-line:#c7d4e8;--wire-block:#dbe6f6;--wire-ink:#9fb0cc;
+    --shadow:0 1px 2px rgba(11,31,59,.06),0 8px 24px rgba(11,31,59,.06)}
+  :root[data-theme="dark"]{--ink:#e7eefb;--ink-soft:#a9b7d0;--line:#1e2f4d;--bg:#081426;--card:#0d1e38;
+    --muted:#8294b3;--wire:#0c1d36;--wire-line:#23375a;--wire-block:#152a4b;--wire-ink:#5a6f95;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+  .shell{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1560px;margin:0 auto}
+  .rail{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:var(--navy);
+    color:#cdd9ef;padding:22px 15px 40px;border-right:1px solid rgba(255,255,255,.06)}
+  .brandmark{display:flex;align-items:center;gap:11px;padding:6px 6px 16px}
+  .brandmark .glyph{width:34px;height:34px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px}
+  .brandmark b{color:#fff;font-size:14px;letter-spacing:.13em}
+  .brandmark span{display:block;font-size:10px;color:#7f93bd;letter-spacing:.2em;margin-top:1px}
+  .rail a{display:block;color:#cdd9ef;padding:6px 9px;border-radius:7px;font-size:13px;border-left:2px solid transparent}
+  .rail a:hover{background:rgba(255,255,255,.05);color:#fff}
+  .rail a.on{color:#fff;background:rgba(11,179,255,.12);border-left-color:var(--cyan)}
+  .rail .grp{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#5f76a6;margin:16px 8px 6px}
+  main{padding:0 clamp(18px,4vw,56px) 120px;min-width:0}
+  .hero{padding:60px 0 34px;border-bottom:1px solid var(--line)}
+  .kicker{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+  h1{font-size:clamp(30px,5vw,52px);line-height:1.03;margin:14px 0 0;letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+  h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{max-width:64ch;color:var(--ink-soft);font-size:17px;margin:16px 0 0}
+  .metastrip{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:12px;color:var(--ink-soft);font-weight:600}
+  .chip b{color:var(--ink)}
+  section{padding:44px 0;border-bottom:1px solid var(--line);scroll-margin-top:14px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .eyebrow .b{margin-left:6px}
+  h2{font-size:clamp(22px,3.2vw,32px);margin:9px 0 4px;letter-spacing:-.015em;font-weight:800;text-wrap:balance}
+  .sub{color:var(--ink-soft);max-width:74ch}
+  code{font-family:var(--mono);font-size:.85em;background:var(--wire);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+  .b{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid transparent}
+  .b.blue{background:color-mix(in srgb,var(--blue) 14%,transparent);color:var(--blue);border-color:color-mix(in srgb,var(--blue) 30%,transparent)}
+  .b.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn);border-color:color-mix(in srgb,var(--warn) 34%,transparent)}
+  .gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:20px}
+  @media(max-width:1000px){.gal{grid-template-columns:minmax(0,1fr)}.shell{grid-template-columns:1fr}.rail{display:none}}
+  /* The wireframe kit has fixed minimums — a 150px title block, a 120px filter
+     field, nowrap buttons — that add up to more than a phone is wide. Each card
+     scrolls its own frame rather than pushing the page sideways. */
+  .screen{display:flex;flex-direction:column;gap:8px;min-width:0;overflow-x:auto;padding-bottom:4px}
+  .screen .cap{font-size:12px;color:var(--muted)}
+  .screen .cap b{color:var(--ink);font-weight:700;font-size:13px}
+  .screen .cap code{font-size:11px}
+
+  /* Wireframe kit */
+  .wf{background:var(--wire);border:1px solid var(--wire-line);border-radius:13px;overflow:hidden;box-shadow:var(--shadow);font-size:11.5px}
+  /* A wireframe with no route in the registry: dashed frame, no URL to mistype. */
+  .wf.proposal{border-style:dashed;border-color:color-mix(in srgb,var(--warn) 45%,var(--wire-line))}
+  .wf.proposal .wf-url{color:var(--warn);background:color-mix(in srgb,var(--warn) 9%,transparent);font-style:italic}
+  .wf-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--wire-line)}
+  .wf-bar i{width:9px;height:9px;border-radius:50%;background:var(--wire-line)}
+  .wf-url{margin-left:6px;font-family:var(--mono);font-size:10.5px;color:var(--muted);background:var(--wire);padding:3px 9px;border-radius:6px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wf-body{display:grid}
+  .wf-nav{background:var(--navy);color:#a9bde0;padding:12px 10px;font-size:10.5px}
+  .wf-nav .lg{display:flex;align-items:center;gap:7px;color:#fff;font-weight:700;letter-spacing:.09em;margin-bottom:11px}
+  .wf-nav .lg span{width:19px;height:19px;border-radius:5px;background:var(--grad)}
+  .wf-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+  .wf-nav li{padding:5px 8px;border-radius:5px;color:#9fb4d8}
+  .wf-nav li.on{background:rgba(11,179,255,.16);color:#fff}
+  .wf-main{padding:14px;display:grid;gap:11px;background:var(--wire)}
+  .wf-h{display:flex;justify-content:space-between;align-items:center;gap:9px}
+  .wf-title{height:13px;width:150px;border-radius:5px;background:var(--wire-ink);opacity:.85}
+  .wf-title.sm{width:100px;height:10px}
+  .wf-btn{height:27px;border-radius:7px;background:var(--grad);width:auto;min-width:96px;padding:0 12px;color:#fff;display:grid;place-items:center;font-weight:700;font-size:10.5px;white-space:nowrap}
+  .wf-btn.ghost{background:var(--card);border:1px solid var(--wire-line);color:var(--muted)}
+  .wf-row{display:grid;gap:9px}
+  .wf-k4{grid-template-columns:repeat(4,1fr)}.wf-k3{grid-template-columns:repeat(3,1fr)}
+  .wf-2{grid-template-columns:repeat(2,1fr)}.wf-2b{grid-template-columns:2fr 1fr}.wf-2c{grid-template-columns:1fr 2fr}
+  .wf-card{background:var(--card);border:1px solid var(--wire-line);border-radius:9px;padding:11px;display:grid;gap:7px}
+  .wf-kpi .v{font-size:19px;font-weight:800;color:var(--ink)}
+  .wf-kpi .l{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+  .wf-line{height:8px;border-radius:4px;background:var(--wire-block)}
+  .wf-line.w20{width:20%}.wf-line.w25{width:25%}.wf-line.w40{width:40%}.wf-line.w50{width:50%}.wf-line.w60{width:60%}.wf-line.w80{width:80%}
+  .wf-chart{height:104px;border-radius:8px;border:1px solid var(--wire-line);position:relative;
+    background:repeating-linear-gradient(90deg,var(--wire-line) 0 1px,transparent 1px 40px)}
+  .wf-chart::after{content:"";position:absolute;inset:0;top:auto;height:62%;
+    background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--blue) 24%,transparent));
+    clip-path:polygon(0 72%,13% 56%,27% 63%,40% 40%,54% 48%,68% 26%,82% 34%,100% 14%,100% 100%,0 100%)}
+  .wf-bars{height:104px;display:flex;align-items:flex-end;gap:7px;padding:8px;border:1px solid var(--wire-line);border-radius:8px}
+  .wf-bars i{flex:1;background:var(--grad);border-radius:4px 4px 0 0;opacity:.85}
+  .wf-donut{width:88px;height:88px;border-radius:50%;background:conic-gradient(var(--blue) 0 45%,var(--cyan) 45% 72%,var(--wire-block) 72% 100%);position:relative;margin:0 auto}
+  .wf-donut::after{content:"";position:absolute;inset:24%;border-radius:50%;background:var(--card)}
+  .wf-tbl{background:var(--card);border:1px solid var(--wire-line);border-radius:9px;overflow:hidden}
+  .wf-tr{display:grid;grid-template-columns:1.5fr 1fr 1fr .8fr;gap:9px;padding:8px 11px;border-bottom:1px solid var(--wire-line);align-items:center}
+  .wf-tr.head{background:var(--wire)}.wf-tr:last-child{border-bottom:none}
+  .wf-pill{height:15px;border-radius:999px;background:color-mix(in srgb,var(--good) 24%,transparent);width:56px}
+  .wf-pill.w{background:color-mix(in srgb,var(--warn) 28%,transparent)}
+  .wf-pill.b{background:color-mix(in srgb,var(--blue) 24%,transparent)}
+  .wf-pill.r{background:color-mix(in srgb,var(--crit) 24%,transparent)}
+  .wf-side{display:grid;gap:9px}
+  .wf-badge{font-size:9.5px;font-weight:700;color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,transparent);padding:2px 8px;border-radius:999px;justify-self:start}
+  .wf-input{height:26px;border-radius:6px;background:var(--card);border:1px solid var(--wire-line)}
+  .wf-avatar{width:26px;height:26px;border-radius:50%;background:var(--grad)}
+  .wf-chatL,.wf-chatR{max-width:74%;padding:7px 10px;border-radius:10px;font-size:10.5px}
+  .wf-chatL{background:var(--card);border:1px solid var(--wire-line);justify-self:start;border-bottom-left-radius:3px}
+  .wf-chatR{background:var(--grad);color:#fff;justify-self:end;border-bottom-right-radius:3px}
+  .wf-check{width:15px;height:15px;border-radius:4px;background:var(--wire-block);flex:0 0 auto}
+  .wf-check.on{background:var(--grad)}
+  .wf-map{height:150px;border-radius:8px;border:1px solid var(--wire-line);position:relative;overflow:hidden;
+    background:linear-gradient(135deg,color-mix(in srgb,var(--cyan) 10%,var(--card)),var(--card));}
+  .wf-map::before{content:"";position:absolute;inset:0;background:
+    repeating-linear-gradient(0deg,var(--wire-line) 0 1px,transparent 1px 30px),
+    repeating-linear-gradient(90deg,var(--wire-line) 0 1px,transparent 1px 34px);opacity:.5}
+  .wf-pin{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--blue);transform:rotate(-45deg)}
+  .wf-cal{display:grid;grid-template-columns:60px repeat(4,1fr);gap:5px}
+  .wf-cal .hd{font-size:9px;color:var(--muted);text-align:center;padding:2px 0}
+  .wf-slot{height:22px;border-radius:5px;background:var(--card);border:1px solid var(--wire-line)}
+  .wf-slot.f{background:color-mix(in srgb,var(--blue) 22%,transparent);border-color:transparent}
+  .wf-slot.f2{background:color-mix(in srgb,var(--cyan) 26%,transparent);border-color:transparent}
+  .wf-slot.f3{background:color-mix(in srgb,var(--warn) 26%,transparent);border-color:transparent}
+  .wf-thumb{aspect-ratio:1;border-radius:7px;background:linear-gradient(135deg,var(--wire-block),var(--card));border:1px solid var(--wire-line)}
+  .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .flow .node{background:var(--card);border:1px solid var(--wire-line);border-radius:7px;padding:5px 9px;font-size:10px;color:var(--ink-soft)}
+  .flow .node.on{background:var(--grad);color:#fff;border-color:transparent;font-weight:700}
+  .flow .ar{color:var(--muted)}
+  .legend{display:flex;flex-wrap:wrap;gap:13px;font-size:12px;color:var(--ink-soft);margin:12px 0 0}
+  .legend span{display:inline-flex;gap:6px;align-items:center}
+  .sw{width:12px;height:12px;border-radius:4px}
+  footer{padding:36px 0 0;color:var(--muted);font-size:13px}
+  hr.soft{border:0;border-top:1px solid var(--line);margin:26px 0}
+  .note{border-left:3px solid var(--cyan);background:color-mix(in srgb,var(--cyan) 7%,transparent);padding:11px 15px;border-radius:0 9px 9px 0;margin:14px 0;font-size:13.5px;color:var(--ink-soft)}
+  .note b{color:var(--ink)}
+</style>
+
+<div class="shell">
+<aside class="rail">
+  <div class="brandmark"><span class="glyph">SA</span><div><b>SALIS AUTO</b><span>WIREFRAME GALLERY</span></div></div>
+  <nav>
+    <a href="#top">Overview</a>
+    <div class="grp">Screens by portal</div>
+    <a href="#auth">Auth &amp; onboarding</a>
+    <a href="#platform">Platform Admin</a>
+    <a href="#mainapp">Admin / Manager</a>
+    <a href="#advisor">Service Advisor</a>
+    <a href="#tech">Technician</a>
+    <a href="#store">Store Keeper</a>
+    <a href="#purchase">Purchase Agent</a>
+    <a href="#finance">Finance</a>
+    <a href="#support">Customer Support</a>
+    <a href="#hr">HR Manager</a>
+    <a href="#customer">Customer portal</a>
+    <div class="grp">Reference</div>
+    <a href="#patterns">Responsive &amp; states</a>
+  </nav>
+</aside>
+
+<main>
+  <header class="hero" id="top">
+    <div class="kicker">Design artifact · project-control/wireframes</div>
+    <h1>Wireframe <em>gallery</em> — the primary screen of every module</h1>
+    <p class="lede">Mid-fidelity wireframes for the key screen of each module across all ten portals — layout,
+      hierarchy, controls and state, on the SALIS brand system. Every route printed below is a route the app
+      actually serves, checked against the registry.</p>
+    <div class="metastrip">
+      <span class="chip"><b>38</b> screens</span>
+      <span class="chip"><b>10</b> portals</span>
+      <span class="chip"><b>32</b> routed</span>
+      <span class="chip"><b>6</b> not built</span>
+      <span class="chip">light + dark</span>
+    </div>
+    <div class="note"><b>How to read:</b> each card shows the browser frame, the route, and the screen's blocks —
+      KPIs, tables, forms, charts, maps, chat and mobile card layouts — using the same wireframe kit throughout so
+      density and rhythm are comparable across roles. A card with a <span class="b warn">DESIGN PROPOSAL · NOT
+      BUILT</span> badge and a dashed frame has no route: the screen was drawn but never shipped, so there is no
+      URL to print.</div>
+    <div class="note"><b>Routes reconciled 2 Sep 2026</b> against <code>project-control/MASTER_REGISTRY.json</code>
+      (424 capabilities, generated 1 Sep 2026). Every route below is asserted by
+      <code>project-control/wireframes/check-routes.mjs</code>, which fails if this page prints a route the registry
+      does not carry. A route existing means the app serves it — several of these screens still render a spec
+      placeholder or the generic feature kit; per-screen build status lives in the registry, not here.</div>
+  </header>
+
+  <!-- AUTH -->
+  <section id="auth">
+    <div class="eyebrow">Portal 00 · Auth &amp; onboarding</div>
+    <h2>Auth &amp; onboarding</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Register (customer self-serve)</b> · <code>/register</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/register</span></div>
+          <div class="wf-main" style="place-items:center;padding:22px">
+            <div class="wf-avatar" style="width:38px;height:38px;border-radius:10px"></div>
+            <div class="wf-title sm"></div>
+            <div style="width:100%;max-width:280px;display:grid;gap:9px">
+              <div class="wf-row wf-2"><div class="wf-input"></div><div class="wf-input"></div></div>
+              <div class="wf-input"></div><div class="wf-input"></div><div class="wf-input"></div>
+              <div class="wf-btn" style="width:100%">Create account</div>
+              <div class="wf-line w40" style="margin:0 auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Two-factor (TOTP enrol + verify)</b> · <code>/two-factor-verification</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/two-factor-verification</span></div>
+          <div class="wf-main" style="place-items:center;padding:22px">
+            <div class="wf-title sm"></div>
+            <div style="width:74px;height:74px;border-radius:8px;background:repeating-conic-gradient(var(--ink) 0 25%,transparent 0 50%) 0 0/14px 14px;opacity:.85"></div>
+            <div class="wf-cap" style="font-size:10px;color:var(--muted)">Scan with authenticator</div>
+            <div style="display:flex;gap:7px">
+              <div class="wf-input" style="width:34px"></div><div class="wf-input" style="width:34px"></div>
+              <div class="wf-input" style="width:34px"></div><div class="wf-input" style="width:34px"></div>
+              <div class="wf-input" style="width:34px"></div><div class="wf-input" style="width:34px"></div>
+            </div>
+            <div class="wf-btn" style="width:200px">Verify &amp; enable</div>
+            <div class="wf-line w40"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM ADMIN -->
+  <section id="platform">
+    <div class="eyebrow">Portal 01 <span class="b blue">PLATFORM_ADMIN</span></div>
+    <h2>Platform Admin</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Garages — tenant directory</b> · <code>/super-admin</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/super-admin</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title"></div><div style="display:flex;gap:7px"><div class="wf-input" style="width:120px"></div><div class="wf-btn">Onboard garage</div></div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill w"></div></div>
+              <div class="wf-tr"><div class="wf-line w50"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill r"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Roles &amp; RBAC editor</b> · <code>/roles-permissions</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/roles-permissions</span></div>
+          <div class="wf-main wf-row wf-2c">
+            <div class="wf-card"><div class="wf-badge">14 roles</div>
+              <div class="wf-line w80"></div><div class="wf-line w60"></div><div class="wf-line w80"></div>
+              <div class="wf-line w50"></div><div class="wf-line w60"></div></div>
+            <div class="wf-card"><div class="wf-badge">Permissions · 28 modules</div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto auto;padding:5px 0"><div class="wf-line w60"></div><div class="wf-check on"></div><div class="wf-check on"></div><div class="wf-check"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto auto;padding:5px 0"><div class="wf-line w80"></div><div class="wf-check on"></div><div class="wf-check"></div><div class="wf-check"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto auto;padding:5px 0"><div class="wf-line w50"></div><div class="wf-check on"></div><div class="wf-check on"></div><div class="wf-check on"></div></div>
+              <div class="wf-btn" style="width:100%">Save permissions</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>System health / ops console</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="wf proposal">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k4">
+              <div class="wf-card wf-kpi"><div class="l">Uptime</div><div class="v">99.98%</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Error rate</div><div class="v" style="color:var(--good)">0.02%</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Jobs/min</div><div class="v">1,204</div></div>
+              <div class="wf-card wf-kpi"><div class="l">DB pool</div><div class="v">62%</div></div>
+            </div>
+            <div class="wf-row wf-2b"><div class="wf-card"><div class="wf-line w40"></div><div class="wf-chart"></div></div>
+              <div class="wf-card"><div class="wf-badge">Integrations</div>
+                <div style="display:flex;gap:7px;align-items:center"><div class="wf-check on"></div><div class="wf-line w60"></div></div>
+                <div style="display:flex;gap:7px;align-items:center"><div class="wf-check on"></div><div class="wf-line w80"></div></div>
+                <div style="display:flex;gap:7px;align-items:center"><div class="wf-pill w" style="width:15px;height:15px;border-radius:4px"></div><div class="wf-line w50"></div></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Subscriptions &amp; billing (MRR)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="wf proposal">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k3">
+              <div class="wf-card wf-kpi"><div class="l">MRR</div><div class="v">SAR 890k</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Churn</div><div class="v">1.4%</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Dunning</div><div class="v" style="color:var(--warn)">6</div></div>
+            </div>
+            <div class="wf-bars"><i style="height:40%"></i><i style="height:55%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:65%"></i><i style="height:85%"></i><i style="height:92%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN APP -->
+  <section id="mainapp">
+    <div class="eyebrow">Portal 02 <span class="b blue">ADMIN / MANAGER</span></div>
+    <h2>Admin / Manager app</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Appointments (StandardTablePage)</b> · <code>/appointments</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/appointments</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title"></div><div style="display:flex;gap:7px"><div class="wf-btn ghost">Filters</div><div class="wf-btn">New appointment</div></div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill b"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w50"></div><div class="wf-pill w"></div></div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:6px"><div class="wf-input" style="width:26px"></div><div class="wf-input" style="width:26px"></div><div class="wf-input" style="width:26px"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Workshop calendar (drag-drop scheduling)</b> · <code>/workshop-calendar</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/workshop-calendar</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-btn ghost">Week ▾</div></div>
+            <div class="wf-cal">
+              <div class="hd">Bay</div><div class="hd">Mon</div><div class="hd">Tue</div><div class="hd">Wed</div><div class="hd">Thu</div>
+              <div class="wf-line w80" style="align-self:center"></div><div class="wf-slot f"></div><div class="wf-slot"></div><div class="wf-slot f2"></div><div class="wf-slot"></div>
+              <div class="wf-line w60" style="align-self:center"></div><div class="wf-slot"></div><div class="wf-slot f3"></div><div class="wf-slot f"></div><div class="wf-slot f2"></div>
+              <div class="wf-line w80" style="align-self:center"></div><div class="wf-slot f2"></div><div class="wf-slot f"></div><div class="wf-slot"></div><div class="wf-slot f3"></div>
+              <div class="wf-line w50" style="align-self:center"></div><div class="wf-slot"></div><div class="wf-slot"></div><div class="wf-slot f"></div><div class="wf-slot"></div>
+            </div>
+            <div class="legend" style="font-size:10px"><span><span class="sw" style="background:color-mix(in srgb,var(--blue) 40%,transparent)"></span>Booked</span><span><span class="sw" style="background:color-mix(in srgb,var(--warn) 40%,transparent)"></span>At risk</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Inventory (parts &amp; stock)</b> · <code>/inventory</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/inventory</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k3">
+              <div class="wf-card wf-kpi"><div class="l">SKUs</div><div class="v">3,412</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Stock value</div><div class="v">SAR 1.2M</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Below reorder</div><div class="v" style="color:var(--warn)">9</div></div>
+            </div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w25"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w25"></div><div class="wf-line w40"></div><div class="wf-pill w"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Analytics &amp; BI</b> · <code>/reports-analytics · /bidashboard</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/reports-analytics</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-btn ghost">Export PDF</div></div>
+            <div class="wf-row wf-2"><div class="wf-card"><div class="wf-line w40"></div><div class="wf-chart"></div></div>
+              <div class="wf-card" style="place-items:center"><div class="wf-line w40" style="align-self:flex-start"></div><div class="wf-donut"></div></div></div>
+            <div class="wf-row wf-k4">
+              <div class="wf-card wf-kpi"><div class="l">Revenue</div><div class="v">SAR 1.9M</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Utilisation</div><div class="v">78%</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Avg RO</div><div class="v">SAR 820</div></div>
+              <div class="wf-card wf-kpi"><div class="l">CSAT</div><div class="v">4.6</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVISOR -->
+  <section id="advisor">
+    <div class="eyebrow">Portal 03 <span class="b blue">ADVISOR</span></div>
+    <h2>Service Advisor</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Today's board (dashboard)</b> · <code>/dashboard</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/dashboard</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k4">
+              <div class="wf-card wf-kpi"><div class="l">Arrivals</div><div class="v">12</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Approvals due</div><div class="v" style="color:var(--warn)">4</div></div>
+              <div class="wf-card wf-kpi"><div class="l">In progress</div><div class="v">7</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Ready</div><div class="v" style="color:var(--good)">3</div></div>
+            </div>
+            <div class="wf-row wf-k3">
+              <div class="wf-card"><div class="wf-badge">Awaiting check-in</div><div class="wf-line w80"></div><div class="wf-line w60"></div></div>
+              <div class="wf-card"><div class="wf-badge">Approval pending</div><div class="wf-line w60"></div><div class="wf-line w80"></div></div>
+              <div class="wf-card"><div class="wf-badge">Ready to deliver</div><div class="wf-line w50"></div><div class="wf-line w60"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Estimate builder (FormPage)</b> · <code>/workshop-estimate</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/workshop-estimate</span></div>
+          <div class="wf-main wf-row wf-2b">
+            <div class="wf-card"><div class="wf-badge">Line items</div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w80"></div><div class="wf-line w20"></div><div class="wf-line w20"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w60"></div><div class="wf-line w20"></div><div class="wf-line w20"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w50"></div><div class="wf-line w20"></div><div class="wf-line w20"></div></div>
+              <div class="wf-btn ghost" style="width:120px">+ Add part / labour</div></div>
+            <div class="wf-side"><div class="wf-card"><div class="wf-badge">Summary</div><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w80"></div></div>
+              <div class="wf-btn" style="width:100%">Send for approval</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Vehicle check-in (photos + damage map)</b> · <code>/workshop-check-in</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/workshop-check-in</span></div>
+          <div class="wf-main wf-row wf-2">
+            <div class="wf-card"><div class="wf-badge">Condition photos</div>
+              <div class="wf-row wf-k3"><div class="wf-thumb"></div><div class="wf-thumb"></div><div class="wf-thumb"></div></div>
+              <div class="wf-btn ghost" style="width:100px">+ Capture</div></div>
+            <div class="wf-card"><div class="wf-badge">Details</div><div class="wf-input"></div>
+              <div class="wf-row wf-2"><div class="wf-input"></div><div class="wf-input"></div></div>
+              <div class="wf-cap" style="font-size:10px;color:var(--muted)">Odometer · fuel · notes</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Customer comms (SMS / WhatsApp / chat)</b> · <code>/portal-communications</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/portal-communications</span></div>
+          <div class="wf-main" style="min-height:170px">
+            <div class="wf-chatR"><div class="wf-line w60" style="width:110px;background:rgba(255,255,255,.6)"></div></div>
+            <div class="wf-chatL"><div class="wf-line" style="width:140px"></div></div>
+            <div class="wf-chatR"><div class="wf-line w40" style="width:80px;background:rgba(255,255,255,.6)"></div></div>
+            <div style="display:flex;gap:7px;margin-top:auto"><div class="wf-input" style="flex:1"></div><div class="wf-btn" style="min-width:70px">Send</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH -->
+  <section id="tech">
+    <div class="eyebrow">Portal 04 <span class="b blue">TECHNICIAN</span> · mobile-first</div>
+    <h2>Technician</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>My jobs queue</b> · <code>/technician-portal</code></div>
+        <div class="wf" style="max-width:320px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/technician-portal</span></div>
+          <div class="wf-main">
+            <div class="wf-title sm"></div>
+            <div class="wf-card"><div style="display:flex;justify-content:space-between"><div class="wf-line w60"></div><div class="wf-pill w" style="width:44px"></div></div><div class="wf-line w80"></div></div>
+            <div class="wf-card"><div style="display:flex;justify-content:space-between"><div class="wf-line w50"></div><div class="wf-pill b" style="width:44px"></div></div><div class="wf-line w60"></div></div>
+            <div class="wf-card"><div style="display:flex;justify-content:space-between"><div class="wf-line w60"></div><div class="wf-pill" style="width:44px"></div></div><div class="wf-line w50"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Inspection checklist (multi-point)</b> · <code>/workshop-inspection</code></div>
+        <div class="wf" style="max-width:320px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/workshop-inspection</span></div>
+          <div class="wf-main">
+            <div class="wf-title sm"></div>
+            <div class="wf-card">
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-check on"></div><div class="wf-line w80"></div></div>
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-check on"></div><div class="wf-line w60"></div></div>
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-pill w" style="width:15px;height:15px;border-radius:4px"></div><div class="wf-line w80"></div></div>
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-check"></div><div class="wf-line w50"></div></div>
+            </div>
+            <div class="wf-btn" style="width:100%">Save inspection</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>OBD diagnostics (read DTCs)</b> · <code>/obddiagnostics</code></div>
+        <div class="wf" style="max-width:320px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/obddiagnostics</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-pill" style="width:56px"></div></div>
+            <div class="wf-cap" style="font-size:10px;color:var(--muted)">Scanner connected · VIN read</div>
+            <div class="wf-tbl">
+              <div class="wf-tr head" style="grid-template-columns:auto 1fr auto"><div class="wf-line w40"></div><div class="wf-line w60"></div><div class="wf-line w20"></div></div>
+              <div class="wf-tr" style="grid-template-columns:auto 1fr auto"><code style="font-size:9px">P0300</code><div class="wf-line w80"></div><div class="wf-pill r" style="width:36px"></div></div>
+              <div class="wf-tr" style="grid-template-columns:auto 1fr auto"><code style="font-size:9px">P0171</code><div class="wf-line w60"></div><div class="wf-pill w" style="width:36px"></div></div>
+            </div>
+            <div class="wf-btn" style="width:100%">Attach to job</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>AR repair guide</b> · <code>/ar-overlay</code></div>
+        <div class="wf" style="max-width:320px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/ar-overlay</span></div>
+          <div class="wf-main" style="padding:0">
+            <div style="height:150px;position:relative;background:linear-gradient(135deg,#0b1f3b,#0a5ed7)">
+              <div style="position:absolute;top:34%;left:30%;width:44px;height:44px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 3px rgba(11,179,255,.5)"></div>
+              <div style="position:absolute;bottom:10px;left:12px;right:12px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);border-radius:8px;padding:8px"><div class="wf-line w80" style="background:rgba(255,255,255,.7)"></div></div>
+            </div>
+            <div class="wf-main"><div class="flow"><span class="node">Step 1</span><span class="ar">→</span><span class="node on">Step 2</span><span class="ar">→</span><span class="node">Step 3</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORE -->
+  <section id="store">
+    <div class="eyebrow">Portal 05 <span class="b blue">STORE_KEEPER</span></div>
+    <h2>Store Keeper</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Stock overview</b> · <code>/inventory-management</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/inventory-management</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-input" style="width:160px"></div><div class="wf-btn ghost">Bin view</div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w25"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w25"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w25"></div><div class="wf-line w40"></div><div class="wf-pill w"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Receive stock (against PO, scan-in)</b> · <code>/purchase-order</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/purchase-order</span></div>
+          <div class="wf-main wf-row wf-2b">
+            <div class="wf-card"><div class="wf-badge">PO-3391 · expected 24</div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w80"></div><div class="wf-line w20"></div><div class="wf-check on"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w60"></div><div class="wf-line w20"></div><div class="wf-check on"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w50"></div><div class="wf-line w20"></div><div class="wf-pill w" style="width:44px;height:15px"></div></div></div>
+            <div class="wf-side"><div class="wf-btn">Scan item</div><div class="wf-card"><div class="wf-badge">Discrepancy</div><div class="wf-line w60"></div></div><div class="wf-btn ghost" style="width:100%">Confirm receipt</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Low-stock &amp; reorder (predictive)</b> · <code>/automated-reordering · /parts-auto-reorder</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/automated-reordering</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-btn">Generate requisitions</div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w25"></div><div class="wf-line w25"></div><div class="wf-line w40"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w20"></div><div class="wf-line w20"></div><div class="wf-pill w"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w20"></div><div class="wf-line w20"></div><div class="wf-pill r"></div></div>
+            </div>
+            <div class="wf-cap" style="font-size:10px;color:var(--muted)">Forecast demand ▲ · lead-time aware</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Returns / RMA</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="wf proposal">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
+          <div class="wf-main wf-row wf-2">
+            <div class="wf-card"><div class="wf-badge">New return</div><div class="wf-input"></div><div class="wf-input"></div>
+              <div class="flow"><span class="node on">Defective</span><span class="node">Over-issue</span><span class="node">Wrong part</span></div></div>
+            <div class="wf-card"><div class="wf-badge">Recent RMAs</div><div class="wf-line w80"></div><div class="wf-line w60"></div><div class="wf-line w50"></div><div class="wf-btn ghost" style="width:100px">Process</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PURCHASE -->
+  <section id="purchase">
+    <div class="eyebrow">Portal 06 <span class="b blue">PURCHASE_AGENT</span></div>
+    <h2>Purchase Agent</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>PO builder &amp; tracker</b> · <code>/purchase-order · /purchase-agent-orders</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/purchase-order</span></div>
+          <div class="wf-main wf-row wf-2b">
+            <div class="wf-card"><div class="wf-badge">PO lines</div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w80"></div><div class="wf-line w20"></div><div class="wf-line w20"></div></div>
+              <div class="wf-tr" style="grid-template-columns:1fr auto auto;padding:6px 0"><div class="wf-line w60"></div><div class="wf-line w20"></div><div class="wf-line w20"></div></div>
+              <div class="wf-btn ghost" style="width:100px">+ Add line</div></div>
+            <div class="wf-side"><div class="wf-card"><div class="wf-badge">Supplier</div><div class="wf-input"></div><div class="wf-line w60"></div></div>
+              <div class="flow" style="font-size:9px"><span class="node on">Draft</span><span class="ar">→</span><span class="node">Approve</span><span class="ar">→</span><span class="node">Send</span></div>
+              <div class="wf-btn" style="width:100%">Submit for approval</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>RFQ compare (supplier bids)</b> · <code>/purchase-agent-quotations</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/purchase-agent-quotations</span></div>
+          <div class="wf-main">
+            <div class="wf-title sm"></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill b"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+            </div>
+            <div class="wf-cap" style="font-size:10px;color:var(--muted)">Best price highlighted · scorecard weighted</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINANCE -->
+  <section id="finance">
+    <div class="eyebrow">Portal 07 <span class="b blue">FINANCE_MANAGER</span></div>
+    <h2>Finance</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Finance dashboard (cash / AR / AP)</b> · <code>/financial-reports</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/financial-reports</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k4">
+              <div class="wf-card wf-kpi"><div class="l">Cash</div><div class="v">SAR 640k</div></div>
+              <div class="wf-card wf-kpi"><div class="l">AR</div><div class="v">SAR 210k</div></div>
+              <div class="wf-card wf-kpi"><div class="l">AP</div><div class="v">SAR 96k</div></div>
+              <div class="wf-card wf-kpi"><div class="l">MTD profit</div><div class="v" style="color:var(--good)">SAR 88k</div></div>
+            </div>
+            <div class="wf-card"><div class="wf-line w40"></div><div class="wf-chart"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Payroll run (payslips + GOSI)</b> · <code>/payroll-management</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/payroll-management</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-btn">Run payroll</div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill w"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>P&amp;L statement</b> · <code>/income-statement</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/income-statement</span></div>
+          <div class="wf-main wf-row wf-2c">
+            <div class="wf-card" style="place-items:center"><div class="wf-donut"></div><div class="wf-cap" style="font-size:10px;color:var(--muted)">Cost breakdown</div></div>
+            <div class="wf-card">
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w50"></div><div class="wf-line w20"></div></div>
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <hr style="border:0;border-top:1px solid var(--wire-line);margin:2px 0">
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w40" style="background:var(--wire-ink)"></div><div class="wf-line w25" style="background:var(--wire-ink)"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>VAT / ZATCA returns (Hijri periods)</b> · <code>/tax-management · /zatca-settings</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/tax-management</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-btn ghost">Hijri ▾</div></div>
+            <div class="wf-row wf-k3">
+              <div class="wf-card wf-kpi"><div class="l">Output VAT</div><div class="v">SAR 42k</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Input VAT</div><div class="v">SAR 14k</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Net due</div><div class="v">SAR 28k</div></div>
+            </div>
+            <div class="wf-card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="wf-badge">ZATCA filing</div><div class="wf-pill" style="width:70px"></div></div><div class="wf-btn" style="width:120px">Submit return</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section id="support">
+    <div class="eyebrow">Portal 08 <span class="b blue">CUSTOMER_SUPPORT</span></div>
+    <h2>Customer Support</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Tickets queue (triage)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="wf proposal">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="flow" style="font-size:9px"><span class="node on">Open</span><span class="node">Pending</span><span class="node">Solved</span></div><div class="wf-btn ghost">Filters</div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill r"></div></div>
+              <div class="wf-tr"><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill w"></div></div>
+              <div class="wf-tr"><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-line w40"></div><div class="wf-pill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>SLA tracking (timers &amp; breaches)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="wf proposal">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k3">
+              <div class="wf-card wf-kpi"><div class="l">On track</div><div class="v" style="color:var(--good)">84%</div></div>
+              <div class="wf-card wf-kpi"><div class="l">At risk</div><div class="v" style="color:var(--warn)">9</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Breached</div><div class="v" style="color:var(--crit)">3</div></div>
+            </div>
+            <div class="wf-card"><div class="wf-badge">Response time trend</div><div class="wf-bars"><i style="height:40%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:60%"></i><i style="height:38%"></i><i style="height:70%"></i></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Knowledge base (articles)</b> · <code>/knowledge-base</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/knowledge-base</span></div>
+          <div class="wf-main">
+            <div class="wf-input" style="width:100%"></div>
+            <div class="wf-row wf-k3">
+              <div class="wf-card"><div class="wf-badge">Billing</div><div class="wf-line w80"></div><div class="wf-line w60"></div></div>
+              <div class="wf-card"><div class="wf-badge">Booking</div><div class="wf-line w60"></div><div class="wf-line w80"></div></div>
+              <div class="wf-card"><div class="wf-badge">Warranty</div><div class="wf-line w50"></div><div class="wf-line w60"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Call log</b> · <code>/call-center/logs</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/call-center/logs</span></div>
+          <div class="wf-main">
+            <div class="wf-tbl">
+              <div class="wf-tr head" style="grid-template-columns:auto 1.4fr 1fr .8fr"><div class="wf-line w20"></div><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr" style="grid-template-columns:auto 1.4fr 1fr .8fr"><div class="wf-avatar" style="width:16px;height:16px"></div><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-pill b" style="width:36px"></div></div>
+              <div class="wf-tr" style="grid-template-columns:auto 1.4fr 1fr .8fr"><div class="wf-avatar" style="width:16px;height:16px"></div><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-pill" style="width:36px"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HR -->
+  <section id="hr">
+    <div class="eyebrow">Portal 09 <span class="b blue">HR_MANAGER</span></div>
+    <h2>HR Manager</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Employees directory</b> · <code>/staff-directory</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/staff-directory</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-input" style="width:150px"></div><div class="wf-btn">Add employee</div></div>
+            <div class="wf-tbl">
+              <div class="wf-tr head" style="grid-template-columns:auto 1.4fr 1fr .8fr"><div class="wf-line w20"></div><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-line w25"></div></div>
+              <div class="wf-tr" style="grid-template-columns:auto 1.4fr 1fr .8fr"><div class="wf-avatar"></div><div class="wf-line w80"></div><div class="wf-line w50"></div><div class="wf-pill"></div></div>
+              <div class="wf-tr" style="grid-template-columns:auto 1.4fr 1fr .8fr"><div class="wf-avatar"></div><div class="wf-line w60"></div><div class="wf-line w50"></div><div class="wf-pill w"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Attendance &amp; leave</b> · <code>/timesheet-management · /leave-requests</code></div>
+        <div class="wf">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/timesheet-management</span></div>
+          <div class="wf-main">
+            <div class="wf-row wf-k3">
+              <div class="wf-card wf-kpi"><div class="l">Present</div><div class="v">42</div></div>
+              <div class="wf-card wf-kpi"><div class="l">On leave</div><div class="v">5</div></div>
+              <div class="wf-card wf-kpi"><div class="l">Late</div><div class="v" style="color:var(--warn)">3</div></div>
+            </div>
+            <div class="wf-card"><div class="wf-badge">Leave approvals</div>
+              <div class="wf-tr" style="grid-template-columns:auto 1fr auto auto;padding:6px 0"><div class="wf-avatar" style="width:18px;height:18px"></div><div class="wf-line w60"></div><div class="wf-btn ghost" style="min-width:52px;height:20px">Deny</div><div class="wf-btn" style="min-width:56px;height:20px">Approve</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOMER -->
+  <section id="customer">
+    <div class="eyebrow">Portal 10 <span class="b blue">CUSTOMER</span> · PWA</div>
+    <h2>Customer portal</h2>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Book appointment (wizard)</b> · <code>/customer-portal/booking</code></div>
+        <div class="wf" style="max-width:340px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/customer-portal/booking</span></div>
+          <div class="wf-main">
+            <div class="flow" style="font-size:9px"><span class="node on">Vehicle</span><span class="ar">→</span><span class="node on">Service</span><span class="ar">→</span><span class="node">Slot</span><span class="ar">→</span><span class="node">Confirm</span></div>
+            <div class="wf-card"><div class="wf-badge">Pick service</div>
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-check on"></div><div class="wf-line w80"></div></div>
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-check"></div><div class="wf-line w60"></div></div>
+              <div style="display:flex;gap:8px;align-items:center"><div class="wf-check"></div><div class="wf-line w50"></div></div></div>
+            <div class="wf-btn" style="width:100%">Continue</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Find garage (map + filters)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="wf proposal" style="max-width:340px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
+          <div class="wf-main">
+            <div class="wf-input" style="width:100%"></div>
+            <div class="wf-map"><div class="wf-pin" style="top:38px;left:70px"></div><div class="wf-pin" style="top:80px;left:150px;background:var(--cyan)"></div><div class="wf-pin" style="top:56px;left:220px"></div></div>
+            <div class="wf-card"><div style="display:flex;justify-content:space-between"><div class="wf-line w60"></div><div class="wf-pill" style="width:44px"></div></div><div class="wf-line w80"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Parts store (browse + cart)</b> · <code>/customer-app/marketplace</code></div>
+        <div class="wf" style="max-width:340px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/customer-app/marketplace</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-input" style="width:150px"></div><div class="wf-btn ghost" style="min-width:52px">Cart 2</div></div>
+            <div class="wf-row wf-2">
+              <div class="wf-card"><div class="wf-thumb"></div><div class="wf-line w80"></div><div class="wf-line w40"></div><div class="wf-btn" style="width:100%;height:22px">Add</div></div>
+              <div class="wf-card"><div class="wf-thumb"></div><div class="wf-line w60"></div><div class="wf-line w40"></div><div class="wf-btn" style="width:100%;height:22px">Add</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen"><div class="cap"><b>Invoices &amp; online payment</b> · <code>/client-portal-invoices</code></div>
+        <div class="wf" style="max-width:340px">
+          <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/client-portal-invoices</span></div>
+          <div class="wf-main">
+            <div class="wf-h"><div class="wf-title sm"></div><div class="wf-pill" style="width:60px"></div></div>
+            <div class="wf-card">
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w60"></div><div class="wf-line w20"></div></div>
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w50"></div><div class="wf-line w20"></div></div>
+              <div style="display:flex;justify-content:space-between"><div class="wf-cap" style="font-size:10px;color:var(--muted)">VAT 15%</div><div class="wf-line w20"></div></div>
+              <div style="display:flex;justify-content:space-between"><div class="wf-line w40" style="background:var(--wire-ink)"></div><div class="wf-line w25" style="background:var(--wire-ink)"></div></div></div>
+            <div class="wf-row wf-2"><div class="wf-btn ghost">Download</div><div class="wf-btn">Pay SAR 1,240</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PATTERNS -->
+  <section id="patterns">
+    <div class="eyebrow">Reference</div>
+    <h2>Responsive &amp; universal states</h2>
+    <p class="sub">Every screen renders these states via shared components — no bespoke handling per page.</p>
+    <div class="gal">
+      <div class="screen"><div class="cap"><b>Loading skeleton</b> · shared <code>Skeletons</code></div>
+        <div class="wf"><div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/appointments</span></div>
+          <div class="wf-main"><div class="wf-row wf-k4"><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div></div>
+            <div class="wf-card"><div class="wf-line w60"></div><div class="wf-line"></div><div class="wf-line w80"></div><div class="wf-line w50"></div></div></div></div>
+      </div>
+      <div class="screen"><div class="cap"><b>Empty state</b> · illustration + primary CTA</div>
+        <div class="wf"><div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/job-cards</span></div>
+          <div class="wf-main" style="place-items:center;padding:34px 16px"><div class="wf-avatar" style="width:40px;height:40px;border-radius:11px;opacity:.5"></div><div class="wf-line w40"></div><div class="wf-line w60"></div><div class="wf-btn" style="width:150px">Create job card</div></div></div>
+      </div>
+      <div class="screen"><div class="cap"><b>Error boundary</b> · retry, never white screen</div>
+        <div class="wf"><div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/reports-analytics</span></div>
+          <div class="wf-main" style="place-items:center;padding:34px 16px"><div class="wf-pill r" style="width:40px;height:40px;border-radius:11px"></div><div class="wf-line w50"></div><div class="wf-line w60"></div><div class="wf-row wf-2" style="width:200px"><div class="wf-btn ghost">Reload</div><div class="wf-btn">Retry</div></div></div></div>
+      </div>
+      <div class="screen"><div class="cap"><b>Offline (PWA)</b> · cached data + sync queue</div>
+        <div class="wf"><div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/customer-portal</span></div>
+          <div class="wf-main"><div class="wf-card" style="background:color-mix(in srgb,var(--warn) 10%,var(--card));border-color:color-mix(in srgb,var(--warn) 30%,transparent)"><div style="display:flex;gap:8px;align-items:center"><div class="wf-pill w" style="width:15px;height:15px;border-radius:50%"></div><div class="wf-line w60"></div></div><div class="wf-cap" style="font-size:10px;color:var(--muted)">Showing cached data · 2 changes queued</div></div>
+            <div class="wf-row wf-k3"><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div><div class="wf-card"><div class="wf-line w80"></div><div class="wf-line w40"></div></div></div></div></div>
+      </div>
+    </div>
+
+    <footer>
+      <hr class="soft">
+      <p><b>SALIS AUTO — Wireframe Gallery.</b> 38 screens across 10 portals plus four shared states, on the SALIS
+      brand system (Navy #0B1F3B · gradient #0A5ED7→#0BB3FF · orange for warnings only), light + dark.
+      Source: <code>project-control/wireframes/template.html</code>. Routes reconciled against
+      <code>project-control/MASTER_REGISTRY.json</code> on 2 Sep 2026 and asserted by
+      <code>project-control/wireframes/check-routes.mjs</code>.</p>
+    </footer>
+  </section>
+</main>
+</div>
+
+<script>
+  (function(){
+    var links=[].slice.call(document.querySelectorAll('.rail a'));
+    var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+    var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+      links.forEach(function(a){a.classList.remove('on');});var a=map[e.target.id];if(a)a.classList.add('on');}});},
+      {rootMargin:'-8% 0px -85% 0px'});
+    document.querySelectorAll('section[id],header[id]').forEach(function(s){obs.observe(s);});
+  })();
+</script>
+

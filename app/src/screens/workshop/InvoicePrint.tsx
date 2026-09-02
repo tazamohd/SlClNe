@@ -4,7 +4,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { Loading, EmptyState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useCollection, useEntity, type RowOf } from '@/data/useCollection'
+import { useCollection, useEntity, type RowOf, MAX_PAGE_SIZE } from '@/data/useCollection'
 import {
   invoiceMoney,
   fromHalalas,
@@ -43,11 +43,11 @@ export function InvoicePrint() {
   const serverId = invoice?._id
   const { data: lines = [] } = useCollection(
     'invoiceLines',
-    serverId ? { filter: { invoiceId: serverId }, pageSize: 500 } : undefined
+    serverId ? { filter: { invoiceId: serverId }, pageSize: MAX_PAGE_SIZE } : undefined
   )
   const { data: payments = [] } = useCollection(
     'invoicePayments',
-    serverId ? { filter: { invoiceId: serverId }, pageSize: 500 } : undefined
+    serverId ? { filter: { invoiceId: serverId }, pageSize: MAX_PAGE_SIZE } : undefined
   )
 
   if (isLoading) return <Loading label={t('Loading invoice...')} />

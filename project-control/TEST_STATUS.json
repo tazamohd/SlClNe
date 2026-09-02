@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-02",
   "suites": {
     "unit": {
       "runner": "vitest",
@@ -38,10 +38,10 @@
     },
     "goldenPaths": {
       "runner": "playwright",
-      "present": false,
-      "covered": 0,
+      "present": true,
+      "covered": 7,
       "of": 23,
-      "note": "W4 — Agent 23"
+      "note": "scripts/golden-paths.mjs — 16 failing, 0 unwritten"
     },
     "mobile": {
       "runner": "playwright",

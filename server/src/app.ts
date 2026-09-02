@@ -65,6 +65,38 @@ function isZodError(error: unknown): error is ZodLike {
   )
 }
 
+/** The driver's own error, dug out from under whatever wrapped it.
+ *
+ *  drizzle-orm 0.44 began wrapping every driver failure in a
+ *  `DrizzleQueryError` whose message is the generated SQL and whose `code` is
+ *  undefined; the `PostgresError` carrying the SQLSTATE moved to `.cause`.
+ *  Reading `error.code` directly therefore stopped seeing 23505 and 23503, and
+ *  a duplicate phone answered 500 instead of 409 — the failure was silent
+ *  because both shapes are plain objects and neither TypeScript nor the
+ *  driver complains about a property that is simply absent.
+ *
+ *  The chain is walked rather than the wrapper class imported, so this keeps
+ *  working whether or not a given drizzle version wraps, and if a future one
+ *  adds another layer. `code` is only trusted in SQLSTATE shape — five
+ *  alphanumerics — so an unrelated error carrying, say, `code: 'ENOENT'` is
+ *  not mistaken for a constraint violation. The depth bound is there because
+ *  a cause chain is attacker-adjacent data and need not be acyclic. */
+interface DriverError {
+  code?: string
+  constraint_name?: string
+  constraint?: string
+}
+
+function driverErrorOf(error: unknown): DriverError | undefined {
+  let current: unknown = error
+  for (let depth = 0; depth < 8 && typeof current === 'object' && current !== null; depth += 1) {
+    const code = (current as DriverError).code
+    if (typeof code === 'string' && /^[0-9A-Z]{5}$/.test(code)) return current as DriverError
+    current = (current as { cause?: unknown }).cause
+  }
+  return undefined
+}
+
 /** The colliding column out of a 23505's constraint name (F-018).
  *
  *  Every unique index in the schema is named `<table>_org_<column>_idx`, so
@@ -73,9 +105,8 @@ function isZodError(error: unknown): error is ZodLike {
  *  The postgres driver reports it as `constraint_name`; `constraint` is read
  *  too in case a wrapper renames it. An unrecognised name yields undefined
  *  and the envelope stays field-less rather than guessing. */
-function uniqueViolationField(error: unknown): string | undefined {
-  const source = error as { constraint_name?: string; constraint?: string }
-  const constraint = source.constraint_name ?? source.constraint
+function uniqueViolationField(driver: DriverError): string | undefined {
+  const constraint = driver.constraint_name ?? driver.constraint
   if (typeof constraint !== 'string') return undefined
   const match = /^[a-z0-9_]+_org_([a-z0-9_]+)_idx$/.exec(constraint)
   if (!match?.[1]) return undefined
@@ -244,13 +275,14 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       })
     }
 
-    const driverCode = (error as { code?: string }).code
-    if (driverCode === '23505') {
+    const driver = driverErrorOf(error)
+    const driverCode = driver?.code
+    if (driver && driverCode === '23505') {
       /* F-018: the constraint name carries which column collided —
        * `customers_org_phone_idx` means the phone. Without the field, a
        * duplicate phone/plate/VIN lands at form level instead of on the
        * control that caused it. */
-      const field = uniqueViolationField(error)
+      const field = uniqueViolationField(driver)
       reply.code(409)
       return reply.send({
         error: {

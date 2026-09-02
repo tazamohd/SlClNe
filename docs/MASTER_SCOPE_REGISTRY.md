@@ -27,6 +27,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | tablet verified | 4 |
 | arabic verified | 82 |
 | rtl hazards | 0 |
+| golden paths | 23 |
+| golden paths measured | yes |
+| golden paths passing | 7 |
+| golden paths failing | 16 |
+| golden paths unwritten | 0 |
+| crud create | 32 |
+| crud read | 98 |
+| crud update | 24 |
+| crud delete | 24 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |

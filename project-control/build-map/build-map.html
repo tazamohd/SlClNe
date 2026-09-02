@@ -1,0 +1,1023 @@
+<title>SALIS AUTO Build Map</title>
+<style>
+:root{
+  --bg:#0a0a0c; --bg2:#0e0e11; --fg:#f5f5f7; --mut:#8a8a93;
+  --accent:#DA7756; --blue:#6ba4d9; --gold:#d9b86b; --red:#e0685c;
+  --card:rgba(255,255,255,0.04); --line:rgba(255,255,255,0.09);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.6; overflow-x:hidden;
+}
+.glow-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 600px at 50% -10%, rgba(218,119,86,0.16), transparent 70%);
+  opacity:.5}
+.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 28px}
+
+/* ---------- hero ---------- */
+header{padding:88px 0 40px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:clamp(40px,6vw,66px);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin:16px 0 18px;
+  background:linear-gradient(120deg,#f5f5f7 20%,var(--accent) 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;max-width:16ch}
+.lede{font-size:19px;color:#c9c9d1;max-width:62ch}
+.lede b{color:var(--fg);font-weight:600}
+.statstrip{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:132px}
+.stat .n{font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.stat .l{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-top:7px}
+.stat.warn .n{color:var(--red)} .stat.ok .n{color:var(--accent)} .stat.blue .n{color:var(--blue)}
+
+/* ---------- sections ---------- */
+section{padding:76px 0;border-top:1px solid rgba(255,255,255,0.06)}
+section.alt{background:var(--bg2)}
+.diagram-section{
+  background-image:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.kicker{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px}
+h2{font-size:clamp(26px,3.4vw,34px);font-weight:650;letter-spacing:-.02em;line-height:1.18;max-width:22ch}
+.sub{color:var(--mut);font-size:17px;max-width:66ch;margin-top:14px}
+.plain{margin-top:14px;font-size:14.5px;color:#a9a9b4;max-width:66ch;
+  border-left:2px solid rgba(218,119,86,.45);padding:2px 0 2px 14px}
+.plain b{color:var(--accent);font-weight:600}
+
+.figure{margin-top:38px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.capbar{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:13px 18px;font-size:14.5px;color:#c9c9d1;min-height:50px;display:flex;align-items:center;gap:10px}
+.capbar::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+
+/* ---------- svg type ---------- */
+.nlabel{fill:#f5f5f7;font-size:16px;font-weight:600;font-family:inherit}
+.nsub{fill:#8a8a93;font-size:12.5px;font-family:inherit}
+.nbig{fill:#f5f5f7;font-size:22px;font-weight:700;font-family:inherit}
+.layerlabel{fill:#8a8a93;font-size:11.5px;font-weight:600;letter-spacing:.12em;font-family:inherit}
+.callout{fill:#a9a9b4;font-size:13px;font-family:inherit}
+.stepnum{fill:#f5f5f7;font-size:15px;font-weight:700;font-family:inherit}
+.flow{stroke-dasharray:6 10;animation:flowmove 1.7s linear infinite}
+@keyframes flowmove{to{stroke-dashoffset:-32}}
+.flow-slow{stroke-dasharray:5 11;animation:flowmove 3.4s linear infinite}
+.pulse{animation:pulse 3.4s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes pulse{50%{transform:scale(1.11);opacity:.55}}
+.node{cursor:pointer;transition:transform .2s ease;transform-box:fill-box;transform-origin:center}
+.node:hover{transform:scale(1.045)}
+.node:hover .box{stroke:var(--accent);stroke-width:2}
+
+/* ---------- cards (used ONCE) ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(266px,1fr));gap:16px;margin-top:34px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;
+  transition:transform .22s ease,border-color .22s ease}
+.card:hover{transform:translateY(-3px);border-color:rgba(218,119,86,.5)}
+.card .tag{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;
+  padding:4px 9px;border-radius:999px;display:inline-block;margin-bottom:12px}
+.t-block{background:rgba(224,104,92,.16);color:#f0958c}
+.t-crit{background:rgba(217,184,107,.15);color:var(--gold)}
+.t-high{background:rgba(107,164,217,.15);color:var(--blue)}
+.t-med{background:rgba(255,255,255,.07);color:var(--mut)}
+.card h3{font-size:17px;font-weight:620;margin-bottom:8px;letter-spacing:-.01em}
+.card p{font-size:14.5px;color:var(--mut)}
+.card .own{margin-top:14px;font-size:12px;color:#6f6f79;border-top:1px solid var(--line);padding-top:11px}
+
+/* ---------- callout ---------- */
+.note{margin-top:34px;background:linear-gradient(180deg,rgba(217,184,107,.07),rgba(217,184,107,.02));
+  border:1px solid rgba(217,184,107,.28);border-left:3px solid var(--gold);
+  border-radius:14px;padding:22px 26px}
+.note .h{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+.note p{font-size:15.5px;color:#c9c9d1}
+.note p + p{margin-top:10px}
+
+.takeaway{margin-top:40px;background:linear-gradient(180deg,rgba(218,119,86,.11),rgba(218,119,86,.03));
+  border:1px solid rgba(218,119,86,.34);border-radius:20px;padding:36px 38px}
+.takeaway h3{font-size:24px;font-weight:680;letter-spacing:-.02em;margin-bottom:16px}
+.takeaway ul{list-style:none;display:grid;gap:12px}
+.takeaway li{font-size:16px;color:#c9c9d1;padding-left:26px;position:relative}
+.takeaway li::before{content:"";position:absolute;left:0;top:10px;width:11px;height:2px;background:var(--accent);border-radius:2px}
+.takeaway li b{color:var(--fg);font-weight:620}
+
+footer{padding:56px 0 80px;color:#5f5f68;font-size:13px;border-top:1px solid rgba(255,255,255,0.06)}
+footer a{color:var(--mut)}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:none}
+@media (max-width:760px){
+  header{padding:56px 0 24px}
+  section{padding:54px 0}
+  .wrap{padding:0 18px}
+  .stat .n{font-size:27px}
+}
+@media (prefers-reduced-motion:reduce){
+  .flow,.flow-slow,.pulse{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+<div class="glow-bg"></div>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">SALIS AUTO · Multi-agent rebuild</div>
+  <h1>One registry. Everything else is generated.</h1>
+  <p class="lede">A 424-capability automotive ERP being rebuilt by <b>24 specialist agents</b> across six waves. Nothing here is counted by hand — the registry reads the repository and every route table, test, gate and report falls out of it. This page shows the machine, the plan, and the <b>honest state of it.</b></p>
+  <div class="statstrip">
+    <div class="stat"><div class="n">424</div><div class="l">Capabilities</div></div>
+    <div class="stat ok"><div class="n">424</div><div class="l">Rendering</div></div>
+    <div class="stat blue"><div class="n">99</div><div class="l">Data-backed</div></div>
+    <div class="stat warn"><div class="n">16</div><div class="l">Golden paths failing</div></div>
+    <div class="stat warn"><div class="n">0</div><div class="l">Production ready</div></div>
+    <div class="stat blue"><div class="n">24</div><div class="l">Agents</div></div>
+  </div>
+  <p class="plain" style="margin-top:26px"><b>Every figure on this page is generated</b> — from the registry regeneration of 2 Sep 2026, the golden-path run of 2 Sep 2026 and the release-gate run of 2 Sep 2026. One section is not: the effort projection is a human estimate of 21 Aug 2026, and it says so where it appears.</p>
+</header>
+</div>
+
+<!-- ============ HERO DIAGRAM ============ -->
+<section class="diagram-section">
+<div class="wrap">
+  <div class="kicker">The whole idea in one picture</div>
+  <h2>Two sources of scope feed one registry — and the registry writes the rest</h2>
+  <p class="sub">The design bundle says what things <em>look like</em>. The spec screenshots say what capabilities <em>exist</em>. Only 24 names overlap, so their union — not their sum — is the real scope: 213 + 235 − 24 = 424. A build script walks both, plus the router and the source tree, and emits everything downstream.</p>
+  <p class="plain"><b>In plain words:</b> nobody keeps a list of screens in a spreadsheet. A program reads the actual code and drawings every time, so a number in a document can never quietly go stale.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 560" role="img" aria-label="Diagram: design files and spec screens feed the master registry, which generates the route table, tests, matrix, gap report, release gates and command deck.">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#DA7756" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+      <marker id="arb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#6ba4d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+      <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="16"/>
+      </filter>
+    </defs>
+
+    <!-- inputs -->
+    <g class="node" data-tip="213 screens from the design bundle, 191 of them backed by a hand-authored .dc.html prototype, plus 113 separate mobile layouts. These are authoritative for look, layout and interaction — but not for which capabilities exist.">
+      <rect class="box" x="40" y="122" width="216" height="80" rx="15" fill="rgba(107,164,217,0.07)" stroke="rgba(107,164,217,0.55)" stroke-width="1.5"/>
+      <g transform="translate(78,162)" fill="none" stroke="#6ba4d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M -11 -12 h9 l5 5 v19 h-14 z"/><path d="M -2 -12 v5 h5"/><path d="M -7 -1 h6 M -7 3 h6 M -7 7 h4"/>
+      </g>
+      <text x="108" y="157" class="nlabel">213 designs</text>
+      <text x="108" y="178" class="nsub">look &amp; behaviour</text>
+    </g>
+
+    <g class="node" data-tip="235 reference screenshots and spec pages from the existing product; 24 of them name a screen the design bundle already covers, so 211 enter the registry on their own. Authoritative for which capabilities must exist — but their palette is forbidden by the brand, so they contribute structure and content only.">
+      <rect class="box" x="40" y="358" width="216" height="80" rx="15" fill="rgba(107,164,217,0.07)" stroke="rgba(107,164,217,0.55)" stroke-width="1.5"/>
+      <g transform="translate(78,398)" fill="none" stroke="#6ba4d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="-11" y="-10" width="22" height="16" rx="2"/><path d="M -5 10 h10 M 0 6 v4"/>
+      </g>
+      <text x="108" y="393" class="nlabel">235 spec screens</text>
+      <text x="108" y="414" class="nsub">what must exist</text>
+    </g>
+
+    <text x="148" y="286" text-anchor="middle" class="callout">only 24 names overlap</text>
+    <text x="148" y="306" text-anchor="middle" class="callout" fill="#6ba4d9">→ union, not sum</text>
+
+    <!-- input connectors -->
+    <path d="M 256 162 C 360 162, 430 224, 520 262" fill="none" stroke="rgba(107,164,217,0.25)" stroke-width="2" marker-end="url(#arb)"/>
+    <path d="M 256 162 C 360 162, 430 224, 520 262" fill="none" stroke="#6ba4d9" stroke-width="2" class="flow"/>
+    <path d="M 256 398 C 360 398, 430 336, 520 298" fill="none" stroke="rgba(107,164,217,0.25)" stroke-width="2" marker-end="url(#arb)"/>
+    <path d="M 256 398 C 360 398, 430 336, 520 298" fill="none" stroke="#6ba4d9" stroke-width="2" class="flow"/>
+
+    <!-- hub -->
+    <g class="node" data-tip="build-registry.mjs discovers rather than transcribes: it walks the designs, the specs, the router, the screen files and the test artefacts, reconciles them, and emits MASTER_REGISTRY.json — 213 entries traced to the design bundle plus 211 to the feature map. Running it is how any total is obtained.">
+      <circle cx="600" cy="280" r="112" fill="rgba(218,119,86,0.16)" filter="url(#soft)" class="pulse"/>
+      <circle cx="600" cy="280" r="86" fill="rgba(218,119,86,0.06)" stroke="rgba(218,119,86,0.3)" stroke-width="1.5"/>
+      <circle class="box" cx="600" cy="280" r="66" fill="#16110e" stroke="#DA7756" stroke-width="2.5"/>
+      <text x="600" y="266" text-anchor="middle" class="nbig">424</text>
+      <text x="600" y="290" text-anchor="middle" class="nsub" fill="#DA7756">capabilities</text>
+      <text x="600" y="310" text-anchor="middle" class="nsub">discovered</text>
+      <text x="600" y="392" text-anchor="middle" class="nlabel">MASTER REGISTRY</text>
+      <text x="600" y="413" text-anchor="middle" class="nsub">generated on every run — never hand-edited</text>
+    </g>
+
+    <!-- outputs -->
+    <g>
+      <path d="M 666 258 C 780 210, 830 78, 914 66" fill="none" stroke="rgba(218,119,86,0.22)" stroke-width="1.8" marker-end="url(#ar)"/>
+      <path d="M 666 258 C 780 210, 830 78, 914 66" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+      <path d="M 666 266 C 790 244, 830 162, 914 150" fill="none" stroke="rgba(218,119,86,0.22)" stroke-width="1.8" marker-end="url(#ar)"/>
+      <path d="M 666 266 C 790 244, 830 162, 914 150" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+      <path d="M 666 274 C 800 270, 840 240, 914 234" fill="none" stroke="rgba(218,119,86,0.22)" stroke-width="1.8" marker-end="url(#ar)"/>
+      <path d="M 666 274 C 800 270, 840 240, 914 234" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+      <path d="M 666 288 C 800 296, 840 314, 914 318" fill="none" stroke="rgba(218,119,86,0.22)" stroke-width="1.8" marker-end="url(#ar)"/>
+      <path d="M 666 288 C 800 296, 840 314, 914 318" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+      <path d="M 666 296 C 790 322, 830 390, 914 402" fill="none" stroke="rgba(218,119,86,0.22)" stroke-width="1.8" marker-end="url(#ar)"/>
+      <path d="M 666 296 C 790 322, 830 390, 914 402" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+      <path d="M 666 304 C 780 356, 830 474, 914 486" fill="none" stroke="rgba(218,119,86,0.22)" stroke-width="1.8" marker-end="url(#ar)"/>
+      <path d="M 666 304 C 780 356, 830 474, 914 486" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+    </g>
+
+    <g class="node" data-tip="One route per registry entry, composed from per-domain barrels. Adding a domain is one orchestrator edit — no product agent touches the router.">
+      <rect class="box" x="916" y="38" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
+      <text x="940" y="72" class="nlabel" style="font-size:15px">Route table</text>
+    </g>
+    <g class="node" data-tip="Route coverage is generated, not written. Every registry entry produces its own check: renders, correct shell, correct permission, no console error. Nobody maintains 424 checks by hand.">
+      <rect class="box" x="916" y="122" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
+      <text x="940" y="156" class="nlabel" style="font-size:15px">424 route checks</text>
+    </g>
+    <g class="node" data-tip="SALIS_AUTO_MASTER_MATRIX.md — every capability × desktop, tablet, mobile, Arabic, RTL, data, RBAC, tests, status. Regenerated, never edited.">
+      <rect class="box" x="916" y="206" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
+      <text x="940" y="240" class="nlabel" style="font-size:15px">Capability matrix</text>
+    </g>
+    <g class="node" data-tip="Every line in the gap report is a query over the registry, not an opinion: 5 open blockers, 0 screen files no route reaches, 0 unregistered designs, 1 designed mobile layout still owed.">
+      <rect class="box" x="916" y="290" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
+      <text x="940" y="324" class="nlabel" style="font-size:15px">Gap report</text>
+    </g>
+    <g class="node" data-tip="14 release gates, each decided by a check that ran rather than by reading a status document: 8 PASS, 3 FAIL, 3 UNCHECKABLE as of 2 Sep 2026. Plus two ratchets: placeholders may fall, never rise; forbidden colours may fall, never rise. They become hard zero-gates at W5. A gate that fails on every run gets switched off within a day — one that forbids regression gets obeyed.">
+      <rect class="box" x="916" y="374" width="248" height="56" rx="13" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.45)"/>
+      <text x="940" y="408" class="nlabel" style="font-size:15px">Release gates</text>
+    </g>
+    <g class="node" data-tip="The Command Deck — waves, capabilities, golden paths, release score and gates, rendered from the same dataset. Statuses are read from the repository, not clicked by a human.">
+      <rect class="box" x="916" y="458" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
+      <text x="940" y="492" class="nlabel" style="font-size:15px">Command deck</text>
+    </g>
+
+    <text x="1040" y="536" text-anchor="middle" class="callout">a hardcoded count is itself a defect</text>
+  </svg>
+  <div class="capbar" data-cap="hero">Hover any node to see what it does.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ WAVES ============ -->
+<section class="alt">
+<div class="wrap">
+  <div class="kicker">Delivery model</div>
+  <h2>Six waves, and one of them holds up everything else</h2>
+  <p class="sub">Ten product agents cannot start until four foundation agents finish. That single edge — W1 → W2 — is the whole schedule. Shortening W1 shortens the project; nothing else does.</p>
+  <p class="plain"><b>In plain words:</b> you can't build rooms before the foundation is poured. 10 builders stand idle while 4 pour it, so the fastest thing you can do is put more people on the foundation.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 300" role="img" aria-label="Pipeline: waves W0 reconnaissance through W5 certification, with W1 marked as the critical path.">
+    <defs>
+      <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#DA7756" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <line x1="90" y1="150" x2="1120" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+    <line x1="90" y1="150" x2="1120" y2="150" stroke="#DA7756" stroke-width="2" class="flow" marker-end="url(#ar2)"/>
+
+    <!-- W1 spotlight -->
+    <rect x="248" y="70" width="152" height="178" rx="18" fill="rgba(218,119,86,0.09)" stroke="rgba(218,119,86,0.4)" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <text x="324" y="60" text-anchor="middle" class="layerlabel" fill="#DA7756">CRITICAL PATH</text>
+
+    <g class="node" data-tip="W0 Reconnaissance — Agents 01 Orchestrator · 02 Registry Auditor. Repository audit · Master registry, matrix and generated coverage gates. Exit: Control system, master registry, gap report, dependency graph and risk register exist. No mass implementation yet.">
+      <circle class="box" cx="90" cy="150" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <text x="90" y="157" text-anchor="middle" class="stepnum">W0</text>
+      <text x="90" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Recon</text>
+      <text x="90" y="232" text-anchor="middle" class="nsub">registry + gates</text>
+    </g>
+    <g class="node" data-tip="W1 Foundation — the critical path — Agents 04 UI · 05 Backend/Data · 06 Auth/Security · 07 Test Infrastructure. UI foundation, modal, form, shells, 23 dead CTAs · Server, schema, RLS, auth lifecycle, RBAC, audit, repository swap. Exit: Contracts stable: primitives, repository + API + schema, authn/authz, test harness. Product agents idle until this lands.">
+      <circle class="box" cx="324" cy="150" r="34" fill="#1d130e" stroke="#DA7756" stroke-width="2.6"/>
+      <text x="324" y="157" text-anchor="middle" class="stepnum">W1</text>
+      <text x="324" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Foundation</text>
+      <text x="324" y="232" text-anchor="middle" class="nsub">4 agents · everything waits</text>
+    </g>
+    <g class="node" data-tip="W2 Product parallelisation — Agents 08 Workshop · 09 CRM · 10 Inventory · 11 Procurement · 12 Accounting · 13 Insurance/Fleet/Loans · 14 HR · 15 AI · 16 Portals · 17 Website. Customers and vehicles — CRUD and detail pages · Workshop chain, estimates, invoices, payments · Inventory and procurement · Accounting, tax, reconciliation, reports · AI hub and administration · Portals, kiosk, customer mobile app · Public website and landing system · Feature-map screens. Exit: Every domain capability implemented against real endpoints.">
+      <circle class="box" cx="558" cy="150" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <text x="558" y="157" text-anchor="middle" class="stepnum">W2</text>
+      <text x="558" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Product</text>
+      <text x="558" y="232" text-anchor="middle" class="nsub">10 domain agents</text>
+    </g>
+    <g class="node" data-tip="W3 Cross-cutting hardening — overlaps W2 — Agents 18 Mobile/Tablet · 19 Arabic/RTL · 20 Accessibility · 21 Security · 22 Performance. Integrations, files, notifications, search, print, security, a11y, performance · Responsive, tablet and Arabic/RTL sweep (57 mobile backfills). Exit: Sweeps stay current with W2 rather than queueing behind it.">
+      <circle class="box" cx="792" cy="150" r="30" fill="#16110e" stroke="#6ba4d9" stroke-width="2"/>
+      <text x="792" y="157" text-anchor="middle" class="stepnum">W3</text>
+      <text x="792" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Hardening</text>
+      <text x="792" y="232" text-anchor="middle" class="nsub">runs alongside W2</text>
+    </g>
+    <g class="node" data-tip="W4 System integration — Agents 03 Release Manager · 23 QA/E2E. Full suite, contract, integrity, concurrency, large dataset. Exit: Full regression green: typecheck, build, unit, integration, E2E, RBAC, security, visual, responsive, RTL, performance.">
+      <circle class="box" cx="956" cy="150" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <text x="956" y="157" text-anchor="middle" class="stepnum">W4</text>
+      <text x="956" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Integration</text>
+      <text x="956" y="232" text-anchor="middle" class="nsub">23 golden paths</text>
+    </g>
+    <g class="node" data-tip="W5 Certification — Agents 03 Release Manager · 24 Documentation. Backup/DR restore drill, CI/CD, staging, certification report. Exit: Registry fully verified, all gates pass, certification report generated.">
+      <circle class="box" cx="1120" cy="150" r="30" fill="#16110e" stroke="#d9b86b" stroke-width="2"/>
+      <text x="1120" y="157" text-anchor="middle" class="stepnum">W5</text>
+      <text x="1120" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Certify</text>
+      <text x="1120" y="232" text-anchor="middle" class="nsub">22 × ≥9.5</text>
+    </g>
+
+    <!-- W3 overlap bracket -->
+    <path d="M 558 118 C 620 82, 720 82, 792 118" fill="none" stroke="rgba(107,164,217,0.5)" stroke-width="1.6" class="flow-slow"/>
+    <text x="675" y="76" text-anchor="middle" class="callout" fill="#6ba4d9">hardening does not queue behind product</text>
+  </svg>
+  <div class="capbar" data-cap="waves">Hover a wave to see who owns it and what "done" means there.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ ARCHITECTURE / THE SEAM ============ -->
+<section class="diagram-section">
+<div class="wrap">
+  <div class="kicker">Architecture</div>
+  <h2>Every screen talks to a seam, so the backend can land without moving one of them</h2>
+  <p class="sub">Screens never call the network. They call a <code>Collection&lt;T&gt;</code> repository. Today that repository reads fixtures; tomorrow the same interface is implemented over HTTP and selected by an environment variable. The database is seeded from the very fixtures the app renders now — so every assertion that passes today must still pass after the swap. A failure means the swap is wrong, not the test.</p>
+  <p class="plain"><b>In plain words:</b> the app is wired to a socket, not to a wire. You can swap what's behind the socket — fake data for a real database — and none of the 424 screens notice.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 620" role="img" aria-label="Diagram: screens call hooks which call the repository seam, which today reads fixtures and tomorrow reaches a Fastify server, authorization, row-level security and PostgreSQL.">
+    <defs>
+      <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#DA7756" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+      <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#8a8a93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <!-- screens -->
+    <g class="node" data-tip="424 capabilities across 9 surfaces, largest first: app · public · auth · reference · customer app · portal · call-centre · native · kiosk. 28 of them are the reference pattern library and 12 are external dependencies.">
+      <rect class="box" x="380" y="24" width="440" height="70" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+      <text x="600" y="56" text-anchor="middle" class="nlabel">424 screens · 9 surfaces</text>
+      <text x="600" y="78" text-anchor="middle" class="nsub">app · public · auth · reference · customer app · portal · call-centre · native · kiosk</text>
+    </g>
+    <path d="M 600 94 L 600 130" stroke="#DA7756" stroke-width="2" marker-end="url(#ar3)"/>
+    <path d="M 600 94 L 600 130" stroke="#DA7756" stroke-width="2" class="flow"/>
+
+    <g class="node" data-tip="useCollection, useEntity, useCreate, useUpdate, useDelete — TanStack Query bindings with caching, invalidation, optimistic updates and rollback. No persistence logic ever lands in a visual component.">
+      <rect class="box" x="440" y="132" width="320" height="58" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
+      <text x="600" y="167" text-anchor="middle" class="nlabel" style="font-size:15px">Hooks · cache · optimistic rollback</text>
+    </g>
+    <path d="M 600 190 L 600 226" stroke="#DA7756" stroke-width="2" marker-end="url(#ar3)"/>
+    <path d="M 600 190 L 600 226" stroke="#DA7756" stroke-width="2" class="flow"/>
+
+    <!-- the seam -->
+    <g class="node" data-tip="The seam. Collection&lt;T&gt;: list, get, create, update, delete, bulk. Its shape does NOT change when the backend lands — httpRepository implements the same interface, chosen by VITE_API_URL. That is the entire point.">
+      <rect x="300" y="228" width="600" height="96" rx="20" fill="rgba(218,119,86,0.12)" filter="url(#soft)"/>
+      <rect class="box" x="316" y="234" width="568" height="84" rx="18" fill="#16110e" stroke="#DA7756" stroke-width="2.6"/>
+      <text x="600" y="268" text-anchor="middle" class="nlabel" style="font-size:18px">THE REPOSITORY SEAM</text>
+      <text x="600" y="294" text-anchor="middle" class="nsub">Collection&lt;T&gt; — list · get · create · update · delete · bulk</text>
+    </g>
+
+    <!-- fork -->
+    <path d="M 420 324 C 380 380, 340 390, 300 410" fill="none" stroke="rgba(138,138,147,0.4)" stroke-width="2" marker-end="url(#ar4)"/>
+    <path d="M 780 324 C 820 380, 860 390, 900 410" fill="none" stroke="rgba(218,119,86,0.3)" stroke-width="2" marker-end="url(#ar3)"/>
+    <path d="M 780 324 C 820 380, 860 390, 900 410" fill="none" stroke="#DA7756" stroke-width="2" class="flow"/>
+
+    <!-- today branch -->
+    <rect x="40" y="404" width="480" height="186" rx="18" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <text x="66" y="434" class="layerlabel">STILL FIXTURES — 285 capabilities</text>
+    <g class="node" data-tip="Collection.list() over generated/tables.ts — 35 mock tables ported from the design bundle. It renders. It does not persist. A reload loses everything. 285 of 424 capabilities are still on this branch.">
+      <rect class="box" x="70" y="452" width="420" height="56" rx="13" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+      <text x="280" y="486" text-anchor="middle" class="nlabel" style="font-size:15px">fixtures → generated/tables.ts</text>
+    </g>
+    <g class="node" data-tip="On this branch there is no server, so there is no security boundary: RequireAccess is convenience only and the client decides what it shows itself. The fixture repository refuses writes rather than pretending — it answers &quot;set VITE_API_URL to run against the API&quot; — which is why 16 golden paths stop at a disabled save control.">
+      <rect class="box" x="70" y="518" width="420" height="52" rx="13" fill="rgba(224,104,92,0.08)" stroke="rgba(224,104,92,0.4)"/>
+      <text x="280" y="550" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#f0958c">no server → no boundary, and no writes</text>
+    </g>
+
+    <!-- target branch -->
+    <rect x="600" y="404" width="560" height="186" rx="18" fill="rgba(218,119,86,0.04)" stroke="rgba(218,119,86,0.35)" stroke-width="1.5"/>
+    <text x="626" y="434" class="layerlabel" fill="#DA7756">ALREADY LANDED FOR 99 — same interface, real enforcement</text>
+    <g class="node" data-tip="Node 20 + Fastify + TypeScript. One language across the stack; Zod schemas in packages/contract are imported by both sides, so one schema is the API type, the server guard and the form validator. The server suite ran 2,473 tests green on 2 Sep 2026.">
+      <rect class="box" x="626" y="452" width="150" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="701" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Fastify</text>
+      <text x="701" y="496" text-anchor="middle" class="nsub">Zod contract</text>
+    </g>
+    <g class="node" data-tip="JWT access token 15 minutes + rotating refresh 30 days with reuse detection, argon2id hashing. Claims carry subject, role, org_id, branch_id and scope.">
+      <rect class="box" x="790" y="452" width="150" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="865" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Auth + AuthZ</text>
+      <text x="865" y="496" text-anchor="middle" class="nsub">14 roles × 28 modules</text>
+    </g>
+    <g class="node" data-tip="PostgreSQL 16 with Row-Level Security across 14 migrations. org_id and branch_id on every table, enforced by SET LOCAL app.org_id per request — not by a WHERE clause a developer must remember to write. The isolation run is refused outright if the application role is a superuser or carries BYPASSRLS, because either would pass every assertion vacuously.">
+      <rect class="box" x="954" y="452" width="182" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="1045" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Postgres + RLS</text>
+      <text x="1045" y="496" text-anchor="middle" class="nsub">tenant isolation</text>
+    </g>
+    <g class="node" data-tip="Money is stored as integer halalas and formatted only at the boundary. No financial value is computed in the browser and trusted — the client may display a total; the server decides it.">
+      <rect class="box" x="626" y="518" width="510" height="52" rx="13" fill="rgba(218,119,86,0.07)" stroke="rgba(218,119,86,0.35)"/>
+      <text x="881" y="550" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#DA7756">money in integer halalas · the server decides every total</text>
+    </g>
+
+    <text x="600" y="364" text-anchor="middle" class="callout">the seed is today's fixtures — so every current test must still pass after the swap</text>
+  </svg>
+  <div class="capbar" data-cap="arch">Hover a layer for what it actually guarantees.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ RBAC / ENFORCEMENT ============ -->
+<section class="alt">
+<div class="wrap">
+  <div class="kicker">Security</div>
+  <h2>The client gate is a courtesy. The wall is on the server.</h2>
+  <p class="sub">14 roles × 28 modules × 6 actions is a matrix the app enforces in the browser — which is convenience, not security. Every sensitive operation has to re-validate identity, organization, branch, role, permission, resource ownership and the business rule on the server. Bypassing the UI must still be denied. A cross-tenant read returns <b>404, never 403</b> — a 403 confirms the record exists.</p>
+  <p class="plain"><b>In plain words:</b> hiding a button doesn't stop anyone. The check that matters happens after the request leaves the browser, where the user can't touch it.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 420" role="img" aria-label="Diagram: a request passes the client gate, crosses the trust boundary, and is checked by authentication, authorization, tenant isolation and business rules before reaching the database. A direct API call bypassing the UI is stopped at the same wall.">
+    <defs>
+      <marker id="ar5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#DA7756" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#e0685c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <!-- trust boundary -->
+    <line x1="360" y1="30" x2="360" y2="392" stroke="rgba(224,104,92,0.5)" stroke-width="2" stroke-dasharray="8 8"/>
+    <text x="348" y="52" text-anchor="end" class="layerlabel">UNTRUSTED</text>
+    <text x="372" y="52" class="layerlabel" fill="#DA7756">TRUST BOUNDARY</text>
+
+    <g class="node" data-tip="RequireAccess → SessionProvider.canScreen → SCREEN_MODULE → PERMS. It hides nav items and blocks routes. It is UI polish, and it is explicitly documented as not a security boundary.">
+      <rect class="box" x="40" y="128" width="270" height="76" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="175" y="162" text-anchor="middle" class="nlabel" style="font-size:15px">Client permission gate</text>
+      <text x="175" y="184" text-anchor="middle" class="nsub">convenience only</text>
+    </g>
+
+    <g class="node" data-tip="An attacker skips the app entirely and calls the API directly, or types a URL. The isolation tests do exactly this: Org A → Org B, Branch A → Branch B, by direct URL AND direct API call.">
+      <rect class="box" x="40" y="272" width="270" height="76" rx="15" fill="rgba(224,104,92,0.07)" stroke="rgba(224,104,92,0.42)"/>
+      <text x="175" y="306" text-anchor="middle" class="nlabel" style="font-size:15px" fill="#f0958c">Direct API call</text>
+      <text x="175" y="328" text-anchor="middle" class="nsub">UI bypassed entirely</text>
+    </g>
+
+    <path d="M 310 166 C 336 166, 340 176, 360 186" fill="none" stroke="#DA7756" stroke-width="2" marker-end="url(#ar5)"/>
+    <path d="M 310 310 C 336 310, 340 250, 360 214" fill="none" stroke="rgba(224,104,92,0.6)" stroke-width="2" marker-end="url(#arr)" class="flow"/>
+
+    <!-- server chain -->
+    <g>
+      <path d="M 420 200 L 1120 200" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+      <path d="M 420 200 L 1120 200" stroke="#DA7756" stroke-width="2" class="flow" marker-end="url(#ar5)"/>
+    </g>
+    <g class="node" data-tip="Who are you? JWT verified server-side, session revocable, refresh-token reuse detected.">
+      <circle class="box" cx="450" cy="200" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <g transform="translate(450,198)" fill="none" stroke="#f5f5f7" stroke-width="1.7" stroke-linecap="round"><circle cx="0" cy="-5" r="4.5"/><path d="M -7 9 C -7 2, 7 2, 7 9"/></g>
+      <text x="450" y="256" text-anchor="middle" class="nlabel" style="font-size:14px">Authenticate</text>
+    </g>
+    <g class="node" data-tip="requirePermission(module, action) · requireApproval(amount) · segregation-of-duties guard. The server matrix must be asserted equal to the client matrix, never written from a document.">
+      <circle class="box" cx="618" cy="200" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <g transform="translate(618,199)" fill="none" stroke="#f5f5f7" stroke-width="1.7" stroke-linecap="round"><path d="M -7 -1 v-4 a7 7 0 0 1 14 0 v4"/><rect x="-8" y="-1" width="16" height="11" rx="2.5"/></g>
+      <text x="618" y="256" text-anchor="middle" class="nlabel" style="font-size:14px">Authorize</text>
+      <text x="618" y="276" text-anchor="middle" class="nsub">ceilings · SOD</text>
+    </g>
+    <g class="node" data-tip="Row-Level Security via SET LOCAL app.org_id per request. A branch-scoped user cannot reach another branch; an 'own'-scoped user sees only their own records. Cross-tenant reads return 404, not 403.">
+      <circle class="box" cx="786" cy="200" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <g transform="translate(786,199)" fill="none" stroke="#f5f5f7" stroke-width="1.7"><circle cx="0" cy="0" r="9"/><ellipse cx="0" cy="0" rx="4" ry="9"/><path d="M -9 0 h18"/></g>
+      <text x="786" y="256" text-anchor="middle" class="nlabel" style="font-size:14px">Tenant isolation</text>
+      <text x="786" y="276" text-anchor="middle" class="nsub">RLS, not WHERE</text>
+    </g>
+    <g class="node" data-tip="Rules live once, in packages/contract/rules, as pure functions: invoice totals, VAT, rounding, approval limits, SOD, reservations, job states, refunds. The server calls them for enforcement; the form calls them for the inline message.">
+      <circle class="box" cx="954" cy="200" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
+      <g transform="translate(954,199)" fill="none" stroke="#f5f5f7" stroke-width="1.7"><circle cx="0" cy="0" r="4"/><path d="M 0 -9 v3 M 0 6 v3 M -9 0 h3 M 6 0 h3 M -6.4 -6.4 l2.1 2.1 M 4.3 4.3 l2.1 2.1 M 6.4 -6.4 l-2.1 2.1 M -4.3 4.3 l-2.1 2.1"/></g>
+      <text x="954" y="256" text-anchor="middle" class="nlabel" style="font-size:14px">Business rules</text>
+    </g>
+    <g class="node" data-tip="Every sensitive mutation writes an immutable audit row: actor, role, organization, branch, action, entity, before, after, reason, source, requestId. Application users cannot edit or delete it.">
+      <circle class="box" cx="1122" cy="200" r="30" fill="#16110e" stroke="#d9b86b" stroke-width="2"/>
+      <g transform="translate(1122,199)" fill="none" stroke="#d9b86b" stroke-width="1.7" stroke-linecap="round"><ellipse cx="0" cy="-6" rx="9" ry="3.5"/><path d="M -9 -6 v12 c0 2 4 3.5 9 3.5 s9 -1.5 9 -3.5 v-12"/><path d="M -9 0 c0 2 4 3.5 9 3.5 s9 -1.5 9 -3.5"/></g>
+      <text x="1122" y="256" text-anchor="middle" class="nlabel" style="font-size:14px">DB + audit</text>
+    </g>
+
+    <text x="770" y="112" text-anchor="middle" class="callout">both routes hit the same chain — that is what makes it a boundary</text>
+
+    <!-- ceilings strip -->
+    <g class="node" data-tip="Approval ceilings, enforced today by canApprove(): Owner / CEO and Super Admin unlimited · Branch Manager 50,000 · Accountant 25,000 · Procurement Agent 20,000 · HR Manager 15,000 · Storekeeper 10,000 · Service Advisor 5,000 · Technician, QC Inspector, Receptionist, Call Center Agent, Supplier, Customer 0. The screen states the ceiling up front rather than failing on submit.">
+      <rect class="box" x="420" y="330" width="700" height="56" rx="14" fill="rgba(217,184,107,0.06)" stroke="rgba(217,184,107,0.32)"/>
+      <text x="770" y="364" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#d9b86b">SAR ceilings enforced today · manager 50k · accountant 25k · procurement 20k · 6 roles at 0</text>
+    </g>
+  </svg>
+  <div class="capbar" data-cap="rbac">Hover a checkpoint to see what it validates.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ HONEST STATE ============ -->
+<section class="diagram-section">
+<div class="wrap">
+  <div class="kicker">Where it actually stands</div>
+  <h2>Rendering is 100%. Real data is 23%, and nothing is production-ready.</h2>
+  <p class="sub">A route returning HTTP 200 is the floor, not the ceiling — the lowest rung above "discovered", five rungs below production-ready. This is the registry's own view of the same 424 capabilities, dimension by dimension.</p>
+  <p class="plain"><b>In plain words:</b> the screens are drawn and you can click to all of them. 99 of them now save to a real database and 285 still cannot. 4 have been checked on a tablet. 0 are finished.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 518" role="img" aria-label="Bar chart of coverage by dimension: route check exists 424 of 424, renders on desktop 424 of 424, asserts real content 424 of 424, backed by real data 99 of 424, designed mobile built 112 of 113, tablet verified 4 of 424, arabic certified 82 of 424, rtl certified 1 of 424, production ready 0 of 424.">
+    <!-- gridlines -->
+    <g stroke="rgba(255,255,255,0.07)" stroke-width="1">
+      <line x1="330" y1="26" x2="330" y2="470"/>
+      <line x1="530" y1="26" x2="530" y2="470"/>
+      <line x1="730" y1="26" x2="730" y2="470"/>
+      <line x1="930" y1="26" x2="930" y2="470"/>
+      <line x1="1130" y1="26" x2="1130" y2="470"/>
+    </g>
+    <g class="callout" text-anchor="middle" font-size="11.5">
+      <text x="330" y="492">0%</text><text x="530" y="492">25%</text><text x="730" y="492">50%</text><text x="930" y="492">75%</text><text x="1130" y="492">100%</text>
+    </g>
+
+    <!-- rows generated from MASTER_REGISTRY.json: the bar width IS the ratio -->
+    <g class="node" data-tip="424 of 424. Every registry entry generates its own check: the route renders, in the right shell, with the right permission, with no console error.">
+      <text x="316" y="60" text-anchor="end" class="nlabel" style="font-size:14px">Route check exists</text>
+      <rect x="330" y="42" width="800" height="26" rx="6" fill="rgba(218,119,86,0.75)"/>
+      <text x="1146" y="61" class="nsub" fill="#DA7756">424 / 424</text>
+    </g>
+    <g class="node" data-tip="424 of 424 render a real screen; 0 are still placeholders. 28 entries are the reference pattern library and 12 are external dependencies — REFERENCE_ONLY and EXTERNAL_DEPENDENCY by design, not gaps.">
+      <text x="316" y="108" text-anchor="end" class="nlabel" style="font-size:14px">Renders on desktop</text>
+      <rect x="330" y="90" width="800" height="26" rx="6" fill="rgba(218,119,86,0.75)"/>
+      <text x="1146" y="109" class="nsub" fill="#DA7756">424 / 424</text>
+    </g>
+    <g class="node" data-tip="424 of 424 checks assert what is on the screen; 0 confirm a route returned 200 and nothing else. &quot;Returns 200&quot; is the failure mode the Definition of Done names explicitly, and it is now closed.">
+      <text x="316" y="156" text-anchor="end" class="nlabel" style="font-size:14px">Asserts real content</text>
+      <rect x="330" y="138" width="800" height="26" rx="6" fill="rgba(218,119,86,0.75)"/>
+      <text x="1146" y="157" class="nsub" fill="#DA7756">424 / 424</text>
+    </g>
+    <g class="node" data-tip="99 capabilities read the API; 285 still read fixtures and cannot persist. BLK-004 clears per capability as the backend lands behind the seam, not all at once.">
+      <text x="316" y="204" text-anchor="end" class="nlabel" style="font-size:14px">Backed by real data</text>
+      <rect x="330" y="186" width="187" height="26" rx="6" fill="rgba(217,184,107,0.7)"/>
+      <text x="533" y="205" class="nsub" fill="#d9b86b">99 / 424</text>
+    </g>
+    <g class="node" data-tip="113 screens ship a structurally different mobile design (table becomes a card list). 112 are built; 1 still owe theirs — BLK-006.">
+      <text x="316" y="252" text-anchor="end" class="nlabel" style="font-size:14px">Designed mobile built</text>
+      <rect x="330" y="234" width="793" height="26" rx="6" fill="rgba(218,119,86,0.75)"/>
+      <text x="1139" y="253" class="nsub" fill="#DA7756">112 / 113</text>
+    </g>
+    <g class="node" data-tip="BLK-008. e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.">
+      <text x="316" y="300" text-anchor="end" class="nlabel" style="font-size:14px">Tablet verified</text>
+      <rect x="330" y="282" width="8" height="26" rx="6" fill="rgba(224,104,92,0.9)"/>
+      <text x="354" y="301" class="nsub" fill="#f0958c">4 / 424</text>
+    </g>
+    <g class="node" data-tip="2,122 Arabic keys are ported and the primitives use logical CSS properties throughout, so layouts mirror by construction. 82 capabilities have been certified for strings, dates, numbers and LTR-pinned Latin runs.">
+      <text x="316" y="348" text-anchor="end" class="nlabel" style="font-size:14px">Arabic certified</text>
+      <rect x="330" y="330" width="155" height="26" rx="6" fill="rgba(217,184,107,0.7)"/>
+      <text x="501" y="349" class="nsub" fill="#d9b86b">82 / 424</text>
+    </g>
+    <g class="node" data-tip="Direction, icons, chevrons, tables, charts and scroll affordances, certified per capability. 0 known RTL hazards remain open in the registry, which is not the same as having checked every screen.">
+      <text x="316" y="396" text-anchor="end" class="nlabel" style="font-size:14px">RTL certified</text>
+      <rect x="330" y="378" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
+      <text x="349" y="397" class="nsub" fill="#f0958c">1 / 424</text>
+    </g>
+    <g class="node" data-tip="PRODUCTION_READY is the top of an eight-rung status ladder. An agent may mark its own work DONE; only agent 03 sets VERIFIED, and only after re-running the checks rather than reading the claim.">
+      <text x="316" y="444" text-anchor="end" class="nlabel" style="font-size:14px">Production ready</text>
+      <rect x="330" y="426" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
+      <text x="349" y="445" class="nsub" fill="#f0958c">0 / 424</text>
+    </g>
+  </svg>
+  <div class="capbar" data-cap="cov">Hover a bar for what the number actually means.</div>
+  </div>
+
+  <div class="statstrip" style="margin-top:30px">
+    <div class="stat blue"><div class="n">98</div><div class="l">Can read</div></div>
+    <div class="stat ok"><div class="n">32</div><div class="l">Can create</div></div>
+    <div class="stat ok"><div class="n">24</div><div class="l">Can update</div></div>
+    <div class="stat ok"><div class="n">24</div><div class="l">Can delete</div></div>
+  </div>
+  <p class="plain">98 capabilities read a record; 32 can create one, 24 can update one and 24 can delete one. <b>The product is broadly readable and barely writable</b> — the shape you get when screens land ahead of the endpoints behind them. Each is the registry's own <code>crud</code> field, counted per capability rather than asserted.</p>
+
+  <div class="note">
+    <div class="h">Measured, estimated and unmeasurable are three different things</div>
+    <p>Everything above is a query over <code>MASTER_REGISTRY.json</code>, regenerated on <b>2 Sep 2026</b>. The journeys below are a run record from <b>2 Sep 2026</b> and the release gates a check run from <b>2 Sep 2026</b>. Where the three disagree the later stamp wins, and the fix is to re-run the earlier one — never to reconcile two paragraphs of prose.</p>
+    <p>Exactly one section of this page is not measured. Nothing in the repository computes engineer-days, so the effort projection is a <b>human estimate of 21 Aug 2026</b>, declared in a file and labelled where it appears. The rule the rest of the page runs on is that <b>a count written into a document is a dated snapshot, not a fact</b> — so the one place a snapshot is unavoidable says so out loud, rather than borrowing the credibility of the generated numbers around it.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============ GOLDEN PATHS ============ -->
+<section class="alt diagram-section">
+<div class="wrap">
+  <div class="kicker">Journeys</div>
+  <h2>23 golden paths, and 7 of them can be walked end to end</h2>
+  <p class="sub">A golden path is a whole job somebody came to do — new customer to paid invoice, technician job completion, parts procurement. W4 named 23 of them as a plan; a runner now walks them against the running product, so these are a run record rather than a checklist. 23 journeys exist today and 0 paths have none, which the runner reports as its own state instead of counting it green.</p>
+  <p class="plain"><b>In plain words:</b> every screen opens, and the business still cannot carry a customer from the front desk to a paid invoice. That gap is the difference between screens working and the product working.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 260" role="img" aria-label="Grid of 23 golden paths measured on 2 Sep 2026: 7 passing, 16 failing, 0 unwritten.">
+    <text x="40" y="42" class="layerlabel">23 GOLDEN PATHS · MEASURED 2 Sep 2026</text>
+      <g class="node" data-tip="New customer to paid invoice — FAILING. [desktop] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — failed: Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search customers, vehicles, parts...') resolved to 2 elements: · 1) &lt;input readonly aria-label=&quot;Search customers, vehicles, parts...&quot; placeholder=&quot;Search customers, vehicles, parts...&quot; class=&quot;h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]&quot;/&gt; aka getByRole('textbox', { name: 'Search customers, vehicles,' })
+[desktop] e2e/new-customer-to-paid-invoice.spec.ts:89 › New Customer to Paid Invoice (Golden Path 1) › invoice preview renders a tax invoice — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Tax Invoice&quot;
+[mobile] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — failed: Test timeout of 30000ms exceeded.
+[mobile] e2e/new-customer-to-paid-invoice.spec.ts:89 › New Customer to Paid Invoice (Golden Path 1) › invoice preview renders a tax invoice — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Tax Invoice&quot;
+[desktop] e2e/new-customer-to-paid-invoice.spec.ts:96 › New customer to paid invoice lifecycle › job cards → check-in → estimate → invoice create → payment — failed: Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search customers, vehicles, parts...') resolved to 2 elements: · 1) &lt;input readonly aria-label=&quot;Search customers, vehicles, parts...&quot; placeholder=&quot;Search customers, vehicles, parts...&quot; class=&quot;h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]&quot;/&gt; aka getByRole('textbox', { name: 'Search customers, vehicles,' })
+… and 1 more in the same spec">
+        <rect class="box" x="40" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="63" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">1</text>
+      </g>
+      <g class="node" data-tip="Existing customer service — FAILING. [desktop] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Job History&quot;
+[desktop] e2e/existing-customer-service.spec.ts:20 › Existing Customer Service (Golden Path 2) › vehicle record loads with coverage details — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Comprehensive Coverage&quot;
+[desktop] e2e/existing-customer-service.spec.ts:26 › Existing Customer Service (Golden Path 2) › job card detail loads for the returning vehicle — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[desktop] e2e/existing-customer-service.spec.ts:32 › Existing Customer Service (Golden Path 2) › customer feedback records a satisfaction rating — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Average Rating&quot;
+[mobile] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Job History&quot;
+… and 5 more in the same spec">
+        <rect class="box" x="96" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="119" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">2</text>
+      </g>
+      <g class="node" data-tip="Mobile customer booking — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="152" y="70" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="175" y="90" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">3</text>
+      </g>
+      <g class="node" data-tip="Technician job completion — FAILING. [desktop] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestly disabled — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[mobile] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestly disabled — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;">
+        <rect class="box" x="208" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="231" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">4</text>
+      </g>
+      <g class="node" data-tip="Customer estimate approval — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="264" y="70" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="287" y="90" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">5</text>
+      </g>
+      <g class="node" data-tip="Parts procurement — FAILING. [desktop] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 30000ms exceeded.
+[desktop] e2e/parts-procurement.spec.ts:33 › Parts Procurement (Golden Path 6) › purchase order detail loads with a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 30000ms exceeded.
+[mobile] e2e/parts-procurement.spec.ts:33 › Parts Procurement (Golden Path 6) › purchase order detail loads with a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/parts-procurement.spec.ts:40 › Parts procurement lifecycle › raise request → compare quotations by rating → confirm the PO — failed: Test timeout of 90000ms exceeded.
+… and 1 more in the same spec">
+        <rect class="box" x="320" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="343" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">6</text>
+      </g>
+      <g class="node" data-tip="Inventory receiving — FAILING. [desktop] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/inventory-receiving.spec.ts:13 › Inventory Receiving (Golden Path 7) › inventory hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Inventory &amp; Parts Management&quot;
+[mobile] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/inventory-receiving.spec.ts:40 › Inventory receiving lifecycle › purchase order → goods arrive at the Receiving zone → stock reports update — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/inventory-receiving.spec.ts:40 › Inventory receiving lifecycle › purchase order → goods arrive at the Receiving zone → stock reports update — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;">
+        <rect class="box" x="376" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="399" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">7</text>
+      </g>
+      <g class="node" data-tip="Inventory consumption — FAILING. [mobile] e2e/inventory-consumption.spec.ts:24 › Inventory Consumption (Golden Path 8) › inventory hub totals reflect current parts stock — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Inventory &amp; Parts Management&quot;
+[mobile] e2e/inventory-consumption.spec.ts:32 › Inventory consumption lifecycle › parts billed on the job card → consumption visible at QC and on the technician portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Inventory &amp; Parts Management&quot;">
+        <rect class="box" x="432" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="455" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">8</text>
+      </g>
+      <g class="node" data-tip="Supplier order — FAILING. [desktop] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[desktop] e2e/supplier-order.spec.ts:29 › Supplier Order (Golden Path 9) › owner sees the purchase order the supplier order is billed against — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[mobile] e2e/supplier-order.spec.ts:29 › Supplier Order (Golden Path 9) › owner sees the purchase order the supplier order is billed against — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/supplier-order.spec.ts:37 › Supplier order lifecycle › supplier fulfils the order → procurement tracks the requisition → office holds the PO — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+… and 1 more in the same spec">
+        <rect class="box" x="40" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="63" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">9</text>
+      </g>
+      <g class="node" data-tip="CRM lead conversion — FAILING. [desktop] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Activity Timeline&quot;
+[desktop] e2e/crm-lead-conversion.spec.ts:48 › CRM Lead Conversion (Golden Path 10) › customer feedback page loads with ratings — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Average Rating&quot;
+[mobile] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Activity Timeline&quot;
+[mobile] e2e/crm-lead-conversion.spec.ts:48 › CRM Lead Conversion (Golden Path 10) › customer feedback page loads with ratings — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Average Rating&quot;">
+        <rect class="box" x="96" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="119" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">10</text>
+      </g>
+      <g class="node" data-tip="Insurance claim — FAILING. [desktop] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;
+[mobile] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;
+[desktop] e2e/insurance-claim.spec.ts:41 › Insurance claim lifecycle › owner views claims → reports → customer sees insurance — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;
+[mobile] e2e/insurance-claim.spec.ts:41 › Insurance claim lifecycle › owner views claims → reports → customer sees insurance — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;">
+        <rect class="box" x="152" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="175" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">11</text>
+      </g>
+      <g class="node" data-tip="Fleet contract — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="208" y="110" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="231" y="130" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">12</text>
+      </g>
+      <g class="node" data-tip="Loan workflow — FAILING. [desktop] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Applications&quot;
+[mobile] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Applications&quot;">
+        <rect class="box" x="264" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="287" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">13</text>
+      </g>
+      <g class="node" data-tip="Employee onboarding — FAILING. [desktop] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;HR Management&quot;
+[desktop] e2e/employee-onboarding.spec.ts:33 › Employee Onboarding (Golden Path 14) › staff performance review page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Performance Reviews&quot;
+[desktop] e2e/employee-onboarding.spec.ts:39 › Employee Onboarding (Golden Path 14) › timesheet management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Timesheet Management&quot;
+[desktop] e2e/employee-onboarding.spec.ts:51 › Employee Onboarding (Golden Path 14) › training LMS page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Training &amp; LMS&quot;
+[mobile] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;HR Management&quot;
+… and 5 more in the same spec">
+        <rect class="box" x="320" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="343" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">14</text>
+      </g>
+      <g class="node" data-tip="Organization / branch setup — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="376" y="110" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="399" y="130" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">15</text>
+      </g>
+      <g class="node" data-tip="User invitation + RBAC — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="432" y="110" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="455" y="130" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">16</text>
+      </g>
+      <g class="node" data-tip="Accounting reconciliation — FAILING. [desktop] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;
+[mobile] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;
+[desktop] e2e/accounting-reconciliation.spec.ts:59 › Accounting reconciliation lifecycle › chart of accounts → journal entries → bank reconciliation → financial reports → tax — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;
+[mobile] e2e/accounting-reconciliation.spec.ts:59 › Accounting reconciliation lifecycle › chart of accounts → journal entries → bank reconciliation → financial reports → tax — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;">
+        <rect class="box" x="40" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="63" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">17</text>
+      </g>
+      <g class="node" data-tip="Report generation — FAILING. [desktop] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;
+[mobile] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;
+[desktop] e2e/report-generation.spec.ts:83 › Report generation lifecycle › reports hub → financial → executive → inventory → BI dashboard — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;
+[mobile] e2e/report-generation.spec.ts:83 › Report generation lifecycle › reports hub → financial → executive → inventory → BI dashboard — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;">
+        <rect class="box" x="96" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="119" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">18</text>
+      </g>
+      <g class="node" data-tip="Customer portal — FAILING. [desktop] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[mobile] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[desktop] e2e/customer-portal.spec.ts:96 › Customer portal lifecycle › portal → booking → service tracking → wallet → orders — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[mobile] e2e/customer-portal.spec.ts:96 › Customer portal lifecycle › portal → booking → service tracking → wallet → orders — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;">
+        <rect class="box" x="152" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="175" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">19</text>
+      </g>
+      <g class="node" data-tip="Technician portal — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="208" y="150" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="231" y="170" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">20</text>
+      </g>
+      <g class="node" data-tip="Supplier portal — FAILING. [desktop] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[mobile] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[desktop] e2e/supplier-portal.spec.ts:46 › Supplier Portal (Golden Path 21) › owner views › purchase order page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/supplier-portal.spec.ts:46 › Supplier Portal (Golden Path 21) › owner views › purchase order page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/supplier-portal.spec.ts:79 › Supplier portal lifecycle › supplier portal → procurement → purchase orders → parts network — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+… and 1 more in the same spec">
+        <rect class="box" x="264" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="287" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">21</text>
+      </g>
+      <g class="node" data-tip="Call center — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="320" y="150" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="343" y="170" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">22</text>
+      </g>
+      <g class="node" data-tip="Kiosk — FAILING. [desktop] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;SALIS AUTO&quot;
+[desktop] e2e/kiosk.spec.ts:23 › Kiosk (Golden Path 23) › typing a plate enables the button, but no live API keeps it disabled — failed: Error: expect(locator).toBeDisabled() failed · Locator: getByRole('button', { name: 'Find My Vehicle' })
+[mobile] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;SALIS AUTO&quot;
+[mobile] e2e/kiosk.spec.ts:23 › Kiosk (Golden Path 23) › typing a plate enables the button, but no live API keeps it disabled — failed: Error: expect(locator).toBeDisabled() failed · Locator: getByRole('button', { name: 'Find My Vehicle' })
+[desktop] e2e/kiosk.spec.ts:37 › Kiosk lifecycle › walk-up customer identifies by plate, and the flow honestly stops there — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;SALIS AUTO&quot;
+… and 1 more in the same spec">
+        <rect class="box" x="376" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="399" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">23</text>
+      </g>
+      <g class="node" data-tip="PASSING: 7 of 23. A journey walked the product on this run and every assertion held.">
+        <rect class="box" x="640" y="66" width="164" height="86" rx="15" fill="rgba(218,119,86,0.10)" stroke="#DA7756" stroke-width="1.5"/>
+        <text x="722" y="104" text-anchor="middle" class="nbig" fill="#DA7756">7</text>
+        <text x="722" y="128" text-anchor="middle" class="nsub">passing</text>
+      </g>
+      <g class="node" data-tip="FAILING: 16 of 23. A journey ran and the product could not complete the path. RB-03 — &quot;no critical golden-path failure&quot; — is a release blocker.">
+        <rect class="box" x="820" y="66" width="164" height="86" rx="15" fill="rgba(224,104,92,0.07)" stroke="#e0685c" stroke-width="1.5"/>
+        <text x="902" y="104" text-anchor="middle" class="nbig" fill="#f0958c">16</text>
+        <text x="902" y="128" text-anchor="middle" class="nsub">failing</text>
+      </g>
+      <g class="node" data-tip="UNWRITTEN: 0 of 23. No journey exists for this path yet, so nothing is known about it. Unwritten is not passing, and it is not failing either.">
+        <rect class="box" x="1000" y="66" width="164" height="86" rx="15" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.20)" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <text x="1082" y="104" text-anchor="middle" class="nbig" fill="#8a8a93">0</text>
+        <text x="1082" y="128" text-anchor="middle" class="nsub">unwritten</text>
+      </g>
+    <text x="40" y="216" class="nsub">solid = passing · hollow red = failing · dashed = no journey written · hover any cell for the runner’s own words</text>
+  </svg>
+  <div class="capbar" data-cap="gp">Hover a path for what the runner actually found.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ BLOCKERS (the ONE card grid) ============ -->
+<section>
+<div class="wrap">
+  <div class="kicker">Open blockers</div>
+  <h2>Five computed blockers, each with an owner and a wave</h2>
+  <p class="sub">These are queries over the registry, not a triage meeting's opinions. Severity and ownership come from the same generated source as everything else, regenerated on 2 Sep 2026 — the list shortens by fixing the thing, never by editing the card.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag t-block">Blocker</span>
+      <h3>Three GitHub PATs were exposed in chat and are not confirmed rotated</h3>
+      <p>Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.</p>
+      <div class="own">BLK-003 · Agent 06 · W0</div>
+    </div>
+    <div class="card">
+      <span class="tag t-crit">Critical</span>
+      <h3>285 rendered capabilities are mock-only</h3>
+      <p>They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.</p>
+      <div class="own">BLK-004 · Agent 05 · W2</div>
+    </div>
+    <div class="card">
+      <span class="tag t-high">High</span>
+      <h3>1 built screens owe their designed mobile layout</h3>
+      <p>A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.</p>
+      <div class="own">BLK-006 · Agent 18 · W3</div>
+    </div>
+    <div class="card">
+      <span class="tag t-med">Medium</span>
+      <h3>Tablet verification samples 6 screens, not the full inventory</h3>
+      <p>e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.</p>
+      <div class="own">BLK-008 · Agent 18 · W3</div>
+    </div>
+    <div class="card">
+      <span class="tag t-block">Blocker</span>
+      <h3>16 golden paths fail</h3>
+      <p>A journey walked the path and the product could not complete it. &quot;No critical golden-path failure&quot; is a release blocker.</p>
+      <div class="own">BLK-013 · Agent 23 · W4</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ WHAT REMAINS ============ -->
+<section class="diagram-section">
+<div class="wrap">
+  <div class="kicker">What remains</div>
+  <h2>The same 169 engineer-days, spent three different ways</h2>
+  <p class="sub">Effort is a property of the work. Elapsed time is a property of how it is parallelised — and the backend is stubbornly serial, because the registry, schema and seed are single shared files.</p>
+  <p class="plain"><b>In plain words:</b> the amount of work is fixed. Adding people only helps where the work can actually be split, and the database layer can't be.</p>
+
+  <div class="note">
+    <div class="h">Human estimate · 21 Aug 2026 · not a measurement</div>
+    <p>Every other number on this page is read out of a generated file at build time. These are not. Nothing in this repository computes remaining effort or elapsed time, so this section is one person's estimate in engineer-days for one senior full-stack engineer, declared in <code>project-control/build-map/estimates.json</code> and unrevised since <b>21 Aug 2026</b> — older than the 2 Sep 2026 registry the rest of the page reads. Treat it as a shape, not a date. Integrations needing credentials the user must provision are NOT in these numbers — they set a floor the code cannot move on its own.</p>
+  </div>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 480" role="img" aria-label="Fork diagram: an estimated 169 engineer-days remaining, dated 21 Aug 2026, splits into solo engineer 33 weeks · 7.5 months, three-person team 16 weeks · 4 months, this agent fleet 10-20 more sessions.">
+    <defs>
+      <marker id="ar6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#DA7756" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <!-- effort buckets, from build-map/estimates.json — a declared human estimate -->
+    <text x="40" y="42" class="layerlabel">WHERE THE 169 ESTIMATED DAYS GO</text>
+    <g class="node" data-tip="Backend fill + new schema — 18 engineer-days (estimate of 21 Aug 2026). Backend fill plus greenfield insurance, fleet, loans and HR schema, seed and RLS. The serial bottleneck — every product domain needing new persistence waits behind this one agent.">
+      <rect class="box" x="40" y="58" width="77" height="34" rx="8" fill="rgba(218,119,86,0.62)" stroke="none"/>
+      <text x="131" y="81" class="nsub" style="font-weight:700">Backend fill + new schema · 18d</text>
+    </g>
+    <g class="node" data-tip="Feature-map screens — 28 engineer-days (estimate of 21 Aug 2026). The remaining feature-map screens across seven tranches. The safest work to defer and the easiest to parallelise — the component kit already renders these.">
+      <rect class="box" x="40" y="100" width="119" height="34" rx="8" fill="rgba(218,119,86,0.54)" stroke="none"/>
+      <text x="173" y="123" class="nsub" style="font-weight:700">Feature-map screens · 28d</text>
+    </g>
+    <g class="node" data-tip="Responsive + RTL sweep — 18 engineer-days (estimate of 21 Aug 2026). Responsive, tablet and Arabic/RTL certification across every capability at nine widths, both orientations, both languages.">
+      <rect class="box" x="40" y="142" width="77" height="34" rx="8" fill="rgba(107,164,217,0.55)" stroke="none"/>
+      <text x="131" y="165" class="nsub" style="font-weight:700">Responsive + RTL sweep · 18d</text>
+    </g>
+    <g class="node" data-tip="Full test suites — 16 engineer-days (estimate of 21 Aug 2026). Contract tests, the golden paths, visual regression, and the financial and inventory integrity suites.">
+      <rect class="box" x="40" y="184" width="68" height="34" rx="8" fill="rgba(107,164,217,0.47000000000000003)" stroke="none"/>
+      <text x="122" y="207" class="nsub" style="font-weight:700">Full test suites · 16d</text>
+    </g>
+    <g class="node" data-tip="AI hub + admin — 14 engineer-days (estimate of 21 Aug 2026). The AI hub and the Administration surface — roughly 27 screens, including RolesPermissions derived from the live RBAC matrix rather than duplicated.">
+      <rect class="box" x="40" y="226" width="60" height="34" rx="8" fill="rgba(255,255,255,0.2)" stroke="none"/>
+      <text x="114" y="249" class="nsub" style="font-weight:700">AI hub + admin · 14d</text>
+    </g>
+    <g class="node" data-tip="Platform services — 14 engineer-days (estimate of 21 Aug 2026). Integrations, files, notifications, global search and print/PDF — 14 days; plus the security suite, accessibility and performance budgets — 12 days.">
+      <rect class="box" x="40" y="268" width="60" height="34" rx="8" fill="rgba(255,255,255,0.17)" stroke="none"/>
+      <text x="114" y="291" class="nsub" style="font-weight:700">Platform services · 14d</text>
+    </g>
+    <g class="node" data-tip="Everything else — 61 engineer-days (estimate of 21 Aug 2026). Website tiers B and C, landing sections, SEO and analytics — 12 days; remaining portals (supplier, kiosk, call-centre) — 9 days; CTA wiring — 5 days; HR/insurance/fleet/loans screens — 11 days; backup drill, CI/CD, staging and the certification report — 12 days.">
+      <rect class="box" x="40" y="310" width="260" height="34" rx="8" fill="rgba(255,255,255,0.14)" stroke="none"/>
+      <text x="314" y="333" class="nsub" style="font-weight:700">Everything else · 61d</text>
+    </g>
+
+    <!-- total node -->
+    <g class="node" data-tip="An estimate of 21 Aug 2026, in engineer-days for one senior full-stack engineer. Nothing in the repository computes it. Integrations needing credentials the user must provision are NOT in these numbers — they set a floor the code cannot move on its own.">
+      <circle cx="600" cy="240" r="92" fill="rgba(218,119,86,0.14)" filter="url(#soft)" class="pulse"/>
+      <circle class="box" cx="600" cy="240" r="70" fill="#16110e" stroke="#DA7756" stroke-width="2.5"/>
+      <text x="600" y="234" text-anchor="middle" class="nbig">≈169</text>
+      <text x="600" y="258" text-anchor="middle" class="nsub">engineer-days</text>
+      <text x="600" y="340" text-anchor="middle" class="nlabel" style="font-size:15px">fixed effort</text>
+    </g>
+    <path d="M 388 190 C 470 190, 500 214, 530 232" fill="none" stroke="rgba(218,119,86,0.3)" stroke-width="1.8" marker-end="url(#ar6)"/>
+    <path d="M 388 190 C 470 190, 500 214, 530 232" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+
+    <!-- delivery shapes, from build-map/estimates.json -->
+    <path d="M 670 216 C 780 166.8, 830 111.45, 906 93" fill="none" stroke="rgba(218,119,86,0.28)" stroke-width="1.8" marker-end="url(#ar6)"/>
+    <path d="M 670 216 C 780 166.8, 830 111.45, 906 93" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+    <path d="M 670 240 C 780 240.4, 830 240.85, 906 241" fill="none" stroke="rgba(218,119,86,0.28)" stroke-width="1.8" marker-end="url(#ar6)"/>
+    <path d="M 670 240 C 780 240.4, 830 240.85, 906 241" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+    <path d="M 670 264 C 780 314, 830 370.25, 906 389" fill="none" stroke="rgba(218,119,86,0.28)" stroke-width="1.8" marker-end="url(#ar6)"/>
+    <path d="M 670 264 C 780 314, 830 370.25, 906 389" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+    <g class="node" data-tip="Solo engineer — One senior full-stack engineer working through the buckets in order — roughly 33 working weeks, about seven and a half months. Estimate of 21 Aug 2026; nothing in the repository computes it.">
+      <rect class="box" x="908" y="58" width="252" height="70" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
+      <text x="1034" y="90" text-anchor="middle" class="nlabel" style="font-size:15px">Solo engineer</text>
+      <text x="1034" y="112" text-anchor="middle" class="nsub">~33 weeks · ~7.5 months</text>
+    </g>
+    <g class="node" data-tip="Three-person team — Two frontend plus one backend engineer — about 16 weeks, or three and a half to four months. Roughly a 3x ratio, not 3x speed, because the backend does not split. Estimate of 21 Aug 2026; nothing in the repository computes it.">
+      <rect class="box" x="908" y="206" width="252" height="70" rx="15" fill="rgba(107,164,217,0.07)" stroke="rgba(107,164,217,0.45)"/>
+      <text x="1034" y="238" text-anchor="middle" class="nlabel" style="font-size:15px">Three-person team</text>
+      <text x="1034" y="260" text-anchor="middle" class="nsub">~16 weeks · ~4 months</text>
+    </g>
+    <g class="node" data-tip="This agent fleet — This multi-agent build: product screens parallelise at about 20 per tranche across four non-contending domain agents, but the backend stays serial. 20-25 more tranches, at 1-3 tranches per working session. Estimate of 21 Aug 2026; nothing in the repository computes it.">
+      <rect class="box" x="908" y="354" width="252" height="70" rx="15" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.5)"/>
+      <text x="1034" y="386" text-anchor="middle" class="nlabel" style="font-size:15px">This agent fleet</text>
+      <text x="1034" y="408" text-anchor="middle" class="nsub">~10-20 more sessions</text>
+    </g>
+
+    <text x="1160" y="452" text-anchor="end" class="callout">plus hosting, credentials and a real restore drill — a floor code can't move</text>
+  </svg>
+  <div class="capbar" data-cap="eff">Hover a bucket or an outcome for the detail behind the number.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ THE GATE ============ -->
+<section class="alt diagram-section">
+<div class="wrap">
+  <div class="kicker">Certification</div>
+  <h2>Twenty-two scores must each clear 9.5 — and fourteen gates override all of them</h2>
+  <p class="sub">A strong category never compensates for a weak one; security and business integrity cannot be averaged away. The 22 scores are human judgement — nothing in the repository produces them. The 14 gates are not: each is decided by a check that ran, and on 2 Sep 2026 8 passed, 3 failed and 3 could not be decided from this repository at all.</p>
+  <p class="plain"><b>In plain words:</b> this isn't an average. Every subject has to pass on its own, and a short list of specific failures is an automatic no regardless of the report card. Today that list reads: No critical golden-path failure · No exposed secret (three chat-exposed PATs rotated) · No broken critical mobile workflow.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 380" role="img" aria-label="Diagram: 22 human-judged category scores pass through a certification gate, alongside a rail of 14 measured release gates of which 3 fail and 3 cannot be decided from this repository.">
+    <defs>
+      <marker id="ar7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#d9b86b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <text x="40" y="42" class="layerlabel">22 CATEGORIES · EACH ≥ 9.5 / 10 · HUMAN JUDGEMENT</text>
+    <g class="node" data-tip="Architecture · UI/UX · Desktop · Tablet · Mobile · Arabic/RTL · Backend · Data · Mini ERP · ERP · Portals · Website · AI · Integrations · RBAC · Security · Accessibility · Performance · Testing · Observability · Recovery · Documentation. These 22 scores are read and given by a human — nothing in the repository computes them, and no gate reads them. Unlike the release gates, a high number here is an opinion.">
+      <g fill="rgba(218,119,86,0.35)">
+        <rect x="40" y="70" width="46" height="30" rx="6"/>
+        <rect x="96" y="70" width="46" height="30" rx="6"/>
+        <rect x="152" y="70" width="46" height="30" rx="6"/>
+        <rect x="208" y="70" width="46" height="30" rx="6"/>
+        <rect x="264" y="70" width="46" height="30" rx="6"/>
+        <rect x="320" y="70" width="46" height="30" rx="6"/>
+        <rect x="376" y="70" width="46" height="30" rx="6"/>
+        <rect x="432" y="70" width="46" height="30" rx="6"/>
+        <rect x="40" y="110" width="46" height="30" rx="6"/>
+        <rect x="96" y="110" width="46" height="30" rx="6"/>
+        <rect x="152" y="110" width="46" height="30" rx="6"/>
+        <rect x="208" y="110" width="46" height="30" rx="6"/>
+        <rect x="264" y="110" width="46" height="30" rx="6"/>
+        <rect x="320" y="110" width="46" height="30" rx="6"/>
+        <rect x="376" y="110" width="46" height="30" rx="6"/>
+        <rect x="432" y="110" width="46" height="30" rx="6"/>
+        <rect x="40" y="150" width="46" height="30" rx="6"/>
+        <rect x="96" y="150" width="46" height="30" rx="6"/>
+        <rect x="152" y="150" width="46" height="30" rx="6"/>
+        <rect x="208" y="150" width="46" height="30" rx="6"/>
+        <rect x="264" y="150" width="46" height="30" rx="6"/>
+        <rect x="320" y="150" width="46" height="30" rx="6"/>
+      </g>
+      <text x="40" y="216" class="nsub">architecture · ui/ux · desktop · tablet … recovery · documentation</text>
+    </g>
+
+    <path d="M 490 124 C 560 124, 580 150, 626 168" fill="none" stroke="rgba(217,184,107,0.35)" stroke-width="2" marker-end="url(#ar7)"/>
+    <path d="M 490 124 C 560 124, 580 150, 626 168" fill="none" stroke="#d9b86b" stroke-width="2" class="flow"/>
+
+    <!-- gate -->
+    <g class="node" data-tip="The certification report is generated from the registry and CI artefacts, never hand-written: coverage per surface and dimension, security findings, integrity status, suite results, open defects, limitations, blockers, final score. Asked on 2 Sep 2026, the gate answers: not certifiable · 3 fail · 3 uncheckable.">
+      <rect class="box" x="628" y="96" width="150" height="180" rx="16" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="2"/>
+      <text x="703" y="168" text-anchor="middle" class="nlabel" style="font-size:15px" fill="#d9b86b">GATE</text>
+      <text x="703" y="192" text-anchor="middle" class="nsub">W5</text>
+    </g>
+
+    <!-- gate rail — statuses read from RELEASE_GATES.json, not listed by hand -->
+    <g class="node" data-tip="Checked on 2 Sep 2026 by project-control/release-gates.mjs. UNCHECKABLE is its own answer and not a pass: the gate cannot be decided from this repository, and its evidence says what a human must do. Uncheckable today: No P0 defect open · No P1 defect open · Backup restore drill passed. Full rail — RB-01 No P0 defect open — UNCHECKABLE · RB-02 No P1 defect open — UNCHECKABLE · RB-03 No critical golden-path failure — FAIL · RB-04 No cross-tenant access in the RBAC lab — PASS · RB-05 No unauthorized financial operation — PASS · RB-06 No financial calculation corruption — PASS · RB-07 No inventory corruption — PASS · RB-08 No authentication bypass — PASS · RB-09 No critical security vulnerability — PASS · RB-10 No exposed secret (three chat-exposed PATs rotated) — FAIL · RB-11 No major data loss path — PASS · RB-12 Backup restore drill passed — UNCHECKABLE · RB-13 No broken critical mobile workflow — FAIL · RB-14 Invoice and payment workflows intact — PASS">
+      <rect class="box" x="560" y="300" width="286" height="56" rx="14" fill="rgba(224,104,92,0.09)" stroke="rgba(224,104,92,0.5)"/>
+      <text x="703" y="324" text-anchor="middle" class="nlabel" style="font-size:14px" fill="#f0958c">14 gates · 8 pass · 3 fail</text>
+      <text x="703" y="345" text-anchor="middle" class="nsub">3 uncheckable · any FAIL → not ready</text>
+    </g>
+    <path d="M 703 300 L 703 280" stroke="#e0685c" stroke-width="2.4"/>
+    <path d="M 686 288 L 720 288" stroke="#e0685c" stroke-width="2.4" stroke-linecap="round"/>
+
+    <path d="M 780 186 C 860 186, 880 186, 936 186" fill="none" stroke="rgba(217,184,107,0.35)" stroke-width="2" marker-end="url(#ar7)"/>
+    <path d="M 780 186 C 860 186, 880 186, 936 186" fill="none" stroke="#d9b86b" stroke-width="2" class="flow"/>
+
+    <g class="node" data-tip="10/10 is stated only when the evidence supports it, and never on route coverage alone. A beautiful UI with broken persistence is not 10/10. A working backend with broken mobile is not 10/10.">
+      <rect class="box" x="938" y="148" width="222" height="76" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.2)"/>
+      <text x="1049" y="182" text-anchor="middle" class="nlabel" style="font-size:15px">10/10 — production ready</text>
+      <text x="1049" y="204" text-anchor="middle" class="nsub">not certifiable · 3 fail · 3 uncheckable</text>
+    </g>
+    <text x="1049" y="256" text-anchor="middle" class="callout">23 golden paths · 7 passing · 16 failing · 0 unwritten</text>
+  </svg>
+  <div class="capbar" data-cap="gate">Hover the gate or the gate rail for what each of the 14 gates decided.</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ TAKEAWAY ============ -->
+<section>
+<div class="wrap">
+  <div class="kicker">The short version</div>
+  <h2>What to hold on to</h2>
+  <div class="takeaway">
+    <h3>What this build gets right, and the one thing that decides the schedule</h3>
+    <ul>
+      <li><b>Nothing is counted by hand.</b> Route tables, tests, gates, matrices and reports all fall out of one generated registry. A hardcoded total is treated as a defect.</li>
+      <li><b>The unit of completion is a capability, not a file.</b> "Customer management" can be done; <code>Customers.tsx</code> cannot.</li>
+      <li><b>No agent certifies its own work.</b> An agent may mark its own work DONE; only the release manager sets VERIFIED, and only after re-running the checks.</li>
+      <li><b>The seam is what makes the backend swap safe.</b> The database seeds from today's fixtures, so every assertion that passes now must still pass after the swap.</li>
+      <li><b>The client gate is a courtesy.</b> The real boundary is server-side, and a cross-tenant read returns 404 rather than confirming the record exists.</li>
+      <li><b>Rendering is the floor.</b> 424 of 424 capabilities draw and assert their content; 99 are backed by real data, 4 are tablet-verified and 0 are production-ready. Both facts are true at once, and the second one is the honest one.</li>
+      <li><b>A journey is the only proof.</b> 7 of 23 golden paths pass, 16 fail and 0 have no journey at all. Unwritten is reported as its own state rather than counted green, because not knowing is not the same as passing.</li>
+      <li><b>W1 decides the calendar.</b> Ten product agents wait on four foundation agents, and the backend does not parallelise. Shortening the foundation is the only lever on elapsed time — everything else is effort, not schedule.</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<div class="wrap">
+<footer>
+  Generated — not transcribed — from the project's scope registry, capability matrix, gap report, architecture, business rules, RBAC matrix, dependency graph, agent ownership, definition of done, test strategy, release plan and execution plan.
+  Measurements: registry <b>2 Sep 2026</b> · golden-path run <b>2 Sep 2026</b> · release gates <b>2 Sep 2026</b> · blockers <b>2 Sep 2026</b>. Effort projection: human estimate of <b>21 Aug 2026</b> — the only hand-supplied figure on this page.
+  Re-run <code>npm run gates</code> in <code>app/</code>, then <code>node project-control/build-map/build-map.mjs</code>, and every number above moves with it.
+  <br><br>
+  This page deliberately uses no green or purple — the two hues the SALIS AUTO brand guard forbids.
+</footer>
+</div>
+
+<script>
+// scroll reveal
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+}), { threshold: 0.1 });
+document.querySelectorAll('section .kicker, section h2, section .sub, section .plain, section .figure, section .grid, section .note, section .takeaway')
+  .forEach(el => { el.classList.add('reveal'); io.observe(el); });
+
+// diagram hover captions — scoped to each figure's own caption bar
+document.querySelectorAll('.figure').forEach(fig => {
+  const bar = fig.querySelector('.capbar');
+  if (!bar) return;
+  const def = bar.textContent;
+  fig.querySelectorAll('.node[data-tip]').forEach(n => {
+    n.addEventListener('mouseenter', () => { bar.textContent = n.dataset.tip; });
+    n.addEventListener('focus', () => { bar.textContent = n.dataset.tip; });
+  });
+  fig.addEventListener('mouseleave', () => { bar.textContent = def; });
+});
+</script>
+

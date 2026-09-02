@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-09-02T10:36:45.405Z",
+  "generator": "app/scripts/golden-paths.mjs",
+  "note": "A run record, not a plan. Classified from a Playwright report supplied by GOLDEN_PLAYWRIGHT_JSON (/tmp/pw-report.json) over desktop and mobile. PASSING means a spec declares this path and every one of its tests passed in every project it ran in; FAILING means one ran and did not; UNWRITTEN means no spec declares that path yet. Never hand-edit — re-run the runner.",
+  "base": "http://localhost:4173",
+  "projects": [
+    "desktop",
+    "mobile"
+  ],
+  "totals": {
+    "paths": 23,
+    "passing": 7,
+    "failing": 16,
+    "unwritten": 0,
+    "journeys": 23,
+    "modules": 37,
+    "errors": 0
+  },
+  "errors": [],
+  "paths": [
+    {
+      "path": "New customer to paid invoice",
+      "id": "e2e/new-customer-to-paid-invoice.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — failed: Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search customers, vehicles, parts...') resolved to 2 elements: · 1) <input readonly aria-label=\"Search customers, vehicles, parts...\" placeholder=\"Search customers, vehicles, parts...\" class=\"h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]\"/> aka getByRole('textbox', { name: 'Search customers, vehicles,' })\n[desktop] e2e/new-customer-to-paid-invoice.spec.ts:89 › New Customer to Paid Invoice (Golden Path 1) › invoice preview renders a tax invoice — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Tax Invoice\"\n[mobile] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — failed: Test timeout of 30000ms exceeded.\n[mobile] e2e/new-customer-to-paid-invoice.spec.ts:89 › New Customer to Paid Invoice (Golden Path 1) › invoice preview renders a tax invoice — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Tax Invoice\"\n[desktop] e2e/new-customer-to-paid-invoice.spec.ts:96 › New customer to paid invoice lifecycle › job cards → check-in → estimate → invoice create → payment — failed: Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search customers, vehicles, parts...') resolved to 2 elements: · 1) <input readonly aria-label=\"Search customers, vehicles, parts...\" placeholder=\"Search customers, vehicles, parts...\" class=\"h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]\"/> aka getByRole('textbox', { name: 'Search customers, vehicles,' })\n… and 1 more in the same spec"
+    },
+    {
+      "path": "Existing customer service",
+      "id": "e2e/existing-customer-service.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Job History\"\n[desktop] e2e/existing-customer-service.spec.ts:20 › Existing Customer Service (Golden Path 2) › vehicle record loads with coverage details — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Comprehensive Coverage\"\n[desktop] e2e/existing-customer-service.spec.ts:26 › Existing Customer Service (Golden Path 2) › job card detail loads for the returning vehicle — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\"\n[desktop] e2e/existing-customer-service.spec.ts:32 › Existing Customer Service (Golden Path 2) › customer feedback records a satisfaction rating — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Average Rating\"\n[mobile] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Job History\"\n… and 5 more in the same spec"
+    },
+    {
+      "path": "Mobile customer booking",
+      "id": "e2e/mobile-customer-booking.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Technician job completion",
+      "id": "e2e/technician-job-completion.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestly disabled — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\"\n[mobile] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestly disabled — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\""
+    },
+    {
+      "path": "Customer estimate approval",
+      "id": "e2e/customer-estimate-approval.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Parts procurement",
+      "id": "e2e/parts-procurement.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 30000ms exceeded.\n[desktop] e2e/parts-procurement.spec.ts:33 › Parts Procurement (Golden Path 6) › purchase order detail loads with a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[mobile] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 30000ms exceeded.\n[mobile] e2e/parts-procurement.spec.ts:33 › Parts Procurement (Golden Path 6) › purchase order detail loads with a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[desktop] e2e/parts-procurement.spec.ts:40 › Parts procurement lifecycle › raise request → compare quotations by rating → confirm the PO — failed: Test timeout of 90000ms exceeded.\n… and 1 more in the same spec"
+    },
+    {
+      "path": "Inventory receiving",
+      "id": "e2e/inventory-receiving.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[mobile] e2e/inventory-receiving.spec.ts:13 › Inventory Receiving (Golden Path 7) › inventory hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Inventory & Parts Management\"\n[mobile] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[desktop] e2e/inventory-receiving.spec.ts:40 › Inventory receiving lifecycle › purchase order → goods arrive at the Receiving zone → stock reports update — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[mobile] e2e/inventory-receiving.spec.ts:40 › Inventory receiving lifecycle › purchase order → goods arrive at the Receiving zone → stock reports update — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\""
+    },
+    {
+      "path": "Inventory consumption",
+      "id": "e2e/inventory-consumption.spec.ts",
+      "status": "FAILING",
+      "error": "[mobile] e2e/inventory-consumption.spec.ts:24 › Inventory Consumption (Golden Path 8) › inventory hub totals reflect current parts stock — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Inventory & Parts Management\"\n[mobile] e2e/inventory-consumption.spec.ts:32 › Inventory consumption lifecycle › parts billed on the job card → consumption visible at QC and on the technician portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Inventory & Parts Management\""
+    },
+    {
+      "path": "Supplier order",
+      "id": "e2e/supplier-order.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"AutoParts KSA\"\n[desktop] e2e/supplier-order.spec.ts:29 › Supplier Order (Golden Path 9) › owner sees the purchase order the supplier order is billed against — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[mobile] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"AutoParts KSA\"\n[mobile] e2e/supplier-order.spec.ts:29 › Supplier Order (Golden Path 9) › owner sees the purchase order the supplier order is billed against — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[desktop] e2e/supplier-order.spec.ts:37 › Supplier order lifecycle › supplier fulfils the order → procurement tracks the requisition → office holds the PO — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"AutoParts KSA\"\n… and 1 more in the same spec"
+    },
+    {
+      "path": "CRM lead conversion",
+      "id": "e2e/crm-lead-conversion.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Activity Timeline\"\n[desktop] e2e/crm-lead-conversion.spec.ts:48 › CRM Lead Conversion (Golden Path 10) › customer feedback page loads with ratings — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Average Rating\"\n[mobile] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Activity Timeline\"\n[mobile] e2e/crm-lead-conversion.spec.ts:48 › CRM Lead Conversion (Golden Path 10) › customer feedback page loads with ratings — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Average Rating\""
+    },
+    {
+      "path": "Insurance claim",
+      "id": "e2e/insurance-claim.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Insurance Claims\"\n[mobile] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Insurance Claims\"\n[desktop] e2e/insurance-claim.spec.ts:41 › Insurance claim lifecycle › owner views claims → reports → customer sees insurance — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Insurance Claims\"\n[mobile] e2e/insurance-claim.spec.ts:41 › Insurance claim lifecycle › owner views claims → reports → customer sees insurance — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Insurance Claims\""
+    },
+    {
+      "path": "Fleet contract",
+      "id": "e2e/fleet-contract.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Loan workflow",
+      "id": "e2e/loan-workflow.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Applications\"\n[mobile] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Applications\""
+    },
+    {
+      "path": "Employee onboarding",
+      "id": "e2e/employee-onboarding.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"HR Management\"\n[desktop] e2e/employee-onboarding.spec.ts:33 › Employee Onboarding (Golden Path 14) › staff performance review page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Performance Reviews\"\n[desktop] e2e/employee-onboarding.spec.ts:39 › Employee Onboarding (Golden Path 14) › timesheet management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Timesheet Management\"\n[desktop] e2e/employee-onboarding.spec.ts:51 › Employee Onboarding (Golden Path 14) › training LMS page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Training & LMS\"\n[mobile] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"HR Management\"\n… and 5 more in the same spec"
+    },
+    {
+      "path": "Organization / branch setup",
+      "id": "e2e/org-branch-setup.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "User invitation + RBAC",
+      "id": "e2e/user-invitation-rbac.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Accounting reconciliation",
+      "id": "e2e/accounting-reconciliation.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Unmatched\"\n[mobile] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Unmatched\"\n[desktop] e2e/accounting-reconciliation.spec.ts:59 › Accounting reconciliation lifecycle › chart of accounts → journal entries → bank reconciliation → financial reports → tax — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Unmatched\"\n[mobile] e2e/accounting-reconciliation.spec.ts:59 › Accounting reconciliation lifecycle › chart of accounts → journal entries → bank reconciliation → financial reports → tax — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Unmatched\""
+    },
+    {
+      "path": "Report generation",
+      "id": "e2e/report-generation.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Report Categories\"\n[mobile] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Report Categories\"\n[desktop] e2e/report-generation.spec.ts:83 › Report generation lifecycle › reports hub → financial → executive → inventory → BI dashboard — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Report Categories\"\n[mobile] e2e/report-generation.spec.ts:83 › Report generation lifecycle › reports hub → financial → executive → inventory → BI dashboard — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"Report Categories\""
+    },
+    {
+      "path": "Customer portal",
+      "id": "e2e/customer-portal.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\"\n[mobile] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\"\n[desktop] e2e/customer-portal.spec.ts:96 › Customer portal lifecycle › portal → booking → service tracking → wallet → orders — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\"\n[mobile] e2e/customer-portal.spec.ts:96 › Customer portal lifecycle › portal → booking → service tracking → wallet → orders — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"JC-A3F8B2C1\""
+    },
+    {
+      "path": "Technician portal",
+      "id": "e2e/technician-portal.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Supplier portal",
+      "id": "e2e/supplier-portal.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"AutoParts KSA\"\n[mobile] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"AutoParts KSA\"\n[desktop] e2e/supplier-portal.spec.ts:46 › Supplier Portal (Golden Path 21) › owner views › purchase order page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[mobile] e2e/supplier-portal.spec.ts:46 › Supplier Portal (Golden Path 21) › owner views › purchase order page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"PO-2026-0087\"\n[desktop] e2e/supplier-portal.spec.ts:79 › Supplier portal lifecycle › supplier portal → procurement → purchase orders → parts network — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"AutoParts KSA\"\n… and 1 more in the same spec"
+    },
+    {
+      "path": "Call center",
+      "id": "e2e/call-center.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Kiosk",
+      "id": "e2e/kiosk.spec.ts",
+      "status": "FAILING",
+      "error": "[desktop] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"SALIS AUTO\"\n[desktop] e2e/kiosk.spec.ts:23 › Kiosk (Golden Path 23) › typing a plate enables the button, but no live API keeps it disabled — failed: Error: expect(locator).toBeDisabled() failed · Locator: getByRole('button', { name: 'Find My Vehicle' })\n[mobile] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"SALIS AUTO\"\n[mobile] e2e/kiosk.spec.ts:23 › Kiosk (Golden Path 23) › typing a plate enables the button, but no live API keeps it disabled — failed: Error: expect(locator).toBeDisabled() failed · Locator: getByRole('button', { name: 'Find My Vehicle' })\n[desktop] e2e/kiosk.spec.ts:37 › Kiosk lifecycle › walk-up customer identifies by plate, and the flow honestly stops there — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: \"SALIS AUTO\"\n… and 1 more in the same spec"
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import { Money, SummaryRow } from '@/components/ui/Money'
 import { DetailPage, type DetailStat } from '@/components/shell/DetailPage'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, useEntity } from '@/data/useCollection'
+import { useCollection, useEntity, MAX_PAGE_SIZE } from '@/data/useCollection'
 import { InvoiceStatusBadge } from './Invoices'
 import { fromHalalas, invoiceMoney, lineUnitHalalas, roundHalfUp } from './money'
 
@@ -45,7 +45,7 @@ export function InvoicePreview() {
   const serverId = (invoice as { _id?: string } | undefined)?._id
   const { data: lines = [] } = useCollection(
     'invoiceLines',
-    serverId ? { filter: { invoiceId: serverId }, pageSize: 500 } : undefined,
+    serverId ? { filter: { invoiceId: serverId }, pageSize: MAX_PAGE_SIZE } : undefined,
   )
 
   const back = { to: '/invoices', label: 'Invoices' }

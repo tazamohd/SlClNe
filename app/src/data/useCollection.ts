@@ -26,6 +26,27 @@ import {
   type Repository,
 } from './repository'
 
+/** The largest `pageSize` the API will accept.
+ *
+ *  `packages/contract/src/envelope.ts` is the authority: `listQuery` caps
+ *  `pageSize` at 200, and a larger value is refused outright with
+ *  `bad_request` — not clamped. Four screens asked for 500, so against a live
+ *  API every invoice reported "No line items" and "No payments yet" beside a
+ *  subtotal the server had computed correctly, and after a payment the screen
+ *  warned that its own payments did not add up. A request the server rejects
+ *  looks exactly like a collection that is empty.
+ *
+ *  Transcribed rather than imported, because the app deliberately does not
+ *  depend on `@salis/contract` (see `screens/finance/money.ts` for the same
+ *  decision). `tests/unit/page-size-parity.test.ts` imports the contract
+ *  schema and asserts the two agree, so this copy cannot drift silently.
+ *  **If that parity test is deleted, this constant goes with it.**
+ *
+ *  It is a ceiling, not a promise: a collection with more rows than this is
+ *  truncated, so it suits a bounded child list (an invoice's lines) and not an
+ *  unbounded one. */
+export const MAX_PAGE_SIZE = 200
+
 /** The row type a collection yields. */
 export type RowOf<K extends CollectionKey> =
   Repository[K] extends Collection<infer TRow> ? TRow : never

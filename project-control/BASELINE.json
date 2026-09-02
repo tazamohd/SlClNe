@@ -1,9 +1,11 @@
 {
-  "note": "Ratchet for check-no-fake. These numbers may fall, never rise. Update only when lowering them, and never to accommodate a regression.",
-  "updatedAt": "2026-08-30",
+  "note": "Ratchet for check-no-fake, check-tokens and the golden-path runner. These numbers may fall, never rise. Update only when lowering them, and never to accommodate a regression.",
+  "updatedAt": "2026-09-02",
   "placeholderRoutes": 0,
   "sourceMarkers": 0,
   "forbiddenColours": 0,
   "colourDrift": 0,
-  "inlineTokens": 3
+  "inlineTokens": 3,
+  "goldenPathsUnwritten": 0,
+  "goldenPathsFailing": 16
 }

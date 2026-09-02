@@ -22,6 +22,7 @@
     "certify": "npm run registry && node scripts/check-no-fake.mjs --strict && node scripts/check-tokens.mjs --strict",
     "check-bundle": "node scripts/check-bundle.mjs",
     "smoke": "node scripts/smoke.mjs",
+    "golden": "node scripts/golden-paths.mjs",
     "verify:api": "node scripts/verify-live-api.mjs",
     "lint:css": "node scripts/check-logical-css.mjs",
     "lint:a11y": "node scripts/check-a11y-copy.mjs",

@@ -19,9 +19,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { chromium } from 'playwright'
+import { BASE, isExternal, launchBrowser } from './lib/browser.mjs'
 
-const BASE = process.env.SMOKE_BASE ?? 'http://localhost:4173'
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 /** The registry, read straight from the generated module.
@@ -1623,10 +1622,8 @@ const PLACEHOLDER_BUDGET = 0
 /** Marker text `PendingScreen` renders, and nothing else does. */
 const PENDING_MARKER = 'Designed, not yet rebuilt'
 
-/** Third-party hosts (the Google Fonts CDN the design system imports) are
- *  unreachable in sandboxed CI. Those failures say nothing about the app. */
-const isExternal = (text) =>
-  /fonts\.googleapis|fonts\.gstatic|ERR_CERT_AUTHORITY_INVALID/.test(text)
+/* `isExternal` — third-party hosts whose failures say nothing about the app —
+ * is imported from lib/browser.mjs. */
 
 /** What each shell owes the DOM. `PendingScreen` renders inside the operational
  *  shell whatever the registry's eventual target is, so a placeholder is judged
@@ -1681,11 +1678,7 @@ function expectedShell(entry) {
   return entry.shell
 }
 
-const browser = await chromium.launch({
-  ...(process.env.CHROMIUM_PATH
-    ? { executablePath: process.env.CHROMIUM_PATH }
-    : {}),
-})
+const browser = await launchBrowser()
 const failures = []
 
 // ── Generated route coverage ────────────────────────────────────────────────
