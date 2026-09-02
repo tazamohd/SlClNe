@@ -120,15 +120,16 @@ footer a{color:var(--mut)}
 <header>
   <div class="eyebrow">SALIS AUTO · Multi-agent rebuild</div>
   <h1>One registry. Everything else is generated.</h1>
-  <p class="lede">A 403-capability automotive ERP being rebuilt by <b>24 specialist agents</b> across six waves. Nothing here is counted by hand — the registry reads the repository and every route table, test, gate and report falls out of it. This page shows the machine, the plan, and the <b>honest state of it.</b></p>
+  <p class="lede">A __CAPS__-capability automotive ERP being rebuilt by <b>__AGENTS__ specialist agents</b> across __WAVES_WORD_LC__ waves. Nothing here is counted by hand — the registry reads the repository and every route table, test, gate and report falls out of it. This page shows the machine, the plan, and the <b>honest state of it.</b></p>
   <div class="statstrip">
-    <div class="stat"><div class="n">403</div><div class="l">Capabilities</div></div>
-    <div class="stat ok"><div class="n">363</div><div class="l">Rendering</div></div>
-    <div class="stat warn"><div class="n">0</div><div class="l">Data-backed</div></div>
-    <div class="stat warn"><div class="n">0</div><div class="l">Production ready</div></div>
-    <div class="stat blue"><div class="n">24</div><div class="l">Agents</div></div>
-    <div class="stat blue"><div class="n">~169</div><div class="l">Eng-days left</div></div>
+    <div class="stat"><div class="n">__CAPS__</div><div class="l">Capabilities</div></div>
+    <div class="stat ok"><div class="n">__RENDERED__</div><div class="l">Rendering</div></div>
+    <div class="stat blue"><div class="n">__DATA_BACKED__</div><div class="l">Data-backed</div></div>
+    <div class="stat warn"><div class="n">__GP_FAIL__</div><div class="l">Golden paths failing</div></div>
+    <div class="stat warn"><div class="n">__PROD_READY__</div><div class="l">Production ready</div></div>
+    <div class="stat blue"><div class="n">__AGENTS__</div><div class="l">Agents</div></div>
   </div>
+  <p class="plain" style="margin-top:26px"><b>Every figure on this page is generated</b> — from the registry regeneration of __REGISTRY_DATE__, the golden-path run of __GP_DATE__ and the release-gate run of __GATES_DATE__. One section is not: the effort projection is a human estimate of __EST_DATE__, and it says so where it appears.</p>
 </header>
 </div>
 
@@ -137,7 +138,7 @@ footer a{color:var(--mut)}
 <div class="wrap">
   <div class="kicker">The whole idea in one picture</div>
   <h2>Two sources of scope feed one registry — and the registry writes the rest</h2>
-  <p class="sub">The design bundle says what things <em>look like</em>. The spec screenshots say what capabilities <em>exist</em>. Only 24 names overlap, so their union is the real scope. A build script walks both, plus the router and the source tree, and emits everything downstream.</p>
+  <p class="sub">The design bundle says what things <em>look like</em>. The spec screenshots say what capabilities <em>exist</em>. Only __OVERLAP__ names overlap, so their union — not their sum — is the real scope: __DESIGNS__ + __SPECS__ − __OVERLAP__ = __CAPS__. A build script walks both, plus the router and the source tree, and emits everything downstream.</p>
   <p class="plain"><b>In plain words:</b> nobody keeps a list of screens in a spreadsheet. A program reads the actual code and drawings every time, so a number in a document can never quietly go stale.</p>
 
   <div class="figure">
@@ -155,25 +156,25 @@ footer a{color:var(--mut)}
     </defs>
 
     <!-- inputs -->
-    <g class="node" data-tip="191 hand-designed .dc.html prototypes, plus 113 separate mobile layouts. These are authoritative for look, layout and interaction — but not for which capabilities exist.">
+    <g class="node" data-tip="__DESIGNS__ screens from the design bundle, __DESIGN_FILES__ of them backed by a hand-authored .dc.html prototype, plus __MOBILE_DESIGNS__ separate mobile layouts. These are authoritative for look, layout and interaction — but not for which capabilities exist.">
       <rect class="box" x="40" y="122" width="216" height="80" rx="15" fill="rgba(107,164,217,0.07)" stroke="rgba(107,164,217,0.55)" stroke-width="1.5"/>
       <g transform="translate(78,162)" fill="none" stroke="#6ba4d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M -11 -12 h9 l5 5 v19 h-14 z"/><path d="M -2 -12 v5 h5"/><path d="M -7 -1 h6 M -7 3 h6 M -7 7 h4"/>
       </g>
-      <text x="108" y="157" class="nlabel">191 designs</text>
+      <text x="108" y="157" class="nlabel">__DESIGNS__ designs</text>
       <text x="108" y="178" class="nsub">look &amp; behaviour</text>
     </g>
 
-    <g class="node" data-tip="235 reference screenshots and spec pages from the existing product. Authoritative for which capabilities must exist — but their palette is forbidden by the brand, so they contribute structure and content only.">
+    <g class="node" data-tip="__SPECS__ reference screenshots and spec pages from the existing product; __OVERLAP__ of them name a screen the design bundle already covers, so __SPEC_ONLY__ enter the registry on their own. Authoritative for which capabilities must exist — but their palette is forbidden by the brand, so they contribute structure and content only.">
       <rect class="box" x="40" y="358" width="216" height="80" rx="15" fill="rgba(107,164,217,0.07)" stroke="rgba(107,164,217,0.55)" stroke-width="1.5"/>
       <g transform="translate(78,398)" fill="none" stroke="#6ba4d9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <rect x="-11" y="-10" width="22" height="16" rx="2"/><path d="M -5 10 h10 M 0 6 v4"/>
       </g>
-      <text x="108" y="393" class="nlabel">235 spec screens</text>
+      <text x="108" y="393" class="nlabel">__SPECS__ spec screens</text>
       <text x="108" y="414" class="nsub">what must exist</text>
     </g>
 
-    <text x="148" y="286" text-anchor="middle" class="callout">only 24 names overlap</text>
+    <text x="148" y="286" text-anchor="middle" class="callout">only __OVERLAP__ names overlap</text>
     <text x="148" y="306" text-anchor="middle" class="callout" fill="#6ba4d9">→ union, not sum</text>
 
     <!-- input connectors -->
@@ -183,11 +184,11 @@ footer a{color:var(--mut)}
     <path d="M 256 398 C 360 398, 430 336, 520 298" fill="none" stroke="#6ba4d9" stroke-width="2" class="flow"/>
 
     <!-- hub -->
-    <g class="node" data-tip="build-registry.mjs discovers rather than transcribes: it walks the designs, the specs, the router, the screen files and the test artefacts, reconciles them, and emits MASTER_REGISTRY.json. Running it is how any total is obtained.">
+    <g class="node" data-tip="build-registry.mjs discovers rather than transcribes: it walks the designs, the specs, the router, the screen files and the test artefacts, reconciles them, and emits MASTER_REGISTRY.json — __DESIGN_ENTRIES__ entries traced to the design bundle plus __SPEC_ONLY__ to the feature map. Running it is how any total is obtained.">
       <circle cx="600" cy="280" r="112" fill="rgba(218,119,86,0.16)" filter="url(#soft)" class="pulse"/>
       <circle cx="600" cy="280" r="86" fill="rgba(218,119,86,0.06)" stroke="rgba(218,119,86,0.3)" stroke-width="1.5"/>
       <circle class="box" cx="600" cy="280" r="66" fill="#16110e" stroke="#DA7756" stroke-width="2.5"/>
-      <text x="600" y="266" text-anchor="middle" class="nbig">403</text>
+      <text x="600" y="266" text-anchor="middle" class="nbig">__CAPS__</text>
       <text x="600" y="290" text-anchor="middle" class="nsub" fill="#DA7756">capabilities</text>
       <text x="600" y="310" text-anchor="middle" class="nsub">discovered</text>
       <text x="600" y="392" text-anchor="middle" class="nlabel">MASTER REGISTRY</text>
@@ -214,19 +215,19 @@ footer a{color:var(--mut)}
       <rect class="box" x="916" y="38" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
       <text x="940" y="72" class="nlabel" style="font-size:15px">Route table</text>
     </g>
-    <g class="node" data-tip="Route coverage is generated, not written. Every registry entry produces its own check: renders, correct shell, correct permission, no console error. Nobody maintains 403 checks by hand.">
+    <g class="node" data-tip="Route coverage is generated, not written. Every registry entry produces its own check: renders, correct shell, correct permission, no console error. Nobody maintains __E2E__ checks by hand.">
       <rect class="box" x="916" y="122" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
-      <text x="940" y="156" class="nlabel" style="font-size:15px">403 route checks</text>
+      <text x="940" y="156" class="nlabel" style="font-size:15px">__E2E__ route checks</text>
     </g>
     <g class="node" data-tip="SALIS_AUTO_MASTER_MATRIX.md — every capability × desktop, tablet, mobile, Arabic, RTL, data, RBAC, tests, status. Regenerated, never edited.">
       <rect class="box" x="916" y="206" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
       <text x="940" y="240" class="nlabel" style="font-size:15px">Capability matrix</text>
     </g>
-    <g class="node" data-tip="Every line in the gap report is a query over the registry, not an opinion: 8 open blockers, 339 unreachable screen files, 113 mobile layouts owed.">
+    <g class="node" data-tip="Every line in the gap report is a query over the registry, not an opinion: __BLOCKERS_OPEN__ open blockers, __ORPHANS__ screen files no route reaches, __UNREGISTERED__ unregistered designs, __MOBILE_OWED__ designed mobile layout still owed.">
       <rect class="box" x="916" y="290" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
       <text x="940" y="324" class="nlabel" style="font-size:15px">Gap report</text>
     </g>
-    <g class="node" data-tip="Two ratchets: placeholders may fall, never rise; forbidden colours may fall, never rise. They become hard zero-gates at W5. A gate that fails on every run gets switched off within a day — one that forbids regression gets obeyed.">
+    <g class="node" data-tip="__GATE_TOTAL__ release gates, each decided by a check that ran rather than by reading a status document: __GATE_PASS__ PASS, __GATE_FAIL__ FAIL, __GATE_UNCHECKABLE__ UNCHECKABLE as of __GATES_DATE__. Plus two ratchets: placeholders may fall, never rise; forbidden colours may fall, never rise. They become hard zero-gates at W5. A gate that fails on every run gets switched off within a day — one that forbids regression gets obeyed.">
       <rect class="box" x="916" y="374" width="248" height="56" rx="13" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.45)"/>
       <text x="940" y="408" class="nlabel" style="font-size:15px">Release gates</text>
     </g>
@@ -246,9 +247,9 @@ footer a{color:var(--mut)}
 <section class="alt">
 <div class="wrap">
   <div class="kicker">Delivery model</div>
-  <h2>Six waves, and one of them holds up everything else</h2>
-  <p class="sub">Ten product agents cannot start until four foundation agents finish. That single edge — W1 → W2 — is the whole schedule. Shortening W1 shortens the project; nothing else does.</p>
-  <p class="plain"><b>In plain words:</b> you can't build rooms before the foundation is poured. Ten builders stand idle while four pour it, so the fastest thing you can do is put more people on the foundation.</p>
+  <h2>__WAVES_WORD__ waves, and one of them holds up everything else</h2>
+  <p class="sub">__W2_AGENTS_WORD__ product agents cannot start until __W1_AGENTS_WORD__ foundation agents finish. That single edge — W1 → W2 — is the whole schedule. Shortening W1 shortens the project; nothing else does.</p>
+  <p class="plain"><b>In plain words:</b> you can't build rooms before the foundation is poured. __W2_AGENTS__ builders stand idle while __W1_AGENTS__ pour it, so the fastest thing you can do is put more people on the foundation.</p>
 
   <div class="figure">
   <svg viewBox="0 0 1200 300" role="img" aria-label="Pipeline: waves W0 reconnaissance through W5 certification, with W1 marked as the critical path.">
@@ -264,41 +265,41 @@ footer a{color:var(--mut)}
     <rect x="248" y="70" width="152" height="178" rx="18" fill="rgba(218,119,86,0.09)" stroke="rgba(218,119,86,0.4)" stroke-width="1.5" stroke-dasharray="6 6"/>
     <text x="324" y="60" text-anchor="middle" class="layerlabel" fill="#DA7756">CRITICAL PATH</text>
 
-    <g class="node" data-tip="W0 Reconnaissance — agents 01 and 02. Exit: registry, gap report, dependency graph, ownership and risk register all exist and regenerate cleanly. No mass implementation yet.">
+    <g class="node" data-tip="__W0_TIP__">
       <circle class="box" cx="90" cy="150" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
       <text x="90" y="157" text-anchor="middle" class="stepnum">W0</text>
       <text x="90" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Recon</text>
       <text x="90" y="232" text-anchor="middle" class="nsub">registry + gates</text>
     </g>
-    <g class="node" data-tip="W1 Foundation — agents 04 UI, 05 backend, 06 auth, 07 tests. Primitives, server + schema + row-level security, auth and authorization, the test harness. Ten product agents idle for all of it.">
+    <g class="node" data-tip="__W1_TIP__">
       <circle class="box" cx="324" cy="150" r="34" fill="#1d130e" stroke="#DA7756" stroke-width="2.6"/>
       <text x="324" y="157" text-anchor="middle" class="stepnum">W1</text>
       <text x="324" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Foundation</text>
-      <text x="324" y="232" text-anchor="middle" class="nsub">4 agents · everything waits</text>
+      <text x="324" y="232" text-anchor="middle" class="nsub">__W1_AGENTS__ agents · everything waits</text>
     </g>
-    <g class="node" data-tip="W2 Product — agents 08–17. Ten domains built against real endpoints: workshop, CRM, parts, procurement, accounting, insurance, HR, AI, portals, website.">
+    <g class="node" data-tip="__W2_TIP__">
       <circle class="box" cx="558" cy="150" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
       <text x="558" y="157" text-anchor="middle" class="stepnum">W2</text>
       <text x="558" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Product</text>
-      <text x="558" y="232" text-anchor="middle" class="nsub">10 domain agents</text>
+      <text x="558" y="232" text-anchor="middle" class="nsub">__W2_AGENTS__ domain agents</text>
     </g>
-    <g class="node" data-tip="W3 Hardening — agents 18–22: mobile, tablet, Arabic/RTL, accessibility, security, performance. Starts as soon as ANY capability is reviewable, not after the last one.">
+    <g class="node" data-tip="__W3_TIP__">
       <circle class="box" cx="792" cy="150" r="30" fill="#16110e" stroke="#6ba4d9" stroke-width="2"/>
       <text x="792" y="157" text-anchor="middle" class="stepnum">W3</text>
       <text x="792" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Hardening</text>
       <text x="792" y="232" text-anchor="middle" class="nsub">runs alongside W2</text>
     </g>
-    <g class="node" data-tip="W4 Integration — agents 03 and 23. Full regression: typecheck, build, unit, integration, E2E, RBAC, security, visual, responsive, RTL, performance. No regression is carried forward.">
+    <g class="node" data-tip="__W4_TIP__">
       <circle class="box" cx="956" cy="150" r="30" fill="#16110e" stroke="#DA7756" stroke-width="2"/>
       <text x="956" y="157" text-anchor="middle" class="stepnum">W4</text>
       <text x="956" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Integration</text>
-      <text x="956" y="232" text-anchor="middle" class="nsub">23 golden paths</text>
+      <text x="956" y="232" text-anchor="middle" class="nsub">__GP_TOTAL__ golden paths</text>
     </g>
-    <g class="node" data-tip="W5 Certification — 22 categories each scored out of 10, each requiring ≥9.5. A strong category never compensates for a weak one. Plus a real backup-restore drill.">
+    <g class="node" data-tip="__W5_TIP__">
       <circle class="box" cx="1120" cy="150" r="30" fill="#16110e" stroke="#d9b86b" stroke-width="2"/>
       <text x="1120" y="157" text-anchor="middle" class="stepnum">W5</text>
       <text x="1120" y="212" text-anchor="middle" class="nlabel" style="font-size:14px">Certify</text>
-      <text x="1120" y="232" text-anchor="middle" class="nsub">22 × ≥9.5</text>
+      <text x="1120" y="232" text-anchor="middle" class="nsub">__CATEGORIES__ × ≥9.5</text>
     </g>
 
     <!-- W3 overlap bracket -->
@@ -316,7 +317,7 @@ footer a{color:var(--mut)}
   <div class="kicker">Architecture</div>
   <h2>Every screen talks to a seam, so the backend can land without moving one of them</h2>
   <p class="sub">Screens never call the network. They call a <code>Collection&lt;T&gt;</code> repository. Today that repository reads fixtures; tomorrow the same interface is implemented over HTTP and selected by an environment variable. The database is seeded from the very fixtures the app renders now — so every assertion that passes today must still pass after the swap. A failure means the swap is wrong, not the test.</p>
-  <p class="plain"><b>In plain words:</b> the app is wired to a socket, not to a wire. You can swap what's behind the socket — fake data for a real database — and none of the 403 screens notice.</p>
+  <p class="plain"><b>In plain words:</b> the app is wired to a socket, not to a wire. You can swap what's behind the socket — fake data for a real database — and none of the __CAPS__ screens notice.</p>
 
   <div class="figure">
   <svg viewBox="0 0 1200 620" role="img" aria-label="Diagram: screens call hooks which call the repository seam, which today reads fixtures and tomorrow reaches a Fastify server, authorization, row-level security and PostgreSQL.">
@@ -330,10 +331,10 @@ footer a{color:var(--mut)}
     </defs>
 
     <!-- screens -->
-    <g class="node" data-tip="403 screens across 9 surfaces: the ERP app, auth, portals, the customer phone app, a kiosk, native frames, the public website, the call centre, and a reference pattern library.">
+    <g class="node" data-tip="__CAPS__ capabilities across __SURFACES__ surfaces, largest first: __SURFACE_LIST__. __REFERENCE_ONLY__ of them are the reference pattern library and __EXTERNAL__ are external dependencies.">
       <rect class="box" x="380" y="24" width="440" height="70" rx="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-      <text x="600" y="56" text-anchor="middle" class="nlabel">403 screens · 9 surfaces</text>
-      <text x="600" y="78" text-anchor="middle" class="nsub">app · auth · portals · customer app · kiosk · native · public · call-centre</text>
+      <text x="600" y="56" text-anchor="middle" class="nlabel">__CAPS__ screens · __SURFACES__ surfaces</text>
+      <text x="600" y="78" text-anchor="middle" class="nsub">__SURFACE_LIST__</text>
     </g>
     <path d="M 600 94 L 600 130" stroke="#DA7756" stroke-width="2" marker-end="url(#ar3)"/>
     <path d="M 600 94 L 600 130" stroke="#DA7756" stroke-width="2" class="flow"/>
@@ -360,20 +361,20 @@ footer a{color:var(--mut)}
 
     <!-- today branch -->
     <rect x="40" y="404" width="480" height="186" rx="18" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1.5" stroke-dasharray="6 6"/>
-    <text x="66" y="434" class="layerlabel">TODAY — 363 capabilities live here</text>
-    <g class="node" data-tip="Collection.list() over generated/tables.ts — 35 mock tables ported from the design bundle. It renders. It does not persist. A reload loses everything.">
+    <text x="66" y="434" class="layerlabel">STILL FIXTURES — __MOCK_ONLY__ capabilities</text>
+    <g class="node" data-tip="Collection.list() over generated/tables.ts — __MOCK_TABLES__ mock tables ported from the design bundle. It renders. It does not persist. A reload loses everything. __MOCK_ONLY__ of __CAPS__ capabilities are still on this branch.">
       <rect class="box" x="70" y="452" width="420" height="56" rx="13" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
       <text x="280" y="486" text-anchor="middle" class="nlabel" style="font-size:15px">fixtures → generated/tables.ts</text>
     </g>
-    <g class="node" data-tip="There is no server, so there is no security boundary. RequireAccess is convenience only — the client decides what it shows itself. Stated plainly, because the RBAC engine's completeness could otherwise be mistaken for enforcement.">
+    <g class="node" data-tip="On this branch there is no server, so there is no security boundary: RequireAccess is convenience only and the client decides what it shows itself. The fixture repository refuses writes rather than pretending — it answers &quot;set VITE_API_URL to run against the API&quot; — which is why __GP_FAIL__ golden paths stop at a disabled save control.">
       <rect class="box" x="70" y="518" width="420" height="52" rx="13" fill="rgba(224,104,92,0.08)" stroke="rgba(224,104,92,0.4)"/>
-      <text x="280" y="550" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#f0958c">no server → no security boundary</text>
+      <text x="280" y="550" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#f0958c">no server → no boundary, and no writes</text>
     </g>
 
     <!-- target branch -->
     <rect x="600" y="404" width="560" height="186" rx="18" fill="rgba(218,119,86,0.04)" stroke="rgba(218,119,86,0.35)" stroke-width="1.5"/>
-    <text x="626" y="434" class="layerlabel" fill="#DA7756">TARGET — same interface, real enforcement</text>
-    <g class="node" data-tip="Node 20 + Fastify + TypeScript. One language across the stack; Zod schemas in packages/contract are imported by both sides, so one schema is the API type, the server guard and the form validator.">
+    <text x="626" y="434" class="layerlabel" fill="#DA7756">ALREADY LANDED FOR __DATA_BACKED__ — same interface, real enforcement</text>
+    <g class="node" data-tip="Node 20 + Fastify + TypeScript. One language across the stack; Zod schemas in packages/contract are imported by both sides, so one schema is the API type, the server guard and the form validator. The server suite ran __SERVER_TESTS__ tests green on __GATES_DATE__.">
       <rect class="box" x="626" y="452" width="150" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
       <text x="701" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Fastify</text>
       <text x="701" y="496" text-anchor="middle" class="nsub">Zod contract</text>
@@ -381,9 +382,9 @@ footer a{color:var(--mut)}
     <g class="node" data-tip="JWT access token 15 minutes + rotating refresh 30 days with reuse detection, argon2id hashing. Claims carry subject, role, org_id, branch_id and scope.">
       <rect class="box" x="790" y="452" width="150" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
       <text x="865" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Auth + AuthZ</text>
-      <text x="865" y="496" text-anchor="middle" class="nsub">14 roles × 28 modules</text>
+      <text x="865" y="496" text-anchor="middle" class="nsub">__ROLES__ roles × __MODULES__ modules</text>
     </g>
-    <g class="node" data-tip="PostgreSQL 16 with Row-Level Security. org_id and branch_id on every table, enforced by SET LOCAL app.org_id per request — not by a WHERE clause a developer must remember to write.">
+    <g class="node" data-tip="PostgreSQL 16 with Row-Level Security across __MIGRATIONS__ migrations. org_id and branch_id on every table, enforced by SET LOCAL app.org_id per request — not by a WHERE clause a developer must remember to write. The isolation run is refused outright if the application role is a superuser or carries BYPASSRLS, because either would pass every assertion vacuously.">
       <rect class="box" x="954" y="452" width="182" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
       <text x="1045" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Postgres + RLS</text>
       <text x="1045" y="496" text-anchor="middle" class="nsub">tenant isolation</text>
@@ -405,7 +406,7 @@ footer a{color:var(--mut)}
 <div class="wrap">
   <div class="kicker">Security</div>
   <h2>The client gate is a courtesy. The wall is on the server.</h2>
-  <p class="sub">14 roles × 28 modules × 5 actions is a matrix the app enforces in the browser — which is convenience, not security. Every sensitive operation has to re-validate identity, organization, branch, role, permission, resource ownership and the business rule on the server. Bypassing the UI must still be denied. A cross-tenant read returns <b>404, never 403</b> — a 403 confirms the record exists.</p>
+  <p class="sub">__ROLES__ roles × __MODULES__ modules × __ACTIONS__ actions is a matrix the app enforces in the browser — which is convenience, not security. Every sensitive operation has to re-validate identity, organization, branch, role, permission, resource ownership and the business rule on the server. Bypassing the UI must still be denied. A cross-tenant read returns <b>404, never 403</b> — a 403 confirms the record exists.</p>
   <p class="plain"><b>In plain words:</b> hiding a button doesn't stop anyone. The check that matters happens after the request leaves the browser, where the user can't touch it.</p>
 
   <div class="figure">
@@ -475,9 +476,9 @@ footer a{color:var(--mut)}
     <text x="770" y="112" text-anchor="middle" class="callout">both routes hit the same chain — that is what makes it a boundary</text>
 
     <!-- ceilings strip -->
-    <g class="node" data-tip="Approval ceilings, enforced today by canApprove(): owner and superadmin unlimited · manager 50,000 · accountant 25,000 · procurement 20,000 · HR 15,000 · storekeeper 10,000 · advisor 5,000 · everyone else 0. The screen states the ceiling up front rather than failing on submit.">
+    <g class="node" data-tip="__CEILING_TIP__">
       <rect class="box" x="420" y="330" width="700" height="56" rx="14" fill="rgba(217,184,107,0.06)" stroke="rgba(217,184,107,0.32)"/>
-      <text x="770" y="364" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#d9b86b">SAR ceilings enforced today · manager 50k · accountant 25k · advisor 5k · technician 0</text>
+      <text x="770" y="364" text-anchor="middle" class="nlabel" style="font-size:14.5px" fill="#d9b86b">__CEILING_STRIP__</text>
     </g>
   </svg>
   <div class="capbar" data-cap="rbac">Hover a checkpoint to see what it validates.</div>
@@ -489,133 +490,71 @@ footer a{color:var(--mut)}
 <section class="diagram-section">
 <div class="wrap">
   <div class="kicker">Where it actually stands</div>
-  <h2>Rendering is 90%. Everything that makes it a product is near zero.</h2>
-  <p class="sub">A route returning HTTP 200 is the floor, not the ceiling — the lowest rung above "discovered", five rungs below production-ready. This is the registry's own view of the same 403 capabilities, dimension by dimension.</p>
-  <p class="plain"><b>In plain words:</b> the screens are drawn and you can click to all of them. None of them saves anything, none has been checked on a tablet, and none is finished.</p>
+  <h2>Rendering is __RENDER_PCT__%. Real data is __DATA_PCT__%, and nothing is production-ready.</h2>
+  <p class="sub">A route returning HTTP 200 is the floor, not the ceiling — the lowest rung above "discovered", five rungs below production-ready. This is the registry's own view of the same __CAPS__ capabilities, dimension by dimension.</p>
+  <p class="plain"><b>In plain words:</b> the screens are drawn and you can click to all of them. __DATA_BACKED__ of them now save to a real database and __MOCK_ONLY__ still cannot. __TABLET__ have been checked on a tablet. __PROD_READY__ are finished.</p>
 
   <div class="figure">
-  <svg viewBox="0 0 1200 470" role="img" aria-label="Bar chart of coverage by dimension: route checks 100 percent, rendering 90 percent, content assertions 20 percent, and data, mobile, tablet, Arabic RTL and production readiness all at zero.">
+  <svg viewBox="0 0 1200 __COV_H__" role="img" aria-label="__COV_ARIA__">
     <!-- gridlines -->
     <g stroke="rgba(255,255,255,0.07)" stroke-width="1">
-      <line x1="330" y1="26" x2="330" y2="422"/>
-      <line x1="530" y1="26" x2="530" y2="422"/>
-      <line x1="730" y1="26" x2="730" y2="422"/>
-      <line x1="930" y1="26" x2="930" y2="422"/>
-      <line x1="1130" y1="26" x2="1130" y2="422"/>
+__COV_GRID__
     </g>
     <g class="callout" text-anchor="middle" font-size="11.5">
-      <text x="330" y="444">0%</text><text x="530" y="444">25%</text><text x="730" y="444">50%</text><text x="930" y="444">75%</text><text x="1130" y="444">100%</text>
+      __COV_AXIS__
     </g>
 
-    <!-- rows: y start 40, step 48, bar h 26 -->
-    <g class="node" data-tip="403 of 403. Every registry entry generates its own Playwright check: the route renders, in the right shell, with the right permission, with no console error.">
-      <text x="316" y="60" text-anchor="end" class="nlabel" style="font-size:14px">Route check exists</text>
-      <rect x="330" y="42" width="800" height="26" rx="6" fill="rgba(218,119,86,0.75)"/>
-      <text x="1146" y="61" class="nsub" fill="#DA7756">403 / 403</text>
-    </g>
-    <g class="node" data-tip="363 of 403 render a real screen. The other 40 are the reference pattern library and documentation artefacts, which are REFERENCE_ONLY by design — not gaps.">
-      <text x="316" y="108" text-anchor="end" class="nlabel" style="font-size:14px">Renders on desktop</text>
-      <rect x="330" y="90" width="720" height="26" rx="6" fill="rgba(218,119,86,0.62)"/>
-      <text x="1066" y="109" class="nsub" fill="#DA7756">363 / 403</text>
-    </g>
-    <g class="node" data-tip="Only 79 checks assert what is on the screen. The other 284 confirm a route returned 200 and nothing else — which the Definition of Done explicitly lists as a way a capability looks finished and is not.">
-      <text x="316" y="156" text-anchor="end" class="nlabel" style="font-size:14px">Asserts real content</text>
-      <rect x="330" y="138" width="157" height="26" rx="6" fill="rgba(217,184,107,0.7)"/>
-      <text x="503" y="157" class="nsub" fill="#d9b86b">79 / 403 — 284 assert nothing</text>
-    </g>
-    <g class="node" data-tip="BLK-002 and BLK-004. Every rendering capability draws from fixtures, not an API. Nothing persists; a reload loses it. No capability can satisfy the Definition of Done regardless of how it looks.">
-      <text x="316" y="204" text-anchor="end" class="nlabel" style="font-size:14px">Backed by real data</text>
-      <rect x="330" y="186" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
-      <text x="349" y="205" class="nsub" fill="#f0958c">0 / 403 — the single largest fact</text>
-    </g>
-    <g class="node" data-tip="113 built screens ship a structurally different mobile design (table becomes a card list) that has not been built yet. Mobile is a Definition-of-Done clause on every screen, so certification cannot run against these.">
-      <text x="316" y="252" text-anchor="end" class="nlabel" style="font-size:14px">Designed mobile built</text>
-      <rect x="330" y="234" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
-      <text x="349" y="253" class="nsub" fill="#f0958c">0 / 113 owed</text>
-    </g>
-    <g class="node" data-tip="BLK-008. Tablet is a first-class target — 768, 820, 834 and 1024, portrait AND landscape — and has never been verified anywhere.">
-      <text x="316" y="300" text-anchor="end" class="nlabel" style="font-size:14px">Tablet verified</text>
-      <rect x="330" y="282" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
-      <text x="349" y="301" class="nsub" fill="#f0958c">0 / 403 — never checked</text>
-    </g>
-    <g class="node" data-tip="2,122 Arabic keys are ported and the primitives use logical CSS properties throughout, so the layouts mirror correctly by construction. But no capability has been certified for direction, icons, chevrons, tables, charts, dates, numbers or LTR-pinned Latin runs.">
-      <text x="316" y="348" text-anchor="end" class="nlabel" style="font-size:14px">Arabic / RTL certified</text>
-      <rect x="330" y="330" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
-      <text x="349" y="349" class="nsub" fill="#f0958c">0 / 403 — strings ported, not certified</text>
-    </g>
-    <g class="node" data-tip="PRODUCTION_READY is the top of an eight-rung status ladder. Nothing is on it. An agent may mark its own work DONE; only agent 03 sets VERIFIED, and only after re-running the checks rather than reading the claim.">
-      <text x="316" y="396" text-anchor="end" class="nlabel" style="font-size:14px">Production ready</text>
-      <rect x="330" y="378" width="3" height="26" rx="1.5" fill="rgba(224,104,92,0.9)"/>
-      <text x="349" y="397" class="nsub" fill="#f0958c">0 / 403</text>
-    </g>
+    <!-- rows generated from MASTER_REGISTRY.json: the bar width IS the ratio -->
+__COV_ROWS__
   </svg>
   <div class="capbar" data-cap="cov">Hover a bar for what the number actually means.</div>
   </div>
 
+  <div class="statstrip" style="margin-top:30px">
+    <div class="stat blue"><div class="n">__CRUD_READ__</div><div class="l">Can read</div></div>
+    <div class="stat ok"><div class="n">__CRUD_CREATE__</div><div class="l">Can create</div></div>
+    <div class="stat ok"><div class="n">__CRUD_UPDATE__</div><div class="l">Can update</div></div>
+    <div class="stat ok"><div class="n">__CRUD_DELETE__</div><div class="l">Can delete</div></div>
+  </div>
+  <p class="plain">__CRUD_READ__ capabilities read a record; __CRUD_CREATE__ can create one, __CRUD_UPDATE__ can update one and __CRUD_DELETE__ can delete one. <b>The product is broadly readable and barely writable</b> — the shape you get when screens land ahead of the endpoints behind them. Each is the registry's own <code>crud</code> field, counted per capability rather than asserted.</p>
+
   <div class="note">
-    <div class="h">The documents disagree — and that is the system working</div>
-    <p>The registry snapshot above is dated <b>21 Aug 2026</b> and reports 0 data-backed capabilities. The release plan's progress note, dated <b>12 Aug 2026</b>, describes a landed backend — schema, RLS, JWT auth, server-side RBAC, audit, concurrency, idempotency — with 155 routes on real connected screens and 971 tests passing.</p>
-    <p>Both can't be the current truth. The plan's own rule settles it: <b>a count written into a document is a dated snapshot, not a fact — the registry is the fact.</b> The right move is to re-run <code>npm run gates</code> and read the regenerated numbers, not to reconcile two prose paragraphs. This is precisely the failure mode the registry exists to make visible.</p>
+    <div class="h">Measured, estimated and unmeasurable are three different things</div>
+    <p>Everything above is a query over <code>MASTER_REGISTRY.json</code>, regenerated on <b>__REGISTRY_DATE__</b>. The journeys below are a run record from <b>__GP_DATE__</b> and the release gates a check run from <b>__GATES_DATE__</b>. Where the three disagree the later stamp wins, and the fix is to re-run the earlier one — never to reconcile two paragraphs of prose.</p>
+    <p>Exactly one section of this page is not measured. Nothing in the repository computes engineer-days, so the effort projection is a <b>human estimate of __EST_DATE__</b>, declared in a file and labelled where it appears. The rule the rest of the page runs on is that <b>a count written into a document is a dated snapshot, not a fact</b> — so the one place a snapshot is unavoidable says so out loud, rather than borrowing the credibility of the generated numbers around it.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============ GOLDEN PATHS ============ -->
+<section class="alt diagram-section">
+<div class="wrap">
+  <div class="kicker">Journeys</div>
+  <h2>__GP_TOTAL__ golden paths, and __GP_PASS__ of them can be walked end to end</h2>
+  <p class="sub">A golden path is a whole job somebody came to do — new customer to paid invoice, technician job completion, parts procurement. W4 named __GP_TOTAL__ of them as a plan; a runner now walks them against the running product, so these are a run record rather than a checklist. __GP_JOURNEYS__ journeys exist today and __GP_UNWRITTEN__ paths have none, which the runner reports as its own state instead of counting it green.</p>
+  <p class="plain"><b>In plain words:</b> every screen opens, and the business still cannot carry a customer from the front desk to a paid invoice. That gap is the difference between screens working and the product working.</p>
+
+  <div class="figure">
+  <svg viewBox="0 0 1200 __GP_H__" role="img" aria-label="__GP_ARIA__">
+    <text x="40" y="42" class="layerlabel">__GP_TOTAL__ GOLDEN PATHS · MEASURED __GP_DATE__</text>
+__GP_CELLS__
+__GP_SUMMARY__
+    <text x="40" y="__GP_LEGEND_Y__" class="nsub">solid = passing · hollow red = failing · dashed = no journey written · hover any cell for the runner’s own words</text>
+  </svg>
+  <div class="capbar" data-cap="gp">Hover a path for what the runner actually found.</div>
   </div>
 </div>
 </section>
 
 <!-- ============ BLOCKERS (the ONE card grid) ============ -->
-<section class="alt">
+<section>
 <div class="wrap">
   <div class="kicker">Open blockers</div>
-  <h2>Eight computed blockers, each with an owner and a wave</h2>
-  <p class="sub">These are queries over the registry, not a triage meeting's opinions. Severity and ownership come from the same generated source as everything else.</p>
+  <h2>__BLOCKERS_WORD__ computed blockers, each with an owner and a wave</h2>
+  <p class="sub">These are queries over the registry, not a triage meeting's opinions. Severity and ownership come from the same generated source as everything else, regenerated on __BLOCKERS_DATE__ — the list shortens by fixing the thing, never by editing the card.</p>
 
   <div class="grid">
-    <div class="card">
-      <span class="tag t-block">Blocker</span>
-      <h3>No capability is backed by real data</h3>
-      <p>Everything renders from fixtures. Nothing persists, nothing survives a reload, so no capability can be certified.</p>
-      <div class="own">BLK-002 · Agent 05 · W1</div>
-    </div>
-    <div class="card">
-      <span class="tag t-block">Blocker</span>
-      <h3>Three GitHub tokens exposed and unrotated</h3>
-      <p>Pasted in chat and not confirmed rotated, in a repository that is <em>public</em> and carries the design bundle, 235 screenshots, the RBAC matrix and the API contract.</p>
-      <div class="own">BLK-003 · Agent 06 · W0</div>
-    </div>
-    <div class="card">
-      <span class="tag t-crit">Critical</span>
-      <h3>363 rendered capabilities are mock-only</h3>
-      <p>The visible consequence of BLK-002, capability by capability. Every one of them needs a real endpoint behind the seam.</p>
-      <div class="own">BLK-004 · Agent 05 · W2</div>
-    </div>
-    <div class="card">
-      <span class="tag t-crit">Critical</span>
-      <h3>No modal system, so 23 CTAs do nothing</h3>
-      <p>Without a modal there is nowhere for a form to live, so no create, edit or delete flow can be built anywhere in the product.</p>
-      <div class="own">BLK-007 · Agent 04 · W1</div>
-    </div>
-    <div class="card">
-      <span class="tag t-high">High</span>
-      <h3>284 capabilities assert nothing</h3>
-      <p>They are visited by a test that confirms a 200 and stops. "Returns 200" is not a test.</p>
-      <div class="own">BLK-012 · Agent 07 · W2</div>
-    </div>
-    <div class="card">
-      <span class="tag t-high">High</span>
-      <h3>113 screens owe their designed mobile layout</h3>
-      <p>A structurally different mobile design exists for each and has not been built. Never a shrunken desktop.</p>
-      <div class="own">BLK-006 · Agent 18 · W3</div>
-    </div>
-    <div class="card">
-      <span class="tag t-high">High</span>
-      <h3>No tablet verification anywhere</h3>
-      <p>Four widths, both orientations, on every capability — navigation, tables, forms, modals, detail layouts. Zero checked so far.</p>
-      <div class="own">BLK-008 · Agent 18 · W3</div>
-    </div>
-    <div class="card">
-      <span class="tag t-med">Medium</span>
-      <h3>339 screen files no route reaches</h3>
-      <p>Orphans are release blockers precisely because they are the failure a hardcoded count hides — dead code that looks like progress.</p>
-      <div class="own">BLK-010 · Agent 02 · W0</div>
-    </div>
+__BLOCKER_CARDS__
   </div>
 </div>
 </section>
@@ -624,85 +563,43 @@ footer a{color:var(--mut)}
 <section class="diagram-section">
 <div class="wrap">
   <div class="kicker">What remains</div>
-  <h2>The same 169 engineer-days, spent three different ways</h2>
+  <h2>The same __EST_DAYS__ engineer-days, spent __EST_SHAPES_WORD__ different ways</h2>
   <p class="sub">Effort is a property of the work. Elapsed time is a property of how it is parallelised — and the backend is stubbornly serial, because the registry, schema and seed are single shared files.</p>
   <p class="plain"><b>In plain words:</b> the amount of work is fixed. Adding people only helps where the work can actually be split, and the database layer can't be.</p>
 
+  <div class="note">
+    <div class="h">Human estimate · __EST_DATE__ · not a measurement</div>
+    <p>Every other number on this page is read out of a generated file at build time. These are not. Nothing in this repository computes remaining effort or elapsed time, so this section is one person's estimate in __EST_UNIT__, declared in <code>project-control/build-map/estimates.json</code> and unrevised since <b>__EST_DATE__</b> — older than the __REGISTRY_DATE__ registry the rest of the page reads. Treat it as a shape, not a date. __EST_EXCLUDED__</p>
+  </div>
+
   <div class="figure">
-  <svg viewBox="0 0 1200 480" role="img" aria-label="Fork diagram: 169 engineer-days remaining splits into three delivery shapes — solo engineer 33 weeks, three-person team 16 weeks, agent fleet 10 to 20 sessions.">
+  <svg viewBox="0 0 1200 480" role="img" aria-label="__EST_ARIA__">
     <defs>
       <marker id="ar6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#DA7756" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </marker>
     </defs>
 
-    <!-- effort buckets, left -->
-    <text x="40" y="42" class="layerlabel">WHERE THE 169 DAYS GO</text>
-    <g class="node" data-tip="Backend fill plus greenfield insurance, fleet, loans and HR schema, seed and RLS. The serial bottleneck — every product domain needing new persistence waits behind this one agent.">
-      <rect class="box" x="40" y="58" width="340" height="34" rx="8" fill="rgba(218,119,86,0.5)" stroke="none"/>
-      <text x="52" y="81" class="nsub" fill="#0a0a0c" style="font-weight:700">Backend fill + new schema · 18d</text>
-    </g>
-    <g class="node" data-tip="175 remaining feature-map screens across seven tranches. The safest work to defer and the easiest to parallelise — the component kit already renders these.">
-      <rect class="box" x="40" y="100" width="300" height="34" rx="8" fill="rgba(218,119,86,0.42)" stroke="none"/>
-      <text x="52" y="123" class="nsub" fill="#0a0a0c" style="font-weight:700">175 feature-map screens · 28d</text>
-    </g>
-    <g class="node" data-tip="Responsive, tablet and Arabic/RTL certification across every capability at nine widths, both orientations, both languages.">
-      <rect class="box" x="40" y="142" width="230" height="34" rx="8" fill="rgba(107,164,217,0.5)" stroke="none"/>
-      <text x="52" y="165" class="nsub" fill="#0a0a0c" style="font-weight:700">Responsive + RTL sweep · 18d</text>
-    </g>
-    <g class="node" data-tip="Contract tests, the 23 golden paths, visual regression, and the financial and inventory integrity suites.">
-      <rect class="box" x="40" y="184" width="205" height="34" rx="8" fill="rgba(107,164,217,0.42)" stroke="none"/>
-      <text x="52" y="207" class="nsub" fill="#0a0a0c" style="font-weight:700">Full test suites · 16d</text>
-    </g>
-    <g class="node" data-tip="The AI hub and the Administration surface — roughly 27 screens, including RolesPermissions derived from the live RBAC matrix rather than duplicated.">
-      <rect class="box" x="40" y="226" width="180" height="34" rx="8" fill="rgba(255,255,255,0.16)" stroke="none"/>
-      <text x="52" y="249" class="nsub" style="font-weight:700">AI hub + admin · 14d</text>
-    </g>
-    <g class="node" data-tip="Integrations, files, notifications, global search and print/PDF — 14 days; plus the security suite, accessibility and performance budgets — 12 days.">
-      <rect class="box" x="40" y="268" width="180" height="34" rx="8" fill="rgba(255,255,255,0.13)" stroke="none"/>
-      <text x="52" y="291" class="nsub" style="font-weight:700">Platform services · 14d</text>
-    </g>
-    <g class="node" data-tip="Website tiers B and C, landing sections, SEO and analytics — 12 days; remaining portals (supplier, kiosk, call-centre) — 9 days; CTA wiring — 5 days; HR/insurance/fleet/loans screens — 11 days; backup drill, CI/CD, staging and the certification report — 12 days.">
-      <rect class="box" x="40" y="310" width="150" height="34" rx="8" fill="rgba(255,255,255,0.1)" stroke="none"/>
-      <text x="52" y="333" class="nsub" style="font-weight:700">…and 61d more</text>
-    </g>
+    <!-- effort buckets, from build-map/estimates.json — a declared human estimate -->
+    <text x="40" y="42" class="layerlabel">WHERE THE __EST_DAYS__ ESTIMATED DAYS GO</text>
+__EST_BUCKETS__
 
     <!-- total node -->
-    <g class="node" data-tip="Estimated against the day model for one senior full-stack engineer. Integrations that need credentials the user must provision are NOT in this number — they set a floor the code cannot move on its own.">
+    <g class="node" data-tip="An estimate of __EST_DATE__, in __EST_UNIT__. Nothing in the repository computes it. __EST_EXCLUDED__">
       <circle cx="600" cy="240" r="92" fill="rgba(218,119,86,0.14)" filter="url(#soft)" class="pulse"/>
       <circle class="box" cx="600" cy="240" r="70" fill="#16110e" stroke="#DA7756" stroke-width="2.5"/>
-      <text x="600" y="234" text-anchor="middle" class="nbig">≈169</text>
+      <text x="600" y="234" text-anchor="middle" class="nbig">≈__EST_DAYS__</text>
       <text x="600" y="258" text-anchor="middle" class="nsub">engineer-days</text>
       <text x="600" y="340" text-anchor="middle" class="nlabel" style="font-size:15px">fixed effort</text>
     </g>
     <path d="M 388 190 C 470 190, 500 214, 530 232" fill="none" stroke="rgba(218,119,86,0.3)" stroke-width="1.8" marker-end="url(#ar6)"/>
     <path d="M 388 190 C 470 190, 500 214, 530 232" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
 
-    <!-- three outcomes -->
-    <path d="M 670 216 C 780 180, 830 100, 906 92" fill="none" stroke="rgba(218,119,86,0.28)" stroke-width="1.8" marker-end="url(#ar6)"/>
-    <path d="M 670 216 C 780 180, 830 100, 906 92" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
-    <path d="M 670 240 C 790 240, 830 240, 906 240" fill="none" stroke="rgba(218,119,86,0.28)" stroke-width="1.8" marker-end="url(#ar6)"/>
-    <path d="M 670 240 C 790 240, 830 240, 906 240" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
-    <path d="M 670 264 C 780 300, 830 380, 906 388" fill="none" stroke="rgba(218,119,86,0.28)" stroke-width="1.8" marker-end="url(#ar6)"/>
-    <path d="M 670 264 C 780 300, 830 380, 906 388" fill="none" stroke="#DA7756" stroke-width="1.8" class="flow"/>
+    <!-- delivery shapes, from build-map/estimates.json -->
+__EST_ARROWS__
+__EST_SHAPES__
 
-    <g class="node" data-tip="One senior full-stack engineer working through the buckets in order — roughly 33 working weeks, about seven and a half months.">
-      <rect class="box" x="908" y="58" width="252" height="70" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
-      <text x="1034" y="90" text-anchor="middle" class="nlabel" style="font-size:15px">Solo engineer</text>
-      <text x="1034" y="112" text-anchor="middle" class="nsub">~33 weeks · ~7.5 months</text>
-    </g>
-    <g class="node" data-tip="Two frontend plus one backend engineer — about 16 weeks, or three and a half to four months. Roughly a 3× ratio, not 3× speed, because the backend does not split.">
-      <rect class="box" x="908" y="206" width="252" height="70" rx="15" fill="rgba(107,164,217,0.07)" stroke="rgba(107,164,217,0.45)"/>
-      <text x="1034" y="238" text-anchor="middle" class="nlabel" style="font-size:15px">Three-person team</text>
-      <text x="1034" y="260" text-anchor="middle" class="nsub">~16 weeks · ~4 months</text>
-    </g>
-    <g class="node" data-tip="This multi-agent build: product screens parallelise at about 20 per tranche across four non-contending domain agents, but the backend stays serial. 20–25 more tranches, at 1–3 tranches per working session.">
-      <rect class="box" x="908" y="354" width="252" height="70" rx="15" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.5)"/>
-      <text x="1034" y="386" text-anchor="middle" class="nlabel" style="font-size:15px">This agent fleet</text>
-      <text x="1034" y="408" text-anchor="middle" class="nsub">~10–20 more sessions</text>
-    </g>
-
-    <text x="1034" y="452" text-anchor="middle" class="callout">plus hosting, credentials and a real restore drill — a floor code can't move</text>
+    <text x="1160" y="452" text-anchor="end" class="callout">__EST_FLOOR__</text>
   </svg>
   <div class="capbar" data-cap="eff">Hover a bucket or an outcome for the detail behind the number.</div>
   </div>
@@ -713,45 +610,40 @@ footer a{color:var(--mut)}
 <section class="alt diagram-section">
 <div class="wrap">
   <div class="kicker">Certification</div>
-  <h2>Twenty-two scores must each clear 9.5 — and twelve findings override all of them</h2>
-  <p class="sub">A strong category never compensates for a weak one; security and business integrity cannot be averaged away. Any single absolute blocker means not ready, whatever the scores say.</p>
-  <p class="plain"><b>In plain words:</b> this isn't an average. Every subject has to pass on its own, and a short list of specific failures is an automatic no regardless of the report card.</p>
+  <h2>__CATEGORIES_WORD__ scores must each clear 9.5 — and __GATE_TOTAL_WORD__ gates override all of them</h2>
+  <p class="sub">A strong category never compensates for a weak one; security and business integrity cannot be averaged away. The __CATEGORIES__ scores are human judgement — nothing in the repository produces them. The __GATE_TOTAL__ gates are not: each is decided by a check that ran, and on __GATES_DATE__ __GATE_PASS__ passed, __GATE_FAIL__ failed and __GATE_UNCHECKABLE__ could not be decided from this repository at all.</p>
+  <p class="plain"><b>In plain words:</b> this isn't an average. Every subject has to pass on its own, and a short list of specific failures is an automatic no regardless of the report card. Today that list reads: __GATE_FAIL_LIST__.</p>
 
   <div class="figure">
-  <svg viewBox="0 0 1200 380" role="img" aria-label="Diagram: 22 category scores pass through a certification gate, with an absolute-blocker rail that stops release regardless of score.">
+  <svg viewBox="0 0 1200 380" role="img" aria-label="Diagram: __CATEGORIES__ human-judged category scores pass through a certification gate, alongside a rail of __GATE_TOTAL__ measured release gates of which __GATE_FAIL__ fail and __GATE_UNCHECKABLE__ cannot be decided from this repository.">
     <defs>
       <marker id="ar7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#d9b86b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </marker>
     </defs>
-    <text x="40" y="42" class="layerlabel">22 CATEGORIES · EACH ≥ 9.5 / 10</text>
-    <g class="node" data-tip="Architecture · UI/UX · Desktop · Tablet · Mobile · Arabic/RTL · Backend · Data · Mini ERP · ERP · Portals · Website · AI · Integrations · RBAC · Security · Accessibility · Performance · Testing · Observability · Recovery · Documentation.">
+    <text x="40" y="42" class="layerlabel">__CATEGORIES__ CATEGORIES · EACH ≥ 9.5 / 10 · HUMAN JUDGEMENT</text>
+    <g class="node" data-tip="__CATEGORY_LIST__. These __CATEGORIES__ scores are read and given by a human — nothing in the repository computes them, and no gate reads them. Unlike the release gates, a high number here is an opinion.">
       <g fill="rgba(218,119,86,0.35)">
-        <rect x="40" y="70" width="46" height="30" rx="6"/><rect x="96" y="70" width="46" height="30" rx="6"/><rect x="152" y="70" width="46" height="30" rx="6"/><rect x="208" y="70" width="46" height="30" rx="6"/>
-        <rect x="264" y="70" width="46" height="30" rx="6"/><rect x="320" y="70" width="46" height="30" rx="6"/><rect x="376" y="70" width="46" height="30" rx="6"/><rect x="432" y="70" width="46" height="30" rx="6"/>
-        <rect x="40" y="110" width="46" height="30" rx="6"/><rect x="96" y="110" width="46" height="30" rx="6"/><rect x="152" y="110" width="46" height="30" rx="6"/><rect x="208" y="110" width="46" height="30" rx="6"/>
-        <rect x="264" y="110" width="46" height="30" rx="6"/><rect x="320" y="110" width="46" height="30" rx="6"/><rect x="376" y="110" width="46" height="30" rx="6"/><rect x="432" y="110" width="46" height="30" rx="6"/>
-        <rect x="40" y="150" width="46" height="30" rx="6"/><rect x="96" y="150" width="46" height="30" rx="6"/><rect x="152" y="150" width="46" height="30" rx="6"/><rect x="208" y="150" width="46" height="30" rx="6"/>
-        <rect x="264" y="150" width="46" height="30" rx="6"/><rect x="320" y="150" width="46" height="30" rx="6"/>
+__CATEGORY_CELLS__
       </g>
-      <text x="40" y="206" class="nsub">architecture · mobile · RBAC · security · recovery · documentation …</text>
+      <text x="40" y="__CATEGORY_LEGEND_Y__" class="nsub">__CATEGORY_SAMPLE__</text>
     </g>
 
     <path d="M 490 124 C 560 124, 580 150, 626 168" fill="none" stroke="rgba(217,184,107,0.35)" stroke-width="2" marker-end="url(#ar7)"/>
     <path d="M 490 124 C 560 124, 580 150, 626 168" fill="none" stroke="#d9b86b" stroke-width="2" class="flow"/>
 
     <!-- gate -->
-    <g class="node" data-tip="The certification report is generated from the registry and CI artefacts, never hand-written: coverage per surface and dimension, security findings, integrity status, suite results, open defects, limitations, blockers, final score.">
+    <g class="node" data-tip="The certification report is generated from the registry and CI artefacts, never hand-written: coverage per surface and dimension, security findings, integrity status, suite results, open defects, limitations, blockers, final score. Asked on __GATES_DATE__, the gate answers: __CERT_LINE__.">
       <rect class="box" x="628" y="96" width="150" height="180" rx="16" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="2"/>
       <text x="703" y="168" text-anchor="middle" class="nlabel" style="font-size:15px" fill="#d9b86b">GATE</text>
       <text x="703" y="192" text-anchor="middle" class="nsub">W5</text>
     </g>
 
-    <!-- blocker rail -->
-    <g class="node" data-tip="Any one of these means not ready, whatever the scores say: a P0 or P1 defect · a failing critical golden path · cross-tenant access · an unauthorized financial operation · financial or inventory corruption · authentication bypass · a critical vulnerability · an exposed secret · a major data-loss path · a failed backup restore · a broken critical mobile workflow · a broken invoice or payment workflow.">
-      <rect class="box" x="600" y="300" width="206" height="56" rx="14" fill="rgba(224,104,92,0.09)" stroke="rgba(224,104,92,0.5)"/>
-      <text x="703" y="326" text-anchor="middle" class="nlabel" style="font-size:14px" fill="#f0958c">12 absolute blockers</text>
-      <text x="703" y="345" text-anchor="middle" class="nsub">any one → not ready</text>
+    <!-- gate rail — statuses read from RELEASE_GATES.json, not listed by hand -->
+    <g class="node" data-tip="Checked on __GATES_DATE__ by project-control/release-gates.mjs. UNCHECKABLE is its own answer and not a pass: the gate cannot be decided from this repository, and its evidence says what a human must do. Uncheckable today: __GATE_UNCHECKABLE_LIST__. Full rail — __GATE_TIP__">
+      <rect class="box" x="560" y="300" width="286" height="56" rx="14" fill="rgba(224,104,92,0.09)" stroke="rgba(224,104,92,0.5)"/>
+      <text x="703" y="324" text-anchor="middle" class="nlabel" style="font-size:14px" fill="#f0958c">__GATE_TOTAL__ gates · __GATE_PASS__ pass · __GATE_FAIL__ fail</text>
+      <text x="703" y="345" text-anchor="middle" class="nsub">__GATE_UNCHECKABLE__ uncheckable · any FAIL → not ready</text>
     </g>
     <path d="M 703 300 L 703 280" stroke="#e0685c" stroke-width="2.4"/>
     <path d="M 686 288 L 720 288" stroke="#e0685c" stroke-width="2.4" stroke-linecap="round"/>
@@ -762,11 +654,11 @@ footer a{color:var(--mut)}
     <g class="node" data-tip="10/10 is stated only when the evidence supports it, and never on route coverage alone. A beautiful UI with broken persistence is not 10/10. A working backend with broken mobile is not 10/10.">
       <rect class="box" x="938" y="148" width="222" height="76" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.2)"/>
       <text x="1049" y="182" text-anchor="middle" class="nlabel" style="font-size:15px">10/10 — production ready</text>
-      <text x="1049" y="204" text-anchor="middle" class="nsub">claimed only with evidence</text>
+      <text x="1049" y="204" text-anchor="middle" class="nsub">__CERT_LINE__</text>
     </g>
-    <text x="1049" y="256" text-anchor="middle" class="callout">23 golden paths run desktop + 390px + Arabic</text>
+    <text x="1049" y="256" text-anchor="middle" class="callout">__GP_TOTAL__ golden paths · __GP_PASS__ passing · __GP_FAIL__ failing · __GP_UNWRITTEN__ unwritten</text>
   </svg>
-  <div class="capbar" data-cap="gate">Hover the gate or the blocker rail for the full list.</div>
+  <div class="capbar" data-cap="gate">Hover the gate or the gate rail for what each of the __GATE_TOTAL__ gates decided.</div>
   </div>
 </div>
 </section>
@@ -777,14 +669,15 @@ footer a{color:var(--mut)}
   <div class="kicker">The short version</div>
   <h2>What to hold on to</h2>
   <div class="takeaway">
-    <h3>Six things this build gets right, and one thing that decides the schedule</h3>
+    <h3>What this build gets right, and the one thing that decides the schedule</h3>
     <ul>
       <li><b>Nothing is counted by hand.</b> Route tables, tests, gates, matrices and reports all fall out of one generated registry. A hardcoded total is treated as a defect.</li>
       <li><b>The unit of completion is a capability, not a file.</b> "Customer management" can be done; <code>Customers.tsx</code> cannot.</li>
       <li><b>No agent certifies its own work.</b> An agent may mark its own work DONE; only the release manager sets VERIFIED, and only after re-running the checks.</li>
       <li><b>The seam is what makes the backend swap safe.</b> The database seeds from today's fixtures, so every assertion that passes now must still pass after the swap.</li>
       <li><b>The client gate is a courtesy.</b> The real boundary is server-side, and a cross-tenant read returns 404 rather than confirming the record exists.</li>
-      <li><b>Rendering is the floor.</b> 363 of 403 screens draw; zero are backed by real data, tablet-verified, or production-ready. Both facts are true at once, and the second one is the honest one.</li>
+      <li><b>Rendering is the floor.</b> __RENDERED__ of __CAPS__ capabilities draw and assert their content; __DATA_BACKED__ are backed by real data, __TABLET__ are tablet-verified and __PROD_READY__ are production-ready. Both facts are true at once, and the second one is the honest one.</li>
+      <li><b>A journey is the only proof.</b> __GP_PASS__ of __GP_TOTAL__ golden paths pass, __GP_FAIL__ fail and __GP_UNWRITTEN__ have no journey at all. Unwritten is reported as its own state rather than counted green, because not knowing is not the same as passing.</li>
       <li><b>W1 decides the calendar.</b> Ten product agents wait on four foundation agents, and the backend does not parallelise. Shortening the foundation is the only lever on elapsed time — everything else is effort, not schedule.</li>
     </ul>
   </div>
@@ -793,8 +686,9 @@ footer a{color:var(--mut)}
 
 <div class="wrap">
 <footer>
-  Built from 13 project documents — scope registry, capability matrix, gap report, architecture, business rules, RBAC matrix, dependency graph, agent ownership, definition of done, test strategy, release plan, execution plan and the accessibility audit.
-  Registry figures are the generated snapshot of <b>21 Aug 2026</b>; progress prose is dated <b>12 Aug 2026</b>. Re-run <code>npm run gates</code> for live numbers.
+  Generated — not transcribed — from the project's scope registry, capability matrix, gap report, architecture, business rules, RBAC matrix, dependency graph, agent ownership, definition of done, test strategy, release plan and execution plan.
+  Measurements: registry <b>__REGISTRY_DATE__</b> · golden-path run <b>__GP_DATE__</b> · release gates <b>__GATES_DATE__</b> · blockers <b>__BLOCKERS_DATE__</b>. Effort projection: human estimate of <b>__EST_DATE__</b> — the only hand-supplied figure on this page.
+  Re-run <code>npm run gates</code> in <code>app/</code>, then <code>node project-control/build-map/build-map.mjs</code>, and every number above moves with it.
   <br><br>
   This page deliberately uses no green or purple — the two hues the SALIS AUTO brand guard forbids.
 </footer>
