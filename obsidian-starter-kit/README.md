@@ -4,7 +4,15 @@ A ready-to-use `CLAUDE.md` and a set of Claude Code skills for working on an
 Obsidian vault. Copy the contents of this folder into your vault root:
 
 ```bash
-cp -r obsidian-starter-kit/CLAUDE.md obsidian-starter-kit/.claude /path/to/your/vault/
+# macOS/Linux
+cp -r obsidian-starter-kit/CLAUDE.md obsidian-starter-kit/.claude \
+      obsidian-starter-kit/.mcp.json obsidian-starter-kit/scripts /path/to/your/vault/
+```
+
+```powershell
+# Windows (PowerShell)
+Copy-Item obsidian-starter-kit\CLAUDE.md, obsidian-starter-kit\.mcp.json M:\obo\
+Copy-Item -Recurse obsidian-starter-kit\.claude, obsidian-starter-kit\scripts M:\obo\
 ```
 
 Then open Claude Code inside the vault:
@@ -31,6 +39,35 @@ claude
 | `.claude/skills/question/` | `/question` — answer a question from your notes only, with citations |
 | `scripts/vault-maintenance.ps1` | Nightly unattended maintenance (Windows / Task Scheduler) |
 | `scripts/vault-maintenance.sh` | Same for macOS/Linux (cron) |
+| `.mcp.json` | Project-scoped Obsidian MCP server (auto-detected by Claude Code) |
+
+## Obsidian MCP server (optional but recommended)
+
+`.mcp.json` wires up the [mcp-obsidian](https://github.com/MarkusPfundstein/mcp-obsidian)
+server, which gives Claude Obsidian-aware tools — vault search, reading the
+note you currently have open, appending relative to headings — instead of
+plain file access. One-time setup on your machine:
+
+1. **In Obsidian**: Settings → Community plugins → Browse → install
+   **"Local REST API"** (by coddingtonbear) → enable it → copy the API key
+   from the plugin's settings page.
+2. **Install `uv`** (provides the `uvx` launcher the config uses):
+   - Windows: `winget install astral-sh.uv`
+   - macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+3. **Set the API key as an environment variable** (the config reads
+   `${OBSIDIAN_API_KEY}`, so the key never lives in a file):
+   - Windows (PowerShell): `setx OBSIDIAN_API_KEY "your-key-here"` — then
+     open a **new** terminal (setx only affects new sessions).
+   - macOS/Linux: add `export OBSIDIAN_API_KEY="your-key-here"` to your
+     shell profile.
+4. **Copy `.mcp.json` into the vault root** along with the rest of the kit.
+5. Start `claude` in the vault. It detects the project MCP server and asks
+   once whether to trust it — approve, then verify with `/mcp` (the
+   `obsidian` server should show as connected).
+
+Notes: Obsidian must be running for the server to work (plain file access
+keeps working when it isn't), and the plugin's default HTTPS port is
+`27124` — if you changed it, update `OBSIDIAN_PORT` in `.mcp.json`.
 
 ## Customize first
 
