@@ -1026,7 +1026,50 @@ function reachableScreenFiles() {
   return { all, reached }
 }
 const { all: screenFiles, reached } = reachableScreenFiles()
-const orphanFiles = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
+
+/** Unreachable on purpose, and reviewed as such.
+ *
+ *  Each file here is the pre-kit implementation of feature-map routes that
+ *  render the generic `FeatureScreenView` today, kept as the reference for
+ *  building the real screen. It stays unwired deliberately: routing one would
+ *  put a legacy screen back in front of users. Removing an entry is how that
+ *  reference retires; adding one needs the same argument, or this list becomes
+ *  where dead code hides. Every other unreachable file is a bug.
+ *
+ *  Empty since the merge with main: the three files this list protected —
+ *  admin/SystemScreens, emerging/EmergingTechScreens, enterprise/
+ *  EnterpriseScreens — were deleted on main, which is the retirement the
+ *  paragraph above describes. The mechanism stays for the next one.
+ */
+const RETAINED_REFERENCE = [].map((f) => path.normalize(f))
+
+const unreached = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
+const retainedFiles = unreached.filter((f) => RETAINED_REFERENCE.includes(f))
+const orphanFiles = unreached.filter((f) => !RETAINED_REFERENCE.includes(f))
+
+// A path that stops existing should fail loudly rather than sit in the list
+// forever pretending to protect something.
+const staleRetained = RETAINED_REFERENCE.filter((f) => !fs.existsSync(path.join(APP, f)))
+if (staleRetained.length) {
+  console.error(`  RETAINED_REFERENCE names files that no longer exist: ${staleRetained.join(', ')}`)
+  process.exitCode = 1
+}
+
+/** What the tablet sweep actually covers, read from the sweep itself.
+ *
+ *  `e2e/tablet.spec.ts` declares its viewports and its screens as literal
+ *  tables, so the numbers reported here are the numbers that ran rather than a
+ *  figure typed into this file and left to rot. No spec, no coverage. */
+const tabletSpecPath = path.join(APP, 'e2e/tablet.spec.ts')
+const tabletSweep = (() => {
+  if (!fs.existsSync(tabletSpecPath)) return { present: false, viewports: 0, screens: 0 }
+  const src = read(tabletSpecPath)
+  const block = (name) => (new RegExp(`const ${name} = \\[([\\s\\S]*?)\\n\\]`).exec(src) ?? [, ''])[1]
+  const portrait = (block('PORTRAIT').match(/\{\s*name:/g) ?? []).length
+  const screens = (block('SCREENS').match(/\{\s*path:/g) ?? []).length
+  // Landscape is derived from portrait in the spec, so each device is two.
+  return { present: portrait > 0, viewports: portrait * 2, screens }
+})()
 
 // ── rollups ──────────────────────────────────────────────────────────────────
 
@@ -1142,7 +1185,11 @@ outputs.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
       : { runner: 'playwright', present: false, covered: null, of: GOLDEN_PATH_NAMES.length,
           note: 'never run — no project-control/GOLDEN_PATHS.json, so nothing is known, not zero passing' },
     mobile:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 18' },
-    tablet:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 18' },
+    tablet:      { runner: 'playwright', present: tabletSweep.present,
+                   covered: tabletSweep.screens, of: entries.length,
+                   note: tabletSweep.present
+                     ? `e2e/tablet.spec.ts — ${tabletSweep.viewports} viewports x ${tabletSweep.screens} screens, one per layout family, plus a rotation across the 860px breakpoint`
+                     : 'W3 — Agent 18' },
     rtl:         { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 19' },
     a11y:        { runner: 'axe',        present: false, covered: 0, of: entries.length, note: 'W3 — Agent 20' },
     visual:      { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 23' },
@@ -1177,13 +1224,21 @@ const blockers = [
     detail: 'A .Mobile.dc.html exists and is not yet implemented. Card lists, not narrowed tables.', owner: '18', wave: 'W3' },
   !fs.existsSync(path.join(APP, 'src/components/ui/Modal.tsx')) && { id: 'BLK-007', severity: 'CRITICAL', title: 'No modal system, so 23 CTAs do nothing',
     detail: 'Blocks every create/edit/delete flow in the ERP.', owner: '04', wave: 'W1' },
-  /* Was an unconditional entry reading "No tablet verification anywhere" — a
-   * blocker that stated its own conclusion and could not close however many
-   * routes a run covered. It now counts what is left. */
-  totals.rendered > totals.tabletVerified && { id: 'BLK-008', severity: 'HIGH',
-    title: `${totals.rendered - totals.tabletVerified} rendering capabilities have never been checked at 768–1024`,
-    detail: `The smoke suite loads ${totals.tabletVerified} route(s) at a tablet viewport. 768/820/834/1024, portrait and landscape, is unchecked for the rest.`,
-    owner: '18', wave: 'W3' },
+  (!tabletSweep.present
+    ? { id: 'BLK-008', severity: 'HIGH', title: 'No tablet verification anywhere',
+        detail: '768/820/834/1024, portrait and landscape, has never been checked.', owner: '18', wave: 'W3' }
+    : {
+        id: 'BLK-008', severity: 'MEDIUM',
+        title: `Tablet verification samples ${tabletSweep.screens} screens, not the full inventory`,
+        detail:
+          `e2e/tablet.spec.ts checks ${tabletSweep.viewports} viewports (768/820/834/1024, portrait ` +
+          `and landscape) plus a rotation across the 860px breakpoint, against ${tabletSweep.screens} ` +
+          'screens chosen one per layout family. It asserts no horizontal overflow, the shell the ' +
+          'width implies, and touch-target size. That is a sample, not the inventory: a screen ' +
+          'outside those families can still break at tablet width. Cleared when the sweep runs ' +
+          'over every registered capability.',
+        owner: '18', wave: 'W3',
+      }),
   totals.unregisteredDesigns && { id: 'BLK-009', severity: 'MEDIUM', title: `${totals.unregisteredDesigns} designs are not in the registry`,
     detail: `Design files with no SCREEN_MAP entry: ${unregistered.join(', ')}`, owner: '02', wave: 'W0' },
   totals.orphanScreenFiles && { id: 'BLK-010', severity: 'MEDIUM', title: `${totals.orphanScreenFiles} screen files are unreachable from any route`,
@@ -1330,7 +1385,8 @@ outputs.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
     : `_Never measured. \`project-control/GOLDEN_PATHS.json\` does not exist, so all ${GOLDEN_PATH_NAMES.length} read UNWRITTEN — ` +
       'which is "nobody has checked", not "checked and passing" and not "checked and failing". Run `npm run golden`._'}` +
   `\n\n## Designs not in the registry\n\n${unregistered.length ? unregistered.map((u) => `- \`project/${u}.dc.html\``).join('\n') : '_None — the registry covers every design file._'}` +
-  `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o}\``).join('\n') : '_None._'}` +
+  `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o.split(path.sep).join('/')}\``).join('\n') : '_None._'}` +
+  `\n\n## Retained as reference, deliberately not routed\n\nPre-kit implementations of feature-map routes that render \`FeatureScreenView\` today. Kept as the reference for building the real screen; routing one would put a legacy screen back in front of users. See \`RETAINED_REFERENCE\` in \`app/scripts/build-registry.mjs\`.\n\n${retainedFiles.length ? retainedFiles.map((o) => `- \`app/${o.split(path.sep).join('/')}\``).join('\n') : '_None._'}` +
   `\n\n## Placeholder routes by domain\n\n| Domain | Placeholder | Total |\n|---|---|---|\n` +
   Object.entries(byDomain).filter(([, v]) => v.placeholder).sort((a, b) => b[1].placeholder - a[1].placeholder)
     .map(([k, v]) => `| ${DOMAIN_LABEL[k] ?? k} | ${v.placeholder} | ${v.total} |`).join('\n') + '\n'))
@@ -1397,6 +1453,7 @@ console.log(goldenRun
   : `  golden paths: unmeasured — no GOLDEN_PATHS.json (run \`npm run golden\`); all ${GOLDEN_PATH_NAMES.length} read unwritten`)
 if (unregistered.length) console.log(`  unregistered designs: ${unregistered.join(', ')}`)
 if (orphanFiles.length) console.log(`  orphan screen files: ${orphanFiles.join(', ')}`)
+if (retainedFiles.length) console.log(`  retained as reference, not routed: ${retainedFiles.length}`)
 const changed = outputs.filter(Boolean)
 for (const w of changed) console.log(`  wrote ${w}`)
 const unchanged = outputs.length - changed.length

@@ -79,8 +79,9 @@ export function Skeleton({ className }: { className?: string }) {
 }
 
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
+  const { t } = usePreferences()
   return (
-    <div role="status" aria-label="Loading" className="w-full animate-pulse motion-reduce:animate-none">
+    <div role="status" aria-label={t('Loading')} className="w-full animate-pulse motion-reduce:animate-none">
       <div className="flex gap-4 border-b border-border px-4 py-3">
         {Array.from({ length: cols }, (_, i) => (
           <span key={i} aria-hidden className={cn('h-3 rounded bg-inset', i === 0 ? 'w-32' : 'w-20')} />
@@ -98,8 +99,9 @@ export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
 }
 
 export function CardSkeleton({ count = 3 }: { count?: number }) {
+  const { t } = usePreferences()
   return (
-    <div role="status" aria-label="Loading" className="grid gap-4 animate-pulse sm:grid-cols-2 lg:grid-cols-3 motion-reduce:animate-none">
+    <div role="status" aria-label={t('Loading')} className="grid gap-4 animate-pulse sm:grid-cols-2 lg:grid-cols-3 motion-reduce:animate-none">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} aria-hidden className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
           <span className="h-4 w-3/4 rounded bg-inset" />

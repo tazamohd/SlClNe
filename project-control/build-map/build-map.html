@@ -129,7 +129,7 @@ footer a{color:var(--mut)}
     <div class="stat warn"><div class="n">0</div><div class="l">Production ready</div></div>
     <div class="stat blue"><div class="n">24</div><div class="l">Agents</div></div>
   </div>
-  <p class="plain" style="margin-top:26px"><b>Every figure on this page is generated</b> — from the registry regeneration of 1 Sep 2026, the golden-path run of 1 Sep 2026 and the release-gate run of 1 Sep 2026. One section is not: the effort projection is a human estimate of 21 Aug 2026, and it says so where it appears.</p>
+  <p class="plain" style="margin-top:26px"><b>Every figure on this page is generated</b> — from the registry regeneration of 2 Sep 2026, the golden-path run of 1 Sep 2026 and the release-gate run of 1 Sep 2026. One section is not: the effort projection is a human estimate of 21 Aug 2026, and it says so where it appears.</p>
 </header>
 </div>
 
@@ -495,7 +495,7 @@ footer a{color:var(--mut)}
   <p class="plain"><b>In plain words:</b> the screens are drawn and you can click to all of them. 99 of them now save to a real database and 285 still cannot. 4 have been checked on a tablet. 0 are finished.</p>
 
   <div class="figure">
-  <svg viewBox="0 0 1200 518" role="img" aria-label="Bar chart of coverage by dimension: route check exists 424 of 424, renders on desktop 424 of 424, asserts real content 424 of 424, backed by real data 99 of 424, designed mobile built 112 of 113, tablet verified 4 of 424, arabic certified 80 of 424, rtl certified 1 of 424, production ready 0 of 424.">
+  <svg viewBox="0 0 1200 518" role="img" aria-label="Bar chart of coverage by dimension: route check exists 424 of 424, renders on desktop 424 of 424, asserts real content 424 of 424, backed by real data 99 of 424, designed mobile built 112 of 113, tablet verified 4 of 424, arabic certified 82 of 424, rtl certified 1 of 424, production ready 0 of 424.">
     <!-- gridlines -->
     <g stroke="rgba(255,255,255,0.07)" stroke-width="1">
       <line x1="330" y1="26" x2="330" y2="470"/>
@@ -534,15 +534,15 @@ footer a{color:var(--mut)}
       <rect x="330" y="234" width="793" height="26" rx="6" fill="rgba(218,119,86,0.75)"/>
       <text x="1139" y="253" class="nsub" fill="#DA7756">112 / 113</text>
     </g>
-    <g class="node" data-tip="BLK-008. The smoke suite loads 4 route(s) at a tablet viewport. 768/820/834/1024, portrait and landscape, is unchecked for the rest.">
+    <g class="node" data-tip="BLK-008. e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.">
       <text x="316" y="300" text-anchor="end" class="nlabel" style="font-size:14px">Tablet verified</text>
       <rect x="330" y="282" width="8" height="26" rx="6" fill="rgba(224,104,92,0.9)"/>
       <text x="354" y="301" class="nsub" fill="#f0958c">4 / 424</text>
     </g>
-    <g class="node" data-tip="2,122 Arabic keys are ported and the primitives use logical CSS properties throughout, so layouts mirror by construction. 80 capabilities have been certified for strings, dates, numbers and LTR-pinned Latin runs.">
+    <g class="node" data-tip="2,122 Arabic keys are ported and the primitives use logical CSS properties throughout, so layouts mirror by construction. 82 capabilities have been certified for strings, dates, numbers and LTR-pinned Latin runs.">
       <text x="316" y="348" text-anchor="end" class="nlabel" style="font-size:14px">Arabic certified</text>
-      <rect x="330" y="330" width="151" height="26" rx="6" fill="rgba(217,184,107,0.7)"/>
-      <text x="497" y="349" class="nsub" fill="#d9b86b">80 / 424</text>
+      <rect x="330" y="330" width="155" height="26" rx="6" fill="rgba(217,184,107,0.7)"/>
+      <text x="501" y="349" class="nsub" fill="#d9b86b">82 / 424</text>
     </g>
     <g class="node" data-tip="Direction, icons, chevrons, tables, charts and scroll affordances, certified per capability. 0 known RTL hazards remain open in the registry, which is not the same as having checked every screen.">
       <text x="316" y="396" text-anchor="end" class="nlabel" style="font-size:14px">RTL certified</text>
@@ -568,7 +568,7 @@ footer a{color:var(--mut)}
 
   <div class="note">
     <div class="h">Measured, estimated and unmeasurable are three different things</div>
-    <p>Everything above is a query over <code>MASTER_REGISTRY.json</code>, regenerated on <b>1 Sep 2026</b>. The journeys below are a run record from <b>1 Sep 2026</b> and the release gates a check run from <b>1 Sep 2026</b>. Where the three disagree the later stamp wins, and the fix is to re-run the earlier one — never to reconcile two paragraphs of prose.</p>
+    <p>Everything above is a query over <code>MASTER_REGISTRY.json</code>, regenerated on <b>2 Sep 2026</b>. The journeys below are a run record from <b>1 Sep 2026</b> and the release gates a check run from <b>1 Sep 2026</b>. Where the three disagree the later stamp wins, and the fix is to re-run the earlier one — never to reconcile two paragraphs of prose.</p>
     <p>Exactly one section of this page is not measured. Nothing in the repository computes engineer-days, so the effort projection is a <b>human estimate of 21 Aug 2026</b>, declared in a file and labelled where it appears. The rule the rest of the page runs on is that <b>a count written into a document is a dated snapshot, not a fact</b> — so the one place a snapshot is unavoidable says so out loud, rather than borrowing the credibility of the generated numbers around it.</p>
   </div>
 </div>
@@ -707,7 +707,7 @@ footer a{color:var(--mut)}
 <div class="wrap">
   <div class="kicker">Open blockers</div>
   <h2>Six computed blockers, each with an owner and a wave</h2>
-  <p class="sub">These are queries over the registry, not a triage meeting's opinions. Severity and ownership come from the same generated source as everything else, regenerated on 1 Sep 2026 — the list shortens by fixing the thing, never by editing the card.</p>
+  <p class="sub">These are queries over the registry, not a triage meeting's opinions. Severity and ownership come from the same generated source as everything else, regenerated on 2 Sep 2026 — the list shortens by fixing the thing, never by editing the card.</p>
 
   <div class="grid">
     <div class="card">
@@ -729,9 +729,9 @@ footer a{color:var(--mut)}
       <div class="own">BLK-006 · Agent 18 · W3</div>
     </div>
     <div class="card">
-      <span class="tag t-high">High</span>
-      <h3>420 rendering capabilities have never been checked at 768–1024</h3>
-      <p>The smoke suite loads 4 route(s) at a tablet viewport. 768/820/834/1024, portrait and landscape, is unchecked for the rest.</p>
+      <span class="tag t-med">Medium</span>
+      <h3>Tablet verification samples 6 screens, not the full inventory</h3>
+      <p>e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.</p>
       <div class="own">BLK-008 · Agent 18 · W3</div>
     </div>
     <div class="card">
@@ -760,7 +760,7 @@ footer a{color:var(--mut)}
 
   <div class="note">
     <div class="h">Human estimate · 21 Aug 2026 · not a measurement</div>
-    <p>Every other number on this page is read out of a generated file at build time. These are not. Nothing in this repository computes remaining effort or elapsed time, so this section is one person's estimate in engineer-days for one senior full-stack engineer, declared in <code>project-control/build-map/estimates.json</code> and unrevised since <b>21 Aug 2026</b> — older than the 1 Sep 2026 registry the rest of the page reads. Treat it as a shape, not a date. Integrations needing credentials the user must provision are NOT in these numbers — they set a floor the code cannot move on its own.</p>
+    <p>Every other number on this page is read out of a generated file at build time. These are not. Nothing in this repository computes remaining effort or elapsed time, so this section is one person's estimate in engineer-days for one senior full-stack engineer, declared in <code>project-control/build-map/estimates.json</code> and unrevised since <b>21 Aug 2026</b> — older than the 2 Sep 2026 registry the rest of the page reads. Treat it as a shape, not a date. Integrations needing credentials the user must provision are NOT in these numbers — they set a floor the code cannot move on its own.</p>
   </div>
 
   <div class="figure">
@@ -945,7 +945,7 @@ footer a{color:var(--mut)}
 <div class="wrap">
 <footer>
   Generated — not transcribed — from the project's scope registry, capability matrix, gap report, architecture, business rules, RBAC matrix, dependency graph, agent ownership, definition of done, test strategy, release plan and execution plan.
-  Measurements: registry <b>1 Sep 2026</b> · golden-path run <b>1 Sep 2026</b> · release gates <b>1 Sep 2026</b> · blockers <b>1 Sep 2026</b>. Effort projection: human estimate of <b>21 Aug 2026</b> — the only hand-supplied figure on this page.
+  Measurements: registry <b>2 Sep 2026</b> · golden-path run <b>1 Sep 2026</b> · release gates <b>1 Sep 2026</b> · blockers <b>2 Sep 2026</b>. Effort projection: human estimate of <b>21 Aug 2026</b> — the only hand-supplied figure on this page.
   Re-run <code>npm run gates</code> in <code>app/</code>, then <code>node project-control/build-map/build-map.mjs</code>, and every number above moves with it.
   <br><br>
   This page deliberately uses no green or purple — the two hues the SALIS AUTO brand guard forbids.

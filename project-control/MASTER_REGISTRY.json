@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01",
+  "generatedAt": "2026-09-02",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -18,9 +18,9 @@
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 143,
     "hasErrorState": 111,
-    "hasEmptyState": 166,
+    "hasEmptyState": 168,
     "tabletVerified": 4,
-    "arabicVerified": 80,
+    "arabicVerified": 82,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -16289,14 +16289,14 @@
       "featureMapSource": "project/spec-shots/031-Loaner-Vehicles.png",
       "mobileType": "B-responsive",
       "purpose": "Managing the garage's fleet of courtesy cars.",
-      "desktop": "PARTIAL",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -16330,7 +16330,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -16420,14 +16419,14 @@
       "featureMapSource": "project/spec-shots/033-Towing-Services.png",
       "mobileType": "B-responsive",
       "purpose": "Managing relationships with towing providers.",
-      "desktop": "PARTIAL",
+      "desktop": "DONE",
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -16461,7 +16460,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
@@ -26187,8 +26185,8 @@
       "featureMapSource": "project/spec-shots/197-Voice-Commands.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "PARTIAL",
-      "tablet": "MISSING",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -26229,7 +26227,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING"
       ]
     },
@@ -26253,8 +26250,8 @@
       "featureMapSource": "project/spec-shots/198-Voice-Command-Interface.png",
       "mobileType": "B-responsive",
       "purpose": null,
-      "desktop": "PARTIAL",
-      "tablet": "MISSING",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -26295,7 +26292,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING"
       ]
     },

@@ -370,6 +370,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Load": "تحميل",
   "Load more": "تحميل المزيد",
   "Log Conversations": "تسجيل المحادثات",
+  "Loading": "جارٍ التحميل...",
   "Loading branches...": "جارٍ تحميل الفروع...",
   "Loading calendar...": "جارٍ تحميل التقويم...",
   "Loading customers...": "جارٍ تحميل العملاء...",

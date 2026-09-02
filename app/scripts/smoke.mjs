@@ -1845,6 +1845,12 @@ const failures = []
   const page = await context.newPage()
   await page.goto(BASE + '/language-selection', { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: /Arabic|العربية/ }).click()
+  // The Arabic dictionary is a lazy chunk, so the click fires an async import()
+  // before t() can resolve the heading. Wait for it to apply rather than reading
+  // synchronously — a genuine failure (chunk never loads) still fails the check below.
+  await page
+    .waitForFunction(() => document.body.innerText.includes('اختر لغتك'), { timeout: 5000 })
+    .catch(() => {})
   const dir = await page.evaluate(() => document.documentElement.dir)
   /* The direction flips synchronously, the words do not: the Arabic dictionary
    * is a lazy chunk, so reading innerText straight after the click caught the

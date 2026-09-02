@@ -32,6 +32,16 @@ export default defineConfig({
     setupFiles: ['./src/test-setup.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
     restoreMocks: true,
+    // 77 files of jsdom component rendering across forked workers oversubscribe
+    // a developer machine, and the 5 s default was expiring on tests that pass
+    // in 300 ms when run alone — a different handful on every run. A timeout
+    // that fires on scheduling latency reports a problem the code does not
+    // have, and a suite that cries wolf stops being read. Nothing here waits
+    // longer than it needs to: a passing test still finishes as fast as it
+    // ever did. See `asyncUtilTimeout` in `src/test-setup.ts` for the matching
+    // ceiling on Testing Library's `findBy*` polling.
+    testTimeout: 20_000,
+    hookTimeout: 20_000,
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'json-summary'],

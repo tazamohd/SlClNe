@@ -352,7 +352,11 @@ describe('the authentication plane does not widen anything', () => {
     // is the fence rather than the comment that asks nicely.
     const { readdirSync, readFileSync, statSync } = await import('node:fs')
     const { join, relative } = await import('node:path')
-    const root = new URL('../src', import.meta.url).pathname
+    const { fileURLToPath } = await import('node:url')
+    /* `URL.pathname` gives `/C:/…` on Windows, which `join` turns into
+     * `C:\C:\…`; the walk threw ENOENT and this fence never actually ran
+     * there. `fileURLToPath` is the portable spelling. */
+    const root = fileURLToPath(new URL('../src', import.meta.url))
 
     const offenders: string[] = []
     const walk = (dir: string) => {

@@ -52,10 +52,10 @@
     },
     "tablet": {
       "runner": "playwright",
-      "present": false,
-      "covered": 0,
+      "present": true,
+      "covered": 6,
       "of": 424,
-      "note": "W3 — Agent 18"
+      "note": "e2e/tablet.spec.ts — 8 viewports x 6 screens, one per layout family, plus a rotation across the 860px breakpoint"
     },
     "rtl": {
       "runner": "playwright",

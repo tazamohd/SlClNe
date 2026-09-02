@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-08-31'
+export const REGISTRY_GENERATED_AT = '2026-09-02'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -5258,7 +5258,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -5305,7 +5304,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
@@ -8812,7 +8810,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": false,
@@ -8834,7 +8831,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": false,
