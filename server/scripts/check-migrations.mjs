@@ -23,7 +23,7 @@
  *  Usage:  node scripts/check-migrations.mjs
  *  Exit:   0 clean, 1 drift found.
  */
-import { execFileSync } from 'node:child_process'
+import { execFileSync, execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -90,11 +90,14 @@ if (entries.length) {
 
 let generated = ''
 try {
-  generated = execFileSync('npx', ['drizzle-kit', 'generate'], {
+  /* A fixed command string rather than execFileSync with an args array. On
+   * Windows `npx` is `npx.cmd`, which Node will not spawn without a shell
+   * (EINVAL), and passing *args* through a shell is what triggers DEP0190 —
+   * a constant string with no interpolation avoids both. */
+  generated = execSync('npx drizzle-kit generate', {
     cwd: SERVER,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
-    shell: process.platform === 'win32',
   })
 } catch (error) {
   note(`drizzle-kit generate failed: ${error.message?.split('\n')[0] ?? error}`)
