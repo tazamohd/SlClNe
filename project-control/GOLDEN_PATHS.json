@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-02T08:28:10.489Z",
+  "generatedAt": "2026-09-02T10:36:45.405Z",
   "generator": "app/scripts/golden-paths.mjs",
-  "note": "A run record, not a plan. Classified from a run of the Playwright suite (npx playwright test --reporter=json) over desktop and mobile. PASSING means a spec declares this path and every one of its tests passed in every project it ran in; FAILING means one ran and did not; UNWRITTEN means no spec declares that path yet. Never hand-edit — re-run the runner.",
+  "note": "A run record, not a plan. Classified from a Playwright report supplied by GOLDEN_PLAYWRIGHT_JSON (/tmp/pw-report.json) over desktop and mobile. PASSING means a spec declares this path and every one of its tests passed in every project it ran in; FAILING means one ran and did not; UNWRITTEN means no spec declares that path yet. Never hand-edit — re-run the runner.",
   "base": "http://localhost:4173",
   "projects": [
     "desktop",

@@ -411,4 +411,79 @@ if (totals.failing) {
     console.error(`  ${r.path}\n${r.error.split('\n').map((line) => `    ${line}`).join('\n')}`)
   }
 }
+/* ── the ratchet ──────────────────────────────────────────────────────────────
+ *
+ *  Sixteen of twenty-three paths fail today, so a gate demanding green would be
+ *  switched off within a day. `project-control/BASELINE.json` already carries
+ *  this project's ratchet convention for check-no-fake and check-tokens: the
+ *  numbers may fall, never rise.
+ *
+ *  Both counters are capped, not only the failing one. `passing` is
+ *  `23 - failing - unwritten`, so capping the other two is what keeps passing
+ *  from falling -- and deleting a spec moves a path from FAILING to UNWRITTEN,
+ *  lowering the failing count. That would read as an improvement if unwritten
+ *  were left uncapped. Losing a test is not progress.
+ *
+ *  A configuration error fails under the ratchet too. A mislabelled or
+ *  duplicated golden path is broken measurement rather than a product
+ *  regression to be tolerated: while it stands, every number here is filed
+ *  against the wrong path.
+ *
+ *  Without `--ratchet` the exit code stays honest -- non-zero while anything is
+ *  failing -- because that is the right answer for a person running it. */
+const BASELINE = path.join(REPO, 'project-control', 'BASELINE.json')
+const KEYS = { failing: 'goldenPathsFailing', unwritten: 'goldenPathsUnwritten' }
+
+if (process.argv.includes('--update-baseline')) {
+  /* Merged over what is there, never written fresh: three gates keep counters
+   * in this one file, and rebuilding the object drops the other two -- after
+   * which their gates read a missing key as "no baseline" and pass anything. */
+  const prev = fs.existsSync(BASELINE) ? JSON.parse(fs.readFileSync(BASELINE, 'utf8')) : {}
+  fs.writeFileSync(BASELINE, JSON.stringify({
+    ...prev,
+    updatedAt: new Date().toISOString().slice(0, 10),
+    [KEYS.failing]: totals.failing,
+    [KEYS.unwritten]: totals.unwritten,
+  }, null, 2) + '\n')
+  console.log(`golden paths: baseline set -- ${totals.failing} failing, ${totals.unwritten} unwritten`)
+  process.exit(errors.length ? 1 : 0)
+}
+
+if (process.argv.includes('--ratchet')) {
+  const baseline = fs.existsSync(BASELINE) ? JSON.parse(fs.readFileSync(BASELINE, 'utf8')) : {}
+  const limits = { failing: baseline[KEYS.failing], unwritten: baseline[KEYS.unwritten] }
+  /* No recorded limit means there is no ratchet to check against, and treating
+   * the current number as the limit would pass anything for ever. */
+  const missing = Object.entries(limits)
+    .filter(([, v]) => typeof v !== 'number')
+    .map(([k]) => KEYS[k])
+  if (missing.length) {
+    console.error(
+      `\ngolden paths FAILED -- project-control/BASELINE.json has no ${missing.join(' or ')}. ` +
+      'Run `npm run golden -- --update-baseline` to record one.',
+    )
+    process.exit(1)
+  }
+
+  const rose = ['failing', 'unwritten']
+    .filter((k) => totals[k] > limits[k])
+    .map((k) => `${k} rose to ${totals[k]} (limit ${limits[k]})`)
+
+  if (errors.length || rose.length) {
+    console.error('\ngolden paths FAILED')
+    for (const r of rose) console.error(`  ${r}`)
+    if (errors.length) console.error(`  ${errors.length} configuration error(s), listed above`)
+    process.exit(1)
+  }
+
+  const gained = ['failing', 'unwritten']
+    .filter((k) => totals[k] < limits[k])
+    .map((k) => `${limits[k] - totals[k]} fewer ${k}`)
+  console.log(
+    `golden paths OK -- ${totals.failing} failing, ${totals.unwritten} unwritten, within baseline` +
+    (gained.length ? ` (${gained.join(' and ')}; run --update-baseline to lock it in)` : ''),
+  )
+  process.exit(0)
+}
+
 if (errors.length || totals.failing) process.exit(1)

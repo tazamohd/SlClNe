@@ -110,6 +110,53 @@ jobs:
       - name: Smoke — routes, behaviour, mobile, brand guard
         run: npm run smoke
 
+  golden:
+    name: Golden paths
+    runs-on: ubuntu-latest
+    # The suite is 702 tests over two viewports. It takes about six minutes
+    # locally at four workers; CI runs two and retries once, so the ceiling is
+    # generous rather than tight — a timeout here would read as a red gate
+    # rather than as a slow one.
+    timeout-minutes: 30
+    needs: build
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Ratcheted, not green. Sixteen of twenty-three paths fail today, so a
+      # gate demanding green would be switched off within a day; the counts in
+      # project-control/BASELINE.json may fall and never rise, which is the
+      # convention check-no-fake and check-tokens already use here.
+      #
+      # No separate build or preview step: playwright.config.ts owns its own
+      # webServer and starts one on 4173. Starting a second here is how a run
+      # ends up testing the previous build.
+      - name: Golden paths — ratcheted against the baseline
+        run: npm run golden -- --ratchet
+
+      - name: Upload the golden-path record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-paths
+          path: project-control/GOLDEN_PATHS.json
+          retention-days: 14
+
   server-typecheck:
     name: Server / Typecheck
     runs-on: ubuntu-latest
