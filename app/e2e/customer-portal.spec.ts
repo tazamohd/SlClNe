@@ -80,14 +80,14 @@ test.describe('Customer Portal (Golden Path 19)', () => {
     })
   })
 
-  test('customer approval page loads with estimate', async ({ browser }) => {
+  test('customer approval page loads with real approval lines', async ({ browser }) => {
     const ctx = await browser.newContext()
     await seedRole(ctx, 'owner')
     const page = await ctx.newPage()
     await gotoReady(page, '/customer-approval')
     const text = await bodyText(page)
-    expect(text).toContain('Customer Approval')
-    expect(text).toContain('EST-2026-0418')
+    expect(text).toContain('What we found')
+    expect(text).toContain('Authorise the work')
     await ctx.close()
   })
 })

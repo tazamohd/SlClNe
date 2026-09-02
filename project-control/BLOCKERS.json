@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-02",
   "open": 4,
   "blockers": [
     {
@@ -28,9 +28,9 @@
     },
     {
       "id": "BLK-008",
-      "severity": "HIGH",
-      "title": "420 rendering capabilities have never been checked at 768–1024",
-      "detail": "The smoke suite loads 4 route(s) at a tablet viewport. 768/820/834/1024, portrait and landscape, is unchecked for the rest.",
+      "severity": "MEDIUM",
+      "title": "Tablet verification samples 6 screens, not the full inventory",
+      "detail": "e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.",
       "owner": "18",
       "wave": "W3"
     }

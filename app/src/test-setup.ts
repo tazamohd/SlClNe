@@ -9,8 +9,16 @@
  */
 import '@testing-library/jest-dom/vitest'
 import { afterEach, beforeEach } from 'vitest'
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 import { preloadArabic } from '@/providers/PreferencesProvider'
+
+/** Testing Library polls `findBy*` for 1 s by default. A screen that fetches
+ *  before it can render its first row needs a query round trip inside that
+ *  window, which holds when the file runs alone and does not when 77 files of
+ *  jsdom share the machine — the flake lands on a different file every run.
+ *  Five seconds is still far short of the Vitest timeout, so a genuinely
+ *  missing element fails the assertion rather than the whole test file. */
+configure({ asyncUtilTimeout: 5000 })
 
 /** The Arabic dictionary is a lazy chunk in the browser, which means `t()`
  *  returns the English source for the frame or two before it resolves. A test
