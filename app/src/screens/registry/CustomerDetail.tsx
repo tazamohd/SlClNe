@@ -7,6 +7,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
 import { StatusBadge } from '@/components/ui/Badge'
 import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
+import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Comments, type Comment } from '@/components/ui/Comments'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
@@ -105,6 +106,18 @@ export function CustomerDetail() {
           }))
         : [],
     [worked, customerName, t]
+  )
+
+  const attachments: AttachmentFile[] = useMemo(
+    () =>
+      customerName
+        ? [
+            { id: 'att-1', name: 'national_id.pdf', size: '1.2 MB', type: 'PDF' },
+            { id: 'att-2', name: 'fleet_contract.pdf', size: '3.4 MB', type: 'PDF' },
+            { id: 'att-3', name: 'trade_license.pdf', size: '2.1 MB', type: 'Document' },
+          ]
+        : [],
+    [customerName]
   )
 
   if (customers.isLoading) return <DetailPage title={t('Customers')} loading />
@@ -254,6 +267,11 @@ export function CustomerDetail() {
         comments={
           comments.length > 0 && !isMobile ? (
             <Comments items={comments} title={t('Notes')} />
+          ) : undefined
+        }
+        attachments={
+          attachments.length > 0 && !isMobile ? (
+            <Attachments files={attachments} title={t('Documents')} />
           ) : undefined
         }
         related={[

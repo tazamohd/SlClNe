@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { z } from 'zod'
 import { vehicleCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
-import { Modal } from '@/components/ui/Modal'
+import { Icon } from '@/components/ui/Icon'
+import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
 import {
   Field,
   Form,
@@ -17,6 +18,7 @@ import {
   useCollection,
   useCreate,
   useUpdate,
+  useDelete,
   type RowOf,
 } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -100,8 +102,10 @@ export function VehicleFormModal({
 }) {
   const { t } = usePreferences()
   const toast = useToast()
+  const { confirm } = useModal()
   const create = useCreate('vehicles')
   const update = useUpdate('vehicles')
+  const remove = useDelete('vehicles')
   const { data: customers = [] } = useCollection('customers')
   const editing = Boolean(vehicle)
 
@@ -170,20 +174,61 @@ export function VehicleFormModal({
     onClose()
   }
 
+  const handleDelete = async () => {
+    const id = rowId(vehicle)
+    if (!id) return
+    const agreed = await confirm({
+      title: t('Delete Vehicle?'),
+      description: `${vehicle?.plate ?? ''}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Vehicle deleted'), description: vehicle?.plate ?? '' })
+    onClose()
+  }
+
+  const busy = form.pending || remove.isPending
+
   return (
     <Modal
       open={open}
       onClose={() => void close()}
       variant="crud"
       icon={editing ? 'Pencil' : 'Car'}
-      title={editing ? 'Edit Vehicle' : 'Add New Vehicle'}
-      dismissible={!form.pending}
+      title={t(editing ? 'Edit Vehicle' : 'Add New Vehicle')}
+      dismissible={!busy}
       footer={
         <>
-          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={form.pending}>
+          {editing && rowId(vehicle) ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
+          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={busy}>
             {t('Cancel')}
           </Button>
-          <Button size="lg" onClick={() => form.submit()} disabled={form.pending}>
+          <Button size="lg" onClick={() => form.submit()} disabled={busy}>
             {form.pending ? t('Saving...') : t(editing ? 'Save Changes' : 'Add Vehicle')}
           </Button>
         </>
@@ -197,14 +242,14 @@ export function VehicleFormModal({
         <Field
           name="ownerRef"
           label="Owner"
-          kind="select"
+          kind="searchselect"
           options={owners.map((owner) => ({ value: owner.value, label: owner.name }))}
           placeholder={t('No owner on record')}
         />
         <Field name="mileage" label="Mileage" placeholder="42180" hint="Kilometres on the odometer." />
-        <Field name="vin" label="VIN" hint="Optional. 17 characters." />
+        <Field name="vin" label="VIN" kind="vin" hint="Optional. 17 characters." />
         <Field name="status" label="Status" kind="select" options={STATUS_OPTIONS} required />
-        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
+        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
           {t(editing ? 'Save Changes' : 'Add Vehicle')}
         </button>
       </Form>

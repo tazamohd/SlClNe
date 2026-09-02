@@ -83,7 +83,15 @@ if (fs.existsSync(REGISTRY)) {
 const current = { placeholderRoutes, sourceMarkers: findings.length }
 
 if (updating) {
+  /** Merged over what is already there, never written fresh. `check-tokens`
+   *  keeps its three counters in this same file, and rebuilding the object
+   *  from scratch here silently dropped them — after which its gate read the
+   *  missing keys as "no baseline", fell back to the current count, and would
+   *  have passed any number at all. Two gates, one file: whichever writes
+   *  second has to preserve the other's keys, and check-tokens already does. */
+  const prev = fs.existsSync(BASELINE) ? JSON.parse(fs.readFileSync(BASELINE, 'utf8')) : {}
   fs.writeFileSync(BASELINE, JSON.stringify({
+    ...prev,
     note: 'Ratchet for check-no-fake. These numbers may fall, never rise. ' +
           'Update only when lowering them, and never to accommodate a regression.',
     updatedAt: new Date().toISOString().slice(0, 10),

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SALIS AUTO</string>
+    <string name="title_activity_main">SALIS AUTO</string>
+    <string name="package_name">com.salisauto.app</string>
+    <string name="custom_url_scheme">com.salisauto.app</string>
+</resources>

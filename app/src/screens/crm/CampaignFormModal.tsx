@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { Button } from '@/components/ui/Button'
-import { Modal } from '@/components/ui/Modal'
+import { Icon } from '@/components/ui/Icon'
+import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
 import {
   Field,
   Form,
@@ -9,9 +10,9 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { useToast } from '@/components/ui/Toast'
-import { RepositoryError, useCreate, type RowOf } from '@/data/useCollection'
+import { RepositoryError, useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { NoWritesNotice, asPatch, serverFieldError } from '../registry/writes'
+import { NoWritesNotice, asPatch, rowId, serverFieldError } from '../registry/writes'
 
 type Campaign = RowOf<'campaigns'>
 
@@ -45,33 +46,48 @@ const STATUS_OPTIONS = [
 export function CampaignFormModal({
   open,
   onClose,
+  existingRecord,
 }: {
   open: boolean
   onClose: () => void
+  existingRecord?: Campaign
 }) {
   const { t } = usePreferences()
   const toast = useToast()
+  const { confirm } = useModal()
   const create = useCreate('campaigns')
+  const update = useUpdate('campaigns')
+  const remove = useDelete('campaigns')
+  const editing = Boolean(existingRecord)
 
   const form = useZodForm({
     schema: campaignForm,
     initial: {
-      name: '',
-      type: 'email',
-      status: 'draft',
+      name: existingRecord?.name ?? '',
+      type: existingRecord?.type ?? 'email',
+      status: existingRecord?.status ?? 'draft',
       startDate: '',
       endDate: '',
-      budget: '',
+      budget: existingRecord?.budget != null ? String(existingRecord.budget) : '',
     } satisfies CampaignFormValues,
     async onSubmit(values) {
       try {
-        await create.mutateAsync({ input: asPatch<Campaign>(values) })
+        if (existingRecord) {
+          const id = rowId(existingRecord)
+          if (!id) throw new Error(t('This record has no id, so it cannot be saved.'))
+          await update.mutateAsync({ id, patch: asPatch<Campaign>(values) })
+        } else {
+          await create.mutateAsync({ input: asPatch<Campaign>(values) })
+        }
       } catch (cause) {
         const attributed = serverFieldError(cause)
         if (attributed) throw attributed
         throw cause instanceof RepositoryError ? new Error(cause.message) : cause
       }
-      toast.show({ title: t('Campaign created'), description: values.name })
+      toast.show({
+        title: t(editing ? 'Campaign updated' : 'Campaign created'),
+        description: values.name,
+      })
       onClose()
     },
   })
@@ -84,21 +100,62 @@ export function CampaignFormModal({
     onClose()
   }
 
+  const handleDelete = async () => {
+    const id = rowId(existingRecord)
+    if (!id) return
+    const agreed = await confirm({
+      title: t('Delete Campaign?'),
+      description: `${existingRecord?.name ?? ''}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Campaign deleted'), description: existingRecord?.name ?? '' })
+    onClose()
+  }
+
+  const busy = form.pending || remove.isPending
+
   return (
     <Modal
       open={open}
       onClose={() => void close()}
       variant="crud"
-      icon="Megaphone"
-      title={t('New Campaign')}
-      dismissible={!form.pending}
+      icon={editing ? 'Pencil' : 'Megaphone'}
+      title={t(editing ? 'Edit Campaign' : 'New Campaign')}
+      dismissible={!busy}
       footer={
         <>
-          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={form.pending}>
+          {editing && rowId(existingRecord) ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
+          <Button variant="subtle" size="lg" onClick={() => void close()} disabled={busy}>
             {t('Cancel')}
           </Button>
-          <Button size="lg" onClick={() => form.submit()} disabled={form.pending}>
-            {form.pending ? t('Saving...') : t('Create Campaign')}
+          <Button size="lg" onClick={() => form.submit()} disabled={busy}>
+            {form.pending ? t('Saving...') : t(editing ? 'Save Changes' : 'Create Campaign')}
           </Button>
         </>
       }
@@ -112,8 +169,8 @@ export function CampaignFormModal({
         <Field name="startDate" label="Start Date" kind="date" />
         <Field name="endDate" label="End Date" kind="date" />
         <Field name="budget" label="Budget" placeholder="5000" />
-        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={form.pending}>
-          {t('Create Campaign')}
+        <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
+          {t(editing ? 'Save Changes' : 'Create Campaign')}
         </button>
       </Form>
     </Modal>

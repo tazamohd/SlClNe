@@ -14,6 +14,7 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Loading, Skeleton, EmptyState } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { CHART_COLORS } from '@/components/ui/Charts'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { SCREENS } from '@/data/generated/screens'
 import { ROLES, PERMS } from '@/data/generated/rbac'
@@ -378,7 +379,6 @@ export function UICharts() {
     { label: 'AC/Heating', value: 15 },
   ]
   const max = Math.max(...barData.map(d => d.value))
-  const COLORS = ['var(--salis-blue)', 'var(--salis-blue-bright)', 'var(--chart-3)', 'var(--text-muted)', 'var(--salis-orange)']
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" aria-label={t('Charts Pattern')}>
       <PageHeader icon="BarChart3" title="Charts" subtitle="Data visualization components for analytics" />
@@ -392,7 +392,7 @@ export function UICharts() {
                   <span className="font-semibold text-heading">{d.value}</span>
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-inset">
-                  <div className="h-full rounded-full" style={{ width: `${(d.value / max) * 100}%`, background: COLORS[i] }} />
+                  <div className="h-full rounded-full" style={{ width: `${(d.value / max) * 100}%`, background: CHART_COLORS[i] }} />
                 </div>
               </div>
             ))}
@@ -408,7 +408,7 @@ export function UICharts() {
                   const dash = (pct / 100) * circumference
                   acc.elements.push(
                     <circle key={d.label} cx="50" cy="50" r="35" fill="none"
-                      stroke={COLORS[i]} strokeWidth="12"
+                      stroke={CHART_COLORS[i]} strokeWidth="12"
                       strokeDasharray={`${dash} ${circumference - dash}`}
                       strokeDashoffset={-acc.offset * circumference / 100}
                       strokeLinecap="round" />
@@ -425,7 +425,7 @@ export function UICharts() {
             <div className="flex flex-wrap justify-center gap-3">
               {barData.map((d, i) => (
                 <div key={d.label} className="flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: COLORS[i] }} />
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: CHART_COLORS[i] }} />
                   <span className="text-xs text-body">{t(d.label)}</span>
                 </div>
               ))}

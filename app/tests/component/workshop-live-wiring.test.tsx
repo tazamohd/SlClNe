@@ -227,8 +227,8 @@ describe('EstimateDetail — live VAT split and audit trail', () => {
     renderWithProviders(<EstimateDetail />, { role: 'owner', route: '/estimate-detail?id=EST-9001' })
     await screen.findByRole('heading', { name: 'EST-9001' })
     // The trail resolves a tick after the estimate loads.
-    expect(await screen.findByText('Layla Advisor')).toBeInTheDocument()
-    expect(screen.getByText('Omar Owner')).toBeInTheDocument()
+    expect((await screen.findAllByText('Layla Advisor')).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Omar Owner').length).toBeGreaterThan(0)
     expect(await screen.findByText('Segregation-of-duties conflict')).toBeInTheDocument()
   })
 

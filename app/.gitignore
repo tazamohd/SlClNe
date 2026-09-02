@@ -7,3 +7,12 @@ coverage/
 vite.config.js
 vite.config.d.ts
 test-results/
+
+# Capacitor native build artifacts
+android/app/build/
+android/.gradle/
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+ios/App/Pods/

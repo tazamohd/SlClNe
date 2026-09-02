@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { Modal } from '@/components/ui/Modal'
+import { Modal, DESTRUCTIVE_BUTTON, useModal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
+import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useCreate, type RowOf } from '@/data/useCollection'
+import { useToast } from '@/components/ui/Toast'
+import { useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { RepositoryError } from '@/data/repository'
+import { rowId } from '../registry/writes'
 import { isValidTimeLabel, parseTimeLabel } from './schedule'
 
 type Appointment = RowOf<'appointments'>
@@ -33,26 +36,49 @@ const EMPTY: Fields = {
   technicianName: '',
 }
 
-/** Books an appointment.
+/** Books or edits an appointment.
  *
- *  The write goes through the ordinary collection create, so the server runs
- *  the bay double-booking rule (`rules/appointment.ts`) and answers with a
- *  `rule_violated` this form surfaces rather than swallows — §36, the calendar
- *  is not the boundary. `startMinute` is derived from the time label with the
- *  same `minuteOfDay` the server uses, so the overlap the form sends and the
- *  overlap the server checks are the same arithmetic. */
+ *  The write goes through the ordinary collection create/update, so the server
+ *  runs the bay double-booking rule (`rules/appointment.ts`) and answers with a
+ *  `rule_violated` this form surfaces rather than swallows. `startMinute` is
+ *  derived from the time label with the same `minuteOfDay` the server uses, so
+ *  the overlap the form sends and the overlap the server checks are the same
+ *  arithmetic. */
 export function AppointmentForm({
   open,
   onClose,
   defaultDate,
+  existingRecord,
 }: {
   open: boolean
   onClose: () => void
   defaultDate?: string
+  existingRecord?: Appointment
 }) {
   const { t } = usePreferences()
+  const toast = useToast()
+  const { confirm } = useModal()
   const create = useCreate('appointments')
-  const [fields, setFields] = useState<Fields>({ ...EMPTY, scheduledDate: defaultDate ?? '' })
+  const update = useUpdate('appointments')
+  const remove = useDelete('appointments')
+  const editing = Boolean(existingRecord)
+
+  const [fields, setFields] = useState<Fields>(() => {
+    if (existingRecord) {
+      return {
+        customerName: existingRecord.cust ?? '',
+        vehicleLabel: existingRecord.veh ?? '',
+        plate: existingRecord.plate ?? '',
+        serviceLabel: existingRecord.svc ?? '',
+        scheduledDate: '',
+        timeLabel: existingRecord.time ?? '',
+        durationMins: existingRecord.mins != null ? String(existingRecord.mins) : '60',
+        bay: existingRecord.bay ?? '',
+        technicianName: existingRecord.tech ?? '',
+      }
+    }
+    return { ...EMPTY, scheduledDate: defaultDate ?? '' }
+  })
   const [error, setError] = useState<string | null>(null)
 
   function set<K extends keyof Fields>(key: K, value: string) {
@@ -97,20 +123,30 @@ export function AppointmentForm({
       }
     }
 
+    const input = {
+      scheduledDate: fields.scheduledDate,
+      timeLabel: label,
+      startMinute,
+      durationMins: duration,
+      customerName: fields.customerName.trim(),
+      vehicleLabel: fields.vehicleLabel.trim(),
+      plate: fields.plate.trim(),
+      serviceLabel: fields.serviceLabel.trim(),
+      bay: fields.bay.trim(),
+      technicianName: fields.technicianName.trim() || undefined,
+    } as unknown as Partial<Appointment>
+
     try {
-      await create.mutateAsync({
-        input: {
-          scheduledDate: fields.scheduledDate,
-          timeLabel: label,
-          startMinute,
-          durationMins: duration,
-          customerName: fields.customerName.trim(),
-          vehicleLabel: fields.vehicleLabel.trim(),
-          plate: fields.plate.trim(),
-          serviceLabel: fields.serviceLabel.trim(),
-          bay: fields.bay.trim(),
-          technicianName: fields.technicianName.trim() || undefined,
-        } as unknown as Partial<Appointment>,
+      if (existingRecord) {
+        const id = rowId(existingRecord)
+        if (!id) throw new Error(t('This record has no id, so it cannot be saved.'))
+        await update.mutateAsync({ id, patch: input })
+      } else {
+        await create.mutateAsync({ input })
+      }
+      toast.show({
+        title: t(editing ? 'Appointment updated' : 'Appointment booked'),
+        description: fields.customerName.trim(),
       })
       reset()
       onClose()
@@ -119,40 +155,80 @@ export function AppointmentForm({
     }
   }
 
+  const handleDelete = async () => {
+    const id = rowId(existingRecord)
+    if (!id) return
+    const agreed = await confirm({
+      title: t('Delete Appointment?'),
+      description: `${existingRecord?.cust ?? ''}`,
+      icon: 'Trash2',
+      confirmLabel: t('Delete'),
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await remove.mutateAsync({ id })
+    } catch (cause) {
+      toast.show({
+        title: t('Delete failed'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    toast.show({ title: t('Appointment deleted'), description: existingRecord?.cust ?? '' })
+    onClose()
+  }
+
+  const busy = create.isPending || update.isPending || remove.isPending
+
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title={t('New Appointment')}
-      icon="CalendarPlus"
+      title={t(editing ? 'Edit Appointment' : 'New Appointment')}
+      icon={editing ? 'Pencil' : 'CalendarPlus'}
       variant="crud"
       footer={
         <>
+          {editing && rowId(existingRecord) ? (
+            <Button
+              variant="subtle"
+              onClick={() => void handleDelete()}
+              disabled={busy}
+              className={DESTRUCTIVE_BUTTON}
+            >
+              <Icon name="Trash2" size={14} />
+              {t('Delete')}
+            </Button>
+          ) : null}
+          <div className="flex-1" />
           <Button variant="subtle" onClick={onClose}>
             {t('Cancel')}
           </Button>
-          <Button type="submit" form="appointment-form" disabled={create.isPending}>
-            {t(create.isPending ? 'Saving...' : 'Book Appointment')}
+          <Button type="submit" form="appointment-form" disabled={busy}>
+            {t(busy ? 'Saving...' : editing ? 'Save Changes' : 'Book Appointment')}
           </Button>
         </>
       }
     >
       <form id="appointment-form" onSubmit={submit} className="flex flex-col gap-3">
-        <Field label={t('Customer')} value={fields.customerName} onChange={(v) => set('customerName', v)} />
-        <Field label={t('Vehicle')} value={fields.vehicleLabel} onChange={(v) => set('vehicleLabel', v)} />
+        <FormField label={t('Customer')} value={fields.customerName} onChange={(v) => set('customerName', v)} />
+        <FormField label={t('Vehicle')} value={fields.vehicleLabel} onChange={(v) => set('vehicleLabel', v)} />
         <div className="grid grid-cols-2 gap-3">
-          <Field label={t('Plate')} value={fields.plate} onChange={(v) => set('plate', v)} ltr />
-          <Field label={t('Service')} value={fields.serviceLabel} onChange={(v) => set('serviceLabel', v)} />
+          <FormField label={t('Plate')} value={fields.plate} onChange={(v) => set('plate', v)} ltr />
+          <FormField label={t('Service')} value={fields.serviceLabel} onChange={(v) => set('serviceLabel', v)} />
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <Field label={t('Date')} type="date" value={fields.scheduledDate} onChange={(v) => set('scheduledDate', v)} ltr />
-          <Field label={t('Time')} value={fields.timeLabel} onChange={(v) => set('timeLabel', v)} placeholder="9:00 AM" ltr />
+          <FormField label={t('Date')} type="date" value={fields.scheduledDate} onChange={(v) => set('scheduledDate', v)} ltr />
+          <FormField label={t('Time')} value={fields.timeLabel} onChange={(v) => set('timeLabel', v)} placeholder="9:00 AM" ltr />
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <Field label={t('Bay')} value={fields.bay} onChange={(v) => set('bay', v)} />
-          <Field label={t('Duration (min)')} type="number" value={fields.durationMins} onChange={(v) => set('durationMins', v)} ltr />
+          <FormField label={t('Bay')} value={fields.bay} onChange={(v) => set('bay', v)} />
+          <FormField label={t('Duration (min)')} type="number" value={fields.durationMins} onChange={(v) => set('durationMins', v)} ltr />
         </div>
-        <Field label={t('Technician')} value={fields.technicianName} onChange={(v) => set('technicianName', v)} />
+        <FormField label={t('Technician')} value={fields.technicianName} onChange={(v) => set('technicianName', v)} />
 
         {error ? (
           <p role="alert" className="text-[13px] font-medium text-salis-orange">
@@ -164,7 +240,7 @@ export function AppointmentForm({
   )
 }
 
-function Field({
+function FormField({
   label,
   value,
   onChange,

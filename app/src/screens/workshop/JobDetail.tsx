@@ -10,6 +10,8 @@ import { StatusBadge } from '@/components/ui/Badge'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
 import { Money } from '@/components/ui/Money'
 import { DESTRUCTIVE_BUTTON, useModal } from '@/components/ui/Modal'
+import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
+import { Comments, type Comment } from '@/components/ui/Comments'
 import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
 import { WORKSHOP_STAGES } from '@/components/ui/WorkflowStepper'
@@ -96,6 +98,29 @@ export function JobDetail() {
     : undefined
   const parts = ((lines.data ?? []) as readonly LineRow[]).filter((line) => line.kind === 'part')
 
+  const demoAttachments: AttachmentFile[] = [
+    { id: 'att-1', name: 'checkin_form.pdf', size: '0.8 MB', type: 'PDF' },
+    { id: 'att-2', name: 'inspection_report.pdf', size: '2.1 MB', type: 'PDF' },
+    { id: 'att-3', name: 'damage_photo.jpg', size: '3.5 MB', type: 'Image' },
+  ]
+
+  const demoComments: Comment[] = [
+    {
+      id: 'cmt-1',
+      author: technician?.name ?? t('Technician'),
+      role: t('Technician'),
+      text: t('Inspection completed. Waiting for parts.'),
+      time: '10:30 AM',
+    },
+    {
+      id: 'cmt-2',
+      author: job.cust,
+      role: t('Customer'),
+      text: t('Please proceed with the repair.'),
+      time: '11:15 AM',
+    },
+  ]
+
   async function deleteJob() {
     if (!job) return
     const agreed = await confirm({
@@ -160,7 +185,10 @@ export function JobDetail() {
               {t(remove.isPending ? 'Saving...' : 'Delete')}
             </Button>
           ) : null}
-          <Button size="md" onClick={() => window.print()}>
+          <Button
+            size="md"
+            onClick={() => window.open(`/job-card-print?id=${encodeURIComponent(job.id)}`, '_blank')}
+          >
             <Icon name="Printer" size={15} />
             {t('Print Job Card')}
           </Button>
@@ -239,6 +267,10 @@ export function JobDetail() {
               )}
             </Card>
           )}
+
+          <Comments items={demoComments} title={t('Technician Notes')} />
+
+          <Attachments files={demoAttachments} title={t('Documents')} />
         </div>
       </div>
     </div>

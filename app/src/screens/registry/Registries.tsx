@@ -4,6 +4,9 @@ import { ListPageHeader } from '@/components/shell/ListPage'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { AdvancedFilters, type ActiveFilter, type FilterGroup } from '@/components/ui/AdvancedFilters'
+import { ExportCenter, type ExportColumn } from '@/components/ui/ExportCenter'
+import { ImportCenter, type ImportField } from '@/components/ui/ImportCenter'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -121,6 +124,21 @@ function NoMatches({ query, icon, title, description, action }: {
 // ── Customers ───────────────────────────────────────────────────────────────
 type Customer = RowOf<'customers'> & { email?: string | null }
 
+const CUSTOMER_EXPORT_COLUMNS: ExportColumn[] = [
+  { key: 'name', label: 'Name' },
+  { key: 'phone', label: 'Phone' },
+  { key: 'vehicles', label: 'Vehicles Count' },
+  { key: 'spent', label: 'Total Spent' },
+  { key: 'last', label: 'Last Visit' },
+]
+
+const CUSTOMER_IMPORT_FIELDS: ImportField[] = [
+  { name: 'Name', required: true, example: 'Ahmed Al-Rashid' },
+  { name: 'Phone', required: true, example: '+966 50 123 4567' },
+  { name: 'Email', required: false, example: 'ahmed@example.com' },
+  { name: 'Type', required: false, example: 'individual' },
+]
+
 export function Customers() {
   const { t } = usePreferences()
   const { can, fieldHidden } = useSession()
@@ -137,6 +155,8 @@ export function Customers() {
    *  whatever the last edit left behind. */
   const [form, setForm] = useState<Customer | null | undefined>(undefined)
   const [doomed, setDoomed] = useState<Customer | undefined>(undefined)
+  const [showExport, setShowExport] = useState(false)
+  const [showImport, setShowImport] = useState(false)
 
   // Technicians, QC and suppliers may not see customer contact details.
   const hideContact = fieldHidden('Customer contact details')
@@ -227,14 +247,46 @@ export function Customers() {
         title={t('Customers')}
         search={{ value: query, onChange: setQuery }}
         actions={
-          can('customers', 'c') ? (
-            <Button size="md" onClick={() => setForm(null)}>
-              <Icon name="Plus" size={16} />
-              {t('Add Customer')}
+          <>
+            <Button variant="outline" size="md" onClick={() => { setShowExport(!showExport); setShowImport(false) }}>
+              <Icon name="Download" size={16} />
+              {t('Export')}
             </Button>
-          ) : null
+            <Button variant="outline" size="md" onClick={() => { setShowImport(!showImport); setShowExport(false) }}>
+              <Icon name="Upload" size={16} />
+              {t('Import')}
+            </Button>
+            {can('customers', 'c') ? (
+              <Button size="md" onClick={() => setForm(null)}>
+                <Icon name="Plus" size={16} />
+                {t('Add Customer')}
+              </Button>
+            ) : null}
+          </>
         }
       />
+
+      {showExport ? (
+        <ExportCenter
+          title="Export Customers"
+          description="Export customer records to a file"
+          columns={CUSTOMER_EXPORT_COLUMNS}
+          totalRows={filtered.length}
+          onExport={async () => { /* server-side export */ }}
+          className="mb-4"
+        />
+      ) : null}
+
+      {showImport ? (
+        <ImportCenter
+          title="Import Customers"
+          description="Import customer records from a CSV or Excel file"
+          fields={CUSTOMER_IMPORT_FIELDS}
+          onImport={async () => ({ total: 0, imported: 0, skipped: 0, errors: [] })}
+          className="mb-4"
+        />
+      ) : null}
+
       {isError ? (
         <Card className="p-6">
           <ErrorState description={error?.message} onRetry={() => void refetch()} />
@@ -334,11 +386,39 @@ export function Vehicles() {
   const navigate = useNavigate()
   const toast = useToast()
   const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
-  const { query, setQuery, filtered } = useSearch(vehicles, (v) => [v.plate, v.make, v.owner])
+  const { query, setQuery, filtered: searched } = useSearch(vehicles, (v) => [v.plate, v.make, v.owner])
   const remove = useDelete('vehicles')
 
   const [form, setForm] = useState<Vehicle | null | undefined>(undefined)
   const [doomed, setDoomed] = useState<Vehicle | undefined>(undefined)
+  const [showFilters, setShowFilters] = useState(false)
+  const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([])
+
+  const filterGroups = useMemo<FilterGroup[]>(() => {
+    const statuses = [...new Set(vehicles.map((v) => v.status))].filter(Boolean)
+    const makes = [...new Set(vehicles.map((v) => (v.make ?? '').split(' ')[0]))].filter(Boolean)
+    return [
+      { id: 'status', label: 'Status', icon: 'Activity', options: statuses },
+      { id: 'make', label: 'Make', icon: 'Car', options: makes },
+    ]
+  }, [vehicles])
+
+  const filtered = useMemo(() => {
+    if (activeFilters.length === 0) return searched
+    const groups = new Map<string, string[]>()
+    for (const f of activeFilters) {
+      const arr = groups.get(f.groupId) ?? []
+      arr.push(f.value)
+      groups.set(f.groupId, arr)
+    }
+    return searched.filter((v) => {
+      for (const [groupId, values] of groups) {
+        const field = groupId === 'status' ? v.status : (v.make ?? '').split(' ')[0]
+        if (!values.includes(field)) return false
+      }
+      return true
+    })
+  }, [searched, activeFilters])
 
   const mayEdit = can('vehicles', 'e')
   const mayDelete = can('vehicles', 'd')
@@ -382,14 +462,30 @@ export function Vehicles() {
             ) : null
           }
         />
-        <Input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder={t('Search vehicles...')}
-          aria-label={t('Search vehicles')}
-          inputSize="sm"
-        />
+        <div className="flex items-center gap-2">
+          <Input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={t('Search vehicles...')}
+            aria-label={t('Search vehicles')}
+            inputSize="sm"
+            className="flex-1"
+          />
+          <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)}>
+            <Icon name="SlidersHorizontal" size={14} />
+            {activeFilters.length > 0 ? `(${activeFilters.length})` : null}
+          </Button>
+        </div>
+        {showFilters ? (
+          <AdvancedFilters
+            groups={filterGroups}
+            active={activeFilters}
+            onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+            onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+            onClear={() => setActiveFilters([])}
+          />
+        ) : null}
         {isError ? (
           <Card className="p-6">
             <ErrorState description={error?.message} onRetry={() => void refetch()} />
@@ -464,14 +560,32 @@ export function Vehicles() {
         title={t('All Vehicles')}
         search={{ value: query, onChange: setQuery }}
         actions={
-          can('vehicles', 'c') ? (
-            <Button size="md" onClick={() => setForm(null)}>
-              <Icon name="Plus" size={16} />
-              {t('Add New Vehicle')}
+          <>
+            <Button variant="outline" size="md" onClick={() => setShowFilters(!showFilters)}>
+              <Icon name="SlidersHorizontal" size={16} />
+              {t('Filters')}
+              {activeFilters.length > 0 ? ` (${activeFilters.length})` : null}
             </Button>
-          ) : null
+            {can('vehicles', 'c') ? (
+              <Button size="md" onClick={() => setForm(null)}>
+                <Icon name="Plus" size={16} />
+                {t('Add New Vehicle')}
+              </Button>
+            ) : null}
+          </>
         }
       />
+
+      {showFilters ? (
+        <AdvancedFilters
+          groups={filterGroups}
+          active={activeFilters}
+          onSelect={(groupId, value) => setActiveFilters((prev) => [...prev, { groupId, value }])}
+          onRemove={(groupId, value) => setActiveFilters((prev) => prev.filter((f) => f.groupId !== groupId || f.value !== value))}
+          onClear={() => setActiveFilters([])}
+        />
+      ) : null}
+
       {isError ? (
         <Card className="p-6">
           <ErrorState description={error?.message} onRetry={() => void refetch()} />

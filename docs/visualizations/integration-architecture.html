@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-016 — Integration Architecture</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero {
+    padding: 60px 24px 32px;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+  .caption-bar {
+    max-width: 960px;
+    margin: 0 auto 24px;
+    padding: 14px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .caption-bar .desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .diagram-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 16px;
+  }
+  .diagram-section svg { width: 100%; height: auto; display: block; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .supporting {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 0 24px 80px;
+  }
+  .supporting h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p { color: var(--muted); font-size: 0.95rem; margin-bottom: 16px; }
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .info-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.55; } }
+  @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 6px var(--accent)); } 50% { filter: drop-shadow(0 0 16px var(--accent)); } }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="badge">SA-VIZ-016</div>
+  <h1><span>Integration</span> Architecture</h1>
+  <p>Hub-and-spoke diagram of SALIS AUTO platform integrations with external services and APIs</p>
+</section>
+
+<div class="caption-bar">
+  <span class="label">Hover</span>
+  <span class="desc" id="captionText">Hover on an integration spoke to see connection details</span>
+</div>
+
+<section class="diagram-section reveal">
+<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+  <defs>
+    <marker id="arrowG" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#7dbb7d"/></marker>
+    <marker id="arrowB" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#6ba4d9"/></marker>
+    <marker id="arrowGold" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#d9b86b"/></marker>
+    <marker id="arrowMuted" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#8a8a93"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glowGreen"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#7dbb7d" flood-opacity="0.5"/></filter>
+    <filter id="glowGold"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#d9b86b" flood-opacity="0.5"/></filter>
+    <filter id="glowMuted"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#8a8a93" flood-opacity="0.3"/></filter>
+  </defs>
+
+  <!-- Central hub -->
+  <g filter="url(#glow)" style="animation: glowPulse 3s ease-in-out infinite;">
+    <rect x="345" y="280" width="210" height="100" rx="16" fill="rgba(218,119,86,0.12)" stroke="#DA7756" stroke-width="2"/>
+  </g>
+  <!-- Hub icon: cog -->
+  <g transform="translate(410,310)">
+    <circle cx="20" cy="20" r="10" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+    <circle cx="20" cy="20" r="4" fill="#DA7756" opacity="0.5"/>
+    <line x1="20" y1="4" x2="20" y2="10" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="20" y1="30" x2="20" y2="36" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="4" y1="20" x2="10" y2="20" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="30" y1="20" x2="36" y2="20" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="8.7" y1="8.7" x2="13" y2="13" stroke="#DA7756" stroke-width="1.5"/>
+    <line x1="27" y1="27" x2="31.3" y2="31.3" stroke="#DA7756" stroke-width="1.5"/>
+  </g>
+  <text x="450" y="360" fill="#f5f5f7" font-size="14" font-weight="700" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">SALIS AUTO</text>
+  <text x="450" y="374" fill="#8a8a93" font-size="10" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Platform Hub</text>
+
+  <!-- ZATCA spoke (top) -->
+  <path d="M450,280 C450,190 450,170 450,120" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowG)" style="animation: flowDash 1s linear infinite;" class="spoke-line" data-spoke="zatca"/>
+  <g class="spoke-node" data-spoke="zatca" filter="url(#glowGreen)" cursor="pointer">
+    <rect x="370" y="50" width="160" height="65" rx="12" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1.5"/>
+    <!-- ZATCA icon: document with checkmark -->
+    <rect x="390" y="62" width="16" height="20" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+    <polyline points="394,74 398,78 404,70" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+    <text x="415" y="75" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">ZATCA</text>
+    <text x="415" y="90" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">E-Invoicing Phase 2</text>
+    <circle cx="515" cy="72" r="5" fill="#7dbb7d" opacity="0.8"/><text x="515" y="75" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">A</text>
+  </g>
+
+  <!-- Stripe spoke (top-right) -->
+  <path d="M555,305 C620,270 660,230 710,190" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowG)" style="animation: flowDash 1s linear infinite;" class="spoke-line" data-spoke="stripe"/>
+  <g class="spoke-node" data-spoke="stripe" filter="url(#glowGreen)" cursor="pointer">
+    <rect x="680" y="120" width="160" height="65" rx="12" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1.5"/>
+    <!-- Stripe icon: card -->
+    <rect x="700" y="137" width="22" height="16" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+    <line x1="700" y1="143" x2="722" y2="143" stroke="#7dbb7d" stroke-width="1.2"/>
+    <text x="730" y="148" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Stripe</text>
+    <text x="730" y="163" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Payments & Refunds</text>
+    <circle cx="825" cy="145" r="5" fill="#7dbb7d" opacity="0.8"/><text x="825" y="148" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">A</text>
+  </g>
+
+  <!-- SMS spoke (right) -->
+  <path d="M555,340 C620,350 670,360 730,370" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowG)" style="animation: flowDash 1s linear infinite;" class="spoke-line" data-spoke="sms"/>
+  <g class="spoke-node" data-spoke="sms" filter="url(#glowGreen)" cursor="pointer">
+    <rect x="680" y="340" width="160" height="65" rx="12" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1.5"/>
+    <!-- SMS icon: speech bubble -->
+    <rect x="700" y="355" width="20" height="14" rx="4" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+    <polygon points="708,369 712,375 716,369" fill="none" stroke="#7dbb7d" stroke-width="1"/>
+    <text x="728" y="366" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">SMS Provider</text>
+    <text x="728" y="381" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">OTP & Notifications</text>
+    <circle cx="825" cy="363" r="5" fill="#7dbb7d" opacity="0.8"/><text x="825" y="366" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">A</text>
+  </g>
+
+  <!-- WhatsApp spoke (bottom-right) -->
+  <path d="M520,380 C560,440 600,480 650,510" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowGold)" style="animation: flowDash 1.2s linear infinite;" class="spoke-line" data-spoke="whatsapp"/>
+  <g class="spoke-node" data-spoke="whatsapp" filter="url(#glowGold)" cursor="pointer">
+    <rect x="620" y="490" width="175" height="65" rx="12" fill="rgba(217,184,107,0.08)" stroke="#d9b86b" stroke-width="1.5"/>
+    <!-- WhatsApp icon: phone with bubble -->
+    <rect x="640" y="506" width="14" height="20" rx="3" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+    <circle cx="647" cy="522" r="1.5" fill="#d9b86b"/>
+    <text x="662" y="518" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">WhatsApp API</text>
+    <text x="662" y="533" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Service Updates</text>
+    <circle cx="780" cy="515" r="5" fill="#d9b86b" opacity="0.8"/><text x="780" y="518" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">P</text>
+  </g>
+
+  <!-- Email spoke (bottom-left) -->
+  <path d="M380,380 C340,440 300,480 260,510" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowG)" style="animation: flowDash 1s linear infinite;" class="spoke-line" data-spoke="email"/>
+  <g class="spoke-node" data-spoke="email" filter="url(#glowGreen)" cursor="pointer">
+    <rect x="100" y="490" width="175" height="65" rx="12" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1.5"/>
+    <!-- Email icon: envelope -->
+    <rect x="120" y="507" width="22" height="16" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+    <polyline points="120,507 131,517 142,507" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+    <text x="150" y="518" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Email Service</text>
+    <text x="150" y="533" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Transactional & Marketing</text>
+    <circle cx="260" cy="515" r="5" fill="#7dbb7d" opacity="0.8"/><text x="260" y="518" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">A</text>
+  </g>
+
+  <!-- OBD/Telematics spoke (left) -->
+  <path d="M345,340 C280,350 230,360 170,370" fill="none" stroke="#8a8a93" stroke-width="1.5" stroke-dasharray="6 8" marker-end="url(#arrowMuted)" style="animation: flowDash 1.5s linear infinite;" class="spoke-line" data-spoke="obd"/>
+  <g class="spoke-node" data-spoke="obd" filter="url(#glowMuted)" cursor="pointer">
+    <rect x="10" y="340" width="175" height="65" rx="12" fill="rgba(138,138,147,0.06)" stroke="#8a8a93" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <!-- OBD icon: diagnostic plug -->
+    <rect x="30" y="357" width="18" height="14" rx="3" fill="none" stroke="#8a8a93" stroke-width="1.2"/>
+    <line x1="34" y1="362" x2="34" y2="367" stroke="#8a8a93" stroke-width="1"/>
+    <line x1="39" y1="362" x2="39" y2="367" stroke="#8a8a93" stroke-width="1"/>
+    <line x1="44" y1="362" x2="44" y2="367" stroke="#8a8a93" stroke-width="1"/>
+    <text x="56" y="367" fill="#f5f5f7" font-size="12" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, sans-serif">OBD/Telematics</text>
+    <text x="56" y="382" fill="#8a8a93" font-size="9" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Diagnostics & Fleet</text>
+    <circle cx="170" cy="363" r="5" fill="#8a8a93" opacity="0.6"/><text x="170" y="366" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">F</text>
+  </g>
+
+  <!-- Data flow labels on spokes -->
+  <text x="425" y="210" fill="#7dbb7d" font-size="8" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.8">XML/JSON</text>
+  <text x="440" y="223" fill="#8a8a93" font-size="8" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">Bidirectional</text>
+  <text x="640" y="248" fill="#7dbb7d" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.8">REST + Webhooks</text>
+  <text x="640" y="261" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">Bidirectional</text>
+  <text x="660" y="350" fill="#7dbb7d" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.8">REST API</text>
+  <text x="660" y="363" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">Outbound</text>
+  <text x="580" y="470" fill="#d9b86b" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.8">REST API</text>
+  <text x="580" y="483" fill="#8a8a93" font-size="8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">Outbound</text>
+  <text x="290" y="470" fill="#7dbb7d" font-size="8" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.8">SMTP/API</text>
+  <text x="290" y="483" fill="#8a8a93" font-size="8" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">Outbound</text>
+  <text x="240" y="350" fill="#8a8a93" font-size="8" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.6">OBD-II / CAN</text>
+  <text x="240" y="363" fill="#8a8a93" font-size="8" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, sans-serif" opacity="0.5">Inbound</text>
+
+  <!-- Status legend -->
+  <g transform="translate(20, 640)">
+    <circle cx="10" cy="8" r="5" fill="#7dbb7d" opacity="0.8"/><text x="10" y="11" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">A</text>
+    <text x="22" y="12" fill="#8a8a93" font-size="10" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Active</text>
+    <circle cx="80" cy="8" r="5" fill="#d9b86b" opacity="0.8"/><text x="80" y="11" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">P</text>
+    <text x="92" y="12" fill="#8a8a93" font-size="10" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Planned</text>
+    <circle cx="152" cy="8" r="5" fill="#8a8a93" opacity="0.6"/><text x="152" y="11" fill="#0a0a0c" font-size="7" text-anchor="middle" font-weight="700">F</text>
+    <text x="164" y="12" fill="#8a8a93" font-size="10" font-family="-apple-system, BlinkMacSystemFont, sans-serif">Future</text>
+  </g>
+</svg>
+</section>
+
+<section class="supporting reveal">
+  <h2>Integration <span>Details</span></h2>
+  <p>SALIS AUTO uses a hub-and-spoke integration model. The platform hub orchestrates all external communications via RESTful APIs, webhooks, and SOAP endpoints.</p>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>ZATCA Compliance</h3>
+      <p>Mandatory e-invoicing with XML generation, QR codes, digital certificates, and real-time validation against ZATCA Phase 2</p>
+    </div>
+    <div class="info-card">
+      <h3>Payment Processing</h3>
+      <p>Stripe integration handles card payments, refunds, recurring billing, and webhook-based status updates</p>
+    </div>
+    <div class="info-card">
+      <h3>Communication Stack</h3>
+      <p>SMS for OTP and alerts, email for transactional and marketing, WhatsApp Business API planned for service updates</p>
+    </div>
+    <div class="info-card">
+      <h3>Future: OBD/Telematics</h3>
+      <p>Planned vehicle diagnostics integration via OBD-II ports for automated fault code reading and fleet telemetry</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const spokeDetails = {
+  zatca: { name:'ZATCA E-Invoicing', protocol:'REST + SOAP (XML)', direction:'Bidirectional', frequency:'Per invoice (real-time)', data:'Invoice XML, QR codes, validation responses, digital certificates', status:'Active - Mandatory' },
+  stripe: { name:'Stripe Payments', protocol:'REST API + Webhooks', direction:'Bidirectional', frequency:'Per transaction + webhook callbacks', data:'Payment intents, refunds, customer tokens, webhook events', status:'Active' },
+  sms: { name:'SMS Provider', protocol:'REST API', direction:'Outbound', frequency:'Event-driven (OTP, alerts)', data:'OTP codes, appointment reminders, service status notifications', status:'Active' },
+  whatsapp: { name:'WhatsApp Business API', protocol:'REST API', direction:'Outbound', frequency:'Event-driven', data:'Service completion updates, appointment confirmations, feedback requests', status:'Planned - Q2 2026' },
+  email: { name:'Email Service', protocol:'SMTP / REST API', direction:'Outbound', frequency:'Event-driven + scheduled', data:'Transactional emails (invoices, receipts), marketing campaigns, system alerts', status:'Active' },
+  obd: { name:'OBD/Telematics', protocol:'OBD-II / CAN Bus / IoT Gateway', direction:'Inbound', frequency:'Continuous telemetry', data:'Diagnostic trouble codes, engine data, GPS location, fleet metrics', status:'Future - roadmap' }
+};
+
+const caption = document.getElementById('captionText');
+document.querySelectorAll('.spoke-node').forEach(node => {
+  node.addEventListener('mouseenter', function() {
+    const key = this.dataset.spoke;
+    const d = spokeDetails[key];
+    caption.textContent = d.name + ' — ' + d.protocol + ' | ' + d.direction + ' | ' + d.frequency;
+    document.querySelectorAll('.spoke-node').forEach(n => { if (n !== this) n.style.opacity = '0.3'; });
+    document.querySelectorAll('.spoke-line').forEach(l => { if (l.dataset.spoke !== key) l.style.opacity = '0.15'; });
+  });
+  node.addEventListener('mouseleave', function() {
+    caption.textContent = 'Hover on an integration spoke to see connection details';
+    document.querySelectorAll('.spoke-node').forEach(n => n.style.opacity = '1');
+    document.querySelectorAll('.spoke-line').forEach(l => l.style.opacity = '1');
+  });
+});
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelector('.hero').classList.add('visible');
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@ import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Money, formatSar } from '@/components/ui/Money'
-import { BarList, CHART_COLORS } from '@/components/ui/Charts'
+import { BarList, CountBars } from '@/components/ui/Charts'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import {
@@ -157,6 +157,54 @@ export function Reports() {
   const isMobile = useIsMobile()
   const visible = REPORT_LINKS.filter((link) => can(link.module, 'v'))
 
+  /** `REPORT_LINKS` above is navigation, not data — a route, an icon and the
+   *  module the role must hold to see it — so it stays a constant. The reports
+   *  a *user* made are data, and they live on the server: the builder saves a
+   *  definition to `savedReports` (`GET /saved-reports`), and this hub is where
+   *  you would look for one again. Read through the seam like everything else,
+   *  gated on the same accounting grant the builder is, with a real empty state
+   *  — the fixture build persists nothing, so it shows exactly that rather than
+   *  a list of reports nobody saved. */
+  const mayBuild = can('accounting', 'v')
+  const { data: saved = [], isLoading, isError, error, refetch } = useCollection('savedReports')
+
+  const savedSection = mayBuild ? (
+    <Section title={t('Saved reports')} subtitle={t('Persist this definition and reuse it later')}>
+      {isLoading ? (
+        <p className="text-[13px] text-muted">{t('Loading saved reports…')}</p>
+      ) : isError ? (
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      ) : saved.length === 0 ? (
+        <EmptyState
+          icon="Table"
+          title={t('No saved reports yet')}
+          description={t('Save the current definition to reuse it.')}
+        />
+      ) : (
+        <div className="flex flex-col gap-2">
+          {saved.map((row, index) => (
+            <Link
+              key={String((row as { _id?: string })._id ?? `${row.name}-${index}`)}
+              to="/custom-reports"
+              className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3 no-underline transition-colors duration-150 hover:border-salis-blue hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+            >
+              <span className="min-w-0">
+                <span className="block text-[13px] font-semibold text-heading">{row.name}</span>
+                <span className="mt-0.5 block text-[11px] text-muted">
+                  <span dir="ltr" className="font-mono">
+                    {row.source || '—'}
+                  </span>
+                  {row.owner ? ` · ${row.owner}` : ''}
+                </span>
+              </span>
+              <Icon name="ArrowRight" size={15} className="flex-shrink-0 text-muted" />
+            </Link>
+          ))}
+        </div>
+      )}
+    </Section>
+  ) : null
+
   if (isMobile) {
     return (
       <>
@@ -177,6 +225,7 @@ export function Reports() {
           )}
           <ServerScopeNote />
         </Section>
+        {savedSection}
       </>
     )
   }
@@ -207,6 +256,7 @@ export function Reports() {
         )}
         <ServerScopeNote />
       </Section>
+      {savedSection}
     </>
   )
 }
@@ -739,36 +789,8 @@ function ImbalanceNotice({ text }: { text: string }) {
   )
 }
 
-/** Bars for a count distribution. Distinct from `BarList`, which renders its
- *  value as a SAR amount — a count is a tally of records, so it is shown as a
- *  plain LTR integer, never money. */
-function CountBars({ rows }: { rows: readonly { label: string; value: number }[] }) {
-  const { t } = usePreferences()
-  const max = Math.max(...rows.map((row) => row.value), 1)
-  return (
-    <div className="flex flex-col gap-3">
-      {rows.map((row, index) => (
-        <div key={row.label} className="flex flex-col gap-1.5">
-          <div className="flex items-baseline justify-between gap-3 text-[13px]">
-            <span className="capitalize text-body">{t(row.label)}</span>
-            <span className="font-mono font-semibold text-heading" dir="ltr">
-              {row.value}
-            </span>
-          </div>
-          <div className="h-2 overflow-hidden rounded-full bg-inset">
-            <div
-              className="h-full rounded-full"
-              style={{
-                width: `${(row.value / max) * 100}%`,
-                background: CHART_COLORS[index % CHART_COLORS.length],
-              }}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+/* CountBars is now exported from @/components/ui/Charts — the count-based
+ * bar chart that `BarList` is for money. Imported at the top of this file. */
 
 /** Count rows by a key. A count of records, never a sum of money. */
 function countBy<T>(rows: readonly T[], key: (row: T) => string): { label: string; value: number }[] {

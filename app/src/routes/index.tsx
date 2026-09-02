@@ -16,7 +16,7 @@ import {
 import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
 import { PortalShell } from '@/components/shell/PortalShell'
 import { PublicShell } from '@/components/shell/PublicShell'
-import { Loading } from '@/components/ui/States'
+import { RouteLoader } from '@/components/shell/RouteLoader'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
 
@@ -67,6 +67,20 @@ function lazyBarrel(
     ])
   )
 }
+
+// Print views — lazy loaded, rendered without the app shell.
+const InvoicePrint = lazyNamed(
+  () => import('@/screens/workshop/InvoicePrint'),
+  'InvoicePrint'
+)
+const EstimatePrint = lazyNamed(
+  () => import('@/screens/workshop/EstimatePrint'),
+  'EstimatePrint'
+)
+const JobCardPrint = lazyNamed(
+  () => import('@/screens/workshop/JobCardPrint'),
+  'JobCardPrint'
+)
 
 // Also routed on its own below, so it gets a name of its own.
 const LogoutConfirmation = lazyNamed(
@@ -472,7 +486,7 @@ export function AppRoutes() {
     // One boundary for the whole table: a lazy screen suspends here to the
     // linear loading bar, never to a heavier stand-in, until its chunk lands.
     <ErrorBoundary>
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<RouteLoader />}>
       <Routes>
         <Route path="/" element={<Navigate to="/public-portal/landing" replace />} />
 
@@ -552,6 +566,32 @@ export function AppRoutes() {
             />
           )
         })}
+
+        {/* Print views — clean A4 layouts triggered from detail screens. */}
+        <Route
+          path="/invoice-print"
+          element={
+            <RequireAccess screen="InvoiceDetail">
+              <InvoicePrint />
+            </RequireAccess>
+          }
+        />
+        <Route
+          path="/estimate-print"
+          element={
+            <RequireAccess screen="EstimateDetail">
+              <EstimatePrint />
+            </RequireAccess>
+          }
+        />
+        <Route
+          path="/job-card-print"
+          element={
+            <RequireAccess screen="JobDetail">
+              <JobCardPrint />
+            </RequireAccess>
+          }
+        />
 
         {/* Routes the design references but SCREEN_MAP doesn't list. */}
         <Route path="/customer-app" element={<Navigate to="/customer-app/home" replace />} />

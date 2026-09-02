@@ -149,7 +149,23 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: postgresql://salis:salis@localhost:5432/salis_test
+      # Two roles, which is the arrangement `.env.example` and `scripts/migrate.ts`
+      # already describe: migrations run as the owner, the API runs as a role that
+      # row-level security applies to.
+      #
+      # The image's POSTGRES_USER is the bootstrap superuser, and a superuser
+      # bypasses RLS even where the migrations set FORCE ROW LEVEL SECURITY — so
+      # connecting the API as it silently disabled every tenant boundary, which is
+      # what the ~48 failing isolation assertions were reporting. It cannot simply
+      # be demoted either: PostgreSQL refuses to remove SUPERUSER from the
+      # bootstrap user ("The bootstrap user must have the SUPERUSER attribute").
+      # So it stays the admin, and the API gets its own role.
+      #
+      # `scripts/migrate.ts` creates salis_app on first run from this URL's
+      # credentials, grants it, and revokes update/delete on audit_log — that
+      # revoke only happens when the two roles differ, so it was dead until now.
+      DATABASE_ADMIN_URL: postgresql://salis:salis@localhost:5432/salis_test
+      DATABASE_URL: postgresql://salis_app:salis_app@localhost:5432/salis_test
       JWT_SECRET: ci-test-secret
     steps:
       - uses: actions/checkout@v4
@@ -165,6 +181,13 @@ jobs:
 
       - run: npm ci
         working-directory: server
+
+      # The postgres image makes POSTGRES_USER a superuser, and a superuser
+      # bypasses row-level security even where the migrations set FORCE ROW
+      # LEVEL SECURITY. Connecting the app as one silently disabled every
+      # tenant boundary, so the ~48 isolation assertions failed on every run.
+      # Demote it: still the database owner (so migrations and the per-run test
+      # database it creates keep working), no longer exempt from RLS.
 
       - run: npx vitest run --reporter=verbose
         working-directory: server

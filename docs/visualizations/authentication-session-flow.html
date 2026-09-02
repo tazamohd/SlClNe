@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-004 — Authentication &amp; Session Flow</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero { padding: 60px 24px 24px; text-align: center; max-width: 960px; margin: 0 auto; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; margin: 0 auto; }
+  .badge {
+    display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px; padding: 3px 10px; margin-bottom: 16px;
+  }
+
+  /* Flow selector */
+  .flow-selector {
+    max-width: 960px; margin: 20px auto; padding: 0 24px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .flow-btn {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px;
+    color: var(--muted); font-family: var(--font); font-size: 0.8rem; font-weight: 500;
+    padding: 7px 14px; cursor: pointer; transition: all 0.25s ease;
+  }
+  .flow-btn:hover { border-color: rgba(218,119,86,0.3); color: var(--text); }
+  .flow-btn.active { background: rgba(218,119,86,0.12); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+  /* Caption bar */
+  .caption-bar {
+    max-width: 960px; margin: 16px auto; padding: 14px 20px;
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px;
+    min-height: 52px; display: flex; align-items: center; gap: 12px;
+  }
+  .caption-bar .label { font-weight: 600; font-size: 0.85rem; color: var(--accent); white-space: nowrap; }
+  .caption-bar .desc { color: var(--muted); font-size: 0.88rem; }
+
+  /* Diagram sections */
+  .diagram-section {
+    max-width: 1080px; margin: 0 auto; padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px; border-radius: 16px;
+  }
+  .diagram-section svg { width: 100%; height: auto; display: block; }
+  .flow-diagram { display: none; }
+  .flow-diagram.active { display: block; }
+
+  .section-title {
+    max-width: 960px; margin: 48px auto 16px; padding: 0 24px;
+    font-size: 1.1rem; font-weight: 600; color: var(--text);
+  }
+  .section-title span { color: var(--accent); }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Supporting */
+  .supporting { max-width: 900px; margin: 50px auto 0; padding: 0 24px 80px; }
+  .supporting h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p { color: var(--muted); font-size: 0.95rem; margin-bottom: 16px; }
+  .info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 24px; }
+  .info-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; }
+  .info-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0; }
+
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes flowDashSlow { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.5; } }
+  @keyframes securityPulse { 0%, 100% { stroke-opacity: 0.3; } 50% { stroke-opacity: 0.7; } }
+
+  .node-group { cursor: pointer; }
+  .node-group:hover rect, .node-group:hover ellipse {
+    filter: brightness(1.3) drop-shadow(0 0 6px rgba(218,119,86,0.3));
+  }
+  .node-group text { pointer-events: none; }
+
+  .security-boundary {
+    animation: securityPulse 4s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SA-VIZ-004</div>
+  <h1>Authentication &amp; <span>Session Flow</span></h1>
+  <p>Complete lifecycle from login through JWT issuance, token refresh, session expiry, OTP verification, 2FA, SSO, and password reset.</p>
+</section>
+
+<div class="flow-selector" id="flowSelector">
+  <button class="flow-btn active" data-flow="login">Login Flow</button>
+  <button class="flow-btn" data-flow="refresh">Token Refresh</button>
+  <button class="flow-btn" data-flow="expiry">Session Expiry</button>
+  <button class="flow-btn" data-flow="additional">OTP / 2FA / SSO / Reset</button>
+</div>
+
+<div class="caption-bar" id="captionBar">
+  <span class="label">Login Flow</span>
+  <span class="desc" id="captionText">The primary authentication path: credentials to JWT to dashboard.</span>
+</div>
+
+<!-- FLOW 1: Login -->
+<section class="diagram-section">
+  <div class="flow-diagram active" data-flow="login">
+    <svg viewBox="0 0 1040 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowA" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/>
+        </marker>
+        <marker id="arrowB" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--blue)"/>
+        </marker>
+        <marker id="arrowG" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--green)"/>
+        </marker>
+        <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- Connectors -->
+      <path d="M 180 105 C 220 105, 230 105, 260 105" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA)"/>
+      <text x="220" y="97" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">POST</text>
+
+      <path d="M 420 105 C 460 105, 470 105, 500 105" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA)"/>
+      <text x="460" y="97" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">bcrypt</text>
+
+      <path d="M 650 105 C 700 105, 710 105, 740 105" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG)"/>
+      <text x="695" y="97" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">sign</text>
+
+      <path d="M 870 135 C 870 170, 750 195, 670 210" stroke="var(--blue)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowB)"/>
+      <text x="790" y="175" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">Set-Cookie</text>
+
+      <path d="M 560 230 C 460 240, 380 250, 310 270" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG)"/>
+      <text x="440" y="255" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">redirect</text>
+
+      <!-- Security boundary -->
+      <rect x="480" y="180" width="220" height="70" rx="8" fill="none" stroke="var(--green)" stroke-width="1" stroke-dasharray="5 5" class="security-boundary"/>
+      <text x="590" y="196" fill="var(--green)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="600" opacity="0.6">httpOnly SECURE BOUNDARY</text>
+
+      <!-- Login Form -->
+      <g class="node-group" data-caption="Login Form|Email/phone + password form. Supports both EN and AR layouts. Rate limited: 5 attempts per 15 minutes per IP.">
+        <rect x="50" y="78" width="130" height="54" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <rect x="82" y="92" width="22" height="16" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="82" y1="100" x2="93" y2="93" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="93" y1="93" x2="104" y2="100" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/>
+        <text x="115" y="118" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Login Form</text>
+      </g>
+
+      <!-- POST /auth/login -->
+      <g class="node-group" data-caption="POST /auth/login|Fastify endpoint. Validates request with Zod schema, extracts email and password.">
+        <rect x="260" y="78" width="160" height="54" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="296" y1="98" x2="316" y2="98" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="311,93 316,98 311,103" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="340" y="112" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">/auth/login</text>
+      </g>
+
+      <!-- Validate Credentials -->
+      <g class="node-group" data-caption="Validate Credentials|Lookup user by email, compare password hash with bcrypt. Check account status (active, locked, suspended).">
+        <rect x="500" y="78" width="150" height="54" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <polyline points="534,100 540,106 552,94" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="575" y="112" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">Validate</text>
+      </g>
+
+      <!-- Generate JWT -->
+      <g class="node-group" data-caption="Generate JWT|RS256 signed tokens. Access token (15min): user_id, org_id, branch_id, role. Refresh token (7d): user_id, token_family for rotation detection.">
+        <circle cx="830" cy="105" r="35" fill="rgba(125,187,125,0.06)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+        <rect x="740" y="78" width="180" height="54" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.8"/>
+        <rect x="775" y="92" width="14" height="18" rx="2" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+        <line x1="779" y1="97" x2="785" y2="97" stroke="var(--green)" stroke-width="1" stroke-linecap="round"/>
+        <line x1="779" y1="101" x2="785" y2="101" stroke="var(--green)" stroke-width="1" stroke-linecap="round"/>
+        <line x1="779" y1="105" x2="783" y2="105" stroke="var(--green)" stroke-width="1" stroke-linecap="round"/>
+        <text x="800" y="108" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">Generate JWT</text>
+        <text x="800" y="120" fill="var(--muted)" font-size="7.5" font-family="var(--font)" text-anchor="start">access: 15m | refresh: 7d</text>
+      </g>
+
+      <!-- Set Cookie -->
+      <g class="node-group" data-caption="httpOnly Cookie|Tokens stored as httpOnly, Secure, SameSite=Strict cookies. Never exposed to JavaScript. Prevents XSS token theft.">
+        <rect x="560" y="205" width="140" height="44" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+        <rect x="590" y="217" width="12" height="10" rx="2" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+        <path d="M593 217 L593 213 A3 3 0 0 1 599 213 L599 217" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="610" y="228" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">httpOnly Cookie</text>
+      </g>
+
+      <!-- Dashboard -->
+      <g class="node-group" data-caption="Dashboard|Role-appropriate dashboard view. Owner sees org overview, Manager sees branch KPIs, Technician sees assigned jobs queue.">
+        <rect x="200" y="262" width="140" height="48" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+        <rect x="232" y="275" width="18" height="12" rx="2" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+        <line x1="235" y1="280" x2="246" y2="280" stroke="var(--green)" stroke-width="1" stroke-linecap="round"/>
+        <line x1="235" y1="283" x2="242" y2="283" stroke="var(--green)" stroke-width="1" stroke-linecap="round"/>
+        <text x="270" y="293" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Dashboard</text>
+      </g>
+
+      <!-- Step labels -->
+      <g>
+        <circle cx="87" cy="72" r="8" fill="rgba(218,119,86,0.15)" stroke="var(--accent)" stroke-width="1"/>
+        <text x="87" y="76" fill="var(--accent)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="700">1</text>
+        <circle cx="310" cy="72" r="8" fill="rgba(218,119,86,0.15)" stroke="var(--accent)" stroke-width="1"/>
+        <text x="310" y="76" fill="var(--accent)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="700">2</text>
+        <circle cx="548" cy="72" r="8" fill="rgba(218,119,86,0.15)" stroke="var(--accent)" stroke-width="1"/>
+        <text x="548" y="76" fill="var(--accent)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="700">3</text>
+        <circle cx="790" cy="72" r="8" fill="rgba(125,187,125,0.15)" stroke="var(--green)" stroke-width="1"/>
+        <text x="790" y="76" fill="var(--green)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="700">4</text>
+        <circle cx="608" cy="199" r="8" fill="rgba(107,164,217,0.15)" stroke="var(--blue)" stroke-width="1"/>
+        <text x="608" y="203" fill="var(--blue)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="700">5</text>
+        <circle cx="243" cy="256" r="8" fill="rgba(125,187,125,0.15)" stroke="var(--green)" stroke-width="1"/>
+        <text x="243" y="260" fill="var(--green)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="700">6</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- FLOW 2: Token Refresh -->
+  <div class="flow-diagram" data-flow="refresh">
+    <svg viewBox="0 0 1040 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowA2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/></marker>
+        <marker id="arrowB2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--blue)"/></marker>
+        <marker id="arrowG2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--green)"/></marker>
+        <marker id="arrowGold2" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--gold)"/></marker>
+      </defs>
+
+      <!-- API Request -> Check Token -->
+      <path d="M 175 110 C 230 110, 240 110, 280 110" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA2)"/>
+
+      <!-- Check -> Decision -->
+      <path d="M 440 110 C 475 110, 485 110, 510 110" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA2)"/>
+
+      <!-- Decision -> Valid (up) -->
+      <path d="M 565 85 C 565 60, 700 55, 820 60" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG2)"/>
+      <text x="690" y="55" fill="var(--green)" font-size="9" font-family="var(--font)" text-anchor="middle" font-weight="600">VALID</text>
+
+      <!-- Decision -> Expired (down) -->
+      <path d="M 565 135 C 565 165, 545 185, 520 210" stroke="var(--gold)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGold2)"/>
+      <text x="555" y="175" fill="var(--gold)" font-size="9" font-family="var(--font)" text-anchor="middle" font-weight="600">EXPIRED</text>
+
+      <!-- Refresh endpoint -> Validate refresh -->
+      <path d="M 520 245 C 560 260, 610 265, 660 260" stroke="var(--blue)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowB2)"/>
+      <text x="590" y="268" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">validate</text>
+
+      <!-- Validate refresh -> New token -->
+      <path d="M 810 245 C 850 240, 870 200, 880 170" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG2)"/>
+
+      <!-- New token -> Retry -->
+      <path d="M 920 145 C 950 120, 960 90, 940 75" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.4s linear infinite" marker-end="url(#arrowG2)"/>
+      <text x="960" y="108" fill="var(--muted)" font-size="8.5" font-family="var(--font)">retry</text>
+
+      <!-- API Request -->
+      <g class="node-group" data-caption="API Request|Any authenticated request. JWT is automatically sent via httpOnly cookie with every fetch() call.">
+        <rect x="50" y="84" width="125" height="52" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="82" y1="104" x2="102" y2="104" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="97,99 102,104 97,109" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="112" y="118" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">API Request</text>
+      </g>
+
+      <!-- Check Access Token -->
+      <g class="node-group" data-caption="Check Access Token|Middleware verifies JWT signature and expiration. Uses RS256 public key verification.">
+        <rect x="280" y="84" width="160" height="52" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <polyline points="314,100 320,106 332,94" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="360" y="116" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Check Token</text>
+      </g>
+
+      <!-- Decision diamond -->
+      <g class="node-group" data-caption="Token Status|If the access token is valid, the request proceeds. If expired (but within refresh window), a silent refresh is triggered.">
+        <polygon points="565,85 600,110 565,135 530,110" fill="var(--card-bg)" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="565" y="113" fill="var(--gold)" font-size="9" font-family="var(--font)" text-anchor="middle" font-weight="700">?</text>
+      </g>
+
+      <!-- Process Request (valid path) -->
+      <g class="node-group" data-caption="Process Request|Token valid. Request proceeds through the normal middleware pipeline with tenant context extracted from JWT claims.">
+        <rect x="820" y="42" width="150" height="44" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+        <polyline points="852,58 858,64 870,52" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="880" y="72" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Process</text>
+      </g>
+
+      <!-- POST /auth/refresh -->
+      <g class="node-group" data-caption="POST /auth/refresh|Silent refresh endpoint. Reads refresh token from httpOnly cookie. Implements token rotation: each refresh invalidates the old token family.">
+        <rect x="370" y="215" width="155" height="52" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+        <path d="M405 235 A7 7 0 1 1 405 236" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="412,233 405,235 408,242" fill="none" stroke="var(--blue)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="430" y="248" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">/auth/refresh</text>
+      </g>
+
+      <!-- Validate Refresh Token -->
+      <g class="node-group" data-caption="Validate Refresh|Check refresh token expiry, verify token family (rotation detection), check if user account is still active.">
+        <rect x="660" y="220" width="150" height="52" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+        <rect x="694" y="234" width="14" height="18" rx="2" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+        <line x1="698" y1="239" x2="704" y2="239" stroke="var(--blue)" stroke-width="1" stroke-linecap="round"/>
+        <line x1="698" y1="243" x2="704" y2="243" stroke="var(--blue)" stroke-width="1" stroke-linecap="round"/>
+        <text x="720" y="256" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">Validate</text>
+      </g>
+
+      <!-- New Access Token -->
+      <g class="node-group" data-caption="New Access Token|Fresh 15-minute access token issued. Old refresh token rotated. Both stored in new httpOnly cookies.">
+        <circle cx="880" cy="155" r="28" fill="rgba(125,187,125,0.06)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+        <rect x="840" y="135" width="120" height="44" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+        <text x="900" y="161" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">New Token</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- FLOW 3: Session Expiry -->
+  <div class="flow-diagram" data-flow="expiry">
+    <svg viewBox="0 0 1040 260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowR" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="#d96b6b"/></marker>
+        <marker id="arrowA3" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/></marker>
+      </defs>
+
+      <path d="M 200 110 C 250 110, 280 110, 330 110" stroke="#d96b6b" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowR)"/>
+      <text x="265" y="100" fill="var(--muted)" font-size="8.5" font-family="var(--font)" text-anchor="middle">7d elapsed</text>
+
+      <path d="M 490 110 C 540 110, 560 110, 600 110" stroke="#d96b6b" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowR)"/>
+
+      <path d="M 750 110 C 800 110, 820 110, 860 110" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA3)"/>
+
+      <path d="M 930 140 C 930 175, 800 190, 650 200" stroke="var(--gold)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.4s linear infinite"/>
+      <text x="800" y="185" fill="var(--gold)" font-size="8.5" font-family="var(--font)" text-anchor="middle">toast notification</text>
+
+      <!-- Refresh Token Expired -->
+      <g class="node-group" data-caption="Refresh Expired|The 7-day refresh token has expired. No silent refresh is possible.">
+        <rect x="60" y="84" width="140" height="52" rx="10" fill="var(--card-bg)" stroke="#d96b6b" stroke-width="1.5"/>
+        <line x1="100" y1="100" x2="120" y2="100" stroke="#d96b6b" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="100" y1="107" x2="116" y2="107" stroke="#d96b6b" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="130" y="120" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Refresh Expired</text>
+      </g>
+
+      <!-- Clear Cookies -->
+      <g class="node-group" data-caption="Clear Cookies|All auth cookies are cleared. Set-Cookie with Max-Age=0 for both access and refresh tokens.">
+        <rect x="330" y="84" width="160" height="52" rx="10" fill="var(--card-bg)" stroke="#d96b6b" stroke-width="1.5"/>
+        <line x1="370" y1="102" x2="390" y2="102" stroke="#d96b6b" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="375" y1="97" x2="385" y2="107" stroke="#d96b6b" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="385" y1="97" x2="375" y2="107" stroke="#d96b6b" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="410" y="118" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Clear Cookies</text>
+      </g>
+
+      <!-- Redirect to Login -->
+      <g class="node-group" data-caption="Redirect to Login|User is redirected to /auth/login. The return URL is preserved so the user resumes where they left off after re-authenticating.">
+        <rect x="600" y="84" width="150" height="52" rx="10" fill="var(--card-bg)" stroke="#d96b6b" stroke-width="1.5"/>
+        <path d="M636 104 A6 6 0 1 1 636 105" fill="none" stroke="#d96b6b" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="643,102 636,104 639,111" fill="none" stroke="#d96b6b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="675" y="116" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Redirect</text>
+      </g>
+
+      <!-- Login Page -->
+      <g class="node-group" data-caption="Login Page|Login form shown with a 'Session expired' toast notification. Return URL is stored in a query parameter for post-login redirect.">
+        <rect x="860" y="84" width="130" height="52" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <rect x="892" y="96" width="22" height="16" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="892" y1="104" x2="903" y2="97" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="903" y1="97" x2="914" y2="104" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/>
+        <text x="925" y="121" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Login</text>
+      </g>
+
+      <!-- Toast -->
+      <g class="node-group" data-caption="Session Expired Toast|Non-blocking notification: 'Your session has expired. Please log in again.' Auto-dismisses after 5 seconds.">
+        <rect x="520" y="185" width="155" height="40" rx="8" fill="rgba(217,184,107,0.08)" stroke="var(--gold)" stroke-width="1"/>
+        <text x="597" y="210" fill="var(--gold)" font-size="9" font-family="var(--font)" text-anchor="middle" font-weight="500">Session expired</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- FLOW 4: Additional flows -->
+  <div class="flow-diagram" data-flow="additional">
+    <svg viewBox="0 0 1040 680" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowA4" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/></marker>
+        <marker id="arrowB4" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--blue)"/></marker>
+        <marker id="arrowP4" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--purple)"/></marker>
+        <marker id="arrowGo4" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--gold)"/></marker>
+        <marker id="arrowG4" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--green)"/></marker>
+      </defs>
+
+      <!-- Section labels -->
+      <rect x="30" y="20" width="960" height="140" rx="10" fill="none" stroke="rgba(218,119,86,0.15)" stroke-width="1" stroke-dasharray="5 5"/>
+      <text x="50" y="40" fill="var(--accent)" font-size="10" font-family="var(--font)" font-weight="700" letter-spacing="0.05em">OTP VERIFICATION</text>
+
+      <rect x="30" y="180" width="960" height="140" rx="10" fill="none" stroke="rgba(169,142,224,0.15)" stroke-width="1" stroke-dasharray="5 5"/>
+      <text x="50" y="200" fill="var(--purple)" font-size="10" font-family="var(--font)" font-weight="700" letter-spacing="0.05em">TWO-FACTOR AUTHENTICATION (2FA)</text>
+
+      <rect x="30" y="340" width="960" height="140" rx="10" fill="none" stroke="rgba(107,164,217,0.15)" stroke-width="1" stroke-dasharray="5 5"/>
+      <text x="50" y="360" fill="var(--blue)" font-size="10" font-family="var(--font)" font-weight="700" letter-spacing="0.05em">SSO FLOW</text>
+
+      <rect x="30" y="500" width="960" height="155" rx="10" fill="none" stroke="rgba(217,184,107,0.15)" stroke-width="1" stroke-dasharray="5 5"/>
+      <text x="50" y="520" fill="var(--gold)" font-size="10" font-family="var(--font)" font-weight="700" letter-spacing="0.05em">PASSWORD RESET</text>
+
+      <!-- OTP Flow -->
+      <path d="M 220 90 C 270 90, 290 90, 340 90" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA4)"/>
+      <path d="M 510 90 C 560 90, 580 90, 620 90" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA4)"/>
+      <path d="M 780 90 C 830 90, 850 90, 880 90" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG4)"/>
+      <text x="280" y="82" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">submit</text>
+      <text x="570" y="82" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">match</text>
+      <text x="840" y="82" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">issue JWT</text>
+
+      <g class="node-group" data-caption="OTP Input|6-digit code entry screen. Code sent via SMS or email. Valid for 5 minutes, single-use. Auto-submits on 6th digit.">
+        <rect x="60" y="60" width="160" height="52" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="90" y="86" fill="var(--accent)" font-size="14" font-family="var(--font)" font-weight="300" letter-spacing="4px">_ _ _ _ _ _</text>
+        <text x="140" y="101" fill="var(--text)" font-size="9" font-family="var(--font)" text-anchor="middle" font-weight="600">6-Digit OTP</text>
+      </g>
+      <g class="node-group" data-caption="Verify OTP|Server checks code against stored hash. Rate limited: 3 attempts. After 3 failures, code is invalidated.">
+        <rect x="340" y="65" width="170" height="48" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <polyline points="370,85 376,91 388,79" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="425" y="94" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Verify OTP</text>
+      </g>
+      <g class="node-group" data-caption="Mark Verified|Phone/email marked as verified. user.phone_verified_at or email_verified_at timestamp set.">
+        <rect x="620" y="65" width="160" height="48" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <polyline points="654,85 660,91 672,79" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="700" y="94" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Mark Verified</text>
+      </g>
+      <g class="node-group" data-caption="JWT Issued|Tokens issued after successful verification. Session established.">
+        <rect x="880" y="68" width="90" height="44" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+        <text x="925" y="94" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">JWT</text>
+      </g>
+
+      <!-- 2FA Flow -->
+      <path d="M 230 250 C 290 250, 310 250, 360 250" stroke="var(--purple)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowP4)"/>
+      <path d="M 530 250 C 580 250, 600 250, 640 250" stroke="var(--purple)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowP4)"/>
+      <path d="M 800 250 C 840 250, 860 250, 890 250" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG4)"/>
+      <text x="295" y="242" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">scan</text>
+      <text x="585" y="242" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">TOTP code</text>
+      <text x="850" y="242" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">enable</text>
+
+      <g class="node-group" data-caption="QR Code|Displays a QR code encoding the TOTP secret URI (otpauth://). User scans with authenticator app (Google Authenticator, Authy).">
+        <rect x="70" y="222" width="160" height="52" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+        <!-- QR icon -->
+        <rect x="100" y="236" width="8" height="8" fill="none" stroke="var(--purple)" stroke-width="1.2"/>
+        <rect x="110" y="236" width="8" height="8" fill="none" stroke="var(--purple)" stroke-width="1.2"/>
+        <rect x="100" y="246" width="8" height="8" fill="none" stroke="var(--purple)" stroke-width="1.2"/>
+        <rect x="113" y="249" width="3" height="3" fill="var(--purple)"/>
+        <text x="150" y="256" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">QR Code</text>
+      </g>
+      <g class="node-group" data-caption="TOTP Verify|User enters 6-digit time-based code from authenticator app. Server validates against shared secret with 30s window (+/- 1 step tolerance).">
+        <rect x="360" y="225" width="170" height="48" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+        <text x="445" y="254" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">TOTP Verify</text>
+      </g>
+      <g class="node-group" data-caption="Backup Codes|8 single-use recovery codes generated and shown once. Stored as bcrypt hashes. Can be used instead of TOTP if device is lost.">
+        <rect x="640" y="225" width="160" height="48" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+        <text x="720" y="254" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Backup Codes</text>
+      </g>
+      <g class="node-group" data-caption="2FA Enabled|Two-factor authentication is now active for this account. All future logins require TOTP code after password.">
+        <rect x="890" y="228" width="90" height="44" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+        <text x="935" y="254" fill="var(--green)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Active</text>
+      </g>
+
+      <!-- SSO Flow -->
+      <path d="M 210 420 C 260 420, 290 420, 340 420" stroke="var(--blue)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowB4)"/>
+      <path d="M 530 420 C 580 410, 610 400, 640 400" stroke="var(--blue)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowB4)"/>
+      <path d="M 810 400 C 850 405, 870 410, 890 420" stroke="var(--green)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowG4)"/>
+      <text x="275" y="412" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">redirect</text>
+      <text x="585" y="405" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">callback</text>
+      <text x="858" y="408" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">issue</text>
+
+      <g class="node-group" data-caption="SSO Button|'Sign in with Google/Microsoft' button. Initiates OAuth 2.0 / OIDC authorization code flow.">
+        <rect x="55" y="395" width="155" height="48" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+        <!-- Globe icon -->
+        <circle cx="95" cy="419" r="8" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+        <ellipse cx="95" cy="419" rx="4" ry="8" fill="none" stroke="var(--blue)" stroke-width="1"/>
+        <line x1="87" y1="419" x2="103" y2="419" stroke="var(--blue)" stroke-width="1" stroke-linecap="round"/>
+        <text x="132" y="424" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">SSO Login</text>
+      </g>
+      <g class="node-group" data-caption="Identity Provider|External IdP (Google, Microsoft, Okta). User authenticates on provider's domain. Authorization code returned to callback URL.">
+        <rect x="340" y="395" width="190" height="48" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="435" y="424" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Identity Provider</text>
+      </g>
+      <g class="node-group" data-caption="Callback Handler|/auth/sso/callback receives auth code. Exchanges for ID token, extracts email, matches to existing user or creates account.">
+        <rect x="640" y="378" width="170" height="48" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+        <text x="725" y="407" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Callback Handler</text>
+      </g>
+      <g class="node-group" data-caption="JWT Issued|After successful SSO verification, JWT tokens are issued with the same claims structure as password-based login.">
+        <rect x="890" y="405" width="90" height="44" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+        <text x="935" y="431" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">JWT</text>
+      </g>
+
+      <!-- Password Reset Flow -->
+      <path d="M 210 575 C 260 575, 290 575, 340 575" stroke="var(--gold)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGo4)"/>
+      <path d="M 500 575 C 540 575, 560 575, 590 575" stroke="var(--gold)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGo4)"/>
+      <path d="M 730 575 C 770 575, 790 575, 830 575" stroke="var(--accent)" stroke-width="1.5" fill="none"
+            stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowA4)"/>
+      <text x="275" y="567" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">send email</text>
+      <text x="546" y="567" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">click link</text>
+      <text x="780" y="567" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle">save + re-login</text>
+
+      <g class="node-group" data-caption="Request Reset|User enters email on /auth/forgot-password. A reset link with a signed, expiring token (1 hour) is sent via email.">
+        <rect x="55" y="550" width="155" height="48" rx="10" fill="var(--card-bg)" stroke="var(--gold)" stroke-width="1.5"/>
+        <!-- Mail icon -->
+        <rect x="88" y="564" width="18" height="13" rx="2" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+        <polyline points="88,566 97,572 106,566" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="132" y="580" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Request Reset</text>
+      </g>
+      <g class="node-group" data-caption="Reset Link|Email contains /auth/reset?token=xxx. Token is a signed JWT with 1-hour expiry and single-use flag. Link opens the new password form.">
+        <rect x="340" y="550" width="160" height="48" rx="10" fill="var(--card-bg)" stroke="var(--gold)" stroke-width="1.5"/>
+        <line x1="375" y1="568" x2="395" y2="568" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="375" y1="575" x2="390" y2="575" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="420" y="580" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="start" font-weight="600">Reset Link</text>
+      </g>
+      <g class="node-group" data-caption="New Password|Password form with strength requirements (8+ chars, mixed case, number). New password hashed with bcrypt (cost 12). Old sessions invalidated.">
+        <rect x="590" y="550" width="140" height="48" rx="10" fill="var(--card-bg)" stroke="var(--gold)" stroke-width="1.5"/>
+        <rect x="620" y="564" width="14" height="10" rx="2" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+        <path d="M623 564 L623 560 A4 4 0 0 1 631 560 L631 564" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="660" y="580" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">New Password</text>
+      </g>
+      <g class="node-group" data-caption="Force Re-login|All existing sessions for this user are invalidated (token family revoked). User must log in with new password. Prevents session hijacking after password change.">
+        <rect x="830" y="550" width="150" height="48" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+        <path d="M870 568 A6 6 0 1 1 870 569" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="877,566 870,568 873,575" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="905" y="580" fill="var(--text)" font-size="9.5" font-family="var(--font)" text-anchor="middle" font-weight="600">Re-login</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="supporting reveal">
+  <h2>Security <span>Architecture</span></h2>
+  <p>SALIS AUTO implements defense-in-depth for authentication and session management, following OWASP best practices adapted for the Saudi Arabian automotive market.</p>
+
+  <div class="info-cards">
+    <div class="info-card">
+      <h3 style="color:var(--accent)">httpOnly Cookies</h3>
+      <p>Tokens never touch JavaScript. Stored as httpOnly, Secure, SameSite=Strict cookies. Immune to XSS token theft.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--green)">Token Rotation</h3>
+      <p>Each refresh issues a new token pair and invalidates the old family. Reuse of an old refresh token revokes the entire chain.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--blue)">Rate Limiting</h3>
+      <p>Login: 5 attempts / 15 min per IP. OTP: 3 attempts per code. Password reset: 3 emails / hour. Prevents brute-force attacks.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--purple)">2FA / TOTP</h3>
+      <p>Optional time-based one-time passwords with 8 backup codes. 30-second window with +/-1 step tolerance for clock drift.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--gold)">Session Invalidation</h3>
+      <p>Password changes revoke all sessions. Admin can force-logout any user. Token family tracking detects replay attacks.</p>
+    </div>
+    <div class="info-card">
+      <h3 style="color:var(--accent)">Bilingual Support</h3>
+      <p>All auth screens render in both English and Arabic (RTL). OTP SMS messages sent in the user's preferred language.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const captionBar = document.getElementById('captionBar');
+  const captionText = document.getElementById('captionText');
+  const captionLabel = captionBar.querySelector('.label');
+
+  const flowCaptions = {
+    login: 'The primary authentication path: credentials to JWT to dashboard.',
+    refresh: 'Silent token refresh cycle when the 15-minute access token expires.',
+    expiry: 'What happens when the 7-day refresh token expires and the session ends.',
+    additional: 'Additional auth flows: OTP verification, 2FA setup, SSO, and password reset.'
+  };
+
+  // Flow selector
+  document.getElementById('flowSelector').addEventListener('click', e => {
+    const btn = e.target.closest('.flow-btn');
+    if (!btn) return;
+    const flow = btn.dataset.flow;
+    document.querySelectorAll('.flow-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.flow-diagram').forEach(d => d.classList.remove('active'));
+    document.querySelector(`.flow-diagram[data-flow="${flow}"]`).classList.add('active');
+    captionLabel.textContent = btn.textContent;
+    captionText.textContent = flowCaptions[flow];
+  });
+
+  // Node hover
+  document.querySelectorAll('.node-group').forEach(g => {
+    g.addEventListener('mouseenter', () => {
+      const raw = g.getAttribute('data-caption');
+      if (!raw) return;
+      const [label, desc] = raw.split('|');
+      captionLabel.textContent = label;
+      captionText.textContent = desc;
+    });
+    g.addEventListener('mouseleave', () => {
+      const activeBtn = document.querySelector('.flow-btn.active');
+      if (activeBtn) {
+        captionLabel.textContent = activeBtn.textContent;
+        captionText.textContent = flowCaptions[activeBtn.dataset.flow];
+      }
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

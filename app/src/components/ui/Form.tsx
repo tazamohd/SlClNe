@@ -373,10 +373,16 @@ export type FieldKind =
   | 'email'
   | 'phone'
   | 'currency'
+  | 'percentage'
   | 'date'
+  | 'daterange'
   | 'select'
+  | 'searchselect'
   | 'multiselect'
   | 'file'
+  | 'vin'
+  | 'vat'
+  | 'signature'
 
 export interface FieldOption {
   value: string
@@ -560,6 +566,136 @@ export function Field({
       )
       break
 
+    case 'percentage':
+      control = (
+        <Input
+          {...textish}
+          type="number"
+          min={0}
+          max={100}
+          step="any"
+          inputMode="decimal"
+          dir="ltr"
+          value={typeof raw === 'string' ? raw : ''}
+          onChange={(event) => form.setValue(name, event.target.value)}
+          invalid={showError}
+          className="font-mono"
+          trailing={<span className="font-mono text-[11px] font-semibold text-muted">%</span>}
+        />
+      )
+      break
+
+    case 'daterange': {
+      const parts = typeof raw === 'string' ? raw.split('|') : ['', '']
+      const fromVal = parts[0] ?? ''
+      const toVal = parts[1] ?? ''
+      const dateClass = cn(
+        'h-12 w-full rounded border bg-inset px-3.5 font-mono text-sm text-heading outline-none',
+        'transition-all duration-200 ease-salis',
+        'focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]',
+        'disabled:cursor-not-allowed disabled:opacity-60',
+        showError ? 'border-salis-orange' : 'border-border'
+      )
+      control = (
+        <div className="flex items-center gap-2">
+          <input
+            {...common}
+            type="date"
+            dir="ltr"
+            required={required}
+            readOnly={readOnly}
+            value={fromVal}
+            onChange={(event) => form.setValue(name, `${event.target.value}|${toVal}`)}
+            aria-label={t('From date')}
+            className={dateClass}
+          />
+          <span className="flex-shrink-0 text-xs text-muted">{t('to')}</span>
+          <input
+            id={`${id}-to`}
+            name={`${name}-to`}
+            type="date"
+            dir="ltr"
+            disabled={disabled}
+            readOnly={readOnly}
+            value={toVal}
+            onChange={(event) => form.setValue(name, `${fromVal}|${event.target.value}`)}
+            onBlur={onBlur}
+            aria-label={t('To date')}
+            className={dateClass}
+          />
+        </div>
+      )
+      break
+    }
+
+    case 'searchselect':
+      control = (
+        <SearchSelectField
+          id={id}
+          name={name}
+          disabled={disabled}
+          placeholder={placeholder ? t(placeholder) : undefined}
+          options={options ?? []}
+          value={typeof raw === 'string' ? raw : ''}
+          invalid={showError}
+          onBlur={onBlur}
+          onChange={(value) => {
+            form.markTouched(name)
+            form.setValue(name, value)
+          }}
+          describedBy={describedBy}
+        />
+      )
+      break
+
+    case 'vin':
+      control = (
+        <Input
+          {...textish}
+          dir="ltr"
+          maxLength={17}
+          pattern="[A-HJ-NPR-Z0-9]{17}"
+          value={typeof raw === 'string' ? raw : ''}
+          onChange={(event) => form.setValue(name, event.target.value.toUpperCase())}
+          invalid={showError}
+          className="font-mono uppercase"
+        />
+      )
+      break
+
+    case 'vat':
+      control = (
+        <Input
+          {...textish}
+          dir="ltr"
+          maxLength={15}
+          inputMode="numeric"
+          value={typeof raw === 'string' ? raw : ''}
+          onChange={(event) => form.setValue(name, event.target.value.replace(/\D/g, ''))}
+          invalid={showError}
+          className="font-mono"
+        />
+      )
+      break
+
+    case 'signature':
+      control = (
+        <SignatureField
+          id={id}
+          name={name}
+          disabled={disabled}
+          value={typeof raw === 'string' ? raw : ''}
+          invalid={showError}
+          onBlur={onBlur}
+          onChange={(dataUrl) => {
+            form.markTouched(name)
+            form.setValue(name, dataUrl)
+          }}
+          describedBy={describedBy}
+        />
+      )
+      break
+
     default: {
       const type =
         kind === 'email' ? 'email' : kind === 'phone' ? 'tel' : kind === 'date' ? 'date' : 'text'
@@ -729,6 +865,272 @@ function FileField({
           ))}
         </ul>
       ) : null}
+    </div>
+  )
+}
+
+/** A select with a search/filter input. When the user types, options are filtered.
+ *  A native `<select>` sits behind the visual control so it works when JS is
+ *  disabled and stays accessible to screen readers. */
+function SearchSelectField({
+  id,
+  name,
+  disabled,
+  placeholder,
+  options,
+  value,
+  invalid,
+  onBlur,
+  onChange,
+  describedBy,
+}: {
+  id: string
+  name: string
+  disabled?: boolean
+  placeholder?: string
+  options: readonly FieldOption[]
+  value: string
+  invalid?: boolean
+  onBlur: () => void
+  onChange: (value: string) => void
+  describedBy?: string
+}) {
+  const { t } = usePreferences()
+  const [search, setSearch] = useState('')
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const filtered = useMemo(() => {
+    const needle = search.trim().toLowerCase()
+    if (!needle) return options
+    return options.filter((option) => t(option.label).toLowerCase().includes(needle))
+  }, [options, search, t])
+
+  // Close on outside click.
+  useEffect(() => {
+    if (!open) return
+    const handler = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false)
+        onBlur()
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open, onBlur])
+
+  const selectedLabel = options.find((option) => option.value === value)?.label
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Native select for no-JS fallback and screen readers. */}
+      <select
+        id={id}
+        name={name}
+        disabled={disabled}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
+        aria-describedby={describedBy}
+        aria-invalid={invalid || undefined}
+        className="sr-only"
+        tabIndex={-1}
+      >
+        <option value="">{placeholder ?? t('Select')}</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {t(option.label)}
+          </option>
+        ))}
+      </select>
+
+      {/* Visual search-select trigger. */}
+      <button
+        type="button"
+        onClick={() => { if (!disabled) setOpen(!open) }}
+        disabled={disabled}
+        className={cn(
+          'flex h-12 w-full cursor-pointer items-center justify-between rounded border bg-inset px-3 font-action text-sm outline-none',
+          'transition-all duration-200 ease-salis',
+          'focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]',
+          'disabled:cursor-not-allowed disabled:opacity-60',
+          invalid ? 'border-salis-orange' : 'border-border'
+        )}
+      >
+        <span className={value ? 'text-heading' : 'text-muted'}>
+          {selectedLabel ? t(selectedLabel) : (placeholder ?? t('Select'))}
+        </span>
+        <Icon name="ChevronDown" size={14} className="flex-shrink-0 text-muted" />
+      </button>
+
+      {/* Dropdown with a search input and the filtered option list. */}
+      {open ? (
+        <div className="absolute z-50 mt-1 w-full rounded-lg border border-border bg-card shadow-lg">
+          <div className="p-2">
+            <input
+              type="text"
+              aria-label={t('Search...')}
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={t('Search...')}
+              className="w-full rounded border border-border bg-inset px-3 py-2 text-sm text-heading outline-none focus:border-salis-blue"
+              autoFocus
+            />
+          </div>
+          <ul className="max-h-[200px] overflow-y-auto py-1" role="listbox">
+            {filtered.length === 0 ? (
+              <li className="px-3 py-2 text-sm text-muted">{t('No results found')}</li>
+            ) : (
+              filtered.map((option) => (
+                <li key={option.value}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={option.value === value}
+                    onClick={() => {
+                      onChange(option.value)
+                      setOpen(false)
+                      setSearch('')
+                      onBlur()
+                    }}
+                    className={cn(
+                      'flex w-full cursor-pointer items-center border-none px-3 py-2 text-start text-sm transition-colors',
+                      option.value === value
+                        ? 'bg-salis-blue/[.08] font-semibold text-salis-blue'
+                        : 'bg-transparent text-body hover:bg-inset'
+                    )}
+                  >
+                    {t(option.label)}
+                  </button>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+/** A canvas-based signature pad. Shows a bordered drawing area where the user can
+ *  sign with pointer events. Has a "Clear" button. Stores the result as a data
+ *  URL string. If empty, shows placeholder text. */
+function SignatureField({
+  id,
+  name,
+  disabled,
+  value,
+  invalid,
+  onBlur,
+  onChange,
+  describedBy,
+}: {
+  id: string
+  name: string
+  disabled?: boolean
+  value: string
+  invalid?: boolean
+  onBlur: () => void
+  onChange: (dataUrl: string) => void
+  describedBy?: string
+}) {
+  const { t } = usePreferences()
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const drawingRef = useRef(false)
+
+  function pointFrom(event: React.PointerEvent<HTMLCanvasElement>) {
+    const canvas = canvasRef.current
+    if (!canvas) return null
+    const rect = canvas.getBoundingClientRect()
+    return {
+      x: ((event.clientX - rect.left) / rect.width) * canvas.width,
+      y: ((event.clientY - rect.top) / rect.height) * canvas.height,
+    }
+  }
+
+  function start(event: React.PointerEvent<HTMLCanvasElement>) {
+    if (disabled) return
+    const context = canvasRef.current?.getContext('2d')
+    const point = pointFrom(event)
+    if (!context || !point) return
+    event.currentTarget.setPointerCapture(event.pointerId)
+    drawingRef.current = true
+    const computed = getComputedStyle(canvasRef.current!)
+    context.strokeStyle =
+      computed.getPropertyValue('--salis-blue').trim() || computed.getPropertyValue('color')
+    context.lineWidth = 2.5
+    context.lineCap = 'round'
+    context.lineJoin = 'round'
+    context.beginPath()
+    context.moveTo(point.x, point.y)
+  }
+
+  function move(event: React.PointerEvent<HTMLCanvasElement>) {
+    if (!drawingRef.current) return
+    const context = canvasRef.current?.getContext('2d')
+    const point = pointFrom(event)
+    if (!context || !point) return
+    context.lineTo(point.x, point.y)
+    context.stroke()
+  }
+
+  function end() {
+    if (!drawingRef.current) return
+    drawingRef.current = false
+    const canvas = canvasRef.current
+    if (canvas) {
+      onChange(canvas.toDataURL('image/png'))
+      onBlur()
+    }
+  }
+
+  function clear() {
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) return
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    onChange('')
+    onBlur()
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="relative">
+        <canvas
+          ref={canvasRef}
+          id={id}
+          width={600}
+          height={180}
+          onPointerDown={start}
+          onPointerMove={move}
+          onPointerUp={end}
+          onPointerLeave={end}
+          aria-label={name}
+          aria-invalid={invalid || undefined}
+          aria-describedby={describedBy}
+          className={cn(
+            'h-[180px] w-full touch-none rounded border-[1.5px] border-dashed bg-inset text-salis-blue',
+            'transition-all duration-200',
+            disabled && 'cursor-not-allowed opacity-60',
+            invalid ? 'border-salis-orange' : 'border-border-strong'
+          )}
+        />
+        {value ? null : (
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-muted">
+            <Icon name="PenTool" size={22} />
+            <span className="text-xs">{t('Tap to sign')}</span>
+          </div>
+        )}
+      </div>
+      <button
+        type="button"
+        onClick={clear}
+        disabled={disabled || !value}
+        className="flex h-[30px] cursor-pointer items-center gap-1.5 self-end rounded-md border border-border bg-transparent px-3 font-action text-xs text-muted transition-colors hover:border-salis-orange hover:text-salis-orange disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+      >
+        <Icon name="Eraser" size={13} />
+        {t('Clear')}
+      </button>
     </div>
   )
 }

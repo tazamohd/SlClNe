@@ -41,4 +41,18 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
+  projects: [
+    {
+      name: 'desktop',
+      use: {
+        viewport: { width: 1280, height: 720 },
+      },
+    },
+    {
+      name: 'mobile',
+      use: {
+        viewport: { width: 390, height: 844 },
+      },
+    },
+  ],
 })

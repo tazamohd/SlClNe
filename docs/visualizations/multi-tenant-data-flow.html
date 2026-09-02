@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-002 — Multi-Tenant Data Isolation</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero { padding: 60px 24px 24px; text-align: center; max-width: 960px; margin: 0 auto; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; margin: 0 auto; }
+  .badge {
+    display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px; padding: 3px 10px; margin-bottom: 16px;
+  }
+
+  /* Role selector */
+  .role-selector {
+    max-width: 960px; margin: 20px auto; padding: 0 24px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .role-btn {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px;
+    color: var(--muted); font-family: var(--font); font-size: 0.8rem; font-weight: 500;
+    padding: 7px 14px; cursor: pointer; transition: all 0.25s ease;
+  }
+  .role-btn:hover { border-color: rgba(218,119,86,0.3); color: var(--text); }
+  .role-btn.active {
+    background: rgba(218,119,86,0.12); border-color: var(--accent); color: var(--accent); font-weight: 600;
+  }
+
+  /* Caption bar */
+  .caption-bar {
+    max-width: 960px; margin: 16px auto; padding: 14px 20px;
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px;
+    min-height: 52px; display: flex; align-items: center; gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label { font-weight: 600; font-size: 0.85rem; color: var(--accent); white-space: nowrap; }
+  .caption-bar .desc { color: var(--muted); font-size: 0.88rem; }
+
+  /* Diagram */
+  .diagram-section {
+    max-width: 1080px; margin: 0 auto; padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px; border-radius: 16px;
+  }
+  .diagram-section svg { width: 100%; height: auto; display: block; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Supporting */
+  .supporting { max-width: 900px; margin: 50px auto 0; padding: 0 24px 80px; }
+  .supporting h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; }
+  .supporting h2 span { color: var(--accent); }
+
+  .roles-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; overflow-x: auto; display: block; }
+  .roles-table thead th {
+    text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--card-border);
+    color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .roles-table tbody td {
+    padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text);
+    white-space: nowrap;
+  }
+  .roles-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+  .scope-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;
+  }
+  .scope-all { background: rgba(218,119,86,0.15); color: var(--accent); }
+  .scope-org { background: rgba(107,164,217,0.15); color: var(--blue); }
+  .scope-branch { background: rgba(125,187,125,0.15); color: var(--green); }
+  .scope-own { background: rgba(169,142,224,0.15); color: var(--purple); }
+
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.5; } }
+
+  .node-group { cursor: pointer; }
+  .node-group:hover rect, .node-group:hover ellipse {
+    filter: brightness(1.3) drop-shadow(0 0 6px rgba(218,119,86,0.3));
+  }
+  .node-group text { pointer-events: none; }
+
+  /* Role-based highlighting */
+  .layer { transition: opacity 0.4s ease; }
+  .layer.dimmed { opacity: 0.18; }
+  .layer.highlighted rect, .layer.highlighted ellipse {
+    stroke-width: 2.2;
+    filter: drop-shadow(0 0 8px rgba(218,119,86,0.25));
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SA-VIZ-002</div>
+  <h1>Multi-Tenant <span>Data Isolation</span></h1>
+  <p>How SALIS AUTO enforces tenant boundaries at every layer, from JWT claims through RLS policies to field-level redaction per role.</p>
+</section>
+
+<div class="role-selector" id="roleSelector">
+  <button class="role-btn active" data-role="all">All Layers</button>
+  <button class="role-btn" data-role="owner">Owner</button>
+  <button class="role-btn" data-role="manager">Manager</button>
+  <button class="role-btn" data-role="technician">Technician</button>
+  <button class="role-btn" data-role="customer">Customer</button>
+</div>
+
+<div class="caption-bar" id="captionBar">
+  <span class="label">Select a role</span>
+  <span class="desc" id="captionText">Choose a role above to see which isolation layers apply, or hover any node for details.</span>
+</div>
+
+<section class="diagram-section">
+  <svg viewBox="0 0 1040 580" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/>
+      </marker>
+      <marker id="arrowBlue" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--blue)"/>
+      </marker>
+      <marker id="arrowGreen" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--green)"/>
+      </marker>
+      <marker id="arrowPurple" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--purple)"/>
+      </marker>
+      <filter id="glow"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Connectors -->
+    <path d="M 195 95 C 255 95, 275 95, 320 95" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <path d="M 490 95 C 540 95, 545 95, 575 95" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <path d="M 735 95 C 790 95, 810 95, 850 95" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <path d="M 930 125 C 930 170, 930 180, 930 205" stroke="var(--blue)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowBlue)"/>
+    <text x="945" y="170" fill="var(--muted)" font-size="9" font-family="var(--font)">extract</text>
+
+    <path d="M 855 240 C 780 240, 720 240, 660 240" stroke="var(--blue)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowBlue)"/>
+    <text x="755" y="232" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">parameterized</text>
+
+    <path d="M 540 240 C 460 240, 420 250, 370 275" stroke="var(--green)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGreen)"/>
+    <text x="470" y="260" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">WHERE org_id =</text>
+
+    <path d="M 300 330 C 300 370, 430 370, 520 380" stroke="var(--green)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGreen)"/>
+    <text x="400" y="365" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">filtered rows</text>
+
+    <path d="M 665 400 C 720 410, 740 420, 775 435" stroke="var(--purple)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowPurple)"/>
+    <text x="710" y="430" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">scope</text>
+
+    <path d="M 870 480 C 840 510, 700 520, 580 530" stroke="var(--purple)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowPurple)"/>
+    <text x="740" y="515" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">redact fields</text>
+
+    <path d="M 460 540 C 370 540, 280 530, 200 510" stroke="var(--accent)" stroke-width="1.5" fill="none"
+          stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+    <text x="330" y="530" fill="var(--muted)" font-size="9" font-family="var(--font)" text-anchor="middle">safe response</text>
+
+    <!-- Layer 1: Auth -->
+    <g class="layer node-group" data-layer="auth" data-caption="User Login|User authenticates with credentials. JWT is issued containing org_id, branch_id, and role claims.">
+      <rect x="70" y="68" width="125" height="54" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Person icon -->
+      <circle cx="110" cy="84" r="6" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+      <path d="M100 98 C100 92 120 92 120 98" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="132" y="100" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">User Login</text>
+    </g>
+
+    <g class="layer node-group" data-layer="auth" data-caption="JWT Token|Contains org_id, branch_id, role, and user_id claims. Signed with RS256. Access token: 15min, Refresh: 7 days.">
+      <rect x="320" y="68" width="170" height="54" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Key icon -->
+      <circle cx="360" cy="88" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+      <line x1="365" y1="88" x2="380" y2="88" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="375" y1="88" x2="375" y2="83" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="405" y="100" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">JWT Token</text>
+      <text x="405" y="86" fill="var(--muted)" font-size="8" font-family="var(--font)">org_id + branch_id + role</text>
+    </g>
+
+    <g class="layer node-group" data-layer="auth" data-caption="API Request|Every request carries the JWT in an httpOnly cookie. No tokens in localStorage.">
+      <rect x="575" y="68" width="160" height="54" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Arrow-right icon -->
+      <line x1="610" y1="95" x2="630" y2="95" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <polyline points="625,90 630,95 625,100" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="655" y="92" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">API Request</text>
+    </g>
+
+    <!-- Layer 2: Middleware -->
+    <g class="layer node-group" data-layer="middleware" data-caption="Middleware|Extracts tenant context from JWT: sets current org_id and branch_id on the database session via SET LOCAL for RLS.">
+      <circle cx="930" cy="95" r="34" fill="rgba(107,164,217,0.06)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+      <rect x="855" y="68" width="150" height="54" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+      <!-- Gear icon -->
+      <circle cx="895" cy="88" r="7" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+      <line x1="895" y1="79" x2="895" y2="82" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="895" y1="94" x2="895" y2="97" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="886" y1="88" x2="889" y2="88" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="901" y1="88" x2="904" y2="88" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="930" y="100" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="middle" font-weight="600">Middleware</text>
+    </g>
+
+    <!-- Layer 3: Drizzle + RLS -->
+    <g class="layer node-group" data-layer="drizzle" data-caption="Drizzle Query|Parameterized query with tenant context injected. SET LOCAL app.current_org sets the PostgreSQL session variable.">
+      <rect x="540" y="215" width="160" height="52" rx="10" fill="var(--card-bg)" stroke="var(--blue)" stroke-width="1.5"/>
+      <!-- SQL icon -->
+      <text x="575" y="245" fill="var(--blue)" font-size="9" font-family="var(--font)" font-weight="700">SQL</text>
+      <text x="620" y="245" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Drizzle Query</text>
+    </g>
+
+    <g class="layer node-group" data-layer="rls" data-caption="RLS Policy|PostgreSQL Row-Level Security: CREATE POLICY tenant_isolation ON jobs USING (org_id = current_setting('app.current_org')::uuid). Enforced at the database engine level.">
+      <circle cx="310" cy="305" r="40" fill="rgba(125,187,125,0.06)" stroke="none" style="animation: pulse 3s ease-in-out infinite"/>
+      <rect x="220" y="278" width="180" height="56" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.8"/>
+      <!-- Shield icon -->
+      <path d="M260 298 L260 312 Q260 320 270 322 Q280 318 280 312 L280 298 Z" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linejoin="round"/>
+      <polyline points="265,306 270,311 278,303" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="310" y="306" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">RLS Policy</text>
+      <text x="310" y="320" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="start">WHERE org_id = current</text>
+    </g>
+
+    <!-- Layer 4: Filtered Results -->
+    <g class="layer node-group" data-layer="filter" data-caption="Filtered Results|Rows returned from PostgreSQL already filtered by RLS. Only data belonging to the user's organization is returned.">
+      <rect x="520" y="370" width="155" height="52" rx="10" fill="var(--card-bg)" stroke="var(--green)" stroke-width="1.5"/>
+      <!-- Filter icon -->
+      <polygon points="558,385 578,385 572,396 564,396" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linejoin="round"/>
+      <line x1="568" y1="396" x2="568" y2="408" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="598" y="401" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Filtered</text>
+    </g>
+
+    <!-- Layer 5: Branch Filter -->
+    <g class="layer node-group" data-layer="branch" data-caption="Branch Filter|Application-level filter narrows results to the user's branch. Managers see only their branch; Owners can query across branches.">
+      <rect x="775" y="438" width="170" height="52" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+      <!-- Branch icon -->
+      <circle cx="815" cy="458" r="4" fill="none" stroke="var(--purple)" stroke-width="1.5"/>
+      <line x1="815" y1="462" x2="815" y2="475" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M815 475 C830 470 835 465 835 458" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="835" cy="455" r="3" fill="none" stroke="var(--purple)" stroke-width="1.5"/>
+      <text x="855" y="468" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Branch Filter</text>
+    </g>
+
+    <!-- Layer 6: Field Redaction -->
+    <g class="layer node-group" data-layer="redact" data-caption="Field Redaction|Role-based field masking. Salary fields hidden from non-Owner roles. Customer PII masked for Technicians. Configurable per RBAC module.">
+      <rect x="460" y="510" width="160" height="52" rx="10" fill="var(--card-bg)" stroke="var(--purple)" stroke-width="1.5"/>
+      <!-- Mask icon -->
+      <rect x="498" y="525" width="18" height="12" rx="2" fill="none" stroke="var(--purple)" stroke-width="1.5"/>
+      <line x1="502" y1="531" x2="506" y2="531" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="509" y1="531" x2="512" y2="531" stroke="var(--purple)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="540" y="543" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Redaction</text>
+    </g>
+
+    <!-- Layer 7: Response -->
+    <g class="layer node-group" data-layer="response" data-caption="Response|Clean, tenant-scoped, field-redacted JSON response sent back to the client. No cross-tenant data leakage possible.">
+      <rect x="100" y="490" width="140" height="48" rx="10" fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Check icon -->
+      <polyline points="135,510 142,517 155,504" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="170" y="520" fill="var(--text)" font-size="10" font-family="var(--font)" text-anchor="start" font-weight="600">Response</text>
+    </g>
+
+    <!-- Boundary labels -->
+    <rect x="840" y="195" width="180" height="86" rx="8" fill="none" stroke="rgba(107,164,217,0.2)" stroke-width="1" stroke-dasharray="5 5"/>
+    <text x="930" y="212" fill="var(--blue)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="600" opacity="0.6">MIDDLEWARE LAYER</text>
+
+    <rect x="200" y="200" width="220" height="150" rx="8" fill="none" stroke="rgba(125,187,125,0.2)" stroke-width="1" stroke-dasharray="5 5"/>
+    <text x="310" y="215" fill="var(--green)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="600" opacity="0.6">DATABASE LAYER</text>
+
+    <rect x="440" y="425" width="520" height="155" rx="8" fill="none" stroke="rgba(169,142,224,0.2)" stroke-width="1" stroke-dasharray="5 5"/>
+    <text x="700" y="440" fill="var(--purple)" font-size="8" font-family="var(--font)" text-anchor="middle" font-weight="600" opacity="0.6">APPLICATION LAYER</text>
+  </svg>
+</section>
+
+<section class="supporting reveal">
+  <h2>14 Roles and Their <span>Data Visibility</span></h2>
+  <div style="overflow-x:auto;">
+  <table class="roles-table">
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Org Scope</th>
+        <th>Branch Scope</th>
+        <th>Data Scope</th>
+        <th>Field Restrictions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Owner</td><td><span class="scope-tag scope-all">All Orgs</span></td><td><span class="scope-tag scope-all">All</span></td><td>Everything</td><td>None</td></tr>
+      <tr><td>General Manager</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-all">All Branches</span></td><td>Org-wide data</td><td>Owner financials hidden</td></tr>
+      <tr><td>Branch Manager</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Branch data</td><td>Salary fields hidden</td></tr>
+      <tr><td>Service Advisor</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Jobs + customers</td><td>Financial summaries hidden</td></tr>
+      <tr><td>Technician</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Assigned jobs only</td><td>Customer PII masked</td></tr>
+      <tr><td>Parts Manager</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Inventory + parts requests</td><td>Cost prices visible, salary hidden</td></tr>
+      <tr><td>Cashier</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Invoices + payments</td><td>Cost prices hidden</td></tr>
+      <tr><td>Accountant</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-all">All Branches</span></td><td>Financial records</td><td>HR data hidden</td></tr>
+      <tr><td>HR Manager</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-all">All Branches</span></td><td>Employee records</td><td>Financial details hidden</td></tr>
+      <tr><td>Receptionist</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Appointments + check-ins</td><td>Job details limited</td></tr>
+      <tr><td>Inspector</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-branch">Own Branch</span></td><td>Inspection records</td><td>Pricing hidden</td></tr>
+      <tr><td>Customer</td><td><span class="scope-tag scope-own">Own Data</span></td><td><span class="scope-tag scope-own">N/A</span></td><td>Own vehicles + jobs</td><td>Internal notes hidden</td></tr>
+      <tr><td>Insurance Rep</td><td><span class="scope-tag scope-own">Linked Claims</span></td><td><span class="scope-tag scope-own">N/A</span></td><td>Authorized claims</td><td>Internal costs hidden</td></tr>
+      <tr><td>Auditor</td><td><span class="scope-tag scope-org">Own Org</span></td><td><span class="scope-tag scope-all">All Branches</span></td><td>Read-only full access</td><td>Write operations blocked</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<script>
+  const captionBar = document.getElementById('captionBar');
+  const captionText = document.getElementById('captionText');
+  const captionLabel = captionBar.querySelector('.label');
+  const layers = document.querySelectorAll('.layer');
+
+  // Role config: which layers are highlighted for each role
+  const roleConfig = {
+    all: { highlight: [], dim: [], caption: 'All layers shown. Select a specific role to see its data visibility scope.' },
+    owner: {
+      highlight: ['auth', 'middleware', 'drizzle', 'rls', 'filter', 'response'],
+      dim: ['branch', 'redact'],
+      caption: 'Owner sees all orgs, all branches, all fields. Branch filter and field redaction are bypassed.'
+    },
+    manager: {
+      highlight: ['auth', 'middleware', 'drizzle', 'rls', 'filter', 'branch', 'redact', 'response'],
+      dim: [],
+      caption: 'Manager is scoped to own org and own branch. Salary fields are redacted. All isolation layers active.'
+    },
+    technician: {
+      highlight: ['auth', 'middleware', 'drizzle', 'rls', 'filter', 'branch', 'redact', 'response'],
+      dim: [],
+      caption: 'Technician sees only assigned jobs within own branch. Customer PII is masked. All layers enforced.'
+    },
+    customer: {
+      highlight: ['auth', 'rls', 'redact', 'response'],
+      dim: ['middleware', 'drizzle', 'filter', 'branch'],
+      caption: 'Customer accesses own data only via user_id in JWT. RLS enforces row-level ownership. Internal notes redacted.'
+    }
+  };
+
+  // Role selector
+  document.getElementById('roleSelector').addEventListener('click', e => {
+    const btn = e.target.closest('.role-btn');
+    if (!btn) return;
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const role = btn.dataset.role;
+    const cfg = roleConfig[role];
+
+    captionLabel.textContent = btn.textContent;
+    captionText.textContent = cfg.caption;
+
+    layers.forEach(l => {
+      l.classList.remove('dimmed', 'highlighted');
+      if (role === 'all') return;
+      const layer = l.dataset.layer;
+      if (cfg.dim.includes(layer)) l.classList.add('dimmed');
+      if (cfg.highlight.includes(layer)) l.classList.add('highlighted');
+    });
+  });
+
+  // Node hover
+  document.querySelectorAll('.node-group').forEach(g => {
+    g.addEventListener('mouseenter', () => {
+      const raw = g.getAttribute('data-caption');
+      if (!raw) return;
+      const [label, desc] = raw.split('|');
+      captionLabel.textContent = label;
+      captionText.textContent = desc;
+    });
+    g.addEventListener('mouseleave', () => {
+      const activeBtn = document.querySelector('.role-btn.active');
+      if (activeBtn) {
+        captionLabel.textContent = activeBtn.textContent;
+        captionText.textContent = roleConfig[activeBtn.dataset.role].caption;
+      }
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

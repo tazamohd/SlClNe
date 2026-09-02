@@ -75,10 +75,27 @@ export async function resetDatabase(): Promise<Env> {
         // Already granted, or the role lacks permission to grant it. The
         // terminate below then fails the way it always did, visibly.
       })
-    await maintenance.unsafe(
-      `select pg_terminate_backend(pid) from pg_stat_activity where datname = '${TEST_DATABASE}' and pid <> pg_backend_pid()`,
-    )
-    await maintenance.unsafe(`drop database if exists ${TEST_DATABASE}`)
+    await maintenance
+      .unsafe(
+        `select pg_terminate_backend(pid) from pg_stat_activity where datname = '${TEST_DATABASE}' and pid <> pg_backend_pid()`,
+      )
+      .catch(() => {
+        /* Best-effort, and no longer load-bearing: `with (force)` below drops
+         * the database whether or not this succeeded. It used to throw
+         * "permission denied to terminate process" — pg_signal_backend cannot
+         * signal a backend belonging to a superuser — and because it threw
+         * before the drop, the whole reset aborted and the file's tests were
+         * reported as skipped. Roughly one run in three here. */
+      })
+    /* `with (force)` because the terminate above and the drop below are two
+     * statements: a connection opening in the gap — the previous file's pool
+     * still draining — makes the drop fail with "database is being accessed by
+     * other users". The suite then reported that file's tests as *skipped*,
+     * which reads as switched off rather than broken, and it moved around as
+     * files were added. `force` terminates and drops in one statement, so
+     * there is no gap to lose. PostgreSQL 13+; the terminate is kept because
+     * it reports a permissions problem more clearly than force does. */
+    await maintenance.unsafe(`drop database if exists ${TEST_DATABASE} with (force)`)
     await maintenance.unsafe(`create database ${TEST_DATABASE}`)
   } finally {
     await maintenance.end({ timeout: 5 })

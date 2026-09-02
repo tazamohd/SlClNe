@@ -25,6 +25,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
+import { recordKeys, scanFile } from './lib/i18n-scan.mjs'
+import { arabicStateFrom, layoutFacts } from './lib/screen-facts.mjs'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
@@ -34,7 +36,55 @@ const DOCS = path.join(REPO, 'docs')
 
 const read = (p) => fs.readFileSync(p, 'utf8')
 const readApp = (rel) => read(path.join(APP, rel))
+/** The three shapes the date stamp is written in. Each captures the date, so
+ *  the same list both locates a stamp and bounds what may be masked out of it. */
+const STAMP_PATTERNS = [
+  /"generatedAt":\s*"(\d{4}-\d{2}-\d{2})"/,
+  /REGISTRY_GENERATED_AT = '(\d{4}-\d{2}-\d{2})'/,
+  /build-registry\.mjs on (\d{4}-\d{2}-\d{2})/,
+]
+
+/** Replaces the date *inside each stamp* with a fixed placeholder, leaving any
+ *  other date in the file alone. Anchoring to the stamp shapes rather than
+ *  replacing the bare date value matters both ways: a data field that happens
+ *  to hold the old stamp's date must not be masked away (that would hide real
+ *  drift), and one holding a date the stamp has since moved past must not be
+ *  left unmasked on one side only (that would put the churn back). */
+const maskStamps = (text) =>
+  STAMP_PATTERNS.reduce((t, re) => t.replace(re, (m, d) => m.replace(d, '0000-00-00')), text)
+
+/** A checkout's line endings are the reader's, not the generator's: git's
+ *  Windows default hands back CRLF for blobs stored as LF. Comparing raw would
+ *  make every file differ on those machines and defeat the guard entirely. */
+const normalise = (text) => text.replace(/\r\n/g, '\n')
+
+/** Writes only when something other than the date changed, and reports whether
+ *  it did — `null` for a file left alone.
+ *
+ *  Every generated file carries `generatedAt`, so a regeneration on a later day
+ *  rewrote all twelve of them with one line different and nothing else. CI's
+ *  "registry is current" step is a `git diff --exit-code`, so that turned a
+ *  content check into a calendar check — red on any run dated after the last
+ *  regeneration, for a diff of twelve identical date lines.
+ *
+ *  Deriving the stamp from the last commit rather than the wall clock narrowed
+ *  it but did not close it: the stamp then moves on *every* commit, including
+ *  the ones that touch nothing this script reads, so an unrelated commit a day
+ *  later still reddened the step. Filtering `git log` by input path would fix
+ *  that locally and break it on CI, where `actions/checkout` clones to depth 1
+ *  and there is no history to filter.
+ *
+ *  So the guard is content, not history, and needs neither. Compare the new
+ *  body against the old with the stamps masked out: identical means only the
+ *  date moved, and the file on disk is left exactly as it is. The stamp
+ *  therefore records when the content last changed, which is what a reader
+ *  wants from it anyway, and regeneration is idempotent everywhere — shallow
+ *  clone, deep clone, CRLF checkout, or no git at all. */
 const write = (abs, body) => {
+  if (fs.existsSync(abs)) {
+    const prev = fs.readFileSync(abs, 'utf8')
+    if (normalise(maskStamps(prev)) === normalise(maskStamps(body))) return null
+  }
   fs.mkdirSync(path.dirname(abs), { recursive: true })
   fs.writeFileSync(abs, body)
   return path.relative(REPO, abs)
@@ -155,6 +205,55 @@ const designFiles = fs.existsSync(PROJECT)
 const designDesktop = new Set(designFiles.filter((f) => !f.includes('.Mobile.')).map((f) => f.replace('.dc.html', '')))
 const designMobile = new Set(designFiles.filter((f) => f.includes('.Mobile.')).map((f) => f.replace('.Mobile.dc.html', '')))
 
+/** `[registryName, componentName]` for every screen the app declares.
+ *
+ *  A declaration maps the registry's name for a screen onto the component that
+ *  renders it — `'General-Ledger': GeneralLedger` — and the two are spelled
+ *  differently on purpose: the registry name comes from the spec, the component
+ *  name is a JS identifier. Anything that detects a fact by reading a component
+ *  therefore has to come back through this table, or it reports on a name the
+ *  registry never asks about.
+ *
+ *  Three shapes, because the app uses three. Domain barrels declare a screen
+ *  bare (`'General-Ledger': GeneralLedger`) or as an object naming a shell
+ *  beside the component; the route table declares one as
+ *  `lazyNamed(() => import(…), 'ExportName')`. Each shape missed is a block of
+ *  the registry that reads as a gap because nothing looked, not because
+ *  anything is wrong with the screen — the route-table shape alone accounted
+ *  for all nineteen CustomerApp / PartsNetwork entries.
+ *
+ *  The key charset is `[\w.-]`, not `\w`: over half the registry is
+ *  hyphenated — 205 of 424 entries — and a word class stops at the first
+ *  hyphen, so those keys matched a fragment or nothing, silently capping every
+ *  detector that reads this table. */
+const BARREL_ALIASES = (() => {
+  const pairs = []
+  const OBJECT_FORM = /['"]?([\w.-]+?)['"]?\s*:\s*\{\s*component\s*:\s*(\w+)/g
+  //  ScreenName: wrapper(ImportedName)   or   ScreenName: ImportedName,
+  const BARE_FORM = /['"]?([\w.-]+?)['"]?\s*:\s*(?:\w+\()?\s*([A-Z]\w*)\s*\)?\s*[,}]/g
+  //  ScreenName: lazyNamed(() => import('@/screens/…'), 'ExportName')
+  const LAZY_NAMED = /(?:const\s+)?['"]?([\w.-]+)['"]?\s*[:=]\s*lazyNamed\(\s*\(\)\s*=>\s*import\(\s*'[^']+'\s*\)\s*,\s*'(\w+)'/gs
+  const STRUCTURAL = new Set(['component', 'shell'])
+  const collect = (src, patterns) => {
+    for (const re of patterns) {
+      for (const m of src.matchAll(re)) {
+        if (STRUCTURAL.has(m[1])) continue
+        pairs.push([m[1], m[2]])
+      }
+    }
+  }
+  const domainsDir = path.join(APP, 'src/screens/domains')
+  if (fs.existsSync(domainsDir)) {
+    for (const f of fs.readdirSync(domainsDir).filter((n) => n.endsWith('.ts'))) {
+      try {
+        collect(fs.readFileSync(path.join(domainsDir, f), 'utf8'), [OBJECT_FORM, BARE_FORM])
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  collect(routesSrc, [LAZY_NAMED])
+  return pairs
+})()
+
 /** Screens whose source file already contains a useIsMobile / isMobile branch.
  *  This is how the builder upgrades a designed-mobile screen from MISSING → DONE
  *  once an agent has actually wired up the mobile layout. */
@@ -180,21 +279,8 @@ const mobileImplemented = (() => {
 
   // Also resolve domain barrel aliases: a barrel maps ScreenName → ImportedComponent,
   // so if the ImportedComponent is in our set, the ScreenName should be too.
-  const domainsDir = path.join(screensDir, 'domains')
-  if (fs.existsSync(domainsDir)) {
-    for (const f of fs.readdirSync(domainsDir).filter(n => n.endsWith('.ts'))) {
-      try {
-        const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
-        // Match patterns like:  ScreenName: wrapper(ImportedName)  or  ScreenName: ImportedName,
-        for (const m of src.matchAll(/['"]?(\w[\w.]*?)['"]?\s*:\s*(?:\w+\()?\s*(\w+)\s*\)?\s*[,}]/g)) {
-          const screenName = m[1]
-          const componentName = m[2]
-          if (names.has(componentName) && !names.has(screenName)) {
-            names.add(screenName)
-          }
-        }
-      } catch (_) { /* skip unreadable */ }
-    }
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (names.has(componentName)) names.add(screenName)
   }
 
   return names
@@ -225,24 +311,240 @@ const stateImplemented = (() => {
   }
   walk(screensDir)
 
-  const domainsDir = path.join(screensDir, 'domains')
-  if (fs.existsSync(domainsDir)) {
-    for (const f of fs.readdirSync(domainsDir).filter(n => n.endsWith('.ts'))) {
-      try {
-        const src = fs.readFileSync(path.join(domainsDir, f), 'utf8')
-        for (const m of src.matchAll(/['"]?(\w[\w.]*?)['"]?\s*:\s*(?:\w+\()?\s*(\w+)\s*\)?\s*[,}]/g)) {
-          const screenName = m[1]
-          const componentName = m[2]
-          if (map.has(componentName) && !map.has(screenName)) {
-            map.set(screenName, map.get(componentName))
-          }
-        }
-      } catch (_) { /* skip unreadable */ }
-    }
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
   }
 
   return map
 })()
+
+/** Screens that read through the repository seam, and the collections they ask
+ *  for. Maps component name → { keys: string[] }.
+ *
+ *  `dataBacked` and `dataSource` were a hardcoded `false` and `[]`, so every
+ *  product screen carried MOCK_ONLY — "renders, but from fixtures rather than
+ *  an API" — whatever it actually did, the total read 0, and BLK-002 ("no
+ *  capability is backed by real data") could never close. A flag that cannot
+ *  clear says nothing about the thing it names.
+ *
+ *  What makes a screen data-backed is concrete here: `repository.ts` resolves
+ *  to the HTTP client when VITE_API_URL is set and to fixtures when it is not,
+ *  and the hooks below are the only way through that seam. A screen that calls
+ *  one shows real rows against a real server; a screen that does not renders
+ *  local constants and will not, however the build is configured. Nothing in
+ *  `components/` calls the seam — the shared pieces take their data as props —
+ *  so reading the screen's own source is the whole answer rather than a
+ *  first approximation of it.
+ *
+ *  This measures wiring, not correctness: it says a screen asks the repository
+ *  for a collection, not that what it renders is right. */
+const SEAM_CALL =
+  /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
+const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk|Repository)\b/
+
+const dataBackedScreens = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+
+  /** Attributed per exported function, not per file. `crm/Crm.tsx` exports ten
+   *  screens and each fetches its own collection, so crediting the file's whole
+   *  set to all of them would have said LeadPipeline reads aiAgents. Each
+   *  export owns the source from its own signature to the next one. */
+  const scan = (src) => {
+    const starts = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
+    const direct = new Map()
+    starts.forEach((m, i) => {
+      const body = src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length)
+      direct.set(m[1], {
+        body,
+        keys: [...new Set([...body.matchAll(SEAM_CALL)].map((k) => k[1]))].sort(),
+      })
+    })
+    /* A screen that renders a sibling from the same file rather than fetching
+     * for itself — the three Campaigns wrappers are exactly this — is backed by
+     * whatever that sibling reads. One level only: this resolves the wrapper
+     * case without pretending to be a call graph. */
+    for (const [name, own] of direct) {
+      if (own.keys.length) continue
+      const inherited = new Set()
+      for (const [other, sib] of direct) {
+        if (other === name || !sib.keys.length) continue
+        if (new RegExp(`<${other}\\b|\\b${other}\\s*\\(`).test(own.body)) {
+          for (const k of sib.keys) inherited.add(k)
+        }
+      }
+      if (inherited.size) own.keys = [...inherited].sort()
+    }
+    return direct
+  }
+
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const src = fs.readFileSync(full, 'utf8')
+        if (!SEAM_ANY.test(src)) continue
+        for (const [name, { keys }] of scan(src)) {
+          if (!keys.length) continue
+          const prev = map.get(name)?.keys ?? []
+          map.set(name, { keys: [...new Set([...prev, ...keys])].sort() })
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+
+  /* Through the barrel, same as the detectors above. Without this the registry
+   * asks about `Customers-List` while this map only knows `CustomersList`, so a
+   * wired screen registered under a spec name reads as unwired for ever. */
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+
+  return map
+})()
+
+/** Routes the smoke suite actually loads at a tablet viewport, read from its
+ *  own table so the two cannot drift. Today that is four routes. */
+const SMOKE_TABLET_ROUTES = new Set(
+  [...smokeSrc.matchAll(/\{\s*w:\s*(\d+)\s*,\s*h:\s*\d+\s*,\s*label:\s*'[^']*'\s*,\s*route:\s*'([^']+)'/g)]
+    .filter((m) => Number(m[1]) >= 768 && Number(m[1]) <= 1024)
+    .map((m) => m[2])
+)
+
+/** Routes the smoke suite actually renders right-to-left, read the same way.
+ *  A route qualifies only where the run asserts `documentElement.dir`, so the
+ *  set is what a browser has confirmed flips, not a list I keep by hand. */
+const RTL_VERIFIED_ROUTES = new Set(
+  [...smokeSrc.matchAll(/BASE\s*\+\s*'([^']+)'/g)]
+    .filter((m, i, all) => {
+      /* Look only as far as the next navigation: an assertion after that one
+       * belongs to the route it loaded, not to this one. */
+      const end = all[i + 1]?.index ?? smokeSrc.length
+      return /documentElement\.dir/.test(smokeSrc.slice(m.index, end))
+    })
+    .map((m) => m[1])
+)
+
+/** Per-screen layout facts — whether the file hard-codes a physical direction,
+ *  and whether it carries a breakpoint in the tablet range — keyed by component
+ *  name. The two predicates live in `lib/screen-facts.mjs` so a test can show
+ *  each firing and not firing; see the note there on why that matters. */
+const screenIntl = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const src = fs.readFileSync(full, 'utf8')
+        const facts = layoutFacts(src)
+        for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
+          const prev = map.get(m[1])
+          map.set(m[1], prev
+            ? { physical: prev.physical || facts.physical,
+                tabletBreakpoints: prev.tabletBreakpoints || facts.tabletBreakpoints }
+            : { ...facts })
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+  return map
+})()
+
+/** Per-screen Arabic state, decided by the same scanner `check-i18n` runs.
+ *
+ *  Deliberately not a regex of my own: my first attempt counted a key as
+ *  untranslated when the gate counted it dynamic, so the registry claimed ten
+ *  Arabic gaps on a codebase the gate reports fully covered. `scanFile` draws
+ *  the literal/dynamic line once, and both readers now sit on that line. */
+const arabicFacts = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+  let covered
+  try {
+    covered = new Set([
+      ...recordKeys(path.join(APP, 'src/data/generated/ar.ts')),
+      ...recordKeys(path.join(APP, 'src/data/ar-overrides.ts')),
+    ])
+  } catch (_) {
+    return map // no dictionary to judge against; leave every screen unclaimed
+  }
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      try {
+        const { literals, dynamic } = scanFile(fs.readFileSync(full, 'utf8'))
+        const facts = {
+          /* A screen with no `t()` at all is not "fully translated" — it is
+           * not translated. Certifying it on an empty set is the same false
+           * clear as the constants this replaced, from the other side. */
+          translated: literals.length > 0,
+          uncovered: literals.some((k) => !covered.has(k)),
+          dynamic: dynamic > 0,
+        }
+        for (const m of fs.readFileSync(full, 'utf8').matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
+          const prev = map.get(m[1])
+          map.set(m[1], prev
+            ? { translated: prev.translated || facts.translated,
+                uncovered: prev.uncovered || facts.uncovered,
+                dynamic: prev.dynamic || facts.dynamic }
+            : { ...facts })
+        }
+      } catch (_) { /* skip unreadable */ }
+    }
+  }
+  walk(screensDir)
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
+  }
+  return map
+})()
+
+/** Every spec screen with no component of its own is rendered by the feature
+ *  kit's single view, so that file is what a visitor to one of those routes
+ *  actually sees, and it is what these three facts are true or false of. The
+ *  component's name is read from the route table rather than written here. */
+const KIT_COMPONENT = routesSrc.match(/<(\w+)\s+def=\{/)?.[1] ?? null
+
+/** The source a screen's facts come from: its own component, or the kit view
+ *  where the kit is what renders the route. `undefined` means neither — the
+ *  screen cannot be measured from here, which is not the same as being wrong,
+ *  and the three helpers below must not report it as a gap. */
+const factsFor = (map, name, route) =>
+  map.get(name) ?? (KIT_COMPONENT && KIT_ROUTES.has(route) ? map.get(KIT_COMPONENT) : undefined)
+
+const tabletStateOf = (name, route, built) => {
+  if (!built) return 'MISSING'
+  if (SMOKE_TABLET_ROUTES.has(route)) return 'DONE'
+  const facts = factsFor(screenIntl, name, route)
+  if (!facts) return 'PARTIAL' // built; nothing readable to judge it by
+  return facts.tabletBreakpoints ? 'PARTIAL' : 'MISSING'
+}
+const arabicStateOf = (name, route, built) => {
+  if (!built) return 'MISSING'
+  const facts = factsFor(arabicFacts, name, route)
+  if (!facts) return 'PARTIAL'
+  return arabicStateFrom(facts)
+}
+const rtlStateOf = (name, route, built) => {
+  if (!built) return 'MISSING'
+  if (factsFor(screenIntl, name, route)?.physical) return 'MISSING'
+  return RTL_VERIFIED_ROUTES.has(route) ? 'VERIFIED' : 'PARTIAL'
+}
 
 // ── classification ───────────────────────────────────────────────────────────
 
@@ -366,18 +668,18 @@ for (const s of SCREENS) {
     // Coverage. `built` means the route renders a real component — it is the
     // floor, not the Definition of Done, so nothing above DONE is claimed here.
     desktop: built ? 'DONE' : 'MISSING',
-    tablet: 'MISSING',
+    tablet: tabletStateOf(s.name, s.route, built),
     mobile: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
     responsive: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
-    arabic: built ? 'PARTIAL' : 'MISSING',
-    rtl: built ? 'PARTIAL' : 'MISSING',
+    arabic: arabicStateOf(s.name, s.route, built),
+    rtl: rtlStateOf(s.name, s.route, built),
     loadingState: built && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
     emptyState: built && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
     errorState: built && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
     successState: 'MISSING',
     accessibility: 'MISSING',
-    dataBacked: false,
-    dataSource: [],
+    dataBacked: built && dataBackedScreens.has(s.name),
+    dataSource: (built && dataBackedScreens.get(s.name)?.keys) || [],
     crud: { create: false, read: built, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
@@ -417,18 +719,18 @@ for (const s of SPEC_SCREENS) {
     mobileType: 'B-responsive',
     purpose: s.purpose,
     desktop: owned ? 'DONE' : kit ? 'PARTIAL' : 'MISSING',
-    tablet: 'MISSING',
+    tablet: tabletStateOf(s.name, s.route, owned || kit),
     mobile: owned || kit ? 'PARTIAL' : 'MISSING',
     responsive: owned || kit ? 'PARTIAL' : 'MISSING',
-    arabic: owned || kit ? 'PARTIAL' : 'MISSING',
-    rtl: owned || kit ? 'PARTIAL' : 'MISSING',
+    arabic: arabicStateOf(s.name, s.route, owned || kit),
+    rtl: rtlStateOf(s.name, s.route, owned || kit),
     loadingState: (owned || kit) && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
     emptyState: (owned || kit) && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
     errorState: (owned || kit) && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
     successState: 'MISSING',
     accessibility: 'MISSING',
-    dataBacked: false,
-    dataSource: [],
+    dataBacked: (owned || kit) && dataBackedScreens.has(s.name),
+    dataSource: ((owned || kit) && dataBackedScreens.get(s.name)?.keys) || [],
     crud: { create: false, read: owned || kit, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
@@ -462,7 +764,10 @@ for (const e of entries) {
   if (rendered && e.mobile === 'MISSING' && e.mobileType !== 'native-frame') f.push('DESKTOP_ONLY')
   if (rendered && e.tablet === 'MISSING') f.push('TABLET_MISSING')
   if (rendered && e.arabic !== 'VERIFIED') f.push('ARABIC_MISSING')
-  if (rendered && e.rtl !== 'VERIFIED') f.push('RTL_BROKEN')
+  /* Only a real hazard, not merely "no RTL run has looked at this". The flag
+   * says broken; firing it on every clean-but-unexercised screen is what made
+   * it meaningless. Absence of verification is carried by `rtl: 'PARTIAL'`. */
+  if (rendered && e.rtl === 'MISSING') f.push('RTL_BROKEN')
   if (product && !e.tests.e2e) f.push('UNTESTED')
   if (product && e.tests.e2e && !e.e2eContent && rendered) f.push('NO_CONTENT_ASSERTION')
   if (product && rendered && !e.dataBacked) f.push('MOCK_ONLY')
@@ -531,17 +836,12 @@ const { all: screenFiles, reached } = reachableScreenFiles()
  *  reference retires; adding one needs the same argument, or this list becomes
  *  where dead code hides. Every other unreachable file is a bug.
  *
- *      admin/SystemScreens           /security-cameras, /digital-signage
- *      emerging/EmergingTechScreens  /drone-inspection, /ar-repair-guide, /ar-overlay,
- *                                    /vr-showroom, /blockchain-service-history,
- *                                    /smart-contracts, /quantum-computing
- *      enterprise/EnterpriseScreens  /wearable-integration
+ *  Empty since the merge with main: the three files this list protected —
+ *  admin/SystemScreens, emerging/EmergingTechScreens, enterprise/
+ *  EnterpriseScreens — were deleted on main, which is the retirement the
+ *  paragraph above describes. The mechanism stays for the next one.
  */
-const RETAINED_REFERENCE = [
-  'src/screens/admin/SystemScreens.tsx',
-  'src/screens/emerging/EmergingTechScreens.tsx',
-  'src/screens/enterprise/EnterpriseScreens.tsx',
-].map((f) => path.normalize(f))
+const RETAINED_REFERENCE = [].map((f) => path.normalize(f))
 
 const unreached = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
 const retainedFiles = unreached.filter((f) => RETAINED_REFERENCE.includes(f))
@@ -594,6 +894,9 @@ const totals = {
   hasLoadingState: count(entries, (e) => e.loadingState === 'DONE'),
   hasErrorState: count(entries, (e) => e.errorState === 'DONE'),
   hasEmptyState: count(entries, (e) => e.emptyState === 'DONE'),
+  tabletVerified: count(entries, (e) => e.tablet === 'DONE'),
+  arabicVerified: count(entries, (e) => e.arabic === 'VERIFIED'),
+  rtlHazards: count(entries, (e) => e.rtl === 'MISSING'),
   unregisteredDesigns: unregistered.length,
   orphanScreenFiles: orphanFiles.length,
   productionReady: count(entries, (e) => e.status === 'PRODUCTION_READY'),
@@ -642,9 +945,9 @@ function inputDate() {
   }
 }
 const stamp = inputDate()
-const written = []
+const outputs = []
 
-written.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
   generatedAt: stamp,
   generator: 'app/scripts/build-registry.mjs',
   note: 'Discovered from the repository. Never hand-edit; re-run the generator.',
@@ -654,11 +957,11 @@ written.push(write(path.join(CONTROL, 'MASTER_REGISTRY.json'), JSON.stringify({
   entries,
 }, null, 2) + '\n'))
 
-written.push(write(path.join(CONTROL, 'STATUS.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'STATUS.json'), JSON.stringify({
   generatedAt: stamp, totals, bySurface, byDomain, byModule,
 }, null, 2) + '\n'))
 
-written.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
   generatedAt: stamp,
   suites: {
     unit:        { runner: 'vitest',     present: false, covered: 0, of: entries.length, note: 'W1 — Agent 07' },
@@ -731,7 +1034,7 @@ const blockers = [
     detail: 'The brand permits blue and orange only. Run scripts/check-tokens.mjs for the offenders.', owner: '04', wave: 'W1' },
 ].filter(Boolean)
 
-written.push(write(path.join(CONTROL, 'BLOCKERS.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'BLOCKERS.json'), JSON.stringify({
   generatedAt: stamp, open: blockers.length, blockers,
 }, null, 2) + '\n'))
 
@@ -756,7 +1059,7 @@ const trackerDomains = domainOrder
       category: e.category,
     })),
   }))
-written.push(write(path.join(CONTROL, 'tracker/tracker-data.json'), JSON.stringify({
+outputs.push(write(path.join(CONTROL, 'tracker/tracker-data.json'), JSON.stringify({
   generatedAt: stamp,
   domains: trackerDomains,
   totals: { total: entries.length, built: totals.rendered, designedMobile: count(entries, (e) => e.mobileType === 'A-designed') },
@@ -764,7 +1067,7 @@ written.push(write(path.join(CONTROL, 'tracker/tracker-data.json'), JSON.stringi
 
 /** The typed slice the app itself reads — routes and generated tests bind to
  *  this, so adding a capability to the registry adds its route check for free. */
-written.push(write(path.join(APP, 'src/data/generated/master-registry.ts'),
+outputs.push(write(path.join(APP, 'src/data/generated/master-registry.ts'),
 `// GENERATED by scripts/build-registry.mjs — do not edit by hand.
 // The authoritative capability inventory. Routes and route tests are derived
 // from this, so a capability cannot exist without appearing in coverage.
@@ -792,7 +1095,7 @@ const bar = (a, b) => {
 const genHeader = (title, sub) =>
   `<!-- GENERATED by app/scripts/build-registry.mjs on ${stamp}. Do not edit by hand. -->\n\n# ${title}\n\n${sub}\n`
 
-written.push(write(path.join(DOCS, 'SALIS_AUTO_MASTER_MATRIX.md'),
+outputs.push(write(path.join(DOCS, 'SALIS_AUTO_MASTER_MATRIX.md'),
   genHeader('SALIS AUTO — Master Capability Matrix',
     `${totals.capabilities} capabilities · ${totals.rendered} rendering · ${totals.placeholder} placeholder · ${totals.dataBacked} data-backed.`) +
   '\n| Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |\n' +
@@ -806,7 +1109,7 @@ written.push(write(path.join(DOCS, 'SALIS_AUTO_MASTER_MATRIX.md'),
     e.category === 'PRODUCT' ? e.status : e.category,
   ].join(' | ')).map((r) => `| ${r} |`).join('\n') + '\n'))
 
-written.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
   genHeader('SALIS AUTO — Scope Registry',
     'Every capability the product must ship, by surface and domain. Regenerate rather than edit.') +
   `\n## Totals\n\n| Metric | Count |\n|---|---|\n` +
@@ -820,25 +1123,36 @@ written.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
   `\n\n## By RBAC module\n\n| Module | Capabilities | Rendering |\n|---|---|---|\n` +
   Object.entries(byModule).sort().map(([k, v]) => `| ${k} | ${v.total} | ${v.rendered} |`).join('\n') + '\n'))
 
-const flagCounts = entries.flatMap((e) => e.flags).reduce((a, f) => ((a[f] = (a[f] ?? 0) + 1), a), {})
-written.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
+/** Every flag the generator can raise, and what raises it. Keyed here rather
+ *  than inline in the table so a flag at zero still prints a row: a flag that
+ *  disappears when it clears leaves a reader unable to tell "checked, clear"
+ *  from "no longer checked", which is the same ambiguity as a flag that never
+ *  clears. RTL_BROKEN reads 0 today and that is a result, not an absence. */
+const FLAG_MEANINGS = {
+  PLACEHOLDER: 'product route renders PendingScreen',
+  MOCK_ONLY: 'renders, but from fixtures rather than an API',
+  UNTESTED: 'no route check in the smoke suite',
+  TABLET_MISSING: 'no md:/lg: layout in the source — nothing written for 768–1024',
+  ARABIC_MISSING: 'Arabic not certified: an untranslated key, or keys built dynamically',
+  RTL_BROKEN: 'a hard-coded physical side (ml-/pr-/text-left) the RTL flip will not mirror',
+  MOBILE_MISSING: 'a .Mobile design exists and is not built',
+  DESKTOP_ONLY: 'renders on desktop with no mobile treatment',
+  DUPLICATE: 'two entries claim one route',
+  NO_RBAC_MODULE: 'no RBAC module maps to this screen',
+  NO_CONTENT_ASSERTION: 'the route is visited but nothing is asserted about it',
+}
+const flagCounts = entries.flatMap((e) => e.flags).reduce(
+  (a, f) => ((a[f] = (a[f] ?? 0) + 1), a),
+  Object.fromEntries(Object.keys(FLAG_MEANINGS).map((f) => [f, 0]))
+)
+outputs.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
   genHeader('SALIS AUTO — Master Gap Report',
     'Computed from the registry. Every line is a query, not an opinion.') +
   `\n## Open blockers\n\n| ID | Severity | Title | Owner | Wave |\n|---|---|---|---|---|\n` +
   blockers.map((b) => `| ${b.id} | ${b.severity} | ${b.title} | ${b.owner} | ${b.wave} |`).join('\n') +
   `\n\n## Flags across the inventory\n\n| Flag | Count | Meaning |\n|---|---|---|\n` +
-  Object.entries(flagCounts).sort((a, b) => b[1] - a[1]).map(([f, n]) => `| ${f} | ${n} | ${({
-    PLACEHOLDER: 'product route renders PendingScreen',
-    MOCK_ONLY: 'renders, but from fixtures rather than an API',
-    UNTESTED: 'no route check in the smoke suite',
-    TABLET_MISSING: 'never verified at 768–1024',
-    ARABIC_MISSING: 'Arabic not certified',
-    RTL_BROKEN: 'RTL not certified',
-    MOBILE_MISSING: 'a .Mobile design exists and is not built',
-    DESKTOP_ONLY: 'renders on desktop with no mobile treatment',
-    DUPLICATE: 'two entries claim one route',
-    NO_RBAC_MODULE: 'no RBAC module maps to this screen',
-  })[f] ?? '—'} |`).join('\n') +
+  Object.entries(flagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([f, n]) => `| ${f} | ${n} | ${FLAG_MEANINGS[f] ?? '—'} |`).join('\n') +
   `\n\n## Designs not in the registry\n\n${unregistered.length ? unregistered.map((u) => `- \`project/${u}.dc.html\``).join('\n') : '_None — the registry covers every design file._'}` +
   `\n\n## Screen files no route reaches\n\n${orphanFiles.length ? orphanFiles.map((o) => `- \`app/${o.split(path.sep).join('/')}\``).join('\n') : '_None._'}` +
   `\n\n## Retained as reference, deliberately not routed\n\nPre-kit implementations of feature-map routes that render \`FeatureScreenView\` today. Kept as the reference for building the real screen; routing one would put a legacy screen back in front of users. See \`RETAINED_REFERENCE\` in \`app/scripts/build-registry.mjs\`.\n\n${retainedFiles.length ? retainedFiles.map((o) => `- \`app/${o.split(path.sep).join('/')}\``).join('\n') : '_None._'}` +
@@ -847,7 +1161,7 @@ written.push(write(path.join(DOCS, 'MASTER_GAP_REPORT.md'),
     .map(([k, v]) => `| ${DOMAIN_LABEL[k] ?? k} | ${v.placeholder} | ${v.total} |`).join('\n') + '\n'))
 
 const MODULES = [...new Set(Object.keys(PERMS))].sort()
-written.push(write(path.join(DOCS, 'MASTER_RBAC_MATRIX.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_RBAC_MATRIX.md'),
   genHeader('SALIS AUTO — RBAC Matrix (live)',
     `${ROLES.length} roles × ${MODULES.length} modules, read from \`PERMS\` in the generated data layer. ` +
     'Actions: v=view, c=create, e=edit, x=delete, a=approve. This is the matrix the app enforces — ' +
@@ -863,7 +1177,7 @@ const OWNERSHIP = JSON.parse(read(path.join(CONTROL, 'OWNERSHIP.json')))
 const DEPS = JSON.parse(read(path.join(CONTROL, 'DEPENDENCIES.json')))
 
 const capsFor = (agentId) => entries.filter((e) => e.owner === agentId).length
-written.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
   genHeader('SALIS AUTO — Agent Ownership',
     'Who owns which paths. An agent does not edit another agent\'s files; a needed change outside your boundary is a request, not an edit.') +
   `\n## Serialised through Agent ${OWNERSHIP.shared.arbiter}\n\n${OWNERSHIP.shared.rule}\n\n` +
@@ -886,7 +1200,7 @@ written.push(write(path.join(DOCS, 'MASTER_AGENT_OWNERSHIP.md'),
       : '')
   + '\n'))
 
-written.push(write(path.join(DOCS, 'MASTER_DEPENDENCY_GRAPH.md'),
+outputs.push(write(path.join(DOCS, 'MASTER_DEPENDENCY_GRAPH.md'),
   genHeader('SALIS AUTO — Dependency Graph',
     'What must land before what. Every edge is a technical dependency with its reason, not a preference.') +
   `\n## Waves\n\n| Wave | Name | Requires | Agents | Exit condition |\n|---|---|---|---|---|\n` +
@@ -904,4 +1218,7 @@ console.log(`registry: ${totals.capabilities} capabilities · ${totals.rendered}
 if (unregistered.length) console.log(`  unregistered designs: ${unregistered.join(', ')}`)
 if (orphanFiles.length) console.log(`  orphan screen files: ${orphanFiles.join(', ')}`)
 if (retainedFiles.length) console.log(`  retained as reference, not routed: ${retainedFiles.length}`)
-for (const w of written) console.log(`  wrote ${w}`)
+const changed = outputs.filter(Boolean)
+for (const w of changed) console.log(`  wrote ${w}`)
+const unchanged = outputs.length - changed.length
+if (unchanged) console.log(`  ${unchanged} unchanged`)

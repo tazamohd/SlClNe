@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-014 Supplier Journey - SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c; --bg-alt: #0e0e11; --text: #f5f5f7; --muted: #8a8a93;
+    --accent: #DA7756; --blue: #6ba4d9; --green: #7dbb7d; --purple: #a98ee0; --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04); --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .hero { padding: 80px 0 40px; text-align: center; }
+  .hero .badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); border: 1px solid rgba(107,164,217,0.3); background: rgba(107,164,217,0.08); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+  .hero h1 span { color: var(--blue); }
+  .hero p { color: var(--muted); font-size: 17px; max-width: 640px; margin: 0 auto; }
+  .diagram-section { padding: 40px 0 60px; }
+  .diagram-wrapper {
+    background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: 16px;
+    padding: 32px; overflow-x: auto;
+  }
+  .caption-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(14,14,17,0.95); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--card-border); padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+  }
+  .caption-bar.active { transform: translateY(0); }
+  .caption-bar .node-name { font-weight: 600; color: var(--blue); white-space: nowrap; }
+  .caption-bar .node-desc { color: var(--muted); font-size: 14px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px 0 80px; }
+  .info-card {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px;
+    opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .info-card.visible { opacity: 1; transform: translateY(0); }
+  .info-card h3 { font-size: 15px; margin-bottom: 8px; }
+  .info-card p { font-size: 14px; color: var(--muted); }
+  .access-note {
+    background: rgba(107,164,217,0.06); border: 1px solid rgba(107,164,217,0.2); border-radius: 12px;
+    padding: 20px 28px; margin: 0 0 32px; display: flex; align-items: flex-start; gap: 16px;
+    opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .access-note.visible { opacity: 1; transform: translateY(0); }
+  .access-note h4 { color: var(--blue); font-size: 15px; margin-bottom: 4px; }
+  .access-note p { color: var(--muted); font-size: 14px; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes glowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .flow-line { animation: flowDash 1.2s linear infinite; }
+  .glow { animation: glowPulse 2.5s ease-in-out infinite; }
+  .journey-node { cursor: pointer; transition: filter 0.2s ease; }
+  .journey-node:hover { filter: brightness(1.3); }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <div class="badge">SA-VIZ-014</div>
+    <h1>Supplier Portal <span>Journey</span></h1>
+    <p>External supplier workflow for purchase orders, delivery management, invoicing, and payment tracking through a scoped portal view.</p>
+  </section>
+
+  <section class="diagram-section">
+    <div class="diagram-wrapper">
+      <svg viewBox="0 0 1100 640" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Supplier portal journey diagram">
+        <defs>
+          <marker id="sB" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </marker>
+          <marker id="sG" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+          </marker>
+          <marker id="sD" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#d9b86b" stroke-width="1.2"/>
+          </marker>
+          <marker id="sA" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#DA7756" stroke-width="1.2"/>
+          </marker>
+          <filter id="glS"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Access scope boundary -->
+        <rect x="30" y="20" width="1040" height="600" rx="16" fill="none" stroke="rgba(107,164,217,0.1)" stroke-width="1" stroke-dasharray="6 6"/>
+        <text x="50" y="42" fill="var(--blue)" font-size="10" font-weight="600" opacity="0.5" letter-spacing="1.5">SUPPLIER PORTAL SCOPE -- OWN POs AND PAYMENTS ONLY</text>
+
+        <!-- Row 1 connectors -->
+        <path d="M190,120 C240,120 260,120 310,120" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sB)"/>
+        <path d="M450,120 C500,120 520,120 570,120" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sB)"/>
+        <path d="M710,120 C760,120 780,120 830,120" fill="none" stroke="#6ba4d9" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sB)"/>
+
+        <!-- Row 1 to Row 2 -->
+        <path d="M930,155 C930,200 930,230 930,260 C930,300 830,300 770,300" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sG)"/>
+
+        <!-- Row 2 connectors -->
+        <path d="M630,300 C570,300 540,300 470,300" fill="none" stroke="#7dbb7d" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sG)"/>
+        <path d="M330,300 C270,300 240,300 170,300" fill="none" stroke="#DA7756" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sA)"/>
+
+        <!-- Row 2 to Row 3 -->
+        <path d="M100,335 C100,380 100,410 100,440 C100,470 200,470 290,470" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sD)"/>
+
+        <!-- Row 3 connectors -->
+        <path d="M430,470 C490,470 520,470 580,470" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sD)"/>
+        <path d="M720,470 C780,470 810,470 870,470" fill="none" stroke="#d9b86b" stroke-width="1.5" stroke-dasharray="6 8" class="flow-line" marker-end="url(#sD)"/>
+
+        <!-- Node 1: Login -->
+        <g class="journey-node" data-name="Supplier Login" data-desc="Supplier authenticates via dedicated portal. Credentials scoped to supplier account only. No access to workshop internal systems.">
+          <rect x="65" y="85" width="125" height="70" rx="12" fill="rgba(107,164,217,0.1)" stroke="rgba(107,164,217,0.35)" stroke-width="1"/>
+          <g transform="translate(110,105)">
+            <circle cx="0" cy="0" r="5" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <line x1="5" y1="0" x2="16" y2="0" stroke="#6ba4d9" stroke-width="1.5"/>
+            <line x1="12" y1="0" x2="12" y2="5" stroke="#6ba4d9" stroke-width="1.5"/>
+          </g>
+          <text x="127" y="138" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Login</text>
+        </g>
+
+        <!-- Node 2: Dashboard -->
+        <g class="journey-node" data-name="Supplier Dashboard" data-desc="Overview: open POs count, pending deliveries, payment status summary, recent activity. All data scoped to this supplier only.">
+          <rect x="315" y="85" width="135" height="70" rx="12" fill="rgba(107,164,217,0.1)" stroke="rgba(107,164,217,0.35)" stroke-width="1"/>
+          <g transform="translate(365,105)">
+            <rect x="-10" y="-7" width="20" height="14" rx="2" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <polyline points="-6,4 -2,-3 2,1 6,-5" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+          </g>
+          <text x="382" y="138" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Dashboard</text>
+        </g>
+
+        <!-- Node 3: Receive PO Notification -->
+        <g class="journey-node" data-name="Receive PO" data-desc="Email and in-portal notification when a new Purchase Order is issued. View PO details: parts, quantities, unit prices, delivery deadline.">
+          <rect x="575" y="85" width="135" height="70" rx="12" fill="rgba(107,164,217,0.12)" stroke="rgba(107,164,217,0.45)" stroke-width="1.5" filter="url(#glS)"/>
+          <circle cx="642" cy="80" r="16" fill="rgba(107,164,217,0.08)" class="glow"/>
+          <g transform="translate(622,105)">
+            <rect x="-8" y="-7" width="16" height="14" rx="2" fill="none" stroke="#6ba4d9" stroke-width="1.5"/>
+            <polyline points="-8,-7 0,0 8,-7" fill="none" stroke="#6ba4d9" stroke-width="1.2"/>
+          </g>
+          <text x="642" y="138" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">Receive PO</text>
+        </g>
+
+        <!-- Node 4: Confirm/Reject PO -->
+        <g class="journey-node" data-name="Confirm / Reject PO" data-desc="Review PO line items. Confirm acceptance or reject with reason. Partial acceptance supported: confirm available items, note backorders.">
+          <rect x="835" y="85" width="140" height="70" rx="12" fill="rgba(107,164,217,0.1)" stroke="rgba(107,164,217,0.35)" stroke-width="1"/>
+          <g transform="translate(888,102)">
+            <circle cx="-8" cy="0" r="7" fill="none" stroke="#7dbb7d" stroke-width="1.3"/>
+            <polyline points="-11,-1 -9,2 -5,-2" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <circle cx="8" cy="0" r="7" fill="none" stroke="#DA7756" stroke-width="1.3"/>
+            <line x1="5" y1="0" x2="11" y2="0" stroke="#DA7756" stroke-width="1.5"/>
+          </g>
+          <text x="905" y="138" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Confirm / Reject</text>
+        </g>
+
+        <!-- Node 5: Prepare Shipment -->
+        <g class="journey-node" data-name="Prepare Shipment" data-desc="Internal supplier process. Update portal with expected delivery date and tracking information. Attach packing list.">
+          <rect x="635" y="265" width="135" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.35)" stroke-width="1"/>
+          <g transform="translate(685,285)">
+            <rect x="-9" y="-6" width="18" height="12" rx="2" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <line x1="-9" y1="-2" x2="9" y2="-2" stroke="#7dbb7d" stroke-width="1"/>
+            <polyline points="-4,2 0,5 4,2" fill="none" stroke="#7dbb7d" stroke-width="1.3"/>
+          </g>
+          <text x="702" y="320" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Prepare Shipment</text>
+        </g>
+
+        <!-- Node 6: Update Delivery Status -->
+        <g class="journey-node" data-name="Delivery Status" data-desc="Update delivery tracking: dispatched, in-transit, delivered. Workshop receives real-time updates on expected arrival.">
+          <rect x="335" y="265" width="135" height="70" rx="12" fill="rgba(125,187,125,0.1)" stroke="rgba(125,187,125,0.35)" stroke-width="1"/>
+          <g transform="translate(385,285)">
+            <rect x="-9" y="-5" width="18" height="10" rx="3" fill="none" stroke="#7dbb7d" stroke-width="1.5"/>
+            <circle cx="-4" cy="5" r="2.5" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+            <circle cx="4" cy="5" r="2.5" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+            <polyline points="9,-2 13,-2 13,2" fill="none" stroke="#7dbb7d" stroke-width="1.2"/>
+          </g>
+          <text x="402" y="320" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Delivery Status</text>
+        </g>
+
+        <!-- Node 7: Goods Received -->
+        <g class="journey-node" data-name="Goods Received" data-desc="Workshop confirms receipt of goods. Three-way match: PO, delivery note, and goods received. Any discrepancies flagged for resolution.">
+          <rect x="60" y="265" width="140" height="70" rx="12" fill="rgba(218,119,86,0.1)" stroke="rgba(218,119,86,0.35)" stroke-width="1"/>
+          <g transform="translate(112,285)">
+            <rect x="-9" y="-7" width="18" height="14" rx="2" fill="none" stroke="#DA7756" stroke-width="1.5"/>
+            <polyline points="-5,0 -2,3 5,-3" fill="none" stroke="#DA7756" stroke-width="1.8"/>
+          </g>
+          <text x="130" y="320" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Goods Received</text>
+        </g>
+
+        <!-- Node 8: Submit Invoice -->
+        <g class="journey-node" data-name="Submit Invoice" data-desc="Supplier submits invoice through portal. Invoice matched against confirmed PO and goods receipt. VAT 15% and SAR amounts validated.">
+          <rect x="295" y="435" width="135" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.4)" stroke-width="1.5" filter="url(#glS)"/>
+          <circle cx="362" cy="430" r="16" fill="rgba(217,184,107,0.08)" class="glow"/>
+          <g transform="translate(345,455)">
+            <rect x="-8" y="-8" width="16" height="17" rx="2" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="-4" y1="-3" x2="4" y2="-3" stroke="#d9b86b" stroke-width="1.2"/>
+            <line x1="-4" y1="0" x2="4" y2="0" stroke="#d9b86b" stroke-width="1.2"/>
+            <text x="0" y="6" text-anchor="middle" fill="#d9b86b" font-size="5" font-weight="700">SAR</text>
+          </g>
+          <text x="362" y="490" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">Submit Invoice</text>
+        </g>
+
+        <!-- Node 9: Track Payment -->
+        <g class="journey-node" data-name="Track Payment" data-desc="Monitor payment status: pending approval, approved, scheduled, paid. View expected payment date based on agreed payment terms.">
+          <rect x="585" y="435" width="135" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(635,455)">
+            <circle cx="0" cy="0" r="8" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="0" y1="-4" x2="0" y2="1" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="0" y1="1" x2="4" y2="3" stroke="#d9b86b" stroke-width="1.3"/>
+          </g>
+          <text x="652" y="490" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Track Payment</text>
+        </g>
+
+        <!-- Node 10: Payment History -->
+        <g class="journey-node" data-name="Payment History" data-desc="View complete payment history and download statements. Filter by date range, PO number, or payment status. Export to CSV.">
+          <rect x="875" y="435" width="140" height="70" rx="12" fill="rgba(217,184,107,0.1)" stroke="rgba(217,184,107,0.35)" stroke-width="1"/>
+          <g transform="translate(928,455)">
+            <rect x="-10" y="-7" width="20" height="14" rx="2" fill="none" stroke="#d9b86b" stroke-width="1.5"/>
+            <line x1="-6" y1="-3" x2="6" y2="-3" stroke="#d9b86b" stroke-width="1.2"/>
+            <line x1="-6" y1="0" x2="6" y2="0" stroke="#d9b86b" stroke-width="1.2"/>
+            <line x1="-6" y1="3" x2="3" y2="3" stroke="#d9b86b" stroke-width="1.2"/>
+          </g>
+          <text x="945" y="490" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Payment History</text>
+        </g>
+
+        <!-- Bidirectional arrow annotation: workshop <-> supplier -->
+        <g transform="translate(550,560)">
+          <rect x="-120" y="-15" width="240" height="30" rx="6" fill="rgba(107,164,217,0.06)" stroke="rgba(107,164,217,0.15)" stroke-width="1"/>
+          <text x="0" y="4" text-anchor="middle" fill="var(--blue)" font-size="10" font-weight="600">Workshop Internal</text>
+          <text x="0" y="15" text-anchor="middle" fill="var(--muted)" font-size="9">PO creation, goods receipt, payment approval -- not visible to supplier</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Access Note -->
+  <div class="access-note" data-reveal>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6ba4d9" stroke-width="1.8">
+      <circle cx="12" cy="8" r="4"/><path d="M4,20 C4,14 20,14 20,20"/><line x1="18" y1="8" x2="22" y2="4"/>
+    </svg>
+    <div>
+      <h4>Scoped Portal Access</h4>
+      <p>Suppliers see only Purchase Orders and payments related to their own account. They have no visibility into workshop operations, other suppliers, customer data, or internal financial records. The portal is a walled-off view designed for external collaboration.</p>
+    </div>
+  </div>
+
+  <!-- Three-Way Match Detail -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text);">Three-Way Match Process</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6ba4d9" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        <h4 style="font-size: 14px; color: var(--blue); margin-bottom: 6px;">1. Purchase Order</h4>
+        <p style="font-size: 12px; color: var(--muted);">Original PO with agreed parts, quantities, and unit prices in SAR.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7dbb7d" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="3" y="7" width="18" height="10" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><polyline points="8,16 12,19 16,16"/></svg>
+        <h4 style="font-size: 14px; color: var(--green); margin-bottom: 6px;">2. Delivery Note</h4>
+        <p style="font-size: 12px; color: var(--muted);">Packing list confirming items shipped. Verified at workshop goods receipt.</p>
+      </div>
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d9b86b" stroke-width="1.5" style="margin-bottom: 8px;"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><text x="12" y="18" text-anchor="middle" fill="#d9b86b" font-size="6" font-weight="700">SAR</text></svg>
+        <h4 style="font-size: 14px; color: var(--gold); margin-bottom: 6px;">3. Supplier Invoice</h4>
+        <p style="font-size: 12px; color: var(--muted);">Invoice amounts validated against PO prices and received quantities.</p>
+      </div>
+    </div>
+    <div style="background: rgba(217,184,107,0.05); border: 1px solid rgba(217,184,107,0.15); border-radius: 10px; padding: 16px 20px; opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+      <p style="font-size: 13px; color: var(--muted);">All three documents must match in quantities and pricing before payment is approved. Discrepancies are flagged for manual review and resolution between supplier and workshop procurement.</p>
+    </div>
+  </section>
+
+  <!-- Supplier Portal Limitations -->
+  <section style="padding: 0 0 40px;">
+    <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 24px; overflow-x: auto; opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+      <h3 style="font-size: 16px; color: var(--blue); margin-bottom: 16px;">Supplier Portal Scope</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--card-border);">
+            <th style="text-align: left; padding: 8px 12px; color: var(--muted); font-weight: 600;">Data</th>
+            <th style="text-align: center; padding: 8px 12px; color: var(--green);">Visible</th>
+            <th style="text-align: center; padding: 8px 12px; color: var(--accent);">Hidden</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Own purchase orders</td>
+            <td style="text-align: center; color: var(--green);">Yes</td>
+            <td style="text-align: center;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Own payment history</td>
+            <td style="text-align: center; color: var(--green);">Yes</td>
+            <td style="text-align: center;">--</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Other suppliers' POs</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Workshop operations</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding: 8px 12px; color: var(--text);">Customer data</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 12px; color: var(--text);">Financial reports</td>
+            <td style="text-align: center;">--</td>
+            <td style="text-align: center; color: var(--accent);">No access</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Payment Status Legend -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text);">Payment Status Lifecycle</h2>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease, transform 0.5s ease;" data-reveal>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(107,164,217,0.08); border: 1px solid rgba(107,164,217,0.25); font-size: 12px; color: var(--blue); font-weight: 600;">Invoice Submitted</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(217,184,107,0.08); border: 1px solid rgba(217,184,107,0.25); font-size: 12px; color: var(--gold); font-weight: 600;">Pending Approval</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(169,142,224,0.08); border: 1px solid rgba(169,142,224,0.25); font-size: 12px; color: var(--purple); font-weight: 600;">Approved</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(218,119,86,0.08); border: 1px solid rgba(218,119,86,0.25); font-size: 12px; color: var(--accent); font-weight: 600;">Scheduled</div>
+      <svg width="20" height="20" viewBox="0 0 20 20" style="align-self: center;"><polyline points="6,10 14,10" stroke="var(--muted)" stroke-width="1.5" fill="none"/><polyline points="11,7 14,10 11,13" stroke="var(--muted)" stroke-width="1.5" fill="none"/></svg>
+      <div style="padding: 8px 16px; border-radius: 8px; background: rgba(125,187,125,0.08); border: 1px solid rgba(125,187,125,0.25); font-size: 12px; color: var(--green); font-weight: 600;">Paid</div>
+    </div>
+  </section>
+
+  <div class="info-grid">
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--blue)">PO Management</h3>
+      <p>View, confirm, or reject purchase orders. Partial acceptance supported for backorder scenarios. PO details include parts, quantities, unit prices, and delivery deadlines.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--green)">Delivery Tracking</h3>
+      <p>Update shipment status through the portal. Workshop receives real-time visibility on expected arrival. Packing list attachment supports three-way matching at goods receipt.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--gold)">Invoice Submission</h3>
+      <p>Submit invoices digitally through the portal. System validates against confirmed PO and goods receipt (three-way match). SAR amounts and 15% VAT auto-verified.</p>
+    </div>
+    <div class="info-card" data-reveal>
+      <h3 style="color:var(--accent)">Payment Transparency</h3>
+      <p>Track payment lifecycle from submission through approval to settlement. View payment terms, expected dates, and historical statements. Export data for supplier-side accounting.</p>
+    </div>
+  </div>
+
+  <!-- PO Confirmation Detail -->
+  <section style="padding: 0 0 40px;">
+    <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text);">Purchase Order Response Options</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+      <div style="background: rgba(125,187,125,0.05); border: 1px solid rgba(125,187,125,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--green); font-size: 15px; margin-bottom: 8px;">Full Confirmation</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Accept all line items as specified. Confirm delivery date and begin fulfillment preparation.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(125,187,125,0.1); color: var(--green); border: 1px solid rgba(125,187,125,0.2);">All items confirmed</span>
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(125,187,125,0.1); color: var(--green); border: 1px solid rgba(125,187,125,0.2);">Delivery committed</span>
+        </div>
+      </div>
+      <div style="background: rgba(217,184,107,0.05); border: 1px solid rgba(217,184,107,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 8px;">Partial Acceptance</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Confirm available items, mark remaining as backordered with expected restock date. Workshop notified of partial delivery.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(217,184,107,0.1); color: var(--gold); border: 1px solid rgba(217,184,107,0.2);">Some items backordered</span>
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(217,184,107,0.1); color: var(--gold); border: 1px solid rgba(217,184,107,0.2);">Split delivery</span>
+        </div>
+      </div>
+      <div style="background: rgba(218,119,86,0.05); border: 1px solid rgba(218,119,86,0.2); border-radius: 12px; padding: 24px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease;" data-reveal>
+        <h4 style="color: var(--accent); font-size: 15px; margin-bottom: 8px;">Rejection</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">Decline the PO entirely with a reason (out of stock, discontinued, pricing disagreement). Workshop procurement team notified immediately.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(218,119,86,0.1); color: var(--accent); border: 1px solid rgba(218,119,86,0.2);">Reason required</span>
+          <span style="padding: 4px 10px; border-radius: 6px; font-size: 11px; background: rgba(218,119,86,0.1); color: var(--accent); border: 1px solid rgba(218,119,86,0.2);">Auto-notify workshop</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="caption-bar" id="captionBar">
+  <span class="node-name" id="captionName">--</span>
+  <span class="node-desc" id="captionDesc">Hover a node for details</span>
+</div>
+
+<script>
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-reveal], .info-card, .access-note').forEach(el => obs.observe(el));
+
+  const bar = document.getElementById('captionBar');
+  const nameEl = document.getElementById('captionName');
+  const descEl = document.getElementById('captionDesc');
+  let hideTimer;
+  document.querySelectorAll('.journey-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimer);
+      nameEl.textContent = node.dataset.name;
+      descEl.textContent = node.dataset.desc;
+      bar.classList.add('active');
+    });
+    node.addEventListener('mouseleave', () => {
+      hideTimer = setTimeout(() => bar.classList.remove('active'), 1500);
+    });
+  });
+})();
+</script>
+</body>
+</html>

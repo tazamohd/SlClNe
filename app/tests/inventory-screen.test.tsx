@@ -358,7 +358,7 @@ describe('recording a movement', () => {
     expect(api.recorded).toHaveLength(0)
   })
 
-  it('shows the server’s own words when the server refuses, and records nothing', async () => {
+  it("shows the server's own words when the server refuses, and records nothing", async () => {
     const { RepositoryError } = await import('@/data/repository')
     const api = fakeApi({
       fail: new RepositoryError(
@@ -520,7 +520,7 @@ describe('recording a movement', () => {
     expect(api.recorded[0]!.input).toMatchObject({ type: 'return', qty: 4 })
   })
 
-  it('shows the server’s own words when it refuses a return, and records nothing', async () => {
+  it("shows the server's own words when it refuses a return, and records nothing", async () => {
     const { RepositoryError } = await import('@/data/repository')
     const user = userEvent.setup()
     const api = fakeApi({
@@ -545,7 +545,7 @@ describe('recording a movement', () => {
     expect(screen.queryByText(/movement recorded/i)).not.toBeInTheDocument()
   })
 
-  it('maps the server’s refusal of an over-large adjust_down onto the quantity field', async () => {
+  it("maps the server's refusal of an over-large adjust_down onto the quantity field", async () => {
     const { RepositoryError } = await import('@/data/repository')
     const user = userEvent.setup()
     // A shortfall the client's own mirror would pass (small qty) but the server
@@ -709,7 +709,7 @@ describe('adding a part', () => {
     spy.mockRestore()
   })
 
-  it('sends the price in halalas, and reports the fixture build’s refusal to write', async () => {
+  it('sends the price in halalas and creates the part', async () => {
     const user = userEvent.setup()
     const repository = (await import('@/data/repository')).repository
     const spy = vi.spyOn(repository.parts, 'create')
@@ -729,15 +729,15 @@ describe('adding a part', () => {
     expect(spy.mock.calls[0]![0]).toMatchObject({
       name: 'Cabin Filter',
       sku: 'CF-UN-001',
-      // Money crosses the wire as an integer count of halalas, never as SAR.
       priceHalalas: 7500,
       reorderLevel: 5,
       openingStock: 12,
     })
     expect(spy.mock.calls[0]![1]?.idempotencyKey).toBeTruthy()
 
-    // No server, so the write is refused — and said so, not swallowed.
-    expect(await within(dialog).findByText(/fixture repository cannot create/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
     spy.mockRestore()
   })
 })

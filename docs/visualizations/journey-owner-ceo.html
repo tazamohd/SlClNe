@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-007 Owner/CEO Journey — SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  .hero { padding: 64px 0 32px; text-align: center; }
+  .hero .badge {
+    display: inline-block; padding: 4px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(217,184,107,0.3); background: rgba(217,184,107,0.08); margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 640px; margin: 0 auto; }
+
+  .section { padding: 48px 0; }
+  .section-alt { background: var(--bg-alt); }
+  .section-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+  .caption-bar {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px;
+    padding: 14px 20px; margin-top: 24px; min-height: 52px;
+    display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); transition: all 0.3s ease;
+  }
+  .caption-bar .label { color: var(--gold); font-weight: 600; }
+
+  .diagram-wrap {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 14px; padding: 32px 24px; overflow-x: auto;
+  }
+
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+  @keyframes fadeRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table th {
+    text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--card-border);
+    color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .data-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .tag-full { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(125,187,125,0.15); color: var(--green); }
+  .tag-unlimited { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; background: rgba(217,184,107,0.15); color: var(--gold); }
+
+  .stat-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .stat-card {
+    flex: 1; min-width: 160px; background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 20px; text-align: center;
+  }
+  .stat-card .val { font-size: 28px; font-weight: 700; color: var(--gold); }
+  .stat-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.6px; }
+
+  .stage-node { cursor: pointer; transition: transform 0.2s ease; }
+  .stage-node:hover { transform: scale(1.05); }
+  .stage-node:hover .node-stroke { stroke-width: 2.5; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">SA-VIZ-007</div>
+    <h1>Owner / CEO Journey</h1>
+    <p>Full-authority executive path through SALIS AUTO — unlimited approvals, all branches, every module accessible across the entire tenant</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-row reveal">
+    <div class="stat-card"><div class="val">28/28</div><div class="lbl">Modules Accessible</div></div>
+    <div class="stat-card"><div class="val">Unlimited</div><div class="lbl">Approval Ceiling (SAR)</div></div>
+    <div class="stat-card"><div class="val">All</div><div class="lbl">Branch Visibility</div></div>
+    <div class="stat-card"><div class="val">13/13</div><div class="lbl">Domain Access</div></div>
+  </div>
+
+  <!-- Hero Diagram -->
+  <div class="section">
+    <div class="section-title reveal">Daily Executive Flow</div>
+    <div class="section-sub reveal">The Owner navigates from login to strategic decisions, seeing all branches and all data with no approval limits</div>
+    <div class="diagram-wrap reveal">
+      <svg id="heroSvg" viewBox="0 0 1220 520" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <defs>
+          <marker id="arrowGold" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#d9b86b"/>
+          </marker>
+          <marker id="arrowAccent" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#DA7756"/>
+          </marker>
+          <marker id="arrowBlue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,3.5 L0,7 z" fill="#6ba4d9"/>
+          </marker>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glowSoft">
+            <feGaussianBlur stdDeviation="12" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Dot-grid background -->
+        <pattern id="dotGrid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.06)"/>
+        </pattern>
+        <rect width="1220" height="520" fill="url(#dotGrid)"/>
+
+        <!-- Main flow connectors (curved Bezier) -->
+        <!-- Login -> Dashboard -->
+        <path d="M200,160 C260,160 260,160 310,160" stroke="#d9b86b" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowGold)" style="animation: flowDash 1s linear infinite;"/>
+        <!-- Dashboard -> BI Reports -->
+        <path d="M430,160 C490,160 490,160 510,160" stroke="#d9b86b" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowGold)" style="animation: flowDash 1s linear infinite;"/>
+        <!-- BI Reports -> Approval Inbox -->
+        <path d="M630,160 C690,160 690,160 710,160" stroke="#d9b86b" stroke-width="1.5" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowGold)" style="animation: flowDash 1s linear infinite;"/>
+
+        <!-- Dashboard -> Branch Comparison (down) -->
+        <path d="M370,210 C370,270 370,300 370,330" stroke="#6ba4d9" stroke-width="1.2" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowBlue)" style="animation: flowDash 1.2s linear infinite;"/>
+        <!-- Dashboard -> Financial Overview (down-right) -->
+        <path d="M400,210 C450,270 530,300 610,340" stroke="#DA7756" stroke-width="1.2" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowAccent)" style="animation: flowDash 1.3s linear infinite;"/>
+        <!-- Approval Inbox -> Strategic Settings (down) -->
+        <path d="M810,210 C810,270 810,300 810,340" stroke="#d9b86b" stroke-width="1.2" fill="none" stroke-dasharray="6 8" marker-end="url(#arrowGold)" style="animation: flowDash 1.4s linear infinite;"/>
+
+        <!-- Unlimited badge between Approval Inbox nodes -->
+        <g transform="translate(810,88)">
+          <rect x="-45" y="-14" width="90" height="28" rx="14" fill="rgba(217,184,107,0.12)" stroke="#d9b86b" stroke-width="1"/>
+          <text x="0" y="5" text-anchor="middle" fill="#d9b86b" font-size="10" font-weight="700">UNLIMITED SAR</text>
+        </g>
+        <text x="810" y="72" text-anchor="middle" fill="#8a8a93" font-size="9">No approval ceiling</text>
+
+        <!-- All-Branches badge -->
+        <g transform="translate(370,88)">
+          <rect x="-45" y="-14" width="90" height="28" rx="14" fill="rgba(125,187,125,0.12)" stroke="#7dbb7d" stroke-width="1"/>
+          <text x="0" y="5" text-anchor="middle" fill="#7dbb7d" font-size="10" font-weight="700">ALL BRANCHES</text>
+        </g>
+        <text x="370" y="72" text-anchor="middle" fill="#8a8a93" font-size="9">Cross-tenant visibility</text>
+
+        <!-- Node 1: LOGIN -->
+        <g class="stage-node" data-stage="login" transform="translate(110,160)">
+          <circle cx="0" cy="0" r="45" fill="rgba(217,184,107,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-55" y="-48" width="110" height="96" rx="14" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <!-- Key icon -->
+          <g transform="translate(0,-12)">
+            <circle cx="0" cy="-4" r="6" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <line x1="0" y1="2" x2="0" y2="14" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="0" y1="10" x2="4" y2="10" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="0" y1="6" x2="3" y2="6" stroke="#d9b86b" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">LOGIN</text>
+          <text x="0" y="35" text-anchor="middle" fill="#d9b86b" font-size="8" font-weight="500">owner@salisauto.sa</text>
+        </g>
+
+        <!-- Node 2: EXECUTIVE DASHBOARD -->
+        <g class="stage-node" data-stage="dashboard" transform="translate(370,160)">
+          <circle cx="0" cy="0" r="50" fill="rgba(217,184,107,0.08)" stroke="none" filter="url(#glow)" opacity="0.5">
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="2"/>
+          <!-- Dashboard grid icon -->
+          <g transform="translate(0,-12)">
+            <rect x="-10" y="-10" width="8" height="8" rx="1.5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <rect x="2" y="-10" width="8" height="8" rx="1.5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <rect x="-10" y="2" width="8" height="8" rx="1.5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <rect x="2" y="2" width="8" height="8" rx="1.5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">EXECUTIVE</text>
+          <text x="0" y="34" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">DASHBOARD</text>
+        </g>
+
+        <!-- Node 3: BI REPORTS -->
+        <g class="stage-node" data-stage="bi-reports" transform="translate(570,160)">
+          <circle cx="0" cy="0" r="45" fill="rgba(169,142,224,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-55" y="-48" width="110" height="96" rx="14" fill="rgba(169,142,224,0.06)" stroke="#a98ee0" stroke-width="1.5"/>
+          <!-- Chart icon -->
+          <g transform="translate(0,-12)">
+            <polyline points="-10,10 -10,-10" stroke="#a98ee0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polyline points="-10,10 10,10" stroke="#a98ee0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <polyline points="-6,4 -2,-4 3,2 8,-8" stroke="#a98ee0" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="11" font-weight="600">BI REPORTS</text>
+          <text x="0" y="35" text-anchor="middle" fill="#a98ee0" font-size="8" font-weight="500">Drill-down analytics</text>
+        </g>
+
+        <!-- Node 4: APPROVAL INBOX -->
+        <g class="stage-node" data-stage="approvals" transform="translate(810,160)">
+          <circle cx="0" cy="0" r="45" fill="rgba(218,119,86,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-55" y="-48" width="110" height="96" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <!-- Checkmark circle icon -->
+          <g transform="translate(0,-12)">
+            <circle cx="0" cy="0" r="10" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <polyline points="-5,0 -1,5 6,-5" stroke="#DA7756" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">APPROVAL</text>
+          <text x="0" y="34" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">INBOX</text>
+        </g>
+
+        <!-- Node 5: BRANCH COMPARISON (lower left) -->
+        <g class="stage-node" data-stage="branch-compare" transform="translate(370,400)">
+          <circle cx="0" cy="0" r="45" fill="rgba(107,164,217,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1.5"/>
+          <!-- Columns comparison icon -->
+          <g transform="translate(0,-12)">
+            <rect x="-12" y="-8" width="8" height="18" rx="1.5" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <rect x="4" y="-4" width="8" height="14" rx="1.5" stroke="#6ba4d9" stroke-width="1.5" fill="none"/>
+            <line x1="-4" y1="-12" x2="8" y2="-12" stroke="#6ba4d9" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">BRANCH</text>
+          <text x="0" y="34" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">COMPARISON</text>
+        </g>
+
+        <!-- Node 6: FINANCIAL OVERVIEW (lower center) -->
+        <g class="stage-node" data-stage="financial" transform="translate(610,400)">
+          <circle cx="0" cy="0" r="45" fill="rgba(218,119,86,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1.5"/>
+          <!-- Currency/wallet icon -->
+          <g transform="translate(0,-12)">
+            <rect x="-10" y="-7" width="20" height="16" rx="2" stroke="#DA7756" stroke-width="1.5" fill="none"/>
+            <circle cx="4" cy="2" r="4" stroke="#DA7756" stroke-width="1.2" fill="none"/>
+            <line x1="-10" y1="-2" x2="-6" y2="-2" stroke="#DA7756" stroke-width="1.2" stroke-linecap="round"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">FINANCIAL</text>
+          <text x="0" y="34" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">OVERVIEW</text>
+        </g>
+
+        <!-- Node 7: STRATEGIC SETTINGS (lower right) -->
+        <g class="stage-node" data-stage="settings" transform="translate(810,400)">
+          <circle cx="0" cy="0" r="45" fill="rgba(217,184,107,0.06)" stroke="none" filter="url(#glowSoft)" opacity="0.4">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <rect class="node-stroke" x="-60" y="-48" width="120" height="96" rx="14" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1.5"/>
+          <!-- Gear icon -->
+          <g transform="translate(0,-12)">
+            <circle cx="0" cy="0" r="5" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+            <circle cx="0" cy="0" r="10" stroke="#d9b86b" stroke-width="1.5" fill="none" stroke-dasharray="4 3.5"/>
+          </g>
+          <text x="0" y="22" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">STRATEGIC</text>
+          <text x="0" y="34" text-anchor="middle" fill="#f5f5f7" font-size="10" font-weight="600">SETTINGS</text>
+        </g>
+
+        <!-- KPI labels on Dashboard -->
+        <g transform="translate(370,240)">
+          <text x="0" y="0" text-anchor="middle" fill="#8a8a93" font-size="9">Revenue | Jobs | Utilization</text>
+        </g>
+
+        <!-- Financial sub-labels -->
+        <g transform="translate(610,462)">
+          <text x="0" y="0" text-anchor="middle" fill="#8a8a93" font-size="8">P&amp;L | Cash Flow | AR Aging</text>
+        </g>
+
+        <!-- Settings sub-labels -->
+        <g transform="translate(810,462)">
+          <text x="0" y="0" text-anchor="middle" fill="#8a8a93" font-size="8">Pricing | Feature Flags | Config</text>
+        </g>
+
+        <!-- BI sub-labels -->
+        <g transform="translate(570,222)">
+          <text x="0" y="0" text-anchor="middle" fill="#8a8a93" font-size="8">By branch | period | service type</text>
+        </g>
+      </svg>
+    </div>
+    <div class="caption-bar" id="captionBar">
+      <span class="label">Hover a node</span>
+      <span>to see details about the Owner's interaction at each step</span>
+    </div>
+  </div>
+
+  <!-- Owner Contrast Section -->
+  <div class="section section-alt">
+    <div class="container">
+      <div class="section-title reveal">Owner vs Other Roles — Access Contrast</div>
+      <div class="section-sub reveal">The Owner holds full authority; other management roles operate within branch and SAR limits</div>
+      <div class="diagram-wrap reveal">
+        <svg id="contrastSvg" viewBox="0 0 1100 300" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+          <pattern id="dotGrid2" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+            <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.04)"/>
+          </pattern>
+          <rect width="1100" height="300" fill="url(#dotGrid2)"/>
+
+          <!-- Owner bar (full width) -->
+          <rect x="60" y="40" width="980" height="40" rx="8" fill="rgba(217,184,107,0.1)" stroke="#d9b86b" stroke-width="1"/>
+          <text x="75" y="65" fill="#d9b86b" font-size="12" font-weight="700">OWNER</text>
+          <text x="1030" y="65" text-anchor="end" fill="#d9b86b" font-size="11" font-weight="600">28 modules | Unlimited SAR | All branches</text>
+
+          <!-- Super Admin bar -->
+          <rect x="60" y="95" width="920" height="36" rx="8" fill="rgba(169,142,224,0.08)" stroke="#a98ee0" stroke-width="1"/>
+          <text x="75" y="118" fill="#a98ee0" font-size="11" font-weight="600">Super Admin</text>
+          <text x="970" y="118" text-anchor="end" fill="#a98ee0" font-size="10">26 modules | Unlimited SAR | All branches</text>
+
+          <!-- Manager bar -->
+          <rect x="60" y="145" width="560" height="36" rx="8" fill="rgba(107,164,217,0.08)" stroke="#6ba4d9" stroke-width="1"/>
+          <text x="75" y="168" fill="#6ba4d9" font-size="11" font-weight="600">Manager</text>
+          <text x="610" y="168" text-anchor="end" fill="#6ba4d9" font-size="10">18 modules | SAR 50K | Own branch</text>
+
+          <!-- Accountant bar -->
+          <rect x="60" y="195" width="400" height="36" rx="8" fill="rgba(125,187,125,0.08)" stroke="#7dbb7d" stroke-width="1"/>
+          <text x="75" y="218" fill="#7dbb7d" font-size="11" font-weight="600">Accountant</text>
+          <text x="450" y="218" text-anchor="end" fill="#7dbb7d" font-size="10">12 modules | SAR 25K</text>
+
+          <!-- Procurement bar -->
+          <rect x="60" y="245" width="340" height="36" rx="8" fill="rgba(218,119,86,0.08)" stroke="#DA7756" stroke-width="1"/>
+          <text x="75" y="268" fill="#DA7756" font-size="11" font-weight="600">Procurement</text>
+          <text x="390" y="268" text-anchor="end" fill="#DA7756" font-size="10">8 modules | SAR 20K</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Executive Capabilities -->
+  <div class="section">
+    <div class="section-title reveal">Key Executive Capabilities</div>
+    <div class="section-sub reveal">Unique powers available only to the Owner role — these actions cannot be delegated to any other role</div>
+    <div class="diagram-wrap reveal">
+      <svg id="capsSvg" viewBox="0 0 1100 320" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;">
+        <pattern id="dotGrid3" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="0.8" fill="rgba(255,255,255,0.04)"/>
+        </pattern>
+        <rect width="1100" height="320" fill="url(#dotGrid3)"/>
+
+        <!-- Capability cards -->
+        <!-- Card 1: Unlimited Approvals -->
+        <rect x="40" y="30" width="200" height="120" rx="12" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="1"/>
+        <g transform="translate(140,60)">
+          <circle cx="0" cy="0" r="14" stroke="#d9b86b" stroke-width="1.5" fill="none"/>
+          <text x="0" y="5" text-anchor="middle" fill="#d9b86b" font-size="12" font-weight="800">&#8734;</text>
+        </g>
+        <text x="140" y="92" text-anchor="middle" fill="#f5f5f7" font-size="12" font-weight="600">Unlimited Approvals</text>
+        <text x="140" y="108" text-anchor="middle" fill="#8a8a93" font-size="10">No SAR ceiling on any</text>
+        <text x="140" y="122" text-anchor="middle" fill="#8a8a93" font-size="10">transaction type</text>
+
+        <!-- Card 2: Cross-Branch Data -->
+        <rect x="260" y="30" width="200" height="120" rx="12" fill="rgba(107,164,217,0.06)" stroke="#6ba4d9" stroke-width="1"/>
+        <g transform="translate(360,58)">
+          <circle cx="-10" cy="0" r="8" stroke="#6ba4d9" stroke-width="1.2" fill="none"/>
+          <circle cx="10" cy="0" r="8" stroke="#6ba4d9" stroke-width="1.2" fill="none"/>
+          <line x1="-2" y1="0" x2="2" y2="0" stroke="#6ba4d9" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <text x="360" y="92" text-anchor="middle" fill="#f5f5f7" font-size="12" font-weight="600">Cross-Branch View</text>
+        <text x="360" y="108" text-anchor="middle" fill="#8a8a93" font-size="10">Aggregated data from</text>
+        <text x="360" y="122" text-anchor="middle" fill="#8a8a93" font-size="10">every branch location</text>
+
+        <!-- Card 3: Tenant Configuration -->
+        <rect x="480" y="30" width="200" height="120" rx="12" fill="rgba(169,142,224,0.06)" stroke="#a98ee0" stroke-width="1"/>
+        <g transform="translate(580,58)">
+          <circle cx="0" cy="0" r="10" stroke="#a98ee0" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+          <circle cx="0" cy="0" r="4" stroke="#a98ee0" stroke-width="1.5" fill="none"/>
+        </g>
+        <text x="580" y="92" text-anchor="middle" fill="#f5f5f7" font-size="12" font-weight="600">Tenant Configuration</text>
+        <text x="580" y="108" text-anchor="middle" fill="#8a8a93" font-size="10">Feature flags, pricing,</text>
+        <text x="580" y="122" text-anchor="middle" fill="#8a8a93" font-size="10">branding, system-wide rules</text>
+
+        <!-- Card 4: Role Management -->
+        <rect x="700" y="30" width="200" height="120" rx="12" fill="rgba(125,187,125,0.06)" stroke="#7dbb7d" stroke-width="1"/>
+        <g transform="translate(800,55)">
+          <circle cx="-6" cy="-2" r="4" stroke="#7dbb7d" stroke-width="1.2" fill="none"/>
+          <circle cx="6" cy="-2" r="4" stroke="#7dbb7d" stroke-width="1.2" fill="none"/>
+          <path d="M-12,8 C-12,4 -9,1 -6,1" stroke="#7dbb7d" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <path d="M12,8 C12,4 9,1 6,1" stroke="#7dbb7d" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="800" y="92" text-anchor="middle" fill="#f5f5f7" font-size="12" font-weight="600">Role Management</text>
+        <text x="800" y="108" text-anchor="middle" fill="#8a8a93" font-size="10">Create, modify, assign</text>
+        <text x="800" y="122" text-anchor="middle" fill="#8a8a93" font-size="10">all 14 system roles</text>
+
+        <!-- Card 5: Audit Access -->
+        <rect x="920" y="30" width="145" height="120" rx="12" fill="rgba(218,119,86,0.06)" stroke="#DA7756" stroke-width="1"/>
+        <g transform="translate(993,58)">
+          <path d="M0,-10 L7,-6 L7,4 C7,9 0,13 0,13 C0,13 -7,9 -7,4 L-7,-6 Z" stroke="#DA7756" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <text x="993" y="92" text-anchor="middle" fill="#f5f5f7" font-size="12" font-weight="600">Audit Trail</text>
+        <text x="993" y="108" text-anchor="middle" fill="#8a8a93" font-size="10">Full compliance</text>
+        <text x="993" y="122" text-anchor="middle" fill="#8a8a93" font-size="10">and SOD logs</text>
+
+        <!-- Connecting line from Owner to all cards -->
+        <line x1="40" y1="180" x2="1065" y2="180" stroke="rgba(217,184,107,0.2)" stroke-width="1"/>
+        <text x="550" y="205" text-anchor="middle" fill="#d9b86b" font-size="11" font-weight="600">OWNER-EXCLUSIVE CAPABILITIES</text>
+        <text x="550" y="222" text-anchor="middle" fill="#8a8a93" font-size="10">These capabilities are available ONLY to the Owner role — no other role in the 14-role hierarchy has access</text>
+
+        <!-- Comparison note -->
+        <rect x="100" y="248" width="900" height="50" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <text x="550" y="270" text-anchor="middle" fill="#8a8a93" font-size="11">Super Admin shares most operational access but cannot modify tenant configuration, pricing rules, or feature flags.</text>
+        <text x="550" y="286" text-anchor="middle" fill="#8a8a93" font-size="11">Manager, Accountant, and Procurement roles operate within strict branch scope and SAR approval ceilings.</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- RBAC Scope Table -->
+  <div class="section section-alt">
+    <div class="container">
+    <div class="section-title reveal">Owner RBAC Scope — Full Access Matrix</div>
+    <div class="section-sub reveal">Complete access to all 28 modules across all 13 domains with no restrictions</div>
+    <div class="diagram-wrap reveal" style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>Modules</th>
+            <th>Access Level</th>
+            <th>Approval Limit</th>
+            <th>Branch Scope</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Workshop Operations</td><td>Job Cards, Inspections, Estimates</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>Customer Management</td><td>Customers, Vehicles, Communications</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>Financial</td><td>Invoices, Payments, P&amp;L, AR/AP</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>Inventory</td><td>Parts, Stock, Purchase Orders</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>Procurement</td><td>Suppliers, Quotes, POs</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>HR &amp; Staff</td><td>Users, Roles, Scheduling, Attendance</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>Reporting &amp; BI</td><td>Dashboards, Reports, Analytics</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">N/A</span></td><td>All branches</td></tr>
+          <tr><td>Configuration</td><td>Tenant Settings, Feature Flags, Pricing</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">N/A</span></td><td>Tenant-wide</td></tr>
+          <tr><td>Notifications</td><td>Alerts, Escalations, Channels</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">N/A</span></td><td>All branches</td></tr>
+          <tr><td>Audit &amp; Compliance</td><td>Audit Logs, SOD Reports, VAT</td><td><span class="tag-full">Full Read</span></td><td><span class="tag-unlimited">N/A</span></td><td>All branches</td></tr>
+          <tr><td>Multi-Tenant Admin</td><td>Tenant Config, Branch Setup</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">N/A</span></td><td>Tenant-wide</td></tr>
+          <tr><td>Insurance</td><td>Claims, Policies, Adjuster Portal</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">Unlimited</span></td><td>All branches</td></tr>
+          <tr><td>Quality Control</td><td>QC Checklists, SOD Enforcement</td><td><span class="tag-full">Full CRUD</span></td><td><span class="tag-unlimited">N/A</span></td><td>All branches</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // IntersectionObserver for scroll reveal
+  const obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+  // Node hover captions
+  const captions = {
+    'login': { label: 'Login', text: 'Owner authenticates via owner@salisauto.sa with MFA — highest-privilege session grants access to all 28 modules across all branches' },
+    'dashboard': { label: 'Executive Dashboard', text: 'KPI overview: total revenue, active jobs, technician utilization, bay occupancy — aggregated from ALL branches in real time' },
+    'bi-reports': { label: 'BI Reports', text: 'Drill-down analytics by branch, time period, and service type — comparative trends, revenue breakdowns, and customer retention' },
+    'approvals': { label: 'Approval Inbox', text: 'All pending approvals surface here — estimates, purchase orders, refunds — with UNLIMITED SAR ceiling, no escalation needed' },
+    'branch-compare': { label: 'Branch Comparison', text: 'Side-by-side performance metrics for all locations — revenue, job throughput, customer satisfaction, and staff efficiency' },
+    'financial': { label: 'Financial Overview', text: 'Profit & Loss, cash flow projections, accounts receivable aging — consolidated across the entire tenant with drill-down by branch' },
+    'settings': { label: 'Strategic Settings', text: 'Pricing tiers, feature flag toggles, tenant configuration, branding — changes here affect every branch system-wide' }
+  };
+  var bar = document.getElementById('captionBar');
+  document.querySelectorAll('.stage-node').forEach(function(node){
+    node.addEventListener('mouseenter', function(){
+      var key = node.getAttribute('data-stage');
+      var c = captions[key];
+      if(c){
+        bar.innerHTML = '<span class="label">' + c.label + '</span><span>' + c.text + '</span>';
+        bar.style.borderColor = 'rgba(217,184,107,0.25)';
+      }
+    });
+    node.addEventListener('mouseleave', function(){
+      bar.innerHTML = '<span class="label">Hover a node</span><span>to see details about the Owner\'s interaction at each step</span>';
+      bar.style.borderColor = '';
+    });
+  });
+})();
+</script>
+</body>
+</html>
