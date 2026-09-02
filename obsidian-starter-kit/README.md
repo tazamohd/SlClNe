@@ -40,6 +40,20 @@ claude
 | `scripts/vault-maintenance.ps1` | Nightly unattended maintenance (Windows / Task Scheduler) |
 | `scripts/vault-maintenance.sh` | Same for macOS/Linux (cron) |
 | `.mcp.json` | Project-scoped Obsidian MCP server (auto-detected by Claude Code) |
+| `.claude/agents/vault-analyst.md` | Read-only subagent for whole-vault analysis (see below) |
+
+## The vault-analyst subagent
+
+Heavy structural questions — "map my vault", "what should I reorganize?",
+"find all my orphaned notes and clusters" — mean scanning hundreds of notes.
+The `vault-analyst` subagent runs that scan in its own context so your main
+conversation stays responsive, and reports back paths, counts, and a
+concrete proposal. It is deliberately read-only: it never edits notes, so
+you can point it at the whole vault without worrying.
+
+Claude Code uses it automatically when a request calls for vault-wide
+analysis, or you can ask for it explicitly: "use the vault-analyst agent to
+audit my folder structure".
 
 ## Obsidian MCP server (optional but recommended)
 
