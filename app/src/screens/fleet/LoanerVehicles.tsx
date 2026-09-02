@@ -36,25 +36,25 @@ function LoanerStatusBadge({ status }: { status: Loaner['status'] }) {
   switch (status) {
     case 'available':
       return (
-        <Badge background="rgba(10,94,215,.1)" color="#0A5ED7">
+        <Badge background="var(--tint-blue)" color="var(--salis-blue)">
           {t('Available')}
         </Badge>
       )
     case 'on-loan':
       return (
-        <Badge background="rgba(10,94,215,.1)" color="#0A5ED7">
+        <Badge background="var(--tint-blue)" color="var(--salis-blue)">
           {t('On Loan')}
         </Badge>
       )
     case 'overdue':
       return (
-        <Badge background="rgba(249,115,22,.1)" color="#F97316">
+        <Badge background="var(--tint-orange)" color="var(--salis-orange)">
           {t('Overdue')}
         </Badge>
       )
     case 'maintenance':
       return (
-        <Badge background="rgba(249,115,22,.1)" color="#F97316">
+        <Badge background="var(--tint-orange)" color="var(--salis-orange)">
           {t('Maintenance')}
         </Badge>
       )

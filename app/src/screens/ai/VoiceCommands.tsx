@@ -22,7 +22,7 @@ const COMMAND_GROUPS: VoiceCommandConfig[] = [
     commands: ['Open job card', 'Create new job', 'Update job status', 'Assign technician'],
     enabled: true,
     icon: 'Wrench',
-    tone: ['rgba(10,94,215,.1)', '#0A5ED7'],
+    tone: ['var(--tint-blue)', 'var(--salis-blue)'],
   },
   {
     id: 'vc-2',
@@ -30,7 +30,7 @@ const COMMAND_GROUPS: VoiceCommandConfig[] = [
     commands: ['Search customer', 'Find vehicle', 'Go to dashboard', 'Open inventory'],
     enabled: true,
     icon: 'Search',
-    tone: ['rgba(11,179,255,.1)', '#0BB3FF'],
+    tone: ['var(--tint-bright)', 'var(--salis-blue-bright)'],
   },
   {
     id: 'vc-3',
@@ -38,7 +38,7 @@ const COMMAND_GROUPS: VoiceCommandConfig[] = [
     commands: ['Generate daily report', 'Show revenue summary', 'Export invoice list'],
     enabled: true,
     icon: 'BarChart3',
-    tone: ['rgba(11,31,59,.1)', '#0B1F3B'],
+    tone: ['var(--tint-navy)', 'var(--salis-navy)'],
   },
   {
     id: 'vc-4',
@@ -46,7 +46,7 @@ const COMMAND_GROUPS: VoiceCommandConfig[] = [
     commands: ['Call customer', 'Send SMS reminder', 'Notify manager'],
     enabled: false,
     icon: 'Phone',
-    tone: ['rgba(100,116,139,.1)', '#64748B'],
+    tone: ['var(--tint-neutral)', 'var(--text-muted)'],
   },
   {
     id: 'vc-5',
@@ -54,7 +54,7 @@ const COMMAND_GROUPS: VoiceCommandConfig[] = [
     commands: ['Check stock level', 'Reorder parts', 'Scan barcode'],
     enabled: false,
     icon: 'Package',
-    tone: ['rgba(249,115,22,.1)', '#F97316'],
+    tone: ['var(--tint-orange)', 'var(--salis-orange)'],
   },
 ]
 
@@ -84,7 +84,7 @@ export function VoiceCommands() {
         title={t('Voice Commands')}
         subtitle={t('Voice interface settings')}
         actions={
-          <Badge background="rgba(249,115,22,.1)" color="#F97316">
+          <Badge background="var(--tint-orange)" color="var(--salis-orange)">
             {t('External Dependency')}
           </Badge>
         }
@@ -127,7 +127,7 @@ export function VoiceCommands() {
                       onClick={() => toggleGroup(group.id)}
                       className={cn(
                         'relative h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200',
-                        group.enabled ? 'bg-salis-blue' : 'bg-[#CBD5E1]'
+                        group.enabled ? 'bg-salis-blue' : 'bg-[var(--neutral-300)]'
                       )}
                     >
                       <span
@@ -201,8 +201,8 @@ export function VoiceCommands() {
                     <span className="text-sm text-body">{t(lang.label)}</span>
                   </div>
                   <Badge
-                    background={lang.active ? 'rgba(10,94,215,.1)' : 'rgba(100,116,139,.1)'}
-                    color={lang.active ? '#0A5ED7' : '#64748B'}
+                    background={lang.active ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+                    color={lang.active ? 'var(--salis-blue)' : 'var(--text-muted)'}
                   >
                     {lang.active ? t('Active') : t('Inactive')}
                   </Badge>

@@ -81,10 +81,10 @@ const INTERACTIONS: VoiceInteraction[] = [
 ]
 
 const RESULT_STYLES: Record<string, { bg: string; fg: string; label: string }> = {
-  success: { bg: 'rgba(10,94,215,.1)', fg: '#0A5ED7', label: 'Success' },
-  partial: { bg: 'rgba(11,179,255,.1)', fg: '#0BB3FF', label: 'Partial' },
-  failed: { bg: 'rgba(249,115,22,.1)', fg: '#F97316', label: 'Failed' },
-  ambiguous: { bg: 'rgba(100,116,139,.1)', fg: '#64748B', label: 'Ambiguous' },
+  success: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', label: 'Success' },
+  partial: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)', label: 'Partial' },
+  failed: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', label: 'Failed' },
+  ambiguous: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)', label: 'Ambiguous' },
 }
 
 const TABS = [
@@ -93,11 +93,11 @@ const TABS = [
 ] as const
 
 const INTENT_DISTRIBUTION = [
-  { label: 'Job Management', pct: 100, count: 124, color: '#0A5ED7' },
-  { label: 'Search & Navigation', pct: 78, count: 97, color: '#0BB3FF' },
-  { label: 'Reporting', pct: 52, count: 64, color: '#F97316' },
-  { label: 'Communication', pct: 31, count: 38, color: '#0B1F3B' },
-  { label: 'Inventory', pct: 22, count: 27, color: '#64748B' },
+  { label: 'Job Management', pct: 100, count: 124, color: 'var(--salis-blue)' },
+  { label: 'Search & Navigation', pct: 78, count: 97, color: 'var(--salis-blue-bright)' },
+  { label: 'Reporting', pct: 52, count: 64, color: 'var(--salis-orange)' },
+  { label: 'Communication', pct: 31, count: 38, color: 'var(--salis-navy)' },
+  { label: 'Inventory', pct: 22, count: 27, color: 'var(--text-muted)' },
 ] as const
 
 export function VoiceCommandInterface() {
@@ -224,7 +224,7 @@ export function VoiceCommandInterface() {
                 { stage: 'Action Dispatch', latency: '60ms', status: 'ok', icon: 'Zap' },
               ].map((step) => (
                 <div key={step.stage} className="flex items-center gap-3 rounded-lg border border-border bg-inset p-3">
-                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[rgba(10,94,215,.1)] text-salis-blue">
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--tint-blue)] text-salis-blue">
                     <Icon name={step.icon} size={14} />
                   </span>
                   <div className="flex-1">

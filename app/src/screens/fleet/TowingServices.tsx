@@ -36,25 +36,25 @@ function TowStatusBadge({ status }: { status: TowRequest['status'] }) {
   switch (status) {
     case 'active':
       return (
-        <Badge background="rgba(10,94,215,.1)" color="#0A5ED7">
+        <Badge background="var(--tint-blue)" color="var(--salis-blue)">
           {t('Active')}
         </Badge>
       )
     case 'completed':
       return (
-        <Badge background="rgba(10,94,215,.1)" color="#0A5ED7">
+        <Badge background="var(--tint-blue)" color="var(--salis-blue)">
           {t('Completed')}
         </Badge>
       )
     case 'delayed':
       return (
-        <Badge background="rgba(249,115,22,.1)" color="#F97316">
+        <Badge background="var(--tint-orange)" color="var(--salis-orange)">
           {t('Delayed')}
         </Badge>
       )
     case 'cancelled':
       return (
-        <Badge background="rgba(249,115,22,.1)" color="#F97316">
+        <Badge background="var(--tint-orange)" color="var(--salis-orange)">
           {t('Cancelled')}
         </Badge>
       )
