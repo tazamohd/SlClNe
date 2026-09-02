@@ -92,6 +92,13 @@
       "when": 1786465099901,
       "tag": "0012_snapshot_realign",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1788329586481,
+      "tag": "0013_money_and_quantity_invariants",
+      "breakpoints": true
     }
   ]
 }

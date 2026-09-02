@@ -18,10 +18,11 @@
  *  They are seeded verbatim so a rebuilt screen renders exactly what the
  *  prototype rendered; where a machine value exists it sits beside them.
  */
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   bigint,
   boolean,
+  check,
   date,
   doublePrecision,
   index,
@@ -293,7 +294,10 @@ export const estimateLines = pgTable(
     partSku: varchar('part_sku', { length: 64 }),
     sort: integer('sort').notNull().default(0),
   },
-  (t) => ({ byEstimate: index('estimate_lines_estimate_idx').on(t.orgId, t.estimateId) }),
+  (t) => ({ byEstimate: index('estimate_lines_estimate_idx').on(t.orgId, t.estimateId),
+    estimateLinesQtyPositive: check('estimate_lines_qty_positive', sql`qty > 0`),
+    estimateLinesUnitPriceNonNegative: check('estimate_lines_unit_price_non_negative', sql`unit_price_halalas >= 0`),
+  }),
 )
 
 export const invoices = pgTable(
@@ -343,7 +347,10 @@ export const invoiceLines = pgTable(
     partSku: varchar('part_sku', { length: 64 }),
     sort: integer('sort').notNull().default(0),
   },
-  (t) => ({ byInvoice: index('invoice_lines_invoice_idx').on(t.orgId, t.invoiceId) }),
+  (t) => ({ byInvoice: index('invoice_lines_invoice_idx').on(t.orgId, t.invoiceId),
+    invoiceLinesQtyPositive: check('invoice_lines_qty_positive', sql`qty > 0`),
+    invoiceLinesUnitPriceNonNegative: check('invoice_lines_unit_price_non_negative', sql`unit_price_halalas >= 0`),
+  }),
 )
 
 export const payments = pgTable(
@@ -358,7 +365,9 @@ export const payments = pgTable(
     amountHalalas: money('amount_halalas').notNull(),
     note: text('note'),
   },
-  (t) => ({ byInvoice: index('payments_invoice_idx').on(t.orgId, t.invoiceId) }),
+  (t) => ({ byInvoice: index('payments_invoice_idx').on(t.orgId, t.invoiceId),
+    paymentsAmountPositive: check('payments_amount_positive', sql`amount_halalas > 0`),
+  }),
 )
 
 export const receipts = pgTable(
@@ -373,7 +382,9 @@ export const receipts = pgTable(
     amountHalalas: money('amount_halalas').notNull(),
     status: varchar('status', { length: 16 }).notNull().default('pending'),
   },
-  (t) => ({ codePerOrg: uniqueIndex('receipts_org_code_idx').on(t.orgId, t.code) }),
+  (t) => ({ codePerOrg: uniqueIndex('receipts_org_code_idx').on(t.orgId, t.code),
+    receiptsAmountNonNegative: check('receipts_amount_non_negative', sql`amount_halalas >= 0`),
+  }),
 )
 
 /* --------------------------------------------------------- parts & purchase */
@@ -385,7 +396,25 @@ export const parts = pgTable(
     name: varchar('name', { length: 200 }).notNull(),
     sku: varchar('sku', { length: 64 }).notNull(),
     priceHalalas: money('price_halalas').notNull().default(0),
-    /** Redacted from roles that may not see margin (`FIELD_RULES`). */
+    /** Cost price. **Nullable on purpose: NULL means "no cost recorded", not
+     *  zero.** `partCreate.costHalalas` is `.optional()`, so a part may be
+     *  entered before its cost is known, and the client renders that as
+     *  `Unknown` rather than a number — margin and margin% are withheld for
+     *  that row instead of being computed against a cost nobody supplied.
+     *
+     *  A `NOT NULL DEFAULT 0` would erase that distinction and read as a part
+     *  costing nothing, i.e. 100% margin, which is worse than the gap it
+     *  closes. The invariant that *is* enforced is the range: see
+     *  `parts_cost_non_negative`, which admits NULL and rejects a negative.
+     *
+     *  No server-side aggregate reads this column today, so the SUM()-skips-
+     *  NULL hazard is latent rather than live; any future valuation query must
+     *  decide explicitly whether an unknown cost excludes a part from the
+     *  total or is treated as zero, and say so at the call site.
+     *
+     *  Separately redacted from roles that may not see margin (`FIELD_RULES`),
+     *  which is why a null on the wire is ambiguous between "not recorded" and
+     *  "not yours to see". */
     costHalalas: money('cost_halalas'),
     onHand: integer('on_hand').notNull().default(0),
     reserved: integer('reserved').notNull().default(0),
@@ -395,6 +424,11 @@ export const parts = pgTable(
   (t) => ({
     skuPerOrg: uniqueIndex('parts_org_sku_idx').on(t.orgId, t.sku),
     byOrg: index('parts_org_idx').on(t.orgId, t.branchId),
+    partsPriceNonNegative: check('parts_price_non_negative', sql`price_halalas >= 0`),
+    partsCostNonNegative: check('parts_cost_non_negative', sql`cost_halalas IS NULL OR cost_halalas >= 0`),
+    partsOnHandNonNegative: check('parts_on_hand_non_negative', sql`on_hand >= 0`),
+    partsReservedNonNegative: check('parts_reserved_non_negative', sql`reserved >= 0`),
+    partsReorderLevelNonNegative: check('parts_reorder_level_non_negative', sql`reorder_level >= 0`),
   }),
 )
 
@@ -414,7 +448,9 @@ export const inventoryMovements = pgTable(
      *  provable from the ledger (F-017). Null on every other movement. */
     transferId: varchar('transfer_id', { length: ULID_LENGTH }),
   },
-  (t) => ({ byPart: index('inventory_movements_part_idx').on(t.orgId, t.partId) }),
+  (t) => ({ byPart: index('inventory_movements_part_idx').on(t.orgId, t.partId),
+    inventoryMovementsQtyPositive: check('inventory_movements_qty_positive', sql`qty >= 1`),
+  }),
 )
 
 /** A tenant-owned vendor directory. The parts network carried only free-text
@@ -475,7 +511,10 @@ export const requisitionLines = pgTable(
     estUnitPriceHalalas: money('est_unit_price_halalas').notNull(),
     sort: integer('sort').notNull().default(0),
   },
-  (t) => ({ byReq: index('requisition_lines_req_idx').on(t.orgId, t.requisitionId) }),
+  (t) => ({ byReq: index('requisition_lines_req_idx').on(t.orgId, t.requisitionId),
+    requisitionLinesQtyPositive: check('requisition_lines_qty_positive', sql`qty >= 1`),
+    requisitionLinesEstUnitPriceNonNegative: check('requisition_lines_est_unit_price_non_negative', sql`est_unit_price_halalas >= 0`),
+  }),
 )
 
 export const purchaseOrders = pgTable(
@@ -516,12 +555,24 @@ export const purchaseOrderLines = pgTable(
     descriptionAr: varchar('description_ar', { length: 300 }),
     qty: integer('qty').notNull(),
     /** Running total of quantity received, updated by the receiving route under
-     *  the invariant `received ≤ ordered` (§5b). */
+     *  the invariant `received ≤ ordered` (§5b).
+     *
+     *  That invariant is **not** a database CHECK, deliberately. The route
+     *  supports an authorised exception: a caller holding `procurement:a` may
+     *  post `overReceiptApproved: true` with a reason and book more than was
+     *  ordered — a supplier shipping a bonus carton is a real event, and
+     *  refusing to record it would push the truth out of the ledger. A
+     *  `CHECK (received_qty <= qty)` rejects that approved receipt at the
+     *  storage layer, where the approval is not visible. Enforcement therefore
+     *  stays in the route, which can see who is asking and why. */
     receivedQty: integer('received_qty').notNull().default(0),
     unitPriceHalalas: money('unit_price_halalas').notNull(),
     sort: integer('sort').notNull().default(0),
   },
-  (t) => ({ byPo: index('po_lines_po_idx').on(t.orgId, t.purchaseOrderId) }),
+  (t) => ({ byPo: index('po_lines_po_idx').on(t.orgId, t.purchaseOrderId),
+    poLinesQtyPositive: check('po_lines_qty_positive', sql`qty >= 1`),
+    poLinesReceivedQtyNonNegative: check('po_lines_received_qty_non_negative', sql`received_qty >= 0`),
+  }),
 )
 
 /* ------------------------------------------------------------------- people */
@@ -646,7 +697,9 @@ export const customerFeedback = pgTable(
     customerId: varchar('customer_id', { length: ULID_LENGTH }),
     customerName: varchar('customer_name', { length: 200 }),
   },
-  (t) => ({ byOrg: index('customer_feedback_org_idx').on(t.orgId, t.branchId) }),
+  (t) => ({ byOrg: index('customer_feedback_org_idx').on(t.orgId, t.branchId),
+    customerFeedbackRatingRange: check('customer_feedback_rating_range', sql`rating BETWEEN 1 AND 5`),
+  }),
 )
 
 /* --------------------------------------------------------------- accounting */

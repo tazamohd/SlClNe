@@ -131,6 +131,12 @@ jobs:
       - run: npm run typecheck
         working-directory: server
 
+      # Catches the two drifts that never error on their own: a schema.ts change
+      # with no committed migration, and a .sql file with no journal entry.
+      - name: Migration and snapshot integrity
+        run: npm run check-migrations
+        working-directory: server
+
   server-test:
     name: Server / Unit Tests
     runs-on: ubuntu-latest

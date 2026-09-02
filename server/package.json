@@ -12,6 +12,7 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "tsx scripts/migrate.ts --reset && tsx scripts/seed.ts",
+    "check-migrations": "node scripts/check-migrations.mjs",
     "rbac-lab": "tsx scripts/rbac-lab.ts",
     "test": "vitest run",
     "test:watch": "vitest"
