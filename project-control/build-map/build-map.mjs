@@ -228,7 +228,7 @@ const gpCells = GOLDEN.paths.map((p, i) => {
   const y = GP_Y + Math.floor(i / GP_COLS) * GP_YS
   const tip = `${p.path} — ${p.status}. ` + (p.error
     ? p.error
-    : 'No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.')
+    : 'No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.')
   return `      <g class="node" data-tip="${esc(tip)}">
         <rect class="box" x="${x}" y="${y}" width="${GP_CW}" height="${GP_CH}" rx="6" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.2"${c.dash}/>
         <text x="${x + GP_CW / 2}" y="${y + 20}" text-anchor="middle" class="nsub" fill="${c.ink}" style="font-weight:700">${i + 1}</text>

@@ -129,7 +129,7 @@ footer a{color:var(--mut)}
     <div class="stat warn"><div class="n">0</div><div class="l">Production ready</div></div>
     <div class="stat blue"><div class="n">24</div><div class="l">Agents</div></div>
   </div>
-  <p class="plain" style="margin-top:26px"><b>Every figure on this page is generated</b> — from the registry regeneration of 2 Sep 2026, the golden-path run of 1 Sep 2026 and the release-gate run of 1 Sep 2026. One section is not: the effort projection is a human estimate of 21 Aug 2026, and it says so where it appears.</p>
+  <p class="plain" style="margin-top:26px"><b>Every figure on this page is generated</b> — from the registry regeneration of 2 Sep 2026, the golden-path run of 2 Sep 2026 and the release-gate run of 2 Sep 2026. One section is not: the effort projection is a human estimate of 21 Aug 2026, and it says so where it appears.</p>
 </header>
 </div>
 
@@ -223,11 +223,11 @@ footer a{color:var(--mut)}
       <rect class="box" x="916" y="206" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
       <text x="940" y="240" class="nlabel" style="font-size:15px">Capability matrix</text>
     </g>
-    <g class="node" data-tip="Every line in the gap report is a query over the registry, not an opinion: 6 open blockers, 0 screen files no route reaches, 0 unregistered designs, 1 designed mobile layout still owed.">
+    <g class="node" data-tip="Every line in the gap report is a query over the registry, not an opinion: 5 open blockers, 0 screen files no route reaches, 0 unregistered designs, 1 designed mobile layout still owed.">
       <rect class="box" x="916" y="290" width="248" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.16)"/>
       <text x="940" y="324" class="nlabel" style="font-size:15px">Gap report</text>
     </g>
-    <g class="node" data-tip="14 release gates, each decided by a check that ran rather than by reading a status document: 7 PASS, 3 FAIL, 4 UNCHECKABLE as of 1 Sep 2026. Plus two ratchets: placeholders may fall, never rise; forbidden colours may fall, never rise. They become hard zero-gates at W5. A gate that fails on every run gets switched off within a day — one that forbids regression gets obeyed.">
+    <g class="node" data-tip="14 release gates, each decided by a check that ran rather than by reading a status document: 8 PASS, 3 FAIL, 3 UNCHECKABLE as of 2 Sep 2026. Plus two ratchets: placeholders may fall, never rise; forbidden colours may fall, never rise. They become hard zero-gates at W5. A gate that fails on every run gets switched off within a day — one that forbids regression gets obeyed.">
       <rect class="box" x="916" y="374" width="248" height="56" rx="13" fill="rgba(218,119,86,0.08)" stroke="rgba(218,119,86,0.45)"/>
       <text x="940" y="408" class="nlabel" style="font-size:15px">Release gates</text>
     </g>
@@ -374,7 +374,7 @@ footer a{color:var(--mut)}
     <!-- target branch -->
     <rect x="600" y="404" width="560" height="186" rx="18" fill="rgba(218,119,86,0.04)" stroke="rgba(218,119,86,0.35)" stroke-width="1.5"/>
     <text x="626" y="434" class="layerlabel" fill="#DA7756">ALREADY LANDED FOR 99 — same interface, real enforcement</text>
-    <g class="node" data-tip="Node 20 + Fastify + TypeScript. One language across the stack; Zod schemas in packages/contract are imported by both sides, so one schema is the API type, the server guard and the form validator. The server suite ran 2,473 tests green on 1 Sep 2026.">
+    <g class="node" data-tip="Node 20 + Fastify + TypeScript. One language across the stack; Zod schemas in packages/contract are imported by both sides, so one schema is the API type, the server guard and the form validator. The server suite ran 2,473 tests green on 2 Sep 2026.">
       <rect class="box" x="626" y="452" width="150" height="56" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)"/>
       <text x="701" y="478" text-anchor="middle" class="nlabel" style="font-size:14px">Fastify</text>
       <text x="701" y="496" text-anchor="middle" class="nsub">Zod contract</text>
@@ -568,7 +568,7 @@ footer a{color:var(--mut)}
 
   <div class="note">
     <div class="h">Measured, estimated and unmeasurable are three different things</div>
-    <p>Everything above is a query over <code>MASTER_REGISTRY.json</code>, regenerated on <b>2 Sep 2026</b>. The journeys below are a run record from <b>1 Sep 2026</b> and the release gates a check run from <b>1 Sep 2026</b>. Where the three disagree the later stamp wins, and the fix is to re-run the earlier one — never to reconcile two paragraphs of prose.</p>
+    <p>Everything above is a query over <code>MASTER_REGISTRY.json</code>, regenerated on <b>2 Sep 2026</b>. The journeys below are a run record from <b>2 Sep 2026</b> and the release gates a check run from <b>2 Sep 2026</b>. Where the three disagree the later stamp wins, and the fix is to re-run the earlier one — never to reconcile two paragraphs of prose.</p>
     <p>Exactly one section of this page is not measured. Nothing in the repository computes engineer-days, so the effort projection is a <b>human estimate of 21 Aug 2026</b>, declared in a file and labelled where it appears. The rule the rest of the page runs on is that <b>a count written into a document is a dated snapshot, not a fact</b> — so the one place a snapshot is unavoidable says so out loud, rather than borrowing the credibility of the generated numbers around it.</p>
   </div>
 </div>
@@ -578,111 +578,165 @@ footer a{color:var(--mut)}
 <section class="alt diagram-section">
 <div class="wrap">
   <div class="kicker">Journeys</div>
-  <h2>23 golden paths, and 1 of them can be walked end to end</h2>
-  <p class="sub">A golden path is a whole job somebody came to do — new customer to paid invoice, technician job completion, parts procurement. W4 named 23 of them as a plan; a runner now walks them against the running product, so these are a run record rather than a checklist. 17 journeys exist today and 6 paths have none, which the runner reports as its own state instead of counting it green.</p>
+  <h2>23 golden paths, and 7 of them can be walked end to end</h2>
+  <p class="sub">A golden path is a whole job somebody came to do — new customer to paid invoice, technician job completion, parts procurement. W4 named 23 of them as a plan; a runner now walks them against the running product, so these are a run record rather than a checklist. 23 journeys exist today and 0 paths have none, which the runner reports as its own state instead of counting it green.</p>
   <p class="plain"><b>In plain words:</b> every screen opens, and the business still cannot carry a customer from the front desk to a paid invoice. That gap is the difference between screens working and the product working.</p>
 
   <div class="figure">
-  <svg viewBox="0 0 1200 260" role="img" aria-label="Grid of 23 golden paths measured on 1 Sep 2026: 1 passing, 16 failing, 6 unwritten.">
-    <text x="40" y="42" class="layerlabel">23 GOLDEN PATHS · MEASURED 1 Sep 2026</text>
-      <g class="node" data-tip="New customer to paid invoice — FAILING. new-customer-to-paid-invoice: step 3: &quot;Send Invoice&quot; did not raise an invoice for Journey Customer MTJAY1QL. The product answered: The fixture repository cannot create invoices. Set VITE_API_URL to run against the API.. No invoice means no paid invoice — the rest of this path is unreachable.">
+  <svg viewBox="0 0 1200 260" role="img" aria-label="Grid of 23 golden paths measured on 2 Sep 2026: 7 passing, 16 failing, 0 unwritten.">
+    <text x="40" y="42" class="layerlabel">23 GOLDEN PATHS · MEASURED 2 Sep 2026</text>
+      <g class="node" data-tip="New customer to paid invoice — FAILING. [desktop] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — failed: Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search customers, vehicles, parts...') resolved to 2 elements: · 1) &lt;input readonly aria-label=&quot;Search customers, vehicles, parts...&quot; placeholder=&quot;Search customers, vehicles, parts...&quot; class=&quot;h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]&quot;/&gt; aka getByRole('textbox', { name: 'Search customers, vehicles,' })
+[desktop] e2e/new-customer-to-paid-invoice.spec.ts:89 › New Customer to Paid Invoice (Golden Path 1) › invoice preview renders a tax invoice — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Tax Invoice&quot;
+[mobile] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — failed: Test timeout of 30000ms exceeded.
+[mobile] e2e/new-customer-to-paid-invoice.spec.ts:89 › New Customer to Paid Invoice (Golden Path 1) › invoice preview renders a tax invoice — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Tax Invoice&quot;
+[desktop] e2e/new-customer-to-paid-invoice.spec.ts:96 › New customer to paid invoice lifecycle › job cards → check-in → estimate → invoice create → payment — failed: Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search customers, vehicles, parts...') resolved to 2 elements: · 1) &lt;input readonly aria-label=&quot;Search customers, vehicles, parts...&quot; placeholder=&quot;Search customers, vehicles, parts...&quot; class=&quot;h-9 w-[260px] cursor-pointer rounded border border-border bg-inset px-3 ps-8 font-ui text-[13px] text-heading outline-none transition-all duration-200 focus:border-salis-blue focus:bg-card focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]&quot;/&gt; aka getByRole('textbox', { name: 'Search customers, vehicles,' })
+… and 1 more in the same spec">
         <rect class="box" x="40" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="63" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">1</text>
       </g>
-      <g class="node" data-tip="Existing customer service — FAILING. existing-customer-service: step 3: the &quot;New Job Card&quot; save control is disabled, so no service visit can be opened for Ahmed Al-Rashid. The form itself says: This build reads the design fixtures, which cannot be written to. Point VITE_API_URL at the API to save a job card.">
+      <g class="node" data-tip="Existing customer service — FAILING. [desktop] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Job History&quot;
+[desktop] e2e/existing-customer-service.spec.ts:20 › Existing Customer Service (Golden Path 2) › vehicle record loads with coverage details — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Comprehensive Coverage&quot;
+[desktop] e2e/existing-customer-service.spec.ts:26 › Existing Customer Service (Golden Path 2) › job card detail loads for the returning vehicle — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[desktop] e2e/existing-customer-service.spec.ts:32 › Existing Customer Service (Golden Path 2) › customer feedback records a satisfaction rating — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Average Rating&quot;
+[mobile] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Job History&quot;
+… and 5 more in the same spec">
         <rect class="box" x="96" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="119" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">2</text>
       </g>
-      <g class="node" data-tip="Mobile customer booking — FAILING. mobile-customer-booking: booking step 4: &quot;Confirm Booking&quot;: the control is disabled, so the journey cannot complete — the screen explains: &quot;This build has no API configured, so a booking cannot be saved.&quot;">
-        <rect class="box" x="152" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
-        <text x="175" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">3</text>
+      <g class="node" data-tip="Mobile customer booking — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="152" y="70" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="175" y="90" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">3</text>
       </g>
-      <g class="node" data-tip="Technician job completion — FAILING. technician-job-completion: step 2: job card C2A9F4E3 is listed as &quot;Completed&quot; but the workshop rail puts it at Check-In. The stage the technician works from is not the stage the card is at.">
+      <g class="node" data-tip="Technician job completion — FAILING. [desktop] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestly disabled — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[mobile] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestly disabled — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;">
         <rect class="box" x="208" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="231" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">4</text>
       </g>
-      <g class="node" data-tip="Customer estimate approval — FAILING. customer-estimate-approval: step 3: approving EST-0231 was refused. The product answered: The fixture repository cannot change a job card. Set VITE_API_URL to run against the API.">
-        <rect class="box" x="264" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
-        <text x="287" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">5</text>
+      <g class="node" data-tip="Customer estimate approval — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="264" y="70" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="287" y="90" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">5</text>
       </g>
-      <g class="node" data-tip="Parts procurement — FAILING. parts-procurement: step &quot;raise a requisition&quot; — &quot;New Requisition&quot; opened &quot;Creating requisitions is not available yet&quot; instead of the requisition form. The product says: Creating requisitions is not available yet This build is reading design fixtures, which hold no procurement records and refuse writes rather than pretending. Set the API URL to run requisitions and purchase orders against the server. Close — POST /procurement/requisitions is not reachable from this build, so a requisition cannot be raised through the UI">
+      <g class="node" data-tip="Parts procurement — FAILING. [desktop] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 30000ms exceeded.
+[desktop] e2e/parts-procurement.spec.ts:33 › Parts Procurement (Golden Path 6) › purchase order detail loads with a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 30000ms exceeded.
+[mobile] e2e/parts-procurement.spec.ts:33 › Parts Procurement (Golden Path 6) › purchase order detail loads with a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/parts-procurement.spec.ts:40 › Parts procurement lifecycle › raise request → compare quotations by rating → confirm the PO — failed: Test timeout of 90000ms exceeded.
+… and 1 more in the same spec">
         <rect class="box" x="320" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="343" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">6</text>
       </g>
-      <g class="node" data-tip="Inventory receiving — FAILING. inventory-receiving: step &quot;record the receipt&quot; — the part ledger offers no &quot;Receive Stock&quot; action. The product says: Spark Plug Set SP-SET-04 Stock on hand, and every movement that produced it. On Hand 12 Reserved — Available 12 Reorder At 20 Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. The stock ledger is unavailable Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. Close — POST /inventory/:id/movement is not reachable from this build, so received stock cannot be booked">
+      <g class="node" data-tip="Inventory receiving — FAILING. [desktop] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/inventory-receiving.spec.ts:13 › Inventory Receiving (Golden Path 7) › inventory hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Inventory &amp; Parts Management&quot;
+[mobile] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/inventory-receiving.spec.ts:40 › Inventory receiving lifecycle › purchase order → goods arrive at the Receiving zone → stock reports update — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/inventory-receiving.spec.ts:40 › Inventory receiving lifecycle › purchase order → goods arrive at the Receiving zone → stock reports update — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;">
         <rect class="box" x="376" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="399" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">7</text>
       </g>
-      <g class="node" data-tip="Inventory consumption — FAILING. inventory-consumption: step &quot;issue stock to a job&quot; — the part ledger offers no &quot;Consume&quot; action. The product says: Oil Filter (Toyota) OF-TY-118 Stock on hand, and every movement that produced it. On Hand 142 Reserved — Available 142 Reorder At 40 Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. The stock ledger is unavailable Stock movements need the API. This build is reading design fixtures, which hold no ledger and refuse writes. Close — POST /inventory/:id/movement is not reachable from this build, so stock cannot be issued">
+      <g class="node" data-tip="Inventory consumption — FAILING. [mobile] e2e/inventory-consumption.spec.ts:24 › Inventory Consumption (Golden Path 8) › inventory hub totals reflect current parts stock — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Inventory &amp; Parts Management&quot;
+[mobile] e2e/inventory-consumption.spec.ts:32 › Inventory consumption lifecycle › parts billed on the job card → consumption visible at QC and on the technician portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Inventory &amp; Parts Management&quot;">
         <rect class="box" x="432" y="70" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="455" y="90" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">8</text>
       </g>
-      <g class="node" data-tip="Supplier order — FAILING. supplier-order: step &quot;choose the supplier&quot; — the supplier picker is disabled. The product says: Back to Inventory Create Purchase Order / The order number is assigned by the server when the order is saved. / 2 items below reorder level / This build is reading design fixtures, which hold no procurement records and refuse writes rather than pretending. Set the API URL to run requisitions and purchase orders against the server. / Supplier Supplier * Choose a supplier... Order Date 2026-09-01 Ex — GET /procurement/suppliers is not reachable from this build, so no supplier can be named on the order">
+      <g class="node" data-tip="Supplier order — FAILING. [desktop] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[desktop] e2e/supplier-order.spec.ts:29 › Supplier Order (Golden Path 9) › owner sees the purchase order the supplier order is billed against — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[mobile] e2e/supplier-order.spec.ts:29 › Supplier Order (Golden Path 9) › owner sees the purchase order the supplier order is billed against — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/supplier-order.spec.ts:37 › Supplier order lifecycle › supplier fulfils the order → procurement tracks the requisition → office holds the PO — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+… and 1 more in the same spec">
         <rect class="box" x="40" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="63" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">9</text>
       </g>
-      <g class="node" data-tip="CRM lead conversion — FAILING. crm-lead-conversion: convert: the conversion did not complete — the app stayed on the lead. The dialog said: The fixture repository cannot perform this action. Set VITE_API_URL to run against the API.">
+      <g class="node" data-tip="CRM lead conversion — FAILING. [desktop] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Activity Timeline&quot;
+[desktop] e2e/crm-lead-conversion.spec.ts:48 › CRM Lead Conversion (Golden Path 10) › customer feedback page loads with ratings — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Average Rating&quot;
+[mobile] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Activity Timeline&quot;
+[mobile] e2e/crm-lead-conversion.spec.ts:48 › CRM Lead Conversion (Golden Path 10) › customer feedback page loads with ratings — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Average Rating&quot;">
         <rect class="box" x="96" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="119" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">10</text>
       </g>
-      <g class="node" data-tip="Insurance claim — UNWRITTEN. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="152" y="110" width="46" height="30" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <text x="175" y="130" text-anchor="middle" class="nsub" fill="#6f6f79" style="font-weight:700">11</text>
+      <g class="node" data-tip="Insurance claim — FAILING. [desktop] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;
+[mobile] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;
+[desktop] e2e/insurance-claim.spec.ts:41 › Insurance claim lifecycle › owner views claims → reports → customer sees insurance — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;
+[mobile] e2e/insurance-claim.spec.ts:41 › Insurance claim lifecycle › owner views claims → reports → customer sees insurance — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Insurance Claims&quot;">
+        <rect class="box" x="152" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="175" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">11</text>
       </g>
-      <g class="node" data-tip="Fleet contract — UNWRITTEN. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="208" y="110" width="46" height="30" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <text x="231" y="130" text-anchor="middle" class="nsub" fill="#6f6f79" style="font-weight:700">12</text>
+      <g class="node" data-tip="Fleet contract — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="208" y="110" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="231" y="130" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">12</text>
       </g>
-      <g class="node" data-tip="Loan workflow — UNWRITTEN. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="264" y="110" width="46" height="30" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <text x="287" y="130" text-anchor="middle" class="nsub" fill="#6f6f79" style="font-weight:700">13</text>
+      <g class="node" data-tip="Loan workflow — FAILING. [desktop] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Applications&quot;
+[mobile] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Applications&quot;">
+        <rect class="box" x="264" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="287" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">13</text>
       </g>
-      <g class="node" data-tip="Employee onboarding — UNWRITTEN. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="320" y="110" width="46" height="30" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <text x="343" y="130" text-anchor="middle" class="nsub" fill="#6f6f79" style="font-weight:700">14</text>
+      <g class="node" data-tip="Employee onboarding — FAILING. [desktop] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;HR Management&quot;
+[desktop] e2e/employee-onboarding.spec.ts:33 › Employee Onboarding (Golden Path 14) › staff performance review page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Performance Reviews&quot;
+[desktop] e2e/employee-onboarding.spec.ts:39 › Employee Onboarding (Golden Path 14) › timesheet management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Timesheet Management&quot;
+[desktop] e2e/employee-onboarding.spec.ts:51 › Employee Onboarding (Golden Path 14) › training LMS page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Training &amp; LMS&quot;
+[mobile] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;HR Management&quot;
+… and 5 more in the same spec">
+        <rect class="box" x="320" y="110" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="343" y="130" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">14</text>
       </g>
-      <g class="node" data-tip="Organization / branch setup — UNWRITTEN. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="376" y="110" width="46" height="30" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <text x="399" y="130" text-anchor="middle" class="nsub" fill="#6f6f79" style="font-weight:700">15</text>
+      <g class="node" data-tip="Organization / branch setup — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="376" y="110" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="399" y="130" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">15</text>
       </g>
-      <g class="node" data-tip="User invitation + RBAC — UNWRITTEN. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="432" y="110" width="46" height="30" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <text x="455" y="130" text-anchor="middle" class="nsub" fill="#6f6f79" style="font-weight:700">16</text>
+      <g class="node" data-tip="User invitation + RBAC — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="432" y="110" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="455" y="130" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">16</text>
       </g>
-      <g class="node" data-tip="Accounting reconciliation — FAILING. accounting-reconciliation: &quot;Accounting reconciliation&quot; cannot be completed. 3 step(s) the product does not support today:
-  1. step 2 — there is no bank statement to reconcile against: the screen shows no statement table at all. It says: Reconciliation needs statement lines to match receipts against. The server has no bank-statement collection yet, so no automated match can run. Nothing here is matched or unmatched — it is unreconciled. Missing server collection: bankStatements (imported statement lines and a matching endpoint).
-  2. step 2 — &quot;Import statement&quot; is present but disabled, so an accountant cannot supply the statement themselves either.
-  3. step 3 — with no statement lines there is nothing to match a receipt to, so no reconciliation can be performed or recorded.">
+      <g class="node" data-tip="Accounting reconciliation — FAILING. [desktop] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;
+[mobile] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;
+[desktop] e2e/accounting-reconciliation.spec.ts:59 › Accounting reconciliation lifecycle › chart of accounts → journal entries → bank reconciliation → financial reports → tax — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;
+[mobile] e2e/accounting-reconciliation.spec.ts:59 › Accounting reconciliation lifecycle › chart of accounts → journal entries → bank reconciliation → financial reports → tax — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Unmatched&quot;">
         <rect class="box" x="40" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="63" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">17</text>
       </g>
-      <g class="node" data-tip="Report generation — PASSING. No journey in app/scripts/journeys walks this path, so nothing is known about it. Unwritten is not passing.">
-        <rect class="box" x="96" y="150" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
-        <text x="119" y="170" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">18</text>
+      <g class="node" data-tip="Report generation — FAILING. [desktop] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;
+[mobile] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;
+[desktop] e2e/report-generation.spec.ts:83 › Report generation lifecycle › reports hub → financial → executive → inventory → BI dashboard — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;
+[mobile] e2e/report-generation.spec.ts:83 › Report generation lifecycle › reports hub → financial → executive → inventory → BI dashboard — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;Report Categories&quot;">
+        <rect class="box" x="96" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
+        <text x="119" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">18</text>
       </g>
-      <g class="node" data-tip="Customer portal — FAILING. customer-portal: customer portal: the portal filled its panels without asking anyone for this customer's records — no request was made for vehicles, appointments, invoices, jobs or estimates. The rows came from the design fixtures bundled into the build, which are the whole workshop's and are identical for every signed-in principal, so nothing on this screen is scoped to the customer looking at it.">
+      <g class="node" data-tip="Customer portal — FAILING. [desktop] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[mobile] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[desktop] e2e/customer-portal.spec.ts:96 › Customer portal lifecycle › portal → booking → service tracking → wallet → orders — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;
+[mobile] e2e/customer-portal.spec.ts:96 › Customer portal lifecycle › portal → booking → service tracking → wallet → orders — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;JC-A3F8B2C1&quot;">
         <rect class="box" x="152" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="175" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">19</text>
       </g>
-      <g class="node" data-tip="Technician portal — FAILING. technician-portal: technician job detail: the job the portal handed this technician is not at the Repair stage — it is at &quot;Check-In&quot;, so the portal's one write (repair → qc) has nothing to act on. The screen says: &quot;This job has not reached the repair bay yet — check-in, inspection and the estimate move at the service desk.&quot;">
-        <rect class="box" x="208" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
-        <text x="231" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">20</text>
+      <g class="node" data-tip="Technician portal — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="208" y="150" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="231" y="170" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">20</text>
       </g>
-      <g class="node" data-tip="Supplier portal — FAILING. supplier-portal: step &quot;read the order book&quot; — the supplier's portal shows no purchase orders at all. The portal reads the `purchaseOrders` collection through the repository seam; this build serves it no rows, so a supplier signing in has nothing to work — the path cannot be walked">
+      <g class="node" data-tip="Supplier portal — FAILING. [desktop] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[mobile] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+[desktop] e2e/supplier-portal.spec.ts:46 › Supplier Portal (Golden Path 21) › owner views › purchase order page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[mobile] e2e/supplier-portal.spec.ts:46 › Supplier Portal (Golden Path 21) › owner views › purchase order page loads — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;PO-2026-0087&quot;
+[desktop] e2e/supplier-portal.spec.ts:79 › Supplier portal lifecycle › supplier portal → procurement → purchase orders → parts network — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;AutoParts KSA&quot;
+… and 1 more in the same spec">
         <rect class="box" x="264" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="287" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">21</text>
       </g>
-      <g class="node" data-tip="Call center — FAILING. call-center: call centre: &quot;Answer&quot; for Layla Al-Sulaiman: the control is disabled, so the journey cannot complete — and the screen offers no reason for refusing it">
-        <rect class="box" x="320" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
-        <text x="343" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">22</text>
+      <g class="node" data-tip="Call center — PASSING. No spec in app/e2e declares this path, so nothing is known about it. Unwritten is not passing.">
+        <rect class="box" x="320" y="150" width="46" height="30" rx="6" fill="rgba(218,119,86,0.92)" stroke="#DA7756" stroke-width="1.2"/>
+        <text x="343" y="170" text-anchor="middle" class="nsub" fill="#12100f" style="font-weight:700">22</text>
       </g>
-      <g class="node" data-tip="Kiosk — FAILING. kiosk: kiosk step 1: &quot;Find My Vehicle&quot;: the control is disabled, so the journey cannot complete — and the screen offers no reason for refusing it">
+      <g class="node" data-tip="Kiosk — FAILING. [desktop] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;SALIS AUTO&quot;
+[desktop] e2e/kiosk.spec.ts:23 › Kiosk (Golden Path 23) › typing a plate enables the button, but no live API keeps it disabled — failed: Error: expect(locator).toBeDisabled() failed · Locator: getByRole('button', { name: 'Find My Vehicle' })
+[mobile] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;SALIS AUTO&quot;
+[mobile] e2e/kiosk.spec.ts:23 › Kiosk (Golden Path 23) › typing a plate enables the button, but no live API keeps it disabled — failed: Error: expect(locator).toBeDisabled() failed · Locator: getByRole('button', { name: 'Find My Vehicle' })
+[desktop] e2e/kiosk.spec.ts:37 › Kiosk lifecycle › walk-up customer identifies by plate, and the flow honestly stops there — failed: Error: expect(received).toContain(expected) // indexOf · Expected substring: &quot;SALIS AUTO&quot;
+… and 1 more in the same spec">
         <rect class="box" x="376" y="150" width="46" height="30" rx="6" fill="rgba(224,104,92,0.12)" stroke="#e0685c" stroke-width="1.2"/>
         <text x="399" y="170" text-anchor="middle" class="nsub" fill="#f0958c" style="font-weight:700">23</text>
       </g>
-      <g class="node" data-tip="PASSING: 1 of 23. A journey walked the product on this run and every assertion held.">
+      <g class="node" data-tip="PASSING: 7 of 23. A journey walked the product on this run and every assertion held.">
         <rect class="box" x="640" y="66" width="164" height="86" rx="15" fill="rgba(218,119,86,0.10)" stroke="#DA7756" stroke-width="1.5"/>
-        <text x="722" y="104" text-anchor="middle" class="nbig" fill="#DA7756">1</text>
+        <text x="722" y="104" text-anchor="middle" class="nbig" fill="#DA7756">7</text>
         <text x="722" y="128" text-anchor="middle" class="nsub">passing</text>
       </g>
       <g class="node" data-tip="FAILING: 16 of 23. A journey ran and the product could not complete the path. RB-03 — &quot;no critical golden-path failure&quot; — is a release blocker.">
@@ -690,9 +744,9 @@ footer a{color:var(--mut)}
         <text x="902" y="104" text-anchor="middle" class="nbig" fill="#f0958c">16</text>
         <text x="902" y="128" text-anchor="middle" class="nsub">failing</text>
       </g>
-      <g class="node" data-tip="UNWRITTEN: 6 of 23. No journey exists for this path yet, so nothing is known about it. Unwritten is not passing, and it is not failing either.">
+      <g class="node" data-tip="UNWRITTEN: 0 of 23. No journey exists for this path yet, so nothing is known about it. Unwritten is not passing, and it is not failing either.">
         <rect class="box" x="1000" y="66" width="164" height="86" rx="15" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.20)" stroke-width="1.5" stroke-dasharray="3 3"/>
-        <text x="1082" y="104" text-anchor="middle" class="nbig" fill="#8a8a93">6</text>
+        <text x="1082" y="104" text-anchor="middle" class="nbig" fill="#8a8a93">0</text>
         <text x="1082" y="128" text-anchor="middle" class="nsub">unwritten</text>
       </g>
     <text x="40" y="216" class="nsub">solid = passing · hollow red = failing · dashed = no journey written · hover any cell for the runner’s own words</text>
@@ -706,7 +760,7 @@ footer a{color:var(--mut)}
 <section>
 <div class="wrap">
   <div class="kicker">Open blockers</div>
-  <h2>Six computed blockers, each with an owner and a wave</h2>
+  <h2>Five computed blockers, each with an owner and a wave</h2>
   <p class="sub">These are queries over the registry, not a triage meeting's opinions. Severity and ownership come from the same generated source as everything else, regenerated on 2 Sep 2026 — the list shortens by fixing the thing, never by editing the card.</p>
 
   <div class="grid">
@@ -739,12 +793,6 @@ footer a{color:var(--mut)}
       <h3>16 golden paths fail</h3>
       <p>A journey walked the path and the product could not complete it. &quot;No critical golden-path failure&quot; is a release blocker.</p>
       <div class="own">BLK-013 · Agent 23 · W4</div>
-    </div>
-    <div class="card">
-      <span class="tag t-high">High</span>
-      <h3>6 golden paths have no journey</h3>
-      <p>No journey in app/scripts/journeys walks these paths, so nothing is known about them. Unwritten is not passing.</p>
-      <div class="own">BLK-014 · Agent 23 · W4</div>
     </div>
   </div>
 </div>
@@ -848,11 +896,11 @@ footer a{color:var(--mut)}
 <div class="wrap">
   <div class="kicker">Certification</div>
   <h2>Twenty-two scores must each clear 9.5 — and fourteen gates override all of them</h2>
-  <p class="sub">A strong category never compensates for a weak one; security and business integrity cannot be averaged away. The 22 scores are human judgement — nothing in the repository produces them. The 14 gates are not: each is decided by a check that ran, and on 1 Sep 2026 7 passed, 3 failed and 4 could not be decided from this repository at all.</p>
-  <p class="plain"><b>In plain words:</b> this isn't an average. Every subject has to pass on its own, and a short list of specific failures is an automatic no regardless of the report card. Today that list reads: No critical golden-path failure · No critical security vulnerability · No exposed secret (three chat-exposed PATs rotated).</p>
+  <p class="sub">A strong category never compensates for a weak one; security and business integrity cannot be averaged away. The 22 scores are human judgement — nothing in the repository produces them. The 14 gates are not: each is decided by a check that ran, and on 2 Sep 2026 8 passed, 3 failed and 3 could not be decided from this repository at all.</p>
+  <p class="plain"><b>In plain words:</b> this isn't an average. Every subject has to pass on its own, and a short list of specific failures is an automatic no regardless of the report card. Today that list reads: No critical golden-path failure · No exposed secret (three chat-exposed PATs rotated) · No broken critical mobile workflow.</p>
 
   <div class="figure">
-  <svg viewBox="0 0 1200 380" role="img" aria-label="Diagram: 22 human-judged category scores pass through a certification gate, alongside a rail of 14 measured release gates of which 3 fail and 4 cannot be decided from this repository.">
+  <svg viewBox="0 0 1200 380" role="img" aria-label="Diagram: 22 human-judged category scores pass through a certification gate, alongside a rail of 14 measured release gates of which 3 fail and 3 cannot be decided from this repository.">
     <defs>
       <marker id="ar7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#d9b86b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -891,17 +939,17 @@ footer a{color:var(--mut)}
     <path d="M 490 124 C 560 124, 580 150, 626 168" fill="none" stroke="#d9b86b" stroke-width="2" class="flow"/>
 
     <!-- gate -->
-    <g class="node" data-tip="The certification report is generated from the registry and CI artefacts, never hand-written: coverage per surface and dimension, security findings, integrity status, suite results, open defects, limitations, blockers, final score. Asked on 1 Sep 2026, the gate answers: not certifiable · 3 fail · 4 uncheckable.">
+    <g class="node" data-tip="The certification report is generated from the registry and CI artefacts, never hand-written: coverage per surface and dimension, security findings, integrity status, suite results, open defects, limitations, blockers, final score. Asked on 2 Sep 2026, the gate answers: not certifiable · 3 fail · 3 uncheckable.">
       <rect class="box" x="628" y="96" width="150" height="180" rx="16" fill="rgba(217,184,107,0.06)" stroke="#d9b86b" stroke-width="2"/>
       <text x="703" y="168" text-anchor="middle" class="nlabel" style="font-size:15px" fill="#d9b86b">GATE</text>
       <text x="703" y="192" text-anchor="middle" class="nsub">W5</text>
     </g>
 
     <!-- gate rail — statuses read from RELEASE_GATES.json, not listed by hand -->
-    <g class="node" data-tip="Checked on 1 Sep 2026 by project-control/release-gates.mjs. UNCHECKABLE is its own answer and not a pass: the gate cannot be decided from this repository, and its evidence says what a human must do. Uncheckable today: No P0 defect open · No P1 defect open · Backup restore drill passed · No broken critical mobile workflow. Full rail — RB-01 No P0 defect open — UNCHECKABLE · RB-02 No P1 defect open — UNCHECKABLE · RB-03 No critical golden-path failure — FAIL · RB-04 No cross-tenant access in the RBAC lab — PASS · RB-05 No unauthorized financial operation — PASS · RB-06 No financial calculation corruption — PASS · RB-07 No inventory corruption — PASS · RB-08 No authentication bypass — PASS · RB-09 No critical security vulnerability — FAIL · RB-10 No exposed secret (three chat-exposed PATs rotated) — FAIL · RB-11 No major data loss path — PASS · RB-12 Backup restore drill passed — UNCHECKABLE · RB-13 No broken critical mobile workflow — UNCHECKABLE · RB-14 Invoice and payment workflows intact — PASS">
+    <g class="node" data-tip="Checked on 2 Sep 2026 by project-control/release-gates.mjs. UNCHECKABLE is its own answer and not a pass: the gate cannot be decided from this repository, and its evidence says what a human must do. Uncheckable today: No P0 defect open · No P1 defect open · Backup restore drill passed. Full rail — RB-01 No P0 defect open — UNCHECKABLE · RB-02 No P1 defect open — UNCHECKABLE · RB-03 No critical golden-path failure — FAIL · RB-04 No cross-tenant access in the RBAC lab — PASS · RB-05 No unauthorized financial operation — PASS · RB-06 No financial calculation corruption — PASS · RB-07 No inventory corruption — PASS · RB-08 No authentication bypass — PASS · RB-09 No critical security vulnerability — PASS · RB-10 No exposed secret (three chat-exposed PATs rotated) — FAIL · RB-11 No major data loss path — PASS · RB-12 Backup restore drill passed — UNCHECKABLE · RB-13 No broken critical mobile workflow — FAIL · RB-14 Invoice and payment workflows intact — PASS">
       <rect class="box" x="560" y="300" width="286" height="56" rx="14" fill="rgba(224,104,92,0.09)" stroke="rgba(224,104,92,0.5)"/>
-      <text x="703" y="324" text-anchor="middle" class="nlabel" style="font-size:14px" fill="#f0958c">14 gates · 7 pass · 3 fail</text>
-      <text x="703" y="345" text-anchor="middle" class="nsub">4 uncheckable · any FAIL → not ready</text>
+      <text x="703" y="324" text-anchor="middle" class="nlabel" style="font-size:14px" fill="#f0958c">14 gates · 8 pass · 3 fail</text>
+      <text x="703" y="345" text-anchor="middle" class="nsub">3 uncheckable · any FAIL → not ready</text>
     </g>
     <path d="M 703 300 L 703 280" stroke="#e0685c" stroke-width="2.4"/>
     <path d="M 686 288 L 720 288" stroke="#e0685c" stroke-width="2.4" stroke-linecap="round"/>
@@ -912,9 +960,9 @@ footer a{color:var(--mut)}
     <g class="node" data-tip="10/10 is stated only when the evidence supports it, and never on route coverage alone. A beautiful UI with broken persistence is not 10/10. A working backend with broken mobile is not 10/10.">
       <rect class="box" x="938" y="148" width="222" height="76" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.2)"/>
       <text x="1049" y="182" text-anchor="middle" class="nlabel" style="font-size:15px">10/10 — production ready</text>
-      <text x="1049" y="204" text-anchor="middle" class="nsub">not certifiable · 3 fail · 4 uncheckable</text>
+      <text x="1049" y="204" text-anchor="middle" class="nsub">not certifiable · 3 fail · 3 uncheckable</text>
     </g>
-    <text x="1049" y="256" text-anchor="middle" class="callout">23 golden paths · 1 passing · 16 failing · 6 unwritten</text>
+    <text x="1049" y="256" text-anchor="middle" class="callout">23 golden paths · 7 passing · 16 failing · 0 unwritten</text>
   </svg>
   <div class="capbar" data-cap="gate">Hover the gate or the gate rail for what each of the 14 gates decided.</div>
   </div>
@@ -935,7 +983,7 @@ footer a{color:var(--mut)}
       <li><b>The seam is what makes the backend swap safe.</b> The database seeds from today's fixtures, so every assertion that passes now must still pass after the swap.</li>
       <li><b>The client gate is a courtesy.</b> The real boundary is server-side, and a cross-tenant read returns 404 rather than confirming the record exists.</li>
       <li><b>Rendering is the floor.</b> 424 of 424 capabilities draw and assert their content; 99 are backed by real data, 4 are tablet-verified and 0 are production-ready. Both facts are true at once, and the second one is the honest one.</li>
-      <li><b>A journey is the only proof.</b> 1 of 23 golden paths pass, 16 fail and 6 have no journey at all. Unwritten is reported as its own state rather than counted green, because not knowing is not the same as passing.</li>
+      <li><b>A journey is the only proof.</b> 7 of 23 golden paths pass, 16 fail and 0 have no journey at all. Unwritten is reported as its own state rather than counted green, because not knowing is not the same as passing.</li>
       <li><b>W1 decides the calendar.</b> Ten product agents wait on four foundation agents, and the backend does not parallelise. Shortening the foundation is the only lever on elapsed time — everything else is effort, not schedule.</li>
     </ul>
   </div>
@@ -945,7 +993,7 @@ footer a{color:var(--mut)}
 <div class="wrap">
 <footer>
   Generated — not transcribed — from the project's scope registry, capability matrix, gap report, architecture, business rules, RBAC matrix, dependency graph, agent ownership, definition of done, test strategy, release plan and execution plan.
-  Measurements: registry <b>2 Sep 2026</b> · golden-path run <b>1 Sep 2026</b> · release gates <b>1 Sep 2026</b> · blockers <b>2 Sep 2026</b>. Effort projection: human estimate of <b>21 Aug 2026</b> — the only hand-supplied figure on this page.
+  Measurements: registry <b>2 Sep 2026</b> · golden-path run <b>2 Sep 2026</b> · release gates <b>2 Sep 2026</b> · blockers <b>2 Sep 2026</b>. Effort projection: human estimate of <b>21 Aug 2026</b> — the only hand-supplied figure on this page.
   Re-run <code>npm run gates</code> in <code>app/</code>, then <code>node project-control/build-map/build-map.mjs</code>, and every number above moves with it.
   <br><br>
   This page deliberately uses no green or purple — the two hues the SALIS AUTO brand guard forbids.

@@ -13,7 +13,6 @@ Computed from the registry. Every line is a query, not an opinion.
 | BLK-006 | HIGH | 1 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
 | BLK-013 | BLOCKER | 16 golden paths fail | 23 | W4 |
-| BLK-014 | HIGH | 6 golden paths have no journey | 23 | W4 |
 
 ## Flags across the inventory
 
@@ -33,33 +32,33 @@ Computed from the registry. Every line is a query, not an opinion.
 
 ## Golden paths
 
-Measured by `app/scripts/golden-paths.mjs` — 1 passing, 16 failing, 6 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
+Measured by `app/scripts/golden-paths.mjs` — 7 passing, 16 failing, 0 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
 
 | Path | Status | Journey | Detail |
 |---|---|---|---|
-| New customer to paid invoice | FAILING | `new-customer-to-paid-invoice` | new-customer-to-paid-invoice: step 3: "Send Invoice" did not raise an invoice for Journey Customer MTJAY1QL. The product answered: The fixture repository cannot |
-| Existing customer service | FAILING | `existing-customer-service` | existing-customer-service: step 3: the "New Job Card" save control is disabled, so no service visit can be opened for Ahmed Al-Rashid. The form itself says: Thi |
-| Mobile customer booking | FAILING | `mobile-customer-booking` | mobile-customer-booking: booking step 4: "Confirm Booking": the control is disabled, so the journey cannot complete — the screen explains: "This build has no AP |
-| Technician job completion | FAILING | `technician-job-completion` | technician-job-completion: step 2: job card C2A9F4E3 is listed as "Completed" but the workshop rail puts it at Check-In. The stage the technician works from is  |
-| Customer estimate approval | FAILING | `customer-estimate-approval` | customer-estimate-approval: step 3: approving EST-0231 was refused. The product answered: The fixture repository cannot change a job card. Set VITE_API_URL to r |
-| Parts procurement | FAILING | `parts-procurement` | parts-procurement: step "raise a requisition" — "New Requisition" opened "Creating requisitions is not available yet" instead of the requisition form. The produ |
-| Inventory receiving | FAILING | `inventory-receiving` | inventory-receiving: step "record the receipt" — the part ledger offers no "Receive Stock" action. The product says: Spark Plug Set SP-SET-04 Stock on hand, and |
-| Inventory consumption | FAILING | `inventory-consumption` | inventory-consumption: step "issue stock to a job" — the part ledger offers no "Consume" action. The product says: Oil Filter (Toyota) OF-TY-118 Stock on hand,  |
-| Supplier order | FAILING | `supplier-order` | supplier-order: step "choose the supplier" — the supplier picker is disabled. The product says: Back to Inventory Create Purchase Order / The order number is as |
-| CRM lead conversion | FAILING | `crm-lead-conversion` | crm-lead-conversion: convert: the conversion did not complete — the app stayed on the lead. The dialog said: The fixture repository cannot perform this action.  |
-| Insurance claim | UNWRITTEN | — | — |
-| Fleet contract | UNWRITTEN | — | — |
-| Loan workflow | UNWRITTEN | — | — |
-| Employee onboarding | UNWRITTEN | — | — |
-| Organization / branch setup | UNWRITTEN | — | — |
-| User invitation + RBAC | UNWRITTEN | — | — |
-| Accounting reconciliation | FAILING | `accounting-reconciliation` | accounting-reconciliation: "Accounting reconciliation" cannot be completed. 3 step(s) the product does not support today: ·   1. step 2 — there is no bank state |
-| Report generation | PASSING | `report-generation` | — |
-| Customer portal | FAILING | `customer-portal` | customer-portal: customer portal: the portal filled its panels without asking anyone for this customer's records — no request was made for vehicles, appointment |
-| Technician portal | FAILING | `technician-portal` | technician-portal: technician job detail: the job the portal handed this technician is not at the Repair stage — it is at "Check-In", so the portal's one write  |
-| Supplier portal | FAILING | `supplier-portal` | supplier-portal: step "read the order book" — the supplier's portal shows no purchase orders at all. The portal reads the `purchaseOrders` collection through th |
-| Call center | FAILING | `call-center` | call-center: call centre: "Answer" for Layla Al-Sulaiman: the control is disabled, so the journey cannot complete — and the screen offers no reason for refusing |
-| Kiosk | FAILING | `kiosk` | kiosk: kiosk step 1: "Find My Vehicle": the control is disabled, so the journey cannot complete — and the screen offers no reason for refusing it |
+| New customer to paid invoice | FAILING | `e2e/new-customer-to-paid-invoice.spec.ts` | [desktop] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — fai |
+| Existing customer service | FAILING | `e2e/existing-customer-service.spec.ts` | [desktop] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect( |
+| Mobile customer booking | PASSING | `e2e/mobile-customer-booking.spec.ts` | — |
+| Technician job completion | FAILING | `e2e/technician-job-completion.spec.ts` | [desktop] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestl |
+| Customer estimate approval | PASSING | `e2e/customer-estimate-approval.spec.ts` | — |
+| Parts procurement | FAILING | `e2e/parts-procurement.spec.ts` | [desktop] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 3000 |
+| Inventory receiving | FAILING | `e2e/inventory-receiving.spec.ts` | [desktop] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed |
+| Inventory consumption | FAILING | `e2e/inventory-consumption.spec.ts` | [mobile] e2e/inventory-consumption.spec.ts:24 › Inventory Consumption (Golden Path 8) › inventory hub totals reflect current parts stock — failed: Error: expect |
+| Supplier order | FAILING | `e2e/supplier-order.spec.ts` | [desktop] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received |
+| CRM lead conversion | FAILING | `e2e/crm-lead-conversion.spec.ts` | [desktop] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(recei |
+| Insurance claim | FAILING | `e2e/insurance-claim.spec.ts` | [desktop] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toCont |
+| Fleet contract | PASSING | `e2e/fleet-contract.spec.ts` | — |
+| Loan workflow | FAILING | `e2e/loan-workflow.spec.ts` | [desktop] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toCo |
+| Employee onboarding | FAILING | `e2e/employee-onboarding.spec.ts` | [desktop] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expec |
+| Organization / branch setup | PASSING | `e2e/org-branch-setup.spec.ts` | — |
+| User invitation + RBAC | PASSING | `e2e/user-invitation-rbac.spec.ts` | — |
+| Accounting reconciliation | FAILING | `e2e/accounting-reconciliation.spec.ts` | [desktop] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(receive |
+| Report generation | FAILING | `e2e/report-generation.spec.ts` | [desktop] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // inde |
+| Customer portal | FAILING | `e2e/customer-portal.spec.ts` | [desktop] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received) |
+| Technician portal | PASSING | `e2e/technician-portal.spec.ts` | — |
+| Supplier portal | FAILING | `e2e/supplier-portal.spec.ts` | [desktop] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain |
+| Call center | PASSING | `e2e/call-center.spec.ts` | — |
+| Kiosk | FAILING | `e2e/kiosk.spec.ts` | [desktop] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toC |
 
 ## Designs not in the registry
 

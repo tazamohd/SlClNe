@@ -62,3 +62,46 @@ test.describe('Inventory receiving lifecycle', () => {
     expect(await bodyText(page)).toContain('Stock')
   })
 })
+
+/** Ported from the retired `scripts/journeys/supply-chain.mjs`.
+ *
+ *  Receiving is a ledger movement, not a screen: on-hand is never written
+ *  directly, it is the consequence of the movements behind it. Nothing else in
+ *  this suite opens a part's ledger at all, so nothing else would notice if
+ *  the stock figures or the movement history disappeared from it. This build
+ *  has no ledger behind the dialog and says so — the honest end of this path
+ *  until the API exists.
+ *
+ *  Pinned to a desktop viewport in both projects: the mobile stock list
+ *  renders cards rather than the parts table this opens a part from. */
+test.describe('Inventory receiving — the part ledger', () => {
+  test.use({ viewport: { width: 1280, height: 800 } })
+
+  test.beforeEach(async ({ context }) => {
+    await seedRole(context, 'owner')
+  })
+
+  test('a part opens its ledger, which states the stock and refuses movements it cannot record', async ({ page }) => {
+    await gotoReady(page, '/inventory')
+
+    const parts = page.getByRole('table', { name: 'Current stock levels by part' })
+    await expect(parts).toBeVisible()
+    await expect(parts.locator('.animate-pulse')).toHaveCount(0)
+    expect(await parts.locator('tbody tr').count()).toBeGreaterThan(0)
+    await parts.locator('tbody tr').first().click()
+
+    const ledger = page.getByRole('dialog')
+    await expect(ledger).toBeVisible()
+    // The four figures a storekeeper receives against. Reserved and Available
+    // may read "—" on a dataset that does not record holds; the labels may not
+    // be missing, or the quantity on the shelf is being asserted from nowhere.
+    for (const figure of ['On Hand', 'Reserved', 'Available', 'Reorder At']) {
+      await expect(ledger.getByText(figure, { exact: true })).toBeVisible()
+    }
+
+    // No movement can be booked from this build, and the dialog says why
+    // rather than offering a form that could not save.
+    await expect(ledger.getByRole('button', { name: 'Receive Stock' })).toHaveCount(0)
+    await expect(ledger).toContainText('Stock movements need the API')
+  })
+})

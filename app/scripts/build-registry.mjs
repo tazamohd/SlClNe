@@ -1247,7 +1247,7 @@ const blockers = [
     detail: 'A journey walked the path and the product could not complete it. "No critical golden-path failure" is a release blocker.', owner: '23', wave: 'W4' },
   goldenUnwritten && { id: 'BLK-014', severity: 'HIGH', title: `${goldenUnwritten} golden paths have no journey`,
     detail: goldenRun
-      ? 'No journey in app/scripts/journeys walks these paths, so nothing is known about them. Unwritten is not passing.'
+      ? 'No spec in app/e2e declares these paths, so nothing is known about them. Unwritten is not passing.'
       : 'The runner has never run — project-control/GOLDEN_PATHS.json does not exist. Run `npm run golden`.',
     owner: '23', wave: 'W4' },
   brandViolations && { id: 'BLK-011', severity: 'MEDIUM', title: `${brandViolations} hardcoded colours sit in a forbidden hue band`,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01",
+  "generatedAt": "2026-09-02",
   "suites": {
     "unit": {
       "runner": "vitest",
@@ -39,9 +39,9 @@
     "goldenPaths": {
       "runner": "playwright",
       "present": true,
-      "covered": 1,
+      "covered": 7,
       "of": 23,
-      "note": "scripts/golden-paths.mjs — 16 failing, 6 unwritten"
+      "note": "scripts/golden-paths.mjs — 16 failing, 0 unwritten"
     },
     "mobile": {
       "runner": "playwright",

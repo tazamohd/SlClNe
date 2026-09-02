@@ -602,22 +602,23 @@ function defectArtefacts() {
   }
 }
 
-/** Golden-path journeys. The runner and modules are owned elsewhere; this only
- *  reports what exists, and reads a result file if one has been produced. */
+/** Golden-path coverage. The specs and the runner are owned elsewhere; this
+ *  only reports what exists, and reads the run record if one has been produced.
+ *
+ *  The journeys once lived in `app/scripts/journeys` as their own module system.
+ *  They were retired into `app/e2e`, where the Playwright suite already walked
+ *  the same paths, and a spec now declares its path in its `describe` title.
+ *  This scan follows, because a gate that counts files in a deleted directory
+ *  reports zero for ever and calls it evidence. */
 function goldenPathEvidence() {
   const plan = readJson(join(HERE, 'tracker', 'plan-structure.json'))
   const named = plan?.goldenPaths?.length ?? 0
-  const dir = join(APP, 'scripts', 'journeys')
+  const dir = join(APP, 'e2e')
   const modules = existsSync(dir)
-    ? readdirSync(dir).filter((name) => /\.(mjs|js|ts)$/.test(name))
+    ? readdirSync(dir).filter((name) => /\.spec\.tsx?$/.test(name))
+        .filter((name) => /\(Golden Path \d+\)/.test(readFileSync(join(dir, name), 'utf8')))
     : []
-  const candidates = [
-    join(HERE, 'GOLDEN_PATHS.json'),
-    join(HERE, 'JOURNEYS.json'),
-    join(APP, 'scripts', 'journeys', 'results.json'),
-    join(APP, 'journey-results.json'),
-  ]
-  const resultFile = candidates.find((path) => existsSync(path)) ?? null
+  const resultFile = existsSync(join(HERE, 'GOLDEN_PATHS.json')) ? join(HERE, 'GOLDEN_PATHS.json') : null
   return { named, dir: relative(ROOT, dir), modules, resultFile: resultFile ? relative(ROOT, resultFile) : null, results: resultFile ? readJson(resultFile) : null }
 }
 
@@ -769,13 +770,12 @@ async function main() {
       status: UNCHECKABLE,
       evidence:
         `${golden.named} golden paths are named in tracker/plan-structure.json and none of them has been ` +
-        `walked. ${golden.dir} contains ${golden.modules.length} journey module(s) and no runner result ` +
-        `file exists (looked for project-control/GOLDEN_PATHS.json, project-control/JOURNEYS.json, ` +
-        `app/scripts/journeys/results.json, app/journey-results.json). project-control/TEST_STATUS.json ` +
+        `walked. ${golden.dir} contains ${golden.modules.length} declaring spec(s) and no runner result ` +
+        `file exists (looked for project-control/GOLDEN_PATHS.json). project-control/TEST_STATUS.json ` +
         `records the goldenPaths suite as present=${mobile.goldenPathSuite?.present} with ` +
         `${mobile.goldenPathSuite?.covered ?? 0}/${mobile.goldenPathSuite?.of ?? golden.named} covered. ` +
-        `"Nobody checked" is not "nothing failed": a human must land the journey modules and their ` +
-        `runner, after which this gate reads their output automatically.`,
+        `"Nobody checked" is not "nothing failed": a human must land the declaring specs, after which ` +
+        `this gate reads the runner's output automatically.`,
       checkedBy: 'no golden-path run exists',
     })
   }
@@ -995,32 +995,84 @@ async function main() {
 
   /* ── 13 — critical mobile workflow ─────────────────────────────────────── */
   {
-    const mobileJourneys = golden.modules.length
+    /* This gate used to read UNCHECKABLE with the words "no mobile workflow
+     * suite exists to fail". One exists now: playwright.config.ts declares a
+     * `mobile` project at 390x844 and every golden-path spec runs in it, so the
+     * phone-facing paths are walked on a phone viewport. Leaving the old text
+     * in place would have been a gate asserting its own blindness after it
+     * could see — the failure this whole checker is meant to prevent.
+     *
+     * `projects` comes from the run record rather than from parsing its prose,
+     * so "the mobile project never ran" and "it ran and was clean" stay
+     * distinguishable. Without it a green would be indistinguishable from an
+     * absence. */
     const rows = golden.results ? (Array.isArray(golden.results) ? golden.results : golden.results.paths ?? []) : []
-    const phonePaths = rows.filter((row) => /mobile|kiosk|portal|call center/i.test(String(row.path ?? row.id)))
-    const phoneLine = phonePaths.length
-      ? ` The phone- and kiosk-facing golden paths stand at: ` +
-        `${phonePaths.map((row) => `${row.path ?? row.id} — ${row.status}`).join('; ')} ` +
-        `(from ${golden.resultFile}; any failure there is already carried as a FAIL by RB-03 and is not ` +
-        `double-counted here).`
-      : ''
-    gate('RB-13', 'No broken critical mobile workflow', {
-      status: UNCHECKABLE,
-      evidence:
-        `No mobile workflow suite exists to fail.${phoneLine} project-control/TEST_STATUS.json records the mobile ` +
-        `suite as present=${mobile.mobileSuite?.present} with ${mobile.mobileSuite?.covered ?? 0}/` +
-        `${mobile.mobileSuite?.of ?? '?'} covered and the tablet suite as present=` +
-        `${mobile.tabletSuite?.present} with ${mobile.tabletSuite?.covered ?? 0}/${mobile.tabletSuite?.of ?? '?'}; ` +
-        `${golden.dir} holds ${mobileJourneys} journey module(s), so no journey walks a phone. ` +
-        `Open mobile blockers: ${mobile.openMobileBlockers.join(' | ') || 'none'}. The nearest tooling, ` +
-        `app/scripts/mobile-audit.mjs, loads every route at 390x844 and reports horizontal overflow — a ` +
-        `layout property, not a workflow — so a green run there would not answer this gate and passing it ` +
-        `off as one would be exactly the fake green this project forbids. A human must write mobile ` +
-        `journeys (the runner contract is in app/scripts/journeys/README.md) covering at minimum the ` +
-        `mobile booking, technician job-completion and customer-portal paths; this gate then reads their ` +
-        `result alongside RB-03.`,
-      checkedBy: 'no mobile workflow run exists',
-    })
+    const ranProjects = golden.results?.projects ?? []
+    const ranMobile = ranProjects.some((name) => /mobile|phone/i.test(String(name)))
+    const failsMobile = (row) => /\[mobile\]/.test(String(row.error ?? ''))
+    const failsDesktop = (row) => /\[desktop\]/.test(String(row.error ?? ''))
+    /* Two ways a path counts as a mobile workflow, because one of them is a
+     * name and names are not measurements.
+     *
+     * By name: the paths a phone or kiosk user actually walks. A useful
+     * heuristic, and the only one the gate had.
+     *
+     * By behaviour: any path that passes on desktop and fails on mobile. That
+     * IS a workflow a phone cannot complete, whatever it is called, and the
+     * name filter alone misses it -- `Inventory consumption` is exactly that
+     * case and was invisible to this gate until the run record could be read
+     * per project. Filtering on the word "mobile" would have reported the one
+     * unambiguous phone-specific break in the record as out of scope. */
+    const namedPhone = rows.filter((row) => /mobile|kiosk|portal|call center/i.test(String(row.path ?? row.id)))
+    const mobileOnly = rows.filter((row) => failsMobile(row) && !failsDesktop(row))
+    const phonePaths = [...new Set([...namedPhone, ...mobileOnly])]
+    const brokenOnMobile = phonePaths.filter(failsMobile)
+
+    if (!golden.resultFile || !rows.length) {
+      gate('RB-13', 'No broken critical mobile workflow', {
+        status: UNCHECKABLE,
+        evidence:
+          `No run record exists at project-control/GOLDEN_PATHS.json, so nothing is known about the ` +
+          `phone-facing paths. Run \`npm run golden\` — the Playwright suite's mobile project walks them ` +
+          `at 390x844 — and this gate reads the result.`,
+        checkedBy: 'no golden-path run record',
+      })
+    } else if (!ranMobile) {
+      gate('RB-13', 'No broken critical mobile workflow', {
+        status: UNCHECKABLE,
+        evidence:
+          `${golden.resultFile} records a run over ${ranProjects.join(', ') || 'no project'}, which does not ` +
+          `include a mobile viewport. Every path in it could be passing and this gate would still know ` +
+          `nothing about a phone. Re-run without restricting the Playwright projects.`,
+        checkedBy: 'run covered no mobile project',
+      })
+    } else if (brokenOnMobile.length) {
+      gate('RB-13', 'No broken critical mobile workflow', {
+        status: FAIL,
+        evidence:
+          `${brokenOnMobile.length} of ${phonePaths.length} phone- and kiosk-facing golden path(s) fail in the ` +
+          `mobile project (390x840) of the Playwright suite, per ${golden.resultFile}: ` +
+          `${brokenOnMobile.map((row) => row.path ?? row.id).join('; ')}. ` +
+          (mobileOnly.length
+            ? `${mobileOnly.length} fail on mobile while passing on desktop, which is a phone-specific break ` +
+              `rather than a product-wide one: ${mobileOnly.map((row) => row.path ?? row.id).join('; ')}. `
+            : `All of them also fail on desktop, so they are broken everywhere rather than only on a phone; ` +
+              `RB-03 carries the product-wide failure and this gate carries the mobile half. `) +
+          `Open mobile blockers: ${mobile.openMobileBlockers.join(' | ') || 'none'}.`,
+        checkedBy: 'playwright mobile project via the golden-path run record',
+      })
+    } else {
+      gate('RB-13', 'No broken critical mobile workflow', {
+        status: PASS,
+        evidence:
+          `All ${phonePaths.length} phone- and kiosk-facing golden path(s) pass in the mobile project ` +
+          `(390x840) of the Playwright suite, per ${golden.resultFile} (projects: ${ranProjects.join(', ')}). ` +
+          `Note this covers workflow completion at a phone viewport, not layout quality: BLK-008 ` +
+          `(tablet 768-1024) is a separate, still-open concern, and app/scripts/mobile-audit.mjs measures ` +
+          `horizontal overflow rather than whether a workflow finishes.`,
+        checkedBy: 'playwright mobile project via the golden-path run record',
+      })
+    }
   }
 
   /* ── 14 — invoice and payment workflows ────────────────────────────────── */

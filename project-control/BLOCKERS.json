@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-09-02",
-  "open": 6,
+  "open": 5,
   "blockers": [
     {
       "id": "BLK-003",
@@ -39,14 +39,6 @@
       "severity": "BLOCKER",
       "title": "16 golden paths fail",
       "detail": "A journey walked the path and the product could not complete it. \"No critical golden-path failure\" is a release blocker.",
-      "owner": "23",
-      "wave": "W4"
-    },
-    {
-      "id": "BLK-014",
-      "severity": "HIGH",
-      "title": "6 golden paths have no journey",
-      "detail": "No journey in app/scripts/journeys walks these paths, so nothing is known about them. Unwritten is not passing.",
       "owner": "23",
       "wave": "W4"
     }

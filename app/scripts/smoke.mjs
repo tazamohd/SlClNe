@@ -1623,7 +1623,7 @@ const PLACEHOLDER_BUDGET = 0
 const PENDING_MARKER = 'Designed, not yet rebuilt'
 
 /* `isExternal` — third-party hosts whose failures say nothing about the app —
- * is imported from lib/browser.mjs, which the golden-path runner reads too. */
+ * is imported from lib/browser.mjs. */
 
 /** What each shell owes the DOM. `PendingScreen` renders inside the operational
  *  shell whatever the registry's eventual target is, so a placeholder is judged
