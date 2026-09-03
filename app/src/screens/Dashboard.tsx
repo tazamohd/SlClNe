@@ -4,13 +4,14 @@ import { CHART_COLORS } from '@/components/ui/Charts'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { PageHeader } from '@/components/shell/AppShell'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
+import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Role-adaptive KPI home. The reference implementation every other
  *  operational screen follows: PageHeader → metric row → pipeline strip →
@@ -18,6 +19,7 @@ import { useCollection } from '@/data/useCollection'
 export function Dashboard() {
   const { t, rtl } = usePreferences()
   const { userName } = useSession()
+  const isMobile = useIsMobile()
   const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
 
   if (isLoading) return <Loading label="Loading dashboard..." />
@@ -40,6 +42,202 @@ export function Dashboard() {
     { header: 'Priority', cell: (job) => <PriorityBadge value={job.pr} label={t(job.pr)} /> },
     { header: 'Status', cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} /> },
   ]
+
+  if (isMobile) {
+    /* `Dashboard.Mobile.dc.html`: a compact header, two full-width actions,
+     * the metrics and the pipeline as horizontal strips (one card ~78% of the
+     * viewport so the next one peeks in), the two charts stacked, and the
+     * latest job cards as a card list. The strips bleed to the screen edge
+     * (`-mx-4 px-4`) exactly as the design's 16px gutter does. */
+    return (
+      <>
+        <MobilePageHeader
+          icon="Sparkles"
+          title={t('Dashboard')}
+          subtitle={
+            <>
+              {t('Welcome back,')}{' '}
+              <span className="font-semibold text-heading">{userName}</span>
+            </>
+          }
+        />
+
+        <div className="flex gap-2">
+          <Button variant="outline" size="md" className="h-10 flex-1">
+            <Icon name="FileText" size={16} />
+            {t('New Job Card')}
+          </Button>
+          <Button size="md" className="h-10 flex-1">
+            <Icon name="Car" size={16} />
+            {t('Add Vehicle')}
+          </Button>
+        </div>
+
+        {/* ── Metrics strip ────────────────────────────────────────────── */}
+        <div
+          role="region"
+          aria-label={t('Metrics')}
+          tabIndex={0}
+          className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+        >
+          <MobileMetric
+            icon="DollarSign"
+            iconTint="var(--tint-blue)"
+            iconColor="var(--salis-blue)"
+            label={t('Total Revenue')}
+            value="$128,450"
+            orbGradient="linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))"
+            orbIcon="TrendingUp"
+            footer={
+              <span className="inline-flex w-fit items-center gap-0.5 text-xs font-semibold text-salis-blue">
+                <Icon name="ArrowUpRight" size={14} />
+                +12%
+              </span>
+            }
+          />
+          <MobileMetric
+            icon="Wrench"
+            iconTint="var(--tint-bright)"
+            iconColor="var(--salis-blue-bright)"
+            label={t('Active Jobs')}
+            value="14"
+            orbGradient="linear-gradient(135deg,var(--salis-blue-bright),var(--chart-3))"
+            orbIcon="Gauge"
+            footer={
+              <div className="flex flex-wrap gap-1.5">
+                <span className="rounded-full border border-salis-orange/[.3] bg-tint-orange px-2 py-0.5 text-[11px] font-medium text-salis-orange">
+                  {t('5 pending')}
+                </span>
+                <span className="rounded-full border border-salis-bright/[.3] bg-tint-bright px-2 py-0.5 text-[11px] font-medium text-salis-bright">
+                  {t('9 active')}
+                </span>
+              </div>
+            }
+          />
+          <MobileMetric
+            icon="Users"
+            iconTint="var(--tint-navy)"
+            iconColor="var(--salis-navy)"
+            label={t('Customers')}
+            value="248"
+            orbGradient="linear-gradient(135deg,var(--salis-navy),var(--navy-dark))"
+            orbIcon="Target"
+            footer={
+              <span className="inline-flex w-fit items-center gap-0.5 text-xs font-semibold text-salis-blue">
+                <Icon name="ArrowUpRight" size={14} />
+                +8%
+              </span>
+            }
+          />
+          <MobileMetric
+            icon="Package"
+            iconTint="var(--tint-orange)"
+            iconColor="var(--salis-orange)"
+            label={t('Inventory')}
+            value="86%"
+            orbGradient="linear-gradient(135deg,var(--salis-orange),var(--orange-light))"
+            orbIcon="ShieldCheck"
+            footer={<span className="text-xs text-salis-orange">{t('142/165 in stock')}</span>}
+          />
+        </div>
+
+        {/* ── Pipeline strip ───────────────────────────────────────────── */}
+        <div>
+          <h3 className="mb-3 text-sm font-bold text-heading">{t('Pipeline')}</h3>
+          <div
+            role="region"
+            aria-label={t('Pipeline')}
+            tabIndex={0}
+            className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+          >
+            {PIPELINE.map((stage) => (
+              <Card key={stage.label} className="flex flex-[0_0_100px] flex-col gap-2 p-3">
+                <span
+                  className="flex w-fit rounded-lg p-2 text-white shadow-md"
+                  style={{ background: stage.gradient }}
+                >
+                  <Icon name={stage.icon} size={16} />
+                </span>
+                <div>
+                  <h4 className="font-display text-xl font-black text-heading">{stage.count}</h4>
+                  <p className="text-[11px] font-medium text-muted">{t(stage.label)}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Charts, stacked ──────────────────────────────────────────── */}
+        <Card className="p-4">
+          <CardHeader icon="TrendingUp" title={t('Revenue Trend')} className="mb-4" />
+          <RevenueTrendChart label={t('Revenue Trend')} />
+        </Card>
+
+        <Card className="p-4">
+          <CardHeader icon="BarChart3" title={t('Job Status')} className="mb-4" />
+          <div className="flex flex-wrap items-center gap-5">
+            <div
+              className="relative h-[140px] w-[140px] flex-shrink-0 rounded-full"
+              style={{ background: `conic-gradient(${donutGradient})` }}
+            >
+              <div className="absolute inset-7 flex flex-col items-center justify-center rounded-full bg-card">
+                <span className="font-display text-2xl font-black text-heading">{donutTotal}</span>
+                <span className="text-[11px] text-muted">{t('jobs')}</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              {LEGEND.map(([label, count], index) => (
+                <div key={label} className="flex items-center gap-2 text-[13px]">
+                  <span
+                    className="h-2.5 w-2.5 flex-shrink-0 rounded-[3px]"
+                    style={{ background: CHART_COLORS[index % CHART_COLORS.length] }}
+                  />
+                  <span className="min-w-[80px] text-body">{t(label as string)}</span>
+                  <span className="font-mono text-xs text-muted">{count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* ── Latest job cards ─────────────────────────────────────────── */}
+        <div>
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-bold text-heading">{t('Latest Job Cards')}</h3>
+            <Link
+              to="/job-cards"
+              className="inline-flex items-center gap-1 font-action text-[13px] font-medium text-salis-blue no-underline hover:no-underline"
+            >
+              {t('View All')}
+              <Icon name="ArrowUpRight" size={14} />
+            </Link>
+          </div>
+          <DataTable
+            caption="Latest job cards"
+            columns={jobColumns}
+            rows={jobs}
+            rowKey={(job) => job.id}
+            mobileCard={(job) => (
+              <>
+                <MobileCardHeader
+                  title={job.id}
+                  code
+                  trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+                />
+                <MobileCardRow>
+                  {job.cust} · {job.veh}
+                </MobileCardRow>
+                <div className="flex flex-wrap gap-2">
+                  <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} />
+                  <PriorityBadge value={job.pr} label={t(job.pr)} />
+                </div>
+              </>
+            )}
+          />
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -186,29 +384,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="p-6">
           <CardHeader icon="TrendingUp" title={t('Revenue Trend')} className="mb-6" />
-          <svg viewBox="0 0 600 260" className="block h-auto w-full" role="img" aria-label={t('Revenue Trend')}>
-            <defs>
-              <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--salis-blue)" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="var(--salis-blue)" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path d={`${REVENUE_PATH} L580,220 L20,220 Z`} fill="url(#revGrad)" />
-            <path d={REVENUE_PATH} fill="none" stroke="var(--salis-blue)" strokeWidth="2.5" />
-            {MONTHS.map((month, i) => (
-              <text
-                key={month}
-                x={20 + i * 112}
-                y="244"
-                fontSize="11"
-                fill="var(--text-muted)"
-                textAnchor="middle"
-                fontFamily="Inter,sans-serif"
-              >
-                {month}
-              </text>
-            ))}
-          </svg>
+          <RevenueTrendChart label={t('Revenue Trend')} />
         </Card>
 
         <Card className="p-6">
@@ -370,6 +546,79 @@ function MetricCard({
           />
         </div>
       ) : null}
+    </Card>
+  )
+}
+
+function RevenueTrendChart({ label }: { label: string }) {
+  return (
+      <svg viewBox="0 0 600 260" className="block h-auto w-full" role="img" aria-label={label}>
+        <defs>
+          <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--salis-blue)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="var(--salis-blue)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={`${REVENUE_PATH} L580,220 L20,220 Z`} fill="url(#revGrad)" />
+        <path d={REVENUE_PATH} fill="none" stroke="var(--salis-blue)" strokeWidth="2.5" />
+        {MONTHS.map((month, i) => (
+          <text
+            key={month}
+            x={20 + i * 112}
+            y="244"
+            fontSize="11"
+            fill="var(--text-muted)"
+            textAnchor="middle"
+            fontFamily="Inter,sans-serif"
+          >
+            {month}
+          </text>
+        ))}
+      </svg>
+  )
+}
+
+/** One card of the mobile metrics strip: ~78% of the viewport so the next
+ *  card peeks in and says the row scrolls. */
+function MobileMetric({
+  icon,
+  iconTint,
+  iconColor,
+  label,
+  value,
+  footer,
+  orbGradient,
+  orbIcon,
+}: {
+  icon: string
+  iconTint: string
+  iconColor: string
+  label: string
+  value: string
+  footer?: React.ReactNode
+  orbGradient: string
+  orbIcon: string
+}) {
+  return (
+    <Card className="flex-[0_0_78%] snap-start rounded-[14px] p-4">
+      <div className="flex items-start justify-between gap-2.5">
+        <div className="flex min-w-0 flex-col gap-2.5">
+          <div className="flex items-center gap-2">
+            <span className="flex rounded-lg p-1.5" style={{ background: iconTint, color: iconColor }}>
+              <Icon name={icon} size={16} />
+            </span>
+            <span className="text-xs font-medium text-muted">{label}</span>
+          </div>
+          <h3 className="font-display text-2xl font-black text-heading">{value}</h3>
+          {footer}
+        </div>
+        <div
+          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-white"
+          style={{ background: orbGradient }}
+        >
+          <Icon name={orbIcon} size={22} />
+        </div>
+      </div>
     </Card>
   )
 }
