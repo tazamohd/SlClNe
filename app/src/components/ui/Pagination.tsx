@@ -7,10 +7,25 @@ export interface PaginationProps {
   pageSize: number
   total: number
   onPageChange: (page: number) => void
+  /** Offer a rows-per-page choice. Omit to keep the page size fixed. */
+  pageSizeOptions?: readonly number[]
+  onPageSizeChange?: (pageSize: number) => void
   className?: string
+  testId?: string
 }
 
-export function Pagination({ page, pageSize, total, onPageChange, className }: PaginationProps) {
+/** "Showing 1–25 of 140" plus the page buttons, as the design's table footers
+ *  draw it. Numerals are Latin and LTR in both languages (README §7). */
+export function Pagination({
+  page,
+  pageSize,
+  total,
+  onPageChange,
+  pageSizeOptions,
+  onPageSizeChange,
+  className,
+  testId = 'data-table-pagination',
+}: PaginationProps) {
   const { t, rtl } = usePreferences()
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const from = Math.min((page - 1) * pageSize + 1, total)
@@ -21,12 +36,43 @@ export function Pagination({ page, pageSize, total, onPageChange, className }: P
   return (
     <nav
       aria-label={t('Pagination')}
-      className={cn('flex items-center justify-between gap-4', className)}
+      data-testid={testId}
+      className={cn('flex flex-wrap items-center justify-between gap-3', className)}
     >
-      <span className="text-xs text-muted">
-        {total > 0
-          ? `${from}–${to} ${t('of')} ${total}`
-          : t('No results')}
+      <span className="flex items-center gap-3 text-xs text-muted">
+        <span data-testid="data-table-summary">
+          {total > 0 ? (
+            <>
+              {t('Showing')}{' '}
+              <span dir="ltr" className="font-mono tabular-nums text-body">
+                {from}–{to}
+              </span>{' '}
+              {t('of')}{' '}
+              <span dir="ltr" className="font-mono tabular-nums text-body">
+                {total}
+              </span>
+            </>
+          ) : (
+            t('No results')
+          )}
+        </span>
+        {pageSizeOptions?.length && onPageSizeChange ? (
+          <label className="flex items-center gap-1.5">
+            <span className="sr-only">{t('Rows per page')}</span>
+            <select
+              value={pageSize}
+              onChange={(event) => onPageSizeChange(Number(event.target.value))}
+              className="h-8 rounded border border-border bg-inset px-2 font-mono text-xs text-heading outline-none focus:border-salis-blue focus:shadow-[0_0_0_3px_rgba(10,94,215,.15)]"
+            >
+              {pageSizeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <span aria-hidden>{t('per page')}</span>
+          </label>
+        ) : null}
       </span>
       <div className="flex items-center gap-1">
         <PageButton
@@ -47,6 +93,7 @@ export function Pagination({ page, pageSize, total, onPageChange, className }: P
               key={p}
               active={p === page}
               onClick={() => onPageChange(p as number)}
+              aria-current={p === page ? 'page' : undefined}
             >
               {p}
             </PageButton>
@@ -77,6 +124,7 @@ function PageButton({
   onClick: () => void
   children: React.ReactNode
   'aria-label'?: string
+  'aria-current'?: 'page'
 }) {
   return (
     <button
@@ -84,7 +132,7 @@ function PageButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        'flex h-8 min-w-[32px] cursor-pointer items-center justify-center rounded-md border-none px-2 text-xs font-medium transition-colors',
+        'flex h-9 min-w-[36px] cursor-pointer items-center justify-center rounded-md border-none px-2 font-mono text-xs font-medium tabular-nums transition-colors',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue',
         active
           ? 'bg-salis-gradient text-white'

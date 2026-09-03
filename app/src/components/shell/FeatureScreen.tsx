@@ -2,9 +2,9 @@ import { type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader, type PageHeaderProps } from '@/components/ui/PageHeader'
 import { Select } from '@/components/ui/Select'
 import { Tabs, TabList, Tab } from '@/components/ui/Tabs'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
 /** Composition kit for the product's feature screens.
@@ -21,48 +21,10 @@ import { usePreferences } from '@/providers/PreferencesProvider'
  *  Building that shape once keeps 211 screens consistent with each other and
  *  with the designed screens, instead of 211 separate interpretations. */
 
-export function FeatureHeader({
-  icon,
-  title,
-  subtitle,
-  actions,
-}: {
-  icon: string
-  title: string
-  subtitle?: string
-  actions?: ReactNode
-}) {
-  const isMobile = useIsMobile()
-
-  return (
-    <div className="flex flex-wrap items-start justify-between gap-4">
-      <div className="flex min-w-0 items-center gap-3">
-        <div
-          className={cn(
-            'flex flex-shrink-0 rounded-xl bg-salis-gradient text-white',
-            'shadow-[0_12px_20px_-6px_rgba(10,94,215,.35)]',
-            isMobile ? 'p-2.5' : 'p-3.5'
-          )}
-        >
-          <Icon name={icon} size={isMobile ? 20 : 26} />
-        </div>
-        <div className="min-w-0">
-          <h1
-            className={cn(
-              'font-display font-black tracking-[-0.02em] text-heading',
-              isMobile ? 'text-xl' : 'text-[34px] leading-[1.15]'
-            )}
-          >
-            {title}
-          </h1>
-          {subtitle ? (
-            <p className={cn('text-muted', isMobile ? 'text-xs' : 'mt-0.5 text-sm')}>{subtitle}</p>
-          ) : null}
-        </div>
-      </div>
-      {actions ? <div className="flex flex-shrink-0 flex-wrap gap-2.5">{actions}</div> : null}
-    </div>
-  )
+/** @deprecated Import `PageHeader` from `@/components/ui/PageHeader`. The kit's
+ *  header is now the standard variant of the one page header. */
+export function FeatureHeader(props: Omit<PageHeaderProps, 'variant'>) {
+  return <PageHeader variant="standard" {...props} />
 }
 
 /** Pill tab bar built on the Tabs primitive. Controlled when `value`/`onChange`

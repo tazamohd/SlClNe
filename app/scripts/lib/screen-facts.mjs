@@ -61,3 +61,30 @@ export function arabicStateFrom({ translated, uncovered, dynamic }) {
   if (dynamic) return 'PARTIAL'
   return translated ? 'VERIFIED' : 'MISSING'
 }
+
+/** The frames that carry all three async states for whatever they wrap. A
+ *  screen rendered through one of them has loading, error and empty handled
+ *  by construction, which is the whole reason the frames exist. */
+const STATE_FRAMES = /<(?:ScreenFrame|ListPage|DetailPage|FeatureScreenView)\b/
+
+/** `{ loading, error, empty, success }` for one source file.
+ *
+ *  The first three predicates are the ones `build-registry` used inline for
+ *  a year — kept verbatim, plus the frames above. `success` is new: it was a
+ *  hardcoded 'MISSING' on all 424 entries, which is not a measurement. A
+ *  screen counts as giving success feedback when it raises a toast or wraps a
+ *  write in `toast.promise`; a toast that only ever reports errors is still
+ *  feedback the user sees. */
+export function stateFacts(src) {
+  const framed = STATE_FRAMES.test(src)
+  return {
+    loading:
+      framed || (src.includes('Loading') && (src.includes('isLoading') || src.includes('<Loading'))),
+    error: framed || src.includes('ErrorState') || (src.includes('isError') && src.includes('error')),
+    empty:
+      framed ||
+      src.includes('EmptyState') ||
+      (src.includes('empty') && (src.includes('length === 0') || src.includes('.length'))),
+    success: /\buseToast\s*\(/.test(src) && /\b(?:show|promise|update)\s*\(/.test(src),
+  }
+}

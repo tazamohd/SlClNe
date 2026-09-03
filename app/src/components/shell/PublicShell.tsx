@@ -5,6 +5,9 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { cn } from '@/lib/cn'
 import { Footer } from '@/screens/public/sections/Footer'
+import { ShellContext } from './ShellContext'
+
+const PUBLIC_SHELL = { kind: 'public' } as const
 
 /** The marketing chrome all ten `PublicPortal.*.dc.html` designs share: a
  *  64px sticky header — logo, centred nav, theme toggle, sign-in — and the
@@ -48,6 +51,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
   }, [pathname])
 
   return (
+    <ShellContext.Provider value={PUBLIC_SHELL}>
     <div className="flex min-h-screen flex-col bg-page font-ui">
       <a
         href="#main-content"
@@ -159,5 +163,6 @@ export function PublicShell({ children }: { children: ReactNode }) {
 
       <Footer />
     </div>
+    </ShellContext.Provider>
   )
 }

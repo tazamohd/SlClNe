@@ -85,6 +85,10 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
   services: null,
   departments: null,
   integrations: null,
+
+  // ─── Client-local until the server serves them (see CLIENT_LOCAL) ───────
+  featureRows: null,
+  notifications: null,
 }
 
 /** Collections the API can actually serve today. */

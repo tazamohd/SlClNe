@@ -64,6 +64,21 @@ jobs:
       - name: Design tokens and brand palette
         run: npm run check-tokens
 
+      - name: Arabic coverage
+        run: npm run check-i18n
+
+      - name: Accessibility (static)
+        run: npm run check-a11y
+
+      - name: Logical CSS and aria-label copy
+        run: npm run lint:css && npm run lint:a11y
+
+      - name: Registry ratchet (states, mock-only, Arabic may fall, never rise)
+        run: npm run check-registry-ratchet
+
+      - name: Bundle budget
+        run: npm run check-bundle
+
       - name: Upload the gap report
         if: always()
         uses: actions/upload-artifact@v4
@@ -109,6 +124,44 @@ jobs:
 
       - name: Smoke — routes, behaviour, mobile, brand guard
         run: npm run smoke
+
+  playwright:
+    name: End-to-end specs
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # playwright.config.ts builds and previews on 4173 itself.
+      - name: Playwright — navigation, responsive, RBAC, keyboard, RTL, states, a11y
+        run: npx playwright test
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            app/playwright-report
+            app/test-results
+          retention-days: 7
 
   server-typecheck:
     name: Server / Typecheck

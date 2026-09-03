@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-03",
   "domains": [
     {
       "id": "workshop",
@@ -2035,7 +2035,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "Welcome Page",
@@ -2053,7 +2053,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "Customers List",
@@ -2062,7 +2062,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "Customer Loyalty",
@@ -2170,7 +2170,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "Vehicle Inspections",
@@ -2431,7 +2431,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "Parts Availability",
@@ -3844,7 +3844,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "User Settings",
@@ -3853,7 +3853,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "REDIRECT"
         },
         {
           "name": "Security Settings",

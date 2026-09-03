@@ -1,234 +1,159 @@
 import { useMemo, useState } from 'react'
-import { Card } from '@/components/ui/Card'
-import { Icon } from '@/components/ui/Icon'
+import { useNavigate } from 'react-router-dom'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { Button } from '@/components/ui/Button'
-import { Badge } from '@/components/ui/Badge'
-import { EmptyState } from '@/components/ui/States'
-import { MobileCardHeader, MobileCardRow, MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
+import { Card } from '@/components/ui/Card'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
+import { Icon } from '@/components/ui/Icon'
+import { useNotifications, type NotificationItem } from '@/data/useNotifications'
+import { useDateFormat } from '@/lib/formatDate'
+import { cn } from '@/lib/cn'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useIsMobile } from '@/lib/useMediaQuery'
 
-interface Notification {
-  id: number
-  icon: string
-  title: string
-  body: string
-  time: string
-  category: 'jobs' | 'appointments' | 'alerts' | 'finance'
-  categoryLabel: string
-  iconBg: string
-  categoryBg: string
-  categoryFg: string
-  unread: boolean
-}
-
+/** The notification centre, reading the same collection the bell counts.
+ *
+ *  The previous version held eight rows in a local array with a `readSet`
+ *  that reset on navigation, so the bell's orange dot never went away.
+ *  Marking read now writes through the seam; the badge in the topbar, the
+ *  phone header and the customer app all fall to zero together. */
 type FilterId = 'all' | 'unread' | 'alerts'
 
-function useNotifications(t: (s: string) => string) {
-  return useMemo<Notification[]>(() => [
-    { id: 1, icon: 'Wrench', title: t('New Job Card Created'), body: 'JC-E5D7A3B5 — Sara Al-Mutairi · Ford Explorer 2022', time: t('just now'), category: 'jobs', categoryLabel: t('Job Cards'), iconBg: 'var(--tint-blue)', categoryBg: 'var(--tint-blue)', categoryFg: 'var(--salis-blue)', unread: true },
-    { id: 2, icon: 'Calendar', title: t('Appointment Confirmed'), body: 'Ahmed Al-Rashid — ' + t('Maintenance') + ' · Jul 23, 9:00 AM', time: '5 ' + t('minutes ago'), category: 'appointments', categoryLabel: t('Appointments'), iconBg: 'var(--tint-bright)', categoryBg: 'var(--tint-bright)', categoryFg: 'var(--salis-blue-bright)', unread: true },
-    { id: 3, icon: 'AlertTriangle', title: t('Invoice Overdue'), body: 'INV-2026-0141 — Fatima Al-Zahrani · SAR 4,250', time: '2 ' + t('hours ago'), category: 'alerts', categoryLabel: t('Alerts'), iconBg: 'var(--tint-orange)', categoryBg: 'var(--tint-orange)', categoryFg: 'var(--salis-orange)', unread: true },
-    { id: 4, icon: 'Package', title: t('Low Stock Alert'), body: t('Brake Pads (Front)') + ' — 18/25 ' + t('In Stock'), time: '3 ' + t('hours ago'), category: 'alerts', categoryLabel: t('Alerts'), iconBg: 'var(--tint-orange)', categoryBg: 'var(--tint-orange)', categoryFg: 'var(--salis-orange)', unread: true },
-    { id: 5, icon: 'CreditCard', title: t('Payment Received'), body: 'INV-2026-0140 — Omar Al-Ghamdi · SAR 620', time: t('yesterday'), category: 'finance', categoryLabel: t('Finance'), iconBg: 'var(--tint-blue)', categoryBg: 'var(--tint-blue)', categoryFg: 'var(--salis-blue)', unread: false },
-    { id: 6, icon: 'FileCheck', title: t('Estimate Approved'), body: 'EST-0230 — Mohammed Hassan · SAR 3,600', time: t('yesterday'), category: 'jobs', categoryLabel: t('Job Cards'), iconBg: 'var(--tint-blue)', categoryBg: 'var(--tint-blue)', categoryFg: 'var(--salis-blue)', unread: false },
-    { id: 7, icon: 'ShieldCheck', title: t('QC Passed'), body: 'JC-C2A9F4E3 — Omar Al-Ghamdi · Hyundai Sonata 2023', time: '2 ' + t('days ago'), category: 'jobs', categoryLabel: t('Job Cards'), iconBg: 'var(--tint-blue)', categoryBg: 'var(--tint-blue)', categoryFg: 'var(--salis-blue)', unread: false },
-    { id: 8, icon: 'Car', title: t('Vehicle Ready'), body: 'JC-A3F8B2C1 — Ahmed Al-Rashid · Toyota Camry 2022', time: '2 ' + t('days ago'), category: 'jobs', categoryLabel: t('Job Cards'), iconBg: 'var(--tint-bright)', categoryBg: 'var(--tint-bright)', categoryFg: 'var(--salis-blue-bright)', unread: false },
-  ], [t])
-}
-
-const FILTERS: { id: FilterId; labelKey: string }[] = [
-  { id: 'all', labelKey: 'All Notifications' },
-  { id: 'unread', labelKey: 'Unread' },
-  { id: 'alerts', labelKey: 'Alerts' },
+const FILTERS: { id: FilterId; label: string }[] = [
+  { id: 'all', label: 'All Notifications' },
+  { id: 'unread', label: 'Unread' },
+  { id: 'alerts', label: 'Alerts' },
 ]
+
+const KIND_LABEL: Record<NotificationItem['kind'], string> = {
+  jobs: 'Job Cards',
+  appointments: 'Appointments',
+  alerts: 'Alerts',
+  finance: 'Finance',
+}
 
 export function NotificationCenter() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
-  const allNotifs = useNotifications(t)
-
+  const { relative } = useDateFormat()
+  const navigate = useNavigate()
+  const { items, unread, isLoading, isError, error, refetch, markRead, markAllRead, pending } = useNotifications()
   const [filter, setFilter] = useState<FilterId>('all')
-  const [readSet, setReadSet] = useState<Record<number, boolean>>({})
-
-  const markRead = (id: number) => setReadSet((prev) => ({ ...prev, [id]: true }))
-  const markAllRead = () => {
-    const next: Record<number, boolean> = {}
-    for (const n of allNotifs) next[n.id] = true
-    setReadSet(next)
-  }
-
-  const unreadCount = allNotifs.filter((n) => n.unread && !readSet[n.id]).length
 
   const filtered = useMemo(() => {
-    if (filter === 'unread') return allNotifs.filter((n) => n.unread && !readSet[n.id])
-    if (filter === 'alerts') return allNotifs.filter((n) => n.category === 'alerts')
-    return allNotifs
-  }, [allNotifs, filter, readSet])
+    if (filter === 'unread') return items.filter((n) => !n.readAt)
+    if (filter === 'alerts') return items.filter((n) => n.kind === 'alerts')
+    return items
+  }, [items, filter])
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="Bell"
-          title={t('Notification Center')}
-          subtitle={unreadCount + ' ' + t('unread')}
-        />
-
-        <div className="flex gap-2 overflow-x-auto">
-          {FILTERS.map((f) => (
-            <Button
-              key={f.id}
-              variant={filter === f.id ? 'primary' : 'subtle'}
-              size="sm"
-              onClick={() => setFilter(f.id)}
-            >
-              {t(f.labelKey)}
-            </Button>
-          ))}
-          <Button variant="ghost" size="sm" onClick={markAllRead}>
-            <Icon name="CheckCheck" size={14} />
-            {t('Mark All Read')}
-          </Button>
-        </div>
-
-        {filtered.length === 0 ? (
-          <Card className="p-6">
-            <EmptyState
-              icon="BellOff"
-              title={t('No notifications')}
-              description={t('Nothing matches the current filters.')}
-            />
-          </Card>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {filtered.map((n) => {
-              const isUnread = n.unread && !readSet[n.id]
-              return (
-                <MobileCard key={n.id} onClick={() => markRead(n.id)}>
-                  <MobileCardHeader
-                    leading={
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="flex flex-shrink-0 rounded-lg p-2"
-                          style={{ background: n.iconBg, color: n.categoryFg }}
-                        >
-                          <Icon name={n.icon} size={16} />
-                        </span>
-                        <span className="text-[13px] font-semibold text-heading">{n.title}</span>
-                        {isUnread && (
-                          <span className="h-2 w-2 flex-shrink-0 rounded-full bg-salis-blue" />
-                        )}
-                      </div>
-                    }
-                  />
-                  <MobileCardRow label={n.body} />
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-muted">{n.time}</span>
-                    <Badge background={n.categoryBg} color={n.categoryFg}>
-                      {n.categoryLabel}
-                    </Badge>
-                  </div>
-                </MobileCard>
-              )
-            })}
-          </div>
-        )}
-      </div>
-    )
+  const open = (item: NotificationItem) => {
+    if (!item.readAt) markRead(item.id)
+    if (item.route) navigate(item.route)
   }
 
   return (
-    <div className="mx-auto flex max-w-[800px] animate-fade-up flex-col gap-5 motion-reduce:animate-none">
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-salis-blue opacity-30 blur-xl" />
-            <div className="relative flex rounded-2xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="Bell" size={28} />
-            </div>
-          </div>
-          <div>
-            <h1 className="font-display text-[26px] font-black text-heading">{t('Notification Center')}</h1>
-            <p className="mt-0.5 text-sm text-muted">{unreadCount} {t('unread')}</p>
-          </div>
-        </div>
-        <div className="flex-1" />
-        <div className="flex overflow-hidden rounded-lg border border-border">
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => setFilter(f.id)}
-              className={
-                'h-[34px] cursor-pointer border-none px-3.5 font-action text-xs font-semibold transition-colors ' +
-                (filter === f.id
-                  ? 'bg-salis-gradient text-white'
-                  : 'bg-card text-body hover:bg-inset')
-              }
-            >
-              {t(f.labelKey)}
-            </button>
-          ))}
-        </div>
-        <Button variant="subtle" size="sm" onClick={markAllRead}>
-          <Icon name="CheckCheck" size={14} />
-          {t('Mark All Read')}
+    <ScreenFrame
+      icon="Bell"
+      title="Notification Center"
+      subtitle={
+        <>
+          <span dir="ltr" className="font-mono tabular-nums">
+            {unread}
+          </span>{' '}
+          {t('unread')}
+        </>
+      }
+      query={{ isLoading, isError, error, refetch }}
+      skeleton="cards"
+      empty={
+        !isLoading && filtered.length === 0
+          ? {
+              icon: filter === 'unread' ? 'CheckCheck' : 'BellOff',
+              title: filter === 'unread' ? "You're all caught up" : 'No notifications yet',
+              description:
+                filter === 'unread'
+                  ? 'Every notification has been read.'
+                  : 'Job, appointment, stock and payment events will appear here.',
+            }
+          : false
+      }
+      actions={
+        <Button
+          variant="outline"
+          size="md"
+          icon="CheckCheck"
+          onClick={markAllRead}
+          disabled={unread === 0}
+          loading={pending}
+          loadingLabel="Saving..."
+        >
+          {t('Mark all as read')}
         </Button>
-      </div>
-
-      {filtered.length === 0 ? (
-        <Card className="p-8">
-          <EmptyState
-            icon="BellOff"
-            title={t('No notifications')}
-            description={t('Nothing matches the current filters.')}
-          />
-        </Card>
-      ) : (
-        <div className="flex flex-col">
-          {filtered.map((n) => {
-            const isUnread = n.unread && !readSet[n.id]
-            return (
-              <div
-                key={n.id}
-                onClick={() => markRead(n.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    markRead(n.id)
-                  }
-                }}
-                className={`flex cursor-pointer gap-3.5 border-0 border-b border-solid border-border px-4 py-4 transition-colors duration-150 hover:bg-salis-blue/[.03] focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 focus-visible:outline-none ${isUnread ? 'bg-salis-blue/[.03]' : ''}`}
+      }
+      toolbar={
+        <ChipGroup label={t('Filter notifications')}>
+          {FILTERS.map((f) => (
+            <Chip
+              key={f.id}
+              label={f.id === 'unread' ? `${t(f.label)} (${unread})` : t(f.label)}
+              selected={filter === f.id}
+              onToggle={() => setFilter(f.id)}
+            />
+          ))}
+        </ChipGroup>
+      }
+    >
+      <Card className="divide-y divide-border overflow-hidden">
+        {filtered.map((item) => {
+          const isUnread = !item.readAt
+          const alert = item.kind === 'alerts'
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => open(item)}
+              data-testid="notification-row"
+              aria-label={`${t(item.title)}${isUnread ? ` — ${t('unread')}` : ''}`}
+              className={cn(
+                'flex w-full cursor-pointer items-start gap-3.5 border-none px-4 py-3.5 text-start transition-colors sm:px-5',
+                'hover:bg-salis-blue/[.04] focus-visible:outline-none focus-visible:bg-salis-blue/[.08]',
+                isUnread ? 'bg-tint-blue/40' : 'bg-transparent'
+              )}
+            >
+              <span
+                className={cn(
+                  'mt-0.5 flex flex-shrink-0 rounded-lg p-2',
+                  alert ? 'bg-tint-orange text-salis-orange' : 'bg-tint-blue text-salis-blue'
+                )}
               >
-                <span
-                  className="flex flex-shrink-0 rounded-xl p-2.5"
-                  style={{ background: n.iconBg, color: n.categoryFg }}
-                >
-                  <Icon name={n.icon} size={18} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-heading">{n.title}</p>
-                    {isUnread && (
-                      <span className="h-2 w-2 flex-shrink-0 rounded-full bg-salis-blue" />
+                <Icon name={item.icon} size={16} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className={cn('text-sm text-heading', isUnread ? 'font-bold' : 'font-semibold')}>
+                    {t(item.title)}
+                  </span>
+                  <span
+                    className={cn(
+                      'rounded-full px-2 py-px text-[11px] font-medium',
+                      alert ? 'bg-tint-orange text-salis-orange' : 'bg-tint-blue text-salis-blue'
                     )}
-                  </div>
-                  <p className="mt-1 text-[13px] leading-relaxed text-body">{n.body}</p>
-                  <div className="mt-1.5 flex items-center gap-2">
-                    <span className="text-[11px] text-muted">{n.time}</span>
-                    <Badge background={n.categoryBg} color={n.categoryFg}>
-                      {n.categoryLabel}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
-    </div>
+                  >
+                    {t(KIND_LABEL[item.kind])}
+                  </span>
+                </span>
+                <span dir="ltr" className="mt-0.5 block truncate text-[13px] text-muted">
+                  {item.body}
+                </span>
+              </span>
+              <span className="flex flex-shrink-0 flex-col items-end gap-1.5">
+                <span className="text-[11px] text-faint">{relative(item.createdAt)}</span>
+                {isUnread ? (
+                  <span aria-hidden className="h-2 w-2 rounded-full bg-salis-orange" />
+                ) : null}
+              </span>
+            </button>
+          )
+        })}
+      </Card>
+    </ScreenFrame>
   )
 }

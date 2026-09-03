@@ -12,7 +12,16 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { repository } from '@/data/repository'
 import { cn } from '@/lib/cn'
+import { useDebounce } from '@/lib/useDebounce'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
+import {
+  matchCommand,
+  useBuiltInCommands,
+  useRegisteredCommands,
+  type Command,
+  type CommandGroup,
+} from './commands'
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 
@@ -85,7 +94,7 @@ const ENTITY_DEFS: EntityDef[] = [
     searchFields: ['id', 'cust', 'veh'],
     primaryField: 'id',
     secondaryFields: ['cust', 'veh', 'st'],
-    route: '/job-cards',
+    route: '/job-detail?id=$id',
     idField: 'id',
   },
   {
@@ -97,7 +106,7 @@ const ENTITY_DEFS: EntityDef[] = [
     searchFields: ['id', 'cust', 'amount'],
     primaryField: 'id',
     secondaryFields: ['cust', 'amount', 'status'],
-    route: '/invoices',
+    route: '/invoice-detail?id=$id',
     idField: 'id',
   },
   {
@@ -109,7 +118,7 @@ const ENTITY_DEFS: EntityDef[] = [
     searchFields: ['id', 'cust', 'veh'],
     primaryField: 'id',
     secondaryFields: ['cust', 'veh', 'amount'],
-    route: '/estimates',
+    route: '/estimate-detail?id=$id',
     idField: 'id',
   },
   {
@@ -200,12 +209,11 @@ const ENTITY_DEFS: EntityDef[] = [
 
 /* ── Recent searches ───────────────────────────────────────────────────────── */
 
-const RECENT_KEY = 'salis-recent-searches'
 const MAX_RECENT = 5
 
 function readRecent(): string[] {
   try {
-    const raw = localStorage.getItem(RECENT_KEY)
+    const raw = readStored(STORAGE_KEYS.recentSearches)
     if (!raw) return []
     const parsed = JSON.parse(raw) as unknown
     return Array.isArray(parsed) ? parsed.filter((s): s is string => typeof s === 'string').slice(0, MAX_RECENT) : []
@@ -215,19 +223,16 @@ function readRecent(): string[] {
 }
 
 function addRecent(term: string): void {
-  try {
-    const list = readRecent().filter((s) => s !== term)
-    list.unshift(term)
-    localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, MAX_RECENT)))
-  } catch {
-    /* localStorage may be blocked */
-  }
+  const list = readRecent().filter((s) => s !== term)
+  list.unshift(term)
+  writeStored(STORAGE_KEYS.recentSearches, JSON.stringify(list.slice(0, MAX_RECENT)))
 }
 
 /* ── Search logic ──────────────────────────────────────────────────────────── */
 
 const MAX_PER_CATEGORY = 5
 const MAX_TOTAL = 25
+const MAX_COMMANDS = 8
 
 function matchRow(row: Record<string, unknown>, fields: string[], needle: string): boolean {
   for (const field of fields) {
@@ -244,6 +249,17 @@ function fieldValue(row: Record<string, unknown>, field: string): string {
   return String(v)
 }
 
+const GROUP_LABEL: Record<CommandGroup, string> = {
+  screen: 'On this screen',
+  create: 'Create',
+  navigate: 'Go to',
+  toggle: 'Preferences',
+  session: 'Session',
+}
+
+/** Everything the list can hold, in one keyboard-navigable order. */
+type Item = { kind: 'command'; command: Command } | { kind: 'result'; result: SearchResult }
+
 /* ── Component ─────────────────────────────────────────────────────────────── */
 
 export function GlobalSearchPalette({
@@ -254,17 +270,19 @@ export function GlobalSearchPalette({
   onClose: () => void
 }) {
   const { t } = usePreferences()
-  const { can } = useSession()
+  const { can, canScreen } = useSession()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
+  const builtIn = useBuiltInCommands()
+  const registeredCommands = useRegisteredCommands()
 
   const [query, setQuery] = useState('')
+  const settled = useDebounce(query, 200)
   const [results, setResults] = useState<SearchResult[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [recentSearches, setRecentSearches] = useState<string[]>(readRecent)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   /** Entity definitions the current role can access. */
   const allowedDefs = useMemo(
@@ -272,13 +290,30 @@ export function GlobalSearchPalette({
     [can],
   )
 
+  const hasQuery = query.trim().length > 0
+
+  /** Commands: with no query, the screen's own actions plus preferences and
+   *  session — a short, actionable list. With a query, everything that
+   *  matches, navigation included, capped so records still get room. */
+  const commands = useMemo<Command[]>(() => {
+    const visible = [...registeredCommands, ...builtIn].filter(
+      (command) => !command.screen || canScreen(command.screen)
+    )
+    if (!hasQuery) return visible.filter((command) => command.group !== 'navigate')
+    const needle = query.trim()
+    const order: CommandGroup[] = ['screen', 'create', 'navigate', 'toggle', 'session']
+    return visible
+      .filter((command) => matchCommand(command, needle, t))
+      .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group))
+      .slice(0, MAX_COMMANDS)
+  }, [registeredCommands, builtIn, canScreen, hasQuery, query, t])
+
   /** Execute search across all permitted entities. */
   const executeSearch = useCallback(
     async (term: string) => {
       const needle = term.toLowerCase().trim()
       if (!needle) {
         setResults([])
-        setActiveIndex(0)
         return
       }
 
@@ -307,7 +342,7 @@ export function GlobalSearchPalette({
                   icon: def.icon,
                   primary,
                   secondary,
-                  route: def.route,
+                  route: def.route.replace('$id', encodeURIComponent(id)),
                 })
                 count++
               }
@@ -319,22 +354,14 @@ export function GlobalSearchPalette({
       )
 
       setResults(all.slice(0, MAX_TOTAL))
-      setActiveIndex(0)
     },
     [allowedDefs],
   )
 
-  /** Debounced search. */
   useEffect(() => {
     if (!open) return
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => {
-      void executeSearch(query)
-    }, 250)
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [query, open, executeSearch])
+    void executeSearch(settled)
+  }, [settled, open, executeSearch])
 
   /** Focus the input when opened. */
   useEffect(() => {
@@ -347,32 +374,37 @@ export function GlobalSearchPalette({
     }
   }, [open])
 
+  const items = useMemo<Item[]>(
+    () => [
+      ...commands.map((command): Item => ({ kind: 'command', command })),
+      ...results.map((result): Item => ({ kind: 'result', result })),
+    ],
+    [commands, results]
+  )
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [items.length, query])
+
   /** Scroll active item into view. */
   useEffect(() => {
     if (!listRef.current) return
-    const active = listRef.current.querySelector('[data-active="true"]')
-    if (active) {
-      active.scrollIntoView({ block: 'nearest' })
-    }
+    const active = listRef.current.querySelector<HTMLElement>('[data-active="true"]')
+    active?.scrollIntoView?.({ block: 'nearest' })
   }, [activeIndex])
 
-  /** Navigate to a result. */
-  const selectResult = useCallback(
-    (result: SearchResult) => {
-      if (query.trim()) addRecent(query.trim())
-      setRecentSearches(readRecent())
-      navigate(result.route)
+  const runItem = useCallback(
+    (item: Item) => {
+      if (item.kind === 'result') {
+        if (query.trim()) addRecent(query.trim())
+        setRecentSearches(readRecent())
+        navigate(item.result.route)
+      } else {
+        item.command.run({ navigate })
+      }
       onClose()
     },
     [navigate, onClose, query],
-  )
-
-  /** Navigate to a recent search term. */
-  const selectRecent = useCallback(
-    (term: string) => {
-      setQuery(term)
-    },
-    [],
   )
 
   /** Keyboard navigation. */
@@ -385,7 +417,7 @@ export function GlobalSearchPalette({
       }
       if (e.key === 'ArrowDown') {
         e.preventDefault()
-        setActiveIndex((i) => Math.min(i + 1, results.length - 1))
+        setActiveIndex((i) => Math.min(i + 1, Math.max(items.length - 1, 0)))
         return
       }
       if (e.key === 'ArrowUp') {
@@ -395,39 +427,51 @@ export function GlobalSearchPalette({
       }
       if (e.key === 'Enter') {
         e.preventDefault()
-        if (results[activeIndex]) {
-          selectResult(results[activeIndex])
-        }
-        return
+        if (items[activeIndex]) runItem(items[activeIndex])
       }
     },
-    [onClose, results, activeIndex, selectResult],
+    [onClose, items, activeIndex, runItem],
   )
 
   if (!open) return null
 
   /** Group results by category. */
-  const grouped: { label: string; icon: string; items: { result: SearchResult; globalIndex: number }[] }[] = []
+  const grouped: { label: string; icon: string; entries: { result: SearchResult; index: number }[] }[] = []
   const seen = new Map<string, number>()
-  for (let i = 0; i < results.length; i++) {
-    const r = results[i]
+  results.forEach((r, i) => {
+    const index = commands.length + i
     let groupIdx = seen.get(r.categoryKey)
     if (groupIdx === undefined) {
       groupIdx = grouped.length
       seen.set(r.categoryKey, groupIdx)
-      grouped.push({ label: r.category, icon: r.icon, items: [] })
+      grouped.push({ label: r.category, icon: r.icon, entries: [] })
     }
-    grouped[groupIdx].items.push({ result: r, globalIndex: i })
-  }
+    grouped[groupIdx].entries.push({ result: r, index })
+  })
 
-  const hasQuery = query.trim().length > 0
+  const commandGroups: { group: CommandGroup; entries: { command: Command; index: number }[] }[] = []
+  commands.forEach((command, index) => {
+    let bucket = commandGroups.find((g) => g.group === command.group)
+    if (!bucket) {
+      bucket = { group: command.group, entries: [] }
+      commandGroups.push(bucket)
+    }
+    bucket.entries.push({ command, index })
+  })
+
   const showRecent = !hasQuery && recentSearches.length > 0
-  const showEmpty = hasQuery && results.length === 0
+  const showEmpty = hasQuery && items.length === 0
+
+  const optionClass = (active: boolean) =>
+    cn(
+      'flex w-full cursor-pointer items-center gap-3 border-none px-4 py-2.5 text-start transition-colors focus-visible:outline-none',
+      active ? 'bg-salis-blue/[.08]' : 'bg-transparent hover:bg-salis-blue/[.04]',
+    )
 
   return createPortal(
     <div
       role="presentation"
-      className="fixed inset-0 z-[95] flex items-start justify-center bg-salis-navy/[.55] pt-[10vh] sm:pt-[15vh]"
+      className="fixed inset-0 z-palette flex items-start justify-center bg-salis-navy/[.55] pt-[10vh] sm:pt-[15vh]"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -436,12 +480,13 @@ export function GlobalSearchPalette({
         role="dialog"
         aria-modal="true"
         aria-label={t('Global Search')}
+        data-testid="command-palette"
         tabIndex={-1}
         className={cn(
           'flex w-full flex-col overflow-hidden border border-border bg-card shadow-2xl',
           isMobile
             ? 'h-full rounded-none'
-            : 'max-h-[min(520px,70vh)] max-w-[580px] rounded-2xl',
+            : 'max-h-[min(560px,72vh)] max-w-[600px] rounded-2xl',
         )}
         onKeyDown={handleKeyDown}
       >
@@ -453,8 +498,10 @@ export function GlobalSearchPalette({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('Search customers, vehicles, parts...')}
-            aria-label={t('Search customers, vehicles, parts...')}
+            placeholder={t('Search or type an action...')}
+            aria-label={t('Search or type an action...')}
+            aria-controls="command-palette-list"
+            aria-activedescendant={items[activeIndex] ? `palette-item-${activeIndex}` : undefined}
             className="min-w-0 flex-1 border-none bg-transparent font-ui text-[15px] text-heading outline-none placeholder:text-faint"
             autoComplete="off"
             autoCorrect="off"
@@ -465,7 +512,7 @@ export function GlobalSearchPalette({
               type="button"
               onClick={onClose}
               aria-label={t('Close')}
-              className="flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors hover:text-heading"
+              className="flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-colors hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
             >
               <Icon name="X" size={16} />
             </button>
@@ -476,8 +523,50 @@ export function GlobalSearchPalette({
           )}
         </div>
 
-        {/* ── Results / recent / empty ─────────────────────────────────── */}
-        <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto" role="listbox">
+        {/* ── Commands / results / recent / empty ───────────────────────── */}
+        <div ref={listRef} id="command-palette-list" className="min-h-0 flex-1 overflow-y-auto" role="listbox">
+          {commandGroups.map((bucket) => (
+            <div key={bucket.group}>
+              <div className="flex items-center gap-2 px-4 pb-1 pt-3">
+                <Icon name="Zap" size={12} className="text-muted" />
+                <span className="font-action text-[11px] font-semibold uppercase tracking-[.05em] text-muted">
+                  {t(GROUP_LABEL[bucket.group])}
+                </span>
+              </div>
+              {bucket.entries.map(({ command, index }) => (
+                <button
+                  key={command.id}
+                  id={`palette-item-${index}`}
+                  type="button"
+                  role="option"
+                  aria-selected={index === activeIndex}
+                  data-active={index === activeIndex}
+                  data-testid="command-palette-result"
+                  onClick={() => runItem({ kind: 'command', command })}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  className={optionClass(index === activeIndex)}
+                >
+                  <span
+                    className={cn(
+                      'flex flex-shrink-0 rounded-lg p-1.5',
+                      index === activeIndex ? 'bg-salis-blue/[.15] text-salis-blue' : 'bg-salis-blue/[.08] text-salis-blue',
+                    )}
+                  >
+                    <Icon name={command.icon} size={14} />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-[13px] font-medium text-heading">
+                    {t(command.label)}
+                  </span>
+                  {command.shortcut ? (
+                    <kbd className="rounded border border-border bg-inset px-1.5 py-px font-mono text-[10px] text-muted">
+                      {command.shortcut}
+                    </kbd>
+                  ) : null}
+                </button>
+              ))}
+            </div>
+          ))}
+
           {showRecent ? (
             <div className="px-4 py-3">
               <span className="font-action text-[11px] font-semibold uppercase tracking-wide text-muted">
@@ -488,7 +577,7 @@ export function GlobalSearchPalette({
                   <button
                     key={term}
                     type="button"
-                    onClick={() => selectRecent(term)}
+                    onClick={() => setQuery(term)}
                     className="flex cursor-pointer items-center gap-3 rounded-lg border-none bg-transparent px-2 py-2 text-start transition-colors hover:bg-salis-blue/[.04] focus-visible:bg-salis-blue/[.06] focus-visible:outline-none"
                   >
                     <Icon name="Clock" size={14} className="flex-shrink-0 text-muted" />
@@ -497,13 +586,13 @@ export function GlobalSearchPalette({
                 ))}
               </div>
             </div>
-          ) : showEmpty ? (
+          ) : null}
+
+          {showEmpty ? (
             <div className="flex flex-col items-center gap-2 px-5 py-12 text-center">
               <Icon name="SearchX" size={36} className="text-muted" />
               <p className="m-0 text-sm text-muted">{t('No results found')}</p>
-              <p className="m-0 text-xs text-faint">
-                {t('Try a different search term')}
-              </p>
+              <p className="m-0 text-xs text-faint">{t('Try a different search term')}</p>
             </div>
           ) : (
             grouped.map((group) => (
@@ -514,57 +603,43 @@ export function GlobalSearchPalette({
                     {t(group.label)}
                   </span>
                 </div>
-                {group.items.map(({ result, globalIndex }) => (
+                {group.entries.map(({ result, index }) => (
                   <button
                     key={result.id}
+                    id={`palette-item-${index}`}
                     type="button"
                     role="option"
-                    aria-selected={globalIndex === activeIndex}
-                    data-active={globalIndex === activeIndex}
-                    onClick={() => selectResult(result)}
-                    onMouseEnter={() => setActiveIndex(globalIndex)}
-                    className={cn(
-                      'flex w-full cursor-pointer items-center gap-3 border-none px-4 py-2.5 text-start transition-colors focus-visible:outline-none',
-                      globalIndex === activeIndex
-                        ? 'bg-salis-blue/[.08]'
-                        : 'bg-transparent hover:bg-salis-blue/[.04]',
-                    )}
+                    aria-selected={index === activeIndex}
+                    data-active={index === activeIndex}
+                    data-testid="command-palette-result"
+                    onClick={() => runItem({ kind: 'result', result })}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    className={optionClass(index === activeIndex)}
                   >
                     <span
                       className={cn(
                         'flex flex-shrink-0 rounded-lg p-1.5',
-                        globalIndex === activeIndex
-                          ? 'bg-salis-blue/[.15] text-salis-blue'
-                          : 'bg-salis-blue/[.08] text-salis-blue',
+                        index === activeIndex ? 'bg-salis-blue/[.15] text-salis-blue' : 'bg-salis-blue/[.08] text-salis-blue',
                       )}
                     >
                       <Icon name={result.icon} size={14} />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="m-0 truncate text-[13px] font-medium text-heading">
-                        {result.primary}
-                      </p>
-                      <p className="m-0 mt-px truncate text-[11px] text-muted">
-                        {result.secondary}
-                      </p>
+                      <p className="m-0 truncate text-[13px] font-medium text-heading">{result.primary}</p>
+                      <p className="m-0 mt-px truncate text-[11px] text-muted">{result.secondary}</p>
                     </div>
-                    <span className="flex-shrink-0 text-[11px] text-faint">
-                      {t(result.category)}
-                    </span>
+                    <span className="flex-shrink-0 text-[11px] text-faint">{t(result.category)}</span>
                   </button>
                 ))}
               </div>
             ))
           )}
 
-          {/* Hint when nothing is typed and no recent searches */}
-          {!hasQuery && recentSearches.length === 0 ? (
+          {!hasQuery && commands.length === 0 && recentSearches.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-5 py-12 text-center">
               <Icon name="Search" size={36} className="text-muted" />
               <p className="m-0 text-sm text-muted">{t('Search across all entities')}</p>
-              <p className="m-0 text-xs text-faint">
-                {t('Search customers, vehicles, parts...')}
-              </p>
+              <p className="m-0 text-xs text-faint">{t('Search customers, vehicles, parts...')}</p>
             </div>
           ) : null}
         </div>
@@ -598,21 +673,9 @@ export function GlobalSearchPalette({
   )
 }
 
-/** Hook: manages the search palette open/close state and the Cmd+K / Ctrl+K
- *  global shortcut. Returns `{ open, setOpen }`. */
-export function useGlobalSearch() {
-  const [open, setOpen] = useState(false)
+export default GlobalSearchPalette
 
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        setOpen((prev) => !prev)
-      }
-    }
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [])
-
-  return { open, setOpen }
-}
+/** The open/close hook moved to `CommandPalette.tsx` so the headers can bind
+ *  ⌘K without pulling this module into the shared entry; re-exported for the
+ *  callers that still import it from here. */
+export { useGlobalSearch } from './CommandPalette'

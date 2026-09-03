@@ -1,9 +1,13 @@
 import type { ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
+import { PageHeader, type PageHeaderProps } from '@/components/ui/PageHeader'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
+import { useNotifications } from '@/data/useNotifications'
+import { CommandPalette, useGlobalSearch } from './CommandPalette'
+import { CountBadge } from './Topbar'
 
 /** Mobile chrome: 56px header with the drawer trigger, user chip and controls.
  *
@@ -14,7 +18,9 @@ import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
 export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
   const { t, theme, toggleTheme } = usePreferences()
   const { userName } = useSession()
+  const navigate = useNavigate()
   const { open: searchOpen, setOpen: setSearchOpen } = useGlobalSearch()
+  const { unread } = useNotifications()
 
   return (
     <header className="relative z-[5] flex h-14 flex-shrink-0 items-center gap-2 border-b border-border bg-sidebar px-3 shadow-sm">
@@ -46,13 +52,15 @@ export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
       </button>
       <button
         type="button"
-        aria-label={t('Notifications')}
+        onClick={() => navigate('/notification-center')}
+        aria-label={unread > 0 ? `${t('Notifications')}: ${unread} ${t('unread')}` : t('Notifications')}
+        data-testid="topbar-notifications"
         className="relative inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
       >
         <Icon name="Bell" size={16} />
-        <span className="absolute top-1.5 h-[7px] w-[7px] rounded-full border-2 border-sidebar bg-salis-orange end-[7px]" />
+        {unread > 0 ? <CountBadge count={unread} /> : null}
       </button>
-      <GlobalSearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   )
 }
@@ -152,28 +160,10 @@ export function MobileList({ children }: { children: ReactNode }) {
 }
 
 /** Compact page title for mobile screens (the 48px gradient heading doesn't
- *  fit a phone). */
-export function MobilePageHeader({
-  icon,
-  title,
-  subtitle,
-  actions,
-}: {
-  icon: string
-  title: string
-  subtitle?: ReactNode
-  actions?: ReactNode
-}) {
-  return (
-    <div className="flex items-center gap-2.5">
-      <div className="flex rounded-lg bg-salis-gradient p-2.5 text-white shadow-[0_12px_20px_-6px_rgba(10,94,215,.3)]">
-        <Icon name={icon} size={20} />
-      </div>
-      <div className="min-w-0 flex-1">
-        <h1 className="truncate font-display text-xl font-black text-heading">{title}</h1>
-        {subtitle ? <p className="truncate text-xs text-muted">{subtitle}</p> : null}
-      </div>
-      {actions}
-    </div>
-  )
+ *  fit a phone).
+ *  @deprecated `PageHeader` from `@/components/ui/PageHeader` renders this
+ *  layout itself below 860px, so a screen no longer needs an `isMobile`
+ *  branch to pick it. Kept for the screens that still do. */
+export function MobilePageHeader(props: Omit<PageHeaderProps, 'variant'>) {
+  return <PageHeader variant="compact" {...props} />
 }

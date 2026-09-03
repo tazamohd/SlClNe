@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn'
 import { Money } from './Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -81,6 +82,149 @@ export function CountBars({
         </div>
       ))}
     </div>
+  )
+}
+
+/** SVG path for a series scaled into `width × height`, with `pad` px kept
+ *  clear at top and bottom so the stroke never clips. Shared by the sparkline
+ *  and the area chart; exported so a test can pin the geometry. */
+export function pathFor(
+  values: readonly number[],
+  width: number,
+  height: number,
+  pad = 2
+): { line: string; area: string; points: { x: number; y: number }[] } {
+  if (values.length === 0) return { line: '', area: '', points: [] }
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const span = max - min || 1
+  const step = values.length > 1 ? width / (values.length - 1) : 0
+  const points = values.map((value, index) => ({
+    x: values.length > 1 ? index * step : width / 2,
+    y: pad + (height - pad * 2) * (1 - (value - min) / span),
+  }))
+  const line = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
+  const last = points[points.length - 1]
+  const area = `${line} L${last.x.toFixed(1)},${height} L${points[0].x.toFixed(1)},${height} Z`
+  return { line, area, points }
+}
+
+/** Tiny trend line for a KPI tile. Reads as an image to assistive tech, with
+ *  `label` saying what the trend is of; the figure it sits beside carries the
+ *  value. `kind: 'area'` fills under the line. */
+export function Sparkline({
+  values,
+  kind = 'line',
+  width = 96,
+  height = 32,
+  stroke = 'var(--salis-blue)',
+  label,
+  showLast,
+  className,
+}: {
+  values: readonly number[]
+  kind?: 'line' | 'area'
+  width?: number
+  height?: number
+  stroke?: string
+  /** English source string. */
+  label: string
+  /** Mark the latest point with a dot. */
+  showLast?: boolean
+  className?: string
+}) {
+  const { t } = usePreferences()
+  const { line, area, points } = pathFor(values, width, height, 3)
+  const last = points[points.length - 1]
+  return (
+    <svg
+      role="img"
+      aria-label={t(label)}
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      className={className}
+    >
+      {kind === 'area' && area ? <path d={area} fill={stroke} fillOpacity={0.12} /> : null}
+      {line ? (
+        <path d={line} fill="none" stroke={stroke} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      ) : null}
+      {showLast && last ? <circle cx={last.x} cy={last.y} r={3} fill={stroke} /> : null}
+    </svg>
+  )
+}
+
+/** Area chart for a time series, drawn inline like every other chart here.
+ *  Axes are labels only — the design draws no grid — and the series is also
+ *  described in text for screen readers: first, last and peak values. */
+export function AreaChart({
+  series,
+  labels,
+  height = 260,
+  label,
+  format = (value) => String(value),
+  className,
+}: {
+  series: readonly number[]
+  /** One label per point, e.g. months. */
+  labels: readonly string[]
+  height?: number
+  /** English source string naming the chart. */
+  label: string
+  /** Formats a value for the accessible summary. */
+  format?: (value: number) => string
+  className?: string
+}) {
+  const { t } = usePreferences()
+  const width = 600
+  const plotHeight = height - 40
+  const inset = 20
+  const { line, area, points } = pathFor(series, width - inset * 2, plotHeight, 8)
+  const shift = (d: string) => d.replace(/([ML])(-?[\d.]+),/g, (_, cmd: string, x: string) => `${cmd}${(Number(x) + inset).toFixed(1)},`)
+  const gradientId = `area-${label.replace(/\W+/g, '-').toLowerCase()}`
+  const peak = series.length ? Math.max(...series) : 0
+  const summary = series.length
+    ? `${t('From')} ${format(series[0])} ${t('to')} ${format(series[series.length - 1])}; ${t('peak')} ${format(peak)}`
+    : t('No data')
+
+  return (
+    <figure className={cn('m-0', className)}>
+      <svg
+        role="img"
+        aria-label={`${t(label)} — ${summary}`}
+        viewBox={`0 0 ${width} ${height}`}
+        className="block h-auto w-full"
+      >
+        <defs>
+          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--salis-blue)" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="var(--salis-blue)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {area ? <path d={shift(area)} fill={`url(#${gradientId})`} /> : null}
+        {line ? <path d={shift(line)} fill="none" stroke="var(--salis-blue)" strokeWidth="2.5" strokeLinecap="round" /> : null}
+        {points.map((p, index) => (
+          <circle key={index} cx={p.x + inset} cy={p.y} r={3} fill="var(--surface-card)" stroke="var(--salis-blue)" strokeWidth={2} />
+        ))}
+        {labels.map((text, index) => {
+          const x = points[index] ? points[index].x + inset : inset
+          return (
+            <text
+              key={`${text}-${index}`}
+              x={x}
+              y={height - 12}
+              fontSize="11"
+              fill="var(--text-muted)"
+              textAnchor="middle"
+              fontFamily="Inter, sans-serif"
+            >
+              {t(text)}
+            </text>
+          )
+        })}
+      </svg>
+      <figcaption className="sr-only">{summary}</figcaption>
+    </figure>
   )
 }
 

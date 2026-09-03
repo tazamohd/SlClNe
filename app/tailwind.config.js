@@ -76,8 +76,16 @@ export default {
         'btn-sm': 'var(--h-btn-sm)',
         'btn-lg': 'var(--h-btn-lg)',
         topbar: 'var(--h-topbar)',
+        row: 'var(--row-comfortable)',
+        'row-sm': 'var(--row-compact)',
       },
       width: { sidebar: 'var(--w-sidebar)' },
+      zIndex: {
+        sticky: 'var(--z-sticky)',
+        drawer: 'var(--z-drawer)',
+        palette: 'var(--z-palette)',
+        toast: 'var(--z-toast)',
+      },
       backgroundImage: {
         'salis-gradient': 'var(--salis-gradient)',
         'salis-gradient-hover': 'var(--salis-gradient-hover)',

@@ -1,62 +1,78 @@
 import { useMemo, useState } from 'react'
-import {
-  FeatureHeader,
-  Section,
-  SearchField,
-  StatRow,
-  TabBar,
-} from '@/components/shell/FeatureScreen'
+import { Section, SearchField, StatRow, TabBar } from '@/components/shell/FeatureScreen'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { Button } from '@/components/ui/Button'
-import { Icon } from '@/components/ui/Icon'
-import { EmptyState } from '@/components/ui/DataTable'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobileList } from '@/components/shell/MobileShell'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useCollection } from '@/data/useCollection'
+import type { FeatureRow } from '@/data/repository'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import type { FeatureDef, FeatureSection } from './types'
 
-/** Renders a `FeatureDef` through the feature-screen kit, in both layouts. */
+/** Renders a `FeatureDef` through the feature-screen kit.
+ *
+ *  Rows come through the repository seam (`featureRows`, keyed by route and
+ *  panel) rather than from the definition itself, so every kit screen has the
+ *  same loading, error and empty states as a designed one, and a sortable,
+ *  paged table instead of a raw `<table>`. The header is the one page header,
+ *  which also gives the ~48 kit routes breadcrumbs and a phone layout. */
 export function FeatureScreenView({ def }: { def: FeatureDef }) {
   const { t } = usePreferences()
+  const query = useCollection('featureRows', { filter: { route: def.route }, pageSize: 500 })
 
   return (
-    <>
-      <FeatureHeader
-        icon={def.icon}
-        title={t(def.title)}
-        subtitle={def.subtitle ? t(def.subtitle) : undefined}
-        actions={
-          def.action ? (
-            <Button size="md">
-              <Icon name={def.action.icon} size={16} />
-              {t(def.action.label)}
-            </Button>
-          ) : undefined
-        }
-      />
-
+    <ScreenFrame
+      icon={def.icon}
+      title={def.title}
+      subtitle={def.subtitle ? t(def.subtitle) : undefined}
+      query={query}
+      skeleton="table"
+      actions={
+        def.action ? (
+          <Button size="md" icon={def.action.icon}>
+            {t(def.action.label)}
+          </Button>
+        ) : undefined
+      }
+    >
       {def.tabs?.length ? <TabBar tabs={def.tabs} /> : null}
       {def.stats?.length ? <StatRow stats={def.stats} /> : null}
 
       {def.sections?.map((section) => (
-        <FeatureSectionView key={section.title} section={section} />
+        <FeatureSectionView
+          key={section.title}
+          section={section}
+          rows={(query.data ?? []).filter((row) => row.section === section.title)}
+        />
       ))}
-    </>
+    </ScreenFrame>
   )
 }
 
-function FeatureSectionView({ section }: { section: FeatureSection }) {
+function FeatureSectionView({ section, rows }: { section: FeatureSection; rows: readonly FeatureRow[] }) {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const [query, setQuery] = useState('')
 
-  const rows = useMemo(() => {
-    const all = section.rows ?? []
+  const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase()
-    if (!needle) return all
-    return all.filter((row) => row.some((cell) => cell.toLowerCase().includes(needle)))
-  }, [section.rows, query])
+    if (!needle) return rows
+    return rows.filter((row) => row.cells.some((cell) => cell.toLowerCase().includes(needle)))
+  }, [rows, query])
 
-  const body = !section.columns ? null : rows.length === 0 ? (
+  const columns = useMemo<Column<FeatureRow>[]>(
+    () =>
+      (section.columns ?? []).map((header, index) => ({
+        header,
+        key: `${index}-${header}`,
+        cell: (row) => (
+          <span className={index === 0 ? 'font-medium text-heading' : 'text-body'}>{row.cells[index]}</span>
+        ),
+        sortValue: (row) => row.cells[index],
+      })),
+    [section.columns]
+  )
+
+  const empty = (
     <EmptyState
       icon={section.empty?.icon ?? (query ? 'SearchX' : 'Inbox')}
       title={query ? t('No results') : t(section.empty?.title ?? 'Nothing here yet')}
@@ -68,54 +84,6 @@ function FeatureSectionView({ section }: { section: FeatureSection }) {
             : undefined
       }
     />
-  ) : isMobile ? (
-    <MobileList>
-      {rows.map((row) => (
-        <MobileCard key={row[0]}>
-          <MobileCardHeader title={row[0]} />
-          {row.slice(1).map((cell, cellIndex) => (
-            <MobileCardRow key={cellIndex} label={t(section.columns![cellIndex + 1])}>
-              {cell}
-            </MobileCardRow>
-          ))}
-        </MobileCard>
-      ))}
-    </MobileList>
-  ) : (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-sm">
-        <thead>
-          <tr>
-            {section.columns.map((column) => (
-              <th
-                key={column}
-                scope="col"
-                className="whitespace-nowrap border-b border-border px-3 py-2.5 text-start text-xs font-semibold uppercase tracking-[.04em] text-muted"
-              >
-                {t(column)}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row[0]} className="transition-colors duration-150 hover:bg-salis-blue/[.04]">
-              {row.map((cell, cellIndex) => (
-                <td
-                  key={cellIndex}
-                  className={
-                    'border-b border-border px-3 py-3 align-middle ' +
-                    (cellIndex === 0 ? 'font-medium text-heading' : 'text-body')
-                  }
-                >
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
   )
 
   return (
@@ -128,12 +96,26 @@ function FeatureSectionView({ section }: { section: FeatureSection }) {
         ) : undefined
       }
     >
-      {body ?? (
-        <EmptyState
-          icon={section.empty?.icon ?? 'Inbox'}
-          title={t(section.empty?.title ?? 'Nothing here yet')}
-          description={section.empty?.description ? t(section.empty.description) : undefined}
+      {section.columns ? (
+        <DataTable<FeatureRow>
+          caption={section.title}
+          columns={columns}
+          rows={filtered}
+          rowKey={(row) => row.id}
+          empty={empty}
+          mobileCard={(row) => (
+            <>
+              <MobileCardHeader title={row.cells[0]} />
+              {row.cells.slice(1).map((cell, cellIndex) => (
+                <MobileCardRow key={cellIndex} label={t(section.columns![cellIndex + 1])}>
+                  {cell}
+                </MobileCardRow>
+              ))}
+            </>
+          )}
         />
+      ) : (
+        empty
       )}
     </Section>
   )

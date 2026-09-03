@@ -1609,6 +1609,13 @@ const EXPECTED_REDIRECTS = {
   '/splash': '/welcome',
   '/customer-app': '/customer-app/home',
   '/support': '/call-center',
+  // Duplicate-concept consolidations, shared with the router and the registry
+  // through route-redirects.json so the three cannot disagree.
+  ...Object.fromEntries(
+    Object.entries(
+      JSON.parse(fs.readFileSync(path.join(APP, 'route-redirects.json'), 'utf8'))
+    ).filter(([key]) => key.startsWith('/'))
+  ),
 }
 
 /** Built screens whose registry shell does not exist yet, so they render inside
@@ -1706,7 +1713,17 @@ const failures = []
   let placeholders = 0
   let checked = 0
 
-  for (const entry of REGISTRY) {
+  /* `SMOKE_ROUTES=/job-cards,/customers npm run smoke` limits the route walk
+   * to the screens a change touched — a per-PR check that finishes in seconds.
+   * CI never sets it, so the full inventory still runs there. */
+  const only = (process.env.SMOKE_ROUTES ?? '')
+    .split(',')
+    .map((r) => r.trim())
+    .filter(Boolean)
+  const walk = only.length ? REGISTRY.filter((entry) => only.includes(entry.route)) : REGISTRY
+  if (only.length) console.log(`  routes limited by SMOKE_ROUTES to ${walk.length} of ${REGISTRY.length}`)
+
+  for (const entry of walk) {
     problems = []
     await page.goto(BASE + entry.route, { waitUntil: 'domcontentloaded' })
     await page

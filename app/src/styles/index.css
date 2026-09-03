@@ -9,8 +9,19 @@
 @import './tokens/effects.css';
 @import './tokens/base.css';
 
-/* Self-hosted fonts — latin subset only (woff2). Arabic text uses the system
-   font stack defined in tokens/typography.css. */
+/* Self-hosted fonts (woff2). Latin faces carry a latin `unicode-range`, the
+   Arabic face an Arabic one, so a browser downloads only the script the page
+   actually renders — an English session never fetches Noto Sans Arabic, and
+   an Arabic page still sets its plates, SKUs and money in Inter / JetBrains
+   Mono because those runs are Latin. */
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/noto-sans-arabic-arabic.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
 @font-face {
   font-family: 'Montserrat';
   font-style: normal;
@@ -99,12 +110,50 @@
   50% { transform: translateY(-12px); }
 }
 
+/* App-level tokens the design system does not define. Colours stay in
+   tokens/colors.css (the token gate reads its palette from that directory);
+   these are sizes and layers only. */
+:root {
+  /* The design system's stacks with Noto Sans Arabic inserted second, so
+     Arabic glyphs come from a face designed for them rather than whatever the
+     OS falls back to (handoff I18N.md). Latin glyphs still resolve to the
+     first family because the Arabic face declares an Arabic unicode-range. */
+  --font-ui: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-action: 'Poppins', 'Noto Sans Arabic', 'Inter', system-ui, sans-serif;
+  --font-display: 'Montserrat', 'Noto Sans Arabic', 'Inter', system-ui, sans-serif;
+  --row-comfortable: 44px;
+  --row-compact: 36px;
+  --z-sticky: 5;
+  --z-drawer: 50;
+  --z-palette: 95;
+  --z-toast: 100;
+}
+
 @layer base {
   html, body, #root {
     min-height: 100%;
   }
   body {
     background: var(--bg-page);
+  }
+  /* Belt and braces under the per-element `motion-reduce:animate-none` the
+     a11y gate requires: a user who asked the OS for less motion gets none from
+     transitions either, including the ones a screen forgot to annotate. */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  /* Arabic display type: the negative Latin tracking on headings breaks the
+     joins between Arabic letters. */
+  [lang='ar'] h1,
+  [lang='ar'] h2,
+  [lang='ar'] h3,
+  [lang='ar'] .font-display {
+    letter-spacing: 0;
   }
   input::placeholder,
   textarea::placeholder {

@@ -243,3 +243,68 @@ export function ReadOnlyNotice({
     </p>
   )
 }
+
+/** Placeholder for a detail page: header card, four stat tiles, two panels.
+ *  Sized like the content it stands in for, so nothing jumps when it lands. */
+export function DetailSkeleton() {
+  const { t } = usePreferences()
+  return (
+    <div role="status" aria-label={t('Loading')} className="flex animate-pulse flex-col gap-6 motion-reduce:animate-none">
+      <div aria-hidden className="flex items-center gap-5 rounded-[14px] border border-border bg-card p-6">
+        <span className="h-[72px] w-[72px] flex-shrink-0 rounded-full bg-inset" />
+        <div className="flex flex-1 flex-col gap-2.5">
+          <span className="h-5 w-1/3 rounded bg-inset" />
+          <span className="h-3 w-1/2 rounded bg-inset" />
+          <span className="h-3 w-2/5 rounded bg-inset" />
+        </div>
+      </div>
+      <div aria-hidden className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
+          <span key={i} className="flex h-[74px] flex-col justify-center gap-2 rounded-lg border border-border bg-card p-4">
+            <span className="h-2.5 w-1/2 rounded bg-inset" />
+            <span className="h-4 w-1/3 rounded bg-inset" />
+          </span>
+        ))}
+      </div>
+      <div aria-hidden className="grid gap-6 md:grid-cols-2">
+        {Array.from({ length: 2 }, (_, i) => (
+          <span key={i} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
+            <span className="h-4 w-1/3 rounded bg-inset" />
+            <span className="h-3 w-full rounded bg-inset" />
+            <span className="h-3 w-5/6 rounded bg-inset" />
+            <span className="h-3 w-2/3 rounded bg-inset" />
+          </span>
+        ))}
+      </div>
+      <span className="sr-only">{t('Loading...')}</span>
+    </div>
+  )
+}
+
+/** Placeholder for a dashboard: KPI row, pipeline strip, two chart cards. */
+export function DashboardSkeleton() {
+  const { t } = usePreferences()
+  return (
+    <div role="status" aria-label={t('Loading')} className="flex animate-pulse flex-col gap-6 motion-reduce:animate-none">
+      <div aria-hidden className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }, (_, i) => (
+          <span key={i} className="flex h-[132px] flex-col gap-3 rounded-xl border border-border bg-card p-6">
+            <span className="h-3 w-1/2 rounded bg-inset" />
+            <span className="h-8 w-2/3 rounded bg-inset" />
+            <span className="h-2.5 w-1/3 rounded bg-inset" />
+          </span>
+        ))}
+      </div>
+      <div aria-hidden className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-6">
+        {Array.from({ length: 6 }, (_, i) => (
+          <span key={i} className="h-[118px] rounded-xl border border-border bg-card" />
+        ))}
+      </div>
+      <div aria-hidden className="grid gap-6 lg:grid-cols-2">
+        <span className="h-[300px] rounded-xl border border-border bg-card" />
+        <span className="h-[300px] rounded-xl border border-border bg-card" />
+      </div>
+      <span className="sr-only">{t('Loading...')}</span>
+    </div>
+  )
+}

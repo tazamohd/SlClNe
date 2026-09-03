@@ -238,7 +238,14 @@ async function emitIconRegistry() {
   walk(srcDir)
 
   // Icons this rebuild introduces that no prototype referenced.
-  for (const extra of ['Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight']) definite.add(extra)
+  for (const extra of [
+    'Menu', 'Hammer', 'Construction', 'ArrowLeft', 'ArrowRight',
+    // Shared primitives added by the UX upgrade: sortable headers, density
+    // toggle, command palette, collapsible sidebar, notifications.
+    'ChevronUp', 'Rows3', 'LayoutList', 'ListFilter', 'Command',
+    'PanelLeftClose', 'PanelLeftOpen', 'BellDot', 'Keyboard', 'Kanban',
+    'LayoutTemplate', 'SquareStack',
+  ]) definite.add(extra)
 
   /** name as referenced -> lucide export that actually exists. */
   const resolved = new Map()

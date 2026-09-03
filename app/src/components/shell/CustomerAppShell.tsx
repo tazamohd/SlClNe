@@ -3,6 +3,9 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useNotifications } from '@/data/useNotifications'
+import { ShellContext } from './ShellContext'
+import { CountBadge } from './Topbar'
 
 /** The customer-facing phone app.
  *
@@ -20,11 +23,15 @@ const TABS = [
   { to: '/customer-app/profile', label: 'Profile', icon: 'User' },
 ] as const
 
+const CUSTOMER_SHELL = { kind: 'customer-app' } as const
+
 export function CustomerAppShell({ children }: { children: ReactNode }) {
   const { t, theme, toggleTheme } = usePreferences()
   const { pathname } = useLocation()
+  const { unread } = useNotifications()
 
   return (
+    <ShellContext.Provider value={CUSTOMER_SHELL}>
     <div className="flex min-h-screen justify-center bg-page-alt font-ui">
       <div className="flex h-screen w-full max-w-[430px] flex-col border-x border-border bg-page">
         <a
@@ -48,13 +55,11 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
           </button>
           <NavLink
             to="/customer-app/notifications"
-            aria-label={t('Notifications')}
+            aria-label={unread > 0 ? `${t('Notifications')}: ${unread} ${t('unread')}` : t('Notifications')}
             className="relative flex h-10 w-10 items-center justify-center rounded text-muted no-underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name="Bell" size={16} />
-            {pathname !== '/customer-app/notifications' ? (
-              <span className="absolute end-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-salis-orange" />
-            ) : null}
+            {unread > 0 && pathname !== '/customer-app/notifications' ? <CountBadge count={unread} /> : null}
           </NavLink>
         </header>
 
@@ -76,12 +81,13 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
               }
             >
               <Icon name={tab.icon} size={19} />
-              <span className="font-action text-[10px] font-semibold">{t(tab.label)}</span>
+              <span className="font-action text-[11px] font-semibold">{t(tab.label)}</span>
             </NavLink>
           ))}
         </nav>
       </div>
     </div>
+    </ShellContext.Provider>
   )
 }
 

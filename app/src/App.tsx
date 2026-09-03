@@ -21,7 +21,10 @@ export function App() {
           <RepositoryProvider>
             <ToastProvider>
               <ModalProvider>
-                <BrowserRouter basename={import.meta.env.BASE_URL}>
+                {/* `v7_startTransition` wraps navigations in a transition, so
+                    the screen you are on stays visible until the next lazy
+                    chunk has landed — no flash of skeleton on a warm cache. */}
+                <BrowserRouter basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true }}>
                   <AppRoutes />
                 </BrowserRouter>
               </ModalProvider>

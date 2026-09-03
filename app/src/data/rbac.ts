@@ -12,6 +12,7 @@ import {
   SOD,
 } from './generated/rbac'
 import { NAV } from './generated/nav'
+import { journeyNav } from './nav-journey'
 import type { Action, NavGroup, Role, RoleId, SodRule } from './types'
 
 export { ROLES, PERMS, SCREEN_MODULE, RBAC_UNGATED, FIELD_RULES, SOD }
@@ -76,7 +77,9 @@ export function canScreen(screen: string, role: string): boolean {
  *  group with nothing left in it disappears too — screens never grey out
  *  (chat decision: "Hide it entirely"). */
 export function navFor(role: string, nav: readonly NavGroup[] = NAV): NavGroup[] {
-  return nav
+  // Journey order first, then the role filter: a group whose every item the
+  // role cannot open disappears, exactly as before the regrouping.
+  return journeyNav(nav)
     .map((group) => ({
       ...group,
       items: group.items.filter((item) => !item.screen || canScreen(item.screen, role)),

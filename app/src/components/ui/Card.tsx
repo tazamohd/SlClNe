@@ -2,13 +2,21 @@ import { memo, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Icon } from './Icon'
 
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  /** A card that leads somewhere: hover lift, blue-tinted border, a focus
+   *  ring for the keyboard. The design's stat and pipeline tiles. */
+  interactive?: boolean
+}
+
 /** Surface panel: 16px radius, hairline border, small shadow. The unit every
  *  dashboard metric, chart and table sits in. */
-export const Card = memo(function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export const Card = memo(function Card({ className, interactive, ...props }: CardProps) {
   return (
     <div
       className={cn(
         'rounded-xl border border-border bg-card shadow-sm',
+        interactive &&
+          'cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:border-salis-blue/[.3] hover:shadow-lg motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 active:translate-y-0',
         className
       )}
       {...props}

@@ -17,7 +17,49 @@ import {
   arabicStateFrom,
   classNameTokens,
   layoutFacts,
+  stateFacts,
 } from '../../scripts/lib/screen-facts.mjs'
+
+describe('the async-state detectors', () => {
+  it('credit a screen that branches on the query itself', () => {
+    const src = `
+      const { data, isLoading, isError, error } = useCollection('jobs')
+      if (isLoading) return <Loading />
+      if (isError) return <ErrorState description={error?.message} />
+      if (data.length === 0) return <EmptyState />
+    `
+    expect(stateFacts(src)).toMatchObject({ loading: true, error: true, empty: true, success: false })
+  })
+
+  it('credit all three to a screen rendered through a state frame', () => {
+    for (const frame of ['ScreenFrame', 'ListPage', 'DetailPage', 'FeatureScreenView']) {
+      expect(stateFacts(`return <${frame} title="X" query={q}>{body}</${frame}>`)).toMatchObject({
+        loading: true,
+        error: true,
+        empty: true,
+      })
+    }
+  })
+
+  it('does not credit a screen with none of it', () => {
+    expect(stateFacts(`export function Static() { return <table>{ROWS.map(r => <tr />)}</table> }`)).toEqual({
+      loading: false,
+      error: false,
+      empty: false,
+      success: false,
+    })
+  })
+
+  it('reads success feedback from a toast, however the hook is destructured', () => {
+    expect(stateFacts(`const toast = useToast(); toast.show({ title: 'Saved' })`).success).toBe(true)
+    expect(stateFacts(`const { show } = useToast(); show({ title: 'Saved' })`).success).toBe(true)
+    expect(stateFacts(`const toast = useToast(); await toast.promise(save(), copy)`).success).toBe(true)
+  })
+
+  it('does not count a toast hook that is imported but never raised', () => {
+    expect(stateFacts(`const toast = useToast()`).success).toBe(false)
+  })
+})
 import { scanFile } from '../../scripts/lib/i18n-scan.mjs'
 
 describe('classNameTokens', () => {

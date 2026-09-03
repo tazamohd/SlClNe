@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/cn'
+import { cycleFocus, focusFirst } from '@/lib/focusTrap'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
 
@@ -33,26 +34,8 @@ export function Drawer({
         onClose()
         return
       }
-      if (e.key !== 'Tab') return
       const el = drawerRef.current
-      if (!el) return
-      const focusable = el.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      )
-      if (focusable.length === 0) return
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault()
-          last.focus()
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault()
-          first.focus()
-        }
-      }
+      if (el) cycleFocus(el, e)
     },
     [onClose],
   )
@@ -62,15 +45,7 @@ export function Drawer({
     previousFocus.current = document.activeElement as HTMLElement
     document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', handleKeyDown)
-    requestAnimationFrame(() => {
-      const el = drawerRef.current
-      if (el) {
-        const first = el.querySelector<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        )
-        first?.focus()
-      }
-    })
+    requestAnimationFrame(() => focusFirst(drawerRef.current))
     return () => {
       document.body.style.overflow = ''
       document.removeEventListener('keydown', handleKeyDown)

@@ -39,4 +39,10 @@ export const STORAGE_KEYS = {
   /** The signed-in user object (JSON), so a reload restores the session
    *  without a round-trip to `/auth/me`. */
   user: 'salis-user',
+  /** Table density — comfortable (44px rows) or compact (36px). */
+  density: 'salis-density',
+  /** Sidebar groups the user has folded, as a JSON array of labels. */
+  navCollapsed: 'salis-nav-collapsed',
+  /** Command palette history. */
+  recentSearches: 'salis-recent-searches',
 } as const

@@ -1,0 +1,10 @@
+{
+  "$comment": "Routes that hand off to a canonical screen. Read by src/routes/index.tsx (renders <Navigate replace>), scripts/build-registry.mjs (marks the loser REDIRECT so it is neither a placeholder nor mock-only) and scripts/smoke.mjs (expects the landing path). Each loser was a duplicate of the same concept; the winner is the one with CRUD, states and RBAC. The loser components stay in their barrels unrouted, as reference.",
+  "/customers-list": "/customers",
+  "/vehicles-list": "/vehicles",
+  "/inventory-management": "/inventory",
+  "/dashboard-home": "/dashboard",
+  "/dashboard-main": "/dashboard",
+  "/system-settings": "/settings",
+  "/user-settings": "/profile"
+}

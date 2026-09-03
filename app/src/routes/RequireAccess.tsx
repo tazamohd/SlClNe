@@ -1,8 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
 import { useSession } from '@/providers/SessionProvider'
 import { AppShell } from '@/components/shell/AppShell'
 import { CustomerAppShell } from '@/components/shell/CustomerAppShell'
+import { RouteLoader } from '@/components/shell/RouteLoader'
 import type { Shell } from '@/screens/registry'
 
 /** Guards an operational route.
@@ -65,7 +66,28 @@ export function RequireAccess({
     return <Navigate to="/unauthorized" replace />
   }
   const Chrome = resolveShell(shell)
-  return Chrome ? <Chrome>{children}</Chrome> : <>{children}</>
+  // The suspense boundary sits *inside* the chrome: a lazy screen chunk
+  // suspends to a skeleton in the content area while the sidebar and topbar
+  // stay put. With it outside (as it was), every first navigation into a
+  // domain blanked the whole shell.
+  const body = <Suspense fallback={<ScreenSkeleton />}>{children}</Suspense>
+  return Chrome ? <Chrome>{body}</Chrome> : body
+}
+
+/** Provider-safe skeleton for the content column while a chunk loads. */
+export function ScreenSkeleton() {
+  return (
+    <div className="flex flex-col gap-6" aria-hidden>
+      <div className="flex items-center gap-3">
+        <span className="h-12 w-12 animate-pulse rounded-xl bg-inset motion-reduce:animate-none" />
+        <span className="flex flex-col gap-2">
+          <span className="h-6 w-48 animate-pulse rounded bg-inset motion-reduce:animate-none" />
+          <span className="h-3 w-32 animate-pulse rounded bg-inset motion-reduce:animate-none" />
+        </span>
+      </div>
+      <RouteLoader />
+    </div>
+  )
 }
 
 function resolveShell(shell: 'app' | 'customer-app' | Shell | null | undefined): Shell | null {

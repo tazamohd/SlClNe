@@ -2,6 +2,9 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { ShellContext } from './ShellContext'
+
+const AUTH_SHELL = { kind: 'auth' } as const
 
 /** Centred frame shared by every unauthenticated screen.
  *
@@ -18,11 +21,13 @@ export function AuthLayout({
   controls?: boolean
 }) {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
-      <AuthBackdrop />
-      {controls ? <AuthControls /> : null}
-      <main id="main-content" className={cn('relative z-[1] w-full animate-fade-up motion-reduce:animate-none p-4', className)}>{children}</main>
-    </div>
+    <ShellContext.Provider value={AUTH_SHELL}>
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
+        <AuthBackdrop />
+        {controls ? <AuthControls /> : null}
+        <main id="main-content" className={cn('relative z-[1] w-full animate-fade-up motion-reduce:animate-none p-4', className)}>{children}</main>
+      </div>
+    </ShellContext.Provider>
   )
 }
 

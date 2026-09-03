@@ -36,6 +36,15 @@ const DICTIONARY_DEADLINE_MS = 1500
  *  at all. A failed load is not fatal either: `t()` falls back to the English
  *  source, so mount either way. */
 if (initialLanguage() === 'ar') {
+  // Only an Arabic session preloads the Arabic face; `unicode-range` keeps an
+  // English one from ever requesting it.
+  const preload = document.createElement('link')
+  preload.rel = 'preload'
+  preload.as = 'font'
+  preload.type = 'font/woff2'
+  preload.crossOrigin = 'anonymous'
+  preload.href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/fonts/noto-sans-arabic-arabic.woff2`
+  document.head.appendChild(preload)
   const deadline = new Promise((resolve) => setTimeout(resolve, DICTIONARY_DEADLINE_MS))
   Promise.race([preloadArabic(), deadline]).then(mount, mount)
 } else {

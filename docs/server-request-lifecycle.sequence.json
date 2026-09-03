@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Server Request Lifecycle",
+    "output": "docs/server-request-lifecycle.html",
+    "viewBox": [1020, 800],
+    "column_fit": "spread",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "admission",
+        "label": "Admission",
+        "focus": ["client", "fastify", "authhook"],
+        "note": "Every path but the named public ones is verified before a handler runs."
+      },
+      {
+        "id": "authorisation",
+        "label": "Authorisation",
+        "focus": ["fastify", "route", "rbac"],
+        "note": "The grant check and the body schema both run before the transaction opens."
+      },
+      {
+        "id": "commit",
+        "label": "Tenant transaction",
+        "focus": ["route", "pg", "fastify", "client"],
+        "note": "The row and the audit entry share one transaction, then the response is redacted."
+      }
+    ]
+  },
+  "participants": [
+    { "id": "client", "type": "frontend", "label": "Browser App", "sublabel": "app/ SPA" },
+    { "id": "fastify", "type": "backend", "label": "Fastify", "sublabel": "helmet, CORS, rate limit" },
+    { "id": "authhook", "type": "security", "label": "onRequest Hook", "sublabel": "JWT verifier" },
+    { "id": "route", "type": "backend", "label": "Collection Route", "sublabel": "routes/collections.ts" },
+    { "id": "rbac", "type": "security", "label": "RBAC Guard", "sublabel": "requirePermission" },
+    { "id": "pg", "type": "database", "label": "PostgreSQL", "sublabel": "row-level security" }
+  ],
+  "segments": [
+    { "from": 150, "to": 292, "label": "Admission" },
+    { "from": 312, "to": 412, "label": "Authorisation" },
+    { "from": 432, "to": 632, "label": "Tenant transaction" },
+    { "from": 652, "to": 722, "label": "Response" }
+  ],
+  "messages": [
+    {
+      "id": "submit",
+      "from": "client",
+      "to": "fastify",
+      "y": 190,
+      "label": "POST /api/v1/invoices + Bearer",
+      "variant": "emphasis",
+      "note": "Rate limit is keyed on orgId:ip, so one branch behind a NAT cannot exhaust the tenant budget."
+    },
+    {
+      "id": "admit",
+      "from": "fastify",
+      "to": "authhook",
+      "y": 232,
+      "label": "onRequest: path not public",
+      "variant": "security"
+    },
+    {
+      "id": "principal",
+      "from": "authhook",
+      "to": "fastify",
+      "y": 272,
+      "label": "principal: org, branch, role, scope",
+      "variant": "return",
+      "note": "401 when the token is missing, expired or invalid. scope is derived from the role, never read from the token."
+    },
+    {
+      "id": "dispatch",
+      "from": "fastify",
+      "to": "route",
+      "y": 318,
+      "label": "dispatch, then parse body",
+      "variant": "default",
+      "note": "orgId, version and createdBy are refused rather than stripped; a schema failure answers 400."
+    },
+    {
+      "id": "grant",
+      "from": "route",
+      "to": "rbac",
+      "y": 358,
+      "label": "requirePermission(module, 'c')",
+      "variant": "security"
+    },
+    {
+      "id": "granted",
+      "from": "rbac",
+      "to": "route",
+      "y": 396,
+      "label": "granted, else 403",
+      "variant": "return",
+      "note": "Server and client read the same RBAC matrix; the test suite asserts the two tables are identical."
+    },
+    {
+      "id": "begin",
+      "from": "route",
+      "to": "pg",
+      "y": 442,
+      "label": "BEGIN + set_config app.org_id",
+      "variant": "emphasis",
+      "note": "The RLS policies read app.org_id, app.branch_id, app.user_id and app.scope."
+    },
+    {
+      "id": "scoped",
+      "from": "pg",
+      "to": "route",
+      "y": 482,
+      "label": "tenant-scoped transaction",
+      "variant": "return"
+    },
+    {
+      "id": "insert",
+      "from": "route",
+      "to": "pg",
+      "y": 528,
+      "label": "INSERT ... RETURNING",
+      "variant": "emphasis",
+      "note": "Writer rules that must read other rows run here, inside the same transaction as the write."
+    },
+    {
+      "id": "audit",
+      "from": "route",
+      "to": "pg",
+      "y": 568,
+      "label": "INSERT audit_log, same tx",
+      "variant": "default",
+      "note": "Append-only at the database level; password hashes and tokens are scrubbed before the row is written."
+    },
+    {
+      "id": "commit",
+      "from": "pg",
+      "to": "route",
+      "y": 610,
+      "label": "COMMIT: change and audit together",
+      "variant": "return"
+    },
+    {
+      "id": "present",
+      "from": "route",
+      "to": "fastify",
+      "y": 658,
+      "label": "present, then redact fields",
+      "variant": "return",
+      "note": "A field the role may not see is nulled before serialisation, so it never reaches the wire."
+    },
+    {
+      "id": "respond",
+      "from": "fastify",
+      "to": "client",
+      "y": 700,
+      "label": "201 + x-request-id",
+      "variant": "return",
+      "note": "The onSend hook stamps x-request-id on every reply, including the error envelopes."
+    }
+  ],
+  "activations": [
+    { "participant": "client", "from": 185, "to": 705, "type": "frontend" },
+    { "participant": "fastify", "from": 190, "to": 702, "type": "backend" },
+    { "participant": "authhook", "from": 227, "to": 277, "type": "security" },
+    { "participant": "route", "from": 313, "to": 662, "type": "backend" },
+    { "participant": "rbac", "from": 353, "to": 401, "type": "security" },
+    { "participant": "pg", "from": 437, "to": 615, "type": "database" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Authenticated by default",
+      "items": [
+        "The hook covers everything except /health, /ready, /api/v1/public/leads and the login routes",
+        "A route added later is verified unless it is explicitly named public",
+        "There is no development bypass header: a test signs a real token"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Isolation is the database's job",
+      "items": [
+        "Every query runs in a transaction that has already set app.org_id",
+        "A handler that forgets WHERE org_id still cannot read another tenant",
+        "Redaction happens on the way out, not in the client"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "One error contract",
+      "items": [
+        "A rule or permission failure is logged at warn with no stack trace",
+        "23505 answers 409 and names the colliding field from the index name",
+        "Anything unrecognised is 500 with a request id and no driver message"
+      ]
+    }
+  ]
+}

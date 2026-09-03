@@ -26,7 +26,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 import { recordKeys, scanFile } from './lib/i18n-scan.mjs'
-import { arabicStateFrom, layoutFacts } from './lib/screen-facts.mjs'
+import { arabicStateFrom, layoutFacts, stateFacts } from './lib/screen-facts.mjs'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
@@ -184,6 +184,12 @@ const IMPL = {
   domains: domainScreens(),
 }
 const KIT_ROUTES = new Set([...featureDefsSrc.matchAll(/route: '([^']+)'/g)].map((m) => m[1]))
+/** Routes that hand off to a canonical screen. The router, the smoke runner
+ *  and this generator all read the one JSON, so a redirect is never a
+ *  placeholder here, an unexpected landing there and a dead route in between. */
+const REDIRECTS = Object.fromEntries(
+  Object.entries(JSON.parse(readApp('route-redirects.json'))).filter(([k]) => k.startsWith('/'))
+)
 /** Route coverage moved into the smoke runner itself: it reads this registry and
  *  checks every entry, so grepping it for route literals now matches nothing.
  *  Two distinct facts are worth tracking separately — that a route is visited at
@@ -299,12 +305,10 @@ const stateImplemented = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        const hasLoading = src.includes('Loading') && (src.includes('isLoading') || src.includes('<Loading'))
-        const hasError = src.includes('ErrorState') || (src.includes('isError') && src.includes('error'))
-        const hasEmpty = src.includes('EmptyState') || src.includes('empty') && (src.includes('length === 0') || src.includes('.length'))
-        if (!hasLoading && !hasError && !hasEmpty) continue
+        const facts = stateFacts(src)
+        if (!facts.loading && !facts.error && !facts.empty && !facts.success) continue
         for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
-          map.set(m[1], { loading: hasLoading, error: hasError, empty: hasEmpty })
+          map.set(m[1], facts)
         }
       } catch (_) { /* skip unreadable */ }
     }
@@ -673,13 +677,13 @@ for (const s of SCREENS) {
     responsive: built && mobileImplemented.has(s.name) ? 'DONE' : built && !hasMobileDesign ? 'PARTIAL' : 'MISSING',
     arabic: arabicStateOf(s.name, s.route, built),
     rtl: rtlStateOf(s.name, s.route, built),
-    loadingState: built && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
-    emptyState: built && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
-    errorState: built && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
-    successState: 'MISSING',
+    loadingState: built && factsFor(stateImplemented, s.name, s.route)?.loading ? 'DONE' : 'MISSING',
+    emptyState: built && factsFor(stateImplemented, s.name, s.route)?.empty ? 'DONE' : 'MISSING',
+    errorState: built && factsFor(stateImplemented, s.name, s.route)?.error ? 'DONE' : 'MISSING',
+    successState: built && factsFor(stateImplemented, s.name, s.route)?.success ? 'DONE' : 'MISSING',
     accessibility: 'MISSING',
-    dataBacked: built && dataBackedScreens.has(s.name),
-    dataSource: (built && dataBackedScreens.get(s.name)?.keys) || [],
+    dataBacked: built && Boolean(factsFor(dataBackedScreens, s.name, s.route)),
+    dataSource: (built && factsFor(dataBackedScreens, s.name, s.route)?.keys) || [],
     crud: { create: false, read: built, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
@@ -724,13 +728,13 @@ for (const s of SPEC_SCREENS) {
     responsive: owned || kit ? 'PARTIAL' : 'MISSING',
     arabic: arabicStateOf(s.name, s.route, owned || kit),
     rtl: rtlStateOf(s.name, s.route, owned || kit),
-    loadingState: (owned || kit) && stateImplemented.get(s.name)?.loading ? 'DONE' : 'MISSING',
-    emptyState: (owned || kit) && stateImplemented.get(s.name)?.empty ? 'DONE' : 'MISSING',
-    errorState: (owned || kit) && stateImplemented.get(s.name)?.error ? 'DONE' : 'MISSING',
-    successState: 'MISSING',
+    loadingState: (owned || kit) && factsFor(stateImplemented, s.name, s.route)?.loading ? 'DONE' : 'MISSING',
+    emptyState: (owned || kit) && factsFor(stateImplemented, s.name, s.route)?.empty ? 'DONE' : 'MISSING',
+    errorState: (owned || kit) && factsFor(stateImplemented, s.name, s.route)?.error ? 'DONE' : 'MISSING',
+    successState: (owned || kit) && factsFor(stateImplemented, s.name, s.route)?.success ? 'DONE' : 'MISSING',
     accessibility: 'MISSING',
-    dataBacked: (owned || kit) && dataBackedScreens.has(s.name),
-    dataSource: ((owned || kit) && dataBackedScreens.get(s.name)?.keys) || [],
+    dataBacked: (owned || kit) && Boolean(factsFor(dataBackedScreens, s.name, s.route)),
+    dataSource: ((owned || kit) && factsFor(dataBackedScreens, s.name, s.route)?.keys) || [],
     crud: { create: false, read: owned || kit, update: false, delete: false },
     approval: false, export: false, print: false, notifications: false, audit: false,
     tests: { unit: false, integration: false, e2e: SMOKE_READS_REGISTRY || SMOKE_CONTENT_ROUTES.has(s.route) },
@@ -753,10 +757,30 @@ for (const e of entries) {
   byRoute.get(e.route).push(e)
 }
 
+/* A route that hands off to a canonical screen is neither a placeholder nor
+ * a mock: it renders the winner. Reclassified before the flags so none of the
+ * product-route flags fire on it, and so `expand-smoke-assertions` (which
+ * already skips REDIRECT) stops generating a text assertion for it. */
+for (const e of entries) {
+  if (REDIRECTS[e.route]) {
+    e.category = 'REDIRECT'
+    e.redirectTo = REDIRECTS[e.route]
+    e.status = 'IMPLEMENTED'
+  }
+}
+
+/* Surfaces with nothing to read: the auth chain, the marketing site, the
+ * native frames and the UI reference pages. MOCK_ONLY measures "renders from
+ * fixtures rather than an API"; a login form or a privacy policy has no
+ * collection, so flagging it made the count say 285 while the wirable set was
+ * 46 screens smaller. */
+const NO_DATA_SURFACES = new Set(['auth', 'public', 'native', 'reference'])
+
 for (const e of entries) {
   const f = e.flags
   const product = e.category === 'PRODUCT'
   const rendered = e.status === 'IMPLEMENTED'
+  const wirable = product && !NO_DATA_SURFACES.has(e.surface)
 
   if (product && !rendered) f.push('PLACEHOLDER')          // renders PendingScreen today
   if (byRoute.get(e.route).length > 1) f.push('DUPLICATE') // two entries claim one route
@@ -770,8 +794,14 @@ for (const e of entries) {
   if (rendered && e.rtl === 'MISSING') f.push('RTL_BROKEN')
   if (product && !e.tests.e2e) f.push('UNTESTED')
   if (product && e.tests.e2e && !e.e2eContent && rendered) f.push('NO_CONTENT_ASSERTION')
-  if (product && rendered && !e.dataBacked) f.push('MOCK_ONLY')
+  if (wirable && rendered && !e.dataBacked) f.push('MOCK_ONLY')
   if (product && e.surface !== 'auth' && e.surface !== 'public' && !e.module) f.push('NO_RBAC_MODULE')
+  /* The four states the Definition of Done requires, as flags so the gap
+   * report shows them falling — and so the ratchet can hold the gains. */
+  if (wirable && rendered && e.loadingState !== 'DONE') f.push('LOADING_MISSING')
+  if (wirable && rendered && e.emptyState !== 'DONE') f.push('EMPTY_MISSING')
+  if (wirable && rendered && e.errorState !== 'DONE') f.push('ERROR_MISSING')
+  if (wirable && rendered && e.successState !== 'DONE') f.push('SUCCESS_MISSING')
 }
 
 /** A `.dc.html` on disk that no registry entry claims. This is the check that
@@ -894,6 +924,8 @@ const totals = {
   hasLoadingState: count(entries, (e) => e.loadingState === 'DONE'),
   hasErrorState: count(entries, (e) => e.errorState === 'DONE'),
   hasEmptyState: count(entries, (e) => e.emptyState === 'DONE'),
+  hasSuccessState: count(entries, (e) => e.successState === 'DONE'),
+  redirects: count(entries, (e) => e.category === 'REDIRECT'),
   tabletVerified: count(entries, (e) => e.tablet === 'DONE'),
   arabicVerified: count(entries, (e) => e.arabic === 'VERIFIED'),
   rtlHazards: count(entries, (e) => e.rtl === 'MISSING'),
@@ -1140,6 +1172,10 @@ const FLAG_MEANINGS = {
   DUPLICATE: 'two entries claim one route',
   NO_RBAC_MODULE: 'no RBAC module maps to this screen',
   NO_CONTENT_ASSERTION: 'the route is visited but nothing is asserted about it',
+  LOADING_MISSING: 'no loading state — the body has nothing to show while its data arrives',
+  EMPTY_MISSING: 'no empty state — a collection with no rows renders a blank panel',
+  ERROR_MISSING: 'no error state — a failed read has no message and no retry',
+  SUCCESS_MISSING: 'no success feedback — a write completes without telling the user',
 }
 const flagCounts = entries.flatMap((e) => e.flags).reduce(
   (a, f) => ((a[f] = (a[f] ?? 0) + 1), a),

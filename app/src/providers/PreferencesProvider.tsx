@@ -19,6 +19,8 @@ import { readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
  *  moment you navigated. Here the preference lives above the router, so it
  *  simply persists. */
 
+export type Density = 'comfortable' | 'compact'
+
 interface PreferencesValue {
   theme: Theme
   language: Language
@@ -26,11 +28,16 @@ interface PreferencesValue {
   rtl: boolean
   dir: 'rtl' | 'ltr'
   notifications: boolean
+  /** Table row density. Persisted, app-wide — a parts clerk who wants 30 SKUs
+   *  on one screen wants them on every screen. */
+  density: Density
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
   setLanguage: (language: Language) => void
   toggleLanguage: () => void
   setNotifications: (on: boolean) => void
+  setDensity: (density: Density) => void
+  toggleDensity: () => void
   /** Translate an English source string. Falls back to the source when a key
    *  has no Arabic yet — never renders an empty label. */
   t: (source: string) => string
@@ -91,6 +98,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotificationsState] = useState(
     () => (readStored(STORAGE_KEYS.notifications) ?? 'on') === 'on'
   )
+  const [density, setDensityState] = useState<Density>(
+    () => (readStored(STORAGE_KEYS.density) === 'compact' ? 'compact' : 'comfortable')
+  )
   const [arLookup, setArLookup] = useState<Record<string, string> | null>(arCache)
 
   useEffect(() => {
@@ -144,6 +154,11 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     setNotificationsState(on)
   }, [])
 
+  const setDensity = useCallback((next: Density) => {
+    writeStored(STORAGE_KEYS.density, next)
+    setDensityState(next)
+  }, [])
+
   const value = useMemo<PreferencesValue>(() => {
     const rtl = language === 'ar'
     const dict = arLookup
@@ -153,14 +168,17 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       rtl,
       dir: rtl ? 'rtl' : 'ltr',
       notifications,
+      density,
       setTheme,
       toggleTheme: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
       setLanguage,
       toggleLanguage: () => setLanguage(rtl ? 'en' : 'ar'),
       setNotifications,
+      setDensity,
+      toggleDensity: () => setDensity(density === 'compact' ? 'comfortable' : 'compact'),
       t: (source: string) => (rtl && dict ? (dict[source] ?? source) : source),
     }
-  }, [theme, language, notifications, arLookup, setTheme, setLanguage, setNotifications])
+  }, [theme, language, notifications, density, arLookup, setTheme, setLanguage, setNotifications, setDensity])
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>
 }

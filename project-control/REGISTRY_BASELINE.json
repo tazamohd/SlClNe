@@ -1,0 +1,13 @@
+{
+  "mockOnly": 185,
+  "loadingMissing": 171,
+  "emptyMissing": 146,
+  "errorMissing": 174,
+  "successMissing": 259,
+  "arabicMissing": 342,
+  "tabletMissing": 301,
+  "rtlBroken": 0,
+  "placeholder": 0,
+  "noContentAssertion": 0,
+  "updatedAt": "2026-09-03"
+}

@@ -19,7 +19,7 @@ export function Money({
   bare?: boolean
 }) {
   return (
-    <span dir="ltr" className={cn('font-mono', className)}>
+    <span dir="ltr" className={cn('font-mono tabular-nums', className)}>
       {formatSar(sar, { bare })}
     </span>
   )

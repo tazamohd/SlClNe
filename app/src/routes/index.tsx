@@ -4,7 +4,7 @@ import type { ComponentType } from 'react'
 import { SCREENS } from '@/data/generated/screens'
 import { SPEC_SCREENS } from '@/data/generated/spec-screens'
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
-import { RequireAccess } from './RequireAccess'
+import { RequireAccess, ScreenSkeleton } from './RequireAccess'
 import { PendingScreen } from '@/screens/PendingScreen'
 import {
   composeScreens,
@@ -19,6 +19,19 @@ import { PublicShell } from '@/components/shell/PublicShell'
 import { RouteLoader } from '@/components/shell/RouteLoader'
 import { FeatureScreenView } from '@/screens/feature/FeatureScreenView'
 import { FEATURE_DEF_BY_ROUTE } from '@/screens/feature/definitions'
+import redirectTable from '../../route-redirects.json'
+
+/** Routes that hand off to a canonical screen (`route-redirects.json`, shared
+ *  with the registry generator and the smoke runner). A loser renders
+ *  `<Navigate replace>` so the back button never lands on it. */
+const REDIRECTS: Readonly<Record<string, string>> = Object.fromEntries(
+  Object.entries(redirectTable).filter(([key]) => key.startsWith('/'))
+) as Record<string, string>
+
+function redirectFor(route: string) {
+  const to = REDIRECTS[route]
+  return to ? <Navigate to={to} replace /> : null
+}
 
 /** Everything below reaches its screen through `React.lazy(() => import(...))`
  *  rather than a static import. The routes, guards, shells and screen-name
@@ -492,6 +505,8 @@ export function AppRoutes() {
 
         {SCREENS.map((screen) => {
           const entry = SCREEN_ENTRIES[screen.name]
+          const redirect = redirectFor(screen.route)
+          if (redirect) return <Route key={screen.name} path={screen.route} element={redirect} />
 
           // Ungated screens render outside RequireAccess entirely rather than
           // passing a flag through it: the guard redirects anyone without a
@@ -506,7 +521,9 @@ export function AppRoutes() {
                 element={
                   UngatedShell ? (
                     <UngatedShell>
-                      <Ungated />
+                      <Suspense fallback={<ScreenSkeleton />}>
+                        <Ungated />
+                      </Suspense>
                     </UngatedShell>
                   ) : (
                     <Ungated />
@@ -535,6 +552,8 @@ export function AppRoutes() {
             entry exist and PendingScreen names what to build from. Screens that
             do have a design are already routed above. */}
         {SPEC_SCREENS.filter((spec) => !spec.designScreen).map((spec) => {
+          const redirect = redirectFor(spec.route)
+          if (redirect) return <Route key={spec.id} path={spec.route} element={redirect} />
           const def = FEATURE_DEF_BY_ROUTE.get(spec.route)
           // A domain that has built the real screen outranks both the kit and the
           // placeholder — that is how a feature-map route graduates.

@@ -5,6 +5,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { ShellContext } from './ShellContext'
 
 /** The chrome for a single-audience portal — technician, customer, and later
  *  supplier and procurement.
@@ -150,6 +151,8 @@ export function portalShellFor(config: PortalConfig) {
   }
 }
 
+const PORTAL_SHELL = { kind: 'portal' } as const
+
 function PortalFrame({ config, children }: { config: PortalConfig; children: ReactNode }) {
   const { t, theme, toggleTheme, rtl, toggleLanguage } = usePreferences()
   const { userName, roleLabel, canScreen } = useSession()
@@ -158,6 +161,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
   const tabbed = nav.length > 1
 
   return (
+    <ShellContext.Provider value={PORTAL_SHELL}>
     <div className="flex min-h-screen flex-col bg-page-alt font-ui">
       <a
         href="#main-content"
@@ -277,11 +281,12 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
               }
             >
               <Icon name={item.icon} size={19} />
-              <span className="font-action text-[10px] font-semibold">{t(item.label)}</span>
+              <span className="font-action text-[11px] font-semibold">{t(item.label)}</span>
             </NavLink>
           ))}
         </nav>
       ) : null}
     </div>
+    </ShellContext.Provider>
   )
 }

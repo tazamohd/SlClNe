@@ -7,6 +7,7 @@
  *  error, then invalidate. The UI is never left showing a state the server
  *  rejected.
  */
+import { useCallback } from 'react'
 import {
   useMutation,
   useQuery,
@@ -14,6 +15,8 @@ import {
   type QueryClient,
   type UseMutationResult,
 } from '@tanstack/react-query'
+import { useToast } from '@/components/ui/Toast'
+import { usePreferences } from '@/providers/PreferencesProvider'
 import {
   repository,
   RepositoryError,
@@ -322,6 +325,46 @@ export function useBulk<K extends CollectionKey>(
       void client.invalidateQueries({ queryKey: queryKeys.all(key) })
     },
   })
+}
+
+/** Delete with a way back.
+ *
+ *  Snapshots the row before the optimistic delete and shows an "Undo" toast;
+ *  undo re-creates the row from the snapshot minus its server metadata. On the
+ *  fixtures the row simply returns; against the API it comes back with a new
+ *  id, which is the honest outcome of a delete that was carried out and then
+ *  reversed. `label` names the thing for the toast ("Job card"). */
+export function useUndoableDelete<K extends CollectionKey>(key: K, label = 'Record') {
+  const client = useQueryClient()
+  const toast = useToast()
+  const { t } = usePreferences()
+  const remove = useDelete<K>(key)
+  const create = useCreate<K>(key)
+
+  const run = useCallback(
+    async (id: string) => {
+      const snapshot = findCached<K>(client, key, id)
+      await remove.mutateAsync({ id })
+      toast.show({
+        title: `${t(label)} ${t('deleted')}`,
+        tone: 'success',
+        undo: snapshot
+          ? () => {
+              const restore = { ...(snapshot as object) } as Record<string, unknown>
+              delete restore._id
+              delete restore._version
+              delete restore._createdAt
+              delete restore._updatedAt
+              delete restore._optimistic
+              void create.mutateAsync({ input: restore as Partial<RowOf<K>> })
+            }
+          : undefined,
+      }, 6000)
+    },
+    [client, key, remove, create, toast, t, label],
+  )
+
+  return { remove: run, pending: remove.isPending || create.isPending }
 }
 
 function findCached<K extends CollectionKey>(

@@ -16,7 +16,9 @@ export type Coverage = 'MISSING' | 'PARTIAL' | 'DONE' | 'VERIFIED' | 'N/A'
  *    real data until a credential, device or service exists. Its blocker names
  *    the dependency.
  *  - `NOT_IN_SCOPE` is deliberately excluded, with the reason recorded. */
-export type Category = 'PRODUCT' | 'REFERENCE_ONLY' | 'EXTERNAL_DEPENDENCY' | 'NOT_IN_SCOPE'
+/** `REDIRECT`: the route hands off to a canonical screen (route-redirects.json).
+ *  It renders the winner, so it is neither a placeholder nor a mock. */
+export type Category = 'PRODUCT' | 'REFERENCE_ONLY' | 'EXTERNAL_DEPENDENCY' | 'NOT_IN_SCOPE' | 'REDIRECT'
 
 export type Surface =
   | 'app' | 'auth' | 'portal' | 'customer-app' | 'public' | 'kiosk' | 'native'
@@ -45,6 +47,9 @@ export type RegistryFlag =
   | 'NO_CONTENT_ASSERTION'
   | 'DESKTOP_ONLY' | 'MOBILE_MISSING' | 'TABLET_MISSING'
   | 'ARABIC_MISSING' | 'RTL_BROKEN' | 'MOCK_ONLY' | 'NO_RBAC_MODULE'
+  /** The four states the Definition of Done requires of every data-backed
+   *  screen, as flags so the gap report shows them falling. */
+  | 'LOADING_MISSING' | 'EMPTY_MISSING' | 'ERROR_MISSING' | 'SUCCESS_MISSING'
 
 /** The slice of the registry the app itself reads. The full record — coverage
  *  per dimension, CRUD, tests, evidence — lives in
@@ -64,6 +69,8 @@ export interface RegistryEntry {
   mobileType: MobileType
   status: CapabilityStatus
   flags: RegistryFlag[]
+  /** Where a `REDIRECT` entry lands. */
+  redirectTo?: string
   /** Whether the sidebar reaches it. A product capability with no nav entry and
    *  no inbound link is unreachable however well it renders. */
   inNav: boolean

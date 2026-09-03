@@ -24,6 +24,7 @@ import {
   sodViolation,
 } from '@/data/rbac'
 import { NAV } from '@/data/generated/nav'
+import { journeyNav } from '@/data/nav-journey'
 import { REGISTRY } from '@/data/generated/master-registry'
 import type { Action, RoleId } from '@/data/types'
 
@@ -727,9 +728,11 @@ describe('navFor unknown and edge roles', () => {
     }
   })
 
-  it('preserves group ordering from the source nav', () => {
+  it('preserves group ordering from the journey-ordered nav', () => {
     const ownerNav = navFor('owner')
-    const sourceLabels = NAV.map((g) => g.label)
+    // The sidebar is regrouped by the working day (`nav-journey.ts`) before
+    // the role filter; the filter must not reorder what the journey decided.
+    const sourceLabels = journeyNav(NAV).map((g) => g.label)
     const ownerLabels = ownerNav.map((g) => g.label)
     // Owner labels must appear in the same relative order as the source.
     let lastIdx = -1

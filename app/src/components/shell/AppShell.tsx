@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { cycleFocus, focusFirst } from '@/lib/focusTrap'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { Icon } from '@/components/ui/Icon'
+import { PageHeader as UnifiedPageHeader, type PageHeaderProps } from '@/components/ui/PageHeader'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { MobileHeader } from './MobileShell'
+import { ShellContext } from './ShellContext'
+
+const APP_SHELL = { kind: 'app' } as const
 
 /** The one shell for every operational screen.
  *
@@ -30,20 +34,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const handleDrawerKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') { setDrawerOpen(false); return }
-      if (e.key !== 'Tab') return
       const el = drawerRef.current
-      if (!el) return
-      const focusable = el.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      )
-      if (focusable.length === 0) return
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus() }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus() }
-      }
+      if (el) cycleFocus(el, e)
     },
     [],
   )
@@ -53,12 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     previousFocus.current = document.activeElement as HTMLElement
     document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', handleDrawerKey)
-    requestAnimationFrame(() => {
-      const first = drawerRef.current?.querySelector<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      )
-      first?.focus()
-    })
+    requestAnimationFrame(() => focusFirst(drawerRef.current))
     return () => {
       document.body.style.overflow = ''
       document.removeEventListener('keydown', handleDrawerKey)
@@ -67,9 +54,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [drawerOpen, handleDrawerKey])
 
   return (
+    <ShellContext.Provider value={APP_SHELL}>
     <div className="flex h-screen overflow-hidden bg-page font-ui">
       <a
         href="#main-content"
+        data-testid="skip-link"
         className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-salis-blue px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
       >
         {t('Skip to main content')}
@@ -115,6 +104,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </main>
       </div>
     </div>
+    </ShellContext.Provider>
   )
 }
 
@@ -128,37 +118,10 @@ function PageBackdrop() {
   )
 }
 
-/** Page title block: gradient icon tile, gradient-filled heading, subtitle and
- *  right-aligned actions. Shared by the dashboards and list screens. */
-export function PageHeader({
-  icon,
-  title,
-  subtitle,
-  actions,
-}: {
-  icon: string
-  title: string
-  subtitle?: ReactNode
-  actions?: ReactNode
-}) {
-  const { t } = usePreferences()
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-6">
-      <div className="flex items-center gap-3">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-          <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-            <Icon name={icon} size={32} />
-          </div>
-        </div>
-        <div>
-          <h1 className="bg-salis-gradient-r bg-clip-text font-display text-5xl font-black leading-[1.1] text-transparent">
-            {t(title)}
-          </h1>
-          {subtitle ? <p className="font-light text-muted">{subtitle}</p> : null}
-        </div>
-      </div>
-      {actions ? <div className="flex flex-wrap gap-3">{actions}</div> : null}
-    </div>
-  )
+/** The dashboards' page title: gradient icon tile with a halo and a gradient-
+ *  filled 48px heading.
+ *  @deprecated Import `PageHeader` from `@/components/ui/PageHeader` with
+ *  `variant="hero"`; this wrapper exists so the two dashboards need not move. */
+export function PageHeader(props: Omit<PageHeaderProps, 'variant'>) {
+  return <UnifiedPageHeader {...props} variant="hero" />
 }

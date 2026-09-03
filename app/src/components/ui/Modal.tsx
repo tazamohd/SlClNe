@@ -11,6 +11,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/cn'
+import { cycleFocus, focusableWithin } from '@/lib/focusTrap'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Button } from './Button'
@@ -48,10 +49,6 @@ const VARIANTS: Record<ModalVariant, { width: string; layout: ModalLayout }> = {
  *  reserves this treatment for exactly those, and never uses red. */
 export const DESTRUCTIVE_BUTTON =
   'bg-none bg-salis-orange shadow-none hover:bg-none hover:bg-salis-orange-hover hover:shadow-none'
-
-const FOCUSABLE =
-  'a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),' +
-  'select:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
 /** Every open dialog, oldest last. Escape and the focus trap read the tail:
  *  a confirmation raised from inside a form dialog must close itself and leave
@@ -150,7 +147,7 @@ export function Modal({
     const opener = document.activeElement
     restoreTo.current = opener instanceof HTMLElement ? opener : null
     const panel = panelRef.current
-    const first = panel?.querySelector<HTMLElement>(FOCUSABLE)
+    const first = panel ? focusableWithin(panel)[0] : undefined
     ;(first ?? panel)?.focus()
     return () => {
       const target = restoreTo.current
@@ -170,32 +167,8 @@ export function Modal({
         onClose()
         return
       }
-      if (event.key !== 'Tab') return
-
       const panel = panelRef.current
-      if (!panel) return
-      // Deliberately no `offsetParent` visibility filter: the panel is inside a
-      // fixed overlay, where that property is unreliable, and dropping every
-      // candidate would leave the trap with nothing to cycle through.
-      const focusable = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
-        (element) => !element.closest('[aria-hidden="true"]')
-      )
-      if (!focusable.length) {
-        event.preventDefault()
-        panel.focus()
-        return
-      }
-      const first = focusable[0]
-      const last = focusable[focusable.length - 1]
-      const active = document.activeElement
-      const outside = !panel.contains(active)
-      if (event.shiftKey && (active === first || outside)) {
-        event.preventDefault()
-        last.focus()
-      } else if (!event.shiftKey && (active === last || outside)) {
-        event.preventDefault()
-        first.focus()
-      }
+      if (panel) cycleFocus(panel, event)
     }
     // Capture, so a dialog closes even when the focused control stops the event.
     document.addEventListener('keydown', onKeyDown, true)

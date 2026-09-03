@@ -13,6 +13,10 @@
  *  back.
  */
 import * as T from './generated/tables'
+import { FEATURE_ROWS_SEED, type FeatureRow } from './feature-rows'
+import { NOTIFICATIONS_SEED, type NotificationRow } from './notifications-seed'
+
+export type { FeatureRow, NotificationRow }
 
 /* ------------------------------------------------------------------- types */
 
@@ -473,9 +477,22 @@ export interface Repository {
   diagParts: Collection<(typeof T.DIAG_PARTS)[number]>
   diagLabour: Collection<(typeof T.DIAG_LABOUR)[number]>
   diagCopies: Collection<(typeof T.DIAG_COPIES)[number]>
+  /** Feature-kit table rows, keyed by route and panel. Client-local. */
+  featureRows: Collection<FeatureRow>
+  /** In-app notifications behind the bell. Client-local. */
+  notifications: Collection<NotificationRow>
 }
 
 export type CollectionKey = keyof Repository
+
+/** Collections the API does not serve yet. Both repositories back them with
+ *  the same session fixture, so a screen reads them through the one seam and
+ *  gains a real endpoint the day the server registers one — by deleting the
+ *  key from this set. Said plainly rather than hidden behind a 404 handler. */
+export const CLIENT_LOCAL: ReadonlySet<CollectionKey> = new Set<CollectionKey>([
+  'featureRows',
+  'notifications',
+])
 
 /** Where each collection lives on the API. Mirrors `server/src/registry.ts`;
  *  the seed-fidelity suite fetches every one of these paths, so a name that
@@ -533,6 +550,10 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   diagParts: 'diagnostics/parts',
   diagLabour: 'diagnostics/labour',
   diagCopies: 'diagnostics/copies',
+  // Not served yet — see CLIENT_LOCAL. The paths are reserved so the day the
+  // server registers them nothing on the client needs renaming.
+  featureRows: 'feature-rows',
+  notifications: 'notifications',
 }
 
 /* ------------------------------------------------------------ mock backend */
@@ -611,7 +632,7 @@ function listSlice<TRow>(data: TRow[], query: Query) {
  *  copy — data resets on reload, which is honest: no fake persistence, no
  *  silent data loss. This lets every screen with mutation hooks work in demo
  *  mode without a backend. */
-function fixture<TRow>(seed: readonly TRow[]): Collection<TRow> {
+export function fixture<TRow>(seed: readonly TRow[]): Collection<TRow> {
   const data: TRow[] = seed.slice()
 
   const idempotencyLog = new Map<string, TRow | TRow[] | void>()
@@ -773,6 +794,10 @@ export const mockRepository: Repository = {
    * readings, and the commands that write them refuse without a bridge. */
   obdReadings: fixture<ObdReadingRow>([]),
   dtcCodes: fixture(T.DTC_CODES),
+  /* Client-local collections (CLIENT_LOCAL): the same instances back the HTTP
+   * repository until the server serves them. */
+  featureRows: fixture<FeatureRow>(FEATURE_ROWS_SEED),
+  notifications: fixture<NotificationRow>(NOTIFICATIONS_SEED),
   oemTools: fixture(T.OEM_TOOLS),
   integrations: fixture(T.SYS_INTEGRATIONS),
   kbProcedures: fixture(T.KB_PROCEDURES),
@@ -932,7 +957,9 @@ function httpCollection<TRow>(base: string, path: string): Collection<TRow> {
 export function createHttpRepository(baseUrl: string): Repository {
   const entries = Object.entries(ENDPOINTS).map(([key, path]) => [
     key,
-    httpCollection(baseUrl, path),
+    CLIENT_LOCAL.has(key as CollectionKey)
+      ? mockRepository[key as CollectionKey]
+      : httpCollection(baseUrl, path),
   ])
   return Object.fromEntries(entries) as Repository
 }
