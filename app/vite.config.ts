@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'node:url'
+import { SECURITY_HEADERS } from './security-headers.mjs'
 
 export default defineConfig({
   plugins: [react()],
@@ -42,5 +43,12 @@ export default defineConfig({
     // down so a future oversized chunk still surfaces.
     chunkSizeWarningLimit: 600,
   },
+  /** `preview` serves the built app, and the E2E suite runs against it — so
+   *  applying the production headers here means the Playwright specs exercise
+   *  the real Content-Security-Policy on every run. A directive tight enough to
+   *  break the app fails a test instead of reaching a user. `dev` is left
+   *  unrestricted: Vite's HMR client injects inline script, so a production CSP
+   *  there would block the dev server and teach everyone to disable it. */
+  preview: { port: 4173, headers: SECURITY_HEADERS },
   server: { port: 5173, host: true },
 })

@@ -1,9 +1,9 @@
 # SALIS AUTO — Software Requirements Specification
 
-**Version** 1.0 · **Date** 2026-09-02 · **Status** DRAFT, pending review
+**Version** 1.1 · **Date** 2026-09-03 · **Status** DRAFT, pending review
 
 This document specifies what SALIS AUTO must do and how conformance is proven.
-It is written against the code as it stands on 2026-09-02 and cites file paths so
+It is written against the code as it stands on 2026-09-03 and cites file paths so
 that any claim here can be checked rather than believed.
 
 Where a requirement is met, this document says so and names the evidence. Where
@@ -90,18 +90,22 @@ sources depends on it holding.
 
 ### 2.2 Capability inventory
 
-As of 2026-09-02, from `project-control/STATUS.json`:
+As of 2026-09-03, from `project-control/STATUS.json`:
 
-| | Count |
-|---|---|
-| Capabilities registered | **424** |
-| — product | 384 |
-| — reference-only (design-system documentation) | 28 |
-| — external dependency (§2.6) | 12 |
-| Rendering a real component | 424 |
-| Placeholder routes | 0 |
-| Backed by real data | **0** |
-| Reading fixtures only | **384** |
+| | Count | Change since 2026-09-02 |
+|---|---|---|
+| Capabilities registered | **424** | — |
+| — product | 384 | — |
+| — reference-only (design-system documentation) | 28 | — |
+| — external dependency (§2.6) | 12 | — |
+| Rendering a real component | 424 | — |
+| Placeholder routes | 0 | — |
+| Backed by real data | **99** | +99 |
+| Reading fixtures only | **285** | −99 |
+| Built screens owing a designed mobile layout | 1 | +1 |
+
+The first ninety-nine capabilities crossed from fixtures to the API in a day,
+which is what the repository seam was built for: no screen moved.
 
 By surface: app 313 · public 31 · auth 28 · reference 28 · customer-app 11 ·
 portal 8 · call-center 2 · native 2 · kiosk 1.
@@ -314,18 +318,45 @@ ingestion, bank statement import, and S3-compatible file storage behind a
 
 ### 5.5 Security
 
+**5.5.1 The API.** This process serves JSON and nothing else, so it can deny
+every fetch directive outright.
+
 | ID | Requirement | Status |
 |---|---|---|
 | SRS-SEC-1 | `X-Content-Type-Options: nosniff` | Met |
 | SRS-SEC-2 | `Strict-Transport-Security` with a max-age | Met |
-| SRS-SEC-3 | `X-Frame-Options: DENY` | **Not met** — helmet's `SAMEORIGIN` default is served |
-| SRS-SEC-4 | `Content-Security-Policy: default-src 'none'` | **Not met** — helmet is registered with `contentSecurityPolicy: false` (`server/src/app.ts:136`); no CSP header is sent |
-| SRS-SEC-5 | `Referrer-Policy: strict-origin-when-cross-origin` | **Not met** — `no-referrer` is served |
+| SRS-SEC-3 | `X-Frame-Options: DENY` | Met — `frameguard: { action: 'deny' }`, verified on the wire |
+| SRS-SEC-4 | `Content-Security-Policy: default-src 'none'` | Met — served as `default-src 'none';frame-ancestors 'none';base-uri 'none';form-action 'none'`. `useDefaults` is off: helmet's defaults are written for a page that loads scripts and styles, and this process serves JSON only |
+| SRS-SEC-5 | `Referrer-Policy: no-referrer` | Met. **The requirement was tightened, not the status.** It previously read `strict-origin-when-cross-origin`; `no-referrer` sends no `Referer` at all, which is strictly stronger and costs an API nothing, so the specification now asks for what the code does because the code is right |
 | SRS-SEC-6 | `X-Powered-By` absent | Met |
 | SRS-SEC-7 | Rate limiting keyed by tenant and address, not address alone | Met |
 | SRS-SEC-8 | No secret in source; secrets from environment only | Met — `.env` gitignored |
 | SRS-SEC-9 | Parameterised queries throughout; user input escaped for `ILIKE` | Met — `escapeIlike` |
 | SRS-SEC-10 | Exposed GitHub PATs rotated and secret scanning added to CI | **Not met** — BLK-003, open |
+
+**5.5.2 The delivered application.** Added 2026-09-03. This half had no
+requirements and no headers: nginx, Vercel and Netlify each served the built SPA
+with none at all. It is the half that matters most, because it is the document a
+browser parses and executes — where an XSS actually lands. The API being locked
+down while the page loading it was not is the more dangerous of the two gaps,
+and it was the one nobody had written down.
+
+The headers are defined once in `app/security-headers.mjs`; `scripts/gen-headers.mjs`
+writes them into all three deploy configs and `npm run check-headers` fails the
+build when they drift.
+
+| ID | Requirement | Status |
+|---|---|---|
+| SRS-SEC-11 | The built application is served with a Content-Security-Policy on every response, including static assets and error responses. | Met — `always` on every nginx `add_header`; the asset `location` repeats the set, because nginx discards inherited headers in a nested block |
+| SRS-SEC-12 | `script-src 'self'` — no `'unsafe-inline'`, no `'unsafe-eval'`. | Met — the build emits zero inline `<script>`, so no nonce is needed. This is the directive that stops an injected script; weakening it makes the policy decorative |
+| SRS-SEC-13 | `frame-ancestors 'none'` and `object-src 'none'`. | Met |
+| SRS-SEC-14 | `font-src 'self'` — no external font host. | Met — Inter and Poppins self-hosted under `/fonts` |
+| SRS-SEC-15 | `style-src` may use `'unsafe-inline'` only for as long as inline style attributes exist. | **Partial, with a deadline** — 95 source files use React's `style={{…}}`, which emits a style attribute and cannot carry a nonce. Narrow to `style-src-elem 'self'` once those are gone |
+| SRS-SEC-16 | `connect-src` names every origin the application calls. | **Deployment-dependent** — `'self'` today. When `VITE_API_BASE_URL` points off-origin, that origin must be added or every request is blocked. The one directive a deployer must edit |
+| SRS-SEC-17 | `Permissions-Policy` denies camera, microphone, geolocation and the rest of the hardware this application never requests. | Met |
+| SRS-SEC-18 | HSTS for two years, subdomains included, preload-eligible. | Met |
+| SRS-SEC-19 | The policy is exercised against the real build, not asserted. | Met — `e2e/security-headers.spec.ts` runs six specs against `vite preview`, which serves the production headers; it loads six real screens and the Arabic switch and fails on any CSP violation or page error |
+| SRS-SEC-20 | One definition, three deploy targets, no drift. | Met — generated and gated by `check-headers` |
 
 ### 5.6 Reliability and observability
 
@@ -351,13 +382,21 @@ separate probes; audit trail as the mutation record of last resort.
 
 A requirement is met when a test proves it, not when a document asserts it.
 
-| Layer | Runner | Scale on 2026-09-02 |
-|---|---|---|
-| Unit + component | vitest + testing-library | **3,078 passing / 3,078**, 77 files |
-| API + integration | vitest + ephemeral PostgreSQL | **2,443 passing / 2,470**, 30 files, 27 failing |
-| Route smoke + golden paths | Playwright | **260 passing / 315**, 55 failing |
-| Tablet | Playwright, 8 viewports × 6 layout families | **65 passing / 65** |
-| Static gates | bespoke | no-fake, tokens, i18n, a11y, logical-CSS, a11y-copy, bundle — all passing |
+| Layer | Runner | Scale on 2026-09-03 | On 2026-09-02 |
+|---|---|---|---|
+| Unit + component | vitest + testing-library | **3,459 passing / 3,459**, 93 files | 3,078 / 3,078 |
+| API + integration | vitest + ephemeral PostgreSQL | **2,486 passing / 2,486**, 31 files, 0 failing, 0 skipped | 2,443 / 2,470 |
+| E2E — smoke, golden paths, responsive, tablet, security headers | Playwright, desktop and mobile projects | **586 passing / 702**, 116 failing | 260 / 315 |
+| Static gates | bespoke | no-fake, tokens, a11y, logical-CSS, a11y-copy, bundle, **headers** passing; **i18n red** | all passing |
+
+The E2E suite roughly doubled because the config gained desktop and mobile
+projects, so every spec now runs at both. Failures held at exactly 116 across
+that change and across the introduction of the Content-Security-Policy — the
+policy added twelve passing specs and broke nothing, which is the only way to
+know a directive is safe to tighten.
+
+The i18n gate is red on ten keys added with the current in-flight `DataTable`,
+`Pagination`, `PageHeader` and `Breadcrumbs` work — the gate is doing its job.
 
 **Verification environment.** The API suite requires a real PostgreSQL; the
 harness drops and rebuilds an ephemeral `salis_auto_test` per file, and
@@ -376,12 +415,17 @@ From `project-control/BLOCKERS.json`, generated:
 
 | ID | Severity | Statement |
 |---|---|---|
-| BLK-002 | BLOCKER | No capability is backed by real data. |
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed and are not confirmed rotated. |
-| BLK-004 | CRITICAL | 384 rendered capabilities read fixtures rather than the API. |
+| BLK-004 | CRITICAL | 285 rendered capabilities read fixtures rather than the API. |
+| BLK-006 | HIGH | 1 built screen owes its designed mobile layout. |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory. |
 
-BLK-002 and BLK-004 are the same wall seen from two sides: the server exists,
+**BLK-002 is cleared.** "No capability is backed by real data" stopped being
+true on 2026-09-03; ninety-nine now read the API. BLK-003 is the only blocker
+here that no amount of engineering closes — it needs a person to rotate three
+credentials.
+
+BLK-004 is the remaining half of a wall whose other half just fell: the server exists,
 is migrated, seeded and tested, and the repository seam is built — but
 `VITE_API_BASE_URL` is unset, so every screen still reads fixtures. Closing them
 is a per-domain migration, not a rewrite.
@@ -403,25 +447,55 @@ integration tests, no API tests". There are 3,078 unit and component tests and
 2,470 API tests. The file's own note is right: `TEST_STATUS.json` is the live
 version and the prose is not.
 
-**9.3 The certification asserts security properties the code contradicts.**
-`docs/release-blockers.md` §6 marks "No XSS / Injection Vulnerabilities" **PASS**,
-citing "CSP headers configured" and "the `security.test.ts` suite validates
-header presence and content". The CSP is explicitly disabled at
-`server/src/app.ts:136`, and that suite could not run at all — it needed a
-database that was unreachable. It fails on exactly the claims cited. See
-SRS-SEC-3, -4, -5.
+**9.3 The certification asserted security properties the code contradicted.**
+*Resolved 2026-09-03.* `docs/release-blockers.md` §6 marked "No XSS / Injection
+Vulnerabilities" **PASS**, citing "CSP headers configured" and a
+`security.test.ts` that "validates header presence and content". The CSP was
+disabled outright, the frame policy sat on helmet's `SAMEORIGIN` default, and
+that suite had never run — it needed a database that was unreachable. The claim
+was true only because nothing could check it.
 
-**9.4 Twenty-two API tests assert a contract the server no longer serves.**
-`collections.test.ts` and `writes.test.ts` expect bare arrays where the API
-returns `{rows}`, and send `customer` where the schema requires `customerName`.
-Both files had never executed — they died at login, and vitest reported their 32
-tests as *skipped*. Whether the tests or the API are correct is undecided and is
-the largest open contract question in the system.
+Closed by hardening the code rather than softening the claim: CSP on with
+`useDefaults` off, `frameguard: deny`, and the rate-limit headers renamed to the
+IETF spelling the API was already documented as returning. The one assertion
+that changed direction went *stricter* — `no-referrer` over
+`strict-origin-when-cross-origin`. Verified from the response rather than from
+the suite:
+
+```
+content-security-policy      default-src 'none';frame-ancestors 'none';
+                             base-uri 'none';form-action 'none'
+x-frame-options              DENY
+referrer-policy              no-referrer
+strict-transport-security    max-age=15552000; includeSubDomains
+x-content-type-options       nosniff
+cross-origin-opener-policy   same-origin
+cross-origin-resource-policy same-origin
+x-powered-by                 (absent)
+```
+
+The lesson is kept rather than the finding: a gate that cannot run reports the
+absence of evidence as the presence of compliance.
+
+**9.4 Twenty-two API tests asserted a contract the server no longer served.**
+*Resolved 2026-09-03.* `collections.test.ts` and `writes.test.ts` expected bare
+arrays where the API returns `{rows}`, and sent `customer` where the schema
+requires `customerName`. Both files had never executed — they died at login, and
+vitest reported their 32 tests as *skipped*, which reads like a deliberate
+exclusion rather than two suites falling over.
+
+Settled from the code, not by preference: a body that does not match the schema
+is 400, a schema-valid body a rule refuses is 422 — correcting `docs/api.md` and
+an `app.ts` fallback that disagreed with every route. The server suite is now
+**2,486 passing, 0 failing, 0 skipped** across 31 files.
 
 **9.5 The E2E suite could not run outside CI.**
-`playwright.config.ts` pinned Chromium to a path that exists only in the CI
-image. Fixed 2026-08-31; 55 of 315 specs now fail, mostly on copy assertions that
-drifted while nobody could run them.
+*Resolved 2026-08-31, consequences outstanding.* `playwright.config.ts` pinned
+Chromium to a path that exists only in the CI image, so every spec died at launch
+on any other machine — indistinguishable from having no E2E suite. The suite now
+runs anywhere, and **116 of 702 specs fail**, mostly on copy assertions that
+drifted during the months nobody could run them. Those failures are the debt the
+pinned path was hiding, not new breakage.
 
 ---
 
