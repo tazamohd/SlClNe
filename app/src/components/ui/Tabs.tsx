@@ -1,4 +1,4 @@
-import { createContext, useContext, useId, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useId, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 type TabVariant = 'underline' | 'pill'
@@ -8,6 +8,12 @@ interface TabsContextValue {
   setActiveTab: (id: string) => void
   baseId: string
   variant: TabVariant
+  /** Ids of the `TabPanel`s currently mounted. A tab only claims
+   *  `aria-controls` over a panel that exists: `TabBar` renders a bare
+   *  tablist whose sections live elsewhere, and an `aria-controls` pointing
+   *  at nothing is an invalid ARIA reference (axe: aria-valid-attr-value). */
+  panels: ReadonlySet<string>
+  registerPanel: (id: string) => () => void
 }
 
 const TabsContext = createContext<TabsContextValue | null>(null)
@@ -29,14 +35,29 @@ export interface TabsProps {
 
 export function Tabs({ defaultTab, value, onChange, children, className, variant = 'underline' }: TabsProps) {
   const [internal, setInternal] = useState(defaultTab ?? '')
+  const [panels, setPanels] = useState<ReadonlySet<string>>(() => new Set())
   const baseId = useId()
+  /* Stable across renders: `TabPanel` subscribes in an effect keyed on it, and
+   * a fresh function each render would unregister and re-register the panel
+   * on every commit — each a state change, so a render loop. */
+  const registerPanel = useCallback((id: string) => {
+    setPanels((current) => (current.has(id) ? current : new Set(current).add(id)))
+    return () => {
+      setPanels((current) => {
+        if (!current.has(id)) return current
+        const next = new Set(current)
+        next.delete(id)
+        return next
+      })
+    }
+  }, [])
   const activeTab = value ?? internal
   const setActiveTab = (id: string) => {
     if (!value) setInternal(id)
     onChange?.(id)
   }
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab, baseId, variant }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab, baseId, variant, panels, registerPanel }}>
       <div className={className}>{children}</div>
     </TabsContext.Provider>
   )
@@ -97,7 +118,7 @@ export interface TabProps {
 }
 
 export function Tab({ id, children, className, disabled }: TabProps) {
-  const { activeTab, setActiveTab, baseId, variant } = useTabsContext()
+  const { activeTab, setActiveTab, baseId, variant, panels } = useTabsContext()
   const selected = activeTab === id
   return (
     <button
@@ -105,7 +126,7 @@ export function Tab({ id, children, className, disabled }: TabProps) {
       role="tab"
       id={`${baseId}-tab-${id}`}
       aria-selected={selected}
-      aria-controls={`${baseId}-panel-${id}`}
+      aria-controls={panels.has(id) ? `${baseId}-panel-${id}` : undefined}
       tabIndex={selected ? 0 : -1}
       disabled={disabled}
       onClick={() => setActiveTab(id)}
@@ -140,8 +161,10 @@ export interface TabPanelProps {
 }
 
 export function TabPanel({ id, children, className }: TabPanelProps) {
-  const { activeTab, baseId } = useTabsContext()
-  if (activeTab !== id) return null
+  const { activeTab, baseId, registerPanel } = useTabsContext()
+  const mounted = activeTab === id
+  useEffect(() => (mounted ? registerPanel(id) : undefined), [mounted, id, registerPanel])
+  if (!mounted) return null
   return (
     <div
       role="tabpanel"

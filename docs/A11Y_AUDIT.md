@@ -160,6 +160,37 @@ browser is available in CI.
 
 ---
 
+## 6. Runtime sweep — axe-core in the browser (2026-09-03)
+
+The static checker above cannot see computed colour contrast, a label wired up
+in a parent, or a live accessibility tree. `app/e2e/a11y.spec.ts` now runs
+axe-core (WCAG 2.x A/AA tags) over one rendered screen per shell family —
+operational app, auth, public site, technician/customer/supplier portals,
+customer app, kiosk — in both the desktop and the 390px project, and CI runs it
+as its own job (`Accessibility (axe)`).
+
+**Fixed on the first run** (serious/critical, other than contrast — these gate
+at zero):
+
+| Finding | axe rule | Where | Fix |
+|---|---|---|---|
+| `aria-controls` pointing at a panel that does not exist | `aria-valid-attr-value` (critical) | every `TabBar` (Inventory, feature screens) | `Tab` only claims a panel a mounted `TabPanel` registered |
+| Icon-only filter button with no name | `button-name` (critical) | Job Cards, phone layout | `aria-label` + `aria-expanded` |
+| Horizontal scrollers the keyboard cannot reach | `scrollable-region-focusable` (serious) | Customer portal vehicle strip; Dashboard metric and pipeline strips (phone) | `tabIndex={0}` with a named `region` |
+| Scroll container with no focusable content | `scrollable-region-focusable` (serious) | Bank reconciliation, phone layout | the export/print actions the desktop header has are now offered on the phone too; `main` is `tabIndex={-1}` for the skip link |
+
+**Ratcheted, not fixed — colour contrast.** Every remaining serious finding is
+`color-contrast`, and every failing pair is the brand palette itself: orange
+`#F97316` on white (2.8:1, the Logout link), white on bright blue `#0BB3FF`
+(2.35:1, priority pills), and each accent on its own 10% tint (2.1–2.5:1, the
+status and service pills straight from the design bundle's badge tables in
+`src/data/generated/badges.ts`), plus muted `#64748B` on the grey pills
+(3.9–4.2:1, just under 4.5). That is a palette decision, not a component one,
+so the sweep records the count per screen and viewport in
+`project-control/BASELINE.json` (`axeColourContrastNodes`) and fails the moment
+a screen adds one. Lower the numbers as the palette work lands; never raise
+them. A screen not in the table has a ceiling of zero.
+
 ## The gate
 
 `app/scripts/check-a11y.mjs` exits non-zero when the total rises above a

@@ -145,7 +145,12 @@ export function CustomerPortal() {
           />
         </Card>
       ) : (
-        <ul className="-mx-1 m-0 flex list-none gap-2.5 overflow-x-auto p-0 px-1 pb-1">
+        <ul
+          className="-mx-1 m-0 flex list-none gap-2.5 overflow-x-auto p-0 px-1 pb-1"
+          aria-label={t('My Vehicles')}
+          // A horizontal scroller has to be reachable from the keyboard.
+          tabIndex={0}
+        >
           {vehicleRows.map((vehicle, index) => (
             <li
               key={vehicle._id ?? `${vehicle.plate}-${index}`}
