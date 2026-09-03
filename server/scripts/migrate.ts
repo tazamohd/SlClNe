@@ -71,6 +71,37 @@ export async function runMigrations(options: { reset?: boolean } = {}): Promise<
       /* The audit log is append-only even for the application role. The trigger
        * enforces it too; this makes the intent visible in the grant table. */
       await db.execute(sql.raw(`revoke update, delete on audit_log from "${role}"`))
+
+      /* `otp_challenges` holds live authentication material, so the blanket
+       * grant above is too wide for it. The narrowing below is derived from
+       * what `src/auth/otp.ts` actually executes, not from a rule of thumb.
+       *
+       *   SELECT   the throttle, verification and recovery paths all read
+       *   INSERT   `issueChallenge`
+       *   UPDATE   two columns only — see below
+       *   DELETE   never. No code path deletes a challenge; consumption is
+       *            `verified_at`, not a row removal, and there is no cleanup
+       *            sweep. Revoked. If a retention job is added later it needs
+       *            this back, deliberately and with its own reason.
+       *
+       * The database audit recommended `REVOKE UPDATE, DELETE`. **Revoking
+       * UPDATE would have been a security regression, not a hardening.** Both
+       * of the OTP protections are writes to this table: the attempt counter
+       * that caps brute force (`set({ attempts })`) and the consumption that
+       * stops replay (`set({ verifiedAt })`). Without UPDATE a wrong code
+       * cannot be counted, so a six-digit code becomes unlimited guesses, and a
+       * correct code cannot be consumed, so it works forever. The recommendation
+       * was written against the grant table rather than the code.
+       *
+       * Column-level UPDATE is the real least privilege here, and it is tighter
+       * than the audit asked for: with it, a compromised application role can
+       * count an attempt and consume a challenge, and cannot rewrite
+       * `code_hash`, push out `expires_at`, or redirect `destination` — the
+       * three writes that would turn this table into a way in. */
+      await db.execute(sql.raw(`revoke update, delete on otp_challenges from "${role}"`))
+      await db.execute(
+        sql.raw(`grant update (attempts, verified_at) on otp_challenges to "${role}"`),
+      )
     }
   } finally {
     await client.end({ timeout: 5 })
