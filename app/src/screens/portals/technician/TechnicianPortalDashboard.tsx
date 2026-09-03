@@ -1,82 +1,86 @@
+import { useNavigate } from 'react-router-dom'
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Badge } from '@/components/ui/Badge'
+import { StatusBadge, ServiceBadge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection } from '@/data/useCollection'
+import { UNKNOWN } from '@/screens/registry/writes'
+import { railLabelFor, type JobRow } from '@/screens/workshop/stages'
+import { detailRoute, isDone, isInProgress, todayIso, type AppointmentRow } from '../portal-data'
 
-interface Job {
-  workOrder: string
-  vehicle: string
-  service: string
-  priority: 'High' | 'Normal' | 'Low'
-  status: 'In Progress' | 'Queued' | 'Waiting Parts'
-  estimatedHours: number
-}
-
-const ASSIGNED_JOBS: Job[] = [
-  { workOrder: 'WO-8830', vehicle: '2021 Honda Accord', service: 'Full Brake Service', priority: 'High', status: 'In Progress', estimatedHours: 3 },
-  { workOrder: 'WO-8831', vehicle: '2022 Toyota Camry', service: 'Engine Tune-up', priority: 'Normal', status: 'Queued', estimatedHours: 2.5 },
-  { workOrder: 'WO-8832', vehicle: '2023 Hyundai Tucson', service: 'AC Recharge', priority: 'Normal', status: 'Queued', estimatedHours: 1 },
-  { workOrder: 'WO-8833', vehicle: '2020 Nissan Altima', service: 'Transmission Flush', priority: 'Low', status: 'Waiting Parts', estimatedHours: 2 },
-  { workOrder: 'WO-8834', vehicle: '2019 Toyota Hilux', service: 'Suspension Repair', priority: 'High', status: 'Queued', estimatedHours: 4 },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-  'Waiting Parts': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-}
-
-const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-}
-
+/** The technician's day at a glance, from the same two collections the portal
+ *  home reads. The design's "Hours Today" tile is a number no collection
+ *  records, so it shows the em dash rather than an invented 6.5. */
 export function TechnicianPortalDashboard() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
+  const jobs = useCollection('jobs')
+  const appointments = useCollection('appointments')
+
+  const rows = (jobs.data ?? []) as readonly JobRow[]
+  const active = rows.filter((job) => !isDone(job))
+  const today = todayIso()
+  const schedule = ((appointments.data ?? []) as readonly AppointmentRow[]).filter(
+    (row) => !row.scheduledDate || row.scheduledDate === today
+  )
 
   const kpis = [
-    { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Assigned Jobs'), value: jobs.isLoading ? UNKNOWN : String(active.length), icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('In Progress'), value: jobs.isLoading ? UNKNOWN : String(rows.filter(isInProgress).length), icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Today'), value: appointments.isLoading ? UNKNOWN : String(schedule.length), icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Hours Today'), value: UNKNOWN, icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
-  const columns: Column<Job>[] = [
-    { header: t('Work Order'), cell: (j) => j.workOrder },
-    { header: t('Vehicle'), cell: (j) => j.vehicle },
-    { header: t('Service'), cell: (j) => j.service },
-    { header: t('Priority'), cell: (j) => <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge> },
-    { header: t('Est. Hours'), cell: (j) => j.estimatedHours },
-    { header: t('Status'), cell: (j) => <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge> },
+  const columns: Column<JobRow>[] = [
+    { header: 'Job Card', cell: (job) => job.id, code: true },
+    { header: 'Customer', cell: (job) => <span className="font-medium text-heading">{job.cust}</span> },
+    { header: 'Vehicle', cell: (job) => job.veh },
+    { header: 'Service', cell: (job) => <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} /> },
+    { header: 'Stage', cell: (job) => t(railLabelFor(job.stage)) },
+    { header: 'Status', cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} /> },
   ]
 
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="LayoutDashboard" title={t('Technician Dashboard')} subtitle={t('Today\'s work overview')} />
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map((k) => (
-          <KpiCard key={k.label} {...k} />
-        ))}
-      </div>
-
+    <ScreenFrame
+      icon="LayoutDashboard"
+      title="Technician Dashboard"
+      subtitle={t("Today's work overview")}
+      query={jobs}
+      skeleton="dashboard"
+      empty={
+        active.length === 0 && {
+          icon: 'Wrench',
+          title: 'No jobs assigned to you',
+          description: 'Jobs appear here as soon as the workshop assigns one to you.',
+        }
+      }
+      toolbar={
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          {kpis.map((k) => (
+            <KpiCard key={k.label} {...k} />
+          ))}
+        </div>
+      }
+    >
       <DataTable
         caption="Technician assigned jobs"
         columns={columns}
-        rows={ASSIGNED_JOBS}
-        rowKey={(j) => j.workOrder}
-        mobileCard={(j) => (
+        rows={active}
+        rowKey={(job) => job._id ?? job.id}
+        onRowClick={(job) => navigate(detailRoute(job.id))}
+        mobileCard={(job) => (
           <>
-            <MobileCardHeader title={j.service} trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>} />
-            <MobileCardRow label={t('Vehicle')}>{j.vehicle}</MobileCardRow>
-            <MobileCardRow label={t('Work Order')}>{j.workOrder}</MobileCardRow>
-            <MobileCardRow label={t('Priority')}><Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge></MobileCardRow>
+            <MobileCardHeader title={job.cust} trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />} />
+            <MobileCardRow label={t('Vehicle')}>{job.veh}</MobileCardRow>
+            <MobileCardRow label={t('Job Card')}>
+              <span className="font-mono" dir="ltr">{job.id}</span>
+            </MobileCardRow>
+            <MobileCardRow label={t('Stage')}>{t(railLabelFor(job.stage))}</MobileCardRow>
           </>
         )}
       />
-    </div>
+    </ScreenFrame>
   )
 }

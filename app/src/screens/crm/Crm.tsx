@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { ListPageHeader } from '@/components/shell/ListPage'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
+import { useCommand, type Command } from '@/components/shell/commands'
 import { FeatureHeader, Section, StatRow } from '@/components/shell/FeatureScreen'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
@@ -15,6 +17,7 @@ import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { rowId } from '../registry/writes'
 import { LeadFormModal } from './LeadFormModal'
 import { OpportunityFormModal } from './OpportunityFormModal'
 import { CampaignFormModal } from './CampaignFormModal'
@@ -81,19 +84,22 @@ const PIPELINE_STAGES = ['new', 'qualified', 'proposal', 'negotiation', 'won', '
 /** Kanban pipeline.
  *
  *  The design rendered a flat list; a pipeline's whole value is seeing where
- *  value is stuck, so this columns by stage and totals each column. */
+ *  value is stuck, so this columns by stage, counts the work in each column
+ *  and totals its value in mono. A card opens the lead. One header serves both
+ *  layouts; the columns stack on a phone and tile three across on a wide
+ *  screen. */
 export function LeadPipeline() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
   const navigate = useNavigate()
-  const { data: leads = [], isLoading, isError, error, refetch } = useCollection('leads')
+  const leadsQuery = useCollection('leads')
+  const leads = leadsQuery.data ?? []
   const [creating, setCreating] = useState(false)
 
   const byStage = useMemo(() => {
     const map = new Map<string, Lead[]>()
     for (const stage of PIPELINE_STAGES) map.set(stage, [])
-    for (const lead of leads) map.get(lead.stage)?.push(lead)
+    for (const lead of leads) map.get(lead.stage.toLowerCase())?.push(lead)
     return map
   }, [leads])
 
@@ -109,65 +115,109 @@ export function LeadPipeline() {
     [leads]
   )
 
-  if (isLoading) return <Loading label="Loading pipeline..." />
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
-  const pipelineStats = (
-    <StatRow
-      stats={[
-        { label: 'Open Pipeline', value: formatSar(openValue), caption: 'Not yet closed', highlight: true },
-        { label: 'Won', value: formatSar(wonValue), caption: 'Closed won', tone: 'info' },
-        { label: 'Leads', value: leads.length, caption: 'All stages' },
-        {
-          label: 'Win Rate',
-          value: leads.length
-            ? `${Math.round((byStage.get('won')!.length / leads.length) * 100)}%`
-            : '0%',
-          caption: 'Won / total',
-        },
-      ]}
-    />
+  const mayCreate = can('crm', 'c')
+  const commands = useMemo<Command[]>(
+    () =>
+      mayCreate
+        ? [
+            {
+              id: 'crm:new-lead',
+              label: 'New Lead',
+              icon: 'UserPlus',
+              group: 'create',
+              keywords: ['lead', 'prospect', 'crm', 'new'],
+              shortcut: 'N',
+              run: () => setCreating(true),
+            },
+          ]
+        : [],
+    [mayCreate]
   )
+  useCommand(commands)
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader
-          icon="GitBranch"
-          title={t('Lead Pipeline')}
-          actions={
-            can('crm', 'c') ? (
-              <Button size="md" onClick={() => setCreating(true)}>
-                <Icon name="Plus" size={16} />
-                {t('New Lead')}
-              </Button>
-            ) : null
-          }
+  const leadRoute = (lead: Lead) =>
+    `/lead-detail?${rowId(lead) ? `id=${encodeURIComponent(rowId(lead) as string)}` : `name=${encodeURIComponent(lead.name)}`}`
+
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t('CRM')}
+        title={t('Lead Pipeline')}
+        subtitle={t('Where every open deal is, and what it is worth')}
+        actions={
+          mayCreate ? (
+            <Button size="md" icon="Plus" onClick={() => setCreating(true)}>
+              {t('New Lead')}
+            </Button>
+          ) : null
+        }
+        query={leadsQuery}
+        skeleton="cards"
+        empty={
+          leads.length === 0
+            ? {
+                icon: 'GitBranch',
+                title: 'No leads yet',
+                description: 'Leads arrive from the website, campaigns and walk-ins.',
+                action: mayCreate ? (
+                  <Button size="md" icon="Plus" onClick={() => setCreating(true)}>
+                    {t('New Lead')}
+                  </Button>
+                ) : null,
+              }
+            : false
+        }
+      >
+        <StatRow
+          stats={[
+            { label: 'Open Pipeline', value: formatSar(openValue), caption: 'Not yet closed', highlight: true },
+            { label: 'Won', value: formatSar(wonValue), caption: 'Closed won', tone: 'info' },
+            { label: 'Leads', value: leads.length, caption: 'All stages' },
+            {
+              label: 'Win Rate',
+              value: leads.length
+                ? `${Math.round(((byStage.get('won')?.length ?? 0) / leads.length) * 100)}%`
+                : '0%',
+              caption: 'Won / total',
+            },
+          ]}
         />
-        {pipelineStats}
-        <LeadFormModal open={creating} onClose={() => setCreating(false)} />
-        <div className="flex flex-col gap-4">
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {PIPELINE_STAGES.map((stage) => {
             const column = byStage.get(stage) ?? []
             const total = column.reduce((sum, l) => sum + parseSar(l.value), 0)
             return (
-              <Card key={stage} className="flex flex-col gap-3 rounded-lg p-4">
+              <section
+                key={stage}
+                aria-label={`${t(stage[0].toUpperCase() + stage.slice(1))} · ${column.length}`}
+                className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
+              >
                 <div className="flex items-center justify-between gap-2">
-                  <Tone value={stage} palette={STAGE_TONE} />
-                  <span className="font-mono text-[11px] text-muted" dir="ltr">
-                    {column.length} · {formatSar(total)}
+                  <span className="flex items-center gap-2">
+                    <Tone value={stage} palette={STAGE_TONE} />
+                    <span
+                      dir="ltr"
+                      className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-inset px-1.5 font-mono text-[11px] font-semibold tabular-nums text-heading"
+                    >
+                      {column.length}
+                    </span>
                   </span>
+                  <Money sar={total} className="text-[11px] font-semibold text-muted" />
                 </div>
                 <div className="flex flex-col gap-2">
                   {column.length === 0 ? (
-                    <p className="py-3 text-center text-xs text-muted">{t('Nothing here yet')}</p>
+                    <p className="rounded-lg border border-dashed border-border py-4 text-center text-xs text-muted">
+                      {t('Nothing here yet')}
+                    </p>
                   ) : (
                     column.map((lead) => (
                       <button
-                        key={lead.name}
+                        key={rowId(lead) ?? lead.name}
                         type="button"
-                        onClick={() => navigate(`/lead-detail?name=${encodeURIComponent(lead.name)}`)}
-                        className="flex cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-colors hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+                        onClick={() => navigate(leadRoute(lead))}
+                        className="flex min-h-11 cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-all duration-150 hover:-translate-y-px hover:border-salis-blue hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
                       >
                         <span className="text-[13px] font-semibold text-heading">{lead.name}</span>
                         <span className="text-[11px] text-muted">{lead.company}</span>
@@ -184,74 +234,13 @@ export function LeadPipeline() {
                     ))
                   )}
                 </div>
-              </Card>
+              </section>
             )
           })}
         </div>
-      </>
-    )
-  }
+      </ScreenFrame>
 
-  return (
-    <>
-      <ListPageHeader
-        title={t('Lead Pipeline')}
-        subtitle={t('CRM')}
-        actions={
-          can('crm', 'c') ? (
-            <Button size="md" onClick={() => setCreating(true)}>
-              <Icon name="Plus" size={16} />
-              {t('New Lead')}
-            </Button>
-          ) : null
-        }
-      />
-
-      {pipelineStats}
       <LeadFormModal open={creating} onClose={() => setCreating(false)} />
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {PIPELINE_STAGES.map((stage) => {
-          const column = byStage.get(stage) ?? []
-          const total = column.reduce((sum, l) => sum + parseSar(l.value), 0)
-          return (
-            <Card key={stage} className="flex flex-col gap-3 rounded-lg p-4">
-              <div className="flex items-center justify-between gap-2">
-                <Tone value={stage} palette={STAGE_TONE} />
-                <span className="font-mono text-[11px] text-muted" dir="ltr">
-                  {column.length} · {formatSar(total)}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2">
-                {column.length === 0 ? (
-                  <p className="py-3 text-center text-xs text-muted">{t('Nothing here yet')}</p>
-                ) : (
-                  column.map((lead) => (
-                    <button
-                      key={lead.name}
-                      type="button"
-                      onClick={() => navigate(`/lead-detail?name=${encodeURIComponent(lead.name)}`)}
-                      className="flex cursor-pointer flex-col gap-1 rounded-lg border border-border bg-inset p-3 text-start transition-colors hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
-                    >
-                      <span className="text-[13px] font-semibold text-heading">{lead.name}</span>
-                      <span className="text-[11px] text-muted">{lead.company}</span>
-                      <span className="mt-1 flex items-center justify-between gap-2">
-                        <Money sar={parseSar(lead.value)} className="text-xs font-semibold text-heading" />
-                        <span className="inline-flex items-center gap-1 text-[11px] text-muted">
-                          <Icon name="Gauge" size={11} />
-                          <span className="font-mono" dir="ltr">
-                            {lead.score}
-                          </span>
-                        </span>
-                      </span>
-                    </button>
-                  ))
-                )}
-              </div>
-            </Card>
-          )
-        })}
-      </div>
     </>
   )
 }

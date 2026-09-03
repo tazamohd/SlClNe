@@ -1,25 +1,24 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { BackLink } from '@/components/ui/BackLink'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { StatusBadge } from '@/components/ui/Badge'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
 import { Money } from '@/components/ui/Money'
-import { DESTRUCTIVE_BUTTON, useModal } from '@/components/ui/Modal'
+import { useModal } from '@/components/ui/Modal'
 import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Comments, type Comment } from '@/components/ui/Comments'
-import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { EmptyState, Loading } from '@/components/ui/States'
 import { useToast } from '@/components/ui/Toast'
 import { WORKSHOP_STAGES } from '@/components/ui/WorkflowStepper'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
-import { RepositoryError } from '@/data/repository'
+import { useCollection, useUndoableDelete, type RowOf } from '@/data/useCollection'
 import { JobCardForm } from './JobCardForm'
+import { MenuAction, WORKSHOP_CRUMBS } from './StageFrame'
 import { railIndexFor, type JobRow } from './stages'
 
 /** A single job card: stage timeline, assigned technician, parts and costs.
@@ -35,17 +34,18 @@ import { railIndexFor, type JobRow } from './stages'
  *  card in the database, including ones with no technician and no invoice. The
  *  timeline is now the job's real stage, the parts are its invoice's part
  *  lines, and the totals are the ones the server computed.
- */
+ *
+ *  Delete sits behind "More actions" and can be undone from the toast that
+ *  follows; the header keeps one primary (print) and one secondary (edit). */
 export function JobDetail() {
   const { t } = usePreferences()
   const { fieldHidden, can } = useSession()
-  const isMobile = useIsMobile()
   const { confirm } = useModal()
   const toast = useToast()
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const jobs = useCollection('jobs')
-  const remove = useDelete('jobs')
+  const remove = useUndoableDelete('jobs', 'Job card')
   const [editing, setEditing] = useState(false)
 
   const jobId = params.get('id')
@@ -59,39 +59,8 @@ export function JobDetail() {
   const lines = useCollection('invoiceLines', { filter: { invoiceId: invoice?._id ?? '' } })
   const technicians = useCollection('technicians')
 
-  if (jobs.isLoading) {
-    return <Loading label="Loading job card..." />
-  }
-
-  if (jobs.isError) {
-    return (
-      <ErrorState
-        title={t("Couldn't load this")}
-        description={jobs.error?.message}
-        onRetry={() => void jobs.refetch()}
-      />
-    )
-  }
-
-  if (!job) {
-    return (
-      <Card className="p-6">
-        <EmptyState
-          icon="FileQuestion"
-          title={t('Job card not found')}
-          description={t('It may have been deleted, or the link is out of date.')}
-          action={
-            <Link to="/job-cards" className="font-action text-[13px] font-medium">
-              {t('Back to Job Cards')}
-            </Link>
-          }
-        />
-      </Card>
-    )
-  }
-
   const hideCosts = fieldHidden('Part cost / margin')
-  const technician = job.assignedTechId
+  const technician = job?.assignedTechId
     ? (technicians.data as readonly TechnicianRow[] | undefined)?.find(
         (row) => row._id === job.assignedTechId
       )
@@ -104,28 +73,30 @@ export function JobDetail() {
     { id: 'att-3', name: 'damage_photo.jpg', size: '3.5 MB', type: 'Image' },
   ]
 
-  const demoComments: Comment[] = [
-    {
-      id: 'cmt-1',
-      author: technician?.name ?? t('Technician'),
-      role: t('Technician'),
-      text: t('Inspection completed. Waiting for parts.'),
-      time: '10:30 AM',
-    },
-    {
-      id: 'cmt-2',
-      author: job.cust,
-      role: t('Customer'),
-      text: t('Please proceed with the repair.'),
-      time: '11:15 AM',
-    },
-  ]
+  const demoComments: Comment[] = job
+    ? [
+        {
+          id: 'cmt-1',
+          author: technician?.name ?? t('Technician'),
+          role: t('Technician'),
+          text: t('Inspection completed. Waiting for parts.'),
+          time: '10:30 AM',
+        },
+        {
+          id: 'cmt-2',
+          author: job.cust,
+          role: t('Customer'),
+          text: t('Please proceed with the repair.'),
+          time: '11:15 AM',
+        },
+      ]
+    : []
 
   async function deleteJob() {
     if (!job) return
     const agreed = await confirm({
       title: 'Delete Job Card?',
-      description: `${job.id} — ${job.cust}. This cannot be undone.`,
+      description: `${job.id} — ${job.cust}. You can undo this from the notice that follows.`,
       icon: 'Trash2',
       confirmLabel: 'Delete',
       destructive: true,
@@ -133,147 +104,158 @@ export function JobDetail() {
     })
     if (!agreed) return
     try {
-      await remove.mutateAsync({ id: job._id ?? job.id })
+      await remove.remove(job._id ?? job.id)
     } catch (cause) {
       toast.show({
         title: t('Delete Job Card?'),
-        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        description: cause instanceof Error ? cause.message : String(cause),
         error: true,
       })
       return
     }
-    toast.show({ title: t('Job Cards'), description: job.id })
     navigate('/job-cards')
   }
 
   return (
-    <div className="flex max-w-[1100px] animate-fade-up motion-reduce:animate-none flex-col gap-6">
-      <BackLink to="/job-cards" label="Back to Job Cards" />
-
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'} dir="ltr">
-            {job.id}
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {job.cust} · {job.veh}
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2.5">
-          <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
-          <Link
-            to={`/job-card-detail?id=${encodeURIComponent(job.id)}`}
-            className="inline-flex h-9 items-center gap-2 rounded border border-border bg-card px-3.5 font-action text-[13px] text-heading no-underline hover:no-underline"
-          >
-            <Icon name="ClipboardList" size={15} />
-            {t('Job Card')}
-          </Link>
-          {can('jobcards', 'e') ? (
-            <Button variant="subtle" size="md" onClick={() => setEditing(true)}>
-              <Icon name="Pencil" size={15} />
-              {t('Edit')}
-            </Button>
-          ) : null}
-          {can('jobcards', 'd') ? (
-            <Button
-              size="md"
-              className={DESTRUCTIVE_BUTTON}
-              onClick={() => void deleteJob()}
-              disabled={remove.isPending}
-            >
-              <Icon name="Trash2" size={15} />
-              {t(remove.isPending ? 'Saving...' : 'Delete')}
-            </Button>
-          ) : null}
-          <Button
-            size="md"
-            onClick={() => window.open(`/job-card-print?id=${encodeURIComponent(job.id)}`, '_blank')}
-          >
-            <Icon name="Printer" size={15} />
-            {t('Print Job Card')}
-          </Button>
-        </div>
-      </div>
-
-      <JobCardForm open={editing} onClose={() => setEditing(false)} job={job} />
-
-      <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]'}>
-        <Card className="p-6">
-          <h2 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h2>
-          <Timeline steps={timelineFor(job.stage)} />
-        </Card>
-
-        <div className="flex flex-col gap-4">
-          <Card className="p-5">
-            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h2>
-            {technician ? (
-              <div className="flex items-center gap-2.5">
-                <Avatar name={technician.name} size={36} />
-                <span className="text-sm text-body">{technician.name}</span>
-              </div>
-            ) : (
-              <p className="text-[13px] text-muted">{t('No technician assigned yet')}</p>
-            )}
-          </Card>
-
-          <Card className="p-5">
-            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Parts Used')}</h2>
-            {lines.isLoading ? (
-              <Loading inline label="Loading parts..." />
-            ) : parts.length === 0 ? (
-              <p className="text-[13px] text-muted">
-                {t('Parts appear here once they are billed to this job card.')}
-              </p>
-            ) : (
-              <div className="flex flex-col gap-2">
-                {parts.map((part, index) => (
-                  <div
-                    key={part._id ?? `${part.part}-${index}`}
-                    className="flex justify-between gap-3 text-[13px]"
-                  >
-                    <span className="min-w-0 truncate text-body">{part.desc}</span>
-                    {/* Part prices follow the same redaction rule as the totals. */}
-                    {hideCosts ? (
-                      <span className="text-faint">—</span>
-                    ) : (
-                      <Money sar={part.unit} className="flex-shrink-0 text-muted" />
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </Card>
-
-          {hideCosts ? null : (
-            <Card className="flex flex-col gap-2 p-5">
-              {invoice ? (
-                <>
-                  {/* Server-computed. Splitting the subtotal into labour and
-                      parts in the browser would be a frontend financial
-                      calculation, which Part 5b forbids outright. */}
-                  <CostRow label={t('Subtotal')} halalas={invoice.subtotalHalalas} />
-                  <CostRow label={t('VAT (15%)')} halalas={invoice.taxHalalas} />
-                  <div className="flex justify-between border-t border-border pt-2 text-base font-bold text-heading">
-                    <span>{t('Total Cost')}</span>
-                    <Money sar={(invoice.totalHalalas ?? 0) / 100} className="font-bold" />
-                  </div>
-                </>
-              ) : (
-                <EmptyState
-                  icon="Receipt"
-                  title={t('Not invoiced yet')}
-                  description={t('Totals appear once this job card is invoiced.')}
-                />
-              )}
+    <>
+      <ScreenFrame
+        icon="ClipboardList"
+        title={job?.id ?? 'Job Card'}
+        titleCode
+        breadcrumbs={WORKSHOP_CRUMBS}
+        back={{ to: '/job-cards', label: 'Back to Job Cards' }}
+        subtitle={job ? `${job.cust} · ${job.veh}` : undefined}
+        status={job ? <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} /> : undefined}
+        actions={
+          job ? (
+            <>
+              <Link
+                to={`/job-card-detail?id=${encodeURIComponent(job.id)}`}
+                className="inline-flex h-10 items-center gap-2 rounded border border-border bg-card px-3.5 font-action text-[13px] text-heading no-underline transition-colors hover:border-salis-blue hover:text-salis-blue hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+              >
+                <Icon name="ClipboardList" size={15} />
+                {t('Job Card')}
+              </Link>
+              {can('jobcards', 'e') ? (
+                <Button variant="subtle" size="md" icon="Pencil" onClick={() => setEditing(true)}>
+                  {t('Edit')}
+                </Button>
+              ) : null}
+              <Button
+                size="md"
+                icon="Printer"
+                onClick={() => window.open(`/job-card-print?id=${encodeURIComponent(job.id)}`, '_blank')}
+              >
+                {t('Print Job Card')}
+              </Button>
+            </>
+          ) : undefined
+        }
+        overflow={
+          job && can('jobcards', 'd') ? (
+            <MenuAction icon="Trash2" label="Delete" destructive disabled={remove.pending} onClick={() => void deleteJob()} />
+          ) : undefined
+        }
+        query={jobs}
+        notFound={
+          !jobs.isLoading && !jobs.isError && !job
+            ? {
+                icon: 'FileQuestion',
+                title: 'Job card not found',
+                description: 'It may have been deleted, or the link is out of date.',
+                action: (
+                  <Link to="/job-cards" className="font-action text-[13px] font-medium">
+                    {t('Back to Job Cards')}
+                  </Link>
+                ),
+              }
+            : null
+        }
+        skeleton="detail"
+        bodyClassName="max-w-[1100px]"
+      >
+        {job ? (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+            <Card className="p-6">
+              <h2 className="mb-5 text-[17px] font-bold text-heading">{t('Timeline')}</h2>
+              <Timeline steps={timelineFor(job.stage)} />
             </Card>
-          )}
 
-          <Comments items={demoComments} title={t('Technician Notes')} />
+            <div className="flex flex-col gap-4">
+              <Card className="p-5">
+                <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Assigned Technician')}</h2>
+                {technician ? (
+                  <div className="flex items-center gap-2.5">
+                    <Avatar name={technician.name} size={36} />
+                    <span className="text-sm text-body">{technician.name}</span>
+                  </div>
+                ) : (
+                  <p className="text-[13px] text-muted">{t('No technician assigned yet')}</p>
+                )}
+              </Card>
 
-          <Attachments files={demoAttachments} title={t('Documents')} />
-        </div>
-      </div>
-    </div>
+              <Card className="p-5">
+                <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Parts Used')}</h2>
+                {lines.isLoading ? (
+                  <Loading inline label="Loading parts..." />
+                ) : parts.length === 0 ? (
+                  <p className="text-[13px] text-muted">
+                    {t('Parts appear here once they are billed to this job card.')}
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    {parts.map((part, index) => (
+                      <div
+                        key={part._id ?? `${part.part}-${index}`}
+                        className="flex justify-between gap-3 text-[13px]"
+                      >
+                        <span className="min-w-0 truncate text-body">{part.desc}</span>
+                        {/* Part prices follow the same redaction rule as the totals. */}
+                        {hideCosts ? (
+                          <span className="text-faint">—</span>
+                        ) : (
+                          <Money sar={part.unit} className="flex-shrink-0 text-muted" />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+
+              {hideCosts ? null : (
+                <Card className="flex flex-col gap-2 p-5">
+                  {invoice ? (
+                    <>
+                      {/* Server-computed. Splitting the subtotal into labour and
+                          parts in the browser would be a frontend financial
+                          calculation, which Part 5b forbids outright. */}
+                      <CostRow label={t('Subtotal')} halalas={invoice.subtotalHalalas} />
+                      <CostRow label={t('VAT (15%)')} halalas={invoice.taxHalalas} />
+                      <div className="flex justify-between border-t border-border pt-2 text-base font-bold text-heading">
+                        <span>{t('Total Cost')}</span>
+                        <Money sar={(invoice.totalHalalas ?? 0) / 100} className="font-bold" />
+                      </div>
+                    </>
+                  ) : (
+                    <EmptyState
+                      icon="Receipt"
+                      title={t('Not invoiced yet')}
+                      description={t('Totals appear once this job card is invoiced.')}
+                    />
+                  )}
+                </Card>
+              )}
+
+              <Comments items={demoComments} title={t('Technician Notes')} />
+
+              <Attachments files={demoAttachments} title={t('Documents')} />
+            </div>
+          </div>
+        ) : null}
+      </ScreenFrame>
+
+      {job ? <JobCardForm open={editing} onClose={() => setEditing(false)} job={job} /> : null}
+    </>
   )
 }
 

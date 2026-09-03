@@ -51,7 +51,10 @@ describe('JobDetail', () => {
     const user = userEvent.setup()
     renderWithProviders(<JobDetail />, { route: '/job-detail', role: 'owner' })
 
-    await user.click(await screen.findByRole('button', { name: /^Delete$/ }))
+    // Delete is a tertiary action: it lives behind "More actions", never
+    // beside the primary.
+    await user.click(await screen.findByRole('button', { name: 'More actions' }))
+    await user.click(await screen.findByRole('menuitem', { name: /^Delete$/ }))
     const dialog = await screen.findByRole('dialog')
     expect(within(dialog).getByText('Delete Job Card?')).toBeInTheDocument()
     expect(within(dialog).getByText(new RegExp(FIRST.cust))).toBeInTheDocument()
@@ -59,17 +62,25 @@ describe('JobDetail', () => {
 
   it('offers each control to exactly the grant that carries it', async () => {
     // technician holds `jobcards: ve` — it edits its own work and deletes
-    // nothing. parts holds `v` alone and gets neither control.
+    // nothing, so the overflow menu that would hold Delete is absent. parts
+    // holds `v` alone and gets neither control.
     renderWithProviders(<JobDetail />, { route: '/job-detail', role: 'technician' })
     await screen.findByRole('heading', { level: 1, name: FIRST.id })
     expect(screen.getByRole('button', { name: /^Edit$/ })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /^Delete$/ })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'More actions' })).toBeNull()
 
     cleanup()
     renderWithProviders(<JobDetail />, { route: '/job-detail', role: 'parts' })
     await screen.findByRole('heading', { level: 1, name: FIRST.id })
     expect(screen.queryByRole('button', { name: /^Edit$/ })).toBeNull()
-    expect(screen.queryByRole('button', { name: /^Delete$/ })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'More actions' })).toBeNull()
+  })
+
+  it('places the record in the workshop with breadcrumbs', async () => {
+    renderWithProviders(<JobDetail />, { route: '/job-detail' })
+    await screen.findByRole('heading', { level: 1, name: FIRST.id })
+    const trail = screen.getByRole('navigation', { name: 'Breadcrumb' })
+    expect(within(trail).getByRole('link', { name: 'Job Cards' })).toHaveAttribute('href', '/job-cards')
   })
 
   it('links across to the full job card', async () => {

@@ -1,6 +1,8 @@
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { useDateFormat } from '@/lib/formatDate'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -8,19 +10,32 @@ import { Panel } from '@/components/ui/FieldGrid'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { Avatar } from '@/components/ui/Avatar'
 import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
-import { WORKSHOP_STAGES, WorkflowStepper } from '@/components/ui/WorkflowStepper'
-import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { WORKSHOP_STAGES } from '@/components/ui/WorkflowStepper'
+import { EmptyState, Loading } from '@/components/ui/States'
+import { useModal } from '@/components/ui/Modal'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
-import { railIndexFor, railLabelFor, type JobRow } from './stages'
+import { useCollection, useUndoableDelete, type RowOf } from '@/data/useCollection'
+import { MenuAction, StageActionBar, StageRail, WORKSHOP_CRUMBS } from './StageFrame'
+import { StageNotice, stageBusy } from './StageNotice'
+import { useJobStage } from './useJobStage'
+import { STAGE_LABELS, nextStageOf, railIndexFor, railLabelFor, type JobRow } from './stages'
 
 /** The job card as one record: who, what vehicle, which stage, what it costs.
  *
+ *  The header is the one page header with the card's code as its title, its
+ *  status and priority beside it, and a single primary action: advance the
+ *  card to its next stage. That is the same `POST /jobs/:id/transition` the
+ *  stage screens send, so the office can move a card from here without
+ *  opening the stage screen — and leaving quality control or delivery asks
+ *  first, because those two moves are the ones an audit reads. Print, a
+ *  share link and cancelling the card sit behind "More actions".
+ *
  *  `JobCardDetail.dc.html` and `JobCardDetail.Mobile.dc.html` are two different
- *  layouts, not one layout at two widths — the phone drops the sidebar for a
- *  56px bar, turns the six-step rail into a horizontally scrolling strip of
- *  16px dots, and stacks every panel into a single column. Both are here.
+ *  layouts, not one layout at two widths — the phone turns the six-step rail
+ *  into a horizontally scrolling strip of 16px dots, stacks every panel into a
+ *  single column and pins the primary action to the bottom edge. Both are here.
  *
  *  **Where this screen deviates from the design, and why.** The prototype fills
  *  its panels with figures that no column in `job_cards` holds — an estimated
@@ -35,15 +50,16 @@ import { railIndexFor, railLabelFor, type JobRow } from './stages'
  */
 export function JobCardDetail() {
   const { t, rtl } = usePreferences()
-  const { fieldHidden } = useSession()
+  const { fieldHidden, can } = useSession()
   const isMobile = useIsMobile()
-  const [params] = useSearchParams()
+  const navigate = useNavigate()
+  const { confirm } = useModal()
+  const toast = useToast()
+  const { dateTime } = useDateFormat()
 
-  const jobs = useCollection('jobs')
-  const requested = params.get('id')
-
-  const rows = (jobs.data ?? []) as readonly JobRow[]
-  const job = requested ? rows.find((row) => row.id === requested) : rows[0]
+  const stage = useJobStage()
+  const job = stage.job
+  const cancel = useUndoableDelete('jobs', 'Job card')
 
   /* The links the API models: an invoice names its job card, a line names its
    * invoice. Both are server-side filters rather than a list fetched and sieved
@@ -57,52 +73,98 @@ export function JobCardDetail() {
   const vehicles = useCollection('vehicles')
   const technicians = useCollection('technicians')
 
-  if (jobs.isLoading) return <Loading label="Loading job card..." />
-
-  if (jobs.isError) {
-    return (
-      <ErrorState
-        title={t("Couldn't load this")}
-        description={jobs.error?.message}
-        onRetry={() => void jobs.refetch()}
-      />
-    )
-  }
-
-  if (!job) {
-    return (
-      <Card className="p-6">
-        <EmptyState
-          icon="FileQuestion"
-          title={t('Job card not found')}
-          description={t('It may have been deleted, or the link is out of date.')}
-          action={
-            <Link to="/job-cards" className="font-action text-[13px] font-medium">
-              {t('Back to Job Cards')}
-            </Link>
-          }
-        />
-      </Card>
-    )
-  }
-
   const customer = (customers.data as readonly CustomerRow[] | undefined)?.find(
-    (row) => row.name === job.cust
+    (row) => row.name === job?.cust
   )
   const vehicle = (vehicles.data as readonly VehicleRow[] | undefined)?.find(
-    (row) => row.make === job.veh && row.owner === job.cust
+    (row) => row.make === job?.veh && row.owner === job?.cust
   )
-  const technician = job.assignedTechId
+  const technician = job?.assignedTechId
     ? (technicians.data as readonly TechnicianRow[] | undefined)?.find(
         (row) => row._id === job.assignedTechId
       )
     : undefined
 
   const hideContact = fieldHidden('Customer contact details')
-  const stageLabel = railLabelFor(job.stage)
+  const stageLabel = railLabelFor(job?.stage)
+  const next = job ? nextStageOf(job.stage) : null
+  const mayEdit = can('jobcards', 'e')
+  const mayCancel = can('jobcards', 'd')
+  const showAdvance = Boolean(job) && mayEdit && next !== null
+
+  async function advance() {
+    if (!job || !next) return
+    // Passing quality control and handing the vehicle back are the two moves
+    // the audit trail is read for. Ask before either.
+    if (job.stage === 'qc' || job.stage === 'delivery') {
+      const agreed = await confirm({
+        title: job.stage === 'qc' ? 'Pass quality control?' : 'Confirm delivery?',
+        description:
+          job.stage === 'qc'
+            ? 'This records that the work passed its quality check and moves the card to delivery.'
+            : 'This records the vehicle as handed back to the customer.',
+        icon: 'ShieldCheck',
+        confirmLabel: 'Advance',
+      })
+      if (!agreed) return
+    }
+    await stage.advance(next, { reason: `advanced from job card to ${next}` })
+  }
+
+  async function cancelJob() {
+    if (!job) return
+    const agreed = await confirm({
+      title: 'Cancel this job card?',
+      description: 'The card is removed from the queue. You can undo this from the notice that follows.',
+      icon: 'Trash2',
+      confirmLabel: 'Cancel job',
+      cancelLabel: 'Keep it',
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!agreed) return
+    try {
+      await cancel.remove(job._id ?? job.id)
+    } catch (cause) {
+      toast.show({
+        title: t('Cancel job'),
+        description: cause instanceof Error ? cause.message : String(cause),
+        error: true,
+      })
+      return
+    }
+    navigate('/job-cards')
+  }
+
+  function shareLink() {
+    const url = window.location.href
+    const copy = navigator.clipboard?.writeText(url)
+    if (!copy) {
+      toast.show({ title: t('Share link'), description: url, tone: 'info' })
+      return
+    }
+    void copy.then(
+      () => toast.show({ title: t('Link copied'), description: url }),
+      () => toast.show({ title: t('Share link'), description: url, tone: 'info' })
+    )
+  }
+
+  const advanceButton = showAdvance && next ? (
+    <Button
+      size={isMobile ? 'lg' : 'md'}
+      loading={stage.status === 'saving'}
+      loadingLabel="Saving..."
+      disabled={stageBusy(stage)}
+      onClick={() => void advance()}
+    >
+      {t('Advance')}
+      <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
+      {t(STAGE_LABELS[next])}
+    </Button>
+  ) : null
 
   const shared = {
-    job,
+    job: job as JobRow,
     customer,
     vehicle,
     technician,
@@ -112,77 +174,96 @@ export function JobCardDetail() {
     hideContact,
   }
 
-  if (isMobile) return <MobileLayout {...shared} stageLabel={stageLabel} />
-
   return (
-    <div className="flex max-w-[1200px] animate-fade-up motion-reduce:animate-none flex-col gap-6">
-      <div>
-        <Link
-          to="/job-cards"
-          className="inline-flex items-center gap-1.5 font-action text-[13px] text-muted no-underline hover:no-underline"
-        >
-          <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={14} />
-          {t('Back to Job Cards')}
-        </Link>
-      </div>
+    <ScreenFrame
+      icon="ClipboardList"
+      title={job?.id ?? 'Job Card'}
+      titleCode
+      breadcrumbs={WORKSHOP_CRUMBS}
+      back={{ to: '/job-cards', label: 'Back to Job Cards' }}
+      status={
+        job ? (
+          <>
+            <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
+            <PriorityBadge value={job.pr} label={t(job.pr)} />
+          </>
+        ) : undefined
+      }
+      meta={
+        job
+          ? [
+              { icon: 'Car', label: 'Vehicle', value: job.veh },
+              { icon: 'Clock', label: 'Created', value: job._createdAt ? dateTime(job._createdAt) : NOT_RECORDED, code: true },
+            ]
+          : undefined
+      }
+      actions={!isMobile ? advanceButton : undefined}
+      overflow={
+        job ? (
+          <>
+            <MenuAction icon="Printer" label="Print" onClick={() => window.print()} />
+            <MenuAction icon="Link" label="Share link" onClick={shareLink} />
+            {mayCancel ? (
+              <MenuAction icon="Trash2" label="Cancel job" destructive disabled={cancel.pending} onClick={() => void cancelJob()} />
+            ) : null}
+          </>
+        ) : undefined
+      }
+      loading={stage.loading}
+      error={stage.loadError ? { message: stage.loadError, onRetry: stage.reload } : null}
+      notFound={
+        !stage.loading && !job
+          ? {
+              icon: 'FileQuestion',
+              title: 'Job card not found',
+              description: 'It may have been deleted, or the link is out of date.',
+              action: (
+                <Link to="/job-cards" className="font-action text-[13px] font-medium">
+                  {t('Back to Job Cards')}
+                </Link>
+              ),
+            }
+          : null
+      }
+      skeleton="detail"
+    >
+      {job ? (
+        isMobile ? (
+          <MobileLayout {...shared} stageLabel={stageLabel} notice={showAdvance ? <StageNotice stage={stage} /> : null}>
+            {advanceButton ? <StageActionBar>{advanceButton}</StageActionBar> : null}
+          </MobileLayout>
+        ) : (
+          <div className="grid max-w-[1200px] grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
+            <div className="flex min-w-0 flex-col gap-6">
+              <StageRail job={job} current={stageLabel} />
+              {showAdvance ? <StageNotice stage={stage} /> : null}
 
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div
-              className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg"
-              aria-hidden
-            />
-            <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="ClipboardList" size={28} />
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <CustomerPanel job={job} customer={customer} vehicle={vehicle} hideContact={hideContact} />
+                <AssignmentPanel job={job} technician={technician} />
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                <ServicesPanel job={job} />
+                <PartsPanel lines={shared.lines} loading={shared.linesLoading} invoice={invoice} />
+              </div>
             </div>
+
+            <aside className="self-start lg:sticky lg:top-6">
+              <CostSummary invoice={invoice} />
+            </aside>
           </div>
-          <div>
-            <h1 className="font-display text-[26px] font-black text-heading" dir="ltr">
-              {job.id}
-            </h1>
-            <p className="mt-0.5 text-sm text-muted">
-              {t('Created')}: <CreatedAt value={job._createdAt} />
-            </p>
-          </div>
-        </div>
-        <span className="flex-1" />
-        <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
-        <PriorityBadge value={job.pr} label={`${t(job.pr)} ${t('Priority')}`} />
-        <Button variant="subtle" size="md" onClick={() => window.print()}>
-          <Icon name="Printer" size={14} />
-          {t('Print')}
-        </Button>
-      </div>
-
-      <WorkflowStepper current={stageLabel} />
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <CustomerPanel
-          job={job}
-          customer={customer}
-          vehicle={vehicle}
-          hideContact={hideContact}
-        />
-        <AssignmentPanel job={job} technician={technician} />
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <ServicesPanel job={job} />
-        <PartsPanel lines={shared.lines} loading={shared.linesLoading} invoice={invoice} />
-      </div>
-
-      <div className="flex justify-end">
-        <CostSummary invoice={invoice} className="w-full sm:w-[320px]" />
-      </div>
-    </div>
+        )
+      ) : null}
+    </ScreenFrame>
   )
 }
 
 /* ------------------------------------------------------------------ mobile */
 
-/** `JobCardDetail.Mobile.dc.html`: a 56px bar with the code and both pills, a
- *  scrolling stage strip under it, then one column of cards at 16px padding. */
+/** `JobCardDetail.Mobile.dc.html`: the compact header, a scrolling stage strip
+ *  under it, then one column of cards at 16px padding, and the primary action
+ *  pinned to the bottom. */
 function MobileLayout({
   job,
   customer,
@@ -193,95 +274,87 @@ function MobileLayout({
   linesLoading,
   hideContact,
   stageLabel,
-}: SharedProps & { stageLabel: string }) {
-  const { t, rtl } = usePreferences()
+  notice,
+  children,
+}: SharedProps & { stageLabel: string; notice?: React.ReactNode; children?: React.ReactNode }) {
+  const { t } = usePreferences()
 
   return (
-    <div className="-mx-4 -my-4 flex flex-col">
-      <div className="flex items-center gap-2.5 border-b border-border bg-sidebar px-4 py-3.5">
-        <Link to="/job-cards" aria-label={t('Back to Job Cards')} className="flex text-muted">
-          <Icon name={rtl ? 'ChevronRight' : 'ChevronLeft'} size={20} />
-        </Link>
-        <h1
-          className="min-w-0 flex-1 truncate font-display text-[17px] font-extrabold text-heading"
-          dir="ltr"
-        >
-          {job.id}
-        </h1>
-        <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />
-        <PriorityBadge value={job.pr} label={t(job.pr)} />
-      </div>
-
+    <div className="flex flex-col gap-3">
       <MobileStageStrip current={stageLabel} />
+      {notice}
 
-      <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3 p-4">
-        <Card className="flex items-center gap-2.5 rounded-xl p-3.5">
-          <Avatar name={job.cust} size={38} />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-bold text-heading">{job.cust}</p>
-            <p className="mt-px truncate text-[11px] text-muted">
-              {job.veh}
-              {vehicle ? ` · ${vehicle.plate}` : ''}
-            </p>
-          </div>
-        </Card>
-
-        <div className="grid grid-cols-2 gap-2">
-          <Stat label={t('Check-In')} value={<CreatedAt value={job._createdAt} short />} />
-          <Stat
-            label={t('Odometer Reading')}
-            value={vehicle ? <span dir="ltr">{vehicle.mileage}</span> : NOT_RECORDED}
-          />
+      <Card className="flex items-center gap-2.5 rounded-xl p-3.5">
+        <Avatar name={job.cust} size={38} />
+        <div className="min-w-0">
+          <p className="truncate text-sm font-bold text-heading">{job.cust}</p>
+          <p className="mt-px truncate text-[11px] text-muted">
+            {job.veh}
+            {vehicle ? <span dir="ltr" className="font-mono">{` · ${vehicle.plate}`}</span> : null}
+          </p>
         </div>
+      </Card>
 
-        <Card className="flex items-center gap-2.5 rounded-[10px] p-3">
-          {technician ? (
-            <>
-              <Avatar name={technician.name} size={32} />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-heading">{technician.name}</p>
-                <p className="mt-px text-[10px] text-muted">{t('Assigned Technician')}</p>
-              </div>
-              {technician.rating ? (
-                <span className="text-[11px] font-semibold text-salis-blue" dir="ltr">
-                  ★ {technician.rating}
-                </span>
-              ) : null}
-            </>
-          ) : (
-            <p className="text-xs text-muted">{t('No technician assigned yet')}</p>
-          )}
-        </Card>
-
-        <ServicesPanel job={job} />
-        <PartsPanel lines={lines} loading={linesLoading} invoice={invoice} />
-        <CostSummary invoice={invoice} />
-
-        {hideContact || !customer ? null : (
-          <Card className="flex flex-col gap-1 rounded-xl p-3.5">
-            <span className="font-action text-[11px] font-medium text-muted">{t('Phone')}</span>
-            <a
-              href={`tel:${customer.phone.replace(/\s/g, '')}`}
-              dir="ltr"
-              className="font-mono text-[13px]"
-            >
-              {customer.phone}
-            </a>
-          </Card>
-        )}
+      <div className="grid grid-cols-2 gap-2">
+        <Stat label={t('Check-In')} value={<CreatedAt value={job._createdAt} />} />
+        <Stat
+          label={t('Odometer Reading')}
+          value={vehicle ? <span dir="ltr">{vehicle.mileage}</span> : NOT_RECORDED}
+        />
       </div>
+
+      <Card className="flex items-center gap-2.5 rounded-[10px] p-3">
+        {technician ? (
+          <>
+            <Avatar name={technician.name} size={32} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-semibold text-heading">{technician.name}</p>
+              <p className="mt-px text-[11px] text-muted">{t('Assigned Technician')}</p>
+            </div>
+            {technician.rating ? (
+              <span className="text-[11px] font-semibold text-salis-blue" dir="ltr">
+                ★ {technician.rating}
+              </span>
+            ) : null}
+          </>
+        ) : (
+          <p className="text-xs text-muted">{t('No technician assigned yet')}</p>
+        )}
+      </Card>
+
+      <ServicesPanel job={job} />
+      <PartsPanel lines={lines} loading={linesLoading} invoice={invoice} />
+      <CostSummary invoice={invoice} />
+
+      {hideContact || !customer ? null : (
+        <Card className="flex flex-col gap-1 rounded-xl p-3.5">
+          <span className="font-action text-[11px] font-medium text-muted">{t('Phone')}</span>
+          <a
+            href={`tel:${customer.phone.replace(/\s/g, '')}`}
+            dir="ltr"
+            className="inline-flex min-h-[44px] items-center font-mono text-[13px]"
+          >
+            {customer.phone}
+          </a>
+        </Card>
+      )}
+
+      {children}
     </div>
   )
 }
 
-/** The phone's stage rail: 16px dots, 9px labels, scrolls sideways rather than
+/** The phone's stage rail: 16px dots, 11px labels, scrolls sideways rather than
  *  compressing six steps into 390px. */
 function MobileStageStrip({ current }: { current: string }) {
   const { t } = usePreferences()
   const currentIndex = WORKSHOP_STAGES.indexOf(current as (typeof WORKSHOP_STAGES)[number])
 
   return (
-    <ol className="flex list-none items-center overflow-x-auto border-b border-border bg-card px-4 py-2">
+    <ol
+      aria-label={t('Workshop stages')}
+      className="-mx-4 flex list-none items-center overflow-x-auto border-b border-border bg-card px-4 py-2 [scrollbar-width:none]"
+    >
       {WORKSHOP_STAGES.map((stage, index) => {
         const isCurrent = index === currentIndex
         const isDone = index < currentIndex
@@ -305,7 +378,7 @@ function MobileStageStrip({ current }: { current: string }) {
               </span>
               <span
                 className={cn(
-                  'whitespace-nowrap font-action text-[9px] font-semibold',
+                  'whitespace-nowrap font-action text-[11px] font-semibold',
                   isCurrent ? 'text-salis-blue' : isDone ? 'text-heading' : 'text-muted'
                 )}
               >
@@ -581,40 +654,22 @@ function Cell({
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <Card className="rounded-[10px] p-2.5">
-      <span className="text-[10px] text-muted">{label}</span>
+      <span className="text-[11px] text-muted">{label}</span>
       <p className="mt-0.5 truncate text-xs font-semibold text-heading">{value}</p>
     </Card>
   )
 }
 
-
-/** An ISO stamp from the API, or an em dash when the row has none — which is
- *  every fixture row, because the design bundle has no timestamps. */
-function CreatedAt({ value, short }: { value?: string; short?: boolean }) {
+/** An ISO stamp from the API in the session's locale, or an em dash when the
+ *  row has none — which is every fixture row, because the design bundle has
+ *  no timestamps. */
+function CreatedAt({ value }: { value?: string }) {
+  const { dateTime } = useDateFormat()
   if (!value) return <>{NOT_RECORDED}</>
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return <>{NOT_RECORDED}</>
-  return (
-    <span dir="ltr">{(short ? SHORT_STAMP : STAMP).format(date)}</span>
-  )
+  const formatted = dateTime(value)
+  if (formatted === '—') return <>{NOT_RECORDED}</>
+  return <span dir="ltr">{formatted}</span>
 }
-
-/* Latin dates, pinned LTR, matching the server's own `dateUS` presentation so
- * one record does not read two ways depending on which endpoint served it. */
-const STAMP = new Intl.DateTimeFormat('en-US', {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-})
-
-const SHORT_STAMP = new Intl.DateTimeFormat('en-US', {
-  month: 'short',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-})
 
 /** Five labels the design writes in Arabic that `data/generated/ar.ts` does not
  *  carry. That file belongs to the Arabic agent, so the strings live here, taken

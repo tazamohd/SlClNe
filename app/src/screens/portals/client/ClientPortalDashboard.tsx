@@ -1,85 +1,136 @@
+import { Link } from 'react-router-dom'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
-import { DataTable, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { Card } from '@/components/ui/Card'
+import { Money } from '@/components/ui/Money'
+import { EmptyState } from '@/components/ui/States'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { useSession } from '@/providers/SessionProvider'
+import { useCollection } from '@/data/useCollection'
+import { InvoiceStatusBadge } from '@/screens/registry/badges'
+import { UNKNOWN } from '@/screens/registry/writes'
+import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
+import { mineOnly, todayIso, type AppointmentRow, type InvoiceRow, type VehicleRow } from '../portal-data'
 
-interface Activity {
-  description: string
-  date: string
-  type: 'service' | 'invoice' | 'appointment' | 'message'
-  status: 'Completed' | 'Pending' | 'Upcoming'
-}
-
-const RECENT_ACTIVITY: Activity[] = [
-  { description: 'Oil Change - Toyota Camry 2022', date: '2025-08-15', type: 'service', status: 'Completed' },
-  { description: 'Invoice #INV-4821 Payment Due', date: '2025-08-18', type: 'invoice', status: 'Pending' },
-  { description: 'Brake Inspection Scheduled', date: '2025-08-22', type: 'appointment', status: 'Upcoming' },
-  { description: 'Service Advisor Response', date: '2025-08-14', type: 'message', status: 'Completed' },
-  { description: 'Tire Rotation - Honda Accord 2021', date: '2025-08-12', type: 'service', status: 'Completed' },
-  { description: 'Appointment Confirmation', date: '2025-08-20', type: 'appointment', status: 'Upcoming' },
-]
-
-const TYPE_ICONS: Record<string, string> = {
-  service: 'Wrench',
-  invoice: 'FileText',
-  appointment: 'Calendar',
-  message: 'MessageSquare',
-}
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Upcoming: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-}
-
+/** The client portal's home, from the three collections its tabs read.
+ *
+ *  The design's four tiles and six-row activity feed were constants. The
+ *  tiles now count the rows the server returned for this customer, and the
+ *  feed is what a customer actually has in flight: the next appointment and
+ *  the invoices still open. "Messages" had no collection behind it and is
+ *  gone rather than fixed at five. */
 export function ClientPortalDashboard() {
   const { t } = usePreferences()
+  const { user, userName } = useSession()
+
+  const vehicles = useCollection('vehicles')
+  const appointments = useCollection('appointments')
+  const invoices = useCollection('invoices')
+
+  const vehicleRows = mineOnly((vehicles.data ?? []) as readonly VehicleRow[], user?.id)
+  const today = todayIso()
+  const upcoming = ((appointments.data ?? []) as readonly AppointmentRow[]).filter(
+    (row) => !row.scheduledDate || row.scheduledDate >= today
+  )
+  const openInvoices = ((invoices.data ?? []) as readonly InvoiceRow[]).filter(
+    (row) => row.status !== 'paid'
+  )
 
   const kpis = [
-    { label: t('My Vehicles'), value: '3', icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Appointments'), value: '2', icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Open Invoices'), value: '1', icon: 'FileText', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Messages'), value: '5', icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('My Vehicles'), value: vehicles.isLoading ? UNKNOWN : String(vehicleRows.length), icon: 'Car', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Appointments'), value: appointments.isLoading ? UNKNOWN : String(upcoming.length), icon: 'Calendar', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Open Invoices'), value: invoices.isLoading ? UNKNOWN : String(openInvoices.length), icon: 'FileText', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
-  const columns: Column<Activity>[] = [
-    { header: t('Activity'), cell: (a) => a.description },
-    { header: t('Type'), cell: (a) => (
-      <div className="flex items-center gap-1.5">
-        <Icon name={TYPE_ICONS[a.type]} size={14} className="text-muted" />
-        <span className="text-body">{t(a.type)}</span>
-      </div>
-    ) },
-    { header: t('Date'), cell: (a) => a.date },
-    { header: t('Status'), cell: (a) => <Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge> },
-  ]
+  const next = upcoming[0]
 
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="LayoutDashboard" title={t('My Dashboard')} subtitle={t('Welcome back')} />
+    <ScreenFrame
+      icon="LayoutDashboard"
+      title="My Dashboard"
+      subtitle={`${t('Welcome back')}, ${userName}`}
+      query={vehicles}
+      skeleton="dashboard"
+      toolbar={
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+          {kpis.map((k) => (
+            <KpiCard key={k.label} {...k} />
+          ))}
+        </div>
+      }
+    >
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="flex flex-col gap-3 p-5">
+          <div className="flex items-center gap-2">
+            <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden>
+              <Icon name="Calendar" size={16} />
+            </span>
+            <h2 className="text-sm font-semibold text-heading">{t('Next appointment')}</h2>
+          </div>
+          {next ? (
+            <div className="flex items-center gap-3 rounded-xl border border-border p-3.5">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[13px] font-semibold text-heading">{t(next.svc)}</p>
+                <p className="mt-0.5 truncate text-[11px] text-muted">
+                  {next.veh} · {next.bay}
+                </p>
+              </div>
+              <span className="font-mono text-[13px] font-semibold text-heading" dir="ltr">
+                {next.scheduledDate ? `${next.scheduledDate} ${next.time}` : next.time}
+              </span>
+            </div>
+          ) : (
+            <EmptyState
+              icon="CalendarX"
+              title={t('Nothing booked yet')}
+              description={t('Your next visit appears here once you book it.')}
+              action={
+                <Link to="/client-portal-appointments" className="font-action text-[13px] font-medium">
+                  {t('Appointments')}
+                </Link>
+              }
+            />
+          )}
+        </Card>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map((k) => (
-          <KpiCard key={k.label} {...k} />
-        ))}
+        <Card className="flex flex-col gap-3 p-5">
+          <div className="flex items-center gap-2">
+            <span className="flex rounded-lg bg-tint-orange p-1.5 text-salis-orange" aria-hidden>
+              <Icon name="Receipt" size={16} />
+            </span>
+            <h2 className="text-sm font-semibold text-heading">{t('Open Invoices')}</h2>
+          </div>
+          {openInvoices.length === 0 ? (
+            <EmptyState
+              icon="CheckCircle"
+              title={t('Nothing owed right now')}
+              description={t('New invoices appear here as soon as the workshop issues them.')}
+            />
+          ) : (
+            <ul className="m-0 flex list-none flex-col gap-2 p-0">
+              {openInvoices.slice(0, 4).map((invoice, index) => (
+                <li
+                  key={invoice._id ?? `${invoice.id}-${index}`}
+                  className="flex min-h-[48px] items-center gap-3 rounded-xl border border-border px-3.5 py-2"
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-mono text-[13px] font-semibold text-heading" dir="ltr">
+                      {invoice.id}
+                    </span>
+                    <span className="mt-0.5 block text-[11px] text-muted">{invoice.due}</span>
+                  </span>
+                  <Money sar={fromHalalas(invoiceMoney(invoice).totalHalalas)} className="text-[13px] font-semibold text-heading" />
+                  <InvoiceStatusBadge value={invoice.status} />
+                </li>
+              ))}
+            </ul>
+          )}
+          <Link to="/client-portal-invoices" className="font-action text-[13px] font-medium">
+            {t('View All')}
+          </Link>
+        </Card>
       </div>
-
-      <DataTable
-        caption="Recent client activity"
-        columns={columns}
-        rows={RECENT_ACTIVITY}
-        rowKey={(_, i) => `row-${i}`}
-        mobileCard={(a) => (
-          <>
-            <MobileCardHeader title={a.description} trailing={<Badge background={STATUS_STYLES[a.status].bg} color={STATUS_STYLES[a.status].fg}>{t(a.status)}</Badge>} />
-            <MobileCardRow label={t('Type')}>{t(a.type)}</MobileCardRow>
-            <MobileCardRow label={t('Date')}>{a.date}</MobileCardRow>
-          </>
-        )}
-      />
-    </div>
+    </ScreenFrame>
   )
 }

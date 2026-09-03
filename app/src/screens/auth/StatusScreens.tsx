@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { useDateFormat } from '@/lib/formatDate'
+import { emailFromState, formatCountdown } from './firstRun'
 
 /** The four terminal-state screens: 403, session timeout, lockout, and the
  *  logout confirmation. They share a centred-card shape, so they live together
@@ -105,12 +107,14 @@ export function Unauthorized() {
 /** Session timeout. Shows when it lapsed so the user can tell an idle timeout
  *  from a server-side revocation. */
 export function SessionExpired() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
+  const { time } = useDateFormat()
+  const location = useLocation()
   const isMobile = useIsMobile()
-  const [at] = useState(() => {
-    const now = new Date()
-    return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-  })
+  const [expiredAt] = useState(() => new Date())
+  /* The address of the session that lapsed, when whoever sent us here passed
+   * it on — Login prefills it so the user only types the password again. */
+  const email = emailFromState(location.state)
 
   return (
     <StatusFrame
@@ -142,13 +146,25 @@ export function SessionExpired() {
       <p className="font-action text-sm text-muted">
         {t('Your session has expired. Please sign in again.')}
       </p>
-      <p className="font-mono text-[11px] text-faint" dir="ltr">
-        {rtl ? 'انتهت الجلسة الساعة ' : 'Timed out at '}
-        {at}
+      <p className="text-[11px] text-faint">
+        {t('Timed out at')}{' '}
+        <span className="font-mono" dir="ltr">
+          {time(expiredAt)}
+        </span>
       </p>
+      {email ? (
+        <p className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted">
+          <Icon name="Mail" size={13} className="text-salis-blue" />
+          {t('Signed in as')}{' '}
+          <span className="font-mono font-semibold text-heading" dir="ltr">
+            {email}
+          </span>
+        </p>
+      ) : null}
       <Link
         to="/login"
-        className={`mt-2 inline-flex items-center justify-center whitespace-nowrap rounded bg-salis-gradient font-action text-sm font-semibold text-white no-underline shadow-[0_4px_12px_rgba(10,94,215,.25)] hover:text-white hover:no-underline ${isMobile ? 'h-10 px-5' : 'h-11 px-6'}`}
+        state={email ? { email } : undefined}
+        className={`mt-2 inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded bg-salis-gradient font-action text-sm font-semibold text-white no-underline shadow-[0_4px_12px_rgba(10,94,215,.25)] hover:text-white hover:no-underline ${isMobile ? 'px-5' : 'h-12 px-6'}`}
       >
         {t('Sign In')}
       </Link>
@@ -169,9 +185,15 @@ export function AccountLocked() {
     return () => clearInterval(timer)
   }, [secondsLeft])
 
-  const countdown = `${String(Math.floor(secondsLeft / 60)).padStart(2, '0')}:${String(
-    secondsLeft % 60
-  ).padStart(2, '0')}`
+  const countdown = formatCountdown(secondsLeft)
+  /* A live region that changed every second would talk over everything else
+   * a screen reader says; this one moves once a minute, and once more at
+   * zero, which is when the user can actually do something. */
+  const announcedMinutes = Math.ceil(secondsLeft / 60)
+  const announcement =
+    secondsLeft <= 0
+      ? t('You can sign in again now')
+      : `${t('Unlocks in')} ${formatCountdown(announcedMinutes * 60)}`
 
   return (
     <StatusFrame
@@ -213,8 +235,16 @@ export function AccountLocked() {
         </Row>
         <Divider />
         <Row label={t('Unlocks in')}>
-          <span className="font-mono font-bold text-salis-orange" dir="ltr">
+          <span
+            role="timer"
+            data-testid="lockout-countdown"
+            className="font-mono text-base font-bold tabular-nums text-salis-orange"
+            dir="ltr"
+          >
             {countdown}
+          </span>
+          <span className="sr-only" aria-live="polite" aria-atomic="true">
+            {announcement}
           </span>
         </Row>
       </div>

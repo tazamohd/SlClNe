@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { AuthCard } from '@/components/shell/AuthCard'
-import { CodeInput } from '@/components/ui/CodeInput'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { useToast } from '@/components/ui/Toast'
@@ -11,11 +10,15 @@ import { useSession } from '@/providers/SessionProvider'
 import { API_URL } from '@/data/repository'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { OneTimeCodeInput } from './OneTimeCodeInput'
 
 const CODE_LENGTH = 6
 /** Resend throttle from README §6b — the server enforces the same 60 seconds
  *  and answers 429 with a `retry-after`; this is the client half of it. */
 const RESEND_SECONDS = 60
+/** The live region moves at these intervals rather than every second, so a
+ *  screen reader is not talked over for a whole minute. */
+const ANNOUNCE_EVERY = 15
 
 /** Where the flow that sent the code says it went — a phone number or an email
  *  address, carried in router state so this screen never has to invent one. */
@@ -48,6 +51,60 @@ function issueLocalCode(): string {
   return String((random[0] as number) % 10 ** CODE_LENGTH).padStart(CODE_LENGTH, '0')
 }
 
+/** Ticks a cooldown down to zero, one second at a time. */
+function useCooldown(): [number, (seconds: number) => void] {
+  const [cooldown, setCooldown] = useState(RESEND_SECONDS)
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const timer = setInterval(() => setCooldown((s) => s - 1), 1000)
+    return () => clearInterval(timer)
+  }, [cooldown])
+  return [cooldown, setCooldown]
+}
+
+/** "Didn't receive a code? Resend (45s)" with a polite live region that
+ *  announces the wait at quarter-minute marks and once more when it ends. */
+function ResendRow({
+  cooldown,
+  onResend,
+}: {
+  cooldown: number
+  onResend: () => void
+}) {
+  const { t } = usePreferences()
+  const announced = Math.ceil(cooldown / ANNOUNCE_EVERY) * ANNOUNCE_EVERY
+  const announcement =
+    announced > 0
+      ? `${t('Resend available in')} ${announced}s`
+      : t('You can request a new code now')
+
+  return (
+    <p className="mt-4 text-[13px] text-muted">
+      {t("Didn't receive a code?")}{' '}
+      {/* Throttled rather than a live link that could be hammered. */}
+      <button
+        type="button"
+        disabled={cooldown > 0}
+        onClick={onResend}
+        className={cn(
+          'inline-flex min-h-[44px] items-center border-none bg-transparent p-0 font-semibold focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2',
+          cooldown > 0 ? 'cursor-not-allowed text-faint' : 'cursor-pointer text-salis-blue'
+        )}
+      >
+        {t('Resend Code')}
+        {cooldown > 0 ? (
+          <span className="ms-1 font-mono tabular-nums" dir="ltr" data-testid="resend-countdown">
+            ({cooldown}s)
+          </span>
+        ) : null}
+      </button>
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </span>
+    </p>
+  )
+}
+
 /** SMS one-time code, sent during customer self-signup. */
 export function OTPVerification() {
   const { t } = usePreferences()
@@ -59,72 +116,77 @@ export function OTPVerification() {
 
   const destination = destinationFrom(location.state)
   const [code, setCode] = useState('')
-  const [cooldown, setCooldown] = useState(RESEND_SECONDS)
+  const [cooldown, setCooldown] = useCooldown()
   const [busy, setBusy] = useState(false)
+  const [rejected, setRejected] = useState(false)
   const [localCode, setLocalCode] = useState(() => (live ? null : issueLocalCode()))
 
-  useEffect(() => {
-    if (cooldown <= 0) return
-    const timer = setInterval(() => setCooldown((s) => s - 1), 1000)
-    return () => clearInterval(timer)
-  }, [cooldown])
+  const reject = useCallback(
+    (message: string) => {
+      toast.show({ title: t('Error'), description: message, error: true })
+      // Cleared, not kept: a wrong code left in the cells would be resubmitted
+      // untouched, and the user needs an empty field to type the right one.
+      setCode('')
+      setRejected(true)
+    },
+    [t, toast]
+  )
 
-  const verify = useCallback(async () => {
-    const entered = code.replace(/\s/g, '')
-    if (entered.length < CODE_LENGTH) {
-      toast.show({ title: t('Error'), description: t('Enter the 6-digit code'), error: true })
-      return
-    }
+  const verify = useCallback(
+    async (entered: string) => {
+      if (entered.length < CODE_LENGTH) {
+        toast.show({ title: t('Error'), description: t('Enter the 6-digit code'), error: true })
+        return
+      }
 
-    if (!live) {
-      if (entered !== localCode) {
-        toast.show({ title: t('Error'), description: t('That code is not correct.'), error: true })
+      if (!live) {
+        if (entered !== localCode) {
+          reject(t('That code is not correct.'))
+          return
+        }
+        navigate('/dashboard', { replace: true })
+        return
+      }
+
+      if (!destination) {
+        /* Reaching this screen without knowing where the code went means the
+         * flow that sent it did not pass it on. Saying so beats verifying
+         * against nothing and reporting success. */
+        reject(t('This link is missing the number the code was sent to. Request a new code.'))
+        return
+      }
+
+      setBusy(true)
+      let ok = false
+      let message = t('That code is not correct.')
+      try {
+        const response = await fetch(`${API_URL.replace(/\/$/, '')}/auth/verify-otp`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify({ destination, otp: entered }),
+        })
+        const body = (await response.json().catch(() => null)) as {
+          error?: { message?: string }
+        } | null
+        ok = response.ok
+        if (!ok) message = body?.error?.message ?? message
+      } catch {
+        message = t('The server could not be reached.')
+      }
+      setBusy(false)
+
+      if (!ok) {
+        reject(message)
         return
       }
       navigate('/dashboard', { replace: true })
-      return
-    }
-
-    if (!destination) {
-      /* Reaching this screen without knowing where the code went means the
-       * flow that sent it did not pass it on. Saying so beats verifying
-       * against nothing and reporting success. */
-      toast.show({
-        title: t('Error'),
-        description: t('This link is missing the number the code was sent to. Request a new code.'),
-        error: true,
-      })
-      return
-    }
-
-    setBusy(true)
-    let ok = false
-    let message = t('That code is not correct.')
-    try {
-      const response = await fetch(`${API_URL.replace(/\/$/, '')}/auth/verify-otp`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ destination, otp: entered }),
-      })
-      const body = (await response.json().catch(() => null)) as {
-        error?: { message?: string }
-      } | null
-      ok = response.ok
-      if (!ok) message = body?.error?.message ?? message
-    } catch {
-      message = t('The server could not be reached.')
-    }
-    setBusy(false)
-
-    if (!ok) {
-      toast.show({ title: t('Error'), description: message, error: true })
-      return
-    }
-    navigate('/dashboard', { replace: true })
-  }, [code, destination, live, localCode, navigate, t, toast])
+    },
+    [destination, live, localCode, navigate, reject, t, toast]
+  )
 
   const resend = useCallback(async () => {
     setCooldown(RESEND_SECONDS)
+    setRejected(false)
     if (!live) {
       const next = issueLocalCode()
       setLocalCode(next)
@@ -154,7 +216,7 @@ export function OTPVerification() {
       return
     }
     toast.show({ title: t('Resend Code'), description: t('A new code is on its way.') })
-  }, [destination, live, t, toast])
+  }, [destination, live, setCooldown, t, toast])
 
   return (
     <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
@@ -174,9 +236,30 @@ export function OTPVerification() {
         }
         className={isMobile ? 'p-4' : undefined}
       >
-        <CodeInput value={code} onChange={setCode} length={CODE_LENGTH} autoFocus />
-        <Button size="lg" className="w-full" onClick={() => void verify()} disabled={busy}>
-          {busy ? t('Verifying…') : t('Verify')}
+        {/* Six digits in and the code is checked; the button remains for the
+            user who pastes five, or who wants to press something. */}
+        <OneTimeCodeInput
+          id="otp-code"
+          value={code}
+          onChange={(next) => {
+            setRejected(false)
+            setCode(next)
+          }}
+          onComplete={(entered) => void verify(entered)}
+          length={CODE_LENGTH}
+          label={t('Verification code')}
+          invalid={rejected}
+          disabled={busy}
+          autoFocus
+        />
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={() => void verify(code)}
+          loading={busy}
+          loadingLabel="Verifying…"
+        >
+          {t('Verify')}
         </Button>
 
         {localCode ? (
@@ -185,27 +268,13 @@ export function OTPVerification() {
              so rather than implying an SMS arrived. */
           <p className="mt-3 rounded border border-border bg-inset px-3 py-2 text-[12px] text-muted">
             {t('No messaging provider is configured in this build. Code issued locally')}:{' '}
-            <span className="font-mono font-bold text-heading" dir="ltr">
+            <span className="font-mono font-bold text-heading" dir="ltr" data-testid="local-code">
               {localCode}
             </span>
           </p>
         ) : null}
 
-        <p className="mt-4 text-[13px] text-muted">
-          {t("Didn't receive a code?")}{' '}
-          {/* Throttled rather than a live link that could be hammered. */}
-          <button
-            type="button"
-            disabled={cooldown > 0}
-            onClick={() => void resend()}
-            className={cn(
-              'border-none bg-transparent p-0 font-semibold',
-              cooldown > 0 ? 'cursor-not-allowed text-faint' : 'cursor-pointer text-salis-blue'
-            )}
-          >
-            {cooldown > 0 ? `${t('Resend Code')} (${cooldown}s)` : t('Resend Code')}
-          </button>
-        </p>
+        <ResendRow cooldown={cooldown} onResend={() => void resend()} />
       </AuthCard>
     </AuthLayout>
   )
@@ -225,10 +294,10 @@ export function TwoFactorVerification() {
   const { live } = useSession()
   const isMobile = useIsMobile()
   const [code, setCode] = useState('')
+  const [rejected, setRejected] = useState(false)
   const [localCode, setLocalCode] = useState(() => (live ? null : issueLocalCode()))
 
-  function verify() {
-    const entered = code.replace(/\s/g, '')
+  function verify(entered: string) {
     if (entered.length < CODE_LENGTH) {
       toast.show({ title: t('Error'), description: t('Enter the 6-digit code'), error: true })
       return
@@ -245,6 +314,8 @@ export function TwoFactorVerification() {
     }
     if (entered !== localCode) {
       toast.show({ title: t('Error'), description: t('That code is not correct.'), error: true })
+      setCode('')
+      setRejected(true)
       return
     }
     navigate('/dashboard', { replace: true })
@@ -259,20 +330,32 @@ export function TwoFactorVerification() {
         description={t('Enter the code from your authenticator app')}
         className={isMobile ? 'p-4' : undefined}
       >
-        <CodeInput value={code} onChange={setCode} length={CODE_LENGTH} autoFocus />
-        <Button size="lg" className="w-full" onClick={verify}>
+        <OneTimeCodeInput
+          id="two-factor-code"
+          value={code}
+          onChange={(next) => {
+            setRejected(false)
+            setCode(next)
+          }}
+          onComplete={verify}
+          length={CODE_LENGTH}
+          label={t('Verification code')}
+          invalid={rejected}
+          autoFocus
+        />
+        <Button size="lg" className="w-full" onClick={() => verify(code)}>
           {t('Verify')}
         </Button>
         {localCode ? (
           <p className="mt-3 rounded border border-border bg-inset px-3 py-2 text-[12px] text-muted">
             {t('No authenticator is enrolled in this build. Code issued locally')}:{' '}
-            <span className="font-mono font-bold text-heading" dir="ltr">
+            <span className="font-mono font-bold text-heading" dir="ltr" data-testid="local-code">
               {localCode}
             </span>{' '}
             <button
               type="button"
               onClick={() => setLocalCode(issueLocalCode())}
-              className="cursor-pointer border-none bg-transparent p-0 font-semibold text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+              className="inline-flex min-h-[44px] cursor-pointer items-center border-none bg-transparent p-0 font-semibold text-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >
               {t('Refresh')}
             </button>
@@ -329,7 +412,7 @@ export function CreatePIN() {
                 key={key}
                 type="button"
                 onClick={() => press(key)}
-                aria-label={key === '⌫' ? 'Delete' : key}
+                aria-label={key === '⌫' ? t('Delete') : key}
                 className={`cursor-pointer rounded-full border border-border bg-card font-display font-bold text-heading transition-colors duration-150 hover:bg-inset ${isMobile ? 'h-14 w-14 text-lg' : 'h-16 w-16 text-xl'} focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2`}
               >
                 {key}
@@ -367,7 +450,7 @@ export function BiometricSetup() {
         </Link>
         <Link
           to="/dashboard"
-          className="whitespace-nowrap font-action text-[13px] text-muted no-underline hover:no-underline"
+          className="inline-flex min-h-[44px] items-center whitespace-nowrap font-action text-[13px] text-muted no-underline hover:no-underline"
         >
           {t('Skip for now')}
         </Link>

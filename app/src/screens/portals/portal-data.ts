@@ -65,3 +65,19 @@ export function minuteOf(label: string): number {
 export function detailRoute(code: string): string {
   return `/technician-portal/job-detail?id=${encodeURIComponent(code)}`
 }
+
+/** Narrows a portal list to the signed-in customer's rows — when a field lets
+ *  it. The server's own scope is the access control: a customer principal is
+ *  only ever sent their rows, so this is a display courtesy for staff roles
+ *  reading the same screen, never a boundary. It applies only when the rows
+ *  carry `customerId` and at least one matches the signed-in user; a fixture
+ *  list (no ids) or a mismatch (staff viewing a branch) passes through whole
+ *  rather than hiding everything behind a guess. */
+export function mineOnly<TRow extends { customerId?: string | null }>(
+  rows: readonly TRow[],
+  userId: string | null | undefined
+): readonly TRow[] {
+  if (!userId) return rows
+  const mine = rows.filter((row) => row.customerId === userId)
+  return mine.length > 0 ? mine : rows
+}

@@ -1,9 +1,9 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { DetailPage, type DetailSection, type DetailStat } from '@/components/shell/DetailPage'
 import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
-import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 import { Comments, type Comment } from '@/components/ui/Comments'
 import { Icon } from '@/components/ui/Icon'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -33,29 +33,18 @@ import { ConvertLeadModal } from './ConvertLeadModal'
  *    row anywhere in the schema, so they are omitted rather than invented.
  *  - **Deal panel** shows the deal value, the lead score with its meter, and
  *    the stage — every field real.
- *  - **Conversion path** is the design's promise made honest: a read-only
- *    stage rail derived from `stage`, not a mutation. The pipeline runs
- *    New → Qualified → Proposal → Negotiation → Won; a `lost` lead sits off the
- *    rail and says so.
- *  - **Activity timeline** and **notes** have no server source — there is no
- *    lead-activity or lead-note collection, endpoint or table — so each renders
- *    an honest empty state. `crm-gaps` still pins those two missing endpoints.
+ *  - **Next action** is the one primary control on the page. It reads the
+ *    stage and says what moves the lead on: for an active lead that is
+ *    converting it to an opportunity (`POST /crm/leads/:id/convert`, via
+ *    `ConvertLeadModal`); a converted lead points at the opportunities list; a
+ *    lost lead has none. Edit stays a secondary control in the header.
+ *  - **Activity timeline** and **notes** derive from the lead's own fields —
+ *    there is no lead-activity or lead-note collection, endpoint or table.
+ *  - The design's two sample PDFs are gone: there is no document store, and a
+ *    rail of invented files is worse than no rail.
  *
- *  **Writes (F-027).** `leads` is now writable and a lead→opportunity conversion
- *  route exists, so Edit and Convert to Opportunity are real controls, gated on
- *  the caller's `crm` grants:
- *
- *  - **Edit** patches the lead through `useUpdate('leads')` (`LeadFormModal`).
- *  - **Convert to Opportunity** posts `POST /crm/leads/:id/convert`
- *    (`ConvertLeadModal`), which creates the opportunity and moves the lead to
- *    `converted` in one server transaction. A lead already `converted` shows the
- *    converted state instead of the action — the route is idempotent, but
- *    offering "convert" on a converted lead would misdescribe what it does.
- *
- *  The Send-note button is still absent: notes have no server home, so a note
- *  control would be a write that cannot land. Against the fixtures both real
- *  controls refuse honestly with the "set VITE_API_URL" state rather than
- *  faking a save. */
+ *  Against the fixtures both real controls refuse honestly with the "set
+ *  VITE_API_URL" state rather than faking a save. */
 type Lead = RowOf<'leads'> & { _id?: string; _createdAt?: string }
 
 const PIPELINE = ['New', 'Qualified', 'Proposal', 'Negotiation', 'Won'] as const
@@ -65,6 +54,16 @@ const PIPELINE = ['New', 'Qualified', 'Proposal', 'Negotiation', 'Won'] as const
 function titleCase(stage: string): string {
   const s = stage.toLowerCase()
   return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+/** What moving this lead forward means, by stage. English sources; translated
+ *  where rendered. */
+const NEXT_ACTION: Record<string, { title: string; body: string }> = {
+  new: { title: 'Qualify and convert', body: 'Confirm the need and the budget, then convert the lead into an opportunity so it can be forecast.' },
+  qualified: { title: 'Send a proposal', body: 'The lead is qualified. Convert it to an opportunity to price the work and track the proposal.' },
+  proposal: { title: 'Follow up on the proposal', body: 'A proposal is out. Convert to an opportunity to carry the value into the forecast.' },
+  negotiation: { title: 'Close the deal', body: 'Terms are being negotiated. Convert to an opportunity to record the agreed value and close date.' },
+  won: { title: 'Hand over to the workshop', body: 'The deal is won. Convert it so the opportunity carries the value and the customer can be checked in.' },
 }
 
 export function LeadDetail() {
@@ -143,17 +142,6 @@ export function LeadDetail() {
     [lead, t]
   )
 
-  const attachments: AttachmentFile[] = useMemo(
-    () =>
-      lead
-        ? [
-            { id: 'att-1', name: 'business_card.pdf', size: '0.5 MB', type: 'PDF' },
-            { id: 'att-2', name: 'proposal_draft.pdf', size: '1.8 MB', type: 'PDF' },
-          ]
-        : [],
-    [lead]
-  )
-
   if (leads.isLoading) return <DetailPage title={t('Lead')} loading />
 
   if (leads.isError) {
@@ -180,26 +168,15 @@ export function LeadDetail() {
   }
 
   const leadRef = rowId(lead) ?? lead.name
-  const canConvert = can('crm', 'c') && can('crm', 'e') && !isConverted
+  const canConvert = can('crm', 'c') && can('crm', 'e') && !isConverted && !isLost
   const canEdit = can('crm', 'e')
+  const next = NEXT_ACTION[stage]
 
-  const actions =
-    canEdit || canConvert ? (
-      <div className={isMobile ? 'flex flex-wrap gap-2' : 'flex gap-2'}>
-        {canConvert ? (
-          <Button onClick={() => setConverting(true)}>
-            <Icon name="GitBranch" size={14} />
-            {t('Convert to Opportunity')}
-          </Button>
-        ) : null}
-        {canEdit ? (
-          <Button variant="subtle" onClick={() => setEditing(true)}>
-            <Icon name="Pencil" size={14} />
-            {t('Edit')}
-          </Button>
-        ) : null}
-      </div>
-    ) : undefined
+  const actions = canEdit ? (
+    <Button variant="outline" size="md" icon="Pencil" onClick={() => setEditing(true)}>
+      {t('Edit')}
+    </Button>
+  ) : undefined
 
   const summary: DetailStat[] = [
     { label: 'Deal Value', value: <Money sar={parseSar(lead.value ?? '')} />, icon: 'DollarSign' },
@@ -215,7 +192,63 @@ export function LeadDetail() {
     { label: 'Lead Source', value: lead.source ? t(lead.source) : '—', icon: 'Compass' },
   ]
 
+  const nextActionCard = (
+    <Card className="flex flex-col gap-3 border-salis-blue/[.35] bg-tint-blue p-5">
+      <div className="flex items-center gap-2">
+        <span className="flex rounded-lg bg-salis-gradient p-2 text-white">
+          <Icon name={isConverted ? 'CheckCircle' : isLost ? 'XCircle' : 'ArrowRightCircle'} size={16} />
+        </span>
+        <p className="font-action text-xs font-semibold uppercase tracking-[.06em] text-salis-blue">
+          {t('Next action')}
+        </p>
+      </div>
+      {isConverted ? (
+        <>
+          <p className="text-sm font-bold text-heading">{t('Lead converted')}</p>
+          <p className="text-[13px] text-muted">
+            {t('This lead became an opportunity and has left the active pipeline.')}
+          </p>
+          <Link
+            to="/opportunities"
+            className="inline-flex h-10 w-fit items-center gap-2 rounded bg-salis-gradient px-3.5 font-action text-[13px] font-semibold text-white no-underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+          >
+            <Icon name="Target" size={14} />
+            {t('Open opportunities')}
+          </Link>
+        </>
+      ) : isLost ? (
+        <>
+          <p className="text-sm font-bold text-heading">{t('Lead lost')}</p>
+          <p className="text-[13px] text-muted">
+            {t('This lead did not convert and has left the active pipeline.')}
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="text-sm font-bold text-heading">{t(next?.title ?? 'Move the lead forward')}</p>
+          <p className="text-[13px] text-muted">
+            {t(next?.body ?? 'Convert the lead to an opportunity to carry its value into the forecast.')}
+          </p>
+          {canConvert ? (
+            <Button size="md" icon="GitBranch" className="w-fit" onClick={() => setConverting(true)}>
+              {t('Convert to Opportunity')}
+            </Button>
+          ) : (
+            <p className="text-[11px] text-muted">{t('Converting a lead needs the CRM create and edit grants.')}</p>
+          )}
+        </>
+      )}
+    </Card>
+  )
+
   const sections: DetailSection[] = [
+    {
+      id: 'next',
+      title: 'What happens next',
+      icon: 'Compass',
+      span: 'full',
+      children: nextActionCard,
+    },
     {
       id: 'contact',
       title: 'Contact Information',
@@ -291,14 +324,14 @@ export function LeadDetail() {
       children: isConverted ? (
         <EmptyState
           icon="CheckCircle"
-          title={t('Lead converted')}
-          description={t('This lead became an opportunity and has left the active pipeline.')}
+          title={t('Converted')}
+          description={t('The stage rail no longer applies to a converted lead.')}
         />
       ) : isLost ? (
         <EmptyState
           icon="XCircle"
-          title={t('Lead lost')}
-          description={t('This lead did not convert and has left the active pipeline.')}
+          title={t('Off the pipeline')}
+          description={t('A lost lead sits outside the stage rail.')}
         />
       ) : (
         <WorkflowStepper current={titleCase(stage)} stages={PIPELINE} />
@@ -325,11 +358,6 @@ export function LeadDetail() {
         comments={
           comments.length > 0 && !isMobile ? (
             <Comments items={comments} title={t('Notes')} />
-          ) : undefined
-        }
-        attachments={
-          attachments.length > 0 && !isMobile ? (
-            <Attachments files={attachments} title={t('Documents')} />
           ) : undefined
         }
       />

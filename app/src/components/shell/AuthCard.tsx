@@ -54,16 +54,23 @@ export function AuthCard({
   )
 }
 
-/** Field label + input wrapper with the design's 12px label treatment. */
+/** Field label + input wrapper with the design's 12px label treatment.
+ *
+ *  `error` (already translated) replaces the hint in Action Orange and is
+ *  given `messageId` so the control can point `aria-describedby` at it. */
 export function Field({
   label,
   htmlFor,
   hint,
+  error,
+  messageId,
   children,
 }: {
   label: string
   htmlFor?: string
   hint?: string
+  error?: string | null
+  messageId?: string
   children: ReactNode
 }) {
   return (
@@ -72,7 +79,19 @@ export function Field({
         {label}
       </label>
       {children}
-      {hint ? <span className="text-xs text-muted">{hint}</span> : null}
+      {error ? (
+        <span
+          id={messageId}
+          className="flex items-center gap-1.5 text-[11px] font-medium text-salis-orange"
+        >
+          <Icon name="AlertCircle" size={12} className="flex-shrink-0" />
+          {error}
+        </span>
+      ) : hint ? (
+        <span id={messageId} className="text-xs text-muted">
+          {hint}
+        </span>
+      ) : null}
     </div>
   )
 }

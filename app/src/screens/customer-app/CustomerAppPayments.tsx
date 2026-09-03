@@ -1,82 +1,104 @@
+import { useNavigate } from 'react-router-dom'
 import { Card } from '@/components/ui/Card'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { Money, formatSar } from '@/components/ui/Money'
+import { EmptyState, ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { usePagedCollection, type RowOf } from '@/data/useCollection'
+import { InvoiceStatusBadge } from '@/screens/registry/badges'
+import { derived, UNKNOWN } from '@/screens/registry/writes'
+import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
 
-interface Payment {
-  id: string
-  description: string
-  amount: number
-  date: string
-  method: 'Visa' | 'Mada' | 'Apple Pay' | 'Cash' | 'Bank Transfer'
-  invoice: string
-  status: 'Completed' | 'Pending' | 'Refunded'
+/** The customer's payments, read through the repository seam.
+ *
+ *  The design listed seven invented payments and three saved cards. Neither
+ *  exists behind the API: what a customer can be shown is their invoices, each
+ *  with the amount the server computed and the balance it derives from the
+ *  payments recorded against it. So the screen is the invoice list, and the
+ *  one action on it — "Pay now" — is primary only while something is owed.
+ *
+ *  ### Balance on a fixture row
+ *
+ *  A fixture invoice carries a display total and a status, no payments. A
+ *  *paid* one owes nothing; an open one owes its total, because nothing has
+ *  been recorded against it. That reading is exact for the fixtures and is
+ *  replaced by the server's `balanceHalalas` the moment the API serves it. */
+type Invoice = RowOf<'invoices'> & {
+  _id?: string
+  totalHalalas?: number
+  paidHalalas?: number
+  balanceHalalas?: number
 }
 
-interface PaymentMethod {
-  type: string
-  last4: string
-  expiry: string
-  icon: string
-  primary: boolean
-}
-
-const PAYMENTS: Payment[] = [
-  { id: 'PAY-8401', description: 'Oil Change + Filter', amount: 285, date: 'Aug 15, 2026', method: 'Visa', invoice: 'INV-2026-1284', status: 'Completed' },
-  { id: 'PAY-8398', description: 'Brake Pad Replacement', amount: 1240, date: 'Aug 12, 2026', method: 'Mada', invoice: 'INV-2026-1280', status: 'Completed' },
-  { id: 'PAY-8395', description: 'Full Service Package', amount: 2180, date: 'Aug 05, 2026', method: 'Apple Pay', invoice: 'INV-2026-1275', status: 'Completed' },
-  { id: 'PAY-8392', description: 'AC Service & Recharge', amount: 450, date: 'Jul 28, 2026', method: 'Visa', invoice: 'INV-2026-1270', status: 'Refunded' },
-  { id: 'PAY-8390', description: 'Tire Rotation (4x)', amount: 120, date: 'Jul 20, 2026', method: 'Cash', invoice: 'INV-2026-1265', status: 'Completed' },
-  { id: 'PAY-8387', description: 'Battery Replacement', amount: 380, date: 'Jul 15, 2026', method: 'Bank Transfer', invoice: 'INV-2026-1260', status: 'Pending' },
-  { id: 'PAY-8384', description: 'Engine Diagnostic', amount: 199, date: 'Jul 10, 2026', method: 'Mada', invoice: 'INV-2026-1255', status: 'Completed' },
-]
-
-const METHODS: PaymentMethod[] = [
-  { type: 'Visa', last4: '4821', expiry: '09/28', icon: 'CreditCard', primary: true },
-  { type: 'Mada', last4: '7733', expiry: '12/27', icon: 'CreditCard', primary: false },
-  { type: 'Apple Pay', last4: '1155', expiry: '-', icon: 'Smartphone', primary: false },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Refunded: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+function balanceOf(invoice: Invoice): number {
+  const money = invoiceMoney(invoice)
+  if (money.fromServer) return money.balanceHalalas
+  return invoice.status === 'paid' ? 0 : money.totalHalalas
 }
 
 export function CustomerAppPayments() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
+  const { data, isLoading, isError, error, refetch } = usePagedCollection('invoices')
+  const rows = (data?.rows ?? []) as readonly Invoice[]
+  const total = data?.page.total
 
-  const totalSpent = PAYMENTS.filter((p) => p.status === 'Completed').reduce((sum, p) => sum + p.amount, 0)
+  const open = rows.filter((inv) => balanceOf(inv) > 0)
+  const dueHalalas = open.reduce((sum, inv) => sum + balanceOf(inv), 0)
+  const hasBalance = dueHalalas > 0
 
   const kpis = [
-    { label: t('Total Spent'), value: `${(totalSpent / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Amount Due'), value: isLoading ? UNKNOWN : formatSar(fromHalalas(dueHalalas)), icon: 'AlertCircle', bg: hasBalance ? 'var(--tint-orange)' : 'var(--tint-blue)', fg: hasBalance ? 'var(--salis-orange)' : 'var(--salis-blue)' },
+    { label: t('Open Invoices'), value: isLoading ? UNKNOWN : String(open.length), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Total Invoices'), value: total === undefined ? UNKNOWN : String(total), icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Paid'), value: isLoading ? UNKNOWN : String(rows.filter((inv) => inv.status === 'paid').length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
-  const columns: Column<Payment>[] = [
-    { header: 'ID', cell: (p) => p.id, code: true },
-    { header: 'Description', cell: (p) => <span className="font-medium text-heading">{t(p.description)}</span> },
-    { header: 'Amount', cell: (p) => p.amount.toLocaleString(), code: true, className: 'text-end' },
-    { header: 'Method', cell: (p) => p.method },
-    { header: 'Invoice', cell: (p) => p.invoice, code: true },
-    { header: 'Date', cell: (p) => p.date },
+  const columns: Column<Invoice>[] = [
+    { header: 'Invoice', cell: (inv) => inv.id, code: true },
+    { header: 'Customer', cell: (inv) => <span className="font-medium text-heading">{derived(inv.cust)}</span> },
+    { header: 'Amount', cell: (inv) => <Money sar={fromHalalas(invoiceMoney(inv).totalHalalas)} />, className: 'text-end' },
     {
-      header: 'Status',
-      cell: (p) => (
-        <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
-      ),
+      header: 'Balance',
+      cell: (inv) => {
+        const balance = balanceOf(inv)
+        return (
+          <Money
+            sar={fromHalalas(balance)}
+            className={balance > 0 ? 'font-semibold text-salis-orange' : 'font-semibold text-salis-blue'}
+          />
+        )
+      },
+      className: 'text-end',
     },
+    { header: 'Due', cell: (inv) => derived(inv.due) },
+    { header: 'Status', cell: (inv) => <InvoiceStatusBadge value={inv.status} /> },
   ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="CreditCard" title={t('Payments')} subtitle={t('Payment history and saved methods')} />
+      <PageHeader
+        icon="CreditCard"
+        title={t('Payments')}
+        subtitle={t('Invoices and what is still owed')}
+        back={{ to: '/customer-app/profile', label: 'Profile' }}
+        actions={
+          hasBalance ? (
+            <Button size="lg" icon="Wallet" onClick={() => navigate('/customer-app/wallet')}>
+              {t('Pay now')}
+            </Button>
+          ) : (
+            <Button size="lg" variant="outline" icon="Wallet" onClick={() => navigate('/customer-app/wallet')}>
+              {t('Open wallet')}
+            </Button>
+          )
+        }
+      />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map((k) => (
@@ -84,50 +106,91 @@ export function CustomerAppPayments() {
         ))}
       </div>
 
+      {/* The one decision on this screen: is anything owed, and if so, pay it. */}
+      {!isLoading && !isError ? (
+        <Card className="flex flex-col gap-3 rounded-2xl p-5 shadow-sm sm:flex-row sm:items-center">
+          <span
+            className={
+              hasBalance
+                ? 'flex flex-shrink-0 rounded-xl bg-tint-orange p-3 text-salis-orange'
+                : 'flex flex-shrink-0 rounded-xl bg-tint-blue p-3 text-salis-blue'
+            }
+          >
+            <Icon name={hasBalance ? 'AlertCircle' : 'CheckCircle'} size={22} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold text-heading">
+              {hasBalance ? t('You have a balance to pay') : t('Nothing owed right now')}
+            </p>
+            <p className="mt-0.5 text-[13px] text-muted">
+              {hasBalance ? (
+                <>
+                  <Money sar={fromHalalas(dueHalalas)} className="font-semibold text-heading" /> ·{' '}
+                  {open.length} {t('open invoices')}
+                </>
+              ) : (
+                t('New invoices appear here as soon as the workshop issues them.')
+              )}
+            </p>
+          </div>
+          {hasBalance ? (
+            <Button size="lg" icon="Wallet" className="w-full sm:w-auto" onClick={() => navigate('/customer-app/wallet')}>
+              {t('Pay now')}
+            </Button>
+          ) : null}
+        </Card>
+      ) : null}
+
       <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Payment Methods')}</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {METHODS.map((m) => (
-            <div key={m.last4} className="flex items-center gap-3 rounded-xl border border-border p-4">
-              <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-heading">{m.type} <span className="font-mono text-muted" dir="ltr">****{m.last4}</span></p>
-                <p className="text-xs text-muted">{m.expiry !== '-' ? `${t('Expires')} ${m.expiry}` : t('Digital Wallet')}</p>
-              </div>
-              {m.primary && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Primary')}</Badge>}
-            </div>
-          ))}
-        </div>
+        <h2 className="mb-2 font-display text-sm font-bold text-heading">{t('Payment Methods')}</h2>
+        <EmptyState
+          icon="CreditCard"
+          title={t('No saved payment methods')}
+          description={t('Cards you save at checkout appear here.')}
+        />
       </Card>
 
       <div>
         <p className="mb-3 text-sm font-bold text-heading">{t('Payment History')}</p>
-        <DataTable
-          caption="Payment history"
-          columns={columns}
-          rows={PAYMENTS}
-          rowKey={(p) => p.id}
-          empty={t('No payments found')}
-          mobileCard={(p) => (
-            <>
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
-                    <div>
-                      <p className="text-[13px] font-semibold text-heading">{t(p.description)}</p>
-                      <p className="text-xs text-muted">{p.date}</p>
-                    </div>
-                  </div>
-                }
-                trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
+        {isError ? (
+          <Card className="p-6">
+            <ErrorState
+              description={error?.message}
+              onRetry={() => void refetch()}
+              retryLabel="Refresh"
+            />
+          </Card>
+        ) : (
+          <DataTable
+            caption="Payment history"
+            columns={columns}
+            rows={rows}
+            rowKey={(inv, index) => inv._id ?? `${inv.id}-${index}`}
+            loading={isLoading}
+            empty={
+              <EmptyState
+                icon="Receipt"
+                title={t('No invoices yet')}
+                description={t('Invoices for your services appear here.')}
               />
-              <MobileCardRow label={t('Amount')} value={`${p.amount.toLocaleString()} SAR`} />
-              <MobileCardRow label={t('Method')} value={p.method} />
-              <MobileCardRow label={t('Invoice')} value={p.invoice} />
-            </>
-          )}
-        />
+            }
+            mobileCard={(inv) => (
+              <>
+                <MobileCardHeader title={inv.id} code trailing={<InvoiceStatusBadge value={inv.status} />} />
+                <MobileCardRow label={t('Amount')}>
+                  <Money sar={fromHalalas(invoiceMoney(inv).totalHalalas)} />
+                </MobileCardRow>
+                <MobileCardRow label={t('Balance')}>
+                  <Money
+                    sar={fromHalalas(balanceOf(inv))}
+                    className={balanceOf(inv) > 0 ? 'font-semibold text-salis-orange' : 'font-semibold text-salis-blue'}
+                  />
+                </MobileCardRow>
+                <MobileCardRow label={t('Due')}>{derived(inv.due)}</MobileCardRow>
+              </>
+            )}
+          />
+        )}
       </div>
     </div>
   )

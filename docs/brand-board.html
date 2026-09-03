@@ -1,0 +1,1169 @@
+<title>SALIS AUTO Brand Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600&display=swap">
+
+<style>
+/* ============================================================
+   SALIS AUTO — Brand Board
+   Every colour and face below is read from app/src/styles/tokens/.
+   Nothing here is invented; this page is the system rendering itself.
+   ============================================================ */
+
+/* --- Product tokens: fixed, theme-independent. These are specimens. --- */
+:root {
+  --salis-blue: #0A5ED7;
+  --salis-blue-hover: #0952C0;
+  --salis-bright: #0BB3FF;
+  --salis-navy: #0B1F3B;
+  --salis-orange: #F97316;
+  --salis-gradient: linear-gradient(135deg, #0A5ED7 0%, #0BB3FF 100%);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --f-display: 'Montserrat', 'Poppins', system-ui, sans-serif;
+  --f-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-action: 'Poppins', 'Inter', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  --f-ar: 'Noto Sans Arabic', 'Inter', sans-serif;
+
+  /* --- Page tokens: light (the product's own light neutrals) --- */
+  --page: #F8FAFC;
+  --page-alt: #E6E9ED;
+  --card: #FFFFFF;
+  --inset: #F8FAFC;
+  --border: #E2E8F0;
+  --border-strong: #C9D1DA;
+  --heading: #0B1F3B;
+  --body: #2A2F3A;
+  --muted: #64748B;
+  --faint: #9BA4B0;
+  --band: #0B1F3B;
+  --shadow-sm: 0 1px 2px rgba(1,1,1,.06), 0 1px 3px rgba(1,1,1,.1);
+  --shadow-lg: 0 4px 6px -2px rgba(1,1,1,.05), 0 12px 16px -4px rgba(1,1,1,.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0E1117;
+    --page-alt: #151A23;
+    --card: #151A23;
+    --inset: #0E1117;
+    --border: #232A36;
+    --border-strong: #2E3746;
+    --heading: #FFFFFF;
+    --body: #E6EAF0;
+    --muted: #9BA4B0;
+    --faint: #6F7987;
+    --band: #080B10;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-lg: 0 12px 28px rgba(0,0,0,.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  --page: #0E1117;
+  --page-alt: #151A23;
+  --card: #151A23;
+  --inset: #0E1117;
+  --border: #232A36;
+  --border-strong: #2E3746;
+  --heading: #FFFFFF;
+  --body: #E6EAF0;
+  --muted: #9BA4B0;
+  --faint: #6F7987;
+  --band: #080B10;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-lg: 0 12px 28px rgba(0,0,0,.5);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--body);
+  font-family: var(--f-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ---------- Section scaffolding ---------- */
+section { padding: 72px 0; border-top: 1px solid var(--border); }
+section:first-of-type { border-top: 0; }
+
+.eyebrow {
+  font-family: var(--f-action);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--salis-blue);
+  margin: 0 0 10px;
+}
+.band .eyebrow { color: var(--salis-bright); }
+
+h2 {
+  font-family: var(--f-display);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+  color: var(--heading);
+  margin: 0 0 8px;
+  text-wrap: balance;
+}
+.band h2 { color: #FFFFFF; }
+
+.lede {
+  max-width: 62ch;
+  color: var(--muted);
+  margin: 0 0 32px;
+}
+.band .lede { color: #9BA4B0; }
+
+/* A section header carries the file its values come from. */
+.source {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--inset);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 8px;
+  margin-bottom: 18px;
+}
+.band .source {
+  color: #9BA4B0;
+  background: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.12);
+}
+
+/* ---------- Masthead ---------- */
+.masthead { padding: 88px 0 64px; }
+
+.lockup {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(44px, 8vw, 84px);
+  letter-spacing: -.045em;
+  line-height: .95;
+  margin: 0 0 20px;
+  color: var(--heading);
+}
+.lockup .grad {
+  background: var(--salis-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tagline {
+  font-family: var(--f-action);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--heading);
+  margin: 0 0 28px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--muted);
+}
+.chip--live { border-color: var(--salis-blue); color: var(--salis-blue); }
+.chip--draft { border-color: var(--salis-orange); color: var(--salis-orange); }
+
+/* ---------- The Colour Law ---------- */
+.law {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 44px;
+  align-items: start;
+}
+.law-statement {
+  font-family: var(--f-display);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+  color: var(--heading);
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+.law-statement em { font-style: normal; color: var(--salis-blue); }
+.law-statement strong { font-weight: 600; color: var(--salis-orange); }
+
+.banned { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.banned span {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px dashed var(--border-strong);
+  color: var(--faint);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.enforced {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: rgba(10,94,215,.08);
+  border-inline-start: 3px solid var(--salis-blue);
+  font-size: 13px;
+  color: var(--body);
+}
+.enforced code {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--salis-blue);
+}
+
+/* ---------- Swatches ---------- */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 14px;
+  margin-bottom: 34px;
+}
+.sw {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+.sw-fill { height: 84px; }
+.sw-meta { padding: 11px 13px; }
+.sw-name {
+  font-family: var(--f-action);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--heading);
+}
+.sw-hex {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+.sw-use { font-size: 11.5px; color: var(--faint); margin-top: 5px; line-height: 1.4; }
+
+.subhead {
+  font-family: var(--f-action);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+/* Collision callout */
+.collision {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--salis-orange);
+  background: rgba(249,115,22,.07);
+  font-size: 13px;
+  color: var(--body);
+}
+.collision-dot {
+  flex: none;
+  width: 34px; height: 34px;
+  border-radius: 7px;
+  background: var(--salis-orange);
+}
+.collision b { color: var(--heading); }
+
+/* ---------- Type specimen ---------- */
+.faces { display: grid; gap: 16px; margin-bottom: 36px; }
+.face {
+  display: grid;
+  grid-template-columns: 176px 1fr;
+  gap: 28px;
+  align-items: center;
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.face-role {
+  font-family: var(--f-action);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--salis-blue);
+}
+.face-name { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+.face-job { font-size: 12px; color: var(--faint); margin-top: 7px; line-height: 1.45; }
+.spec-display { font-family: var(--f-display); font-size: 30px; font-weight: 700; letter-spacing: -.03em; color: var(--heading); }
+.spec-ui { font-family: var(--f-ui); font-size: 17px; font-weight: 400; color: var(--body); }
+.spec-action { font-family: var(--f-action); font-size: 17px; font-weight: 500; color: var(--heading); }
+.spec-mono { font-family: var(--f-mono); font-size: 17px; color: var(--body); font-variant-numeric: tabular-nums; }
+.spec-ar { font-family: var(--f-ar); font-size: 20px; color: var(--body); direction: rtl; }
+
+table.scale {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.scale th, table.scale td {
+  text-align: start;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+}
+table.scale th {
+  font-family: var(--f-action);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+table.scale td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+table.scale td:first-child { color: var(--heading); font-weight: 500; }
+.scale-wrap { overflow-x: auto; }
+
+/* ---------- Voice ---------- */
+.traits { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 40px; }
+.trait {
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--salis-blue);
+}
+.trait h3 {
+  font-family: var(--f-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--heading);
+  margin: 0 0 7px;
+}
+.trait p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.voice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.vcard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  overflow: hidden;
+}
+.vcard-head {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--f-action);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--inset);
+}
+.vcard-body { padding: 18px 16px; }
+
+/* Real product component specimens */
+.field-label { font-size: 12px; font-weight: 500; color: var(--heading); display: block; margin-bottom: 6px; }
+.field-input {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--radius);
+  border: 1px solid var(--salis-orange);
+  background: var(--inset);
+  color: var(--body);
+  font-family: var(--f-mono);
+  font-size: 13px;
+  padding: 0 12px;
+  line-height: 40px;
+}
+.field-error {
+  margin-top: 7px;
+  font-size: 12.5px;
+  color: var(--salis-orange);
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+.field-help { margin-top: 7px; font-size: 12.5px; color: var(--muted); }
+
+.notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--inset);
+  border-inline-start: 3px solid var(--salis-blue);
+}
+.notice--warn { border-inline-start-color: var(--salis-orange); }
+.notice-title { font-weight: 600; color: var(--heading); font-size: 13px; margin-bottom: 3px; }
+.notice-text { font-size: 12.5px; color: var(--muted); }
+.notice-text code {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  background: var(--page-alt);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--body);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 15px;
+  border-radius: var(--radius);
+  background: var(--salis-navy);
+  color: #FFFFFF;
+  font-size: 13px;
+  box-shadow: var(--shadow-lg);
+}
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--salis-bright); flex: none; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--f-action);
+  font-weight: 500;
+  font-size: 13px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: filter var(--dur, .2s) var(--ease);
+}
+.btn:focus-visible { outline: 2px solid var(--salis-bright); outline-offset: 2px; }
+.btn--primary { background: var(--salis-blue); color: #FFFFFF; box-shadow: 0 10px 15px -3px rgba(10,94,215,.25); }
+.btn--primary:hover { background: var(--salis-blue-hover); }
+.btn--danger { background: var(--salis-orange); color: #FFFFFF; }
+.btn--ghost { background: transparent; color: var(--body); border-color: var(--border-strong); }
+
+.dont-do { display: grid; gap: 10px; margin-top: 14px; }
+.line { display: flex; gap: 11px; align-items: baseline; font-size: 13px; }
+.line-tag {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex: none;
+}
+.tag-write { background: rgba(10,94,215,.12); color: var(--salis-blue); }
+.tag-not { background: rgba(100,116,139,.14); color: var(--muted); }
+.line-not { color: var(--faint); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+/* ---------- Dark band with screen mockups ---------- */
+.band { background: var(--band); border-top: 0; }
+
+.screens { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+
+/* Product-theme specimens: these commit to fixed colours on purpose. */
+.frame {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  font-size: 13px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+.frame--light { background: #F8FAFC; color: #2A2F3A; border: 1px solid #E2E8F0; }
+.frame--dark { background: #0E1117; color: #E6EAF0; border: 1px solid #232A36; }
+
+.frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  font-family: var(--f-action);
+  font-size: 12px;
+  font-weight: 500;
+}
+.frame--light .frame-bar { background: #FFFFFF; border-bottom: 1px solid #E2E8F0; color: #0B1F3B; }
+.frame--dark .frame-bar { background: #0B1F3B; border-bottom: 1px solid #232A36; color: #FFFFFF; }
+.frame-mark {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  background: var(--salis-gradient);
+  flex: none;
+}
+.frame-theme {
+  margin-inline-start: auto;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  opacity: .6;
+}
+
+.frame-body { padding: 18px; }
+
+.doc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+.doc-id { font-family: var(--f-mono); font-size: 11.5px; opacity: .65; }
+.doc-title { font-family: var(--f-display); font-size: 19px; font-weight: 600; letter-spacing: -.02em; margin: 3px 0 0; }
+.frame--light .doc-title { color: #0B1F3B; }
+.frame--dark .doc-title { color: #FFFFFF; }
+
+.pill {
+  font-family: var(--f-action);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 11px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pill--active { background: rgba(10,94,215,.12); color: var(--salis-blue); }
+.frame--dark .pill--active { background: rgba(11,179,255,.15); color: var(--salis-bright); }
+.pill--due { background: rgba(249,115,22,.13); color: var(--salis-orange); }
+
+.rows { border-radius: var(--radius); overflow: hidden; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  font-size: 12.5px;
+}
+.frame--light .row { border-bottom: 1px solid #E2E8F0; }
+.frame--dark .row { border-bottom: 1px solid #232A36; }
+.row:last-child { border-bottom: 0; }
+.row-label { opacity: .85; }
+.amount { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.row--total { height: 44px; font-weight: 600; }
+.frame--light .row--total { background: #F8FAFC; color: #0B1F3B; }
+.frame--dark .row--total { background: #151A23; color: #FFFFFF; }
+.row--total .amount { font-size: 15px; }
+
+.plate {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+.frame--light .plate { background: #E6E9ED; color: #0B1F3B; }
+.frame--dark .plate { background: #232A36; color: #E6EAF0; }
+
+.frame-actions { display: flex; gap: 9px; margin-top: 16px; }
+.mini-btn {
+  font-family: var(--f-action);
+  font-size: 12px;
+  font-weight: 500;
+  height: 34px;
+  padding: 0 15px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+}
+.mini-btn--primary { background: var(--salis-blue); color: #FFFFFF; }
+.mini-btn--ghost { background: transparent; }
+.frame--light .mini-btn--ghost { border-color: #C9D1DA; color: #2A2F3A; }
+.frame--dark .mini-btn--ghost { border-color: #2E3746; color: #E6EAF0; }
+
+/* RTL specimen */
+.rtl { direction: rtl; font-family: var(--f-ar); }
+.rtl .doc-title { font-family: var(--f-ar); font-weight: 600; letter-spacing: 0; }
+.rtl .amount, .rtl .plate, .rtl .doc-id { direction: ltr; unicode-bidi: isolate; }
+.rtl-note {
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: #9BA4B0;
+  display: grid;
+  gap: 7px;
+}
+.rtl-note code { font-family: var(--f-mono); font-size: 11.5px; color: var(--salis-bright); }
+
+/* ---------- Conflict table ---------- */
+.conflict { display: grid; gap: 10px; }
+.crow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 13px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+.crow-name { font-weight: 500; color: var(--heading); font-size: 13px; }
+.crow-name small { display: block; font-weight: 400; color: var(--faint); font-size: 11.5px; margin-top: 2px; }
+.pair { display: flex; align-items: center; gap: 9px; }
+.pair-sw { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border-strong); flex: none; }
+.pair-txt { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.pair-txt b { display: block; font-weight: 500; color: var(--heading); }
+.rejected .pair-sw { position: relative; opacity: .55; }
+.crit {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(249,115,22,.14);
+  color: var(--salis-orange);
+  margin-inline-start: 8px;
+}
+
+footer {
+  padding: 44px 0 60px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--faint);
+}
+footer code { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+
+@media (max-width: 860px) {
+  .law, .screens { grid-template-columns: 1fr; }
+  .face { grid-template-columns: 1fr; gap: 14px; }
+  .crow { grid-template-columns: 1fr; gap: 12px; }
+  .wrap { padding: 0 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="wrap masthead">
+  <p class="eyebrow">Brand board · v1.0</p>
+  <h1 class="lockup"><span class="grad">SALIS</span> AUTO</h1>
+  <p class="tagline">Workshop Management. Saudi Standard.</p>
+  <div class="chips">
+    <span class="chip chip--live">Visual identity — shipping, CI-enforced</span>
+    <span class="chip chip--draft">Voice — draft, awaiting sign-off</span>
+    <span class="chip">app/src/styles/tokens/</span>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The rule everything else follows</p>
+    <h2>The colour law</h2>
+    <div class="law">
+      <div>
+        <p class="law-statement">
+          <em>Blue</em> is success, active and progress. <strong>Orange</strong> is warnings and
+          critical calls to action. There is no third signal colour.
+        </p>
+        <p class="lede" style="margin-bottom:14px">
+          This is the most distinctive thing about the SALIS AUTO interface and the easiest to
+          break. Screens rebuilt from screenshots are how it gets broken — reproduce structure
+          and content, never the source's palette.
+        </p>
+        <div class="enforced">
+          Enforced, not advised. A smoke check walks the computed styles of rebuilt screens and
+          fails the build on dominant green or purple. See <code>app/README.md §7</code>.
+        </div>
+      </div>
+      <div>
+        <p class="subhead">Never</p>
+        <div class="banned">
+          <span>green</span><span>red</span><span>yellow</span>
+          <span>purple</span><span>pink</span><span>teal</span>
+        </div>
+        <p class="lede" style="margin:22px 0 0;font-size:13px">
+          Green and red are the two most common status colours in software. Removing them is a
+          deliberate cost: severity has to be carried by weight, position and wording instead of
+          hue — which also means the interface still works for the colour-blind readers on a
+          workshop floor.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Palette</p>
+    <h2>Four brand colours, one gradient</h2>
+    <p class="lede">Read from <code style="font-family:var(--f-mono);font-size:12.5px">tokens/colors.css</code>. If this page and that file disagree, the file is right.</p>
+    <span class="source">app/src/styles/tokens/colors.css</span>
+
+    <p class="subhead">Brand</p>
+    <div class="swatches">
+      <div class="sw">
+        <div class="sw-fill" style="background:#0A5ED7"></div>
+        <div class="sw-meta">
+          <div class="sw-name">SALIS Blue</div>
+          <div class="sw-hex">#0A5ED7</div>
+          <div class="sw-use">Primary action, active, success, progress</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:#0BB3FF"></div>
+        <div class="sw-meta">
+          <div class="sw-name">Blue Bright</div>
+          <div class="sw-hex">#0BB3FF</div>
+          <div class="sw-use">Information, focus ring, dark-mode success</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:#0B1F3B"></div>
+        <div class="sw-meta">
+          <div class="sw-name">SALIS Navy</div>
+          <div class="sw-hex">#0B1F3B</div>
+          <div class="sw-use">Sidebar, dark surfaces, formal print</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:#F97316"></div>
+        <div class="sw-meta">
+          <div class="sw-name">SALIS Orange</div>
+          <div class="sw-hex">#F97316</div>
+          <div class="sw-use">Warnings and critical CTAs only</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:linear-gradient(135deg,#0A5ED7 0%,#0BB3FF 100%)"></div>
+        <div class="sw-meta">
+          <div class="sw-name">SALIS Gradient</div>
+          <div class="sw-hex">135° blue → bright</div>
+          <div class="sw-use">Mark, hero surfaces. Never behind body text.</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="subhead">Semantic</p>
+    <div class="swatches">
+      <div class="sw">
+        <div class="sw-fill" style="background:#0A5ED7"></div>
+        <div class="sw-meta">
+          <div class="sw-name">Success</div>
+          <div class="sw-hex">#0A5ED7</div>
+          <div class="sw-use">Blue, not green. Deliberate.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:#0BB3FF"></div>
+        <div class="sw-meta">
+          <div class="sw-name">Info</div>
+          <div class="sw-hex">#0BB3FF</div>
+          <div class="sw-use">Swaps with Success in dark mode</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:#F97316"></div>
+        <div class="sw-meta">
+          <div class="sw-name">Warning</div>
+          <div class="sw-hex">#F97316</div>
+          <div class="sw-use">Caution, pending, over-ceiling</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-fill" style="background:#F97316"></div>
+        <div class="sw-meta">
+          <div class="sw-name">Destructive</div>
+          <div class="sw-hex">#F97316</div>
+          <div class="sw-use">Identical to Warning — see below</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collision">
+      <div class="collision-dot"></div>
+      <div>
+        <b>Warning and Destructive are the same colour.</b> Both resolve to
+        <code style="font-family:var(--f-mono);font-size:12px">--salis-orange</code> in light mode,
+        and neither is overridden in dark. A caution and a delete are pixel-identical in both
+        themes, so the token split currently buys nothing. Either collapse the two tokens, or
+        differentiate destructive by weight, border or icon — the constraint is the palette, not
+        the ability to signal severity.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Typography</p>
+    <h2>Four faces, four jobs</h2>
+    <p class="lede">
+      Not four decorations. Each face earns its place by doing something the others cannot, and a
+      fifth would have to displace one of these.
+    </p>
+    <span class="source">app/src/styles/tokens/typography.css + index.css</span>
+
+    <div class="faces">
+      <div class="face">
+        <div>
+          <div class="face-role">Display</div>
+          <div class="face-name">Montserrat 600–700</div>
+          <div class="face-job">Page and section headings. Tight tracking at −0.03em.</div>
+        </div>
+        <div class="spec-display">Job cards due today</div>
+      </div>
+      <div class="face">
+        <div>
+          <div class="face-role">Interface</div>
+          <div class="face-name">Inter 400–600</div>
+          <div class="face-job">All body copy, tables, labels, help text.</div>
+        </div>
+        <div class="spec-ui">Optional. Required only for VAT-registered customers.</div>
+      </div>
+      <div class="face">
+        <div>
+          <div class="face-role">Action</div>
+          <div class="face-name">Poppins 500–600</div>
+          <div class="face-job">Navigation, buttons, chips, eyebrows.</div>
+        </div>
+        <div class="spec-action">Approve estimate · Post run · Issue invoice</div>
+      </div>
+      <div class="face">
+        <div>
+          <div class="face-role">Metrics</div>
+          <div class="face-name">JetBrains Mono 400–500</div>
+          <div class="face-job">Every number that has to align: SAR, plates, VIN, invoice ids.</div>
+        </div>
+        <div class="spec-mono">SAR 12,480.50 · ABC-1234 · JTDBR32E**0*******</div>
+      </div>
+      <div class="face">
+        <div>
+          <div class="face-role">Arabic</div>
+          <div class="face-name">Noto Sans Arabic 400–600</div>
+          <div class="face-job">Second in every stack, so an English session never fetches it.</div>
+        </div>
+        <div class="spec-ar">بطاقات العمل المستحقة اليوم</div>
+      </div>
+    </div>
+
+    <p class="subhead">Scale</p>
+    <div class="scale-wrap">
+      <table class="scale">
+        <thead>
+          <tr><th>Role</th><th>Size</th><th>Weight</th><th>Tracking</th><th>Leading</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Display L</td><td class="num">32px</td><td class="num">700</td><td class="num">−0.03em</td><td class="num">—</td></tr>
+          <tr><td>H1</td><td class="num">30px</td><td class="num">700</td><td class="num">−0.03em</td><td class="num">1.2</td></tr>
+          <tr><td>H2</td><td class="num">22px</td><td class="num">500</td><td class="num">−0.02em</td><td class="num">1.3</td></tr>
+          <tr><td>H3</td><td class="num">17px</td><td class="num">500</td><td class="num">−0.02em</td><td class="num">1.4</td></tr>
+          <tr><td>Body</td><td class="num">14px</td><td class="num">400</td><td class="num">—</td><td class="num">1.5</td></tr>
+          <tr><td>Label</td><td class="num">12px</td><td class="num">500</td><td class="num">0.025em</td><td class="num">—</td></tr>
+          <tr><td>Caption</td><td class="num">11px</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede" style="margin-top:18px">
+      Body is 14px, not 16px. This is a dense operational product; the scale is tuned for tables,
+      and raising it breaks the 44px row rhythm.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Voice</p>
+    <h2>Precise, accountable, plain, respectful</h2>
+    <p class="lede">
+      The reader is a professional under time pressure. Every line below already ships somewhere in
+      the product — this codifies a tone that was consistent but unwritten.
+    </p>
+
+    <div class="traits">
+      <div class="trait">
+        <h3>Precise</h3>
+        <p>Name the exact thing. The field, the amount, the id. "That phone is already in use" beats "Duplicate record detected".</p>
+      </div>
+      <div class="trait">
+        <h3>Accountable</h3>
+        <p>Say what happened and what the reader can do next. When the system fails, it hands over a request id rather than an apology.</p>
+      </div>
+      <div class="trait">
+        <h3>Plain</h3>
+        <p>Short sentences. Contractions are fine. No ceremony, no exclamation marks.</p>
+      </div>
+      <div class="trait">
+        <h3>Respectful</h3>
+        <p>Never scold, never congratulate, never explain the reader's own job back to them.</p>
+      </div>
+    </div>
+
+    <div class="voice-grid">
+      <div class="vcard">
+        <div class="vcard-head">Validation — names the field, not the user</div>
+        <div class="vcard-body">
+          <label class="field-label" for="spec-phone">Mobile number</label>
+          <div class="field-input" id="spec-phone">+966 55 402 1188</div>
+          <div class="field-error"><span aria-hidden="true">▲</span><span>That phone is already in use.</span></div>
+          <div class="dont-do">
+            <div class="line"><span class="line-tag tag-not">not</span><span class="line-not">Oops! You entered an invalid phone number.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="vcard-head">Permission — states the boundary, does not apologise</div>
+        <div class="vcard-body">
+          <div class="notice">
+            <div>
+              <div class="notice-title">You don't have permission to access this page.</div>
+              <div class="notice-text">Ask an owner or general manager to grant the Finance module.</div>
+            </div>
+          </div>
+          <div class="dont-do">
+            <div class="line"><span class="line-tag tag-not">not</span><span class="line-not">Sorry, access denied!</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="vcard-head">Escalation — a route forward, not a wall</div>
+        <div class="vcard-body">
+          <div class="notice notice--warn">
+            <div>
+              <div class="notice-title">That amount is above this role's approval ceiling.</div>
+              <div class="notice-text">Send to a general manager to approve <span class="amount" style="font-family:var(--f-mono)">SAR 84,200.00</span>.</div>
+            </div>
+          </div>
+          <div class="dont-do">
+            <div class="line"><span class="line-tag tag-not">not</span><span class="line-not">Forbidden.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="vcard-head">Failure — hands over a handle</div>
+        <div class="vcard-body">
+          <div class="notice notice--warn">
+            <div>
+              <div class="notice-title">Something went wrong.</div>
+              <div class="notice-text">Quote the request id when reporting this: <code>01JR8T4M2K</code></div>
+            </div>
+          </div>
+          <div class="dont-do">
+            <div class="line"><span class="line-tag tag-not">not</span><span class="line-not">duplicate key value violates unique constraint …</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="vcard-head">Destructive — names the record and the consequence</div>
+        <div class="vcard-body">
+          <div class="notice-title" style="margin-bottom:6px">Delete job card 4F2A?</div>
+          <div class="notice-text" style="margin-bottom:14px">The vehicle stays on file and the audit trail is kept.</div>
+          <div class="btn-row">
+            <button type="button" class="btn btn--danger">Delete job card</button>
+            <button type="button" class="btn btn--ghost">Keep it</button>
+          </div>
+          <div class="dont-do">
+            <div class="line"><span class="line-tag tag-not">not</span><span class="line-not">Are you sure? This cannot be undone!</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vcard">
+        <div class="vcard-head">Confirmation — states the completed fact</div>
+        <div class="vcard-body">
+          <div class="toast"><span class="toast-dot"></span><span>Invoice issued.</span></div>
+          <div class="dont-do">
+            <div class="line"><span class="line-tag tag-write">write</span><span>Post run · Approve estimate · Issue invoice</span></div>
+            <div class="line"><span class="line-tag tag-not">not</span><span class="line-not">Success! · Submit · OK</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow">Applied</p>
+    <h2>The same invoice, three ways</h2>
+    <p class="lede">
+      One component set, two themes and two reading directions. Arabic is a first-class rendering,
+      not a translation layer laid over a left-to-right grid.
+    </p>
+
+    <div class="screens">
+      <div class="frame frame--light">
+        <div class="frame-bar">
+          <span class="frame-mark"></span>
+          <span>SALIS AUTO</span>
+          <span class="frame-theme">light</span>
+        </div>
+        <div class="frame-body">
+          <div class="doc-head">
+            <div>
+              <div class="doc-id">INV-2026-004182</div>
+              <h3 class="doc-title">Al-Rajhi Fleet Services</h3>
+            </div>
+            <span class="pill pill--active">Issued</span>
+          </div>
+          <div class="row" style="border-top:1px solid #E2E8F0">
+            <span class="row-label">Vehicle</span>
+            <span class="plate">ABC-1234</span>
+          </div>
+          <div class="rows">
+            <div class="row"><span class="row-label">Parts — 6 lines</span><span class="amount">8,940.00</span></div>
+            <div class="row"><span class="row-label">Labour — 12.5 hrs</span><span class="amount">2,912.61</span></div>
+            <div class="row"><span class="row-label">VAT 15%</span><span class="amount">1,777.89</span></div>
+            <div class="row row--total"><span>Total SAR</span><span class="amount">13,630.50</span></div>
+          </div>
+          <div class="frame-actions">
+            <span class="mini-btn mini-btn--primary">Send to customer</span>
+            <span class="mini-btn mini-btn--ghost">Download ZATCA XML</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame frame--dark">
+        <div class="frame-bar">
+          <span class="frame-mark"></span>
+          <span>SALIS AUTO</span>
+          <span class="frame-theme">dark</span>
+        </div>
+        <div class="frame-body">
+          <div class="doc-head">
+            <div>
+              <div class="doc-id">INV-2026-004183</div>
+              <h3 class="doc-title">Nassar Transport Co.</h3>
+            </div>
+            <span class="pill pill--due">Payment due</span>
+          </div>
+          <div class="row" style="border-top:1px solid #232A36">
+            <span class="row-label">Vehicle</span>
+            <span class="plate">TRK-8802</span>
+          </div>
+          <div class="rows">
+            <div class="row"><span class="row-label">Parts — 3 lines</span><span class="amount">4,120.00</span></div>
+            <div class="row"><span class="row-label">Labour — 6.0 hrs</span><span class="amount">1,398.05</span></div>
+            <div class="row"><span class="row-label">VAT 15%</span><span class="amount">827.71</span></div>
+            <div class="row row--total"><span>Total SAR</span><span class="amount">6,345.76</span></div>
+          </div>
+          <div class="frame-actions">
+            <span class="mini-btn mini-btn--primary">Record payment</span>
+            <span class="mini-btn mini-btn--ghost">Send reminder</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:22px" class="screens">
+      <div class="frame frame--dark rtl" lang="ar" dir="rtl">
+        <div class="frame-bar">
+          <span class="frame-mark"></span>
+          <span>سالس أوتو</span>
+          <span class="frame-theme">RTL</span>
+        </div>
+        <div class="frame-body">
+          <div class="doc-head">
+            <div>
+              <div class="doc-id" dir="ltr">INV-2026-004183</div>
+              <h3 class="doc-title">شركة نصار للنقل</h3>
+            </div>
+            <span class="pill pill--due">الدفع مستحق</span>
+          </div>
+          <div class="row" style="border-top:1px solid #232A36">
+            <span class="row-label">المركبة</span>
+            <span class="plate" dir="ltr">TRK-8802</span>
+          </div>
+          <div class="rows">
+            <div class="row"><span class="row-label">قطع الغيار — ٣ بنود</span><span class="amount" dir="ltr">4,120.00</span></div>
+            <div class="row"><span class="row-label">أجور العمل — ٦ ساعات</span><span class="amount" dir="ltr">1,398.05</span></div>
+            <div class="row"><span class="row-label">ضريبة القيمة المضافة ١٥٪</span><span class="amount" dir="ltr">827.71</span></div>
+            <div class="row row--total"><span>الإجمالي بالريال</span><span class="amount" dir="ltr">6,345.76</span></div>
+          </div>
+          <div class="frame-actions">
+            <span class="mini-btn mini-btn--primary">تسجيل الدفعة</span>
+            <span class="mini-btn mini-btn--ghost">إرسال تذكير</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="subhead" style="color:#9BA4B0">What the mirror actually costs</p>
+        <div class="rtl-note">
+          <div>The layout is not flipped by a second stylesheet. Every offset uses logical
+            properties — <code>margin-inline-start</code>, <code>border-inline-start</code> — so one
+            rule set serves both directions.</div>
+          <div>Latin runs inside Arabic text carry <code>dir="ltr"</code>. Without it the bidi
+            algorithm reorders the digits, and <code>TRK-8802</code> silently becomes
+            <code>8802-TRK</code> on a fiscal document.</div>
+          <div>Currency stays <code>font-mono</code> with comma thousands and two decimals in both
+            directions, so a column of totals aligns whichever way the page reads.</div>
+          <div>Arabic copy is written for Arabic. Length differences are a layout problem to solve,
+            never a reason to abbreviate the Arabic and not the English.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Unresolved</p>
+    <h2>The press kit and the product disagree</h2>
+    <p class="lede">
+      <code style="font-family:var(--f-mono);font-size:12.5px">marketing/press-kit.md</code> v1.0 is
+      marked Approved and specifies a different palette from the one that ships. Two of its
+      secondary colours are hues the build actively fails on. Until this is decided, every deck and
+      printed invoice template is a coin flip.
+    </p>
+
+    <div class="conflict">
+      <div class="crow">
+        <div class="crow-name">SALIS Blue</div>
+        <div class="pair rejected"><span class="pair-sw" style="background:#1B4F9C"></span><span class="pair-txt"><b>#1B4F9C</b>press kit</span></div>
+        <div class="pair"><span class="pair-sw" style="background:#0A5ED7"></span><span class="pair-txt"><b>#0A5ED7</b>ships</span></div>
+      </div>
+      <div class="crow">
+        <div class="crow-name">SALIS Orange</div>
+        <div class="pair rejected"><span class="pair-sw" style="background:#E67E22"></span><span class="pair-txt"><b>#E67E22</b>press kit</span></div>
+        <div class="pair"><span class="pair-sw" style="background:#F97316"></span><span class="pair-txt"><b>#F97316</b>ships</span></div>
+      </div>
+      <div class="crow">
+        <div class="crow-name">Success<span class="crit">CRITICAL</span><small>The press kit specifies a colour the build fails on.</small></div>
+        <div class="pair rejected"><span class="pair-sw" style="background:#27AE60"></span><span class="pair-txt"><b>#27AE60</b>press kit</span></div>
+        <div class="pair"><span class="pair-sw" style="background:#0A5ED7"></span><span class="pair-txt"><b>#0A5ED7</b>ships</span></div>
+      </div>
+      <div class="crow">
+        <div class="crow-name">Error<span class="crit">CRITICAL</span><small>Red is forbidden by §7.</small></div>
+        <div class="pair rejected"><span class="pair-sw" style="background:#E74C3C"></span><span class="pair-txt"><b>#E74C3C</b>press kit</span></div>
+        <div class="pair"><span class="pair-sw" style="background:#F97316"></span><span class="pair-txt"><b>#F97316</b>ships</span></div>
+      </div>
+      <div class="crow">
+        <div class="crow-name">Arabic face<small>Two different licences and metrics.</small></div>
+        <div class="pair rejected"><span class="pair-txt"><b>IBM Plex Sans Arabic</b>press kit</span></div>
+        <div class="pair"><span class="pair-txt"><b>Noto Sans Arabic</b>ships</span></div>
+      </div>
+      <div class="crow">
+        <div class="crow-name">Display face<small>The press kit does not know two of the three shipped faces exist.</small></div>
+        <div class="pair rejected"><span class="pair-txt"><b>Inter only</b>press kit</span></div>
+        <div class="pair"><span class="pair-txt"><b>Montserrat / Poppins / Inter</b>ships</span></div>
+      </div>
+    </div>
+
+    <div class="enforced" style="margin-top:24px">
+      <b style="color:var(--heading)">Recommendation.</b> The code wins and the press kit is
+      reissued against it. The palette is shipping and CI-enforced; the no-green rule is a
+      deliberate semantic decision the press kit's secondary palette directly contradicts; and
+      print built on <code>#1B4F9C</code> will not match a screenshot placed beside it. This is a
+      Marketing Director call, not an engineering one.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Visual identity documented from <code>app/src/styles/tokens/</code> and <code>app/README.md §7</code>.
+    Voice and messaging drafted from shipped microcopy and <code>docs/marketing/press-kit.md</code>.
+    Full written guidance in <code>docs/brand-guidelines.md</code>.
+  </div>
+</footer>

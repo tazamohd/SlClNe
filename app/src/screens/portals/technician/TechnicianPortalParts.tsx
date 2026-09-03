@@ -1,80 +1,99 @@
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Badge } from '@/components/ui/Badge'
+import { Money } from '@/components/ui/Money'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection } from '@/data/useCollection'
+import type { RequisitionRow } from '@/data/repository'
+import { derived, UNKNOWN } from '@/screens/registry/writes'
+import { fromHalalas } from '@/screens/finance/money'
 
-interface PartRequest {
-  id: string
-  partName: string
-  partNumber: string
-  workOrder: string
-  quantity: number
-  status: 'Approved' | 'Pending' | 'Delivered' | 'Out of Stock'
-  requestDate: string
+/** Parts a technician has asked for, read from the requisitions collection —
+ *  the record procurement raises a purchase order from. The design's six
+ *  invented `PR-` rows and their "Out of Stock" state are gone: stock is the
+ *  inventory module's answer, not a column on a request. No API is configured
+ *  on a fixture build, so the honest state here is the empty one. */
+const STATUS_STYLES: Record<RequisitionRow['status'], { bg: string; fg: string; label: string }> = {
+  draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)', label: 'Draft' },
+  submitted: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', label: 'Pending' },
+  approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', label: 'Approved' },
+  rejected: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)', label: 'Rejected' },
+  ordered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)', label: 'Ordered' },
 }
 
-const PART_REQUESTS: PartRequest[] = [
-  { id: 'PR-501', partName: 'Brake Pads (Front)', partNumber: 'BP-TOY-4821', workOrder: 'WO-8830', quantity: 2, status: 'Delivered', requestDate: '2025-08-17' },
-  { id: 'PR-502', partName: 'Oil Filter', partNumber: 'OF-HON-2210', workOrder: 'WO-8831', quantity: 1, status: 'Approved', requestDate: '2025-08-18' },
-  { id: 'PR-503', partName: 'AC Compressor', partNumber: 'AC-HYU-3301', workOrder: 'WO-8832', quantity: 1, status: 'Pending', requestDate: '2025-08-18' },
-  { id: 'PR-504', partName: 'Transmission Fluid (4L)', partNumber: 'TF-NIS-5500', workOrder: 'WO-8833', quantity: 4, status: 'Out of Stock', requestDate: '2025-08-16' },
-  { id: 'PR-505', partName: 'Shock Absorber (Rear)', partNumber: 'SA-TOY-7701', workOrder: 'WO-8834', quantity: 2, status: 'Pending', requestDate: '2025-08-18' },
-  { id: 'PR-506', partName: 'Spark Plugs', partNumber: 'SP-TOY-1100', workOrder: 'WO-8831', quantity: 4, status: 'Delivered', requestDate: '2025-08-15' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Delivered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'Out of Stock': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+function RequestStatus({ value }: { value: RequisitionRow['status'] }) {
+  const { t } = usePreferences()
+  const style = STATUS_STYLES[value] ?? STATUS_STYLES.draft
+  return (
+    <Badge background={style.bg} color={style.fg}>
+      {t(style.label)}
+    </Badge>
+  )
 }
 
 export function TechnicianPortalParts() {
   const { t } = usePreferences()
+  const requests = useCollection('requisitions')
+  const rows = (requests.data ?? []) as readonly RequisitionRow[]
+
+  const countOf = (status: RequisitionRow['status']) => rows.filter((row) => row.status === status).length
 
   const kpis = [
-    { label: t('Total Requests'), value: String(PART_REQUESTS.length), icon: 'Package', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Pending'), value: '2', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Delivered'), value: '2', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Out of Stock'), value: '1', icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Total Requests'), value: requests.isLoading ? UNKNOWN : String(rows.length), icon: 'Package', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Pending'), value: requests.isLoading ? UNKNOWN : String(countOf('submitted')), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Approved'), value: requests.isLoading ? UNKNOWN : String(countOf('approved')), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Ordered'), value: requests.isLoading ? UNKNOWN : String(countOf('ordered')), icon: 'Truck', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
-  const columns: Column<PartRequest>[] = [
-    { header: t('Ref'), cell: (p) => p.id },
-    { header: t('Part Name'), cell: (p) => p.partName },
-    { header: t('Part No.'), cell: (p) => p.partNumber },
-    { header: t('Work Order'), cell: (p) => p.workOrder },
-    { header: t('Qty'), cell: (p) => p.quantity },
-    { header: t('Requested'), cell: (p) => p.requestDate },
-    { header: t('Status'), cell: (p) => <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge> },
+  const columns: Column<RequisitionRow>[] = [
+    { header: 'Ref', cell: (row) => row.code, code: true },
+    { header: 'Requested by', cell: (row) => row.requester },
+    { header: 'Priority', cell: (row) => t(row.priority) },
+    { header: 'Needed by', cell: (row) => derived(row.neededBy) },
+    { header: 'Estimate', cell: (row) => <Money sar={fromHalalas(row.estimatedTotalHalalas)} />, numeric: true },
+    { header: 'Status', cell: (row) => <RequestStatus value={row.status} /> },
   ]
 
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="Package" title={t('Parts Requests')} subtitle={t('Request and track parts')} />
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map((k) => (
-          <KpiCard key={k.label} {...k} />
-        ))}
-      </div>
-
+    <ScreenFrame
+      icon="Package"
+      title="Parts Requests"
+      subtitle={t('Request and track parts')}
+      query={requests}
+      skeleton="table"
+      empty={
+        rows.length === 0 && {
+          icon: 'Package',
+          title: 'No parts requested yet',
+          description: 'Parts you request from a job card appear here with their approval status.',
+        }
+      }
+      toolbar={
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          {kpis.map((k) => (
+            <KpiCard key={k.label} {...k} />
+          ))}
+        </div>
+      }
+    >
       <DataTable
         caption="Parts requests"
         columns={columns}
-        rows={PART_REQUESTS}
-        rowKey={(p) => p.id}
-        mobileCard={(p) => (
+        rows={rows}
+        rowKey={(row) => row._id ?? row.id}
+        mobileCard={(row) => (
           <>
-            <MobileCardHeader title={p.partName} trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>} />
-            <MobileCardRow label={t('Part No.')}>{p.partNumber}</MobileCardRow>
-            <MobileCardRow label={t('Work Order')}>{p.workOrder}</MobileCardRow>
-            <MobileCardRow label={t('Quantity')}>{p.quantity}</MobileCardRow>
+            <MobileCardHeader title={row.code} code trailing={<RequestStatus value={row.status} />} />
+            <MobileCardRow label={t('Priority')}>{t(row.priority)}</MobileCardRow>
+            <MobileCardRow label={t('Needed by')}>{derived(row.neededBy)}</MobileCardRow>
+            <MobileCardRow label={t('Estimate')}>
+              <Money sar={fromHalalas(row.estimatedTotalHalalas)} />
+            </MobileCardRow>
           </>
         )}
       />
-    </div>
+    </ScreenFrame>
   )
 }

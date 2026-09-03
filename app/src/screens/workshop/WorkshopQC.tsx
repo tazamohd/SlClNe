@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { BackLink } from '@/components/ui/BackLink'
-import { PageHeader } from '@/components/ui/PageHeader'
 import { useQuery } from '@tanstack/react-query'
 import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
@@ -8,9 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Money } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
-import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { EmptyState, Loading } from '@/components/ui/States'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { sodRuleFor } from '@/data/rbac'
 import { history, type EntityHistory, type RepositoryError } from '@/data/repository'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
@@ -18,7 +14,8 @@ import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
-import { StageNotice, stageBusy, stageLabel } from './StageNotice'
+import { StageFrame } from './StageFrame'
+import { stageBusy } from './StageNotice'
 import { useJobStage } from './useJobStage'
 
 const QC_CHECKS: ChecklistItem[] = [
@@ -45,7 +42,6 @@ const QC_ACTIVITY = 'Pass quality check'
 export function WorkshopQC() {
   const { t, rtl } = usePreferences()
   const { role, roleMeta, can } = useSession()
-  const isMobile = useIsMobile()
   const toast = useToast()
   const stage = useJobStage()
   const [checked, setChecked] = useState<Record<string, boolean>>({})
@@ -142,22 +138,65 @@ export function WorkshopQC() {
       )
     : undefined
   const work = (lines.data ?? []) as readonly LineRow[]
+  const saving = stage.status === 'saving'
 
   return (
-    <div className="flex max-w-[1200px] flex-col gap-6">
-      <BackLink to="/job-cards" label="Back to Job Cards" />
+    <StageFrame
+      icon="ShieldCheck"
+      title="Quality Check"
+      stage={stage}
+      subtitle={<span dir="ltr">{job ? `${job.id} · ${job.veh}` : '—'}</span>}
+      notice={
+        atRepair || atQc ? null : (
+          <p className="text-[13px] text-muted">
+            {t('This job card is not at a stage quality control can act on.')}{' '}
+            <span dir="ltr" className="font-mono">
+              {job?.stage ?? '—'}
+            </span>
+          </p>
+        )
+      }
+      actions={
+        <>
+          {atQc ? (
+            <Button
+              variant="outline"
+              size="lg"
+              icon="RotateCcw"
+              className="border-salis-orange text-salis-orange hover:bg-salis-orange hover:text-white"
+              onClick={() => void stage.advance('repair', { reason: 'returned to repair by qc' })}
+              disabled={stageBusy(stage)}
+            >
+              {t('Return to Repair')}
+            </Button>
+          ) : null}
 
-      <PageHeader
-        icon="ShieldCheck"
-        title={t('Quality Check')}
-        subtitle={<span dir="ltr">{job ? `${job.id} · ${job.veh}` : '—'}</span>}
-        compact={isMobile}
-      />
-
-      <WorkflowStepper current={stage.stageLabel} />
-
-      <StageNotice stage={stage} />
-
+          {atRepair ? (
+            <Button
+              size="lg"
+              icon={rtl ? 'ArrowLeft' : 'ArrowRight'}
+              loading={saving}
+              loadingLabel="Saving..."
+              onClick={() => void handOver()}
+              disabled={stageBusy(stage)}
+            >
+              {t('Send to Quality Check')}
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              icon="CheckCircle"
+              loading={saving}
+              loadingLabel="Saving..."
+              onClick={() => void approve()}
+              disabled={sodConflict || !atQc || !mayPass || stageBusy(stage)}
+            >
+              {t('Approve QC')}
+            </Button>
+          )}
+        </>
+      }
+    >
       {sodConflict ? (
         <Card className="flex items-start gap-3 border-salis-orange/40 p-4">
           <span className="flex flex-shrink-0 rounded bg-salis-orange/[.12] p-2 text-salis-orange">
@@ -270,7 +309,7 @@ export function WorkshopQC() {
           icon="ClipboardCheck"
           title={t('QC Checklist')}
           action={
-            <span className="font-mono text-[11px] font-semibold text-muted">
+            <span className="font-mono text-[11px] font-semibold text-muted" dir="ltr">
               {done}/{QC_CHECKS.length}
             </span>
           }
@@ -332,51 +371,7 @@ export function WorkshopQC() {
           </Panel>
         </div>
       </div>
-
-      <div className="flex flex-wrap items-center justify-end gap-3">
-        {atRepair || atQc ? null : (
-          <p className="me-auto text-[13px] text-muted">
-            {t('This job card is not at a stage quality control can act on.')}{' '}
-            <span dir="ltr" className="font-mono">
-              {job?.stage ?? '—'}
-            </span>
-          </p>
-        )}
-
-        {atQc ? (
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-salis-orange text-salis-orange hover:bg-salis-orange hover:text-white"
-            onClick={() => void stage.advance('repair', { reason: 'returned to repair by qc' })}
-            disabled={stageBusy(stage)}
-          >
-            <Icon name="RotateCcw" size={16} />
-            {t(stageLabel(stage, 'Return to Repair'))}
-          </Button>
-        ) : null}
-
-        {atRepair ? (
-          <Button
-            size="lg"
-            onClick={() => void handOver()}
-            disabled={stageBusy(stage)}
-          >
-            <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={16} />
-            {t(stageLabel(stage, 'Send to Quality Check'))}
-          </Button>
-        ) : (
-          <Button
-            size="lg"
-            onClick={() => void approve()}
-            disabled={sodConflict || !atQc || !mayPass || stageBusy(stage)}
-          >
-            <Icon name="CheckCircle" size={16} />
-            {t(stageLabel(stage, 'Approve QC'))}
-          </Button>
-        )}
-      </div>
-    </div>
+    </StageFrame>
   )
 }
 

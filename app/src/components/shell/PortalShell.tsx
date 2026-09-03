@@ -7,8 +7,8 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { ShellContext } from './ShellContext'
 
-/** The chrome for a single-audience portal — technician, customer, and later
- *  supplier and procurement.
+/** The chrome for a single-audience portal — technician, customer, supplier,
+ *  purchase agent, and the client portal.
  *
  *  Deliberately not derived from `AppShell`: a portal serves one audience with
  *  a handful of destinations, so it gets a narrow nav rather than the 28-module
@@ -26,17 +26,23 @@ import { ShellContext } from './ShellContext'
  *  dressing from the current route against the `SURFACES` table below. A domain
  *  whose portal is not in that table has two options:
  *
- *  - add its surface to `SURFACES` (one entry: route base, title, icon, nav) —
- *    an edit to this file, which is owned by agent 04 outside the W2 grant, so
- *    it goes through the owner or the orchestrator; or
+ *  - add its surface to `SURFACES` (one entry: route base, title, icon, nav);
  *  - bind its own config with `portalShellFor(config)` and declare the bound
  *    component in its barrel, touching nothing here.
+ *
+ *  ### Route matching
+ *
+ *  A surface owns `base`, everything under `base/`, and everything the
+ *  registry routes *flat* as `base-…` — the technician's sub-screens live at
+ *  `/technician-portal-my-jobs`, not `/technician-portal/my-jobs`, and before
+ *  the hyphen form was matched they rendered the unregistered "Portal" chrome
+ *  with no tab bar at all. `also` lists prefixes that belong to a surface
+ *  without sharing its base (the vendor page is a supplier tab).
  *
  *  Nav items may name the registry screen they lead to; items the signed-in
  *  role cannot open are removed, exactly like the operational sidebar. Every
  *  nav destination must be a built screen — this shell never links to a route
- *  that renders a placeholder, which is why the tables below carry fewer tabs
- *  than the design mock-ups until the remaining portal screens exist.
+ *  that renders a placeholder.
  *
  *  Session affordances: the signed-in identity (name + role), theme and
  *  language toggles, and sign-out via `/logout-confirmation` — the same
@@ -61,6 +67,11 @@ export interface PortalNavItem {
 export interface PortalConfig {
   /** Route prefix that identifies this surface, e.g. `/technician-portal`. */
   base: string
+  /** Where the brand chip links. Defaults to `base`; set it when the base
+   *  itself is not a route (`/purchase-agent` → `/purchase-agent-dashboard`). */
+  home?: string
+  /** Extra route prefixes that belong to this surface. */
+  also?: readonly string[]
   /** English portal name shown in the header — translated at render. */
   title: string
   /** lucide icon for the brand chip. */
@@ -68,25 +79,19 @@ export interface PortalConfig {
   nav: readonly PortalNavItem[]
 }
 
-/** The portals this shell recognises by route.
- *
- *  Nav is deliberately shorter than the design's five-tab bar: the remaining
- *  tabs (Time, Parts, Profile…) are tranche-3 screens, and a tab that lands on
- *  a placeholder is a dead end wearing chrome. Tabs are added here as the
- *  screens become real. */
+/** The portals this shell recognises by route. Five tabs at most: a bottom
+ *  bar with more than five is a bar with labels nobody can read. */
 const SURFACES: readonly PortalConfig[] = [
   {
     base: '/technician-portal',
     title: 'Technician Portal',
     icon: 'Wrench',
     nav: [
-      {
-        to: '/technician-portal',
-        icon: 'Home',
-        label: 'Home',
-        screen: 'TechnicianPortal',
-        end: true,
-      },
+      { to: '/technician-portal', icon: 'Home', label: 'Home', screen: 'TechnicianPortal', end: true },
+      { to: '/technician-portal-my-jobs', icon: 'ClipboardList', label: 'Jobs', screen: 'Technician-Portal-My-Jobs' },
+      { to: '/technician-portal-time-clock', icon: 'Clock', label: 'Clock', screen: 'Technician-Portal-Time-Clock' },
+      { to: '/technician-portal-parts', icon: 'Package', label: 'Parts', screen: 'Technician-Portal-Parts' },
+      { to: '/technician-portal-profile', icon: 'User', label: 'Profile', screen: 'Technician-Portal-Profile' },
     ],
   },
   {
@@ -104,7 +109,21 @@ const SURFACES: readonly PortalConfig[] = [
     ],
   },
   {
+    base: '/client-portal',
+    home: '/client-portal-dashboard',
+    title: 'Client Portal',
+    icon: 'UserCircle',
+    nav: [
+      { to: '/client-portal-dashboard', icon: 'Home', label: 'Home', screen: 'Client-Portal-Dashboard' },
+      { to: '/client-portal-vehicles', icon: 'Car', label: 'Vehicles', screen: 'Client-Portal-Vehicles' },
+      { to: '/client-portal-appointments', icon: 'Calendar', label: 'Appointments', screen: 'Client-Portal-Appointments' },
+      { to: '/client-portal-invoices', icon: 'Receipt', label: 'Invoices', screen: 'Client-Portal-Invoices' },
+      { to: '/client-portal-profile', icon: 'User', label: 'Profile', screen: 'Client-Portal-Profile' },
+    ],
+  },
+  {
     base: '/supplier-portal',
+    also: ['/vendor-supplier-portal'],
     title: 'Supplier Portal',
     icon: 'Truck',
     nav: [
@@ -115,7 +134,28 @@ const SURFACES: readonly PortalConfig[] = [
         label: 'Orders',
         screen: 'SupplierPortal.Orders',
       },
+      { to: '/vendor-supplier-portal', icon: 'Store', label: 'Vendor', screen: 'Vendor-Supplier-Portal' },
     ],
+  },
+  {
+    base: '/purchase-agent',
+    home: '/purchase-agent-dashboard',
+    title: 'Purchase Agent',
+    icon: 'ShoppingCart',
+    nav: [
+      { to: '/purchase-agent-dashboard', icon: 'LayoutDashboard', label: 'Dashboard', screen: 'Purchase-Agent-Dashboard' },
+      { to: '/purchase-agent-orders', icon: 'ClipboardList', label: 'Orders', screen: 'Purchase-Agent-Orders' },
+      { to: '/purchase-agent-quotations', icon: 'FileText', label: 'Quotations', screen: 'Purchase-Agent-Quotations' },
+      { to: '/purchase-agent-suppliers', icon: 'Users', label: 'Suppliers', screen: 'Purchase-Agent-Suppliers' },
+      { to: '/purchase-agent-reports', icon: 'BarChart3', label: 'Reports', screen: 'Purchase-Agent-Reports' },
+    ],
+  },
+  {
+    base: '/customer-app',
+    home: '/customer-app/home',
+    title: 'Customer App',
+    icon: 'Smartphone',
+    nav: [],
   },
 ]
 
@@ -129,10 +169,14 @@ const UNREGISTERED: PortalConfig = {
   nav: [],
 }
 
-function surfaceFor(pathname: string): PortalConfig {
+function owns(prefix: string, pathname: string): boolean {
+  return pathname === prefix || pathname.startsWith(`${prefix}/`) || pathname.startsWith(`${prefix}-`)
+}
+
+export function surfaceFor(pathname: string): PortalConfig {
   return (
     SURFACES.find(
-      (surface) => pathname === surface.base || pathname.startsWith(`${surface.base}/`)
+      (surface) => owns(surface.base, pathname) || (surface.also ?? []).some((prefix) => owns(prefix, pathname))
     ) ?? UNREGISTERED
   )
 }
@@ -172,7 +216,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
       <header className="sticky top-0 z-20 border-b border-border bg-sidebar">
         <div className="mx-auto flex w-full max-w-[960px] items-center gap-2.5 px-4 py-3">
           <NavLink
-            to={config.base || '/'}
+            to={config.home ?? config.base ?? '/'}
             end
             className="flex items-center gap-2.5 no-underline hover:no-underline"
           >
@@ -197,7 +241,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
                   end={item.end ?? false}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-1.5 rounded-md px-3 py-1.5 font-action text-[13px] font-medium no-underline transition-colors hover:no-underline',
+                      'flex min-h-[44px] items-center gap-1.5 rounded-md px-3 py-1.5 font-action text-[13px] font-medium no-underline transition-colors hover:no-underline',
                       isActive
                         ? 'bg-salis-gradient-r text-white shadow'
                         : 'text-heading hover:bg-salis-blue/[.08]'
@@ -216,7 +260,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex h-8 cursor-pointer items-center gap-1.5 rounded-md border-none bg-transparent px-2 font-action text-xs font-medium text-muted transition-colors hover:bg-salis-blue/[.08] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+            className="flex h-11 cursor-pointer items-center gap-1.5 rounded-md border-none bg-transparent px-2 font-action text-xs font-medium text-muted transition-colors hover:bg-salis-blue/[.08] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name="Globe" size={14} />
             <span>{rtl ? 'English' : 'عربي'}</span>
@@ -226,7 +270,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted transition-colors hover:bg-salis-blue/[.08] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-muted transition-colors hover:bg-salis-blue/[.08] hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>
@@ -248,7 +292,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
           <NavLink
             to="/logout-confirmation"
             aria-label={t('Logout')}
-            className="flex h-8 items-center gap-1.5 rounded-md px-2 font-action text-xs font-medium text-salis-orange no-underline transition-colors hover:bg-salis-orange hover:text-white hover:no-underline"
+            className="flex h-11 items-center gap-1.5 rounded-md px-2 font-action text-xs font-medium text-salis-orange no-underline transition-colors hover:bg-salis-orange hover:text-white hover:no-underline"
           >
             <Icon name="LogOut" size={15} />
             <span className="hidden sm:inline">{t('Logout')}</span>
@@ -275,13 +319,13 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
               end={item.end ?? false}
               className={({ isActive }) =>
                 cn(
-                  'flex flex-1 flex-col items-center gap-1 py-2.5 no-underline transition-colors hover:no-underline',
+                  'flex min-h-[56px] min-w-0 flex-1 flex-col items-center justify-center gap-1 px-1 py-2 no-underline transition-colors hover:no-underline',
                   isActive ? 'text-salis-blue' : 'text-muted'
                 )
               }
             >
               <Icon name={item.icon} size={19} />
-              <span className="font-action text-[11px] font-semibold">{t(item.label)}</span>
+              <span className="max-w-full truncate font-action text-[11px] font-semibold">{t(item.label)}</span>
             </NavLink>
           ))}
         </nav>

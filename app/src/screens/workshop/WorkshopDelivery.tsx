@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
-import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
-import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
+import { EmptyState } from '@/components/ui/States'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { StageFrame } from './StageFrame'
+import { stageBusy } from './StageNotice'
+import { useJobStage } from './useJobStage'
 
 const DELIVERY_CHECKS: ChecklistItem[] = [
   { icon: 'Bell', label: 'Customer Notified' },
@@ -21,29 +23,42 @@ const DELIVERY_CHECKS: ChecklistItem[] = [
   { icon: 'Eye', label: 'Quality Check' },
 ]
 
-const PARTS_SAR = 590
-const LABOUR_SAR = 755
-const VAT_RATE = 0.15
+type InvoiceRow = RowOf<'invoices'> & {
+  _id?: string
+  subtotalHalalas?: number
+  taxHalalas?: number
+  totalHalalas?: number
+}
 
 /** Stage 6 — hand the vehicle back and close the job.
  *
- *  Odometer readings bracket the visit: what came in, what goes out. The
- *  difference is the workshop's own mileage on the vehicle, which is what a
- *  customer queries. */
+ *  Odometer readings bracket the visit: what came in (the vehicle record's
+ *  mileage), what goes out (typed here). The difference is the workshop's
+ *  own mileage on the vehicle, which is what a customer queries, so the
+ *  reading travels with the transition as its reason.
+ *
+ *  Completing delivery is `POST /jobs/:id/transition` to `invoiced` — the
+ *  contract's only move out of `delivery`. The invoice summary is the job's
+ *  real invoice, or says there is none; the prototype's fixed parts/labour
+ *  split was the same two numbers for every card. */
 export function WorkshopDelivery() {
   const { t, rtl } = usePreferences()
-  const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
+  const stage = useJobStage()
+  const job = stage.job
+  const vehicles = useCollection('vehicles')
+  const invoices = useCollection('invoices', { filter: { jobCardId: job?._id ?? '' } })
+  const invoice = invoices.data?.[0] as InvoiceRow | undefined
+  const vehicle = (vehicles.data ?? []).find((row) => row.make === job?.veh && row.owner === job?.cust)
+
   const [checked, setChecked] = useState<Record<string, boolean>>({})
+  const [odometerOut, setOdometerOut] = useState('')
 
   const done = countChecked(DELIVERY_CHECKS, checked)
   const complete = done === DELIVERY_CHECKS.length
 
-  const vat = (PARTS_SAR + LABOUR_SAR) * VAT_RATE
-  const grandTotal = PARTS_SAR + LABOUR_SAR + vat
-
-  function completeDelivery() {
+  async function completeDelivery() {
     if (!complete) {
       toast.show({
         title: t('Incomplete checklist'),
@@ -52,29 +67,45 @@ export function WorkshopDelivery() {
       })
       return
     }
-    toast.show({ title: t('Delivered'), description: t('Job card closed') })
-    setTimeout(() => navigate('/job-cards'), 700)
+    const reason = [
+      `delivered ${done}/${DELIVERY_CHECKS.length}`,
+      odometerOut.trim() ? `odometer out ${odometerOut.trim()}` : '',
+    ]
+      .filter(Boolean)
+      .join(' · ')
+    const moved = await stage.advance('invoiced', { reason })
+    if (moved) navigate('/job-cards')
   }
 
   return (
-    <div className="flex max-w-[1200px] flex-col gap-6">
-      <BackLink to="/job-cards" label="Back to Job Cards" />
-
-      <PageHeader
-        icon="Car"
-        title={t('Vehicle Delivery')}
-        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
-        compact={isMobile}
-      />
-
-      <WorkflowStepper current="Delivery" />
-
+    <StageFrame
+      icon="Car"
+      title="Vehicle Delivery"
+      stage={stage}
+      actions={
+        <>
+          <Button variant="outline" size="lg" icon="Printer" className="border-border-strong text-body" onClick={() => window.print()}>
+            {t('Print Delivery Note')}
+          </Button>
+          <Button
+            size="lg"
+            icon="CheckCircle"
+            loading={stage.status === 'saving'}
+            loadingLabel="Saving..."
+            disabled={stageBusy(stage)}
+            onClick={() => void completeDelivery()}
+          >
+            {t('Complete Delivery')}
+          </Button>
+        </>
+      }
+    >
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <Panel
           icon="ListChecks"
           title={t('Delivery Checklist')}
           action={
-            <span className="font-mono text-[11px] font-semibold text-muted">
+            <span className="font-mono text-[11px] font-semibold text-muted" dir="ltr">
               {done}/{DELIVERY_CHECKS.length}
             </span>
           }
@@ -88,15 +119,25 @@ export function WorkshopDelivery() {
 
         <div className="flex flex-col gap-5">
           <Panel icon="Receipt" title={t('Invoice Summary')}>
-            <div className="flex flex-col gap-2">
-              <SummaryRow label={t('Parts')} sar={PARTS_SAR} />
-              <SummaryRow label={t('Labor')} sar={LABOUR_SAR} />
-              <SummaryRow label={t('VAT (15%)')} sar={vat} />
-              <div className="flex justify-between border-t border-border pt-2 text-lg font-extrabold text-heading">
-                <span>{t('Grand Total')}</span>
-                <Money sar={grandTotal} className="font-extrabold" />
+            {invoice ? (
+              <div className="flex flex-col gap-2">
+                <SummaryRow label={t('Subtotal')} halalas={invoice.subtotalHalalas} />
+                <SummaryRow label={t('VAT (15%)')} halalas={invoice.taxHalalas} />
+                <div className="flex justify-between border-t border-border pt-2 text-lg font-extrabold text-heading">
+                  <span>{t('Grand Total')}</span>
+                  <Money sar={(invoice.totalHalalas ?? 0) / 100} className="font-extrabold" />
+                </div>
+                <p className="text-[11px] text-muted">
+                  {t('Invoice')} <span dir="ltr" className="font-mono">{invoice.id}</span> · {t(invoice.status)}
+                </p>
               </div>
-            </div>
+            ) : (
+              <EmptyState
+                icon="Receipt"
+                title={t('Not invoiced yet')}
+                description={t('Totals appear once this job card is invoiced.')}
+              />
+            )}
           </Panel>
 
           <Panel icon="Gauge" title={t('Final Odometer')}>
@@ -104,32 +145,28 @@ export function WorkshopDelivery() {
               <div className="flex flex-1 flex-col gap-0.5">
                 <span className="text-[11px] text-muted">{t('Check-In')}</span>
                 <span className="font-mono text-base font-bold text-heading" dir="ltr">
-                  42,180 km
+                  {vehicle?.mileage ?? '—'}
                 </span>
               </div>
               <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={16} className="text-muted" />
               <div className="flex flex-1 flex-col gap-0.5">
-                <span className="text-[11px] text-muted">{t('Delivery')}</span>
-                <span className="font-mono text-base font-bold text-salis-blue" dir="ltr">
-                  42,195 km
-                </span>
+                <label htmlFor="odometer-out" className="text-[11px] text-muted">
+                  {t('Delivery')}
+                </label>
+                <Input
+                  id="odometer-out"
+                  value={odometerOut}
+                  onChange={(e) => setOdometerOut(e.target.value)}
+                  dir="ltr"
+                  inputMode="numeric"
+                  placeholder="km"
+                  className="font-mono"
+                />
               </div>
             </div>
           </Panel>
         </div>
       </div>
-
-      <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="outline" size="lg" className="border-border-strong text-body" onClick={() => window.print()}>
-          <Icon name="Printer" size={16} />
-          {t('Print Delivery Note')}
-        </Button>
-        <Button size="lg" onClick={completeDelivery}>
-          <Icon name="CheckCircle" size={16} />
-          {t('Complete Delivery')}
-        </Button>
-      </div>
-    </div>
+    </StageFrame>
   )
 }
-

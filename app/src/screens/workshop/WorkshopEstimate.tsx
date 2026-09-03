@@ -1,18 +1,16 @@
 import { useNavigate } from 'react-router-dom'
-import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
-import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useIsMobile } from '@/lib/useMediaQuery'
-import { StageNotice, stageBusy, stageLabel } from './StageNotice'
+import { StageFrame } from './StageFrame'
+import { stageBusy } from './StageNotice'
 import { useJobStage } from './useJobStage'
 
 /** VAT rate for KSA (ZATCA). */
@@ -45,7 +43,6 @@ export function WorkshopEstimate() {
   const { canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
-  const isMobile = useIsMobile()
   const stage = useJobStage()
 
   const partsTotal = PARTS.reduce((sum, row) => sum + row.qty * row.unit, 0)
@@ -76,51 +73,51 @@ export function WorkshopEstimate() {
     })
   }
 
-  const partsColumns: Column<typeof PARTS[number]>[] = [
+  const partsColumns: Column<(typeof PARTS)[number]>[] = [
     { header: 'Description', cell: (row) => t(row.desc) },
-    { header: 'Quantity', cell: (row) => String(row.qty) },
-    { header: 'Unit Price', cell: (row) => <Money sar={row.unit} /> },
-    { header: 'Total', cell: (row) => <Money sar={row.qty * row.unit} className="font-semibold" /> },
+    { header: 'Quantity', cell: (row) => String(row.qty), numeric: true },
+    { header: 'Unit Price', cell: (row) => <Money sar={row.unit} />, numeric: true },
+    { header: 'Total', cell: (row) => <Money sar={row.qty * row.unit} className="font-semibold" />, numeric: true },
   ]
 
-  const labourColumns: Column<typeof LABOUR[number]>[] = [
+  const labourColumns: Column<(typeof LABOUR)[number]>[] = [
     { header: 'Description', cell: (row) => t(row.desc) },
-    { header: 'Hours', cell: (row) => row.hours.toFixed(1) },
-    { header: 'Rate', cell: (row) => <span dir="ltr" className="font-mono">{`SAR ${row.rate}/hr`}</span> },
-    { header: 'Total', cell: (row) => <Money sar={row.hours * row.rate} className="font-semibold" /> },
+    { header: 'Hours', cell: (row) => row.hours.toFixed(1), numeric: true },
+    { header: 'Rate', cell: (row) => <span dir="ltr" className="font-mono">{`SAR ${row.rate}/hr`}</span>, numeric: true },
+    { header: 'Total', cell: (row) => <Money sar={row.hours * row.rate} className="font-semibold" />, numeric: true },
   ]
 
   return (
-    <div className="flex max-w-[1200px] flex-col gap-6">
-      <BackLink to="/job-cards" label="Back to Job Cards" />
-
-      <div className="flex items-center gap-3">
-        {!isMobile && (
-          <div className="relative">
-            <div className="absolute inset-0 rounded-xl bg-salis-blue opacity-30 blur-lg" aria-hidden />
-            <div className="relative flex rounded-xl bg-salis-gradient p-3 text-white shadow-[0_20px_25px_-5px_rgba(10,94,215,.25)]">
-              <Icon name="Calculator" size={28} />
-            </div>
-          </div>
-        )}
-        <div>
-          <h1 className={`font-display font-black text-heading ${isMobile ? 'text-xl' : 'text-[26px]'}`}>{t('Cost Estimate')}</h1>
-          <p className="mt-0.5 text-sm text-muted" dir="ltr">
-            {stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}
-          </p>
-        </div>
-      </div>
-
-      <WorkflowStepper current={stage.stageLabel} />
-
-      <StageNotice stage={stage} />
-
+    <StageFrame
+      icon="Calculator"
+      title="Cost Estimate"
+      stage={stage}
+      subtitle={<span dir="ltr">{stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}</span>}
+      actions={
+        <>
+          <Button variant="outline" size="lg" icon="Send" onClick={() => navigate('/customer-approval')}>
+            {t('Send to Customer')}
+          </Button>
+          <Button
+            size="lg"
+            icon="CheckCircle"
+            loading={stage.status === 'saving'}
+            loadingLabel="Saving..."
+            onClick={() => void approve()}
+            disabled={mayApprove && stageBusy(stage)}
+          >
+            {t('Approve Estimate')}
+          </Button>
+        </>
+      }
+    >
       <Panel icon="Package" title={t('Parts')}>
         <DataTable
           caption="Parts line items"
           columns={partsColumns}
           rows={PARTS}
           rowKey={(row) => row.desc}
+          pageSize={false}
           mobileCard={(row) => (
             <>
               <MobileCardHeader
@@ -140,6 +137,7 @@ export function WorkshopEstimate() {
           columns={labourColumns}
           rows={LABOUR}
           rowKey={(row) => row.desc}
+          pageSize={false}
           mobileCard={(row) => (
             <>
               <MobileCardHeader
@@ -153,7 +151,7 @@ export function WorkshopEstimate() {
         />
       </Panel>
 
-      <Card className={`flex flex-col gap-2.5 p-6 ${isMobile ? 'w-full' : 'self-end sm:min-w-[360px]'}`}>
+      <Card className="flex w-full flex-col gap-2.5 p-6 sm:w-[360px] sm:self-end">
         <SummaryRow label={t('Subtotal')} sar={subtotal} />
         <SummaryRow label={t('VAT (15%)')} sar={vat} />
         <div className="flex justify-between border-t border-border pt-2.5 text-lg font-extrabold text-heading">
@@ -162,34 +160,17 @@ export function WorkshopEstimate() {
         </div>
       </Card>
 
-      <div className={`flex gap-3 ${isMobile ? 'flex-col' : 'flex-wrap justify-end'}`}>
-        <Button variant="outline" size="lg" onClick={() => navigate('/customer-approval')} className={isMobile ? 'w-full' : ''}>
-          <Icon name="Send" size={16} />
-          {t('Send to Customer')}
-        </Button>
-        <Button
-          size="lg"
-          onClick={() => void approve()}
-          disabled={mayApprove && stageBusy(stage)}
-          className={isMobile ? 'w-full' : ''}
-        >
-          <Icon name="CheckCircle" size={18} />
-          {t(stageLabel(stage, 'Approve Estimate'))}
-        </Button>
-      </div>
-
       {/* Say up front where the button will actually take them. Discovering
           your ceiling only after pressing Approve is the kind of thing that
           gets worked around. */}
       {!mayApprove ? (
-        <p className="flex items-center justify-end gap-1.5 text-[13px] text-muted">
+        <p className="flex items-center gap-1.5 text-[13px] text-muted sm:justify-end">
           <Icon name="Info" size={14} className="text-salis-blue" />
           {limit === 0
             ? t('Your role cannot approve estimates — this will be sent for sign-off.')
             : `${t('Above your approval limit')} (${t('Limit')}: SAR ${limit?.toLocaleString('en-US')})`}
         </p>
       ) : null}
-    </div>
+    </StageFrame>
   )
 }
-

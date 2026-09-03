@@ -1,22 +1,27 @@
 import { useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { DetailPage, type DetailRecord, type DetailStat } from '@/components/shell/DetailPage'
+import { DetailPage, type DetailMeta, type DetailRecord, type DetailStat } from '@/components/shell/DetailPage'
+import { useCommand, type Command } from '@/components/shell/commands'
 import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
 import { Money, parseSar } from '@/components/ui/Money'
+import { Popover } from '@/components/ui/Popover'
 import { StatusBadge } from '@/components/ui/Badge'
 import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
-import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
 import { Comments, type Comment } from '@/components/ui/Comments'
+import { EmptyState } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { useCollection, useDelete, type RowOf } from '@/data/useCollection'
+import { useCollection, useUndoableDelete, type RowOf } from '@/data/useCollection'
+import { isLive } from '@/data/repository'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useToast } from '@/components/ui/Toast'
+import { invoiceMoney } from '@/screens/finance/money'
 import { CustomerFormModal } from './CustomerForm'
 import { Consequence, DeleteRecordModal } from './DeleteRecordModal'
 import { InvoiceStatusBadge, VehicleStatusBadge } from './badges'
+import { OverflowItem } from './registryShared'
 import { derived, rowId } from './writes'
 
 /** Customer 360 — `CustomerDetail.dc.html` and `.Mobile.dc.html`.
@@ -28,22 +33,24 @@ import { derived, rowId } from './writes'
  *  come out of one `DetailPage`, with `on: 'desktop' | 'mobile'` marking the
  *  parts that genuinely differ.
  *
- *  Two deliberate departures from the prototype, both because the alternative
- *  would be inventing data:
+ *  One primary action: "New Job Card", which opens the job-card screen with
+ *  this customer already named. Edit is secondary; Delete lives behind the
+ *  overflow menu, confirms, and can be undone from the toast.
+ *
+ *  Deliberate departures from the prototype, all because the alternative would
+ *  be inventing data:
  *
  *  - The service-history table drops the design's Date, Technician and Cost
- *    columns. A job card carries customer, vehicle, service, status and
- *    priority; it carries no date, no assigned-technician name and no total, so
- *    those three columns could only have been filled with numbers nobody wrote.
- *    The columns that exist are shown.
- *  - "Member Since" appears only when the record actually carries a creation
- *    timestamp, which the API sends and the demo fixtures do not.
+ *    columns. A job card carries no date, no technician name and no total.
+ *  - "Member Since" appears only when the record carries a creation timestamp.
+ *  - The design's three sample PDFs are gone. The documents rail is an honest
+ *    empty state; uploading needs a document store the API does not have yet,
+ *    so the Upload control is present and disabled with the reason.
  *
  *  Contact details are redacted for technicians, QC and suppliers
  *  (`FIELD_RULES`), so the email and phone are dropped from the header rather
  *  than rendered blank. **That is presentation, not protection** — the server
- *  still sends both fields to those roles today, which is recorded as a finding
- *  rather than papered over here. */
+ *  still sends both fields to those roles today. */
 type Customer = RowOf<'customers'> & {
   email?: string | null
   type?: string
@@ -53,11 +60,12 @@ type Customer = RowOf<'customers'> & {
 type Vehicle = RowOf<'vehicles'>
 type Job = RowOf<'jobs'>
 
+const OPEN_JOB_STATES = new Set(['completed', 'delivered', 'cancelled'])
+
 export function CustomerDetail() {
   const { t } = usePreferences()
   const { can, fieldHidden } = useSession()
   const isMobile = useIsMobile()
-  const toast = useToast()
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const [editing, setEditing] = useState(false)
@@ -69,7 +77,7 @@ export function CustomerDetail() {
   const vehicles = useCollection('vehicles')
   const invoices = useCollection('invoices')
   const jobs = useCollection('jobs')
-  const remove = useDelete('customers')
+  const { remove: removeCustomer, pending: removing } = useUndoableDelete('customers', 'Customer')
 
   const rows = (customers.data ?? []) as readonly Customer[]
   // The design's own screens fall back to the first record when the query
@@ -79,6 +87,40 @@ export function CustomerDetail() {
   const owned = (vehicles.data ?? []).filter((v: Vehicle) => customerName && v.owner === customerName)
   const billed = (invoices.data ?? []).filter((row) => customerName && row.cust === customerName)
   const worked = (jobs.data ?? []).filter((row: Job) => customerName && row.cust === customerName)
+  const openJobs = worked.filter((job) => !OPEN_JOB_STATES.has(job.st))
+
+  /** What the customer still owes, from the server's balance where it exists
+   *  and from the unpaid total where this build has only the fixture string. */
+  const outstandingHalalas = useMemo(
+    () =>
+      billed.reduce((sum, invoice) => {
+        if (invoice.status === 'cancelled') return sum
+        const money = invoiceMoney(invoice)
+        if (money.fromServer) return sum + money.balanceHalalas
+        return invoice.status === 'paid' ? sum : sum + money.totalHalalas
+      }, 0),
+    [billed]
+  )
+
+  const canCreateJob = can('jobcards', 'c')
+  const commands = useMemo<Command[]>(
+    () =>
+      canCreateJob && customerName
+        ? [
+            {
+              id: 'customer:new-job',
+              label: 'New Job Card',
+              icon: 'ClipboardPlus',
+              group: 'create',
+              keywords: ['job', 'card', 'check-in', customerName],
+              shortcut: 'N',
+              run: (ctx) => ctx.navigate('/job-cards', { state: { customerName } }),
+            },
+          ]
+        : [],
+    [canCreateJob, customerName]
+  )
+  useCommand(commands)
 
   const activities: ActivityItem[] = useMemo(
     () =>
@@ -106,18 +148,6 @@ export function CustomerDetail() {
           }))
         : [],
     [worked, customerName, t]
-  )
-
-  const attachments: AttachmentFile[] = useMemo(
-    () =>
-      customerName
-        ? [
-            { id: 'att-1', name: 'national_id.pdf', size: '1.2 MB', type: 'PDF' },
-            { id: 'att-2', name: 'fleet_contract.pdf', size: '3.4 MB', type: 'PDF' },
-            { id: 'att-3', name: 'trade_license.pdf', size: '2.1 MB', type: 'Document' },
-          ]
-        : [],
-    [customerName]
   )
 
   if (customers.isLoading) return <DetailPage title={t('Customers')} loading />
@@ -148,30 +178,37 @@ export function CustomerDetail() {
   const hideContact = fieldHidden('Customer contact details')
   const id = rowId(customer)
   const memberSince = customer._createdAt ? customer._createdAt.slice(0, 4) : undefined
+  const mayEdit = can('customers', 'e')
+  const mayDelete = can('customers', 'd')
+
+  const meta: DetailMeta[] = [
+    ...(hideContact || isMobile
+      ? []
+      : [
+          ...(customer.email ? [{ icon: 'Mail', label: 'Email', value: customer.email, code: true }] : []),
+          { icon: 'Phone', label: 'Phone', value: customer.phone, code: true },
+        ]),
+    ...(!isMobile && customer.last ? [{ icon: 'Clock', label: 'Last Visit', value: t(customer.last) }] : []),
+    ...(!isMobile && memberSince
+      ? [{ icon: 'Calendar', label: 'Member Since', value: memberSince, code: true }]
+      : []),
+  ]
 
   const summary: DetailStat[] = [
-    { label: 'Total Jobs', value: worked.length, icon: 'Wrench', on: 'desktop' },
+    { label: 'Vehicles', value: derived(customer.vehicles ?? owned.length), icon: 'Car', on: 'desktop' },
+    { label: 'Open Jobs', value: openJobs.length, icon: 'Wrench', on: 'desktop' },
     {
-      label: 'Total Spent',
-      value: <Money sar={parseSar(customer.spent ?? '')} />,
-      icon: 'DollarSign',
+      label: 'Outstanding',
+      value: (
+        <Money
+          sar={outstandingHalalas / 100}
+          className={outstandingHalalas > 0 ? 'text-salis-orange' : undefined}
+        />
+      ),
+      icon: 'Receipt',
       on: 'desktop',
     },
-    { label: 'Vehicles', value: derived(customer.vehicles), icon: 'Car', on: 'desktop' },
-    ...(memberSince
-      ? [
-          {
-            label: 'Member Since',
-            value: (
-              <span dir="ltr" className="font-mono">
-                {memberSince}
-              </span>
-            ),
-            icon: 'Calendar',
-            on: 'desktop' as const,
-          },
-        ]
-      : []),
+    { label: 'Total Jobs', value: worked.length, icon: 'History', on: 'desktop' },
     // The phone screen shows a different three.
     { label: 'Vehicles Count', value: derived(customer.vehicles), on: 'mobile' },
     { label: 'Total Spent', value: <Money sar={parseSar(customer.spent ?? '')} />, on: 'mobile' },
@@ -201,14 +238,81 @@ export function CustomerDetail() {
   }))
 
   const historyColumns: Column<Job>[] = [
-    { header: 'Job Card', cell: (job) => job.id, code: true },
-    { header: 'Vehicle', cell: (job) => job.veh },
-    { header: 'Service', cell: (job) => t(job.svc.replace(/_/g, ' ')) },
+    { header: 'Job Card', cell: (job) => job.id, code: true, sortValue: (job) => job.id },
+    { header: 'Vehicle', cell: (job) => job.veh, sortValue: (job) => job.veh },
+    { header: 'Service', cell: (job) => t(job.svc.replace(/_/g, ' ')), sortValue: (job) => job.svc },
     {
       header: 'Status',
       cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />,
+      sortValue: (job) => job.st,
     },
   ]
+
+  const actions =
+    canCreateJob || mayEdit || mayDelete ? (
+      <>
+        {canCreateJob ? (
+          <Button size="md" icon="ClipboardPlus" onClick={() => navigate('/job-cards', { state: { customerName } })}>
+            {t('New Job Card')}
+          </Button>
+        ) : null}
+        {mayEdit ? (
+          <Button variant="outline" size="md" icon="Pencil" onClick={() => setEditing(true)}>
+            {t('Edit')}
+          </Button>
+        ) : null}
+        {mayDelete ? (
+          <Popover
+            align="end"
+            trigger={
+              <button
+                type="button"
+                aria-label={t('More actions')}
+                aria-haspopup="menu"
+                className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border border-border bg-card text-muted transition-colors hover:border-salis-blue hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+              >
+                <Icon name="MoreHorizontal" size={18} />
+              </button>
+            }
+            contentClassName="flex min-w-[200px] flex-col gap-1 p-1.5"
+          >
+            <OverflowItem icon="Trash2" label="Delete" destructive onClick={() => setDeleting(true)} />
+          </Popover>
+        ) : null}
+      </>
+    ) : undefined
+
+  const documents = isMobile ? undefined : (
+    <Card className="flex flex-col gap-3 p-5">
+      <div className="flex items-center gap-2">
+        <Icon name="Paperclip" size={16} className="text-salis-blue" />
+        <h2 className="text-sm font-bold text-heading">{t('Documents')}</h2>
+      </div>
+      <EmptyState
+        icon="FileUp"
+        title={t('No documents yet')}
+        description={t('ID copies, contracts and signed forms will appear here.')}
+        action={
+          <div className="flex flex-col items-center gap-1.5">
+            <Button
+              variant="outline"
+              size="md"
+              icon="Upload"
+              disabled
+              title={t('Document storage is not connected yet.')}
+            >
+              {t('Upload')}
+            </Button>
+            <p className="text-[11px] text-muted">
+              {isLive
+                ? t('Document storage is not connected yet.')
+                : t('This build reads demo data. Saving needs the API — set VITE_API_URL.')}
+            </p>
+          </div>
+        }
+      />
+    </Card>
+  )
 
   return (
     <>
@@ -217,16 +321,7 @@ export function CustomerDetail() {
         title={customer.name}
         avatar={{ initial: customer.name.trim()[0] ?? '?' }}
         subtitle={isMobile && !hideContact ? <span dir="ltr">{customer.phone}</span> : undefined}
-        meta={
-          isMobile || hideContact
-            ? undefined
-            : [
-                ...(customer.email
-                  ? [{ icon: 'Mail', label: 'Email', value: customer.email, code: true }]
-                  : []),
-                { icon: 'Phone', label: 'Phone', value: customer.phone, code: true },
-              ]
-        }
+        meta={meta.length ? meta : undefined}
         /* The design draws a "Loyal Customer" pill here. There is no loyalty
            column anywhere in the data model, so rendering it for every customer
            would be a label the record does not carry. The account type — which
@@ -238,27 +333,10 @@ export function CustomerDetail() {
             </span>
           ) : undefined
         }
-        actions={
-          can('customers', 'e') || can('customers', 'd') ? (
-            <>
-              {can('customers', 'e') ? (
-                <Button variant="subtle" onClick={() => setEditing(true)}>
-                  <Icon name="Pencil" size={14} />
-                  {t('Edit')}
-                </Button>
-              ) : null}
-              {can('customers', 'd') ? (
-                <Button variant="subtle" onClick={() => setDeleting(true)}>
-                  <Icon name="Trash2" size={14} />
-                  {t('Delete')}
-                </Button>
-              ) : null}
-            </>
-          ) : undefined
-        }
+        actions={actions}
         summary={summary}
         summaryAlign="center"
-        readOnly={can('customers', 'e') ? false : 'Read-only — your role can view this customer but not change it.'}
+        readOnly={mayEdit ? false : 'Read-only — your role can view this customer but not change it.'}
         timeline={
           activities.length > 0 && !isMobile ? (
             <ActivityFeed items={activities} title={t('Recent Activity')} />
@@ -269,11 +347,7 @@ export function CustomerDetail() {
             <Comments items={comments} title={t('Notes')} />
           ) : undefined
         }
-        attachments={
-          attachments.length > 0 && !isMobile ? (
-            <Attachments files={attachments} title={t('Documents')} />
-          ) : undefined
-        }
+        attachments={documents}
         related={[
           {
             id: 'vehicles',
@@ -316,10 +390,26 @@ export function CustomerDetail() {
                 rows={worked}
                 rowKey={(job) => job.id}
                 loading={jobs.isLoading}
+                pageSize={10}
+                onRowClick={(job) => navigate(`/job-detail?id=${encodeURIComponent(job.id)}`)}
                 empty={
-                  <div className="py-2 text-center text-[13px] text-muted">
-                    {t('No job cards for this customer yet.')}
-                  </div>
+                  <EmptyState
+                    icon="Wrench"
+                    title={t('No job cards for this customer yet.')}
+                    description={t('Check a vehicle in to open the first one.')}
+                    action={
+                      canCreateJob ? (
+                        <Button
+                          variant="outline"
+                          size="md"
+                          icon="ClipboardPlus"
+                          onClick={() => navigate('/job-cards', { state: { customerName } })}
+                        >
+                          {t('New Job Card')}
+                        </Button>
+                      ) : null
+                    }
+                  />
                 }
               />
             ),
@@ -345,8 +435,8 @@ export function CustomerDetail() {
           }
           onConfirm={async () => {
             if (!id) throw new Error(t('This record has no id, so it cannot be deleted.'))
-            await remove.mutateAsync({ id })
-            toast.show({ title: t('Customer deleted'), description: customer.name })
+            if (removing) return
+            await removeCustomer(id)
             // Staying on the detail page of a record that no longer exists
             // would show a not-found panel a second later; go back to the list.
             navigate('/customers')

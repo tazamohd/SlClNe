@@ -2,6 +2,8 @@ import { DataTable, type Column } from '@/components/ui/DataTable'
 import { EmptyState, ErrorState } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
+import { mineOnly } from '../portal-data'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { VehicleStatusBadge } from '@/screens/registry/badges'
@@ -10,10 +12,10 @@ import { derived } from '@/screens/registry/writes'
 /** The customer's own vehicles, read through the repository seam.
  *
  *  Scope is the server's, not this screen's: the customer portal reads
- *  `vehicles` exactly as `CustomerPortal` does and never trims a list by
- *  identity in the browser — a client-side filter is not an access control, and
- *  the rows a portal principal is allowed to see are decided by the API's
- *  row-level security before they are sent.
+ *  `vehicles` exactly as `CustomerPortal` does, and the rows a portal principal
+ *  is allowed to see are decided by the API's row-level security before they
+ *  are sent. `mineOnly` narrows a staff reader's view to the signed-in customer
+ *  when the rows carry `customerId` — a display courtesy, not a boundary.
  *
  *  ### What the collection does and does not carry
  *
@@ -26,6 +28,8 @@ import { derived } from '@/screens/registry/writes'
  */
 type Vehicle = RowOf<'vehicles'> & {
   _id?: string
+  /** API-only; lets a staff reader narrow the list to the signed-in customer. */
+  customerId?: string | null
   /** API-only; the design fixtures carry no VIN. */
   vin?: string | null
   /** Not projected by any build today — see the note above. */
@@ -34,8 +38,9 @@ type Vehicle = RowOf<'vehicles'> & {
 
 export function ClientPortalVehicles() {
   const { t } = usePreferences()
+  const { user } = useSession()
   const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
-  const rows = vehicles as readonly Vehicle[]
+  const rows = mineOnly(vehicles as readonly Vehicle[], user?.id)
 
   const columns: Column<Vehicle>[] = [
     { header: t('Vehicle'), cell: (v) => derived(v.make) },

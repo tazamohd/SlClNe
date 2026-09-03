@@ -1,16 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { cn } from '@/lib/cn'
-import { BackLink } from '@/components/ui/BackLink'
-import { Icon } from '@/components/ui/Icon'
-import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { Panel } from '@/components/ui/FieldGrid'
-import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { StageNotice, stageBusy, stageLabel } from './StageNotice'
+import { StageFrame } from './StageFrame'
+import { stageBusy } from './StageNotice'
 import { useJobStage } from './useJobStage'
+import { useStageDraft } from './useStageDraft'
+import { DraftSaved } from './WorkshopCheckIn'
 
 type Verdict = 'pass' | 'fail' | 'na'
 
@@ -42,12 +40,13 @@ const CATEGORIES = [
   },
 ] as const
 
+const NO_RESULTS: Record<string, Verdict> = {}
+
 export function WorkshopInspection() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
   const toast = useToast()
   const stage = useJobStage()
-  const [results, setResults] = useState<Record<string, Verdict>>({})
+  const { draft: results, setDraft: setResults, saved, clear } = useStageDraft('inspection', stage.job?.id, NO_RESULTS)
 
   const { checked, total } = useMemo(() => {
     const all = CATEGORIES.flatMap((category) =>
@@ -76,45 +75,54 @@ export function WorkshopInspection() {
      * the diagnostics flow and nothing links it to a job card — so the count of
      * failures rides along as the transition's reason, which the audit log does
      * keep. It is a summary, not a substitute for the findings record. */
-    await stage.advance('estimate', {
+    const done = await stage.advance('estimate', {
       reason: `inspection ${checked}/${total}, ${failures} fail`,
       then: '/workshop-estimate',
     })
+    if (done) clear()
   }
 
-
   return (
-    <div className="flex max-w-[1200px] flex-col gap-6">
-      <BackLink to="/job-cards" label="Back to Job Cards" />
-
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <PageHeader
-          icon="SearchCheck"
-          title={t('Vehicle Inspection')}
-          subtitle={<span dir="ltr">{stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}</span>}
-          compact={isMobile}
-        />
-        <span className="font-mono text-[13px] text-muted">
-          {checked}/{total} {t('checks recorded')}
-        </span>
-      </div>
-
-      <WorkflowStepper current={stage.stageLabel} />
-
-      <StageNotice stage={stage} />
-
+    <StageFrame
+      icon="SearchCheck"
+      title="Vehicle Inspection"
+      stage={stage}
+      meta={[
+        {
+          icon: 'ListChecks',
+          label: 'Checks recorded',
+          value: (
+            <span>
+              <span dir="ltr" className="font-mono">{checked}/{total}</span> {t('checks recorded')}
+            </span>
+          ),
+        },
+      ]}
+      notice={saved ? <DraftSaved /> : null}
+      actions={
+        <Button
+          size="lg"
+          icon="CheckCircle"
+          loading={stage.status === 'saving'}
+          loadingLabel="Saving..."
+          disabled={stageBusy(stage)}
+          onClick={() => void submit()}
+          className="sm:min-w-[280px]"
+        >
+          {t('Submit Inspection')}
+        </Button>
+      }
+    >
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         {CATEGORIES.map((category) => {
-          const done = category.items.filter(
-            (item) => results[`${category.label}-${item}`]
-          ).length
+          const done = category.items.filter((item) => results[`${category.label}-${item}`]).length
           return (
             <Panel
               key={category.label}
               icon={category.icon}
               title={t(category.label)}
               action={
-                <span className="font-mono text-[11px] font-semibold text-muted">
+                <span className="font-mono text-[11px] font-semibold text-muted" dir="ltr">
                   {done}/{category.items.length}
                 </span>
               }
@@ -122,35 +130,21 @@ export function WorkshopInspection() {
               <div className="flex flex-col">
                 {category.items.map((item) => {
                   const key = `${category.label}-${item}`
+                  const set = (verdict: Verdict) => setResults((prev) => ({ ...prev, [key]: verdict }))
                   return (
                     <div
                       key={item}
-                      className="flex items-center gap-2.5 border-b border-border py-2 last:border-b-0"
+                      className="flex min-h-[44px] items-center gap-2.5 border-b border-border py-1.5 last:border-b-0"
                     >
                       <span className="flex-1 text-[13px] text-body">{t(item)}</span>
                       <div
                         role="radiogroup"
-                        aria-label={`${t(item)} — ${t(category.label)}`}
+                        aria-label={t(item)}
                         className="flex gap-1"
                       >
-                        <VerdictButton
-                          label={t('Pass')}
-                          selected={results[key] === 'pass'}
-                          tone="pass"
-                          onSelect={() => setResults((prev) => ({ ...prev, [key]: 'pass' }))}
-                        />
-                        <VerdictButton
-                          label={t('Fail')}
-                          selected={results[key] === 'fail'}
-                          tone="fail"
-                          onSelect={() => setResults((prev) => ({ ...prev, [key]: 'fail' }))}
-                        />
-                        <VerdictButton
-                          label={t('N/A')}
-                          selected={results[key] === 'na'}
-                          tone="na"
-                          onSelect={() => setResults((prev) => ({ ...prev, [key]: 'na' }))}
-                        />
+                        <VerdictButton label={t('Pass')} selected={results[key] === 'pass'} tone="pass" onSelect={() => set('pass')} />
+                        <VerdictButton label={t('Fail')} selected={results[key] === 'fail'} tone="fail" onSelect={() => set('fail')} />
+                        <VerdictButton label={t('N/A')} selected={results[key] === 'na'} tone="na" onSelect={() => set('na')} />
                       </div>
                     </div>
                   )
@@ -160,23 +154,13 @@ export function WorkshopInspection() {
           )
         })}
       </div>
-
-      <Button
-        size="lg"
-        className="w-full max-w-[400px] self-end"
-        onClick={() => void submit()}
-        disabled={stageBusy(stage)}
-      >
-        <Icon name="CheckCircle" size={18} />
-        {t(stageLabel(stage, 'Submit Inspection'))}
-      </Button>
-    </div>
+    </StageFrame>
   )
 }
 
 /** Pass is blue, fail is orange, N/A is slate — the palette has no red or
  *  green, so "fail" reads as the warning colour (README §7). */
-const TONES: Record<'pass' | 'fail' | 'na', string> = {
+const TONES: Record<Verdict, string> = {
   pass: 'bg-salis-blue/[.15] text-salis-blue',
   fail: 'bg-salis-orange/[.15] text-salis-orange',
   na: 'bg-tint-neutral text-muted',
@@ -190,7 +174,7 @@ function VerdictButton({
 }: {
   label: string
   selected: boolean
-  tone: 'pass' | 'fail' | 'na'
+  tone: Verdict
   onSelect: () => void
 }) {
   return (
@@ -200,8 +184,9 @@ function VerdictButton({
       aria-checked={selected}
       onClick={onSelect}
       className={cn(
-        'h-[26px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-2 font-action text-[10px] font-semibold',
-        selected ? TONES[tone] : 'bg-inset text-muted focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2'
+        'h-9 min-w-[44px] cursor-pointer whitespace-nowrap rounded-[4px] border-none px-2.5 font-action text-[11px] font-semibold',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2',
+        selected ? TONES[tone] : 'bg-inset text-muted hover:text-heading'
       )}
     >
       {label}

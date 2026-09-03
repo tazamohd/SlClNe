@@ -83,7 +83,9 @@ export function VehiclesList() {
       mobileCard={(r) => (
         <>
           <MobileCardHeader title={derived(r.make)} trailing={<VehicleStatusBadge value={r.status} />} />
-          <MobileCardRow label={t('Plate')}>{derived(r.plate)}</MobileCardRow>
+          <MobileCardRow label={t('Plate')}>
+            <span dir="ltr" className="font-mono">{derived(r.plate)}</span>
+          </MobileCardRow>
           <MobileCardRow label={t('Owner')}>{derived(r.owner)}</MobileCardRow>
         </>
       )}

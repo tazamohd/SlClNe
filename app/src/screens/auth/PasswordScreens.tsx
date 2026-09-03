@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { AuthCard, Field } from '@/components/shell/AuthCard'
 import { Input } from '@/components/ui/Input'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -196,27 +197,24 @@ export function ResetPassword() {
             htmlFor="new-pw"
             hint={`${t('Must be at least')} ${MIN_PASSWORD_LENGTH} ${t('characters')}`}
           >
-            <Input
+            <PasswordInput
               id="new-pw"
-              type="password"
               autoComplete="new-password"
+              strength
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               invalid={submitted && tooShort}
-              dir="ltr"
             />
           </Field>
           <Field label={t('Confirm Password')} htmlFor="confirm-pw">
-            <Input
+            <PasswordInput
               id="confirm-pw"
-              type="password"
               autoComplete="new-password"
               placeholder="••••••••"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               invalid={mismatch}
-              dir="ltr"
             />
           </Field>
           {mismatch ? (

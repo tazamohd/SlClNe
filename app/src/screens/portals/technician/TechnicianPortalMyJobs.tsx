@@ -1,74 +1,71 @@
-import { Badge } from '@/components/ui/Badge'
+import { useNavigate } from 'react-router-dom'
+import { StatusBadge, ServiceBadge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection } from '@/data/useCollection'
+import { railLabelFor, type JobRow } from '@/screens/workshop/stages'
+import { detailRoute, isDone } from '../portal-data'
 
-interface Job {
-  workOrder: string
-  vehicle: string
-  plate: string
-  service: string
-  priority: 'High' | 'Normal' | 'Low'
-  status: 'In Progress' | 'Queued' | 'Waiting Parts' | 'Completed'
-  estimatedHours: number
-  bay: string
-}
-
-const JOBS: Job[] = [
-  { workOrder: 'WO-8830', vehicle: '2021 Honda Accord', plate: 'KSA 7193', service: 'Full Brake Service', priority: 'High', status: 'In Progress', estimatedHours: 3, bay: 'Bay 3' },
-  { workOrder: 'WO-8831', vehicle: '2022 Toyota Camry', plate: 'RJD 4821', service: 'Engine Tune-up', priority: 'Normal', status: 'Queued', estimatedHours: 2.5, bay: 'Bay 3' },
-  { workOrder: 'WO-8832', vehicle: '2023 Hyundai Tucson', plate: 'DMM 2856', service: 'AC Recharge', priority: 'Normal', status: 'Queued', estimatedHours: 1, bay: 'Bay 5' },
-  { workOrder: 'WO-8833', vehicle: '2020 Nissan Altima', plate: 'JED 5034', service: 'Transmission Flush', priority: 'Low', status: 'Waiting Parts', estimatedHours: 2, bay: 'Bay 3' },
-  { workOrder: 'WO-8834', vehicle: '2019 Toyota Hilux', plate: 'RYD 9012', service: 'Suspension Repair', priority: 'High', status: 'Queued', estimatedHours: 4, bay: 'Bay 7' },
-  { workOrder: 'WO-8825', vehicle: '2022 Kia Sportage', plate: 'MKH 3344', service: 'Oil Change', priority: 'Normal', status: 'Completed', estimatedHours: 1, bay: 'Bay 3' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-  'Waiting Parts': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-}
-
-const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-}
-
+/** The technician's work orders, read through the repository seam.
+ *
+ *  The design listed six invented `WO-` rows with bays and hour estimates the
+ *  job collection does not carry. What it does carry — the card, the customer,
+ *  the vehicle, the service, the status and the stage — is what this shows,
+ *  scoped by the server to the signed-in technician (F-015). A row opens the
+ *  portal job detail. */
 export function TechnicianPortalMyJobs() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
+  const jobs = useCollection('jobs')
+  const rows = (jobs.data ?? []) as readonly JobRow[]
 
-  const columns: Column<Job>[] = [
-    { header: t('Work Order'), cell: (j) => j.workOrder },
-    { header: t('Vehicle'), cell: (j) => j.vehicle },
-    { header: t('Plate'), cell: (j) => j.plate },
-    { header: t('Service'), cell: (j) => j.service },
-    { header: t('Bay'), cell: (j) => j.bay },
-    { header: t('Priority'), cell: (j) => <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge> },
-    { header: t('Est. Hours'), cell: (j) => j.estimatedHours },
-    { header: t('Status'), cell: (j) => <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge> },
+  const columns: Column<JobRow>[] = [
+    { header: 'Job Card', cell: (job) => job.id, code: true, sortValue: (job) => job.id },
+    { header: 'Customer', cell: (job) => <span className="font-medium text-heading">{job.cust}</span>, sortValue: (job) => job.cust },
+    { header: 'Vehicle', cell: (job) => job.veh, sortValue: (job) => job.veh },
+    { header: 'Service', cell: (job) => <ServiceBadge value={job.svc} label={t(job.svc.replace(/_/g, ' '))} /> },
+    { header: 'Stage', cell: (job) => t(railLabelFor(job.stage)) },
+    { header: 'Status', cell: (job) => <StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />, sortValue: (job) => job.st },
   ]
 
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="Clipboard" title={t('My Jobs')} subtitle={t('Assigned work orders and status')} />
-
+    <ScreenFrame
+      icon="ClipboardList"
+      title="My Jobs"
+      subtitle={t('Assigned work orders and status')}
+      query={jobs}
+      skeleton="table"
+      empty={
+        rows.length === 0 && {
+          icon: 'Wrench',
+          title: 'No jobs assigned to you',
+          description: 'Jobs appear here as soon as the workshop assigns one to you.',
+        }
+      }
+    >
       <DataTable
         caption="Technician assigned work orders"
         columns={columns}
-        rows={JOBS}
-        rowKey={(j) => j.workOrder}
-        mobileCard={(j) => (
+        rows={rows}
+        rowKey={(job) => job._id ?? job.id}
+        onRowClick={(job) => navigate(detailRoute(job.id))}
+        pageSize={20}
+        mobileCard={(job) => (
           <>
-            <MobileCardHeader title={j.service} trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>} />
-            <MobileCardRow label={t('Vehicle')}>{j.vehicle} - {j.plate}</MobileCardRow>
-            <MobileCardRow label={t('Work Order')}>{j.workOrder}</MobileCardRow>
-            <MobileCardRow label={t('Bay')}>{j.bay}</MobileCardRow>
+            <MobileCardHeader
+              title={job.cust}
+              trailing={<StatusBadge value={job.st} label={t(job.st.replace(/_/g, ' '))} />}
+            />
+            <MobileCardRow label={t('Job Card')}>
+              <span className="font-mono" dir="ltr">{job.id}</span>
+            </MobileCardRow>
+            <MobileCardRow label={t('Vehicle')}>{job.veh}</MobileCardRow>
+            <MobileCardRow label={t('Stage')}>{isDone(job) ? t('Done') : t(railLabelFor(job.stage))}</MobileCardRow>
           </>
         )}
       />
-    </div>
+    </ScreenFrame>
   )
 }

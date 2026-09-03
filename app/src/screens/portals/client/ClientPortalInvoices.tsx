@@ -4,6 +4,8 @@ import { EmptyState, ErrorState } from '@/components/ui/States'
 import { Icon } from '@/components/ui/Icon'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
+import { mineOnly } from '@/screens/portals/portal-data'
 import { Money } from '@/components/ui/Money'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { usePagedCollection, type RowOf } from '@/data/useCollection'
@@ -34,6 +36,7 @@ import { AGGREGATE_GAP } from '@/screens/accounting/reporting'
  */
 type Invoice = RowOf<'invoices'> & {
   _id?: string
+  customerId?: string | null
   totalHalalas?: number
   paidHalalas?: number
   balanceHalalas?: number
@@ -66,8 +69,9 @@ function BalanceCell({ invoice }: { invoice: Invoice }) {
 
 export function ClientPortalInvoices() {
   const { t } = usePreferences()
+  const { user } = useSession()
   const { data, isLoading, isError, error, refetch } = usePagedCollection('invoices')
-  const rows = (data?.rows ?? []) as readonly Invoice[]
+  const rows = mineOnly((data?.rows ?? []) as readonly Invoice[], user?.id)
   const total = data?.page.total
 
   const overdue = rows.filter((inv) => inv.status === 'overdue').length

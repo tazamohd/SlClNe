@@ -2,19 +2,19 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { Attachments, type AttachmentFile } from '@/components/ui/Attachments'
-import { BackLink } from '@/components/ui/BackLink'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Comments, type Comment } from '@/components/ui/Comments'
 import { Icon } from '@/components/ui/Icon'
 import { Money, SummaryRow } from '@/components/ui/Money'
-import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { DetailSkeleton, EmptyState, ErrorState } from '@/components/ui/States'
+import { OverflowItem } from '@/screens/registry/registryShared'
 import { InvoiceStatusBadge } from './Invoices'
-import { InvoiceRowActions } from './InvoiceActions'
+import { invoiceActionsFor, useInvoiceLifecycle } from './InvoiceActions'
 import { RecordPaymentModal, type PayableInvoice } from './RecordPaymentModal'
 import { fromHalalas, invoiceMoney, lineUnitHalalas, paymentHalalas, roundHalfUp } from './money'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
 import { useCollection, useEntity } from '@/data/useCollection'
 
 /** Full invoice: line items, payments received, and the ZATCA totals block.
@@ -29,12 +29,20 @@ import { useCollection, useEntity } from '@/data/useCollection'
  *  The line sum is still computed — but only to *compare*. When it disagrees
  *  with the subtotal the server holds, the screen says so instead of choosing
  *  one of them. That is the honest answer to two sources of truth, and the
- *  seeded data has exactly that disagreement today. */
+ *  seeded data has exactly that disagreement today.
+ *
+ *  One primary action: "Record Payment", shown only while there is a balance
+ *  to take and the role may take it. Issue and Cancel sit beside it as the
+ *  lifecycle allows; Print and Send live in the overflow. The design's sample
+ *  note thread and two sample PDFs are gone — there is no note or document
+ *  store, so each rail is an honest empty state. */
 export function InvoiceDetail() {
   const { t, rtl } = usePreferences()
+  const { can } = useSession()
   const isMobile = useIsMobile()
   const [params] = useSearchParams()
   const [paying, setPaying] = useState<PayableInvoice | null>(null)
+  const { issue, cancel, busy } = useInvoiceLifecycle()
 
   const invoiceId = params.get('id')
   /* A direct link names one invoice and is fetched by name — the register may
@@ -60,40 +68,59 @@ export function InvoiceDetail() {
     serverId ? { filter: { invoiceId: serverId }, pageSize: 500 } : undefined
   )
 
-  if (isLoading) return <Loading label="Loading invoice..." />
+  const crumbs = [{ label: 'Invoices', to: '/invoices' }]
+
+  if (isLoading) {
+    return (
+      <div className="flex max-w-[1100px] flex-col gap-6">
+        <PageHeader title={t('Invoice')} breadcrumbs={crumbs} back={{ to: '/invoices', label: 'Invoices' }} variant="quiet" />
+        <DetailSkeleton />
+      </div>
+    )
+  }
 
   if (error) {
     return (
-      <Card className="p-6">
-        <ErrorState
-          title={t("Couldn't load this invoice")}
-          description={error.message}
-          onRetry={() => void (invoiceId ? single.refetch() : list.refetch())}
-        />
-      </Card>
+      <div className="flex max-w-[1100px] flex-col gap-6">
+        <PageHeader title={t('Invoice')} breadcrumbs={crumbs} back={{ to: '/invoices', label: 'Invoices' }} variant="quiet" />
+        <Card className="p-6">
+          <ErrorState
+            title={t("Couldn't load this invoice")}
+            description={error.message}
+            onRetry={() => void (invoiceId ? single.refetch() : list.refetch())}
+          />
+        </Card>
+      </div>
     )
   }
 
   if (!invoice) {
     return (
-      <Card className="p-6">
-        <EmptyState
-          icon="FileQuestion"
-          title={t('Invoice not found')}
-          description={t('It may have been deleted, or the link is out of date.')}
-          action={
-            <Link to="/invoices" className="font-action text-[13px] font-medium">
-              {t('Invoices')}
-            </Link>
-          }
-        />
-      </Card>
+      <div className="flex max-w-[1100px] flex-col gap-6">
+        <PageHeader title={t('Invoice')} breadcrumbs={crumbs} back={{ to: '/invoices', label: 'Invoices' }} variant="quiet" />
+        <Card className="p-6">
+          <EmptyState
+            icon="FileQuestion"
+            title={t('Invoice not found')}
+            description={t('It may have been deleted, or the link is out of date.')}
+            action={
+              <Link to="/invoices" className="font-action text-[13px] font-medium">
+                {t('Invoices')}
+              </Link>
+            }
+          />
+        </Card>
+      </div>
     )
   }
 
   const payable = invoice as unknown as PayableInvoice
   const money = invoiceMoney(invoice)
   const qrCode = (invoice as { qrCode?: string | null }).qrCode ?? null
+  const issuedAt = (invoice as { issuedAt?: string | null }).issuedAt ?? null
+  const allowed = invoiceActionsFor(payable, can)
+  const pending = busy === invoice.id
+  const printRoute = `/invoice-print?id=${encodeURIComponent(invoice.id)}`
 
   /* Not a total — a check. Rounded the way the server rounds a subtotal so the
    * comparison cannot fail on a half-halala the server never had. */
@@ -105,68 +132,54 @@ export function InvoiceDetail() {
     money.fromServer && lines.length > 0 && lineSumHalalas !== money.subtotalHalalas
   const paidDisagrees = money.fromServer && paidFromPayments !== money.paidHalalas
 
-  const demoAttachments: AttachmentFile[] = [
-    { id: 'att-1', name: 'signed_invoice.pdf', size: '1.8 MB', type: 'PDF' },
-    { id: 'att-2', name: 'payment_receipt.pdf', size: '0.5 MB', type: 'PDF' },
-  ]
+  const actions = (
+    <>
+      {allowed.issue ? (
+        <Button variant="outline" size="md" icon="Send" loading={pending} onClick={() => void issue(payable)}>
+          {t('Issue')}
+        </Button>
+      ) : null}
+      {allowed.pay && money.balanceHalalas > 0 ? (
+        <Button size="md" icon="CreditCard" disabled={pending} onClick={() => setPaying(payable)}>
+          {t('Record Payment')}
+        </Button>
+      ) : null}
+    </>
+  )
 
-  const demoComments: Comment[] = [
-    {
-      id: 'cmt-1',
-      author: invoice.cust,
-      text: t('Payment sent via bank transfer.'),
-      time: '2:30 PM',
-    },
-    {
-      id: 'cmt-2',
-      author: t('Accountant'),
-      role: t('Finance'),
-      text: t('Payment confirmed and recorded.'),
-      time: '3:15 PM',
-    },
-  ]
+  const overflow = (
+    <>
+      <OverflowItem icon="Printer" label="Print" onClick={() => window.open(printRoute, '_blank')} />
+      {/* Chasing payment needs the notification service (Part 4), which is
+          not built and has no endpoint in API_ENDPOINTS.md. Shown and
+          disabled, rather than wired to nothing. */}
+      <OverflowItem icon="Bell" label="Send reminder" disabled onClick={() => undefined} />
+      {allowed.cancel ? (
+        <OverflowItem icon="CircleX" label="Cancel invoice" destructive disabled={pending} onClick={() => void cancel(payable)} />
+      ) : null}
+    </>
+  )
 
   return (
     <div className="flex max-w-[1100px] flex-col gap-6">
-      <BackLink to="/invoices" label="Invoices" />
-
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className={isMobile ? 'font-display text-xl font-black text-heading' : 'font-display text-[26px] font-black text-heading'} dir="ltr">
-            {invoice.id}
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {invoice.cust}
-            {(invoice as { issuedAt?: string | null }).issuedAt ? (
-              <>
-                {' · '}
-                {t('Issued')}{' '}
-                <span dir="ltr" className="font-mono">
-                  {String((invoice as { issuedAt?: string | null }).issuedAt).slice(0, 10)}
-                </span>
-              </>
-            ) : null}
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2.5">
-          <InvoiceStatusBadge status={invoice.status} />
-          <InvoiceRowActions invoice={payable} onRecordPayment={setPaying} labelled />
-          {/* Chasing payment needs the notification service (Part 4), which is
-              not built and has no endpoint in API_ENDPOINTS.md. Shown and
-              disabled with the reason, rather than wired to nothing. */}
-          <Button variant="subtle" size="md" disabled title={t('Reminders need the notification service, which is not built yet.')}>
-            <Icon name="Bell" size={15} />
-            {t('Send reminder')}
-          </Button>
-          <Button
-            size="md"
-            onClick={() => window.open(`/invoice-print?id=${encodeURIComponent(invoice.id)}`, '_blank')}
-          >
-            <Icon name="Printer" size={15} />
-            {t('Print')}
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        variant="quiet"
+        eyebrow={t('Finance')}
+        title={invoice.id}
+        titleCode
+        breadcrumbs={crumbs}
+        back={{ to: '/invoices', label: 'Invoices' }}
+        status={<InvoiceStatusBadge status={invoice.status} />}
+        meta={[
+          { icon: 'User', label: 'Customer', value: invoice.cust },
+          { icon: 'Calendar', label: 'Due Date', value: invoice.due },
+          ...(issuedAt
+            ? [{ icon: 'Send', label: 'Issued', value: String(issuedAt).slice(0, 10), code: true }]
+            : []),
+        ]}
+        actions={actions}
+        overflow={overflow}
+      />
 
       <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-2 gap-4 lg:grid-cols-4'}>
         <MetaCard label={t('Customer')} value={invoice.cust} sub={t('Bill to')} />
@@ -178,15 +191,14 @@ export function InvoiceDetail() {
         <MetaCard
           label={t('Status')}
           value={t(invoice.status[0].toUpperCase() + invoice.status.slice(1))}
-          sub={
-            (invoice as { issuedAt?: string | null }).issuedAt ? t('Issued') : t('Not yet issued')
-          }
+          sub={issuedAt ? t('Issued') : t('Not yet issued')}
         />
         <MetaCard
           label={t('Balance due')}
           value={money.fromServer ? undefined : '—'}
           money={money.fromServer ? fromHalalas(money.balanceHalalas) : undefined}
           sub={money.fromServer ? t('As the server reports it') : t('Needs the API')}
+          warn={money.fromServer && money.balanceHalalas > 0}
         />
       </div>
 
@@ -273,47 +285,78 @@ export function InvoiceDetail() {
       ) : null}
 
       <div className={isMobile ? 'flex flex-col gap-5' : 'grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]'}>
-        <Card>
-          <div className="border-b border-border px-[18px] py-[13px]">
-            <p className="font-display text-sm font-bold text-heading">{t('Payments received')}</p>
-          </div>
-          {payments.length === 0 ? (
-            <div className="px-[18px] py-6">
-              <EmptyState
-                icon="CreditCard"
-                title={t('No payments yet')}
-                description={t('Record one from the actions above.')}
-              />
+        <div className="flex flex-col gap-6">
+          <Card>
+            <div className="border-b border-border px-[18px] py-[13px]">
+              <p className="font-display text-sm font-bold text-heading">{t('Payments received')}</p>
             </div>
-          ) : (
-            <div className="flex flex-col">
-              {payments.map((payment, index) => (
-                <div
-                  key={`${payment.ref || 'payment'}-${index}`}
-                  className="flex items-center gap-3 border-b border-border px-[18px] py-3 last:border-b-0"
-                >
-                  <span className="flex rounded bg-tint-blue p-2 text-salis-blue">
-                    <Icon name="CreditCard" size={15} />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[13px] font-semibold text-heading">
-                      {rtl && payment.ar_method ? payment.ar_method : payment.method}
-                    </p>
-                    <p className="mt-0.5 font-mono text-[11px] text-muted" dir="ltr">
-                      {payment.ref || '—'} · {payment.date}
-                    </p>
+            {payments.length === 0 ? (
+              <div className="px-[18px] py-6">
+                <EmptyState
+                  icon="CreditCard"
+                  title={t('No payments yet')}
+                  description={
+                    money.balanceHalalas > 0 && allowed.pay
+                      ? t('Record one from the actions above.')
+                      : t('Nothing has been received against this invoice.')
+                  }
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                {payments.map((payment, index) => (
+                  <div
+                    key={`${payment.ref || 'payment'}-${index}`}
+                    className="flex items-center gap-3 border-b border-border px-[18px] py-3 last:border-b-0"
+                  >
+                    <span className="flex rounded bg-tint-blue p-2 text-salis-blue">
+                      <Icon name="CreditCard" size={15} />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[13px] font-semibold text-heading">
+                        {rtl && payment.ar_method ? payment.ar_method : payment.method}
+                      </p>
+                      <p className="mt-0.5 font-mono text-[11px] text-muted" dir="ltr">
+                        {payment.ref || '—'} · {payment.date}
+                      </p>
+                    </div>
+                    <Money
+                      sar={fromHalalas(paymentHalalas(payment))}
+                      className="font-semibold text-heading"
+                    />
                   </div>
-                  <Money
-                    sar={fromHalalas(paymentHalalas(payment))}
-                    className="font-semibold text-heading"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </Card>
+                ))}
+              </div>
+            )}
+          </Card>
 
-        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Card className="flex flex-col gap-3 p-5">
+              <div className="flex items-center gap-2">
+                <Icon name="MessageSquare" size={16} className="text-salis-blue" />
+                <h2 className="text-sm font-bold text-heading">{t('Invoice Notes')}</h2>
+              </div>
+              <EmptyState
+                icon="MessageSquare"
+                title={t('No notes yet')}
+                description={t('Notes need a server home before they can be kept here.')}
+              />
+            </Card>
+            <Card className="flex flex-col gap-3 p-5">
+              <div className="flex items-center gap-2">
+                <Icon name="Paperclip" size={16} className="text-salis-blue" />
+                <h2 className="text-sm font-bold text-heading">{t('Attachments')}</h2>
+              </div>
+              <EmptyState
+                icon="FileUp"
+                title={t('No attachments')}
+                description={t('Document storage is not connected yet.')}
+              />
+            </Card>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 lg:sticky lg:top-4 lg:self-start">
           <Card className="flex flex-col gap-2.5 p-5">
             {money.fromServer ? (
               <>
@@ -371,10 +414,6 @@ export function InvoiceDetail() {
               )}
             </div>
           </Card>
-
-          <Comments items={demoComments} title={t('Invoice Notes')} />
-
-          <Attachments files={demoAttachments} title={t('Attachments')} />
         </div>
       </div>
 
@@ -410,7 +449,7 @@ function Th({
     <th
       scope="col"
       className={cn(
-        'px-2.5 py-2.5 text-[10.5px] font-bold uppercase tracking-[.05em] text-muted',
+        'px-2.5 py-2.5 text-[11px] font-bold uppercase tracking-[.05em] text-muted',
         align === 'end' ? 'text-end' : 'text-start',
         className
       )}
@@ -420,23 +459,24 @@ function Th({
   )
 }
 
-
 function MetaCard({
   label,
   value,
   money,
   sub,
+  warn,
 }: {
   label: string
   value?: string
   /** A money value renders through the formatter rather than as text. */
   money?: number
   sub: string
+  warn?: boolean
 }) {
   return (
     <Card className="p-4">
       <p className="font-action text-[11px] font-medium text-muted">{label}</p>
-      <p className="mt-1 text-sm font-semibold text-heading">
+      <p className={cn('mt-1 text-sm font-semibold', warn ? 'text-salis-orange' : 'text-heading')}>
         {money === undefined ? value : <Money sar={money} className="font-semibold" />}
       </p>
       <p className="mt-0.5 text-[11px] text-muted">{sub}</p>

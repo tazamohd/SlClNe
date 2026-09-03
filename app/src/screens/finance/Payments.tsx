@@ -1,23 +1,54 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ListPageHeader } from '@/components/shell/ListPage'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { DataTable, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
+import { KpiCard, TONES } from '@/components/ui/KpiCard'
 import { Money, formatSar } from '@/components/ui/Money'
-import { EmptyState, ErrorState } from '@/components/ui/States'
+import { EmptyState } from '@/components/ui/States'
 import { InvoiceStatusBadge } from './Invoices'
 import { InvoiceRowActions } from './InvoiceActions'
+import { RaiseReceiptModal } from './RaiseReceiptModal'
 import { RecordPaymentModal, type PayableInvoice } from './RecordPaymentModal'
-import { fromHalalas, invoiceMoney } from './money'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { fromHalalas, invoiceMoney, paymentHalalas } from './money'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
 
 type Invoice = RowOf<'invoices'>
+type Payment = RowOf<'invoicePayments'>
+
+const DAY_MS = 24 * 60 * 60 * 1000
+
+/** The methods the API accepts, in the order the till thinks of them. */
+const METHODS = ['all', 'cash', 'card', 'mada', 'transfer'] as const
+type MethodFilter = (typeof METHODS)[number]
+const METHOD_LABEL: Record<MethodFilter, string> = {
+  all: 'All',
+  cash: 'Cash',
+  card: 'Card',
+  mada: 'Mada',
+  transfer: 'Transfer',
+}
+
+/** "Mada" / "Bank transfer" / "Card (Visa)" → the chip it belongs under. */
+function methodKey(method: string): Exclude<MethodFilter, 'all'> | 'other' {
+  const m = method.toLowerCase()
+  if (m.includes('mada')) return 'mada'
+  if (m.includes('cash')) return 'cash'
+  if (m.includes('card') || m.includes('visa') || m.includes('master')) return 'card'
+  if (m.includes('transfer') || m.includes('bank') || m.includes('sadad')) return 'transfer'
+  return 'other'
+}
+
+function paymentEpoch(payment: Payment): number | null {
+  const parsed = Date.parse(payment.date ?? '')
+  return Number.isNaN(parsed) ? null : parsed
+}
 
 /** Collections view: what's owed, what's been received, and the button that
  *  takes the money.
@@ -26,26 +57,26 @@ type Invoice = RowOf<'invoices'>
  *  `balanceHalalas` for what is outstanding, `paidHalalas` for what has been
  *  collected — added as integer halalas. Nothing here divides, applies a rate
  *  or rounds; the only division is the one that turns halalas into the SAR the
- *  formatter renders.
+ *  formatter renders. Today and This week are sums over the payments received,
+ *  by the payment's own date.
  *
  *  Note this departs from the prototype's numbers, deliberately.
  *  `Payments.dc.html` shows "SAR 8,090" outstanding and "SAR 61,420" collected,
  *  but the five invoices it renders directly below total 9,065 unpaid and 1,005
  *  paid. Those headline figures were hardcoded and never reconciled against the
  *  data. A collections screen whose total contradicts the rows under it is
- *  worse than one showing an unfamiliar number.
- *
- *  The earlier rebuild summed the *whole invoice amount* into one bucket or the
- *  other by status, which counts a part-paid invoice entirely as outstanding
- *  and loses the money already received against it. With the API's paid and
- *  balance columns available, both figures are now exact. */
+ *  worse than one showing an unfamiliar number. */
 export function Payments() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
   const navigate = useNavigate()
-  const { data: invoices = [], isLoading, error, refetch } = useCollection('invoices')
+  const invoicesQuery = useCollection('invoices')
+  const invoices = invoicesQuery.data ?? []
+  const { data: payments = [] } = useCollection('invoicePayments')
   const [paying, setPaying] = useState<PayableInvoice | null>(null)
+  const [raising, setRaising] = useState(false)
+  const [method, setMethod] = useState<MethodFilter>('all')
+  const [now] = useState(() => Date.now())
 
   const { outstandingHalalas, collectedHalalas, derived } = useMemo(() => {
     let owed = 0
@@ -72,197 +103,243 @@ export function Payments() {
     return { outstandingHalalas: owed, collectedHalalas: received, derived: !fromServer }
   }, [invoices])
 
-  const columns: Column<Invoice>[] = [
-    { header: 'Invoice', cell: (invoice) => invoice.id, code: true },
-    { header: 'Customer', cell: (invoice) => invoice.cust },
+  const { todayHalalas, weekHalalas, undated } = useMemo(() => {
+    const startOfToday = new Date(now)
+    startOfToday.setHours(0, 0, 0, 0)
+    const dayStart = startOfToday.getTime()
+    const weekStart = dayStart - 6 * DAY_MS
+    let today = 0
+    let week = 0
+    let missing = 0
+    for (const payment of payments) {
+      const at = paymentEpoch(payment)
+      if (at === null) {
+        missing += 1
+        continue
+      }
+      const amount = paymentHalalas(payment)
+      if (at >= dayStart) today += amount
+      if (at >= weekStart) week += amount
+    }
+    return { todayHalalas: today, weekHalalas: week, undated: missing }
+  }, [payments, now])
+
+  const receivedRows = useMemo(
+    () => (method === 'all' ? payments : payments.filter((p) => methodKey(p.method) === method)),
+    [payments, method]
+  )
+
+  const invoiceColumns: Column<Invoice>[] = [
+    { header: 'Invoice', cell: (invoice) => invoice.id, code: true, sortValue: (invoice) => invoice.id },
+    { header: 'Customer', cell: (invoice) => invoice.cust, sortValue: (invoice) => invoice.cust },
     {
       header: 'Amount',
       cell: (invoice) => (
         <Money sar={fromHalalas(invoiceMoney(invoice).totalHalalas)} className="font-semibold" />
       ),
+      numeric: true,
+      sortValue: (invoice) => invoiceMoney(invoice).totalHalalas,
     },
-    { header: 'Due Date', cell: (invoice) => invoice.due },
-    { header: 'Status', cell: (invoice) => <InvoiceStatusBadge status={invoice.status} /> },
+    { header: 'Due Date', cell: (invoice) => invoice.due, sortValue: (invoice) => Date.parse(invoice.due) || invoice.due },
+    { header: 'Status', cell: (invoice) => <InvoiceStatusBadge status={invoice.status} />, sortValue: (invoice) => invoice.status },
     {
       header: 'Actions',
       cell: (invoice) => (
-        <InvoiceRowActions
-          invoice={invoice as unknown as PayableInvoice}
-          onRecordPayment={setPaying}
-        />
+        <span className="flex flex-wrap items-center gap-1.5">
+          <InvoiceRowActions
+            invoice={invoice as unknown as PayableInvoice}
+            onRecordPayment={setPaying}
+          />
+          {can('payments', 'c') ? (
+            <Button
+              variant="subtle"
+              size="sm"
+              aria-label={t('Raise receipt')}
+              title={t('Raise receipt')}
+              onClick={(event) => {
+                event.stopPropagation()
+                setRaising(true)
+              }}
+            >
+              <Icon name="Receipt" size={14} />
+            </Button>
+          ) : null}
+        </span>
       ),
     },
   ]
 
-  const statCards = (
-    <div className={isMobile ? 'flex flex-col gap-3' : 'grid grid-cols-1 gap-6 sm:grid-cols-2'}>
-      <StatCard
+  const paymentColumns: Column<Payment>[] = [
+    { header: 'Date', cell: (p) => p.date, sortValue: (p) => paymentEpoch(p) ?? p.date },
+    { header: 'Payment Method', cell: (p) => t(p.method), sortValue: (p) => p.method },
+    { header: 'Reference', cell: (p) => p.ref || '—', code: true, sortValue: (p) => p.ref ?? '' },
+    {
+      header: 'Amount',
+      cell: (p) => <Money sar={fromHalalas(paymentHalalas(p))} className="font-semibold" />,
+      numeric: true,
+      sortValue: (p) => paymentHalalas(p),
+    },
+  ]
+
+  const kpis = (
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <KpiCard
         label={t('Outstanding')}
-        value={formatSar(fromHalalas(outstandingHalalas))}
-        tone="warning"
-        note={derived ? t('Invoice totals — this build has no API to give balances.') : undefined}
+        value={formatSar(fromHalalas(outstandingHalalas), { bare: true })}
+        mono
+        icon="Wallet"
+        caption={derived ? t('Invoice totals — this build has no API to give balances.') : t('SAR, server balances')}
+        {...(outstandingHalalas > 0 ? TONES.orange : TONES.blue)}
       />
-      <StatCard
+      <KpiCard
         label={t('Collected')}
-        value={formatSar(fromHalalas(collectedHalalas))}
-        note={derived ? t('Paid invoices only — part payments need the API.') : undefined}
+        value={formatSar(fromHalalas(collectedHalalas), { bare: true })}
+        mono
+        icon="CheckCircle"
+        caption={derived ? t('Paid invoices only — part payments need the API.') : t('SAR, all time')}
+        {...TONES.blue}
+      />
+      <KpiCard
+        label={t('Today')}
+        value={formatSar(fromHalalas(todayHalalas), { bare: true })}
+        mono
+        icon="Sun"
+        caption={t('SAR received today')}
+        {...TONES.bright}
+      />
+      <KpiCard
+        label={t('This week')}
+        value={formatSar(fromHalalas(weekHalalas), { bare: true })}
+        mono
+        icon="CalendarRange"
+        caption={undated > 0 ? t('Some payments carry no date and are not counted.') : t('SAR received in the last 7 days')}
+        {...TONES.navy}
       />
     </div>
   )
 
-  const mobileCard = (invoice: Invoice) => (
-    <>
-      <MobileCardHeader
-        title={invoice.id}
-        code
-        trailing={<InvoiceStatusBadge status={invoice.status} />}
-      />
-      <MobileCardRow>{invoice.cust}</MobileCardRow>
-      <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
-      <MobileCardRow label={t('Amount')}>
-        <Money
-          sar={fromHalalas(invoiceMoney(invoice).totalHalalas)}
-          className="font-semibold text-heading"
-        />
-      </MobileCardRow>
-      <div className="border-t border-border pt-2.5">
-        <InvoiceRowActions
-          invoice={invoice as unknown as PayableInvoice}
-          onRecordPayment={setPaying}
-          labelled
-        />
-      </div>
-    </>
+  const methodChips = (
+    <ChipGroup label={t('Payment Method')}>
+      {METHODS.map((option) => {
+        const count = option === 'all' ? payments.length : payments.filter((p) => methodKey(p.method) === option).length
+        return (
+          <Chip
+            key={option}
+            label={`${t(METHOD_LABEL[option])} ${count}`}
+            selected={method === option}
+            onToggle={() => setMethod(option)}
+          />
+        )
+      })}
+    </ChipGroup>
   )
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader
-          icon="Wallet"
-          title={t('Payments')}
-          actions={
-            can('invoices', 'c') ? (
-              <Button size="md" onClick={() => navigate('/invoice-create')}>
-                <Icon name="Plus" size={16} />
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t('Finance')}
+        title={t('Payments')}
+        actions={
+          <>
+            {can('payments', 'c') ? (
+              <Button variant="outline" size="md" icon="Receipt" onClick={() => setRaising(true)}>
+                {t('New Receipt')}
+              </Button>
+            ) : null}
+            {can('invoices', 'c') ? (
+              <Button size="md" icon="Plus" onClick={() => navigate('/invoice-create')}>
                 {t('New Invoice')}
               </Button>
-            ) : undefined
-          }
-        />
-
-        {statCards}
-
-        {error ? (
-          <Card className="p-6">
-            <ErrorState
-              title={t("Couldn't load the invoices")}
-              description={error.message}
-              onRetry={() => void refetch()}
-            />
-          </Card>
-        ) : (
+            ) : null}
+          </>
+        }
+        query={invoicesQuery}
+        skeleton="dashboard"
+        toolbar={kpis}
+      >
+        <Card className="overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
+            <h2 className="text-sm font-bold text-heading">{t('Payments received')}</h2>
+            {methodChips}
+          </div>
           <DataTable
-            caption="Payments"
-            columns={columns}
-            rows={invoices}
-            rowKey={(invoice) => invoice.id}
-            loading={isLoading}
-            onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
-            mobileCard={mobileCard}
+            caption="Payments received"
+            columns={paymentColumns}
+            rows={receivedRows}
+            rowKey={(p, index) => `${p.ref || 'payment'}-${index}`}
+            defaultSort={{ key: 'Date', dir: 'desc' }}
+            pageSize={10}
+            className="rounded-none border-0 shadow-none"
+            mobileCard={(p) => (
+              <>
+                <MobileCardHeader title={p.ref || '—'} code trailing={<span className="text-xs text-muted">{t(p.method)}</span>} />
+                <MobileCardRow label={t('Date')}>{p.date}</MobileCardRow>
+                <MobileCardRow label={t('Amount')}>
+                  <Money sar={fromHalalas(paymentHalalas(p))} className="font-semibold text-heading" />
+                </MobileCardRow>
+              </>
+            )}
             empty={
               <EmptyState
-                icon="Wallet"
-                title={t('No payments yet')}
+                icon="CreditCard"
+                title={method === 'all' ? t('No payments yet') : t('No payments by this method')}
                 description={t('Payments appear here once invoices are raised.')}
               />
             }
           />
-        )}
+        </Card>
 
-        {paying ? (
-          <RecordPaymentModal invoice={paying} open onClose={() => setPaying(null)} />
-        ) : null}
-      </>
-    )
-  }
-
-  return (
-    <>
-      <ListPageHeader
-        title={t('Payments')}
-        actions={
-          can('invoices', 'c') ? (
-            <Button size="md" onClick={() => navigate('/invoice-create')}>
-              <Icon name="Plus" size={16} />
-              {t('New Invoice')}
-            </Button>
-          ) : null
-        }
-      />
-
-      {statCards}
-
-      {error ? (
-        <Card className="p-6">
-          <ErrorState
-            title={t("Couldn't load the invoices")}
-            description={error.message}
-            onRetry={() => void refetch()}
+        <Card className="overflow-hidden">
+          <div className="border-b border-border px-4 py-3">
+            <h2 className="text-sm font-bold text-heading">{t('Invoices')}</h2>
+          </div>
+          <DataTable
+            caption="Payments"
+            columns={invoiceColumns}
+            rows={invoices}
+            rowKey={(invoice) => invoice.id}
+            className="rounded-none border-0 shadow-none"
+            onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
+            mobileCard={(invoice) => (
+              <>
+                <MobileCardHeader
+                  title={invoice.id}
+                  code
+                  trailing={<InvoiceStatusBadge status={invoice.status} />}
+                />
+                <MobileCardRow>{invoice.cust}</MobileCardRow>
+                <MobileCardRow label={t('Due Date')}>{invoice.due}</MobileCardRow>
+                <MobileCardRow label={t('Amount')}>
+                  <Money
+                    sar={fromHalalas(invoiceMoney(invoice).totalHalalas)}
+                    className="font-semibold text-heading"
+                  />
+                </MobileCardRow>
+                <div className="border-t border-border pt-2.5">
+                  <InvoiceRowActions
+                    invoice={invoice as unknown as PayableInvoice}
+                    onRecordPayment={setPaying}
+                    labelled
+                  />
+                </div>
+              </>
+            )}
+            empty={
+              <EmptyState
+                icon="Wallet"
+                title={t('No invoices yet')}
+                description={t('Invoices are raised when a job card is delivered.')}
+              />
+            }
           />
         </Card>
-      ) : (
-        <DataTable
-          caption="Payments"
-          columns={columns}
-          rows={invoices}
-          rowKey={(invoice) => invoice.id}
-          loading={isLoading}
-          onRowClick={(invoice) => navigate(`/invoice-detail?id=${encodeURIComponent(invoice.id)}`)}
-          mobileCard={mobileCard}
-          empty={
-            <EmptyState
-              icon="Wallet"
-              title={t('No payments yet')}
-              description={t('Payments appear here once invoices are raised.')}
-            />
-          }
-        />
-      )}
+      </ScreenFrame>
 
       {paying ? (
         <RecordPaymentModal invoice={paying} open onClose={() => setPaying(null)} />
       ) : null}
+      {raising ? <RaiseReceiptModal open onClose={() => setRaising(false)} /> : null}
     </>
-  )
-}
-
-function StatCard({
-  label,
-  value,
-  tone,
-  note,
-}: {
-  label: string
-  value: string
-  /** Outstanding money is orange — it's the number that needs chasing. */
-  tone?: 'warning'
-  /** Said out loud when the figure is less exact than it looks. */
-  note?: string
-}) {
-  return (
-    <Card className="p-5">
-      <p className="text-[13px] text-muted">{label}</p>
-      <p
-        dir="ltr"
-        className={
-          'mt-1.5 font-display text-[28px] font-black ' +
-          (tone === 'warning' ? 'text-salis-orange' : 'text-heading')
-        }
-      >
-        {value}
-      </p>
-      {note ? <p className="mt-1 text-[11px] text-muted">{note}</p> : null}
-    </Card>
   )
 }

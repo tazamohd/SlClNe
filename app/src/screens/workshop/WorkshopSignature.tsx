@@ -1,30 +1,47 @@
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BackLink } from '@/components/ui/BackLink'
-import { PageHeader } from '@/components/ui/PageHeader'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { useDateFormat } from '@/lib/formatDate'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Panel, FieldGrid, ReadField } from '@/components/ui/FieldGrid'
 import { formatSar } from '@/components/ui/Money'
+import { useModal } from '@/components/ui/Modal'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { StageFrame } from './StageFrame'
+import { useJobStage } from './useJobStage'
 
-const TOTAL_SAR = 1546.75
+type InvoiceRow = RowOf<'invoices'> & { _id?: string; totalHalalas?: number }
 
 /** Customer e-signature on handover.
  *
  *  The design showed a "tap to sign" placeholder; this captures an actual
  *  signature on a canvas, because a handover record with no signature in it
  *  isn't a handover record. Strokes are kept as paths so the result can be
- *  serialised and stored once file storage exists (README §10). */
+ *  serialised and stored once file storage exists (README §10).
+ *
+ *  The summary is the job card's own: the code, the customer, the vehicle
+ *  and the invoiced total when there is one. The prototype printed one
+ *  customer's name and one figure for every card, which is the fabrication
+ *  this rebuild removes. Clearing a signature asks first and can be undone
+ *  from the toast, because a customer who has just signed on a tablet does
+ *  not want to do it twice over a slipped thumb. */
 export function WorkshopSignature() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
+  const { confirm } = useModal()
   const navigate = useNavigate()
+  const { dateTime } = useDateFormat()
+  const stage = useJobStage()
+  const job = stage.job
+  const invoices = useCollection('invoices', { filter: { jobCardId: job?._id ?? '' } })
+  const invoice = invoices.data?.[0] as InvoiceRow | undefined
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawing = useRef(false)
   const [hasSignature, setHasSignature] = useState(false)
@@ -68,56 +85,79 @@ export function WorkshopSignature() {
     drawing.current = false
   }
 
-  function clear() {
+  async function clear() {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
     if (!canvas || !context) return
+    const agreedToClear = await confirm({
+      title: 'Clear the signature?',
+      description: 'The customer will need to sign again. You can undo this from the notice that follows.',
+      icon: 'Eraser',
+      confirmLabel: 'Clear',
+      destructive: true,
+    })
+    if (!agreedToClear) return
+    const snapshot = context.getImageData(0, 0, canvas.width, canvas.height)
     context.clearRect(0, 0, canvas.width, canvas.height)
     setHasSignature(false)
+    toast.show({
+      title: t('Signature cleared'),
+      undo: () => {
+        context.putImageData(snapshot, 0, 0)
+        setHasSignature(true)
+      },
+    })
   }
 
-  const ready = hasSignature && agreed
+  const ready = hasSignature && agreed && Boolean(job)
 
-  function confirm() {
-    if (!ready) return
+  function confirmSignature() {
+    if (!ready || !job) return
     toast.show({ title: t('Signature captured'), description: t('Ready for Delivery') })
-    setTimeout(() => navigate('/workshop-delivery'), 700)
+    navigate(`/workshop-delivery?id=${encodeURIComponent(job.id)}`)
   }
 
   return (
-    <div className="flex max-w-[900px] flex-col gap-6">
-      <BackLink to="/job-cards" label="Back to Job Cards" />
-
-      <PageHeader
-        icon="PenTool"
-        title={t('Customer Signature')}
-        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
-        compact={isMobile}
-      />
-
+    <StageFrame
+      icon="PenTool"
+      title="Customer Signature"
+      stage={stage}
+      className="max-w-[900px]"
+      actions={
+        <Button size="lg" icon="CheckCircle" onClick={confirmSignature} disabled={!ready}>
+          {t('Confirm Signature')}
+        </Button>
+      }
+    >
       <Panel icon="FileText" title={t('Job Summary')}>
         <FieldGrid>
-          <ReadField label={t('Job Card')} value="JC-A3F8B2C1" code emphasis />
-          <ReadField label={t('Customer')} value="Ahmed Al-Rashid" emphasis />
-          <ReadField label={t('Vehicle')} value="Toyota Camry 2022" />
-          <ReadField label={t('Service')} value={`${t('Maintenance')} · ${t('Repair')}`} />
-          <ReadField label={t('Total Amount')} value={formatSar(TOTAL_SAR)} code emphasis />
-          <ReadField label={t('Date & Time')} value="Jul 22, 2026 · 2:45 PM" />
+          <ReadField label={t('Job Card')} value={job?.id ?? '—'} code emphasis />
+          <ReadField label={t('Customer')} value={job?.cust ?? '—'} emphasis />
+          <ReadField label={t('Vehicle')} value={job?.veh ?? '—'} />
+          <ReadField label={t('Service')} value={job ? t(job.svc.replace(/_/g, ' ')) : '—'} />
+          <ReadField
+            label={t('Total Amount')}
+            value={invoice?.totalHalalas != null ? formatSar(invoice.totalHalalas / 100) : t('Not invoiced yet')}
+            code={invoice?.totalHalalas != null}
+            emphasis
+          />
+          <ReadField label={t('Date & Time')} value={job?._createdAt ? dateTime(job._createdAt) : '—'} code />
         </FieldGrid>
       </Panel>
 
       <Card className="flex flex-col gap-3.5 rounded-lg p-5">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-sm font-bold text-heading">{t('Sign Below')}</h2>
-          <button
-            type="button"
-            onClick={clear}
+          <Button
+            variant="outline"
+            size="sm"
+            icon="Eraser"
+            onClick={() => void clear()}
             disabled={!hasSignature}
-            className="flex h-[30px] cursor-pointer items-center gap-1.5 rounded-md border border-border bg-transparent px-3 font-action text-xs text-muted transition-colors hover:border-salis-orange hover:text-salis-orange disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+            className="border-border text-muted hover:border-salis-orange hover:bg-transparent hover:text-salis-orange"
           >
-            <Icon name="Eraser" size={13} />
             {t('Clear')}
-          </button>
+          </Button>
         </div>
 
         <div className="relative">
@@ -140,7 +180,7 @@ export function WorkshopSignature() {
           )}
         </div>
 
-        <label className="flex cursor-pointer items-center gap-2.5">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5">
           <input
             type="checkbox"
             checked={agreed}
@@ -163,11 +203,6 @@ export function WorkshopSignature() {
           </span>
         </label>
       </Card>
-
-      <Button size="lg" className="self-end" onClick={confirm} disabled={!ready}>
-        <Icon name="CheckCircle" size={18} />
-        {t('Confirm Signature')}
-      </Button>
-    </div>
+    </StageFrame>
   )
 }

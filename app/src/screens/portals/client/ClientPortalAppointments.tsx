@@ -5,10 +5,11 @@ import { EmptyState, ErrorState } from '@/components/ui/States'
 import { Icon } from '@/components/ui/Icon'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { derived } from '@/screens/registry/writes'
-import { todayIso } from '@/screens/portals/portal-data'
+import { mineOnly, todayIso } from '@/screens/portals/portal-data'
 
 /** The customer's bookings, read through the repository seam.
  *
@@ -35,6 +36,7 @@ import { todayIso } from '@/screens/portals/portal-data'
  */
 type Appointment = RowOf<'appointments'> & {
   _id?: string
+  customerId?: string | null
   /** ISO date the API stores; the design fixtures carry only the time label. */
   scheduledDate?: string | null
   /** Not projected by any build today — see the note above. */
@@ -62,8 +64,9 @@ function StatusPill({ value }: { value: string }) {
 
 export function ClientPortalAppointments() {
   const { t } = usePreferences()
+  const { user } = useSession()
   const { data: appointments = [], isLoading, isError, error, refetch } = useCollection('appointments')
-  const rows = appointments as readonly Appointment[]
+  const rows = mineOnly(appointments as readonly Appointment[], user?.id)
 
   const today = todayIso()
   /* A fixture row carries no date, so it cannot be shown to be in the past —

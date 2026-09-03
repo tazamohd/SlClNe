@@ -78,3 +78,73 @@ export function railLabelFor(stage: string | undefined): string {
 export function railIndexFor(stage: string | undefined): number {
   return isJobStage(stage) ? RAIL_POSITION[stage] : 0
 }
+
+/** The rail position for a row of either shape.
+ *
+ *  An API row carries `stage`; a fixture row carries only the older `st`
+ *  status, which says less but still says something — `in_progress` is a card
+ *  under repair, `completed` is one waiting on its quality check. The Dashboard
+ *  reads the same fallback, so a stage count there and a stage filter here
+ *  agree on every row. */
+export function railIndexForJob(job: Pick<JobRow, 'stage' | 'st'>): number {
+  if (job.stage) return railIndexFor(job.stage)
+  switch (job.st) {
+    case 'in_progress':
+      return 3
+    case 'completed':
+      return 4
+    case 'delivered':
+      return 5
+    case 'pending':
+    default:
+      return 0
+  }
+}
+
+/** The six rail steps by id — the ids the Dashboard's pipeline strip links
+ *  to (`/job-cards?stage=<id>`), so the two screens speak one vocabulary. */
+export const RAIL_STAGES: readonly { id: JobStage; label: string; icon: string }[] = [
+  { id: 'checkin', label: 'Check-In', icon: 'Clock' },
+  { id: 'inspection', label: 'Inspection', icon: 'Search' },
+  { id: 'estimate', label: 'Estimate', icon: 'FileText' },
+  { id: 'repair', label: 'Repair', icon: 'Wrench' },
+  { id: 'qc', label: 'Quality Check', icon: 'ShieldCheck' },
+  { id: 'delivery', label: 'Delivery', icon: 'Car' },
+]
+
+export function railStageIdFor(index: number): JobStage {
+  return RAIL_STAGES[Math.max(0, Math.min(index, RAIL_STAGES.length - 1))].id
+}
+
+/** Human label for every API stage, including the two past the rail. */
+export const STAGE_LABELS: Readonly<Record<JobStage, string>> = {
+  checkin: 'Check-In',
+  inspection: 'Inspection',
+  estimate: 'Estimate',
+  repair: 'Repair',
+  qc: 'Quality Check',
+  delivery: 'Delivery',
+  invoiced: 'Invoiced',
+  closed: 'Closed',
+}
+
+/** The screen where a card at each stage is worked. `repair` has no screen of
+ *  its own: the hand-over out of repair happens on the QC screen. */
+export const STAGE_ROUTES: Readonly<Record<JobStage, string | undefined>> = {
+  checkin: '/workshop-check-in',
+  inspection: '/workshop-inspection',
+  estimate: '/workshop-estimate',
+  repair: '/workshop-qc',
+  qc: '/workshop-qc',
+  delivery: '/workshop-delivery',
+  invoiced: undefined,
+  closed: undefined,
+}
+
+/** The forward move from a stage, or `null` at the end of the line. Mirrors
+ *  `JOB_STAGE_TRANSITIONS`' happy path; the server still decides. */
+export function nextStageOf(stage: string | undefined): JobStage | null {
+  const current = isJobStage(stage) ? stage : 'checkin'
+  const index = JOB_STAGES.indexOf(current)
+  return index >= 0 && index < JOB_STAGES.length - 1 ? JOB_STAGES[index + 1] : null
+}

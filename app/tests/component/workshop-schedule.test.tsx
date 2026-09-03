@@ -7,11 +7,26 @@ import { renderWithProviders } from '../helpers/render'
 
 /** The two schedule views over the real `appointments` collection. */
 describe('AppointmentCalendar', () => {
-  it('renders the calendar with a day/week toggle', async () => {
+  it('renders the calendar with a day/week segmented control', async () => {
+    const user = userEvent.setup()
     renderWithProviders(<AppointmentCalendar />, { role: 'owner' })
     expect(await screen.findByRole('heading', { name: 'Calendar' })).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Day' })).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Week' })).toBeInTheDocument()
+    const day = screen.getByRole('button', { name: 'Day' })
+    const week = screen.getByRole('button', { name: 'Week' })
+    // Week is the default; the pressed state moves with the choice.
+    expect(week).toHaveAttribute('aria-pressed', 'true')
+    expect(day).toHaveAttribute('aria-pressed', 'false')
+    await user.click(day)
+    expect(day).toHaveAttribute('aria-pressed', 'true')
+    expect(week).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByRole('button', { name: 'Today' })).toBeInTheDocument()
+  })
+
+  it('keeps the header up while the appointments load', () => {
+    // The frame renders the title first and only the body waits — a
+    // navigation must never blank the page for the length of a fetch.
+    renderWithProviders(<AppointmentCalendar />, { role: 'owner' })
+    expect(screen.getByRole('heading', { name: 'Calendar' })).toBeInTheDocument()
   })
 
   it('places real appointments on the grid', async () => {
@@ -67,7 +82,21 @@ describe('TechnicianSchedule', () => {
   it("groups a technician's appointments under them", async () => {
     renderWithProviders(<TechnicianSchedule />, { role: 'owner' })
     await screen.findByRole('heading', { name: 'Technician Schedule' })
-    // Saeed Al-Zahrani appears via the appointment union (seed has no id link).
-    expect(await screen.findByText('Saeed Al-Zahrani')).toBeInTheDocument()
+    // Saeed Al-Zahrani appears via the appointment union (seed has no id link):
+    // once as a lane on the timeline, once as a utilization card.
+    expect((await screen.findAllByText('Saeed Al-Zahrani')).length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('draws a technician × hour timeline whose bookings open the job', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<TechnicianSchedule />, { role: 'owner' })
+    const grid = await screen.findByRole('table', { name: 'Technician timeline' })
+    // One lane per technician on the roster union, plus the header row.
+    expect(within(grid).getAllByRole('row').length).toBeGreaterThan(1)
+    // A booking is a button; tapping it is how a job is opened from the day.
+    const booking = within(grid).getAllByRole('button')[0]
+    await user.click(booking)
+    // Navigation happens inside the MemoryRouter; the screen itself stays up.
+    expect(screen.getByRole('heading', { name: 'Technician Schedule' })).toBeInTheDocument()
   })
 })

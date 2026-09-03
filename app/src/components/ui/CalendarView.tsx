@@ -2,6 +2,7 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useDateFormat } from '@/lib/formatDate'
 import { Icon } from './Icon'
 import { Button } from './Button'
 
@@ -41,6 +42,7 @@ export function CalendarView({
   className,
 }: CalendarViewProps) {
   const { t, rtl } = usePreferences()
+  const { locale } = useDateFormat()
   const isMobile = useIsMobile()
   const [viewing, setViewing] = useState(() => initialDate ?? new Date())
 
@@ -66,7 +68,8 @@ export function CalendarView({
   const prev = () => setViewing(new Date(year, month - 1, 1))
   const next = () => setViewing(new Date(year, month + 1, 1))
 
-  const monthLabel = viewing.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+  // Locale-aware, Gregorian with Latin digits in both languages (handoff §7).
+  const monthLabel = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(viewing)
 
   return (
     <div className={cn('flex flex-col gap-4', className)}>
