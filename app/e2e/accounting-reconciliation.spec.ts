@@ -18,10 +18,12 @@ test.describe('Accounting Reconciliation (Golden Path 17)', () => {
     expect(text).toContain('Journal Entries')
   })
 
-  test('bank reconciliation page loads', async ({ page }) => {
+  test('bank reconciliation page loads with the book side and no pretend bank side', async ({ page }) => {
     await gotoReady(page, '/bank-reconciliation')
     const text = await bodyText(page)
-    expect(text).toContain('Unmatched')
+    expect(text).toContain('Bank Reconciliation')
+    expect(text).toContain('Receipts in view')
+    expect(text).toContain('No bank feed connected')
   })
 
   test('financial reports page loads', async ({ page }) => {
@@ -67,7 +69,7 @@ test.describe('Accounting reconciliation lifecycle', () => {
     expect(await bodyText(page)).toContain('Journal Entries')
 
     await gotoReady(page, '/bank-reconciliation')
-    expect(await bodyText(page)).toContain('Unmatched')
+    expect(await bodyText(page)).toContain('Receipts in view')
 
     await gotoReady(page, '/financial-reports')
     expect(await bodyText(page)).toContain('Profit & Loss')

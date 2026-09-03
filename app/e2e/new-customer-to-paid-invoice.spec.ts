@@ -17,7 +17,7 @@ test.describe('New Customer to Paid Invoice (Golden Path 1)', () => {
     await gotoReady(page, '/job-cards')
     expect(await bodyText(page)).toContain('Job Cards')
 
-    const search = page.getByPlaceholder('Search customers, vehicles, parts...')
+    const search = page.getByPlaceholder('Search job cards...')
     await search.fill('zzz-no-such-customer-zzz')
     await expect(page.getByText('No matching job cards')).toBeVisible()
 
@@ -86,9 +86,15 @@ test.describe('New Customer to Paid Invoice (Golden Path 1)', () => {
     expect(await bodyText(page)).toContain('Outstanding')
   })
 
-  test('invoice preview renders a tax invoice', async ({ page }) => {
+  test('invoice preview renders the tax invoice with its ZATCA block', async ({ page }) => {
     await gotoReady(page, '/invoice-preview')
-    expect(await bodyText(page)).toContain('Tax Invoice')
+    const text = await bodyText(page)
+    expect(text).toContain('Tax invoice')
+    expect(text).toContain('INV-2026-0142')
+    expect(text).toContain('ZATCA e-invoice')
+    // The QR payload is server-assigned on issue; a preview of an unissued
+    // invoice says so rather than drawing a decorative code.
+    expect(text).toContain('The QR payload is assigned when the invoice is issued.')
   })
 })
 
@@ -99,8 +105,8 @@ test.describe('New customer to paid invoice lifecycle', () => {
 
     // 1. Front desk finds the queue empty of the new plate, then opens a job card.
     await gotoReady(page, '/job-cards')
-    await page.getByPlaceholder('Search customers, vehicles, parts...').fill('Lexus')
-    await page.getByPlaceholder('Search customers, vehicles, parts...').fill('')
+    await page.getByPlaceholder('Search job cards...').fill('Lexus')
+    await page.getByPlaceholder('Search job cards...').fill('')
 
     // 2. Vehicle is checked in with real intake data.
     await gotoReady(page, '/workshop-check-in')

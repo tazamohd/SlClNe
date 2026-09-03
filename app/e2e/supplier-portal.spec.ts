@@ -7,10 +7,12 @@ test.describe('Supplier Portal (Golden Path 21)', () => {
       await seedRole(context, 'supplier')
     })
 
-    test('supplier portal loads', async ({ page }) => {
+    test('supplier portal loads for the supplier account', async ({ page }) => {
       await gotoReady(page, '/supplier-portal')
       const text = await bodyText(page)
-      expect(text).toContain('AutoParts KSA')
+      expect(text).toContain('Al-Jazira Parts Co.')
+      expect(text).toContain('Active Orders')
+      expect(text).toContain('Performance Metrics')
     })
 
     test('supplier orders page loads', async ({ page }) => {
@@ -43,10 +45,11 @@ test.describe('Supplier Portal (Golden Path 21)', () => {
       await seedRole(context, 'owner')
     })
 
-    test('purchase order page loads', async ({ page }) => {
+    test('purchase order page loads as a form the server numbers on save', async ({ page }) => {
       await gotoReady(page, '/purchase-order')
       const text = await bodyText(page)
-      expect(text).toContain('PO-2026-0087')
+      expect(text).toContain('Create Purchase Order')
+      expect(text).toContain('The order number is assigned by the server when the order is saved.')
     })
 
     test('parts network page loads', async ({ page }) => {
@@ -85,7 +88,7 @@ test.describe('Supplier portal lifecycle', () => {
     const supplierPage = await supplierCtx.newPage()
 
     await gotoReady(supplierPage, '/supplier-portal')
-    expect(await bodyText(supplierPage)).toContain('AutoParts KSA')
+    expect(await bodyText(supplierPage)).toContain('Al-Jazira Parts Co.')
 
     await gotoReady(supplierPage, '/supplier-portal/orders')
     expect((await bodyText(supplierPage)).length).toBeGreaterThan(0)
@@ -111,7 +114,7 @@ test.describe('Supplier portal lifecycle', () => {
     const ownerPage = await ownerCtx.newPage()
 
     await gotoReady(ownerPage, '/purchase-order')
-    expect(await bodyText(ownerPage)).toContain('PO-2026-0087')
+    expect(await bodyText(ownerPage)).toContain('Create Purchase Order')
 
     await gotoReady(ownerPage, '/parts-network')
     expect(await bodyText(ownerPage)).toContain('Parts Network')

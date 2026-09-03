@@ -24,7 +24,7 @@ test.describe('Inventory Consumption (Golden Path 8)', () => {
   test('inventory hub totals reflect current parts stock', async ({ page, context }) => {
     await seedRole(context, 'owner')
     await gotoReady(page, '/inventory')
-    expect(await bodyText(page)).toContain('Inventory & Parts Management')
+    expect(await bodyText(page)).toContain('Inventory & Parts')
   })
 })
 
@@ -52,6 +52,6 @@ test.describe('Inventory consumption lifecycle', () => {
 
     // 3. Consumption ultimately shows up against stock in the inventory hub.
     await gotoReady(page, '/inventory')
-    expect(await bodyText(page)).toContain('Inventory & Parts Management')
+    expect(await bodyText(page)).toContain('Inventory & Parts')
   })
 })

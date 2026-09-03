@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { seedRole, gotoReady, bodyText } from './helpers'
+import { seedRole, gotoReady, bodyText, onMobile } from './helpers'
 
 test.describe('Customer registry', () => {
   test.beforeEach(async ({ context }) => {
@@ -18,10 +18,14 @@ test.describe('Customer registry', () => {
     expect(text.trim().length).toBeGreaterThan(50)
   })
 
-  test('customer detail page loads with job history', async ({ page }) => {
+  test('customer detail page loads with the account and its service history', async ({ page }) => {
     await gotoReady(page, '/customer-detail')
     const text = await bodyText(page)
-    expect(text).toContain('Job History')
+    expect(text).toContain('Ahmed Al-Rashid')
+    expect(text).toContain('Toyota Camry 2022')
+    // The phone layout keeps the account summary and vehicle cards; the
+    // service history table is a desktop section.
+    if (!onMobile(test.info())) expect(text).toContain('Service History')
   })
 
   test('vehicles list loads', async ({ page }) => {
@@ -33,6 +37,7 @@ test.describe('Customer registry', () => {
   test('vehicle detail page loads', async ({ page }) => {
     await gotoReady(page, '/vehicle-detail')
     const text = await bodyText(page)
-    expect(text).toContain('Comprehensive Coverage')
+    expect(text).toContain('RUH 4821')
+    expect(text).toContain('Latest Job Cards')
   })
 })

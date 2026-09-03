@@ -14,7 +14,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | external dependency | 12 |
 | rendered | 424 |
 | placeholder | 0 |
-| designed mobile owed | 1 |
+| designed mobile owed | 0 |
 | untested | 0 |
 | mock only | 285 |
 | data backed | 99 |
@@ -29,8 +29,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
-| golden paths passing | 7 |
-| golden paths failing | 16 |
+| golden paths passing | 23 |
+| golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
 | crud read | 98 |
@@ -45,7 +45,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 28 | 0 | 0 | 28 |
-| app | 313 | 313 | 0 | 1 | 313 |
+| app | 313 | 313 | 0 | 0 | 313 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |

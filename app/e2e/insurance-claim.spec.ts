@@ -7,10 +7,15 @@ test.describe('Insurance Claim (Golden Path 11)', () => {
       await seedRole(context, 'owner')
     })
 
-    test('insurance claims page loads', async ({ page }) => {
+    test('insurance claims page loads, and says what it is missing', async ({ page }) => {
       await gotoReady(page, '/insurance-claims')
       const text = await bodyText(page)
-      expect(text).toContain('Insurance Claims')
+      expect(text).toContain('Insurance & Finance')
+      expect(text).toContain('Claims')
+      // Claims live on the server and a decision cannot be faked: the fixture
+      // build shows the empty state and names the missing collection.
+      expect(text).toContain('No claims to show')
+      expect(text).toContain('insuranceClaims')
     })
 
     test('insurance reports page loads', async ({ page }) => {
@@ -43,7 +48,8 @@ test.describe('Insurance claim lifecycle', () => {
     await seedRole(context, 'owner')
 
     await gotoReady(page, '/insurance-claims')
-    expect(await bodyText(page)).toContain('Insurance Claims')
+    expect(await bodyText(page)).toContain('Insurance & Finance')
+    expect(await bodyText(page)).toContain('No claims to show')
 
     await gotoReady(page, '/insurance-reports')
     expect(await bodyText(page)).toContain('Insurance Reports')

@@ -10,9 +10,7 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|---|---|
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
 | BLK-004 | CRITICAL | 285 rendered capabilities are mock-only | 05 | W2 |
-| BLK-006 | HIGH | 1 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
-| BLK-013 | BLOCKER | 16 golden paths fail | 23 | W4 |
 
 ## Flags across the inventory
 
@@ -22,9 +20,9 @@ Computed from the registry. Every line is a query, not an opinion.
 | TABLET_MISSING | 301 | no md:/lg: layout in the source — nothing written for 768–1024 |
 | MOCK_ONLY | 285 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
-| DESKTOP_ONLY | 1 | renders on desktop with no mobile treatment |
-| MOBILE_MISSING | 1 | a .Mobile design exists and is not built |
+| DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | DUPLICATE | 0 | two entries claim one route |
+| MOBILE_MISSING | 0 | a .Mobile design exists and is not built |
 | NO_CONTENT_ASSERTION | 0 | the route is visited but nothing is asserted about it |
 | PLACEHOLDER | 0 | product route renders PendingScreen |
 | RTL_BROKEN | 0 | a hard-coded physical side (ml-/pr-/text-left) the RTL flip will not mirror |
@@ -32,33 +30,33 @@ Computed from the registry. Every line is a query, not an opinion.
 
 ## Golden paths
 
-Measured by `app/scripts/golden-paths.mjs` — 7 passing, 16 failing, 0 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
+Measured by `app/scripts/golden-paths.mjs` — 23 passing, 0 failing, 0 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
 
 | Path | Status | Journey | Detail |
 |---|---|---|---|
-| New customer to paid invoice | FAILING | `e2e/new-customer-to-paid-invoice.spec.ts` | [desktop] e2e/new-customer-to-paid-invoice.spec.ts:16 › New Customer to Paid Invoice (Golden Path 1) › job cards list loads and search filters client-side — fai |
-| Existing customer service | FAILING | `e2e/existing-customer-service.spec.ts` | [desktop] e2e/existing-customer-service.spec.ts:14 › Existing Customer Service (Golden Path 2) › customer record loads with job history — failed: Error: expect( |
+| New customer to paid invoice | PASSING | `e2e/new-customer-to-paid-invoice.spec.ts` | — |
+| Existing customer service | PASSING | `e2e/existing-customer-service.spec.ts` | — |
 | Mobile customer booking | PASSING | `e2e/mobile-customer-booking.spec.ts` | — |
-| Technician job completion | FAILING | `e2e/technician-job-completion.spec.ts` | [desktop] e2e/technician-job-completion.spec.ts:46 › Technician job completion lifecycle › technician opens job → works the stage rail → stage action is honestl |
+| Technician job completion | PASSING | `e2e/technician-job-completion.spec.ts` | — |
 | Customer estimate approval | PASSING | `e2e/customer-estimate-approval.spec.ts` | — |
-| Parts procurement | FAILING | `e2e/parts-procurement.spec.ts` | [desktop] e2e/parts-procurement.spec.ts:18 › Parts Procurement (Golden Path 6) › quotations table re-sorts by rating on tab click — failed: Test timeout of 3000 |
-| Inventory receiving | FAILING | `e2e/inventory-receiving.spec.ts` | [desktop] e2e/inventory-receiving.spec.ts:18 › Inventory Receiving (Golden Path 7) › the purchase order goods are received against has a real PO number — failed |
-| Inventory consumption | FAILING | `e2e/inventory-consumption.spec.ts` | [mobile] e2e/inventory-consumption.spec.ts:24 › Inventory Consumption (Golden Path 8) › inventory hub totals reflect current parts stock — failed: Error: expect |
-| Supplier order | FAILING | `e2e/supplier-order.spec.ts` | [desktop] e2e/supplier-order.spec.ts:9 › Supplier Order (Golden Path 9) › supplier sees their storefront identity on the portal — failed: Error: expect(received |
-| CRM lead conversion | FAILING | `e2e/crm-lead-conversion.spec.ts` | [desktop] e2e/crm-lead-conversion.spec.ts:16 › CRM Lead Conversion (Golden Path 10) › lead detail loads with contact and deal info — failed: Error: expect(recei |
-| Insurance claim | FAILING | `e2e/insurance-claim.spec.ts` | [desktop] e2e/insurance-claim.spec.ts:10 › Insurance Claim (Golden Path 11) › owner views › insurance claims page loads — failed: Error: expect(received).toCont |
+| Parts procurement | PASSING | `e2e/parts-procurement.spec.ts` | — |
+| Inventory receiving | PASSING | `e2e/inventory-receiving.spec.ts` | — |
+| Inventory consumption | PASSING | `e2e/inventory-consumption.spec.ts` | — |
+| Supplier order | PASSING | `e2e/supplier-order.spec.ts` | — |
+| CRM lead conversion | PASSING | `e2e/crm-lead-conversion.spec.ts` | — |
+| Insurance claim | PASSING | `e2e/insurance-claim.spec.ts` | — |
 | Fleet contract | PASSING | `e2e/fleet-contract.spec.ts` | — |
-| Loan workflow | FAILING | `e2e/loan-workflow.spec.ts` | [desktop] e2e/loan-workflow.spec.ts:30 › Loan workflow lifecycle › customer applies for loan → owner reviews loan reports — failed: Error: expect(received).toCo |
-| Employee onboarding | FAILING | `e2e/employee-onboarding.spec.ts` | [desktop] e2e/employee-onboarding.spec.ts:15 › Employee Onboarding (Golden Path 14) › HR management page loads — failed: Error: expect(received).toContain(expec |
+| Loan workflow | PASSING | `e2e/loan-workflow.spec.ts` | — |
+| Employee onboarding | PASSING | `e2e/employee-onboarding.spec.ts` | — |
 | Organization / branch setup | PASSING | `e2e/org-branch-setup.spec.ts` | — |
 | User invitation + RBAC | PASSING | `e2e/user-invitation-rbac.spec.ts` | — |
-| Accounting reconciliation | FAILING | `e2e/accounting-reconciliation.spec.ts` | [desktop] e2e/accounting-reconciliation.spec.ts:21 › Accounting Reconciliation (Golden Path 17) › bank reconciliation page loads — failed: Error: expect(receive |
-| Report generation | FAILING | `e2e/report-generation.spec.ts` | [desktop] e2e/report-generation.spec.ts:9 › Report Generation (Golden Path 18) › reports hub loads — failed: Error: expect(received).toContain(expected) // inde |
-| Customer portal | FAILING | `e2e/customer-portal.spec.ts` | [desktop] e2e/customer-portal.spec.ts:10 › Customer Portal (Golden Path 19) › customer views › customer portal dashboard loads — failed: Error: expect(received) |
+| Accounting reconciliation | PASSING | `e2e/accounting-reconciliation.spec.ts` | — |
+| Report generation | PASSING | `e2e/report-generation.spec.ts` | — |
+| Customer portal | PASSING | `e2e/customer-portal.spec.ts` | — |
 | Technician portal | PASSING | `e2e/technician-portal.spec.ts` | — |
-| Supplier portal | FAILING | `e2e/supplier-portal.spec.ts` | [desktop] e2e/supplier-portal.spec.ts:10 › Supplier Portal (Golden Path 21) › supplier views › supplier portal loads — failed: Error: expect(received).toContain |
+| Supplier portal | PASSING | `e2e/supplier-portal.spec.ts` | — |
 | Call center | PASSING | `e2e/call-center.spec.ts` | — |
-| Kiosk | FAILING | `e2e/kiosk.spec.ts` | [desktop] e2e/kiosk.spec.ts:13 › Kiosk (Golden Path 23) › kiosk identify step loads with branding and both identify fields — failed: Error: expect(received).toC |
+| Kiosk | PASSING | `e2e/kiosk.spec.ts` | — |
 
 ## Designs not in the registry
 

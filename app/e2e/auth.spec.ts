@@ -66,7 +66,8 @@ test.describe('Login flow', () => {
     await page.waitForURL('**/register', { timeout: 5000 })
     await page.waitForFunction(() => !document.body.textContent?.includes('Loading'), { timeout: 5000 })
     const text = await bodyText(page)
-    expect(text).toContain("Don't have an account?")
+    expect(text).toContain('Create Account')
+    expect(text).toContain('Already have an account?')
   })
 })
 
