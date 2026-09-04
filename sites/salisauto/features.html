@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
-<script>document.documentElement.dataset.titleAr="ثلاثة عشر مجالاً";document.documentElement.dataset.titleEn="Thirteen domains";</script>
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="ثلاثة عشر مجالاً";document.documentElement.dataset.titleEn="Thirteen domains";</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -117,6 +117,7 @@
   <div class="sec-head"><div class="eyebrow"><span lang="en">What is different</span><span lang="ar">ما المختلف</span></div><h2 id="diff-h"><span lang="en">Built for this market, not translated into it.</span><span lang="ar">مبني لهذا السوق، لا مترجم إليه.</span></h2></div>
   <ul class="facts"><li><span lang="en">Arabic is a first-class rendering, right-to-left, with English beside it. Plates, ids and amounts stay Latin and are isolated so the bidi algorithm never reorders a number.</span><span lang="ar">العربية واجهة أصلية من اليمين إلى اليسار، والإنجليزية بجانبها. تبقى اللوحات والأرقام لاتينية ومعزولة فلا تعيد خوارزمية الاتجاه ترتيب رقم.</span></li><li><span lang="en">Money is stored as integer halalas. Totals reconcile because rounding happens once.</span><span lang="ar">تُخزَّن المبالغ بالهللة كأعداد صحيحة. تتطابق المجاميع لأن التقريب يحدث مرة واحدة.</span></li><li><span lang="en">Each workshop is isolated at the database level. Access is by role, per module, per action.</span><span lang="ar">كل ورشة معزولة على مستوى قاعدة البيانات. الوصول بحسب الدور، لكل وحدة، ولكل إجراء.</span></li><li><span lang="en">Every mutation writes its audit row, with actor, before, after and request id, in the same transaction as the change.</span><span lang="ar">كل تعديل يكتب سطر تدقيقه، بالفاعل والقيمة قبل وبعد ورقم الطلب، في المعاملة نفسها مع التغيير.</span></li><li><span lang="en">The AI platform answers from the workshop’s own data: today’s revenue, the technician with the most open jobs, the parts due for reorder.</span><span lang="ar">تجيب منصة الذكاء الاصطناعي من بيانات الورشة نفسها: إيراد اليوم، الفني الأكثر أعمالاً مفتوحة، القطع المستحقة لإعادة الطلب.</span></li></ul>
 </section>
+<section class="wrap" aria-label="The AI era" style="padding-top:0"><p><a class="more" href="index.html#ai"><span lang="en">How the AI platform changes the day</span><span lang="ar">كيف تغيّر منصة الذكاء الاصطناعي اليوم</span> <span dir="ltr" aria-hidden="true">→</span></a></p></section>
 
 <section class="wrap cta-end" aria-label="Next step">
   <h2><span lang="en">See the thirteen domains on one job card.</span><span lang="ar">شاهد المجالات الثلاثة عشر على بطاقة عمل واحدة.</span></h2>
@@ -168,5 +169,6 @@
   </div>
 </footer>
 <script src="assets/site.js"></script>
+<script src="assets/scenes.js" defer></script>
 </body>
 </html>

@@ -204,7 +204,7 @@ function head(page) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
-<script>document.documentElement.dataset.titleAr=${JSON.stringify(page.title[1])};document.documentElement.dataset.titleEn=${JSON.stringify(page.title[0])};</script>${jsonld}
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr=${JSON.stringify(page.title[1])};document.documentElement.dataset.titleEn=${JSON.stringify(page.title[0])};</script>${jsonld}
 </head>`;
 }
 
@@ -363,9 +363,9 @@ function proofBand() {
       <h2 id="proof-h">${t('Numbers carry their baseline or they do not appear.', 'الأرقام تحمل أساس قياسها أو لا تظهر.')}</h2>
     </div>
     <div class="grid">
-      <div class="cell"><div class="pair" dir="ltr"><span class="from">48 h</span><span class="to">4 h</span></div><div class="what">${t('Estimate approval', 'اعتماد عرض السعر')}</div><div class="base">${t('Baseline: paper estimates signed at the counter.', 'الأساس: عروض أسعار ورقية تُوقَّع عند الكاونتر.')}</div></div>
-      <div class="cell"><div class="pair" dir="ltr"><span class="from">15 min</span><span class="to">2 min</span></div><div class="what">${t('Invoice at the counter', 'الفاتورة عند الكاونتر')}</div><div class="base">${t('Baseline: handwritten invoice copied to a spreadsheet at day’s end.', 'الأساس: فاتورة بخط اليد تُنسخ إلى جدول في نهاية اليوم.')}</div></div>
-      <div class="cell"><div class="pair" dir="ltr"><span class="to">+25%</span></div><div class="what">${t('Workshop throughput', 'إنتاجية الورشة')}</div><div class="base">${t('Measured across deployments against each workshop’s prior twelve months.', 'مقاسة عبر مواقع التشغيل مقارنة بالاثني عشر شهراً السابقة لكل ورشة.')}</div></div>
+      <div class="cell"><div class="pair" dir="ltr"><span class="from">48 h</span><span class="to" data-count="4" data-from="48" data-unit=" h">4 h</span></div><div class="what">${t('Estimate approval', 'اعتماد عرض السعر')}</div><div class="base">${t('Baseline: paper estimates signed at the counter.', 'الأساس: عروض أسعار ورقية تُوقَّع عند الكاونتر.')}</div></div>
+      <div class="cell"><div class="pair" dir="ltr"><span class="from">15 min</span><span class="to" data-count="2" data-from="15" data-unit=" min">2 min</span></div><div class="what">${t('Invoice at the counter', 'الفاتورة عند الكاونتر')}</div><div class="base">${t('Baseline: handwritten invoice copied to a spreadsheet at day’s end.', 'الأساس: فاتورة بخط اليد تُنسخ إلى جدول في نهاية اليوم.')}</div></div>
+      <div class="cell"><div class="pair" dir="ltr"><span class="to" data-count="25" data-from="0" data-prefix="+" data-unit="%">+25%</span></div><div class="what">${t('Workshop throughput', 'إنتاجية الورشة')}</div><div class="base">${t('Measured across deployments against each workshop’s prior twelve months.', 'مقاسة عبر مواقع التشغيل مقارنة بالاثني عشر شهراً السابقة لكل ورشة.')}</div></div>
     </div>
   </div>
 </section>`;
@@ -379,13 +379,71 @@ const STAGES = [
   ['lifecycle.html#qc', 'Quality control', 'مراقبة الجودة', 'A second technician signs', 'يوقّع فني ثانٍ'],
   ['lifecycle.html#delivery', 'Delivery', 'التسليم', 'Invoice, QR, e-signature', 'فاتورة، رمز استجابة، توقيع إلكتروني'],
 ];
-const rail6 = `<div class="rail6" role="list">${STAGES.map(([h, en, ar, sen, sar], i) => `<a role="listitem" href="${h}"><span class="n" dir="ltr">${i + 1}</span><b>${t(en, ar)}</b><span>${t(sen, sar)}</span></a>`).join('')}</div>`;
+const rail6 = `<div class="rail6" role="list">${STAGES.map(([h, en, ar, sen, sar], i) => `<a role="listitem" href="${h}" data-stage="${i}"><span class="n" dir="ltr">${i + 1}</span><b>${t(en, ar)}</b><span>${t(sen, sar)}</span></a>`).join('')}</div>`;
 
 const ctaEnd = (h, ha, p, pa) => `
 <section class="wrap cta-end" aria-label="Next step">
   <h2>${t(h, ha)}</h2>
   <p>${t(p, pa)}</p>
   <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a><a class="btn ghost" href="pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a></div>
+</section>`;
+
+/* ---------------------------------------------------------------- S4: the AI era */
+/* Hand-placed landmass polygons (lon, lat), no external map data. Approximate on purpose. */
+const MAP = {
+  step: 0.9,
+  polys: [
+    [[34.8,29.3],[37,29.9],[39,32],[41.5,31.3],[44.5,29.2],[47.9,29.9],[48.6,28.5],[49.5,27],[50.2,26.4],[51.6,25.2],[51.2,24.6],[52.6,24.2],[54.4,24.4],[56.2,26.2],[56.5,24.8],[58.6,23.6],[59.8,22.5],[58.8,20.6],[57.8,19],[56.1,17.9],[54,17],[52.2,16.4],[49.4,14.6],[45.2,13],[43.4,12.7],[42.8,14.8],[42.3,16.8],[40.8,19.6],[39.1,22.3],[38.6,24.4],[36.9,26.2],[35.5,28]],
+    [[34.5,29.5],[34.9,32.9],[35.9,34.6],[36.5,36.8],[41,37.1],[42.4,37.3],[44.8,37.1],[46.1,35],[47.7,32.4],[48.5,30],[47.9,29.9],[44.5,29.2],[41.5,31.3],[39,32],[37,29.9]],
+    [[25,31.6],[31,31.5],[34.2,31.2],[34.9,29.4],[34.2,27.8],[33.5,27],[35,24.5],[36.9,22],[31.5,22],[25,22]],
+    [[44.8,37.1],[48.5,38.5],[53,37],[56,37.5],[61.2,36.6],[61,31],[61.6,25.2],[57.3,25.7],[56.3,27.1],[54,26.6],[51.5,27.9],[50,30.2],[48.5,30],[47.7,32.4],[46.1,35]],
+  ],
+  /* name, lon, lat, ring: 0 Riyadh, 1 Kingdom, 2 Gulf, 3 region */
+  cities: [['riyadh',46.7,24.7,0],['jeddah',39.2,21.5,1],['dammam',50.1,26.4,1],['madinah',39.6,24.5,1],['abha',42.5,18.2,1],['kuwait',48,29.4,2],['manama',50.6,26.2,2],['doha',51.5,25.3,2],['abudhabi',54.4,24.5,2],['dubai',55.3,25.2,2],['muscat',58.5,23.6,2],['amman',35.9,31.9,3],['cairo',31.2,30,3],['baghdad',44.4,33.3,3]],
+  links: [['riyadh','jeddah'],['riyadh','dammam'],['riyadh','madinah'],['riyadh','abha'],['riyadh','kuwait'],['dammam','manama'],['manama','doha'],['doha','abudhabi'],['abudhabi','dubai'],['dubai','muscat'],['madinah','amman'],['amman','cairo'],['kuwait','baghdad']],
+};
+function mapSvg() {
+  const W = 1000, H = 560, cx = 46, cy = 25.5, k = 24;
+  const X = (lon) => W / 2 + (lon - cx) * k, Y = (lat) => H / 2 - (lat - cy) * k;
+  const inside = (poly, x, y) => { let r = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) r = !r; } return r; };
+  let dots = '';
+  for (let lat = 12; lat <= 38; lat += MAP.step) for (let lon = 24; lon <= 62; lon += MAP.step) {
+    if (MAP.polys.some((p) => inside(p, lon, lat))) dots += `<circle cx="${X(lon).toFixed(0)}" cy="${Y(lat).toFixed(0)}" r="2.2"/>`;
+  }
+  const cities = MAP.cities.map(([n, lon, lat, ring]) => ring === 0
+    ? `<circle cx="${X(lon).toFixed(0)}" cy="${Y(lat).toFixed(0)}" r="7" fill="#F97316"/><circle cx="${X(lon).toFixed(0)}" cy="${Y(lat).toFixed(0)}" r="14" fill="none" stroke="#F97316" stroke-width="2" opacity=".6"/>`
+    : `<circle cx="${X(lon).toFixed(0)}" cy="${Y(lat).toFixed(0)}" r="3.5" fill="${ring === 3 ? '#0BB3FF' : '#0A5ED7'}" opacity=".5"/>`).join('');
+  return `<svg class="map-fallback" viewBox="0 0 ${W} ${H}" aria-hidden="true"><g fill="#0A5ED7" opacity=".5">${dots}</g>${cities}</svg>`;
+}
+const aiCards = [
+  ['AI Assistant', 'المساعد الذكي', 'Natural-language questions over the workshop’s own data.', 'أسئلة بلغة طبيعية على بيانات الورشة نفسها.'],
+  ['Smart Scheduling', 'الجدولة الذكية', 'Predictive bay allocation and technician scheduling.', 'توزيع تنبؤي للخلجان وجدولة الفنيين.'],
+  ['AI Agents', 'الوكلاء الأذكياء', 'Routine administrative tasks run by the system, with the audit row written like any other change.', 'مهام إدارية روتينية ينفذها النظام، مع صف تدقيق يُكتب ككل تغيير آخر.'],
+];
+const aiSection = `
+<section class="ai-era" id="ai" aria-labelledby="ai-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow bright">${t('The AI era', 'عصر الذكاء الاصطناعي')}</div>
+      <h2 id="ai-h">${t('Reinventing auto service for the AI era.', 'إعادة تعريف خدمة السيارات لعصر الذكاء الاصطناعي.')}</h2>
+      <p>${t('Saudi Arabia first, then the Gulf and the region. Less retyping, less waiting, less guessing: the system drafts, schedules and reconciles, and people decide. Built to lead by removing friction, not by adding features.', 'السعودية أولاً، ثم الخليج والمنطقة. إعادة إدخال أقل، وانتظار أقل، وتخمين أقل: النظام يصوغ ويجدول ويطابق، والناس يقررون. بُني ليتصدر بإزالة الاحتكاك لا بإضافة الميزات.')}</p>
+    </div>
+    <div class="ai-stage" data-driver="#ai">
+      ${mapSvg()}
+      <div class="scene" data-scene="map" data-driver="#ai" data-map='${JSON.stringify(MAP)}' aria-hidden="true"></div>
+      <div class="ai-overlay" aria-hidden="true">
+        <div class="fold">
+          <div class="paper p1"></div><div class="paper p2"></div><div class="paper p3"></div>
+          <div class="slab"><b dir="ltr">JC-4F2A</b><span>${t('One job card', 'بطاقة عمل واحدة')}</span><i></i></div>
+        </div>
+        <span class="orb-label l1">${t('Assistant', 'المساعد')}</span>
+        <span class="orb-label l2">${t('Scheduling', 'الجدولة')}</span>
+        <span class="orb-label l3">${t('Agents', 'الوكلاء')}</span>
+      </div>
+    </div>
+    <p class="scene-cap ai-cap">${t('Illustrative. Regions light as the network grows; no customer locations are shown.', 'رسم توضيحي. تضيء المناطق مع نمو الشبكة؛ لا تُعرض مواقع عملاء.')}</p>
+    <div class="roles ai-cards">${aiCards.map(([en, ar, den, dar]) => `<div><b>${t(en, ar)}</b><p>${t(den, dar)}</p></div>`).join('')}</div>
+  </div>
 </section>`;
 
 /* ---------------------------------------------------------------- home */
@@ -410,6 +468,8 @@ const domainsGrid = (compact = false) => `<div class="domains">${DOMAINS.map(([e
 
 const home = `
 <section class="hero" aria-labelledby="hero-h">
+  <div class="scene" data-scene="hero" aria-hidden="true"></div>
+  <div class="scrim" aria-hidden="true"></div>
   <svg class="trace anim" viewBox="0 0 400 200" style="width:980px;inset-inline-end:-300px;top:-160px"><use href="#trace"/></svg>
   <svg class="trace anim late" viewBox="0 0 400 200" style="width:700px;inset-inline-start:-260px;bottom:-240px;transform:rotate(180deg)"><use href="#trace"/></svg>
   <div class="wrap hero-grid">
@@ -423,17 +483,18 @@ const home = `
       </div>
       <div class="statusline">${t('<b>Single bay to multi-branch.</b> Thirteen domains, fourteen roles, SAR to the halala, one audit trail.', '<b>من خليج واحد إلى فروع متعددة.</b> ثلاثة عشر مجالاً، أربعة عشر دوراً، الريال حتى الهللة، وسجل تدقيق واحد.')}</div>
     </div>
-    <div class="hero-mock">${mockBay}</div>
+    <div class="hero-mock tilt-deep">${mockBay}</div>
   </div>
 </section>
 
-<section class="wrap" aria-labelledby="life-h">
+<section class="wrap" aria-labelledby="life-h" id="life">
   <div class="sec-head">
     <div class="eyebrow">${t('The lifecycle', 'دورة الورشة')}</div>
     <h2 id="life-h">${t('Six stages. One job card. Each stage gates the next.', 'ست مراحل. بطاقة عمل واحدة. كل مرحلة تشترط سابقتها.')}</h2>
     <p>${t('The vehicle moves from check-in to delivery on one record. The invoice at the end is the sum of what happened, not a list retyped from memory.', 'تنتقل المركبة من الاستقبال إلى التسليم على سجل واحد. والفاتورة في النهاية هي مجموع ما حدث، لا قائمة أُعيد إدخالها من الذاكرة.')}</p>
   </div>
-  ${rail6}
+  <div class="rail-wrap"><div class="scene rail-scene" data-scene="rail" data-driver="#life" aria-hidden="true"></div>${rail6}</div>
+  <p class="scene-cap">${t('The job card is the only thing that moves. Scroll, and it travels the six stages.', 'بطاقة العمل هي الشيء الوحيد الذي يتحرك. مرّر، وستقطع المراحل الست.')}</p>
   <p style="margin-top:28px"><a class="more" href="lifecycle.html">${t('Walk the six stages', 'تابع المراحل الست')} <span dir="ltr" aria-hidden="true">→</span></a></p>
 </section>
 
@@ -448,6 +509,8 @@ ${proofBand()}
   ${domainsGrid(true)}
   <p style="margin-top:24px"><a class="more" href="features.html">${t('Every module under every domain', 'كل الوحدات تحت كل مجال')} <span dir="ltr" aria-hidden="true">→</span></a></p>
 </section>
+
+${aiSection}
 
 <section class="wrap" aria-labelledby="who-h">
   <div class="sec-head"><div class="eyebrow">${t('Who it is for', 'لمن هذا المنتج')}</div><h2 id="who-h">${t('Judged on whether it survives the floor at 09:40 with a queue behind the counter.', 'يُحكم عليه بما إذا كان يصمد على أرض الورشة في ٩:٤٠ وخلف الكاونتر طابور.')}</h2></div>
@@ -495,7 +558,7 @@ function pageHero(o) {
       <div class="ctas"><a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a>${o.cta2 || ''}</div>
       ${o.status ? `<div class="statusline">${t(o.status[0], o.status[1])}</div>` : ''}
     </div>
-    ${o.mock ? `<div class="hero-mock">${o.mock}</div>` : ''}
+    ${o.mock ? `<div class="hero-mock tilt-deep">${o.scene ? `<div class="scene" data-scene="${o.scene}" aria-hidden="true"></div>` : ''}${o.mock}</div>` : ''}
   </div>
 </section>`;
 }
@@ -514,9 +577,10 @@ const lifecycle = pageHero({
   mock: mockBay,
 }) + `
 <section class="wrap" aria-label="The six stages">
-  ${rail6}
+  <div class="rail-wrap"><div class="scene rail-scene" data-scene="rail" data-driver="#stages" aria-hidden="true"></div>${rail6}</div>
+  <p class="scene-cap">${t('Scroll through the stages below and the job card moves with you.', 'مرّر عبر المراحل أدناه وتتحرك بطاقة العمل معك.')}</p>
 </section>
-<section class="wrap" aria-label="Stage by stage" style="padding-top:0">
+<section class="wrap" aria-label="Stage by stage" style="padding-top:0" id="stages">
   <article class="stage" id="checkin"><div class="stage-text"><div class="stage-n" dir="ltr">01</div><h3>${t('Check-in', 'الاستقبال')}</h3><p>${t('The plate is typed once. The customer is found by phone number or created on the spot. Six photos and a walk-around mark existing damage before the key changes hands.', 'تُكتب اللوحة مرة واحدة. يُعثر على العميل برقم هاتفه أو يُنشأ فوراً. ست صور وجولة حول المركبة تحدد الأضرار القائمة قبل أن ينتقل المفتاح.')}</p><div class="gate">${t('Gate: plate, customer and photos before a bay is assigned.', 'الشرط: اللوحة والعميل والصور قبل إسناد خليج.')}</div></div>${mockCheckin}</article>
   <article class="stage flip" id="inspection"><div class="stage-text"><div class="stage-n" dir="ltr">02</div><h3>${t('Inspection', 'الفحص')}</h3><p>${t('A multi-point checklist with severity on each item. Flagged items become estimate lines automatically, with the photo attached, so nothing is retyped and nothing is forgotten.', 'قائمة فحص متعددة النقاط بدرجة خطورة لكل بند. تصبح البنود المحددة بنود عرض سعر تلقائياً مع الصورة المرفقة، فلا شيء يُعاد إدخاله ولا شيء يُنسى.')}</p><div class="gate">${t('Gate: every checklist item answered.', 'الشرط: الإجابة عن كل بنود القائمة.')}</div></div>${mockInspection}</article>
   <article class="stage" id="estimate"><div class="stage-text"><div class="stage-n" dir="ltr">03</div><h3>${t('Estimate', 'عرض السعر')}</h3><p>${t('Itemised parts and labour with VAT, sent to the customer’s phone. They sign with an SMS-verified signature. The approval is on the job card with its timestamp, and the job moves to Repair on its own.', 'قطع وأجرة مفصّلة بالضريبة، تُرسل إلى هاتف العميل. يوقّع بتوقيع موثّق برسالة نصية. يُسجَّل الاعتماد على بطاقة العمل بوقته، وتنتقل المهمة إلى الإصلاح تلقائياً.')}</p><div class="gate">${t('Gate: customer signature, or the advisor records an approval by phone with the caller’s number.', 'الشرط: توقيع العميل، أو يسجّل المستشار اعتماداً هاتفياً برقم المتصل.')}</div></div>${mockEstimate}</article>
@@ -544,13 +608,14 @@ const features = pageHero({
     ['The AI platform answers from the workshop’s own data: today’s revenue, the technician with the most open jobs, the parts due for reorder.', 'تجيب منصة الذكاء الاصطناعي من بيانات الورشة نفسها: إيراد اليوم، الفني الأكثر أعمالاً مفتوحة، القطع المستحقة لإعادة الطلب.'],
   ])}
 </section>
+<section class="wrap" aria-label="The AI era" style="padding-top:0"><p><a class="more" href="index.html#ai">${t('How the AI platform changes the day', 'كيف تغيّر منصة الذكاء الاصطناعي اليوم')} <span dir="ltr" aria-hidden="true">→</span></a></p></section>
 ${ctaEnd('See the thirteen domains on one job card.', 'شاهد المجالات الثلاثة عشر على بطاقة عمل واحدة.', 'A 20-minute demo, in Arabic or English.', 'عرض توضيحي لعشرين دقيقة، بالعربية أو الإنجليزية.')}`;
 
 const zatca = pageHero({
   crumb: ['ZATCA Phase 2', 'الفوترة الإلكترونية'], eyebrow: ['هيئة الزكاة والضريبة والجمارك · ZATCA Phase 2', 'هيئة الزكاة والضريبة والجمارك · المرحلة الثانية'],
   h1: ['E-invoicing generated by the <span class="o">same transaction</span> that posts the sale.', 'فوترة إلكترونية تولدها <span class="o">المعاملة نفسها</span> التي ترحّل البيع.'],
   lede: ['Compliance is not a module you switch on. Every issued invoice carries what Phase 2 requires, and it cannot be edited afterwards.', 'الامتثال ليس وحدة تُفعَّل. كل فاتورة صادرة تحمل ما تتطلبه المرحلة الثانية، ولا يمكن تعديلها بعد ذلك.'],
-  mock: mockInvoice,
+  mock: mockInvoice, scene: 'invoice',
   status: ['<b>Plain statement of scope.</b> Data model, QR, hash chain, XML, immutability and retention are in the product. Reporting to the Fatoora platform is configured for each workshop at deployment.', '<b>بيان صريح للنطاق.</b> نموذج البيانات ورمز الاستجابة وسلسلة التجزئة وملف XML وعدم القابلية للتعديل والحفظ كلها في المنتج. ويُهيَّأ الإبلاغ لمنصة فاتورة لكل ورشة عند التشغيل.'],
 }) + `
 <section class="wrap two" aria-labelledby="z-h">
@@ -767,7 +832,7 @@ const BODIES = { home, lifecycle, features, zatca, parts, fleet, customer, porta
 
 /* ---------------------------------------------------------------- write */
 for (const page of PAGES) {
-  const html = head(page) + '\n<body>' + traceSymbol + header(page) + `\n<main id="main">${BODIES[page.key]}\n</main>` + footer() + `\n<script src="assets/site.js"></script>\n</body>\n</html>\n`;
+  const html = head(page) + '\n<body>' + traceSymbol + header(page) + `\n<main id="main">${BODIES[page.key]}\n</main>` + footer() + `\n<script src="assets/site.js"></script>\n<script src="assets/scenes.js" defer></script>\n</body>\n</html>\n`;
   const out = join(ROOT, page.path);
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, html);

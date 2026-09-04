@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
-<script>document.documentElement.dataset.titleAr="المرحلة الثانية من الفوترة الإلكترونية";document.documentElement.dataset.titleEn="ZATCA Phase 2";</script>
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="المرحلة الثانية من الفوترة الإلكترونية";document.documentElement.dataset.titleEn="ZATCA Phase 2";</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -105,7 +105,7 @@
       <div class="ctas"><a class="btn on-dark" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a 20-minute demo</span><span lang="ar">احجز عرضاً لعشرين دقيقة</span></a></div>
       <div class="statusline"><span lang="en"><b>Plain statement of scope.</b> Data model, QR, hash chain, XML, immutability and retention are in the product. Reporting to the Fatoora platform is configured for each workshop at deployment.</span><span lang="ar"><b>بيان صريح للنطاق.</b> نموذج البيانات ورمز الاستجابة وسلسلة التجزئة وملف XML وعدم القابلية للتعديل والحفظ كلها في المنتج. ويُهيَّأ الإبلاغ لمنصة فاتورة لكل ورشة عند التشغيل.</span></div>
     </div>
-    <div class="hero-mock">
+    <div class="hero-mock tilt-deep"><div class="scene" data-scene="invoice" aria-hidden="true"></div>
 <div class="mock" aria-label="Invoice with ZATCA QR, illustrative">
   <div class="bar"><b><span lang="en">Tax invoice</span><span lang="ar">فاتورة ضريبية</span> <span class="mono" dir="ltr">INV-88120</span></b><span class="st "><span lang="en">Issued · immutable</span><span lang="ar">صادرة · غير قابلة للتعديل</span></span></div>
   <div class="inv">
@@ -185,5 +185,6 @@
   </div>
 </footer>
 <script src="assets/site.js"></script>
+<script src="assets/scenes.js" defer></script>
 </body>
 </html>

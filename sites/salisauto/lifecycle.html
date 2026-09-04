@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
-<script>document.documentElement.dataset.titleAr="دورة الورشة";document.documentElement.dataset.titleEn="The workshop lifecycle";</script>
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="دورة الورشة";document.documentElement.dataset.titleEn="The workshop lifecycle";</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -105,7 +105,7 @@
       <div class="ctas"><a class="btn on-dark" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a 20-minute demo</span><span lang="ar">احجز عرضاً لعشرين دقيقة</span></a></div>
       
     </div>
-    <div class="hero-mock">
+    <div class="hero-mock tilt-deep">
 <div class="mock" aria-label="Bay board, illustrative">
   <div class="bar"><b><span lang="en">Bay board · Riyadh Main</span><span lang="ar">لوحة الخلجان · الرياض الرئيسي</span></b><span class="mono" dir="ltr">04 Sep 2026 · 09:40</span></div>
   <div class="row head"><span><span lang="en">Bay</span><span lang="ar">الخليج</span></span><span><span lang="en">Job card</span><span lang="ar">بطاقة العمل</span></span><span><span lang="en">Plate</span><span lang="ar">اللوحة</span></span><span class="num"><span lang="en">Amount</span><span lang="ar">المبلغ</span></span><span><span lang="en">Status</span><span lang="ar">الحالة</span></span></div>
@@ -118,9 +118,10 @@
   </div>
 </section>
 <section class="wrap" aria-label="The six stages">
-  <div class="rail6" role="list"><a role="listitem" href="lifecycle.html#checkin"><span class="n" dir="ltr">1</span><b><span lang="en">Check-in</span><span lang="ar">الاستقبال</span></b><span><span lang="en">Photos, plate, customer lookup</span><span lang="ar">صور، لوحة، بحث عن العميل</span></span></a><a role="listitem" href="lifecycle.html#inspection"><span class="n" dir="ltr">2</span><b><span lang="en">Inspection</span><span lang="ar">الفحص</span></b><span><span lang="en">Multi-point, with severity</span><span lang="ar">متعدد النقاط، بدرجات الخطورة</span></span></a><a role="listitem" href="lifecycle.html#estimate"><span class="n" dir="ltr">3</span><b><span lang="en">Estimate</span><span lang="ar">عرض السعر</span></b><span><span lang="en">Signed from the phone</span><span lang="ar">يُوقَّع من الهاتف</span></span></a><a role="listitem" href="lifecycle.html#repair"><span class="n" dir="ltr">4</span><b><span lang="en">Repair</span><span lang="ar">الإصلاح</span></b><span><span lang="en">Bay board, parts from stock</span><span lang="ar">لوحة الخلجان، قطع من المخزون</span></span></a><a role="listitem" href="lifecycle.html#qc"><span class="n" dir="ltr">5</span><b><span lang="en">Quality control</span><span lang="ar">مراقبة الجودة</span></b><span><span lang="en">A second technician signs</span><span lang="ar">يوقّع فني ثانٍ</span></span></a><a role="listitem" href="lifecycle.html#delivery"><span class="n" dir="ltr">6</span><b><span lang="en">Delivery</span><span lang="ar">التسليم</span></b><span><span lang="en">Invoice, QR, e-signature</span><span lang="ar">فاتورة، رمز استجابة، توقيع إلكتروني</span></span></a></div>
+  <div class="rail-wrap"><div class="scene rail-scene" data-scene="rail" data-driver="#stages" aria-hidden="true"></div><div class="rail6" role="list"><a role="listitem" href="lifecycle.html#checkin" data-stage="0"><span class="n" dir="ltr">1</span><b><span lang="en">Check-in</span><span lang="ar">الاستقبال</span></b><span><span lang="en">Photos, plate, customer lookup</span><span lang="ar">صور، لوحة، بحث عن العميل</span></span></a><a role="listitem" href="lifecycle.html#inspection" data-stage="1"><span class="n" dir="ltr">2</span><b><span lang="en">Inspection</span><span lang="ar">الفحص</span></b><span><span lang="en">Multi-point, with severity</span><span lang="ar">متعدد النقاط، بدرجات الخطورة</span></span></a><a role="listitem" href="lifecycle.html#estimate" data-stage="2"><span class="n" dir="ltr">3</span><b><span lang="en">Estimate</span><span lang="ar">عرض السعر</span></b><span><span lang="en">Signed from the phone</span><span lang="ar">يُوقَّع من الهاتف</span></span></a><a role="listitem" href="lifecycle.html#repair" data-stage="3"><span class="n" dir="ltr">4</span><b><span lang="en">Repair</span><span lang="ar">الإصلاح</span></b><span><span lang="en">Bay board, parts from stock</span><span lang="ar">لوحة الخلجان، قطع من المخزون</span></span></a><a role="listitem" href="lifecycle.html#qc" data-stage="4"><span class="n" dir="ltr">5</span><b><span lang="en">Quality control</span><span lang="ar">مراقبة الجودة</span></b><span><span lang="en">A second technician signs</span><span lang="ar">يوقّع فني ثانٍ</span></span></a><a role="listitem" href="lifecycle.html#delivery" data-stage="5"><span class="n" dir="ltr">6</span><b><span lang="en">Delivery</span><span lang="ar">التسليم</span></b><span><span lang="en">Invoice, QR, e-signature</span><span lang="ar">فاتورة، رمز استجابة، توقيع إلكتروني</span></span></a></div></div>
+  <p class="scene-cap"><span lang="en">Scroll through the stages below and the job card moves with you.</span><span lang="ar">مرّر عبر المراحل أدناه وتتحرك بطاقة العمل معك.</span></p>
 </section>
-<section class="wrap" aria-label="Stage by stage" style="padding-top:0">
+<section class="wrap" aria-label="Stage by stage" style="padding-top:0" id="stages">
   <article class="stage" id="checkin"><div class="stage-text"><div class="stage-n" dir="ltr">01</div><h3><span lang="en">Check-in</span><span lang="ar">الاستقبال</span></h3><p><span lang="en">The plate is typed once. The customer is found by phone number or created on the spot. Six photos and a walk-around mark existing damage before the key changes hands.</span><span lang="ar">تُكتب اللوحة مرة واحدة. يُعثر على العميل برقم هاتفه أو يُنشأ فوراً. ست صور وجولة حول المركبة تحدد الأضرار القائمة قبل أن ينتقل المفتاح.</span></p><div class="gate"><span lang="en">Gate: plate, customer and photos before a bay is assigned.</span><span lang="ar">الشرط: اللوحة والعميل والصور قبل إسناد خليج.</span></div></div>
 <div class="mock" aria-label="Check-in, illustrative">
   <div class="bar"><b><span lang="en">Check-in</span><span lang="ar">الاستقبال</span> <span class="mono" dir="ltr">JC-4F2A</span></b><span class="mono" dir="ltr">09:12</span></div>
@@ -242,5 +243,6 @@
   </div>
 </footer>
 <script src="assets/site.js"></script>
+<script src="assets/scenes.js" defer></script>
 </body>
 </html>
