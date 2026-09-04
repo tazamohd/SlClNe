@@ -452,6 +452,7 @@ const aiSection = `
     </div>
     <p class="scene-cap ai-cap">${t('Illustrative. Regions light as the network grows; no customer locations are shown.', 'رسم توضيحي. تضيء المناطق مع نمو الشبكة؛ لا تُعرض مواقع عملاء.')}</p>
     <div class="roles ai-cards">${aiCards.map(([en, ar, den, dar]) => `<div><b>${t(en, ar)}</b><p>${t(den, dar)}</p></div>`).join('')}</div>
+    <p class="fine">${t('Requires configuration: the AI features connect to an AI API at deployment. Until it is connected, the assistant shows “Connect the API”.', 'يتطلب إعداداً: تتصل ميزات الذكاء الاصطناعي بواجهة برمجية عند النشر. وحتى يتم الربط، يعرض المساعد «اربط الواجهة البرمجية».')}</p>
   </div>
 </section>`;
 
@@ -706,7 +707,7 @@ const customer = pageHero({
   <div class="sec-head"><div class="eyebrow">${t('What the customer sees', 'ما يراه العميل')}</div><h2 id="c-h">${t('The same job card, from the other side.', 'بطاقة العمل نفسها، من الجهة الأخرى.')}</h2></div>
   ${facts([
     ['Live stage of the job, from check-in to delivery, with the time the vehicle is expected to be ready.', 'مرحلة العمل لحظياً، من الاستقبال إلى التسليم، مع الوقت المتوقع لجاهزية المركبة.'],
-    ['The estimate, line by line with VAT, approved with an SMS one-time code and a drawn signature. The approval lands on the job card with its timestamp.', 'عرض السعر بنداً بنداً بالضريبة، يُعتمد برمز تحقق برسالة نصية وتوقيع مرسوم. يُسجَّل الاعتماد على بطاقة العمل بوقته.'],
+    ['The estimate, line by line with VAT, approved with an SMS one-time code and a drawn signature. The approval lands on the job card with its timestamp. Requires configuration: the SMS code needs an SMS provider connected at deployment.', 'عرض السعر بنداً بنداً بالضريبة، يُعتمد برمز تحقق برسالة نصية وتوقيع مرسوم. يُسجَّل الاعتماد على بطاقة العمل بوقته. يتطلب إعداداً: رمز التحقق يحتاج إلى مزوّد رسائل نصية مربوط عند النشر.'],
     ['Service history per vehicle and reminders for the next service, by mileage and by date.', 'سجل الخدمة لكل مركبة وتذكيرات بالخدمة التالية، بالمسافة وبالتاريخ.'],
     ['Every invoice with its QR, downloadable, and the payment status.', 'كل فاتورة برمزها، قابلة للتنزيل، مع حالة الدفع.'],
     ['Direct messages to the service advisor, on the job, not in a separate chat app.', 'رسائل مباشرة إلى مستشار الخدمة، على العمل نفسه، لا في تطبيق دردشة منفصل.'],

@@ -13,21 +13,17 @@ const DOCS = join(REPO, 'docs');
 
 /* ---------------------------------------------------------------- sections */
 const SECTIONS = [
+  // Public sections only (owner's decision 2026-09-05): training and the media kit.
+  // The enablement layer (first-week plan, manual, how-tos) is the training material itself, so it ships under Training.
   { key: 'training', dir: 'training', out: 'training',
     title: ['Training', 'التدريب'],
-    desc: ['Role courses, the first-week plan, assessments and certification.', 'دورات الأدوار، وخطة الأسبوع الأول، والتقييمات، والشهادات.'] },
-  { key: 'enablement', dir: 'enablement', out: 'guides',
-    title: ['Manual and how-to guides', 'الدليل وأدلة الخطوات'],
-    desc: ['The user manual by journey group and task guides with their media blocks.', 'دليل المستخدم بحسب مجموعات الرحلة، وأدلة المهام مع كتل الوسائط الخاصة بها.'] },
-  { key: 'kb', dir: 'knowledge-base', out: 'knowledge-base',
-    title: ['Knowledge base', 'قاعدة المعرفة'],
-    desc: ['How-tos, library guides, references and troubleshooting for the platform.', 'أدلة الخطوات، وأدلة المكتبة، والمراجع، واستكشاف الأعطال للمنصة.'] },
+    desc: ['Role courses, assessments and certification.', 'دورات الأدوار، والتقييمات، والشهادات.'] },
+  { key: 'enablement', dir: 'enablement', out: 'training/guides',
+    title: ['Training guide, manual and how-to', 'دليل التدريب والدليل وأدلة الخطوات'],
+    desc: ['The first-week plan per role, the user manual by journey group, and task guides with their media blocks.', 'خطة الأسبوع الأول لكل دور، ودليل المستخدم بحسب مجموعات الرحلة، وأدلة المهام مع كتل الوسائط.'] },
   { key: 'media', dir: 'marketing/media', out: 'media',
     title: ['Media kit', 'عدة الوسائط'],
     desc: ['Video scripts, shorts, carousels, the photo brief and the screenshot guide.', 'نصوص الفيديو، والمقاطع القصيرة، والعروض المتتابعة، وموجز التصوير، ودليل لقطات الشاشة.'] },
-  { key: 'product', dir: 'requirements', out: 'product', only: ['technician-knowledge-library.md'],
-    title: ['Product plans', 'خطط المنتج'],
-    desc: ['The technician knowledge base and library recommendation.', 'توصية قاعدة معرفة الفنيين والمكتبة.'] },
 ];
 
 /* ---------------------------------------------------------------- markdown */
