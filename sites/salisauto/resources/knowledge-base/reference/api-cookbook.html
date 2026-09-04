@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Cookbook</title>
+<meta name="description" content="API Cookbook — SALIS AUTO Knowledge base.">
+<meta name="description" lang="ar" content="API Cookbook — قاعدة المعرفة SALIS AUTO.">
+<link rel="canonical" href="https://salisauto.app/resources/knowledge-base/reference/api-cookbook.html">
+<link rel="alternate" hreflang="en" href="https://salisauto.app/resources/knowledge-base/reference/api-cookbook.html?lang=en">
+<link rel="alternate" hreflang="ar" href="https://salisauto.app/resources/knowledge-base/reference/api-cookbook.html?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://salisauto.app/resources/knowledge-base/reference/api-cookbook.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SALIS AUTO">
+<meta property="og:title" content="API Cookbook">
+<meta property="og:description" content="API Cookbook — SALIS AUTO Knowledge base.">
+<meta property="og:url" content="https://salisauto.app/resources/knowledge-base/reference/api-cookbook.html">
+<meta property="og:image" content="https://salisauto.app/assets/logo-full-colour.svg">
+<meta property="og:locale" content="en_SA">
+<meta property="og:locale:alternate" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SalisAuto">
+<meta name="theme-color" content="#0B1F3B">
+<link rel="icon" href="../../../assets/logo-reversed-white.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="API Cookbook";document.documentElement.dataset.titleEn="API Cookbook";</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="trace" viewBox="0 0 400 200">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
+      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
+      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
+      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
+      <path d="M22 100 H84" stroke="#0BB3FF"/>
+    </g>
+    <g class="dots">
+      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
+      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+      <circle cx="62" cy="44" r="10" fill="#F97316"/>
+      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
+      <circle cx="362" cy="132" r="10" fill="#F97316"/>
+      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
+      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+    </g>
+  </symbol>
+</svg>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
+<header id="site-header">
+  <div class="wrap">
+    <a class="logo" href="../../../index.html" aria-label="SALIS AUTO home"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <a href="../../../lifecycle.html"><span lang="en">Product</span><span lang="ar">المنتج</span></a>
+          <ul class="menu">
+            <li><a href="../../../lifecycle.html"><b><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></b><span><span lang="en">Check-in to delivery</span><span lang="ar">من الاستقبال إلى التسليم</span></span></a></li>
+            <li><a href="../../../features.html"><b><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></b><span><span lang="en">Every module, one record</span><span lang="ar">كل الوحدات، سجل واحد</span></span></a></li>
+            <li><a href="../../../zatca.html"><b><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></b><span><span lang="en">QR, hash chain, retention</span><span lang="ar">رمز الاستجابة، سلسلة التجزئة، الحفظ</span></span></a></li>
+            <li><a href="../../../spare-parts.html"><b><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></b><span><span lang="en">Supplier network and reorder</span><span lang="ar">شبكة الموردين وإعادة الطلب</span></span></a></li>
+            <li><a href="../../../fleet.html"><b><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></b><span><span lang="en">Contract vehicles across branches</span><span lang="ar">مركبات العقود عبر الفروع</span></span></a></li>
+            <li><a href="../../../customer-app.html"><b><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></b><span><span lang="en">Approve from the phone</span><span lang="ar">الاعتماد من الهاتف</span></span></a></li>
+            <li><a href="../../../portals.html"><b><span lang="en">Portals</span><span lang="ar">البوابات</span></b><span><span lang="en">Technician and supplier</span><span lang="ar">الفني والمورّد</span></span></a></li>
+          </ul>
+        </li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a></li>
+        <li><a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a></li>
+        <li><a href="../../../resources/index.html" aria-current="page"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </nav>
+    <div class="hdr-actions">
+      <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="mobile" hidden>
+    <a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a>
+    <a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a>
+    <a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a>
+    <a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a>
+    <a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a>
+    <a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a>
+    <a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a>
+    <a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a>
+    <a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a>
+    <a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+    <a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+  </div>
+</header>
+<main id="main">
+<section class="wrap doc">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a> › <a href="../../../resources/knowledge-base/index.html"><span lang="en">Knowledge base</span><span lang="ar">قاعدة المعرفة</span></a></nav>
+  <p class="fine"><span lang="en">Shown in the language it was written in. Source:</span><span lang="ar">يُعرض باللغة التي كُتب بها. المصدر:</span> <code dir="ltr">docs/knowledge-base/reference/api-cookbook.md</code></p>
+  <article class="doc-body" dir="ltr">
+<h2 dir="auto" id="api-cookbook">API Cookbook</h2>
+<p dir="auto">Common API usage patterns for SALIS AUTO with curl examples. All examples assume the server is running at <code dir="ltr">http://localhost:4000</code> and use JSON format.</p>
+<hr>
+<h3 dir="auto" id="authentication">Authentication</h3>
+<h4 dir="auto" id="login">Login</h4>
+<pre dir="ltr"><code>curl -X POST http://localhost:4000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "manager@salis.demo",
+    "password": "salis1234"
+  }'</code></pre>
+<p dir="auto"><b>Response (200):</b></p>
+<pre dir="ltr"><code>{
+  "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+  "refreshToken": "a1b2c3d4e5f6...",
+  "user": {
+    "id": "01HYX3N2K5P8M7Q4R6T9W0V1",
+    "email": "manager@salis.demo",
+    "name": "Ahmad Al-Rashid",
+    "ar": "أحمد الراشد",
+    "role": "manager",
+    "scope": "branch",
+    "orgId": "01HYX3N2K5P8M7Q4R6T9W0V2",
+    "branchId": "01HYX3N2K5P8M7Q4R6T9W0V3",
+    "roleLabel": "Branch Manager",
+    "approvalLimit": 50000,
+    "destination": "/dashboard"
+  }
+}</code></pre>
+<h4 dir="auto" id="refresh-token">Refresh Token</h4>
+<pre dir="ltr"><code>curl -X POST http://localhost:4000/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refreshToken": "a1b2c3d4e5f6..."
+  }'</code></pre>
+<p dir="auto">Returns the same shape as login. The used refresh token is revoked and a new pair is issued.</p>
+<h4 dir="auto" id="logout">Logout</h4>
+<pre dir="ltr"><code>curl -X POST http://localhost:4000/auth/logout \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refreshToken": "a1b2c3d4e5f6..."
+  }'</code></pre>
+<p dir="auto"><b>Response:</b> <code dir="ltr">204 No Content</code></p>
+<h4 dir="auto" id="get-current-user">Get Current User</h4>
+<pre dir="ltr"><code>curl http://localhost:4000/auth/me \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."</code></pre>
+<p dir="auto"><b>Response (200):</b></p>
+<pre dir="ltr"><code>{
+  "user": { "id": "...", "name": "...", "role": "manager", ... }
+}</code></pre>
+<hr>
+<h3 dir="auto" id="listing-with-pagination">Listing with Pagination</h3>
+<p dir="auto">All collection endpoints support pagination via <code dir="ltr">page</code> and <code dir="ltr">pageSize</code> query parameters.</p>
+<h4 dir="auto" id="basic-list">Basic List</h4>
+<pre dir="ltr"><code>curl http://localhost:4000/jobs \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<p dir="auto">Returns a bare JSON array of the first 50 rows (default <code dir="ltr">pageSize</code>).</p>
+<h4 dir="auto" id="paginated-list">Paginated List</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/jobs?page=2&amp;pageSize=20" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<p dir="auto">Returns rows 21-40.</p>
+<h4 dir="auto" id="pagination-parameters">Pagination Parameters</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Parameter</th><th dir="auto">Type</th><th dir="auto">Default</th><th dir="auto">Range</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">page</code></td><td dir="auto">integer</td><td dir="auto">1</td><td dir="auto">&gt;= 1</td><td dir="auto">Page number</td></tr><tr><td dir="auto"><code dir="ltr">pageSize</code></td><td dir="auto">integer</td><td dir="auto">50</td><td dir="auto">1-200</td><td dir="auto">Rows per page</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="sorting">Sorting</h3>
+<p dir="auto">Use the <code dir="ltr">sort</code> parameter with the format <code dir="ltr">field:direction</code>.</p>
+<h4 dir="auto" id="sort-by-amount-descending">Sort by Amount Descending</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/invoices?sort=totalHalalas:desc" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<h4 dir="auto" id="sort-by-date-ascending">Sort by Date Ascending</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/appointments?sort=scheduledDate:asc" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<h4 dir="auto" id="valid-directions">Valid Directions</h4>
+<ul dir="auto"><li><code dir="ltr">asc</code> — Ascending (A-Z, oldest first, smallest first)</li><li><code dir="ltr">desc</code> — Descending (Z-A, newest first, largest first)</li></ul>
+<hr>
+<h3 dir="auto" id="searching">Searching</h3>
+<p dir="auto">Use the <code dir="ltr">q</code> parameter for free-text search. The server performs case-insensitive <code dir="ltr">ILIKE %q%</code> on designated searchable columns.</p>
+<h4 dir="auto" id="search-customers-by-name">Search Customers by Name</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/customers?q=toyota" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<p dir="auto">Searches across the <code dir="ltr">name</code> and <code dir="ltr">phone</code> columns for customers.</p>
+<h4 dir="auto" id="search-parts-by-sku">Search Parts by SKU</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/inventory?q=BRK-PAD" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<p dir="auto">Searches across <code dir="ltr">name</code> and <code dir="ltr">sku</code> columns.</p>
+<h4 dir="auto" id="searchable-columns-per-collection">Searchable Columns per Collection</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Endpoint</th><th dir="auto">Searchable Columns</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">/jobs</code></td><td dir="auto">id, customer name, vehicle label</td></tr><tr><td dir="auto"><code dir="ltr">/appointments</code></td><td dir="auto">customer name, vehicle label, plate, technician name</td></tr><tr><td dir="auto"><code dir="ltr">/estimates</code></td><td dir="auto">id, customer name, vehicle label</td></tr><tr><td dir="auto"><code dir="ltr">/invoices</code></td><td dir="auto">id, customer name</td></tr><tr><td dir="auto"><code dir="ltr">/receipts</code></td><td dir="auto">id, customer name, invoice code</td></tr><tr><td dir="auto"><code dir="ltr">/customers</code></td><td dir="auto">name, phone</td></tr><tr><td dir="auto"><code dir="ltr">/vehicles</code></td><td dir="auto">plate, make_model, owner name</td></tr><tr><td dir="auto"><code dir="ltr">/inventory</code></td><td dir="auto">name, sku</td></tr><tr><td dir="auto"><code dir="ltr">/technicians</code></td><td dir="auto">name, specialty</td></tr><tr><td dir="auto"><code dir="ltr">/crm/leads</code></td><td dir="auto">name, company</td></tr><tr><td dir="auto"><code dir="ltr">/crm/opportunities</code></td><td dir="auto">name, company, owner name</td></tr><tr><td dir="auto"><code dir="ltr">/accounting/coa</code></td><td dir="auto">code, name, type</td></tr><tr><td dir="auto"><code dir="ltr">/accounting/journal-entries</code></td><td dir="auto">id, ref, narration</td></tr><tr><td dir="auto"><code dir="ltr">/accounting/expenses</code></td><td dir="auto">id, category, vendor</td></tr></tbody></table></div>
+<p dir="auto"><b>Note:</b> The <code dir="ltr">q</code> parameter is limited to 200 characters.</p>
+<hr>
+<h3 dir="auto" id="filtering">Filtering</h3>
+<p dir="auto">Use <code dir="ltr">filter[field]</code> for exact-match filtering on any returned column.</p>
+<h4 dir="auto" id="filter-by-status">Filter by Status</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/jobs?filter[status]=in_progress" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<h4 dir="auto" id="filter-by-branch">Filter by Branch</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/jobs?filter[branchId]=01HYX3N2K5P8M7Q4R6T9W0V3" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<h4 dir="auto" id="filter-by-priority">Filter by Priority</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/jobs?filter[priority]=urgent" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<hr>
+<h3 dir="auto" id="combining-query-parameters">Combining Query Parameters</h3>
+<p dir="auto">Query parameters can be combined freely.</p>
+<h4 dir="auto" id="search-filter-sort-and-paginate">Search, Filter, Sort, and Paginate</h4>
+<pre dir="ltr"><code>curl "http://localhost:4000/invoices?q=ahmed&amp;filter[status]=paid&amp;sort=totalHalalas:desc&amp;page=1&amp;pageSize=20" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<p dir="auto">This searches for invoices matching "ahmed" with status "paid", sorted by amount descending, returning the first 20 results.</p>
+<hr>
+<h3 dir="auto" id="getting-a-single-record">Getting a Single Record</h3>
+<p dir="auto">Detail endpoints return a single JSON object (not an array).</p>
+<h4 dir="auto" id="get-job-card-by-id">Get Job Card by ID</h4>
+<pre dir="ltr"><code>curl http://localhost:4000/jobs/01HYX3N2K5P8M7Q4R6T9W0V1 \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+<p dir="auto"><b>Response (200):</b></p>
+<pre dir="ltr"><code>{
+  "id": "01HYX3N2K5P8M7Q4R6T9W0V1",
+  "code": "A3F8B2C1",
+  "customerName": "Ahmad Al-Rashid",
+  "vehicleLabel": "Toyota Camry 2023",
+  "service": "maintenance",
+  "status": "in_progress",
+  "stage": "repair",
+  "priority": "medium",
+  "assignedTechId": "01HYX3N2K5P8M7Q4R6T9W0V4",
+  "complaint": "Engine noise when accelerating",
+  "orgId": "01HYX3N2K5P8M7Q4R6T9W0V2",
+  "branchId": "01HYX3N2K5P8M7Q4R6T9W0V3",
+  "createdAt": "2026-08-15T10:30:00.000Z",
+  "version": 3
+}</code></pre>
+<h4 dir="auto" id="available-detail-endpoints">Available Detail Endpoints</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Path</th><th dir="auto">Returns</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">GET /jobs/:id</code></td><td dir="auto">Job card detail</td></tr><tr><td dir="auto"><code dir="ltr">GET /estimates/:id</code></td><td dir="auto">Estimate with lines</td></tr><tr><td dir="auto"><code dir="ltr">GET /invoices/:id</code></td><td dir="auto">Invoice with lines and payments</td></tr><tr><td dir="auto"><code dir="ltr">GET /receipts/:id</code></td><td dir="auto">Receipt detail</td></tr><tr><td dir="auto"><code dir="ltr">GET /accounting/coa/:id</code></td><td dir="auto">Account detail</td></tr><tr><td dir="auto"><code dir="ltr">GET /accounting/journal-entries/:id</code></td><td dir="auto">Journal entry detail</td></tr><tr><td dir="auto"><code dir="ltr">GET /accounting/expenses/:id</code></td><td dir="auto">Expense detail</td></tr><tr><td dir="auto"><code dir="ltr">GET /kb/procedures/:id</code></td><td dir="auto">Knowledge base procedure detail</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="response-format">Response Format</h3>
+<h4 dir="auto" id="lists">Lists</h4>
+<p dir="auto">List endpoints return a <b>bare JSON array</b>:</p>
+<pre dir="ltr"><code>[
+  { "id": "...", "name": "...", ... },
+  { "id": "...", "name": "...", ... }
+]</code></pre>
+<h4 dir="auto" id="detail">Detail</h4>
+<p dir="auto">Detail endpoints return a <b>single JSON object</b>:</p>
+<pre dir="ltr"><code>{ "id": "...", "name": "...", ... }</code></pre>
+<h4 dir="auto" id="empty-lists">Empty Lists</h4>
+<p dir="auto">An empty list returns an empty array: <code dir="ltr">[]</code></p>
+<hr>
+<h3 dir="auto" id="error-handling">Error Handling</h3>
+<h4 dir="auto" id="parsing-the-error-envelope">Parsing the Error Envelope</h4>
+<p dir="auto">All errors follow the same format:</p>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "forbidden",
+    "message": "Your role does not have permission to edit invoices",
+    "field": null
+  }
+}</code></pre>
+<h4 dir="auto" id="example-handling-a-401">Example: Handling a 401</h4>
+<pre dir="ltr"><code># This will fail if the token is expired
+curl http://localhost:4000/jobs \
+  -H "Authorization: Bearer expired-token"
+
+# Response: 401
+# { "error": { "code": "unauthorized", "message": "Token expired" } }
+
+# Fix: refresh the token
+curl -X POST http://localhost:4000/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{ "refreshToken": "valid-refresh-token" }'</code></pre>
+<h4 dir="auto" id="example-handling-a-422">Example: Handling a 422</h4>
+<pre dir="ltr"><code># Attempt to transfer stock to another org's branch
+curl -X POST http://localhost:4000/parts/01HYX.../movements \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "transfer",
+    "qty": 5,
+    "toBranchId": "01OTHER_ORG_BRANCH"
+  }'
+
+# Response: 422
+# { "error": { "code": "rule_violated", "message": "Transfer target branch does not belong to this organization", "field": "toBranchId" } }</code></pre>
+<hr>
+<h3 dir="auto" id="working-with-money">Working with Money</h3>
+<p dir="auto">All monetary values in the API are integer halalas. To display as SAR:</p>
+<pre dir="ltr"><code>Display value = API value / 100</code></pre>
+<h4 dir="auto" id="examples">Examples</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">API Value (halalas)</th><th dir="auto">Display (SAR)</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">150000</code></td><td dir="auto"><code dir="ltr">SAR 1,500.00</code></td></tr><tr><td dir="auto"><code dir="ltr">7550</code></td><td dir="auto"><code dir="ltr">SAR 75.50</code></td></tr><tr><td dir="auto"><code dir="ltr">100</code></td><td dir="auto"><code dir="ltr">SAR 1.00</code></td></tr><tr><td dir="auto"><code dir="ltr">0</code></td><td dir="auto"><code dir="ltr">SAR 0.00</code></td></tr></tbody></table></div>
+<h4 dir="auto" id="in-javascript">In JavaScript</h4>
+<pre dir="ltr"><code>// API returns halalas
+const totalHalalas = response.totalHalalas // 150000
+
+// Convert for display
+const sarAmount = totalHalalas / 100 // 1500.00
+const formatted = new Intl.NumberFormat('en-SA', {
+  style: 'currency',
+  currency: 'SAR'
+}).format(sarAmount) // "SAR 1,500.00"</code></pre>
+<h4 dir="auto" id="in-request-bodies">In Request Bodies</h4>
+<p dir="auto">When sending money values, convert SAR to halalas:</p>
+<pre dir="ltr"><code># Create a part priced at SAR 150.00
+curl -X POST http://localhost:4000/inventory \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Brake Pad Set",
+    "sku": "BRK-PAD-001",
+    "priceHalalas": 15000,
+    "onHand": 50,
+    "reorderLevel": 10
+  }'</code></pre>
+<hr>
+<h3 dir="auto" id="csv-export">CSV Export</h3>
+<p dir="auto">Request data in CSV format by setting the <code dir="ltr">Accept</code> header:</p>
+<pre dir="ltr"><code>curl "http://localhost:4000/invoices?filter[status]=paid&amp;sort=issuedAt:desc" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Accept: text/csv" \
+  -o invoices.csv</code></pre>
+<h4 dir="auto" id="csv-notes">CSV Notes</h4>
+<ul dir="auto"><li>Maximum 50,000 rows per export.</li><li>Formula injection protection: cells starting with <code dir="ltr">=</code>, <code dir="ltr">+</code>, <code dir="ltr">-</code>, <code dir="ltr">@</code>, <code dir="ltr">\t</code>, <code dir="ltr">\r</code> are prefixed with <code dir="ltr">'</code>.</li><li>UTF-8 encoding with BOM for Arabic support.</li><li>Money columns remain in halalas (integer) in the CSV.</li></ul>
+<hr>
+<h3 dir="auto" id="health-check">Health Check</h3>
+<p dir="auto">No authentication required:</p>
+<pre dir="ltr"><code>curl http://localhost:4000/health</code></pre>
+<p dir="auto"><b>Response (200):</b></p>
+<pre dir="ltr"><code>{ "status": "ok" }</code></pre>
+<p dir="auto">Use this to verify the server is running and reachable.</p>
+<hr>
+<h3 dir="auto" id="idempotency">Idempotency</h3>
+<p dir="auto">For write operations, include an <code dir="ltr">Idempotency-Key</code> header to prevent duplicate effects:</p>
+<pre dir="ltr"><code>curl -X POST http://localhost:4000/payments \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: pay-inv-001-2026-08-30" \
+  -d '{
+    "invoiceId": "01HYX...",
+    "paidOn": "2026-08-30",
+    "method": "card",
+    "amountHalalas": 150000
+  }'</code></pre>
+<p dir="auto">If the same <code dir="ltr">Idempotency-Key</code> is sent again with the same request body, the server returns the stored response. A different body with the same key is rejected.</p>
+<hr>
+<h3 dir="auto" id="see-also">See Also</h3>
+<ul dir="auto"><li><a href="../troubleshooting/error-codes.html">Error Codes</a> — Complete error reference</li><li><a href="./data-dictionary.html">Data Dictionary</a> — Table schemas</li><li><a href="./configuration-reference.html">Configuration Reference</a> — Environment variables</li></ul>
+  </article>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="../../../index.html"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+      <p class="tag"><span lang="en">Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.</span></p>
+      <p class="fine"><a href="https://app.salisauto.app/privacy-policy"><span lang="en">Privacy</span><span lang="ar">الخصوصية</span></a> · <a href="https://app.salisauto.app/terms-conditions"><span lang="en">Terms</span><span lang="ar">الشروط</span></a> · <a href="https://app.salisauto.app/cookie-policy"><span lang="en">Cookies</span><span lang="ar">ملفات الارتباط</span></a></p>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Product</span><span lang="ar">المنتج</span></span>
+      <ul>
+        <li><a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a></li>
+        <li><a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a></li>
+        <li><a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a></li>
+        <li><a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a></li>
+        <li><a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a></li>
+        <li><a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a></li>
+        <li><a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a></li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">The SALIS family</span><span lang="ar">عائلة SALIS</span></span>
+      <ul>
+        <li><a href="https://salisco.com/products/garage.html" dir="ltr">SALIS Garage</a> <em><span lang="en">this product</span><span lang="ar">هذا المنتج</span></em></li>
+        <li><a href="https://salisco.com/products/spare-parts.html" dir="ltr">SALIS Spare Parts</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/fleet.html" dir="ltr">SALIS Fleet</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/insurance.html" dir="ltr">SALIS Insurance</a> <em><span lang="en">planned</span><span lang="ar">مخطط</span></em></li>
+        <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Contact</span><span lang="ar">تواصل</span></span>
+      <ul>
+        <li><a href="mailto:info@salisauto.app" dir="ltr">info@salisauto.app</a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a></li>
+        <li><a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a></li>
+        <li><a href="https://www.linkedin.com/company/salisauto" dir="ltr">linkedin.com/company/salisauto</a></li>
+        <li><a href="https://x.com/SalisAuto" dir="ltr">@SalisAuto</a> · <a href="https://www.instagram.com/salisauto" dir="ltr">@salisauto</a></li>
+        <li><a href="https://www.youtube.com/@salisauto" dir="ltr">youtube.com/@salisauto</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

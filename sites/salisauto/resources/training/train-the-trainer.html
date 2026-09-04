@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SALIS AUTO -- Train-the-Trainer Guide</title>
+<meta name="description" content="SALIS AUTO -- Train-the-Trainer Guide — SALIS AUTO Training.">
+<meta name="description" lang="ar" content="SALIS AUTO -- Train-the-Trainer Guide — التدريب SALIS AUTO.">
+<link rel="canonical" href="https://salisauto.app/resources/training/train-the-trainer.html">
+<link rel="alternate" hreflang="en" href="https://salisauto.app/resources/training/train-the-trainer.html?lang=en">
+<link rel="alternate" hreflang="ar" href="https://salisauto.app/resources/training/train-the-trainer.html?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://salisauto.app/resources/training/train-the-trainer.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SALIS AUTO">
+<meta property="og:title" content="SALIS AUTO -- Train-the-Trainer Guide">
+<meta property="og:description" content="SALIS AUTO -- Train-the-Trainer Guide — SALIS AUTO Training.">
+<meta property="og:url" content="https://salisauto.app/resources/training/train-the-trainer.html">
+<meta property="og:image" content="https://salisauto.app/assets/logo-full-colour.svg">
+<meta property="og:locale" content="en_SA">
+<meta property="og:locale:alternate" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SalisAuto">
+<meta name="theme-color" content="#0B1F3B">
+<link rel="icon" href="../../assets/logo-reversed-white.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="SALIS AUTO -- Train-the-Trainer Guide";document.documentElement.dataset.titleEn="SALIS AUTO -- Train-the-Trainer Guide";</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="trace" viewBox="0 0 400 200">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
+      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
+      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
+      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
+      <path d="M22 100 H84" stroke="#0BB3FF"/>
+    </g>
+    <g class="dots">
+      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
+      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+      <circle cx="62" cy="44" r="10" fill="#F97316"/>
+      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
+      <circle cx="362" cy="132" r="10" fill="#F97316"/>
+      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
+      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+    </g>
+  </symbol>
+</svg>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
+<header id="site-header">
+  <div class="wrap">
+    <a class="logo" href="../../index.html" aria-label="SALIS AUTO home"><img class="full" src="../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <a href="../../lifecycle.html"><span lang="en">Product</span><span lang="ar">المنتج</span></a>
+          <ul class="menu">
+            <li><a href="../../lifecycle.html"><b><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></b><span><span lang="en">Check-in to delivery</span><span lang="ar">من الاستقبال إلى التسليم</span></span></a></li>
+            <li><a href="../../features.html"><b><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></b><span><span lang="en">Every module, one record</span><span lang="ar">كل الوحدات، سجل واحد</span></span></a></li>
+            <li><a href="../../zatca.html"><b><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></b><span><span lang="en">QR, hash chain, retention</span><span lang="ar">رمز الاستجابة، سلسلة التجزئة، الحفظ</span></span></a></li>
+            <li><a href="../../spare-parts.html"><b><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></b><span><span lang="en">Supplier network and reorder</span><span lang="ar">شبكة الموردين وإعادة الطلب</span></span></a></li>
+            <li><a href="../../fleet.html"><b><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></b><span><span lang="en">Contract vehicles across branches</span><span lang="ar">مركبات العقود عبر الفروع</span></span></a></li>
+            <li><a href="../../customer-app.html"><b><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></b><span><span lang="en">Approve from the phone</span><span lang="ar">الاعتماد من الهاتف</span></span></a></li>
+            <li><a href="../../portals.html"><b><span lang="en">Portals</span><span lang="ar">البوابات</span></b><span><span lang="en">Technician and supplier</span><span lang="ar">الفني والمورّد</span></span></a></li>
+          </ul>
+        </li>
+        <li><a href="../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a></li>
+        <li><a href="../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a></li>
+        <li><a href="../../resources/index.html" aria-current="page"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </nav>
+    <div class="hdr-actions">
+      <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="mobile" hidden>
+    <a href="../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a>
+    <a href="../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a>
+    <a href="../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a>
+    <a href="../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a>
+    <a href="../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a>
+    <a href="../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a>
+    <a href="../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a>
+    <a href="../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a>
+    <a href="../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a>
+    <a href="../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+    <a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+  </div>
+</header>
+<main id="main">
+<section class="wrap doc">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a> › <a href="../../resources/training/index.html"><span lang="en">Training</span><span lang="ar">التدريب</span></a></nav>
+  <p class="fine"><span lang="en">Shown in the language it was written in. Source:</span><span lang="ar">يُعرض باللغة التي كُتب بها. المصدر:</span> <code dir="ltr">docs/training/train-the-trainer.md</code></p>
+  <article class="doc-body" dir="ltr">
+<h2 dir="auto" id="salis-auto-train-the-trainer-guide">SALIS AUTO -- Train-the-Trainer Guide</h2>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Field</th><th dir="auto">Value</th></tr></thead><tbody><tr><td dir="auto">Document ID</td><td dir="auto">SA-TRN-012</td></tr><tr><td dir="auto">Version</td><td dir="auto">1.0</td></tr><tr><td dir="auto">Date</td><td dir="auto">2026-08-31</td></tr><tr><td dir="auto">Author</td><td dir="auto">SALIS AUTO PMO</td></tr><tr><td dir="auto">Status</td><td dir="auto">Approved</td></tr><tr><td dir="auto">Classification</td><td dir="auto">Internal -- Confidential</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="1-purpose">1. Purpose</h3>
+<p dir="auto">This document provides certified trainers with the tools, techniques, and checklists needed to deliver SALIS AUTO training courses effectively. It covers demo environment setup, bilingual delivery strategies, session pacing, common participant questions, proctoring guidelines, and a comprehensive facilitator checklist.</p>
+<hr>
+<h3 dir="auto" id="2-trainer-qualifications">2. Trainer Qualifications</h3>
+<h4 dir="auto" id="2-1-eligibility-requirements">2.1 Eligibility Requirements</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Requirement</th><th dir="auto">Detail</th></tr></thead><tbody><tr><td dir="auto">Platform Certification</td><td dir="auto">Gold tier (90%+ on all course assessments)</td></tr><tr><td dir="auto">Role Experience</td><td dir="auto">Minimum 6 months in the relevant role</td></tr><tr><td dir="auto">Facilitation Training</td><td dir="auto">Completed internal facilitator program</td></tr><tr><td dir="auto">Language Proficiency</td><td dir="auto">Fluent in English and Arabic</td></tr><tr><td dir="auto">Recertification</td><td dir="auto">Annual renewal via refresher assessment</td></tr></tbody></table></div>
+<h4 dir="auto" id="2-2-trainer-roles">2.2 Trainer Roles</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Role</th><th dir="auto">Responsibility</th></tr></thead><tbody><tr><td dir="auto">Lead Trainer</td><td dir="auto">Delivers ILT sessions; manages classroom dynamics</td></tr><tr><td dir="auto">Lab Facilitator</td><td dir="auto">Assists during hands-on labs; troubleshoots demo issues</td></tr><tr><td dir="auto">LMS Administrator</td><td dir="auto">Manages course enrollment, progress tracking, reporting</td></tr><tr><td dir="auto">Proctor</td><td dir="auto">Administers assessments; enforces exam integrity</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="3-demo-environment-setup">3. Demo Environment Setup</h3>
+<h4 dir="auto" id="3-1-environment-overview">3.1 Environment Overview</h4>
+<p dir="auto">The training demo environment is a sandboxed copy of the production system with pre-loaded data. It resets nightly at 02:00 AST.</p>
+<h4 dir="auto" id="3-2-demo-accounts">3.2 Demo Accounts</h4>
+<p dir="auto">All demo accounts use password: <code dir="ltr">Demo@1234</code></p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Role</th><th dir="auto">Name</th><th dir="auto">Email</th><th dir="auto">Scope</th><th dir="auto">SAR Limit</th></tr></thead><tbody><tr><td dir="auto">Owner/CEO</td><td dir="auto">Abdullah Al-Salis</td><td dir="auto">owner@salisauto.sa</td><td dir="auto">All</td><td dir="auto">Unlimited</td></tr><tr><td dir="auto">Super Admin</td><td dir="auto">Platform Admin</td><td dir="auto">admin@salisauto.com</td><td dir="auto">Platform</td><td dir="auto">Unlimited</td></tr><tr><td dir="auto">Branch Manager</td><td dir="auto">Faisal Al-Harbi</td><td dir="auto">manager@salisauto.sa</td><td dir="auto">Branch</td><td dir="auto">50,000</td></tr><tr><td dir="auto">Service Advisor</td><td dir="auto">Noura Al-Qahtani</td><td dir="auto">advisor@salisauto.sa</td><td dir="auto">Branch</td><td dir="auto">5,000</td></tr><tr><td dir="auto">Technician</td><td dir="auto">Saeed Al-Zahrani</td><td dir="auto">tech@salisauto.sa</td><td dir="auto">Own</td><td dir="auto">0</td></tr><tr><td dir="auto">QC Inspector</td><td dir="auto">Majed Al-Otaibi</td><td dir="auto">qc@salisauto.sa</td><td dir="auto">Branch</td><td dir="auto">0</td></tr><tr><td dir="auto">Storekeeper</td><td dir="auto">Yousef Al-Ghamdi</td><td dir="auto">parts@salisauto.sa</td><td dir="auto">Branch</td><td dir="auto">10,000</td></tr><tr><td dir="auto">Accountant</td><td dir="auto">Hessa Al-Mutairi</td><td dir="auto">finance@salisauto.sa</td><td dir="auto">All</td><td dir="auto">25,000</td></tr><tr><td dir="auto">HR Manager</td><td dir="auto">Reem Al-Dossari</td><td dir="auto">hr@salisauto.sa</td><td dir="auto">All</td><td dir="auto">15,000</td></tr><tr><td dir="auto">Receptionist</td><td dir="auto">Lama Al-Shehri</td><td dir="auto">frontdesk@salisauto.sa</td><td dir="auto">Branch</td><td dir="auto">0</td></tr><tr><td dir="auto">Call Center</td><td dir="auto">Turki Al-Anazi</td><td dir="auto">calls@salisauto.sa</td><td dir="auto">All</td><td dir="auto">0</td></tr><tr><td dir="auto">Procurement</td><td dir="auto">Bandar Al-Subaie</td><td dir="auto">procurement@salisauto.sa</td><td dir="auto">All</td><td dir="auto">20,000</td></tr><tr><td dir="auto">Supplier</td><td dir="auto">Al-Jazira Parts Co.</td><td dir="auto">supplier@aljazira.sa</td><td dir="auto">External</td><td dir="auto">0</td></tr><tr><td dir="auto">Customer</td><td dir="auto">Khalid Al-Amri</td><td dir="auto">khalid@example.sa</td><td dir="auto">Self</td><td dir="auto">0</td></tr></tbody></table></div>
+<h4 dir="auto" id="3-3-pre-session-setup-checklist">3.3 Pre-Session Setup Checklist</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">#</th><th dir="auto">Task</th><th dir="auto">Timing</th></tr></thead><tbody><tr><td dir="auto">1</td><td dir="auto">Verify demo environment is online and responsive</td><td dir="auto">Day before</td></tr><tr><td dir="auto">2</td><td dir="auto">Log in to each demo account to confirm access</td><td dir="auto">Day before</td></tr><tr><td dir="auto">3</td><td dir="auto">Verify pre-loaded demo data (job cards, invoices)</td><td dir="auto">Day before</td></tr><tr><td dir="auto">4</td><td dir="auto">Test projector/screen sharing with demo environment</td><td dir="auto">1 hour before</td></tr><tr><td dir="auto">5</td><td dir="auto">Prepare browser tabs for multi-role demonstrations</td><td dir="auto">30 min before</td></tr><tr><td dir="auto">6</td><td dir="auto">Distribute participant workbooks (print or digital)</td><td dir="auto">Session start</td></tr><tr><td dir="auto">7</td><td dir="auto">Confirm bilingual keyboard and input method setup</td><td dir="auto">30 min before</td></tr><tr><td dir="auto">8</td><td dir="auto">Test QR code scanning on mobile devices</td><td dir="auto">30 min before</td></tr><tr><td dir="auto">9</td><td dir="auto">Set up backup internet connection</td><td dir="auto">Day before</td></tr><tr><td dir="auto">10</td><td dir="auto">Request ad-hoc environment reset if needed</td><td dir="auto">As required</td></tr></tbody></table></div>
+<h4 dir="auto" id="3-4-demo-data-scenarios">3.4 Demo Data Scenarios</h4>
+<p dir="auto">The demo environment includes these pre-loaded scenarios for hands-on labs:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Scenario</th><th dir="auto">Purpose</th></tr></thead><tbody><tr><td dir="auto">5 open job cards at various stages</td><td dir="auto">Workshop lifecycle demonstration</td></tr><tr><td dir="auto">3 pending estimates (&lt; 5K, 10K, 60K SAR)</td><td dir="auto">Approval hierarchy demonstration</td></tr><tr><td dir="auto">2 completed jobs with invoices</td><td dir="auto">ZATCA compliance demonstration</td></tr><tr><td dir="auto">10 inventory items (mixed stock)</td><td dir="auto">Parts management demonstration</td></tr><tr><td dir="auto">3 pending POs</td><td dir="auto">Procurement SOD demonstration</td></tr><tr><td dir="auto">5 customer records with history</td><td dir="auto">CRM and registry demonstration</td></tr><tr><td dir="auto">2 pending leave requests</td><td dir="auto">HR management demonstration</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="4-bilingual-delivery-guidelines">4. Bilingual Delivery Guidelines</h3>
+<h4 dir="auto" id="4-1-language-strategy">4.1 Language Strategy</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Audience</th><th dir="auto">Primary Language</th><th dir="auto">Support Language</th><th dir="auto">Interface</th></tr></thead><tbody><tr><td dir="auto">Internal staff</td><td dir="auto">Arabic</td><td dir="auto">English</td><td dir="auto">AR (RTL)</td></tr><tr><td dir="auto">Technical roles</td><td dir="auto">English</td><td dir="auto">Arabic</td><td dir="auto">EN (LTR)</td></tr><tr><td dir="auto">Executives</td><td dir="auto">Participant choice</td><td dir="auto">Other</td><td dir="auto">Mixed</td></tr><tr><td dir="auto">External users</td><td dir="auto">Participant choice</td><td dir="auto">Other</td><td dir="auto">Mixed</td></tr></tbody></table></div>
+<h4 dir="auto" id="4-2-best-practices">4.2 Best Practices</h4>
+<ol dir="auto"><li><b>Lead in the primary language</b> -- deliver core explanations in the audience's dominant language</li><li><b>Show both interfaces</b> -- demonstrate key screens in both EN and AR to build familiarity</li><li><b>Use consistent terminology</b> -- maintain a bilingual glossary for platform-specific terms</li><li><b>Provide bilingual handouts</b> -- participant workbooks should have EN on the left page, AR on the right</li><li><b>Label demos clearly</b> -- announce which language the interface is in before each demonstration</li><li><b>Accommodate code-switching</b> -- allow participants to ask questions in either language</li><li><b>RTL awareness</b> -- demonstrate how the interface mirrors in Arabic, including navigation, tables, and forms</li></ol>
+<h4 dir="auto" id="4-3-key-bilingual-terms">4.3 Key Bilingual Terms</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">English Term</th><th dir="auto">Arabic Term</th><th dir="auto">Context</th></tr></thead><tbody><tr><td dir="auto">Job Card</td><td dir="auto">بطاقة العمل</td><td dir="auto">Workshop</td></tr><tr><td dir="auto">Estimate</td><td dir="auto">التقدير</td><td dir="auto">Finance</td></tr><tr><td dir="auto">Invoice</td><td dir="auto">الفاتورة</td><td dir="auto">Finance/ZATCA</td></tr><tr><td dir="auto">Check-In</td><td dir="auto">تسجيل الدخول</td><td dir="auto">Workshop</td></tr><tr><td dir="auto">Quality Control</td><td dir="auto">مراقبة الجودة</td><td dir="auto">QC</td></tr><tr><td dir="auto">Purchase Order</td><td dir="auto">أمر الشراء</td><td dir="auto">Procurement</td></tr><tr><td dir="auto">Dashboard</td><td dir="auto">لوحة التحكم</td><td dir="auto">Navigation</td></tr><tr><td dir="auto">Approval</td><td dir="auto">الموافقة</td><td dir="auto">Workflow</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="5-session-pacing-guide">5. Session Pacing Guide</h3>
+<h4 dir="auto" id="5-1-general-pacing-rules">5.1 General Pacing Rules</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Activity Type</th><th dir="auto">Recommended Duration</th><th dir="auto">Notes</th></tr></thead><tbody><tr><td dir="auto">Concept lecture</td><td dir="auto">15-25 min max</td><td dir="auto">Break into 15-min chunks</td></tr><tr><td dir="auto">Hands-on lab</td><td dir="auto">20-30 min</td><td dir="auto">Allow extra time for slow learners</td></tr><tr><td dir="auto">Quiz/Assessment</td><td dir="auto">10-15 min</td><td dir="auto">Self-paced within time limit</td></tr><tr><td dir="auto">Break</td><td dir="auto">10-15 min</td><td dir="auto">Every 90 minutes minimum</td></tr><tr><td dir="auto">Q&amp;A</td><td dir="auto">10-15 min</td><td dir="auto">After each module</td></tr></tbody></table></div>
+<h4 dir="auto" id="5-2-track-specific-pacing">5.2 Track-Specific Pacing</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Track</th><th dir="auto">Total Duration</th><th dir="auto">Sessions</th><th dir="auto">Daily Pace</th></tr></thead><tbody><tr><td dir="auto">Executive</td><td dir="auto">4-8h per role</td><td dir="auto">1-2 days</td><td dir="auto">4h/day (mornings)</td></tr><tr><td dir="auto">Operations</td><td dir="auto">4-8h per role</td><td dir="auto">1-2 days</td><td dir="auto">Split shifts</td></tr><tr><td dir="auto">Back-Office</td><td dir="auto">8-10h combined</td><td dir="auto">2-3 days</td><td dir="auto">4h/day (afternoons)</td></tr><tr><td dir="auto">External</td><td dir="auto">2-3h per role</td><td dir="auto">1 session</td><td dir="auto">Evening or self-paced</td></tr></tbody></table></div>
+<h4 dir="auto" id="5-3-handling-delays">5.3 Handling Delays</h4>
+<ul dir="auto"><li>If a lab takes longer than planned, reduce the subsequent lecture by the same amount</li><li>Never skip hands-on labs -- they are the primary learning vehicle</li><li>Use the "parking lot" technique for off-topic questions -- note them and address at the end</li><li>If the demo environment is slow, switch to screenshots while the environment recovers</li></ul>
+<hr>
+<h3 dir="auto" id="6-common-questions-and-answers">6. Common Questions and Answers</h3>
+<h4 dir="auto" id="6-1-general-platform-questions">6.1 General Platform Questions</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Question</th><th dir="auto">Answer</th></tr></thead><tbody><tr><td dir="auto">Can I use the platform on my phone?</td><td dir="auto">Yes, the interface is responsive. Tablets are recommended for technicians in the workshop.</td></tr><tr><td dir="auto">What browser is recommended?</td><td dir="auto">Chrome or Edge (latest version). Safari is supported but Chrome is preferred.</td></tr><tr><td dir="auto">What happens if I forget my password?</td><td dir="auto">Use the "Forgot Password" link on the login page, or contact your Super Admin.</td></tr><tr><td dir="auto">Can I work in both English and Arabic?</td><td dir="auto">Yes, switch languages instantly via the language toggle. All data is stored bilingually.</td></tr><tr><td dir="auto">How is my data protected?</td><td dir="auto">Role-based access (RBAC), SOD controls, encrypted storage, 7-year audit trail.</td></tr></tbody></table></div>
+<h4 dir="auto" id="6-2-role-specific-questions">6.2 Role-Specific Questions</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Question</th><th dir="auto">Answer</th></tr></thead><tbody><tr><td dir="auto">Why can't I approve this estimate? (Advisor)</td><td dir="auto">Your approval limit is 5,000 SAR. Estimates above this escalate to the manager (50K) or owner (unlimited).</td></tr><tr><td dir="auto">Why am I blocked from passing QC? (Technician)</td><td dir="auto">SOD rule: the person who repairs cannot pass QC on the same job. A different QC inspector must review.</td></tr><tr><td dir="auto">Can I see other branches' data? (Manager)</td><td dir="auto">No, the manager role has branch scope. Only all-scope roles (owner, accountant, HR) can see cross-branch data.</td></tr><tr><td dir="auto">How do I handle a ZATCA error? (Accountant)</td><td dir="auto">Check the ZATCA compliance panel. Common issues: missing VAT number, incorrect QR format, broken hash chain. Contact Super Admin if unresolved.</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="7-proctoring-guidelines">7. Proctoring Guidelines</h3>
+<h4 dir="auto" id="7-1-assessment-administration">7.1 Assessment Administration</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Rule</th><th dir="auto">Detail</th></tr></thead><tbody><tr><td dir="auto">Environment</td><td dir="auto">Closed-book; no external references</td></tr><tr><td dir="auto">Device</td><td dir="auto">One screen only; no secondary devices</td></tr><tr><td dir="auto">Time limit</td><td dir="auto">45 minutes per 30-question assessment</td></tr><tr><td dir="auto">Passing score</td><td dir="auto">70% (Bronze), 80% (Silver), 90% (Gold)</td></tr><tr><td dir="auto">Retake policy</td><td dir="auto">Maximum 3 attempts; 48-hour cooldown between</td></tr><tr><td dir="auto">Accommodation</td><td dir="auto">+50% time for non-native language test takers</td></tr></tbody></table></div>
+<h4 dir="auto" id="7-2-integrity-measures">7.2 Integrity Measures</h4>
+<ol dir="auto"><li>Randomize question order for each participant</li><li>Randomize answer option order within each question</li><li>Monitor for screen sharing or second-device usage</li><li>Log all assessment attempts with timestamps and scores</li><li>Flag any assessment completed in under 5 minutes for review</li></ol>
+<h4 dir="auto" id="7-3-incident-handling">7.3 Incident Handling</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Incident</th><th dir="auto">Action</th></tr></thead><tbody><tr><td dir="auto">Technical failure mid-exam</td><td dir="auto">Pause timer; restart from last saved question</td></tr><tr><td dir="auto">Suspected cheating</td><td dir="auto">Note the incident; allow completion; review logs</td></tr><tr><td dir="auto">Participant complaint</td><td dir="auto">Document and escalate to Training Coordinator</td></tr><tr><td dir="auto">Environment outage</td><td dir="auto">Reschedule within 48 hours; do not use offline backup</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="8-facilitator-checklist">8. Facilitator Checklist</h3>
+<h4 dir="auto" id="8-1-pre-training-1-week-before">8.1 Pre-Training (1 Week Before)</h4>
+<ul dir="auto"><li>[ ] Confirm participant list and roles</li><li>[ ] Send calendar invitations with joining details</li><li>[ ] Distribute pre-reading materials and Platform Fundamentals module link</li><li>[ ] Verify LMS enrollment for all participants</li><li>[ ] Review course materials for any recent platform updates</li><li>[ ] Prepare printed participant workbooks (bilingual)</li><li>[ ] Confirm training room or virtual meeting setup</li><li>[ ] Test demo environment access with all 14 accounts</li></ul>
+<h4 dir="auto" id="8-2-day-of-training-morning">8.2 Day-of-Training (Morning)</h4>
+<ul dir="auto"><li>[ ] Arrive 30 minutes early</li><li>[ ] Set up projector/screen sharing</li><li>[ ] Open browser tabs for all demo accounts needed</li><li>[ ] Test audio/video for virtual participants</li><li>[ ] Distribute workbooks and credentials sheet</li><li>[ ] Welcome participants and review agenda</li><li>[ ] Confirm emergency exits and facilities (in-person)</li><li>[ ] Collect signed attendance sheet</li></ul>
+<h4 dir="auto" id="8-3-during-training">8.3 During Training</h4>
+<ul dir="auto"><li>[ ] Follow the pacing guide (break every 90 minutes)</li><li>[ ] Demonstrate in both EN and AR interfaces</li><li>[ ] Monitor participant progress during labs</li><li>[ ] Use the parking lot for off-topic questions</li><li>[ ] Distribute quiz/assessment at module end</li><li>[ ] Record any platform issues encountered for reporting</li></ul>
+<h4 dir="auto" id="8-4-post-training-same-day">8.4 Post-Training (Same Day)</h4>
+<ul dir="auto"><li>[ ] Collect participant feedback surveys</li><li>[ ] Record assessment scores in the LMS</li><li>[ ] Submit the training completion report to HR (hr@salisauto.sa)</li><li>[ ] File the attendance sheet</li><li>[ ] Report any demo environment issues to Super Admin (admin@salisauto.com)</li><li>[ ] Update the "Lessons Learned" log with any new common questions</li></ul>
+<h4 dir="auto" id="8-5-post-training-within-1-week">8.5 Post-Training (Within 1 Week)</h4>
+<ul dir="auto"><li>[ ] Issue certificates for passing participants via LMS</li><li>[ ] Send follow-up resources and reference links to participants</li><li>[ ] Schedule remediation sessions for participants who did not pass</li><li>[ ] Submit the trainer feedback form to the Training Coordinator</li><li>[ ] Archive training materials and recordings</li></ul>
+<hr>
+<h3 dir="auto" id="9-trainer-resources">9. Trainer Resources</h3>
+<h4 dir="auto" id="9-1-reference-documents">9.1 Reference Documents</h4>
+<ul dir="auto"><li><a href="program-overview.html">Program Overview</a> (SA-TRN-001)</li><li><a href="assessment-bank.html">Assessment Bank</a> (SA-TRN-013)</li><li><a href="certification-framework.html">Certification Framework</a> (SA-TRN-014)</li><li><a href="../user-documentation/guides/getting-started.html">Getting Started Guide</a></li><li><a href="../user-documentation/guides/owner-superadmin-guide.html">Owner &amp; Super Admin Guide</a></li><li><a href="../user-documentation/guides/manager-guide.html">Manager Guide</a></li><li><a href="../user-documentation/guides/workshop-staff-guide.html">Workshop Staff Guide</a></li><li><a href="../user-documentation/guides/finance-staff-guide.html">Finance Staff Guide</a></li><li><a href="../user-documentation/guides/support-staff-guide.html">Support Staff Guide</a></li><li><a href="../knowledge-base/reference/rbac-matrix.html">RBAC Matrix</a></li></ul>
+<h4 dir="auto" id="9-2-escalation-contacts">9.2 Escalation Contacts</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Issue Type</th><th dir="auto">Contact</th></tr></thead><tbody><tr><td dir="auto">Demo environment</td><td dir="auto">Super Admin (admin@salisauto.com)</td></tr><tr><td dir="auto">LMS technical issues</td><td dir="auto">IT Support (support@salisauto.sa)</td></tr><tr><td dir="auto">Training scheduling</td><td dir="auto">HR Manager (hr@salisauto.sa)</td></tr><tr><td dir="auto">Content updates</td><td dir="auto">SALIS AUTO PMO</td></tr><tr><td dir="auto">Participant complaints</td><td dir="auto">Training Coordinator -&gt; HR Manager -&gt; Owner</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="10-revision-history">10. Revision History</h3>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Version</th><th dir="auto">Date</th><th dir="auto">Author</th><th dir="auto">Changes</th></tr></thead><tbody><tr><td dir="auto">1.0</td><td dir="auto">2026-08-31</td><td dir="auto">SALIS AUTO PMO</td><td dir="auto">Initial release</td></tr></tbody></table></div>
+  </article>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="../../index.html"><img class="full" src="../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+      <p class="tag"><span lang="en">Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.</span></p>
+      <p class="fine"><a href="https://app.salisauto.app/privacy-policy"><span lang="en">Privacy</span><span lang="ar">الخصوصية</span></a> · <a href="https://app.salisauto.app/terms-conditions"><span lang="en">Terms</span><span lang="ar">الشروط</span></a> · <a href="https://app.salisauto.app/cookie-policy"><span lang="en">Cookies</span><span lang="ar">ملفات الارتباط</span></a></p>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Product</span><span lang="ar">المنتج</span></span>
+      <ul>
+        <li><a href="../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a></li>
+        <li><a href="../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a></li>
+        <li><a href="../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a></li>
+        <li><a href="../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a></li>
+        <li><a href="../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a></li>
+        <li><a href="../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a></li>
+        <li><a href="../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a></li>
+        <li><a href="../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">The SALIS family</span><span lang="ar">عائلة SALIS</span></span>
+      <ul>
+        <li><a href="https://salisco.com/products/garage.html" dir="ltr">SALIS Garage</a> <em><span lang="en">this product</span><span lang="ar">هذا المنتج</span></em></li>
+        <li><a href="https://salisco.com/products/spare-parts.html" dir="ltr">SALIS Spare Parts</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/fleet.html" dir="ltr">SALIS Fleet</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/insurance.html" dir="ltr">SALIS Insurance</a> <em><span lang="en">planned</span><span lang="ar">مخطط</span></em></li>
+        <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Contact</span><span lang="ar">تواصل</span></span>
+      <ul>
+        <li><a href="mailto:info@salisauto.app" dir="ltr">info@salisauto.app</a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a></li>
+        <li><a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a></li>
+        <li><a href="https://www.linkedin.com/company/salisauto" dir="ltr">linkedin.com/company/salisauto</a></li>
+        <li><a href="https://x.com/SalisAuto" dir="ltr">@SalisAuto</a> · <a href="https://www.instagram.com/salisauto" dir="ltr">@salisauto</a></li>
+        <li><a href="https://www.youtube.com/@salisauto" dir="ltr">youtube.com/@salisauto</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

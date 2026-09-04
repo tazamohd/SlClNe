@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How To: Setup Integrations</title>
+<meta name="description" content="How To: Setup Integrations — SALIS AUTO Knowledge base.">
+<meta name="description" lang="ar" content="How To: Setup Integrations — قاعدة المعرفة SALIS AUTO.">
+<link rel="canonical" href="https://salisauto.app/resources/knowledge-base/how-to/setup-integrations.html">
+<link rel="alternate" hreflang="en" href="https://salisauto.app/resources/knowledge-base/how-to/setup-integrations.html?lang=en">
+<link rel="alternate" hreflang="ar" href="https://salisauto.app/resources/knowledge-base/how-to/setup-integrations.html?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://salisauto.app/resources/knowledge-base/how-to/setup-integrations.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SALIS AUTO">
+<meta property="og:title" content="How To: Setup Integrations">
+<meta property="og:description" content="How To: Setup Integrations — SALIS AUTO Knowledge base.">
+<meta property="og:url" content="https://salisauto.app/resources/knowledge-base/how-to/setup-integrations.html">
+<meta property="og:image" content="https://salisauto.app/assets/logo-full-colour.svg">
+<meta property="og:locale" content="en_SA">
+<meta property="og:locale:alternate" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SalisAuto">
+<meta name="theme-color" content="#0B1F3B">
+<link rel="icon" href="../../../assets/logo-reversed-white.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="How To: Setup Integrations";document.documentElement.dataset.titleEn="How To: Setup Integrations";</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="trace" viewBox="0 0 400 200">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
+      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
+      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
+      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
+      <path d="M22 100 H84" stroke="#0BB3FF"/>
+    </g>
+    <g class="dots">
+      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
+      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+      <circle cx="62" cy="44" r="10" fill="#F97316"/>
+      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
+      <circle cx="362" cy="132" r="10" fill="#F97316"/>
+      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
+      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+    </g>
+  </symbol>
+</svg>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
+<header id="site-header">
+  <div class="wrap">
+    <a class="logo" href="../../../index.html" aria-label="SALIS AUTO home"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <a href="../../../lifecycle.html"><span lang="en">Product</span><span lang="ar">المنتج</span></a>
+          <ul class="menu">
+            <li><a href="../../../lifecycle.html"><b><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></b><span><span lang="en">Check-in to delivery</span><span lang="ar">من الاستقبال إلى التسليم</span></span></a></li>
+            <li><a href="../../../features.html"><b><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></b><span><span lang="en">Every module, one record</span><span lang="ar">كل الوحدات، سجل واحد</span></span></a></li>
+            <li><a href="../../../zatca.html"><b><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></b><span><span lang="en">QR, hash chain, retention</span><span lang="ar">رمز الاستجابة، سلسلة التجزئة، الحفظ</span></span></a></li>
+            <li><a href="../../../spare-parts.html"><b><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></b><span><span lang="en">Supplier network and reorder</span><span lang="ar">شبكة الموردين وإعادة الطلب</span></span></a></li>
+            <li><a href="../../../fleet.html"><b><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></b><span><span lang="en">Contract vehicles across branches</span><span lang="ar">مركبات العقود عبر الفروع</span></span></a></li>
+            <li><a href="../../../customer-app.html"><b><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></b><span><span lang="en">Approve from the phone</span><span lang="ar">الاعتماد من الهاتف</span></span></a></li>
+            <li><a href="../../../portals.html"><b><span lang="en">Portals</span><span lang="ar">البوابات</span></b><span><span lang="en">Technician and supplier</span><span lang="ar">الفني والمورّد</span></span></a></li>
+          </ul>
+        </li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a></li>
+        <li><a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a></li>
+        <li><a href="../../../resources/index.html" aria-current="page"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </nav>
+    <div class="hdr-actions">
+      <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="mobile" hidden>
+    <a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a>
+    <a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a>
+    <a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a>
+    <a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a>
+    <a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a>
+    <a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a>
+    <a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a>
+    <a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a>
+    <a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a>
+    <a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+    <a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+  </div>
+</header>
+<main id="main">
+<section class="wrap doc">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a> › <a href="../../../resources/knowledge-base/index.html"><span lang="en">Knowledge base</span><span lang="ar">قاعدة المعرفة</span></a></nav>
+  <p class="fine"><span lang="en">Shown in the language it was written in. Source:</span><span lang="ar">يُعرض باللغة التي كُتب بها. المصدر:</span> <code dir="ltr">docs/knowledge-base/how-to/setup-integrations.md</code></p>
+  <article class="doc-body" dir="ltr">
+<h2 dir="auto" id="how-to-setup-integrations">How To: Setup Integrations</h2>
+<p dir="auto">Guide for configuring external service integrations in SALIS AUTO: ZATCA e-invoicing, payment gateways, SMS providers, email services, OBD devices, and social media connections.</p>
+<hr>
+<h3 dir="auto" id="prerequisites">Prerequisites</h3>
+<ul dir="auto"><li>Integration configuration requires the <code dir="ltr">settings</code> or <code dir="ltr">admin</code> RBAC module.</li><li><b>Owner/CEO</b> and <b>Super Admin</b> have full <code dir="ltr">settings</code> access (<code dir="ltr">vcedax</code>).</li><li><b>Branch Manager</b> has <code dir="ltr">settings:ve</code> (View and Edit only).</li><li>Integration records are stored in the <code dir="ltr">integrations</code> table with <code dir="ltr">name</code>, <code dir="ltr">category</code>, <code dir="ltr">icon</code>, <code dir="ltr">status</code>, and <code dir="ltr">detail</code> fields.</li></ul>
+<hr>
+<h3 dir="auto" id="zatca-e-invoicing-integration">ZATCA E-Invoicing Integration</h3>
+<p dir="auto">SALIS AUTO supports ZATCA Phase 2 e-invoicing for Saudi Arabian tax compliance.</p>
+<h4 dir="auto" id="step-1-configure-organization-vat-number">Step 1: Configure Organization VAT Number</h4>
+<ol dir="auto"><li>Navigate to <code dir="ltr">/admin/settings</code> or the organization settings.</li><li>Enter the organization's <b>VAT Registration Number</b> in the <code dir="ltr">vatNumber</code> field.</li><li>Saudi VAT numbers follow the format: 15 digits starting and ending with <code dir="ltr">3</code> (e.g., <code dir="ltr">300012345600003</code>).</li><li>This value is stored in <code dir="ltr">organizations.vatNumber</code> (varchar 20).</li></ol>
+<h4 dir="auto" id="step-2-enable-phase-2-compliance">Step 2: Enable Phase 2 Compliance</h4>
+<ol dir="auto"><li>In the ZATCA settings section, enable Phase 2 mode.</li><li>Configure the following:</li></ol>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Setting</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto">Seller VAT Number</td><td dir="auto">Auto-populated from organization settings</td></tr><tr><td dir="auto">ZATCA Environment</td><td dir="auto"><code dir="ltr">sandbox</code> for testing, <code dir="ltr">production</code> for live</td></tr><tr><td dir="auto">Certificate</td><td dir="auto">Upload the ZATCA-issued digital certificate</td></tr><tr><td dir="auto">Private Key</td><td dir="auto">Upload the associated private key</td></tr><tr><td dir="auto">Hash Algorithm</td><td dir="auto">SHA-256 (default, per ZATCA specification)</td></tr></tbody></table></div>
+<h4 dir="auto" id="step-3-test-with-sandbox">Step 3: Test with Sandbox</h4>
+<ol dir="auto"><li>Set the ZATCA environment to <code dir="ltr">sandbox</code>.</li><li>Create a test invoice and issue it.</li><li>Verify the following fields are populated:</li><li><code dir="ltr">sellerVatNumber</code> — From organization settings</li><li><code dir="ltr">buyerVatNumber</code> — From the customer record (required for B2B tax invoices)</li><li><code dir="ltr">qrCode</code> — Base64-encoded TLV QR code</li><li><code dir="ltr">hashSelf</code> — SHA-256 hash of this invoice</li><li><code dir="ltr">hashPrev</code> — Hash of the previous invoice in the chain</li><li>Submit to ZATCA sandbox and verify acceptance.</li><li>Once validated, switch to <code dir="ltr">production</code>.</li></ol>
+<h4 dir="auto" id="zatca-invoice-requirements">ZATCA Invoice Requirements</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Field</th><th dir="auto">Required For</th><th dir="auto">Source</th></tr></thead><tbody><tr><td dir="auto">Seller name</td><td dir="auto">All invoices</td><td dir="auto"><code dir="ltr">organizations.name</code></td></tr><tr><td dir="auto">Seller VAT</td><td dir="auto">All invoices</td><td dir="auto"><code dir="ltr">organizations.vatNumber</code></td></tr><tr><td dir="auto">Buyer VAT</td><td dir="auto">B2B tax invoices</td><td dir="auto"><code dir="ltr">customers</code> record</td></tr><tr><td dir="auto">Invoice date</td><td dir="auto">All invoices</td><td dir="auto"><code dir="ltr">invoices.issuedAt</code></td></tr><tr><td dir="auto">Total with VAT</td><td dir="auto">All invoices</td><td dir="auto"><code dir="ltr">invoices.totalHalalas</code> (includes 15% VAT)</td></tr><tr><td dir="auto">VAT amount</td><td dir="auto">All invoices</td><td dir="auto"><code dir="ltr">invoices.taxHalalas</code></td></tr><tr><td dir="auto">QR code</td><td dir="auto">All invoices</td><td dir="auto">Auto-generated TLV encoding</td></tr><tr><td dir="auto">Hash chain</td><td dir="auto">All invoices</td><td dir="auto">SHA-256 sequential linking</td></tr></tbody></table></div>
+<h4 dir="auto" id="vat-calculation">VAT Calculation</h4>
+<ul dir="auto"><li>Saudi VAT rate: <b>15%</b></li><li>Tax is calculated on the subtotal: <code dir="ltr">taxHalalas = subtotalHalalas * 0.15</code></li><li>Total: <code dir="ltr">totalHalalas = subtotalHalalas + taxHalalas - discountHalalas</code></li><li>All amounts are integer halalas (1 SAR = 100 halalas)</li></ul>
+<hr>
+<h3 dir="auto" id="stripe-payment-gateway">Stripe Payment Gateway</h3>
+<h4 dir="auto" id="step-1-obtain-api-keys">Step 1: Obtain API Keys</h4>
+<ol dir="auto"><li>Create a Stripe account at stripe.com.</li><li>Navigate to Developers &gt; API Keys in the Stripe dashboard.</li><li>Copy the <b>Publishable Key</b> (starts with <code dir="ltr">pk_</code>) and <b>Secret Key</b> (starts with <code dir="ltr">sk_</code>).</li><li>For testing, use the test mode keys (<code dir="ltr">pk_test_...</code>, <code dir="ltr">sk_test_...</code>).</li></ol>
+<h4 dir="auto" id="step-2-configure-in-salis-auto">Step 2: Configure in SALIS AUTO</h4>
+<ol dir="auto"><li>Navigate to the payment gateway settings.</li><li>Enter the Stripe API keys:</li></ol>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Setting</th><th dir="auto">Value</th><th dir="auto">Notes</th></tr></thead><tbody><tr><td dir="auto">Publishable Key</td><td dir="auto"><code dir="ltr">pk_live_...</code> or <code dir="ltr">pk_test_...</code></td><td dir="auto">Used by the frontend</td></tr><tr><td dir="auto">Secret Key</td><td dir="auto"><code dir="ltr">sk_live_...</code> or <code dir="ltr">sk_test_...</code></td><td dir="auto">Used by the server (never exposed to frontend)</td></tr><tr><td dir="auto">Currency</td><td dir="auto"><code dir="ltr">sar</code></td><td dir="auto">Saudi Riyal</td></tr></tbody></table></div>
+<h4 dir="auto" id="step-3-configure-webhooks">Step 3: Configure Webhooks</h4>
+<ol dir="auto"><li>In the Stripe dashboard, go to Developers &gt; Webhooks.</li><li>Add an endpoint URL: <code dir="ltr">https://your-domain.com/api/webhooks/stripe</code></li><li>Select events to listen for:</li><li><code dir="ltr">payment_intent.succeeded</code></li><li><code dir="ltr">payment_intent.payment_failed</code></li><li><code dir="ltr">charge.refunded</code></li><li><code dir="ltr">charge.dispute.created</code></li><li>Copy the <b>Webhook Signing Secret</b> (starts with <code dir="ltr">whsec_</code>).</li><li>Configure the signing secret in SALIS AUTO's server settings.</li></ol>
+<h4 dir="auto" id="step-4-test-mode">Step 4: Test Mode</h4>
+<ol dir="auto"><li>Use Stripe's test card numbers for testing:</li><li>Success: <code dir="ltr">4242 4242 4242 4242</code></li><li>Decline: <code dir="ltr">4000 0000 0000 0002</code></li><li>3D Secure: <code dir="ltr">4000 0025 0000 3155</code></li><li>Verify payments appear in the <code dir="ltr">payments</code> table with correct <code dir="ltr">amountHalalas</code>.</li><li>Test refund flow and verify the refund updates <code dir="ltr">invoices.paidHalalas</code>.</li></ol>
+<hr>
+<h3 dir="auto" id="sms-provider-setup">SMS Provider Setup</h3>
+<h4 dir="auto" id="configuration-for-saudi-numbers">Configuration for Saudi Numbers</h4>
+<ol dir="auto"><li>Choose an SMS provider that supports Saudi Arabia (+966 numbers).</li><li>Configure provider credentials in the integration settings.</li></ol>
+<h4 dir="auto" id="phone-number-format">Phone Number Format</h4>
+<p dir="auto">Saudi phone numbers must follow the international format:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Type</th><th dir="auto">Format</th><th dir="auto">Example</th></tr></thead><tbody><tr><td dir="auto">Mobile</td><td dir="auto"><code dir="ltr">+9665XXXXXXXX</code></td><td dir="auto"><code dir="ltr">+966501234567</code></td></tr><tr><td dir="auto">Landline (Riyadh)</td><td dir="auto"><code dir="ltr">+96611XXXXXXX</code></td><td dir="auto"><code dir="ltr">+966112345678</code></td></tr><tr><td dir="auto">Landline (Jeddah)</td><td dir="auto"><code dir="ltr">+96612XXXXXXX</code></td><td dir="auto"><code dir="ltr">+966122345678</code></td></tr></tbody></table></div>
+<p dir="auto"><b>Important:</b> Do not include the domestic leading zero. <code dir="ltr">0501234567</code> becomes <code dir="ltr">+966501234567</code>.</p>
+<h4 dir="auto" id="otp-configuration">OTP Configuration</h4>
+<p dir="auto">OTP (One-Time Password) delivery uses the <code dir="ltr">otp_challenges</code> table:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Field</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">channel</code></td><td dir="auto"><code dir="ltr">sms</code> or <code dir="ltr">whatsapp</code> (varchar 8)</td></tr><tr><td dir="auto"><code dir="ltr">destination</code></td><td dir="auto">Phone number in <code dir="ltr">+966</code> format (varchar 254)</td></tr><tr><td dir="auto"><code dir="ltr">codeHash</code></td><td dir="auto">Hashed OTP code (never stored in plaintext)</td></tr><tr><td dir="auto"><code dir="ltr">expiresAt</code></td><td dir="auto">Expiration timestamp</td></tr><tr><td dir="auto"><code dir="ltr">attempts</code></td><td dir="auto">Number of verification attempts</td></tr><tr><td dir="auto"><code dir="ltr">verifiedAt</code></td><td dir="auto">Set when successfully verified</td></tr></tbody></table></div>
+<h4 dir="auto" id="otp-templates">OTP Templates</h4>
+<p dir="auto">Configure SMS templates for different use cases:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Template</th><th dir="auto">Example Message</th></tr></thead><tbody><tr><td dir="auto">Login OTP</td><td dir="auto">"Your SALIS AUTO verification code is {code}. Valid for 5 minutes."</td></tr><tr><td dir="auto">Password Reset</td><td dir="auto">"Your password reset code is {code}. Do not share this with anyone."</td></tr><tr><td dir="auto">Appointment Reminder</td><td dir="auto">"Reminder: Your vehicle service appointment is tomorrow at {time}."</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="email-service-configuration">Email Service Configuration</h3>
+<h4 dir="auto" id="setup">Setup</h4>
+<ol dir="auto"><li>Configure SMTP credentials or email API provider settings.</li><li>Required configuration:</li></ol>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Setting</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto">SMTP Host</td><td dir="auto">Email server hostname</td></tr><tr><td dir="auto">SMTP Port</td><td dir="auto">587 (TLS) or 465 (SSL)</td></tr><tr><td dir="auto">Username</td><td dir="auto">SMTP authentication username</td></tr><tr><td dir="auto">Password</td><td dir="auto">SMTP authentication password</td></tr><tr><td dir="auto">From Address</td><td dir="auto">Sender email address</td></tr><tr><td dir="auto">From Name</td><td dir="auto">Sender display name (e.g., "SALIS AUTO")</td></tr></tbody></table></div>
+<h4 dir="auto" id="dns-records">DNS Records</h4>
+<p dir="auto">For reliable delivery, configure these DNS records for your sending domain:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Record</th><th dir="auto">Type</th><th dir="auto">Purpose</th></tr></thead><tbody><tr><td dir="auto">SPF</td><td dir="auto">TXT</td><td dir="auto">Authorize sending servers</td></tr><tr><td dir="auto">DKIM</td><td dir="auto">TXT</td><td dir="auto">Email signature verification</td></tr><tr><td dir="auto">DMARC</td><td dir="auto">TXT</td><td dir="auto">Policy for failed authentication</td></tr></tbody></table></div>
+<h4 dir="auto" id="email-templates">Email Templates</h4>
+<p dir="auto">Configure templates for:</p>
+<ul dir="auto"><li>Welcome email (new user registration)</li><li>Password reset</li><li>Appointment confirmation</li><li>Invoice notification</li><li>Estimate approval request</li><li>Service completion notification</li></ul>
+<hr>
+<h3 dir="auto" id="obd-device-pairing">OBD Device Pairing</h3>
+<h4 dir="auto" id="device-registration">Device Registration</h4>
+<ol dir="auto"><li>Navigate to the OBD device management section.</li><li>Add a new device:</li></ol>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Field</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">code</code></td><td dir="auto">Device identifier (varchar 32)</td></tr><tr><td dir="auto"><code dir="ltr">bay</code></td><td dir="auto">Workshop bay assignment (varchar 32)</td></tr><tr><td dir="auto"><code dir="ltr">status</code></td><td dir="auto">Connection status</td></tr></tbody></table></div>
+<ol dir="auto"><li>The device is stored in the <code dir="ltr">obd_devices</code> table.</li></ol>
+<h4 dir="auto" id="connecting-a-device">Connecting a Device</h4>
+<ol dir="auto"><li>Ensure the OBD-II adapter is physically connected to the vehicle's diagnostic port.</li><li>Verify Bluetooth or WiFi connectivity between the device and the bay's bridge system.</li><li>The device status should update to <code dir="ltr">connected</code> or <code dir="ltr">scanning</code>.</li><li>Vehicle information auto-populates: <code dir="ltr">vehicleLabel</code>, <code dir="ltr">plate</code>, <code dir="ltr">vin</code>.</li></ol>
+<h4 dir="auto" id="reading-diagnostics">Reading Diagnostics</h4>
+<p dir="auto">Once connected:</p>
+<ul dir="auto"><li><b>Live data</b>: RPM, coolant temperature, voltage, engine load are displayed.</li><li><b>DTC scan</b>: Trouble codes are read and stored in <code dir="ltr">obd_dtc_readings</code>.</li><li><b>Clear codes</b>: DTCs can be cleared (recorded as <code dir="ltr">source: 'clear'</code>).</li><li>The <code dir="ltr">dtc_codes</code> reference table provides descriptions and severity levels for standard codes.</li></ul>
+<h4 dir="auto" id="oem-tool-integration">OEM Tool Integration</h4>
+<p dir="auto">The <code dir="ltr">oem_tools</code> table tracks manufacturer-specific diagnostic tools:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Field</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">brand</code></td><td dir="auto">Vehicle manufacturer</td></tr><tr><td dir="auto"><code dir="ltr">tool</code></td><td dir="auto">Diagnostic tool name</td></tr><tr><td dir="auto"><code dir="ltr">status</code></td><td dir="auto">License/subscription status</td></tr><tr><td dir="auto"><code dir="ltr">protocol</code></td><td dir="auto">Communication protocol</td></tr><tr><td dir="auto"><code dir="ltr">licence</code></td><td dir="auto">License key</td></tr><tr><td dir="auto"><code dir="ltr">expiresOn</code></td><td dir="auto">License expiration date</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="google-business-profile">Google Business Profile</h3>
+<h4 dir="auto" id="setup">Setup</h4>
+<ol dir="auto"><li>Navigate to the integration settings.</li><li>Connect your Google Business Profile account.</li><li>Link the organization's Google listing.</li></ol>
+<h4 dir="auto" id="features">Features</h4>
+<ul dir="auto"><li>Sync customer reviews from Google to SALIS AUTO's feedback system.</li><li>Update business hours and service offerings.</li><li>Monitor and respond to reviews from within the platform.</li></ul>
+<hr>
+<h3 dir="auto" id="social-media-integration">Social Media Integration</h3>
+<h4 dir="auto" id="available-platforms">Available Platforms</h4>
+<ul dir="auto"><li>Google Business Profile (review management)</li><li>Social media monitoring (track brand mentions)</li></ul>
+<h4 dir="auto" id="configuration">Configuration</h4>
+<ol dir="auto"><li>Navigate to CRM &amp; Marketing &gt; Social Media Integration.</li><li>Connect accounts using OAuth.</li><li>Configure monitoring keywords and response templates.</li></ol>
+<hr>
+<h3 dir="auto" id="integration-status-monitoring">Integration Status Monitoring</h3>
+<p dir="auto">All integrations are tracked in the <code dir="ltr">integrations</code> table:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Field</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">name</code></td><td dir="auto">Integration name</td></tr><tr><td dir="auto"><code dir="ltr">nameAr</code></td><td dir="auto">Arabic name</td></tr><tr><td dir="auto"><code dir="ltr">category</code></td><td dir="auto">Integration category</td></tr><tr><td dir="auto"><code dir="ltr">icon</code></td><td dir="auto">Display icon</td></tr><tr><td dir="auto"><code dir="ltr">status</code></td><td dir="auto"><code dir="ltr">active</code>, <code dir="ltr">inactive</code>, <code dir="ltr">error</code>, <code dir="ltr">pending</code></td></tr><tr><td dir="auto"><code dir="ltr">detail</code></td><td dir="auto">Status details or error message</td></tr></tbody></table></div>
+<p dir="auto">Monitor integration health at <code dir="ltr">/admin/integrations</code> (requires <code dir="ltr">admin</code> module access).</p>
+<hr>
+<h3 dir="auto" id="see-also">See Also</h3>
+<ul dir="auto"><li><a href="../troubleshooting/integration-issues.html">Integration Issues</a> — Troubleshooting integration problems</li><li><a href="../reference/configuration-reference.html">Configuration Reference</a> — Environment variables</li><li><a href="../troubleshooting/error-codes.html">Error Codes</a> — API error reference</li></ul>
+  </article>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="../../../index.html"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+      <p class="tag"><span lang="en">Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.</span></p>
+      <p class="fine"><a href="https://app.salisauto.app/privacy-policy"><span lang="en">Privacy</span><span lang="ar">الخصوصية</span></a> · <a href="https://app.salisauto.app/terms-conditions"><span lang="en">Terms</span><span lang="ar">الشروط</span></a> · <a href="https://app.salisauto.app/cookie-policy"><span lang="en">Cookies</span><span lang="ar">ملفات الارتباط</span></a></p>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Product</span><span lang="ar">المنتج</span></span>
+      <ul>
+        <li><a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a></li>
+        <li><a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a></li>
+        <li><a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a></li>
+        <li><a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a></li>
+        <li><a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a></li>
+        <li><a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a></li>
+        <li><a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a></li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">The SALIS family</span><span lang="ar">عائلة SALIS</span></span>
+      <ul>
+        <li><a href="https://salisco.com/products/garage.html" dir="ltr">SALIS Garage</a> <em><span lang="en">this product</span><span lang="ar">هذا المنتج</span></em></li>
+        <li><a href="https://salisco.com/products/spare-parts.html" dir="ltr">SALIS Spare Parts</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/fleet.html" dir="ltr">SALIS Fleet</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/insurance.html" dir="ltr">SALIS Insurance</a> <em><span lang="en">planned</span><span lang="ar">مخطط</span></em></li>
+        <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Contact</span><span lang="ar">تواصل</span></span>
+      <ul>
+        <li><a href="mailto:info@salisauto.app" dir="ltr">info@salisauto.app</a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a></li>
+        <li><a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a></li>
+        <li><a href="https://www.linkedin.com/company/salisauto" dir="ltr">linkedin.com/company/salisauto</a></li>
+        <li><a href="https://x.com/SalisAuto" dir="ltr">@SalisAuto</a> · <a href="https://www.instagram.com/salisauto" dir="ltr">@salisauto</a></li>
+        <li><a href="https://www.youtube.com/@salisauto" dir="ltr">youtube.com/@salisauto</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

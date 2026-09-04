@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Performance Issues</title>
+<meta name="description" content="Performance Issues — SALIS AUTO Knowledge base.">
+<meta name="description" lang="ar" content="Performance Issues — قاعدة المعرفة SALIS AUTO.">
+<link rel="canonical" href="https://salisauto.app/resources/knowledge-base/troubleshooting/performance-issues.html">
+<link rel="alternate" hreflang="en" href="https://salisauto.app/resources/knowledge-base/troubleshooting/performance-issues.html?lang=en">
+<link rel="alternate" hreflang="ar" href="https://salisauto.app/resources/knowledge-base/troubleshooting/performance-issues.html?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://salisauto.app/resources/knowledge-base/troubleshooting/performance-issues.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SALIS AUTO">
+<meta property="og:title" content="Performance Issues">
+<meta property="og:description" content="Performance Issues — SALIS AUTO Knowledge base.">
+<meta property="og:url" content="https://salisauto.app/resources/knowledge-base/troubleshooting/performance-issues.html">
+<meta property="og:image" content="https://salisauto.app/assets/logo-full-colour.svg">
+<meta property="og:locale" content="en_SA">
+<meta property="og:locale:alternate" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SalisAuto">
+<meta name="theme-color" content="#0B1F3B">
+<link rel="icon" href="../../../assets/logo-reversed-white.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="Performance Issues";document.documentElement.dataset.titleEn="Performance Issues";</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="trace" viewBox="0 0 400 200">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
+      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
+      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
+      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
+      <path d="M22 100 H84" stroke="#0BB3FF"/>
+    </g>
+    <g class="dots">
+      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
+      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+      <circle cx="62" cy="44" r="10" fill="#F97316"/>
+      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
+      <circle cx="362" cy="132" r="10" fill="#F97316"/>
+      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
+      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+    </g>
+  </symbol>
+</svg>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
+<header id="site-header">
+  <div class="wrap">
+    <a class="logo" href="../../../index.html" aria-label="SALIS AUTO home"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <a href="../../../lifecycle.html"><span lang="en">Product</span><span lang="ar">المنتج</span></a>
+          <ul class="menu">
+            <li><a href="../../../lifecycle.html"><b><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></b><span><span lang="en">Check-in to delivery</span><span lang="ar">من الاستقبال إلى التسليم</span></span></a></li>
+            <li><a href="../../../features.html"><b><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></b><span><span lang="en">Every module, one record</span><span lang="ar">كل الوحدات، سجل واحد</span></span></a></li>
+            <li><a href="../../../zatca.html"><b><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></b><span><span lang="en">QR, hash chain, retention</span><span lang="ar">رمز الاستجابة، سلسلة التجزئة، الحفظ</span></span></a></li>
+            <li><a href="../../../spare-parts.html"><b><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></b><span><span lang="en">Supplier network and reorder</span><span lang="ar">شبكة الموردين وإعادة الطلب</span></span></a></li>
+            <li><a href="../../../fleet.html"><b><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></b><span><span lang="en">Contract vehicles across branches</span><span lang="ar">مركبات العقود عبر الفروع</span></span></a></li>
+            <li><a href="../../../customer-app.html"><b><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></b><span><span lang="en">Approve from the phone</span><span lang="ar">الاعتماد من الهاتف</span></span></a></li>
+            <li><a href="../../../portals.html"><b><span lang="en">Portals</span><span lang="ar">البوابات</span></b><span><span lang="en">Technician and supplier</span><span lang="ar">الفني والمورّد</span></span></a></li>
+          </ul>
+        </li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a></li>
+        <li><a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a></li>
+        <li><a href="../../../resources/index.html" aria-current="page"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </nav>
+    <div class="hdr-actions">
+      <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="mobile" hidden>
+    <a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a>
+    <a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a>
+    <a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a>
+    <a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a>
+    <a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a>
+    <a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a>
+    <a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a>
+    <a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a>
+    <a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a>
+    <a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+    <a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+  </div>
+</header>
+<main id="main">
+<section class="wrap doc">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a> › <a href="../../../resources/knowledge-base/index.html"><span lang="en">Knowledge base</span><span lang="ar">قاعدة المعرفة</span></a></nav>
+  <p class="fine"><span lang="en">Shown in the language it was written in. Source:</span><span lang="ar">يُعرض باللغة التي كُتب بها. المصدر:</span> <code dir="ltr">docs/knowledge-base/troubleshooting/performance-issues.md</code></p>
+  <article class="doc-body" dir="ltr">
+<h2 dir="auto" id="performance-issues">Performance Issues</h2>
+<p dir="auto">Diagnosis and resolution guide for performance problems in SALIS AUTO across frontend, backend, database, and mobile layers.</p>
+<hr>
+<h3 dir="auto" id="frontend-performance">Frontend Performance</h3>
+<h4 dir="auto" id="slow-page-loads">Slow Page Loads</h4>
+<p dir="auto"><b>Symptom:</b> Initial page load takes more than 3 seconds; users see a blank screen or loading spinner.</p>
+<p dir="auto"><b>Diagnosis:</b></p>
+<ol dir="auto"><li>Open browser DevTools &gt; Network tab. Check the total transfer size and number of requests.</li><li>Look at the Performance tab for long tasks blocking the main thread.</li><li>Check the bundle size in the Vite build output.</li></ol>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li><b>Enable code splitting and lazy routes.</b> Each screen should be loaded on demand via React Router's lazy loading. The routes in <code dir="ltr">app/src/routes/index.tsx</code> should use <code dir="ltr">React.lazy()</code>: ``<code dir="ltr">ts const JobCards = React.lazy(() =&gt; import('../screens/workshop/JobCards')) </code>``</li><li><b>Tree-shake unused icons.</b> The icon registry contains 260 lucide-react icons. Ensure only imported icons are bundled.</li><li><b>Verify Vite configuration.</b> In <code dir="ltr">vite.config.ts</code>:</li><li><code dir="ltr">build.rollupOptions.output.manualChunks</code> should separate vendor libraries.</li><li><code dir="ltr">build.target</code> should be <code dir="ltr">es2020</code> or higher for modern browsers.</li><li><b>Check for unnecessary re-renders.</b> Use React DevTools Profiler to identify components rendering too frequently.</li><li><b>Optimize TailwindCSS.</b> Ensure <code dir="ltr">content</code> paths in <code dir="ltr">tailwind.config</code> are precise to avoid scanning unnecessary files, which increases build time.</li></ol>
+<h4 dir="auto" id="slow-client-side-navigation">Slow Client-Side Navigation</h4>
+<p dir="auto"><b>Symptom:</b> Switching between screens within the app feels sluggish.</p>
+<p dir="auto"><b>Diagnosis:</b></p>
+<ol dir="auto"><li>Check React Query cache hits vs. fresh fetches in the DevTools.</li><li>Profile the component tree for unnecessary re-renders.</li></ol>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li><b>Configure React Query staleTime.</b> Setting <code dir="ltr">staleTime</code> to 30-60 seconds prevents refetching on every navigation: ``<code dir="ltr">ts useQuery({ queryKey: ['jobs'], queryFn: fetchJobs, staleTime: 30_000 }) </code>``</li><li><b>Prefetch on hover.</b> For frequently navigated links, prefetch data when the user hovers over the link.</li><li><b>Avoid re-mounting shells.</b> The <code dir="ltr">AppShell</code> (sidebar + topbar) should remain mounted across route changes. Only the content area should swap.</li><li><b>Memoize expensive computations.</b> Use <code dir="ltr">useMemo</code> for derived data like filtered lists or aggregated stats.</li></ol>
+<h4 dir="auto" id="react-query-cache-management">React Query Cache Management</h4>
+<p dir="auto"><b>Symptom:</b> Memory usage grows over time; the browser tab becomes unresponsive after extended use.</p>
+<p dir="auto"><b>Root Cause:</b> React Query retains cached data indefinitely by default.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Set <code dir="ltr">gcTime</code> (garbage collection time) to a reasonable value (default is 5 minutes): ``<code dir="ltr">ts const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30_000, gcTime: 300_000 } } }) </code>``</li><li>Invalidate caches when the user switches branches or roles (these change data scope).</li><li>For large collections (parts, customers, vehicles), limit cached pages to the most recent 3-5 pages.</li></ol>
+<hr>
+<h3 dir="auto" id="api-backend-performance">API / Backend Performance</h3>
+<h4 dir="auto" id="slow-api-responses">Slow API Responses</h4>
+<p dir="auto"><b>Symptom:</b> API calls take more than 500ms. Visible in the browser Network tab or server access logs.</p>
+<p dir="auto"><b>Diagnosis:</b></p>
+<ol dir="auto"><li>Check the server response time in the <code dir="ltr">X-Response-Time</code> header (if configured).</li><li>Look at database query execution time with <code dir="ltr">EXPLAIN ANALYZE</code>.</li><li>Check if the slow endpoint is a list with a large dataset.</li></ol>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li><b>Ensure database indexes exist.</b> Every tenant-owned table must have an index on <code dir="ltr">org_id</code>. The schema defines these: ``<code dir="ltr"> branches_org_idx          ON (org_id) users_org_email_idx       ON (org_id, email)           UNIQUE job_cards_org_idx         ON (org_id, branch_id, status) customers_org_idx         ON (org_id, branch_id) parts_org_idx             ON (org_id, branch_id) invoices_org_idx          ON (org_id, branch_id, status) </code>``</li><li><b>Enforce pagination.</b> Never return unbounded result sets. The API defaults to <code dir="ltr">pageSize=50</code> with a maximum of 200.</li><li><b>Add composite indexes</b> for frequently filtered queries (e.g., <code dir="ltr">org_id + status</code>, <code dir="ltr">org_id + branch_id + created_at</code>).</li><li><b>Optimize <code dir="ltr">ILIKE</code> searches.</b> The <code dir="ltr">q</code> parameter uses <code dir="ltr">ILIKE %term%</code> which cannot use a B-tree index. For high-volume tables, consider:</li><li>A trigram index (<code dir="ltr">pg_trgm</code> extension): <code dir="ltr">CREATE INDEX idx_trgm ON customers USING gin (name gin_trgm_ops)</code></li><li>Limiting searchable columns to those listed in the API reference.</li></ol>
+<h4 dir="auto" id="connection-pooling">Connection Pooling</h4>
+<p dir="auto"><b>Symptom:</b> Database connections are exhausted; new requests queue or time out.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Configure the connection pool size based on expected concurrency. A typical starting point is <code dir="ltr">max: 20</code> connections per server instance.</li><li>Set connection idle timeout to release unused connections.</li><li>Monitor active connections with <code dir="ltr">SELECT count(*) FROM pg_stat_activity</code>.</li><li>For PGlite (local development), connection pooling is not applicable — PGlite runs in-process.</li></ol>
+<h4 dir="auto" id="large-dataset-queries">Large Dataset Queries</h4>
+<p dir="auto"><b>Symptom:</b> Endpoints serving tables with tens of thousands of rows respond slowly.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Always paginate: <code dir="ltr">?page=1&amp;pageSize=50</code>.</li><li>Use filters to narrow results: <code dir="ltr">?filter[status]=active&amp;filter[branch_id]=&lt;id&gt;</code>.</li><li>Use sorting to bring relevant results first: <code dir="ltr">?sort=created_at:desc</code>.</li><li>For aggregate reports, pre-compute totals into summary tables or materialized views rather than scanning full tables.</li></ol>
+<hr>
+<h3 dir="auto" id="database-performance">Database Performance</h3>
+<h4 dir="auto" id="index-optimization">Index Optimization</h4>
+<p dir="auto">Every table in the schema has indexes defined. Verify these are created and used:</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Table</th><th dir="auto">Index</th><th dir="auto">Columns</th></tr></thead><tbody><tr><td dir="auto"><code dir="ltr">job_cards</code></td><td dir="auto"><code dir="ltr">job_cards_org_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id, status)</code></td></tr><tr><td dir="auto"><code dir="ltr">job_cards</code></td><td dir="auto"><code dir="ltr">job_cards_tech_idx</code></td><td dir="auto"><code dir="ltr">(org_id, assigned_tech_id)</code></td></tr><tr><td dir="auto"><code dir="ltr">customers</code></td><td dir="auto"><code dir="ltr">customers_org_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id)</code></td></tr><tr><td dir="auto"><code dir="ltr">customers</code></td><td dir="auto"><code dir="ltr">customers_org_phone_idx</code></td><td dir="auto"><code dir="ltr">(org_id, phone)</code> UNIQUE</td></tr><tr><td dir="auto"><code dir="ltr">vehicles</code></td><td dir="auto"><code dir="ltr">vehicles_org_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id)</code></td></tr><tr><td dir="auto"><code dir="ltr">vehicles</code></td><td dir="auto"><code dir="ltr">vehicles_org_plate_idx</code></td><td dir="auto"><code dir="ltr">(org_id, plate)</code> UNIQUE</td></tr><tr><td dir="auto"><code dir="ltr">vehicles</code></td><td dir="auto"><code dir="ltr">vehicles_org_vin_idx</code></td><td dir="auto"><code dir="ltr">(org_id, vin)</code> UNIQUE</td></tr><tr><td dir="auto"><code dir="ltr">invoices</code></td><td dir="auto"><code dir="ltr">invoices_org_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id, status)</code></td></tr><tr><td dir="auto"><code dir="ltr">parts</code></td><td dir="auto"><code dir="ltr">parts_org_sku_idx</code></td><td dir="auto"><code dir="ltr">(org_id, sku)</code> UNIQUE</td></tr><tr><td dir="auto"><code dir="ltr">parts</code></td><td dir="auto"><code dir="ltr">parts_org_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id)</code></td></tr><tr><td dir="auto"><code dir="ltr">estimates</code></td><td dir="auto"><code dir="ltr">estimates_org_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id, status)</code></td></tr><tr><td dir="auto"><code dir="ltr">appointments</code></td><td dir="auto"><code dir="ltr">appointments_date_idx</code></td><td dir="auto"><code dir="ltr">(org_id, branch_id, scheduled_date)</code></td></tr><tr><td dir="auto"><code dir="ltr">appointments</code></td><td dir="auto"><code dir="ltr">appointments_bay_idx</code></td><td dir="auto"><code dir="ltr">(org_id, scheduled_date, bay)</code></td></tr><tr><td dir="auto"><code dir="ltr">audit_log</code></td><td dir="auto"><code dir="ltr">audit_entity_idx</code></td><td dir="auto"><code dir="ltr">(org_id, entity, entity_id)</code></td></tr><tr><td dir="auto"><code dir="ltr">audit_log</code></td><td dir="auto"><code dir="ltr">audit_ts_idx</code></td><td dir="auto"><code dir="ltr">(org_id, ts)</code></td></tr></tbody></table></div>
+<h4 dir="auto" id="query-analysis">Query Analysis</h4>
+<p dir="auto">To diagnose slow queries:</p>
+<pre dir="ltr"><code>EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT * FROM job_cards
+WHERE org_id = '...' AND branch_id = '...' AND status = 'in_progress'
+ORDER BY created_at DESC
+LIMIT 50 OFFSET 0;</code></pre>
+<p dir="auto">Look for:</p>
+<ul dir="auto"><li><b>Seq Scan</b> on large tables (should be Index Scan)</li><li><b>High buffer reads</b> indicating cache misses</li><li><b>Sort operations</b> on unindexed columns</li></ul>
+<h4 dir="auto" id="vacuum-and-autovacuum">Vacuum and Autovacuum</h4>
+<p dir="auto">Soft-deleted rows (<code dir="ltr">deleted_at IS NOT NULL</code>) accumulate over time. PostgreSQL's autovacuum handles this, but for tables with high churn:</p>
+<ol dir="auto"><li>Monitor table bloat: <code dir="ltr">SELECT pg_size_pretty(pg_total_relation_size('job_cards'))</code>.</li><li>Adjust autovacuum thresholds for high-traffic tables if needed.</li><li>Consider periodic archival of old soft-deleted records.</li></ol>
+<hr>
+<h3 dir="auto" id="mobile-performance">Mobile Performance</h3>
+<h4 dir="auto" id="reducing-dom-nodes">Reducing DOM Nodes</h4>
+<p dir="auto"><b>Symptom:</b> Mobile devices struggle with list screens showing many rows.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Use <code dir="ltr">mobileCard</code> renderers on <code dir="ltr">DataTable</code>. The mobile layout renders fewer DOM nodes than the desktop <code dir="ltr">&lt;table&gt;</code>.</li><li>Reduce <code dir="ltr">pageSize</code> on mobile (e.g., 20 instead of 50).</li><li>Defer loading of off-screen content.</li></ol>
+<h4 dir="auto" id="touch-interaction-performance">Touch Interaction Performance</h4>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Ensure <code dir="ltr">MobileCard</code> components use <code dir="ltr">role="button"</code> with proper keyboard handlers (already implemented).</li><li>Avoid hover-dependent interactions on touch devices.</li><li>Use CSS <code dir="ltr">touch-action: manipulation</code> to eliminate the 300ms tap delay.</li></ol>
+<h4 dir="auto" id="image-and-asset-optimization">Image and Asset Optimization</h4>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Compress images before upload.</li><li>Use appropriate formats (WebP for photos, SVG for icons).</li><li>The icon system uses inline SVG from the registry (260 lucide-react icons) — no network requests for icons.</li></ol>
+<hr>
+<h3 dir="auto" id="data-export-performance">Data Export Performance</h3>
+<h4 dir="auto" id="csv-export-timing-out">CSV Export Timing Out</h4>
+<p dir="auto"><b>Symptom:</b> Exporting data to CSV fails or times out for large datasets.</p>
+<p dir="auto"><b>Root Cause:</b> The export attempts to serialize more than 50,000 rows.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>The CSV export enforces a 50,000-row limit. Filter the dataset before exporting.</li><li>Use date range filters to reduce the export scope.</li><li>For larger exports, split into multiple requests by date range or branch.</li><li>The export uses the <code dir="ltr">Accept: text/csv</code> header. Formula injection protection is applied to cell values (prefixing with <code dir="ltr">'</code> when a value starts with <code dir="ltr">=</code>, <code dir="ltr">+</code>, <code dir="ltr">-</code>, <code dir="ltr">@</code>, <code dir="ltr">\t</code>, or <code dir="ltr">\r</code>).</li></ol>
+<hr>
+<h3 dir="auto" id="search-performance">Search Performance</h3>
+<h4 dir="auto" id="ilike-on-non-indexed-columns">ILIKE on Non-Indexed Columns</h4>
+<p dir="auto"><b>Symptom:</b> Search queries are slow on tables with many rows.</p>
+<p dir="auto"><b>Root Cause:</b> <code dir="ltr">ILIKE %term%</code> cannot use standard B-tree indexes. It performs a sequential scan.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Only the designated searchable columns per collection are searched (see <a href="../../api.html">API Reference</a> for the list).</li><li>For high-volume tables (customers, vehicles, parts), consider adding a <code dir="ltr">pg_trgm</code> GIN index: ``<code dir="ltr">sql CREATE EXTENSION IF NOT EXISTS pg_trgm; CREATE INDEX customers_name_trgm ON customers USING gin (name gin_trgm_ops); </code>``</li><li>Limit the search to the user's branch scope to reduce the scan range (already enforced by RLS).</li><li>Keep the <code dir="ltr">q</code> parameter under 200 characters.</li></ol>
+<hr>
+<h3 dir="auto" id="performance-monitoring-checklist">Performance Monitoring Checklist</h3>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Metric</th><th dir="auto">Target</th><th dir="auto">Measurement</th></tr></thead><tbody><tr><td dir="auto">First Contentful Paint</td><td dir="auto">&lt; 1.5s</td><td dir="auto">Lighthouse</td></tr><tr><td dir="auto">Time to Interactive</td><td dir="auto">&lt; 3s</td><td dir="auto">Lighthouse</td></tr><tr><td dir="auto">API response time (p95)</td><td dir="auto">&lt; 200ms</td><td dir="auto">Server logs</td></tr><tr><td dir="auto">Database query time</td><td dir="auto">&lt; 50ms</td><td dir="auto"><code dir="ltr">EXPLAIN ANALYZE</code></td></tr><tr><td dir="auto">Bundle size (gzipped)</td><td dir="auto">&lt; 500KB initial</td><td dir="auto">Vite build output</td></tr><tr><td dir="auto">Memory usage (browser tab)</td><td dir="auto">&lt; 150MB</td><td dir="auto">Chrome Task Manager</td></tr><tr><td dir="auto">CSV export (50K rows)</td><td dir="auto">&lt; 10s</td><td dir="auto">Server logs</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="see-also">See Also</h3>
+<ul dir="auto"><li><a href="./common-issues.html">Common Issues</a> — General troubleshooting</li><li><a href="../reference/configuration-reference.html">Configuration Reference</a> — Environment and build settings</li><li><a href="../reference/data-dictionary.html">Data Dictionary</a> — Table indexes</li></ul>
+  </article>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="../../../index.html"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+      <p class="tag"><span lang="en">Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.</span></p>
+      <p class="fine"><a href="https://app.salisauto.app/privacy-policy"><span lang="en">Privacy</span><span lang="ar">الخصوصية</span></a> · <a href="https://app.salisauto.app/terms-conditions"><span lang="en">Terms</span><span lang="ar">الشروط</span></a> · <a href="https://app.salisauto.app/cookie-policy"><span lang="en">Cookies</span><span lang="ar">ملفات الارتباط</span></a></p>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Product</span><span lang="ar">المنتج</span></span>
+      <ul>
+        <li><a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a></li>
+        <li><a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a></li>
+        <li><a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a></li>
+        <li><a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a></li>
+        <li><a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a></li>
+        <li><a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a></li>
+        <li><a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a></li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">The SALIS family</span><span lang="ar">عائلة SALIS</span></span>
+      <ul>
+        <li><a href="https://salisco.com/products/garage.html" dir="ltr">SALIS Garage</a> <em><span lang="en">this product</span><span lang="ar">هذا المنتج</span></em></li>
+        <li><a href="https://salisco.com/products/spare-parts.html" dir="ltr">SALIS Spare Parts</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/fleet.html" dir="ltr">SALIS Fleet</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/insurance.html" dir="ltr">SALIS Insurance</a> <em><span lang="en">planned</span><span lang="ar">مخطط</span></em></li>
+        <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Contact</span><span lang="ar">تواصل</span></span>
+      <ul>
+        <li><a href="mailto:info@salisauto.app" dir="ltr">info@salisauto.app</a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a></li>
+        <li><a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a></li>
+        <li><a href="https://www.linkedin.com/company/salisauto" dir="ltr">linkedin.com/company/salisauto</a></li>
+        <li><a href="https://x.com/SalisAuto" dir="ltr">@SalisAuto</a> · <a href="https://www.instagram.com/salisauto" dir="ltr">@salisauto</a></li>
+        <li><a href="https://www.youtube.com/@salisauto" dir="ltr">youtube.com/@salisauto</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

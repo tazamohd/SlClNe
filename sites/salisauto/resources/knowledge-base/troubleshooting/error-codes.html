@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Error Code Reference</title>
+<meta name="description" content="API Error Code Reference — SALIS AUTO Knowledge base.">
+<meta name="description" lang="ar" content="API Error Code Reference — قاعدة المعرفة SALIS AUTO.">
+<link rel="canonical" href="https://salisauto.app/resources/knowledge-base/troubleshooting/error-codes.html">
+<link rel="alternate" hreflang="en" href="https://salisauto.app/resources/knowledge-base/troubleshooting/error-codes.html?lang=en">
+<link rel="alternate" hreflang="ar" href="https://salisauto.app/resources/knowledge-base/troubleshooting/error-codes.html?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://salisauto.app/resources/knowledge-base/troubleshooting/error-codes.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SALIS AUTO">
+<meta property="og:title" content="API Error Code Reference">
+<meta property="og:description" content="API Error Code Reference — SALIS AUTO Knowledge base.">
+<meta property="og:url" content="https://salisauto.app/resources/knowledge-base/troubleshooting/error-codes.html">
+<meta property="og:image" content="https://salisauto.app/assets/logo-full-colour.svg">
+<meta property="og:locale" content="en_SA">
+<meta property="og:locale:alternate" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@SalisAuto">
+<meta name="theme-color" content="#0B1F3B">
+<link rel="icon" href="../../../assets/logo-reversed-white.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../../../assets/site.css">
+<script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr="API Error Code Reference";document.documentElement.dataset.titleEn="API Error Code Reference";</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="trace" viewBox="0 0 400 200">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
+      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
+      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
+      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
+      <path d="M22 100 H84" stroke="#0BB3FF"/>
+    </g>
+    <g class="dots">
+      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
+      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+      <circle cx="62" cy="44" r="10" fill="#F97316"/>
+      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
+      <circle cx="362" cy="132" r="10" fill="#F97316"/>
+      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
+      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
+    </g>
+  </symbol>
+</svg>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
+<header id="site-header">
+  <div class="wrap">
+    <a class="logo" href="../../../index.html" aria-label="SALIS AUTO home"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <a href="../../../lifecycle.html"><span lang="en">Product</span><span lang="ar">المنتج</span></a>
+          <ul class="menu">
+            <li><a href="../../../lifecycle.html"><b><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></b><span><span lang="en">Check-in to delivery</span><span lang="ar">من الاستقبال إلى التسليم</span></span></a></li>
+            <li><a href="../../../features.html"><b><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></b><span><span lang="en">Every module, one record</span><span lang="ar">كل الوحدات، سجل واحد</span></span></a></li>
+            <li><a href="../../../zatca.html"><b><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></b><span><span lang="en">QR, hash chain, retention</span><span lang="ar">رمز الاستجابة، سلسلة التجزئة، الحفظ</span></span></a></li>
+            <li><a href="../../../spare-parts.html"><b><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></b><span><span lang="en">Supplier network and reorder</span><span lang="ar">شبكة الموردين وإعادة الطلب</span></span></a></li>
+            <li><a href="../../../fleet.html"><b><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></b><span><span lang="en">Contract vehicles across branches</span><span lang="ar">مركبات العقود عبر الفروع</span></span></a></li>
+            <li><a href="../../../customer-app.html"><b><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></b><span><span lang="en">Approve from the phone</span><span lang="ar">الاعتماد من الهاتف</span></span></a></li>
+            <li><a href="../../../portals.html"><b><span lang="en">Portals</span><span lang="ar">البوابات</span></b><span><span lang="en">Technician and supplier</span><span lang="ar">الفني والمورّد</span></span></a></li>
+          </ul>
+        </li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a></li>
+        <li><a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a></li>
+        <li><a href="../../../resources/index.html" aria-current="page"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </nav>
+    <div class="hdr-actions">
+      <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="mobile" hidden>
+    <a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a>
+    <a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a>
+    <a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a>
+    <a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a>
+    <a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a>
+    <a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a>
+    <a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a>
+    <a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a>
+    <a href="../../../about.html"><span lang="en">About</span><span lang="ar">عن المنتج</span></a>
+    <a href="../../../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+    <a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+  </div>
+</header>
+<main id="main">
+<section class="wrap doc">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a> › <a href="../../../resources/knowledge-base/index.html"><span lang="en">Knowledge base</span><span lang="ar">قاعدة المعرفة</span></a></nav>
+  <p class="fine"><span lang="en">Shown in the language it was written in. Source:</span><span lang="ar">يُعرض باللغة التي كُتب بها. المصدر:</span> <code dir="ltr">docs/knowledge-base/troubleshooting/error-codes.md</code></p>
+  <article class="doc-body" dir="ltr">
+<h2 dir="auto" id="api-error-code-reference">API Error Code Reference</h2>
+<p dir="auto">Complete reference for all API error codes returned by the SALIS AUTO server. Every error follows the standard envelope format. This document provides resolution steps for each code.</p>
+<hr>
+<h3 dir="auto" id="error-envelope-format">Error Envelope Format</h3>
+<p dir="auto">All API errors return this JSON structure:</p>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "string",
+    "message": "string",
+    "field": "string (optional)"
+  }
+}</code></pre>
+<ul dir="auto"><li><code dir="ltr">code</code> — Machine-readable error identifier (see tables below).</li><li><code dir="ltr">message</code> — Human-readable description of the error.</li><li><code dir="ltr">field</code> — Present when a specific request field caused the error. Included on both <code dir="ltr">400</code> and <code dir="ltr">422</code> responses where one field is to blame.</li></ul>
+<hr>
+<h3 dir="auto" id="http-400-bad-request">HTTP 400 — Bad Request</h3>
+<p dir="auto"><b>Code:</b> <code dir="ltr">bad_request</code></p>
+<p dir="auto">The request body does not match the expected schema. The server could not even form a domain question from the request.</p>
+<h4 dir="auto" id="common-causes">Common Causes</h4>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Example</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">Missing required field</td><td dir="auto"><code dir="ltr">POST /jobs</code> without <code dir="ltr">customerName</code></td><td dir="auto">Add the missing field. Check the <code dir="ltr">field</code> value in the response.</td></tr><tr><td dir="auto">Unknown field present</td><td dir="auto">Sending <code dir="ltr">customername</code> instead of <code dir="ltr">customerName</code></td><td dir="auto">Fix the field name to match the API schema (camelCase).</td></tr><tr><td dir="auto">Wrong value type</td><td dir="auto">Sending <code dir="ltr">"qty": "five"</code> instead of <code dir="ltr">"qty": 5</code></td><td dir="auto">Use the correct JSON type (string, number, boolean).</td></tr><tr><td dir="auto">Value outside enum</td><td dir="auto"><code dir="ltr">"status": "open"</code> when valid values are <code dir="ltr">draft</code>, <code dir="ltr">pending</code>, <code dir="ltr">approved</code></td><td dir="auto">Check the allowed enum values for the field.</td></tr><tr><td dir="auto">Malformed JSON</td><td dir="auto">Unquoted keys, trailing commas</td><td dir="auto">Validate JSON syntax before sending.</td></tr><tr><td dir="auto">Missing <code dir="ltr">Idempotency-Key</code> header</td><td dir="auto">Write operations that require idempotency</td><td dir="auto">Add the <code dir="ltr">Idempotency-Key</code> header with a unique value (up to 128 characters).</td></tr><tr><td dir="auto">Invalid query parameter</td><td dir="auto"><code dir="ltr">pageSize=500</code> (max is 200)</td><td dir="auto">Use <code dir="ltr">pageSize</code> between 1 and 200.</td></tr><tr><td dir="auto"><code dir="ltr">q</code> parameter too long</td><td dir="auto">Search string exceeds 200 characters</td><td dir="auto">Shorten the search query.</td></tr></tbody></table></div>
+<h4 dir="auto" id="example-response">Example Response</h4>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "bad_request",
+    "message": "Missing required field",
+    "field": "customerName"
+  }
+}</code></pre>
+<h4 dir="auto" id="resolution-steps">Resolution Steps</h4>
+<ol dir="auto"><li>Read the <code dir="ltr">field</code> value to identify which field caused the error.</li><li>Check the request body against the API schema for that endpoint.</li><li>Verify all required fields are present with correct types.</li><li>Validate JSON syntax.</li></ol>
+<hr>
+<h3 dir="auto" id="http-401-unauthorized">HTTP 401 — Unauthorized</h3>
+<h4 dir="auto" id="code-unauthorized">Code: <code dir="ltr">unauthorized</code></h4>
+<p dir="auto">The request lacks valid authentication credentials.</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">No <code dir="ltr">Authorization</code> header</td><td dir="auto">Add <code dir="ltr">Authorization: Bearer &lt;accessToken&gt;</code> to the request.</td></tr><tr><td dir="auto">Malformed header</td><td dir="auto">Ensure format is exactly <code dir="ltr">Bearer &lt;token&gt;</code> with a single space.</td></tr><tr><td dir="auto">Expired access token</td><td dir="auto">Call <code dir="ltr">POST /auth/refresh</code> with the refresh token to obtain a new access token. Default TTL is 900 seconds (15 minutes).</td></tr><tr><td dir="auto">Invalid/corrupted token</td><td dir="auto">Log out and log back in to obtain fresh tokens.</td></tr><tr><td dir="auto">Token signed with wrong secret</td><td dir="auto">Verify <code dir="ltr">JWT_SECRET</code> matches between the token issuer and the server.</td></tr></tbody></table></div>
+<h4 dir="auto" id="code-invalid-credentials">Code: <code dir="ltr">invalid_credentials</code></h4>
+<p dir="auto">Authentication failed during login.</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">Wrong password</td><td dir="auto">Verify the password. For demo accounts, the default is <code dir="ltr">salis1234</code>.</td></tr><tr><td dir="auto">Unknown email</td><td dir="auto">Verify the email address exists in the system.</td></tr><tr><td dir="auto">Account inactive</td><td dir="auto">Contact an admin to check the user's <code dir="ltr">status</code> in <code dir="ltr">/admin/users</code>.</td></tr></tbody></table></div>
+<p dir="auto"><b>Important:</b> The response is identical for unknown email and wrong password. This is by design to prevent account enumeration attacks. The message is always: "Email or password is incorrect."</p>
+<h4 dir="auto" id="example-response">Example Response</h4>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "invalid_credentials",
+    "message": "Email or password is incorrect"
+  }
+}</code></pre>
+<h4 dir="auto" id="resolution-steps">Resolution Steps</h4>
+<ol dir="auto"><li>Verify the email address and password.</li><li>Try the demo password if using a seeded account.</li><li>If the user cannot remember their password, use the forgot-password flow at <code dir="ltr">/forgot-password</code>.</li><li>If the user's account may be deactivated, ask an admin to verify status.</li></ol>
+<hr>
+<h3 dir="auto" id="http-403-forbidden">HTTP 403 — Forbidden</h3>
+<p dir="auto"><b>Code:</b> <code dir="ltr">forbidden</code></p>
+<p dir="auto">The authenticated user's role does not have the required permission for this operation.</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">Role lacks module access</td><td dir="auto">Check <a href="../reference/rbac-matrix.html">RBAC Matrix</a>. The user's role may not have the required action (<code dir="ltr">v</code>, <code dir="ltr">c</code>, <code dir="ltr">e</code>, <code dir="ltr">x</code>, or <code dir="ltr">a</code>) on the module.</td></tr><tr><td dir="auto">Insufficient data scope</td><td dir="auto">A branch-scoped user cannot access records from another branch. An <code dir="ltr">own</code>-scoped user sees only records assigned to them.</td></tr><tr><td dir="auto">Approval ceiling exceeded</td><td dir="auto">The amount exceeds the user's SAR approval limit. Escalate to a higher-authority role.</td></tr><tr><td dir="auto">Segregation of duties violation</td><td dir="auto">The same user cannot both submit and approve. A different user must approve.</td></tr></tbody></table></div>
+<h4 dir="auto" id="example-response">Example Response</h4>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "forbidden",
+    "message": "Your role does not have permission to approve estimates"
+  }
+}</code></pre>
+<h4 dir="auto" id="resolution-steps">Resolution Steps</h4>
+<ol dir="auto"><li>Identify the module and action from the error context.</li><li>Look up the user's role in the RBAC permission matrix.</li><li>If the user needs access, an admin can change their role.</li><li>For approval issues, check the user's ceiling and segregation of duties constraints.</li></ol>
+<hr>
+<h3 dir="auto" id="http-404-not-found">HTTP 404 — Not Found</h3>
+<p dir="auto"><b>Code:</b> <code dir="ltr">not_found</code></p>
+<p dir="auto">The requested resource does not exist or is not accessible to this user.</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">Wrong resource ID</td><td dir="auto">Verify the ULID (26-character string) is correct.</td></tr><tr><td dir="auto">Resource soft-deleted</td><td dir="auto">The record has a non-null <code dir="ltr">deleted_at</code> timestamp and is excluded from queries.</td></tr><tr><td dir="auto">Wrong organization</td><td dir="auto">The resource belongs to a different <code dir="ltr">org_id</code>. Cross-tenant reads return 404 (never 403, to avoid confirming existence).</td></tr><tr><td dir="auto">Wrong branch scope</td><td dir="auto">A branch-scoped user may get 404 for records belonging to another branch.</td></tr></tbody></table></div>
+<h4 dir="auto" id="example-response">Example Response</h4>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "not_found",
+    "message": "Resource not found"
+  }
+}</code></pre>
+<h4 dir="auto" id="resolution-steps">Resolution Steps</h4>
+<ol dir="auto"><li>Verify the resource ID is correct.</li><li>Check if the resource was recently deleted.</li><li>Ensure the requesting user belongs to the same organization as the resource.</li><li>For branch-scoped users, verify the resource belongs to their branch.</li></ol>
+<hr>
+<h3 dir="auto" id="http-409-conflict">HTTP 409 — Conflict</h3>
+<p dir="auto"><b>Code:</b> <code dir="ltr">conflict</code></p>
+<p dir="auto">The resource is in a state that refuses the requested operation.</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">Stale version (optimistic concurrency)</td><td dir="auto">Re-read the resource to get the current <code dir="ltr">version</code>, then retry with the updated version.</td></tr><tr><td dir="auto">Invalid state transition</td><td dir="auto">E.g., issuing an already-issued invoice, or reopening a posted payroll period.</td></tr><tr><td dir="auto">Duplicate idempotency key with different body</td><td dir="auto">The same <code dir="ltr">Idempotency-Key</code> was sent with a different request body. Use a new key for different requests.</td></tr></tbody></table></div>
+<h4 dir="auto" id="example-response">Example Response</h4>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "conflict",
+    "message": "Invoice is already issued"
+  }
+}</code></pre>
+<h4 dir="auto" id="resolution-steps">Resolution Steps</h4>
+<ol dir="auto"><li>Re-read the resource to see its current state.</li><li>Verify the state transition is valid for the resource's current status.</li><li>If using idempotency keys, ensure the same key is only reused with the identical request body.</li></ol>
+<hr>
+<h3 dir="auto" id="http-422-validation-rule-violated">HTTP 422 — Validation / Rule Violated</h3>
+<h4 dir="auto" id="code-rule-violated">Code: <code dir="ltr">rule_violated</code></h4>
+<p dir="auto">The request was syntactically valid (passed schema validation) but was refused by a domain rule.</p>
+<div class="tablewrap"><table><thead><tr><th dir="auto">Cause</th><th dir="auto">Example</th><th dir="auto">Resolution</th></tr></thead><tbody><tr><td dir="auto">Cross-org transfer</td><td dir="auto">Transfer to a branch outside the user's organization</td><td dir="auto">Verify the <code dir="ltr">toBranchId</code> belongs to the same <code dir="ltr">org_id</code>.</td></tr><tr><td dir="auto">Negative stock</td><td dir="auto">Issue more stock than available for a non-backorderable part</td><td dir="auto">Check <code dir="ltr">on_hand</code> before issuing.</td></tr><tr><td dir="auto">Invalid stage transition</td><td dir="auto">Advancing a job card from check-in directly to repair (skipping inspection)</td><td dir="auto">Follow the stage sequence: Check-In, Inspection, Estimate, Repair, QC, Delivery.</td></tr><tr><td dir="auto">Self-approval</td><td dir="auto">Submitter attempting to approve their own estimate</td><td dir="auto">A different user must approve (segregation of duties).</td></tr></tbody></table></div>
+<h4 dir="auto" id="code-validation-failed">Code: <code dir="ltr">validation_failed</code></h4>
+<p dir="auto">Same class as <code dir="ltr">rule_violated</code>. Used where a domain refusal is better described as a validation failure.</p>
+<h4 dir="auto" id="example-response">Example Response</h4>
+<pre dir="ltr"><code>{
+  "error": {
+    "code": "rule_violated",
+    "message": "Transfer target branch does not belong to this organization",
+    "field": "toBranchId"
+  }
+}</code></pre>
+<h4 dir="auto" id="resolution-steps">Resolution Steps</h4>
+<ol dir="auto"><li>Read the <code dir="ltr">message</code> and <code dir="ltr">field</code> for specifics.</li><li>Review the domain rules in the <a href="../../MASTER_BUSINESS_RULES.html">Business Rules documentation</a>.</li><li>Adjust the request to comply with the rule.</li></ol>
+<h4 dir="auto" id="distinguishing-400-vs-422">Distinguishing 400 vs 422</h4>
+<p dir="auto">The line between 400 and 422 is whether the server could form a domain question:</p>
+<pre dir="ltr"><code>POST /parts/:id/movements
+{ "type": "transfer", "qty": 2 }
+  --&gt; 400 bad_request, field: toBranchId  (missing required field)
+
+POST /parts/:id/movements
+{ "type": "transfer", "qty": 2, "toBranchId": "&lt;other org's branch&gt;" }
+  --&gt; 422 rule_violated, field: toBranchId  (valid request, refused by rule)</code></pre>
+<hr>
+<h3 dir="auto" id="network-errors-client-side">Network Errors (Client-Side)</h3>
+<p dir="auto">These errors are not returned by the server but occur at the network level.</p>
+<h4 dir="auto" id="cors-errors">CORS Errors</h4>
+<p dir="auto"><b>Symptom:</b> <code dir="ltr">Access to fetch has been blocked by CORS policy</code> in the browser console.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Verify <code dir="ltr">CORS_ORIGIN</code> on the server includes the frontend's origin.</li><li>For local development, ensure the origins match exactly (including port).</li><li>A comma-separated list is supported (e.g., <code dir="ltr">http://localhost:5173,http://localhost:3000</code>).</li><li>Using <code dir="ltr">*</code> allows all origins but is not recommended for production.</li></ol>
+<h4 dir="auto" id="timeout-errors">Timeout Errors</h4>
+<p dir="auto"><b>Symptom:</b> Request hangs and eventually times out.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Check server health: <code dir="ltr">GET /health</code> should return <code dir="ltr">{ status: "ok" }</code>.</li><li>Review database connection: verify <code dir="ltr">DATABASE_URL</code> is correct and the database is reachable.</li><li>For large data exports, the 50,000-row limit may cause timeouts. Reduce the scope.</li><li>Check database connection pooling configuration.</li></ol>
+<h4 dir="auto" id="connection-refused">Connection Refused</h4>
+<p dir="auto"><b>Symptom:</b> <code dir="ltr">ERR_CONNECTION_REFUSED</code> in the browser.</p>
+<p dir="auto"><b>Resolution:</b></p>
+<ol dir="auto"><li>Verify the server is running on the expected port.</li><li>Check <code dir="ltr">VITE_API_BASE_URL</code> in the frontend configuration.</li><li>For containerized deployments, ensure the port is correctly mapped.</li></ol>
+<hr>
+<h3 dir="auto" id="error-code-quick-reference">Error Code Quick Reference</h3>
+<div class="tablewrap"><table><thead><tr><th dir="auto">HTTP</th><th dir="auto">Code</th><th dir="auto">Meaning</th><th dir="auto">Common Fix</th></tr></thead><tbody><tr><td dir="auto">400</td><td dir="auto"><code dir="ltr">bad_request</code></td><td dir="auto">Schema mismatch</td><td dir="auto">Fix request body</td></tr><tr><td dir="auto">401</td><td dir="auto"><code dir="ltr">unauthorized</code></td><td dir="auto">Missing/invalid token</td><td dir="auto">Re-authenticate</td></tr><tr><td dir="auto">401</td><td dir="auto"><code dir="ltr">invalid_credentials</code></td><td dir="auto">Wrong email/password</td><td dir="auto">Verify credentials</td></tr><tr><td dir="auto">403</td><td dir="auto"><code dir="ltr">forbidden</code></td><td dir="auto">Insufficient permissions</td><td dir="auto">Check RBAC matrix</td></tr><tr><td dir="auto">404</td><td dir="auto"><code dir="ltr">not_found</code></td><td dir="auto">Resource missing</td><td dir="auto">Verify resource ID and org</td></tr><tr><td dir="auto">409</td><td dir="auto"><code dir="ltr">conflict</code></td><td dir="auto">State conflict</td><td dir="auto">Re-read and retry</td></tr><tr><td dir="auto">422</td><td dir="auto"><code dir="ltr">rule_violated</code></td><td dir="auto">Domain rule refusal</td><td dir="auto">Comply with business rule</td></tr><tr><td dir="auto">422</td><td dir="auto"><code dir="ltr">validation_failed</code></td><td dir="auto">Validation refusal</td><td dir="auto">Fix field value</td></tr></tbody></table></div>
+<hr>
+<h3 dir="auto" id="see-also">See Also</h3>
+<ul dir="auto"><li><a href="./common-issues.html">Common Issues</a> — User-facing issue resolution</li><li><a href="../reference/rbac-matrix.html">RBAC Matrix</a> — Permission lookup</li><li><a href="../reference/api-cookbook.html">API Cookbook</a> — Correct API usage patterns</li></ul>
+  </article>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="logo" href="../../../index.html"><img class="full" src="../../../assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="../../../assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span></a>
+      <p class="tag"><span lang="en">Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.</span></p>
+      <p class="fine"><a href="https://app.salisauto.app/privacy-policy"><span lang="en">Privacy</span><span lang="ar">الخصوصية</span></a> · <a href="https://app.salisauto.app/terms-conditions"><span lang="en">Terms</span><span lang="ar">الشروط</span></a> · <a href="https://app.salisauto.app/cookie-policy"><span lang="en">Cookies</span><span lang="ar">ملفات الارتباط</span></a></p>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Product</span><span lang="ar">المنتج</span></span>
+      <ul>
+        <li><a href="../../../lifecycle.html"><span lang="en">The lifecycle</span><span lang="ar">دورة الورشة</span></a></li>
+        <li><a href="../../../features.html"><span lang="en">Thirteen domains</span><span lang="ar">ثلاثة عشر مجالاً</span></a></li>
+        <li><a href="../../../zatca.html"><span lang="en">ZATCA Phase 2</span><span lang="ar">الفوترة الإلكترونية</span></a></li>
+        <li><a href="../../../spare-parts.html"><span lang="en">Spare Parts</span><span lang="ar">قطع الغيار</span></a></li>
+        <li><a href="../../../fleet.html"><span lang="en">Fleet</span><span lang="ar">الأساطيل</span></a></li>
+        <li><a href="../../../customer-app.html"><span lang="en">Customer app</span><span lang="ar">تطبيق العملاء</span></a></li>
+        <li><a href="../../../portals.html"><span lang="en">Portals</span><span lang="ar">البوابات</span></a></li>
+        <li><a href="../../../pricing.html"><span lang="en">Pricing</span><span lang="ar">الأسعار</span></a></li>
+        <li><a href="../../../resources/index.html"><span lang="en">Resources</span><span lang="ar">المصادر</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">The SALIS family</span><span lang="ar">عائلة SALIS</span></span>
+      <ul>
+        <li><a href="https://salisco.com/products/garage.html" dir="ltr">SALIS Garage</a> <em><span lang="en">this product</span><span lang="ar">هذا المنتج</span></em></li>
+        <li><a href="https://salisco.com/products/spare-parts.html" dir="ltr">SALIS Spare Parts</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/fleet.html" dir="ltr">SALIS Fleet</a> <em><span lang="en">inside</span><span lang="ar">داخله</span></em></li>
+        <li><a href="https://salisco.com/products/insurance.html" dir="ltr">SALIS Insurance</a> <em><span lang="en">planned</span><span lang="ar">مخطط</span></em></li>
+        <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="k"><span lang="en">Contact</span><span lang="ar">تواصل</span></span>
+      <ul>
+        <li><a href="mailto:info@salisauto.app" dir="ltr">info@salisauto.app</a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a></li>
+        <li><a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a></li>
+        <li><a href="https://www.linkedin.com/company/salisauto" dir="ltr">linkedin.com/company/salisauto</a></li>
+        <li><a href="https://x.com/SalisAuto" dir="ltr">@SalisAuto</a> · <a href="https://www.instagram.com/salisauto" dir="ltr">@salisauto</a></li>
+        <li><a href="https://www.youtube.com/@salisauto" dir="ltr">youtube.com/@salisauto</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script src="../../../assets/site.js"></script>
+</body>
+</html>

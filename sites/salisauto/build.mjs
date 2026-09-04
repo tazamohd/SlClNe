@@ -13,6 +13,9 @@ const SIGNIN = `${APP}/login`;
 const FAMILY = 'https://salisco.com';
 
 const t = (en, ar) => `<span lang="en">${en}</span><span lang="ar">${ar}</span>`;
+/** Relative prefix back to the site root for a page path such as resources/media/x.html. */
+const baseOf = (path) => '../'.repeat((path.match(/\//g) || []).length);
+let B = '';
 
 /* ---------------------------------------------------------------- pages */
 const PAGES = [
@@ -73,7 +76,7 @@ const traceSymbol = `
   </symbol>
 </svg>`;
 
-const logo = () => `<img class="full" src="assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span>`;
+const logo = () => `<img class="full" src="${B}assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="${B}assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span>`;
 
 const PRODUCT_KEYS = ['lifecycle', 'features', 'zatca', 'parts', 'fleet', 'customer', 'portals'];
 const PRODUCT_MENU = [
@@ -87,23 +90,25 @@ const PRODUCT_MENU = [
 ];
 
 function header(page) {
+  B = baseOf(page.path);
   const on = (k) => (page.key === k ? ' aria-current="page"' : '');
   return `
 <a class="skip" href="#main">${t('Skip to content', 'انتقل إلى المحتوى')}</a>
 <header id="site-header">
   <div class="wrap">
-    <a class="logo" href="index.html" aria-label="SALIS AUTO home">${logo()}</a>
+    <a class="logo" href="${B}index.html" aria-label="SALIS AUTO home">${logo()}</a>
     <nav aria-label="Main">
       <ul>
         <li class="has-menu">
-          <a href="lifecycle.html"${PRODUCT_KEYS.includes(page.key) ? ' aria-current="true"' : ''}>${t('Product', 'المنتج')}</a>
+          <a href="${B}lifecycle.html"${PRODUCT_KEYS.includes(page.key) ? ' aria-current="true"' : ''}>${t('Product', 'المنتج')}</a>
           <ul class="menu">
-            ${PRODUCT_MENU.map(([h, k, en, ar, sen, sar]) => `<li><a href="${h}"${on(k)}><b>${t(en, ar)}</b><span>${t(sen, sar)}</span></a></li>`).join('\n            ')}
+            ${PRODUCT_MENU.map(([h, k, en, ar, sen, sar]) => `<li><a href="${B}${h}"${on(k)}><b>${t(en, ar)}</b><span>${t(sen, sar)}</span></a></li>`).join('\n            ')}
           </ul>
         </li>
-        <li><a href="pricing.html"${on('pricing')}>${t('Pricing', 'الأسعار')}</a></li>
-        <li><a href="about.html"${on('about')}>${t('About', 'عن المنتج')}</a></li>
-        <li><a href="contact.html"${on('contact')}>${t('Contact', 'تواصل')}</a></li>
+        <li><a href="${B}pricing.html"${on('pricing')}>${t('Pricing', 'الأسعار')}</a></li>
+        <li><a href="${B}about.html"${on('about')}>${t('About', 'عن المنتج')}</a></li>
+        <li><a href="${B}contact.html"${on('contact')}>${t('Contact', 'تواصل')}</a></li>
+        <li><a href="${B}resources/index.html"${page.key === 'resources' ? ' aria-current="page"' : ''}>${t('Resources', 'المصادر')}</a></li>
       </ul>
     </nav>
     <div class="hdr-actions">
@@ -114,30 +119,33 @@ function header(page) {
     </div>
   </div>
   <div id="mobile-menu" class="mobile" hidden>
-    ${PRODUCT_MENU.map(([h, , en, ar]) => `<a href="${h}">${t(en, ar)}</a>`).join('\n    ')}
-    <a href="pricing.html">${t('Pricing', 'الأسعار')}</a>
-    <a href="about.html">${t('About', 'عن المنتج')}</a>
-    <a href="contact.html">${t('Contact', 'تواصل')}</a>
+    ${PRODUCT_MENU.map(([h, , en, ar]) => `<a href="${B}${h}">${t(en, ar)}</a>`).join('\n    ')}
+    <a href="${B}pricing.html">${t('Pricing', 'الأسعار')}</a>
+    <a href="${B}about.html">${t('About', 'عن المنتج')}</a>
+    <a href="${B}contact.html">${t('Contact', 'تواصل')}</a>
+    <a href="${B}resources/index.html">${t('Resources', 'المصادر')}</a>
     <a href="${SIGNIN}">${t('Sign in', 'تسجيل الدخول')}</a>
     <a href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a>
   </div>
 </header>`;
 }
 
-function footer() {
+function footer(page) {
+  B = baseOf(page.path);
   return `
 <footer>
   <div class="wrap">
     <div>
-      <a class="logo" href="index.html">${logo()}</a>
+      <a class="logo" href="${B}index.html">${logo()}</a>
       <p class="tag">${t('Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.', 'إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.')}</p>
       <p class="fine"><a href="${APP}/privacy-policy">${t('Privacy', 'الخصوصية')}</a> · <a href="${APP}/terms-conditions">${t('Terms', 'الشروط')}</a> · <a href="${APP}/cookie-policy">${t('Cookies', 'ملفات الارتباط')}</a></p>
     </div>
     <div>
       <span class="k">${t('Product', 'المنتج')}</span>
       <ul>
-        ${PRODUCT_MENU.map(([h, , en, ar]) => `<li><a href="${h}">${t(en, ar)}</a></li>`).join('\n        ')}
-        <li><a href="pricing.html">${t('Pricing', 'الأسعار')}</a></li>
+        ${PRODUCT_MENU.map(([h, , en, ar]) => `<li><a href="${B}${h}">${t(en, ar)}</a></li>`).join('\n        ')}
+        <li><a href="${B}pricing.html">${t('Pricing', 'الأسعار')}</a></li>
+        <li><a href="${B}resources/index.html">${t('Resources', 'المصادر')}</a></li>
       </ul>
     </div>
     <div>
@@ -166,6 +174,7 @@ function footer() {
 }
 
 function head(page) {
+  B = baseOf(page.path);
   const url = SITE + '/' + (page.path === 'index.html' ? '' : page.path);
   const jsonld = page.key === 'home' ? `
 <script type="application/ld+json">
@@ -199,11 +208,11 @@ function head(page) {
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@SalisAuto">
 <meta name="theme-color" content="#0B1F3B">
-<link rel="icon" href="assets/logo-reversed-white.svg" type="image/svg+xml">
+<link rel="icon" href="${B}assets/logo-reversed-white.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="${B}assets/site.css">
 <script>document.documentElement.className+=' js';document.documentElement.dataset.titleAr=${JSON.stringify(page.title[1])};document.documentElement.dataset.titleEn=${JSON.stringify(page.title[0])};</script>${jsonld}
 </head>`;
 }
@@ -385,7 +394,7 @@ const ctaEnd = (h, ha, p, pa) => `
 <section class="wrap cta-end" aria-label="Next step">
   <h2>${t(h, ha)}</h2>
   <p>${t(p, pa)}</p>
-  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a><a class="btn ghost" href="pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a></div>
+  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a><a class="btn ghost" href="${B}pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a></div>
 </section>`;
 
 /* ---------------------------------------------------------------- S4: the AI era */
@@ -479,7 +488,7 @@ const home = `
       <p class="lede">${t('One platform runs the workshop from check-in to invoice, in Arabic and English, with ZATCA e-invoicing built in. Every change is on the audit trail.', 'منصة واحدة تدير الورشة من الاستقبال إلى الفاتورة، بالعربية والإنجليزية، مع فوترة إلكترونية متوافقة مع الهيئة مبنية في الأساس. كل تغيير مسجَّل في سجل التدقيق.')}</p>
       <div class="ctas">
         <a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a>
-        <a class="btn ghost-dark" href="pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a>
+        <a class="btn ghost-dark" href="${B}pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a>
       </div>
       <div class="statusline">${t('<b>Single bay to multi-branch.</b> Thirteen domains, fourteen roles, SAR to the halala, one audit trail.', '<b>من خليج واحد إلى فروع متعددة.</b> ثلاثة عشر مجالاً، أربعة عشر دوراً، الريال حتى الهللة، وسجل تدقيق واحد.')}</div>
     </div>
@@ -495,7 +504,7 @@ const home = `
   </div>
   <div class="rail-wrap"><div class="scene rail-scene" data-scene="rail" data-driver="#life" aria-hidden="true"></div>${rail6}</div>
   <p class="scene-cap">${t('The job card is the only thing that moves. Scroll, and it travels the six stages.', 'بطاقة العمل هي الشيء الوحيد الذي يتحرك. مرّر، وستقطع المراحل الست.')}</p>
-  <p style="margin-top:28px"><a class="more" href="lifecycle.html">${t('Walk the six stages', 'تابع المراحل الست')} <span dir="ltr" aria-hidden="true">→</span></a></p>
+  <p style="margin-top:28px"><a class="more" href="${B}lifecycle.html">${t('Walk the six stages', 'تابع المراحل الست')} <span dir="ltr" aria-hidden="true">→</span></a></p>
 </section>
 
 ${proofBand()}
@@ -551,7 +560,7 @@ function pageHero(o) {
   <svg class="trace anim" viewBox="0 0 400 200" style="width:900px;inset-inline-end:-320px;top:-200px"><use href="#trace"/></svg>
   <div class="wrap${o.mock ? ' hero-grid' : ''}">
     <div>
-      <div class="crumbs"><a href="index.html">SALIS AUTO</a> <span aria-hidden="true">/</span> ${t(o.crumb[0], o.crumb[1])}</div>
+      <div class="crumbs"><a href="${B}index.html">SALIS AUTO</a> <span aria-hidden="true">/</span> ${t(o.crumb[0], o.crumb[1])}</div>
       <div class="eyebrow">${t(o.eyebrow[0], o.eyebrow[1])}</div>
       <h1 id="ph">${t(o.h1[0], o.h1[1])}</h1>
       <p class="lede">${t(o.lede[0], o.lede[1])}</p>
@@ -831,22 +840,41 @@ const contact = pageHero({
 const BODIES = { home, lifecycle, features, zatca, parts, fleet, customer, portals, pricing, about, contact };
 
 /* ---------------------------------------------------------------- write */
-for (const page of PAGES) {
-  const html = head(page) + '\n<body>' + traceSymbol + header(page) + `\n<main id="main">${BODIES[page.key]}\n</main>` + footer() + `\n<script src="assets/site.js"></script>\n<script src="assets/scenes.js" defer></script>\n</body>\n</html>\n`;
-  const out = join(ROOT, page.path);
-  mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, html);
-  console.log('wrote', page.path, html.length);
+/** Wrap a page body in the shared chrome. `page` needs path, key, title, desc. */
+export function renderPage(page, body, { scenes = true } = {}) {
+  const b = baseOf(page.path);
+  return head(page) + '\n<body>' + traceSymbol + header(page) + `\n<main id="main">${body}\n</main>` + footer(page) +
+    `\n<script src="${b}assets/site.js"></script>\n` + (scenes ? `<script src="${b}assets/scenes.js" defer></script>\n` : '') + `</body>\n</html>\n`;
 }
 
-const today = '2026-09-04';
-writeFileSync(join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+export function writePages() {
+  for (const page of PAGES) {
+    const html = renderPage(page, BODIES[page.key]);
+    const out = join(ROOT, page.path);
+    mkdirSync(dirname(out), { recursive: true });
+    writeFileSync(out, html);
+    console.log('wrote', page.path, html.length);
+  }
+}
+
+export function writeSitemap(extraPaths = []) {
+  const today = '2026-09-04';
+  const paths = [...PAGES.map((p) => p.path), ...extraPaths];
+  writeFileSync(join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${PAGES.map((p) => { const u = SITE + '/' + (p.path === 'index.html' ? '' : p.path); return `  <url><loc>${u}</loc><lastmod>${today}</lastmod>
+${paths.map((p) => { const u = SITE + '/' + (p === 'index.html' ? '' : p); return `  <url><loc>${u}</loc><lastmod>${today}</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="${u}?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ar" href="${u}?lang=ar"/>
   </url>`; }).join('\n')}
 </urlset>
 `);
-writeFileSync(join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
-console.log('sitemap, robots written');
+  writeFileSync(join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+  console.log('sitemap, robots written', paths.length, 'urls');
+}
+
+export { PAGES, SITE, APP, DEMO, SIGNIN, t, ROOT };
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  writePages();
+  writeSitemap();
+}
