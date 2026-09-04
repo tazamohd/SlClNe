@@ -206,7 +206,7 @@ export function Dashboard() {
             <h3 className="text-sm font-bold text-heading">{t('Latest Job Cards')}</h3>
             <Link
               to="/job-cards"
-              className="inline-flex items-center gap-1 font-action text-[13px] font-medium text-salis-blue no-underline hover:no-underline"
+              className="inline-flex h-9 items-center gap-1 rounded px-2 font-action text-[13px] font-medium text-salis-blue no-underline hover:bg-salis-blue/[.08] hover:no-underline"
             >
               {t('View All')}
               <Icon name="ArrowUpRight" size={14} />
