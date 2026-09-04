@@ -14,9 +14,9 @@ const L = (s) => `<span dir="ltr">${s}</span>`;
 
 /* ---------------------------------------------------------------- pages */
 const PAGES = [
-  { path: 'index.html', key: 'home', title: ['SALISCO', 'سلسكو'],
+  { path: 'index.html', key: 'home', title: ['SALISCO', 'ساليسكو'],
     desc: ['SALISCO builds operational software for Saudi Arabia on one backbone: Arabic, ZATCA, SAR and an audit trail. Four product lines: Garage, Spare Parts, Fleet, Insurance.',
-           'سلسكو تبني برمجيات تشغيلية للمملكة على أساس واحد: العربية، الهيئة، الريال، وسجل التدقيق. أربعة خطوط: الورشة، قطع الغيار، الأساطيل، التأمين.'] },
+           'ساليسكو تبني برمجيات تشغيلية للمملكة على أساس واحد: العربية، الهيئة، الريال، وسجل التدقيق. أربعة خطوط: الورشة، قطع الغيار، الأساطيل، التأمين.'] },
   { path: 'products/garage.html', key: 'garage', title: ['SALIS Garage', 'SALIS Garage'],
     desc: ['SALIS Garage is workshop management for Saudi workshops, shipping today as SALIS AUTO: check-in to invoice, ZATCA e-invoicing, Arabic and English, one audit trail.',
            'SALIS Garage هو إدارة الورش للورش السعودية، يعمل اليوم باسم SALIS AUTO: من الاستقبال إلى الفاتورة، فوترة إلكترونية، عربي وإنجليزي، سجل تدقيق واحد.'] },
@@ -29,12 +29,12 @@ const PAGES = [
   { path: 'products/insurance.html', key: 'insurance', title: ['SALIS Insurance', 'SALIS Insurance'],
     desc: ['SALIS Insurance is planned: claims and approvals between workshops and insurers on the estimate and invoice records that already exist in SALIS Garage.',
            'SALIS Insurance مخطط: المطالبات والموافقات بين الورش وشركات التأمين على سجلات عروض الأسعار والفواتير الموجودة في SALIS Garage.'] },
-  { path: 'about.html', key: 'about', title: ['About SALISCO', 'عن سلسكو'],
+  { path: 'about.html', key: 'about', title: ['About SALISCO', 'عن ساليسكو'],
     desc: ['What SALISCO is, the four assumptions every product starts from, and where it is built.',
-           'ما هي سلسكو، الافتراضات الأربعة التي يبدأ منها كل منتج، وأين تُبنى.'] },
-  { path: 'contact.html', key: 'contact', title: ['Contact SALISCO', 'تواصل مع سلسكو'],
+           'ما هي ساليسكو، الافتراضات الأربعة التي يبدأ منها كل منتج، وأين تُبنى.'] },
+  { path: 'contact.html', key: 'contact', title: ['Contact SALISCO', 'تواصل مع ساليسكو'],
     desc: ['Email, demo booking and the SALISCO accounts on LinkedIn, X, Instagram and YouTube.',
-           'البريد، حجز العرض التوضيحي، وحسابات سلسكو على لينكدإن وإكس وإنستغرام ويوتيوب.'] },
+           'البريد، حجز العرض التوضيحي، وحسابات ساليسكو على لينكدإن وإكس وإنستغرام ويوتيوب.'] },
 ];
 
 const rel = (p) => (p.includes('/') ? '../' : '');
@@ -80,7 +80,7 @@ function header(page) {
             <li><a href="${r}products/insurance.html"${on('insurance')}><b dir="ltr">SALIS Insurance</b><span>${t('Planned', 'مخطط')}</span></a></li>
           </ul>
         </li>
-        <li><a href="${r}about.html"${on('about')}>${t('About', 'عن سلسكو')}</a></li>
+        <li><a href="${r}about.html"${on('about')}>${t('About', 'عن ساليسكو')}</a></li>
         <li><a href="${r}contact.html"${on('contact')}>${t('Contact', 'تواصل')}</a></li>
       </ul>
     </nav>
@@ -95,7 +95,7 @@ function header(page) {
     <a href="${r}products/spare-parts.html" dir="ltr">SALIS Spare Parts</a>
     <a href="${r}products/fleet.html" dir="ltr">SALIS Fleet</a>
     <a href="${r}products/insurance.html" dir="ltr">SALIS Insurance</a>
-    <a href="${r}about.html">${t('About', 'عن سلسكو')}</a>
+    <a href="${r}about.html">${t('About', 'عن ساليسكو')}</a>
     <a href="${r}contact.html">${t('Contact', 'تواصل')}</a>
   </div>
 </header>`;
@@ -109,7 +109,6 @@ function footer(page) {
     <div>
       <a class="wm" href="${r}index.html">SALISCO<i></i></a>
       <p class="tag">${t('Operational software for Saudi Arabia. One backbone, four product lines. Riyadh.', 'برمجيات تشغيلية للمملكة العربية السعودية. أساس واحد وأربعة خطوط منتجات. الرياض.')}</p>
-      <p class="fine">${t('The name SALISCO and the Arabic form سلسكو are proposals awaiting the owner’s confirmation.', 'الاسم SALISCO وصيغته العربية سلسكو مقترحان بانتظار تأكيد المالك.')}</p>
     </div>
     <div>
       <span class="k">${t('Family', 'العائلة')}</span>
@@ -134,7 +133,7 @@ function footer(page) {
       <span class="k">${t('Contact', 'تواصل')}</span>
       <ul>
         <li><a href="mailto:info@salisco.com" dir="ltr">info@salisco.com</a><span class="prop">${t('proposed', 'مقترح')}</span></li>
-        <li><a href="https://salisco.com" dir="ltr">salisco.com</a><span class="prop">${t('proposed', 'مقترح')}</span></li>
+        <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
         <li><a href="${DEMO}">${t('Book a SALIS AUTO demo', 'احجز عرض SALIS AUTO')}</a></li>
         <li><a href="https://salisauto.app" dir="ltr">salisauto.app</a></li>
       </ul>
@@ -148,7 +147,7 @@ function head(page) {
   const url = SITE + '/' + (page.path === 'index.html' ? '' : page.path);
   const jsonld = page.key === 'home' ? `
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"SALISCO","alternateName":"سلسكو","url":"${SITE}","email":"info@salisco.com",
+{"@context":"https://schema.org","@type":"Organization","name":"SALISCO","alternateName":"ساليسكو","url":"${SITE}","email":"info@salisco.com",
  "address":{"@type":"PostalAddress","addressLocality":"Riyadh","addressCountry":"SA"},
  "sameAs":["https://www.linkedin.com/company/salisco","https://x.com/salisco","https://www.instagram.com/salisco","https://www.youtube.com/@salisco"],
  "brand":[{"@type":"Brand","name":"SALIS Garage"},{"@type":"Brand","name":"SALIS Spare Parts"},{"@type":"Brand","name":"SALIS Fleet"},{"@type":"Brand","name":"SALIS Insurance"}],
@@ -260,7 +259,7 @@ const home = `
     <div>
       <div class="eyebrow">${t('Riyadh · Operational software for Saudi Arabia', 'الرياض · برمجيات تشغيلية للمملكة')}</div>
       <h1 id="hero-h">${t('One backbone.<br>Four lines of <span class="o">Saudi-built</span> software.', 'أساس واحد.<br>أربعة خطوط من البرمجيات <span class="o">المبنية في السعودية.</span>')}</h1>
-      <p class="lede">${t('SALISCO builds the operational software Saudi businesses run on. Garage, Spare Parts, Fleet and Insurance share one ledger and four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.', 'سلسكو تبني البرمجيات التشغيلية التي تعمل عليها المنشآت السعودية. الورشة وقطع الغيار والأساطيل والتأمين تتشارك دفتراً واحداً وأربعة افتراضات من اليوم الأول: العربية، الهيئة، الريال، وسجل تدقيق يجيب عن سؤال من غيّر ماذا.')}</p>
+      <p class="lede">${t('SALISCO builds the operational software Saudi businesses run on. Garage, Spare Parts, Fleet and Insurance share one ledger and four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.', 'ساليسكو تبني البرمجيات التشغيلية التي تعمل عليها المنشآت السعودية. الورشة وقطع الغيار والأساطيل والتأمين تتشارك دفتراً واحداً وأربعة افتراضات من اليوم الأول: العربية، الهيئة، الريال، وسجل تدقيق يجيب عن سؤال من غيّر ماذا.')}</p>
       <div class="ctas">
         <a class="btn on-dark" href="#family">${t('See the four lines', 'اطّلع على الخطوط الأربعة')}</a>
         <a class="btn ghost-dark" href="${DEMO}">${t('Book a SALIS AUTO demo', 'احجز عرض SALIS AUTO')}</a>
@@ -336,7 +335,7 @@ ${proofBand()}
 <section class="wrap cta-end" aria-label="Next step">
   <h2>${t('See the shipping product on your own numbers.', 'شاهد المنتج المتاح على أرقامك.')}</h2>
   <p>${t('A 20-minute SALIS AUTO demo, in Arabic or English, on a job card from your floor.', 'عرض SALIS AUTO لعشرين دقيقة، بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.')}</p>
-  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a><a class="btn ghost" href="contact.html">${t('Contact SALISCO', 'تواصل مع سلسكو')}</a></div>
+  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a><a class="btn ghost" href="contact.html">${t('Contact SALISCO', 'تواصل مع ساليسكو')}</a></div>
 </section>`;
 
 function proofBand() {
@@ -494,8 +493,8 @@ const insurance = productPage({
   ],
   proof: false,
   endH: t('Interested in the insurance line?', 'مهتم بخط التأمين؟').replace('?', '?'),
-  endP: t('Write to SALISCO. Insurers and workshops who want to shape it are the first people we want to hear from.', 'راسل سلسكو. شركات التأمين والورش الراغبة في تشكيل هذا الخط هم أول من نريد سماعهم.'),
-  endCtas: `<a class="btn" href="mailto:info@salisco.com">${t('Email SALISCO', 'راسل سلسكو')}</a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
+  endP: t('Write to SALISCO. Insurers and workshops who want to shape it are the first people we want to hear from.', 'راسل ساليسكو. شركات التأمين والورش الراغبة في تشكيل هذا الخط هم أول من نريد سماعهم.'),
+  endCtas: `<a class="btn" href="mailto:info@salisco.com">${t('Email SALISCO', 'راسل ساليسكو')}</a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
 });
 
 /* ---------------------------------------------------------------- about, contact */
@@ -503,8 +502,8 @@ const about = `
 <section class="phero" aria-labelledby="ah">
   <svg class="trace anim" viewBox="0 0 400 200" style="width:900px;inset-inline-end:-320px;top:-200px"><use href="#trace"/></svg>
   <div class="wrap">
-    <div class="eyebrow">${t('About', 'عن سلسكو')}</div>
-    <h1 id="ah">${t('SALISCO builds the software Saudi operations run on.', 'سلسكو تبني البرمجيات التي تعمل عليها العمليات السعودية.')}</h1>
+    <div class="eyebrow">${t('About', 'عن ساليسكو')}</div>
+    <h1 id="ah">${t('SALISCO builds the software Saudi operations run on.', 'ساليسكو تبني البرمجيات التي تعمل عليها العمليات السعودية.')}</h1>
     <p class="lede">${t('A product-family company in Riyadh. One engineering backbone, four product lines, one rule: the product is judged on whether it survives a workshop floor at 09:40 with a queue behind the counter.', 'شركة عائلة منتجات في الرياض. أساس هندسي واحد، أربعة خطوط منتجات، وقاعدة واحدة: يُحكم على المنتج بما إذا كان يصمد على أرض ورشة في التاسعة والأربعين صباحاً وخلف الكاونتر طابور.')}</p>
   </div>
 </section>
@@ -523,7 +522,7 @@ const about = `
     <li>${t('Built in Riyadh for the Saudi market. The first product, SALIS AUTO, serves workshops from a single bay to multi-branch fleet operations.', 'تُبنى في الرياض للسوق السعودي. المنتج الأول، SALIS AUTO، يخدم الورش من خليج واحد إلى عمليات أساطيل متعددة الفروع.')}</li>
     <li>${t('Hiring in Riyadh, on site: product design (Arabic-first), backend engineering (PostgreSQL), implementation (workshops). Roles are listed on the SALIS AUTO careers page.', 'التوظيف في الرياض حضورياً: تصميم المنتج (العربية أولاً)، هندسة الخلفية (PostgreSQL)، التطبيق (الورش). الوظائف مدرجة في صفحة الوظائف في SALIS AUTO.')} <a href="https://salisauto.app/public-portal/careers">${t('See open roles', 'اطّلع على الوظائف')}</a></li>
   </ul>
-  <div class="note">${t('Honest note. The company name SALISCO, its Arabic form سلسكو, the domain salisco.com and the address info@salisco.com are proposals awaiting the owner’s confirmation. The four product lines were confirmed on 4 September 2026.', 'ملاحظة صريحة. اسم الشركة SALISCO وصيغته العربية سلسكو والنطاق salisco.com والعنوان info@salisco.com مقترحات بانتظار تأكيد المالك. خطوط المنتجات الأربعة أُكدت في ٤ سبتمبر ٢٠٢٦.')}</div>
+  <div class="note">${t('Honest note. The company name SALISCO, its Arabic form ساليسكو, the domain salisco.com and the four product lines were confirmed by the owner on 4 September 2026. The address info@salisco.com is still a proposal.', 'ملاحظة صريحة. اسم الشركة SALISCO وصيغته العربية ساليسكو والنطاق salisco.com وخطوط المنتجات الأربعة أُكدت من المالك في ٤ سبتمبر ٢٠٢٦. العنوان info@salisco.com ما يزال مقترحاً.')}</div>
 </section>`;
 
 const contact = `
@@ -541,15 +540,15 @@ const contact = `
     <a class="channel" href="${DEMO}"><span class="k">${t('Demo', 'العرض التوضيحي')}</span><b>${t('Book a 20-minute SALIS AUTO demo', 'احجز عرض SALIS AUTO لعشرين دقيقة')}</b><span>${t('In Arabic or English, on a job card from your floor.', 'بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.')}</span></a>
     <a class="channel" href="mailto:info@salisauto.app"><span class="k">${t('Product support', 'دعم المنتج')}</span><b dir="ltr">info@salisauto.app</b><span>${t('Existing SALIS AUTO workshops: support lives with the product.', 'ورش SALIS AUTO الحالية: الدعم مع المنتج.')}</span></a>
   </div>
-  <div class="sec-head" style="margin-top:56px"><div class="eyebrow">${t('Accounts', 'الحسابات')}</div><h2>${t('SALISCO on four platforms, one handle.', 'سلسكو على أربع منصات بمعرّف واحد.')}</h2><p>${t('SALISCO speaks as the company: releases across the family, hiring, results. Product detail stays on each product’s own accounts. The handle must be reserved on every platform before these go live.', 'سلسكو تتحدث بصفة الشركة: الإصدارات عبر العائلة، والتوظيف، والنتائج. تفاصيل المنتج تبقى على حسابات كل منتج. يجب حجز المعرّف على كل منصة قبل الإطلاق.')}</p></div>
+  <div class="sec-head" style="margin-top:56px"><div class="eyebrow">${t('Accounts', 'الحسابات')}</div><h2>${t('SALISCO on four platforms, one handle.', 'ساليسكو على أربع منصات بمعرّف واحد.')}</h2><p>${t('SALISCO speaks as the company: releases across the family, hiring, results. Product detail stays on each product’s own accounts. The handle must be reserved on every platform before these go live.', 'ساليسكو تتحدث بصفة الشركة: الإصدارات عبر العائلة، والتوظيف، والنتائج. تفاصيل المنتج تبقى على حسابات كل منتج. يجب حجز المعرّف على كل منصة قبل الإطلاق.')}</p></div>
   <div class="tablewrap">
     <table>
       <thead><tr><th>${t('Platform', 'المنصة')}</th><th>${t('Handle', 'المعرّف')}</th><th>${t('Bio, English', 'النبذة بالإنجليزية')}</th><th>${t('Bio, Arabic', 'النبذة بالعربية')}</th></tr></thead>
       <tbody>
-        <tr><td><b>LinkedIn</b></td><td class="mono" dir="ltr">linkedin.com/company/salisco</td><td class="bio" dir="ltr">SALISCO builds operational software for Saudi Arabia. One backbone across four product lines: Garage, Spare Parts, Fleet, Insurance. Arabic, ZATCA, the riyal, and an audit trail. Shipping today as SALIS AUTO.<span class="lim">215 / 2,000</span></td><td class="bio arabic" dir="rtl">سلسكو تبني برمجيات تشغيلية للمملكة العربية السعودية. أساس واحد لأربعة خطوط منتجات: الورشة، قطع الغيار، الأساطيل، التأمين. العربية، الهيئة، الريال، وسجل تدقيق. متاح اليوم باسم <span dir="ltr">SALIS AUTO</span>.</td></tr>
+        <tr><td><b>LinkedIn</b></td><td class="mono" dir="ltr">linkedin.com/company/salisco</td><td class="bio" dir="ltr">SALISCO builds operational software for Saudi Arabia. One backbone across four product lines: Garage, Spare Parts, Fleet, Insurance. Arabic, ZATCA, the riyal, and an audit trail. Shipping today as SALIS AUTO.<span class="lim">215 / 2,000</span></td><td class="bio arabic" dir="rtl">ساليسكو تبني برمجيات تشغيلية للمملكة العربية السعودية. أساس واحد لأربعة خطوط منتجات: الورشة، قطع الغيار، الأساطيل، التأمين. العربية، الهيئة، الريال، وسجل تدقيق. متاح اليوم باسم <span dir="ltr">SALIS AUTO</span>.</td></tr>
         <tr><td><b>X</b></td><td class="mono" dir="ltr">@salisco</td><td class="bio" dir="ltr">Operational software built in Saudi Arabia. Garage, Spare Parts, Fleet, Insurance on one backbone. Makers of SALIS AUTO.<span class="lim">121 / 160</span></td><td class="bio arabic" dir="rtl">برمجيات تشغيلية مبنية في السعودية. الورشة، قطع الغيار، الأساطيل، التأمين على أساس واحد. صانعو <span dir="ltr">SALIS AUTO</span>.</td></tr>
         <tr><td><b>Instagram</b></td><td class="mono" dir="ltr">@salisco</td><td class="bio" dir="ltr">Saudi-built operational software.<br>Garage · Spare Parts · Fleet · Insurance<br>Makers of SALIS AUTO. Riyadh.<span class="lim">104 / 150</span></td><td class="bio arabic" dir="rtl">برمجيات تشغيلية مبنية في السعودية.<br>الورشة · قطع الغيار · الأساطيل · التأمين<br>صانعو <span dir="ltr">SALIS AUTO</span>. الرياض.</td></tr>
-        <tr><td><b>YouTube</b></td><td class="mono" dir="ltr">youtube.com/@salisco</td><td class="bio" dir="ltr">Company channel for SALISCO: releases across the four product lines, engineering talks, recorded webinars. Product demos live on each product’s own channel.<span class="lim">168 / 1,000</span></td><td class="bio arabic" dir="rtl">قناة شركة سلسكو: إصدارات خطوط المنتجات الأربعة، وأحاديث هندسية، وندوات مسجلة. العروض التوضيحية على قناة كل منتج.</td></tr>
+        <tr><td><b>YouTube</b></td><td class="mono" dir="ltr">youtube.com/@salisco</td><td class="bio" dir="ltr">Company channel for SALISCO: releases across the four product lines, engineering talks, recorded webinars. Product demos live on each product’s own channel.<span class="lim">168 / 1,000</span></td><td class="bio arabic" dir="rtl">قناة شركة ساليسكو: إصدارات خطوط المنتجات الأربعة، وأحاديث هندسية، وندوات مسجلة. العروض التوضيحية على قناة كل منتج.</td></tr>
       </tbody>
     </table>
   </div>
