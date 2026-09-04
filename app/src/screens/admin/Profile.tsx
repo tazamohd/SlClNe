@@ -1,226 +1,237 @@
-import { useState } from 'react'
+import { useRef } from 'react'
+import { z } from 'zod'
 import { Avatar } from '@/components/ui/Avatar'
-import { Card } from '@/components/ui/Card'
-import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { Card } from '@/components/ui/Card'
+import { Field, Form, FormErrorSummary, useUnsavedChangesGuard, useZodForm, type ZodForm } from '@/components/ui/Form'
+import { Icon } from '@/components/ui/Icon'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useIsMobile } from '@/lib/useMediaQuery'
 
-const MIN_PW = 8
+/** The signed-in user's own page: identity card, profile details, and a
+ *  password form that is its own form — a password manager needs the
+ *  `current-password` / `new-password` pair on a form of its own to offer to
+ *  save the new one, and mixing it into the profile save meant "Save Changes"
+ *  sometimes changed a password and sometimes did not.
+ *
+ *  The password fields validate on blur (length, match) and again on submit;
+ *  success clears the form and says "Password changed". The avatar is
+ *  generated from the name; there is no upload endpoint, and the card says so
+ *  rather than offering a picker that goes nowhere. */
 
-function validatePassword(t: (s: string) => string, current: string, next: string, confirm: string) {
-  const errors: { current?: string; next?: string; confirm?: string } = {}
-  if (!current) errors.current = t('Required')
-  if (!next) errors.next = t('Required')
-  else if (next.length < MIN_PW) errors.next = t('At least 8 characters')
-  if (!confirm) errors.confirm = t('Required')
-  else if (confirm !== next) errors.confirm = t('Passwords do not match')
-  return errors
+const MIN_PASSWORD = 8
+
+const profileSchema = z.object({
+  fullName: z.string().trim().min(2, 'Enter your full name.'),
+  email: z.string(),
+})
+
+const passwordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Enter your current password.'),
+    newPassword: z.string().min(MIN_PASSWORD, 'At least 8 characters'),
+    confirmPassword: z.string().min(1, 'Confirm the new password.'),
+  })
+  .refine((values) => values.newPassword === values.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+
+type PasswordValues = z.infer<typeof passwordSchema>
+type PasswordName = keyof PasswordValues
+
+const EMPTY_PASSWORDS: PasswordValues = { currentPassword: '', newPassword: '', confirmPassword: '' }
+
+/** What a single password field reports when it loses focus, before the form
+ *  as a whole is ever submitted. */
+function blurMessage(name: PasswordName, values: PasswordValues): string | null {
+  const value = values[name]
+  if (name === 'currentPassword') return value ? null : 'Enter your current password.'
+  if (name === 'newPassword') return value.length >= MIN_PASSWORD ? null : 'At least 8 characters'
+  if (!value) return 'Confirm the new password.'
+  return value === values.newPassword ? null : 'Passwords do not match'
 }
 
 export function Profile() {
   const { t, language, theme } = usePreferences()
-  const { userName, roleLabel, user } = useSession()
-  const isMobile = useIsMobile()
+  const { userName, roleLabel, user, live } = useSession()
   const toast = useToast()
 
-  const [fullName, setFullName] = useState(userName)
-  const [email] = useState(user?.email ?? '')
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [pwErrors, setPwErrors] = useState<{ current?: string; next?: string; confirm?: string }>({})
+  const profileForm = useZodForm({
+    schema: profileSchema,
+    initial: { fullName: userName, email: user?.email ?? '' },
+    onSubmit: async () => {
+      toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.'), tone: 'success' })
+    },
+  })
 
-  function handleSave() {
-    if (currentPassword || newPassword || confirmPassword) {
-      const errors = validatePassword(t, currentPassword, newPassword, confirmPassword)
-      setPwErrors(errors)
-      if (Object.keys(errors).length > 0) {
-        toast.show({ title: t('Validation error'), description: t('Please fix the highlighted fields.'), error: true })
-        return
-      }
-    }
-    toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
-    setCurrentPassword('')
-    setNewPassword('')
-    setConfirmPassword('')
-    setPwErrors({})
-  }
+  // The form clears itself after a successful change; the ref breaks the
+  // cycle between the form and the handler that resets it.
+  const clearPassword = useRef<() => void>(() => {})
+  const passwordForm = useZodForm({
+    schema: passwordSchema,
+    initial: EMPTY_PASSWORDS,
+    onSubmit: async () => {
+      toast.show({
+        title: t('Password changed'),
+        description: t('Use the new password the next time you sign in.'),
+        tone: 'success',
+      })
+      clearPassword.current()
+    },
+  })
+  clearPassword.current = () => passwordForm.reset(EMPTY_PASSWORDS)
 
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-salis-gradient text-white shadow-[0_8px_20px_rgba(10,94,215,.25)]">
-            <Icon name="User" size={24} />
-          </span>
-          <div>
-            <h1 className="font-display text-xl font-black text-heading">{t('Profile')}</h1>
-            <p className="mt-0.5 text-xs text-muted">{t('Manage your account')}</p>
-          </div>
-        </div>
-
-        <Card className="rounded-2xl p-4">
-          <div className="mb-4 flex items-center gap-3">
-            <Avatar name={userName} size={56} />
-            <div className="min-w-0">
-              <p className="truncate text-sm font-bold text-heading">{userName}</p>
-              <p className="text-xs text-muted">{t('Role')}: {roleLabel}</p>
-            </div>
-          </div>
-          <div className="divide-y divide-border">
-            <div className="py-2">
-              <MobileCardHeader title={t('Full Name')} />
-              <MobileCardRow value={fullName || '—'} />
-            </div>
-            <div className="py-2">
-              <MobileCardHeader title={t('Email')} />
-              <MobileCardRow value={<span dir="ltr">{email || '—'}</span>} />
-            </div>
-            <div className="py-2">
-              <MobileCardHeader title={t('Language')} />
-              <MobileCardRow value={language === 'ar' ? 'العربية' : 'English'} />
-            </div>
-            <div className="py-2">
-              <MobileCardHeader title={t('Theme')} />
-              <MobileCardRow value={theme === 'dark' ? t('Dark') : t('Light')} />
-            </div>
-          </div>
-        </Card>
-
-        <Card className="rounded-2xl p-4">
-          <h2 className="mb-3 text-base font-bold text-heading">{t('Change Password')}</h2>
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="m-current-pw" className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
-              <Input
-                id="m-current-pw"
-                type="password"
-                placeholder="••••••••"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                aria-invalid={Boolean(pwErrors.current)}
-              />
-              {pwErrors.current ? <span className="text-[11px] text-salis-orange">{pwErrors.current}</span> : null}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="m-new-pw" className="font-action text-xs font-medium text-body">{t('New Password')}</label>
-              <Input
-                id="m-new-pw"
-                type="password"
-                placeholder="••••••••"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                aria-invalid={Boolean(pwErrors.next)}
-              />
-              {pwErrors.next ? <span className="text-[11px] text-salis-orange">{pwErrors.next}</span> : null}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="m-confirm-pw" className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
-              <Input
-                id="m-confirm-pw"
-                type="password"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                aria-invalid={Boolean(pwErrors.confirm)}
-              />
-              {pwErrors.confirm ? <span className="text-[11px] text-salis-orange">{pwErrors.confirm}</span> : null}
-            </div>
-          </div>
-        </Card>
-
-        <Button className="self-end" onClick={handleSave}>
-          <Icon name="Check" size={16} />
-          {t('Save Changes')}
-        </Button>
-      </div>
-    )
-  }
+  useUnsavedChangesGuard(profileForm.dirty || passwordForm.dirty)
 
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none" style={{ maxWidth: 640 }}>
-      <h1 className="font-display text-[30px] font-black text-heading">{t('Profile')}</h1>
+    <div className="flex max-w-[720px] animate-fade-up flex-col gap-5 motion-reduce:animate-none sm:gap-6">
+      <PageHeader title="Profile" icon="User" subtitle={t('Manage your account')} />
 
-      <Card className="rounded-2xl p-6">
-        <div className="mb-5 flex items-center gap-4">
+      <Card className="flex flex-col gap-5 rounded-2xl p-5 md:p-6">
+        <div className="flex items-center gap-4">
           <Avatar name={userName} size={64} />
-          <div>
-            <p className="text-base font-bold text-heading">{userName}</p>
-            <p className="mt-0.5 text-[13px] text-muted">{t('Role')}: {roleLabel}</p>
+          <div className="min-w-0">
+            <p className="m-0 truncate text-base font-bold text-heading">{userName}</p>
+            <p className="m-0 mt-0.5 text-[13px] text-muted">
+              {t('Role')}: {roleLabel}
+            </p>
+            <p className="m-0 mt-1 flex items-center gap-1.5 text-[12px] text-muted">
+              <Icon name="Info" size={12} className="flex-shrink-0 text-salis-blue" />
+              {live
+                ? t('Your avatar is generated from your name.')
+                : t('Your avatar is generated from your name. Photo upload needs a live API.')}
+            </p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="profile-name" className="font-action text-xs font-medium text-body">{t('Full Name')}</label>
-            <Input
-              id="profile-name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
+
+        <Form form={profileForm} className="gap-4">
+          <FormErrorSummary />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Field name="fullName" label="Full Name" required />
+            <Field name="email" label="Email" kind="email" readOnly hint="Managed by your administrator." />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="profile-email" className="font-action text-xs font-medium text-body">{t('Email')}</label>
-            <Input
-              id="profile-email"
-              dir="ltr"
-              value={email}
-              readOnly
-            />
+          <dl className="m-0 grid grid-cols-2 gap-3 rounded-lg bg-inset px-4 py-3 text-[13px]">
+            <div>
+              <dt className="text-muted">{t('Language')}</dt>
+              <dd className="m-0 font-medium text-heading">{language === 'ar' ? 'العربية' : 'English'}</dd>
+            </div>
+            <div>
+              <dt className="text-muted">{t('Theme')}</dt>
+              <dd className="m-0 font-medium text-heading">{theme === 'dark' ? t('Dark') : t('Light')}</dd>
+            </div>
+          </dl>
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              size="lg"
+              icon="Check"
+              loading={profileForm.pending}
+              loadingLabel="Saving"
+              disabled={!profileForm.dirty}
+            >
+              {t('Save Changes')}
+            </Button>
           </div>
-        </div>
+        </Form>
       </Card>
 
-      <Card className="rounded-2xl p-6">
-        <h2 className="mb-4 text-base font-bold text-heading">{t('Change Password')}</h2>
-        <div className="flex flex-col gap-3.5">
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="current-pw" className="font-action text-xs font-medium text-body">{t('Current Password')}</label>
-            <Input
-              id="current-pw"
-              type="password"
-              placeholder="••••••••"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              aria-invalid={Boolean(pwErrors.current)}
-            />
-            {pwErrors.current ? <span className="text-[11px] text-salis-orange">{pwErrors.current}</span> : null}
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="new-pw" className="font-action text-xs font-medium text-body">{t('New Password')}</label>
-            <Input
-              id="new-pw"
-              type="password"
-              placeholder="••••••••"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              aria-invalid={Boolean(pwErrors.next)}
-            />
-            {pwErrors.next ? <span className="text-[11px] text-salis-orange">{pwErrors.next}</span> : null}
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="confirm-pw" className="font-action text-xs font-medium text-body">{t('Confirm Password')}</label>
-            <Input
-              id="confirm-pw"
-              type="password"
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              aria-invalid={Boolean(pwErrors.confirm)}
-            />
-            {pwErrors.confirm ? <span className="text-[11px] text-salis-orange">{pwErrors.confirm}</span> : null}
-          </div>
+      <Card className="flex flex-col gap-4 rounded-2xl p-5 md:p-6">
+        <div>
+          <h2 className="text-base font-bold text-heading">{t('Change Password')}</h2>
+          <p className="mt-0.5 text-[13px] text-muted">{t('At least 8 characters. Mixed case, digits and symbols make it stronger.')}</p>
         </div>
+        <Form form={passwordForm} className="gap-4">
+          <FormErrorSummary />
+          <PasswordField
+            form={passwordForm}
+            name="currentPassword"
+            label="Current Password"
+            autoComplete="current-password"
+          />
+          <PasswordField
+            form={passwordForm}
+            name="newPassword"
+            label="New Password"
+            autoComplete="new-password"
+            strength
+          />
+          <PasswordField
+            form={passwordForm}
+            name="confirmPassword"
+            label="Confirm Password"
+            autoComplete="new-password"
+          />
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              size="lg"
+              icon="KeyRound"
+              loading={passwordForm.pending}
+              loadingLabel="Saving"
+              disabled={!passwordForm.dirty}
+            >
+              {t('Change Password')}
+            </Button>
+          </div>
+        </Form>
       </Card>
+    </div>
+  )
+}
 
-      <Button className="self-end" onClick={handleSave}>
-        <Icon name="Check" size={16} />
-        {t('Save Changes')}
-      </Button>
+/** A password control bound to the zod form. `Field` has no password kind
+ *  (it would have to know about autocomplete, the eye toggle and the strength
+ *  meter), so this binds `PasswordInput` to the same values/errors/touched
+ *  state and adds the blur check the shared field leaves to submit. */
+function PasswordField({
+  form,
+  name,
+  label,
+  autoComplete,
+  strength,
+}: {
+  form: ZodForm<PasswordValues>
+  name: PasswordName
+  label: string
+  autoComplete: 'current-password' | 'new-password'
+  strength?: boolean
+}) {
+  const { t } = usePreferences()
+  const id = `${form.id}-${name}`
+  const messageId = `${id}-message`
+  const value = form.values[name]
+  const blur = form.touched[name] ? blurMessage(name, form.values) : null
+  const error = form.errors[name] ?? blur
+  const showError = Boolean(error) && (form.touched[name] || form.submitted)
+
+  return (
+    <div className="flex flex-col gap-1">
+      <label htmlFor={id} className="font-action text-xs font-medium text-heading">
+        {t(label)}
+      </label>
+      <PasswordInput
+        id={id}
+        name={name}
+        value={value}
+        autoComplete={autoComplete}
+        strength={strength}
+        placeholder="••••••••"
+        inputSize="md"
+        aria-invalid={showError || undefined}
+        aria-describedby={showError ? messageId : undefined}
+        onChange={(event) => form.setValue(name, event.target.value)}
+        onBlur={() => form.markTouched(name)}
+      />
+      {showError ? (
+        <span id={messageId} className="flex items-center gap-1.5 text-[11px] font-medium text-salis-orange">
+          <Icon name="AlertCircle" size={12} className="flex-shrink-0" />
+          {t(error ?? '')}
+        </span>
+      ) : null}
     </div>
   )
 }

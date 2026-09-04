@@ -9,6 +9,7 @@ import { PreferencesProvider } from '@/providers/PreferencesProvider'
 import { SessionProvider } from '@/providers/SessionProvider'
 import { RepositoryProvider } from '@/providers/RepositoryProvider'
 import { ToastProvider } from '@/components/ui/Toast'
+import { ModalProvider } from '@/components/ui/Modal'
 import { AppRoutes } from '@/routes'
 import { SCREENS } from '@/data/generated/screens'
 import type { ScreenMeta } from '@/data/types'
@@ -57,9 +58,11 @@ function renderRoute(route: string) {
         <SessionProvider>
           <RepositoryProvider>
             <ToastProvider>
-              <MemoryRouter initialEntries={[route]}>
-                <AppRoutes />
-              </MemoryRouter>
+              <ModalProvider>
+                <MemoryRouter initialEntries={[route]}>
+                  <AppRoutes />
+                </MemoryRouter>
+              </ModalProvider>
             </ToastProvider>
           </RepositoryProvider>
         </SessionProvider>

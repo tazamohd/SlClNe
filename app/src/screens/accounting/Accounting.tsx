@@ -1,15 +1,12 @@
-import { useMemo, useState } from 'react'
-import { useIsMobile } from '@/lib/useMediaQuery'
-import { ListPageHeader } from '@/components/shell/ListPage'
+import { useMemo, useState, type ReactNode } from 'react'
+import { ScreenFrame } from '@/components/shell/ScreenFrame'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
-import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { Input } from '@/components/ui/Input'
 import { Money, parseSar } from '@/components/ui/Money'
-import { ErrorState } from '@/components/ui/States'
+import { useDebounce } from '@/lib/useDebounce'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
@@ -18,13 +15,21 @@ import { AccountFormModal } from './AccountFormModal'
 import { JournalEntryFormModal } from './JournalEntryFormModal'
 import { ExpenseFormModal } from './ExpenseFormModal'
 import { DepartmentFormModal } from './DepartmentFormModal'
+import { DateRangeFilter } from './ReportControls'
+import { inDateRange, rowDateIso } from './reporting'
 
 /** The accounting ledger screens. Each pairs its title with the module name,
- *  as the design does ("Chart of Accounts" above "Accounting").
+ *  as the design does ("Chart of Accounts" above "Accounting"), on the quiet
+ *  page header, with the reporting suite's period picker in the actions slot
+ *  and the module's view grant checked before anything is drawn.
  *
  *  Every amount runs through `Money`, so the SAR convention (comma thousands,
  *  2 decimals, mono, LTR) is applied uniformly — the mock tables store these as
- *  display strings like "SAR 842,500", which `parseSar` normalises. */
+ *  display strings like "SAR 842,500", which `parseSar` normalises.
+ *
+ *  The period picker filters on the best date a row carries (`issuedAt`,
+ *  `_createdAt`, the design's `date` column); a row with no date is kept, so
+ *  a demo fixture is never hidden by a range it cannot be measured against. */
 
 const ACCOUNTING = 'Accounting'
 
@@ -61,14 +66,46 @@ const ACCOUNT_TYPE: Record<string, readonly [string, string]> = {
 
 function useFilter<TRow>(rows: readonly TRow[], fields: (row: TRow) => (string | number)[]) {
   const [query, setQuery] = useState('')
+  const needle = useDebounce(query.trim().toLowerCase(), 250)
   const filtered = useMemo(() => {
-    const needle = query.trim().toLowerCase()
     if (!needle) return rows
     return rows.filter((row) =>
       fields(row).some((value) => String(value).toLowerCase().includes(needle))
     )
-  }, [rows, query, fields])
-  return { query, setQuery, filtered }
+  }, [rows, needle, fields])
+  return { query, setQuery, filtered, searching: Boolean(needle) }
+}
+
+/** The period picker and the rows it keeps. `dateKey` names the design's own
+ *  date column, which the fixtures carry where the API carries `_createdAt`. */
+function usePeriod<TRow extends Record<string, unknown>>(rows: readonly TRow[], dateKey: string) {
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
+  const inPeriod = useMemo(
+    () => (from || to ? rows.filter((row) => inDateRange(rowDateIso(row, dateKey), from, to)) : rows),
+    [rows, from, to, dateKey]
+  )
+  const picker = <DateRangeFilter from={from} to={to} onFrom={setFrom} onTo={setTo} />
+  return { inPeriod, picker, filtering: Boolean(from || to) }
+}
+
+function NoRows({ filtering, icon, title }: { filtering: boolean; icon: string; title: string }) {
+  const { t } = usePreferences()
+  return filtering ? (
+    <EmptyState icon="SearchX" title={t('No results')} description={t('Nothing matches the current filters.')} />
+  ) : (
+    <EmptyState icon={icon} title={t(title)} />
+  )
+}
+
+/** Header actions: the period picker, then the primary button. */
+function Actions({ picker, children }: { picker: ReactNode; children?: ReactNode }) {
+  return (
+    <>
+      {picker}
+      {children}
+    </>
+  )
 }
 
 // ── Chart of accounts ───────────────────────────────────────────────────────
@@ -77,12 +114,10 @@ type Account = RowOf<'chartOfAccounts'>
 export function ChartOfAccounts() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
-  const { data: accounts = [], isLoading, isError, error, refetch } = useCollection('chartOfAccounts')
-  const { query, setQuery, filtered } = useFilter(accounts, (a) => [a.code, a.name, a.type])
+  const accountsQuery = useCollection('chartOfAccounts')
+  const accounts = accountsQuery.data ?? []
+  const { query, setQuery, filtered, searching } = useFilter(accounts, (a) => [a.code, a.name, a.type])
   const [addingAccount, setAddingAccount] = useState(false)
-
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const typeBadge = (value: string) => {
     const [bg, fg] = ACCOUNT_TYPE[value] ?? ACCOUNT_TYPE.Expense
@@ -94,23 +129,42 @@ export function ChartOfAccounts() {
   }
 
   const columns: Column<Account>[] = [
-    { header: 'Account Code', cell: (a) => a.code, code: true },
-    { header: 'Account Name', cell: (a) => t(a.name) },
-    { header: 'Account Type', cell: (a) => typeBadge(a.type) },
-    { header: 'Sub-Accounts', cell: (a) => a.children },
-    { header: 'Balance', cell: (a) => <Money sar={parseSar(a.balance)} className="font-semibold" /> },
+    { header: 'Account Code', cell: (a) => a.code, code: true, sortValue: (a) => a.code },
+    { header: 'Account Name', cell: (a) => t(a.name), sortValue: (a) => a.name },
+    { header: 'Account Type', cell: (a) => typeBadge(a.type), sortValue: (a) => a.type },
+    { header: 'Sub-Accounts', cell: (a) => a.children, numeric: true, sortValue: (a) => Number(a.children) },
+    {
+      header: 'Balance',
+      cell: (a) => <Money sar={parseSar(a.balance)} className="font-semibold" />,
+      numeric: true,
+      sortValue: (a) => parseSar(a.balance),
+    },
   ]
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader icon="BookOpen" title={t('Chart of Accounts')} subtitle={t(ACCOUNTING)} />
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t(ACCOUNTING)}
+        title={t('Chart of Accounts')}
+        search={{ value: query, onChange: setQuery, placeholder: t('Search accounts...') }}
+        actions={
+          can('accounting', 'c') ? (
+            <Button size="md" icon="Plus" onClick={() => setAddingAccount(true)}>
+              {t('Add Account')}
+            </Button>
+          ) : null
+        }
+        denied={!can('accounting', 'v')}
+        query={accountsQuery}
+        skeleton="table"
+      >
         <DataTable
           caption="Chart of accounts"
           columns={columns}
           rows={filtered}
           rowKey={(a) => a.code}
-          loading={isLoading}
+          defaultSort={{ key: 'Account Code', dir: 'asc' }}
           mobileCard={(a) => (
             <>
               <MobileCardHeader title={a.code} code trailing={typeBadge(a.type)} />
@@ -121,46 +175,10 @@ export function ChartOfAccounts() {
               <MobileCardRow label={t('Sub-Accounts')}>{a.children}</MobileCardRow>
             </>
           )}
-          empty={<EmptyState icon="BookOpen" title={t('No accounts yet')} />}
+          empty={<NoRows filtering={searching} icon="BookOpen" title="No accounts yet" />}
         />
-      </>
-    )
-  }
-
-  return (
-    <>
-      <ListPageHeader
-        title={t('Chart of Accounts')}
-        subtitle={t(ACCOUNTING)}
-        search={{ value: query, onChange: setQuery, placeholder: t('Search accounts...') }}
-        actions={
-          can('accounting', 'c') ? (
-            <Button size="md" onClick={() => setAddingAccount(true)}>
-              <Icon name="Plus" size={16} />
-              {t('Add Account')}
-            </Button>
-          ) : null
-        }
-      />
+      </ScreenFrame>
       <AccountFormModal open={addingAccount} onClose={() => setAddingAccount(false)} />
-      <DataTable
-        caption="Chart of accounts"
-        columns={columns}
-        rows={filtered}
-        rowKey={(a) => a.code}
-        loading={isLoading}
-        mobileCard={(a) => (
-          <>
-            <MobileCardHeader title={a.code} code trailing={typeBadge(a.type)} />
-            <MobileCardRow>{t(a.name)}</MobileCardRow>
-            <MobileCardRow label={t('Balance')}>
-              <Money sar={parseSar(a.balance)} className="font-semibold text-heading" />
-            </MobileCardRow>
-            <MobileCardRow label={t('Sub-Accounts')}>{a.children}</MobileCardRow>
-          </>
-        )}
-        empty={<EmptyState icon="BookOpen" title={t('No accounts yet')} />}
-      />
     </>
   )
 }
@@ -171,9 +189,10 @@ type JournalEntry = RowOf<'journalEntries'>
 export function JournalEntries() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
-  const { data: entries = [], isLoading, isError, error, refetch } = useCollection('journalEntries')
-  const { query, setQuery, filtered } = useFilter(entries, (e) => [e.id, e.ref, e.narration])
+  const entriesQuery = useCollection('journalEntries')
+  const entries = entriesQuery.data ?? []
+  const { inPeriod, picker, filtering } = usePeriod(entries, 'date')
+  const { query, setQuery, filtered, searching } = useFilter(inPeriod, (e) => [e.id, e.ref, e.narration])
   const [creatingEntry, setCreatingEntry] = useState(false)
 
   // Double entry: debits must equal credits. Showing the totals makes an
@@ -181,24 +200,22 @@ export function JournalEntries() {
   const { debit, credit } = useMemo(() => {
     let d = 0
     let c = 0
-    for (const entry of entries) {
+    for (const entry of inPeriod) {
       d += parseSar(entry.debit)
       c += parseSar(entry.credit)
     }
     return { debit: d, credit: c }
-  }, [entries])
+  }, [inPeriod])
   const balanced = Math.abs(debit - credit) < 0.005
 
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
   const columns: Column<JournalEntry>[] = [
-    { header: 'Entry #', cell: (e) => e.id, code: true },
-    { header: 'Date', cell: (e) => e.date },
-    { header: 'Reference', cell: (e) => e.ref, code: true },
-    { header: 'Narration', cell: (e) => t(e.narration) },
-    { header: 'Debit', cell: (e) => <Money sar={parseSar(e.debit)} /> },
-    { header: 'Credit', cell: (e) => <Money sar={parseSar(e.credit)} /> },
-    { header: 'Status', cell: (e) => <LedgerStatus value={e.status} /> },
+    { header: 'Entry #', cell: (e) => e.id, code: true, sortValue: (e) => e.id },
+    { header: 'Date', cell: (e) => e.date, sortValue: (e) => rowDateIso(e, 'date') ?? e.date },
+    { header: 'Reference', cell: (e) => e.ref, code: true, sortValue: (e) => e.ref },
+    { header: 'Narration', cell: (e) => t(e.narration), sortValue: (e) => e.narration },
+    { header: 'Debit', cell: (e) => <Money sar={parseSar(e.debit)} />, numeric: true, sortValue: (e) => parseSar(e.debit) },
+    { header: 'Credit', cell: (e) => <Money sar={parseSar(e.credit)} />, numeric: true, sortValue: (e) => parseSar(e.credit) },
+    { header: 'Status', cell: (e) => <LedgerStatus value={e.status} />, sortValue: (e) => e.status },
   ]
 
   const balanceNotice = (
@@ -225,37 +242,33 @@ export function JournalEntries() {
     </div>
   )
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader
-          icon="BookOpen"
-          title={t('Journal Entries')}
-          actions={
-            can('accounting', 'c') ? (
-              <Button size="md" onClick={() => setCreatingEntry(true)}>
-                <Icon name="Plus" size={16} />
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t(ACCOUNTING)}
+        title={t('Journal Entries')}
+        search={{ value: query, onChange: setQuery, placeholder: t('Search entries...') }}
+        actions={
+          <Actions picker={picker}>
+            {can('accounting', 'c') ? (
+              <Button size="md" icon="Plus" onClick={() => setCreatingEntry(true)}>
                 {t('New Journal Entry')}
               </Button>
-            ) : null
-          }
-        />
-        <JournalEntryFormModal open={creatingEntry} onClose={() => setCreatingEntry(false)} />
-        <Input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder={t('Search entries...')}
-          aria-label={t('Search entries')}
-          inputSize="sm"
-        />
-        {balanceNotice}
+            ) : null}
+          </Actions>
+        }
+        denied={!can('accounting', 'v')}
+        query={entriesQuery}
+        skeleton="table"
+        notice={balanceNotice}
+      >
         <DataTable
           caption="Journal entries"
           columns={columns}
           rows={filtered}
           rowKey={(e) => e.id}
-          loading={isLoading}
+          defaultSort={{ key: 'Date', dir: 'desc' }}
           mobileCard={(e) => (
             <>
               <MobileCardHeader title={e.id} code trailing={<LedgerStatus value={e.status} />} />
@@ -273,56 +286,10 @@ export function JournalEntries() {
               </MobileCardRow>
             </>
           )}
-          empty={<EmptyState icon="BookOpen" title={t('No journal entries yet')} />}
+          empty={<NoRows filtering={searching || filtering} icon="BookOpen" title="No journal entries yet" />}
         />
-      </>
-    )
-  }
-
-  return (
-    <>
-      <ListPageHeader
-        title={t('Journal Entries')}
-        subtitle={t(ACCOUNTING)}
-        search={{ value: query, onChange: setQuery }}
-        actions={
-          can('accounting', 'c') ? (
-            <Button size="md" onClick={() => setCreatingEntry(true)}>
-              <Icon name="Plus" size={16} />
-              {t('New Journal Entry')}
-            </Button>
-          ) : null
-        }
-      />
+      </ScreenFrame>
       <JournalEntryFormModal open={creatingEntry} onClose={() => setCreatingEntry(false)} />
-
-      {balanceNotice}
-
-      <DataTable
-        caption="Journal entries"
-        columns={columns}
-        rows={filtered}
-        rowKey={(e) => e.id}
-        loading={isLoading}
-        mobileCard={(e) => (
-          <>
-            <MobileCardHeader title={e.id} code trailing={<LedgerStatus value={e.status} />} />
-            <MobileCardRow>{t(e.narration)}</MobileCardRow>
-            <MobileCardRow label={t('Reference')}>
-              <span className="font-mono" dir="ltr">
-                {e.ref}
-              </span>
-            </MobileCardRow>
-            <MobileCardRow label={t('Debit')}>
-              <Money sar={parseSar(e.debit)} className="text-heading" />
-            </MobileCardRow>
-            <MobileCardRow label={t('Credit')}>
-              <Money sar={parseSar(e.credit)} className="text-heading" />
-            </MobileCardRow>
-          </>
-        )}
-        empty={<EmptyState icon="BookOpen" title={t('No journal entries yet')} />}
-      />
     </>
   )
 }
@@ -333,32 +300,52 @@ type Expense = RowOf<'expenses'>
 export function Expenses() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
-  const { data: expenses = [], isLoading, isError, error, refetch } = useCollection('expenses')
-  const { query, setQuery, filtered } = useFilter(expenses, (e) => [e.id, e.category, e.vendor])
+  const expensesQuery = useCollection('expenses')
+  const expenses = expensesQuery.data ?? []
+  const { inPeriod, picker, filtering } = usePeriod(expenses, 'date')
+  const { query, setQuery, filtered, searching } = useFilter(inPeriod, (e) => [e.id, e.category, e.vendor])
   const [creatingExpense, setCreatingExpense] = useState(false)
 
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
   const columns: Column<Expense>[] = [
-    { header: 'Expense #', cell: (e) => e.id, code: true },
-    { header: 'Date', cell: (e) => e.date },
-    { header: 'Category', cell: (e) => t(e.category) },
-    { header: 'Vendor', cell: (e) => e.vendor },
-    { header: 'Amount', cell: (e) => <Money sar={parseSar(e.amount)} className="font-semibold" /> },
-    { header: 'Status', cell: (e) => <LedgerStatus value={e.status} /> },
+    { header: 'Expense #', cell: (e) => e.id, code: true, sortValue: (e) => e.id },
+    { header: 'Date', cell: (e) => e.date, sortValue: (e) => rowDateIso(e, 'date') ?? e.date },
+    { header: 'Category', cell: (e) => t(e.category), sortValue: (e) => e.category },
+    { header: 'Vendor', cell: (e) => e.vendor, sortValue: (e) => e.vendor },
+    {
+      header: 'Amount',
+      cell: (e) => <Money sar={parseSar(e.amount)} className="font-semibold" />,
+      numeric: true,
+      sortValue: (e) => parseSar(e.amount),
+    },
+    { header: 'Status', cell: (e) => <LedgerStatus value={e.status} />, sortValue: (e) => e.status },
   ]
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader icon="Receipt" title={t('Expenses')} subtitle={t(ACCOUNTING)} />
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t(ACCOUNTING)}
+        title={t('Expenses')}
+        search={{ value: query, onChange: setQuery, placeholder: t('Search expenses...') }}
+        actions={
+          <Actions picker={picker}>
+            {can('accounting', 'c') ? (
+              <Button size="md" icon="Plus" onClick={() => setCreatingExpense(true)}>
+                {t('New Expense')}
+              </Button>
+            ) : null}
+          </Actions>
+        }
+        denied={!can('accounting', 'v')}
+        query={expensesQuery}
+        skeleton="table"
+      >
         <DataTable
           caption="Expenses"
           columns={columns}
           rows={filtered}
           rowKey={(e) => e.id}
-          loading={isLoading}
+          defaultSort={{ key: 'Date', dir: 'desc' }}
           mobileCard={(e) => (
             <>
               <MobileCardHeader title={e.id} code trailing={<LedgerStatus value={e.status} />} />
@@ -369,46 +356,10 @@ export function Expenses() {
               </MobileCardRow>
             </>
           )}
-          empty={<EmptyState icon="Receipt" title={t('No expenses recorded')} />}
+          empty={<NoRows filtering={searching || filtering} icon="Receipt" title="No expenses recorded" />}
         />
-      </>
-    )
-  }
-
-  return (
-    <>
-      <ListPageHeader
-        title={t('Expenses')}
-        subtitle={t(ACCOUNTING)}
-        search={{ value: query, onChange: setQuery }}
-        actions={
-          can('accounting', 'c') ? (
-            <Button size="md" onClick={() => setCreatingExpense(true)}>
-              <Icon name="Plus" size={16} />
-              {t('New Expense')}
-            </Button>
-          ) : null
-        }
-      />
+      </ScreenFrame>
       <ExpenseFormModal open={creatingExpense} onClose={() => setCreatingExpense(false)} />
-      <DataTable
-        caption="Expenses"
-        columns={columns}
-        rows={filtered}
-        rowKey={(e) => e.id}
-        loading={isLoading}
-        mobileCard={(e) => (
-          <>
-            <MobileCardHeader title={e.id} code trailing={<LedgerStatus value={e.status} />} />
-            <MobileCardRow>{e.vendor}</MobileCardRow>
-            <MobileCardRow label={t('Category')}>{t(e.category)}</MobileCardRow>
-            <MobileCardRow label={t('Amount')}>
-              <Money sar={parseSar(e.amount)} className="font-semibold text-heading" />
-            </MobileCardRow>
-          </>
-        )}
-        empty={<EmptyState icon="Receipt" title={t('No expenses recorded')} />}
-      />
     </>
   )
 }
@@ -419,52 +370,53 @@ type Receipt = RowOf<'receipts'>
 export function Receipts() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
-  const { data: receipts = [], isLoading, isError, error, refetch } = useCollection('receipts')
-  const { query, setQuery, filtered } = useFilter(receipts, (r) => [r.id, r.customer, r.invoice])
+  const receiptsQuery = useCollection('receipts')
+  const receipts = receiptsQuery.data ?? []
+  const { inPeriod, picker, filtering } = usePeriod(receipts, 'date')
+  const { query, setQuery, filtered, searching } = useFilter(inPeriod, (r) => [r.id, r.customer, r.invoice])
   const [raising, setRaising] = useState(false)
 
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
-
   const columns: Column<Receipt>[] = [
-    { header: 'Receipt #', cell: (r) => r.id, code: true },
-    { header: 'Date', cell: (r) => r.date },
-    { header: 'Customer', cell: (r) => r.customer },
-    { header: 'Invoice', cell: (r) => r.invoice, code: true },
-    { header: 'Payment Method', cell: (r) => t(r.method) },
-    { header: 'Amount', cell: (r) => <Money sar={parseSar(r.amount)} className="font-semibold" /> },
-    { header: 'Status', cell: (r) => <LedgerStatus value={r.status} /> },
+    { header: 'Receipt #', cell: (r) => r.id, code: true, sortValue: (r) => r.id },
+    { header: 'Date', cell: (r) => r.date, sortValue: (r) => rowDateIso(r, 'date') ?? r.date },
+    { header: 'Customer', cell: (r) => r.customer, sortValue: (r) => r.customer },
+    { header: 'Invoice', cell: (r) => r.invoice, code: true, sortValue: (r) => r.invoice },
+    { header: 'Payment Method', cell: (r) => t(r.method), sortValue: (r) => r.method },
+    {
+      header: 'Amount',
+      cell: (r) => <Money sar={parseSar(r.amount)} className="font-semibold" />,
+      numeric: true,
+      sortValue: (r) => parseSar(r.amount),
+    },
+    { header: 'Status', cell: (r) => <LedgerStatus value={r.status} />, sortValue: (r) => r.status },
   ]
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader
-          icon="Receipt"
-          title={t('Receipts')}
-          actions={
-            can('payments', 'c') ? (
-              <Button size="md" onClick={() => setRaising(true)}>
-                <Icon name="Plus" size={16} />
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t(ACCOUNTING)}
+        title={t('Receipts')}
+        search={{ value: query, onChange: setQuery, placeholder: t('Search receipts...') }}
+        actions={
+          <Actions picker={picker}>
+            {can('payments', 'c') ? (
+              <Button size="md" icon="Plus" onClick={() => setRaising(true)}>
                 {t('New Receipt')}
               </Button>
-            ) : null
-          }
-        />
-        <Input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder={t('Search receipts...')}
-          aria-label={t('Search receipts')}
-          inputSize="sm"
-        />
+            ) : null}
+          </Actions>
+        }
+        denied={!can('accounting', 'v') && !can('payments', 'v')}
+        query={receiptsQuery}
+        skeleton="table"
+      >
         <DataTable
           caption="Cash receipts"
           columns={columns}
           rows={filtered}
           rowKey={(r) => r.id}
-          loading={isLoading}
+          defaultSort={{ key: 'Date', dir: 'desc' }}
           mobileCard={(r) => (
             <>
               <MobileCardHeader title={r.id} code trailing={<LedgerStatus value={r.status} />} />
@@ -479,50 +431,9 @@ export function Receipts() {
               </MobileCardRow>
             </>
           )}
-          empty={<EmptyState icon="Receipt" title={t('No receipts yet')} />}
+          empty={<NoRows filtering={searching || filtering} icon="Receipt" title="No receipts yet" />}
         />
-        <RaiseReceiptModal open={raising} onClose={() => setRaising(false)} />
-      </>
-    )
-  }
-
-  return (
-    <>
-      <ListPageHeader
-        title={t('Receipts')}
-        subtitle={t(ACCOUNTING)}
-        search={{ value: query, onChange: setQuery }}
-        actions={
-          can('payments', 'c') ? (
-            <Button size="md" onClick={() => setRaising(true)}>
-              <Icon name="Plus" size={16} />
-              {t('New Receipt')}
-            </Button>
-          ) : null
-        }
-      />
-      <DataTable
-        caption="Cash receipts"
-        columns={columns}
-        rows={filtered}
-        rowKey={(r) => r.id}
-        loading={isLoading}
-        mobileCard={(r) => (
-          <>
-            <MobileCardHeader title={r.id} code trailing={<LedgerStatus value={r.status} />} />
-            <MobileCardRow>{r.customer}</MobileCardRow>
-            <MobileCardRow label={t('Invoice')}>
-              <span className="font-mono" dir="ltr">
-                {r.invoice}
-              </span>
-            </MobileCardRow>
-            <MobileCardRow label={t('Amount')}>
-              <Money sar={parseSar(r.amount)} className="font-semibold text-heading" />
-            </MobileCardRow>
-          </>
-        )}
-        empty={<EmptyState icon="Receipt" title={t('No receipts yet')} />}
-      />
+      </ScreenFrame>
       <RaiseReceiptModal open={raising} onClose={() => setRaising(false)} />
     </>
   )
@@ -534,12 +445,10 @@ type Department = RowOf<'departments'>
 export function Departments() {
   const { t } = usePreferences()
   const { can } = useSession()
-  const isMobile = useIsMobile()
-  const { data: departments = [], isLoading, isError, error, refetch } = useCollection('departments')
-  const { query, setQuery, filtered } = useFilter(departments, (d) => [d.name, d.head, d.branch])
+  const departmentsQuery = useCollection('departments')
+  const departments = departmentsQuery.data ?? []
+  const { query, setQuery, filtered, searching } = useFilter(departments, (d) => [d.name, d.head, d.branch])
   const [addingDepartment, setAddingDepartment] = useState(false)
-
-  if (isError) return <Card className="p-6"><ErrorState description={error?.message} onRetry={() => void refetch()} /></Card>
 
   const columns: Column<Department>[] = [
     {
@@ -550,23 +459,37 @@ export function Departments() {
           {t(d.name)}
         </span>
       ),
+      sortValue: (d) => d.name,
     },
-    { header: 'Department Head', cell: (d) => d.head },
-    { header: 'Headcount', cell: (d) => d.headcount },
-    { header: 'Cost Center', cell: (d) => d.costCenter, code: true },
-    { header: 'Branch', cell: (d) => t(d.branch) },
+    { header: 'Department Head', cell: (d) => d.head, sortValue: (d) => d.head },
+    { header: 'Headcount', cell: (d) => d.headcount, numeric: true, sortValue: (d) => Number(d.headcount) },
+    { header: 'Cost Center', cell: (d) => d.costCenter, code: true, sortValue: (d) => d.costCenter },
+    { header: 'Branch', cell: (d) => t(d.branch), sortValue: (d) => d.branch },
   ]
 
-  if (isMobile) {
-    return (
-      <>
-        <MobilePageHeader icon="Building2" title={t('Departments')} subtitle={t('Administration')} />
+  return (
+    <>
+      <ScreenFrame
+        variant="quiet"
+        eyebrow={t('Administration')}
+        title={t('Departments')}
+        search={{ value: query, onChange: setQuery, placeholder: t('Search departments...') }}
+        actions={
+          can('hr', 'c') ? (
+            <Button size="md" icon="Plus" onClick={() => setAddingDepartment(true)}>
+              {t('Add Department')}
+            </Button>
+          ) : null
+        }
+        denied={!can('hr', 'v') && !can('accounting', 'v')}
+        query={departmentsQuery}
+        skeleton="table"
+      >
         <DataTable
           caption="Departments and cost centres"
           columns={columns}
           rows={filtered}
           rowKey={(d) => d.costCenter}
-          loading={isLoading}
           mobileCard={(d) => (
             <>
               <MobileCardHeader title={t(d.name)} />
@@ -579,48 +502,10 @@ export function Departments() {
               </MobileCardRow>
             </>
           )}
-          empty={<EmptyState icon="Building2" title={t('No departments yet')} />}
+          empty={<NoRows filtering={searching} icon="Building2" title="No departments yet" />}
         />
-      </>
-    )
-  }
-
-  return (
-    <>
-      <ListPageHeader
-        title={t('Departments')}
-        subtitle={t('Administration')}
-        search={{ value: query, onChange: setQuery }}
-        actions={
-          can('hr', 'c') ? (
-            <Button size="md" onClick={() => setAddingDepartment(true)}>
-              <Icon name="Plus" size={16} />
-              {t('Add Department')}
-            </Button>
-          ) : null
-        }
-      />
+      </ScreenFrame>
       <DepartmentFormModal open={addingDepartment} onClose={() => setAddingDepartment(false)} />
-      <DataTable
-        caption="Departments and cost centres"
-        columns={columns}
-        rows={filtered}
-        rowKey={(d) => d.costCenter}
-        loading={isLoading}
-        mobileCard={(d) => (
-          <>
-            <MobileCardHeader title={t(d.name)} />
-            <MobileCardRow label={t('Department Head')}>{d.head}</MobileCardRow>
-            <MobileCardRow label={t('Headcount')}>{d.headcount}</MobileCardRow>
-            <MobileCardRow label={t('Cost Center')}>
-              <span className="font-mono" dir="ltr">
-                {d.costCenter}
-              </span>
-            </MobileCardRow>
-          </>
-        )}
-        empty={<EmptyState icon="Building2" title={t('No departments yet')} />}
-      />
     </>
   )
 }

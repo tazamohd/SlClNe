@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { MobilePageHeader } from '@/components/shell/MobileShell'
-import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
+import { Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
+import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { BarList, CountBars, Donut } from '@/components/ui/Charts'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
-import { ErrorState, Loading } from '@/components/ui/States'
+import { Card } from '@/components/ui/Card'
+import { DashboardSkeleton, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
@@ -32,6 +33,43 @@ function ExportButtons() {
         <Icon name="Printer" size={15} />
         {t('Print')}
       </Button>
+    </>
+  )
+}
+
+/** The one header every report shares: quiet, under the Accounting eyebrow,
+ *  with export and print in the actions slot. Rendered in every state, so a
+ *  report that is still loading keeps its title instead of blanking. */
+function ReportHeader({ icon, title, subtitle }: { icon: string; title: string; subtitle?: string }) {
+  const { t } = usePreferences()
+  return (
+    <PageHeader
+      variant="quiet"
+      icon={icon}
+      eyebrow={t('Accounting')}
+      title={t(title)}
+      subtitle={subtitle ? t(subtitle) : undefined}
+      actions={<ExportButtons />}
+    />
+  )
+}
+
+function ReportLoading({ header }: { header: React.ReactNode }) {
+  return (
+    <>
+      {header}
+      <DashboardSkeleton />
+    </>
+  )
+}
+
+function ReportError({ header, message, onRetry }: { header: React.ReactNode; message?: string; onRetry: () => void }) {
+  return (
+    <>
+      {header}
+      <Card className="p-6">
+        <ErrorState description={message} onRetry={onRetry} />
+      </Card>
     </>
   )
 }
@@ -102,13 +140,16 @@ export function FinancialReports() {
       .sort((a, b) => b.value - a.value)
   }, [totals.expenses])
 
-  if (isLoading) return <Loading label={t('Loading reports...')} />
-  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+  const header = (
+    <ReportHeader icon="TrendingUp" title="Financial Reports" subtitle="Balance sheet, P&L, cash flow and trial balance" />
+  )
+  if (isLoading) return <ReportLoading header={header} />
+  if (isError) return <ReportError header={header} message={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
       <>
-        <MobilePageHeader icon="TrendingUp" title={t('Financial Reports')} />
+        {header}
         <StatRow stats={stats} />
         <Section title={t('Profit & Loss')} subtitle={t('Derived from the chart of accounts')}>
           <BarList
@@ -144,12 +185,7 @@ export function FinancialReports() {
 
   return (
     <>
-      <FeatureHeader
-        icon="TrendingUp"
-        title={t('Financial Reports')}
-        subtitle={t('Balance sheet, P&L, cash flow and trial balance')}
-        actions={<ExportButtons />}
-      />
+      {header}
       <StatRow stats={stats} />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -287,13 +323,16 @@ export function FinancialStatements() {
     { label: 'Equity', value: totals.equity, strong: true },
   ]
 
-  if (isLoading) return <Loading label={t('Loading statements...')} />
-  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+  const header = (
+    <ReportHeader icon="FileText" title="Financial Statements" subtitle="IFRS statements for the current period" />
+  )
+  if (isLoading) return <ReportLoading header={header} />
+  if (isError) return <ReportError header={header} message={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
       <>
-        <MobilePageHeader icon="FileText" title={t('Financial Statements')} />
+        {header}
         <Section title={t('Statement Summary')} subtitle={t('Figures derive from the chart of accounts')}>
           <div className="flex flex-col">
             {rows.map((row) => (
@@ -316,12 +355,7 @@ export function FinancialStatements() {
 
   return (
     <>
-      <FeatureHeader
-        icon="FileText"
-        title={t('Financial Statements')}
-        subtitle={t('IFRS statements for the current period')}
-        actions={<ExportButtons />}
-      />
+      {header}
       <Section title={t('Statement Summary')} subtitle={t('Figures derive from the chart of accounts')}>
         <div className="flex flex-col">
           {rows.map((row) => (
@@ -353,13 +387,16 @@ export function ExecutiveReports() {
 
   const hidePnl = fieldHidden('Branch P&L')
 
-  if (isLoading) return <Loading label={t('Loading reports...')} />
-  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+  const header = (
+    <ReportHeader icon="BarChart3" title="Executive Reports" subtitle="Board and CEO level KPIs" />
+  )
+  if (isLoading) return <ReportLoading header={header} />
+  if (isError) return <ReportError header={header} message={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
       <>
-        <MobilePageHeader icon="BarChart3" title={t('Executive Reports')} />
+        {header}
         <StatRow stats={[
           { label: 'Revenue', value: hidePnl ? '---' : formatSar(totals.revenue), caption: 'Period to date', highlight: true },
           { label: 'Net Profit', value: hidePnl ? '---' : formatSar(totals.profit), caption: 'Revenue less expenses', tone: 'info' },
@@ -385,12 +422,7 @@ export function ExecutiveReports() {
 
   return (
     <>
-      <FeatureHeader
-        icon="BarChart3"
-        title={t('Executive Reports')}
-        subtitle={t('Board and CEO level KPIs')}
-        actions={<ExportButtons />}
-      />
+      {header}
       <StatRow
         stats={[
           {
@@ -452,10 +484,14 @@ export function OperationalReports() {
     [technicians],
   )
 
+  const header = (
+    <ReportHeader icon="Activity" title="Operational Reports" subtitle="Workshop throughput, bookings and technician load" />
+  )
+
   if (isMobile) {
     return (
       <>
-        <MobilePageHeader icon="ClipboardList" title={t('Operational Reports')} />
+        {header}
         <StatRow
           stats={[
             { label: 'Job Cards', value: jobs.length, caption: 'In this period', highlight: true },
@@ -475,12 +511,7 @@ export function OperationalReports() {
 
   return (
     <>
-      <FeatureHeader
-        icon="Activity"
-        title={t('Operational Reports')}
-        subtitle={t('Workshop throughput, bookings and technician load')}
-        actions={<ExportButtons />}
-      />
+      {header}
       <StatRow
         stats={[
           { label: 'Job Cards', value: jobs.length, caption: 'In this period', highlight: true },
@@ -518,13 +549,14 @@ export function BIDashboard() {
     return [...map.entries()].map(([label, value]) => ({ label, value }))
   }, [jobs])
 
-  if (isLoading) return <Loading label={t('Loading dashboard...')} />
-  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+  const header = <ReportHeader icon="PieChart" title="BI Dashboard" subtitle="Cross-module analytics" />
+  if (isLoading) return <ReportLoading header={header} />
+  if (isError) return <ReportError header={header} message={error?.message} onRetry={() => void refetch()} />
 
   if (isMobile) {
     return (
       <>
-        <MobilePageHeader icon="PieChart" title={t('BI Dashboard')} />
+        {header}
         <StatRow stats={[
           { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
           { label: 'Receivable', value: formatSar(totals.receivable), caption: 'Outstanding', tone: 'warning' },
@@ -547,12 +579,7 @@ export function BIDashboard() {
 
   return (
     <>
-      <FeatureHeader
-        icon="PieChart"
-        title={t('BI Dashboard')}
-        subtitle={t('Cross-module analytics')}
-        actions={<ExportButtons />}
-      />
+      {header}
       <StatRow
         stats={[
           { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },

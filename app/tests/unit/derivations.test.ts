@@ -32,12 +32,19 @@ const VAT_RATE = 0.15
  *  on these screens — "Revenue" is both a headline stat and a bar in the P&L —
  *  so this picks the paragraph the metric card renders its figure in. */
 function statValue(label: string): number {
-  const value = screen
-    .getAllByText(label)
+  const labels = screen.getAllByText(label)
+  // A feature-kit stat card puts the figure right after the label…
+  const sibling = labels
     .map((node) => node.nextElementSibling)
     .find((node) => node instanceof HTMLElement && node.className.includes('font-display'))
-  if (!value) throw new Error(`no metric card labelled "${label}"`)
-  return parseSar(value.textContent ?? '')
+  if (sibling) return parseSar(sibling.textContent ?? '')
+  // …while a `KpiCard` holds the label in its header row and the figure in the
+  // first paragraph of the tile below it.
+  const tile = labels
+    .map((node) => node.parentElement?.parentElement?.querySelector('p'))
+    .find((node): node is HTMLParagraphElement => node instanceof HTMLParagraphElement)
+  if (!tile) throw new Error(`no metric card labelled "${label}"`)
+  return parseSar(tile.textContent ?? '')
 }
 
 /** The amount in a labelled summary row, with the label text removed first so
@@ -183,7 +190,7 @@ describe('invoice recompute', () => {
     expect((container.querySelector('table') as HTMLTableElement).querySelectorAll('tbody tr'))
       .toHaveLength(0)
 
-    await user.click(screen.getByRole('button', { name: /Send Invoice/ }))
+    await user.click(screen.getByRole('button', { name: /Issue invoice/ }))
     expect(await screen.findByText(/Add at least one line item/)).toBeInTheDocument()
   })
 })

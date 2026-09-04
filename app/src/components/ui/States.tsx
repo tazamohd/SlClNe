@@ -53,6 +53,7 @@ export function Loading({
     <div
       role="status"
       aria-live="polite"
+      data-testid="state-loading"
       className={cn('flex flex-col items-center gap-3 py-10', className)}
     >
       <span
@@ -129,7 +130,7 @@ export function EmptyState({
 }) {
   const { t } = usePreferences()
   return (
-    <div className="flex flex-col items-center gap-3 py-6 text-center">
+    <div data-testid="state-empty" className="flex flex-col items-center gap-3 py-6 text-center">
       <span className="flex rounded-full bg-inset p-4 text-muted">
         <Icon name={icon} size={24} />
       </span>
@@ -164,7 +165,7 @@ export function ErrorState({
 }) {
   const { t } = usePreferences()
   return (
-    <div role="alert" className="flex flex-col items-center gap-3 py-6 text-center">
+    <div role="alert" data-testid="state-error" className="flex flex-col items-center gap-3 py-6 text-center">
       <span className="flex rounded-full bg-tint-orange p-4 text-salis-orange">
         <Icon name="CloudOff" size={24} />
       </span>
@@ -179,7 +180,7 @@ export function ErrorState({
       </div>
       <div className="flex flex-wrap items-center justify-center gap-2.5">
         {secondaryAction}
-        <Button onClick={onRetry}>
+        <Button onClick={onRetry} testId="state-error-retry">
           <Icon name="RefreshCw" size={15} />
           {t(retryLabel ?? 'Retry')}
         </Button>

@@ -18,8 +18,8 @@ function Harness({
 }) {
   const [value, setValue] = useState('')
   return (
-    <label>
-      Password
+    <>
+      <label htmlFor="pw">Password</label>
       <PasswordInput
         id="pw"
         autoComplete={autoComplete}
@@ -27,7 +27,7 @@ function Harness({
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
-    </label>
+    </>
   )
 }
 

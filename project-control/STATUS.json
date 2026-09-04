@@ -7,20 +7,20 @@
     "externalDependency": 12,
     "rendered": 424,
     "placeholder": 0,
-    "designedMobileOwed": 1,
+    "designedMobileOwed": 7,
     "untested": 0,
-    "mockOnly": 185,
-    "dataBacked": 147,
+    "mockOnly": 174,
+    "dataBacked": 158,
     "e2eCovered": 424,
     "contentAsserted": 424,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 189,
-    "hasErrorState": 158,
-    "hasEmptyState": 215,
-    "hasSuccessState": 69,
+    "hasLoadingState": 200,
+    "hasErrorState": 169,
+    "hasEmptyState": 231,
+    "hasSuccessState": 109,
     "redirects": 7,
     "tabletVerified": 4,
-    "arabicVerified": 82,
+    "arabicVerified": 85,
     "rtlHazards": 0,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
@@ -31,7 +31,7 @@
       "total": 28,
       "rendered": 28,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 2,
       "e2e": 28,
       "dataBacked": 0
     },
@@ -39,9 +39,9 @@
       "total": 313,
       "rendered": 313,
       "placeholder": 0,
-      "mobileOwed": 1,
+      "mobileOwed": 5,
       "e2e": 313,
-      "dataBacked": 137
+      "dataBacked": 148
     },
     "call-center": {
       "total": 2,
@@ -105,7 +105,7 @@
       "total": 28,
       "rendered": 28,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 2,
       "e2e": 28,
       "dataBacked": 0
     },
@@ -113,7 +113,7 @@
       "total": 18,
       "rendered": 18,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 18,
       "dataBacked": 4
     },
@@ -129,9 +129,9 @@
       "total": 22,
       "rendered": 22,
       "placeholder": 0,
-      "mobileOwed": 1,
+      "mobileOwed": 4,
       "e2e": 22,
-      "dataBacked": 18
+      "dataBacked": 20
     },
     "accounting": {
       "total": 23,
@@ -211,7 +211,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 72
+      "dataBacked": 81
     }
   },
   "byModule": {
@@ -219,7 +219,7 @@
       "total": 16,
       "rendered": 16,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 16,
       "dataBacked": 0
     },
@@ -227,7 +227,7 @@
       "total": 7,
       "rendered": 7,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 1,
       "e2e": 7,
       "dataBacked": 2
     },
@@ -339,7 +339,7 @@
       "total": 4,
       "rendered": 4,
       "placeholder": 0,
-      "mobileOwed": 1,
+      "mobileOwed": 0,
       "e2e": 4,
       "dataBacked": 1
     },
@@ -355,9 +355,9 @@
       "total": 10,
       "rendered": 10,
       "placeholder": 0,
-      "mobileOwed": 0,
+      "mobileOwed": 4,
       "e2e": 10,
-      "dataBacked": 7
+      "dataBacked": 9
     },
     "vehicles": {
       "total": 4,

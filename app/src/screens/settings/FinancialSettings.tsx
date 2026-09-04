@@ -1,10 +1,12 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { useSession } from '@/providers/SessionProvider'
+import { SettingsShell } from '@/screens/admin/SettingsShell'
 
+/** Financial configuration — currency, numbering, terms, tax. Read-only here:
+ *  a rate or a numbering change is a configuration change applied server-side
+ *  to new documents (§A37), and no endpoint exposes it yet. */
 const SETTINGS = [
   { label: 'Default Currency', value: 'SAR' },
   { label: 'Fiscal Year Start', value: 'January 1' },
@@ -17,39 +19,40 @@ const SETTINGS = [
 
 export function FinancialSettings() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Landmark" title={t('Financial Settings')} subtitle={t('Financial configuration')} />
-        <MobileCard>
-          {SETTINGS.map((s) => (
-            <MobileCardRow key={s.label} label={t(s.label)} value={s.value} />
-          ))}
-        </MobileCard>
-      </div>
-    )
-  }
+  const { live } = useSession()
 
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="Landmark" title={t('Financial Settings')} subtitle={t('Financial configuration')} />
-
-      <Card className="rounded-2xl p-6 shadow-sm">
+    <SettingsShell
+      title="Financial Settings"
+      icon="Landmark"
+      subtitle="Financial configuration"
+      readOnly={
+        live
+          ? 'Financial configuration is applied server-side to new documents.'
+          : 'Platform defaults — a financial configuration endpoint is not connected yet.'
+      }
+    >
+      <Card className="rounded-2xl p-5 shadow-sm md:p-6">
         <div className="mb-4 flex items-center gap-2">
-          <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Landmark" size={16} /></span>
+          <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
+            <Icon name="Landmark" size={16} />
+          </span>
           <h2 className="text-sm font-semibold text-heading">{t('Configuration')}</h2>
         </div>
-        <div className="grid gap-4">
+        <dl className="m-0 grid gap-4">
           {SETTINGS.map((s) => (
-            <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
-              <span className="text-sm text-muted">{t(s.label)}</span>
-              <span className="font-mono text-sm font-medium text-heading">{s.value}</span>
+            <div
+              key={s.label}
+              className="flex min-h-[44px] items-center justify-between gap-4 border-b border-border/50 pb-3 last:border-0 last:pb-0"
+            >
+              <dt className="text-sm text-muted">{t(s.label)}</dt>
+              <dd dir="ltr" className="m-0 font-mono text-sm font-medium text-heading">
+                {s.value}
+              </dd>
             </div>
           ))}
-        </div>
+        </dl>
       </Card>
-    </div>
+    </SettingsShell>
   )
 }

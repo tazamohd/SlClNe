@@ -274,7 +274,14 @@ const mobileImplemented = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        if (!src.includes('useIsMobile') && !src.includes('isMobile')) continue
+        /* A screen has a phone layout when it branches on the viewport itself,
+         * or when it renders through a primitive that does — the unified
+         * page header, the state frames and the table's card swap all decide
+         * the phone layout once, which is why screens stopped branching. */
+        const viaPrimitive =
+          /<(?:ScreenFrame|PageHeader|DetailPage|ListPage|MobileCard|MobilePageHeader|FeatureScreenView)\b/.test(src) ||
+          /\bmobileCard=/.test(src)
+        if (!src.includes('useIsMobile') && !src.includes('isMobile') && !viaPrimitive) continue
         for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
           names.add(m[1])
         }
@@ -538,8 +545,21 @@ const tabletStateOf = (name, route, built) => {
   if (!facts) return 'PARTIAL' // built; nothing readable to judge it by
   return facts.tabletBreakpoints ? 'PARTIAL' : 'MISSING'
 }
+/** Routes whose heading the smoke run has actually read in Arabic: the RTL
+ *  block waits for real Arabic letters in the <h1> and fails the route if the
+ *  English source leaks through. That is a browser-confirmed translation, so
+ *  it outranks the static dictionary sniff for those routes. */
+const ARABIC_VERIFIED_ROUTES = new Set(
+  [...smokeSrc.matchAll(/BASE\s*\+\s*'([^']+)'/g)]
+    .filter((m, i, all) => {
+      const end = all[i + 1]?.index ?? smokeSrc.length
+      return /arabicHeading/.test(smokeSrc.slice(m.index, end))
+    })
+    .map((m) => m[1])
+)
 const arabicStateOf = (name, route, built) => {
   if (!built) return 'MISSING'
+  if (ARABIC_VERIFIED_ROUTES.has(route)) return 'VERIFIED'
   const facts = factsFor(arabicFacts, name, route)
   if (!facts) return 'PARTIAL'
   return arabicStateFrom(facts)

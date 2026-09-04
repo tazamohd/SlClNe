@@ -17,6 +17,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { RepositoryError, isLive } from '@/data/repository'
 import type { JobRow } from './stages'
+import { VehiclePicker } from './VehiclePicker'
 
 /** Opening a job card, for real.
  *
@@ -223,6 +224,14 @@ export function JobCardForm({
         <FormErrorSummary />
         <Field name="customerName" label="Customer" required placeholder={t('Ahmed Al-Rashid')} />
         <Field name="vehicleLabel" label="Vehicle" required placeholder={t('Toyota Camry 2022')} />
+        {/* The picker fills the field above with one canonical label; the
+            field stays editable for a car the catalogue does not list. */}
+        <VehiclePicker
+          onPick={(label) => {
+            form.setValue('vehicleLabel', label)
+            form.markTouched('vehicleLabel')
+          }}
+        />
         <Field name="service" label="Service" kind="select" options={SERVICE_OPTIONS} required />
         <Field name="priority" label="Priority" kind="select" options={PRIORITY_OPTIONS} required />
         <Field

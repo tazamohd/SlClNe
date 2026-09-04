@@ -221,6 +221,7 @@ export function Modal({
       <div
         ref={panelRef}
         role="dialog"
+        data-testid="modal"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}

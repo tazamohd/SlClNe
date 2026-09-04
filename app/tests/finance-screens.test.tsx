@@ -83,6 +83,9 @@ function serverInvoice(over: Record<string, unknown> = {}) {
 }
 
 beforeEach(() => {
+  // The create screen autosaves its draft to local storage; a test must not
+  // inherit the lines another one typed.
+  window.localStorage.clear()
   rows.invoices = [serverInvoice()]
   rows.invoiceLines = []
   rows.invoicePayments = []
@@ -404,7 +407,7 @@ describe('creating an invoice', () => {
     const { InvoiceCreate } = await import('@/screens/finance/InvoiceCreate')
     renderScreen(InvoiceCreate, { role: 'accountant' })
 
-    await user.click(screen.getByRole('button', { name: /Send Invoice/ }))
+    await user.click(screen.getByRole('button', { name: /Issue invoice/ }))
 
     expect(await screen.findByText('Name the customer this invoice bills.')).toBeInTheDocument()
     expect(spies.createInvoice).not.toHaveBeenCalled()
@@ -424,7 +427,7 @@ describe('creating an invoice', () => {
     renderScreen(InvoiceCreate, { role: 'accountant' })
 
     await user.type(screen.getByLabelText(/Customer/), 'Ahmed Al-Rashid')
-    await user.click(screen.getByRole('button', { name: /Save Draft/ }))
+    await user.click(screen.getByRole('button', { name: /Save draft/ }))
 
     await waitFor(() => expect(spies.createInvoice).toHaveBeenCalledTimes(1))
     const [input, options] = spies.createInvoice.mock.calls[0]
@@ -457,7 +460,7 @@ describe('creating an invoice', () => {
     renderScreen(InvoiceCreate, { role: 'accountant' })
 
     await user.type(screen.getByLabelText(/Customer/), 'Ahmed Al-Rashid')
-    await user.click(screen.getByRole('button', { name: /Save Draft/ }))
+    await user.click(screen.getByRole('button', { name: /Save draft/ }))
 
     expect(
       await screen.findByText(/The preview and the server disagree about this invoice/)
@@ -469,7 +472,7 @@ describe('creating an invoice', () => {
     const { InvoiceCreate } = await import('@/screens/finance/InvoiceCreate')
     renderScreen(InvoiceCreate, { role: 'technician' })
     expect(screen.getByText('Your role can view invoices but not raise them.')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /Save Draft/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Save draft/ })).not.toBeInTheDocument()
   })
 })
 

@@ -48,7 +48,7 @@
           "route": "/dashboard",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -57,7 +57,7 @@
           "route": "/diagnostic-report",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -147,7 +147,7 @@
           "route": "/workshop-check-in",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -156,7 +156,7 @@
           "route": "/workshop-delivery",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -174,7 +174,7 @@
           "route": "/workshop-inspection",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -183,7 +183,7 @@
           "route": "/workshop-qc",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -397,7 +397,7 @@
           "route": "/parts-network",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -406,7 +406,7 @@
           "route": "/parts-network/incoming",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -415,7 +415,7 @@
           "route": "/parts-network/members",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -424,7 +424,7 @@
           "route": "/parts-network/orders",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -433,7 +433,7 @@
           "route": "/parts-network/quotations",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -442,7 +442,7 @@
           "route": "/parts-network/requests",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -451,7 +451,7 @@
           "route": "/parts-network/send-request",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -460,7 +460,7 @@
           "route": "/parts-supply-network",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -932,7 +932,7 @@
           "route": "/settings",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1057,7 +1057,7 @@
           "route": "/login",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1084,7 +1084,7 @@
           "route": "/onboarding",
           "status": "built",
           "mobile": "designed",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1317,7 +1317,7 @@
           "route": "/procurement-portal",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1326,7 +1326,7 @@
           "route": "/procurement-portal/requisitions",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1344,7 +1344,7 @@
           "route": "/supplier-portal/orders",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },

@@ -187,7 +187,9 @@ describe('CustomerDetail', () => {
     renderWithProviders(<CustomerDetail />, at(`/customer-detail?id=${CUSTOMER_ID}`))
     await screen.findByRole('heading', { name: 'Ahmed Al-Rashid' })
 
-    await user.click(screen.getByRole('button', { name: /Delete/ }))
+    // Delete is a tertiary action, behind the header's overflow menu.
+    await user.click(screen.getByRole('button', { name: /More actions/ }))
+    await user.click(await screen.findByRole('menuitem', { name: /Delete/ }))
     const dialog = screen.getByRole('dialog')
     expect(within(dialog).getByText('Ahmed Al-Rashid')).toBeInTheDocument()
     // The count is the vehicles actually joined to this customer, not a guess.

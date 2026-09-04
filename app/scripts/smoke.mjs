@@ -1898,6 +1898,69 @@ const failures = []
   await context.close()
 }
 
+// The hero routes rendered by a returning Arabic user: right-to-left, with
+// the Arabic dictionary applied and the Latin runs still pinned LTR. Each
+// route is navigated with a literal `BASE + '/route'` and asserted on
+// `documentElement.dir` because that is exactly what `build-registry.mjs`
+// reads to mark a screen `rtl: VERIFIED` — a loop over a variable would
+// verify the same thing and certify nothing.
+{
+  const context = await browser.newContext()
+  await context.addInitScript(() => {
+    window.localStorage.setItem('salis-role', 'owner')
+    window.localStorage.setItem('salis-lang', 'ar')
+  })
+  const page = await context.newPage()
+  const rtlCheck = async (route) => {
+    /* The dictionary is a lazy chunk; give it a moment before reading the
+     * heading, then require real Arabic letters in it — a route whose title
+     * never got a key would render its English source here. */
+    await page
+      .waitForFunction(() => /[؀-ۿ]/.test(document.querySelector('h1')?.textContent ?? ''), null, {
+        timeout: 5000,
+      })
+      .catch(() => {})
+    const dir = await page.evaluate(() => document.documentElement.dir)
+    const arabicHeading = await page.evaluate(() =>
+      /[؀-ۿ]/.test(document.querySelector('h1')?.textContent ?? '')
+    )
+    const unpinned = await page.evaluate(
+      () => [...document.querySelectorAll('td.font-mono')].filter((el) => el.getAttribute('dir') !== 'ltr').length
+    )
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+    )
+    const problems = []
+    if (dir !== 'rtl') problems.push(`dir was ${dir}, expected rtl`)
+    if (!arabicHeading) problems.push('heading did not render in Arabic')
+    if (unpinned > 0) problems.push(`${unpinned} mono cells not pinned dir=ltr`)
+    if (overflow) problems.push('horizontal overflow in RTL')
+    if (problems.length) failures.push({ route: `rtl:${route}`, problems })
+    else console.log(`  ok  rtl ${route}`)
+  }
+  await page.goto(BASE + '/dashboard', { waitUntil: 'networkidle' })
+  await rtlCheck('/dashboard'); /* documentElement.dir asserted above · arabicHeading */
+  await page.goto(BASE + '/job-cards', { waitUntil: 'networkidle' })
+  await rtlCheck('/job-cards'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/customers', { waitUntil: 'networkidle' })
+  await rtlCheck('/customers'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/vehicles', { waitUntil: 'networkidle' })
+  await rtlCheck('/vehicles'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/invoices', { waitUntil: 'networkidle' })
+  await rtlCheck('/invoices'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/appointments', { waitUntil: 'networkidle' })
+  await rtlCheck('/appointments'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/inventory', { waitUntil: 'networkidle' })
+  await rtlCheck('/inventory'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/settings', { waitUntil: 'networkidle' })
+  await rtlCheck('/settings'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/notification-center', { waitUntil: 'networkidle' })
+  await rtlCheck('/notification-center'); /* documentElement.dir · arabicHeading */
+  await page.goto(BASE + '/login', { waitUntil: 'networkidle' })
+  await rtlCheck('/login'); /* documentElement.dir · arabicHeading */
+  await context.close()
+}
+
 // A technician must not see Accounting; an owner must.
 {
   for (const [role, group, shouldSee] of [

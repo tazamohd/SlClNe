@@ -185,18 +185,18 @@ export function Payments() {
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       <KpiCard
         label={t('Outstanding')}
-        value={formatSar(fromHalalas(outstandingHalalas), { bare: true })}
+        value={formatSar(fromHalalas(outstandingHalalas))}
         mono
         icon="Wallet"
-        caption={derived ? t('Invoice totals — this build has no API to give balances.') : t('SAR, server balances')}
+        caption={derived ? t('Invoice totals — this build has no API to give balances.') : t('Server balances, summed here')}
         {...(outstandingHalalas > 0 ? TONES.orange : TONES.blue)}
       />
       <KpiCard
         label={t('Collected')}
-        value={formatSar(fromHalalas(collectedHalalas), { bare: true })}
+        value={formatSar(fromHalalas(collectedHalalas))}
         mono
         icon="CheckCircle"
-        caption={derived ? t('Paid invoices only — part payments need the API.') : t('SAR, all time')}
+        caption={derived ? t('Paid invoices only — part payments need the API.') : t('All time')}
         {...TONES.blue}
       />
       <KpiCard

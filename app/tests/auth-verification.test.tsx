@@ -39,18 +39,25 @@ describe('OTPVerification', () => {
     const user = userEvent.setup()
     mount('/otpverification')
     await user.click(field())
-    await user.paste('482 913')
-    expect(field().value).toBe('482913')
+    // Five digits, so the paste lands without tripping the auto-submit.
+    await user.paste('482 91')
+    expect(field().value).toBe('48291')
   })
 
-  it('refuses letters and the overflow', async () => {
+  it('refuses letters', async () => {
     const user = userEvent.setup()
     mount('/otpverification')
     await user.click(field())
     await user.keyboard('4a8')
     expect(field().value).toBe('48')
-    await user.paste('12345678')
-    expect(field().value).toBe('123456')
+  })
+
+  it('ignores the overflow of a pasted code and verifies the first six digits', async () => {
+    const user = userEvent.setup()
+    mount('/otpverification')
+    await user.click(field())
+    await user.paste(`${localCode()}99`)
+    expect(await screen.findByText('Dashboard landed')).toBeInTheDocument()
   })
 
   it('verifies as soon as the sixth digit lands', async () => {

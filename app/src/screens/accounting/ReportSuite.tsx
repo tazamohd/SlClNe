@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { Accordion, AccordionItem } from '@/components/ui/Accordion'
+import { cn } from '@/lib/cn'
 import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -57,11 +60,24 @@ interface ReportLink {
   countKey?: CollectionKey
   /** Named when the surface is honest about a missing server capability. */
   gapped?: boolean
+  /** Which shelf of the picker the report sits on. */
+  group: ReportGroup
 }
+
+type ReportGroup = 'finance' | 'sales' | 'operations' | 'builder'
+
+const REPORT_GROUPS: readonly { id: ReportGroup | 'all'; label: string; icon: string }[] = [
+  { id: 'all', label: 'All reports', icon: 'LayoutGrid' },
+  { id: 'finance', label: 'Finance', icon: 'Landmark' },
+  { id: 'sales', label: 'Sales', icon: 'TrendingUp' },
+  { id: 'operations', label: 'Operations', icon: 'Activity' },
+  { id: 'builder', label: 'Custom', icon: 'Table' },
+]
 
 const REPORT_LINKS: readonly ReportLink[] = [
   {
     name: 'Sales Reports',
+    group: 'sales',
     description: 'Revenue, VAT and receivable by invoice',
     route: '/sales-reports',
     icon: 'TrendingUp',
@@ -70,6 +86,7 @@ const REPORT_LINKS: readonly ReportLink[] = [
   },
   {
     name: 'Analytics Overview',
+    group: 'operations',
     description: 'Cross-module distributions and largest movers',
     route: '/reports-analytics',
     icon: 'PieChart',
@@ -77,6 +94,7 @@ const REPORT_LINKS: readonly ReportLink[] = [
   },
   {
     name: 'Tax Management',
+    group: 'finance',
     description: 'Output VAT at the ZATCA rate',
     route: '/tax-management',
     icon: 'Percent',
@@ -84,6 +102,7 @@ const REPORT_LINKS: readonly ReportLink[] = [
   },
   {
     name: 'Bank Reconciliation',
+    group: 'finance',
     description: 'Recorded cash against the bank statement',
     route: '/bank-reconciliation',
     icon: 'Landmark',
@@ -93,6 +112,7 @@ const REPORT_LINKS: readonly ReportLink[] = [
   },
   {
     name: 'Custom Reports',
+    group: 'builder',
     description: 'Build a report over any ledger source',
     route: '/custom-reports',
     icon: 'Table',
@@ -100,6 +120,7 @@ const REPORT_LINKS: readonly ReportLink[] = [
   },
   {
     name: 'Financial Reports',
+    group: 'finance',
     description: 'Balance sheet, P&L and trial balance',
     route: '/financial-reports',
     icon: 'FileText',
@@ -155,7 +176,12 @@ export function Reports() {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
+  const [group, setGroup] = useState<ReportGroup | 'all'>('all')
   const visible = REPORT_LINKS.filter((link) => can(link.module, 'v'))
+  const shelves = REPORT_GROUPS.filter(
+    (shelf) => shelf.id === 'all' || visible.some((link) => link.group === shelf.id)
+  )
+  const shown = group === 'all' ? visible : visible.filter((link) => link.group === group)
 
   /** `REPORT_LINKS` above is navigation, not data — a route, an icon and the
    *  module the role must hold to see it — so it stays a constant. The reports
@@ -205,58 +231,123 @@ export function Reports() {
     </Section>
   ) : null
 
+  const header = (
+    <PageHeader
+      variant="quiet"
+      eyebrow={t('Accounting')}
+      title={t('Reports')}
+      subtitle={t('Standard operational and financial reports')}
+    />
+  )
+
+  const denied = (
+    <EmptyState
+      icon="Lock"
+      title={t('No reports available to your role')}
+      description={t('Your role does not have view access to any reporting module.')}
+    />
+  )
+
+  /* A phone gets the shelves as an accordion — one open at a time, the first
+   * open by default — so the six cards do not run past the fold. */
   if (isMobile) {
+    const openShelf = shelves.find((shelf) => shelf.id !== 'all')
     return (
       <>
-        <MobilePageHeader icon="FileText" title={t('Reports')} />
-        <Section title={t('Available reports')}>
-          {visible.length === 0 ? (
-            <EmptyState
-              icon="Lock"
-              title={t('No reports available to your role')}
-              description={t('Your role does not have view access to any reporting module.')}
-            />
-          ) : (
-            <div className="flex flex-col gap-3">
-              {visible.map((link) => (
-                <ReportCard key={link.route} link={link} />
+        {header}
+        {visible.length === 0 ? (
+          <Section title={t('Available reports')}>{denied}</Section>
+        ) : (
+          <Accordion defaultOpen={openShelf ? [openShelf.id] : []}>
+            {shelves
+              .filter((shelf) => shelf.id !== 'all')
+              .map((shelf) => (
+                <AccordionItem
+                  key={shelf.id}
+                  id={shelf.id}
+                  title={
+                    <span className="flex items-center gap-2">
+                      <Icon name={shelf.icon} size={15} className="text-salis-blue" />
+                      {t(shelf.label)}
+                      <span dir="ltr" className="font-mono text-[11px] text-muted">
+                        {visible.filter((link) => link.group === shelf.id).length}
+                      </span>
+                    </span>
+                  }
+                >
+                  <div className="flex flex-col gap-3">
+                    {visible
+                      .filter((link) => link.group === shelf.id)
+                      .map((link) => (
+                        <ReportCard key={link.route} link={link} />
+                      ))}
+                  </div>
+                </AccordionItem>
               ))}
-            </div>
-          )}
-          <ServerScopeNote />
-        </Section>
+          </Accordion>
+        )}
+        <ServerScopeNote />
         {savedSection}
       </>
     )
   }
 
+  /* Desktop: a picker rail at the start, the cards beside it. */
   return (
     <>
-      <FeatureHeader
-        icon="BarChart3"
-        title={t('Reports')}
-        subtitle={t('Standard operational and financial reports')}
-      />
-      <Section
-        title={t('Available reports')}
-        subtitle={t('Each opens a report over live server data')}
-      >
-        {visible.length === 0 ? (
-          <EmptyState
-            icon="Lock"
-            title={t('No reports available to your role')}
-            description={t('Your role does not have view access to any reporting module.')}
-          />
-        ) : (
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {visible.map((link) => (
-              <ReportCard key={link.route} link={link} />
-            ))}
-          </div>
-        )}
-        <ServerScopeNote />
-      </Section>
-      {savedSection}
+      {header}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <nav aria-label={t('Report picker')} className="lg:sticky lg:top-4 lg:self-start">
+          <ul className="m-0 flex list-none flex-row flex-wrap gap-1 p-0 lg:flex-col">
+            {shelves.map((shelf) => {
+              const active = group === shelf.id
+              const count =
+                shelf.id === 'all' ? visible.length : visible.filter((link) => link.group === shelf.id).length
+              return (
+                <li key={shelf.id}>
+                  <button
+                    type="button"
+                    aria-current={active ? 'true' : undefined}
+                    onClick={() => setGroup(shelf.id)}
+                    className={cn(
+                      'flex h-11 w-full cursor-pointer items-center gap-2.5 rounded-lg border px-3 text-start font-action text-[13px] transition-colors duration-150',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue',
+                      active
+                        ? 'border-salis-blue/[.35] bg-tint-blue font-semibold text-salis-blue'
+                        : 'border-transparent bg-transparent text-body hover:bg-inset hover:text-heading'
+                    )}
+                  >
+                    <Icon name={shelf.icon} size={15} />
+                    <span className="flex-1">{t(shelf.label)}</span>
+                    <span dir="ltr" className="font-mono text-[11px] tabular-nums text-muted">
+                      {count}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+
+        <div className="flex min-w-0 flex-col gap-6">
+          <Section
+            title={t(REPORT_GROUPS.find((shelf) => shelf.id === group)?.label ?? 'Available reports')}
+            subtitle={t('Each opens a report over live server data')}
+          >
+            {shown.length === 0 ? (
+              denied
+            ) : (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {shown.map((link) => (
+                  <ReportCard key={link.route} link={link} />
+                ))}
+              </div>
+            )}
+            <ServerScopeNote />
+          </Section>
+          {savedSection}
+        </div>
+      </div>
     </>
   )
 }

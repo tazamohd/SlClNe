@@ -163,7 +163,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "EMPTY_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -186,7 +185,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -230,11 +228,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
-      "LOADING_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -891,7 +886,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "ARABIC_MISSING",
+      "SUCCESS_MISSING"
     ],
     "inNav": false,
     "designSource": "project/CustomerDetail.dc.html",
@@ -982,7 +978,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING"
+      "SUCCESS_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Customers.dc.html",
@@ -1046,10 +1042,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOBILE_MISSING",
-      "DESKTOP_ONLY",
-      "ARABIC_MISSING",
-      "EMPTY_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -1182,7 +1174,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "ARABIC_MISSING",
+      "SUCCESS_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Estimates.dc.html",
@@ -1321,7 +1314,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "ARABIC_MISSING",
+      "SUCCESS_MISSING"
     ],
     "inNav": true,
     "designSource": "project/FleetManagement.dc.html",
@@ -1503,7 +1497,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "SUCCESS_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Inventory.dc.html",
@@ -1524,6 +1518,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": true,
@@ -1566,7 +1561,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "EMPTY_MISSING",
       "ERROR_MISSING"
@@ -1590,7 +1584,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "SUCCESS_MISSING"
     ],
@@ -1634,10 +1627,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "owner": "12",
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING",
-      "SUCCESS_MISSING"
-    ],
+    "flags": [],
     "inNav": true,
     "designSource": "project/Invoices.dc.html",
     "designMobileSource": "project/Invoices.Mobile.dc.html",
@@ -1657,8 +1647,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "SUCCESS_MISSING"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/JobCardDetail.dc.html",
@@ -1679,7 +1668,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -1701,7 +1689,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": false,
@@ -1746,7 +1733,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "LOADING_MISSING",
       "EMPTY_MISSING",
@@ -1888,7 +1874,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING"
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Login.dc.html",
@@ -2024,10 +2011,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "MOCK_ONLY",
-      "LOADING_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -2093,7 +2077,11 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "owner": "06",
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
-    "flags": [],
+    "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "ARABIC_MISSING"
+    ],
     "inNav": false,
     "designSource": "project/Onboarding.dc.html",
     "designMobileSource": "project/Onboarding.Mobile.dc.html",
@@ -2423,7 +2411,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
+      "ARABIC_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -2510,7 +2498,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY",
       "LOADING_MISSING",
       "EMPTY_MISSING",
@@ -2678,9 +2666,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "owner": "17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING"
-    ],
+    "flags": [],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -2895,7 +2881,9 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "owner": "17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
-    "flags": [],
+    "flags": [
+      "ARABIC_MISSING"
+    ],
     "inNav": false,
     "designSource": "project/PublicPortal.Landing.dc.html",
     "designMobileSource": null,
@@ -3452,7 +3440,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "MOCK_ONLY",
       "LOADING_MISSING",
       "EMPTY_MISSING",
@@ -3730,7 +3719,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "SUCCESS_MISSING"
     ],
@@ -3776,7 +3764,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "ARABIC_MISSING",
+      "SUCCESS_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Technicians.dc.html",
@@ -3797,7 +3786,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": true,
@@ -4481,7 +4469,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "SUCCESS_MISSING"
     ],
     "inNav": true,
     "designSource": "project/Vehicles.dc.html",
@@ -4502,7 +4490,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING"
+      "TABLET_MISSING",
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/Welcome.dc.html",
@@ -4572,6 +4561,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "ARABIC_MISSING",
       "EMPTY_MISSING",
       "SUCCESS_MISSING"
@@ -4595,9 +4586,10 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY",
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
+      "ARABIC_MISSING",
       "LOADING_MISSING",
-      "EMPTY_MISSING",
       "ERROR_MISSING"
     ],
     "inNav": false,
@@ -4645,6 +4637,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "LOADING_MISSING",
@@ -4670,6 +4664,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOBILE_MISSING",
+      "DESKTOP_ONLY",
       "ARABIC_MISSING"
     ],
     "inNav": false,
@@ -4715,7 +4711,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY",
+      "ARABIC_MISSING",
       "LOADING_MISSING",
       "EMPTY_MISSING",
       "ERROR_MISSING"
@@ -4853,8 +4849,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -4877,8 +4872,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -4901,8 +4895,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -4953,8 +4946,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -4977,8 +4969,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5051,8 +5042,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5075,8 +5065,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5099,8 +5088,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5171,8 +5159,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5222,8 +5209,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5246,8 +5232,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5270,8 +5255,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5294,8 +5278,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5345,8 +5328,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5446,8 +5428,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5470,8 +5451,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5494,8 +5474,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5518,8 +5497,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5542,8 +5520,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5566,8 +5543,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5590,8 +5566,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5614,8 +5589,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5638,8 +5612,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5662,8 +5635,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5686,8 +5658,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5710,8 +5681,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5734,8 +5704,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5758,8 +5727,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5782,8 +5750,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5806,8 +5773,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5852,8 +5818,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5876,8 +5841,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5900,8 +5864,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -5952,8 +5915,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "NO_RBAC_MODULE",
-      "SUCCESS_MISSING"
+      "NO_RBAC_MODULE"
     ],
     "inNav": false,
     "designSource": null,
@@ -6360,11 +6322,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -6662,11 +6620,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -6690,11 +6644,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -6746,11 +6696,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -7160,13 +7106,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -7288,11 +7229,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -7316,11 +7253,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -7398,11 +7331,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "EMPTY_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -7448,11 +7377,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE",
-      "LOADING_MISSING",
-      "ERROR_MISSING",
       "SUCCESS_MISSING"
     ],
     "inNav": false,
@@ -8575,7 +8500,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE",
@@ -10024,7 +9948,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": false,
@@ -10046,7 +9969,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE",

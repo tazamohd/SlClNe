@@ -1,11 +1,12 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { SettingsShell } from '@/screens/admin/SettingsShell'
 
+/** System configuration overview. `/system-settings` redirects to `/settings`
+ *  (route-redirects.json), so this screen is unrouted and kept as reference;
+ *  it still renders inside the settings family shell so it cannot drift. */
 const GENERAL = [
   { label: 'Company Name', value: 'SALIS Auto' },
   { label: 'Timezone', value: 'Asia/Riyadh (UTC+3)' },
@@ -25,118 +26,59 @@ const SECURITY = [
   { label: 'Password Policy', value: 'Strong' },
 ]
 
-export function SystemSettings() {
+type Row = { label: string; value: string | boolean }
+
+function OnOff({ on }: { on: boolean }) {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Settings" title={t('System Settings')} subtitle={t('System configuration')} />
-        <MobileCard>
-          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('General')}</p>} />
-          {GENERAL.map((s) => (
-            <MobileCardRow key={s.label} label={t(s.label)} value={s.value} />
-          ))}
-        </MobileCard>
-        <MobileCard>
-          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Notifications')}</p>} />
-          {NOTIFICATIONS.map((s) => (
-            <MobileCardRow key={s.label} label={t(s.label)}>
-              <Badge
-                background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
-              >
-                {s.value ? t('On') : t('Off')}
-              </Badge>
-            </MobileCardRow>
-          ))}
-        </MobileCard>
-        <MobileCard>
-          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Security')}</p>} />
-          {SECURITY.map((s) => (
-            <MobileCardRow key={s.label} label={t(s.label)}>
-              {typeof s.value === 'boolean' ? (
-                <Badge
-                  background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                  color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
-                >
-                  {s.value ? t('On') : t('Off')}
-                </Badge>
-              ) : (
-                <span className="text-xs font-medium text-heading">{s.value}</span>
-              )}
-            </MobileCardRow>
-          ))}
-        </MobileCard>
-      </div>
-    )
-  }
-
   return (
-    <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="Settings" title={t('System Settings')} subtitle={t('System configuration')} />
+    <Badge
+      background={on ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
+      color={on ? 'var(--salis-blue)' : 'var(--text-muted)'}
+    >
+      {on ? t('On') : t('Off')}
+    </Badge>
+  )
+}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="rounded-2xl p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Building" size={16} /></span>
-            <h2 className="text-sm font-semibold text-heading">{t('General')}</h2>
-          </div>
-          <div className="grid gap-4">
-            {GENERAL.map((s) => (
-              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                <span className="text-sm text-muted">{t(s.label)}</span>
-                <span className="text-sm font-medium text-heading">{s.value}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="rounded-2xl p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Bell" size={16} /></span>
-            <h2 className="text-sm font-semibold text-heading">{t('Notifications')}</h2>
-          </div>
-          <div className="grid gap-4">
-            {NOTIFICATIONS.map((s) => (
-              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                <span className="text-sm text-muted">{t(s.label)}</span>
-                <Badge
-                  background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                  color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
-                >
-                  {s.value ? t('On') : t('Off')}
-                </Badge>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="rounded-2xl p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Lock" size={16} /></span>
-            <h2 className="text-sm font-semibold text-heading">{t('Security')}</h2>
-          </div>
-          <div className="grid gap-4">
-            {SECURITY.map((s) => (
-              <div key={s.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                <span className="text-sm text-muted">{t(s.label)}</span>
-                {typeof s.value === 'boolean' ? (
-                  <Badge
-                    background={s.value ? 'var(--tint-blue)' : 'var(--tint-neutral)'}
-                    color={s.value ? 'var(--salis-blue)' : 'var(--text-muted)'}
-                  >
-                    {s.value ? t('On') : t('Off')}
-                  </Badge>
-                ) : (
-                  <span className="text-sm font-medium text-heading">{s.value}</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </Card>
+function Section({ icon, title, rows }: { icon: string; title: string; rows: readonly Row[] }) {
+  const { t } = usePreferences()
+  return (
+    <Card className="rounded-2xl p-5 shadow-sm md:p-6">
+      <div className="mb-4 flex items-center gap-2">
+        <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
+          <Icon name={icon} size={16} />
+        </span>
+        <h2 className="text-sm font-semibold text-heading">{t(title)}</h2>
       </div>
-    </div>
+      <dl className="m-0 grid gap-4">
+        {rows.map((row) => (
+          <div
+            key={row.label}
+            className="flex min-h-[44px] items-center justify-between gap-4 border-b border-border/50 pb-3 last:border-0 last:pb-0"
+          >
+            <dt className="text-sm text-muted">{t(row.label)}</dt>
+            <dd className="m-0">
+              {typeof row.value === 'boolean' ? (
+                <OnOff on={row.value} />
+              ) : (
+                <span className="text-sm font-medium text-heading">{row.value}</span>
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
+  )
+}
+
+export function SystemSettings() {
+  return (
+    <SettingsShell title="System Settings" icon="Settings" subtitle="System configuration">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 sm:gap-6">
+        <Section icon="Building" title="General" rows={GENERAL} />
+        <Section icon="Bell" title="Notifications" rows={NOTIFICATIONS} />
+        <Section icon="Lock" title="Security" rows={SECURITY} />
+      </div>
+    </SettingsShell>
   )
 }
