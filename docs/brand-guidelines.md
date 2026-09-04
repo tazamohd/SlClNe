@@ -6,7 +6,8 @@
 | Version        | 1.0                                                      |
 | Date           | 2026-09-03                                               |
 | Status         | Draft — Sections 2 and 3 require Marketing Director sign-off |
-| Supersedes     | Nothing. Complements `marketing/press-kit.md` (SA-MKT-011) |
+| Supersedes     | Nothing. Complements `docs/marketing/press-kit.md` (SA-MKT-011) |
+| Companion      | `docs/brand-social-kit.html` (SA-BRD-002) — social identity kit; PNG exports in `docs/social-kit/` |
 | Source of truth| `app/src/styles/tokens/*.css` for every visual value      |
 
 > **How to read this.** Section 4 (Visual Identity) *documents* what ships today —
@@ -152,7 +153,7 @@ These are enforced constraints, not preferences. They come from
 
 ## 3. Messaging
 
-Approved messaging lives in `marketing/press-kit.md` §5–6 and is reproduced here
+Approved messaging lives in `docs/marketing/press-kit.md` §5–6 and is reproduced here
 only in summary. That document remains the source of truth for external copy.
 
 ### Taglines
@@ -299,17 +300,23 @@ emoji, no filled variants.
 
 ### Logo Usage
 
-Logo rules are held in `marketing/press-kit.md` §2 and are unchanged by this
+Logo rules are held in `docs/marketing/press-kit.md` §2 and are unchanged by this
 document: minimum 120px digital / 30mm print, clear space of one icon height,
 no rotation, no effects, no recolouring outside the palette, no separation of
 elements. Variations available: full colour, reversed white, monochrome navy,
 icon only, Arabic.
 
+Masters live in `app/public/assets/`: `logo-full-colour.svg`, `logo-reversed-white.svg`,
+`logo-mono-navy.svg`, `logo-mono-white.svg`, and the Arabic draft `logo-arabic-*.svg`
+(traced from the raster on 2026-09-04 and recoloured to the tokens; the Arabic wordmark
+سلس اوتو is set in Noto Sans Arabic Bold and awaits a type designer's pass). PNG copies
+sit beside them for tools that cannot take SVG.
+
 ---
 
 ## 5. Consistency Audit
 
-Run 2026-09-03 against `marketing/press-kit.md` v1.0 (Approved) and the shipped
+Run 2026-09-03 against `docs/marketing/press-kit.md` v1.0 (Approved) and the shipped
 token files. **These conflicts are unresolved and need a decision.**
 
 ### 5.1 Press kit and product disagree on the palette
@@ -361,7 +368,7 @@ survives the next contributor.
 |--------|-------|-------|
 | Any value in §4 | Engineering | Edit `app/src/styles/tokens/*.css`, then update §4 to match |
 | Voice and microcopy (§2) | Marketing Director + Design | Amend this file |
-| External messaging (§3) | Marketing Director | Amend `marketing/press-kit.md`, then re-summarise here |
+| External messaging (§3) | Marketing Director | Amend `docs/marketing/press-kit.md`, then re-summarise here |
 | Resolving §5 conflicts | Marketing Director | Decision required; see recommendation |
 
 **Do not** create a second token file to satisfy tooling. If a script needs
