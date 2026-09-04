@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { Icon } from '@/components/ui/Icon'
 import { useT } from '@/providers/PreferencesProvider'
 
 interface FooterLink {
@@ -13,6 +12,15 @@ interface FooterGroup {
 }
 
 const GROUPS: readonly FooterGroup[] = [
+  {
+    heading: 'Family',
+    links: [
+      { label: 'Garage', to: '/public-portal/workshop' },
+      { label: 'Spare Parts', to: '/public-portal/spare-parts' },
+      { label: 'Fleet', to: '/public-portal/fleet' },
+      { label: 'Insurance', to: '/public-portal/insurance' },
+    ],
+  },
   {
     heading: 'Product',
     links: [
@@ -57,15 +65,14 @@ export function Footer() {
     <footer className="flex flex-wrap gap-10 border-t border-border bg-sidebar p-6 md:gap-[60px] md:p-10">
       <div className="min-w-[200px]">
         <div className="mb-3 flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-salis-gradient text-white">
-            <Icon name="Car" size={14} />
-          </span>
+          <img src="/assets/logo-full-colour.svg" alt="" width={500} height={500} className="h-7 w-7 object-contain dark:hidden" />
+          <img src="/assets/logo-reversed-white.svg" alt="" width={500} height={500} className="hidden h-7 w-7 object-contain dark:block" />
           <span dir="ltr" className="font-display text-sm font-extrabold text-heading">
             SALIS AUTO
           </span>
         </div>
         <p className="m-0 max-w-[240px] text-xs text-muted">
-          {t('Integrated automotive workshop management system for Saudi Arabia.')}
+          {t('Workshop management, Saudi standard. One of four SALIS products on one backbone.')}
         </p>
       </div>
       {GROUPS.map((group) => (

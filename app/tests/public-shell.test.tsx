@@ -39,9 +39,9 @@ describe('PublicShell', () => {
     const links = Array.from(nav.querySelectorAll('a')).map((a) => a.getAttribute('href'))
     expect(links).toEqual([
       '/public-portal/landing',
+      '/public-portal/products',
+      '/public-portal/pricing',
       '/public-portal/about',
-      '/public-portal/services',
-      '/public-portal/marketplace',
       '/public-portal/contact',
       '/public-portal/blog',
     ])

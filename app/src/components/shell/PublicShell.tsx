@@ -33,9 +33,9 @@ const SHRINK_AT_PX = 24
  */
 const NAV_LINKS = [
   { label: 'Home', to: '/public-portal/landing' },
+  { label: 'Products', to: '/public-portal/products' },
+  { label: 'Pricing', to: '/public-portal/pricing' },
   { label: 'About', to: '/public-portal/about' },
-  { label: 'Services', to: '/public-portal/services' },
-  { label: 'Marketplace', to: '/public-portal/marketplace' },
   { label: 'Contact', to: '/public-portal/contact' },
   { label: 'Blog', to: '/public-portal/blog' },
 ] as const

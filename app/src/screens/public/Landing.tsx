@@ -90,6 +90,40 @@ export function PublicLanding() {
     [t]
   )
 
+  const family = useMemo<readonly IconCardItem[]>(
+    () => [
+      {
+        icon: 'Wrench',
+        title: t('Garage'),
+        description: t('This product. Check-in to delivery, finance, ZATCA e-invoicing, portals. What a workshop signs in to today.'),
+        tint: 'blue',
+        to: '/public-portal/workshop',
+      },
+      {
+        icon: 'Package',
+        title: t('Spare Parts'),
+        description: t('Supplier network, price comparison, purchase orders and automatic reorder. Runs inside Garage today.'),
+        tint: 'bright',
+        to: '/public-portal/spare-parts',
+      },
+      {
+        icon: 'Truck',
+        title: t('Fleet'),
+        description: t('Vehicles under contract, SLA tracking and cost per vehicle across branches. Runs inside Garage today.'),
+        tint: 'navy',
+        to: '/public-portal/fleet',
+      },
+      {
+        icon: 'ShieldCheck',
+        title: t('Insurance'),
+        description: t('Claims and approvals between workshops and insurers on the records that already exist. Planned.'),
+        tint: 'orange',
+        to: '/public-portal/insurance',
+      },
+    ],
+    [t]
+  )
+
   const valueProps = useMemo<readonly ValuePropItem[]>(
     () => [
       {
@@ -192,6 +226,19 @@ export function PublicLanding() {
       />
 
       <ValueProposition items={valueProps} />
+
+      <section
+        aria-label={t('The SALIS family')}
+        className="mx-auto max-w-[1100px] px-5 py-10 md:px-10 md:py-[60px]"
+      >
+        <SectionIntro
+          as="h2"
+          centered
+          title={t('Four products, one backbone')}
+          subtitle={t('Garage is what you sign in to today. Spare Parts and Fleet run inside it. Insurance is planned. All four share Arabic, ZATCA, SAR and one audit trail.')}
+        />
+        <IconCardGrid items={family} columns={4} centered iconSize={24} />
+      </section>
 
       <section
         aria-label={t('Platform features')}

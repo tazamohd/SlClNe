@@ -44,6 +44,9 @@ export function PublicInsurance() {
         title="Vehicle Insurance"
         subtitle="Comprehensive and third-party coverage for your vehicles"
       />
+      <p className="mx-auto mb-8 mt-0 max-w-[640px] rounded-lg border border-salis-orange/40 bg-tint-orange px-4 py-3 text-center text-sm text-heading">
+        {t('SALIS Insurance is planned. Claims and approvals will run on the estimate and invoice records that already exist in SALIS Garage. Until then, the team handles quotes by hand.')}
+      </p>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {PLANS.map((plan) => (
           <article
@@ -90,7 +93,7 @@ export function PublicInsurance() {
                   : 'mt-4 flex h-11 w-full items-center justify-center rounded-lg border-[1.5px] border-salis-blue font-action text-sm font-medium text-salis-blue no-underline hover:no-underline'
               }
             >
-              {t('Get Quote')}
+              {t('Ask about a quote')}
             </Link>
           </article>
         ))}

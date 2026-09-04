@@ -10,10 +10,10 @@ import { useT } from '@/providers/PreferencesProvider'
  *  through `t()` inside, so callers hand over English source strings exactly
  *  as everywhere else in the app.
  *
- *  The product mock is a dashboard-shaped composition of tinted blocks — no
- *  imagery, no screenshot to go stale, nothing a screen reader has to
- *  describe (it is `aria-hidden`). It stands in for the real thing the way a
- *  wireframe does: a sidebar, a header, a stat row, a pipeline and a table. */
+ *  The product mock is a bay board with the shape of the real one — four bays,
+ *  a job card, a plate, an amount in SAR and a status — built from tokens, no
+ *  imagery, nothing a screen reader has to describe (it is `aria-hidden`).
+ *  Behind it, the brand's circuit trace (SA-BRD-002) drawn with token colours. */
 export interface HeroCta {
   label: string
   to: string
@@ -41,6 +41,7 @@ export function Hero({ badge, title, description, primaryCta, secondaryCta, mock
         className="absolute end-0 top-0 h-[600px] w-[600px] rounded-full blur-[64px]"
         style={{ background: 'radial-gradient(circle, rgba(10,94,215,.06), transparent 70%)' }}
       />
+      {mock ? <TraceBackdrop /> : null}
       <div
         className={
           mock
@@ -93,73 +94,107 @@ export function Hero({ badge, title, description, primaryCta, secondaryCta, mock
           </div>
         </div>
 
-        {mock ? <ProductMock /> : null}
+        {mock ? <BayBoardMock /> : null}
       </div>
     </section>
   )
 }
 
-/** Dashboard-shaped composition of tinted blocks. Decorative only. */
-function ProductMock() {
+/** The brand's circuit trace behind the hero, in token colours through
+ *  Tailwind's fill/stroke utilities. Mirrors under RTL with the layout. */
+function TraceBackdrop() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 400 200"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={7}
+      className="pointer-events-none absolute -end-24 -top-10 hidden h-[420px] w-[840px] opacity-[.16] lg:block rtl:-scale-x-100 dark:opacity-[.28]"
+    >
+      <path d="M22 160H118L160 118H262" className="stroke-salis-bright" />
+      <path d="M62 44H140L182 86H300L342 44" className="stroke-salis-blue" />
+      <path d="M204 176H318L362 132" className="stroke-salis-orange" />
+      <path d="M22 100H84" className="stroke-salis-bright" />
+      <circle cx="22" cy="160" r="10" className="fill-salis-bright" />
+      <circle cx="262" cy="118" r="10" className="fill-page stroke-salis-bright" />
+      <circle cx="62" cy="44" r="10" className="fill-salis-orange" />
+      <circle cx="342" cy="44" r="10" className="fill-page stroke-salis-blue" />
+      <circle cx="362" cy="132" r="10" className="fill-salis-orange" />
+      <circle cx="204" cy="176" r="10" className="fill-page stroke-salis-orange" />
+      <circle cx="84" cy="100" r="10" className="fill-page stroke-salis-bright" />
+    </svg>
+  )
+}
+
+/** A bay board with the shape of the real one. Figures are fixed and
+ *  illustrative; the block is `aria-hidden` so nothing is read out as data.
+ *  Plates, ids and amounts are Latin and isolated with `dir="ltr"`. */
+function BayBoardMock() {
+  const t = useT()
+  const rows = [
+    { bay: 1, job: 'JC-4F2A', plate: 'RUH 4821', amount: 'SAR 1,245.00', status: t('In repair'), warn: false },
+    { bay: 2, job: 'JC-4F2B', plate: 'RUH 1157', amount: 'SAR 380.00', status: t('QC'), warn: false },
+    { bay: 3, job: 'JC-4F2C', plate: 'RUH 9930', amount: 'SAR 2,910.50', status: t('Awaiting parts'), warn: true },
+    { bay: 4, job: 'JC-4F2D', plate: 'RUH 2204', amount: 'SAR 640.00', status: t('Delivered'), warn: false },
+  ]
   return (
     <div
       aria-hidden
-      className="relative mx-auto w-full max-w-[520px] animate-fade-up motion-reduce:animate-none"
+      className="relative mx-auto w-full max-w-[560px] animate-fade-up motion-reduce:animate-none"
     >
-      <div className="absolute -inset-4 rounded-[28px] bg-salis-blue/[.06] blur-2xl" />
-      <div className="relative flex overflow-hidden rounded-2xl border border-border bg-card shadow-[0_24px_48px_-12px_rgba(11,31,59,.25)]">
-        {/* Sidebar */}
-        <div className="hidden w-[72px] flex-shrink-0 flex-col gap-3 border-e border-border bg-sidebar p-3 sm:flex">
-          <span className="h-8 w-8 rounded-lg bg-salis-gradient" />
-          <span className="mt-2 h-2 w-10 rounded bg-salis-blue/[.35]" />
-          <span className="h-2 w-8 rounded bg-border" />
-          <span className="h-2 w-9 rounded bg-border" />
-          <span className="h-2 w-7 rounded bg-border" />
-          <span className="h-2 w-10 rounded bg-border" />
+      <div className="absolute -inset-4 rounded-[28px] bg-salis-blue/[.08] blur-2xl" />
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-[0_24px_48px_-12px_rgba(11,31,59,.25)]">
+        <div className="flex items-center justify-between gap-3 bg-salis-navy px-4 py-3 text-white">
+          <span className="font-action text-sm font-semibold">
+            {t('Bay board')} · {t('Main branch')}
+          </span>
+          <span dir="ltr" className="font-mono text-xs text-white/70">
+            03 Sep 2026 · 09:40
+          </span>
         </div>
-        {/* Page */}
-        <div className="flex min-w-0 flex-1 flex-col gap-3 p-4">
-          <div className="flex items-center justify-between">
-            <span className="h-3 w-28 rounded bg-salis-navy/[.35] dark:bg-white/[.35]" />
-            <span className="h-6 w-16 rounded-md bg-salis-gradient" />
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <span className="flex h-14 flex-col justify-end gap-1 rounded-lg bg-tint-blue p-2">
-              <span className="h-1.5 w-8 rounded bg-salis-blue/[.35]" />
-              <span className="h-2.5 w-12 rounded bg-salis-blue" />
-            </span>
-            <span className="flex h-14 flex-col justify-end gap-1 rounded-lg bg-tint-bright p-2">
-              <span className="h-1.5 w-8 rounded bg-salis-bright/[.35]" />
-              <span className="h-2.5 w-10 rounded bg-salis-bright" />
-            </span>
-            <span className="flex h-14 flex-col justify-end gap-1 rounded-lg bg-tint-orange p-2">
-              <span className="h-1.5 w-8 rounded bg-salis-orange/[.35]" />
-              <span className="h-2.5 w-9 rounded bg-salis-orange" />
-            </span>
-          </div>
-          {/* Pipeline */}
-          <div className="flex items-center gap-1.5">
+        <ul className="m-0 list-none divide-y divide-border p-0">
+          {rows.map((row) => (
+            <li
+              key={row.job}
+              className="grid grid-cols-[1.2fr_auto_auto] items-center gap-3 px-4 py-3 text-sm sm:grid-cols-[1.2fr_auto_auto_auto]"
+            >
+              <span>
+                <span className="font-semibold text-heading">
+                  {t('Bay')} {row.bay}
+                </span>
+                <span dir="ltr" className="block font-mono text-xs text-muted">
+                  {row.job}
+                </span>
+              </span>
+              <span dir="ltr" className="hidden font-mono text-xs text-muted sm:inline">
+                {row.plate}
+              </span>
+              <span dir="ltr" className="font-mono text-sm tabular-nums text-heading">
+                {row.amount}
+              </span>
+              <span
+                className={
+                  'justify-self-end whitespace-nowrap rounded-full px-2.5 py-0.5 font-action text-xs font-semibold ' +
+                  (row.warn ? 'bg-tint-orange text-salis-orange-hover' : 'bg-tint-blue text-salis-blue')
+                }
+              >
+                {row.status}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center gap-3 border-t border-border px-4 py-3">
+          <div className="flex flex-1 items-center gap-1.5">
             <span className="h-2 flex-[3] rounded-full bg-salis-blue" />
             <span className="h-2 flex-[2] rounded-full bg-salis-bright" />
             <span className="h-2 flex-[2] rounded-full bg-salis-blue/[.45]" />
             <span className="h-2 flex-1 rounded-full bg-border" />
           </div>
-          {/* Table rows */}
-          <div className="flex flex-col divide-y divide-border rounded-lg border border-border">
-            {[0, 1, 2, 3].map((row) => (
-              <span key={row} className="flex items-center gap-3 px-3 py-2">
-                <span className="h-5 w-5 flex-shrink-0 rounded-full bg-tint-blue" />
-                <span className="h-2 flex-1 rounded bg-border" />
-                <span className="h-2 w-10 rounded bg-border" />
-                <span
-                  className={
-                    'h-4 w-12 rounded-full ' +
-                    (row === 1 ? 'bg-tint-orange' : 'bg-tint-blue')
-                  }
-                />
-              </span>
-            ))}
-          </div>
+          <span className="whitespace-nowrap font-mono text-[11px] text-muted">
+            {t('6 stages, one job card')}
+          </span>
         </div>
       </div>
     </div>

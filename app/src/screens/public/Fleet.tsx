@@ -2,6 +2,7 @@ import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 import { IconCardGrid, type IconCardItem } from './sections/IconCardGrid'
+import { CtaBanner } from './sections/CtaBanner'
 
 /** PublicPortal.Fleet — Fleet Management product page.
  *
@@ -48,6 +49,11 @@ const FEATURES: readonly IconCardItem[] = [
 
 export function PublicFleet() {
   const t = useT()
+  const audience: readonly IconCardItem[] = [
+    { icon: 'Truck', title: t('Fleet manager'), description: t('Utilisation and cost per vehicle across branches, without a spreadsheet export.'), tint: 'blue' },
+    { icon: 'MapPin', title: t('Branch manager'), description: t('Which contract vehicles are due, in the bay, or overdue, on one board.'), tint: 'bright' },
+    { icon: 'Receipt', title: t('Finance'), description: t('Contract invoices with the same ZATCA e-invoice and audit trail as every other sale.'), tint: 'navy' },
+  ]
   usePageMeta({
     title: t('Fleet Management — SALIS AUTO'),
     description: t('End-to-end fleet operations from contracts to compliance'),
@@ -60,7 +66,24 @@ export function PublicFleet() {
         title="Fleet Management"
         subtitle="End-to-end fleet operations from contracts to compliance"
       />
+      <p className="mx-auto mb-8 mt-0 max-w-[640px] text-center text-sm text-muted">
+        {t('Fleet runs inside SALIS Garage today. A fleet-manager product of its own is planned.')}
+      </p>
       <IconCardGrid items={FEATURES} columns={3} centered iconSize={24} />
+      <div className="mt-14 md:mt-20" />
+      <SectionIntro
+        as="h2"
+        centered
+        title={t('Who it is for')}
+        subtitle={t('Fleet, branch and finance read the same contract, vehicle and invoice.')}
+      />
+      <IconCardGrid items={audience} columns={3} centered iconSize={24} />
+      <CtaBanner
+        title={t('See your contract vehicles on one board')}
+        description={t('A 20-minute demo, in Arabic or English.')}
+        primaryCta={{ label: t('Book a demo'), to: '/public-portal/book-demo' }}
+        secondaryCta={{ label: t('Talk to sales'), to: '/public-portal/contact' }}
+      />
     </div>
   )
 }

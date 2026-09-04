@@ -146,7 +146,7 @@ describe('Tier A public pages', () => {
   it('Insurance quote CTAs lead to the contact page — no fake quote flow', () => {
     const Page = componentOf('PublicPortal.Insurance')
     renderPublic(<Page />)
-    const quotes = screen.getAllByRole('link', { name: 'Get Quote' })
+    const quotes = screen.getAllByRole('link', { name: 'Ask about a quote' })
     expect(quotes).toHaveLength(2)
     for (const quote of quotes) {
       expect(quote).toHaveAttribute('href', '/public-portal/contact')
