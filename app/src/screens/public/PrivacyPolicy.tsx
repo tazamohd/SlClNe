@@ -77,7 +77,7 @@ export function PublicPrivacyPolicy() {
     <div className={isMobile ? 'px-1' : ''}>
       <LegalDocument
         title="Privacy Policy"
-        updated="16 August 2026"
+        updated="2026-08-16"
         intro="This Privacy Policy explains how SALIS AUTO handles personal information when you visit our website, contact us, or use our workshop management platform. We are committed to protecting your privacy and handling your data responsibly."
         clauses={CLAUSES}
       />

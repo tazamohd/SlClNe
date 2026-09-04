@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import type { ComponentType, ReactElement } from 'react'
 import { PreferencesProvider } from '@/providers/PreferencesProvider'
@@ -25,7 +25,7 @@ function renderPublic(ui: ReactElement, route = '/') {
 }
 
 const PAGES: readonly { name: string; h1: string; title: string }[] = [
-  { name: 'PublicPortal.Landing', h1: 'Manage Your Workshop with Confidence', title: 'SALIS AUTO — Workshop Management for Saudi Arabia' },
+  { name: 'PublicPortal.Landing', h1: 'Workshop Management. Saudi Standard.', title: 'SALIS AUTO — Workshop Management. Saudi Standard.' },
   { name: 'PublicPortal.About', h1: 'About SALIS AUTO', title: 'About — SALIS AUTO' },
   { name: 'PublicPortal.Services', h1: 'Our Services', title: 'Services — SALIS AUTO' },
   { name: 'PublicPortal.Marketplace', h1: 'Parts Marketplace', title: 'Parts Marketplace — SALIS AUTO' },
@@ -98,14 +98,24 @@ describe('Tier A public pages', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Manage Your Workshop with Confidence' })
+      screen.getByRole('heading', { level: 1, name: 'Workshop Management. Saudi Standard.' })
     ).toBeInTheDocument()
-    // The design's CTA pair, both with real destinations.
-    expect(screen.getByRole('link', { name: 'Get Started' })).toHaveAttribute('href', '/register')
-    expect(screen.getByRole('link', { name: 'Book a Demo' })).toHaveAttribute(
+    // One primary CTA (the demo) and a text-link secondary (pricing), both with
+    // real destinations. Scoped to the page body: the shell's header carries
+    // its own persistent "Book a Demo" link.
+    const main = within(screen.getByRole('main'))
+    expect(main.getByRole('link', { name: 'Book a 20-minute demo' })).toHaveAttribute(
       'href',
-      '/public-portal/contact'
+      '/public-portal/book-demo'
     )
+    expect(main.getByRole('link', { name: 'See pricing' })).toHaveAttribute(
+      'href',
+      '/public-portal/pricing'
+    )
+    // The header's persistent demo link leads to the booking form.
+    expect(
+      within(screen.getByRole('banner')).getByRole('link', { name: 'Book a Demo' })
+    ).toHaveAttribute('href', '/public-portal/book-demo')
   })
 
   it('Landing renders in Arabic with the document flipped to RTL', () => {
@@ -113,8 +123,8 @@ describe('Tier A public pages', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     expect(document.documentElement.dir).toBe('rtl')
-    // "Get Started" has an Arabic key in the generated dictionary.
-    expect(screen.getByRole('link', { name: 'البدء' })).toBeInTheDocument()
+    // The primary CTA's Arabic key lives in ar-overrides.
+    expect(screen.getByRole('link', { name: 'احجز عرضاً لعشرين دقيقة' })).toBeInTheDocument()
   })
 
   it('pages render at 390px without the desktop nav', () => {

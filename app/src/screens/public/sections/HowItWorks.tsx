@@ -1,11 +1,11 @@
 import { useT } from '@/providers/PreferencesProvider'
 
-/** A numbered-steps workflow section — 3-4 steps showing how the product works.
+/** A numbered-steps rail — 3-4 steps showing how the product works.
  *
- *  Each step has a numbered circle in salis-blue, a title, and a description.
- *  Horizontal layout on desktop with connecting lines between steps; vertical
- *  stacked layout on mobile. The connecting line uses a subtle blue wash so it
- *  reads as decorative, not interactive. */
+ *  An ordered list: the numbers are content, not decoration. On desktop the
+ *  steps sit on one horizontal rail with a connecting line drawn in logical
+ *  inset properties, so under Arabic the rail runs right-to-left and step 1
+ *  is still where reading starts. On a phone the rail turns vertical. */
 export interface Step {
   number: number
   title: string
@@ -19,6 +19,7 @@ export interface HowItWorksProps {
 
 export function HowItWorks({ title, steps }: HowItWorksProps) {
   const t = useT()
+  const count = steps.length
   return (
     <section className="px-5 py-14 md:px-10 md:py-20">
       <div className="mx-auto max-w-[1080px]">
@@ -26,63 +27,45 @@ export function HowItWorks({ title, steps }: HowItWorksProps) {
           {t(title)}
         </h2>
 
-        {/* Desktop: horizontal with connecting lines */}
-        <div className="hidden md:block">
-          <div className="relative flex items-start justify-between">
-            {/* Connecting line behind all steps */}
-            <div
-              aria-hidden
-              className="absolute start-0 end-0 top-6 mx-auto h-[2px] bg-salis-blue/[.12]"
-              style={{ width: `${((steps.length - 1) / steps.length) * 100}%`, marginInlineStart: `${(100 / steps.length) / 2}%` }}
-            />
-            {steps.map((step) => (
-              <div key={step.number} className="relative flex flex-1 flex-col items-center text-center px-4">
-                <span
-                  dir="ltr"
-                  className="relative z-10 mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-salis-gradient text-[15px] font-bold text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]"
-                >
-                  {step.number}
-                </span>
-                <h2 className="mb-1.5 mt-0 text-[16px] font-bold text-heading">
-                  {t(step.title)}
-                </h2>
-                <p className="m-0 max-w-[220px] text-[13px] leading-[1.6] text-muted">
-                  {t(step.description)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile: vertical stacked */}
-        <div className="flex flex-col gap-8 md:hidden">
+        <ol className="relative m-0 flex list-none flex-col gap-8 p-0 md:flex-row md:items-start md:gap-0">
+          {/* The rail behind the numbers. Horizontal from `md`: spans from the
+              centre of the first circle to the centre of the last, in inline
+              (logical) terms so it mirrors under RTL. */}
+          <span
+            aria-hidden
+            className="absolute top-6 hidden h-[2px] bg-salis-blue/[.15] md:block"
+            style={{
+              insetInlineStart: `${100 / count / 2}%`,
+              insetInlineEnd: `${100 / count / 2}%`,
+            }}
+          />
           {steps.map((step, index) => (
-            <div key={step.number} className="flex gap-4">
-              <div className="flex flex-col items-center">
+            <li
+              key={step.number}
+              className="relative flex gap-4 md:flex-1 md:flex-col md:items-center md:px-4 md:text-center"
+            >
+              {/* Vertical rail segment, phone only. */}
+              {index < count - 1 ? (
                 <span
-                  dir="ltr"
-                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient text-[14px] font-bold text-white shadow-[0_4px_12px_rgba(10,94,215,.25)]"
-                >
-                  {step.number}
-                </span>
-                {index < steps.length - 1 && (
-                  <div
-                    aria-hidden
-                    className="mt-2 w-[2px] flex-1 bg-salis-blue/[.12]"
-                  />
-                )}
-              </div>
-              <div className="pb-2 pt-1.5">
-                <h2 className="mb-1 mt-0 text-[15px] font-bold text-heading">
-                  {t(step.title)}
-                </h2>
-                <p className="m-0 text-[13px] leading-[1.6] text-muted">
+                  aria-hidden
+                  className="absolute start-5 top-12 h-[calc(100%-1rem)] w-[2px] bg-salis-blue/[.15] md:hidden"
+                />
+              ) : null}
+              <span
+                dir="ltr"
+                className="relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-salis-gradient font-display text-[15px] font-bold tabular-nums text-white shadow-[0_4px_12px_rgba(10,94,215,.25)] md:mb-4 md:h-12 md:w-12"
+              >
+                {step.number}
+              </span>
+              <div className="pt-1.5 md:pt-0">
+                <h3 className="mb-1.5 mt-0 text-[16px] font-bold text-heading">{t(step.title)}</h3>
+                <p className="m-0 text-[13px] leading-[1.6] text-muted md:max-w-[220px]">
                   {t(step.description)}
                 </p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   )

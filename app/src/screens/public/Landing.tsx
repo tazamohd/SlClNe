@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { Hero } from './sections/Hero'
@@ -16,157 +17,181 @@ import { SectionIntro } from './sections/SectionIntro'
  *
  *  Full marketing landing page composed from reusable sections (§32):
  *  Hero → Trust → Value Proposition → Features → Statistics → How It Works
- *  → Testimonials → Partners → FAQ → CTA. */
-
-const FEATURES: readonly IconCardItem[] = [
-  {
-    icon: 'ClipboardList',
-    title: 'Job Card Management',
-    description: 'Complete workflow from check-in to delivery with real-time tracking.',
-    tint: 'blue',
-  },
-  {
-    icon: 'Package',
-    title: 'Inventory Control',
-    description: 'Smart parts management with auto-reorder and supplier integration.',
-    tint: 'bright',
-  },
-  {
-    icon: 'Receipt',
-    title: 'ZATCA E-Invoicing',
-    description: 'Fully compliant Saudi electronic invoicing with QR codes.',
-    tint: 'orange',
-  },
-  {
-    icon: 'Truck',
-    title: 'Fleet Management',
-    description: 'Multi-vehicle accounts with contract tracking and SLA monitoring.',
-    tint: 'navy',
-  },
-  {
-    icon: 'Sparkles',
-    title: 'AI Assistant',
-    description: 'Intelligent insights, automated reports, and smart scheduling.',
-    tint: 'blue',
-  },
-  {
-    icon: 'MapPin',
-    title: 'Multi-Branch',
-    description: 'Centralized management across all your workshop locations.',
-    tint: 'bright',
-  },
-]
-
-const VALUE_PROPS: readonly ValuePropItem[] = [
-  {
-    icon: '\u{1F6E0}',
-    title: 'Built for Workshops',
-    description: 'Every feature is designed around how Saudi automotive workshops actually operate — not adapted from generic software.',
-  },
-  {
-    icon: '\u{1F4CA}',
-    title: 'Real-Time Visibility',
-    description: 'See every job, every bay and every technician in one dashboard. Know where your business stands at any moment.',
-  },
-  {
-    icon: '\u{1F512}',
-    title: 'Saudi Compliance',
-    description: 'ZATCA e-invoicing, VAT calculations, and financial reporting built in — stay compliant without extra work.',
-  },
-]
-
-const STATS: readonly StatItem[] = [
-  { value: '500+', label: 'Workshops served' },
-  { value: '50K+', label: 'Vehicles managed' },
-  { value: '99.9%', label: 'Platform uptime' },
-]
-
-const STEPS: readonly Step[] = [
-  { number: 1, title: 'Sign Up', description: 'Create your account and configure your workshop in minutes.' },
-  { number: 2, title: 'Set Up', description: 'Import your customer and vehicle data, or start fresh.' },
-  { number: 3, title: 'Go Live', description: 'Check in your first vehicle and let SALIS AUTO handle the rest.' },
-  { number: 4, title: 'Grow', description: 'Add branches, technicians and integrations as your business scales.' },
-]
-
-const TESTIMONIALS: readonly Testimonial[] = [
-  {
-    quote: 'SALIS AUTO replaced three separate systems we were using. Now everything is in one place and our team actually uses it.',
-    author: 'Ahmed K.',
-    role: 'Workshop Owner',
-    company: 'Al-Riyadh Auto Services',
-  },
-  {
-    quote: 'The inventory alerts alone saved us from running out of brake pads twice in the first month. Worth every riyal.',
-    author: 'Fahad M.',
-    role: 'Operations Manager',
-    company: 'Jeddah Motor Works',
-  },
-  {
-    quote: 'Our customers love the live tracking. They can see exactly where their car is in the process — no more phone calls.',
-    author: 'Saad R.',
-    role: 'Service Advisor',
-    company: 'Eastern Province Auto Care',
-  },
-]
+ *  → Testimonials → Partners → FAQ → CTA.
+ *
+ *  Every string is wrapped in `t()` *here*, at the literal, even though each
+ *  section translates its props again: the Arabic-completeness gate scans for
+ *  literal `t('…')` call sites, and a string that only ever reaches `t` as a
+ *  prop is invisible to it. Translating twice is harmless — a translated
+ *  string is its own key. */
 
 const PARTNERS: readonly string[] = [
   'Mada', 'HyperPay', 'Unifonic', 'ZATCA', 'Bosch', 'Denso',
   'Continental', 'Shell Lubricants',
 ]
 
-const FAQ_ITEMS: readonly FaqItem[] = [
-  {
-    question: 'How long does it take to get started?',
-    answer: 'Most workshops are up and running within a day. Our onboarding team helps you import existing data and configure your workflow.',
-  },
-  {
-    question: 'Do I need to install any software?',
-    answer: 'No. SALIS AUTO runs entirely in your browser — on desktop, tablet and phone. There is nothing to install or update.',
-  },
-  {
-    question: 'Is my data secure?',
-    answer: 'Yes. We use industry-standard encryption, role-based access control, and tenant isolation to keep your workshop data private and safe.',
-  },
-  {
-    question: 'Can I try it for free?',
-    answer: 'Absolutely. The Starter plan is free for a single branch with up to five users — no credit card required.',
-  },
-]
-
 export function PublicLanding() {
   const t = useT()
   usePageMeta({
-    title: t('SALIS AUTO — Workshop Management for Saudi Arabia'),
+    title: t('SALIS AUTO — Workshop Management. Saudi Standard.'),
     description: t(
-      'SALIS AUTO is the all-in-one garage management system built for Saudi workshops — from single bays to franchise networks.'
+      'One platform runs the workshop from check-in to invoice, in Arabic and English, with ZATCA e-invoicing built in.'
     ),
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'SALIS AUTO',
-      url: 'https://salisauto.sa',
-      description: 'All-in-one garage management system built for Saudi automotive workshops.',
-      contactPoint: { '@type': 'ContactPoint', email: 'info@salisauto.sa', contactType: 'sales' },
+      url: 'https://salisauto.app',
+      description: 'Workshop management platform built for Saudi automotive workshops: ZATCA e-invoicing, Arabic and English, one audit trail.',
+      contactPoint: { '@type': 'ContactPoint', email: 'info@salisauto.app', contactType: 'sales' },
       areaServed: { '@type': 'Country', name: 'Saudi Arabia' },
     },
   })
 
+  const features = useMemo<readonly IconCardItem[]>(
+    () => [
+      {
+        icon: 'ClipboardList',
+        title: t('Job Card Management'),
+        description: t('Complete workflow from check-in to delivery with real-time tracking.'),
+        tint: 'blue',
+      },
+      {
+        icon: 'Package',
+        title: t('Inventory Control'),
+        description: t('Smart parts management with auto-reorder and supplier integration.'),
+        tint: 'bright',
+      },
+      {
+        icon: 'Receipt',
+        title: t('ZATCA E-Invoicing'),
+        description: t('Fully compliant Saudi electronic invoicing with QR codes.'),
+        tint: 'orange',
+      },
+      {
+        icon: 'Truck',
+        title: t('Fleet Management'),
+        description: t('Multi-vehicle accounts with contract tracking and SLA monitoring.'),
+        tint: 'navy',
+      },
+      {
+        icon: 'Sparkles',
+        title: t('AI Assistant'),
+        description: t('Intelligent insights, automated reports, and smart scheduling.'),
+        tint: 'blue',
+      },
+      {
+        icon: 'MapPin',
+        title: t('Multi-Branch'),
+        description: t('Centralized management across all your workshop locations.'),
+        tint: 'bright',
+      },
+    ],
+    [t]
+  )
+
+  const valueProps = useMemo<readonly ValuePropItem[]>(
+    () => [
+      {
+        icon: 'Wrench',
+        title: t('Built for Workshops'),
+        description: t('Every feature is designed around how Saudi automotive workshops actually operate — not adapted from generic software.'),
+      },
+      {
+        icon: 'Gauge',
+        title: t('Real-Time Visibility'),
+        description: t('See every job, every bay and every technician in one dashboard. Know where your business stands at any moment.'),
+      },
+      {
+        icon: 'ShieldCheck',
+        title: t('Saudi Compliance'),
+        description: t('ZATCA e-invoicing, VAT calculations, and financial reporting built in — stay compliant without extra work.'),
+      },
+    ],
+    [t]
+  )
+
+  const stats = useMemo<readonly StatItem[]>(
+    () => [
+      { value: '4 h', label: t('Estimate approval, down from 48 hours') },
+      { value: '2 min', label: t('Invoice at the counter, down from 15 minutes') },
+      { value: '+25%', label: t('Workshop throughput across deployments') },
+    ],
+    [t]
+  )
+
+  const steps = useMemo<readonly Step[]>(
+    () => [
+      { number: 1, title: t('Sign Up'), description: t('Create your account and configure your workshop in minutes.') },
+      { number: 2, title: t('Set Up'), description: t('Import your customer and vehicle data, or start fresh.') },
+      { number: 3, title: t('Go Live'), description: t('Check in your first vehicle and let SALIS AUTO handle the rest.') },
+      { number: 4, title: t('Grow'), description: t('Add branches, technicians and integrations as your business scales.') },
+    ],
+    [t]
+  )
+
+  const testimonials = useMemo<readonly Testimonial[]>(
+    () => [
+      {
+        quote: t('Our accountant stopped re-keying invoices. The VAT return reconciled the first month.'),
+        author: t('Workshop owner'),
+        role: t('Three branches'),
+        company: t('Eastern Province'),
+      },
+      {
+        quote: t('Estimates that took two days on paper are signed from the customer\'s phone the same afternoon.'),
+        author: t('Operations manager'),
+        role: t('Single-bay workshop'),
+        company: t('Jeddah'),
+      },
+      {
+        quote: t('Customers watch the job move from the bay to delivery. The phone rings less, and when it does, it is not about status.'),
+        author: t('Service advisor'),
+        role: t('Fleet accounts'),
+        company: t('Riyadh'),
+      },
+    ],
+    [t]
+  )
+
+  const faqs = useMemo<readonly FaqItem[]>(
+    () => [
+      {
+        question: t('How long does it take to get started?'),
+        answer: t('Most workshops run their first job card within a day. Onboarding imports your customers, vehicles and parts, and sets up your roles.'),
+      },
+      {
+        question: t('Do I need to install any software?'),
+        answer: t('No. SALIS AUTO runs in the browser on desktop and phone. There is nothing to install and nothing to update.'),
+      },
+      {
+        question: t('Is my data secure?'),
+        answer: t('Yes. Each workshop is isolated at the database level, access is by role, and every change records who made it and when.'),
+      },
+      {
+        question: t('Can I try it before I commit?'),
+        answer: t('Yes. Book a 20-minute demo on your own workshop\'s numbers, then run one branch on the Starter plan at no charge. No card is needed.'),
+      },
+    ],
+    [t]
+  )
+
   return (
     <>
       <Hero
-        badge="Automotive ERP for Saudi Arabia"
-        title="Manage Your Workshop with Confidence"
-        description="SALIS AUTO is the all-in-one garage management system built for Saudi workshops — from single bays to franchise networks."
-        primaryCta={{ label: 'Get Started', to: '/register' }}
-        secondaryCta={{ label: 'Book a Demo', to: '/public-portal/contact' }}
+        badge={t('Built for Saudi workshops')}
+        title={t('Workshop Management. Saudi Standard.')}
+        description={t('One platform runs the workshop from check-in to invoice, in Arabic and English, with ZATCA e-invoicing built in. Every change is on the audit trail.')}
+        primaryCta={{ label: t('Book a 20-minute demo'), to: '/public-portal/book-demo' }}
+        secondaryCta={{ label: t('See pricing'), to: '/public-portal/pricing' }}
       />
 
       <TrustBand
-        headline="Trusted by leading workshops across Saudi Arabia"
-        logos={['Al-Riyadh Auto', 'Jeddah Motor Works', 'Eastern Province Auto', 'Dammam Workshop Group', 'Madinah Service Center']}
+        headline={t('Built for the Saudi market, not translated into it')}
+        logos={[t('ZATCA Phase 2'), t('Arabic and English'), t('SAR to the halala'), t('One audit trail'), t('Multi-branch')]}
       />
 
-      <ValueProposition items={VALUE_PROPS} />
+      <ValueProposition items={valueProps} />
 
       <section
         aria-label={t('Platform features')}
@@ -175,23 +200,23 @@ export function PublicLanding() {
         <SectionIntro
           as="h2"
           centered
-          title="Everything Your Workshop Needs"
-          subtitle="A complete platform covering operations, finance, CRM, and more"
+          title={t('Thirteen domains, one backbone')}
+          subtitle={t('Workshop, parts, finance, CRM, HR and AI on one record of the job, with no seams to reconcile.')}
         />
-        <IconCardGrid items={FEATURES} columns={3} />
+        <IconCardGrid items={features} columns={3} />
       </section>
 
       <div className="mx-auto max-w-[960px] px-5 md:px-10">
-        <StatBand items={STATS} />
+        <StatBand items={stats} />
       </div>
 
-      <HowItWorks title="How It Works" steps={STEPS} />
+      <HowItWorks title={t('How It Works')} steps={steps} />
 
-      <Testimonials title="What Our Customers Say" items={TESTIMONIALS} />
+      <Testimonials title={t('What workshops report')} items={testimonials} />
 
       <PartnerLogos
-        title="Integrations & Partners"
-        subtitle="Connect with the payment, compliance and parts providers you already use"
+        title={t('Integrations & Partners')}
+        subtitle={t('Connect with the payment, compliance and parts providers you already use')}
         partners={PARTNERS}
       />
 
@@ -199,14 +224,14 @@ export function PublicLanding() {
         <h2 className="mb-8 mt-0 text-center font-display text-3xl font-black text-heading md:text-[36px]">
           {t('Frequently Asked Questions')}
         </h2>
-        <FaqList items={FAQ_ITEMS} />
+        <FaqList items={faqs} />
       </section>
 
       <CtaBanner
-        title="Ready to Transform Your Workshop?"
-        description="Join hundreds of Saudi workshops already running smarter with SALIS AUTO."
-        primaryCta={{ label: 'Get Started Free', to: '/register' }}
-        secondaryCta={{ label: 'Schedule a Demo', to: '/public-portal/contact' }}
+        title={t('See it on your own workshop\'s numbers')}
+        description={t('A 20-minute demo, in Arabic or English, on a job card from your floor.')}
+        primaryCta={{ label: t('Book a demo'), to: '/public-portal/book-demo' }}
+        secondaryCta={{ label: t('Talk to sales'), to: '/public-portal/contact' }}
       />
     </>
   )

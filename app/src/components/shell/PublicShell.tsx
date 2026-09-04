@@ -9,18 +9,27 @@ import { ShellContext } from './ShellContext'
 
 const PUBLIC_SHELL = { kind: 'public' } as const
 
+/** How far the page scrolls before the header takes its compact form. */
+const SHRINK_AT_PX = 24
+
 /** The marketing chrome all ten `PublicPortal.*.dc.html` designs share: a
- *  64px sticky header — logo, centred nav, theme toggle, sign-in — and the
- *  shared footer. Rendered `ungated`, entirely outside `RequireAccess`: a
- *  visitor with no session must see every page in this shell.
+ *  sticky header — logo, centred nav, theme toggle, sign-in — and the shared
+ *  footer. Rendered `ungated`, entirely outside `RequireAccess`: a visitor
+ *  with no session must see every page in this shell.
  *
- *  Two deliberate additions over the design source, both required by the
+ *  Three deliberate additions over the design source, required by the
  *  product brief rather than drawn in the handoff:
  *  - a language toggle (Arabic is mandatory on the public site and the design
- *    files expose language only as an editor prop), and
+ *    files expose language only as an editor prop);
  *  - a mobile pattern — the designs ship no `PublicPortal.*.Mobile.dc.html`,
  *    so below the app's 860px breakpoint the centred nav becomes a hamburger
- *    disclosure panel. That pattern is this shell's own, not the handoff's.
+ *    disclosure panel whose rows are ≥44px; and
+ *  - a persistent "Book a Demo" link on desktop beside Sign In.
+ *
+ *  The header is 64px at the top of the page and 56px once the visitor has
+ *  scrolled. The switch is a class toggle, not an animated height — nothing
+ *  under it reflows mid-scroll — and only the shadow and the logo's scale
+ *  transition, both compositor-friendly.
  */
 const NAV_LINKS = [
   { label: 'Home', to: '/public-portal/landing' },
@@ -33,9 +42,20 @@ const NAV_LINKS = [
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
   return cn(
-    'text-[13px] font-medium no-underline transition-colors hover:text-salis-blue hover:no-underline',
+    'inline-flex min-h-[44px] items-center text-[13px] font-medium no-underline transition-colors hover:text-salis-blue hover:no-underline',
     isActive ? 'text-salis-blue' : 'text-body'
   )
+}
+
+function useScrolled(): boolean {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const read = () => setScrolled(window.scrollY > SHRINK_AT_PX)
+    read()
+    window.addEventListener('scroll', read, { passive: true })
+    return () => window.removeEventListener('scroll', read)
+  }, [])
+  return scrolled
 }
 
 export function PublicShell({ children }: { children: ReactNode }) {
@@ -43,6 +63,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const scrolled = useScrolled()
 
   // Navigating from the open menu must close it — a panel that lingers over
   // the next page is the classic hamburger bug.
@@ -60,18 +81,38 @@ export function PublicShell({ children }: { children: ReactNode }) {
         {t('Skip to main content')}
       </a>
 
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-sidebar px-4 md:px-10">
+      <header
+        data-scrolled={scrolled || undefined}
+        className={cn(
+          'sticky top-0 z-10 flex items-center gap-4 border-b border-border bg-sidebar/95 px-4 backdrop-blur transition-shadow duration-200 md:px-10',
+          scrolled ? 'h-14 shadow-sm' : 'h-16'
+        )}
+      >
         <Link
           to="/public-portal/landing"
-          className="flex items-center gap-2 no-underline hover:no-underline"
+          className="flex min-h-[44px] items-center gap-2 no-underline hover:no-underline"
           aria-label={t('SALIS AUTO home')}
         >
+          {/* Vector masters (SA-BRD-002): full colour on the light header, reversed on the navy one. */}
           <img
-            src="/assets/logo-blue-orange.png"
+            src="/assets/logo-full-colour.svg"
             alt=""
             width={500}
             height={500}
-            className="h-10 w-10 object-contain"
+            className={cn(
+              'h-10 w-10 object-contain transition-transform duration-200 motion-reduce:transition-none dark:hidden',
+              scrolled && 'scale-90'
+            )}
+          />
+          <img
+            src="/assets/logo-reversed-white.svg"
+            alt=""
+            width={500}
+            height={500}
+            className={cn(
+              'hidden h-10 w-10 object-contain transition-transform duration-200 motion-reduce:transition-none dark:block',
+              scrolled && 'scale-90'
+            )}
           />
           <span dir="ltr" className="font-display text-base font-extrabold text-heading">
             SALIS AUTO
@@ -93,12 +134,12 @@ export function PublicShell({ children }: { children: ReactNode }) {
           <span className="flex-1" />
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={toggleTheme}
             aria-label={t('Toggle theme')}
-            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-muted hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={16} />
           </button>
@@ -106,16 +147,24 @@ export function PublicShell({ children }: { children: ReactNode }) {
             type="button"
             onClick={toggleLanguage}
             aria-label={t('Switch language')}
-            className="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-none bg-transparent px-2 font-action text-[13px] font-medium text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+            className="flex h-11 cursor-pointer items-center gap-1.5 rounded-lg border-none bg-transparent px-2 font-action text-[13px] font-medium text-muted hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
           >
             <Icon name="Globe" size={16} />
             <span lang={language === 'ar' ? 'ar' : 'en'}>
               {language === 'ar' ? 'English' : 'عربي'}
             </span>
           </button>
+          {!isMobile ? (
+            <Link
+              to="/public-portal/book-demo"
+              className="inline-flex h-11 items-center rounded-lg border border-salis-blue px-4 font-action text-[13px] font-semibold text-salis-blue no-underline transition-colors hover:bg-salis-blue/[.06] hover:no-underline"
+            >
+              {t('Book a Demo')}
+            </Link>
+          ) : null}
           <Link
             to="/login"
-            className="inline-flex h-9 items-center rounded-lg bg-salis-gradient px-4 font-action text-[13px] font-semibold text-white no-underline hover:no-underline"
+            className="inline-flex h-11 items-center rounded-lg bg-salis-gradient px-4 font-action text-[13px] font-semibold text-white no-underline hover:no-underline"
           >
             {t('Sign In')}
           </Link>
@@ -126,7 +175,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
               aria-label={t('Menu')}
               aria-expanded={menuOpen}
               aria-controls="public-mobile-menu"
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
             >
               <Icon name={menuOpen ? 'X' : 'Menu'} size={20} />
             </button>
@@ -138,7 +187,10 @@ export function PublicShell({ children }: { children: ReactNode }) {
         <nav
           id="public-mobile-menu"
           aria-label={t('Main navigation')}
-          className="sticky top-16 z-10 flex flex-col border-b border-border bg-sidebar px-4 py-2"
+          className={cn(
+            'sticky z-10 flex flex-col border-b border-border bg-sidebar px-4 py-2',
+            scrolled ? 'top-14' : 'top-16'
+          )}
         >
           {NAV_LINKS.map((link) => (
             <NavLink
@@ -146,7 +198,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
               to={link.to}
               className={({ isActive }) =>
                 cn(
-                  'rounded-lg px-2 py-3 text-[15px] font-medium no-underline hover:no-underline',
+                  'flex min-h-[44px] items-center rounded-lg px-3 text-[15px] font-medium no-underline hover:no-underline',
                   isActive ? 'bg-salis-blue/[.08] text-salis-blue' : 'text-body'
                 )
               }

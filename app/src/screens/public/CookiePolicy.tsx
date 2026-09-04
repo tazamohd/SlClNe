@@ -62,7 +62,7 @@ export function PublicCookiePolicy() {
   return (
     <LegalDocument
       title="Cookie Policy"
-      updated="16 August 2026"
+      updated="2026-08-16"
       intro="This Cookie Policy explains how SALIS AUTO uses cookies and similar technologies when you visit our website or use our platform. It covers what cookies are, which ones we use, and how you can manage them."
       clauses={CLAUSES}
     />

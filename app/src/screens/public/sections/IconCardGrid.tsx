@@ -83,8 +83,11 @@ export function IconCardGrid({
   ariaLabel,
 }: IconCardGridProps) {
   const t = useT()
+  // 1 column on a phone, 2 from `md`, the full count from `lg` — the tablet
+  // tier is out of scope, so the middle step exists only so the desktop
+  // breakpoint has something to widen from.
   const grid = cn(
-    'grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6',
+    'grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6',
     columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'
   )
 

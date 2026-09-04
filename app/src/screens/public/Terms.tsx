@@ -83,7 +83,7 @@ export function PublicTerms() {
     <div className={isMobile ? 'px-1' : ''}>
       <LegalDocument
         title="Terms & Conditions"
-        updated="16 August 2026"
+        updated="2026-08-16"
         intro="These Terms & Conditions govern your access to and use of the SALIS AUTO website and platform. Please read them carefully before using the service."
         clauses={CLAUSES}
       />
