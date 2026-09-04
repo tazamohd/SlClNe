@@ -45,7 +45,7 @@ const PAGES = [
            'البداية، الاحترافية، والمؤسسات. شهرياً أو سنوياً، بالريال، مع الوحدات التي تشملها كل خطة سطراً بسطر.'] },
   { path: 'about.html', key: 'about', title: ['About SALIS AUTO', 'عن SALIS AUTO'],
     desc: ['Built in Riyadh for Saudi workshops. SALIS Garage, one of four SALISCO product lines on one backbone.',
-           'مبني في الرياض للورش السعودية. SALIS Garage، واحد من أربعة خطوط منتجات سلسكو على أساس واحد.'] },
+           'مبني في الرياض للورش السعودية. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو على أساس واحد.'] },
   { path: 'contact.html', key: 'contact', title: ['Contact SALIS AUTO', 'تواصل مع SALIS AUTO'],
     desc: ['Email, the demo booking page, sign-in, and the SALIS AUTO accounts on LinkedIn, X, Instagram and YouTube.',
            'البريد، صفحة حجز العرض، تسجيل الدخول، وحسابات SALIS AUTO على لينكدإن وإكس وإنستغرام ويوتيوب.'] },
@@ -130,7 +130,7 @@ function footer() {
   <div class="wrap">
     <div>
       <a class="logo" href="index.html">${logo()}</a>
-      <p class="tag">${t('Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.', 'إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات سلسكو. الرياض.')}</p>
+      <p class="tag">${t('Workshop management, Saudi standard. SALIS Garage, one of four SALISCO product lines. Riyadh.', 'إدارة ورش السيارات بمعيار سعودي. SALIS Garage، واحد من أربعة خطوط منتجات ساليسكو. الرياض.')}</p>
       <p class="fine"><a href="${APP}/privacy-policy">${t('Privacy', 'الخصوصية')}</a> · <a href="${APP}/terms-conditions">${t('Terms', 'الشروط')}</a> · <a href="${APP}/cookie-policy">${t('Cookies', 'ملفات الارتباط')}</a></p>
     </div>
     <div>
@@ -775,7 +775,7 @@ ${ctaEnd('Not sure which tier? Bring your branch count and user list.', 'لست 
 const about = pageHero({
   crumb: ['About', 'عن المنتج'], eyebrow: ['About SALIS AUTO', 'عن SALIS AUTO'],
   h1: ['Built in Riyadh <span class="o">for Saudi workshops.</span>', 'مبني في الرياض <span class="o">للورش السعودية.</span>'],
-  lede: ['SALIS AUTO is SALIS Garage, the shipping product of the SALISCO family. Four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.', 'SALIS AUTO هو SALIS Garage، المنتج المتاح من عائلة سلسكو. أربعة افتراضات من اليوم الأول: العربية، الهيئة، الريال، وسجل تدقيق يجيب عن سؤال من غيّر ماذا.'],
+  lede: ['SALIS AUTO is SALIS Garage, the shipping product of the SALISCO family. Four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.', 'SALIS AUTO هو SALIS Garage، المنتج المتاح من عائلة ساليسكو. أربعة افتراضات من اليوم الأول: العربية، الهيئة، الريال، وسجل تدقيق يجيب عن سؤال من غيّر ماذا.'],
   cta2: `<a class="btn ghost-dark" href="${FAMILY}" dir="ltr">salisco.com</a>`,
 }) + `
 <section class="wrap" aria-labelledby="as-h">
@@ -788,7 +788,7 @@ const about = pageHero({
   </div>
 </section>
 <section class="wrap two" aria-labelledby="fam-h">
-  <div class="sec-head"><div class="eyebrow">${t('The family', 'العائلة')}</div><h2 id="fam-h">${t('One of four SALISCO lines.', 'واحد من أربعة خطوط سلسكو.')}</h2></div>
+  <div class="sec-head"><div class="eyebrow">${t('The family', 'العائلة')}</div><h2 id="fam-h">${t('One of four SALISCO lines.', 'واحد من أربعة خطوط ساليسكو.')}</h2></div>
   ${facts([
     ['SALIS Garage, this product, shipping. Workshops sign in to it today as SALIS AUTO.', 'SALIS Garage، هذا المنتج، متاح. تسجّل الورش الدخول إليه اليوم باسم SALIS AUTO.'],
     ['SALIS Spare Parts and SALIS Fleet run inside it today; each has its own page on this site.', 'SALIS Spare Parts وSALIS Fleet يعملان داخله اليوم؛ ولكل منهما صفحة في هذا الموقع.'],
