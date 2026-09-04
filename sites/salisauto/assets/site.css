@@ -462,8 +462,8 @@ html[lang="ar"] .status-inline{font-family:var(--f-ar);letter-spacing:0;font-siz
 /* ---------- motion layer: scenes, tilt, reveals (transform and opacity only) ---------- */
 .scene{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .scene canvas{display:block;width:100%;height:100%}
-.hero .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(11,31,59,.96) 0,rgba(11,31,59,.78) 42%,rgba(11,31,59,.28) 100%)}
-html[dir="rtl"] .hero .scrim{background:linear-gradient(270deg,rgba(11,31,59,.96) 0,rgba(11,31,59,.78) 42%,rgba(11,31,59,.28) 100%)}
+.hero .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(11,31,59,.92) 0,rgba(11,31,59,.7) 38%,rgba(11,31,59,.22) 62%,rgba(11,31,59,.08) 100%)}
+html[dir="rtl"] .hero .scrim{background:linear-gradient(270deg,rgba(11,31,59,.92) 0,rgba(11,31,59,.7) 38%,rgba(11,31,59,.22) 62%,rgba(11,31,59,.08) 100%)}
 .hero.has-scene .trace{opacity:0;transition:opacity .6s var(--ease)}
 .rail-wrap{position:relative}
 .rail-scene{position:relative;display:none;height:230px;margin-bottom:-56px;inset:auto}
@@ -564,3 +564,21 @@ html[lang="ar"] .orb-label{font-family:var(--f-ar);letter-spacing:0;font-size:12
 .res-card b{font-family:var(--f-display);font-size:18px;color:var(--heading)}
 .res-card em{font-style:normal;font-size:12px;color:var(--blue)}
 @media (prefers-reduced-motion:reduce){.res-card{transition:none}.res-card:hover{transform:none}}
+
+/* ---------- pass 2: entrance sequence, rail underline, parallax, slab hand-off ---------- */
+.motion-ready .seq{animation:seq .7s var(--ease) both;animation-delay:calc(var(--i,0) * 80ms)}
+.motion-ready .seq-mock{animation-name:seq-mock;animation-duration:.9s}
+@keyframes seq{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes seq-mock{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+.hero-mock.tilt.seq{animation-fill-mode:backwards}
+.rail6 a b{position:relative;padding-bottom:4px}
+.rail6 a b::after{content:"";position:absolute;inset-inline-start:0;bottom:0;width:100%;height:2px;background:var(--grad);border-radius:1px;transform:scaleX(0);transform-origin:0 50%;transition:transform .45s var(--ease)}
+html[dir="rtl"] .rail6 a b::after{transform-origin:100% 50%}
+.rail-wrap.has-scene .rail6 a.is-active b::after{transform:scaleX(1)}
+.rail-wrap.has-scene .rail6 a.is-active .n{box-shadow:0 0 0 4px rgba(11,179,255,.25)}
+.hero > .trace,.phero > .trace,.proof > .trace{transform:translateY(var(--py,0px))}
+.hero > .trace.late{transform:rotate(180deg) translateY(calc(var(--py,0px) * -1))}
+.ai-stage > .map-fallback{transform:translateY(var(--py,0px))}
+.ai-stage.has-scene.in .fold .slab{opacity:0;transform:scale(.9);transition:opacity .45s var(--ease) 1.5s,transform .45s var(--ease) 1.5s}
+.ai-stage.has-scene .orb-label{opacity:0;animation:fadein .6s var(--ease) 2.2s forwards}
+@media (prefers-reduced-motion:reduce){.motion-ready .seq{animation:none}.rail6 a b::after{transition:none}.hero > .trace,.phero > .trace,.proof > .trace,.ai-stage > .map-fallback{transform:none}.ai-stage.has-scene .orb-label{animation:none;opacity:1}}

@@ -79,9 +79,10 @@
     var vh = window.innerHeight;
     var blocks = [].slice.call(document.querySelectorAll('main section > .wrap > *, main section.wrap > *, .domains > div, .tier, .roles > div, .quotes > blockquote, .stage, .facts > li'));
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
-    blocks.forEach(function (el, i) {
+    blocks.forEach(function (el) {
       if (el.getBoundingClientRect().top < vh * 0.9) return;
-      el.classList.add('reveal'); el.style.setProperty('--d', ((i % 6) * 60) + 'ms'); io.observe(el);
+      var idx = 0, sib = el; while ((sib = sib.previousElementSibling)) idx++;
+      el.classList.add('reveal'); el.style.setProperty('--d', (Math.min(idx, 8) * 70) + 'ms'); io.observe(el);
     });
   }
 
@@ -109,6 +110,28 @@
   if (stageEl && 'IntersectionObserver' in window) {
     var fio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { stageEl.classList.add('in'); fio.disconnect(); } }, { threshold: 0.35 });
     fio.observe(stageEl);
+  }
+
+  /* Hero entrance: eyebrow, headline, lede, buttons, status line, then the mock, 80 ms apart. */
+  if (!reduce) {
+    var heroCol = document.querySelector('.hero .hero-grid > div:first-child, .phero .hero-grid > div:first-child, .phero .wrap:not(.hero-grid)');
+    if (heroCol) { var kids = [].slice.call(heroCol.children); kids.forEach(function (k, i) { k.classList.add('seq'); k.style.setProperty('--i', i); }); var mock = document.querySelector('.hero-mock'); if (mock) { mock.classList.add('seq', 'seq-mock'); mock.style.setProperty('--i', kids.length); } }
+  }
+
+  /* Parallax on decorative layers: transform only, one rAF per scroll burst. */
+  var para = [].slice.call(document.querySelectorAll('.hero > .trace, .phero > .trace, .ai-stage > .map-fallback, .proof > .trace'));
+  if (para.length && !reduce) {
+    var ticking = false;
+    function place() {
+      ticking = false; var vh = window.innerHeight;
+      para.forEach(function (el) {
+        var host = el.parentElement, r = host.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) return;
+        var off = ((r.top + r.height / 2) - vh / 2) * (el.classList.contains('late') ? 0.08 : 0.14);
+        el.style.setProperty('--py', off.toFixed(1) + 'px');
+      });
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(place); } }, { passive: true });
+    place();
   }
 
   root.classList.add('motion-ready');
