@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://salisco.com/</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/?lang=ar"/>
+  </url>
+  <url><loc>https://salisco.com/products/garage.html</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/products/garage.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/products/garage.html?lang=ar"/>
+  </url>
+  <url><loc>https://salisco.com/products/spare-parts.html</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/products/spare-parts.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/products/spare-parts.html?lang=ar"/>
+  </url>
+  <url><loc>https://salisco.com/products/fleet.html</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/products/fleet.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/products/fleet.html?lang=ar"/>
+  </url>
+  <url><loc>https://salisco.com/products/insurance.html</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/products/insurance.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/products/insurance.html?lang=ar"/>
+  </url>
+  <url><loc>https://salisco.com/about.html</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/about.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/about.html?lang=ar"/>
+  </url>
+  <url><loc>https://salisco.com/contact.html</loc><lastmod>2026-09-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://salisco.com/contact.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://salisco.com/contact.html?lang=ar"/>
+  </url>
+</urlset>
