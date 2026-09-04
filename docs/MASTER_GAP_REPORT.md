@@ -9,24 +9,24 @@ Computed from the registry. Every line is a query, not an opinion.
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
-| BLK-004 | CRITICAL | 185 rendered capabilities are mock-only | 05 | W2 |
-| BLK-006 | HIGH | 1 built screens owe their designed mobile layout | 18 | W3 |
+| BLK-004 | CRITICAL | 174 rendered capabilities are mock-only | 05 | W2 |
+| BLK-006 | HIGH | 7 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
-| ARABIC_MISSING | 342 | Arabic not certified: an untranslated key, or keys built dynamically |
-| TABLET_MISSING | 301 | no md:/lg: layout in the source — nothing written for 768–1024 |
-| SUCCESS_MISSING | 259 | no success feedback — a write completes without telling the user |
+| ARABIC_MISSING | 339 | Arabic not certified: an untranslated key, or keys built dynamically |
+| TABLET_MISSING | 287 | no md:/lg: layout in the source — nothing written for 768–1024 |
+| SUCCESS_MISSING | 230 | no success feedback — a write completes without telling the user |
 | NO_RBAC_MODULE | 212 | no RBAC module maps to this screen |
-| MOCK_ONLY | 185 | renders, but from fixtures rather than an API |
-| ERROR_MISSING | 174 | no error state — a failed read has no message and no retry |
-| LOADING_MISSING | 171 | no loading state — the body has nothing to show while its data arrives |
-| EMPTY_MISSING | 146 | no empty state — a collection with no rows renders a blank panel |
-| DESKTOP_ONLY | 1 | renders on desktop with no mobile treatment |
-| MOBILE_MISSING | 1 | a .Mobile design exists and is not built |
+| MOCK_ONLY | 174 | renders, but from fixtures rather than an API |
+| ERROR_MISSING | 163 | no error state — a failed read has no message and no retry |
+| LOADING_MISSING | 160 | no loading state — the body has nothing to show while its data arrives |
+| EMPTY_MISSING | 135 | no empty state — a collection with no rows renders a blank panel |
+| DESKTOP_ONLY | 7 | renders on desktop with no mobile treatment |
+| MOBILE_MISSING | 7 | a .Mobile design exists and is not built |
 | DUPLICATE | 0 | two entries claim one route |
 | NO_CONTENT_ASSERTION | 0 | the route is visited but nothing is asserted about it |
 | PLACEHOLDER | 0 | product route renders PendingScreen |

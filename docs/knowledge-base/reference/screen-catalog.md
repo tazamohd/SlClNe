@@ -21,12 +21,12 @@ Complete catalog of all 191+ screens in SALIS AUTO organized by domain. Each ent
 
 | Screen | Route | Category | RBAC Module | Shell |
 |--------|-------|----------|-------------|-------|
-| Job Cards | `/jobcards` | Custom | `jobcards` | AppShell |
-| Job Detail | `/jobcards/:id` | Custom | `jobcards` | AppShell |
-| Check-In | `/checkin` | Custom | `jobcards` | AppShell |
+| Job Cards | `/job-cards` | Custom | `jobcards` | AppShell |
+| Job Detail | `/job-detail?id=` | Custom | `jobcards` | AppShell |
+| Check-In | stage inside the job card (`/job-detail?id=`); kiosk at `/kiosk-check-in` | Custom | `jobcards` | AppShell |
 | Inspection | `/inspection` | Custom | `jobcards` | AppShell |
-| QC Gate | `/qc-gate` | Custom | `jobcards` | AppShell |
-| Delivery | `/delivery` | Custom | `jobcards` | AppShell |
+| QC Gate | stage inside the job card | Custom | `jobcards` | AppShell |
+| Delivery | stage inside the job card | Custom | `jobcards` | AppShell |
 | Appointments | `/appointments` | Custom | `appointments` | AppShell |
 | Estimates | `/estimates` | Custom | `estimates` | AppShell |
 | Service Bay Dashboard | various | Feature | `jobcards` | AppShell |
@@ -143,7 +143,7 @@ Complete catalog of all 191+ screens in SALIS AUTO organized by domain. Each ent
 |--------|-------|----------|-------------|-------|
 | Users & Teams | `/admin/users` | Custom | `admin` | AppShell |
 | Roles | `/admin/roles` | Custom | `admin` | AppShell |
-| Branches | `/admin/branches` | Custom | `admin` | AppShell |
+| Branches | `/branches` | Custom | `admin` | AppShell |
 | Settings | `/settings` | Custom | `settings` | AppShell |
 | Audit Log | `/admin/audit` | Custom | `audit` | AppShell |
 | Role Management | various | Feature | `admin` | AppShell |

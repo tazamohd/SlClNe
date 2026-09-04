@@ -1,14 +1,15 @@
 # How To: Manage Users & Roles
 
-Step-by-step guide for creating, editing, and managing user accounts and their roles in SALIS AUTO. User management requires the `admin` RBAC module — only Owner/CEO, Super Admin, and Branch Manager (view-only) have access.
+Step-by-step guide for creating, editing, and managing user accounts and their roles in SALIS AUTO. Only Owner/CEO and Super Admin can change users; Branch Manager can view them.
+
+> **Preview screen.** In the current release the Users & Teams screen is a preview: **Invite User** shows the form but does not create the account. User creation is done by SALIS AUTO during onboarding. The steps below describe the intended flow.
 
 ---
 
 ## Prerequisites
 
-- You must be logged in with a role that has `admin:c` (Create) or `admin:e` (Edit) permission.
-- Only **Owner/CEO** and **Super Admin** have full create/edit/delete access on the `admin` module.
-- **Branch Manager** has `admin:v` (View only) — they can see users but not modify them.
+- Sign in as **Owner/CEO** or **Super Admin**.
+- **Branch Manager** can see users but not modify them.
 
 ---
 

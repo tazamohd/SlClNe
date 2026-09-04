@@ -101,10 +101,11 @@
   <p class="fine"><span lang="en">Shown in the language it was written in. Source:</span><span lang="ar">يُعرض باللغة التي كُتب بها. المصدر:</span> <code dir="ltr">docs/knowledge-base/how-to/manage-users-roles.md</code></p>
   <article class="doc-body" dir="ltr">
 <h2 dir="auto" id="how-to-manage-users-roles">How To: Manage Users &amp; Roles</h2>
-<p dir="auto">Step-by-step guide for creating, editing, and managing user accounts and their roles in SALIS AUTO. User management requires the <code dir="ltr">admin</code> RBAC module — only Owner/CEO, Super Admin, and Branch Manager (view-only) have access.</p>
+<p dir="auto">Step-by-step guide for creating, editing, and managing user accounts and their roles in SALIS AUTO. Only Owner/CEO and Super Admin can change users; Branch Manager can view them.</p>
+<blockquote dir="auto"><b>Preview screen.</b> In the current release the Users &amp; Teams screen is a preview: <b>Invite User</b> shows the form but does not create the account. User creation is done by SALIS AUTO during onboarding. The steps below describe the intended flow.</blockquote>
 <hr>
 <h3 dir="auto" id="prerequisites">Prerequisites</h3>
-<ul dir="auto"><li>You must be logged in with a role that has <code dir="ltr">admin:c</code> (Create) or <code dir="ltr">admin:e</code> (Edit) permission.</li><li>Only <b>Owner/CEO</b> and <b>Super Admin</b> have full create/edit/delete access on the <code dir="ltr">admin</code> module.</li><li><b>Branch Manager</b> has <code dir="ltr">admin:v</code> (View only) — they can see users but not modify them.</li></ul>
+<ul dir="auto"><li>Sign in as <b>Owner/CEO</b> or <b>Super Admin</b>.</li><li><b>Branch Manager</b> can see users but not modify them.</li></ul>
 <hr>
 <h3 dir="auto" id="viewing-the-user-list">Viewing the User List</h3>
 <ol dir="auto"><li>Navigate to <b>Administration &gt; Users &amp; Teams</b> in the sidebar, or go directly to <code dir="ltr">/admin/users</code>.</li><li>The user list displays in a <code dir="ltr">DataTable</code> with the following columns:</li><li>Name</li><li>Email</li><li>Role (displayed as a badge)</li><li>Branch</li><li>Status (active/inactive)</li><li>Last login</li><li>Use the search bar to filter by name or email.</li><li>Use <code dir="ltr">filter[role]</code> to show only users of a specific role.</li><li>On mobile, each user renders as a <code dir="ltr">MobileCard</code> with a tappable summary.</li></ol>

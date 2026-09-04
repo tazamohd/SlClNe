@@ -104,14 +104,14 @@
 <p dir="auto">Step-by-step guide for creating and managing branch locations in SALIS AUTO. Branches are the fundamental unit of multi-location operations — every tenant-owned record carries a <code dir="ltr">branch_id</code> that determines data visibility for branch-scoped users.</p>
 <hr>
 <h3 dir="auto" id="prerequisites">Prerequisites</h3>
-<ul dir="auto"><li>You must be logged in with a role that has <code dir="ltr">admin:c</code> (Create) or <code dir="ltr">admin:e</code> (Edit) permission.</li><li><b>Owner/CEO</b> and <b>Super Admin</b> have full CRUD access on the <code dir="ltr">admin</code> module.</li><li><b>Branch Manager</b> has <code dir="ltr">admin:v</code> (View only).</li></ul>
+<ul dir="auto"><li>Sign in as <b>Owner/CEO</b> or <b>Super Admin</b>. Only those roles can create or edit branches.</li><li><b>Branch Manager</b> can view branches but not change them.</li></ul>
 <hr>
 <h3 dir="auto" id="understanding-branches">Understanding Branches</h3>
 <p dir="auto">Branches represent physical workshop locations within an organization. Key points:</p>
-<ul dir="auto"><li>Every organization has at least one branch, typically marked as the <b>main branch</b> (<code dir="ltr">isMain: true</code>).</li><li>The <code dir="ltr">branches</code> table uses the universal tenant columns (<code dir="ltr">id</code>, <code dir="ltr">org_id</code>, <code dir="ltr">branch_id</code>, <code dir="ltr">created_at</code>, etc.).</li><li>Branch-scoped users (<code dir="ltr">manager</code>, <code dir="ltr">advisor</code>, <code dir="ltr">technician</code>, <code dir="ltr">qc</code>, <code dir="ltr">parts</code>, <code dir="ltr">frontdesk</code>, <code dir="ltr">callcenter</code>) see only data belonging to their assigned branch.</li><li>Organization-scoped users (<code dir="ltr">accountant</code>, <code dir="ltr">hr</code>, <code dir="ltr">procurement</code>) see data across all branches.</li><li>The <code dir="ltr">branches_org_idx</code> index on <code dir="ltr">org_id</code> ensures efficient tenant-scoped queries.</li></ul>
+<ul dir="auto"><li>Every organization has at least one branch, marked as the <b>main branch</b>.</li><li>Branch-scoped roles (manager, advisor, technician, QC, parts, front desk, call centre) see only their assigned branch.</li><li>Organization-scoped roles (accountant, HR, procurement) see every branch.</li></ul>
 <hr>
 <h3 dir="auto" id="viewing-the-branch-list">Viewing the Branch List</h3>
-<ol dir="auto"><li>Navigate to <b>Administration &gt; Branches</b> in the sidebar, or go directly to <code dir="ltr">/admin/branches</code>.</li><li>The branch list shows:</li></ol>
+<ol dir="auto"><li>Navigate to <b>Administration &gt; Branches</b> in the sidebar, or go directly to <code dir="ltr">/branches</code>.</li><li>The branch list shows:</li></ol>
 <div class="tablewrap"><table><thead><tr><th dir="auto">Column</th><th dir="auto">Description</th></tr></thead><tbody><tr><td dir="auto">Name</td><td dir="auto">Branch name in English</td></tr><tr><td dir="auto">Name (Arabic)</td><td dir="auto">Branch name in Arabic</td></tr><tr><td dir="auto">City</td><td dir="auto">City where the branch is located</td></tr><tr><td dir="auto">Is Main</td><td dir="auto">Whether this is the primary/headquarters branch</td></tr><tr><td dir="auto">Status</td><td dir="auto">Active or inactive</td></tr></tbody></table></div>
 <ol dir="auto"><li>Use the search bar to filter branches by name or city.</li></ol>
 <hr>
@@ -123,7 +123,7 @@
 <ul dir="auto"><li>Setting <code dir="ltr">isMain: true</code> designates this as the headquarters or primary location.</li><li>Only one branch per organization should be marked as main.</li><li>The main branch is typically the default selection for new records.</li></ul>
 <hr>
 <h3 dir="auto" id="editing-branch-details">Editing Branch Details</h3>
-<ol dir="auto"><li>Navigate to <code dir="ltr">/admin/branches</code>.</li><li>Click on the branch row to open it.</li><li>Update the desired fields (name, Arabic name, city, isMain status).</li><li>Click <b>Save</b>.</li><li>Changes take effect immediately. All records linked to this <code dir="ltr">branch_id</code> retain their association.</li></ol>
+<ol dir="auto"><li>Navigate to <code dir="ltr">/branches</code>.</li><li>Click on the branch row to open it.</li><li>Update the desired fields (name, Arabic name, city, isMain status).</li><li>Click <b>Save</b>.</li><li>Changes take effect immediately. Records already linked to the branch keep their link.</li></ol>
 <hr>
 <h3 dir="auto" id="assigning-users-to-branches">Assigning Users to Branches</h3>
 <p dir="auto">Users are assigned to branches through the user management screen:</p>

@@ -127,7 +127,7 @@ Upon completing this course, participants will be able to:
 | 2 | ZATCA Phase 2 requirements           | 25 min   |
 | 3 | QR code generation and validation    | 20 min   |
 | 4 | Hash chain integrity                 | 20 min   |
-| 5 | Credit notes and corrections         | 15 min   |
+| 5 | Corrections: cancel and reissue      | 15 min   |
 | 6 | 7-year retention compliance          | 15 min   |
 
 ### 3.2 Key Concepts
@@ -135,9 +135,9 @@ Upon completing this course, participants will be able to:
 - **ZATCA Phase 2**: Mandatory e-invoicing with VAT at 15%, QR codes, hash chain, 7-year retention
 - **QR Code**: Each invoice includes a scannable QR code containing seller, VAT number, total, VAT amount, timestamp
 - **Hash Chain**: Sequential hash linking each invoice to the previous one for tamper detection
-- **Credit Notes**: Required for invoice corrections; original invoice remains in the chain
+- **Corrections**: An issued invoice is never edited. It is cancelled and a new invoice is issued that references it; the original remains in the chain. Credit and debit notes are planned, not yet in the product.
 - **Retention**: All invoices and supporting documents retained for 7 years minimum
-- **Invoice Types**: Standard invoice, simplified invoice, credit note, debit note
+- **Invoice Types**: Standard invoice, simplified invoice
 
 ### 3.3 Hands-On Lab
 

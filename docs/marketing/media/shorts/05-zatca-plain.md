@@ -21,7 +21,7 @@ AR: الفاتورة الصادرة لا تتغير بصمت.
 |---|---|---|
 | Beat 1 | QR: seller, VAT number, time, total, VAT amount. | رمز الاستجابة: البائع، الرقم الضريبي، الوقت، الإجمالي، مبلغ الضريبة. |
 | Beat 2 | Hash: each invoice holds the hash of the one before. | التجزئة: كل فاتورة تحمل تجزئة سابقتها. |
-| Beat 3 | Corrections are credit or debit notes. The original stays. | التصحيح إشعار دائن أو مدين. والأصل يبقى. |
+| Beat 3 | A correction cancels and reissues. The original stays. | التصحيح إلغاء وإصدار جديد. والأصل يبقى. |
 
 ## Voice-over (optional)
 

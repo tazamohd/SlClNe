@@ -633,9 +633,9 @@ const zatca = pageHero({
     ['A QR code in TLV encoding: seller name, VAT number, timestamp, total with VAT, and the VAT amount. The customer can scan it at the counter.', 'رمز استجابة بترميز TLV: اسم البائع، الرقم الضريبي، الوقت، الإجمالي بالضريبة، ومبلغ الضريبة. يستطيع العميل مسحه عند الكاونتر.'],
     ['A hash that links the invoice to the one before it. Delete or alter one, and the chain breaks visibly. That is the point.', 'تجزئة تربط الفاتورة بالتي قبلها. احذف واحدة أو عدّلها فتنكسر السلسلة على نحو ظاهر. وهذا هو المقصود.'],
     ['XML in the UBL 2.1 form the authority expects, with seller and buyer VAT numbers, and 15% VAT computed on the server, not in the browser.', 'ملف XML بصيغة UBL 2.1 التي تتوقعها الهيئة، بالرقمين الضريبيين للبائع والمشتري، وضريبة ١٥٪ تُحسب على الخادم لا في المتصفح.'],
-    ['Immutable after issue. Corrections are credit or debit notes that reference the original, never edits to it.', 'غير قابلة للتعديل بعد الإصدار. التصحيحات إشعارات دائنة أو مدينة تشير إلى الأصل، لا تعديلات عليه.'],
+    ['Immutable after issue. A correction cancels the invoice and issues a new one that references it; the original stays in the chain.', 'غير قابلة للتعديل بعد الإصدار. التصحيح يلغي الفاتورة ويصدر فاتورة جديدة تشير إليها؛ ويبقى الأصل في السلسلة.'],
     ['Seven-year retention in an archive that can prove its own integrity, and an export of up to 50,000 invoices with every ZATCA field for the accountant’s tools.', 'حفظ لسبع سنوات في أرشيف يثبت سلامته بنفسه، وتصدير حتى ٥٠٬٠٠٠ فاتورة بكل حقول الهيئة لأدوات المحاسب.'],
-    ['Simplified tax invoices on Starter; standard and simplified invoices with credit and debit notes on Professional and Enterprise.', 'فواتير ضريبية مبسطة في خطة البداية؛ وفواتير قياسية ومبسطة مع الإشعارات الدائنة والمدينة في الاحترافية والمؤسسات.'],
+    ['Simplified tax invoices on Starter; standard and simplified invoices on Professional and Enterprise. Credit and debit notes are planned.', 'فواتير ضريبية مبسطة في خطة البداية؛ وفواتير قياسية ومبسطة في الاحترافية والمؤسسات. الإشعارات الدائنة والمدينة مخططة.'],
   ])}
 </section>
 ${whoSection([

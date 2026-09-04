@@ -20,3 +20,10 @@ app/vite.config.d.ts
 
 # Transient agent worktrees
 .claude/worktrees/
+
+# Local tooling state and the plan snapshot; never committed
+.claude-flow/
+.claude/reviews/
+.claude/proven-config.json
+.claude/.proven-config-version
+SlClNe-plan/

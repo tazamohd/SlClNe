@@ -14,20 +14,20 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | external dependency | 12 |
 | rendered | 424 |
 | placeholder | 0 |
-| designed mobile owed | 1 |
+| designed mobile owed | 7 |
 | untested | 0 |
-| mock only | 185 |
-| data backed | 147 |
+| mock only | 174 |
+| data backed | 158 |
 | e2e covered | 424 |
 | content asserted | 424 |
 | rendered without assertion | 0 |
-| has loading state | 189 |
-| has error state | 158 |
-| has empty state | 215 |
-| has success state | 69 |
+| has loading state | 200 |
+| has error state | 169 |
+| has empty state | 231 |
+| has success state | 109 |
 | redirects | 7 |
 | tablet verified | 4 |
-| arabic verified | 82 |
+| arabic verified | 85 |
 | rtl hazards | 0 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
@@ -37,8 +37,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
-| auth | 28 | 28 | 0 | 0 | 28 |
-| app | 313 | 313 | 0 | 1 | 313 |
+| auth | 28 | 28 | 0 | 2 | 28 |
+| app | 313 | 313 | 0 | 5 | 313 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |

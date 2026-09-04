@@ -51,7 +51,9 @@ The `WorkflowStepper` component renders the stage progress visually:
 
 ## Approval Threshold Configuration
 
-Approvals are governed by two mechanisms: role-based ceilings and the `canApprove()` function.
+> Approval ceilings are fixed per role in the current product and shown read-only. This section describes the ceilings; there is no screen to change them. Contact SALIS AUTO to adjust a ceiling for your organization.
+
+Approvals are governed by role-based ceilings.
 
 ### Per-Role Approval Limits
 

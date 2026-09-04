@@ -6,9 +6,8 @@ Step-by-step guide for creating and managing branch locations in SALIS AUTO. Bra
 
 ## Prerequisites
 
-- You must be logged in with a role that has `admin:c` (Create) or `admin:e` (Edit) permission.
-- **Owner/CEO** and **Super Admin** have full CRUD access on the `admin` module.
-- **Branch Manager** has `admin:v` (View only).
+- Sign in as **Owner/CEO** or **Super Admin**. Only those roles can create or edit branches.
+- **Branch Manager** can view branches but not change them.
 
 ---
 
@@ -16,17 +15,15 @@ Step-by-step guide for creating and managing branch locations in SALIS AUTO. Bra
 
 Branches represent physical workshop locations within an organization. Key points:
 
-- Every organization has at least one branch, typically marked as the **main branch** (`isMain: true`).
-- The `branches` table uses the universal tenant columns (`id`, `org_id`, `branch_id`, `created_at`, etc.).
-- Branch-scoped users (`manager`, `advisor`, `technician`, `qc`, `parts`, `frontdesk`, `callcenter`) see only data belonging to their assigned branch.
-- Organization-scoped users (`accountant`, `hr`, `procurement`) see data across all branches.
-- The `branches_org_idx` index on `org_id` ensures efficient tenant-scoped queries.
+- Every organization has at least one branch, marked as the **main branch**.
+- Branch-scoped roles (manager, advisor, technician, QC, parts, front desk, call centre) see only their assigned branch.
+- Organization-scoped roles (accountant, HR, procurement) see every branch.
 
 ---
 
 ## Viewing the Branch List
 
-1. Navigate to **Administration > Branches** in the sidebar, or go directly to `/admin/branches`.
+1. Navigate to **Administration > Branches** in the sidebar, or go directly to `/branches`.
 2. The branch list shows:
 
 | Column | Description |
@@ -67,11 +64,11 @@ Branches represent physical workshop locations within an organization. Key point
 
 ## Editing Branch Details
 
-1. Navigate to `/admin/branches`.
+1. Navigate to `/branches`.
 2. Click on the branch row to open it.
 3. Update the desired fields (name, Arabic name, city, isMain status).
 4. Click **Save**.
-5. Changes take effect immediately. All records linked to this `branch_id` retain their association.
+5. Changes take effect immediately. Records already linked to the branch keep their link.
 
 ---
 
