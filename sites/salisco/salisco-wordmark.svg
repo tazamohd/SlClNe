@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400" role="img" aria-label="SALISCO">
+  <title>SALISCO wordmark</title>
+  <!-- Typeset in Montserrat 800. Convert the text to outlines before print or signage:
+       this file relies on the font being installed or loaded. Colours are the SALIS tokens. -->
+  <defs>
+    <linearGradient id="trace" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#0A5ED7"/>
+      <stop offset="1" stop-color="#0BB3FF"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#trace)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 300 H200 L260 240 H420"/>
+    <path d="M120 100 H300 L360 160 H520"/>
+  </g>
+  <g fill="none" stroke="#F97316" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 200 H140"/>
+  </g>
+  <circle cx="60" cy="300" r="16" fill="#0BB3FF"/>
+  <circle cx="120" cy="100" r="16" fill="#0A5ED7"/>
+  <circle cx="40" cy="200" r="16" fill="#F97316"/>
+  <circle cx="420" cy="240" r="16" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="14"/>
+  <circle cx="520" cy="160" r="16" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="14"/>
+  <text x="560" y="248" font-family="Montserrat, 'Noto Sans Arabic', Inter, system-ui, sans-serif" font-weight="800" font-size="150" letter-spacing="-4" fill="#0B1F3B">SALISCO</text>
+  <circle cx="1150" cy="240" r="22" fill="#F97316"/>
+</svg>
