@@ -29,25 +29,6 @@
 <script>document.documentElement.classList.add('js');document.documentElement.dataset.titleAr="SALIS Spare Parts";document.documentElement.dataset.titleEn="SALIS Spare Parts";</script>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="trace" viewBox="0 0 400 200">
-    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
-      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
-      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
-      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
-      <path d="M22 100 H84" stroke="#0BB3FF"/>
-    </g>
-    <g class="dots">
-      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
-      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-      <circle cx="62" cy="44" r="10" fill="#F97316"/>
-      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
-      <circle cx="362" cy="132" r="10" fill="#F97316"/>
-      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
-      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-    </g>
-  </symbol>
-</svg>
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
 <header id="site-header">
   <div class="wrap">
@@ -69,7 +50,8 @@
     </nav>
     <div class="hdr-actions">
       <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
-      <a class="btn small" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a>
       <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -80,22 +62,28 @@
     <a href="../products/insurance.html" dir="ltr">SALIS Insurance</a>
     <a href="../about.html"><span lang="en">About</span><span lang="ar">عن ساليسكو</span></a>
     <a href="../contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
   </div>
 </header>
 <main id="main">
-<section class="phero" aria-labelledby="ph">
-  <svg class="trace anim" viewBox="0 0 400 200" style="width:900px;inset-inline-end:-320px;top:-200px"><use href="#trace"/></svg>
+<section class="field phero" aria-labelledby="ph">
+<svg class="field-trace" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <path d="M-20 470 H240 L330 380 H620 L700 300 H1000" stroke="#0BB3FF"/>
+  <path d="M120 90 H380 L470 180 H760 L850 90 H1240" stroke="#0A5ED7"/>
+  <path d="M520 560 H820 L920 460 H1240" stroke="#F97316"/>
+  <circle cx="620" cy="380" r="12" fill="#0BB3FF"/><circle cx="760" cy="180" r="12" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="6"/><circle cx="920" cy="460" r="12" fill="#F97316"/><circle cx="240" cy="470" r="12" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="6"/>
+</svg>
   <div class="wrap hero-grid">
     <div>
-      <div class="crumbs"><a href="../index.html">SALISCO</a> <span aria-hidden="true">/</span> <a href="../index.html#family"><span lang="en">Products</span><span lang="ar">المنتجات</span></a></div>
+      <div class="crumbs"><a href="../index.html" translate="no">SALISCO</a> <span aria-hidden="true">/</span> <a href="../index.html#family"><span lang="en">Products</span><span lang="ar">المنتجات</span></a></div>
       <div class="eyebrow"><span lang="en">Supplier network · in SALIS AUTO today</span><span lang="ar">شبكة الموردين · داخل SALIS AUTO اليوم</span></div>
       <h1 id="ph" dir="ltr" translate="no">SALIS Spare Parts</h1>
       <p class="lede"><span lang="en">The parts side of the workshop as one system: catalogue, price comparison, purchase orders, automatic reorder below minimum stock, and a portal where suppliers publish and confirm.</span><span lang="ar">جانب القطع في الورشة كنظام واحد: الكتالوج، مقارنة الأسعار، أوامر الشراء، إعادة الطلب تلقائياً عند انخفاض المخزون عن حده، وبوابة ينشر فيها الموردون ويؤكدون.</span></p>
-      <div class="ctas"><a class="btn on-dark" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a><a class="btn ghost-dark" href="garage.html"><span lang="en">It ships inside Garage</span><span lang="ar">يعمل داخل الورشة</span></a></div>
+      <div class="ctas"><a class="btn on-dark" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost-dark" href="garage.html"><span lang="en">It ships inside Garage</span><span lang="ar">يعمل داخل الورشة</span><span class="arr" aria-hidden="true">→</span></a></div>
       <div class="statusline"><span lang="en"><b>Status: in SALIS AUTO today.</b> Available to every SALIS AUTO workshop. Access for buyers outside the workshop is planned and not yet available.</span><span lang="ar"><b>الحالة: داخل SALIS AUTO اليوم.</b> متاح لكل ورشة على SALIS AUTO. الوصول لمشترين من خارج الورشة مخطط وغير متاح بعد.</span></div>
     </div>
-    <div class="hero-mock">
-<div class="bezel"><div class="mock" aria-label="Purchase order, illustrative">
+    <div class="hero-mock"><div class="bezel">
+<div class="mock" aria-label="Purchase order, illustrative">
   <div class="bar"><b><span lang="en">Purchase order</span><span lang="ar">أمر شراء</span> <span class="mono" dir="ltr">PO-10421</span></b><span class="st o"><span lang="en">Awaiting approval</span><span lang="ar">بانتظار الاعتماد</span></span></div>
   <div class="kv"><span><span lang="en">Supplier</span><span lang="ar">المورّد</span></span><b><span lang="en">Preferred supplier, Riyadh</span><span lang="ar">المورّد المفضل، الرياض</span></b><span><span lang="en">Trigger</span><span lang="ar">السبب</span></span><b><span lang="en">Stock below minimum: 4 of 12</span><span lang="ar">المخزون تحت الحد: ٤ من ١٢</span></b></div>
   <div class="row head"><span><span lang="en">Part</span><span lang="ar">القطعة</span></span><span><span lang="en">Number</span><span lang="ar">الرقم</span></span><span class="num"><span lang="en">Qty</span><span lang="ar">الكمية</span></span><span class="num"><span lang="en">Unit</span><span lang="ar">الوحدة</span></span><span class="num"><span lang="en">Line</span><span lang="ar">الإجمالي</span></span></div>
@@ -107,22 +95,37 @@
   </div>
 </section>
 
-<section class="wrap two" aria-labelledby="what-h">
-  <div class="sec-head"><div class="eyebrow"><span lang="en">What it does</span><span lang="ar">ما الذي يقوم به</span></div><h2 id="what-h"><span lang="en">Stock that reorders itself, with a person still approving.</span><span lang="ar">مخزون يعيد طلب نفسه، ومع ذلك يعتمده شخص.</span></h2></div>
-  <ul class="facts"><li><span lang="en">Every part has an opening quantity; everything after that is a movement with an idempotency key, so a retried request never double-counts.</span><span lang="ar">لكل قطعة كمية افتتاحية، وكل ما يليها حركة بمفتاح تكرار، فلا يُحتسب طلب معاد مرتين.</span></li><li><span lang="en">When stock drops below its minimum, a purchase request is drafted against the preferred supplier and waits for approval within the role’s ceiling.</span><span lang="ar">حين ينخفض المخزون عن حده، تُصاغ طلبية شراء للمورّد المفضل وتنتظر الاعتماد ضمن سقف الدور.</span></li><li><span lang="en">Suppliers publish catalogues, prices and delivery times in their own portal; the workshop compares before it orders.</span><span lang="ar">ينشر الموردون الكتالوجات والأسعار ومدد التوصيل في بوابتهم، وتقارن الورشة قبل الطلب.</span></li><li><span lang="en">Parts consumed on a job card leave stock and land on the invoice as the same line, priced in SAR to the halala.</span><span lang="ar">القطع المصروفة على بطاقة العمل تخرج من المخزون وتظهر في الفاتورة كالبند نفسه، مسعّرة بالريال حتى الهللة.</span></li></ul>
+<section class="wrap" aria-labelledby="depth-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">In depth</span><span lang="ar">بالتفصيل</span></div><h2 id="depth-h"><span lang="en">Stock that reorders itself, with a person still approving.</span><span lang="ar">مخزون يعيد طلب نفسه، ومع ذلك يعتمده شخص.</span></h2></div>
+  <div class="tabs" data-tabs><div class="tablist" role="tablist" aria-label="SALIS Spare Parts in depth"><button class="tab" role="tab" type="button" id="tabs-4-t0" aria-selected="true" aria-controls="tabs-4-p0" tabindex="0"><span lang="en">Overview</span><span lang="ar">نظرة عامة</span></button><button class="tab" role="tab" type="button" id="tabs-4-t1" aria-selected="false" aria-controls="tabs-4-p1" tabindex="-1"><span lang="en">What ships today</span><span lang="ar">ما هو متاح اليوم</span></button><button class="tab" role="tab" type="button" id="tabs-4-t2" aria-selected="false" aria-controls="tabs-4-p2" tabindex="-1"><span lang="en">Who it is for</span><span lang="ar">لمن هو</span></button><button class="tab" role="tab" type="button" id="tabs-4-t3" aria-selected="false" aria-controls="tabs-4-p3" tabindex="-1"><span lang="en">How it connects</span><span lang="ar">كيف يرتبط</span></button><button class="tab" role="tab" type="button" id="tabs-4-t4" aria-selected="false" aria-controls="tabs-4-p4" tabindex="-1"><span lang="en">FAQ</span><span lang="ar">أسئلة</span></button><span class="ind" aria-hidden="true"></span></div><div class="tabpanel" role="tabpanel" id="tabs-4-p0" aria-labelledby="tabs-4-t0" tabindex="0"><div class="tp"><div><h3><span lang="en">From minimum stock to a confirmed delivery.</span><span lang="ar">من الحد الأدنى للمخزون إلى تسليم مؤكد.</span></h3><ul class="facts"><li><span lang="en">Every part has an opening quantity; everything after that is a movement with an idempotency key, so a retried request never double-counts.</span><span lang="ar">لكل قطعة كمية افتتاحية، وكل ما يليها حركة بمفتاح تكرار، فلا يُحتسب طلب معاد مرتين.</span></li><li><span lang="en">When stock drops below its minimum, a purchase request is drafted against the preferred supplier and waits for approval within the role’s ceiling.</span><span lang="ar">حين ينخفض المخزون عن حده، تُصاغ طلبية شراء للمورّد المفضل وتنتظر الاعتماد ضمن سقف الدور.</span></li><li><span lang="en">Suppliers publish catalogues, prices and delivery times in their own portal; the workshop compares before it orders.</span><span lang="ar">ينشر الموردون الكتالوجات والأسعار ومدد التوصيل في بوابتهم، وتقارن الورشة قبل الطلب.</span></li><li><span lang="en">Parts consumed on a job card leave stock and land on the invoice as the same line, priced in SAR to the halala.</span><span lang="ar">القطع المصروفة على بطاقة العمل تخرج من المخزون وتظهر في الفاتورة كالبند نفسه، مسعّرة بالريال حتى الهللة.</span></li></ul></div><div class="bezel">
+<div class="mock" aria-label="Purchase order, illustrative">
+  <div class="bar"><b><span lang="en">Purchase order</span><span lang="ar">أمر شراء</span> <span class="mono" dir="ltr">PO-10421</span></b><span class="st o"><span lang="en">Awaiting approval</span><span lang="ar">بانتظار الاعتماد</span></span></div>
+  <div class="kv"><span><span lang="en">Supplier</span><span lang="ar">المورّد</span></span><b><span lang="en">Preferred supplier, Riyadh</span><span lang="ar">المورّد المفضل، الرياض</span></b><span><span lang="en">Trigger</span><span lang="ar">السبب</span></span><b><span lang="en">Stock below minimum: 4 of 12</span><span lang="ar">المخزون تحت الحد: ٤ من ١٢</span></b></div>
+  <div class="row head"><span><span lang="en">Part</span><span lang="ar">القطعة</span></span><span><span lang="en">Number</span><span lang="ar">الرقم</span></span><span class="num"><span lang="en">Qty</span><span lang="ar">الكمية</span></span><span class="num"><span lang="en">Unit</span><span lang="ar">الوحدة</span></span><span class="num"><span lang="en">Line</span><span lang="ar">الإجمالي</span></span></div>
+  <div class="row"><span><span lang="en">Front brake pads</span><span lang="ar">تيل فرامل أمامي</span></span><span class="mono" dir="ltr">BP-2210-F</span><span class="num mono" dir="ltr">8</span><span class="num mono" dir="ltr">SAR 145.00</span><span class="num mono" dir="ltr">SAR 1,160.00</span></div>
+  <div class="row"><span><span lang="en">Oil filter</span><span lang="ar">فلتر زيت</span></span><span class="mono" dir="ltr">OF-0090</span><span class="num mono" dir="ltr">24</span><span class="num mono" dir="ltr">SAR 28.50</span><span class="num mono" dir="ltr">SAR 684.00</span></div>
+  <div class="row total"><span><span lang="en">Total incl. VAT 15%</span><span lang="ar">الإجمالي شامل الضريبة ١٥٪</span></span><span></span><span></span><span></span><b class="num mono" dir="ltr">SAR 2,120.60</b></div>
+  <div class="foot"><span lang="en">Illustrative order. Prices are examples.</span><span lang="ar">أمر توضيحي. الأسعار أمثلة.</span></div>
+</div></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-4-p1" aria-labelledby="tabs-4-t1" tabindex="0" data-tab-hidden><div class="tp one"><div><h3><span lang="en">What a SALIS AUTO workshop has today.</span><span lang="ar">ما تملكه ورشة SALIS AUTO اليوم.</span></h3><p class="lead"><span lang="en"><b>Status: in SALIS AUTO today.</b> Available to every SALIS AUTO workshop. Access for buyers outside the workshop is planned and not yet available.</span><span lang="ar"><b>الحالة: داخل SALIS AUTO اليوم.</b> متاح لكل ورشة على SALIS AUTO. الوصول لمشترين من خارج الورشة مخطط وغير متاح بعد.</span></p><ul class="ships"><li><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><span><span lang="en">Supplier catalogue and the supplier portal.</span><span lang="ar">كتالوج الموردين وبوابة الموردين.</span></span></li><li><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><span><span lang="en">Price comparison across suppliers before the order is placed.</span><span lang="ar">مقارنة الأسعار بين الموردين قبل وضع الطلب.</span></span></li><li><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><span><span lang="en">Purchase orders with approval ceilings by role.</span><span lang="ar">أوامر الشراء بسقوف اعتماد بحسب الدور.</span></span></li><li><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><span><span lang="en">Automatic reorder below minimum stock, with the order drafted for approval.</span><span lang="ar">إعادة الطلب تلقائياً تحت الحد الأدنى، مع صياغة الطلب للاعتماد.</span></span></li><li><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><span><span lang="en">Access for buyers outside the workshop.</span><span lang="ar">الوصول لمشترين من خارج الورشة.</span></span></li></ul></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-4-p2" aria-labelledby="tabs-4-t2" tabindex="0" data-tab-hidden><div class="roles"><div><b><span lang="en">Parts manager</span><span lang="ar">مدير القطع</span></b><p><span lang="en">Sees what is below minimum, what is on order, and what is arriving, without a spreadsheet.</span><span lang="ar">يرى ما هو تحت الحد، وما هو مطلوب، وما هو في الطريق، دون جدول.</span></p></div><div><b><span lang="en">Purchasing</span><span lang="ar">المشتريات</span></b><p><span lang="en">Approves drafted orders within a ceiling; anything above routes to the next role.</span><span lang="ar">يعتمد الأوامر المصاغة ضمن سقف، وما فوقه يُحال إلى الدور التالي.</span></p></div><div><b><span lang="en">Supplier</span><span lang="ar">المورّد</span></b><p><span lang="en">Publishes once, confirms orders, tracks delivery, gets paid against a ZATCA invoice.</span><span lang="ar">ينشر مرة، يؤكد الطلبات، يتابع التسليم، ويُسدد له مقابل فاتورة إلكترونية.</span></p></div><div><b><span lang="en">Accountant</span><span lang="ar">المحاسب</span></b><p><span lang="en">Stock value and cost of parts sold reconcile to the ledger by construction.</span><span lang="ar">قيمة المخزون وتكلفة القطع المباعة تتطابق مع الدفتر بحكم البناء.</span></p></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-4-p3" aria-labelledby="tabs-4-t3" tabindex="0" data-tab-hidden><div class="tp one"><div><h3><span lang="en">Same ledger, no seams.</span><span lang="ar">الدفتر نفسه، بلا فواصل.</span></h3><p class="lead"><span lang="en">Spare Parts is a view on the same stock the job cards consume.</span><span lang="ar">قطع الغيار نافذة على المخزون نفسه الذي تستهلكه بطاقات العمل.</span></p><div class="connect"><a class="bezel" href="garage.html"><span class="core"><b dir="ltr" translate="no">SALIS Garage</b><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">A part requested from a job card arrives against that card and lands on its invoice.</span><span lang="ar">القطعة المطلوبة من بطاقة العمل تصل مقابل تلك البطاقة وتظهر في فاتورتها.</span></p></span></a><a class="bezel" href="fleet.html"><span class="core"><b dir="ltr" translate="no">SALIS Fleet</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Parts for contract vehicles are priced by the contract, visible on the order.</span><span lang="ar">قطع مركبات العقد مسعّرة بحسب العقد، وظاهرة على الطلب.</span></p></span></a><a class="bezel" href="insurance.html"><span class="core"><b dir="ltr" translate="no">SALIS Insurance</b><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Approved claim lines reserve parts before the repair starts. Planned.</span><span lang="ar">بنود المطالبة المعتمدة تحجز القطع قبل بدء الإصلاح. مخطط.</span></p></span></a></div></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-4-p4" aria-labelledby="tabs-4-t4" tabindex="0" data-tab-hidden><div class="faq"><details class="bezel"><summary><span><span lang="en">Do suppliers need a SALIS AUTO account?</span><span lang="ar">هل يحتاج الموردون إلى حساب SALIS AUTO؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">They use the supplier portal, a separate sign-in tied to your workshop.</span><span lang="ar">يستخدمون بوابة الموردين، وهي تسجيل دخول منفصل مرتبط بورشتك.</span></p></div></details><details class="bezel"><summary><span><span lang="en">Can a retried order be counted twice?</span><span lang="ar">هل يمكن أن يُحتسب طلب معاد مرتين؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">No. Every movement carries an idempotency key; a retry returns the same movement.</span><span lang="ar">لا. كل حركة تحمل مفتاح تكرار، والإعادة تعيد الحركة نفسها.</span></p></div></details><details class="bezel"><summary><span><span lang="en">Who approves a drafted order?</span><span lang="ar">من يعتمد الطلب المصاغ؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">The role whose ceiling covers the amount. Above it, the order routes to the next role.</span><span lang="ar">الدور الذي يغطي سقفه المبلغ. وما فوقه يُحال الطلب إلى الدور التالي.</span></p></div></details></div></div></div>
 </section>
 
-<section class="wrap" aria-labelledby="who-h">
-  <div class="sec-head"><div class="eyebrow"><span lang="en">Who it is for</span><span lang="ar">لمن هو</span></div><h2 id="who-h"><span lang="en">Judged on whether it survives the floor.</span><span lang="ar">يُحكم عليه بما إذا كان يصمد على أرض الورشة.</span></h2></div>
-  <div class="roles"><div><b><span lang="en">Parts manager</span><span lang="ar">مدير القطع</span></b><p><span lang="en">Sees what is below minimum, what is on order, and what is arriving, without a spreadsheet.</span><span lang="ar">يرى ما هو تحت الحد، وما هو مطلوب، وما هو في الطريق، دون جدول.</span></p></div><div><b><span lang="en">Purchasing</span><span lang="ar">المشتريات</span></b><p><span lang="en">Approves drafted orders within a ceiling; anything above routes to the next role.</span><span lang="ar">يعتمد الأوامر المصاغة ضمن سقف، وما فوقه يُحال إلى الدور التالي.</span></p></div><div><b><span lang="en">Supplier</span><span lang="ar">المورّد</span></b><p><span lang="en">Publishes once, confirms orders, tracks delivery, gets paid against a ZATCA invoice.</span><span lang="ar">ينشر مرة، يؤكد الطلبات، يتابع التسليم، ويُسدد له مقابل فاتورة إلكترونية.</span></p></div><div><b><span lang="en">Accountant</span><span lang="ar">المحاسب</span></b><p><span lang="en">Stock value and cost of parts sold reconcile to the ledger by construction.</span><span lang="ar">قيمة المخزون وتكلفة القطع المباعة تتطابق مع الدفتر بحكم البناء.</span></p></div></div>
+
+
+<section class="wrap" aria-labelledby="fam2-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">The rest of the family</span><span lang="ar">بقية العائلة</span></div><h2 id="fam2-h"><span lang="en">Four lines, one backbone.</span><span lang="ar">أربعة خطوط، أساس واحد.</span></h2></div>
+  
+<ol class="road">
+  <li><a href="../products/garage.html" dir="ltr" translate="no">SALIS Garage</a><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Workshops sign in today, as SALIS AUTO. Releases are announced on the SALIS AUTO accounts, with release notes.</span><span lang="ar">تسجّل الورش الدخول اليوم باسم SALIS AUTO. تُعلن الإصدارات على حسابات SALIS AUTO مع ملاحظات الإصدار.</span></p></li>
+  <li><a href="../products/spare-parts.html" dir="ltr" translate="no">SALIS Spare Parts</a><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Available to every SALIS AUTO workshop. Access for buyers outside the workshop is planned, with no date promised.</span><span lang="ar">متاح لكل ورشة على SALIS AUTO. الوصول لمشترين من خارج الورشة مخطط، دون وعد بتاريخ.</span></p></li>
+  <li><a href="../products/fleet.html" dir="ltr" translate="no">SALIS Fleet</a><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Available inside SALIS AUTO. A standalone product for fleet managers who do not run a workshop is planned, with no date promised.</span><span lang="ar">متاح داخل SALIS AUTO. منتج مستقل لمديري الأساطيل الذين لا يديرون ورشة مخطط، دون وعد بتاريخ.</span></p></li>
+  <li><a href="../products/insurance.html" dir="ltr" translate="no">SALIS Insurance</a><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Not available. Described here so the family is complete and honest. Insurers and workshops who want to shape it are the first people we want to hear from.</span><span lang="ar">غير متاح. يُذكر هنا لتكون العائلة كاملة وصادقة. شركات التأمين والورش الراغبة في تشكيله أول من نريد سماعهم.</span></p></li>
+</ol>
 </section>
-
-
 
 <section class="wrap cta-end" aria-label="Next step">
-  <h2><span lang="en">Procurement is measured, like everything else.</span><span lang="ar">المشتريات تُقاس، ككل شيء آخر.</span></h2>
-  <p><span lang="en">The press kit records a 40% shorter procurement cycle across deployments. Ask for the baseline in the demo.</span><span lang="ar">يسجل الملف الصحفي دورة مشتريات أقصر بنسبة ٤٠٪ عبر عمليات التشغيل. اطلب أساس القياس في العرض.</span></p>
-  <div class="ctas"><a class="btn" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="../index.html#family"><span lang="en">Back to the family</span><span lang="ar">العودة إلى العائلة</span></a></div>
+  <h2><span lang="en">See reorder run on your own stock list.</span><span lang="ar">شاهد إعادة الطلب تعمل على قائمة مخزونك.</span></h2>
+  <p><span lang="en">A 20-minute demo, in Arabic or English.</span><span lang="ar">عرض توضيحي لعشرين دقيقة، بالعربية أو الإنجليزية.</span></p>
+  <div class="ctas"><a class="btn" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="../index.html#family"><span lang="en">Back to the family</span><span lang="ar">العودة إلى العائلة</span><span class="arr" aria-hidden="true">→</span></a></div>
 </section>
 </main>
 <footer>
@@ -156,7 +159,7 @@
       <ul>
         <li><a href="mailto:info@salisco.com" dir="ltr">info@salisco.com</a><span class="prop"><span lang="en">proposed</span><span lang="ar">مقترح</span></span></li>
         <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
-        <li><a href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
         <li><a href="https://salisauto.app" dir="ltr">salisauto.app</a></li>
       </ul>
     </div>

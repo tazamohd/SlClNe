@@ -29,25 +29,6 @@
 <script>document.documentElement.classList.add('js');document.documentElement.dataset.titleAr="الصفحة غير موجودة";document.documentElement.dataset.titleEn="Page not found";</script>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="trace" viewBox="0 0 400 200">
-    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
-      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
-      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
-      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
-      <path d="M22 100 H84" stroke="#0BB3FF"/>
-    </g>
-    <g class="dots">
-      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
-      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-      <circle cx="62" cy="44" r="10" fill="#F97316"/>
-      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
-      <circle cx="362" cy="132" r="10" fill="#F97316"/>
-      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
-      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-    </g>
-  </symbol>
-</svg>
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
 <header id="site-header">
   <div class="wrap">
@@ -69,7 +50,8 @@
     </nav>
     <div class="hdr-actions">
       <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
-      <a class="btn small" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a>
       <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -80,15 +62,24 @@
     <a href="products/insurance.html" dir="ltr">SALIS Insurance</a>
     <a href="about.html"><span lang="en">About</span><span lang="ar">عن ساليسكو</span></a>
     <a href="contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
   </div>
 </header>
 <main id="main">
-<section class="wrap lost" aria-labelledby="lh">
-  <div class="eyebrow">404</div>
-  <div class="code" dir="ltr" aria-hidden="true">404</div>
-  <h1 id="lh"><span lang="en">That page is not here.</span><span lang="ar">هذه الصفحة ليست هنا.</span></h1>
-  <p class="lede" style="color:var(--muted)"><span lang="en">The address may have changed, or it never existed on salisco.com. The four product lines, the company page and contact are one click away.</span><span lang="ar">ربما تغيّر العنوان، أو لم يوجد أصلاً على salisco.com. خطوط المنتجات الأربعة وصفحة الشركة وصفحة التواصل على بعد نقرة.</span></p>
-  <div class="ctas"><a class="btn" href="index.html"><span lang="en">Go to the home page</span><span lang="ar">اذهب إلى الصفحة الرئيسية</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="index.html#family"><span lang="en">See the four lines</span><span lang="ar">اطّلع على الخطوط الأربعة</span></a><a class="btn ghost" href="contact.html"><span lang="en">Contact SALISCO</span><span lang="ar">تواصل مع ساليسكو</span></a></div>
+<section class="field lost" aria-labelledby="lh">
+<svg class="field-trace" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <path d="M-20 470 H240 L330 380 H620 L700 300 H1000" stroke="#0BB3FF"/>
+  <path d="M120 90 H380 L470 180 H760 L850 90 H1240" stroke="#0A5ED7"/>
+  <path d="M520 560 H820 L920 460 H1240" stroke="#F97316"/>
+  <circle cx="620" cy="380" r="12" fill="#0BB3FF"/><circle cx="760" cy="180" r="12" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="6"/><circle cx="920" cy="460" r="12" fill="#F97316"/><circle cx="240" cy="470" r="12" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="6"/>
+</svg>
+  <div class="wrap">
+    <div class="eyebrow">404</div>
+    <div class="code" dir="ltr" aria-hidden="true">404</div>
+    <h1 id="lh"><span lang="en">That page is not here.</span><span lang="ar">هذه الصفحة ليست هنا.</span></h1>
+    <p class="lede"><span lang="en">The address may have changed, or it never existed on salisco.com. The four product lines, the company page and contact are one click away.</span><span lang="ar">ربما تغيّر العنوان، أو لم يوجد أصلاً على salisco.com. خطوط المنتجات الأربعة وصفحة الشركة وصفحة التواصل على بعد نقرة.</span></p>
+    <div class="ctas"><a class="btn on-dark" href="index.html"><span lang="en">Go to the home page</span><span lang="ar">اذهب إلى الصفحة الرئيسية</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost-dark" href="index.html#family"><span lang="en">See the four lines</span><span lang="ar">اطّلع على الخطوط الأربعة</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost-dark" href="contact.html"><span lang="en">Contact SALISCO</span><span lang="ar">تواصل مع ساليسكو</span><span class="arr" aria-hidden="true">→</span></a></div>
+  </div>
 </section>
 </main>
 <footer>
@@ -122,7 +113,7 @@
       <ul>
         <li><a href="mailto:info@salisco.com" dir="ltr">info@salisco.com</a><span class="prop"><span lang="en">proposed</span><span lang="ar">مقترح</span></span></li>
         <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
-        <li><a href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
         <li><a href="https://salisauto.app" dir="ltr">salisauto.app</a></li>
       </ul>
     </div>

@@ -36,25 +36,6 @@
 </script>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="trace" viewBox="0 0 400 200">
-    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
-      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
-      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
-      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
-      <path d="M22 100 H84" stroke="#0BB3FF"/>
-    </g>
-    <g class="dots">
-      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
-      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-      <circle cx="62" cy="44" r="10" fill="#F97316"/>
-      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
-      <circle cx="362" cy="132" r="10" fill="#F97316"/>
-      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
-      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-    </g>
-  </symbol>
-</svg>
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
 <header id="site-header">
   <div class="wrap">
@@ -76,7 +57,8 @@
     </nav>
     <div class="hdr-actions">
       <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
-      <a class="btn small" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a>
       <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -87,70 +69,33 @@
     <a href="products/insurance.html" dir="ltr">SALIS Insurance</a>
     <a href="about.html"><span lang="en">About</span><span lang="ar">عن ساليسكو</span></a>
     <a href="contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
   </div>
 </header>
 <main id="main">
-<section class="hero" aria-labelledby="hero-h">
-  <svg class="trace anim" viewBox="0 0 400 200" style="width:980px;inset-inline-end:-300px;top:-160px"><use href="#trace"/></svg>
-  <svg class="trace anim late" viewBox="0 0 400 200" style="width:700px;inset-inline-start:-260px;bottom:-240px;transform:rotate(180deg)"><use href="#trace"/></svg>
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow"><span lang="en">Riyadh · Operational software for Saudi Arabia</span><span lang="ar">الرياض · برمجيات تشغيلية للمملكة</span></div>
-      <h1 id="hero-h"><span lang="en">One backbone.<br>Four lines of <span class="o">Saudi-built</span> software.</span><span lang="ar">أساس واحد.<br>أربعة خطوط من البرمجيات <span class="o">المبنية في السعودية.</span></span></h1>
-      <p class="lede"><span lang="en">SALISCO builds the operational software Saudi businesses run on. Garage, Spare Parts, Fleet and Insurance share one ledger and four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.</span><span lang="ar">ساليسكو تبني البرمجيات التشغيلية التي تعمل عليها المنشآت السعودية. الورشة وقطع الغيار والأساطيل والتأمين تتشارك دفتراً واحداً وأربعة افتراضات من اليوم الأول: العربية، الهيئة، الريال، وسجل تدقيق يجيب عن سؤال من غيّر ماذا.</span></p>
-      <div class="ctas">
-        <a class="btn on-dark" href="#family"><span lang="en">See the four lines</span><span lang="ar">اطّلع على الخطوط الأربعة</span><span class="arr" aria-hidden="true">→</span></a>
-        <a class="btn ghost-dark" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a>
-      </div>
-    </div>
-    <div class="hero-mock">
-<div class="bezel"><div class="mock" aria-label="Bay board, illustrative">
-  <div class="bar"><b><span lang="en">Bay board · Riyadh Main</span><span lang="ar">لوحة الخلجان · الرياض الرئيسي</span></b><span class="mono" dir="ltr">04 Sep 2026 · 09:40</span></div>
-  <div class="row head"><span><span lang="en">Bay</span><span lang="ar">الخليج</span></span><span><span lang="en">Job card</span><span lang="ar">بطاقة العمل</span></span><span><span lang="en">Plate</span><span lang="ar">اللوحة</span></span><span class="num"><span lang="en">Amount</span><span lang="ar">المبلغ</span></span><span><span lang="en">Status</span><span lang="ar">الحالة</span></span></div>
-  <div class="row"><b>1</b><span class="mono" dir="ltr">JC-4F2A</span><span class="mono" dir="ltr">RUH 4821</span><span class="num mono" dir="ltr">SAR 1,245.00</span><span class="st "><span lang="en">In repair</span><span lang="ar">قيد الإصلاح</span></span></div>
-  <div class="row"><b>2</b><span class="mono" dir="ltr">JC-4F2B</span><span class="mono" dir="ltr">RUH 1157</span><span class="num mono" dir="ltr">SAR 380.00</span><span class="st "><span lang="en">QC</span><span lang="ar">فحص الجودة</span></span></div>
-  <div class="row"><b>3</b><span class="mono" dir="ltr">JC-4F2C</span><span class="mono" dir="ltr">RUH 9930</span><span class="num mono" dir="ltr">SAR 2,910.50</span><span class="st o"><span lang="en">Awaiting parts</span><span lang="ar">بانتظار القطع</span></span></div>
-  <div class="row"><b>4</b><span class="mono" dir="ltr">JC-4F2D</span><span class="mono" dir="ltr">RUH 2204</span><span class="num mono" dir="ltr">SAR 640.00</span><span class="st "><span lang="en">Delivered</span><span lang="ar">تم التسليم</span></span></div>
-  <div class="foot"><span lang="en">Illustrative rows. Figures are examples, not customer data.</span><span lang="ar">صفوف توضيحية. الأرقام أمثلة وليست بيانات عملاء.</span></div>
-</div></div></div>
+<section class="field" id="top" aria-labelledby="hero-h">
+<svg class="field-trace" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <path d="M-20 470 H240 L330 380 H620 L700 300 H1000" stroke="#0BB3FF"/>
+  <path d="M120 90 H380 L470 180 H760 L850 90 H1240" stroke="#0A5ED7"/>
+  <path d="M520 560 H820 L920 460 H1240" stroke="#F97316"/>
+  <circle cx="620" cy="380" r="12" fill="#0BB3FF"/><circle cx="760" cy="180" r="12" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="6"/><circle cx="920" cy="460" r="12" fill="#F97316"/><circle cx="240" cy="470" r="12" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="6"/>
+</svg>
+  <div class="wrap">
+    <div class="eyebrow rv"><span lang="en">Riyadh · operational software for Saudi Arabia</span><span lang="ar">الرياض · برمجيات تشغيلية للمملكة</span></div>
+    <h1 id="hero-h" class="rv"><span lang="en">SALISCO. One backbone. Four lines of <span class="o">Saudi-built</span> software.</span><span lang="ar">ساليسكو. أساس واحد. أربعة خطوط من البرمجيات <span class="o">المبنية في السعودية.</span></span></h1>
+    <p class="lede rv"><span lang="en">Garage, Spare Parts, Fleet and Insurance share one ledger and four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.</span><span lang="ar">الورشة وقطع الغيار والأساطيل والتأمين تتشارك دفتراً واحداً وأربعة افتراضات من اليوم الأول: العربية، والهيئة، والريال، وسجل تدقيق يجيب عن السؤال: من غيّر ماذا.</span></p>
+    <div class="ctas rv"><a class="btn on-dark" href="#family"><span lang="en">See the four lines</span><span lang="ar">اطّلع على الخطوط الأربعة</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost-dark" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span><span class="arr" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
-<section id="family" class="wrap" aria-labelledby="family-h">
-  <div class="sec-head">
-    <div class="eyebrow"><span lang="en">The family</span><span lang="ar">العائلة</span></div>
-    <h2 id="family-h"><span lang="en">One family. Four products. Status stated on every line.</span><span lang="ar">عائلة واحدة. أربعة منتجات. الحالة مذكورة في كل سطر.</span></h2>
-    <p><span lang="en">Garage is what a workshop signs in to today. Spare Parts and Fleet ship inside it. Insurance is planned and is described as planned.</span><span lang="ar">الورشة هي ما تسجّل الورش الدخول إليه اليوم. قطع الغيار والأساطيل تعمل داخلها. التأمين مخطط ويوصف بأنه مخطط.</span></p>
-  </div>
+<section class="wrap stack" id="family" aria-labelledby="fam-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">The family</span><span lang="ar">العائلة</span></div><h2 id="fam-h"><span lang="en">One family. Four products. Status stated on every line.</span><span lang="ar">عائلة واحدة. أربعة منتجات. الحالة مذكورة في كل سطر.</span></h2><p><span lang="en">Garage is what a workshop signs in to today. Spare Parts and Fleet ship inside it. Insurance is planned and is described as planned.</span><span lang="ar">الورشة هي ما تسجّل الورش الدخول إليه اليوم. قطع الغيار والأساطيل تعمل داخلها. التأمين مخطط ويوصف بأنه مخطط.</span></p></div>
   
-<div class="map" role="img" aria-label="Four product lines on one backbone">
-  <div class="lines">
-    <a class="line live" href="products/garage.html"><span class="core"><span class="cap"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><b dir="ltr" translate="no">SALIS Garage</b><span><span lang="en">Workshop management, as SALIS AUTO</span><span lang="ar">إدارة الورش، باسم SALIS AUTO</span></span></span></a>
-    <a class="line" href="products/spare-parts.html"><span class="core"><span class="cap"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><b dir="ltr" translate="no">SALIS Spare Parts</b><span><span lang="en">Supplier network and reorder</span><span lang="ar">شبكة الموردين وإعادة الطلب</span></span></span></a>
-    <a class="line" href="products/fleet.html"><span class="core"><span class="cap"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><b dir="ltr" translate="no">SALIS Fleet</b><span><span lang="en">Fleet accounts across branches</span><span lang="ar">حسابات الأساطيل عبر الفروع</span></span></span></a>
-    <a class="line plan" href="products/insurance.html"><span class="core"><span class="cap"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><b dir="ltr" translate="no">SALIS Insurance</b><span><span lang="en">Claims on the same records</span><span lang="ar">مطالبات على السجلات نفسها</span></span></span></a>
-  </div>
-  <div class="rail"><span class="railcap"><span lang="en">One backbone</span><span lang="ar">أساس واحد</span></span></div>
-  <div class="assume">
-    <div><i></i><b><span lang="en">Arabic first</span><span lang="ar">العربية أولاً</span></b><span><span lang="en">Written for Arabic, English beside it</span><span lang="ar">تُكتب بالعربية والإنجليزية بجانبها</span></span></div>
-    <div><i></i><b><span lang="en">ZATCA in the core</span><span lang="ar">الهيئة في النواة</span></b><span><span lang="en">QR and hash chain in the posting transaction</span><span lang="ar">رمز الاستجابة وسلسلة التجزئة في معاملة الترحيل</span></span></div>
-    <div><i></i><b><span lang="en">SAR to the halala</span><span lang="ar">الريال حتى الهللة</span></b><span><span lang="en">Integer halalas, rounding once</span><span lang="ar">هللات صحيحة، وتقريب مرة واحدة</span></span></div>
-    <div><i class="o"></i><b><span lang="en">One audit row per change</span><span lang="ar">سطر تدقيق لكل تغيير</span></b><span><span lang="en">Actor, before, after, request id</span><span lang="ar">الفاعل، قبل، بعد، رقم الطلب</span></span></div>
-  </div>
-</div>
-  <div class="note"><span lang="en">Product lines confirmed by the owner on 4 September 2026. Statuses describe what a workshop can sign in to today, not the roadmap.</span><span lang="ar">خطوط المنتجات كما أكدها المالك في ٤ سبتمبر ٢٠٢٦. تصف الحالات ما تستطيع الورشة تسجيل الدخول إليه اليوم، لا خارطة الطريق.</span></div>
-</section>
-
-<section id="lines" class="wrap lines-detail" aria-label="Product lines in detail">
-  <article class="line-row">
-    <div class="line-text">
-      <div class="eyebrow"><span lang="en">Garage · shipping as SALIS AUTO</span><span lang="ar">الورشة · متاح باسم SALIS AUTO</span></div>
-      <h3 dir="ltr" translate="no">SALIS Garage</h3>
-      <p><span lang="en">The full workshop lifecycle on one job card: check-in, inspection, estimate, repair, quality control, delivery. Finance and ZATCA e-invoicing on the same record, a customer app, and portals for technicians and suppliers.</span><span lang="ar">دورة الورشة كاملة على بطاقة عمل واحدة: الاستقبال، الفحص، عرض السعر، الإصلاح، مراقبة الجودة، التسليم. المالية والفوترة الإلكترونية على السجل نفسه، وتطبيق للعملاء، وبوابات للفنيين والموردين.</span></p>
-      <a class="more" href="products/garage.html"><span lang="en">Read about Garage</span><span lang="ar">اقرأ عن الورشة</span> <span dir="ltr" aria-hidden="true">→</span></a>
-    </div>
-    <div class="line-mock">
-<div class="bezel"><div class="mock" aria-label="Bay board, illustrative">
+<div class="cards">
+  <article class="card bezel" data-i="0" id="line-garage"><div class="core">
+    <div class="txt"><span class="st live"><span lang="en">Shipping as SALIS AUTO</span><span lang="ar">متاح باسم SALIS AUTO</span></span><h3 translate="no" dir="ltr">SALIS Garage</h3><p><span lang="en">Workshop management, Saudi standard. The full lifecycle from check-in to delivery, finance and ZATCA e-invoicing, a customer app, and portals for technicians and suppliers.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. دورة الورشة كاملة من الاستقبال إلى التسليم، المالية والفوترة الإلكترونية، تطبيق للعملاء، وبوابات للفنيين والموردين.</span></p><a class="more" href="products/garage.html"><span lang="en">Read about Garage</span><span lang="ar">اقرأ عن الورشة</span> <span aria-hidden="true">→</span></a></div>
+    <div class="cmock" aria-hidden="true">
+<div class="mock" aria-label="Bay board, illustrative">
   <div class="bar"><b><span lang="en">Bay board · Riyadh Main</span><span lang="ar">لوحة الخلجان · الرياض الرئيسي</span></b><span class="mono" dir="ltr">04 Sep 2026 · 09:40</span></div>
   <div class="row head"><span><span lang="en">Bay</span><span lang="ar">الخليج</span></span><span><span lang="en">Job card</span><span lang="ar">بطاقة العمل</span></span><span><span lang="en">Plate</span><span lang="ar">اللوحة</span></span><span class="num"><span lang="en">Amount</span><span lang="ar">المبلغ</span></span><span><span lang="en">Status</span><span lang="ar">الحالة</span></span></div>
   <div class="row"><b>1</b><span class="mono" dir="ltr">JC-4F2A</span><span class="mono" dir="ltr">RUH 4821</span><span class="num mono" dir="ltr">SAR 1,245.00</span><span class="st "><span lang="en">In repair</span><span lang="ar">قيد الإصلاح</span></span></div>
@@ -158,17 +103,12 @@
   <div class="row"><b>3</b><span class="mono" dir="ltr">JC-4F2C</span><span class="mono" dir="ltr">RUH 9930</span><span class="num mono" dir="ltr">SAR 2,910.50</span><span class="st o"><span lang="en">Awaiting parts</span><span lang="ar">بانتظار القطع</span></span></div>
   <div class="row"><b>4</b><span class="mono" dir="ltr">JC-4F2D</span><span class="mono" dir="ltr">RUH 2204</span><span class="num mono" dir="ltr">SAR 640.00</span><span class="st "><span lang="en">Delivered</span><span lang="ar">تم التسليم</span></span></div>
   <div class="foot"><span lang="en">Illustrative rows. Figures are examples, not customer data.</span><span lang="ar">صفوف توضيحية. الأرقام أمثلة وليست بيانات عملاء.</span></div>
-</div></div></div>
-  </article>
-  <article class="line-row flip">
-    <div class="line-text">
-      <div class="eyebrow"><span lang="en">Spare Parts · in SALIS AUTO today</span><span lang="ar">قطع الغيار · داخل SALIS AUTO اليوم</span></div>
-      <h3 dir="ltr" translate="no">SALIS Spare Parts</h3>
-      <p><span lang="en">Supplier catalogue, price comparison, purchase orders, and automatic reorder when stock drops below its minimum. Suppliers publish and confirm through their own portal.</span><span lang="ar">كتالوج الموردين، مقارنة الأسعار، أوامر الشراء، وإعادة الطلب تلقائياً عند انخفاض المخزون عن حده. ينشر الموردون ويؤكدون عبر بوابتهم.</span></p>
-      <a class="more" href="products/spare-parts.html"><span lang="en">Read about Spare Parts</span><span lang="ar">اقرأ عن قطع الغيار</span> <span dir="ltr" aria-hidden="true">→</span></a>
-    </div>
-    <div class="line-mock">
-<div class="bezel"><div class="mock" aria-label="Purchase order, illustrative">
+</div></div>
+  </div></article>
+  <article class="card bezel" data-i="1" id="line-parts"><div class="core">
+    <div class="txt"><span class="st in"><span lang="en">In SALIS AUTO today</span><span lang="ar">داخل SALIS AUTO اليوم</span></span><h3 translate="no" dir="ltr">SALIS Spare Parts</h3><p><span lang="en">The supplier network: catalogue, price comparison, purchase orders, automatic reorder below minimum stock, and the supplier portal.</span><span lang="ar">شبكة الموردين: الكتالوج، مقارنة الأسعار، أوامر الشراء، إعادة الطلب تلقائياً عند انخفاض المخزون عن حده، وبوابة الموردين.</span></p><a class="more" href="products/spare-parts.html"><span lang="en">Read about Spare Parts</span><span lang="ar">اقرأ عن قطع الغيار</span> <span aria-hidden="true">→</span></a></div>
+    <div class="cmock" aria-hidden="true">
+<div class="mock" aria-label="Purchase order, illustrative">
   <div class="bar"><b><span lang="en">Purchase order</span><span lang="ar">أمر شراء</span> <span class="mono" dir="ltr">PO-10421</span></b><span class="st o"><span lang="en">Awaiting approval</span><span lang="ar">بانتظار الاعتماد</span></span></div>
   <div class="kv"><span><span lang="en">Supplier</span><span lang="ar">المورّد</span></span><b><span lang="en">Preferred supplier, Riyadh</span><span lang="ar">المورّد المفضل، الرياض</span></b><span><span lang="en">Trigger</span><span lang="ar">السبب</span></span><b><span lang="en">Stock below minimum: 4 of 12</span><span lang="ar">المخزون تحت الحد: ٤ من ١٢</span></b></div>
   <div class="row head"><span><span lang="en">Part</span><span lang="ar">القطعة</span></span><span><span lang="en">Number</span><span lang="ar">الرقم</span></span><span class="num"><span lang="en">Qty</span><span lang="ar">الكمية</span></span><span class="num"><span lang="en">Unit</span><span lang="ar">الوحدة</span></span><span class="num"><span lang="en">Line</span><span lang="ar">الإجمالي</span></span></div>
@@ -176,17 +116,12 @@
   <div class="row"><span><span lang="en">Oil filter</span><span lang="ar">فلتر زيت</span></span><span class="mono" dir="ltr">OF-0090</span><span class="num mono" dir="ltr">24</span><span class="num mono" dir="ltr">SAR 28.50</span><span class="num mono" dir="ltr">SAR 684.00</span></div>
   <div class="row total"><span><span lang="en">Total incl. VAT 15%</span><span lang="ar">الإجمالي شامل الضريبة ١٥٪</span></span><span></span><span></span><span></span><b class="num mono" dir="ltr">SAR 2,120.60</b></div>
   <div class="foot"><span lang="en">Illustrative order. Prices are examples.</span><span lang="ar">أمر توضيحي. الأسعار أمثلة.</span></div>
-</div></div></div>
-  </article>
-  <article class="line-row">
-    <div class="line-text">
-      <div class="eyebrow"><span lang="en">Fleet · in SALIS AUTO today</span><span lang="ar">الأساطيل · داخل SALIS AUTO اليوم</span></div>
-      <h3 dir="ltr" translate="no">SALIS Fleet</h3>
-      <p><span lang="en">Vehicles under contract, SLA tracking, cost per vehicle and utilisation across branches, from the same job cards the workshop already writes.</span><span lang="ar">المركبات تحت العقد، متابعة اتفاقيات مستوى الخدمة، التكلفة لكل مركبة ونسبة الاستخدام عبر الفروع، من بطاقات العمل نفسها التي تكتبها الورشة.</span></p>
-      <a class="more" href="products/fleet.html"><span lang="en">Read about Fleet</span><span lang="ar">اقرأ عن الأساطيل</span> <span dir="ltr" aria-hidden="true">→</span></a>
-    </div>
-    <div class="line-mock">
-<div class="bezel"><div class="mock" aria-label="Fleet utilisation, illustrative">
+</div></div>
+  </div></article>
+  <article class="card bezel" data-i="2" id="line-fleet"><div class="core">
+    <div class="txt"><span class="st in"><span lang="en">In SALIS AUTO today</span><span lang="ar">داخل SALIS AUTO اليوم</span></span><h3 translate="no" dir="ltr">SALIS Fleet</h3><p><span lang="en">Fleet accounts across branches: vehicles under contract, SLA tracking, cost per vehicle and utilisation, computed from the job cards the workshop already writes.</span><span lang="ar">حسابات الأساطيل عبر الفروع: المركبات تحت العقد، متابعة اتفاقيات مستوى الخدمة، التكلفة لكل مركبة ونسبة الاستخدام، محسوبة من بطاقات العمل التي تكتبها الورشة أصلاً.</span></p><a class="more" href="products/fleet.html"><span lang="en">Read about Fleet</span><span lang="ar">اقرأ عن الأساطيل</span> <span aria-hidden="true">→</span></a></div>
+    <div class="cmock" aria-hidden="true">
+<div class="mock" aria-label="Fleet utilisation, illustrative">
   <div class="bar"><b><span lang="en">Fleet account · Contract 2026-14</span><span lang="ar">حساب أسطول · عقد 2026-14</span></b><span class="mono" dir="ltr">31 Aug 2026</span></div>
   <div class="row head"><span><span lang="en">Plate</span><span lang="ar">اللوحة</span></span><span><span lang="en">Branch</span><span lang="ar">الفرع</span></span><span><span lang="en">Utilisation</span><span lang="ar">الاستخدام</span></span><span class="num"><span lang="en">Cost / km</span><span lang="ar">التكلفة / كم</span></span></div>
   <div class="row"><span class="mono" dir="ltr">RUH 7712</span><span><span lang="en">Riyadh Main</span><span lang="ar">الرياض الرئيسي</span></span><span class="util"><i style="width:82%"></i><em dir="ltr">82%</em></span><span class="num mono" dir="ltr">SAR 0.41</span></div>
@@ -194,17 +129,12 @@
   <div class="row"><span class="mono" dir="ltr">JED 5521</span><span><span lang="en">Jeddah</span><span lang="ar">جدة</span></span><span class="util"><i style="width:37%"></i><em dir="ltr">37%</em></span><span class="num mono" dir="ltr">SAR 0.88</span></div>
   <div class="row"><span class="mono" dir="ltr">RUH 0916</span><span><span lang="en">Riyadh Main</span><span lang="ar">الرياض الرئيسي</span></span><span class="util"><i style="width:91%"></i><em dir="ltr">91%</em></span><span class="num mono" dir="ltr">SAR 0.36</span></div>
   <div class="foot"><span lang="en">Utilisation is days in service over days under contract. Illustrative figures.</span><span lang="ar">الاستخدام هو أيام الخدمة على أيام العقد. أرقام توضيحية.</span></div>
-</div></div></div>
-  </article>
-  <article class="line-row flip">
-    <div class="line-text">
-      <div class="eyebrow"><span lang="en">Insurance · planned</span><span lang="ar">التأمين · مخطط</span></div>
-      <h3 dir="ltr" translate="no">SALIS Insurance</h3>
-      <p><span lang="en">Claims and approvals between workshops and insurers on the estimate and invoice records that already exist. Not available yet, and not described as if it were.</span><span lang="ar">المطالبات والموافقات بين الورش وشركات التأمين على سجلات عروض الأسعار والفواتير الموجودة أصلاً. غير متاح بعد، ولا يوصف كأنه متاح.</span></p>
-      <a class="more" href="products/insurance.html"><span lang="en">Read the plan for Insurance</span><span lang="ar">اقرأ خطة التأمين</span> <span dir="ltr" aria-hidden="true">→</span></a>
-    </div>
-    <div class="line-mock">
-<div class="bezel"><div class="mock planned" aria-label="Claim timeline, illustrative and planned">
+</div></div>
+  </div></article>
+  <article class="card bezel" data-i="3" id="line-insurance"><div class="core">
+    <div class="txt"><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><h3 translate="no" dir="ltr">SALIS Insurance</h3><p><span lang="en">Claims and approvals between workshops and insurers on the estimate and invoice records that already exist. Not available yet, and not described as if it were.</span><span lang="ar">المطالبات والموافقات بين الورش وشركات التأمين على سجلات عروض الأسعار والفواتير الموجودة أصلاً. غير متاح بعد، ولا يوصف كأنه متاح.</span></p><a class="more" href="products/insurance.html"><span lang="en">Read the plan for Insurance</span><span lang="ar">اقرأ خطة التأمين</span> <span aria-hidden="true">→</span></a></div>
+    <div class="cmock" aria-hidden="true">
+<div class="mock planned" aria-label="Claim timeline, illustrative and planned">
   <div class="bar"><b><span lang="en">Claim on estimate</span><span lang="ar">مطالبة على عرض سعر</span> <span class="mono" dir="ltr">EST-2041</span></b><span class="st o"><span lang="en">Planned product</span><span lang="ar">منتج مخطط</span></span></div>
   <ol class="timeline">
     <li class="done"><b><span lang="en">Estimate issued</span><span lang="ar">إصدار عرض السعر</span></b><span class="mono" dir="ltr">02 Sep · SAR 4,860.00</span></li>
@@ -214,41 +144,97 @@
     <li><b><span lang="en">Invoice split: insurer and customer</span><span lang="ar">فاتورة مقسّمة: شركة التأمين والعميل</span></b><span><span lang="en">ZATCA e-invoice for each</span><span lang="ar">فاتورة إلكترونية لكل طرف</span></span></li>
   </ol>
   <div class="foot"><span lang="en">This flow is planned, not available. Shown to state the intent.</span><span lang="ar">هذا المسار مخطط وغير متاح. يُعرض لبيان النية.</span></div>
-</div></div></div>
-  </article>
+</div></div>
+  </div></article>
+</div>
+  <div class="note"><span lang="en">Product lines confirmed by the owner on 4 September 2026. Statuses describe what a workshop can sign in to today, not the roadmap.</span><span lang="ar">خطوط المنتجات كما أكدها المالك في ٤ سبتمبر ٢٠٢٦. تصف الحالات ما تستطيع الورشة تسجيل الدخول إليه اليوم، لا خارطة الطريق.</span></div>
 </section>
 
-<section id="why" class="wrap" aria-labelledby="why-h">
-  <div class="sec-head">
-    <div class="eyebrow"><span lang="en">Why one family</span><span lang="ar">لماذا عائلة واحدة</span></div>
-    <h2 id="why-h"><span lang="en">The value is the absence of seams.</span><span lang="ar">القيمة في غياب الفواصل.</span></h2>
-  </div>
-  <div class="why">
-    <div><span class="k"><span lang="en">Saudi-native</span><span lang="ar">سعودية الأصل</span></span><h3><span lang="en">Built for this market, not translated into it.</span><span lang="ar">بُنيت لهذا السوق، لا تُرجمت إليه.</span></h3><p><span lang="en">ZATCA, SAR and Arabic are the assumptions each product starts from. Nothing is bolted on late, so nothing behaves differently in Arabic than in English.</span><span lang="ar">الهيئة والريال والعربية هي الافتراضات التي يبدأ منها كل منتج. لا شيء يُضاف لاحقاً، فلا شيء يتصرف بالعربية بخلاف الإنجليزية.</span></p></div>
-    <div><span class="k"><span lang="en">One backbone</span><span lang="ar">أساس واحد</span></span><h3><span lang="en">Products share a ledger, not an integration.</span><span lang="ar">المنتجات تتشارك دفتراً واحداً، لا تكاملاً.</span></h3><p><span lang="en">An estimate, a purchase order, a fleet contract and a claim are rows in one system. There is nothing to export, reconcile or retype between them.</span><span lang="ar">عرض السعر وأمر الشراء وعقد الأسطول والمطالبة سطور في نظام واحد. لا شيء يُصدَّر أو يُطابَق أو يُعاد إدخاله بينها.</span></p></div>
-    <div><span class="k"><span lang="en">Auditable</span><span lang="ar">قابلة للتدقيق</span></span><h3><span lang="en">Traceability is enforced by the database.</span><span lang="ar">التتبع تفرضه قاعدة البيانات.</span></h3><p><span lang="en">Every mutation writes its audit row in the same transaction. The promise is not in the marketing copy. It is in the schema.</span><span lang="ar">كل تعديل يكتب سطر تدقيقه في المعاملة نفسها. الوعد ليس في نص تسويقي. إنه في بنية البيانات.</span></p></div>
-  </div>
+<section class="wrap" id="backbone" aria-labelledby="bb-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">One backbone</span><span lang="ar">أساس واحد</span></div><h2 id="bb-h"><span lang="en">Four assumptions every product starts from.</span><span lang="ar">أربعة افتراضات يبدأ منها كل منتج.</span></h2><p><span lang="en">Each tab is one assumption and the screen detail it produces.</span><span lang="ar">كل تبويب افتراض واحد وتفصيل الشاشة الذي ينتج عنه.</span></p></div>
+  <div class="tabs" data-tabs><div class="tablist" role="tablist" aria-label="The backbone every product shares"><button class="tab" role="tab" type="button" id="tabs-1-t0" aria-selected="true" aria-controls="tabs-1-p0" tabindex="0"><span lang="en">Arabic first</span><span lang="ar">العربية أولاً</span></button><button class="tab" role="tab" type="button" id="tabs-1-t1" aria-selected="false" aria-controls="tabs-1-p1" tabindex="-1"><span lang="en">ZATCA in the core</span><span lang="ar">الهيئة في النواة</span></button><button class="tab" role="tab" type="button" id="tabs-1-t2" aria-selected="false" aria-controls="tabs-1-p2" tabindex="-1"><span lang="en">SAR to the halala</span><span lang="ar">الريال حتى الهللة</span></button><button class="tab" role="tab" type="button" id="tabs-1-t3" aria-selected="false" aria-controls="tabs-1-p3" tabindex="-1"><span lang="en">One audit row</span><span lang="ar">سطر تدقيق واحد</span></button><span class="ind" aria-hidden="true"></span></div><div class="tabpanel" role="tabpanel" id="tabs-1-p0" aria-labelledby="tabs-1-t0" tabindex="0"><div class="tp"><div><h3><span lang="en">Written for Arabic, rendered right-to-left, English beside it.</span><span lang="ar">تُكتب بالعربية، وتُعرض من اليمين إلى اليسار، والإنجليزية بجانبها.</span></h3><p><span lang="en">Arabic is a first-class rendering, not a translation layer. Copy is written for Arabic; length differences are a layout problem to solve, never a reason to abbreviate. Plates, ids, SKUs and amounts stay Latin and isolated so the bidi algorithm never reorders a digit.</span><span lang="ar">العربية واجهة أصلية لا طبقة ترجمة. يُكتب النص بالعربية، وفروق الطول مشكلة تخطيط تُحل لا سبباً للاختصار. اللوحات والمعرّفات ورموز القطع والمبالغ تبقى لاتينية معزولة حتى لا يعيد خوارزم الاتجاه ترتيب رقم.</span></p></div><div class="bezel">
+<div class="mock" aria-label="Bilingual field, illustrative">
+  <div class="bar"><b><span lang="en">Job card · customer</span><span lang="ar">بطاقة العمل · العميل</span></b><span class="mono" dir="ltr">JC-4F2A</span></div>
+  <div class="kv"><span><span lang="en">Plate</span><span lang="ar">اللوحة</span></span><b class="mono" dir="ltr">RUH 4821</b><span><span lang="en">Status</span><span lang="ar">الحالة</span></span><b><span lang="en">In repair</span><span lang="ar">قيد الإصلاح</span></b><span><span lang="en">Rendered</span><span lang="ar">العرض</span></span><b><span lang="en">Right-to-left, Arabic written first</span><span lang="ar">من اليمين إلى اليسار، العربية أولاً</span></b></div>
+  <div class="foot"><span lang="en">Plates, ids and amounts stay Latin and isolated; everything else is written for Arabic.</span><span lang="ar">اللوحات والمعرّفات والمبالغ تبقى لاتينية معزولة، وكل ما عداها يُكتب بالعربية.</span></div>
+</div></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-1-p1" aria-labelledby="tabs-1-t1" tabindex="0" data-tab-hidden><div class="tp"><div><h3><span lang="en">The e-invoice is generated by the same transaction that posts the sale.</span><span lang="ar">الفاتورة الإلكترونية تولدها المعاملة نفسها التي ترحّل البيع.</span></h3><p><span lang="en">Phase 2 compliance is not a module you switch on. Every issued invoice carries the TLV QR, the hash that links it to the one before, and UBL 2.1 XML. After issue it is immutable; a correction cancels the invoice and issues a new one that references it, on the same chain. Reporting to the Fatoora platform is configured per workshop at deployment.</span><span lang="ar">الامتثال للمرحلة الثانية ليس وحدة تُفعَّل. كل فاتورة صادرة تحمل رمز الاستجابة بصيغة TLV، والتجزئة التي تربطها بالسابقة، وXML بمعيار UBL 2.1. بعد الإصدار تصبح غير قابلة للتعديل، والتصحيح يلغيها ويصدر فاتورة جديدة تشير إليها في السلسلة نفسها. الإبلاغ إلى منصة فاتورة يُهيأ لكل ورشة عند النشر.</span></p></div><div class="bezel">
+<div class="mock" aria-label="E-invoice stub, illustrative">
+  <div class="bar"><b><span lang="en">Tax invoice</span><span lang="ar">فاتورة ضريبية</span> <span class="mono" dir="ltr">INV-88120</span></b><span class="st "><span lang="en">Issued</span><span lang="ar">صادرة</span></span></div>
+  <div class="kv"><span><span lang="en">QR</span><span lang="ar">رمز الاستجابة</span></span><b><span lang="en">TLV: seller, VAT number, timestamp, total, VAT</span><span lang="ar">TLV: البائع، الرقم الضريبي، الوقت، الإجمالي، الضريبة</span></b><span><span lang="en">Hash</span><span lang="ar">التجزئة</span></span><b class="mono" dir="ltr">bf3c…a25e → prev 46f1…8b91</b><span><span lang="en">After issue</span><span lang="ar">بعد الإصدار</span></span><b><span lang="en">Immutable. A correction cancels and reissues.</span><span lang="ar">غير قابلة للتعديل. التصحيح إلغاء وإصدار جديد.</span></b></div>
+  <div class="foot"><span lang="en">Generated by the same transaction that posts the sale.</span><span lang="ar">تولدها المعاملة نفسها التي ترحّل البيع.</span></div>
+</div></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-1-p2" aria-labelledby="tabs-1-t2" tabindex="0" data-tab-hidden><div class="tp"><div><h3><span lang="en">Money is stored as integer halalas. Rounding happens once.</span><span lang="ar">تُخزَّن المبالغ هللات صحيحة. والتقريب يحدث مرة واحدة.</span></h3><p><span lang="en">A line total, a VAT amount and an invoice total are integers until the moment they are shown. Totals reconcile because nothing is rounded twice, and the accountant’s VAT return adds up from the invoice table, not from a spreadsheet beside it.</span><span lang="ar">إجمالي البند ومبلغ الضريبة وإجمالي الفاتورة أعداد صحيحة حتى لحظة العرض. تتطابق المجاميع لأن لا شيء يُقرَّب مرتين، وإقرار الضريبة يُجمع من جدول الفواتير لا من جدول بجانبه.</span></p></div><div class="bezel">
+<div class="mock" aria-label="Halala arithmetic, illustrative">
+  <div class="bar"><b><span lang="en">Estimate total</span><span lang="ar">إجمالي عرض السعر</span></b><span class="mono" dir="ltr">EST-2041</span></div>
+  <div class="row head"><span><span lang="en">Line</span><span lang="ar">البند</span></span><span></span><span></span><span class="num"><span lang="en">Halalas</span><span lang="ar">هللات</span></span><span class="num">SAR</span></div>
+  <div class="row"><span><span lang="en">Front brake pads</span><span lang="ar">تيل فرامل أمامي</span></span><span></span><span></span><span class="num mono" dir="ltr">64000</span><span class="num mono" dir="ltr">640.00</span></div>
+  <div class="row"><span><span lang="en">VAT 15%</span><span lang="ar">الضريبة ١٥٪</span></span><span></span><span></span><span class="num mono" dir="ltr">9600</span><span class="num mono" dir="ltr">96.00</span></div>
+  <div class="row total"><span><span lang="en">Total</span><span lang="ar">الإجمالي</span></span><span></span><span></span><b class="num mono" dir="ltr">73600</b><b class="num mono" dir="ltr">736.00</b></div>
+  <div class="foot"><span lang="en">Stored as integers. Rounding happens once, at the edge, so totals reconcile.</span><span lang="ar">تُخزَّن أعداداً صحيحة. التقريب مرة واحدة عند الحافة، فتتطابق المجاميع.</span></div>
+</div></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-1-p3" aria-labelledby="tabs-1-t3" tabindex="0" data-tab-hidden><div class="tp"><div><h3><span lang="en">Actor, before, after and request id, written in the same transaction as the change.</span><span lang="ar">الفاعل والقيمة قبل وبعد ورقم الطلب، تُكتب في المعاملة نفسها مع التغيير.</span></h3><p><span lang="en">Traceability is enforced by the database, not promised by the copy. Every mutation across every product line writes its audit row in the transaction that made it, so “who changed this” always has an answer and a request id to quote.</span><span lang="ar">التتبع تفرضه قاعدة البيانات لا يعِد به النص. كل تعديل عبر كل خط منتج يكتب سطر تدقيقه في المعاملة نفسها التي أحدثته، فلسؤال «من غيّر هذا» جواب دائماً ورقم طلب يُقتبس.</span></p></div><div class="bezel">
+<div class="mock" aria-label="Audit row, illustrative">
+  <div class="bar"><b><span lang="en">Audit trail</span><span lang="ar">سجل التدقيق</span></b><span class="mono" dir="ltr">req 9c2e-41a7</span></div>
+  <div class="kv"><span><span lang="en">Actor</span><span lang="ar">الفاعل</span></span><b><span lang="en">Service advisor · Riyadh Main</span><span lang="ar">مستشار الخدمة · الرياض الرئيسي</span></b><span><span lang="en">Change</span><span lang="ar">التغيير</span></span><b><span lang="en">Estimate line 3, quantity</span><span lang="ar">بند عرض السعر ٣، الكمية</span></b><span><span lang="en">Before</span><span lang="ar">قبل</span></span><b class="mono" dir="ltr">2</b><span><span lang="en">After</span><span lang="ar">بعد</span></span><b class="mono" dir="ltr">4</b></div>
+  <div class="foot"><span lang="en">Written in the same transaction as the change. Never edited, never deleted.</span><span lang="ar">يُكتب في المعاملة نفسها مع التغيير. لا يُعدَّل ولا يُحذف.</span></div>
+</div></div></div></div></div>
 </section>
 
+<section class="band" id="why" aria-labelledby="why-h"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Why one family</span><span lang="ar">لماذا عائلة واحدة</span></div><h2 id="why-h"><span lang="en">The value is the absence of seams.</span><span lang="ar">القيمة في غياب الفواصل.</span></h2></div>
+  
+<div class="deck">
+  <div class="dk bezel"><div class="core"><span class="k"><span lang="en">Saudi-native</span><span lang="ar">سعودية الأصل</span></span><h3><span lang="en">Built for this market, not translated into it.</span><span lang="ar">بُنيت لهذا السوق، لا تُرجمت إليه.</span></h3><p><span lang="en">ZATCA, SAR and Arabic are the assumptions each product starts from. Nothing is bolted on late, so nothing behaves differently in Arabic than in English.</span><span lang="ar">الهيئة والريال والعربية هي الافتراضات التي يبدأ منها كل منتج. لا شيء يُضاف متأخراً، فلا شيء يتصرف بالعربية بخلاف الإنجليزية.</span></p></div></div>
+  <div class="dk bezel"><div class="core"><span class="k"><span lang="en">One backbone</span><span lang="ar">أساس واحد</span></span><h3><span lang="en">Products share a ledger, not an integration.</span><span lang="ar">المنتجات تتشارك دفتراً واحداً، لا تكاملاً.</span></h3><p><span lang="en">An estimate, a purchase order, a fleet contract and a claim are rows in one system. There is nothing to export, reconcile or retype between them.</span><span lang="ar">عرض السعر وأمر الشراء وعقد الأسطول والمطالبة صفوف في نظام واحد. لا شيء يُصدَّر أو يُطابَق أو يُعاد إدخاله بينها.</span></p></div></div>
+  <div class="dk bezel"><div class="core"><span class="k"><span lang="en">Auditable</span><span lang="ar">قابلة للتدقيق</span></span><h3><span lang="en">Traceability is enforced by the database.</span><span lang="ar">التتبع تفرضه قاعدة البيانات.</span></h3><p><span lang="en">Every mutation writes its audit row in the same transaction. The promise is not in the marketing copy. It is in the schema.</span><span lang="ar">كل تعديل يكتب سطر تدقيقه في المعاملة نفسها. الوعد ليس في نص التسويق. إنه في المخطط.</span></p></div></div>
+</div>
+</div></section>
 
-<section id="proof" class="proof" aria-labelledby="proof-h">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow bright"><span lang="en">Results from SALIS AUTO deployments</span><span lang="ar">نتائج من تشغيل SALIS AUTO</span></div>
-      <h2 id="proof-h"><span lang="en">Numbers carry their baseline or they do not appear.</span><span lang="ar">الأرقام تحمل أساس قياسها أو لا تظهر.</span></h2>
-    </div>
-    <div class="grid">
-      <div class="cell"><div class="pair" dir="ltr"><span class="from">48 h</span><span class="to">4 h</span></div><div class="what"><span lang="en">Estimate approval</span><span lang="ar">اعتماد عرض السعر</span></div><div class="base"><span lang="en">Baseline: paper estimates signed at the counter.</span><span lang="ar">الأساس: عروض أسعار ورقية تُوقَّع عند الكاونتر.</span></div></div>
-      <div class="cell"><div class="pair" dir="ltr"><span class="from">15 min</span><span class="to">2 min</span></div><div class="what"><span lang="en">Invoice at the counter</span><span lang="ar">الفاتورة عند الكاونتر</span></div><div class="base"><span lang="en">Baseline: handwritten invoice copied to a spreadsheet at day’s end.</span><span lang="ar">الأساس: فاتورة بخط اليد تُنسخ إلى جدول في نهاية اليوم.</span></div></div>
-      <div class="cell"><div class="pair" dir="ltr"><span class="to">+25%</span></div><div class="what"><span lang="en">Workshop throughput</span><span lang="ar">إنتاجية الورشة</span></div><div class="base"><span lang="en">Measured across deployments against each workshop’s prior twelve months.</span><span lang="ar">مقاسة عبر عمليات التشغيل مقارنة بالاثني عشر شهراً السابقة لكل ورشة.</span></div></div>
-    </div>
-  </div>
+<section class="wrap" id="roles" aria-labelledby="roles-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Who it is for</span><span lang="ar">لمن هو</span></div><h2 id="roles-h"><span lang="en">Judged on whether it survives the floor.</span><span lang="ar">يُحكم عليه بما إذا كان يصمد على أرض الورشة.</span></h2><p><span lang="en">Pick a role. Each line says what that person gets from it, and whether it ships today.</span><span lang="ar">اختر دوراً. كل خط يقول ما الذي يحصل عليه هذا الشخص منه، وهل هو متاح اليوم.</span></p></div>
+  <div class="tabs" data-tabs><div class="tablist" role="tablist" aria-label="Who it is for, by role"><button class="tab" role="tab" type="button" id="tabs-2-t0" aria-selected="true" aria-controls="tabs-2-p0" tabindex="0"><span lang="en">Owner</span><span lang="ar">المالك</span></button><button class="tab" role="tab" type="button" id="tabs-2-t1" aria-selected="false" aria-controls="tabs-2-p1" tabindex="-1"><span lang="en">Service advisor</span><span lang="ar">مستشار الخدمة</span></button><button class="tab" role="tab" type="button" id="tabs-2-t2" aria-selected="false" aria-controls="tabs-2-p2" tabindex="-1"><span lang="en">Technician</span><span lang="ar">الفني</span></button><button class="tab" role="tab" type="button" id="tabs-2-t3" aria-selected="false" aria-controls="tabs-2-p3" tabindex="-1"><span lang="en">Accountant</span><span lang="ar">المحاسب</span></button><button class="tab" role="tab" type="button" id="tabs-2-t4" aria-selected="false" aria-controls="tabs-2-p4" tabindex="-1"><span lang="en">Fleet manager</span><span lang="ar">مدير الأسطول</span></button><span class="ind" aria-hidden="true"></span></div><div class="tabpanel" role="tabpanel" id="tabs-2-p0" aria-labelledby="tabs-2-t0" tabindex="0"><div class="rg"><div class="rgi"><b dir="ltr" translate="no">SALIS Garage</b><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Revenue, VAT and stock reconcile without a bookkeeper’s rework. Every branch on one bay board.</span><span lang="ar">الإيراد والضريبة والمخزون تتطابق دون إعادة عمل من المحاسب. كل الفروع على لوحة خلجان واحدة.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Spare Parts</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Stock that reorders itself below minimum, with a person still approving within a ceiling.</span><span lang="ar">مخزون يعيد طلب نفسه تحت الحد، ومع ذلك يعتمده شخص ضمن سقف.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Fleet</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Contract revenue tracked against SLA, so a breach is visible before the customer says so.</span><span lang="ar">إيراد العقد يُتابع مقابل اتفاقية مستوى الخدمة، فيُرى الإخلال قبل أن يقوله العميل.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Insurance</b><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Approval status on the bay board, not in an email thread. Planned.</span><span lang="ar">حالة الموافقة على لوحة الخلجان لا في سلسلة بريد. مخطط.</span></p></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-2-p1" aria-labelledby="tabs-2-t1" tabindex="0" data-tab-hidden><div class="rg"><div class="rgi"><b dir="ltr" translate="no">SALIS Garage</b><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Speed at the counter, and an estimate the customer signs from their phone with an SMS code.</span><span lang="ar">سرعة عند الكاونتر، وعرض سعر يوقّعه العميل من هاتفه برمز رسالة نصية.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Spare Parts</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Parts availability and price seen while the estimate is being built, not after.</span><span lang="ar">توفر القطع وسعرها يُرى أثناء إعداد عرض السعر لا بعده.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Fleet</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">A fleet vehicle checks in with its contract terms already applied.</span><span lang="ar">تُستقبل مركبة الأسطول وشروط عقدها مطبقة سلفاً.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Insurance</b><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">The insurer sees the same estimate the customer signed. Planned.</span><span lang="ar">ترى شركة التأمين عرض السعر نفسه الذي وقّعه العميل. مخطط.</span></p></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-2-p2" aria-labelledby="tabs-2-t2" tabindex="0" data-tab-hidden><div class="rg"><div class="rgi"><b dir="ltr" translate="no">SALIS Garage</b><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Short instructions on a phone, in Arabic, with one hand. Time clock and job updates from the bay.</span><span lang="ar">تعليمات قصيرة على الهاتف، بالعربية، بيد واحدة. تسجيل الوقت وتحديث العمل من الخليج.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Spare Parts</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Parts requested from the job card; the part arrives against that card, not a WhatsApp message.</span><span lang="ar">تُطلب القطع من بطاقة العمل، وتصل مقابل تلك البطاقة لا مقابل رسالة واتساب.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Fleet</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Preventive maintenance jobs land on the bay board like any other job.</span><span lang="ar">أعمال الصيانة الوقائية تظهر على لوحة الخلجان كأي عمل آخر.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Insurance</b><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Repair starts on approval, and the approved lines are the work order. Planned.</span><span lang="ar">يبدأ الإصلاح عند الموافقة، والبنود المعتمدة هي أمر العمل. مخطط.</span></p></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-2-p3" aria-labelledby="tabs-2-t3" tabindex="0" data-tab-hidden><div class="rg"><div class="rgi"><b dir="ltr" translate="no">SALIS Garage</b><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">ZATCA correctness, journals from invoices, and an audit trail that answers who changed this.</span><span lang="ar">صحة الامتثال للهيئة، وقيود من الفواتير، وسجل تدقيق يجيب عن سؤال من غيّر هذا.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Spare Parts</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Stock value and cost of parts sold reconcile to the ledger by construction.</span><span lang="ar">قيمة المخزون وتكلفة القطع المباعة تتطابق مع الدفتر بحكم البناء.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Fleet</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">One consolidated invoice per contract period, itemised per vehicle, ZATCA-compliant.</span><span lang="ar">فاتورة موحدة لكل فترة عقد، مفصّلة لكل مركبة، متوافقة مع الهيئة.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Insurance</b><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Two invoices, two payers, one job card, one audit trail. Planned.</span><span lang="ar">فاتورتان، ودافعان، وبطاقة عمل واحدة، وسجل تدقيق واحد. مخطط.</span></p></div></div></div><div class="tabpanel" role="tabpanel" id="tabs-2-p4" aria-labelledby="tabs-2-t4" tabindex="0" data-tab-hidden><div class="rg"><div class="rgi"><b dir="ltr" translate="no">SALIS Garage</b><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Every fleet vehicle’s job history on the same job cards the workshop writes.</span><span lang="ar">سجل أعمال كل مركبة في الأسطول على بطاقات العمل نفسها التي تكتبها الورشة.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Spare Parts</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Parts for contract vehicles priced by the contract, visible on the order.</span><span lang="ar">قطع مركبات العقد مسعّرة بحسب العقد، وظاهرة على الطلب.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Fleet</b><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Utilisation and cost per vehicle across branches, without a spreadsheet export.</span><span lang="ar">الاستخدام والتكلفة لكل مركبة عبر الفروع، دون تصدير إلى جدول.</span></p></div><div class="rgi"><b dir="ltr" translate="no">SALIS Insurance</b><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Fleet claims under one contract, on the same records. Planned.</span><span lang="ar">مطالبات الأسطول تحت عقد واحد، على السجلات نفسها. مخطط.</span></p></div></div></div></div>
 </section>
 
-<section class="wrap cta-end" aria-label="Next step">
-  <h2><span lang="en">See the shipping product on your own numbers.</span><span lang="ar">شاهد المنتج المتاح على أرقامك.</span></h2>
-  <p><span lang="en">A 20-minute SALIS AUTO demo, in Arabic or English, on a job card from your floor.</span><span lang="ar">عرض SALIS AUTO لعشرين دقيقة، بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.</span></p>
-  <div class="ctas"><a class="btn" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="contact.html"><span lang="en">Contact SALISCO</span><span lang="ar">تواصل مع ساليسكو</span></a></div>
+<section class="wrap" id="proof" aria-labelledby="proof-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Results from SALIS AUTO deployments</span><span lang="ar">نتائج من تشغيل SALIS AUTO</span></div><h2 id="proof-h"><span lang="en">Numbers carry their baseline or they do not appear.</span><span lang="ar">الأرقام تحمل أساس قياسها أو لا تظهر.</span></h2></div>
+  
+<div class="pgrid">
+  <div class="pc bezel"><div class="core"><div class="pair" dir="ltr"><span class="from">48 h</span><span class="to">4 h</span></div><div class="what"><span lang="en">Estimate approval</span><span lang="ar">اعتماد عرض السعر</span></div><div class="base"><span lang="en">Baseline: paper estimates signed at the counter.</span><span lang="ar">الأساس: عروض أسعار ورقية تُوقَّع عند الكاونتر.</span></div></div></div>
+  <div class="pc bezel"><div class="core"><div class="pair" dir="ltr"><span class="from">15 min</span><span class="to">2 min</span></div><div class="what"><span lang="en">Invoice at the counter</span><span lang="ar">الفاتورة عند الكاونتر</span></div><div class="base"><span lang="en">Baseline: handwritten invoice copied to a spreadsheet at day’s end.</span><span lang="ar">الأساس: فاتورة بخط اليد تُنسخ إلى جدول في نهاية اليوم.</span></div></div></div>
+  <div class="pc bezel"><div class="core"><div class="pair" dir="ltr"><span class="to">+25%</span></div><div class="what"><span lang="en">Workshop throughput</span><span lang="ar">إنتاجية الورشة</span></div><div class="base"><span lang="en">Measured across deployments against each workshop’s prior twelve months.</span><span lang="ar">مقاسة عبر عمليات التشغيل مقارنة بالاثني عشر شهراً السابقة لكل ورشة.</span></div></div></div>
+</div>
+</section>
+
+<section class="wrap" id="roadmap" aria-labelledby="road-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Status, line by line</span><span lang="ar">الحالة سطراً بسطر</span></div><h2 id="road-h"><span lang="en">What ships, what runs inside, what is planned.</span><span lang="ar">ما هو متاح، وما يعمل داخله، وما هو مخطط.</span></h2><p><span lang="en">No dates are invented on this page. A line moves when it moves, and this list changes on the day it does.</span><span lang="ar">لا تُخترع تواريخ في هذه الصفحة. ينتقل الخط حين ينتقل، وتتغير هذه القائمة في اليوم نفسه.</span></p></div>
+  
+<ol class="road">
+  <li><a href="products/garage.html" dir="ltr" translate="no">SALIS Garage</a><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Workshops sign in today, as SALIS AUTO. Releases are announced on the SALIS AUTO accounts, with release notes.</span><span lang="ar">تسجّل الورش الدخول اليوم باسم SALIS AUTO. تُعلن الإصدارات على حسابات SALIS AUTO مع ملاحظات الإصدار.</span></p></li>
+  <li><a href="products/spare-parts.html" dir="ltr" translate="no">SALIS Spare Parts</a><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Available to every SALIS AUTO workshop. Access for buyers outside the workshop is planned, with no date promised.</span><span lang="ar">متاح لكل ورشة على SALIS AUTO. الوصول لمشترين من خارج الورشة مخطط، دون وعد بتاريخ.</span></p></li>
+  <li><a href="products/fleet.html" dir="ltr" translate="no">SALIS Fleet</a><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Available inside SALIS AUTO. A standalone product for fleet managers who do not run a workshop is planned, with no date promised.</span><span lang="ar">متاح داخل SALIS AUTO. منتج مستقل لمديري الأساطيل الذين لا يديرون ورشة مخطط، دون وعد بتاريخ.</span></p></li>
+  <li><a href="products/insurance.html" dir="ltr" translate="no">SALIS Insurance</a><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Not available. Described here so the family is complete and honest. Insurers and workshops who want to shape it are the first people we want to hear from.</span><span lang="ar">غير متاح. يُذكر هنا لتكون العائلة كاملة وصادقة. شركات التأمين والورش الراغبة في تشكيله أول من نريد سماعهم.</span></p></li>
+</ol>
+</section>
+
+<section class="wrap" id="faq" aria-labelledby="faq-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Questions</span><span lang="ar">أسئلة</span></div><h2 id="faq-h"><span lang="en">Plain answers.</span><span lang="ar">إجابات واضحة.</span></h2></div>
+  <div class="faq"><details class="bezel"><summary><span><span lang="en">Is SALISCO a product or a company?</span><span lang="ar">هل ساليسكو منتج أم شركة؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">A company in Riyadh with one engineering backbone and four product lines. The product a workshop uses today is SALIS AUTO, which is the Garage line.</span><span lang="ar">شركة في الرياض بأساس هندسي واحد وأربعة خطوط منتجات. المنتج الذي تستخدمه الورشة اليوم هو SALIS AUTO، وهو خط الورشة.</span></p></div></details><details class="bezel"><summary><span><span lang="en">Which lines can I sign in to today?</span><span lang="ar">أي الخطوط يمكنني تسجيل الدخول إليها اليوم؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">Garage, as SALIS AUTO. Spare Parts and Fleet run inside it, so a SALIS AUTO workshop already has them. Insurance is planned and not available.</span><span lang="ar">الورشة، باسم SALIS AUTO. قطع الغيار والأساطيل تعمل داخله، فأي ورشة على SALIS AUTO تملكهما. التأمين مخطط وغير متاح.</span></p></div></details><details class="bezel"><summary><span><span lang="en">Do the lines share data, or integrate?</span><span lang="ar">هل تتشارك الخطوط البيانات أم تتكامل؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">They share one ledger. An estimate, a purchase order, a fleet contract and a claim are rows in one system, and every change writes its audit row in the same transaction.</span><span lang="ar">تتشارك دفتراً واحداً. عرض السعر وأمر الشراء وعقد الأسطول والمطالبة سطور في نظام واحد، وكل تغيير يكتب سطر تدقيقه في المعاملة نفسها.</span></p></div></details><details class="bezel"><summary><span><span lang="en">Where do the numbers on this page come from?</span><span lang="ar">من أين تأتي الأرقام في هذه الصفحة؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">From SALIS AUTO deployments, each quoted with its baseline. A number without a baseline does not appear here.</span><span lang="ar">من عمليات تشغيل SALIS AUTO، وكل رقم مذكور مع أساس قياسه. الرقم بلا أساس لا يظهر هنا.</span></p></div></details><details class="bezel"><summary><span><span lang="en">Does it work in Arabic?</span><span lang="ar">هل يعمل بالعربية؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">Arabic is written first and rendered right-to-left, with English beside it. Compliance terms keep their official Arabic forms.</span><span lang="ar">العربية تُكتب أولاً وتُعرض من اليمين إلى اليسار، والإنجليزية بجانبها. مصطلحات الامتثال تحتفظ بصيغها العربية الرسمية.</span></p></div></details><details class="bezel"><summary><span><span lang="en">How do I see it?</span><span lang="ar">كيف أراه؟</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><span lang="en">Book a 20-minute SALIS AUTO demo, in Arabic or English, on a job card from your own floor. For the company, insurers and partnerships, write to SALISCO.</span><span lang="ar">احجز عرض SALIS AUTO لعشرين دقيقة، بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك. لشؤون الشركة وشركات التأمين والشراكات، راسل ساليسكو.</span></p></div></details></div>
+</section>
+
+<section class="wrap" id="accounts" aria-labelledby="acc-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Accounts</span><span lang="ar">الحسابات</span></div><h2 id="acc-h"><span lang="en">SALISCO on four platforms, one handle.</span><span lang="ar">ساليسكو على أربع منصات بمعرّف واحد.</span></h2></div>
+  
+<div class="acct">
+  <a href="https://www.linkedin.com/company/salisco"><b>LinkedIn</b><span class="mono" dir="ltr">linkedin.com/company/salisco</span><span><span lang="en">Releases across the family, hiring, results.</span><span lang="ar">إصدارات العائلة، التوظيف، النتائج.</span></span></a>
+  <a href="https://x.com/salisco"><b>X</b><span class="mono" dir="ltr">@salisco</span><span><span lang="en">Short company news.</span><span lang="ar">أخبار الشركة القصيرة.</span></span></a>
+  <a href="https://www.instagram.com/salisco"><b>Instagram</b><span class="mono" dir="ltr">@salisco</span><span><span lang="en">The family in pictures, Riyadh.</span><span lang="ar">العائلة بالصور، الرياض.</span></span></a>
+  <a href="https://www.youtube.com/@salisco"><b>YouTube</b><span class="mono" dir="ltr">youtube.com/@salisco</span><span><span lang="en">Engineering talks and recorded webinars.</span><span lang="ar">أحاديث هندسية وندوات مسجلة.</span></span></a>
+</div>
+<p class="fine"><span lang="en">The handle must be reserved on every platform before these go live. Product detail stays on each product’s own accounts.</span><span lang="ar">يجب حجز المعرّف على كل منصة قبل الإطلاق. تفاصيل المنتج تبقى على حسابات كل منتج.</span></p>
+</section>
+
+<section class="wrap cta-end" id="contact" aria-labelledby="cta-h">
+  <h2 id="cta-h"><span lang="en">See it on a job card from your own floor.</span><span lang="ar">شاهده على بطاقة عمل من ورشتك.</span></h2>
+  <p><span lang="en">A 20-minute SALIS AUTO demo, in Arabic or English. For the company, write to SALISCO.</span><span lang="ar">عرض SALIS AUTO لعشرين دقيقة، بالعربية أو الإنجليزية. لشؤون الشركة راسل ساليسكو.</span></p>
+  <div class="ctas"><a class="btn" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="contact.html"><span lang="en">Contact SALISCO</span><span lang="ar">تواصل مع ساليسكو</span><span class="arr" aria-hidden="true">→</span></a></div>
 </section>
 </main>
 <footer>
@@ -282,7 +268,7 @@
       <ul>
         <li><a href="mailto:info@salisco.com" dir="ltr">info@salisco.com</a><span class="prop"><span lang="en">proposed</span><span lang="ar">مقترح</span></span></li>
         <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
-        <li><a href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
         <li><a href="https://salisauto.app" dir="ltr">salisauto.app</a></li>
       </ul>
     </div>

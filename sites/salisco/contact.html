@@ -29,25 +29,6 @@
 <script>document.documentElement.classList.add('js');document.documentElement.dataset.titleAr="تواصل مع ساليسكو";document.documentElement.dataset.titleEn="Contact SALISCO";</script>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="trace" viewBox="0 0 400 200">
-    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" class="draw">
-      <path d="M22 160 H118 L160 118 H262" stroke="#0BB3FF"/>
-      <path d="M62 44 H140 L182 86 H300 L342 44" stroke="#0A5ED7"/>
-      <path d="M204 176 H318 L362 132" stroke="#F97316"/>
-      <path d="M22 100 H84" stroke="#0BB3FF"/>
-    </g>
-    <g class="dots">
-      <circle cx="22" cy="160" r="10" fill="#0BB3FF"/>
-      <circle cx="262" cy="118" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-      <circle cx="62" cy="44" r="10" fill="#F97316"/>
-      <circle cx="342" cy="44" r="10" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="7"/>
-      <circle cx="362" cy="132" r="10" fill="#F97316"/>
-      <circle cx="204" cy="176" r="10" fill="#0B1F3B" stroke="#F97316" stroke-width="7"/>
-      <circle cx="84" cy="100" r="10" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="7"/>
-    </g>
-  </symbol>
-</svg>
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
 <header id="site-header">
   <div class="wrap">
@@ -69,7 +50,8 @@
     </nav>
     <div class="hdr-actions">
       <button class="lang" type="button" id="langToggle" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar" dir="ltr">English</span></button>
-      <a class="btn small" href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span></a>
+      <a class="signin" href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
+      <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">→</span></a>
       <button class="burger" type="button" id="menuToggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -80,11 +62,17 @@
     <a href="products/insurance.html" dir="ltr">SALIS Insurance</a>
     <a href="about.html"><span lang="en">About</span><span lang="ar">عن ساليسكو</span></a>
     <a href="contact.html"><span lang="en">Contact</span><span lang="ar">تواصل</span></a>
+    <a href="https://app.salisauto.app/login"><span lang="en">Sign in</span><span lang="ar">تسجيل الدخول</span></a>
   </div>
 </header>
 <main id="main">
-<section class="phero" aria-labelledby="ch">
-  <svg class="trace anim" viewBox="0 0 400 200" style="width:900px;inset-inline-end:-320px;top:-200px"><use href="#trace"/></svg>
+<section class="field phero" aria-labelledby="ch">
+<svg class="field-trace" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <path d="M-20 470 H240 L330 380 H620 L700 300 H1000" stroke="#0BB3FF"/>
+  <path d="M120 90 H380 L470 180 H760 L850 90 H1240" stroke="#0A5ED7"/>
+  <path d="M520 560 H820 L920 460 H1240" stroke="#F97316"/>
+  <circle cx="620" cy="380" r="12" fill="#0BB3FF"/><circle cx="760" cy="180" r="12" fill="#0B1F3B" stroke="#0A5ED7" stroke-width="6"/><circle cx="920" cy="460" r="12" fill="#F97316"/><circle cx="240" cy="470" r="12" fill="#0B1F3B" stroke="#0BB3FF" stroke-width="6"/>
+</svg>
   <div class="wrap">
     <div class="eyebrow"><span lang="en">Contact</span><span lang="ar">تواصل</span></div>
     <h1 id="ch"><span lang="en">Write, or book the demo.</span><span lang="ar">راسلنا، أو احجز العرض.</span></h1>
@@ -93,11 +81,11 @@
 </section>
 <section class="wrap" aria-label="Contact channels">
   <div class="channels">
-    <a class="channel" href="mailto:info@salisco.com"><span class="k"><span lang="en">Email</span><span lang="ar">البريد</span></span><b dir="ltr">info@salisco.com</b><span><span lang="en">Company matters, partnerships, press, the insurance line.</span><span lang="ar">شؤون الشركة، الشراكات، الإعلام، خط التأمين.</span><span class="prop"><span lang="en">address proposed</span><span lang="ar">العنوان مقترح</span></span></span></a>
-    <a class="channel" href="https://salisauto.app/public-portal/book-demo"><span class="k"><span lang="en">Demo</span><span lang="ar">العرض التوضيحي</span></span><b><span lang="en">Book a 20-minute SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO لعشرين دقيقة</span></b><span><span lang="en">In Arabic or English, on a job card from your floor.</span><span lang="ar">بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.</span></span></a>
-    <a class="channel" href="mailto:info@salisauto.app"><span class="k"><span lang="en">Product support</span><span lang="ar">دعم المنتج</span></span><b dir="ltr">info@salisauto.app</b><span><span lang="en">Existing SALIS AUTO workshops: support lives with the product.</span><span lang="ar">ورش SALIS AUTO الحالية: الدعم مع المنتج.</span></span></a>
+    <a class="channel bezel" href="mailto:info@salisco.com"><span class="core"><span class="k"><span lang="en">Email</span><span lang="ar">البريد</span></span><b dir="ltr">info@salisco.com</b><span><span lang="en">Company matters, partnerships, press, the insurance line.</span><span lang="ar">شؤون الشركة، الشراكات، الإعلام، خط التأمين.</span><span class="prop"><span lang="en">address proposed</span><span lang="ar">العنوان مقترح</span></span></span></span></a>
+    <a class="channel bezel" href="https://app.salisauto.app/public-portal/book-demo"><span class="core"><span class="k"><span lang="en">Demo</span><span lang="ar">العرض التوضيحي</span></span><b><span lang="en">Book a 20-minute SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO لعشرين دقيقة</span></b><span><span lang="en">In Arabic or English, on a job card from your floor.</span><span lang="ar">بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.</span></span></span></a>
+    <a class="channel bezel" href="mailto:info@salisauto.app"><span class="core"><span class="k"><span lang="en">Product support</span><span lang="ar">دعم المنتج</span></span><b dir="ltr">info@salisauto.app</b><span><span lang="en">Existing SALIS AUTO workshops: support lives with the product.</span><span lang="ar">ورش SALIS AUTO الحالية: الدعم مع المنتج.</span></span></span></a>
   </div>
-  <div class="sec-head" style="margin-top:56px"><div class="eyebrow"><span lang="en">Accounts</span><span lang="ar">الحسابات</span></div><h2><span lang="en">SALISCO on four platforms, one handle.</span><span lang="ar">ساليسكو على أربع منصات بمعرّف واحد.</span></h2><p><span lang="en">SALISCO speaks as the company: releases across the family, hiring, results. Product detail stays on each product’s own accounts. The handle must be reserved on every platform before these go live.</span><span lang="ar">ساليسكو تتحدث بصفة الشركة: الإصدارات عبر العائلة، والتوظيف، والنتائج. تفاصيل المنتج تبقى على حسابات كل منتج. يجب حجز المعرّف على كل منصة قبل الإطلاق.</span></p></div>
+  <div class="sec-head" style="margin-top:72px"><div class="eyebrow"><span lang="en">Accounts</span><span lang="ar">الحسابات</span></div><h2><span lang="en">SALISCO on four platforms, one handle.</span><span lang="ar">ساليسكو على أربع منصات بمعرّف واحد.</span></h2><p><span lang="en">SALISCO speaks as the company: releases across the family, hiring, results. Product detail stays on each product’s own accounts. The handle must be reserved on every platform before these go live.</span><span lang="ar">ساليسكو تتحدث بصفة الشركة: الإصدارات عبر العائلة، والتوظيف، والنتائج. تفاصيل المنتج تبقى على حسابات كل منتج. يجب حجز المعرّف على كل منصة قبل الإطلاق.</span></p></div>
   <div class="tablewrap">
     <table>
       <thead><tr><th><span lang="en">Platform</span><span lang="ar">المنصة</span></th><th><span lang="en">Handle</span><span lang="ar">المعرّف</span></th><th><span lang="en">Bio, English</span><span lang="ar">النبذة بالإنجليزية</span></th><th><span lang="en">Bio, Arabic</span><span lang="ar">النبذة بالعربية</span></th></tr></thead>
@@ -109,6 +97,16 @@
       </tbody>
     </table>
   </div>
+</section>
+<section class="wrap" aria-labelledby="road3-h">
+  <div class="sec-head"><div class="eyebrow"><span lang="en">Before you write</span><span lang="ar">قبل أن تراسل</span></div><h2 id="road3-h"><span lang="en">Where each line stands today.</span><span lang="ar">أين يقف كل خط اليوم.</span></h2></div>
+  
+<ol class="road">
+  <li><a href="products/garage.html" dir="ltr" translate="no">SALIS Garage</a><span class="st live"><span lang="en">Shipping</span><span lang="ar">متاح</span></span><p><span lang="en">Workshops sign in today, as SALIS AUTO. Releases are announced on the SALIS AUTO accounts, with release notes.</span><span lang="ar">تسجّل الورش الدخول اليوم باسم SALIS AUTO. تُعلن الإصدارات على حسابات SALIS AUTO مع ملاحظات الإصدار.</span></p></li>
+  <li><a href="products/spare-parts.html" dir="ltr" translate="no">SALIS Spare Parts</a><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Available to every SALIS AUTO workshop. Access for buyers outside the workshop is planned, with no date promised.</span><span lang="ar">متاح لكل ورشة على SALIS AUTO. الوصول لمشترين من خارج الورشة مخطط، دون وعد بتاريخ.</span></p></li>
+  <li><a href="products/fleet.html" dir="ltr" translate="no">SALIS Fleet</a><span class="st in"><span lang="en">In SALIS AUTO</span><span lang="ar">داخل SALIS AUTO</span></span><p><span lang="en">Available inside SALIS AUTO. A standalone product for fleet managers who do not run a workshop is planned, with no date promised.</span><span lang="ar">متاح داخل SALIS AUTO. منتج مستقل لمديري الأساطيل الذين لا يديرون ورشة مخطط، دون وعد بتاريخ.</span></p></li>
+  <li><a href="products/insurance.html" dir="ltr" translate="no">SALIS Insurance</a><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span><p><span lang="en">Not available. Described here so the family is complete and honest. Insurers and workshops who want to shape it are the first people we want to hear from.</span><span lang="ar">غير متاح. يُذكر هنا لتكون العائلة كاملة وصادقة. شركات التأمين والورش الراغبة في تشكيله أول من نريد سماعهم.</span></p></li>
+</ol>
 </section>
 </main>
 <footer>
@@ -142,7 +140,7 @@
       <ul>
         <li><a href="mailto:info@salisco.com" dir="ltr">info@salisco.com</a><span class="prop"><span lang="en">proposed</span><span lang="ar">مقترح</span></span></li>
         <li><a href="https://salisco.com" dir="ltr">salisco.com</a></li>
-        <li><a href="https://salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
+        <li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li>
         <li><a href="https://salisauto.app" dir="ltr">salisauto.app</a></li>
       </ul>
     </div>
