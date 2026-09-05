@@ -204,7 +204,7 @@ export function PublicLanding() {
       },
       {
         question: t('Can I try it before I commit?'),
-        answer: t('Yes. Book a 20-minute demo on your own workshop\'s numbers, then run one branch on the Starter plan at no charge. No card is needed.'),
+        answer: t('Yes. Book a 20-minute demo on your own workshop\'s numbers. Plans are agreed with sales after the demo, and there is no card to enter.'),
       },
     ],
     [t]
