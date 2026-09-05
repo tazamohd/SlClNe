@@ -27,3 +27,4 @@ app/vite.config.d.ts
 .claude/proven-config.json
 .claude/.proven-config-version
 SlClNe-plan/
+.playwright-cli/

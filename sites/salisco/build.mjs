@@ -32,6 +32,8 @@ const PAGES = [
   { path: 'about.html', key: 'about', title: ['About SALISCO', 'عن ساليسكو'],
     desc: ['What SALISCO is, the four assumptions every product starts from, and where it is built.',
            'ما هي ساليسكو، الافتراضات الأربعة التي يبدأ منها كل منتج، وأين تُبنى.'] },
+  { path: '404.html', key: 'lost', noindex: true, title: ['Page not found', 'الصفحة غير موجودة'],
+    desc: ['That address does not exist on salisco.com.', 'هذا العنوان غير موجود على salisco.com.'] },
   { path: 'contact.html', key: 'contact', title: ['Contact SALISCO', 'تواصل مع ساليسكو'],
     desc: ['Email, demo booking and the SALISCO accounts on LinkedIn, X, Instagram and YouTube.',
            'البريد، حجز العرض التوضيحي، وحسابات ساليسكو على لينكدإن وإكس وإنستغرام ويوتيوب.'] },
@@ -68,16 +70,16 @@ function header(page) {
 <a class="skip" href="#main">${t('Skip to content', 'انتقل إلى المحتوى')}</a>
 <header id="site-header">
   <div class="wrap">
-    <a class="wm" href="${r}index.html" aria-label="SALISCO">SALISCO<i></i></a>
+    <a class="wm" href="${r}index.html" aria-label="SALISCO" translate="no">SALISCO<i></i></a>
     <nav aria-label="Main">
       <ul>
         <li class="has-menu">
           <a href="${r}index.html#family"${['garage','parts','fleet','insurance'].includes(page.key) ? ' aria-current="true"' : ''}>${t('Products', 'المنتجات')}</a>
           <ul class="menu">
-            <li><a href="${r}products/garage.html"${on('garage')}><b dir="ltr">SALIS Garage</b><span>${t('Workshop management', 'إدارة الورش')}</span></a></li>
-            <li><a href="${r}products/spare-parts.html"${on('parts')}><b dir="ltr">SALIS Spare Parts</b><span>${t('Supplier network', 'شبكة الموردين')}</span></a></li>
-            <li><a href="${r}products/fleet.html"${on('fleet')}><b dir="ltr">SALIS Fleet</b><span>${t('Fleet accounts', 'حسابات الأساطيل')}</span></a></li>
-            <li><a href="${r}products/insurance.html"${on('insurance')}><b dir="ltr">SALIS Insurance</b><span>${t('Planned', 'مخطط')}</span></a></li>
+            <li><a href="${r}products/garage.html"${on('garage')}><b dir="ltr" translate="no">SALIS Garage</b><span>${t('Workshop management', 'إدارة الورش')}</span></a></li>
+            <li><a href="${r}products/spare-parts.html"${on('parts')}><b dir="ltr" translate="no">SALIS Spare Parts</b><span>${t('Supplier network', 'شبكة الموردين')}</span></a></li>
+            <li><a href="${r}products/fleet.html"${on('fleet')}><b dir="ltr" translate="no">SALIS Fleet</b><span>${t('Fleet accounts', 'حسابات الأساطيل')}</span></a></li>
+            <li><a href="${r}products/insurance.html"${on('insurance')}><b dir="ltr" translate="no">SALIS Insurance</b><span>${t('Planned', 'مخطط')}</span></a></li>
           </ul>
         </li>
         <li><a href="${r}about.html"${on('about')}>${t('About', 'عن ساليسكو')}</a></li>
@@ -107,7 +109,7 @@ function footer(page) {
 <footer>
   <div class="wrap">
     <div>
-      <a class="wm" href="${r}index.html">SALISCO<i></i></a>
+      <a class="wm" href="${r}index.html" translate="no">SALISCO<i></i></a>
       <p class="tag">${t('Operational software for Saudi Arabia. One backbone, four product lines. Riyadh.', 'برمجيات تشغيلية للمملكة العربية السعودية. أساس واحد وأربعة خطوط منتجات. الرياض.')}</p>
     </div>
     <div>
@@ -128,6 +130,7 @@ function footer(page) {
         <li><a href="https://www.youtube.com/@salisco" dir="ltr">youtube.com/@salisco</a></li>
       </ul>
       <p class="fine">${t('Handles are not yet reserved.', 'المعرّفات لم تُحجز بعد.')}</p>
+      <p class="legal"><a href="https://salisauto.app/privacy-policy">${t('Privacy', 'الخصوصية')}</a> · <a href="https://salisauto.app/terms-conditions">${t('Terms', 'الشروط')}</a> <span dir="ltr">(SALIS AUTO)</span></p>
     </div>
     <div>
       <span class="k">${t('Contact', 'تواصل')}</span>
@@ -174,13 +177,14 @@ function head(page) {
 <meta property="og:locale:alternate" content="ar_SA">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@salisco">
-<meta name="theme-color" content="#0B1F3B">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F6F9">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1117">${page.noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="${r}salisco-pfp.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="${r}assets/site.css">
-<script>document.documentElement.dataset.titleAr=${JSON.stringify(page.title[1])};document.documentElement.dataset.titleEn=${JSON.stringify(page.title[0])};</script>${jsonld}
+<script>document.documentElement.classList.add('js');document.documentElement.dataset.titleAr=${JSON.stringify(page.title[1])};document.documentElement.dataset.titleEn=${JSON.stringify(page.title[0])};</script>${jsonld}
 </head>`;
 }
 
@@ -188,7 +192,7 @@ function head(page) {
 const statusChip = (en, ar, cls = '') => `<span class="st ${cls}">${t(en, ar)}</span>`;
 
 const mockGarage = `
-<div class="mock" aria-label="Bay board, illustrative">
+<div class="bezel"><div class="mock" aria-label="Bay board, illustrative">
   <div class="bar"><b>${t('Bay board · Riyadh Main', 'لوحة الخلجان · الرياض الرئيسي')}</b><span class="mono" dir="ltr">04 Sep 2026 · 09:40</span></div>
   <div class="row head"><span>${t('Bay', 'الخليج')}</span><span>${t('Job card', 'بطاقة العمل')}</span><span>${t('Plate', 'اللوحة')}</span><span class="num">${t('Amount', 'المبلغ')}</span><span>${t('Status', 'الحالة')}</span></div>
   <div class="row"><b>1</b><span class="mono" dir="ltr">JC-4F2A</span><span class="mono" dir="ltr">RUH 4821</span><span class="num mono" dir="ltr">SAR 1,245.00</span>${statusChip('In repair', 'قيد الإصلاح')}</div>
@@ -196,10 +200,10 @@ const mockGarage = `
   <div class="row"><b>3</b><span class="mono" dir="ltr">JC-4F2C</span><span class="mono" dir="ltr">RUH 9930</span><span class="num mono" dir="ltr">SAR 2,910.50</span>${statusChip('Awaiting parts', 'بانتظار القطع', 'o')}</div>
   <div class="row"><b>4</b><span class="mono" dir="ltr">JC-4F2D</span><span class="mono" dir="ltr">RUH 2204</span><span class="num mono" dir="ltr">SAR 640.00</span>${statusChip('Delivered', 'تم التسليم')}</div>
   <div class="foot">${t('Illustrative rows. Figures are examples, not customer data.', 'صفوف توضيحية. الأرقام أمثلة وليست بيانات عملاء.')}</div>
-</div>`;
+</div></div>`;
 
 const mockParts = `
-<div class="mock" aria-label="Purchase order, illustrative">
+<div class="bezel"><div class="mock" aria-label="Purchase order, illustrative">
   <div class="bar"><b>${t('Purchase order', 'أمر شراء')} <span class="mono" dir="ltr">PO-10421</span></b>${statusChip('Awaiting approval', 'بانتظار الاعتماد', 'o')}</div>
   <div class="kv"><span>${t('Supplier', 'المورّد')}</span><b>${t('Preferred supplier, Riyadh', 'المورّد المفضل، الرياض')}</b><span>${t('Trigger', 'السبب')}</span><b>${t('Stock below minimum: 4 of 12', 'المخزون تحت الحد: ٤ من ١٢')}</b></div>
   <div class="row head"><span>${t('Part', 'القطعة')}</span><span>${t('Number', 'الرقم')}</span><span class="num">${t('Qty', 'الكمية')}</span><span class="num">${t('Unit', 'الوحدة')}</span><span class="num">${t('Line', 'الإجمالي')}</span></div>
@@ -207,10 +211,10 @@ const mockParts = `
   <div class="row"><span>${t('Oil filter', 'فلتر زيت')}</span><span class="mono" dir="ltr">OF-0090</span><span class="num mono" dir="ltr">24</span><span class="num mono" dir="ltr">SAR 28.50</span><span class="num mono" dir="ltr">SAR 684.00</span></div>
   <div class="row total"><span>${t('Total incl. VAT 15%', 'الإجمالي شامل الضريبة ١٥٪')}</span><span></span><span></span><span></span><b class="num mono" dir="ltr">SAR 2,120.60</b></div>
   <div class="foot">${t('Illustrative order. Prices are examples.', 'أمر توضيحي. الأسعار أمثلة.')}</div>
-</div>`;
+</div></div>`;
 
 const mockFleet = `
-<div class="mock" aria-label="Fleet utilisation, illustrative">
+<div class="bezel"><div class="mock" aria-label="Fleet utilisation, illustrative">
   <div class="bar"><b>${t('Fleet account · Contract 2026-14', 'حساب أسطول · عقد 2026-14')}</b><span class="mono" dir="ltr">31 Aug 2026</span></div>
   <div class="row head"><span>${t('Plate', 'اللوحة')}</span><span>${t('Branch', 'الفرع')}</span><span>${t('Utilisation', 'الاستخدام')}</span><span class="num">${t('Cost / km', 'التكلفة / كم')}</span></div>
   <div class="row"><span class="mono" dir="ltr">RUH 7712</span><span>${t('Riyadh Main', 'الرياض الرئيسي')}</span><span class="util"><i style="width:82%"></i><em dir="ltr">82%</em></span><span class="num mono" dir="ltr">SAR 0.41</span></div>
@@ -218,10 +222,10 @@ const mockFleet = `
   <div class="row"><span class="mono" dir="ltr">JED 5521</span><span>${t('Jeddah', 'جدة')}</span><span class="util"><i style="width:37%"></i><em dir="ltr">37%</em></span><span class="num mono" dir="ltr">SAR 0.88</span></div>
   <div class="row"><span class="mono" dir="ltr">RUH 0916</span><span>${t('Riyadh Main', 'الرياض الرئيسي')}</span><span class="util"><i style="width:91%"></i><em dir="ltr">91%</em></span><span class="num mono" dir="ltr">SAR 0.36</span></div>
   <div class="foot">${t('Utilisation is days in service over days under contract. Illustrative figures.', 'الاستخدام هو أيام الخدمة على أيام العقد. أرقام توضيحية.')}</div>
-</div>`;
+</div></div>`;
 
 const mockInsurance = `
-<div class="mock planned" aria-label="Claim timeline, illustrative and planned">
+<div class="bezel"><div class="mock planned" aria-label="Claim timeline, illustrative and planned">
   <div class="bar"><b>${t('Claim on estimate', 'مطالبة على عرض سعر')} <span class="mono" dir="ltr">EST-2041</span></b>${statusChip('Planned product', 'منتج مخطط', 'o')}</div>
   <ol class="timeline">
     <li class="done"><b>${t('Estimate issued', 'إصدار عرض السعر')}</b><span class="mono" dir="ltr">02 Sep · SAR 4,860.00</span></li>
@@ -231,16 +235,16 @@ const mockInsurance = `
     <li><b>${t('Invoice split: insurer and customer', 'فاتورة مقسّمة: شركة التأمين والعميل')}</b><span>${t('ZATCA e-invoice for each', 'فاتورة إلكترونية لكل طرف')}</span></li>
   </ol>
   <div class="foot">${t('This flow is planned, not available. Shown to state the intent.', 'هذا المسار مخطط وغير متاح. يُعرض لبيان النية.')}</div>
-</div>`;
+</div></div>`;
 
 /* ---------------------------------------------------------------- home */
 const familyMap = `
 <div class="map" role="img" aria-label="Four product lines on one backbone">
   <div class="lines">
-    <a class="line live" href="products/garage.html"><span class="cap">${t('Shipping', 'متاح')}</span><b dir="ltr">SALIS Garage</b><span>${t('Workshop management, as SALIS AUTO', 'إدارة الورش، باسم SALIS AUTO')}</span></a>
-    <a class="line" href="products/spare-parts.html"><span class="cap">${t('In SALIS AUTO', 'داخل SALIS AUTO')}</span><b dir="ltr">SALIS Spare Parts</b><span>${t('Supplier network and reorder', 'شبكة الموردين وإعادة الطلب')}</span></a>
-    <a class="line" href="products/fleet.html"><span class="cap">${t('In SALIS AUTO', 'داخل SALIS AUTO')}</span><b dir="ltr">SALIS Fleet</b><span>${t('Fleet accounts across branches', 'حسابات الأساطيل عبر الفروع')}</span></a>
-    <a class="line plan" href="products/insurance.html"><span class="cap">${t('Planned', 'مخطط')}</span><b dir="ltr">SALIS Insurance</b><span>${t('Claims on the same records', 'مطالبات على السجلات نفسها')}</span></a>
+    <a class="line live" href="products/garage.html"><span class="core"><span class="cap">${t('Shipping', 'متاح')}</span><b dir="ltr" translate="no">SALIS Garage</b><span>${t('Workshop management, as SALIS AUTO', 'إدارة الورش، باسم SALIS AUTO')}</span></span></a>
+    <a class="line" href="products/spare-parts.html"><span class="core"><span class="cap">${t('In SALIS AUTO', 'داخل SALIS AUTO')}</span><b dir="ltr" translate="no">SALIS Spare Parts</b><span>${t('Supplier network and reorder', 'شبكة الموردين وإعادة الطلب')}</span></span></a>
+    <a class="line" href="products/fleet.html"><span class="core"><span class="cap">${t('In SALIS AUTO', 'داخل SALIS AUTO')}</span><b dir="ltr" translate="no">SALIS Fleet</b><span>${t('Fleet accounts across branches', 'حسابات الأساطيل عبر الفروع')}</span></span></a>
+    <a class="line plan" href="products/insurance.html"><span class="core"><span class="cap">${t('Planned', 'مخطط')}</span><b dir="ltr" translate="no">SALIS Insurance</b><span>${t('Claims on the same records', 'مطالبات على السجلات نفسها')}</span></span></a>
   </div>
   <div class="rail"><span class="railcap">${t('One backbone', 'أساس واحد')}</span></div>
   <div class="assume">
@@ -261,7 +265,7 @@ const home = `
       <h1 id="hero-h">${t('One backbone.<br>Four lines of <span class="o">Saudi-built</span> software.', 'أساس واحد.<br>أربعة خطوط من البرمجيات <span class="o">المبنية في السعودية.</span>')}</h1>
       <p class="lede">${t('SALISCO builds the operational software Saudi businesses run on. Garage, Spare Parts, Fleet and Insurance share one ledger and four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.', 'ساليسكو تبني البرمجيات التشغيلية التي تعمل عليها المنشآت السعودية. الورشة وقطع الغيار والأساطيل والتأمين تتشارك دفتراً واحداً وأربعة افتراضات من اليوم الأول: العربية، الهيئة، الريال، وسجل تدقيق يجيب عن سؤال من غيّر ماذا.')}</p>
       <div class="ctas">
-        <a class="btn on-dark" href="#family">${t('See the four lines', 'اطّلع على الخطوط الأربعة')}</a>
+        <a class="btn on-dark" href="#family">${t('See the four lines', 'اطّلع على الخطوط الأربعة')}<span class="arr" aria-hidden="true">→</span></a>
         <a class="btn ghost-dark" href="${DEMO}">${t('Book a SALIS AUTO demo', 'احجز عرض SALIS AUTO')}</a>
       </div>
     </div>
@@ -283,7 +287,7 @@ const home = `
   <article class="line-row">
     <div class="line-text">
       <div class="eyebrow">${t('Garage · shipping as SALIS AUTO', 'الورشة · متاح باسم SALIS AUTO')}</div>
-      <h3 dir="ltr">SALIS Garage</h3>
+      <h3 dir="ltr" translate="no">SALIS Garage</h3>
       <p>${t('The full workshop lifecycle on one job card: check-in, inspection, estimate, repair, quality control, delivery. Finance and ZATCA e-invoicing on the same record, a customer app, and portals for technicians and suppliers.', 'دورة الورشة كاملة على بطاقة عمل واحدة: الاستقبال، الفحص، عرض السعر، الإصلاح، مراقبة الجودة، التسليم. المالية والفوترة الإلكترونية على السجل نفسه، وتطبيق للعملاء، وبوابات للفنيين والموردين.')}</p>
       <a class="more" href="products/garage.html">${t('Read about Garage', 'اقرأ عن الورشة')} <span dir="ltr" aria-hidden="true">→</span></a>
     </div>
@@ -292,7 +296,7 @@ const home = `
   <article class="line-row flip">
     <div class="line-text">
       <div class="eyebrow">${t('Spare Parts · in SALIS AUTO today', 'قطع الغيار · داخل SALIS AUTO اليوم')}</div>
-      <h3 dir="ltr">SALIS Spare Parts</h3>
+      <h3 dir="ltr" translate="no">SALIS Spare Parts</h3>
       <p>${t('Supplier catalogue, price comparison, purchase orders, and automatic reorder when stock drops below its minimum. Suppliers publish and confirm through their own portal.', 'كتالوج الموردين، مقارنة الأسعار، أوامر الشراء، وإعادة الطلب تلقائياً عند انخفاض المخزون عن حده. ينشر الموردون ويؤكدون عبر بوابتهم.')}</p>
       <a class="more" href="products/spare-parts.html">${t('Read about Spare Parts', 'اقرأ عن قطع الغيار')} <span dir="ltr" aria-hidden="true">→</span></a>
     </div>
@@ -301,7 +305,7 @@ const home = `
   <article class="line-row">
     <div class="line-text">
       <div class="eyebrow">${t('Fleet · in SALIS AUTO today', 'الأساطيل · داخل SALIS AUTO اليوم')}</div>
-      <h3 dir="ltr">SALIS Fleet</h3>
+      <h3 dir="ltr" translate="no">SALIS Fleet</h3>
       <p>${t('Vehicles under contract, SLA tracking, cost per vehicle and utilisation across branches, from the same job cards the workshop already writes.', 'المركبات تحت العقد، متابعة اتفاقيات مستوى الخدمة، التكلفة لكل مركبة ونسبة الاستخدام عبر الفروع، من بطاقات العمل نفسها التي تكتبها الورشة.')}</p>
       <a class="more" href="products/fleet.html">${t('Read about Fleet', 'اقرأ عن الأساطيل')} <span dir="ltr" aria-hidden="true">→</span></a>
     </div>
@@ -310,7 +314,7 @@ const home = `
   <article class="line-row flip">
     <div class="line-text">
       <div class="eyebrow">${t('Insurance · planned', 'التأمين · مخطط')}</div>
-      <h3 dir="ltr">SALIS Insurance</h3>
+      <h3 dir="ltr" translate="no">SALIS Insurance</h3>
       <p>${t('Claims and approvals between workshops and insurers on the estimate and invoice records that already exist. Not available yet, and not described as if it were.', 'المطالبات والموافقات بين الورش وشركات التأمين على سجلات عروض الأسعار والفواتير الموجودة أصلاً. غير متاح بعد، ولا يوصف كأنه متاح.')}</p>
       <a class="more" href="products/insurance.html">${t('Read the plan for Insurance', 'اقرأ خطة التأمين')} <span dir="ltr" aria-hidden="true">→</span></a>
     </div>
@@ -335,7 +339,7 @@ ${proofBand()}
 <section class="wrap cta-end" aria-label="Next step">
   <h2>${t('See the shipping product on your own numbers.', 'شاهد المنتج المتاح على أرقامك.')}</h2>
   <p>${t('A 20-minute SALIS AUTO demo, in Arabic or English, on a job card from your floor.', 'عرض SALIS AUTO لعشرين دقيقة، بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.')}</p>
-  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a><a class="btn ghost" href="contact.html">${t('Contact SALISCO', 'تواصل مع ساليسكو')}</a></div>
+  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}<span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="contact.html">${t('Contact SALISCO', 'تواصل مع ساليسكو')}</a></div>
 </section>`;
 
 function proofBand() {
@@ -364,7 +368,7 @@ function productPage(o) {
     <div>
       <div class="crumbs"><a href="../index.html">SALISCO</a> <span aria-hidden="true">/</span> <a href="../index.html#family">${t('Products', 'المنتجات')}</a></div>
       <div class="eyebrow">${o.eyebrow}</div>
-      <h1 id="ph" dir="ltr">${o.name}</h1>
+      <h1 id="ph" dir="ltr" translate="no">${o.name}</h1>
       <p class="lede">${o.lede}</p>
       <div class="ctas">${o.ctas}</div>
       <div class="statusline">${o.status}</div>
@@ -396,7 +400,7 @@ const garage = productPage({
   name: 'SALIS Garage',
   eyebrow: t('Workshop management · shipping as SALIS AUTO', 'إدارة الورش · متاح باسم SALIS AUTO'),
   lede: t('Workshop management, Saudi standard. One job card carries the vehicle from check-in to delivery, and the invoice at the end is the sum of what happened, with the ZATCA QR and hash already on it.', 'إدارة ورش السيارات بمعيار سعودي. بطاقة عمل واحدة ترافق المركبة من الاستقبال إلى التسليم، والفاتورة في النهاية هي مجموع ما حدث، ومعها رمز الهيئة وسلسلة التجزئة.'),
-  ctas: `<a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a><a class="btn ghost-dark" href="https://salisauto.app" dir="ltr">salisauto.app</a>`,
+  ctas: `<a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}<span class="arr" aria-hidden="true">→</span></a><a class="btn ghost-dark" href="https://salisauto.app" dir="ltr">salisauto.app</a>`,
   status: t('<b>Status: shipping.</b> Workshops sign in to it today under the product name SALIS AUTO.', '<b>الحالة: متاح.</b> تسجّل الورش الدخول إليه اليوم باسم المنتج SALIS AUTO.'),
   mock: mockGarage,
   whatH: t('Thirteen domains on one record of the job.', 'ثلاثة عشر مجالاً على سجل واحد للعمل.'),
@@ -416,7 +420,7 @@ const garage = productPage({
   proof: true,
   endH: t('See it on your own workshop’s numbers.', 'شاهده على أرقام ورشتك.'),
   endP: t('A 20-minute demo, in Arabic or English, on a job card from your floor.', 'عرض توضيحي لعشرين دقيقة، بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.'),
-  endCtas: `<a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a><a class="btn ghost" href="https://salisauto.app">${t('Visit SALIS AUTO', 'زُر SALIS AUTO')}</a>`,
+  endCtas: `<a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}<span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="https://salisauto.app">${t('Visit SALIS AUTO', 'زُر SALIS AUTO')}</a>`,
 });
 
 const parts = productPage({
@@ -442,7 +446,7 @@ const parts = productPage({
   proof: false,
   endH: t('Procurement is measured, like everything else.', 'المشتريات تُقاس، ككل شيء آخر.'),
   endP: t('The press kit records a 40% shorter procurement cycle across deployments. Ask for the baseline in the demo.', 'يسجل الملف الصحفي دورة مشتريات أقصر بنسبة ٤٠٪ عبر عمليات التشغيل. اطلب أساس القياس في العرض.'),
-  endCtas: `<a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
+  endCtas: `<a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}<span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
 });
 
 const fleet = productPage({
@@ -468,7 +472,7 @@ const fleet = productPage({
   proof: false,
   endH: t('Fleet utilisation is a measured figure.', 'نسبة استخدام الأسطول رقم مُقاس.'),
   endP: t('The press kit records a 30% utilisation gain across deployments. The baseline is each fleet’s prior contract period.', 'يسجل الملف الصحفي زيادة في الاستخدام بنسبة ٣٠٪ عبر عمليات التشغيل. الأساس هو فترة العقد السابقة لكل أسطول.'),
-  endCtas: `<a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}</a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
+  endCtas: `<a class="btn" href="${DEMO}">${t('Book a demo', 'احجز عرضاً')}<span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
 });
 
 const insurance = productPage({
@@ -492,7 +496,7 @@ const insurance = productPage({
     ['Accountant', 'المحاسب', 'Two invoices, two payers, one job card, one audit trail.', 'فاتورتان، ودافعان، وبطاقة عمل واحدة، وسجل تدقيق واحد.'],
   ],
   proof: false,
-  endH: t('Interested in the insurance line?', 'مهتم بخط التأمين؟').replace('?', '?'),
+  endH: t('Interested in the insurance line?', 'مهتم بخط التأمين؟'),
   endP: t('Write to SALISCO. Insurers and workshops who want to shape it are the first people we want to hear from.', 'راسل ساليسكو. شركات التأمين والورش الراغبة في تشكيل هذا الخط هم أول من نريد سماعهم.'),
   endCtas: `<a class="btn" href="mailto:info@salisco.com">${t('Email SALISCO', 'راسل ساليسكو')}</a><a class="btn ghost" href="../index.html#family">${t('Back to the family', 'العودة إلى العائلة')}</a>`,
 });
@@ -554,7 +558,16 @@ const contact = `
   </div>
 </section>`;
 
-const BODIES = { home, garage, parts, fleet, insurance, about, contact };
+const lost = `
+<section class="wrap lost" aria-labelledby="lh">
+  <div class="eyebrow">404</div>
+  <div class="code" dir="ltr" aria-hidden="true">404</div>
+  <h1 id="lh">${t('That page is not here.', 'هذه الصفحة ليست هنا.')}</h1>
+  <p class="lede" style="color:var(--muted)">${t('The address may have changed, or it never existed on salisco.com. The four product lines, the company page and contact are one click away.', 'ربما تغيّر العنوان، أو لم يوجد أصلاً على salisco.com. خطوط المنتجات الأربعة وصفحة الشركة وصفحة التواصل على بعد نقرة.')}</p>
+  <div class="ctas"><a class="btn" href="index.html">${t('Go to the home page', 'اذهب إلى الصفحة الرئيسية')}<span class="arr" aria-hidden="true">→</span></a><a class="btn ghost" href="index.html#family">${t('See the four lines', 'اطّلع على الخطوط الأربعة')}</a><a class="btn ghost" href="contact.html">${t('Contact SALISCO', 'تواصل مع ساليسكو')}</a></div>
+</section>`;
+
+const BODIES = { home, garage, parts, fleet, insurance, about, contact, lost };
 
 /* ---------------------------------------------------------------- write */
 for (const page of PAGES) {
@@ -568,7 +581,7 @@ for (const page of PAGES) {
 const today = '2026-09-04';
 writeFileSync(join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${PAGES.map((p) => { const u = SITE + '/' + (p.path === 'index.html' ? '' : p.path); return `  <url><loc>${u}</loc><lastmod>${today}</lastmod>
+${PAGES.filter((p) => !p.noindex).map((p) => { const u = SITE + '/' + (p.path === 'index.html' ? '' : p.path); return `  <url><loc>${u}</loc><lastmod>${today}</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="${u}?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ar" href="${u}?lang=ar"/>
   </url>`; }).join('\n')}
