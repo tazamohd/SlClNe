@@ -4143,5 +4143,6 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Analytics Dashboard": "لوحة التحليلات",
   "Real-time KPIs, revenue trends and operational insights": "مؤشرات أداء لحظية، واتجاهات الإيرادات، ورؤى تشغيلية",
   "Our Products": "منتجاتنا",
-}
   "Yes. Book a 20-minute demo on your own workshop's numbers. Plans are agreed with sales after the demo, and there is no card to enter.": "نعم. احجز عرضاً لعشرين دقيقة على أرقام ورشتك. تُتفق الخطط مع المبيعات بعد العرض، ولا بطاقة تُدخل.",
+}
+
