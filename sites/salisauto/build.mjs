@@ -76,7 +76,7 @@ const traceSymbol = `
   </symbol>
 </svg>`;
 
-const logo = () => `<img class="full" src="${B}assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="${B}assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr">SALIS AUTO</span>`;
+const logo = () => `<img class="full" src="${B}assets/logo-full-colour.svg" alt="" width="500" height="500"><img class="rev" src="${B}assets/logo-reversed-white.svg" alt="" width="500" height="500"><span dir="ltr" translate="no">SALIS AUTO</span>`;
 
 const PRODUCT_KEYS = ['lifecycle', 'features', 'zatca', 'parts', 'fleet', 'customer', 'portals'];
 const PRODUCT_MENU = [
@@ -390,11 +390,12 @@ const STAGES = [
 ];
 const rail6 = `<div class="rail6" role="list">${STAGES.map(([h, en, ar, sen, sar], i) => `<a role="listitem" href="${h}" data-stage="${i}"><span class="n" dir="ltr">${i + 1}</span><b>${t(en, ar)}</b><span>${t(sen, sar)}</span></a>`).join('')}</div>`;
 
+const ARR = '<i class="arr" aria-hidden="true">&rarr;</i>';
 const ctaEnd = (h, ha, p, pa) => `
 <section class="wrap cta-end" aria-label="Next step">
   <h2>${t(h, ha)}</h2>
   <p>${t(p, pa)}</p>
-  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a><a class="btn ghost" href="${B}pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a></div>
+  <div class="ctas"><a class="btn" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}${ARR}</a><a class="btn ghost" href="${B}pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a></div>
 </section>`;
 
 /* ---------------------------------------------------------------- S4: the AI era */
@@ -488,7 +489,7 @@ const home = `
       <h1 id="hero-h">${t('Workshop Management.<br><span class="o">Saudi Standard.</span>', 'إدارة ورش السيارات.<br><span class="o">معيار سعودي.</span>')}</h1>
       <p class="lede">${t('One platform runs the workshop from check-in to invoice, in Arabic and English, with ZATCA e-invoicing built in. Every change is on the audit trail.', 'منصة واحدة تدير الورشة من الاستقبال إلى الفاتورة، بالعربية والإنجليزية، مع فوترة إلكترونية متوافقة مع الهيئة مبنية في الأساس. كل تغيير مسجَّل في سجل التدقيق.')}</p>
       <div class="ctas">
-        <a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a>
+        <a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}${ARR}</a>
         <a class="btn ghost-dark" href="${B}pricing.html">${t('See pricing', 'اطّلع على الأسعار')}</a>
       </div>
       <div class="statusline">${t('<b>Single bay to multi-branch.</b> Thirteen domains, fourteen roles, SAR to the halala, one audit trail.', '<b>من خليج واحد إلى فروع متعددة.</b> ثلاثة عشر مجالاً، أربعة عشر دوراً، الريال حتى الهللة، وسجل تدقيق واحد.')}</div>
@@ -565,7 +566,7 @@ function pageHero(o) {
       <div class="eyebrow">${t(o.eyebrow[0], o.eyebrow[1])}</div>
       <h1 id="ph">${t(o.h1[0], o.h1[1])}</h1>
       <p class="lede">${t(o.lede[0], o.lede[1])}</p>
-      <div class="ctas"><a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}</a>${o.cta2 || ''}</div>
+      <div class="ctas"><a class="btn on-dark" href="${DEMO}">${t('Book a 20-minute demo', 'احجز عرضاً لعشرين دقيقة')}${ARR}</a>${o.cta2 || ''}</div>
       ${o.status ? `<div class="statusline">${t(o.status[0], o.status[1])}</div>` : ''}
     </div>
     ${o.mock ? `<div class="hero-mock tilt-deep">${o.scene ? `<div class="scene" data-scene="${o.scene}" aria-hidden="true"></div>` : ''}${o.mock}</div>` : ''}
@@ -808,7 +809,7 @@ const about = pageHero({
 </section>
 <section class="wrap" aria-labelledby="mark-h">
   <div class="sec-head"><div class="eyebrow">${t('The mark', 'العلامة')}</div><h2 id="mark-h">${t('The Arabic wordmark is a draft.', 'الشعار العربي مسودة.')}</h2><p>${t('The Latin wordmark is custom lettering. The Arabic form below is typeset in Noto Sans Arabic and fitted to the same box. It is shown as a draft and is not used on this site until a type designer has redrawn it.', 'الشعار اللاتيني حروف مرسومة خصيصاً. الصيغة العربية أدناه مصفوفة بخط Noto Sans Arabic ومضبوطة على الإطار نفسه. تُعرض كمسودة ولا تُستخدم في هذا الموقع حتى يعيد مصمم خطوط رسمها.')}</p></div>
-  <div class="arabic-drafts"><div style="background:#FFFFFF"><img src="assets/logo-arabic-full-colour.svg" alt="Arabic wordmark draft, full colour on white"></div><div style="background:#0B1F3B"><img src="assets/logo-arabic-reversed-white.svg" alt="Arabic wordmark draft, reversed on navy"></div></div>
+  <div class="arabic-drafts"><div style="background:#FFFFFF"><img src="assets/logo-arabic-full-colour.svg" alt="Arabic wordmark draft, full colour on white" loading="lazy"></div><div style="background:#0B1F3B"><img src="assets/logo-arabic-reversed-white.svg" alt="Arabic wordmark draft, reversed on navy" loading="lazy"></div></div>
 </section>
 ${ctaEnd('See it on your own workshop’s numbers.', 'شاهده على أرقام ورشتك.', 'A 20-minute demo, in Arabic or English, on a job card from your floor.', 'عرض توضيحي لعشرين دقيقة، بالعربية أو الإنجليزية، على بطاقة عمل من ورشتك.')}`;
 
@@ -858,6 +859,21 @@ export function writePages() {
   }
 }
 
+const notFound = () => `
+<section class="wrap nf" aria-labelledby="nf-h">
+  <div class="eyebrow">${t('Not found', 'غير موجود')}</div>
+  <div class="code" dir="ltr">404</div>
+  <h1 id="nf-h">${t('That page is not here.', 'هذه الصفحة ليست هنا.')}</h1>
+  <p>${t('The address may have changed, or the link was typed by hand. The product pages, pricing and contact are one step away.', 'ربما تغيّر العنوان، أو كُتب الرابط يدوياً. صفحات المنتج والأسعار والتواصل على بُعد خطوة.')}</p>
+  <div class="ctas"><a class="btn" href="/">${t('Go to the home page', 'انتقل إلى الصفحة الرئيسية')}${ARR}</a><a class="btn ghost" href="/contact.html">${t('Contact SALIS AUTO', 'تواصل مع SALIS AUTO')}</a></div>
+</section>`;
+
+export function writeNotFound() {
+  const page = { path: '404.html', key: '404', title: ['Page not found', 'الصفحة غير موجودة'], desc: ['That page is not here.', 'هذه الصفحة ليست هنا.'] };
+  writeFileSync(join(ROOT, '404.html'), renderPage(page, notFound(), { scenes: false }));
+  console.log('wrote 404.html');
+}
+
 export function writeSitemap(extraPaths = []) {
   const today = '2026-09-04';
   const paths = [...PAGES.map((p) => p.path), ...extraPaths];
@@ -877,5 +893,6 @@ export { PAGES, SITE, APP, DEMO, SIGNIN, t, ROOT };
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   writePages();
+  writeNotFound();
   writeSitemap();
 }

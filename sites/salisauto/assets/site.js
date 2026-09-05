@@ -39,12 +39,17 @@
   var burger = document.getElementById('menuToggle');
   var menu = document.getElementById('mobile-menu');
   if (burger && menu) {
-    burger.addEventListener('click', function () {
-      var open = menu.hidden;
-      menu.hidden = !open;
+    menu.hidden = false; menu.setAttribute('inert', '');
+    [].slice.call(menu.children).forEach(function (a, i) { a.style.setProperty('--i', i); });
+    function setMenu(open) {
+      menu.classList.toggle('open', open);
+      if (open) menu.removeAttribute('inert'); else menu.setAttribute('inert', '');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
       burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    });
+    }
+    burger.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); burger.focus(); } });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   }
 
   /* Trace animation runs once on load; reduced motion is handled in CSS. */
@@ -82,7 +87,7 @@
     blocks.forEach(function (el) {
       if (el.getBoundingClientRect().top < vh * 0.9) return;
       var idx = 0, sib = el; while ((sib = sib.previousElementSibling)) idx++;
-      el.classList.add('reveal'); el.style.setProperty('--d', (Math.min(idx, 8) * 70) + 'ms'); io.observe(el);
+      el.classList.add('reveal'); el.style.setProperty('--d', (Math.min(idx, 6) * 60) + 'ms'); io.observe(el);
     });
   }
 

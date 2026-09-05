@@ -6,7 +6,7 @@
 // language(s) they were written in, so every block is dir="auto".
 import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, relative, basename, extname } from 'node:path';
-import { renderPage, writePages, writeSitemap, t, ROOT } from './build.mjs';
+import { renderPage, writePages, writeNotFound, writeSitemap, t, ROOT } from './build.mjs';
 
 const REPO = join(ROOT, '..', '..');
 const DOCS = join(REPO, 'docs');
@@ -91,6 +91,7 @@ function walk(dir) {
 const docPages = []; // { path, title, section, group }
 const written = [];
 writePages();
+writeNotFound();
 
 for (const sec of SECTIONS) {
   const dir = join(DOCS, sec.dir);
