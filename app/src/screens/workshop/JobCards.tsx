@@ -115,7 +115,13 @@ export function JobCards() {
               inputSize="sm"
               className="flex-1"
             />
-            <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)}>
+            <Button
+              variant="outline"
+              size="sm"
+              aria-label={t('Filters')}
+              aria-expanded={showFilters}
+              onClick={() => setShowFilters(!showFilters)}
+            >
               <Icon name="SlidersHorizontal" size={14} />
               {activeFilters.length > 0 ? `(${activeFilters.length})` : null}
             </Button>
@@ -178,7 +184,7 @@ export function JobCards() {
     <>
       <ListPageHeader
         title={t('Job Cards')}
-        search={{ value: query, onChange: setQuery }}
+        search={{ value: query, onChange: setQuery, placeholder: t('Search job cards...') }}
         actions={
           <>
             <Button variant="outline" size="md" onClick={() => setShowFilters(!showFilters)}>

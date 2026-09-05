@@ -102,7 +102,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* The mobile designs use their own 56px header composition, not a
             narrowed Topbar — no search box, user chip instead. */}
         {isMobile ? <MobileHeader onOpenNav={() => setDrawerOpen(true)} /> : <Topbar />}
-        <main id="main-content" className="relative flex-1 overflow-auto">
+        {/* `tabIndex={-1}` so the skip link's target takes focus in every
+         * browser, and so the scroll container is reachable from the keyboard
+         * on a screen whose mobile layout has no focusable content of its own. */}
+        <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-auto">
           <PageBackdrop />
           <div
             className={cn(

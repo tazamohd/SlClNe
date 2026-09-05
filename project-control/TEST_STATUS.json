@@ -39,9 +39,9 @@
     "goldenPaths": {
       "runner": "playwright",
       "present": true,
-      "covered": 7,
+      "covered": 23,
       "of": 23,
-      "note": "scripts/golden-paths.mjs — 16 failing, 0 unwritten"
+      "note": "scripts/golden-paths.mjs — 0 failing, 0 unwritten"
     },
     "mobile": {
       "runner": "playwright",

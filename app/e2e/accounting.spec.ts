@@ -46,7 +46,8 @@ test.describe('Accounting screens', () => {
   test('bank reconciliation loads', async ({ page }) => {
     await gotoReady(page, '/bank-reconciliation')
     const text = await bodyText(page)
-    expect(text).toContain('Unmatched')
+    expect(text).toContain('Receipts in view')
+    expect(text).toContain('No bank feed connected')
   })
 
   test('receipts page loads', async ({ page }) => {

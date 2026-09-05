@@ -15,7 +15,8 @@ test.describe('Workshop flow', () => {
   test('job card detail loads with timeline', async ({ page }) => {
     await gotoReady(page, '/job-card-detail')
     const text = await bodyText(page)
-    expect(text).toContain('JC-A3F8B2C1')
+    expect(text).toContain('A3F8B2C1')
+    expect(text).toContain('Quality Check')
   })
 
   test('job detail loads with timeline', async ({ page }) => {

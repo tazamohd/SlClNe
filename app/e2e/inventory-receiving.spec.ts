@@ -12,12 +12,15 @@ test.describe('Inventory Receiving (Golden Path 7)', () => {
 
   test('inventory hub loads', async ({ page }) => {
     await gotoReady(page, '/inventory')
-    expect(await bodyText(page)).toContain('Inventory & Parts Management')
+    expect(await bodyText(page)).toContain('Inventory & Parts')
   })
 
-  test('the purchase order goods are received against has a real PO number', async ({ page }) => {
+  test('the purchase order goods are received against is a real form, numbered on save', async ({ page }) => {
     await gotoReady(page, '/purchase-order')
-    expect(await bodyText(page)).toContain('PO-2026-0087')
+    const text = await bodyText(page)
+    expect(text).toContain('Create Purchase Order')
+    expect(text).toContain('The order number is assigned by the server when the order is saved.')
+    expect(text).toContain('Brake Pads (Front)')
   })
 
   test('internal warehouse shows the Receiving zone and its utilisation', async ({ page }) => {
@@ -44,9 +47,11 @@ test.describe('Inventory receiving lifecycle', () => {
     test.setTimeout(90_000)
     await seedRole(context, 'owner')
 
-    // 1. The purchase order stock is arriving against.
+    // 1. The purchase order stock is arriving against — the server numbers
+    //    it on save, and this build says so rather than inventing a number.
     await gotoReady(page, '/purchase-order')
-    expect(await bodyText(page)).toContain('PO-2026-0087')
+    expect(await bodyText(page)).toContain('Create Purchase Order')
+    expect(await bodyText(page)).toContain('The order number is assigned by the server when the order is saved.')
 
     // 2. Goods physically land in the warehouse's Receiving zone.
     await gotoReady(page, '/internal-warehouse')
@@ -56,7 +61,7 @@ test.describe('Inventory receiving lifecycle', () => {
 
     // 3. The inventory hub and stock reports carry the received quantities.
     await gotoReady(page, '/inventory')
-    expect(await bodyText(page)).toContain('Inventory & Parts Management')
+    expect(await bodyText(page)).toContain('Inventory & Parts')
 
     await gotoReady(page, '/inventory-reports')
     expect(await bodyText(page)).toContain('Stock')

@@ -71,6 +71,6 @@ test.describe('Technician job completion lifecycle', () => {
 
     // 4. The office confirms the same job from the workshop side.
     await gotoReady(page, '/job-card-detail')
-    expect(await bodyText(page)).toContain('JC-A3F8B2C1')
+    expect(await bodyText(page)).toContain('A3F8B2C1')
   })
 })

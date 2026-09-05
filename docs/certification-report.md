@@ -204,3 +204,24 @@ The SALIS AUTO project has successfully completed waves W0–W4, delivering a co
 - Comprehensive documentation
 
 Two follow-up items are recommended before production deployment (financial integrity tests, E2E test execution), but neither blocks certification of the completed development work.
+
+---
+
+## Addendum — 2026-09-03 follow-up
+
+Status of the recommended next steps above, measured rather than restated:
+
+| # | Item | Status | Evidence |
+|---|---|---|---|
+| 1 | Accounting invariant tests | **Done** (landed with the server rewrite) | `server/tests/rules.test.ts` (journal debits = credits; payment ≤ balance to the halala; no payment on a draft or cancelled invoice), `api.test.ts` (total computed from lines, duplicate payment taken once, two simultaneous payments cannot both take the last of the balance), `seed-coherence.test.ts` and `finance-reports.test.ts` (the seeded ledger's SAR 257,050 imbalance is reported, not forced to balance). Server suite: 30 files, 2,473 tests, all passing against PostgreSQL 16. |
+| 2 | Run the full Playwright E2E suite and fix failures | **Done** | 702 tests over desktop and mobile, all passing. 16 golden paths and 16 further tests were asserting fixture text from the deleted shadow copy of the app (`JC-A3F8B2C1`, `PO-2026-0087`, `AutoParts KSA`, `Report Categories`…); each now asserts what the data-backed screen renders, including the honest stops (no API: no purchase-order number, no claim decision, no bank feed). `project-control/GOLDEN_PATHS.json`: 23 passing, 0 failing. Two product defects found on the way are fixed: the Job Cards search shared its label with the topbar's global search, and every `TabBar` carried an `aria-controls` to a panel that did not exist. |
+| 3 | `vite build` in CI | **Already done** | The `build` job runs `npm run build` on every push (`.github/workflows/ci.yml`). |
+| 4 | SSO / social login to a real IdP | **Not done — external** | Needs an identity provider and its credentials; nothing in the repository can be wired without them. |
+| 5 | Automated DAST (OWASP ZAP) | **Not done — external** | Needs a deployed target and a ZAP runner; not added as an unverified CI job. |
+| 6 | Automated a11y checks in CI | **Done** | `app/e2e/a11y.spec.ts`: axe-core over twelve screens in both viewports, run as the `Accessibility (axe)` CI job. Zero serious/critical gate for every rule except colour contrast, which is ratcheted per screen in `project-control/BASELINE.json`; see `docs/A11Y_AUDIT.md` §6 for the four defects it found and fixed and the palette backlog it records. |
+| 7 | PendingScreen specs | **Done earlier** | The registry reports 0 placeholder routes (`project-control/STATUS.json`). |
+
+Also closed: the one built screen that still owed its designed mobile layout
+(Dashboard, `project/Dashboard.Mobile.dc.html`) is implemented; BLK-006 and
+BLK-013 no longer appear in `project-control/BLOCKERS.json`.
+

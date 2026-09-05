@@ -6,10 +6,13 @@ test.describe('Report Generation (Golden Path 18)', () => {
     await seedRole(context, 'owner')
   })
 
-  test('reports hub loads', async ({ page }) => {
+  test('reports hub loads with the available reports and the saved-report shelf', async ({ page }) => {
     await gotoReady(page, '/reports')
     const text = await bodyText(page)
-    expect(text).toContain('Report Categories')
+    expect(text).toContain('Available reports')
+    expect(text).toContain('Sales Reports')
+    expect(text).toContain('Financial Reports')
+    expect(text).toContain('Saved reports')
   })
 
   test('reports analytics page loads', async ({ page }) => {
@@ -85,7 +88,7 @@ test.describe('Report generation lifecycle', () => {
     await seedRole(context, 'owner')
 
     await gotoReady(page, '/reports')
-    expect(await bodyText(page)).toContain('Report Categories')
+    expect(await bodyText(page)).toContain('Available reports')
 
     await gotoReady(page, '/financial-reports')
     expect((await bodyText(page)).length).toBeGreaterThan(0)

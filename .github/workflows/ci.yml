@@ -157,6 +157,33 @@ jobs:
           path: project-control/GOLDEN_PATHS.json
           retention-days: 14
 
+  a11y:
+    name: Accessibility (axe)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: build
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      # axe-core over one rendered screen per shell family, both viewports.
+      # Serious/critical findings other than colour contrast fail outright;
+      # contrast is ratcheted per screen in project-control/BASELINE.json, the
+      # same may-fall-never-rise convention the other gates use. The static
+      # source linter (check-a11y) runs in the build job; this is the half it
+      # cannot do without a browser. playwright.config.ts owns the webServer.
+      - name: Axe sweep — ratcheted against the baseline
+        run: npx playwright test e2e/a11y.spec.ts
   server-typecheck:
     name: Server / Typecheck
     runs-on: ubuntu-latest

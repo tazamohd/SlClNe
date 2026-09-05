@@ -21,24 +21,38 @@ test.describe('RBAC access control', () => {
     await ctx.close()
   })
 
-  test('procurement sees both Approve and Escalate on requisitions', async ({ browser }) => {
-    const ctx = await browser.newContext()
+  test('procurement opens a requisition and is refused a decision this build cannot record', async ({ browser }) => {
+    // Approve / Escalate are real writes (`POST /procurement/requisitions/:id/…`)
+    // that the server re-checks against the role's ceiling. With no API in
+    // this build they are not offered at all: the detail says why, rather than
+    // showing a button whose click would be pretend.
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } })
     await seedRole(ctx, 'procurement')
     const page = await ctx.newPage()
     await gotoReady(page, '/procurement-portal/requisitions')
-    const text = await bodyText(page)
-    expect((text.match(/Approve/g) || []).length).toBeGreaterThan(0)
-    expect((text.match(/Escalate/g) || []).length).toBeGreaterThan(0)
+    expect(await bodyText(page)).toContain('Pending')
+
+    const table = page.getByRole('table', { name: 'Procurement requisitions' })
+    await expect(table).toBeVisible()
+    await table.locator('tbody tr').first().click()
+
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await expect(dialog.getByRole('button', { name: 'Close' }).first()).toBeVisible()
+    await expect(dialog.getByRole('button', { name: 'Approve' })).toHaveCount(0)
+    await expect(dialog).toContainText('refuse writes rather than pretending')
     await ctx.close()
   })
 
   test('appointments filter narrows results', async ({ browser }) => {
-    const ctx = await browser.newContext()
+    // Desktop viewport in both projects: the count below reads table rows,
+    // and the phone layout renders the same appointments as cards.
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } })
     await seedRole(ctx, 'owner')
     const page = await ctx.newPage()
     await gotoReady(page, '/appointments')
     const before = await page.locator('tbody tr').count()
-    await page.getByRole('tab', { name: /No Show/ }).click()
+    await page.getByRole('radio', { name: 'No Show' }).click()
     const after = await page.locator('tbody tr').count()
     expect(before).toBeGreaterThan(0)
     expect(after).toBeGreaterThan(0)
@@ -51,9 +65,9 @@ test.describe('Role-specific landing pages', () => {
   const roleLandings = [
     { role: 'owner', path: '/dashboard', expect: 'Dashboard' },
     { role: 'technician', path: '/technician-portal', expect: 'Current Job' },
-    { role: 'customer', path: '/customer-portal', expect: 'JC-A3F8B2C1' },
-    { role: 'supplier', path: '/supplier-portal', expect: 'AutoParts KSA' },
-    { role: 'superadmin', path: '/super-admin', expect: 'Platform Overview' },
+    { role: 'customer', path: '/customer-portal', expect: 'A3F8B2C1' },
+    { role: 'supplier', path: '/supplier-portal', expect: 'Al-Jazira Parts Co.' },
+    { role: 'superadmin', path: '/super-admin', expect: 'Platform Control' },
   ]
 
   for (const landing of roleLandings) {

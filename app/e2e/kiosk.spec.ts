@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { gotoReady, bodyText } from './helpers'
+import { seedRole, gotoReady, bodyText } from './helpers'
 
 /** Self-service check-in kiosk: Identify -> Select Vehicle -> Confirm
  *  Service -> Done, a real step flow (`KioskCheckIn.tsx`) with large touch
@@ -8,8 +8,16 @@ import { gotoReady, bodyText } from './helpers'
  *  one of those fields has real input. With no live API configured in this
  *  build (BLK-002), the kiosk is honestly stuck at step one — the button
  *  stays disabled even with input, because there's no server to look the
- *  vehicle up against. */
+ *  vehicle up against.
+ *
+ *  The kiosk is a device the front desk signs in (RBAC: `frontdesk` holds
+ *  create/edit on it; walk-up customers never hold a session), so each test
+ *  seeds that role — with no session the guard sends the device to /login. */
 test.describe('Kiosk (Golden Path 23)', () => {
+  test.beforeEach(async ({ context }) => {
+    await seedRole(context, 'frontdesk')
+  })
+
   test('kiosk identify step loads with branding and both identify fields', async ({ page }) => {
     await gotoReady(page, '/kiosk-check-in')
     const text = await bodyText(page)
@@ -34,6 +42,10 @@ test.describe('Kiosk (Golden Path 23)', () => {
 })
 
 test.describe('Kiosk lifecycle', () => {
+  test.beforeEach(async ({ context }) => {
+    await seedRole(context, 'frontdesk')
+  })
+
   test('walk-up customer identifies by plate, and the flow honestly stops there', async ({ page }) => {
     test.setTimeout(90_000)
 

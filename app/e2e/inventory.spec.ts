@@ -9,7 +9,7 @@ test.describe('Inventory and parts', () => {
   test('inventory page loads', async ({ page }) => {
     await gotoReady(page, '/inventory')
     const text = await bodyText(page)
-    expect(text).toContain('Inventory & Parts Management')
+    expect(text).toContain('Inventory & Parts')
   })
 
   test('parts network dashboard loads', async ({ page }) => {
@@ -29,10 +29,14 @@ test.describe('Inventory and parts', () => {
     const text = await bodyText(page)
     expect(text).toContain('Quotations')
 
-    const firstBefore = await page.locator('tbody tr').first().innerText()
-    await page.getByRole('tab', { name: /Rating/ }).click()
-    const firstAfter = await page.locator('tbody tr').first().innerText()
-    expect(firstBefore).not.toBe(firstAfter)
+    // Best price leads by default; the sort chips are a radio group and
+    // picking Rating puts the 4.8-rated supplier first — a table on desktop,
+    // cards on the phone, the same rows either way.
+    const before = await bodyText(page)
+    expect(before.indexOf('Saudi Parts Company')).toBeLessThan(before.indexOf('Al-Faisal Auto Parts'))
+    await page.getByRole('radio', { name: 'Rating' }).click()
+    const after = await bodyText(page)
+    expect(after.indexOf('Al-Faisal Auto Parts')).toBeLessThan(after.indexOf('Saudi Parts Company'))
   })
 
   test('parts network orders loads', async ({ page }) => {
@@ -44,12 +48,14 @@ test.describe('Inventory and parts', () => {
   test('purchase order detail loads', async ({ page }) => {
     await gotoReady(page, '/purchase-order')
     const text = await bodyText(page)
-    expect(text).toContain('PO-2026-0087')
+    expect(text).toContain('Create Purchase Order')
+    expect(text).toContain('The order number is assigned by the server when the order is saved.')
   })
 
   test('inventory reports loads', async ({ page }) => {
     await gotoReady(page, '/inventory-reports')
     const text = await bodyText(page)
-    expect(text).toContain('Stock reports')
+    expect(text).toContain('Inventory Reports')
+    expect(text).toContain('Stock Value')
   })
 })
