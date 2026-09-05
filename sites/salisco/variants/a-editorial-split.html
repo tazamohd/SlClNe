@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SALISCO · Editorial split</title>
+<meta name="description" content="SALISCO home, direction A: editorial split with a sticky product index.">
+<meta name="theme-color" content="#F4F6F9" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0E1117" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;600;700;800&display=swap">
+<style>
+:root{--blue:#0A5ED7;--blue-h:#0952C0;--bright:#0BB3FF;--navy:#0B1F3B;--navy2:#1E3A5F;--orange:#F97316;--orange-h:#EA580C;
+--page:#F4F6F9;--card:#FFFFFF;--inset:#E9EEF4;--border:#D9DFE7;--border-s:#C3CBD6;--heading:#0B1F3B;--body:#2A2F3A;--muted:#64748B;--faint:#94A3B8;
+--chip:#E9F0FB;--chip-fg:#173963;--chip-o:#FFF1E8;--chip-o-fg:#C2410C;--band:#0B1F3B;--band-fg:#FFFFFF;--band-muted:#B7C4D6;--line:rgba(255,255,255,.14);
+--shadow:0 12px 32px -14px rgba(11,31,59,.28);--shadow-lg:0 30px 60px -24px rgba(11,31,59,.45);--ring:rgba(11,31,59,.08);
+--f-display:'Montserrat','Noto Sans Arabic','Inter',system-ui,sans-serif;--f-ui:'Inter','Noto Sans Arabic',system-ui,sans-serif;--f-action:'Poppins','Noto Sans Arabic','Inter',system-ui,sans-serif;--f-mono:'JetBrains Mono','SF Mono',ui-monospace,monospace;--f-ar:'Noto Sans Arabic','Inter',sans-serif;
+--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1);--d-1:120ms;--d-2:160ms;--d-3:200ms;--d-4:260ms;--d-5:400ms;
+--r-1:6px;--r-2:10px;--r-3:16px;--r-4:24px;--r-5:32px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#0E1117;--card:#151A23;--inset:#0E1117;--border:#232A36;--border-s:#2E3746;--heading:#FFFFFF;--body:#E6EAF0;--muted:#9BA4B0;--faint:#6F7987;--chip:#132846;--chip-fg:#7CC7FF;--chip-o:#3A2110;--chip-o-fg:#FDBA74;--shadow:0 12px 32px -14px rgba(0,0,0,.6);--shadow-lg:0 30px 60px -24px rgba(0,0,0,.7);--ring:rgba(255,255,255,.08)}}
+:root[data-theme="dark"]{--page:#0E1117;--card:#151A23;--inset:#0E1117;--border:#232A36;--border-s:#2E3746;--heading:#FFFFFF;--body:#E6EAF0;--muted:#9BA4B0;--faint:#6F7987;--chip:#132846;--chip-fg:#7CC7FF;--chip-o:#3A2110;--chip-o-fg:#FDBA74;--shadow:0 12px 32px -14px rgba(0,0,0,.6);--shadow-lg:0 30px 60px -24px rgba(0,0,0,.7);--ring:rgba(255,255,255,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--page);color:var(--body);font-family:var(--f-ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;color-scheme:light dark}
+html[lang="ar"] body{font-family:var(--f-ar);font-size:16px;line-height:1.75}
+h1,h2,h3{font-family:var(--f-display);color:var(--heading);margin:0;letter-spacing:-.02em;text-wrap:balance}
+html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3{font-family:var(--f-ar);letter-spacing:0}
+h1{font-weight:800;line-height:1.02;letter-spacing:-.035em}h2{font-size:clamp(26px,3.2vw,40px);font-weight:700;line-height:1.12}h3{font-size:20px;font-weight:600;line-height:1.3}
+p{margin:0;text-wrap:pretty}a{color:var(--blue)}.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+html[lang="en"] [lang="ar"]{display:none}html[lang="ar"] [lang="en"]{display:none}[lang="ar"]{font-family:var(--f-ar)}[dir="ltr"]{unicode-bidi:isolate}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}:focus-visible{outline:2px solid var(--bright);outline-offset:3px}
+.skip{position:absolute;inset-inline-start:8px;top:-48px;background:var(--blue);color:#fff;padding:8px 12px;border-radius:6px;z-index:20;text-decoration:none}.skip:focus{top:8px}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-weight:500}html[lang="ar"] .eyebrow{font-family:var(--f-ar);letter-spacing:0;font-size:13px;font-weight:600}
+.o{color:var(--orange)}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--page) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);transition:box-shadow var(--d-3) var(--ease-out)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.wm{font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:-.02em;color:var(--heading);display:inline-flex;align-items:center;gap:.35em;text-decoration:none}.wm i{width:.5em;height:.5em;border-radius:50%;background:var(--orange);display:inline-block}
+.hdr-actions{display:flex;align-items:center;gap:10px}
+.lang{font-family:var(--f-mono);font-size:12.5px;border:1px solid var(--border-s);background:var(--card);color:var(--heading);border-radius:var(--r-1);padding:7px 12px;cursor:pointer;min-height:38px;transition:border-color var(--d-2) var(--ease-out),color var(--d-2) var(--ease-out),transform var(--d-2) var(--ease-out)}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-action);font-weight:600;font-size:15px;background:var(--blue);color:#fff;border-radius:999px;padding:12px 8px 12px 22px;text-decoration:none;border:0;cursor:pointer;transition:transform var(--d-2) var(--ease-out),background-color var(--d-2) var(--ease-out);min-height:44px}
+.btn.small{font-size:13px;padding:8px 6px 8px 16px;min-height:38px}
+.btn .arr{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.18);display:inline-grid;place-items:center;font-family:var(--f-ui);transition:transform var(--d-3) var(--ease-out)}
+.btn.small .arr{width:24px;height:24px}
+.btn.ghost{background:transparent;color:var(--heading);border:1px solid var(--border-s)}.btn.ghost .arr{background:var(--ring)}.btn.on-dark{background:#fff;color:var(--navy)}.btn.on-dark .arr{background:rgba(11,31,59,.1)}
+.btn:active,.lang:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.btn:hover{background:var(--blue-h)}.btn.ghost:hover{background:var(--card);border-color:var(--blue)}.btn.on-dark:hover{background:#fff}.btn:hover .arr{transform:translate(2px,-2px)}html[dir="rtl"] .btn:hover .arr{transform:translate(-2px,-2px)}.lang:hover{border-color:var(--blue);color:var(--blue)}}
+html[dir="rtl"] .arr{transform:scaleX(-1)}
+.st{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:5px;white-space:nowrap;display:inline-block}html[lang="ar"] .st{font-family:var(--f-ar);letter-spacing:0;font-size:12.5px}
+.st.live{background:var(--blue);color:#fff}.st.in{background:var(--chip);color:var(--chip-fg)}.st.plan{background:transparent;color:var(--orange-h);border:1px solid var(--orange)}
+.bezel{background:var(--ring);border:1px solid var(--ring);border-radius:var(--r-5);padding:6px;box-shadow:var(--shadow)}.bezel>.core{background:var(--card);border-radius:calc(var(--r-5) - 6px);box-shadow:inset 0 1px 1px rgba(255,255,255,.35);overflow:hidden}
+.mock{background:var(--card);color:var(--heading);border-radius:calc(var(--r-5) - 6px);overflow:hidden;font-size:13px}
+.mbar{background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;font-family:var(--f-action);font-weight:600}.mbar .mono{color:#B7C4D6;font-size:11.5px;font-weight:400}
+.mt{width:100%;border-collapse:collapse}.mt th{font-family:var(--f-mono);font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:start;padding:8px 14px;border-bottom:1px solid var(--border)}.mt td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+.pill{font-style:normal;font-family:var(--f-action);font-weight:600;font-size:11.5px;background:var(--chip);color:var(--blue);border-radius:999px;padding:3px 10px}.pill.o{background:var(--chip-o);color:var(--chip-o-fg)}
+.bar{display:inline-block;width:80px;height:6px;border-radius:3px;background:var(--inset);vertical-align:middle;position:relative;overflow:hidden}.bar::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--blue);border-radius:3px}
+.mfoot{padding:10px 16px;font-size:11px;color:var(--muted);background:var(--inset)}
+.tl{list-style:none;margin:0;padding:16px;display:grid;gap:12px}.tl li{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start}.tl li::before{content:"";width:12px;height:12px;border:3px solid var(--blue);border-radius:50%;margin-top:4px}.tl li:last-child::before{border-color:var(--orange)}.tl li b{display:block;font-size:13px}.tl li span{display:block;color:var(--muted);font-size:12px}
+.mock.plan{opacity:.85}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+footer{background:var(--band);color:var(--band-fg);padding:64px 0 88px;margin-top:96px}footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px}footer h4{margin:0 0 12px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bright);font-weight:500}footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px}footer a{color:#fff;text-decoration:none}footer .fine{color:var(--band-muted);font-size:13px;margin-top:10px;max-width:36ch}footer em{font-style:normal;font-family:var(--f-mono);font-size:10.5px;color:var(--bright);margin-inline-start:6px}
+.rv{transition:transform var(--d-5) var(--ease-out),opacity var(--d-5) var(--ease-out)}.js .rv.pre{opacity:0;transform:translateY(14px)}.js .rv.in{opacity:1;transform:none}
+@media (max-width:860px){footer .wrap{grid-template-columns:1fr 1fr}}@media (max-width:560px){footer .wrap{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.js .rv.pre{transform:none}}
+
+.hero{min-height:calc(100dvh - 66px);display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end;padding:96px 0 72px;border-bottom:1px solid var(--border)}
+.hero h1{font-size:clamp(46px,7.4vw,112px)}.hero .lede{font-size:19px;max-width:44ch;color:var(--muted);margin-top:28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
+.hero aside{display:grid;gap:10px;border-inline-start:1px solid var(--border);padding-inline-start:28px}
+.hero aside .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}html[lang="ar"] .hero aside .k{font-family:var(--f-ar);letter-spacing:0}
+.hero aside .v{font-family:var(--f-display);font-size:22px;font-weight:700;color:var(--heading)}html[lang="ar"] .hero aside .v{font-family:var(--f-ar)}
+.hero aside .row{padding:14px 0;border-bottom:1px solid var(--border)}.hero aside .row:last-child{border-bottom:0}
+.index{display:grid;grid-template-columns:1fr 1fr;gap:64px;padding:104px 0 80px;align-items:start}
+.index .list{display:grid}.line{display:grid;grid-template-columns:44px 1fr;gap:20px;padding:36px 0;border-top:1px solid var(--border);cursor:default;transition:opacity var(--d-3) var(--ease-out)}
+.line:last-child{border-bottom:1px solid var(--border)}.line .n{font-family:var(--f-mono);font-size:12px;color:var(--faint);padding-top:8px}
+.line h3{font-size:clamp(24px,2.6vw,34px);font-weight:700;letter-spacing:-.02em}.line p{color:var(--muted);margin-top:10px;max-width:52ch}.line .st{margin-top:14px}
+.js .list[data-active] .line:not(.is-active){opacity:.42}
+.sticky{position:sticky;top:96px}.sticky .bezel{transition:transform var(--d-5) var(--ease-out)}.sticky .core>.mock{display:none}.sticky .core>.mock.show{display:block}
+.band{background:var(--band);color:var(--band-fg);padding:96px 0 112px}.band h2{color:#fff}.band .eyebrow{color:var(--bright)}
+.why{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:start;margin-top:40px}.why .lead h3{font-size:clamp(28px,3.4vw,44px);color:#fff;letter-spacing:-.03em;line-height:1.08}.why .lead p{color:var(--band-muted);font-size:17px;max-width:48ch;margin-top:18px}
+.why .side{display:grid;gap:0}.why .side div{padding:22px 0;border-top:1px solid var(--line)}.why .side h3{font-size:19px;color:#fff}.why .side p{color:var(--band-muted);margin-top:8px;font-size:14.5px}
+.why .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bright);display:block;margin-bottom:10px}html[lang="ar"] .why .k{font-family:var(--f-ar);letter-spacing:0}
+.proof{padding:96px 0 40px}.proof .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border-s);border-bottom:1px solid var(--border-s);margin-top:32px}
+.pc{padding:36px 28px;border-inline-end:1px solid var(--border)}.pc:last-child{border-inline-end:0}.pair{font-family:var(--f-mono);display:flex;gap:14px;align-items:baseline}.pair .from{font-size:22px;color:var(--faint);text-decoration:line-through;text-decoration-color:var(--orange);text-decoration-thickness:3px}.pair .to{font-size:54px;font-weight:500;color:var(--blue);letter-spacing:-.04em;line-height:1}
+.what{font-weight:600;color:var(--heading);margin-top:14px}.base{color:var(--muted);font-size:13px;margin-top:6px}
+.note{color:var(--muted);font-size:13px;border-inline-start:3px solid var(--orange);padding:8px 14px;margin-top:28px;max-width:70ch}
+.bbgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}.bb{display:grid;gap:6px;padding-top:16px;border-top:2px solid var(--bright)}.bb i{display:none}.bb b{color:#fff;font-size:15px}.bb span{color:var(--band-muted);font-size:13.5px}
+.cta{padding:96px 0 40px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end}.cta h2{font-size:clamp(30px,4vw,54px)}.cta .ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:860px){.hero,.index,.why,.cta{grid-template-columns:1fr}.hero{min-height:auto;padding:64px 0 48px}.hero aside{border:0;padding:0}.sticky{position:static}.sticky .core>.mock{display:block}.sticky .core>.mock+.mock{display:none}.proof .grid{grid-template-columns:1fr}.pc{border-inline-end:0;border-bottom:1px solid var(--border)}.bbgrid{grid-template-columns:1fr 1fr}.cta .ctas{justify-content:flex-start}}
+@media (max-width:560px){.bbgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="ar">انتقل إلى المحتوى</span></a>
+<div class="grain" aria-hidden="true"></div>
+<header id="site-header"><div class="wrap">
+  <a class="wm" href="#top" translate="no">SALISCO<i></i></a>
+  <div class="hdr-actions"><button class="lang" id="langToggle" type="button" aria-label="Switch language"><span lang="en">العربية</span><span lang="ar">English</span></button>
+  <a class="btn small" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">↗</span></a></div>
+</div></header>
+<main id="main">
+<section class="wrap hero" id="top" aria-labelledby="h1">
+  <div>
+    <div class="eyebrow rv"><span lang="en">Riyadh · operational software for Saudi Arabia</span><span lang="ar">الرياض · برمجيات تشغيلية للمملكة</span></div>
+    <h1 id="h1" class="rv" style="margin-top:14px"><span lang="en">SALISCO.<br>One backbone.<br>Four lines of <span class="o">Saudi-built</span> software.</span><span lang="ar">ساليسكو.<br>أساس واحد.<br>أربعة خطوط من البرمجيات <span class="o">المبنية في السعودية.</span></span></h1>
+    <p class="lede rv"><span lang="en">SALISCO builds the operational software Saudi businesses run on. Garage, Spare Parts, Fleet and Insurance share one ledger and four assumptions from day one: Arabic, ZATCA, the riyal, and an audit trail that answers who changed what.</span><span lang="ar">ساليسكو تبني البرمجيات التشغيلية التي تعمل عليها المنشآت السعودية. الورشة وقطع الغيار والأساطيل والتأمين تتشارك دفتراً واحداً وأربعة افتراضات من اليوم الأول: العربية، والهيئة، والريال، وسجل تدقيق يجيب عن السؤال: من غيّر ماذا.</span></p>
+    <div class="ctas rv"><a class="btn" href="#family"><span lang="en">See the four lines</span><span lang="ar">اطّلع على الخطوط الأربعة</span><span class="arr" aria-hidden="true">↗</span></a><a class="btn ghost" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span><span class="arr" aria-hidden="true">↗</span></a></div>
+  </div>
+  <aside class="rv" aria-label="At a glance">
+    <div class="row"><div class="k"><span lang="en">Shipping today</span><span lang="ar">متاح اليوم</span></div><div class="v" translate="no" dir="ltr">SALIS AUTO</div></div>
+    <div class="row"><div class="k"><span lang="en">Inside it</span><span lang="ar">داخله</span></div><div class="v"><span lang="en">Spare Parts · Fleet</span><span lang="ar">قطع الغيار · الأساطيل</span></div></div>
+    <div class="row"><div class="k"><span lang="en">Planned</span><span lang="ar">مخطط</span></div><div class="v"><span lang="en">Insurance</span><span lang="ar">التأمين</span></div></div>
+    <div class="row"><div class="k"><span lang="en">Estimate approval</span><span lang="ar">اعتماد عرض السعر</span></div><div class="v mono" dir="ltr">48 h → 4 h</div></div>
+  </aside>
+</section>
+
+<section class="wrap index" id="family" aria-labelledby="fam-h">
+  <div>
+    <div class="eyebrow"><span lang="en">The family</span><span lang="ar">العائلة</span></div>
+    <h2 id="fam-h" style="margin:10px 0 28px"><span lang="en">One family. Four products. Status stated on every line.</span><span lang="ar">عائلة واحدة. أربعة منتجات. الحالة مذكورة في كل سطر.</span></h2>
+    <div class="list" id="lineList">
+      <article class="line rv" data-line="garage"><div class="n" dir="ltr">01</div><div><h3 translate="no" dir="ltr">SALIS Garage</h3><p><span lang="en">Workshop management, Saudi standard. The full lifecycle from check-in to delivery, finance and ZATCA e-invoicing, a customer app, and portals for technicians and suppliers.</span><span lang="ar">إدارة ورش السيارات بمعيار سعودي. دورة الورشة كاملة من الاستقبال إلى التسليم، المالية والفوترة الإلكترونية، تطبيق للعملاء، وبوابات للفنيين والموردين.</span></p><span class="st live"><span lang="en">Shipping as SALIS AUTO</span><span lang="ar">متاح باسم SALIS AUTO</span></span></div></article><article class="line rv" data-line="parts"><div class="n" dir="ltr">02</div><div><h3 translate="no" dir="ltr">SALIS Spare Parts</h3><p><span lang="en">The supplier network: catalogue, price comparison, purchase orders, automatic reorder below minimum stock, and the supplier portal.</span><span lang="ar">شبكة الموردين: الكتالوج، مقارنة الأسعار، أوامر الشراء، إعادة الطلب تلقائياً عند انخفاض المخزون عن حده، وبوابة الموردين.</span></p><span class="st in"><span lang="en">In SALIS AUTO today</span><span lang="ar">داخل SALIS AUTO اليوم</span></span></div></article><article class="line rv" data-line="fleet"><div class="n" dir="ltr">03</div><div><h3 translate="no" dir="ltr">SALIS Fleet</h3><p><span lang="en">Fleet accounts across branches: vehicles under contract, SLA tracking, cost per vehicle and utilisation, computed from the job cards the workshop already writes.</span><span lang="ar">حسابات الأساطيل عبر الفروع: المركبات تحت العقد، متابعة اتفاقيات مستوى الخدمة، التكلفة لكل مركبة ونسبة الاستخدام، محسوبة من بطاقات العمل التي تكتبها الورشة أصلاً.</span></p><span class="st in"><span lang="en">In SALIS AUTO today</span><span lang="ar">داخل SALIS AUTO اليوم</span></span></div></article><article class="line rv" data-line="insurance"><div class="n" dir="ltr">04</div><div><h3 translate="no" dir="ltr">SALIS Insurance</h3><p><span lang="en">Claims and approvals between workshops and insurers on the estimate and invoice records that already exist. Not available yet, and not described as if it were.</span><span lang="ar">المطالبات والموافقات بين الورش وشركات التأمين على سجلات عروض الأسعار والفواتير الموجودة أصلاً. غير متاح بعد، ولا يوصف كأنه متاح.</span></p><span class="st plan"><span lang="en">Planned</span><span lang="ar">مخطط</span></span></div></article>
+    </div>
+    <p class="note"><span lang="en">Product lines confirmed by the owner on 4 September 2026. Statuses describe what a workshop can sign in to today, not the roadmap.</span><span lang="ar">خطوط المنتجات كما أكدها المالك في ٤ سبتمبر ٢٠٢٦. تصف الحالات ما تستطيع الورشة تسجيل الدخول إليه اليوم، لا خارطة الطريق.</span></p>
+  </div>
+  <div class="sticky rv"><div class="bezel"><div class="core" id="mockHost"><div data-for="garage" class="mock show" aria-hidden="true"><div class="mbar"><b>Bay board · Riyadh Main</b><span class="mono">04 Sep 2026 · 09:40</span></div>
+<table class="mt"><thead><tr><th>Bay</th><th>Job</th><th>Plate</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+<tr><td>1</td><td class="mono">JC-4F2A</td><td class="mono">RUH 4821</td><td class="mono">SAR 1,245.00</td><td><i class="pill">In repair</i></td></tr>
+<tr><td>2</td><td class="mono">JC-4F2B</td><td class="mono">RUH 1157</td><td class="mono">SAR 380.00</td><td><i class="pill">QC</i></td></tr>
+<tr><td>3</td><td class="mono">JC-4F2C</td><td class="mono">RUH 9930</td><td class="mono">SAR 2,910.50</td><td><i class="pill o">Awaiting parts</i></td></tr>
+<tr><td>4</td><td class="mono">JC-4F2D</td><td class="mono">RUH 2204</td><td class="mono">SAR 640.00</td><td><i class="pill">Delivered</i></td></tr></tbody></table>
+<div class="mfoot">Illustrative rows. Figures are examples, not customer data.</div></div><div data-for="parts" class="mock" aria-hidden="true"><div class="mbar"><b>Purchase order <span class="mono">PO-10421</span></b><i class="pill o">Awaiting approval</i></div>
+<table class="mt"><thead><tr><th>Part</th><th>Number</th><th>Qty</th><th>Line</th></tr></thead><tbody>
+<tr><td>Front brake pads</td><td class="mono">BP-2210-F</td><td class="mono">8</td><td class="mono">SAR 1,160.00</td></tr>
+<tr><td>Oil filter</td><td class="mono">OF-0090</td><td class="mono">24</td><td class="mono">SAR 684.00</td></tr></tbody></table>
+<div class="mfoot">Trigger: stock below minimum, 4 of 12. Illustrative order.</div></div><div data-for="fleet" class="mock" aria-hidden="true"><div class="mbar"><b>Fleet account · Contract 2026-14</b><span class="mono">31 Aug 2026</span></div>
+<table class="mt"><thead><tr><th>Plate</th><th>Branch</th><th>Utilisation</th><th>Cost / km</th></tr></thead><tbody>
+<tr><td class="mono">RUH 7712</td><td>Riyadh Main</td><td><span class="bar" style="--w:82%"></span> <span class="mono">82%</span></td><td class="mono">SAR 0.41</td></tr>
+<tr><td class="mono">DMM 3048</td><td>Dammam</td><td><span class="bar" style="--w:64%"></span> <span class="mono">64%</span></td><td class="mono">SAR 0.53</td></tr>
+<tr><td class="mono">JED 5521</td><td>Jeddah</td><td><span class="bar" style="--w:37%"></span> <span class="mono">37%</span></td><td class="mono">SAR 0.88</td></tr></tbody></table>
+<div class="mfoot">Utilisation is days in service over days under contract. Illustrative.</div></div><div data-for="insurance" class="mock plan" aria-hidden="true"><div class="mbar"><b>Claim timeline</b><i class="pill o">Planned</i></div>
+<ol class="tl"><li><div><b>Estimate <span class="mono">EST-2041</span></b><span>Sent to insurer</span></div></li><li><div><b>Approval</b><span>Insurer responds on the record</span></div></li><li><div><b>Invoice <span class="mono">INV-88120</span></b><span>Issued against the approved lines</span></div></li></ol>
+<div class="mfoot">Not available yet. Shown as a plan, not a feature.</div></div></div></div></div>
+</section>
+
+<section class="band" id="why" aria-labelledby="why-h"><div class="wrap">
+  <div class="eyebrow"><span lang="en">Why one family</span><span lang="ar">لماذا عائلة واحدة</span></div>
+  <h2 id="why-h" style="margin-top:10px"><span lang="en">The value is the absence of seams.</span><span lang="ar">القيمة في غياب الفواصل.</span></h2>
+  <div class="why">
+    <div class="lead rv"><span class="k"><span lang="en">One backbone</span><span lang="ar">أساس واحد</span></span><h3><span lang="en">Products share a ledger, not an integration.</span><span lang="ar">المنتجات تتشارك دفتراً واحداً، لا تكاملاً.</span></h3><p><span lang="en">An estimate, a purchase order, a fleet contract and a claim are rows in one system. There is nothing to export, reconcile or retype between them.</span><span lang="ar">عرض السعر وأمر الشراء وعقد الأسطول والمطالبة صفوف في نظام واحد. لا شيء يُصدَّر أو يُطابَق أو يُعاد إدخاله بينها.</span></p></div>
+    <div class="side">
+      <div class="rv"><span class="k"><span lang="en">Saudi-native</span><span lang="ar">سعودية الأصل</span></span><h3><span lang="en">Built for this market, not translated into it.</span><span lang="ar">بُنيت لهذا السوق، لا تُرجمت إليه.</span></h3><p><span lang="en">ZATCA, SAR and Arabic are the assumptions each product starts from. Nothing is bolted on late, so nothing behaves differently in Arabic than in English.</span><span lang="ar">الهيئة والريال والعربية هي الافتراضات التي يبدأ منها كل منتج. لا شيء يُضاف متأخراً، فلا شيء يتصرف بالعربية بخلاف الإنجليزية.</span></p></div>
+      <div class="rv"><span class="k"><span lang="en">Auditable</span><span lang="ar">قابلة للتدقيق</span></span><h3><span lang="en">Traceability is enforced by the database.</span><span lang="ar">التتبع تفرضه قاعدة البيانات.</span></h3><p><span lang="en">Every mutation writes its audit row in the same transaction. The promise is not in the marketing copy. It is in the schema.</span><span lang="ar">كل تعديل يكتب سطر تدقيقه في المعاملة نفسها. الوعد ليس في نص التسويق. إنه في المخطط.</span></p></div>
+    </div>
+  </div>
+  <div class="bbgrid"><div class="bb rv"><i></i><b><span lang="en">Arabic first</span><span lang="ar">العربية أولاً</span></b><span><span lang="en">Written for Arabic, English beside it.</span><span lang="ar">تُكتب بالعربية والإنجليزية بجانبها.</span></span></div><div class="bb rv"><i></i><b><span lang="en">ZATCA in the core</span><span lang="ar">الهيئة في النواة</span></b><span><span lang="en">QR and hash chain in the posting transaction.</span><span lang="ar">رمز الاستجابة وسلسلة التجزئة في معاملة الترحيل.</span></span></div><div class="bb rv"><i></i><b><span lang="en">SAR, to the halala</span><span lang="ar">الريال حتى الهللة</span></b><span><span lang="en">Money stored as integer halalas; rounding happens once.</span><span lang="ar">المال يُخزَّن هللات صحيحة؛ والتقريب يحدث مرة واحدة.</span></span></div><div class="bb rv"><i></i><b><span lang="en">One audit row per change</span><span lang="ar">صف تدقيق لكل تغيير</span></b><span><span lang="en">Actor, before, after, request id, in the same transaction.</span><span lang="ar">الفاعل، قبل، بعد، ومعرّف الطلب، في المعاملة نفسها.</span></span></div></div>
+</div></section>
+
+<section class="wrap proof" id="proof" aria-labelledby="proof-h">
+  <div class="eyebrow"><span lang="en">Results from deployments</span><span lang="ar">نتائج من مواقع التشغيل</span></div>
+  <h2 id="proof-h" style="margin-top:10px"><span lang="en">Numbers carry their baseline or they do not appear.</span><span lang="ar">الأرقام تحمل أساس قياسها أو لا تظهر.</span></h2>
+  <div class="grid"><div class="pc rv"><div class="pair" dir="ltr"><span class="from">48 h</span><span class="to">4 h</span></div><div class="what"><span lang="en">Estimate approval</span><span lang="ar">اعتماد عرض السعر</span></div><div class="base"><span lang="en">Baseline: paper estimates signed at the counter.</span><span lang="ar">الأساس: عروض أسعار ورقية تُوقَّع عند الكاونتر.</span></div></div><div class="pc rv"><div class="pair" dir="ltr"><span class="from">15 min</span><span class="to">2 min</span></div><div class="what"><span lang="en">Invoice at the counter</span><span lang="ar">الفاتورة عند الكاونتر</span></div><div class="base"><span lang="en">Baseline: handwritten invoice copied to a spreadsheet at day’s end.</span><span lang="ar">الأساس: فاتورة بخط اليد تُنسخ إلى جدول في نهاية اليوم.</span></div></div><div class="pc rv"><div class="pair" dir="ltr"><span class="to">+25%</span></div><div class="what"><span lang="en">Workshop throughput</span><span lang="ar">إنتاجية الورشة</span></div><div class="base"><span lang="en">Measured across deployments against each workshop’s prior twelve months.</span><span lang="ar">مقاسة عبر عمليات التشغيل مقارنة بالاثني عشر شهراً السابقة لكل ورشة.</span></div></div></div>
+</section>
+
+<section class="wrap cta" id="contact" aria-labelledby="cta-h">
+  <div><div class="eyebrow"><span lang="en">Contact</span><span lang="ar">تواصل</span></div><h2 id="cta-h" style="margin-top:10px"><span lang="en">See it on a job card from your own floor.</span><span lang="ar">شاهده على بطاقة عمل من ورشتك.</span></h2><p style="color:var(--muted);margin-top:14px;max-width:48ch"><span lang="en">A 20-minute SALIS AUTO demo in Arabic or English. Company matters, partnerships and press by email.</span><span lang="ar">عرض SALIS AUTO لعشرين دقيقة بالعربية أو الإنجليزية. شؤون الشركة والشراكات والإعلام عبر البريد.</span></p></div>
+  <div class="ctas"><a class="btn" href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a demo</span><span lang="ar">احجز عرضاً</span><span class="arr" aria-hidden="true">↗</span></a><a class="btn ghost" href="mailto:info@salisco.com"><span lang="en">Email SALISCO</span><span lang="ar">راسل ساليسكو</span><span class="arr" aria-hidden="true">↗</span></a></div>
+</section></main>
+<footer><div class="wrap">
+  <div><a class="wm" href="#top" translate="no" style="color:#fff">SALISCO<i></i></a><p class="fine"><span lang="en">Operational software for Saudi Arabia. One backbone, four product lines. Riyadh.</span><span lang="ar">برمجيات تشغيلية للمملكة العربية السعودية. أساس واحد وأربعة خطوط منتجات. الرياض.</span></p><p class="fine" dir="ltr">salisco.com</p></div>
+  <div><h4><span lang="en">The family</span><span lang="ar">العائلة</span></h4><ul><li><span translate="no" dir="ltr">SALIS Garage</span><em><span lang="en">Shipping as SALIS AUTO</span><span lang="ar">متاح باسم SALIS AUTO</span></em></li><li><span translate="no" dir="ltr">SALIS Spare Parts</span><em><span lang="en">In SALIS AUTO today</span><span lang="ar">داخل SALIS AUTO اليوم</span></em></li><li><span translate="no" dir="ltr">SALIS Fleet</span><em><span lang="en">In SALIS AUTO today</span><span lang="ar">داخل SALIS AUTO اليوم</span></em></li><li><span translate="no" dir="ltr">SALIS Insurance</span><em><span lang="en">Planned</span><span lang="ar">مخطط</span></em></li></ul></div>
+  <div><h4><span lang="en">Accounts</span><span lang="ar">الحسابات</span></h4><ul><li><a href="https://www.linkedin.com/company/salisco" dir="ltr">linkedin.com/company/salisco</a></li><li><a href="https://x.com/salisco" dir="ltr">@salisco</a> · <a href="https://www.instagram.com/salisco" dir="ltr">@salisco</a></li><li><a href="https://www.youtube.com/@salisco" dir="ltr">youtube.com/@salisco</a></li></ul></div>
+  <div><h4><span lang="en">Contact</span><span lang="ar">تواصل</span></h4><ul><li><a href="mailto:info@salisco.com" dir="ltr">info@salisco.com</a><em><span lang="en">proposed</span><span lang="ar">مقترح</span></em></li><li><a href="https://app.salisauto.app/public-portal/book-demo"><span lang="en">Book a SALIS AUTO demo</span><span lang="ar">احجز عرض SALIS AUTO</span></a></li><li><a href="https://salisauto.app" dir="ltr">salisauto.app</a></li></ul></div>
+</div></footer>
+<script>
+(function(){
+  var h=document.documentElement;h.classList.add('js');
+  var q=new URLSearchParams(location.search).get('lang');var saved=null;try{saved=localStorage.getItem('salisco-lang')}catch(e){}
+  function set(l){h.lang=l;h.dir=l==='ar'?'rtl':'ltr';try{localStorage.setItem('salisco-lang',l)}catch(e){}}
+  set(q==='ar'||q==='en'?q:(saved||'en'));
+  document.getElementById('langToggle').addEventListener('click',function(){set(h.lang==='ar'?'en':'ar');document.dispatchEvent(new Event('langchange'))});
+  var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items=[].slice.call(document.querySelectorAll('.rv'));
+  if(!rm&&'IntersectionObserver' in window){
+    items.forEach(function(el){if(el.getBoundingClientRect().top>innerHeight)el.classList.add('pre')});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var el=e.target;var sib=[].slice.call(el.parentNode.children).filter(function(c){return c.classList.contains('rv')});var i=sib.indexOf(el);setTimeout(function(){el.classList.remove('pre');el.classList.add('in')},Math.min(i,8)*50);io.unobserve(el)}})},{rootMargin:'0px 0px -10% 0px'});
+    items.forEach(function(el){io.observe(el)});
+  }
+  // count-ups from baseline to result
+  var nums=[].slice.call(document.querySelectorAll('[data-count]'));
+  if(nums.length&&'IntersectionObserver' in window){var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target;io2.unobserve(el);if(rm){el.textContent=el.dataset.count;return}var from=+el.dataset.from||0,to=+el.dataset.count,unit=el.dataset.unit||'',t0=performance.now(),d=900;(function f(now){var p=Math.min(1,(now-t0)/d);p=1-Math.pow(1-p,3);var v=from+(to-from)*p;el.textContent=(el.dataset.sign||'')+(Number.isInteger(to)?Math.round(v):v.toFixed(0))+unit;if(p<1)requestAnimationFrame(f)})(t0)})},{threshold:.5});nums.forEach(function(n){io2.observe(n)})}
+  
+  var list=document.getElementById('lineList'),host=document.getElementById('mockHost');
+  if(list&&host&&'IntersectionObserver' in window&&innerWidth>860){
+    var lines=[].slice.call(list.querySelectorAll('.line'));
+    function show(k){lines.forEach(function(l){l.classList.toggle('is-active',l.dataset.line===k)});[].slice.call(host.children).forEach(function(m){m.classList.toggle('show',m.dataset.for===k)});list.setAttribute('data-active',k)}
+    var io3=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)show(e.target.dataset.line)})},{rootMargin:'-40% 0px -45% 0px'});
+    lines.forEach(function(l){io3.observe(l)});
+    lines.forEach(function(l){l.addEventListener('mouseenter',function(){show(l.dataset.line)})});
+  }
+})();
+</script>
+</body>
+</html>
