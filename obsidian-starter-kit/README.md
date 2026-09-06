@@ -39,6 +39,8 @@ claude
 | `.claude/skills/question/` | `/question` — answer a question from your notes only, with citations |
 | `scripts/vault-maintenance.ps1` | Nightly unattended maintenance (Windows / Task Scheduler) |
 | `scripts/vault-maintenance.sh` | Same for macOS/Linux (cron) |
+| `scripts/install-maintenance-task.ps1` | One-command installer: registers the Task Scheduler job |
+| `scripts/install-maintenance-task.sh` | One-command installer: registers the cron job |
 | `.mcp.json` | Project-scoped Obsidian MCP server (auto-detected by Claude Code) |
 | `.claude/agents/vault-analyst.md` | Read-only subagent for whole-vault analysis (see below) |
 
@@ -99,26 +101,54 @@ unambiguous inbox captures, validates wikilinks and frontmatter in recently
 modified notes, appends a summary to `maintenance-log.md`, and (if the vault
 is a git repo) commits the result so every change is reviewable.
 
-**Test it manually a few times before scheduling it:**
+**Step 1 — test the maintenance run manually** before scheduling it, so you
+see what it does before it runs unattended:
 
 ```powershell
 # Windows (PowerShell)
 powershell -ExecutionPolicy Bypass -File scripts\vault-maintenance.ps1 -VaultPath "M:\obo"
-
-# Then schedule nightly at 02:00 via Task Scheduler:
-schtasks /Create /TN "ObsidianVaultMaintenance" /SC DAILY /ST 02:00 `
-  /TR "powershell -NoProfile -ExecutionPolicy Bypass -File \"M:\obo\scripts\vault-maintenance.ps1\" -VaultPath \"M:\obo\""
 ```
 
 ```bash
-# macOS/Linux: test, then add to crontab
+# macOS/Linux
 ./scripts/vault-maintenance.sh /path/to/vault
-# crontab -e:  0 2 * * * /path/to/vault/scripts/vault-maintenance.sh /path/to/vault
 ```
 
+Check `maintenance-logs/` and `maintenance-log.md` in the vault to confirm
+the run did what you expect.
+
+**Step 2 — register the nightly schedule** with the installer script:
+
+```powershell
+# Windows: registers a Task Scheduler job (defaults to 02:00 daily)
+powershell -ExecutionPolicy Bypass -File scripts\install-maintenance-task.ps1 -VaultPath "M:\obo"
+
+# Run it once immediately to confirm it works end-to-end as a scheduled task:
+schtasks /Run /TN "ObsidianVaultMaintenance"
+
+# Remove it later:
+schtasks /Delete /TN "ObsidianVaultMaintenance" /F
+```
+
+```bash
+# macOS/Linux: registers a cron job (defaults to "0 2 * * *", i.e. 02:00 daily)
+./scripts/install-maintenance-task.sh /path/to/vault
+
+# Custom schedule, e.g. 03:30:
+./scripts/install-maintenance-task.sh /path/to/vault "30 3 * * *"
+
+# Remove it later: crontab -e, then delete the line for this vault.
+```
+
+Both installers are idempotent — re-running them (e.g. to change the vault
+path or time) replaces the previous registration rather than duplicating it.
+The task runs as your own user account, so it fires even when Claude Code
+and your terminal are closed; only Obsidian needs to be running if you want
+the maintenance run to use the MCP server rather than plain file access.
+
 The script's prompt is deliberately conservative (never deletes or merges,
-skips anything ambiguous). Edit the `$prompt`/`PROMPT` block to add your own
-nightly chores.
+skips anything ambiguous). Edit the `$prompt`/`PROMPT` block in
+`vault-maintenance.ps1`/`.sh` to add your own nightly chores.
 
 ## Recommended: put the vault in git
 
