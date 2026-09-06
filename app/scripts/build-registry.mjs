@@ -639,7 +639,15 @@ const screenIntl = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        const facts = layoutFacts(src)
+        // A screen may carry its breakpoints in a stylesheet it imports rather
+        // than in Tailwind variants; read those too, or its tablet layout is
+        // invisible to the detector.
+        let css = ''
+        for (const imp of src.matchAll(/^import\s+'(\.[^']*\.css)'/gm)) {
+          const sheet = path.resolve(path.dirname(full), imp[1])
+          if (fs.existsSync(sheet)) css += fs.readFileSync(sheet, 'utf8')
+        }
+        const facts = layoutFacts(src, css)
         for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
           const prev = map.get(m[1])
           map.set(m[1], prev

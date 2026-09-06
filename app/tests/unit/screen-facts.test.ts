@@ -80,6 +80,30 @@ describe('the tablet-breakpoint detector', () => {
   ])('does not count %s (%s)', (cls) => {
     expect(layoutFacts(`<a className="${cls}" />`).tabletBreakpoints).toBe(false)
   })
+
+  // The public landing carries its breakpoints in a stylesheet it imports, not
+  // in Tailwind variants. A Tailwind-only detector called that screen — which
+  // reflows at 900px, 860px and 760px — a page with no tablet layout at all.
+  it.each([
+    ['@media (max-width:860px){.a{display:none}}', 'a max-width inside the range'],
+    ['@media (min-width: 768px) { .a { display: grid } }', 'a min-width at the boundary'],
+    ['@media screen and (max-width:1024px){.a{gap:0}}', 'a compound query at the top of the range'],
+  ])('counts a stylesheet with %s (%s)', (css) => {
+    expect(layoutFacts('<a className="flex" />', css).tabletBreakpoints).toBe(true)
+  })
+
+  it.each([
+    ['@media (max-width:520px){.a{display:none}}', 'below the tablet range'],
+    ['@media (min-width:1280px){.a{display:none}}', 'above the tablet range'],
+    ['@media (prefers-reduced-motion:reduce){.a{animation:none}}', 'not a width query'],
+    ['', 'no stylesheet offered'],
+  ])('does not count a stylesheet with %s (%s)', (css) => {
+    expect(layoutFacts('<a className="flex" />', css).tabletBreakpoints).toBe(false)
+  })
+
+  it('keeps the Tailwind answer when no stylesheet is passed at all', () => {
+    expect(layoutFacts('<a className="md:flex" />').tabletBreakpoints).toBe(true)
+  })
 })
 
 describe('the Arabic state', () => {
