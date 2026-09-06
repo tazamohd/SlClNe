@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { useLandingMotion } from './landing/useLandingMotion'
+import { useLandingScenes } from './landing/useLandingScenes'
 import { MAP_ACCENTS, MAP_GRID } from './landing/mapFallback'
 import './landing/landing.css'
 
@@ -55,6 +56,7 @@ export function PublicLanding() {
   const t = useT()
   const root = useRef<HTMLDivElement>(null)
   useLandingMotion(root)
+  useLandingScenes(root)
 
   const HERO_CTAS: readonly { label: string; to: string }[] = [
     { label: t('Book a 20-minute demo'), to: '/public-portal/book-demo' },
@@ -247,6 +249,7 @@ export function PublicLanding() {
   return (
     <div className="salis-landing" ref={root}>
       <section className="hero" aria-labelledby="hero-h">
+        <div className="scene" data-scene="hero" aria-hidden="true" />
         <div className="scrim" aria-hidden="true" />
         <Trace className="trace anim" style={{ width: 980, insetInlineEnd: -300, top: -160 }} />
         <Trace
@@ -327,6 +330,7 @@ export function PublicLanding() {
           </p>
         </div>
         <div className="rail-wrap">
+          <div className="scene rail-scene" data-scene="rail" data-driver="#life" aria-hidden="true" />
           <div className="rail6" role="list">
             {STAGES.map((stage, index) => (
               <Link role="listitem" to="/public-portal/workshop" key={stage.title}>
@@ -339,6 +343,9 @@ export function PublicLanding() {
             ))}
           </div>
         </div>
+        <p className="scene-cap">
+          {t('The job card is the only thing that moves. Scroll, and it travels the six stages.')}
+        </p>
         <p style={{ marginTop: 28 }}>
           <Link className="more" to="/public-portal/workshop">
             {t('Walk the six stages')}{' '}
@@ -424,7 +431,8 @@ export function PublicLanding() {
             </p>
           </div>
 
-          <div className="ai-stage">
+          <div className="ai-stage" data-driver="#ai">
+            <div className="scene" data-scene="map" data-driver="#ai" aria-hidden="true" />
             <svg className="map-fallback" viewBox="0 0 1000 560" aria-hidden="true">
               <g className="f-blue" opacity=".5">
                 {MAP_GRID.map(([cx, cy]) => (
@@ -455,6 +463,9 @@ export function PublicLanding() {
                   <i />
                 </div>
               </div>
+              <span className="orb-label l1">{t('Assistant')}</span>
+              <span className="orb-label l2">{t('Scheduling')}</span>
+              <span className="orb-label l3">{t('Agents')}</span>
             </div>
           </div>
 

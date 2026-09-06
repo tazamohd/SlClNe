@@ -949,6 +949,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "That code is not correct.": "هذا الرمز غير صحيح.",
   "That slot was just taken — pick another time.": "حُجز هذا الموعد للتو — اختر وقتًا آخر.",
   "The AI era": "عصر الذكاء الاصطناعي",
+  "The job card is the only thing that moves. Scroll, and it travels the six stages.": "بطاقة العمل هي الشيء الوحيد الذي يتحرك. مرّر، وستقطع المراحل الست.",
   "The lifecycle": "دورة الورشة",
   "The OBD bridge is not configured in this deployment": "لم يُهيّأ جسر OBD في هذا النشر",
   "The QR payload is assigned when the invoice is issued.": "تُخصَّص حمولة رمز QR عند إصدار الفاتورة.",
