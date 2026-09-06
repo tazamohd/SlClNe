@@ -24,10 +24,18 @@ import { ceilingHalalas } from '../security/approvals'
 import type { AuthConfig } from './config'
 import { ProviderNotConfigured, providerStatus, type Providers } from './providers'
 import { ResendTooSoon, TransportUnavailable } from './otp'
-import { AuthFailure, LockedOut, type AuthService, type RequestFacts } from './service'
+import {
+  AuthFailure,
+  LockedOut,
+  RegistrationRefused,
+  RoleSwitchRefused,
+  type AuthService,
+  type RequestFacts,
+} from './service'
 
 const PUBLIC_AUTH_PATHS = [
   '/auth/login',
+  '/auth/register',
   '/auth/refresh',
   '/auth/logout',
   '/auth/forgot-password',
@@ -65,6 +73,18 @@ const loginBody = z.object({
    *  organizations — the unique index is `(org_id, email)`. */
   orgSlug: z.string().trim().min(1).max(80).optional(),
 })
+
+const registerBody = z.object({
+  name: z.string().trim().min(1, 'Please enter your name.').max(200),
+  email: z.string().trim().min(3).max(254).email('Please enter a valid email address.'),
+  password: z.string().min(1).max(200),
+  /* Collected by the form and recorded in the audit entry; the user row has no
+   * column for it, so it is not stored as though it were one. */
+  phone: z.string().trim().min(3).max(40).optional(),
+  organizationName: z.string().trim().min(1).max(200).optional(),
+})
+
+const switchRoleBody = z.object({ role: z.string().trim().min(1).max(32) })
 
 const refreshBody = z.object({ refreshToken: z.string().min(10).max(4096) })
 const forgotBody = z.object({ email: z.string().trim().min(3).max(254) })
@@ -146,6 +166,35 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
         user: presentUser(user),
       })
     } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/auth/register', veryStrictLimit, async (request, reply) => {
+    const body = parse(registerBody, request.body)
+    try {
+      const { tokens, user } = await service.register(body, facts(request))
+      return reply.code(201).send({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        expiresIn: tokens.expiresIn,
+        tokenType: tokens.tokenType,
+        user: presentUser(user),
+      })
+    } catch (error) {
+      if (error instanceof RegistrationRefused) {
+        /* 409 for a taken address, 400 for a password the policy refuses: the
+         * first is a state of the world the caller cannot fix by editing the
+         * request, the second is exactly that. */
+        return reply.code(error.code === 'email_taken' ? 409 : 400).send({
+          error: {
+            code: error.code === 'email_taken' ? 'conflict' : 'bad_request',
+            message: error.message,
+            field: error.field,
+            requestId: request.id,
+          },
+        })
+      }
       return authFailureReply(reply, request, error)
     }
   })
@@ -318,6 +367,29 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
     return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
   })
 
+  app.post('/auth/switch-role', async (request, reply) => {
+    const principal = principalOf(request)
+    const body = parse(switchRoleBody, request.body)
+    try {
+      const { tokens, user } = await service.switchRole(principal, body.role, facts(request))
+      return reply.code(200).send({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        expiresIn: tokens.expiresIn,
+        tokenType: tokens.tokenType,
+        user: presentUser(user),
+        entitlements: entitlementsFor(user.role),
+      })
+    } catch (error) {
+      if (error instanceof RoleSwitchRefused) {
+        return reply.code(403).send({
+          error: { code: 'forbidden', message: error.message, requestId: request.id },
+        })
+      }
+      return authFailureReply(reply, request, error)
+    }
+  })
+
   app.get('/auth/sessions', async (request) => {
     const principal = principalOf(request)
     return { sessions: await service.sessions(principal) }
@@ -354,6 +426,7 @@ function presentUser(user: {
   email: string
   name: string
   role: string
+  baseRole?: string
   orgId: string
   branchId: string | null
 }) {
@@ -362,6 +435,11 @@ function presentUser(user: {
     email: user.email,
     name: user.name,
     role: user.role,
+    /* The account's own role, beside the one it is acting as. The client needs
+     * both: the effective role drives what it renders, and the base role is
+     * what tells it whether to offer the role switcher at all. They are equal
+     * for every account that has never switched. */
+    baseRole: user.baseRole ?? user.role,
     orgId: user.orgId,
     branchId: user.branchId,
   }

@@ -136,7 +136,7 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   purchaseOrders: 1,
 }
 
-/** The 14 demo identities from `RBAC.md`. Passwords are **not** set here —
+/** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
  *  credentials belong to the authentication module, and a seeded password hash
  *  in a repository is a credential in a repository. */
 const DEMO_USERS: readonly { role: string; email: string; name: string }[] = [
@@ -154,6 +154,11 @@ const DEMO_USERS: readonly { role: string; email: string; name: string }[] = [
   { role: 'procurement', email: 'procurement@salisauto.sa', name: 'Procurement Agent' },
   { role: 'supplier', email: 'supplier@aljazira.sa', name: 'Al Jazira Supplies' },
   { role: 'customer', email: 'khalid@example.sa', name: 'Khalid Al-Otaibi' },
+  /* The all-access QA account. It is seeded exactly like the other thirteen —
+   * same tenant, same branch, no password hash in the repository — and its
+   * breadth comes from the matrix row for `test`, not from anything special
+   * here. Everything it does is audited under this user id. */
+  { role: 'test', email: 'test@salisauto.sa', name: 'Test User' },
 ]
 
 /** Back-computes the VAT split from a gross total, so `subtotal + tax` equals

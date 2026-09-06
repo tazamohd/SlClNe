@@ -12,6 +12,8 @@ Conventions:
 
 ## Auth
 - `POST /auth/login` — body: `{email, password}`. Returns `{accessToken, refreshToken, user}`. Access token embeds `{sub, role, org_id, branch_id, scope}`.
+- `POST /auth/register` — body: `{name, email, password, phone?, organizationName?}`. Creates an organization, its main branch and one `owner`, and returns the same `{accessToken, refreshToken, user}` login does (201). The role is never an input: a registrant owns the tenant they just created and nothing else. `409` when the address already has an account, `400` when the password policy refuses it, both naming `error.field`.
+- `POST /auth/switch-role` — body: `{role}`. Authenticated. Only an account whose **own** role is `test` may call it; everyone else gets `403`. Returns a fresh `{accessToken, refreshToken, user, entitlements}` for the acting role. The acting role is stored on the user row, so it survives a refresh and is enforced by row-level security like any other role; the switch is audited.
 - `POST /auth/refresh` — body: `{refreshToken}`.
 - `POST /auth/logout` — invalidates the refresh token.
 - `POST /auth/forgot-password` — starts recovery.
@@ -21,7 +23,7 @@ Conventions:
 - `POST /auth/biometric/enrol`, `POST /auth/biometric/challenge` — WebAuthn.
 - `POST /auth/sso/start`, `POST /auth/sso/callback` — enterprise SSO.
 - `POST /auth/social/:provider` — Google, Apple.
-- `GET /auth/me` — the signed-in user, role, entitlements.
+- `GET /auth/me` — the signed-in user, role, entitlements. `user.baseRole` is the account's own role, which differs from `user.role` only while the test account is acting as another one.
 
 ## Public (unauthenticated)
 - `POST /public/garage-applications` — a business applies to join the platform.

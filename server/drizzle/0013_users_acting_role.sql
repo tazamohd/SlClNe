@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "acting_role" varchar(32);

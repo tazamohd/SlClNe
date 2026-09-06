@@ -22,6 +22,13 @@ import type { Action, NavGroup, Role, RoleId } from '@/data/types'
 import { API_URL, setAccessTokenProvider } from '@/data/repository'
 import { usePreferences } from './PreferencesProvider'
 import { clearStored, readStored, writeStored, STORAGE_KEYS } from '@/lib/storage'
+import {
+  activeDemoAccount,
+  registerDemoAccount,
+  setActiveDemoAccount,
+  REGISTERED_ROLE,
+  type DemoAccount,
+} from '@/data/demo-accounts'
 
 /** Who is signed in, and what they may do.
  *
@@ -56,6 +63,18 @@ import { clearStored, readStored, writeStored, STORAGE_KEYS } from '@/lib/storag
  *  belongs to another agent's module. */
 const REFRESH_KEY = 'salis-refresh'
 
+/** Demo mode's *account* role, as opposed to the role it is currently acting
+ *  as. They differ only for the all-access `test` identity, which is the one
+ *  account allowed to walk the product as somebody else. Persisted separately
+ *  from `STORAGE_KEYS.role` so a reload does not lose the right to switch
+ *  back. */
+const BASE_ROLE_KEY = 'salis-base-role'
+
+/** The role that may act as another one. Mirrors the server's
+ *  `SWITCHABLE_BASE_ROLE`; `POST /auth/switch-role` refuses for anyone else, so
+ *  this only decides whether the control is offered, never whether it works. */
+const SWITCHABLE_BASE_ROLE: RoleId = 'test'
+
 /** How long before expiry the access token is renewed. Sixty seconds is enough
  *  for a slow network and short enough that a clock skew does not strand a
  *  session on an expired token. */
@@ -74,10 +93,28 @@ export interface SessionUser {
   id: string
   email: string
   name: string
+  /** The role in force: the acting role when the account is acting as one. */
   role: RoleId
+  /** The role the account itself holds. Equal to `role` for every account that
+   *  has never switched. */
+  baseRole?: RoleId
   orgId: string
   branchId: string | null
 }
+
+export type RegisterInput = {
+  name: string
+  email: string
+  password: string
+  phone?: string
+  organizationName?: string
+}
+
+export type RegisterResult =
+  | { ok: true; role: RoleId }
+  | { ok: false; message: string; field?: string }
+
+export type SwitchRoleResult = { ok: true; role: RoleId } | { ok: false; message: string }
 
 export interface SessionDevice {
   id: string
@@ -107,7 +144,20 @@ interface SessionValue {
   user: SessionUser | null
   /** True when this session came from the API rather than the role picker. */
   live: boolean
-  signIn: (role: RoleId) => void
+  /** Demo mode's sign-in. `account` is passed when the identity came from the
+   *  registration form rather than a role card, so the shell shows the person's
+   *  own name instead of the role's demo persona. */
+  signIn: (role: RoleId, account?: DemoAccount) => void
+  /** The account's own role, as opposed to the one it is acting as. */
+  baseRole: RoleId
+  /** May this account act as another role? True only for the `test` account.
+   *  The server refuses everyone else, so this only hides a control. */
+  canSwitchRole: boolean
+  /** Act as `next`. Live mode asks the server, which re-checks and audits the
+   *  switch; demo mode rewrites the stored role. */
+  switchRole: (next: RoleId) => Promise<SwitchRoleResult>
+  /** Create an account from scratch and sign in as it. */
+  register: (input: RegisterInput) => Promise<RegisterResult>
   /** Live mode. The role in the success case comes from the server's response,
    *  so the caller can route on it without having guessed it from the form. */
   signInWithPassword: (email: string, password: string) => Promise<SignInResult>
@@ -178,6 +228,21 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return isRoleId(stored) ? stored : DEFAULT_ROLE
   })
   const [demoSignedIn, setDemoSignedIn] = useState(() => isRoleId(readStored(STORAGE_KEYS.role)))
+
+  /* The account's own role in demo mode. Absent for every session that predates
+   * role switching, and for one that signed in through a role card, where the
+   * account *is* the role — so it falls back to the acting role. */
+  const [demoBaseRole, setDemoBaseRole] = useState<RoleId>(() => {
+    const stored = readStored(BASE_ROLE_KEY)
+    if (isRoleId(stored)) return stored
+    const acting = readStored(STORAGE_KEYS.role)
+    return isRoleId(acting) ? acting : DEFAULT_ROLE
+  })
+
+  /* A registered identity, when this demo session signed up rather than
+   * picking a card. It supplies the name; the role still comes from the
+   * matrix. */
+  const [demoAccount, setDemoAccount] = useState<DemoAccount | null>(() => activeDemoAccount())
 
   const [status, setStatus] = useState<SessionStatus>(LIVE ? 'loading' : 'anonymous')
   const [user, setUser] = useState<SessionUser | null>(null)
@@ -263,13 +328,21 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, [renew])
 
-  const signIn = useCallback((next: RoleId) => {
+  const signIn = useCallback((next: RoleId, account?: DemoAccount) => {
     /* Demo mode only. In live mode the role comes from a signed token and this
      * is deliberately inert — a role picker that silently overrode a real
      * session would be a privilege-escalation button. */
     if (LIVE) return
     writeStored(STORAGE_KEYS.role, next)
+    /* Signing in through a role card makes the account *be* that role: it is
+     * not an all-access account acting as one, so the right to switch has to be
+     * re-earned by signing in as `test` rather than left over from a previous
+     * session. */
+    writeStored(BASE_ROLE_KEY, next)
+    setActiveDemoAccount(account ?? null)
+    setDemoAccount(account ?? null)
     setDemoRole(next)
+    setDemoBaseRole(next)
     setDemoSignedIn(true)
   }, [])
 
@@ -313,7 +386,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return
     }
     clearStored(STORAGE_KEYS.role)
+    clearStored(BASE_ROLE_KEY)
+    setActiveDemoAccount(null)
+    setDemoAccount(null)
     setDemoRole(DEFAULT_ROLE)
+    setDemoBaseRole(DEFAULT_ROLE)
     setDemoSignedIn(false)
   }, [clearSession])
 
@@ -321,6 +398,90 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     if (!LIVE) return
     clearSession('expired')
   }, [clearSession])
+
+  const switchRole = useCallback(
+    async (next: RoleId): Promise<SwitchRoleResult> => {
+      if (!isRoleId(next)) return { ok: false, message: 'That is not a role this system defines.' }
+
+      if (!LIVE) {
+        if (demoBaseRole !== SWITCHABLE_BASE_ROLE) {
+          return { ok: false, message: 'This account may not act as another role.' }
+        }
+        /* Only the acting role moves. The base role stays `test`, which is what
+         * lets the tester come back from a role that could not have got here. */
+        writeStored(STORAGE_KEYS.role, next)
+        setDemoRole(next)
+        return { ok: true, role: next }
+      }
+
+      if (!accessTokenRef.current) return { ok: false, message: 'You are not signed in.' }
+      const result = await authFetch('/switch-role', {
+        method: 'POST',
+        body: JSON.stringify({ role: next }),
+        token: accessTokenRef.current,
+      })
+      if (result.status === 401) reportSessionInvalid()
+      if (!result.ok) {
+        return {
+          ok: false,
+          message:
+            result.status === 0
+              ? 'The server could not be reached.'
+              : errorMessage(result.body, 'That role switch was refused.'),
+        }
+      }
+      /* The server answers with a fresh token pair carrying the acting role —
+       * adopting it is what stops the app from spending the rest of the access
+       * token's life claiming the previous one. */
+      const tokens = result.body as TokenResponse
+      adopt(tokens)
+      return { ok: true, role: isRoleId(tokens.user?.role) ? tokens.user.role : next }
+    },
+    [adopt, demoBaseRole, reportSessionInvalid],
+  )
+
+  const register = useCallback(
+    async (input: RegisterInput): Promise<RegisterResult> => {
+      if (!LIVE) {
+        const outcome = registerDemoAccount({
+          name: input.name,
+          email: input.email,
+          organizationName: input.organizationName,
+        })
+        if (!outcome.ok) return { ok: false, message: outcome.message, field: outcome.field }
+        /* Signed in immediately, as the live path does: an account created by a
+         * flow that then asks you to sign in separately is two flows. */
+        writeStored(STORAGE_KEYS.role, outcome.account.role)
+        writeStored(BASE_ROLE_KEY, outcome.account.role)
+        setActiveDemoAccount(outcome.account)
+        setDemoAccount(outcome.account)
+        setDemoRole(outcome.account.role)
+        setDemoBaseRole(outcome.account.role)
+        setDemoSignedIn(true)
+        return { ok: true, role: outcome.account.role }
+      }
+
+      const result = await authFetch('/register', {
+        method: 'POST',
+        body: JSON.stringify(input),
+      })
+      if (!result.ok) {
+        const body = result.body as { error?: { message?: string; field?: string } } | null
+        return {
+          ok: false,
+          message:
+            result.status === 0
+              ? 'The server could not be reached.'
+              : errorMessage(result.body, 'That registration was refused.'),
+          field: body?.error?.field,
+        }
+      }
+      const tokens = result.body as TokenResponse
+      adopt(tokens)
+      return { ok: true, role: isRoleId(tokens.user?.role) ? tokens.user.role : REGISTERED_ROLE }
+    },
+    [adopt],
+  )
 
   const listDevices = useCallback(async (): Promise<SessionDevice[]> => {
     if (!LIVE || !accessTokenRef.current) return []
@@ -360,6 +521,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [clearSession])
 
   const role: RoleId = LIVE ? (user?.role ?? DEFAULT_ROLE) : demoRole
+  const baseRole: RoleId = LIVE
+    ? (isRoleId(user?.baseRole) ? user.baseRole : (user?.role ?? DEFAULT_ROLE))
+    : demoBaseRole
   const signedIn = LIVE ? status === 'authenticated' : demoSignedIn
 
   const value = useMemo<SessionValue>(() => {
@@ -367,7 +531,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return {
       role,
       roleMeta: meta,
-      userName: LIVE ? (user?.name ?? meta.label) : rtl ? meta.demo.ar : meta.demo.name,
+      userName: LIVE
+        ? (user?.name ?? meta.label)
+        : /* A registered identity keeps its own name while acting under any
+           * role; a role card shows the role's demo persona. */
+          (demoAccount?.name ?? (rtl ? meta.demo.ar : meta.demo.name)),
       roleLabel: rtl ? meta.ar : meta.label,
       signedIn,
       status: LIVE ? status : demoSignedIn ? 'authenticated' : 'anonymous',
@@ -375,6 +543,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       user,
       live: LIVE,
       signIn,
+      baseRole,
+      canSwitchRole: baseRole === SWITCHABLE_BASE_ROLE,
+      switchRole,
+      register,
       signInWithPassword,
       signOut,
       reportSessionInvalid,
@@ -389,6 +561,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, [
     role,
+    baseRole,
+    demoAccount,
+    switchRole,
+    register,
     rtl,
     signedIn,
     status,
