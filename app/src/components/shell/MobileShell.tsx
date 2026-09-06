@@ -9,15 +9,20 @@ import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
  *
  *  The design's mobile screens are not narrow desktop screens — the header is
  *  a different composition (hamburger + avatar + name, no search box), padding
- *  drops 24px → 16px, and the body scrolls in a `100vh - 56px` container rather
- *  than the page. `AppShell` renders this instead of the sidebar below 860px. */
+ *  drops 24px → 16px, and the body scrolls in a viewport-height container
+ *  (`h-viewport`, i.e. `100dvh`) below the header rather than the page.
+ *  `AppShell` renders this instead of the sidebar below 860px. */
 export function MobileHeader({ onOpenNav }: { onOpenNav: () => void }) {
   const { t, theme, toggleTheme } = usePreferences()
   const { userName } = useSession()
   const { open: searchOpen, setOpen: setSearchOpen } = useGlobalSearch()
 
   return (
-    <header className="relative z-[5] flex h-14 flex-shrink-0 items-center gap-2 border-b border-border bg-sidebar px-3 shadow-sm">
+    /* `h-topbar-safe` + `pt-safe-top` keeps the 56px bar 56px tall and pushes it
+       clear of the status bar / notch, rather than letting the inset eat into
+       the row. The horizontal padding folds the design's 12px into the same
+       calc so a landscape notch can't sit on the menu button. */
+    <header className="relative z-[5] flex h-topbar-safe flex-shrink-0 items-center gap-2 border-b border-border bg-sidebar pt-safe-top shadow-sm ps-[calc(0.75rem+var(--safe-start))] pe-[calc(0.75rem+var(--safe-end))]">
       <button
         type="button"
         onClick={onOpenNav}

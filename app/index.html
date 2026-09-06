@@ -2,7 +2,11 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- viewport-fit=cover lets the page paint under the notch and the home
+         indicator, which is what makes env(safe-area-inset-*) non-zero. The
+         shells then pad themselves back off those edges with the --safe-*
+         tokens; without this attribute those insets are always 0. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" href="/assets/logo-blue-orange.png" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/assets/logo-blue-orange.png" />
@@ -19,7 +23,7 @@
   <body>
     <div id="root"></div>
     <noscript>
-      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif;padding:2rem;text-align:center">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh;font-family:system-ui,sans-serif;padding:2rem;text-align:center">
         <div>
           <h1 style="font-size:1.5rem;font-weight:700;color:#0B1F3B;margin-bottom:0.5rem">SALIS AUTO</h1>
           <p style="color:#64748B">JavaScript is required to run this application. Please enable JavaScript in your browser settings.</p>

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T01:47:09.398Z",
+  "generatedAt": "2026-09-06T19:49:44.951Z",
   "generator": "app/scripts/golden-paths.mjs",
   "note": "A run record, not a plan. Classified from a run of the Playwright suite (npx playwright test --reporter=json) over desktop and mobile. PASSING means a spec declares this path and every one of its tests passed in every project it ran in; FAILING means one ran and did not; UNWRITTEN means no spec declares that path yet. Never hand-edit — re-run the runner.",
   "base": "http://localhost:4173",
@@ -13,7 +13,7 @@
     "failing": 0,
     "unwritten": 0,
     "journeys": 23,
-    "modules": 38,
+    "modules": 39,
     "errors": 0
   },
   "errors": [],

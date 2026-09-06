@@ -70,13 +70,29 @@ export default {
         'glow-lg': 'var(--glow-blue-lg)',
         'primary-btn': 'var(--shadow-primary-btn)',
       },
+      // Safe-area insets, logical (start/end follow the writing direction).
+      // Added to `spacing` so they reach every padding/margin/inset utility:
+      // `pb-safe-bottom`, `pt-safe-top`, `ps-safe-start`, `pe-safe-end`.
+      spacing: {
+        'safe-top': 'var(--safe-top)',
+        'safe-bottom': 'var(--safe-bottom)',
+        'safe-start': 'var(--safe-start)',
+        'safe-end': 'var(--safe-end)',
+      },
       height: {
         input: 'var(--h-input)',
         btn: 'var(--h-btn)',
         'btn-sm': 'var(--h-btn-sm)',
         'btn-lg': 'var(--h-btn-lg)',
         topbar: 'var(--h-topbar)',
+        // The 56px bar plus whatever the status bar / notch takes above it, so
+        // the bar's contents stay 56px tall instead of being squashed by the
+        // inset padding.
+        'topbar-safe': 'calc(var(--h-topbar) + var(--safe-top))',
+        // `100dvh` where supported, `100vh` otherwise — see styles/index.css.
+        viewport: 'var(--vh-full)',
       },
+      minHeight: { viewport: 'var(--vh-full)' },
       width: { sidebar: 'var(--w-sidebar)' },
       backgroundImage: {
         'salis-gradient': 'var(--salis-gradient)',
