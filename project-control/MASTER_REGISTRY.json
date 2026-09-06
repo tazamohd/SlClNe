@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02",
+  "generatedAt": "2026-09-05",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -113,7 +113,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -183,7 +184,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -254,7 +256,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -325,7 +328,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -395,7 +399,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -467,7 +472,8 @@
         "technician:v",
         "frontdesk:vced",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -541,7 +547,8 @@
         "technician:v",
         "frontdesk:vced",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -616,7 +623,8 @@
         "accountant:vax",
         "hr:va",
         "procurement:vax",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -687,7 +695,8 @@
         "owner:vx",
         "manager:vx",
         "accountant:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -758,7 +767,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -827,7 +837,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -896,7 +907,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -968,7 +980,8 @@
         "owner:vx",
         "manager:vx",
         "accountant:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -1101,7 +1114,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -1174,7 +1188,8 @@
         "advisor:v",
         "callcenter:vcedx",
         "frontdesk:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -1246,7 +1261,8 @@
         "advisor:v",
         "callcenter:vcedx",
         "frontdesk:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -1317,7 +1333,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -1387,7 +1404,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -1459,7 +1477,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -1659,7 +1678,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -1730,7 +1750,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -2534,7 +2555,8 @@
         "accountant:vx",
         "frontdesk:v",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -2608,7 +2630,8 @@
         "accountant:vx",
         "frontdesk:vce",
         "callcenter:vce",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -2686,7 +2709,8 @@
         "accountant:vx",
         "frontdesk:vce",
         "callcenter:vce",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -2761,7 +2785,8 @@
         "frontdesk:v",
         "callcenter:v",
         "customer:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -2839,7 +2864,8 @@
         "frontdesk:v",
         "callcenter:v",
         "customer:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -2916,7 +2942,8 @@
         "accountant:vx",
         "frontdesk:vce",
         "callcenter:vce",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -2987,7 +3014,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -3062,7 +3090,8 @@
         "accountant:vx",
         "hr:vx",
         "procurement:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -3140,7 +3169,8 @@
         "frontdesk:v",
         "callcenter:v",
         "procurement:v",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -3211,7 +3241,8 @@
         "manager:vx",
         "hr:vcedax",
         "accountant:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -3288,7 +3319,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -3363,7 +3395,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -3502,7 +3535,8 @@
         "accountant:vx",
         "frontdesk:v",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -3578,7 +3612,8 @@
         "accountant:vx",
         "frontdesk:v",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -3649,7 +3684,8 @@
         "owner:vx",
         "manager:vx",
         "accountant:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -3720,7 +3756,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -3791,7 +3828,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -3860,7 +3898,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -3934,7 +3973,8 @@
         "accountant:v",
         "frontdesk:vce",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -4012,7 +4052,8 @@
         "accountant:v",
         "frontdesk:vce",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -4218,7 +4259,8 @@
         "frontdesk:v",
         "callcenter:v",
         "procurement:v",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -4289,7 +4331,8 @@
         "manager:vx",
         "hr:vcedax",
         "accountant:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "hr",
@@ -4425,7 +4468,8 @@
         "owner:vx",
         "manager:vx",
         "accountant:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -4494,7 +4538,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -4568,7 +4613,8 @@
         "parts:vcedax",
         "accountant:vx",
         "procurement:vcex",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "parts",
@@ -4644,7 +4690,8 @@
         "accountant:vx",
         "hr:vx",
         "procurement:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "parts",
@@ -4781,7 +4828,8 @@
         "accountant:vcedax",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -4855,7 +4903,8 @@
         "accountant:vcedax",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -4931,7 +4980,8 @@
         "accountant:vcedax",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -5005,7 +5055,8 @@
         "accountant:vcedax",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -5081,7 +5132,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -5162,7 +5214,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -5238,7 +5291,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -5312,7 +5366,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -5385,7 +5440,8 @@
         "advisor:v",
         "frontdesk:vcex",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -5457,7 +5513,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -5591,7 +5648,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -5663,7 +5721,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -5733,7 +5792,8 @@
         "owner:vx",
         "manager:vx",
         "accountant:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -5996,7 +6056,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -6206,7 +6267,8 @@
         "frontdesk:v",
         "callcenter:v",
         "procurement:v",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -6282,7 +6344,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -6352,7 +6415,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -6491,7 +6555,8 @@
         "accountant:vx",
         "hr:vx",
         "procurement:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -6564,7 +6629,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -6633,7 +6699,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -6833,7 +6900,8 @@
         "parts:vced",
         "procurement:vcedax",
         "supplier:vce",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "parts",
@@ -7294,7 +7362,8 @@
         "parts:vced",
         "procurement:vcedax",
         "supplier:vce",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "parts",
@@ -7365,7 +7434,8 @@
         "advisor:vc",
         "accountant:vcedax",
         "frontdesk:vc",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -7501,7 +7571,8 @@
         "parts:v",
         "accountant:v",
         "procurement:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -7572,7 +7643,8 @@
         "parts:v",
         "accountant:v",
         "procurement:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -7649,7 +7721,8 @@
         "frontdesk:v",
         "callcenter:v",
         "procurement:v",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -7784,7 +7857,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -9818,7 +9892,8 @@
         "accountant:vax",
         "procurement:vcedax",
         "supplier:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "procurement",
@@ -9954,7 +10029,8 @@
         "advisor:vc",
         "accountant:vcedax",
         "frontdesk:vc",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -10160,7 +10236,8 @@
         "accountant:vx",
         "hr:vx",
         "procurement:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -10235,7 +10312,8 @@
         "accountant:vx",
         "hr:vx",
         "procurement:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -10435,7 +10513,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -10504,7 +10583,8 @@
         "owner:vx",
         "manager:vx",
         "accountant:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -10637,7 +10717,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -10707,7 +10788,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -10969,7 +11051,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -11038,7 +11121,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -11109,7 +11193,8 @@
         "parts:v",
         "procurement:v",
         "supplier:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -11183,7 +11268,8 @@
         "parts:v",
         "procurement:v",
         "supplier:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -11253,7 +11339,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:ve",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -11324,7 +11411,8 @@
         "owner:vax",
         "manager:vx",
         "accountant:vcedax",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "accounting",
@@ -11399,7 +11487,8 @@
         "qc:v",
         "hr:vcedx",
         "frontdesk:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -11472,7 +11561,8 @@
         "advisor:v",
         "technician:vx",
         "qc:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -11546,7 +11636,8 @@
         "advisor:v",
         "technician:vx",
         "qc:vx",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "portals",
@@ -11623,7 +11714,8 @@
         "qc:v",
         "hr:vcedx",
         "frontdesk:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -11698,7 +11790,8 @@
         "qc:v",
         "hr:vcedx",
         "frontdesk:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -11768,7 +11861,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -13603,7 +13697,8 @@
       "permissions": [
         "owner:vcedax",
         "manager:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "admin",
@@ -13678,7 +13773,8 @@
         "accountant:v",
         "frontdesk:vce",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -13756,7 +13852,8 @@
         "accountant:v",
         "frontdesk:vce",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -13892,7 +13989,8 @@
         "manager:vcedx",
         "advisor:vce",
         "callcenter:vced",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "crm",
@@ -13963,7 +14061,8 @@
         "manager:vce",
         "advisor:v",
         "accountant:v",
-        "superadmin:vcedax"
+        "superadmin:vcedax",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "ai",
@@ -14039,7 +14138,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -14116,7 +14216,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -14189,7 +14290,8 @@
         "accountant:vx",
         "frontdesk:v",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -14265,7 +14367,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -14340,7 +14443,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -14417,7 +14521,8 @@
         "accountant:vx",
         "hr:vx",
         "procurement:vx",
-        "superadmin:vx"
+        "superadmin:vx",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",
@@ -14494,7 +14599,8 @@
         "accountant:vx",
         "frontdesk:vc",
         "callcenter:v",
-        "superadmin:v"
+        "superadmin:v",
+        "test:vcedax"
       ],
       "category": "PRODUCT",
       "domain": "workshop",

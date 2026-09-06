@@ -7,7 +7,7 @@
 
 Enforce on both sides: the frontend hides / disables, the API layer re-checks every request against the same table.
 
-## Roles (14)
+## Roles (15)
 
 ### `owner` — Owner / CEO / المالك / الرئيس التنفيذي
 - **Demo email:** `owner@salisauto.sa` (password `Demo@1234`)
@@ -78,6 +78,28 @@ Enforce on both sides: the frontend hides / disables, the API layer re-checks ev
 - **Demo email:** `khalid@example.sa` (password `Demo@1234`)
 - **Data scope:** `self` — sees only their own records
 - **Approval ceiling:** may not approve
+
+### `test` — Test User / مستخدم اختبار
+- **Demo email:** `test@salisauto.sa` (password `Demo@1234`)
+- **Data scope:** `all` — the whole organization, and deliberately **not**
+  `platform`: "do everything" stops at the tenant boundary.
+- **Approval ceiling:** no ceiling
+- **Grant:** `vcedax` on all 28 modules — every garage role's surface plus the
+  customer, supplier, technician and procurement portals — and it appears on
+  none of the field-redaction lists.
+- **Acts as another role:** the only role `POST /auth/switch-role` will switch.
+  The acting role is stored on the user row, so every check — including
+  row-level security — sees the role it is acting as, and switching *narrows*
+  as often as it widens. The account's own role never changes, which is what
+  lets it come back out of `customer` or `supplier`.
+- **Audited:** every request is written to the audit log under this user id,
+  carrying the role it was acting as. The switch itself is audited too.
+- It holds both halves of every segregation-of-duties pair, by construction.
+  SOD is a control over people (`sodViolation` reads the audit trail); this one
+  identity opts out of the role half of it on purpose.
+
+The matrix below predates the test account; the live, generated one — including
+its column — is `docs/MASTER_RBAC_MATRIX.md`.
 
 ## Permission matrix
 

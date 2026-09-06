@@ -21,7 +21,7 @@ import {
 const ALL_ROLE_IDS = [
   'owner', 'superadmin', 'manager', 'advisor', 'technician', 'qc',
   'parts', 'accountant', 'hr', 'frontdesk', 'callcenter', 'procurement',
-  'supplier', 'customer',
+  'supplier', 'customer', 'test',
 ] as const
 
 const ALL_MODULES = [
@@ -40,8 +40,8 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 // ---------------------------------------------------------------------------
 
 describe('server RBAC data integrity', () => {
-  it('defines exactly 14 roles', () => {
-    expect(ROLES).toHaveLength(14)
+  it('defines exactly 15 roles', () => {
+    expect(ROLES).toHaveLength(15)
   })
 
   it('defines exactly 28 modules', () => {
@@ -197,6 +197,7 @@ describe('server approvalLimit()', () => {
     procurement: 20_000,
     supplier: 0,
     customer: 0,
+    test: null,
   }
 
   for (const [roleId, expected] of Object.entries(EXPECTED_LIMITS)) {
@@ -226,6 +227,7 @@ describe('server destinationFor()', () => {
     procurement: '/procurement-portal',
     supplier: '/supplier-portal',
     customer: '/customer-portal',
+    test: '/dashboard',
   }
 
   for (const [roleId, dest] of Object.entries(EXPECTED)) {
@@ -244,10 +246,13 @@ describe('server destinationFor()', () => {
 // ---------------------------------------------------------------------------
 
 describe('server-side permission boundaries', () => {
-  it('admin module: only owner and superadmin can create/edit/delete', () => {
+  it('admin module: only owner, superadmin and the test account can create/edit/delete', () => {
     for (const action of ['c', 'e', 'x'] as Action[]) {
       for (const roleId of ALL_ROLE_IDS) {
-        const expected = roleId === 'owner' || roleId === 'superadmin'
+        /* `test` is listed here rather than excepted quietly: it holds every
+         * action on every module by design, and a test that pretended
+         * otherwise would be asserting the matrix it wishes it had. */
+        const expected = roleId === 'owner' || roleId === 'superadmin' || roleId === 'test'
         expect(
           can('admin', action, roleId),
           `${roleId} ${action} admin should be ${expected}`,
@@ -279,10 +284,10 @@ describe('server-side permission boundaries', () => {
     }
   })
 
-  it('accounting module has only 4 roles with access', () => {
+  it('accounting module has only 4 business roles with access, plus the test account', () => {
     const permsTyped = PERMS as unknown as Record<string, Record<string, string>>
     const roles = Object.keys(permsTyped['accounting']!)
-    expect(roles.sort()).toEqual(['accountant', 'manager', 'owner', 'superadmin'])
+    expect(roles.sort()).toEqual(['accountant', 'manager', 'owner', 'superadmin', 'test'])
   })
 
   it('external roles cannot approve', () => {

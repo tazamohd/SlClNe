@@ -54,7 +54,7 @@ afterAll(async () => {
 })
 
 describe('the server enforces the identical table the client renders', () => {
-  it('matches on every one of the 392 module × role cells, string for string', () => {
+  it('matches on every one of the 420 module × role cells, string for string', () => {
     const differences: string[] = []
     for (const module of MODULE_IDS) {
       for (const role of ROLE_IDS) {
@@ -64,11 +64,11 @@ describe('the server enforces the identical table the client renders', () => {
       }
     }
     expect(differences).toEqual([])
-    expect(MODULE_IDS.length * ROLE_IDS.length).toBe(392)
+    expect(MODULE_IDS.length * ROLE_IDS.length).toBe(420)
   })
 
-  it('answers every one of the 2,352 role × module × action questions from the table', () => {
-    // Not a sample: 14 roles × 28 modules × 6 actions, generated from PERMS, so
+  it('answers every one of the 2,520 role × module × action questions from the table', () => {
+    // Not a sample: 15 roles × 28 modules × 6 actions, generated from PERMS, so
     // a module or role added to the design bundle is covered the day it lands.
     let checked = 0
     for (const module of MODULE_IDS) {
@@ -82,7 +82,7 @@ describe('the server enforces the identical table the client renders', () => {
         }
       }
     }
-    expect(checked).toBe(14 * 28 * 6)
+    expect(checked).toBe(15 * 28 * 6)
   })
 
   it('fails closed on an unknown module and an unknown role', () => {

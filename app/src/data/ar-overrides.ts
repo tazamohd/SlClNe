@@ -3567,4 +3567,13 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Side view": "المنظر الجانبي",
   "Rear view": "المنظر الخلفي",
   "Interior": "الداخلية",
+
+  /* The test account's role switcher, and the registration flow it exercises. */
+  "Act as role": "التصرف بدور",
+  "Acting as": "يتصرف بدور",
+  "Account created": "تم إنشاء الحساب",
+  "Creating your account…": "جارٍ إنشاء حسابك…",
+  "Registration failed": "فشل إنشاء الحساب",
+  "Signed in. Your demo account uses the shared demo password.": "تم تسجيل الدخول. يستخدم حسابك التجريبي كلمة المرور التجريبية المشتركة.",
+  "You are signed in as the owner of your new workshop.": "تم تسجيل دخولك كمالك لورشتك الجديدة.",
 }

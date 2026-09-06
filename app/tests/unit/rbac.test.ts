@@ -28,7 +28,7 @@ import { REGISTRY } from '@/data/generated/master-registry'
 import type { Action, RoleId } from '@/data/types'
 
 /** The permission engine, exercised across the whole matrix rather than at a
- *  handful of hand-picked points: 14 roles × 28 modules × 5 actions, generated
+ *  handful of hand-picked points: 15 roles × 28 modules × 5 actions, generated
  *  from `PERMS` so a module or role added to the design bundle is covered the
  *  day it lands.
  *
@@ -47,8 +47,8 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 const UNLIMITED: RoleId[] = ['owner', 'superadmin']
 
 describe('matrix shape', () => {
-  it('is the documented 14 roles × 28 modules × 5 actions', () => {
-    expect(ROLE_IDS).toHaveLength(14)
+  it('is the documented 15 roles × 28 modules × 5 actions', () => {
+    expect(ROLE_IDS).toHaveLength(15)
     expect(MODULES).toHaveLength(28)
     expect(ACTIONS).toHaveLength(5)
     expect(new Set(ROLE_IDS).size).toBe(ROLE_IDS.length)
@@ -74,7 +74,7 @@ describe('matrix shape', () => {
 })
 
 describe('can()', () => {
-  it('agrees with the matrix for all 1,960 role × module × action combinations', () => {
+  it('agrees with the matrix for all 2,100 role × module × action combinations', () => {
     let checked = 0
     for (const module of MODULES) {
       for (const role of ROLE_IDS) {
@@ -87,7 +87,7 @@ describe('can()', () => {
         }
       }
     }
-    expect(checked).toBe(14 * 28 * 5)
+    expect(checked).toBe(15 * 28 * 5)
   })
 
   it('never confers a write without the matching read', () => {
@@ -350,6 +350,9 @@ describe('approval ceilings', () => {
     procurement: 20_000,
     supplier: 0,
     customer: 0,
+    /* The all-access test account: unlimited, like the owner, because approving
+     * is one of the things it exists to exercise. */
+    test: null,
   }
 
   it('reports the ceiling the design assigns each role', () => {
@@ -480,12 +483,19 @@ describe('segregation of duties', () => {
     // repair/QC pair is genuinely separated — and `WorkshopQC` enforces it with
     // a literal `role === 'technician'` check rather than from this table, so
     // the other five pairs are enforced nowhere.
+    // `test` appears in every pair, and that is the point of it rather than a
+    // finding: an account that holds every action on every module holds both
+    // sides of every duty. Segregation of duties is a control over *people*
+    // (`sodViolation` reads the audit trail for who did what), and the one
+    // identity that deliberately opts out of the role half of it is the QA
+    // account. It is listed here rather than filtered out so that nobody reads
+    // this expectation as saying the matrix separates duties for it.
     expect(conflicts).toEqual({
-      'Raise purchase order + Approve purchase order': ['owner', 'manager', 'procurement'],
-      'Create supplier + Approve supplier payment': ['owner', 'manager'],
-      'Post journal entry + Approve journal entry': ['accountant'],
-      'Perform repair + Pass quality check': ['owner', 'manager', 'advisor'],
-      'Create employee + Approve payroll run': ['owner', 'hr'],
+      'Raise purchase order + Approve purchase order': ['owner', 'manager', 'procurement', 'test'],
+      'Create supplier + Approve supplier payment': ['owner', 'manager', 'test'],
+      'Post journal entry + Approve journal entry': ['accountant', 'test'],
+      'Perform repair + Pass quality check': ['owner', 'manager', 'advisor', 'test'],
+      'Create employee + Approve payroll run': ['owner', 'hr', 'test'],
     })
   })
 

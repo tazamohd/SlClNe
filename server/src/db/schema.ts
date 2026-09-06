@@ -95,8 +95,17 @@ export const users = pgTable(
     email: varchar('email', { length: 254 }).notNull(),
     name: varchar('name', { length: 200 }).notNull(),
     nameAr: varchar('name_ar', { length: 200 }),
-    /** One of the 14 `RBAC.md` roles. */
+    /** One of the `RBAC.md` roles. */
     role: varchar('role', { length: 32 }).notNull(),
+    /** The role this account is *currently acting as*, or null for its own.
+     *
+     *  Only the all-access `test` account may set it (`POST /auth/switch-role`),
+     *  and the effective role every check reads is `actingRole ?? role`. It is a
+     *  column rather than a token claim on purpose: the role is re-read from
+     *  this row on every refresh and on `/auth/me`, so a switch takes effect —
+     *  and can be taken away — within the access token's lifetime rather than
+     *  the refresh token's. */
+    actingRole: varchar('acting_role', { length: 32 }),
     passwordHash: text('password_hash'),
     status: varchar('status', { length: 20 }).notNull().default('active'),
     lastLoginAt: timestamp('last_login_at', { withTimezone: true }),

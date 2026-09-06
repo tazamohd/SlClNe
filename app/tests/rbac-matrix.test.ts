@@ -21,7 +21,7 @@ import type { Action, RoleId } from '../src/data/types'
 const ALL_ROLE_IDS: RoleId[] = [
   'owner', 'superadmin', 'manager', 'advisor', 'technician', 'qc',
   'parts', 'accountant', 'hr', 'frontdesk', 'callcenter', 'procurement',
-  'supplier', 'customer',
+  'supplier', 'customer', 'test',
 ]
 
 const ALL_MODULES = [
@@ -40,8 +40,8 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 // ---------------------------------------------------------------------------
 
 describe('RBAC data integrity', () => {
-  it('defines exactly 14 roles', () => {
-    expect(ROLES).toHaveLength(14)
+  it('defines exactly 15 roles', () => {
+    expect(ROLES).toHaveLength(15)
   })
 
   it('defines exactly 28 modules', () => {
@@ -306,8 +306,12 @@ describe('fieldHidden()', () => {
     }
   })
 
-  it('Employee salary is hidden from 9 roles, visible to owner/manager/accountant/hr/superadmin', () => {
-    const visible = ['owner', 'manager', 'accountant', 'hr', 'superadmin']
+  it('Employee salary is hidden from 9 roles, visible to owner/manager/accountant/hr/superadmin and the test account', () => {
+    /* The redaction list names the roles a field is hidden *from*, so a role it
+     * never names sees the value. `test` is not on any of the seven lists,
+     * deliberately: an account that exists to check what a screen renders is
+     * useless if the screens redact for it. */
+    const visible = ['owner', 'manager', 'accountant', 'hr', 'superadmin', 'test']
     const hidden = ALL_ROLE_IDS.filter((r) => !visible.includes(r))
     for (const r of visible) {
       expect(fieldHidden('Employee salary', r), `should be visible to ${r}`).toBe(false)
@@ -569,10 +573,10 @@ describe('no role inheritance', () => {
 // ---------------------------------------------------------------------------
 
 describe('critical permission boundaries', () => {
-  it('only owner and superadmin can fully administer admin module', () => {
+  it('only owner, superadmin and the test account can fully administer admin module', () => {
     for (const action of ['c', 'e', 'x'] as Action[]) {
       for (const roleId of ALL_ROLE_IDS) {
-        if (roleId === 'owner' || roleId === 'superadmin') {
+        if (roleId === 'owner' || roleId === 'superadmin' || roleId === 'test') {
           expect(can('admin', action, roleId), `${roleId} should ${action} admin`).toBe(true)
         } else {
           expect(can('admin', action, roleId), `${roleId} should not ${action} admin`).toBe(false)
@@ -623,9 +627,11 @@ describe('critical permission boundaries', () => {
     }
   })
 
-  it('audit module is limited to owner, manager, accountant, superadmin', () => {
+  it('audit module is limited to owner, manager, accountant, superadmin — and the test account', () => {
     const auditRoles = Object.keys(PERMS['audit']!)
-    expect(auditRoles.sort()).toEqual(['accountant', 'manager', 'owner', 'superadmin'])
+    /* `test` reads the audit log because reading it is part of what the account
+     * is for: the log is where its own activity shows up. */
+    expect(auditRoles.sort()).toEqual(['accountant', 'manager', 'owner', 'superadmin', 'test'])
   })
 })
 

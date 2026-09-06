@@ -74,6 +74,12 @@ export const roleId = z.enum([
   'procurement',
   'supplier',
   'customer',
+  /* The all-access QA account. Not a business role: `test` holds every action
+   * on every module, so one login can walk the whole product end to end, and
+   * it is the only role `/auth/switch-role` will act as another one from.
+   * Its breadth is the reason `audit` is enforced rather than assumed — every
+   * request it makes is written to the audit log under its own user id. */
+  'test',
 ])
 export type RoleId = z.infer<typeof roleId>
 
@@ -85,34 +91,34 @@ export type DataScope = z.infer<typeof dataScope>
 
 /** module → role → granted actions, e.g. `'vcedax'`. `''` means denied. */
 export const PERMS: Readonly<Record<ModuleId, Readonly<Record<RoleId, string>>>> = {
-  'dashboard': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': 'v', 'technician': 'v', 'qc': 'v', 'parts': 'v', 'accountant': 'vx', 'hr': 'v', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': 'v', 'supplier': '', 'customer': '' },
-  'jobcards': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vcea', 'technician': 've', 'qc': 'va', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '' },
-  'appointments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vced', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vced', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': '' },
-  'estimates': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '' },
-  'customers': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'vce', 'procurement': '', 'supplier': '', 'customer': '' },
-  'vehicles': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': 'v', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '' },
-  'inventory': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'v', 'technician': 'v', 'qc': '', 'parts': 'vcedax', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcex', 'supplier': '', 'customer': '' },
-  'procurement': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcax', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'vc', 'accountant': 'vax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcedax', 'supplier': 'v', 'customer': '' },
-  'invoices': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '' },
-  'payments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'accounting': { 'owner': 'vax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'hr': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': 'vcedax', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'technicians': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'v', 'technician': 'v', 'qc': 'v', 'parts': '', 'accountant': '', 'hr': 'vcedx', 'frontdesk': 'v', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'crm': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': '' },
-  'callcenter': { 'owner': 'vx', 'superadmin': 'v', 'manager': 'vx', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'v', 'callcenter': 'vcedx', 'procurement': '', 'supplier': '', 'customer': '' },
-  'reports': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': 'v', 'technician': '', 'qc': 'v', 'parts': 'vx', 'accountant': 'vx', 'hr': 'vx', 'frontdesk': '', 'callcenter': '', 'procurement': 'vx', 'supplier': '', 'customer': '' },
-  'approvals': { 'owner': 'vax', 'superadmin': 'vx', 'manager': 'vax', 'advisor': 'va', 'technician': '', 'qc': '', 'parts': 'va', 'accountant': 'vax', 'hr': 'va', 'frontdesk': '', 'callcenter': '', 'procurement': 'vax', 'supplier': '', 'customer': '' },
-  'kiosk': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vcex', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '' },
-  'execreports': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'portaltech': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': 'vx', 'qc': 'vx', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'portalcustomer': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'vx' },
-  'portalsupplier': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'v', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'v', 'supplier': 'vx', 'customer': '' },
-  'portalprocure': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'v', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vx', 'supplier': '', 'customer': '' },
-  'ai': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'vce', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'admin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'settings': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 've', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'audit': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '' },
-  'network': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'vced', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcedax', 'supplier': 'vce', 'customer': '' },
+  'dashboard': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': 'v', 'technician': 'v', 'qc': 'v', 'parts': 'v', 'accountant': 'vx', 'hr': 'v', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': 'v', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'jobcards': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vcea', 'technician': 've', 'qc': 'va', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'appointments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vced', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vced', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'estimates': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'customers': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'vce', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'vehicles': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': 'v', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'inventory': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'v', 'technician': 'v', 'qc': '', 'parts': 'vcedax', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcex', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'procurement': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcax', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'vc', 'accountant': 'vax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcedax', 'supplier': 'v', 'customer': '', 'test': 'vcedax' },
+  'invoices': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'payments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'accounting': { 'owner': 'vax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'hr': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': 'vcedax', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'technicians': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'v', 'technician': 'v', 'qc': 'v', 'parts': '', 'accountant': '', 'hr': 'vcedx', 'frontdesk': 'v', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'crm': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'callcenter': { 'owner': 'vx', 'superadmin': 'v', 'manager': 'vx', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'v', 'callcenter': 'vcedx', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'reports': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': 'v', 'technician': '', 'qc': 'v', 'parts': 'vx', 'accountant': 'vx', 'hr': 'vx', 'frontdesk': '', 'callcenter': '', 'procurement': 'vx', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'approvals': { 'owner': 'vax', 'superadmin': 'vx', 'manager': 'vax', 'advisor': 'va', 'technician': '', 'qc': '', 'parts': 'va', 'accountant': 'vax', 'hr': 'va', 'frontdesk': '', 'callcenter': '', 'procurement': 'vax', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'kiosk': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vcex', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'execreports': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'portaltech': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': 'vx', 'qc': 'vx', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'portalcustomer': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'vx', 'test': 'vcedax' },
+  'portalsupplier': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'v', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'v', 'supplier': 'vx', 'customer': '', 'test': 'vcedax' },
+  'portalprocure': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'v', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vx', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'ai': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'vce', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'admin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'settings': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 've', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'audit': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'network': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'vced', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcedax', 'supplier': 'vce', 'customer': '', 'test': 'vcedax' },
 }
 
 export interface RoleMeta {
@@ -136,6 +142,11 @@ export const ROLE_META: Readonly<Record<RoleId, RoleMeta>> = {
   'procurement': { scope: 'all', limitSar: 20000 },
   'supplier': { scope: 'external', limitSar: 0 },
   'customer': { scope: 'self', limitSar: 0 },
+  /* Organization-wide, not `platform`: "do everything" stops at the tenant
+   * boundary. A test account that could read another organization's rows would
+   * make every isolation guarantee conditional on which demo user is signed
+   * in. Unlimited ceiling, because approving is one of the things it tests. */
+  'test': { scope: 'all', limitSar: null },
 }
 
 /** Field-level redaction: named fields hidden from named roles. */

@@ -9,6 +9,7 @@ import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { ROLES, destinationFor } from '@/data/rbac'
+import { findDemoAccount } from '@/data/demo-accounts'
 import type { Role, RoleId } from '@/data/types'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
@@ -81,7 +82,12 @@ export function Login() {
     }
 
     const role = (ROLES as readonly Role[]).find((r) => r.demo.email === normalized)
-    if (!role || password !== DEMO_PASSWORD) {
+    /* An account created through the registration form signs in here too. Mock
+     * mode stores no passwords — deliberately, see `data/demo-accounts.ts` — so
+     * a registered identity uses the same shared demo password as the role
+     * cards, and the notice under them says as much. */
+    const account = role ? null : findDemoAccount(normalized)
+    if ((!role && !account) || password !== DEMO_PASSWORD) {
       toast.show({
         title: t('Sign in failed'),
         description: t('Pick a demo role to fill valid credentials.'),
@@ -89,6 +95,14 @@ export function Login() {
       })
       return
     }
+
+    if (account) {
+      signIn(account.role, account)
+      toast.show({ title: t('Signed in'), description: account.name })
+      setTimeout(() => navigate(destinationFor(account.role), { replace: true }), 700)
+      return
+    }
+    if (!role) return
 
     signIn(role.id as RoleId)
     toast.show({

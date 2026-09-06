@@ -17,11 +17,12 @@
  *    it may have leaked is worthless if the sessions opened with it survive.
  */
 import { and, eq, isNull } from 'drizzle-orm'
+import { ulid } from 'ulid'
 import { roleId, type RoleId } from '@salis/contract'
 import { writeAudit } from '../audit/audit'
-import { users } from '../db/schema'
+import { branches, organizations, users } from '../db/schema'
 import type { Database } from '../db/client'
-import { withTenant, type Principal } from '../db/tenant'
+import { withTenant, type Principal, type Tx } from '../db/tenant'
 import { sessionPrincipal, withAuthPlane } from './context'
 import type { AuthConfig } from './config'
 import {
@@ -71,10 +72,35 @@ export interface AuthenticatedUser {
   id: string
   email: string
   name: string
+  /** The role every check runs against: the acting role when one is set. */
   role: RoleId
+  /** The role the account actually holds. Differs from `role` only while the
+   *  `test` account is acting as another one. */
+  baseRole: RoleId
   orgId: string
   branchId: string | null
   status: string
+}
+
+/** The only role permitted to act as another one. */
+const SWITCHABLE_BASE_ROLE: RoleId = 'test'
+
+export class RegistrationRefused extends Error {
+  readonly code: 'email_taken' | 'weak_password'
+  readonly field: string
+  constructor(code: RegistrationRefused['code'], message: string, field: string) {
+    super(message)
+    this.name = 'RegistrationRefused'
+    this.code = code
+    this.field = field
+  }
+}
+
+export class RoleSwitchRefused extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'RoleSwitchRefused'
+  }
 }
 
 export interface TokenPair {
@@ -140,7 +166,7 @@ type UserRow = typeof users.$inferSelect
 function toUser(row: UserRow): AuthenticatedUser {
   const parsed = roleId.safeParse(row.role)
   if (!parsed.success) {
-    /* A role in the database that is not one of the fourteen is a data defect,
+    /* A role in the database that is not one of the matrix's is a data defect,
      * and the safe reading of it is *no access*, not a default. Failing closed
      * here is the server-side half of F-006. */
     throw new AuthFailure(
@@ -148,11 +174,20 @@ function toUser(row: UserRow): AuthenticatedUser {
       'This account carries a role the system does not recognise. Contact an administrator.',
     )
   }
+  /* `acting_role` is read with the same suspicion as `role`: an unparseable
+   * value is a data defect, and the safe reading of a defect is the account's
+   * own role rather than a guess. A stored acting role is honoured only for the
+   * one account allowed to have set it, so a value written into this column for
+   * any other user grants nothing. */
+  const acting = row.actingRole ? roleId.safeParse(row.actingRole) : null
+  const effective =
+    acting?.success && parsed.data === SWITCHABLE_BASE_ROLE ? acting.data : parsed.data
   return {
     id: row.id,
     email: row.email,
     name: row.name,
-    role: parsed.data,
+    role: effective,
+    baseRole: parsed.data,
     orgId: row.orgId,
     branchId: row.branchId,
     status: row.status,
@@ -166,6 +201,31 @@ function principalOf(user: AuthenticatedUser): Principal {
     branchId: user.branchId,
     role: user.role,
   })
+}
+
+
+/** A URL-safe, unique-in-the-database slug for a newly registered tenant.
+ *
+ *  Derived from the organization's name, falling back to the local part of the
+ *  registrant's address when the name transliterates to nothing (an all-Arabic
+ *  workshop name does exactly that). A numeric suffix resolves collisions;
+ *  slugs are not secrets and a predictable one is fine. */
+async function uniqueSlug(tx: Tx, orgName: string, email: string): Promise<string> {
+  const base =
+    orgName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60) || email.split('@')[0].replace(/[^a-z0-9]+/g, '-').slice(0, 60) || 'workshop'
+  for (let attempt = 0; ; attempt++) {
+    const candidate = attempt === 0 ? base : `${base}-${attempt + 1}`
+    const clash = await tx
+      .select({ id: organizations.id })
+      .from(organizations)
+      .where(eq(organizations.slug, candidate))
+      .limit(1)
+    if (clash.length === 0) return candidate
+  }
 }
 
 export function createAuthService(deps: AuthDeps) {
@@ -289,6 +349,187 @@ export function createAuthService(deps: AuthDeps) {
         })
       })
       return { tokens, user }
+    },
+
+    /** `POST /auth/register` — a brand-new organization and its first user.
+     *
+     *  Sign-up is the one flow with no tenant to run in: the caller is asking
+     *  for the organization to exist. So it runs on the authentication plane,
+     *  like `login`, and it is deliberately the smallest thing that can be
+     *  called sign-up — one organization, its main branch, and one `owner` who
+     *  is the owner of *that* organization and of nothing else.
+     *
+     *  The role is not an input. A public endpoint that took one would be a
+     *  self-service grant of any role in the matrix; what a registrant gets is
+     *  ownership of the tenant they just created, which is the only authority
+     *  that can be handed out without anybody deciding to hand it out.
+     *
+     *  A taken address is answered as a conflict rather than silently, because
+     *  registration cannot be made non-enumerable in any case — an address that
+     *  is free can be registered, and that is observable whatever the response
+     *  says. Login and password recovery, where the leak is avoidable, still
+     *  answer identically for known and unknown addresses.
+     */
+    async register(
+      input: { name: string; email: string; password: string; phone?: string; organizationName?: string },
+      facts: RequestFacts,
+    ): Promise<{ tokens: TokenPair; user: AuthenticatedUser }> {
+      const email = input.email.trim().toLowerCase()
+      const name = input.name.trim()
+      const policy = checkPasswordPolicy(input.password)
+      if (policy) throw new RegistrationRefused('weak_password', policy.message, policy.field)
+
+      const taken = await withAuthPlane(db, async (tx) =>
+        tx
+          .select({ id: users.id })
+          .from(users)
+          .where(and(eq(users.email, email), isNull(users.deletedAt)))
+          .limit(1),
+      )
+      if (taken.length > 0) {
+        throw new RegistrationRefused(
+          'email_taken',
+          'That email address already has an account. Sign in instead, or use password recovery.',
+          'email',
+        )
+      }
+
+      const orgName = input.organizationName?.trim() || `${name}’s Workshop`
+      const passwordHash = await hashPassword(input.password, config)
+      const orgId = ulid()
+      const branchId = ulid()
+      const userId = ulid()
+
+      const created = await withAuthPlane(db, async (tx) => {
+        await tx.insert(organizations).values({
+          id: orgId,
+          name: orgName,
+          slug: await uniqueSlug(tx, orgName, email),
+          plan: 'starter',
+          status: 'active',
+        })
+        await tx.insert(branches).values({
+          id: branchId,
+          orgId,
+          branchId,
+          name: 'Main Branch',
+          isMain: true,
+          createdBy: userId,
+          updatedBy: userId,
+        })
+        const [row] = await tx
+          .insert(users)
+          .values({
+            id: userId,
+            orgId,
+            branchId,
+            email,
+            name,
+            role: 'owner',
+            passwordHash,
+            status: 'active',
+            createdBy: userId,
+            updatedBy: userId,
+          })
+          .returning()
+        return toUser(row as UserRow)
+      })
+
+      const tokens = await openSession(created, facts)
+      const principal = principalOf(created)
+      await withTenant(db, principal, async (tx) => {
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'create',
+          entity: 'organization',
+          entityId: orgId,
+          after: { event: 'registered', name: orgName, branchId },
+          ...facts,
+        })
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'create',
+          entity: 'user',
+          entityId: created.id,
+          /* `phone` is recorded as *given*, not stored on the user row: there
+           * is no column for it, and an audit entry claiming a field the row
+           * does not carry would be a fiction the log is meant to be free of. */
+          after: { event: 'registered', email, role: created.role, phoneProvided: !!input.phone?.trim() },
+          ...facts,
+        })
+      })
+      return { tokens, user: created }
+    },
+
+    /** `POST /auth/switch-role` — the `test` account acts as another role.
+     *
+     *  Two things make this a feature rather than a privilege-escalation hole:
+     *  the caller must already hold `test`, which no business account does and
+     *  which is granted only by provisioning; and switching *narrows* as often
+     *  as it widens — acting as a technician gives the `own` data scope and a
+     *  zero approval ceiling, enforced by row-level security exactly as it is
+     *  for a real technician.
+     *
+     *  The acting role is written to the user row rather than minted into a
+     *  token, so every later request re-reads it: the switch survives a refresh
+     *  and is revoked by one, and the audit log records who switched, from what
+     *  to what, and when. */
+    async switchRole(
+      principal: Principal,
+      role: string,
+      facts: RequestFacts,
+    ): Promise<{ tokens: TokenPair; user: AuthenticatedUser }> {
+      const target = roleId.safeParse(role)
+      if (!target.success) {
+        throw new RoleSwitchRefused(`"${role}" is not a role this system defines.`)
+      }
+
+      const [row] = await withTenant(db, { ...principal, scope: 'own' }, async (tx) =>
+        tx
+          .select()
+          .from(users)
+          .where(and(eq(users.id, principal.userId), isNull(users.deletedAt)))
+          .limit(1),
+      )
+      if (!row) throw new AuthFailure('session_invalid', 'That session no longer exists.')
+
+      const current = toUser(row)
+      if (current.baseRole !== SWITCHABLE_BASE_ROLE) {
+        /* Refused on the account's *own* role, never on the acting one: an
+         * account that switched into `owner` must not be able to keep switching
+         * because `owner` looks powerful, and one that is not the test account
+         * must not be able to switch at all. */
+        throw new RoleSwitchRefused('This account may not act as another role.')
+      }
+
+      /* Acting as `test` is how the account returns to itself, so it clears the
+       * column rather than storing the base role back into it. */
+      const acting = target.data === SWITCHABLE_BASE_ROLE ? null : target.data
+      const updated = await withTenant(db, { ...principal, scope: 'own' }, async (tx) => {
+        const [next] = await tx
+          .update(users)
+          .set({ actingRole: acting, updatedAt: new Date(), updatedBy: current.id })
+          .where(eq(users.id, current.id))
+          .returning()
+        const user = toUser(next as UserRow)
+        await writeAudit(tx, {
+          actor: principalOf(current),
+          action: 'update',
+          entity: 'user',
+          entityId: current.id,
+          before: { actingRole: current.role },
+          after: { event: 'role_switched', actingRole: user.role },
+          ...facts,
+        })
+        return user
+      })
+
+      /* A fresh pair so the caller is not carrying an access token that still
+       * claims the old role for up to its full lifetime. The previous session's
+       * refresh token stays valid and picks the new role up on its next
+       * rotation — the role is read from the row, never from the token. */
+      const tokens = await openSession(updated, facts)
+      return { tokens, user: updated }
     },
 
     /** `POST /auth/refresh` — rotating, with reuse detection. */
