@@ -34,12 +34,30 @@ export function classNameTokens(src) {
     .filter(Boolean)
 }
 
-/** `{ physical, tabletBreakpoints }` for one source file. */
-export function layoutFacts(src) {
+/** A CSS media query whose width lands in 768-1024, the same range `md:`/`lg:`
+ *  covers. A screen that reaches for a stylesheet instead of Tailwind is still
+ *  a screen with a tablet layout, and a Tailwind-only detector reported the
+ *  landing page — which breaks at 900px, 860px and 760px — as having none. */
+export const TABLET_MEDIA = /@media[^{]*\(\s*(?:min|max)-width\s*:\s*(\d+(?:\.\d+)?)px/g
+
+export function cssTabletBreakpoints(css) {
+  for (const m of css.matchAll(TABLET_MEDIA)) {
+    const px = Number(m[1])
+    if (px >= 768 && px <= 1024) return true
+  }
+  return false
+}
+
+/** `{ physical, tabletBreakpoints }` for one source file.
+ *
+ *  `css` is the text of any stylesheet the file imports, concatenated. It is
+ *  optional: callers with no stylesheet to offer pass nothing and get the
+ *  Tailwind-only answer they got before. */
+export function layoutFacts(src, css = '') {
   const tokens = classNameTokens(src)
   return {
     physical: tokens.some((c) => PHYSICAL_CLASS.test(c)),
-    tabletBreakpoints: tokens.some((c) => TABLET_PREFIX.test(c)),
+    tabletBreakpoints: tokens.some((c) => TABLET_PREFIX.test(c)) || cssTabletBreakpoints(css),
   }
 }
 

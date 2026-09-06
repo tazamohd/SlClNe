@@ -25,7 +25,7 @@ function renderPublic(ui: ReactElement, route = '/') {
 }
 
 const PAGES: readonly { name: string; h1: string; title: string }[] = [
-  { name: 'PublicPortal.Landing', h1: 'Manage Your Workshop with Confidence', title: 'SALIS AUTO — Workshop Management for Saudi Arabia' },
+  { name: 'PublicPortal.Landing', h1: 'Workshop Management. Saudi Standard.', title: 'SALIS AUTO — Workshop Management, Saudi Standard' },
   { name: 'PublicPortal.About', h1: 'About SALIS AUTO', title: 'About — SALIS AUTO' },
   { name: 'PublicPortal.Services', h1: 'Our Services', title: 'Services — SALIS AUTO' },
   { name: 'PublicPortal.Marketplace', h1: 'Parts Marketplace', title: 'Parts Marketplace — SALIS AUTO' },
@@ -98,13 +98,17 @@ describe('Tier A public pages', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Manage Your Workshop with Confidence' })
+      screen.getByRole('heading', { level: 1, name: 'Workshop Management. Saudi Standard.' })
     ).toBeInTheDocument()
-    // The design's CTA pair, both with real destinations.
-    expect(screen.getByRole('link', { name: 'Get Started' })).toHaveAttribute('href', '/register')
-    expect(screen.getByRole('link', { name: 'Book a Demo' })).toHaveAttribute(
+    // The design's hero CTA pair, both with real destinations. "Book a
+    // 20-minute demo" repeats in the closing band, hence getAllByRole.
+    expect(screen.getAllByRole('link', { name: 'Book a 20-minute demo' })[0]).toHaveAttribute(
       'href',
-      '/public-portal/contact'
+      '/public-portal/book-demo'
+    )
+    expect(screen.getAllByRole('link', { name: 'See pricing' })[0]).toHaveAttribute(
+      'href',
+      '/public-portal/pricing'
     )
   })
 
@@ -113,8 +117,8 @@ describe('Tier A public pages', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     expect(document.documentElement.dir).toBe('rtl')
-    // "Get Started" has an Arabic key in the generated dictionary.
-    expect(screen.getByRole('link', { name: 'البدء' })).toBeInTheDocument()
+    // The hero CTA carries the artifact's own Arabic, from AR_OVERRIDES.
+    expect(screen.getAllByRole('link', { name: 'احجز عرضاً لعشرين دقيقة' })[0]).toBeInTheDocument()
   })
 
   it('pages render at 390px without the desktop nav', () => {
