@@ -19,15 +19,20 @@ import './landing/landing.css'
  *  key is a literal at its call site, including the ones inside the data arrays
  *  below, so `check-i18n` and the registry can both prove the coverage.
  *
- *  Everything below the hero renders at rest. `useLandingMotion` adds the
- *  entrance sequence, tilt, reveals, counted proof figures and parallax on top
- *  of it, and the page is complete without them.
+ *  Everything here renders at rest. The two hooks are enhancement on top of a
+ *  page that is already complete without either of them:
  *
- *  Not ported: the artifact's four WebGL scenes (hero constellation, lifecycle
- *  rail, ZATCA invoice, AI-era map). They need Three.js, which is not a
- *  dependency here, and the artifact ships static fallbacks for every visitor
- *  who does not get them — narrow viewport, reduced motion, no WebGL. Those
- *  fallbacks are what this screen renders. */
+ *  - `useLandingMotion` adds the entrance sequence, tilt, reveals, counted
+ *    proof figures and parallax.
+ *  - `useLandingScenes` adds the artifact's three WebGL scenes behind the hero,
+ *    the lifecycle rail and the AI-era map. It loads Three.js lazily and off a
+ *    CDN — see the note in `landing/scenes.ts` for why it is not bundled — and
+ *    declines to start under reduced motion, below 860px, or without WebGL.
+ *
+ *  So the static SVG and HTML fallbacks in the markup below are not a degraded
+ *  path; they are what most visitors see, and they must keep reading correctly
+ *  on their own. The artifact's fourth scene, the ZATCA invoice card, belongs
+ *  to a different page and has no container here. */
 
 /** The decorative circuit trace behind the hero, drawn once on load. */
 function Trace({ className, style }: { className: string; style: CSSProperties }) {
