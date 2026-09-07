@@ -54,7 +54,7 @@ export function TestRoleBar() {
         <div
           role="listbox"
           aria-label={t('Act as role')}
-          className="max-h-[60vh] w-[240px] overflow-y-auto rounded-lg border border-border bg-card p-1.5 shadow-lg"
+          className="max-h-[calc(var(--vh-full)*0.6)] w-[240px] overflow-y-auto rounded-lg border border-border bg-card p-1.5 shadow-lg"
         >
           {(ROLES as readonly Role[]).map((option) => (
             <button

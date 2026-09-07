@@ -158,14 +158,14 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
   const tabbed = nav.length > 1
 
   return (
-    <div className="flex min-h-screen flex-col bg-page-alt font-ui">
+    <div className="flex min-h-viewport flex-col bg-page-alt font-ui">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-salis-blue px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
       >
         {t('Skip to main content')}
       </a>
-      <header className="sticky top-0 z-20 border-b border-border bg-sidebar">
+      <header className="sticky top-0 z-20 border-b border-border bg-sidebar pt-safe-top">
         <div className="mx-auto flex w-full max-w-[960px] items-center gap-2.5 px-4 py-3">
           <NavLink
             to={config.base || '/'}
@@ -252,7 +252,16 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
         </div>
       </header>
 
-      <main id="main-content" className={cn('mx-auto w-full max-w-[960px] flex-1 p-4 md:p-6', tabbed && 'pb-24 md:pb-6')}>
+      {/* The bottom bar is `fixed`, so the page has to reserve its height
+          itself — and that reservation has to include the home-indicator inset
+          the bar now pads itself by, or the last row still ends up under it. */}
+      <main
+        id="main-content"
+        className={cn(
+          'mx-auto w-full max-w-[960px] flex-1 p-4 md:p-6',
+          tabbed && 'pb-[calc(6rem+var(--safe-bottom))] md:pb-6'
+        )}
+      >
         {children}
       </main>
 
@@ -262,7 +271,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
       {tabbed ? (
         <nav
           aria-label={t(config.title)}
-          className="fixed inset-x-0 bottom-0 z-20 flex border-t border-border bg-sidebar pb-[env(safe-area-inset-bottom)] md:hidden"
+          className="fixed inset-x-0 bottom-0 z-20 flex border-t border-border bg-sidebar pb-safe-bottom ps-safe-start pe-safe-end md:hidden"
         >
           {nav.map((item) => (
             <NavLink

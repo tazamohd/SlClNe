@@ -257,9 +257,9 @@ export function Modal({
           'motion-reduce:animate-none',
           isMobile
             ? resolvedSheet === 'full'
-              ? 'h-full rounded-none'
-              : 'max-h-[92vh] rounded-t-2xl'
-            : cn('max-h-[85vh] rounded-2xl', shape.width),
+              ? 'h-full rounded-none pt-safe-top pb-safe-bottom'
+              : 'max-h-[calc(var(--vh-full)*0.92)] rounded-t-2xl pb-safe-bottom'
+            : cn('max-h-[calc(var(--vh-full)*0.85)] rounded-2xl', shape.width),
           className
         )}
       >

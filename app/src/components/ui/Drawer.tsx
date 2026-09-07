@@ -98,7 +98,10 @@ export function Drawer({
           'relative flex flex-col bg-card shadow-xl',
           width,
           'max-h-full overflow-y-auto',
-          side === 'end' ? 'ms-auto' : 'me-auto',
+          // `fixed inset-0` now spans under the notch and the home indicator,
+          // and the panel is flush against whichever edge it slides in from.
+          'pt-safe-top pb-safe-bottom',
+          side === 'end' ? 'ms-auto pe-safe-end' : 'me-auto ps-safe-start',
           'animate-fade-up motion-reduce:animate-none',
           className,
         )}

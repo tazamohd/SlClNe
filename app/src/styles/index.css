@@ -100,6 +100,55 @@
 }
 
 @layer base {
+  /* ── Viewport height ──────────────────────────────────────────────────────
+     `100vh` on a phone is the height the viewport would have if the browser
+     chrome were hidden, so a `h-screen` shell is taller than what you can see
+     and its bottom row sits under Safari's toolbar until you scroll. `100dvh`
+     is the height you actually have, and it tracks the toolbar collapsing.
+     Declared as a token with a `100vh` floor so a browser without `dvh`
+     support (Safari < 15.4) keeps today's behaviour rather than losing its
+     height entirely. Reach it through `h-viewport` / `min-h-viewport`. */
+  :root {
+    --vh-full: 100vh;
+  }
+  @supports (height: 100dvh) {
+    :root {
+      --vh-full: 100dvh;
+    }
+  }
+
+  /* ── Safe-area insets ─────────────────────────────────────────────────────
+     Meaningful only with `viewport-fit=cover` in the viewport meta (index.html),
+     which is what lets the page paint under the notch and the home indicator —
+     and therefore what makes these insets non-zero.
+
+     `start`/`end` are logical, not physical: `env(safe-area-inset-left)` names a
+     screen edge, and in Arabic the start edge is the right one. Mapping them
+     here means every call site can use `ps-safe-start` / `pe-safe-end` and stay
+     correct under the RTL flip, the same rule the rest of the app follows.
+
+     Declared as 0px first and only raised inside `@supports`, so a browser with
+     no `env()` resolves them to a real length rather than to nothing (an
+     unresolvable var would invalidate the whole padding declaration). */
+  :root {
+    --safe-top: 0px;
+    --safe-bottom: 0px;
+    --safe-start: 0px;
+    --safe-end: 0px;
+  }
+  @supports (padding: env(safe-area-inset-top)) {
+    :root {
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+      --safe-start: env(safe-area-inset-left);
+      --safe-end: env(safe-area-inset-right);
+    }
+    [dir='rtl'] {
+      --safe-start: env(safe-area-inset-right);
+      --safe-end: env(safe-area-inset-left);
+    }
+  }
+
   html, body, #root {
     min-height: 100%;
   }

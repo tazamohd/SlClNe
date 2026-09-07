@@ -103,7 +103,7 @@ export function KioskCheckIn() {
   }
 
   return (
-    <main id="main-content" className="flex min-h-screen flex-col bg-page">
+    <main id="main-content" className="flex min-h-viewport flex-col bg-page">
       {/* Header bar */}
       <header className="flex items-center justify-between border-b border-border bg-card px-6 py-4">
         <div className="flex items-center gap-3">
