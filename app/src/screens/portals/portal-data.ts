@@ -20,6 +20,13 @@ export type VehicleRow = RowOf<'vehicles'> & {
   customerId?: string | null
 }
 
+/** The kiosk resolves a walk-in to one of these by phone number before it will
+ *  show anybody a vehicle. `_id` is what the appointment is then filed against;
+ *  the fixture rows carry no id, which is why it is optional here too. */
+export type CustomerRow = RowOf<'customers'> & {
+  _id?: string
+}
+
 export type InvoiceRow = RowOf<'invoices'> & {
   _id?: string
   totalHalalas?: number

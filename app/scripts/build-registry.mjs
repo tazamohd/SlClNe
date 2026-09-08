@@ -756,13 +756,23 @@ const rtlStateOf = (name, route, built) => {
 
 // ── classification ───────────────────────────────────────────────────────────
 
-/** Surface, shell and owning agent, in priority order. First match wins. */
+/** Surface, shell and owning agent, in priority order. First match wins.
+ *
+ *  A caution about the `shell` column: it is a name-pattern table, not a
+ *  reading of `routes/index.tsx`, so it reports what a screen's surface is
+ *  *meant* to render in. That is usually the same thing and was not for the
+ *  kiosk, which this table called `KioskShell` — a component that has never
+ *  existed — while the route actually gave it `PortalShell`, and with it the
+ *  signed-in operator's name and a Logout button on a public terminal. The
+ *  route is fixed and this row now says `none`, which is what it does.
+ *  `app/tests/unit/route-shells.test.ts` is what checks the routes against the
+ *  domain barrels; this column is a label, and should be read as one. */
 const SURFACE_RULES = [
   [/^UI\./,                     'reference',    'none',              'ui',          '04'],
   [/^(Index|FlowSpec|RBACSpec)$/, 'reference',  'none',              'ui',          '02'],
   [/^PublicPortal\./,           'public',       'PublicShell',       'website',     '17'],
   [/^Native\./,                 'native',       'CustomerAppShell',  'portals',     '16'],
-  [/^KioskCheckIn/,             'kiosk',        'KioskShell',        'portals',     '16'],
+  [/^KioskCheckIn/,             'kiosk',        'none',              'portals',     '16'],
   [/^CallCenter/,               'call-center',  'AppShell',          'portals',     '16'],
   [/^(CustomerPortal|TechnicianPortal|SupplierPortal|ProcurementPortal)/, 'portal', 'PortalShell', 'portals', '16'],
   [/^CustomerApp\./,            'customer-app', 'CustomerAppShell',  'customerapp', '16'],

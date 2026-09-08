@@ -204,7 +204,10 @@ const asDomain = (
     Object.entries(screens).map(([name, component]) => [name, { component, shell, ungated }])
   )
 
-const SCREEN_ENTRIES = composeScreens({
+/** Every screen's resolved entry — the chrome and gating each route actually
+ *  gets. Exported for `tests/unit/route-shells.test.ts`, which compares it
+ *  against what the domain barrels declare. */
+export const SCREEN_ENTRIES = composeScreens({
   'legacy:auth': asDomain(PUBLIC_SCREENS, null, true),
   'legacy:customer-app': asDomain(CUSTOMER_APP_SCREENS, CustomerAppShell),
   'legacy:app': asDomain(APP_SCREENS, undefined),
@@ -359,7 +362,7 @@ const SCREEN_ENTRIES = composeScreens({
     () => import('@/screens/domains/portals'),
     [
       'TechnicianPortal', 'TechnicianPortal.JobDetail', 'CustomerPortal', 'CustomerPortal.Booking',
-      'SupplierPortal', 'SupplierPortal.Orders', 'KioskCheckIn',
+      'SupplierPortal', 'SupplierPortal.Orders',
       'Client-Portal-Dashboard', 'Client-Portal-Vehicles', 'Client-Portal-Appointments',
       'Client-Portal-Invoices', 'Client-Portal-Profile', 'Client-Portal-Service-History',
       'Client-Portal-Live-Tracking', 'Client-Portal-Reminders', 'Client-Portal-Review-Chat',
@@ -378,6 +381,21 @@ const SCREEN_ENTRIES = composeScreens({
     ],
     { shell: PortalShell }
   ),
+  /* The kiosk is the one screen in this barrel that is not a portal.
+   *
+   *  `domains/portals.ts` already declares it `shell: null`, and its own
+   *  docstring says it "renders fullscreen with no sidebar or topbar" — but
+   *  `lazyBarrel` reads only `.component` from a barrel and applies its own
+   *  `meta` to every name, so that declaration was discarded and the kiosk drew
+   *  `PortalShell`. On a terminal in the reception area that shell puts the
+   *  signed-in receptionist's name, their role and a Logout button in front of
+   *  whoever walks up to it.
+   *
+   *  A separate call rather than a per-screen override in `lazyBarrel`: the
+   *  barrel is loaded lazily and its shell cannot be read at route-build time
+   *  without giving up the code split. `tests/unit/route-shells.test.ts` is what
+   *  keeps the two declarations from drifting apart again. */
+  kiosk: lazyBarrel(() => import('@/screens/domains/portals'), ['KioskCheckIn'], { shell: null }),
   website: lazyBarrel(
     () => import('@/screens/domains/website'),
     [

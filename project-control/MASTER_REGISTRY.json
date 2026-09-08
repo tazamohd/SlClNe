@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-07",
+  "generatedAt": "2026-09-08",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -18,7 +18,7 @@
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 143,
     "hasErrorState": 111,
-    "hasEmptyState": 168,
+    "hasEmptyState": 169,
     "tabletVerified": 4,
     "arabicVerified": 82,
     "rtlHazards": 0,
@@ -5432,7 +5432,7 @@
       "title": "KioskCheckIn",
       "route": "/kiosk-check-in",
       "surface": "kiosk",
-      "shell": "KioskShell",
+      "shell": "none",
       "module": "kiosk",
       "permissions": [
         "owner:v",
@@ -5461,7 +5461,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
