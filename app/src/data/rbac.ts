@@ -64,12 +64,41 @@ export function can(module: string, action: Action, role: string): boolean {
   return (PERMS[module]?.[role] ?? '').includes(action)
 }
 
+/** The modules that *are* a portal, as opposed to the ones a portal reads from.
+ *
+ *  `PORTAL_SURFACE` and the grant table answer different questions, and the
+ *  customer role is where the difference started to matter. Its portal reads
+ *  `vehicles`, `appointments`, `invoices`, `jobs` and `estimates`, so it holds
+ *  `v` on those modules — otherwise every request 403s and the screen renders
+ *  error alerts, which is exactly what it did. But those modules also carry the
+ *  workshop's own screens, and a grant that exists so a portal's data loads is
+ *  not a licence to open the staff screen behind it. */
+const PORTAL_SURFACE: readonly string[] = [
+  'portalcustomer',
+  'portaltech',
+  'portalsupplier',
+  'portalprocure',
+]
+
 /** May `role` open `screen`? Screens with no module mapping are open by design
- *  — those are the auth, error and design-reference pages in RBAC_UNGATED. */
+ *  — those are the auth, error and design-reference pages in RBAC_UNGATED.
+ *
+ *  A `self`-scoped role is confined to its portal on top of the module check.
+ *  Scope is the discriminator rather than a role list because it is the same
+ *  fact the server narrows rows by: `self` means "this principal is one record,
+ *  not one branch", and a principal like that has no staff screen to be on.
+ *  `own` (technician) and `external` (supplier) are deliberately untouched —
+ *  both hold operational modules the workshop expects them to work in.
+ *
+ *  This hides and disables; it is not the boundary. The API re-checks the
+ *  module on every request, and `drizzle/0014`'s `r_self` policies decide which
+ *  rows come back. A customer who types `/job-cards` into the address bar is
+ *  turned away here, and would have seen only their own row if they weren't. */
 export function canScreen(screen: string, role: string): boolean {
   const module = SCREEN_MODULE[screen]
   if (!module) return true
-  return can(module, 'v', role)
+  if (!can(module, 'v', role)) return false
+  return roleMeta(role).scope !== 'self' || PORTAL_SURFACE.includes(module)
 }
 
 /** Sidebar for a role. Items the role can't view are removed entirely, and a

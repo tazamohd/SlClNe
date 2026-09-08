@@ -456,21 +456,21 @@ export const ROLES=[
  {id:"callcenter",  label:"Call Center Agent",  ar:"موظف مركز الاتصال",        icon:"PhoneCall",  demo:{name:"Turki Al-Anazi",     ar:"تركي العنزي",     email:"calls@salisauto.sa"},      scope:"all",     limit:0,      color:"#0BB3FF"},
  {id:"procurement", label:"Procurement Agent",  ar:"وكيل المشتريات",           icon:"ShoppingCart",demo:{name:"Bandar Al-Subaie",  ar:"بندر السبيعي",    email:"procurement@salisauto.sa"},scope:"all",     limit:20000,  color:"#0A5ED7"},
  {id:"supplier",    label:"Supplier",           ar:"مورّد",                    icon:"Truck",      demo:{name:"Al-Jazira Parts Co.",ar:"شركة الجزيرة للقطع",email:"supplier@aljazira.sa"},  scope:"external",limit:0,      color:"#F97316"},
- {id:"customer",    label:"Customer",           ar:"عميل",                     icon:"User",       demo:{name:"Khalid Al-Amri",     ar:"خالد العامري",    email:"khalid@example.sa"},       scope:"self",    limit:0,      color:"#F97316"},
+ {id:"customer",    label:"Customer",           ar:"عميل",                     icon:"User",       demo:{name:"Ahmed Al-Rashid",    ar:"أحمد الراشد",     email:"ahmed@example.sa"},       scope:"self",    limit:0,      color:"#F97316"},
  {id:"test",        label:"Test User",          ar:"مستخدم اختبار",            icon:"FlaskConical",demo:{name:"Test User",        ar:"مستخدم اختبار",   email:"test@salisauto.sa"},       scope:"all",     limit:null,   color:"#0B1F3B"}
 ];
 
 // module -> allowed actions per role. "" = no access (nav item hidden entirely)
 export const PERMS={
  dashboard:      {owner:"vx",manager:"vx",advisor:"v",technician:"v",qc:"v",parts:"v",accountant:"vx",hr:"v",frontdesk:"v",callcenter:"v",procurement:"v",superadmin:"vx",test:"vcedax"},
- jobcards:       {owner:"vcedax",manager:"vcedax",advisor:"vcea",technician:"ve",qc:"va",parts:"v",accountant:"vx",frontdesk:"vc",callcenter:"v",superadmin:"v",test:"vcedax"},
- appointments:   {owner:"vcedax",manager:"vcedax",advisor:"vced",technician:"v",qc:"",parts:"",accountant:"",hr:"",frontdesk:"vced",callcenter:"vced",procurement:"",superadmin:"v",test:"vcedax"},
- estimates:      {owner:"vcedax",manager:"vceax",advisor:"vce",technician:"v",qc:"",parts:"v",accountant:"vx",frontdesk:"v",callcenter:"v",superadmin:"v",test:"vcedax"},
+ jobcards:       {owner:"vcedax",manager:"vcedax",advisor:"vcea",technician:"ve",qc:"va",parts:"v",accountant:"vx",frontdesk:"vc",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
+ appointments:   {owner:"vcedax",manager:"vcedax",advisor:"vced",technician:"v",qc:"",parts:"",accountant:"",hr:"",frontdesk:"vced",callcenter:"vced",procurement:"",customer:"vc",superadmin:"v",test:"vcedax"},
+ estimates:      {owner:"vcedax",manager:"vceax",advisor:"vce",technician:"v",qc:"",parts:"v",accountant:"vx",frontdesk:"v",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
  customers:      {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"",parts:"",accountant:"vx",hr:"",frontdesk:"vce",callcenter:"vce",procurement:"",superadmin:"v",test:"vcedax"},
- vehicles:       {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"v",parts:"",accountant:"v",frontdesk:"vce",callcenter:"v",superadmin:"v",test:"vcedax"},
+ vehicles:       {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"v",parts:"",accountant:"v",frontdesk:"vce",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
  inventory:      {owner:"vcedax",manager:"vcedax",advisor:"v",technician:"v",qc:"",parts:"vcedax",accountant:"vx",procurement:"vcex",superadmin:"v",test:"vcedax"},
  procurement:    {owner:"vcedax",manager:"vcax",advisor:"",technician:"",qc:"",parts:"vc",accountant:"vax",procurement:"vcedax",supplier:"v",superadmin:"v",test:"vcedax"},
- invoices:       {owner:"vcedax",manager:"vceax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"v",superadmin:"v",test:"vcedax"},
+ invoices:       {owner:"vcedax",manager:"vceax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
  payments:       {owner:"vcedax",manager:"vcax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"",superadmin:"v",test:"vcedax"},
  accounting:     {owner:"vax",manager:"vx",accountant:"vcedax",superadmin:"v",test:"vcedax"},
  hr:             {owner:"vcedax",manager:"vx",hr:"vcedax",accountant:"vx",superadmin:"v",test:"vcedax"},

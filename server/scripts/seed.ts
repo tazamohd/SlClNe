@@ -13,7 +13,7 @@
  *
  *      tsx scripts/seed.ts
  */
-import { sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { monotonicFactory } from 'ulid'
 import { parseSarToHalalas, sarToHalalas, minuteOfDay } from '@salis/contract'
 import {
@@ -139,7 +139,16 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
  *  credentials belong to the authentication module, and a seeded password hash
  *  in a repository is a credential in a repository. */
-const DEMO_USERS: readonly { role: string; email: string; name: string }[] = [
+const DEMO_USERS: readonly {
+  role: string
+  email: string
+  name: string
+  /** For a portal login, the `customers` row this account *is*. Resolved to an
+   *  id after `seed()` has inserted the customers and written to
+   *  `users.customer_id` — the value `app_customer()` carries and every
+   *  `r_self` policy in `drizzle/0014` narrows by. */
+  customer?: string
+}[] = [
   { role: 'owner', email: 'owner@salisauto.sa', name: 'Abdullah Al-Salis' },
   { role: 'superadmin', email: 'admin@salisauto.com', name: 'Platform Admin' },
   { role: 'manager', email: 'manager@salisauto.sa', name: 'Branch Manager' },
@@ -153,12 +162,22 @@ const DEMO_USERS: readonly { role: string; email: string; name: string }[] = [
   { role: 'callcenter', email: 'calls@salisauto.sa', name: 'Call Centre Agent' },
   { role: 'procurement', email: 'procurement@salisauto.sa', name: 'Procurement Agent' },
   { role: 'supplier', email: 'supplier@aljazira.sa', name: 'Al Jazira Supplies' },
-  { role: 'customer', email: 'khalid@example.sa', name: 'Khalid Al-Otaibi' },
+  /* The customer demo login is Ahmed Al-Rashid rather than `RBAC.md`'s Khalid.
+   * Khalid matched no `customers` row, so the portal had nothing of his to show
+   * even once the grants existed; Ahmed is the one fixture customer carrying a
+   * vehicle, a job card, an appointment, an estimate and an invoice, and
+   * `project/CustomerPortal.dc.html` greets "Hi, Ahmed" in its own copy. The
+   * design bundle is what the screens and the seed are built from, so the prose
+   * follows it rather than the other way round. */
+  { role: 'customer', email: 'ahmed@example.sa', name: 'Ahmed Al-Rashid', customer: 'Ahmed Al-Rashid' },
   /* The all-access QA account. It is seeded exactly like the other thirteen —
    * same tenant, same branch, no password hash in the repository — and its
    * breadth comes from the matrix row for `test`, not from anything special
-   * here. Everything it does is audited under this user id. */
-  { role: 'test', email: 'test@salisauto.sa', name: 'Test User' },
+   * here. Everything it does is audited under this user id. It carries the same
+   * customer link as the customer login, so switching into `customer` lands on
+   * a portal with rows in it; the link is inert under every other role, because
+   * only the `self` scope reads `app_customer()`. */
+  { role: 'test', email: 'test@salisauto.sa', name: 'Test User', customer: 'Ahmed Al-Rashid' },
 ]
 
 /** Back-computes the VAT split from a gross total, so `subtotal + tax` equals
@@ -212,15 +231,25 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     }),
   )
   await tx.insert(s.customers).values(customerRows)
-  /* Name → id, so the insurance policies and loan contracts below reference a
-   * real customer rather than a free-standing string (F-016 coherence). */
+  /* Name → id, so every row that names a customer references a real one rather
+   * than a free-standing string (F-016 coherence).
+   *
+   *  `customer_id` is also what the `self` scope narrows by: `drizzle/0014`'s
+   *  `r_self` policies read `customer_id = app_customer()`, so a row left with
+   *  a null link is a row its own customer cannot see. The fixtures name eight
+   *  customers and carry four, so `?? null` is the honest answer for the rest —
+   *  those rows stay staff-only rather than being attached to someone who is
+   *  not in the bundle. */
   const customerIdByName = new Map(customerRows.map((c) => [c.name, c.id]))
+  const customerIdFor = (name: string | null | undefined) =>
+    (name ? customerIdByName.get(name) : undefined) ?? null
 
   const vehicleRows = T.VEHICLES.map((v) =>
     row({
       plate: v.plate,
       makeModel: v.make,
       ownerName: v.owner,
+      customerId: customerIdFor(v.owner),
       mileageKm: parseKilometres(v.mileage),
       lastServiceLabel: v.last,
       status: v.status,
@@ -262,6 +291,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     row({
       code: j.id,
       customerName: j.cust,
+      customerId: customerIdFor(j.cust),
       vehicleLabel: j.veh,
       service: j.svc,
       status: j.st,
@@ -280,6 +310,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         startMinute: minuteOfDay(a.time),
         durationMins: a.mins,
         customerName: a.cust,
+        customerId: customerIdFor(a.cust),
         vehicleLabel: a.veh,
         plate: a.plate,
         serviceLabel: a.svc,
@@ -298,6 +329,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         code: e.id,
         jobCardId: jobIdByCustomer.get(e.cust) ?? null,
         customerName: e.cust,
+        customerId: customerIdFor(e.cust),
         vehicleLabel: e.veh,
         subtotalHalalas: subtotal,
         taxHalalas: tax,
@@ -328,6 +360,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         code: i.id,
         jobCardId: jobIdByCustomer.get(i.cust) ?? null,
         customerName: i.cust,
+        customerId: customerIdFor(i.cust),
         dueDate: parseDisplayDate(i.due) ?? SEED.appointmentDate,
         status: i.status,
         subtotalHalalas: subtotal,
@@ -365,6 +398,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         ...base,
         code: i.code,
         customerName: i.cust,
+        customerId: customerIdFor(i.cust),
         dueDate: parseDisplayDate(i.due) ?? SEED.appointmentDate,
         status: i.status,
         subtotalHalalas: subtotal,
@@ -1331,6 +1365,28 @@ export async function seedAll(tx: Tx): Promise<void> {
   ])
 
   await seed(tx, SEED.orgId, SEED.mainBranchId)
+
+  /* Link the portal logins to the customer they are. This runs after `seed()`
+   * because the `customers` rows do not exist until it has, and a portal login
+   * with no link is not so much broken as blind: `r_self` compares
+   * `customer_id` against `app_customer()`, and NULL matches nothing. */
+  for (const demo of DEMO_USERS) {
+    if (!demo.customer) continue
+    const [customer] = await tx
+      .select({ id: s.customers.id })
+      .from(s.customers)
+      .where(and(eq(s.customers.orgId, SEED.orgId), eq(s.customers.name, demo.customer)))
+      .limit(1)
+    if (!customer) {
+      throw new Error(
+        `demo user ${demo.email} names customer "${demo.customer}", which the seed does not create`,
+      )
+    }
+    await tx
+      .update(s.users)
+      .set({ customerId: customer.id })
+      .where(and(eq(s.users.orgId, SEED.orgId), eq(s.users.email, demo.email)))
+  }
 
   /* A minimal neighbour: enough rows for a cross-tenant read to have something
    * real to be refused. */

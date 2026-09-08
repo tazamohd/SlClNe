@@ -199,7 +199,7 @@ Upon completing this course, the Service Advisor will be able to:
 
 **Lab 3.2: Handling Customer Acceptance**
 
-1. Open the customer portal in a second tab (`khalid@example.sa` / `Demo@1234`)
+1. Open the customer portal in a second tab (`ahmed@example.sa` / `Demo@1234`)
 2. As the customer, review the estimate received
 3. Accept the estimate
 4. Return to the advisor view and confirm the acceptance notification

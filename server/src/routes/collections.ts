@@ -128,6 +128,20 @@ function tenantColumns(def: CollectionDef, principal: Principal) {
   return values
 }
 
+/** The owning customer, for a row a self-scoped principal creates.
+ *
+ *  A customer booking an appointment sends a name, not an id — and must not be
+ *  able to send an id, or one customer could file a booking against another.
+ *  So the server writes the link from the principal, and `r_self`'s WITH CHECK
+ *  refuses the insert if it somehow disagrees. Spread *after* the parsed body,
+ *  so this is the last word on the column rather than a default the request
+ *  could talk over. */
+function selfColumns(def: CollectionDef, principal: Principal) {
+  if (principal.scope !== 'self' || !principal.customerId) return {}
+  const cols = getTableColumns(def.table) as unknown as Record<string, PgColumn>
+  return cols.customerId ? { customerId: principal.customerId } : {}
+}
+
 /** A body that tries to set `orgId`, `version` or `createdBy` is not a
  *  validation slip — it is an attempt to write a column the server owns, and
  *  it is refused rather than quietly stripped, so the caller learns. */
@@ -286,6 +300,7 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
           id: ulid(),
           ...tenantColumns(def, principal),
           ...columns,
+          ...selfColumns(def, principal),
           createdBy: principal.userId,
           updatedBy: principal.userId,
         } as never)

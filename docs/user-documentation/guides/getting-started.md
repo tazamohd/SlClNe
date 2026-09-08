@@ -50,7 +50,7 @@ For evaluation or training, demo accounts are available. On the login screen, cl
 | Call Center Agent | calls@salisauto.sa |
 | Procurement Agent | procurement@salisauto.sa |
 | Supplier | supplier@aljazira.sa |
-| Customer | khalid@example.sa |
+| Customer | ahmed@example.sa |
 
 ---
 

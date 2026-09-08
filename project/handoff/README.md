@@ -61,7 +61,7 @@ The RBAC engine is real code in `design/gms-data.js`. Study `ROLES`, `PERMS`, `S
 | `callcenter` | Call Center Agent | موظف مركز الاتصال | `calls@salisauto.sa` | all | — |
 | `procurement` | Procurement Agent | وكيل المشتريات | `procurement@salisauto.sa` | all | 20,000 |
 | `supplier` | Supplier | مورّد | `supplier@aljazira.sa` | external | — |
-| `customer` | Customer | عميل | `khalid@example.sa` | self | — |
+| `customer` | Customer | عميل | `ahmed@example.sa` | self | — |
 
 
 **28 permission modules:**

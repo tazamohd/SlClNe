@@ -825,14 +825,25 @@ const EXTERNAL = {
   'Drone Inspection ': 'drone hardware + flight service',
 }
 
+/** The modules that are a portal rather than a module a portal reads from.
+ *  Kept in step with `PORTAL_SURFACE` in `src/data/rbac.ts` — the confinement
+ *  below is the same rule `canScreen` applies, and a registry that reported the
+ *  raw grant would name roles that cannot open the screen. */
+const PORTAL_SURFACE = ['portalcustomer', 'portaltech', 'portalsupplier', 'portalprocure']
+const SELF_SCOPED = new Set(ROLES.filter((r) => r.scope === 'self').map((r) => r.id))
+
 const permissionsFor = (screen) => {
   const mod = SCREEN_MODULE[screen]
   if (!mod) return { module: UNGATED.includes(screen) ? 'ungated' : null, permissions: [] }
   const grants = PERMS[mod] ?? {}
+  /* A `self`-scoped role holds operational modules so its portal's data loads;
+   * `canScreen` still keeps it off the operational screen. This column answers
+   * "who can open this screen", so it answers the same way. */
+  const confined = !PORTAL_SURFACE.includes(mod)
   return {
     module: mod,
     permissions: Object.entries(grants)
-      .filter(([, actions]) => actions)
+      .filter(([role, actions]) => actions && !(confined && SELF_SCOPED.has(role)))
       .map(([role, actions]) => `${role}:${actions}`),
   }
 }

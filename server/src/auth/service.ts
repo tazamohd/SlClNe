@@ -79,6 +79,10 @@ export interface AuthenticatedUser {
   baseRole: RoleId
   orgId: string
   branchId: string | null
+  /** The `customers` row this account is, for a portal login; null for staff.
+   *  Read from the row on every login and refresh rather than carried forward,
+   *  so unlinking an account takes effect within an access token's lifetime. */
+  customerId: string | null
   status: string
 }
 
@@ -190,6 +194,7 @@ function toUser(row: UserRow): AuthenticatedUser {
     baseRole: parsed.data,
     orgId: row.orgId,
     branchId: row.branchId,
+    customerId: row.customerId ?? null,
     status: row.status,
   }
 }
@@ -200,6 +205,7 @@ function principalOf(user: AuthenticatedUser): Principal {
     orgId: user.orgId,
     branchId: user.branchId,
     role: user.role,
+    customerId: user.customerId,
   })
 }
 
@@ -265,6 +271,7 @@ export function createAuthService(deps: AuthDeps) {
         role: user.role,
         orgId: user.orgId,
         branchId: user.branchId,
+        customerId: user.customerId,
         name: user.name,
       })
       return {
@@ -630,6 +637,7 @@ export function createAuthService(deps: AuthDeps) {
         role: user.role,
         orgId: user.orgId,
         branchId: user.branchId,
+        customerId: user.customerId,
         name: user.name,
       })
       return {

@@ -106,12 +106,20 @@ export const users = pgTable(
      *  and can be taken away — within the access token's lifetime rather than
      *  the refresh token's. */
     actingRole: varchar('acting_role', { length: 32 }),
+    /** The `customers` row this account *is*, for portal logins.
+     *
+     *  An account and a person the workshop bills were never joined, so the
+     *  `self` scope had no identity to narrow by and `drizzle/0014` had nothing
+     *  to write a policy against. Null for staff, whose scope is decided by
+     *  branch or by assignment instead. */
+    customerId: varchar('customer_id', { length: ULID_LENGTH }),
     passwordHash: text('password_hash'),
     status: varchar('status', { length: 20 }).notNull().default('active'),
     lastLoginAt: timestamp('last_login_at', { withTimezone: true }),
   },
   (t) => ({
     emailPerOrg: uniqueIndex('users_org_email_idx').on(t.orgId, t.email),
+    byCustomer: index('users_customer_idx').on(t.orgId, t.customerId),
   }),
 )
 

@@ -75,9 +75,36 @@ Enforce on both sides: the frontend hides / disables, the API layer re-checks ev
 - **Approval ceiling:** may not approve
 
 ### `customer` — Customer / عميل
-- **Demo email:** `khalid@example.sa` (password `Demo@1234`)
+- **Demo email:** `ahmed@example.sa` (password `Demo@1234`). Not `khalid@example.sa`:
+  Khalid matched no row in the `customers` table, so the portal had nothing of
+  his to show. The demo login is the one fixture customer carrying a vehicle, a
+  job card, an appointment, an estimate and an invoice — and the one
+  `CustomerPortal.dc.html` greets by name.
 - **Data scope:** `self` — sees only their own records
 - **Approval ceiling:** may not approve
+- **Grant:** `v` on `vehicles`, `invoices`, `jobcards` and `estimates`, `vc` on
+  `appointments`, and `vx` on `portalcustomer`. Those five operational modules
+  are what `CustomerPortal` and `CustomerPortal.Booking` read; the `c` is
+  booking. The role previously held `portalcustomer` alone, so every one of
+  those reads answered 403 and the portal rendered error alerts to its only
+  audience.
+- **Two things bound what that grant means**, and neither is the matrix:
+  - `drizzle/0014_customer_id_link.sql` gives `self` something to narrow by.
+    `users.customer_id` says which `customers` row an account is, and a
+    RESTRICTIVE `r_self` policy on every RLS-enabled table denies the scope by
+    default, opening only the tables where a customer link exists. Before it,
+    `self` was narrowed by branch and by the technician-assignment columns —
+    neither of which is the customer — so a self-scoped read of `vehicles`
+    returned the whole branch and a read of `job_cards` returned nothing.
+  - `canScreen` confines a `self`-scoped role to the portal surfaces. Holding
+    `jobcards: v` is what makes the portal's data load; it is not a licence to
+    open the workshop's Job Cards screen.
+- **Not yet built:** `POST /public/customers/register` (§Public endpoints) has
+  no server implementation, so the seed is the only thing that creates a
+  customer account today. Whoever builds it must create the `customers` row and
+  set `users.customer_id` in the same transaction. An account without the link
+  is not refused — it signs in and sees an empty portal, which is the safe
+  failure but a confusing one.
 
 ### `test` — Test User / مستخدم اختبار
 - **Demo email:** `test@salisauto.sa` (password `Demo@1234`)
@@ -103,17 +130,21 @@ its column — is `docs/MASTER_RBAC_MATRIX.md`.
 
 ## Permission matrix
 
+> This table is maintained by hand and does not carry the `test` column.
+> `docs/MASTER_RBAC_MATRIX.md` is generated from `PERMS` and is the one to
+> trust when the two disagree.
+
 | Module | owner | superadmin | manager | advisor | technician | qc | parts | accountant | hr | frontdesk | callcenter | procurement | supplier | customer |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | **`dashboard`** | `vx` | `vx` | `vx` | `v` | `v` | `v` | `v` | `vx` | `v` | `v` | `v` | `v` | — | — |
-| **`jobcards`** | `vcedax` | `v` | `vcedax` | `vcea` | `ve` | `va` | `v` | `vx` | — | `vc` | `v` | — | — | — |
-| **`appointments`** | `vcedax` | `v` | `vcedax` | `vced` | `v` | — | — | — | — | `vced` | `vced` | — | — | — |
-| **`estimates`** | `vcedax` | `v` | `vceax` | `vce` | `v` | — | `v` | `vx` | — | `v` | `v` | — | — | — |
+| **`jobcards`** | `vcedax` | `v` | `vcedax` | `vcea` | `ve` | `va` | `v` | `vx` | — | `vc` | `v` | — | — | `v` |
+| **`appointments`** | `vcedax` | `v` | `vcedax` | `vced` | `v` | — | — | — | — | `vced` | `vced` | — | — | `vc` |
+| **`estimates`** | `vcedax` | `v` | `vceax` | `vce` | `v` | — | `v` | `vx` | — | `v` | `v` | — | — | `v` |
 | **`customers`** | `vcedax` | `v` | `vcedx` | `vce` | `v` | — | — | `vx` | — | `vce` | `vce` | — | — | — |
-| **`vehicles`** | `vcedax` | `v` | `vcedx` | `vce` | `v` | `v` | — | `v` | — | `vce` | `v` | — | — | — |
+| **`vehicles`** | `vcedax` | `v` | `vcedx` | `vce` | `v` | `v` | — | `v` | — | `vce` | `v` | — | — | `v` |
 | **`inventory`** | `vcedax` | `v` | `vcedax` | `v` | `v` | — | `vcedax` | `vx` | — | — | — | `vcex` | — | — |
 | **`procurement`** | `vcedax` | `v` | `vcax` | — | — | — | `vc` | `vax` | — | — | — | `vcedax` | `v` | — |
-| **`invoices`** | `vcedax` | `v` | `vceax` | `vc` | — | — | — | `vcedax` | — | `vc` | `v` | — | — | — |
+| **`invoices`** | `vcedax` | `v` | `vceax` | `vc` | — | — | — | `vcedax` | — | `vc` | `v` | — | — | `v` |
 | **`payments`** | `vcedax` | `v` | `vcax` | `vc` | — | — | — | `vcedax` | — | `vc` | — | — | — | — |
 | **`accounting`** | `vax` | `v` | `vx` | — | — | — | — | `vcedax` | — | — | — | — | — | — |
 | **`hr`** | `vcedax` | `v` | `vx` | — | — | — | — | `vx` | `vcedax` | — | — | — | — | — |

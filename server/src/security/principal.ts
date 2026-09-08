@@ -19,6 +19,7 @@ export interface TokenClaims extends JWTPayload {
   role?: string
   org_id?: string
   branch_id?: string | null
+  customer_id?: string | null
   name?: string
 }
 
@@ -63,6 +64,16 @@ export function principalFromClaims(claims: TokenClaims): Principal {
     role,
     /** Derived, never read from the token. */
     scope: scopeOf(role),
+    /* Read from the token, unlike `scope`, because it *narrows* rather than
+     * widens: `r_self` returns the rows whose `customer_id` equals this value,
+     * so a tampered one trades one customer's rows for another's rather than
+     * for all of them, and the tenant and branch policies still bound it. The
+     * token is signed, and the value in it comes from `users.customer_id`,
+     * which only the seed and an administrator write. A claim of the wrong
+     * shape is dropped rather than passed through, so it fails closed. */
+    customerId: typeof claims.customer_id === 'string' && claims.customer_id
+      ? claims.customer_id
+      : null,
     name: typeof claims.name === 'string' ? claims.name : undefined,
   }
 }

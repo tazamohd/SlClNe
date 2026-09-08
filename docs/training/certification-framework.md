@@ -325,7 +325,7 @@ Changes to the certification framework require:
 | 52   | Recertification notification sent                  | Pending    |
 | 54   | Recertification assessment: 88%                    | Silver (renewed) |
 
-### 9.2 Example: Customer (Khalid Al-Amri)
+### 9.2 Example: Customer (Ahmed Al-Rashid)
 
 | Week | Activity                                           | Status     |
 |------|----------------------------------------------------|------------|

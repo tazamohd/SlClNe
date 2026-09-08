@@ -135,11 +135,36 @@ describe('can()', () => {
 
 describe('canScreen()', () => {
   it('gates every mapped screen on its module and lets no role past the module check', () => {
+    /* The module check is necessary for every role and sufficient for all but
+     * the `self`-scoped ones, which are confined to their own portal on top of
+     * it — see `canScreen`. Stated as an implication in both directions rather
+     * than as equality, so the confinement cannot quietly become a way *past*
+     * the module gate. */
     for (const [screen, module] of Object.entries(SCREEN_MODULE)) {
       for (const role of ROLE_IDS) {
-        expect(canScreen(screen, role), `${role} on ${screen}`).toBe(can(module, 'v', role))
+        const allowed = canScreen(screen, role)
+        if (allowed) expect(can(module, 'v', role), `${role} on ${screen}`).toBe(true)
+        if (roleMeta(role).scope !== 'self') {
+          expect(allowed, `${role} on ${screen}`).toBe(can(module, 'v', role))
+        }
       }
     }
+  })
+
+  it('confines a self-scoped role to its portal, whatever the matrix grants it', () => {
+    /* The customer portal reads five operational modules, so the role holds `v`
+     * on them; before that grant existed the portal rendered error alerts to
+     * its only audience. Holding the module is what makes the *data* load — it
+     * must not also open the workshop's own screen for that module. */
+    expect(can('jobcards', 'v', 'customer')).toBe(true)
+    expect(canScreen('JobCards', 'customer')).toBe(false)
+    expect(canScreen('Invoices', 'customer')).toBe(false)
+    expect(canScreen('CustomerPortal', 'customer')).toBe(true)
+    expect(canScreen('CustomerPortal.Booking', 'customer')).toBe(true)
+
+    /* `own` and `external` are not confined: a technician works job cards and a
+     * supplier works purchase orders, both on the operational screens. */
+    expect(canScreen('JobCards', 'technician')).toBe(can('jobcards', 'v', 'technician'))
   })
 
   it('leaves the ungated screens open to all 14 roles, and none of them is module-mapped', () => {
@@ -324,9 +349,14 @@ describe('field-level redaction', () => {
       )
       if (reachable.length) live[rule.field] = reachable
     }
+    /* `customer` joined these two when the role was granted the modules its
+     * portal reads. The rules named it all along and could not fire, because
+     * the role reached none of the modules they guard; now that it does, they
+     * do. Nothing customer-facing serialises a part cost or a labour rate
+     * today — the redaction is what keeps that true if one ever starts to. */
     expect(live).toEqual({
-      'Part cost / margin': ['advisor', 'technician', 'qc', 'frontdesk', 'callcenter'],
-      'Labour cost rate': ['technician', 'qc', 'frontdesk', 'callcenter'],
+      'Part cost / margin': ['advisor', 'technician', 'qc', 'frontdesk', 'callcenter', 'customer'],
+      'Labour cost rate': ['technician', 'qc', 'frontdesk', 'callcenter', 'customer'],
       'Supplier purchase price': ['advisor', 'technician'],
       'Customer contact details': ['technician', 'qc'],
       'Bank account details': ['advisor', 'frontdesk'],
