@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 import { recordKeys, scanFile } from './lib/i18n-scan.mjs'
 import { arabicStateFrom, layoutFacts } from './lib/screen-facts.mjs'
+import { routedShells } from './lib/route-shells.mjs'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
@@ -126,6 +127,9 @@ const ungatedStart = rbacSrc.indexOf('[', rbacSrc.indexOf('=', rbacSrc.indexOf('
 const UNGATED = JSON.parse(rbacSrc.slice(ungatedStart, rbacSrc.indexOf(']', ungatedStart) + 1))
 
 const routesSrc = readApp('src/routes/index.tsx')
+/** The chrome the router actually gives each screen, read from the route table
+ *  rather than guessed from the screen's name. See `lib/route-shells.mjs`. */
+const ROUTED_SHELLS = routedShells(routesSrc)
 const featureDefsSrc = readApp('src/screens/feature/definitions.ts')
 const smokeSrc = readApp('scripts/smoke.mjs')
 
@@ -756,17 +760,19 @@ const rtlStateOf = (name, route, built) => {
 
 // ── classification ───────────────────────────────────────────────────────────
 
-/** Surface, shell and owning agent, in priority order. First match wins.
+/** Surface and owning agent, in priority order. First match wins.
  *
- *  A caution about the `shell` column: it is a name-pattern table, not a
- *  reading of `routes/index.tsx`, so it reports what a screen's surface is
- *  *meant* to render in. That is usually the same thing and was not for the
- *  kiosk, which this table called `KioskShell` — a component that has never
- *  existed — while the route actually gave it `PortalShell`, and with it the
- *  signed-in operator's name and a Logout button on a public terminal. The
- *  route is fixed and this row now says `none`, which is what it does.
- *  `app/tests/unit/route-shells.test.ts` is what checks the routes against the
- *  domain barrels; this column is a label, and should be read as one. */
+ *  The third column is the shell this surface is *meant* to render in, and it
+ *  is no longer what the registry reports. `routedShells` reads the actual
+ *  answer out of `routes/index.tsx`; this one is the fallback for a screen the
+ *  route table never names, and the two disagreeing is worth knowing about —
+ *  `shellIntent` below records the disagreement rather than hiding it.
+ *
+ *  They disagreed about the kiosk. This table called its chrome `KioskShell`, a
+ *  component that has never existed, while the route gave it `PortalShell` and
+ *  with it the signed-in operator's name and a Logout button on a terminal
+ *  facing the public. A column that states an intention is not much use for
+ *  catching that; one that states what the router does is. */
 const SURFACE_RULES = [
   [/^UI\./,                     'reference',    'none',              'ui',          '04'],
   [/^(Index|FlowSpec|RBACSpec)$/, 'reference',  'none',              'ui',          '02'],
@@ -866,7 +872,10 @@ const NOT_STARTED = { desktop: 'MISSING', tablet: 'MISSING', mobile: 'MISSING', 
 const entries = []
 
 for (const s of SCREENS) {
-  const { surface, shell, domain, owner } = classify(s.name)
+  const { surface, shell: intendedShell, domain, owner } = classify(s.name)
+  /* What the router does, falling back to the surface's intention only for a
+   * screen the route table never names — a spec screen with no route yet. */
+  const shell = ROUTED_SHELLS.get(s.name) ?? intendedShell
   const built =
     IMPL.public.has(s.name) ||
     IMPL.app.has(s.name) ||

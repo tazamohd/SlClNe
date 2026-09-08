@@ -99,12 +99,20 @@ Enforce on both sides: the frontend hides / disables, the API layer re-checks ev
   - `canScreen` confines a `self`-scoped role to the portal surfaces. Holding
     `jobcards: v` is what makes the portal's data load; it is not a licence to
     open the workshop's Job Cards screen.
-- **Not yet built:** `POST /public/customers/register` (§Public endpoints) has
-  no server implementation, so the seed is the only thing that creates a
-  customer account today. Whoever builds it must create the `customers` row and
-  set `users.customer_id` in the same transaction. An account without the link
-  is not refused — it signs in and sees an empty portal, which is the safe
-  failure but a confusing one.
+- **Self-registration:** `POST /public/customers/register` creates the
+  `customers` row, the account and `users.customer_id` in one transaction — an
+  account without the link is not refused anywhere, it just signs in to an
+  empty portal, so the three are written together or not at all. The account is
+  `pending` until a code sent to the phone comes back to
+  `/public/customers/verify-otp`; `login` already refuses any status but
+  `active`, so nothing new gates it. This is the one public endpoint that lets
+  an unauthenticated caller name a tenant — `publicCustomerRegister` in the
+  contract sets out why that is safe and what bounds it.
+- **Assumed, and worth revisiting:** any `active` organization accepts public
+  customer registrations. There is no per-garage opt-in, because
+  `organizations` carries no column for one. If some workshops should not be
+  publicly joinable, that is a flag on the org and a check beside the
+  `status = 'active'` one in `service.registerCustomer`.
 
 ### `test` — Test User / مستخدم اختبار
 - **Demo email:** `test@salisauto.sa` (password `Demo@1234`)

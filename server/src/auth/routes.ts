@@ -16,7 +16,14 @@
  */
 import { z } from 'zod'
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { PERMS, ROLE_META, type ModuleId } from '@salis/contract'
+import {
+  PERMS,
+  ROLE_META,
+  publicCustomerRegister,
+  publicCustomerResend,
+  publicCustomerVerify,
+  type ModuleId,
+} from '@salis/contract'
 import { badRequest } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
 import { GRANT_ACTIONS, describeAction } from '../security/actions'
@@ -49,6 +56,14 @@ const PUBLIC_AUTH_PATHS = [
   '/auth/sso/start',
   '/auth/sso/callback',
   '/auth/providers',
+  /* Customer self-registration. These are `/public/…` rather than `/auth/…`
+   * because that is the path `handoff/README.md` publishes, but they are
+   * listed here because the handlers are in this file and this list is the one
+   * that sits beside them. A route not named here is authenticated, which is
+   * how these three were caught the first time they ran. */
+  '/public/customers/register',
+  '/public/customers/verify-otp',
+  '/public/customers/resend-otp',
 ] as const
 
 const PUBLIC_AUTH_PREFIXES = ['/auth/social/'] as const
@@ -293,6 +308,91 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
     return reply.code(401).send({
       error: { code: 'unauthenticated', message, requestId: request.id },
     })
+  })
+
+  /* ------------------------------------------- customer self-registration */
+
+  /* These three sit on `/public/…` rather than `/auth/…` because that is what
+   * `handoff/README.md` publishes and what the sign-up screens call. They live
+   * in this file, not `routes/public.ts`, because they need the auth service,
+   * the OTP transport and the rate limiters that are already here — and
+   * because everything that opens a session or issues a credential belongs in
+   * `src/auth/**`, which is the boundary `tests/isolation-plane.test.ts`
+   * enforces.
+   *
+   * The security posture is `routes/public.ts`'s, with one deliberate
+   * widening: the caller names a tenant. `publicCustomerRegister` in the
+   * contract says why that is safe and what bounds it. */
+
+  app.post('/public/customers/register', veryStrictLimit, async (request, reply) => {
+    const body = parse(publicCustomerRegister, request.body)
+    try {
+      const result = await service.registerCustomer(body, facts(request))
+      /* 202, not 201: the account exists but cannot be used yet. The response
+       * carries no id, no token and nothing about the organization — a public
+       * caller learns only that a code is on its way. */
+      return reply.code(202).send({
+        status: result.status,
+        message: 'A one-time code has been sent to that number.',
+        expiresAt: result.expiresAt.toISOString(),
+      })
+    } catch (error) {
+      if (error instanceof RegistrationRefused) {
+        const conflict = error.code === 'email_taken'
+        return reply.code(conflict ? 409 : 400).send({
+          error: {
+            code: conflict ? 'conflict' : 'bad_request',
+            message: error.message,
+            field: error.field,
+            requestId: request.id,
+          },
+        })
+      }
+      if (error instanceof ResendTooSoon) {
+        reply.header('retry-after', String(error.retryAfterSeconds))
+        return reply.code(429).send({
+          error: { code: 'rate_limited', message: error.message, requestId: request.id },
+        })
+      }
+      if (error instanceof TransportUnavailable) {
+        /* No SMS provider configured. The account was written and the code
+         * issued; saying "sent" would be the fiction §40 exists to prevent. */
+        return unavailable(reply, request, `${error.message} ${error.detail}`)
+      }
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/public/customers/verify-otp', veryStrictLimit, async (request, reply) => {
+    const body = parse(publicCustomerVerify, request.body)
+    try {
+      await service.verifyCustomer(body.phone, body.code, facts(request))
+      return reply.code(200).send({ verified: true })
+    } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/public/customers/resend-otp', veryStrictLimit, async (request, reply) => {
+    const body = parse(publicCustomerResend, request.body)
+    try {
+      await service.resendCustomerCode(body.phone)
+      /* Always 202, whether or not that number has a pending account: a
+       * different answer for a number nobody registered would make this an
+       * oracle for which customers a workshop has. */
+      return reply.code(202).send({ message: 'If that number is awaiting verification, a new code has been sent.' })
+    } catch (error) {
+      if (error instanceof ResendTooSoon) {
+        reply.header('retry-after', String(error.retryAfterSeconds))
+        return reply.code(429).send({
+          error: { code: 'rate_limited', message: error.message, requestId: request.id },
+        })
+      }
+      if (error instanceof TransportUnavailable) {
+        return unavailable(reply, request, `${error.message} ${error.detail}`)
+      }
+      throw error
+    }
   })
 
   /* ------------------------------------- unconfigured external providers */
