@@ -89,17 +89,32 @@ export type RoleId = z.infer<typeof roleId>
 export const dataScope = z.enum(['platform', 'all', 'org', 'branch', 'own', 'self', 'assigned', 'external'])
 export type DataScope = z.infer<typeof dataScope>
 
-/** module → role → granted actions, e.g. `'vcedax'`. `''` means denied. */
+/** module → role → granted actions, e.g. `'vcedax'`. `''` means denied.
+ *
+ *  The `customer` column is worth reading twice. It held `''` on every module
+ *  but `portalcustomer` — a nav flag with no collection behind it — so the
+ *  customer portal's five reads (`vehicles`, `appointments`, `invoices`,
+ *  `jobs`, `estimates`) each returned 403 and the screen rendered error alerts
+ *  to the only audience it has. The grants below are the smallest set those
+ *  screens need: `v` on the four they read, `vc` on `appointments` because
+ *  booking creates one. No `e`, no `d`, no `a`, and no `x` beyond the portal
+ *  flag it already had.
+ *
+ *  Those grants are only safe because `drizzle/0014` gave the `self` scope
+ *  something to narrow by. Read a grant here as "which module", never as
+ *  "which rows": `jobcards: 'v'` also covers the diagnostic and knowledge-base
+ *  collections, and what keeps a customer out of them is the deny-by-default
+ *  `r_self` policy, not this table. */
 export const PERMS: Readonly<Record<ModuleId, Readonly<Record<RoleId, string>>>> = {
   'dashboard': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': 'v', 'technician': 'v', 'qc': 'v', 'parts': 'v', 'accountant': 'vx', 'hr': 'v', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': 'v', 'supplier': '', 'customer': '', 'test': 'vcedax' },
-  'jobcards': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vcea', 'technician': 've', 'qc': 'va', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
-  'appointments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vced', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vced', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
-  'estimates': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'jobcards': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vcea', 'technician': 've', 'qc': 'va', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'v', 'test': 'vcedax' },
+  'appointments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vced', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vced', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': 'vc', 'test': 'vcedax' },
+  'estimates': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'v', 'test': 'vcedax' },
   'customers': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'vce', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
-  'vehicles': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': 'v', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'vehicles': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedx', 'advisor': 'vce', 'technician': 'v', 'qc': 'v', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': 'vce', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'v', 'test': 'vcedax' },
   'inventory': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'v', 'technician': 'v', 'qc': '', 'parts': 'vcedax', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcex', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'procurement': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcax', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'vc', 'accountant': 'vax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vcedax', 'supplier': 'v', 'customer': '', 'test': 'vcedax' },
-  'invoices': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'invoices': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'v', 'test': 'vcedax' },
   'payments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcax', 'advisor': 'vc', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': 'vc', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'accounting': { 'owner': 'vax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'hr': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': 'vcedax', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },

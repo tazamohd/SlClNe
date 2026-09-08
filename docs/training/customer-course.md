@@ -16,7 +16,7 @@
 | Field            | Detail                                    |
 |------------------|-------------------------------------------|
 | Target Role      | Customer                                  |
-| Demo Account     | Khalid Al-Amri (khalid@example.sa)        |
+| Demo Account     | Ahmed Al-Rashid (ahmed@example.sa)       |
 | Password         | Demo@1234                                 |
 | Approval Scope   | Self                                      |
 | SAR Limit        | 0 SAR (no system approval authority)      |
@@ -71,7 +71,7 @@ Upon completing this course, the Customer will be able to:
 
 **Lab 1.2: Setting Up Your Profile**
 
-1. Log in with the demo account (`khalid@example.sa` / `Demo@1234`)
+1. Log in with the demo account (`ahmed@example.sa` / `Demo@1234`)
 2. Navigate to My Profile
 3. Review and update personal information
 4. Set the preferred branch for service
@@ -147,7 +147,7 @@ Upon completing this course, the Customer will be able to:
 
 **Lab 2.1: Booking an Appointment**
 
-1. Log in to the customer portal (`khalid@example.sa` / `Demo@1234`)
+1. Log in to the customer portal (`ahmed@example.sa` / `Demo@1234`)
 2. Navigate to Appointments > Book New
 3. Select a vehicle from "My Vehicles"
 4. Choose the service type (e.g., General Service, Repair, Inspection)

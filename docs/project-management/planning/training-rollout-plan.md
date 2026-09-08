@@ -42,7 +42,7 @@ This document defines the training deployment strategy for SALIS AUTO, covering 
 | HR Manager          | Back-Office | hr@salisauto.sa            | 15,000      |
 | Receptionist        | Back-Office | frontdesk@salisauto.sa     | 0           |
 | Call Center Agent   | Back-Office | calls@salisauto.sa         | 0           |
-| Customer            | External    | khalid@example.sa          | 0           |
+| Customer            | External    | ahmed@example.sa           | 0           |
 | Supplier            | External    | supplier@aljazira.sa       | 0           |
 
 All demo accounts use the standard password: `Demo@1234`.

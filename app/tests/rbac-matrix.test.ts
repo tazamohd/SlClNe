@@ -615,15 +615,39 @@ describe('critical permission boundaries', () => {
     }
   })
 
-  it('customer can only access portalcustomer, approvals, and estimates modules', () => {
+  it('customer holds exactly the modules its portal reads, and nothing more', () => {
+    /* `portalcustomer` is the portal itself. The other five are the collections
+     * `CustomerPortal` and `CustomerPortal.Booking` fetch — vehicles,
+     * appointments, invoices, jobs (and the service catalogue, also `jobcards`)
+     * and estimates. Until these grants existed each of those reads answered
+     * 403 and the portal rendered error alerts to the only audience it has.
+     *
+     * The grant says which module, never which rows: `drizzle/0014`'s `r_self`
+     * policies are what keep a customer to their own, and `canScreen` is what
+     * keeps them off the workshop's screens for the same modules. Adding a
+     * module here without checking both is how this becomes a leak. */
+    const expected = new Set([
+      'portalcustomer',
+      'vehicles',
+      'appointments',
+      'invoices',
+      'jobcards',
+      'estimates',
+    ])
     for (const mod of ALL_MODULES) {
       const grant = PERMS[mod]?.['customer'] ?? ''
       if (grant) {
-        expect(
-          ['portalcustomer', 'approvals', 'estimates', 'kiosk'].includes(mod),
-          `customer has unexpected access to "${mod}"`,
-        ).toBe(true)
+        expect(expected.has(mod), `customer has unexpected access to "${mod}"`).toBe(true)
       }
+    }
+    /* Read-only but for booking, which is the one thing the portal creates. */
+    for (const mod of expected) {
+      const grant = PERMS[mod]?.['customer'] ?? ''
+      expect(grant, `customer grant on "${mod}"`).not.toBe('')
+      const writes = [...grant].filter((letter) => 'ceda'.includes(letter))
+      expect(writes, `customer write actions on "${mod}"`).toEqual(
+        mod === 'appointments' ? ['c'] : [],
+      )
     }
   })
 

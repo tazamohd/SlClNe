@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 import { recordKeys, scanFile } from './lib/i18n-scan.mjs'
 import { arabicStateFrom, layoutFacts } from './lib/screen-facts.mjs'
+import { routedShells } from './lib/route-shells.mjs'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
@@ -126,6 +127,9 @@ const ungatedStart = rbacSrc.indexOf('[', rbacSrc.indexOf('=', rbacSrc.indexOf('
 const UNGATED = JSON.parse(rbacSrc.slice(ungatedStart, rbacSrc.indexOf(']', ungatedStart) + 1))
 
 const routesSrc = readApp('src/routes/index.tsx')
+/** The chrome the router actually gives each screen, read from the route table
+ *  rather than guessed from the screen's name. See `lib/route-shells.mjs`. */
+const ROUTED_SHELLS = routedShells(routesSrc)
 const featureDefsSrc = readApp('src/screens/feature/definitions.ts')
 const smokeSrc = readApp('scripts/smoke.mjs')
 
@@ -756,13 +760,25 @@ const rtlStateOf = (name, route, built) => {
 
 // ── classification ───────────────────────────────────────────────────────────
 
-/** Surface, shell and owning agent, in priority order. First match wins. */
+/** Surface and owning agent, in priority order. First match wins.
+ *
+ *  The third column is the shell this surface is *meant* to render in, and it
+ *  is no longer what the registry reports. `routedShells` reads the actual
+ *  answer out of `routes/index.tsx`; this one is the fallback for a screen the
+ *  route table never names, and the two disagreeing is worth knowing about —
+ *  `shellIntent` below records the disagreement rather than hiding it.
+ *
+ *  They disagreed about the kiosk. This table called its chrome `KioskShell`, a
+ *  component that has never existed, while the route gave it `PortalShell` and
+ *  with it the signed-in operator's name and a Logout button on a terminal
+ *  facing the public. A column that states an intention is not much use for
+ *  catching that; one that states what the router does is. */
 const SURFACE_RULES = [
   [/^UI\./,                     'reference',    'none',              'ui',          '04'],
   [/^(Index|FlowSpec|RBACSpec)$/, 'reference',  'none',              'ui',          '02'],
   [/^PublicPortal\./,           'public',       'PublicShell',       'website',     '17'],
   [/^Native\./,                 'native',       'CustomerAppShell',  'portals',     '16'],
-  [/^KioskCheckIn/,             'kiosk',        'KioskShell',        'portals',     '16'],
+  [/^KioskCheckIn/,             'kiosk',        'none',              'portals',     '16'],
   [/^CallCenter/,               'call-center',  'AppShell',          'portals',     '16'],
   [/^(CustomerPortal|TechnicianPortal|SupplierPortal|ProcurementPortal)/, 'portal', 'PortalShell', 'portals', '16'],
   [/^CustomerApp\./,            'customer-app', 'CustomerAppShell',  'customerapp', '16'],
@@ -825,14 +841,25 @@ const EXTERNAL = {
   'Drone Inspection ': 'drone hardware + flight service',
 }
 
+/** The modules that are a portal rather than a module a portal reads from.
+ *  Kept in step with `PORTAL_SURFACE` in `src/data/rbac.ts` — the confinement
+ *  below is the same rule `canScreen` applies, and a registry that reported the
+ *  raw grant would name roles that cannot open the screen. */
+const PORTAL_SURFACE = ['portalcustomer', 'portaltech', 'portalsupplier', 'portalprocure']
+const SELF_SCOPED = new Set(ROLES.filter((r) => r.scope === 'self').map((r) => r.id))
+
 const permissionsFor = (screen) => {
   const mod = SCREEN_MODULE[screen]
   if (!mod) return { module: UNGATED.includes(screen) ? 'ungated' : null, permissions: [] }
   const grants = PERMS[mod] ?? {}
+  /* A `self`-scoped role holds operational modules so its portal's data loads;
+   * `canScreen` still keeps it off the operational screen. This column answers
+   * "who can open this screen", so it answers the same way. */
+  const confined = !PORTAL_SURFACE.includes(mod)
   return {
     module: mod,
     permissions: Object.entries(grants)
-      .filter(([, actions]) => actions)
+      .filter(([role, actions]) => actions && !(confined && SELF_SCOPED.has(role)))
       .map(([role, actions]) => `${role}:${actions}`),
   }
 }
@@ -845,7 +872,10 @@ const NOT_STARTED = { desktop: 'MISSING', tablet: 'MISSING', mobile: 'MISSING', 
 const entries = []
 
 for (const s of SCREENS) {
-  const { surface, shell, domain, owner } = classify(s.name)
+  const { surface, shell: intendedShell, domain, owner } = classify(s.name)
+  /* What the router does, falling back to the surface's intention only for a
+   * screen the route table never names — a spec screen with no route yet. */
+  const shell = ROUTED_SHELLS.get(s.name) ?? intendedShell
   const built =
     IMPL.public.has(s.name) ||
     IMPL.app.has(s.name) ||

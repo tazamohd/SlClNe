@@ -4,19 +4,128 @@ import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { isLive } from '@/data/repository'
+import { isLive, repository } from '@/data/repository'
 import { useCreate, type RowOf } from '@/data/useCollection'
-import { todayIso } from './portal-data'
+import { todayIso, type CustomerRow, type VehicleRow } from './portal-data'
 
 type Step = 'identify' | 'vehicle' | 'service' | 'done'
 const STEPS: Step[] = ['identify', 'vehicle', 'service', 'done']
 
-/** Fixture vehicles shown after identification. In live mode these come from the
- *  API; in demo mode the kiosk still demonstrates the flow. */
-const FIXTURE_VEHICLES = [
-  { id: 'v1', make: 'Toyota Camry 2023', plate: 'ABC 1234' },
-  { id: 'v2', make: 'Hyundai Sonata 2022', plate: 'XYZ 5678' },
-]
+/** A vehicle the identify step actually found, and who it belongs to. */
+interface FoundVehicle {
+  id: string
+  make: string
+  plate: string
+  customerId: string | null
+}
+
+/** What the identify step resolved the person at the terminal to.
+ *
+ *  `vehicles` is empty and `customerName` null when nothing matched, which is a
+ *  state the screen renders rather than papers over — see `VehicleStep`. */
+interface Identity {
+  customerId: string | null
+  customerName: string | null
+  vehicles: readonly FoundVehicle[]
+}
+
+const EMPTY_IDENTITY: Identity = { customerId: null, customerName: null, vehicles: [] }
+
+/** Plates are typed by a person on a touch keyboard, and stored with whatever
+ *  spacing the workshop entered. Compare on the characters, not the spacing. */
+const plateKey = (value: string) => value.replace(/[\s-]/g, '').toUpperCase()
+
+/** Phone numbers are stored as "+966 55 210 4471" and typed as anything. Compare
+ *  on the digits, and on the last nine of them, so a local 05… and an
+ *  international +9665… resolve to the same subscriber. */
+const phoneKey = (value: string) => value.replace(/\D/g, '').slice(-9)
+
+/** What to send as the collection's `q`, which is a SQL `ILIKE` over the stored
+ *  text and therefore sees the stored *formatting*.
+ *
+ *  Searching the raw input finds nothing the moment the two disagree about
+ *  spacing: "abc-1234" does not occur inside "ABC 1234", and "0552104471" does
+ *  not occur inside "+966 55 210 4471". So the search is deliberately the
+ *  broadest term that survives any formatting — the longest run of characters
+ *  the two spellings must share — and the exact re-check afterwards is what
+ *  makes the answer right. Broad search, exact match: either half alone is a
+ *  bug, and this screen shipped with only the search. */
+function searchTerm(typed: string, digitsOnly: boolean): string {
+  const parts = digitsOnly
+    ? [typed.replace(/\D/g, '').slice(-4)]
+    : typed.split(/[\s-]+/).filter(Boolean)
+  const longest = parts.sort((a, b) => b.length - a.length)[0] ?? ''
+  return longest.length >= 3 ? longest : typed.trim()
+}
+
+/** Who is at the terminal, from the plate or phone number they typed.
+ *
+ *  Both branches search and then re-check the result exactly: the collections'
+ *  `q` is a free-text search across several columns, so "1234" matches a plate,
+ *  a VIN fragment and a phone number alike. Offering the wrong car to a
+ *  stranger is the failure this whole function exists to prevent, so a partial
+ *  match is discarded rather than shown.
+ *
+ *  Returns `EMPTY_IDENTITY` when nothing matches. It never falls back to a
+ *  sample vehicle: for eleven months this screen showed the same two cars —
+ *  a Toyota Camry on ABC 1234 and a Hyundai Sonata on XYZ 5678 — to every
+ *  walk-in regardless of what they typed, and in live mode the buttons were
+ *  enabled, so anyone could check in against a vehicle that was not theirs. */
+async function identify(phone: string, plate: string): Promise<Identity> {
+  const typedPlate = plate.trim()
+  const typedPhone = phone.trim()
+
+  if (typedPlate) {
+    const wanted = plateKey(typedPlate)
+    const { rows } = await repository.vehicles.list({
+      q: searchTerm(typedPlate, false),
+      pageSize: 50,
+    })
+    const exact = (rows as readonly VehicleRow[]).filter(
+      (row) => plateKey(String(row.plate ?? '')) === wanted,
+    )
+    const owner = exact[0]
+    if (!owner) return EMPTY_IDENTITY
+    return {
+      customerId: owner.customerId ?? null,
+      customerName: String(owner.owner ?? '') || null,
+      vehicles: exact.map(toFound),
+    }
+  }
+
+  if (!typedPhone) return EMPTY_IDENTITY
+  const wanted = phoneKey(typedPhone)
+  if (wanted.length < 6) return EMPTY_IDENTITY
+  const { rows } = await repository.customers.list({
+    q: searchTerm(typedPhone, true),
+    pageSize: 50,
+  })
+  const customer = (rows as readonly CustomerRow[]).find(
+    (row) => phoneKey(String(row.phone ?? '')) === wanted,
+  )
+  if (!customer?._id) return EMPTY_IDENTITY
+
+  /* Their vehicles, by the foreign key rather than by the owner's name: two
+   *  customers can share a name, and a name is not what the row is keyed on. */
+  const owned = await repository.vehicles.list({
+    filter: { customerId: customer._id },
+    pageSize: 20,
+  })
+  return {
+    customerId: customer._id,
+    customerName: String(customer.name ?? '') || null,
+    vehicles: (owned.rows as readonly VehicleRow[]).map(toFound),
+  }
+}
+
+function toFound(row: VehicleRow): FoundVehicle {
+  return {
+    id: row._id ?? String(row.plate ?? ''),
+    make: String(row.make ?? ''),
+    plate: String(row.plate ?? ''),
+    customerId: row.customerId ?? null,
+  }
+}
 
 const FIXTURE_SERVICES = [
   { id: 's1', label: 'Oil Change', icon: 'Droplets' },
@@ -44,16 +153,39 @@ export function KioskCheckIn() {
   const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null)
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [confirmError, setConfirmError] = useState<string | null>(null)
+  const [identity, setIdentity] = useState<Identity>(EMPTY_IDENTITY)
+  const [looking, setLooking] = useState(false)
+  const [lookupError, setLookupError] = useState<string | null>(null)
 
   const stepIndex = STEPS.indexOf(step)
 
-  function handleIdentify() {
+  async function handleIdentify() {
     if (!phone.trim() && !plate.trim()) return
-    setStep('vehicle')
+    setLooking(true)
+    setLookupError(null)
+    try {
+      setIdentity(await identify(phone, plate))
+      setStep('vehicle')
+    } catch (cause) {
+      /* A failed lookup stays on this step. Advancing with an empty result
+       * would be indistinguishable from "we have no record of you", and the two
+       * want different answers from the person at the terminal. */
+      setLookupError((cause as Error).message)
+    } finally {
+      setLooking(false)
+    }
   }
 
   function handleSelectVehicle(id: string) {
     setSelectedVehicle(id)
+    setStep('service')
+  }
+
+  /** Continue with no vehicle on file — the walk-in whose car the workshop has
+   *  never seen. The plate they typed is carried through as a label so the bay
+   *  has something to go on; nothing is filed against another customer. */
+  function handleContinueUnknown() {
+    setSelectedVehicle(null)
     setStep('service')
   }
 
@@ -67,7 +199,7 @@ export function KioskCheckIn() {
    *  CustomerPortalBooking. Works in demo (in-memory) and live (API) alike. */
   async function handleConfirm() {
     if (!selectedService) return
-    const vehicle = FIXTURE_VEHICLES.find((v) => v.id === selectedVehicle)
+    const vehicle = identity.vehicles.find((v) => v.id === selectedVehicle)
     const service = FIXTURE_SERVICES.find((s) => s.id === selectedService)
     const now = new Date()
     const timeLabel = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
@@ -79,8 +211,13 @@ export function KioskCheckIn() {
           timeLabel,
           startMinute: now.getHours() * 60 + now.getMinutes(),
           durationMins: 60,
-          customerName: phone.trim() || 'Walk-in',
-          vehicleLabel: vehicle?.make ?? plate.trim(),
+          /* The customer's name when the lookup found one, and their id so the
+           * appointment is a row about a person rather than a string. This used
+           * to send the typed phone number as the customer's *name*. */
+          ...(identity.customerId ? { customerId: identity.customerId } : {}),
+          customerName: identity.customerName ?? 'Walk-in',
+          ...(vehicle?.customerId && vehicle.id ? { vehicleId: vehicle.id } : {}),
+          vehicleLabel: vehicle?.make || plate.trim() || 'Unidentified vehicle',
           plate: vehicle?.plate ?? plate.trim(),
           serviceLabel: service?.label ?? '',
           bay: 'Bay 1',
@@ -93,6 +230,9 @@ export function KioskCheckIn() {
     }
   }
 
+  /** Back to a blank terminal. Every field is cleared, the resolved identity
+   *  included: the next person to walk up must not find the last one's name or
+   *  their vehicles on the screen. */
   function handleRestart() {
     setStep('identify')
     setPhone('')
@@ -100,6 +240,8 @@ export function KioskCheckIn() {
     setSelectedVehicle(null)
     setSelectedService(null)
     setConfirmError(null)
+    setIdentity(EMPTY_IDENTITY)
+    setLookupError(null)
   }
 
   return (
@@ -174,10 +316,19 @@ export function KioskCheckIn() {
               plate={plate}
               onPhoneChange={setPhone}
               onPlateChange={setPlate}
-              onNext={handleIdentify}
+              onNext={() => void handleIdentify()}
+              pending={looking}
+              error={lookupError}
             />
           ) : step === 'vehicle' ? (
-            <VehicleStep onSelect={handleSelectVehicle} onBack={() => setStep('identify')} />
+            <VehicleStep
+              vehicles={identity.vehicles}
+              customerName={identity.customerName}
+              typedPlate={plate.trim()}
+              onSelect={handleSelectVehicle}
+              onContinueUnknown={handleContinueUnknown}
+              onBack={() => setStep('identify')}
+            />
           ) : step === 'service' ? (
             <ServiceStep
               selected={selectedService}
@@ -217,12 +368,16 @@ function IdentifyStep({
   onPhoneChange,
   onPlateChange,
   onNext,
+  pending,
+  error,
 }: {
   phone: string
   plate: string
   onPhoneChange: (v: string) => void
   onPlateChange: (v: string) => void
   onNext: () => void
+  pending: boolean
+  error: string | null
 }) {
   const { t } = usePreferences()
   const canProceed = phone.trim().length > 0 || plate.trim().length > 0
@@ -277,42 +432,97 @@ function IdentifyStep({
         </div>
       </div>
 
+      {error ? (
+        <p role="alert" className="text-sm text-salis-red">
+          {t('We could not reach the workshop’s records. Please try again.')}
+        </p>
+      ) : null}
+
       <Button
         size="lg"
         className="h-14 w-full text-base"
-        disabled={!canProceed || !isLive}
+        disabled={!canProceed || pending || !isLive}
         onClick={onNext}
       >
-        <Icon name="ArrowRight" size={20} />
-        {t('Find My Vehicle')}
+        <Icon name={pending ? 'Loader' : 'ArrowRight'} size={20} />
+        {t(pending ? 'Searching...' : 'Find My Vehicle')}
       </Button>
     </Card>
   )
 }
 
+/** The vehicles the identify step found, and nothing else.
+ *
+ *  When it found none, this says so and offers to go on as a walk-in. It does
+ *  not fall back to an example car: the whole point of the step before it is
+ *  that the person at the terminal is checking in against a vehicle that is
+ *  theirs, and a helpful-looking default defeats that completely. */
 function VehicleStep({
+  vehicles,
+  customerName,
+  typedPlate,
   onSelect,
+  onContinueUnknown,
   onBack,
 }: {
+  vehicles: readonly FoundVehicle[]
+  customerName: string | null
+  typedPlate: string
   onSelect: (id: string) => void
+  onContinueUnknown: () => void
   onBack: () => void
 }) {
   const { t } = usePreferences()
+
+  if (vehicles.length === 0) {
+    return (
+      <Card className="flex flex-col gap-5 p-6">
+        <div className="text-center">
+          <span className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-tint-orange text-salis-orange">
+            <Icon name="SearchX" size={28} aria-hidden />
+          </span>
+          <h2 className="font-display text-xl font-bold text-heading">
+            {t('No vehicle on file')}
+          </h2>
+          <p className="mt-1 text-sm text-muted">
+            {t('We could not find a vehicle for what you entered. You can still check in, and reception will take the details.')}
+          </p>
+        </div>
+
+        <Button size="lg" className="h-14 w-full text-base" onClick={onContinueUnknown}>
+          <Icon name="ArrowRight" size={20} />
+          {typedPlate ? t('Continue with this plate') : t('Continue as a walk-in')}
+        </Button>
+
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex h-12 min-w-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 font-action text-sm font-medium text-muted transition-colors hover:border-salis-blue hover:text-heading focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+        >
+          <Icon name="ArrowLeft" size={16} aria-hidden />
+          {t('Try again')}
+        </button>
+      </Card>
+    )
+  }
 
   return (
     <Card className="flex flex-col gap-5 p-6">
       <div className="text-center">
         <h2 className="font-display text-xl font-bold text-heading">{t('Select Your Vehicle')}</h2>
-        <p className="mt-1 text-sm text-muted">{t('Choose the vehicle for this visit')}</p>
+        <p className="mt-1 text-sm text-muted">
+          {customerName
+            ? `${t('Welcome back')}, ${customerName}`
+            : t('Choose the vehicle for this visit')}
+        </p>
       </div>
 
       <div className="flex flex-col gap-3">
-        {FIXTURE_VEHICLES.map((v) => (
+        {vehicles.map((v) => (
           <button
             key={v.id}
             type="button"
             onClick={() => onSelect(v.id)}
-            disabled={!isLive}
             className="flex min-h-[64px] w-full cursor-pointer items-center gap-4 rounded-xl border border-border bg-card p-4 text-start transition-all hover:border-salis-blue hover:shadow-md disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
           >
             <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-salis-blue/[.08] text-salis-blue">

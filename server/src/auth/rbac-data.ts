@@ -190,9 +190,9 @@ export const ROLES = [
     "ar": "عميل",
     "icon": "User",
     "demo": {
-      "name": "Khalid Al-Amri",
-      "ar": "خالد العامري",
-      "email": "khalid@example.sa"
+      "name": "Ahmed Al-Rashid",
+      "ar": "أحمد الراشد",
+      "email": "ahmed@example.sa"
     },
     "scope": "self",
     "limit": 0,
@@ -241,6 +241,7 @@ export const PERMS = {
     "accountant": "vx",
     "frontdesk": "vc",
     "callcenter": "v",
+    "customer": "v",
     "superadmin": "v",
     "test": "vcedax"
   },
@@ -256,6 +257,7 @@ export const PERMS = {
     "frontdesk": "vced",
     "callcenter": "vced",
     "procurement": "",
+    "customer": "vc",
     "superadmin": "v",
     "test": "vcedax"
   },
@@ -269,6 +271,7 @@ export const PERMS = {
     "accountant": "vx",
     "frontdesk": "v",
     "callcenter": "v",
+    "customer": "v",
     "superadmin": "v",
     "test": "vcedax"
   },
@@ -297,6 +300,7 @@ export const PERMS = {
     "accountant": "v",
     "frontdesk": "vce",
     "callcenter": "v",
+    "customer": "v",
     "superadmin": "v",
     "test": "vcedax"
   },
@@ -335,6 +339,7 @@ export const PERMS = {
     "accountant": "vcedax",
     "frontdesk": "vc",
     "callcenter": "v",
+    "customer": "v",
     "superadmin": "v",
     "test": "vcedax"
   },

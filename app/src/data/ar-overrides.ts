@@ -3699,4 +3699,11 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Registration failed": "فشل إنشاء الحساب",
   "Signed in. Your demo account uses the shared demo password.": "تم تسجيل الدخول. يستخدم حسابك التجريبي كلمة المرور التجريبية المشتركة.",
   "You are signed in as the owner of your new workshop.": "تم تسجيل دخولك كمالك لورشتك الجديدة.",
+
+  /* Kiosk — the identify step, once it started identifying anybody. */
+  "No vehicle on file": "لا توجد مركبة مسجلة",
+  "We could not find a vehicle for what you entered. You can still check in, and reception will take the details.": "لم نتمكن من العثور على مركبة تطابق ما أدخلته. يمكنك متابعة تسجيل الوصول، وسيأخذ الاستقبال التفاصيل.",
+  "Continue with this plate": "المتابعة بهذه اللوحة",
+  "Continue as a walk-in": "المتابعة كزائر بدون موعد",
+  "We could not reach the workshop\u2019s records. Please try again.": "تعذّر الوصول إلى سجلات الورشة. يرجى المحاولة مرة أخرى.",
 }

@@ -22,10 +22,19 @@ import {
  *  stage rail, quick actions, the pending estimate, their vehicles, upcoming
  *  appointments and recent invoices with real balances.
  *
- *  Own-scope does the filtering: a customer principal reads their records and
+ *  Self-scope does the filtering: a customer principal reads their records and
  *  nothing else, because the server's RLS says so — this screen never trims a
  *  list by identity itself. Staff roles holding `portalcustomer: v` see the
  *  same screen over the rows their own scope returns.
+ *
+ *  That was a description of intent rather than of behaviour until
+ *  `server/drizzle/0014_customer_id_link.sql`. The `self` scope narrowed by
+ *  branch and by the technician-assignment columns, and neither is the
+ *  customer, so the five reads below would have returned the whole branch's
+ *  vehicles and none of the customer's own job cards. What hid that was the
+ *  matrix: the role held `v` on nothing here, so all five answered 403 and this
+ *  screen rendered four error alerts instead. The grants and the policy landed
+ *  together, and `server/tests/customer-self-scope.test.ts` is what says so.
  *
  *  The design's "Approve" button on the pending estimate is deliberately not
  *  here: `POST /estimates/:id/approve` demands `estimates: a`, which the

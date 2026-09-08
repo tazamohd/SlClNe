@@ -20,7 +20,7 @@ import { and, eq, isNull } from 'drizzle-orm'
 import { ulid } from 'ulid'
 import { roleId, type RoleId } from '@salis/contract'
 import { writeAudit } from '../audit/audit'
-import { branches, organizations, users } from '../db/schema'
+import { branches, customers, organizations, users } from '../db/schema'
 import type { Database } from '../db/client'
 import { withTenant, type Principal, type Tx } from '../db/tenant'
 import { sessionPrincipal, withAuthPlane } from './context'
@@ -79,6 +79,10 @@ export interface AuthenticatedUser {
   baseRole: RoleId
   orgId: string
   branchId: string | null
+  /** The `customers` row this account is, for a portal login; null for staff.
+   *  Read from the row on every login and refresh rather than carried forward,
+   *  so unlinking an account takes effect within an access token's lifetime. */
+  customerId: string | null
   status: string
 }
 
@@ -86,7 +90,7 @@ export interface AuthenticatedUser {
 const SWITCHABLE_BASE_ROLE: RoleId = 'test'
 
 export class RegistrationRefused extends Error {
-  readonly code: 'email_taken' | 'weak_password'
+  readonly code: 'email_taken' | 'weak_password' | 'unknown_garage'
   readonly field: string
   constructor(code: RegistrationRefused['code'], message: string, field: string) {
     super(message)
@@ -190,6 +194,7 @@ function toUser(row: UserRow): AuthenticatedUser {
     baseRole: parsed.data,
     orgId: row.orgId,
     branchId: row.branchId,
+    customerId: row.customerId ?? null,
     status: row.status,
   }
 }
@@ -200,6 +205,7 @@ function principalOf(user: AuthenticatedUser): Principal {
     orgId: user.orgId,
     branchId: user.branchId,
     role: user.role,
+    customerId: user.customerId,
   })
 }
 
@@ -265,6 +271,7 @@ export function createAuthService(deps: AuthDeps) {
         role: user.role,
         orgId: user.orgId,
         branchId: user.branchId,
+        customerId: user.customerId,
         name: user.name,
       })
       return {
@@ -461,6 +468,235 @@ export function createAuthService(deps: AuthDeps) {
       return { tokens, user: created }
     },
 
+    /** A customer signing themselves up at a named garage.
+     *
+     *  Distinct from `register` above in every way that matters. That one
+     *  creates an organization and signs the owner straight in; this one joins
+     *  an organization that already exists, creates no session at all, and
+     *  leaves the account unusable until a code sent to the customer's phone
+     *  comes back.
+     *
+     *  **The `customers` row and the link are the point.** An account with a
+     *  `customer` role and no `users.customer_id` is not refused anywhere — it
+     *  signs in and reads an empty portal, because `drizzle/0014`'s `r_self`
+     *  policies compare `customer_id` against `app_customer()` and NULL matches
+     *  no row. So the user, the customer and the link between them are one
+     *  transaction: either the customer exists and is reachable, or nothing was
+     *  written.
+     *
+     *  The account is `pending` until the code is verified. Nothing new
+     *  enforces that — `login` already refuses any status but `active`. */
+    async registerCustomer(
+      input: { garageId: string; name: string; phone: string; email: string; password: string },
+      facts: RequestFacts,
+    ): Promise<{ status: 'pending'; expiresAt: Date }> {
+      const email = input.email.trim().toLowerCase()
+      const name = input.name.trim()
+      const phone = input.phone.trim()
+
+      const policy = checkPasswordPolicy(input.password)
+      if (policy) throw new RegistrationRefused('weak_password', policy.message, policy.field)
+
+      /* One message and one code for "no such garage", "suspended garage" and
+       * "deleted garage" alike: an unauthenticated caller must not be able to
+       * tell a real organization id from an invented one by the answer it
+       * gets. */
+      const refuseGarage = () =>
+        new RegistrationRefused(
+          'unknown_garage',
+          'That workshop is not accepting registrations. Check the link you followed.',
+          'garageId',
+        )
+
+      const [garage] = await withAuthPlane(db, async (tx) =>
+        tx
+          .select({ id: organizations.id, branchId: branches.id })
+          .from(organizations)
+          .leftJoin(
+            branches,
+            and(eq(branches.orgId, organizations.id), eq(branches.isMain, true)),
+          )
+          .where(
+            and(
+              eq(organizations.id, input.garageId),
+              eq(organizations.status, 'active'),
+              isNull(organizations.deletedAt),
+            ),
+          )
+          .limit(1),
+      )
+      if (!garage) throw refuseGarage()
+
+      const taken = await withAuthPlane(db, async (tx) =>
+        tx
+          .select({ id: users.id })
+          .from(users)
+          .where(and(eq(users.email, email), isNull(users.deletedAt)))
+          .limit(1),
+      )
+      if (taken.length > 0) {
+        throw new RegistrationRefused(
+          'email_taken',
+          'That email address already has an account. Sign in instead, or use password recovery.',
+          'email',
+        )
+      }
+
+      const passwordHash = await hashPassword(input.password, config)
+      const userId = ulid()
+      const customerId = ulid()
+
+      const issued = await withAuthPlane(db, async (tx) => {
+        await tx.insert(customers).values({
+          id: customerId,
+          orgId: garage.id,
+          branchId: garage.branchId,
+          name,
+          phone,
+          type: 'individual',
+          createdBy: userId,
+          updatedBy: userId,
+        })
+        await tx.insert(users).values({
+          id: userId,
+          orgId: garage.id,
+          branchId: garage.branchId,
+          email,
+          name,
+          role: 'customer',
+          customerId,
+          passwordHash,
+          /* Not `active`. `login` refuses anything else, so the account cannot
+           * be used before the code below is verified. */
+          status: 'pending',
+          createdBy: userId,
+          updatedBy: userId,
+        })
+        /* Inside the same transaction: a challenge issued against a
+         * registration that then failed to write would leave a code in the
+         * table for an account that does not exist. */
+        return issueChallenge(tx, { channel: 'sms', destination: phone }, config)
+      })
+
+      await transport.send({ channel: 'sms', destination: phone, code: issued.code })
+
+      const principal: Principal = {
+        userId,
+        orgId: garage.id,
+        branchId: garage.branchId,
+        role: 'customer',
+        scope: 'self',
+        customerId,
+        name,
+      }
+      await withTenant(db, principal, async (tx) => {
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'create',
+          entity: 'customer',
+          entityId: customerId,
+          /* The phone number is the OTP destination and is on the row already;
+           * it is not repeated into the log. */
+          after: { event: 'self_registered', name, email, userId },
+          ...facts,
+        })
+      })
+
+      return { status: 'pending', expiresAt: issued.expiresAt }
+    },
+
+    /** The code, against the number it was sent to. Activates the account.
+     *
+     *  Answers the same way whether the number has no pending account or the
+     *  code is simply wrong: a caller must not learn which phone numbers have
+     *  registered here by watching the error change. */
+    async verifyCustomer(phone: string, code: string, facts: RequestFacts): Promise<void> {
+      const destination = phone.trim()
+      const verdict = await withAuthPlane(db, (tx) =>
+        verifyChallenge(tx, { destination, code: code.trim(), channel: 'sms' }, config),
+      )
+      if (verdict.kind !== 'verified') {
+        throw new AuthFailure('invalid_credentials', 'That code is not valid. Request a new one.')
+      }
+
+      const activated = await withAuthPlane(db, async (tx) => {
+        const [row] = await tx
+          .update(users)
+          .set({ status: 'active', updatedAt: new Date() })
+          .where(
+            and(
+              eq(users.role, 'customer'),
+              eq(users.status, 'pending'),
+              isNull(users.deletedAt),
+              /* The link is what ties the code's destination to an account:
+               * the phone number lives on the `customers` row, not on `users`. */
+              eq(
+                users.customerId,
+                tx
+                  .select({ id: customers.id })
+                  .from(customers)
+                  .where(and(eq(customers.phone, destination), isNull(customers.deletedAt)))
+                  .limit(1),
+              ),
+            ),
+          )
+          .returning({ id: users.id, orgId: users.orgId, branchId: users.branchId, customerId: users.customerId })
+        return row
+      })
+      if (!activated) {
+        throw new AuthFailure('invalid_credentials', 'That code is not valid. Request a new one.')
+      }
+
+      const principal: Principal = {
+        userId: activated.id,
+        orgId: activated.orgId,
+        branchId: activated.branchId,
+        role: 'customer',
+        scope: 'self',
+        customerId: activated.customerId,
+      }
+      await withTenant(db, principal, async (tx) => {
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'update',
+          entity: 'user',
+          entityId: activated.id,
+          before: { status: 'pending' },
+          after: { event: 'phone_verified', status: 'active' },
+          ...facts,
+        })
+      })
+    },
+
+    /** Another code to the same number. `issueChallenge` enforces the cooldown,
+     *  and the caller is told nothing about whether the number is registered. */
+    async resendCustomerCode(phone: string): Promise<void> {
+      const destination = phone.trim()
+      const pending = await withAuthPlane(db, async (tx) =>
+        tx
+          .select({ id: users.id })
+          .from(users)
+          .innerJoin(customers, eq(customers.id, users.customerId))
+          .where(
+            and(
+              eq(customers.phone, destination),
+              eq(users.status, 'pending'),
+              isNull(users.deletedAt),
+            ),
+          )
+          .limit(1),
+      )
+      /* No pending account is not an error the caller sees — that would make
+       * this endpoint a phone-number oracle. The cooldown still applies to the
+       * request, so it is not a free probe either. */
+      if (pending.length === 0) return
+
+      const issued = await withAuthPlane(db, (tx) =>
+        issueChallenge(tx, { channel: 'sms', destination }, config),
+      )
+      await transport.send({ channel: 'sms', destination, code: issued.code })
+    },
+
     /** `POST /auth/switch-role` — the `test` account acts as another role.
      *
      *  Two things make this a feature rather than a privilege-escalation hole:
@@ -630,6 +866,7 @@ export function createAuthService(deps: AuthDeps) {
         role: user.role,
         orgId: user.orgId,
         branchId: user.branchId,
+        customerId: user.customerId,
         name: user.name,
       })
       return {
