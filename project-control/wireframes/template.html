@@ -130,6 +130,26 @@
   .wf-slot.f2{background:color-mix(in srgb,var(--cyan) 26%,transparent);border-color:transparent}
   .wf-slot.f3{background:color-mix(in srgb,var(--warn) 26%,transparent);border-color:transparent}
   .wf-thumb{aspect-ratio:1;border-radius:7px;background:linear-gradient(135deg,var(--wire-block),var(--card));border:1px solid var(--wire-line)}
+  /* Route flow — the journey each drawn screen sits in, so a card is read as a
+     step and not as an island. The lit node is the screen the wireframe below
+     draws; a dashed node is a design that was never routed. Every route here is
+     asserted by check-routes.mjs, same as the captions. */
+  .routeflow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:8px 9px;
+    border:1px solid var(--line);border-radius:10px;background:var(--card)}
+  .routeflow .node{display:flex;flex-direction:column;gap:1px;min-width:0;background:var(--wire);
+    border:1px solid var(--wire-line);border-radius:7px;padding:4px 8px}
+  .routeflow .node b{font-size:10.5px;font-weight:700;line-height:1.3;color:var(--ink);white-space:nowrap}
+  .routeflow .node code{background:none;border:0;padding:0;font-size:9.5px;line-height:1.3;
+    color:var(--muted);white-space:nowrap}
+  .routeflow .node.on{background:var(--grad);border-color:transparent;box-shadow:0 1px 6px color-mix(in srgb,var(--blue) 30%,transparent)}
+  .routeflow .node.on b{color:#fff}
+  .routeflow .node.on code{color:rgba(255,255,255,.82)}
+  .routeflow .node.todo{border-style:dashed;background:color-mix(in srgb,var(--warn) 8%,var(--wire));
+    border-color:color-mix(in srgb,var(--warn) 50%,var(--wire-line));box-shadow:none}
+  .routeflow .node.todo b{color:var(--warn)}
+  .routeflow .node.todo code{color:var(--warn);font-style:italic}
+  .routeflow .node.on.todo{background:color-mix(in srgb,var(--warn) 17%,var(--card))}
+  .routeflow .ar{color:var(--muted);font-size:11px;line-height:1}
   .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .flow .node{background:var(--card);border:1px solid var(--wire-line);border-radius:7px;padding:5px 9px;font-size:10px;color:var(--ink-soft)}
   .flow .node.on{background:var(--grad);color:#fff;border-color:transparent;font-weight:700}
@@ -168,22 +188,27 @@
 <main>
   <header class="hero" id="top">
     <div class="kicker">Design artifact · project-control/wireframes</div>
-    <h1>Wireframe <em>gallery</em> — the primary screen of every module</h1>
+    <h1>Wireframe <em>gallery</em> — every screen in the flow it belongs to</h1>
     <p class="lede">Mid-fidelity wireframes for the key screen of each module across all ten portals — layout,
-      hierarchy, controls and state, on the SALIS brand system. Every route printed below is a route the app
-      actually serves, checked against the registry.</p>
+      hierarchy, controls and state, on the SALIS brand system. Every card carries the whole route flow it sits
+      in, not just its own screen: the steps before it, the step it draws, and where the work goes next. Every
+      route printed below is a route the app actually serves, checked against the registry.</p>
     <div class="metastrip">
-      <span class="chip"><b>38</b> screens</span>
+      <span class="chip"><b>38</b> screens drawn</span>
+      <span class="chip"><b>38</b> route flows</span>
       <span class="chip"><b>10</b> portals</span>
       <span class="chip"><b>32</b> routed</span>
       <span class="chip"><b>6</b> not built</span>
       <span class="chip">light + dark</span>
     </div>
-    <div class="note"><b>How to read:</b> each card shows the browser frame, the route, and the screen's blocks —
-      KPIs, tables, forms, charts, maps, chat and mobile card layouts — using the same wireframe kit throughout so
-      density and rhythm are comparable across roles. A card with a <span class="b warn">DESIGN PROPOSAL · NOT
-      BUILT</span> badge and a dashed frame has no route: the screen was drawn but never shipped, so there is no
-      URL to print.</div>
+    <div class="note"><b>How to read:</b> each card opens with its <b>route flow</b> — the ordered journey the
+      screen belongs to, one chip per step with the route it lives at. The chip in brand colour is the screen the
+      wireframe underneath draws; the chips either side are the real routes a user arrives from and leaves for, so
+      a wireframe is read as a step in a job rather than a standalone page. Below it: the browser frame, the route,
+      and the screen's blocks — KPIs, tables, forms, charts, maps, chat and mobile card layouts — using the same
+      wireframe kit throughout so density and rhythm are comparable across roles. A card with a <span class="b
+      warn">DESIGN PROPOSAL · NOT BUILT</span> badge and a dashed frame has no route: the screen was drawn but
+      never shipped, so there is no URL to print, and it appears in its own flow as a dashed chip.</div>
     <div class="note"><b>Routes reconciled 2 Sep 2026</b> against <code>project-control/MASTER_REGISTRY.json</code>
       (424 capabilities, generated 1 Sep 2026). Every route below is asserted by
       <code>project-control/wireframes/check-routes.mjs</code>, which fails if this page prints a route the registry
@@ -197,6 +222,7 @@
     <h2>Auth &amp; onboarding</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Register (customer self-serve)</b> · <code>/register</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Welcome</b><code>/welcome</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Register</b><code>/register</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Verify code</b><code>/otpverification</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Complete profile</b><code>/profile-completion</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Portal</b><code>/customer-portal</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/register</span></div>
           <div class="wf-main" style="place-items:center;padding:22px">
@@ -212,6 +238,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Two-factor (TOTP enrol + verify)</b> · <code>/two-factor-verification</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Sign in</b><code>/login</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Two-factor</b><code>/two-factor-verification</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Biometrics</b><code>/biometric-setup</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Workspace</b><code>/workspace-selection</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Dashboard</b><code>/dashboard</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/two-factor-verification</span></div>
           <div class="wf-main" style="place-items:center;padding:22px">
@@ -237,6 +264,7 @@
     <h2>Platform Admin</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Garages — tenant directory</b> · <code>/super-admin</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Garages</b><code>/super-admin</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Organizations</b><code>/organizations</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Branches</b><code>/branches</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Users &amp; teams</b><code>/users-teams</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Subscription</b><code>/subscription</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/super-admin</span></div>
           <div class="wf-main">
@@ -252,6 +280,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Roles &amp; RBAC editor</b> · <code>/roles-permissions</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Users &amp; teams</b><code>/users-teams</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Roles &amp; RBAC</b><code>/roles-permissions</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Invite</b><code>/invite-acceptance</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Audit log</b><code>/audit-log</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/roles-permissions</span></div>
           <div class="wf-main wf-row wf-2c">
@@ -267,6 +296,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>System health / ops console</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on todo"><b>Ops console</b><code>not built</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Audit log</b><code>/audit-log</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Backup</b><code>/backup</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Maintenance</b><code>/maintenance</code></span></div>
         <div class="wf proposal">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
           <div class="wf-main">
@@ -285,6 +315,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Subscriptions &amp; billing (MRR)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Garages</b><code>/super-admin</code></span><span class="ar" aria-hidden="true">→</span><span class="node on todo"><b>Subscriptions &amp; billing</b><code>not built</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Subscription</b><code>/subscription</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payments</b><code>/payments</code></span></div>
         <div class="wf proposal">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
           <div class="wf-main">
@@ -306,6 +337,7 @@
     <h2>Admin / Manager app</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Appointments (StandardTablePage)</b> · <code>/appointments</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Appointments</b><code>/appointments</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Calendar</b><code>/appointment-calendar</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Check-in</b><code>/workshop-check-in</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Job card</b><code>/job-card-detail</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/appointments</span></div>
           <div class="wf-main">
@@ -321,6 +353,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Workshop calendar (drag-drop scheduling)</b> · <code>/workshop-calendar</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Appointments</b><code>/appointments</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Workshop calendar</b><code>/workshop-calendar</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Tech schedule</b><code>/technician-schedule</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Service bays</b><code>/service-bay-dashboard</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/workshop-calendar</span></div>
           <div class="wf-main">
@@ -337,6 +370,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Inventory (parts &amp; stock)</b> · <code>/inventory</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Inventory</b><code>/inventory</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Availability</b><code>/parts-availability</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Auto-reorder</b><code>/automated-reordering</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Purchase order</b><code>/purchase-order</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Reports</b><code>/inventory-reports</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/inventory</span></div>
           <div class="wf-main">
@@ -354,6 +388,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Analytics &amp; BI</b> · <code>/reports-analytics · /bidashboard</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Reports</b><code>/reports</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Analytics</b><code>/reports-analytics</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>BI dashboard</b><code>/bidashboard</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Executive</b><code>/executive-reports</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Custom</b><code>/custom-reports</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">salisauto.com/reports-analytics</span></div>
           <div class="wf-main">
@@ -378,6 +413,7 @@
     <h2>Service Advisor</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Today's board (dashboard)</b> · <code>/dashboard</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Dashboard</b><code>/dashboard</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Appointments</b><code>/appointments</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Job cards</b><code>/job-cards</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Estimates</b><code>/estimates</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Invoices</b><code>/invoices</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/dashboard</span></div>
           <div class="wf-main">
@@ -396,6 +432,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Estimate builder (FormPage)</b> · <code>/workshop-estimate</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Inspection</b><code>/workshop-inspection</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Estimate</b><code>/workshop-estimate</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Estimate detail</b><code>/estimate-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Approval</b><code>/customer-approval</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Job card</b><code>/job-card-detail</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/workshop-estimate</span></div>
           <div class="wf-main wf-row wf-2b">
@@ -410,6 +447,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Vehicle check-in (photos + damage map)</b> · <code>/workshop-check-in</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Appointment</b><code>/appointments</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Check-in</b><code>/workshop-check-in</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Inspection</b><code>/workshop-inspection</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Estimate</b><code>/workshop-estimate</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Job card</b><code>/job-card-detail</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/workshop-check-in</span></div>
           <div class="wf-main wf-row wf-2">
@@ -423,6 +461,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Customer comms (SMS / WhatsApp / chat)</b> · <code>/portal-communications</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Customer</b><code>/customer-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Comms</b><code>/portal-communications</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>WhatsApp</b><code>/whats-app-campaigns</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>SMS</b><code>/smscampaigns</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Feedback</b><code>/customer-feedback</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/portal-communications</span></div>
           <div class="wf-main" style="min-height:170px">
@@ -442,6 +481,7 @@
     <h2>Technician</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>My jobs queue</b> · <code>/technician-portal</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>My jobs</b><code>/technician-portal</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Job detail</b><code>/technician-portal/job-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Inspection</b><code>/workshop-inspection</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>QC</b><code>/workshop-qc</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Signature</b><code>/workshop-signature</code></span></div>
         <div class="wf" style="max-width:320px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/technician-portal</span></div>
           <div class="wf-main">
@@ -453,6 +493,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Inspection checklist (multi-point)</b> · <code>/workshop-inspection</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Job detail</b><code>/technician-portal/job-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Inspection</b><code>/workshop-inspection</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Diagnostic report</b><code>/diagnostic-report</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Estimate</b><code>/workshop-estimate</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>QC</b><code>/workshop-qc</code></span></div>
         <div class="wf" style="max-width:320px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/workshop-inspection</span></div>
           <div class="wf-main">
@@ -468,6 +509,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>OBD diagnostics (read DTCs)</b> · <code>/obddiagnostics</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Job detail</b><code>/technician-portal/job-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>OBD</b><code>/obddiagnostics</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Diagnostic report</b><code>/diagnostic-report</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Predictive</b><code>/predictive-diagnostics</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Estimate</b><code>/workshop-estimate</code></span></div>
         <div class="wf" style="max-width:320px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/obddiagnostics</span></div>
           <div class="wf-main">
@@ -483,6 +525,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>AR repair guide</b> · <code>/ar-overlay</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Job detail</b><code>/technician-portal/job-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>AR overlay</b><code>/ar-overlay</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Repair guide</b><code>/ar-repair-guide</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Technician KB</b><code>/technician-kb</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>QC</b><code>/workshop-qc</code></span></div>
         <div class="wf" style="max-width:320px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/ar-overlay</span></div>
           <div class="wf-main" style="padding:0">
@@ -503,6 +546,7 @@
     <h2>Store Keeper</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Stock overview</b> · <code>/inventory-management</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Stock</b><code>/inventory-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Warehouse</b><code>/internal-warehouse</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Auto-reorder</b><code>/automated-reordering</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Purchase order</b><code>/purchase-order</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Reports</b><code>/inventory-reports</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/inventory-management</span></div>
           <div class="wf-main">
@@ -517,6 +561,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Receive stock (against PO, scan-in)</b> · <code>/purchase-order</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Orders</b><code>/purchase-orders</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Receive</b><code>/purchase-order</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Warehouse</b><code>/internal-warehouse</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Stock</b><code>/inventory-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payments</b><code>/purchase-agent-payments</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/purchase-order</span></div>
           <div class="wf-main wf-row wf-2b">
@@ -529,6 +574,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Low-stock &amp; reorder (predictive)</b> · <code>/automated-reordering · /parts-auto-reorder</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Stock</b><code>/inventory-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Auto-reorder</b><code>/automated-reordering</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Parts reorder</b><code>/parts-auto-reorder</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Availability</b><code>/parts-availability</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Purchase order</b><code>/purchase-order</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/automated-reordering</span></div>
           <div class="wf-main">
@@ -543,6 +589,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Returns / RMA</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Stock</b><code>/inventory-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node on todo"><b>Returns / RMA</b><code>not built</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Suppliers</b><code>/suppliers</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payments</b><code>/purchase-agent-payments</code></span></div>
         <div class="wf proposal">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
           <div class="wf-main wf-row wf-2">
@@ -561,6 +608,7 @@
     <h2>Purchase Agent</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>PO builder &amp; tracker</b> · <code>/purchase-order · /purchase-agent-orders</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Quotations</b><code>/purchase-agent-quotations</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>PO builder</b><code>/purchase-order</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Orders</b><code>/purchase-agent-orders</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Tracking</b><code>/purchase-agent-tracking</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Delivery</b><code>/purchase-agent-delivery</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/purchase-order</span></div>
           <div class="wf-main wf-row wf-2b">
@@ -575,6 +623,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>RFQ compare (supplier bids)</b> · <code>/purchase-agent-quotations</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Suppliers</b><code>/purchase-agent-suppliers</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>RFQ compare</b><code>/purchase-agent-quotations</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Price compare</b><code>/purchase-agent-price-compare</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Purchase order</b><code>/purchase-order</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Orders</b><code>/purchase-agent-orders</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/purchase-agent-quotations</span></div>
           <div class="wf-main">
@@ -598,6 +647,7 @@
     <h2>Finance</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Finance dashboard (cash / AR / AP)</b> · <code>/financial-reports</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Financial reports</b><code>/financial-reports</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Statements</b><code>/financial-statements</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Receivables</b><code>/accounts-receivable</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payments</b><code>/payments</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Ledger</b><code>/general-ledger</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/financial-reports</span></div>
           <div class="wf-main">
@@ -612,6 +662,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Payroll run (payslips + GOSI)</b> · <code>/payroll-management</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Timesheets</b><code>/timesheet-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Payroll run</b><code>/payroll-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>HR payroll</b><code>/hrpayroll</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Journal</b><code>/journal-entries</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payments</b><code>/payments</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/payroll-management</span></div>
           <div class="wf-main">
@@ -626,6 +677,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>P&amp;L statement</b> · <code>/income-statement</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Ledger</b><code>/general-ledger</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Trial balance</b><code>/trial-balance</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Income statement</b><code>/income-statement</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Balance sheet</b><code>/balance-sheet</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Statements</b><code>/financial-statements</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/income-statement</span></div>
           <div class="wf-main wf-row wf-2c">
@@ -640,6 +692,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>VAT / ZATCA returns (Hijri periods)</b> · <code>/tax-management · /zatca-settings</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Invoices</b><code>/invoices</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Tax</b><code>/tax-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>ZATCA settings</b><code>/zatca-settings</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>VAT settings</b><code>/vat-settings</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Statements</b><code>/financial-statements</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/tax-management</span></div>
           <div class="wf-main">
@@ -662,6 +715,7 @@
     <h2>Customer Support</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Tickets queue (triage)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Call centre</b><code>/call-center</code></span><span class="ar" aria-hidden="true">→</span><span class="node on todo"><b>Tickets queue</b><code>not built</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Support chat</b><code>/support-chat-dashboard</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Knowledge base</b><code>/knowledge-base</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Feedback</b><code>/customer-feedback</code></span></div>
         <div class="wf proposal">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
           <div class="wf-main">
@@ -676,6 +730,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>SLA tracking (timers &amp; breaches)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Call log</b><code>/call-center/logs</code></span><span class="ar" aria-hidden="true">→</span><span class="node on todo"><b>SLA tracking</b><code>not built</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Support chat</b><code>/support-chat-dashboard</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Feedback</b><code>/customer-feedback</code></span></div>
         <div class="wf proposal">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
           <div class="wf-main">
@@ -689,6 +744,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Knowledge base (articles)</b> · <code>/knowledge-base</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Support chat</b><code>/support-chat-dashboard</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Knowledge base</b><code>/knowledge-base</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Technician KB</b><code>/technician-kb</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Prompt library</b><code>/prompt-library</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>AI assistant</b><code>/aiassistant</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/knowledge-base</span></div>
           <div class="wf-main">
@@ -702,6 +758,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Call log</b> · <code>/call-center/logs</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Call centre</b><code>/call-center</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Call log</b><code>/call-center/logs</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Customer</b><code>/customer-detail</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Appointments</b><code>/appointments</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Feedback</b><code>/customer-feedback</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/call-center/logs</span></div>
           <div class="wf-main">
@@ -722,6 +779,7 @@
     <h2>HR Manager</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Employees directory</b> · <code>/staff-directory</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node on"><b>Staff directory</b><code>/staff-directory</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Scheduling</b><code>/staff-scheduling</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Timesheets</b><code>/timesheet-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Performance</b><code>/staff-performance-review</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payroll</b><code>/payroll-management</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/staff-directory</span></div>
           <div class="wf-main">
@@ -735,6 +793,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Attendance &amp; leave</b> · <code>/timesheet-management · /leave-requests</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Staff directory</b><code>/staff-directory</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Timesheets</b><code>/timesheet-management</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Leave requests</b><code>/leave-requests</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Timeclock</b><code>/timeclock-payroll</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payroll</b><code>/payroll-management</code></span></div>
         <div class="wf">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/timesheet-management</span></div>
           <div class="wf-main">
@@ -758,6 +817,7 @@
     <h2>Customer portal</h2>
     <div class="gal">
       <div class="screen"><div class="cap"><b>Book appointment (wizard)</b> · <code>/customer-portal/booking</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Portal</b><code>/customer-portal</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Booking</b><code>/customer-portal/booking</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Appointments</b><code>/client-portal-appointments</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Live tracking</b><code>/client-portal-live-tracking</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Invoices</b><code>/client-portal-invoices</code></span></div>
         <div class="wf" style="max-width:340px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/customer-portal/booking</span></div>
           <div class="wf-main">
@@ -771,6 +831,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Find garage (map + filters)</b> · <span class="b warn">DESIGN PROPOSAL · NOT BUILT</span></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Marketplace</b><code>/public-portal/marketplace</code></span><span class="ar" aria-hidden="true">→</span><span class="node on todo"><b>Find garage</b><code>not built</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Garage</b><code>/customer-app/garage</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Booking</b><code>/customer-portal/booking</code></span></div>
         <div class="wf proposal" style="max-width:340px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">no route — not in the registry</span></div>
           <div class="wf-main">
@@ -781,6 +842,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Parts store (browse + cart)</b> · <code>/customer-app/marketplace</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Home</b><code>/customer-app/home</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Marketplace</b><code>/customer-app/marketplace</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Orders</b><code>/customer-app/orders</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Wallet</b><code>/customer-app/wallet</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payments</b><code>/customer-app-payments</code></span></div>
         <div class="wf" style="max-width:340px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/customer-app/marketplace</span></div>
           <div class="wf-main">
@@ -793,6 +855,7 @@
         </div>
       </div>
       <div class="screen"><div class="cap"><b>Invoices &amp; online payment</b> · <code>/client-portal-invoices</code></div>
+        <div class="routeflow" aria-label="Route flow"><span class="node"><b>Service history</b><code>/client-portal-service-history</code></span><span class="ar" aria-hidden="true">→</span><span class="node on"><b>Invoices</b><code>/client-portal-invoices</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Payment</b><code>/stripe-payment-processing</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Review &amp; chat</b><code>/client-portal-review-chat</code></span><span class="ar" aria-hidden="true">→</span><span class="node"><b>Feedback</b><code>/customer-feedback</code></span></div>
         <div class="wf" style="max-width:340px">
           <div class="wf-bar"><i></i><i></i><i></i><span class="wf-url">/client-portal-invoices</span></div>
           <div class="wf-main">
@@ -837,11 +900,12 @@
 
     <footer>
       <hr class="soft">
-      <p><b>SALIS AUTO — Wireframe Gallery.</b> 38 screens across 10 portals plus four shared states, on the SALIS
-      brand system (Navy #0B1F3B · gradient #0A5ED7→#0BB3FF · orange for warnings only), light + dark.
-      Source: <code>project-control/wireframes/template.html</code>. Routes reconciled against
+      <p><b>SALIS AUTO — Wireframe Gallery.</b> 38 screens in 38 route flows across 10 portals, plus four shared
+      states, on the SALIS brand system (Navy #0B1F3B · gradient #0A5ED7→#0BB3FF · orange for warnings only),
+      light + dark. Source: <code>project-control/wireframes/template.html</code>. Routes reconciled against
       <code>project-control/MASTER_REGISTRY.json</code> on 2 Sep 2026 and asserted by
-      <code>project-control/wireframes/check-routes.mjs</code>.</p>
+      <code>project-control/wireframes/check-routes.mjs</code>, which also holds each flow to the screen drawn
+      beneath it: a card that draws a route its flow does not light, or lights one it does not draw, fails.</p>
     </footer>
   </section>
 </main>
