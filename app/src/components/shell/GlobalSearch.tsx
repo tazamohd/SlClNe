@@ -11,6 +11,7 @@ import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { repository } from '@/data/repository'
+import { pushBackHandler } from '@/lib/back-stack'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
@@ -346,6 +347,9 @@ export function GlobalSearchPalette({
       requestAnimationFrame(() => inputRef.current?.focus())
     }
   }, [open])
+
+  /** Android back closes the palette instead of navigating behind it. */
+  useEffect(() => (open ? pushBackHandler(onClose) : undefined), [open, onClose])
 
   /** Scroll active item into view. */
   useEffect(() => {

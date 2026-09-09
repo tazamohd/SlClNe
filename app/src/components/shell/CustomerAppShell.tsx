@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { hapticSelection } from '@/lib/native'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -69,6 +70,10 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
             the last thing in the column, so nothing else pushes it clear. */}
         <nav
           aria-label={t('App navigation')}
+          /* Hidden while the software keyboard is up: the plugin shortens the
+             web view, which would otherwise leave the bar sitting on top of
+             the keyboard instead of at the bottom of the screen. */
+          data-hide-on-keyboard
           className="flex flex-shrink-0 border-t border-border bg-sidebar pb-safe-bottom ps-safe-start pe-safe-end"
         >
           {TABS.map((tab) => (
@@ -76,6 +81,9 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
               key={tab.to}
               to={tab.to}
               end={'end' in tab ? tab.end : false}
+              /* A tab bar is the one place a phone app is expected to answer
+                 the finger before the screen does. Silent off native. */
+              onClick={hapticSelection}
               className={({ isActive }) =>
                 cn(
                   'flex flex-1 flex-col items-center gap-1 py-2.5 no-underline transition-colors hover:no-underline',

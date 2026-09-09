@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
+import { pushBackHandler } from '@/lib/back-stack'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -46,6 +47,13 @@ export function AppShell({ children }: { children: ReactNode }) {
       }
     },
     [],
+  )
+
+  /* Android back closes the nav drawer rather than navigating out from under
+   * it — the same answer Escape gets in `handleDrawerKey` above. */
+  useEffect(
+    () => (drawerOpen ? pushBackHandler(() => setDrawerOpen(false)) : undefined),
+    [drawerOpen]
   )
 
   useEffect(() => {
