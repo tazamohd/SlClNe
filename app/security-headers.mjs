@@ -48,7 +48,18 @@
 export const SECURITY_HEADERS = {
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self'",
+    // 'self' plus one CDN, and the exception is worth stating plainly.
+    // `screens/public/landing/scenes.ts` loads three.js r128 from cdnjs at
+    // runtime for the WebGL scenes behind the public landing. Nothing else
+    // here reaches off-origin, and this is the directive that actually stops
+    // an injected script, so it is the one to keep narrow.
+    //
+    // Taking it back to a bare 'self' means bundling three.js through npm
+    // instead of fetching it — which would also remove a render-blocking
+    // third-party request from the marketing page and the supply-chain trust
+    // that comes with it. Until then this is pinned to one host, and the
+    // pin in scenes.ts (r128) should carry an SRI hash.
+    "script-src 'self' https://cdnjs.cloudflare.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
