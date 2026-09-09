@@ -129,6 +129,11 @@ export function BankReconciliation() {
     return (
       <>
         <MobilePageHeader icon="Landmark" title={t('Bank Reconciliation')} />
+        {/* The same export and print the desktop header offers: a phone is
+         * where a reconciliation gets checked on the way to the bank. */}
+        <div className="flex flex-wrap gap-2">
+          <ExportPrintActions onExport={exportRows} exportDisabled={rows.length === 0} />
+        </div>
         <StatRow stats={stats} />
         <Section
           title={t('Recorded cash (book side)')}

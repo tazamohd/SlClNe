@@ -72,3 +72,27 @@ test.describe('Technician portal lifecycle', () => {
     await ownerCtx.close()
   })
 })
+
+/** Ported from the retired `scripts/journeys/portals.mjs`.
+ *
+ *  The portal hero is the technician's whole picture of their day, and its
+ *  numbers are derived from the job rows. "Current Job" renders whether or not
+ *  those rows ever arrive, so the assertion that carries weight is that the
+ *  counters resolved: while the queries are in flight every one of them shows
+ *  an ellipsis, and a portal stuck there has told the technician nothing. */
+test.describe('Technician portal — the hero counters', () => {
+  test.beforeEach(async ({ context }) => {
+    await seedRole(context, 'technician')
+  })
+
+  test('the day counters resolve to numbers, not to the loading ellipsis', async ({ page }) => {
+    await gotoReady(page, '/technician-portal')
+
+    const hero = page.getByLabel('Technician Portal')
+    await expect(hero).toBeVisible()
+    for (const counter of ['Assigned', 'In Progress', 'Completed', 'Today']) {
+      const tile = hero.locator('dl > div').filter({ hasText: counter })
+      await expect(tile.locator('dd')).toHaveText(/^\d+$/)
+    }
+  })
+})

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-022 — Deployment Architecture</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: -15%; left: 50%; width: 60%; transform: translateX(-50%);
+    height: 35%; background: radial-gradient(ellipse, rgba(218,119,86,0.06) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .hero { padding: 56px 24px 20px; text-align: center; max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin: 0 auto; }
+  .badge { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(218,119,86,0.3); border-radius: 4px; padding: 3px 10px; margin-bottom: 16px; }
+  .caption-bar { max-width: 1100px; margin: 16px auto; padding: 14px 20px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; min-height: 52px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; }
+  .caption-bar .label { font-weight: 600; font-size: 0.85rem; color: var(--accent); white-space: nowrap; }
+  .caption-bar .desc { color: var(--muted); font-size: 0.88rem; }
+  .diagram-section { max-width: 1150px; margin: 0 auto; padding: 24px; background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px; border-radius: 16px; overflow-x: auto; }
+  .diagram-section svg { width: 100%; height: auto; display: block; min-width: 900px; }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .supporting { max-width: 960px; margin: 48px auto 0; padding: 0 24px 80px; }
+  .supporting h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 12px; }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
+  .info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
+  .info-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 18px; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .info-card:hover { transform: translateY(-3px); border-color: rgba(218,119,86,0.3); }
+  .info-card h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 0.78rem; color: var(--muted); margin: 0; }
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  @keyframes flowDashSlow { to { stroke-dashoffset: -28; } }
+  @keyframes pulse { 0%,100%{opacity:0.5;} 50%{opacity:1;} }
+  @keyframes statusPulse { 0%,100%{r:3.5;} 50%{r:4.5;} }
+  .dep-node { transition: opacity 0.25s ease; cursor: pointer; }
+  .dep-node.dimmed { opacity: 0.12; }
+  .dep-node.highlighted > rect:first-child { stroke-width: 2.5; filter: url(#glow); }
+  .dep-connector { transition: opacity 0.25s ease; }
+  .dep-connector.dimmed { opacity: 0.05; }
+  .dep-connector.highlighted path, .dep-connector.highlighted line { stroke-width: 2.2; stroke-opacity: 1; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SA-VIZ-022</div>
+  <h1><span>Deployment</span> Architecture</h1>
+  <p>Cloud topology from edge to database, showing security zones, scaling strategy, and external integrations</p>
+</section>
+
+<div class="caption-bar">
+  <span class="label">Hover</span>
+  <span class="desc" id="captionText">Hover any component to see its configuration, ports, and role in the stack</span>
+</div>
+
+<section class="diagram-section">
+  <svg id="depDiagram" viewBox="0 0 1060 870" xmlns="http://www.w3.org/2000/svg"></svg>
+</section>
+
+<section class="supporting reveal">
+  <h2>Infrastructure <span>Details</span></h2>
+  <p>SALIS AUTO runs on a cloud-native architecture with horizontal scaling, read replicas for reporting, and a defense-in-depth security model across three network zones.</p>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>Auto-Scaling</h3>
+      <p>API and SPA tiers scale 2-8 containers based on CPU and request latency. Scale-in cooldown prevents flapping.</p>
+    </div>
+    <div class="info-card">
+      <h3>Database HA</h3>
+      <p>PostgreSQL streaming replication with automatic failover. Read replica offloads reporting and analytics queries.</p>
+    </div>
+    <div class="info-card">
+      <h3>Security Zones</h3>
+      <p>Three-tier network: DMZ for public traffic, private subnet for application logic, isolated subnet for data stores.</p>
+    </div>
+    <div class="info-card">
+      <h3>Zero-Downtime Deploy</h3>
+      <p>Rolling deployments with health-check gates. Blue-green strategy for database migrations with backward compatibility.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var F="-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif";
+  var M="'SF Mono','Fira Code','Menlo',monospace";
+  var svg=document.getElementById('depDiagram');
+  var h='';
+  h+='<defs>';
+  h+='<filter id="glow"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  h+='<marker id="arrO" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="5" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#DA7756"/></marker>';
+  h+='<marker id="arrB" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="5" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#6ba4d9"/></marker>';
+  h+='<marker id="arrG" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="5" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#7dbb7d"/></marker>';
+  h+='<marker id="arrP" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="5" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#a98ee0"/></marker>';
+  h+='<marker id="arrD" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="5" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#d9b86b"/></marker>';
+  h+='</defs>';
+
+  // Security zones
+  var zones=[
+    {label:'DMZ',sub:'Public Network',x:40,y:8,w:600,h:200,color:'#DA7756'},
+    {label:'PRIVATE SUBNET',sub:'Application Tier',x:40,y:230,w:600,h:215,color:'#6ba4d9'},
+    {label:'ISOLATED SUBNET',sub:'Database Tier',x:40,y:468,w:600,h:165,color:'#7dbb7d'}
+  ];
+  zones.forEach(function(z){
+    h+='<rect x="'+z.x+'" y="'+z.y+'" width="'+z.w+'" height="'+z.h+'" rx="12" fill="rgba(255,255,255,0.015)" stroke="'+z.color+'" stroke-width="0.6" stroke-opacity="0.3" stroke-dasharray="8 4"/>';
+    h+='<text x="'+(z.x+14)+'" y="'+(z.y+18)+'" fill="'+z.color+'" font-size="9" font-weight="600" letter-spacing="0.1em" font-family="'+F+'" opacity="0.7">'+z.label+'</text>';
+    h+='<text x="'+(z.x+z.w-14)+'" y="'+(z.y+18)+'" fill="'+z.color+'" font-size="8" text-anchor="end" opacity="0.4" font-family="'+F+'">'+z.sub+'</text>';
+  });
+
+  // External services zone
+  h+='<rect x="680" y="230" width="365" height="405" rx="12" fill="rgba(217,184,107,0.02)" stroke="#d9b86b" stroke-width="0.5" stroke-opacity="0.2"/>';
+  h+='<text x="694" y="248" fill="#d9b86b" font-size="9" font-weight="600" letter-spacing="0.1em" font-family="'+F+'" opacity="0.7">EXTERNAL SERVICES</text>';
+
+  // Monitoring zone
+  h+='<rect x="40" y="660" width="1005" height="110" rx="12" fill="rgba(169,142,224,0.02)" stroke="#a98ee0" stroke-width="0.5" stroke-opacity="0.2"/>';
+  h+='<text x="54" y="678" fill="#a98ee0" font-size="9" font-weight="600" letter-spacing="0.1em" font-family="'+F+'" opacity="0.7">MONITORING</text>';
+
+  // Node helper: icon function returns inline SVG path strings
+  function globeIcon(cx,cy){
+    return '<circle cx="'+cx+'" cy="'+cy+'" r="9" fill="none" stroke="#DA7756" stroke-width="1.3"/>'
+      +'<ellipse cx="'+cx+'" cy="'+cy+'" rx="5" ry="9" fill="none" stroke="#DA7756" stroke-width="0.8"/>'
+      +'<line x1="'+(cx-9)+'" y1="'+cy+'" x2="'+(cx+9)+'" y2="'+cy+'" stroke="#DA7756" stroke-width="0.7"/>'
+      +'<line x1="'+(cx-7)+'" y1="'+(cy-5)+'" x2="'+(cx+7)+'" y2="'+(cy-5)+'" stroke="#DA7756" stroke-width="0.5"/>'
+      +'<line x1="'+(cx-7)+'" y1="'+(cy+5)+'" x2="'+(cx+7)+'" y2="'+(cy+5)+'" stroke="#DA7756" stroke-width="0.5"/>';
+  }
+  function lbIcon(cx,cy){
+    return '<rect x="'+(cx-8)+'" y="'+(cy-7)+'" width="16" height="14" rx="2" fill="none" stroke="#DA7756" stroke-width="1.2"/>'
+      +'<line x1="'+(cx-4)+'" y1="'+(cy-2)+'" x2="'+(cx+4)+'" y2="'+(cy-2)+'" stroke="#DA7756" stroke-width="1"/>'
+      +'<line x1="'+(cx-4)+'" y1="'+(cy+2)+'" x2="'+(cx+4)+'" y2="'+(cy+2)+'" stroke="#DA7756" stroke-width="1"/>';
+  }
+  function appIcon(cx,cy,clr){
+    return '<rect x="'+(cx-7)+'" y="'+(cy-8)+'" width="14" height="16" rx="2" fill="none" stroke="'+clr+'" stroke-width="1.2"/>'
+      +'<line x1="'+(cx-7)+'" y1="'+(cy-4)+'" x2="'+(cx+7)+'" y2="'+(cy-4)+'" stroke="'+clr+'" stroke-width="0.7"/>'
+      +'<circle cx="'+(cx-4)+'" cy="'+(cy-6)+'" r="1.2" fill="'+clr+'"/>'
+      +'<circle cx="'+(cx-1)+'" cy="'+(cy-6)+'" r="1.2" fill="'+clr+'"/>';
+  }
+  function dbIcon(cx,cy,clr){
+    return '<ellipse cx="'+cx+'" cy="'+(cy-5)+'" rx="9" ry="4" fill="none" stroke="'+clr+'" stroke-width="1.2"/>'
+      +'<line x1="'+(cx-9)+'" y1="'+(cy-5)+'" x2="'+(cx-9)+'" y2="'+(cy+5)+'" stroke="'+clr+'" stroke-width="1.2"/>'
+      +'<line x1="'+(cx+9)+'" y1="'+(cy-5)+'" x2="'+(cx+9)+'" y2="'+(cy+5)+'" stroke="'+clr+'" stroke-width="1.2"/>'
+      +'<ellipse cx="'+cx+'" cy="'+(cy+5)+'" rx="9" ry="4" fill="none" stroke="'+clr+'" stroke-width="1.2"/>';
+  }
+  function svcIcon(cx,cy,clr){
+    return '<circle cx="'+cx+'" cy="'+cy+'" r="6" fill="none" stroke="'+clr+'" stroke-width="1"/>'
+      +'<circle cx="'+cx+'" cy="'+cy+'" r="2" fill="'+clr+'"/>';
+  }
+  function monIcon(cx,cy,clr){
+    return '<rect x="'+(cx-8)+'" y="'+(cy-6)+'" width="16" height="12" rx="2" fill="none" stroke="'+clr+'" stroke-width="1.1"/>'
+      +'<polyline points="'+(cx-5)+','+(cy+2)+' '+(cx-2)+','+(cy-2)+' '+(cx+1)+','+(cy+1)+' '+(cx+5)+','+(cy-3)+'" fill="none" stroke="'+clr+'" stroke-width="1" stroke-linecap="round"/>';
+  }
+
+  // Status dot
+  function statusDot(x,y){
+    return '<circle cx="'+x+'" cy="'+y+'" r="3.5" fill="#7dbb7d" opacity="0.9"><animate attributeName="r" values="3.5;4.2;3.5" dur="2s" repeatCount="indefinite"/></circle>';
+  }
+
+  // Nodes definition: [id, label, sublabel, x, y, w, h, color, iconFn]
+  var nodes=[
+    {id:'cdn',label:'Cloudflare CDN',sub:'SSL termination, DDoS, edge cache',x:175,y:32,w:330,h:58,color:'#DA7756',
+      desc:'Cloudflare CDN with custom domain (salis.auto). SSL/TLS termination, DDoS mitigation, edge caching for static assets, WAF rules. Ports: 443 (HTTPS), 80 redirect.'},
+    {id:'lb',label:'NGINX / ALB',sub:'Layer 7 routing, health checks',x:195,y:130,w:290,h:55,color:'#DA7756',
+      desc:'NGINX reverse proxy or AWS Application Load Balancer. Layer 7 routing, sticky sessions, health-check probes every 10s. Rate limiting: 100 req/s per IP. Ports: 80/443 inbound, 3000/8080 upstream.'},
+    {id:'spa1',label:'React SPA',sub:'Vite build, static',x:75,y:265,w:195,h:52,color:'#6ba4d9',
+      desc:'React 18 Single Page Application built with Vite. Served as static assets (HTML/CSS/JS bundles). Client-side routing, code splitting, lazy-loaded routes. Container: Node 20 + serve. Port: 3000.'},
+    {id:'spa2',label:'React SPA',sub:'replica',x:75,y:335,w:195,h:52,color:'#6ba4d9',
+      desc:'Second React SPA container replica. Identical build, load-balanced for high availability. Auto-scales 2-4 instances based on request volume. Health endpoint: /health.'},
+    {id:'api1',label:'Express/Fastify API',sub:'Node 20, REST + JWT',x:350,y:265,w:245,h:52,color:'#6ba4d9',
+      desc:'Express or Fastify API server on Node 20. RESTful endpoints, JWT authentication, request validation (Zod), Helmet security headers. Port: 8080. Memory: 512MB-1GB per instance.'},
+    {id:'api2',label:'Express/Fastify API',sub:'replica',x:350,y:335,w:245,h:52,color:'#6ba4d9',
+      desc:'Second API server replica. Auto-scales 2-8 instances on CPU > 70% or p95 latency > 200ms. Graceful shutdown with 30s drain. Shared session store via Redis.'},
+    {id:'pgprimary',label:'PostgreSQL 15+ Primary',sub:'Read/Write, WAL streaming',x:95,y:498,w:240,h:55,color:'#7dbb7d',
+      desc:'PostgreSQL 15+ primary database. All read/write operations. WAL-based streaming replication to read replica. Connection limit: 200 (via PgBouncer). Storage: SSD, encrypted at rest.'},
+    {id:'pgreplica',label:'PostgreSQL Read Replica',sub:'Analytics, reports',x:385,y:498,w:225,h:55,color:'#7dbb7d',
+      desc:'Streaming read replica for analytics, reports, and heavy queries. Replication lag target < 100ms. Offloads financial reporting, audit log queries, and dashboard aggregations.'},
+    {id:'pgbouncer',label:'PgBouncer',sub:'Connection pooler',x:215,y:580,w:200,h:42,color:'#7dbb7d',
+      desc:'PgBouncer connection pooler in transaction mode. Multiplexes ~200 app connections into ~30 database connections. Reduces PostgreSQL overhead, enables fast failover. Port: 6432.'},
+    {id:'zatca',label:'ZATCA API',sub:'Saudi e-invoicing',x:700,y:275,w:220,h:40,color:'#d9b86b',
+      desc:'ZATCA (Zakat, Tax and Customs Authority) Phase 2 e-invoicing API. XML invoice signing, QR code generation, clearance/reporting. TLS 1.2+ mutual auth. Timeout: 30s.'},
+    {id:'stripe',label:'Stripe',sub:'Payment processing',x:700,y:328,w:220,h:40,color:'#d9b86b',
+      desc:'Stripe payment gateway. Handles card payments, payment intents, refunds. PCI DSS compliant. Webhook endpoint for async payment confirmations. API version: 2023-10-16.'},
+    {id:'sms',label:'SMS Gateway',sub:'OTP, notifications',x:700,y:381,w:220,h:40,color:'#d9b86b',
+      desc:'SMS gateway (Twilio/local provider). OTP verification, appointment reminders, service status updates. Rate limit: 10 msg/s. Arabic and English templates.'},
+    {id:'whatsapp',label:'WhatsApp Business',sub:'Customer messaging',x:700,y:434,w:220,h:40,color:'#d9b86b',
+      desc:'WhatsApp Business API. Sends service updates, invoice PDFs, appointment confirmations. Template-based messages with media attachments. Webhook for incoming messages.'},
+    {id:'email',label:'Email (SMTP)',sub:'Transactional mail',x:700,y:487,w:220,h:40,color:'#d9b86b',
+      desc:'SMTP email service (SendGrid/AWS SES). Transactional emails: invoice delivery, password reset, welcome emails. DKIM/SPF/DMARC configured. Port: 587 TLS.'},
+    {id:'s3',label:'Cloud Storage (S3)',sub:'Documents, backups',x:700,y:540,w:220,h:40,color:'#d9b86b',
+      desc:'AWS S3 or compatible object storage. Stores vehicle photos, invoice PDFs, backup snapshots. Lifecycle policies: move to IA after 90 days. Encrypted, versioned. IAM access.'},
+    {id:'errtrack',label:'Error Tracking',sub:'Sentry',x:60,y:693,w:195,h:50,color:'#a98ee0',
+      desc:'Sentry error tracking. Captures unhandled exceptions, breadcrumbs, user context. Source maps for React, Node stack traces. Slack alerts for P1 errors. 100% sample rate.'},
+    {id:'apm',label:'APM',sub:'Datadog / New Relic',x:285,y:693,w:180,h:50,color:'#a98ee0',
+      desc:'Application Performance Monitoring. Distributed tracing across API calls, database queries, external requests. P95/P99 latency dashboards. Auto-instrumented Node + PostgreSQL.'},
+    {id:'logs',label:'Log Aggregation',sub:'ELK / CloudWatch',x:495,y:693,w:210,h:50,color:'#a98ee0',
+      desc:'Centralized log aggregation (ELK stack or CloudWatch). Structured JSON logs from all services. Retention: 90 days hot, 1 year cold. Saved queries for audit and compliance.'},
+    {id:'uptime',label:'Uptime Monitor',sub:'Pingdom / UptimeRobot',x:735,y:693,w:210,h:50,color:'#a98ee0',
+      desc:'External uptime monitoring. Checks /health endpoints every 60s from multiple regions. Alerts via SMS + Slack on 2 consecutive failures. Target: 99.9% uptime SLA.'}
+  ];
+
+  var NM={};nodes.forEach(function(n){NM[n.id]=n;});
+
+  // Render nodes
+  nodes.forEach(function(n){
+    var iconStr='';
+    var ix=n.x+18,iy=n.y+n.h/2;
+    if(n.id==='cdn')iconStr=globeIcon(ix,iy);
+    else if(n.id==='lb')iconStr=lbIcon(ix,iy);
+    else if(n.id.indexOf('spa')===0)iconStr=appIcon(ix,iy,n.color);
+    else if(n.id.indexOf('api')===0)iconStr=appIcon(ix,iy,n.color);
+    else if(n.id.indexOf('pg')===0)iconStr=dbIcon(ix,iy,n.color);
+    else if(n.id==='errtrack'||n.id==='apm'||n.id==='logs'||n.id==='uptime')iconStr=monIcon(ix,iy,n.color);
+    else iconStr=svcIcon(ix,iy,n.color);
+    var isExtSvc=['zatca','stripe','sms','whatsapp','email','s3'].indexOf(n.id)>=0;
+    var tw=isExtSvc?34:38;
+    h+='<g class="dep-node" data-node="'+n.id+'">';
+    h+='<rect x="'+n.x+'" y="'+n.y+'" width="'+n.w+'" height="'+n.h+'" rx="8" fill="#111115" stroke="'+n.color+'" stroke-width="1.4"/>';
+    h+=iconStr;
+    h+='<text x="'+(n.x+tw)+'" y="'+(n.y+n.h/2-4)+'" fill="#f5f5f7" font-size="11" font-weight="600" font-family="'+F+'">'+n.label+'</text>';
+    h+='<text x="'+(n.x+tw)+'" y="'+(n.y+n.h/2+10)+'" fill="#8a8a93" font-size="8.5" font-family="'+F+'">'+n.sub+'</text>';
+    h+=statusDot(n.x+n.w-14,n.y+12);
+    h+='</g>';
+  });
+
+  // Auto-scale indicators (bracket + arrows around SPA and API pairs)
+  function scaleIndicator(x,y1,y2,label){
+    var mx=x,my=(y1+y2)/2;
+    h+='<line x1="'+mx+'" y1="'+y1+'" x2="'+mx+'" y2="'+y2+'" stroke="#6ba4d9" stroke-width="0.8" stroke-opacity="0.5"/>';
+    h+='<line x1="'+mx+'" y1="'+y1+'" x2="'+(mx+6)+'" y2="'+y1+'" stroke="#6ba4d9" stroke-width="0.8" stroke-opacity="0.5"/>';
+    h+='<line x1="'+mx+'" y1="'+y2+'" x2="'+(mx+6)+'" y2="'+y2+'" stroke="#6ba4d9" stroke-width="0.8" stroke-opacity="0.5"/>';
+    h+='<text x="'+(mx-4)+'" y="'+my+'" fill="#6ba4d9" font-size="8" text-anchor="end" font-family="'+F+'" opacity="0.7" transform="rotate(-90,'+(mx-4)+','+my+')">'+label+'</text>';
+  }
+  scaleIndicator(62,270,392,'2-4 instances');
+  scaleIndicator(338,270,392,'2-8 instances');
+
+  // Connectors: vertical flow
+  var conns=[
+    // CDN -> LB
+    {from:'cdn',fe:'bottom',to:'lb',te:'top',color:'#DA7756',ff:0.5,tf:0.5},
+    // LB -> SPA1
+    {from:'lb',fe:'bottom',to:'spa1',te:'top',color:'#DA7756',ff:0.25,tf:0.6},
+    // LB -> API1
+    {from:'lb',fe:'bottom',to:'api1',te:'top',color:'#DA7756',ff:0.75,tf:0.4},
+    // API1 -> PG Primary
+    {from:'api1',fe:'bottom',to:'pgprimary',te:'top',color:'#6ba4d9',ff:0.3,tf:0.6},
+    // API2 -> PG Primary
+    {from:'api2',fe:'bottom',to:'pgprimary',te:'top',color:'#6ba4d9',ff:0.3,tf:0.8},
+    // API1 -> PG Replica (reads)
+    {from:'api1',fe:'bottom',to:'pgreplica',te:'top',color:'#6ba4d9',ff:0.7,tf:0.4},
+    // PG Primary -> PG Replica (replication)
+    {from:'pgprimary',fe:'right',to:'pgreplica',te:'left',color:'#7dbb7d',ff:0.5,tf:0.5},
+    // PgBouncer -> Primary
+    {from:'pgbouncer',fe:'top',to:'pgprimary',te:'bottom',color:'#7dbb7d',ff:0.35,tf:0.5},
+    // PgBouncer -> Replica
+    {from:'pgbouncer',fe:'top',to:'pgreplica',te:'bottom',color:'#7dbb7d',ff:0.65,tf:0.5},
+    // API -> External services
+    {from:'api1',fe:'right',to:'zatca',te:'left',color:'#d9b86b',ff:0.5,tf:0.5},
+    {from:'api1',fe:'right',to:'stripe',te:'left',color:'#d9b86b',ff:0.7,tf:0.5},
+    {from:'api2',fe:'right',to:'sms',te:'left',color:'#d9b86b',ff:0.5,tf:0.5},
+    {from:'api2',fe:'right',to:'whatsapp',te:'left',color:'#d9b86b',ff:0.6,tf:0.5},
+    {from:'api2',fe:'right',to:'email',te:'left',color:'#d9b86b',ff:0.7,tf:0.5},
+    {from:'api1',fe:'right',to:'s3',te:'left',color:'#d9b86b',ff:0.8,tf:0.5}
+  ];
+
+  function ep(n,edge,frac){
+    switch(edge){
+      case'top':return{x:n.x+n.w*frac,y:n.y};
+      case'bottom':return{x:n.x+n.w*frac,y:n.y+n.h};
+      case'left':return{x:n.x,y:n.y+n.h*frac};
+      case'right':return{x:n.x+n.w,y:n.y+n.h*frac};
+    }
+  }
+  function cpCalc(sp,tp,fe,te){
+    var d=Math.max(30,Math.abs(sp.x-tp.x)*0.35,Math.abs(sp.y-tp.y)*0.35);
+    var dir={top:{x:0,y:-1},bottom:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
+    var fd=dir[fe],td=dir[te];
+    return[{x:sp.x+fd.x*d,y:sp.y+fd.y*d},{x:tp.x+td.x*d,y:tp.y+td.y*d}];
+  }
+
+  conns.forEach(function(c){
+    var src=NM[c.from],tgt=NM[c.to];
+    if(!src||!tgt)return;
+    var sp=ep(src,c.fe,c.ff);
+    var tp=ep(tgt,c.te,c.tf);
+    var pts=cpCalc(sp,tp,c.fe,c.te);
+    var pathD='M'+sp.x+','+sp.y+' C'+pts[0].x+','+pts[0].y+' '+pts[1].x+','+pts[1].y+' '+tp.x+','+tp.y;
+    h+='<g class="dep-connector" data-from="'+c.from+'" data-to="'+c.to+'">';
+    h+='<path d="'+pathD+'" fill="none" stroke="'+c.color+'" stroke-width="1.2" stroke-opacity="0.55" stroke-dasharray="6 8" marker-end="url(#arr'+(c.color==='#DA7756'?'O':c.color==='#6ba4d9'?'B':c.color==='#7dbb7d'?'G':c.color==='#a98ee0'?'P':'D')+')" style="animation:flowDash 1.5s linear infinite"/>';
+    h+='</g>';
+  });
+
+  // Monitoring dashed lines up to app/db tiers
+  var monTargets=[
+    {from:'errtrack',to:'api1',fe:'top',te:'bottom',tf:0.15},
+    {from:'apm',to:'api2',fe:'top',te:'bottom',tf:0.2},
+    {from:'logs',to:'pgprimary',fe:'top',te:'bottom',tf:0.3},
+    {from:'uptime',to:'cdn',fe:'top',te:'bottom',tf:0.85}
+  ];
+  monTargets.forEach(function(mt){
+    var src=NM[mt.from],tgt=NM[mt.to];
+    if(!src||!tgt)return;
+    var sp=ep(src,'top',0.5);
+    var tp=ep(tgt,mt.te,mt.tf||0.5);
+    var pts=cpCalc(sp,tp,'top',mt.te);
+    var pathD='M'+sp.x+','+sp.y+' C'+pts[0].x+','+pts[0].y+' '+pts[1].x+','+pts[1].y+' '+tp.x+','+tp.y;
+    h+='<g class="dep-connector" data-from="'+mt.from+'" data-to="'+mt.to+'">';
+    h+='<path d="'+pathD+'" fill="none" stroke="#a98ee0" stroke-width="0.8" stroke-opacity="0.3" stroke-dasharray="3 6" style="animation:flowDashSlow 2.5s linear infinite"/>';
+    h+='</g>';
+  });
+
+  // Replication label on PG Primary -> Replica
+  var repSrc=NM['pgprimary'],repTgt=NM['pgreplica'];
+  var rsp=ep(repSrc,'right',0.5),rtp=ep(repTgt,'left',0.5);
+  var rmx=(rsp.x+rtp.x)/2,rmy=(rsp.y+rtp.y)/2;
+  h+='<text x="'+rmx+'" y="'+(rmy-8)+'" fill="#7dbb7d" font-size="8" text-anchor="middle" font-family="'+F+'" opacity="0.7">streaming</text>';
+  h+='<text x="'+rmx+'" y="'+(rmy+2)+'" fill="#7dbb7d" font-size="8" text-anchor="middle" font-family="'+F+'" opacity="0.7">replication</text>';
+
+  // User icon at very top
+  h+='<g opacity="0.6">';
+  h+='<circle cx="340" cy="14" r="5" fill="none" stroke="#f5f5f7" stroke-width="1.2"/>';
+  h+='<path d="M332,28 C332,22 348,22 348,28" fill="none" stroke="#f5f5f7" stroke-width="1.2"/>';
+  h+='<text x="356" y="24" fill="#8a8a93" font-size="9" font-family="'+F+'">Users</text>';
+  h+='<path d="M340,30 C340,32 340,32 340,32" fill="none" stroke="#8a8a93" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arrO)"/>';
+  h+='</g>';
+
+  // Request flow label
+  h+='<text x="340" y="62" fill="#DA7756" font-size="7.5" font-weight="600" text-anchor="end" font-family="'+F+'" opacity="0.6">HTTPS :443</text>';
+  h+='<text x="340" y="148" fill="#DA7756" font-size="7.5" font-weight="600" text-anchor="end" font-family="'+F+'" opacity="0.6">:80/:443</text>';
+
+  svg.innerHTML=h;
+
+  // Hover interactivity
+  var captionEl=document.getElementById('captionText');
+  var defaultCap='Hover any component to see its configuration, ports, and role in the stack';
+  var nodeDescMap={};nodes.forEach(function(n){nodeDescMap[n.id]=n.desc;});
+
+  document.querySelectorAll('.dep-node').forEach(function(el){
+    el.addEventListener('mouseenter',function(){
+      var id=this.dataset.node;
+      var related=new Set();related.add(id);
+      conns.concat(monTargets).forEach(function(c){
+        if(c.from===id)related.add(c.to);
+        if(c.to===id)related.add(c.from);
+      });
+      document.querySelectorAll('.dep-node').forEach(function(n){
+        var nid=n.dataset.node;
+        if(related.has(nid)){n.classList.add('highlighted');n.classList.remove('dimmed');}
+        else{n.classList.add('dimmed');n.classList.remove('highlighted');}
+      });
+      document.querySelectorAll('.dep-connector').forEach(function(c){
+        if(c.dataset.from===id||c.dataset.to===id){c.classList.add('highlighted');c.classList.remove('dimmed');}
+        else{c.classList.add('dimmed');c.classList.remove('highlighted');}
+      });
+      captionEl.textContent=nodeDescMap[id]||id;
+    });
+    el.addEventListener('mouseleave',function(){
+      document.querySelectorAll('.dep-node,.dep-connector').forEach(function(el){
+        el.classList.remove('dimmed','highlighted');
+      });
+      captionEl.textContent=defaultCap;
+    });
+  });
+
+  // Scroll reveal
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+})();
+</script>
+</body>
+</html>

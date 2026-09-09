@@ -21,6 +21,10 @@ import { fileURLToPath } from 'node:url'
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO = path.resolve(APP, '..')
 const BASELINE = path.join(REPO, 'project-control', 'BASELINE.json')
+/** Used only when the file does not exist yet; an existing note is kept. */
+const SHARED_NOTE =
+  'Ratchet for check-no-fake, check-tokens and the golden-path runner. These numbers ' +
+  'may fall, never rise. Update only when lowering them, and never to accommodate a regression.'
 const REGISTRY = path.join(REPO, 'project-control', 'MASTER_REGISTRY.json')
 
 const strict = process.argv.includes('--strict')
@@ -92,8 +96,10 @@ if (updating) {
   const prev = fs.existsSync(BASELINE) ? JSON.parse(fs.readFileSync(BASELINE, 'utf8')) : {}
   fs.writeFileSync(BASELINE, JSON.stringify({
     ...prev,
-    note: 'Ratchet for check-no-fake. These numbers may fall, never rise. ' +
-          'Update only when lowering them, and never to accommodate a regression.',
+    /* Preserved, not restamped. Three gates keep counters in this file and
+     * this one used to overwrite the note with its own name, so the shared
+     * file described a third of itself. check-tokens already preserves it. */
+    note: prev.note ?? SHARED_NOTE,
     updatedAt: new Date().toISOString().slice(0, 10),
     ...current,
   }, null, 2) + '\n')

@@ -15,7 +15,7 @@ import { InvoiceRowActions } from './InvoiceActions'
 import { RecordPaymentModal, type PayableInvoice } from './RecordPaymentModal'
 import { fromHalalas, invoiceMoney, lineUnitHalalas, paymentHalalas, roundHalfUp } from './money'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { useCollection, useEntity } from '@/data/useCollection'
+import { useCollection, useEntity, MAX_PAGE_SIZE } from '@/data/useCollection'
 
 /** Full invoice: line items, payments received, and the ZATCA totals block.
  *
@@ -53,11 +53,11 @@ export function InvoiceDetail() {
   const serverId = (invoice as { _id?: string } | undefined)?._id
   const { data: lines = [] } = useCollection(
     'invoiceLines',
-    serverId ? { filter: { invoiceId: serverId }, pageSize: 500 } : undefined
+    serverId ? { filter: { invoiceId: serverId }, pageSize: MAX_PAGE_SIZE } : undefined
   )
   const { data: payments = [] } = useCollection(
     'invoicePayments',
-    serverId ? { filter: { invoiceId: serverId }, pageSize: 500 } : undefined
+    serverId ? { filter: { invoiceId: serverId }, pageSize: MAX_PAGE_SIZE } : undefined
   )
 
   if (isLoading) return <Loading label="Loading invoice..." />

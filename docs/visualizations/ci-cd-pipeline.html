@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-023 — CI/CD Pipeline</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --red: #d96b6b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .hero {
+    padding: 60px 24px 32px;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+  }
+  .caption-bar {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding: 14px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+  .caption-bar .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .caption-bar .desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .diagram-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border-radius: 16px;
+    overflow-x: auto;
+  }
+  .diagram-section svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    min-width: 900px;
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .supporting {
+    max-width: 900px;
+    margin: 60px auto 0;
+    padding: 0 24px 80px;
+  }
+  .supporting h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .supporting h2 span { color: var(--accent); }
+  .supporting p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .info-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(218,119,86,0.3);
+  }
+  .info-card h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .info-card p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+  .info-card .stat {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  /* Animations */
+  @keyframes flowDash { to { stroke-dashoffset: -32; } }
+  @keyframes flowDashSlow { to { stroke-dashoffset: -48; } }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.55; }
+  }
+  @keyframes checkPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  /* SVG hover */
+  .stage { cursor: pointer; transition: transform 0.2s ease; transform-box: fill-box; transform-origin: center; }
+  .stage:hover rect { filter: brightness(1.3) drop-shadow(0 0 8px rgba(218,119,86,0.3)); }
+  .stage text { pointer-events: none; }
+  .gate { cursor: pointer; transition: transform 0.2s ease; transform-box: fill-box; transform-origin: center; }
+  .gate:hover { transform: scale(1.2); }
+  .branch-node { cursor: pointer; transition: transform 0.2s ease; transform-box: fill-box; transform-origin: center; }
+  .branch-node:hover rect { filter: brightness(1.2) drop-shadow(0 0 6px rgba(107,164,217,0.3)); }
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SA-VIZ-023</div>
+  <h1>CI/CD <span>Pipeline</span></h1>
+  <p>Automated build, test, and deploy pipeline for SALIS AUTO using GitHub Actions with parallel stages, quality gates, and blue-green deployments.</p>
+</section>
+
+<div class="caption-bar" id="captionBar">
+  <span class="label" id="captionLabel">Hover a stage</span>
+  <span class="desc" id="captionText">Interact with the pipeline diagram to explore each stage, its tools, commands, and expected duration.</span>
+</div>
+
+<!-- Hero Pipeline Diagram -->
+<section class="diagram-section">
+  <svg viewBox="0 0 1080 520" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--accent)"/>
+      </marker>
+      <marker id="arrowGreen" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--green)"/>
+      </marker>
+      <marker id="arrowBlue" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--blue)"/>
+      </marker>
+      <marker id="arrowGold" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--gold)"/>
+      </marker>
+      <marker id="arrowPurple" viewBox="0 0 10 7" refX="9" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 3.5 L 0 7 Z" fill="var(--purple)"/>
+      </marker>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="6" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Background main flow line -->
+    <path d="M 60 130 L 1020 130" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+
+    <!-- === CONNECTORS === -->
+    <!-- Trigger -> Lint (parallel split top) -->
+    <path d="M 120 155 C 140 170, 150 175, 180 185" fill="none" stroke="rgba(218,119,86,0.2)" stroke-width="1.5"/>
+    <path d="M 120 155 C 140 170, 150 175, 180 185" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.4s linear infinite" marker-end="url(#arrow)"/>
+
+    <!-- Trigger -> Unit Tests (parallel split bottom) -->
+    <path d="M 120 155 C 140 190, 150 220, 180 245" fill="none" stroke="rgba(125,187,125,0.2)" stroke-width="1.5"/>
+    <path d="M 120 155 C 140 190, 150 220, 180 245" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.4s linear infinite" marker-end="url(#arrowGreen)"/>
+
+    <!-- Lint -> Gate 1 -->
+    <path d="M 290 195 C 310 195, 320 195, 340 195" fill="none" stroke="rgba(218,119,86,0.2)" stroke-width="1.5"/>
+    <path d="M 290 195 C 310 195, 320 195, 340 195" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <!-- Unit Tests -> Gate 1 -->
+    <path d="M 290 255 C 310 255, 320 230, 340 210" fill="none" stroke="rgba(125,187,125,0.2)" stroke-width="1.5"/>
+    <path d="M 290 255 C 310 255, 320 230, 340 210" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGreen)"/>
+
+    <!-- Gate 1 -> Integration -->
+    <path d="M 370 200 C 395 200, 410 200, 420 200" fill="none" stroke="rgba(218,119,86,0.2)" stroke-width="1.5"/>
+    <path d="M 370 200 C 395 200, 410 200, 420 200" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <!-- Integration -> Build -->
+    <path d="M 530 200 C 550 200, 555 165, 570 145" fill="none" stroke="rgba(107,164,217,0.2)" stroke-width="1.5"/>
+    <path d="M 530 200 C 550 200, 555 165, 570 145" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowBlue)"/>
+
+    <!-- Integration -> Security -->
+    <path d="M 530 210 C 550 215, 555 230, 570 245" fill="none" stroke="rgba(169,142,224,0.2)" stroke-width="1.5"/>
+    <path d="M 530 210 C 550 215, 555 230, 570 245" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowPurple)"/>
+
+    <!-- Build -> Gate 2 -->
+    <path d="M 680 135 C 700 135, 710 160, 730 170" fill="none" stroke="rgba(107,164,217,0.2)" stroke-width="1.5"/>
+    <path d="M 680 135 C 700 135, 710 160, 730 170" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowBlue)"/>
+
+    <!-- Security -> Gate 2 -->
+    <path d="M 680 255 C 700 255, 710 200, 730 185" fill="none" stroke="rgba(169,142,224,0.2)" stroke-width="1.5"/>
+    <path d="M 680 255 C 700 255, 710 200, 730 185" fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowPurple)"/>
+
+    <!-- Gate 2 -> E2E -->
+    <path d="M 760 180 C 780 180, 790 180, 800 180" fill="none" stroke="rgba(218,119,86,0.2)" stroke-width="1.5"/>
+    <path d="M 760 180 C 780 180, 790 180, 800 180" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrow)"/>
+
+    <!-- E2E -> Deploy Staging -->
+    <path d="M 910 180 C 930 180, 935 145, 940 130" fill="none" stroke="rgba(125,187,125,0.2)" stroke-width="1.5"/>
+    <path d="M 910 180 C 930 180, 935 145, 940 130" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDash 1.2s linear infinite" marker-end="url(#arrowGreen)"/>
+
+    <!-- Deploy Staging -> Deploy Prod -->
+    <path d="M 960 155 C 960 185, 960 210, 960 230" fill="none" stroke="rgba(217,184,107,0.2)" stroke-width="1.5"/>
+    <path d="M 960 155 C 960 185, 960 210, 960 230" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="6 8" style="animation: flowDashSlow 2s linear infinite" marker-end="url(#arrowGold)"/>
+
+    <!-- "PARALLEL" label -->
+    <text x="155" y="162" fill="var(--muted)" font-size="8" font-family="var(--font)" text-anchor="middle" letter-spacing="0.1em">PARALLEL</text>
+
+    <!-- === STAGE: Trigger === -->
+    <g class="stage" data-caption="Trigger|Push to branch, PR opened, or manual workflow_dispatch. Determines which pipeline path runs: PR gets lint+test, main gets full deploy.">
+      <circle cx="90" cy="130" r="34" fill="rgba(218,119,86,0.08)" style="animation: pulse 3s ease-in-out infinite"/>
+      <rect x="56" y="104" width="68" height="52" rx="12" fill="#12100e" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Git branch icon -->
+      <g transform="translate(90,122)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="0" cy="-8" r="3"/><circle cx="0" cy="8" r="3"/><circle cx="10" cy="-3" r="3"/>
+        <path d="M 0 -5 v10"/><path d="M 10 0 C 10 5, 0 5, 0 5"/>
+      </g>
+      <text x="90" y="148" fill="var(--text)" font-size="10" font-weight="600" text-anchor="middle" font-family="var(--font)">Trigger</text>
+    </g>
+
+    <!-- === STAGE: Lint & Format === -->
+    <g class="stage" data-caption="Lint & Format|ESLint with strict TypeScript rules, Prettier formatting check, tsc --noEmit for type safety. Runs: eslint . && prettier --check . && tsc --noEmit. Duration: ~45s.">
+      <rect x="180" y="170" width="110" height="50" rx="10" fill="#12100e" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Checkmark/lint icon -->
+      <g transform="translate(205,190)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round">
+        <rect x="-8" y="-7" width="16" height="14" rx="2"/>
+        <path d="M -4 0 l3 3 l6 -7"/>
+      </g>
+      <text x="252" y="192" fill="var(--text)" font-size="10" font-weight="600" font-family="var(--font)">Lint</text>
+      <text x="252" y="204" fill="var(--muted)" font-size="8" font-family="var(--font)">& Format</text>
+    </g>
+
+    <!-- === STAGE: Unit Tests === -->
+    <g class="stage" data-caption="Unit Tests|Vitest with component tests using Testing Library. Coverage target: 80%+ across branches. Runs: vitest run --coverage. Duration: ~90s. Artifacts: coverage/lcov.info.">
+      <rect x="180" y="230" width="110" height="50" rx="10" fill="#12100e" stroke="var(--green)" stroke-width="1.5"/>
+      <!-- Test tube icon -->
+      <g transform="translate(205,250)" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round">
+        <path d="M -4 -8 v12 c 0 4 8 4 8 0 v-12"/><path d="M -6 -8 h12"/><path d="M -2 0 h8"/>
+      </g>
+      <text x="252" y="252" fill="var(--text)" font-size="10" font-weight="600" font-family="var(--font)">Unit</text>
+      <text x="252" y="264" fill="var(--muted)" font-size="8" font-family="var(--font)">Tests</text>
+    </g>
+
+    <!-- === QUALITY GATE 1 === -->
+    <g class="gate" data-caption="Quality Gate 1|Both lint and unit tests must pass. Coverage must meet 80% threshold. Zero TypeScript errors. Blocks pipeline on failure.">
+      <circle cx="355" cy="200" r="14" fill="rgba(125,187,125,0.1)" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <g transform="translate(355,200)" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round">
+        <path d="M -5 0 l3 4 l7 -8" style="animation: checkPulse 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center;"/>
+      </g>
+    </g>
+
+    <!-- === STAGE: Integration Tests === -->
+    <g class="stage" data-caption="Integration Tests|API endpoint tests with PGlite (in-memory PostgreSQL). Drizzle migration tests. Tests multi-tenant RLS policies, ZATCA integration mocks. Runs: vitest run --project=integration. Duration: ~2min.">
+      <rect x="420" y="175" width="110" height="50" rx="10" fill="#12100e" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Database icon -->
+      <g transform="translate(445,195)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round">
+        <ellipse cx="0" cy="-5" rx="8" ry="3"/><path d="M -8 -5 v10 c 0 3 16 3 16 0 v-10"/><path d="M -8 0 c 0 3 16 3 16 0"/>
+      </g>
+      <text x="490" y="197" fill="var(--text)" font-size="10" font-weight="600" font-family="var(--font)">Integration</text>
+      <text x="490" y="209" fill="var(--muted)" font-size="8" font-family="var(--font)">Tests</text>
+    </g>
+
+    <!-- === STAGE: Build === -->
+    <g class="stage" data-caption="Build|Vite production build for React SPA, esbuild for Express backend. Bundle size analysis with rollup-plugin-visualizer. Generates source maps. Runs: vite build && esbuild server. Duration: ~60s. Artifacts: dist/, bundle-report.html.">
+      <rect x="570" y="110" width="110" height="50" rx="10" fill="#12100e" stroke="var(--blue)" stroke-width="1.5"/>
+      <!-- Build/package icon -->
+      <g transform="translate(595,130)" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 -8 l8 4 v8 l-8 4 l-8 -4 v-8 z"/><path d="M 0 0 v8"/><path d="M 0 0 l8 -4"/><path d="M 0 0 l-8 -4"/>
+      </g>
+      <text x="650" y="133" fill="var(--text)" font-size="10" font-weight="600" font-family="var(--font)">Build</text>
+      <text x="650" y="145" fill="var(--muted)" font-size="8" font-family="var(--font)">Vite + esbuild</text>
+    </g>
+
+    <!-- === STAGE: Security Scan === -->
+    <g class="stage" data-caption="Security Scan|npm audit for known vulnerabilities, OWASP dependency check for CVEs, secret scanning for leaked API keys. Fails on critical/high severity. Runs: npm audit --audit-level=high && npx secretlint. Duration: ~40s.">
+      <rect x="570" y="230" width="110" height="50" rx="10" fill="#12100e" stroke="var(--purple)" stroke-width="1.5"/>
+      <!-- Shield icon -->
+      <g transform="translate(595,250)" fill="none" stroke="var(--purple)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 -9 l8 3 v6 c 0 5 -8 8 -8 8 c 0 0 -8 -3 -8 -8 v-6 z"/>
+        <path d="M -3 0 l2 3 l5 -5"/>
+      </g>
+      <text x="648" y="252" fill="var(--text)" font-size="10" font-weight="600" font-family="var(--font)">Security</text>
+      <text x="648" y="264" fill="var(--muted)" font-size="8" font-family="var(--font)">Scan</text>
+    </g>
+
+    <!-- === QUALITY GATE 2 === -->
+    <g class="gate" data-caption="Quality Gate 2|Build must succeed with zero warnings. Bundle size under threshold. No critical security vulnerabilities. All artifacts generated.">
+      <circle cx="745" cy="180" r="14" fill="rgba(125,187,125,0.1)" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <g transform="translate(745,180)" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round">
+        <path d="M -5 0 l3 4 l7 -8" style="animation: checkPulse 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center;"/>
+      </g>
+    </g>
+
+    <!-- === STAGE: E2E Tests === -->
+    <g class="stage" data-caption="E2E Tests|Playwright browser tests against Chrome and Safari. Tests critical paths: login, vehicle intake, invoice flow, ZATCA submission. Runs: npx playwright test. Duration: ~4min. Artifacts: test-results/, playwright-report/.">
+      <rect x="800" y="155" width="110" height="50" rx="10" fill="#12100e" stroke="var(--accent)" stroke-width="1.5"/>
+      <!-- Browser icon -->
+      <g transform="translate(825,175)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round">
+        <rect x="-9" y="-7" width="18" height="14" rx="2"/><path d="M -9 -2 h18"/>
+        <circle cx="-5" cy="-4.5" r="1" fill="var(--accent)"/><circle cx="-2" cy="-4.5" r="1" fill="var(--accent)"/>
+      </g>
+      <text x="872" y="177" fill="var(--text)" font-size="10" font-weight="600" font-family="var(--font)">E2E</text>
+      <text x="872" y="189" fill="var(--muted)" font-size="8" font-family="var(--font)">Tests</text>
+    </g>
+
+    <!-- === STAGE: Deploy Staging === -->
+    <g class="stage" data-caption="Deploy Staging|Auto-deploy to staging environment on develop branch merge. Runs database migrations, seeds test data, smoke tests. Staging URL receives canary traffic. Duration: ~3min.">
+      <rect x="920" y="100" width="90" height="55" rx="10" fill="#12100e" stroke="var(--green)" stroke-width="1.5"/>
+      <!-- Cloud upload icon -->
+      <g transform="translate(945,120)" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round">
+        <path d="M -7 2 c -5 0 -5 -8 0 -8 c 1 -4 9 -4 10 0 c 5 0 5 8 0 8"/>
+        <path d="M 0 8 v-8"/><path d="M -3 3 l3 -3 l3 3"/>
+      </g>
+      <text x="965" y="142" fill="var(--text)" font-size="9" font-weight="600" font-family="var(--font)" text-anchor="middle">Staging</text>
+      <text x="965" y="150" fill="var(--green)" font-size="7" font-family="var(--font)" text-anchor="middle">AUTO</text>
+    </g>
+
+    <!-- === STAGE: Deploy Production === -->
+    <g class="stage" data-caption="Deploy Production|Manual approval gate required. Blue-green deployment: new version goes live alongside old. Health checks validate before traffic switch. Automatic rollback on failure. Duration: ~5min.">
+      <rect x="920" y="230" width="90" height="55" rx="10" fill="#12100e" stroke="var(--gold)" stroke-width="1.5"/>
+      <!-- Rocket icon -->
+      <g transform="translate(945,250)" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 0 -8 c 6 2 8 8 6 14 l-3 -2 l-6 0 l-3 2 c -2 -6 0 -12 6 -14z"/>
+        <circle cx="0" cy="-1" r="2"/>
+        <path d="M -4 6 l-2 3"/><path d="M 4 6 l2 3"/>
+      </g>
+      <text x="965" y="272" fill="var(--text)" font-size="9" font-weight="600" font-family="var(--font)" text-anchor="middle">Production</text>
+      <text x="965" y="280" fill="var(--gold)" font-size="7" font-family="var(--font)" text-anchor="middle">MANUAL</text>
+    </g>
+
+    <!-- Approval gate lock icon -->
+    <g transform="translate(960,210)">
+      <circle cx="0" cy="0" r="8" fill="rgba(217,184,107,0.15)" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 2"/>
+      <g fill="none" stroke="var(--gold)" stroke-width="1.3" stroke-linecap="round">
+        <rect x="-4" y="-1" width="8" height="6" rx="1"/><path d="M -2 -1 v-2 a2 2 0 0 1 4 0 v2"/>
+      </g>
+    </g>
+
+    <!-- === PR WORKFLOW (secondary row) === -->
+    <text x="60" y="375" fill="var(--muted)" font-size="9" font-family="var(--font)" letter-spacing="0.1em" font-weight="600">PR WORKFLOW</text>
+
+    <!-- PR flow line -->
+    <path d="M 60 410 L 900 410" stroke="rgba(107,164,217,0.1)" stroke-width="1.5"/>
+    <path d="M 60 410 L 900 410" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="6 10" style="animation: flowDash 2s linear infinite" opacity="0.5"/>
+
+    <!-- PR node -->
+    <g class="branch-node" data-caption="Pull Request|Developer opens PR from feature/* branch. Triggers lint, unit tests, and build checks. Required status checks must pass.">
+      <rect x="80" y="393" width="80" height="34" rx="8" fill="#12100e" stroke="var(--blue)" stroke-width="1.2"/>
+      <text x="120" y="414" fill="var(--blue)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">PR Open</text>
+    </g>
+
+    <!-- Review node -->
+    <g class="branch-node" data-caption="Code Review|Minimum 1 approval required. Codeowners auto-assigned. Review checks: architecture, security, test coverage, naming conventions.">
+      <rect x="230" y="393" width="80" height="34" rx="8" fill="#12100e" stroke="var(--blue)" stroke-width="1.2"/>
+      <text x="270" y="414" fill="var(--blue)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">Review</text>
+    </g>
+
+    <!-- Approve node -->
+    <g class="branch-node" data-caption="Approval|Reviewer approves PR. All CI checks green. No merge conflicts. Branch is up-to-date with develop base.">
+      <rect x="380" y="393" width="80" height="34" rx="8" fill="#12100e" stroke="var(--blue)" stroke-width="1.2"/>
+      <text x="420" y="414" fill="var(--blue)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">Approve</text>
+    </g>
+
+    <!-- Merge node -->
+    <g class="branch-node" data-caption="Merge|Squash merge into develop. Triggers integration tests and staging deploy. Commit message follows conventional commits format.">
+      <rect x="530" y="393" width="80" height="34" rx="8" fill="#12100e" stroke="var(--green)" stroke-width="1.2"/>
+      <text x="570" y="414" fill="var(--green)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">Merge</text>
+    </g>
+
+    <!-- Deploy node -->
+    <g class="branch-node" data-caption="Auto Deploy|Merge to develop triggers full pipeline: integration tests, E2E, then auto-deploy to staging. Release PR created for main.">
+      <rect x="680" y="393" width="80" height="34" rx="8" fill="#12100e" stroke="var(--green)" stroke-width="1.2"/>
+      <text x="720" y="414" fill="var(--green)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">Deploy</text>
+    </g>
+
+    <!-- Release node -->
+    <g class="branch-node" data-caption="Release|Production release via merge to main. Semantic versioning. Changelog generated from conventional commits. Tagged release on GitHub.">
+      <rect x="830" y="393" width="80" height="34" rx="8" fill="#12100e" stroke="var(--gold)" stroke-width="1.2"/>
+      <text x="870" y="414" fill="var(--gold)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">Release</text>
+    </g>
+
+    <!-- === BRANCH STRATEGY (bottom) === -->
+    <text x="60" y="470" fill="var(--muted)" font-size="9" font-family="var(--font)" letter-spacing="0.1em" font-weight="600">BRANCH STRATEGY</text>
+
+    <!-- Branch lines -->
+    <line x1="200" y1="495" x2="400" y2="495" stroke="var(--blue)" stroke-width="2" opacity="0.4"/>
+    <text x="300" y="490" fill="var(--blue)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">feature/*</text>
+
+    <line x1="400" y1="495" x2="650" y2="495" stroke="var(--accent)" stroke-width="2" opacity="0.4"/>
+    <text x="525" y="490" fill="var(--accent)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">develop</text>
+
+    <line x1="650" y1="495" x2="800" y2="495" stroke="var(--green)" stroke-width="2" opacity="0.4"/>
+    <text x="725" y="490" fill="var(--green)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">staging</text>
+
+    <line x1="800" y1="495" x2="1000" y2="495" stroke="var(--gold)" stroke-width="2" opacity="0.4"/>
+    <text x="900" y="490" fill="var(--gold)" font-size="9" font-weight="600" text-anchor="middle" font-family="var(--font)">main</text>
+
+    <!-- Merge dots -->
+    <circle cx="400" cy="495" r="4" fill="var(--accent)"/><circle cx="650" cy="495" r="4" fill="var(--green)"/><circle cx="800" cy="495" r="4" fill="var(--gold)"/>
+
+    <!-- Branch arrows -->
+    <path d="M 400 495 C 390 480, 395 470, 400 495" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.6"/>
+    <path d="M 650 495 C 640 480, 645 470, 650 495" fill="none" stroke="var(--green)" stroke-width="1" opacity="0.6"/>
+
+    <!-- Status indicators legend -->
+    <g transform="translate(60, 310)">
+      <text x="0" y="0" fill="var(--muted)" font-size="9" font-family="var(--font)" letter-spacing="0.1em" font-weight="600">STATUS</text>
+      <circle cx="10" cy="18" r="5" fill="rgba(125,187,125,0.2)" stroke="var(--green)" stroke-width="1.2"/>
+      <text x="22" y="22" fill="var(--muted)" font-size="9" font-family="var(--font)">Passed</text>
+      <circle cx="80" cy="18" r="5" fill="rgba(217,184,107,0.2)" stroke="var(--gold)" stroke-width="1.2"/>
+      <text x="92" y="22" fill="var(--muted)" font-size="9" font-family="var(--font)">Running</text>
+      <circle cx="160" cy="18" r="5" fill="rgba(217,107,107,0.2)" stroke="var(--red)" stroke-width="1.2"/>
+      <text x="172" y="22" fill="var(--muted)" font-size="9" font-family="var(--font)">Failed</text>
+      <circle cx="225" cy="18" r="5" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1.2"/>
+      <text x="237" y="22" fill="var(--muted)" font-size="9" font-family="var(--font)">Pending</text>
+    </g>
+  </svg>
+</section>
+
+<!-- Supporting Section: Pipeline Metrics -->
+<section class="supporting reveal">
+  <h2>Pipeline <span>Metrics</span></h2>
+  <p>Target performance for the full CI/CD pipeline from commit to production.</p>
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="stat">~12m</div>
+      <h3>Full Pipeline</h3>
+      <p>Commit to staging deploy, including parallel lint, tests, build, security, and E2E</p>
+    </div>
+    <div class="info-card">
+      <div class="stat">80%+</div>
+      <h3>Coverage Target</h3>
+      <p>Branch coverage enforced by Vitest with lcov reporting to PR status checks</p>
+    </div>
+    <div class="info-card">
+      <div class="stat">2</div>
+      <h3>Quality Gates</h3>
+      <p>Automated checkpoints that block the pipeline unless all upstream stages pass</p>
+    </div>
+    <div class="info-card">
+      <div class="stat">0</div>
+      <h3>Critical CVEs</h3>
+      <p>Zero tolerance for critical or high severity vulnerabilities in production deploys</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  SA-VIZ-023 &mdash; CI/CD Pipeline &mdash; SALIS AUTO Documentation Library
+</div>
+
+<script>
+  // Caption bar interaction
+  const captionBar = document.getElementById('captionBar');
+  const captionLabel = document.getElementById('captionLabel');
+  const captionText = document.getElementById('captionText');
+  const defaultLabel = 'Hover a stage';
+  const defaultText = 'Interact with the pipeline diagram to explore each stage, its tools, commands, and expected duration.';
+
+  document.querySelectorAll('.stage, .gate, .branch-node').forEach(g => {
+    const raw = g.dataset.caption;
+    if (!raw) return;
+    const [label, desc] = raw.split('|');
+    g.addEventListener('mouseenter', () => {
+      captionLabel.textContent = label;
+      captionText.textContent = desc;
+      captionBar.style.borderColor = 'rgba(218,119,86,0.25)';
+    });
+    g.addEventListener('mouseleave', () => {
+      captionLabel.textContent = defaultLabel;
+      captionText.textContent = defaultText;
+      captionBar.style.borderColor = '';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

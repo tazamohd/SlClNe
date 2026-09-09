@@ -41,6 +41,7 @@ test.describe('Invoices and finance', () => {
   test('invoice preview renders', async ({ page }) => {
     await gotoReady(page, '/invoice-preview')
     const text = await bodyText(page)
-    expect(text).toContain('Tax Invoice')
+    expect(text).toContain('Tax invoice')
+    expect(text).toContain('INV-2026-0142')
   })
 })

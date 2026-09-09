@@ -33,7 +33,8 @@ test.describe('Workshop golden path', () => {
     await expect(dialog).toContainText('New Job Card')
 
     // Form fields should be present
-    await expect(dialog.locator('label:has-text("Customer")')).toBeVisible()
+    // "Customer *" — not the "Customer Authorization" label further down.
+    await expect(dialog.locator('label', { hasText: /^Customer\s*\*?$/ })).toBeVisible()
     await expect(dialog.locator('label:has-text("Vehicle")')).toBeVisible()
     await expect(dialog.locator('label:has-text("Service")')).toBeVisible()
     await expect(dialog.locator('label:has-text("Priority")')).toBeVisible()

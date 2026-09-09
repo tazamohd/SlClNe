@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-09-04T17:17:23.152Z",
+  "generator": "app/scripts/golden-paths.mjs",
+  "note": "A run record, not a plan. Classified from a run of the Playwright suite (npx playwright test --reporter=json) over desktop and mobile. PASSING means a spec declares this path and every one of its tests passed in every project it ran in; FAILING means one ran and did not; UNWRITTEN means no spec declares that path yet. Never hand-edit — re-run the runner.",
+  "base": "http://localhost:4173",
+  "projects": [
+    "desktop",
+    "mobile"
+  ],
+  "totals": {
+    "paths": 23,
+    "passing": 23,
+    "failing": 0,
+    "unwritten": 0,
+    "journeys": 23,
+    "modules": 38,
+    "errors": 0
+  },
+  "errors": [],
+  "paths": [
+    {
+      "path": "New customer to paid invoice",
+      "id": "e2e/new-customer-to-paid-invoice.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Existing customer service",
+      "id": "e2e/existing-customer-service.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Mobile customer booking",
+      "id": "e2e/mobile-customer-booking.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Technician job completion",
+      "id": "e2e/technician-job-completion.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Customer estimate approval",
+      "id": "e2e/customer-estimate-approval.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Parts procurement",
+      "id": "e2e/parts-procurement.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Inventory receiving",
+      "id": "e2e/inventory-receiving.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Inventory consumption",
+      "id": "e2e/inventory-consumption.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Supplier order",
+      "id": "e2e/supplier-order.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "CRM lead conversion",
+      "id": "e2e/crm-lead-conversion.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Insurance claim",
+      "id": "e2e/insurance-claim.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Fleet contract",
+      "id": "e2e/fleet-contract.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Loan workflow",
+      "id": "e2e/loan-workflow.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Employee onboarding",
+      "id": "e2e/employee-onboarding.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Organization / branch setup",
+      "id": "e2e/org-branch-setup.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "User invitation + RBAC",
+      "id": "e2e/user-invitation-rbac.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Accounting reconciliation",
+      "id": "e2e/accounting-reconciliation.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Report generation",
+      "id": "e2e/report-generation.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Customer portal",
+      "id": "e2e/customer-portal.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Technician portal",
+      "id": "e2e/technician-portal.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Supplier portal",
+      "id": "e2e/supplier-portal.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Call center",
+      "id": "e2e/call-center.spec.ts",
+      "status": "PASSING",
+      "error": null
+    },
+    {
+      "path": "Kiosk",
+      "id": "e2e/kiosk.spec.ts",
+      "status": "PASSING",
+      "error": null
+    }
+  ]
+}

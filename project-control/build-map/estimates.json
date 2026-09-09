@@ -1,0 +1,65 @@
+{
+  "estimatedAt": "2026-08-21",
+  "estimatedBy": "human — hand-written with the 21 Aug 2026 build-map snapshot",
+  "note": "The ONLY hand-supplied numbers on the build map. Nothing in this repository computes remaining effort or elapsed time, so these cannot be measured the way every other figure on the page is. They are kept here, dated and declared, rather than printed as if the registry produced them. The page labels them as an estimate and prints estimatedAt beside them. Revise this file — do not edit build-map.html — and re-run project-control/build-map/build-map.mjs.",
+  "unit": "engineer-days for one senior full-stack engineer",
+  "excluded": "Integrations needing credentials the user must provision are NOT in these numbers — they set a floor the code cannot move on its own.",
+  "buckets": [
+    {
+      "label": "Backend fill + new schema",
+      "days": 18,
+      "tip": "Backend fill plus greenfield insurance, fleet, loans and HR schema, seed and RLS. The serial bottleneck — every product domain needing new persistence waits behind this one agent."
+    },
+    {
+      "label": "Feature-map screens",
+      "days": 28,
+      "tip": "The remaining feature-map screens across seven tranches. The safest work to defer and the easiest to parallelise — the component kit already renders these."
+    },
+    {
+      "label": "Responsive + RTL sweep",
+      "days": 18,
+      "tip": "Responsive, tablet and Arabic/RTL certification across every capability at nine widths, both orientations, both languages."
+    },
+    {
+      "label": "Full test suites",
+      "days": 16,
+      "tip": "Contract tests, the golden paths, visual regression, and the financial and inventory integrity suites."
+    },
+    {
+      "label": "AI hub + admin",
+      "days": 14,
+      "tip": "The AI hub and the Administration surface — roughly 27 screens, including RolesPermissions derived from the live RBAC matrix rather than duplicated."
+    },
+    {
+      "label": "Platform services",
+      "days": 14,
+      "tip": "Integrations, files, notifications, global search and print/PDF — 14 days; plus the security suite, accessibility and performance budgets — 12 days."
+    },
+    {
+      "label": "Everything else",
+      "days": 61,
+      "tip": "Website tiers B and C, landing sections, SEO and analytics — 12 days; remaining portals (supplier, kiosk, call-centre) — 9 days; CTA wiring — 5 days; HR/insurance/fleet/loans screens — 11 days; backup drill, CI/CD, staging and the certification report — 12 days."
+    }
+  ],
+  "shapes": [
+    {
+      "label": "Solo engineer",
+      "detail": "~33 weeks · ~7.5 months",
+      "tone": "plain",
+      "tip": "One senior full-stack engineer working through the buckets in order — roughly 33 working weeks, about seven and a half months."
+    },
+    {
+      "label": "Three-person team",
+      "detail": "~16 weeks · ~4 months",
+      "tone": "blue",
+      "tip": "Two frontend plus one backend engineer — about 16 weeks, or three and a half to four months. Roughly a 3x ratio, not 3x speed, because the backend does not split."
+    },
+    {
+      "label": "This agent fleet",
+      "detail": "~10-20 more sessions",
+      "tone": "accent",
+      "tip": "This multi-agent build: product screens parallelise at about 20 per tranche across four non-contending domain agents, but the backend stays serial. 20-25 more tranches, at 1-3 tranches per working session."
+    }
+  ],
+  "floorNote": "plus hosting, credentials and a real restore drill — a floor code can't move"
+}

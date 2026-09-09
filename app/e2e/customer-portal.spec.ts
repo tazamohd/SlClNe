@@ -7,10 +7,13 @@ test.describe('Customer Portal (Golden Path 19)', () => {
       await seedRole(context, 'customer')
     })
 
-    test('customer portal dashboard loads', async ({ page }) => {
+    test('customer portal dashboard loads with the active job and the garage', async ({ page }) => {
       await gotoReady(page, '/customer-portal')
       const text = await bodyText(page)
-      expect(text).toContain('JC-A3F8B2C1')
+      expect(text).toContain('Khalid Al-Amri')
+      expect(text).toContain('Active Service')
+      expect(text).toContain('A3F8B2C1')
+      expect(text).toContain('My Vehicles')
     })
 
     test('customer portal booking page loads', async ({ page }) => {
@@ -98,7 +101,7 @@ test.describe('Customer portal lifecycle', () => {
     await seedRole(context, 'customer')
 
     await gotoReady(page, '/customer-portal')
-    expect(await bodyText(page)).toContain('JC-A3F8B2C1')
+    expect(await bodyText(page)).toContain('A3F8B2C1')
 
     await gotoReady(page, '/customer-portal/booking')
     expect(await bodyText(page)).toContain('Book Appointment')

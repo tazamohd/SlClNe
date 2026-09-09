@@ -50,7 +50,7 @@
 | Customers | `/customers` | app | customers | DONE | DONE | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | CustomerSegments | `/customer-segments` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | CustomReports | `/custom-reports` | app | reports | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
-| Dashboard | `/dashboard` | app | dashboard | DONE | DONE | MISSING | PARTIAL | PARTIAL | DONE | 12 roles | route | IMPLEMENTED |
+| Dashboard | `/dashboard` | app | dashboard | DONE | DONE | DONE | PARTIAL | PARTIAL | DONE | 12 roles | route | IMPLEMENTED |
 | Departments | `/departments` | app | hr | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | DiagnosticReport | `/diagnostic-report` | app | jobcards | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | EmailMarketing | `/email-marketing` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |

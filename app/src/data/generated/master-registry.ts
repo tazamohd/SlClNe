@@ -1001,8 +1001,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOBILE_MISSING",
-      "DESKTOP_ONLY",
       "ARABIC_MISSING"
     ],
     "inNav": true,

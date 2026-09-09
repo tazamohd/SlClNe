@@ -19,10 +19,17 @@ test.describe('Loan Workflow (Golden Path 13)', () => {
     expect(text).toContain('Loan Reports')
   })
 
-  test('public loan info page loads', async ({ page }) => {
+  test('public loan calculator recomputes the instalment from real input', async ({ page }) => {
     await gotoReady(page, '/public-portal/loans')
     const text = await bodyText(page)
     expect(text).toContain('Auto Financing')
+    expect(text).toContain('Estimated Monthly Payment')
+    expect(text).toContain('SAR 2,183.00')
+
+    await page.getByLabel('Vehicle Price (SAR)').fill('60000')
+    const after = await bodyText(page)
+    expect(after).not.toContain('SAR 2,183.00')
+    expect(after).toMatch(/SAR [\d,]+\.\d{2}/)
   })
 })
 
@@ -43,8 +50,11 @@ test.describe('Loan workflow lifecycle', () => {
     await seedRole(ownerCtx, 'owner')
     const ownerPage = await ownerCtx.newPage()
     await gotoReady(ownerPage, '/loan-reports')
-    expect(await bodyText(ownerPage)).toContain('Loan Reports')
-    expect(await bodyText(ownerPage)).toContain('Applications')
+    // Portfolio totals are a server aggregate; the fixture build names the
+    // endpoint it would read rather than estimating figures.
+    const reports = await bodyText(ownerPage)
+    expect(reports).toContain('Loan Reports')
+    expect(reports).toContain('GET /loans/summary')
     await ownerCtx.close()
   })
 })

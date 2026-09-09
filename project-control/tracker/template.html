@@ -2,11 +2,12 @@
 <!--
   The SAHEL Command Deck, v5 — the radial constellation design, wired to truth.
 
-  Three datasets are injected by build-deck.mjs (tokens live only in the
+  Four datasets are injected by build-deck.mjs (tokens live only in the
   script below — naming them here verbatim would eat the replacement):
     tracker-data.json   — per-domain capability status, generated from the registry
     plan-structure.json — waves, golden paths, release categories, blockers
     AGENTS_LIVE.json    — which agents are running/done/queued, stamped asOf
+    GOLDEN_PATHS.json   — the last golden-path run, or null if it never ran
 
   Two deliberate departures from the uploaded design, same as every revision:
 
@@ -211,6 +212,9 @@
 const DATA = __DATA__
 const PLAN = __PLAN__
 const LIVE = __LIVE__
+/* The golden-path run record, or null when scripts/golden-paths.mjs has never
+ * been run. Null is not zero passing — see gpStatus below. */
+const GOLDEN = __GOLDEN__
 let PIPELINE = { requests: [] }
 try { const pp = document.getElementById('d-pipe'); if (pp) PIPELINE = JSON.parse(pp.textContent) } catch(e) {}
 /* __LOGIC_MARKER__ */
@@ -244,7 +248,10 @@ const CMDS = [
   { l: 'Publish the branch', c: 'git push -u origin plan/control-system-tracker' },
 ]
 
-/* Overlay state — the only hand-written layer. Repo truth always outranks it. */
+/* Overlay state — the only hand-written layer. Repo truth always outranks it.
+ * `gp` was the golden-path status itself; it is now only an annotation drawn
+ * beside the measured status and counted nowhere. `score` is the one genuinely
+ * human judgement on this page and the Score panel says so on its face. */
 const KEY = 'sahel-v5'
 let ov = { items: {}, gp: {}, score: {}, notes: [] }
 try { const s = localStorage.getItem(KEY); if (s) ov = Object.assign(ov, JSON.parse(s)) } catch (e) {}
@@ -263,7 +270,7 @@ function architectReply(text) {
     return `SAHEL Architect online.\n\n${totals.done}/${totals.total} capabilities rendering (${Math.round(totals.done/totals.total*100)}%). ${running.length} running, ${staleAgents.length} unconfirmed. Ask me about any agent, domain, wave, or capability.`
   if (q.match(/(status|overview|progress|summary|report|how.*(going|are))/)) {
     const pct = Math.round(totals.done / totals.total * 100)
-    return `STATUS — ${new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false})}\n\nCapabilities: ${totals.done}/${totals.total} (${pct}%)\nGolden Paths: ${gpDone()}/${PLAN.goldenPaths.length}\nWave: ${LIVE.wave} — ${LIVE.waveName}\nAgents: ${running.length} running · ${staleAgents.length} unconfirmed · ${doneAgents.length} done\nBlockers: ${totals.blocked}\nStamp: ${LIVE.asOf}\n\n${LIVE.waveNote}`
+    return `STATUS — ${new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false})}\n\nCapabilities: ${totals.done}/${totals.total} (${pct}%)\nGolden Paths: ${gpStat()}${gpMeasured() ? ` passing · ${gpCount('FAILING')} failing · ${gpCount('UNWRITTEN')} unwritten` : ' — never measured'}\nWave: ${LIVE.wave} — ${LIVE.waveName}\nAgents: ${running.length} running · ${staleAgents.length} unconfirmed · ${doneAgents.length} done\nBlockers: ${totals.blocked}\nStamp: ${LIVE.asOf}\n\n${LIVE.waveNote}`
   }
   const agM = q.match(/agent\s*#?(\d{1,2})/)
   if (agM) {
@@ -299,17 +306,18 @@ function architectReply(text) {
   if (q.match(/(blocker|block|risk|gate)/))
     return `RELEASE GATES (${PLAN.releaseBlockers.length}):\n\n${PLAN.releaseBlockers.map((b,i)=>`${i+1}. ${b}`).join('\n')}`
   if (q.match(/(golden|path|gp)/))
-    return `GOLDEN PATHS — ${gpDone()}/${PLAN.goldenPaths.length}\n\n${PLAN.goldenPaths.map((g,i)=>`${ov.gp[i]?'✓':'✕'} ${g}`).join('\n')}`
+    return `GOLDEN PATHS — ${gpStat()}${gpMeasured() ? '' : ' (never measured — run npm run golden)'}\n\n` +
+      PLAN.goldenPaths.map(g => `${GP_STYLE[gpStatus(g)].mark} ${GP_STYLE[gpStatus(g)].label.padEnd(10)} ${g}`).join('\n')
   if (q.match(/(agents|team|constellation|who)/)) {
     const r_ = (LIVE.agents||[]).filter(a=>stateOf(a.id)==='running'), s_ = (LIVE.agents||[]).filter(a=>stateOf(a.id)==='stale'), d_ = (LIVE.agents||[]).filter(a=>stateOf(a.id)==='done')
     return `CONSTELLATION — 24 agents\n\nRunning (${r_.length}):\n${r_.map(a=>`  ◷ ${a.id} ${a.name}`).join('\n')||'  None'}\n\nDone (${d_.length}):\n${d_.map(a=>`  ✓ ${a.id} ${a.name}`).join('\n')||'  None'}\n\nUnconfirmed (${s_.length}):\n${s_.map(a=>`  ⧗ ${a.id} ${a.name} — last seen ${ago(staleAge)} ago`).join('\n')||'  None'}\n\nQueued: ${24-r_.length-s_.length-d_.length}`
   }
   if (q.match(/(score|ready|readiness|release|certif)/)) {
     const av = avgScore()
-    return `READINESS · avg ${av>0?av.toFixed(1):'—'}/10 · gate ≥ 9.5\n\n${PLAN.releaseCategories.map(c=>`  ${ov.score[c]?String(ov.score[c]).padStart(2):'  —'} ${c}`).join('\n')}`
+    return `READINESS · avg ${av>0?av.toFixed(1):'—'}/10 · gate ≥ 9.5 · your judgement, not a measurement\n\n${PLAN.releaseCategories.map(c=>`  ${ov.score[c]?String(ov.score[c]).padStart(2):'  —'} ${c}`).join('\n')}`
   }
   if (q.match(/(help|command|what can|how to|usage|\?$)/))
-    return `ARCHITECT COMMANDS\n\n• status — project overview\n• agent 08 — agent details\n• workshop / crm — domain\n• wave W2 — wave details\n• find [term] — search capabilities\n• blockers — release gates\n• golden paths — GP state\n• agents — constellation\n• score — readiness\n\nPIPELINE (prefix with >):\n• > read src/App.tsx — read & analyze files\n• > suggest login improvements — get recommendations\n• > implement dark mode toggle — request coding\n\nVoice: tap mic and speak.`
+    return `ARCHITECT COMMANDS\n\n• status — project overview\n• agent 08 — agent details\n• workshop / crm — domain\n• wave W2 — wave details\n• find [term] — search capabilities\n• blockers — release gates\n• golden paths — measured GP state\n• agents — constellation\n• score — readiness\n\nPIPELINE (prefix with >):\n• > read src/App.tsx — read & analyze files\n• > suggest login improvements — get recommendations\n• > implement dark mode toggle — request coding\n\nVoice: tap mic and speak.`
   if (q.match(/(clear|reset) chat/)) { chatMsgs = []; saveChat(); return 'Chat cleared.' }
   return `I can answer about agents, domains, waves, capabilities, blockers, golden paths, and scores. Try "status" or "help".\n\nTo dispatch requests to the SAHEL session, prefix with > (e.g. "> read src/App.tsx")`
 }
@@ -401,7 +409,38 @@ function domStat(d) {
 }
 const totals = DATA.domains.reduce((acc, d) => { const s = domStat(d)
   acc.done += s.done; acc.total += s.total; acc.blocked += s.blocked; return acc }, { done: 0, total: 0, blocked: 0 })
-const gpDone = () => Object.values(ov.gp).filter(Boolean).length
+/* Golden paths are MEASURED, not clicked.
+ *
+ * This used to be `gpDone = Object.values(ov.gp).filter(Boolean).length` — the
+ * count of ticks in one browser's localStorage. "0/23" was an empty checkbox
+ * list, not a fact about the product: no change to the product could move it,
+ * and no change to it said anything about the product. It now reads the run
+ * record `scripts/golden-paths.mjs` writes.
+ *
+ * Three statuses and no fourth. UNWRITTEN ("nobody has written a journey")
+ * and FAILING ("a journey ran and the product could not do it") are different
+ * facts and are never collapsed, and neither of them is a pass. A missing run
+ * record reads UNMEASURED — also not a pass. */
+const GP_BY_PATH = new Map((GOLDEN && GOLDEN.paths ? GOLDEN.paths : []).map(p => [p.path, p]))
+const gpMeasured = () => Boolean(GOLDEN && GOLDEN.paths)
+const gpStatus = (name) => gpMeasured() ? ((GP_BY_PATH.get(name) || {}).status || 'UNWRITTEN') : 'UNMEASURED'
+const gpCount = (status) => PLAN.goldenPaths.filter(g => gpStatus(g) === status).length
+const gpPassing = () => gpCount('PASSING')
+/* The header stat. `—` where nothing has measured it: a run that never happened
+ * is not a run that found nothing. */
+const gpStat = () => gpMeasured()
+  ? gpPassing() + '/' + PLAN.goldenPaths.length
+  : '—/' + PLAN.goldenPaths.length
+const gpStatCol = () => !gpMeasured() ? '#333'
+  : gpCount('FAILING') ? C.blocked
+  : gpPassing() === PLAN.goldenPaths.length ? C.done
+  : C.prog
+const GP_STYLE = {
+  PASSING:    { mark: '✓', col: C.done,    label: 'PASSING' },
+  FAILING:    { mark: '✕', col: C.blocked, label: 'FAILING' },
+  UNWRITTEN:  { mark: '·', col: '#667',    label: 'UNWRITTEN' },
+  UNMEASURED: { mark: '?', col: '#556',    label: 'UNMEASURED' },
+}
 const avgScore = () => { const cats = PLAN.releaseCategories
   const sum = cats.reduce((s, c) => s + (ov.score[c] || 0), 0); return sum / cats.length }
 
@@ -422,7 +461,7 @@ function render() {
     <div class="stats">
       ${[['DONE', totals.done, C.done], ['TOTAL', totals.total, '#888'],
          ['BLOCK', totals.blocked, totals.blocked ? C.blocked : '#333'],
-         ['GP', gpDone() + '/' + PLAN.goldenPaths.length, gpDone() === PLAN.goldenPaths.length ? C.done : C.prog],
+         ['GP', gpStat(), gpStatCol()],
          ['SCORE', avg > 0 ? avg.toFixed(1) : '—', avg >= 9.5 ? C.done : avg > 0 ? C.prog : '#333']]
         .map(k => `<div class="stat"><div class="l">${k[0]}</div><div class="v" style="color:${k[2]}">${k[1]}</div></div>`).join('')}
     </div>
@@ -509,7 +548,7 @@ function renderConstellation(orches) {
     ${sparks}
     ${nodes}
     <text x="${cx}" y="${cy + 75}" text-anchor="middle" fill="#E8A838" font-size="12" font-weight="700" font-family="ui-monospace,monospace" letter-spacing="5">SAHEL</text>
-    <text x="${cx}" y="${cy + 90}" text-anchor="middle" fill="#334" font-size="8">${totals.done}/${totals.total} · ${gpDone()}/${PLAN.goldenPaths.length} GP · ${isStale ? staleAgents.length + ' unconfirmed' : running.length + ' running'} · ${doneAgents.length} landed</text>
+    <text x="${cx}" y="${cy + 90}" text-anchor="middle" fill="#334" font-size="8">${totals.done}/${totals.total} · ${gpStat()} GP · ${isStale ? staleAgents.length + ' unconfirmed' : running.length + ' running'} · ${doneAgents.length} landed</text>
   </svg>`
 }
 
@@ -559,10 +598,36 @@ function renderPanel() {
     `<div class="hint" style="margin-top:8px">✓ is read from the registry — the repository renders it, nobody clicked it.
      Clicking a pending chip cycles in-progress ◷ → blocked ✕ → clear; the overlay never outranks the repo.</div>`
 
-  if (panel === 'golden') return `<div class="hint">Release blockers · ${gpDone()}/${PLAN.goldenPaths.length} · marked by you from CI evidence, never from an agent's claim</div>` +
-    PLAN.goldenPaths.map((g, i) => `<div class="row" data-gp="${i}" style="${ov.gp[i] ? 'border-color:' + C.done + '22' : ''}">
-      <span style="color:${ov.gp[i] ? C.done : C.blocked};font-weight:700;font-size:12px">${ov.gp[i] ? '✓' : '✕'}</span>
-      <span style="color:${ov.gp[i] ? '#555' : '#bbb'};${ov.gp[i] ? 'text-decoration:line-through' : ''}">${esc(g)}</span></div>`).join('')
+  if (panel === 'golden') {
+    const measured = gpMeasured()
+    const head = measured
+      ? `<div class="hint">Measured by <b>app/scripts/golden-paths.mjs</b> — a journey walked the product and its
+         assertions held, or they did not. <b style="color:${C.done}">${gpPassing()} passing</b> ·
+         <b style="color:${C.blocked}">${gpCount('FAILING')} failing</b> ·
+         <b style="color:#667">${gpCount('UNWRITTEN')} unwritten</b> of ${PLAN.goldenPaths.length}.
+         UNWRITTEN is "nobody has written a journey", not a pass and not a failure.
+         Run <b>npm run golden</b> to refresh, then rebuild this deck.
+         ${GOLDEN.generatedAt ? `Last run <b>${esc(GOLDEN.generatedAt)}</b>.` : ''}</div>`
+      : `<div class="hint" style="border-color:${C.prog}44;color:${C.prog}">Never measured — no
+         <b>project-control/GOLDEN_PATHS.json</b>. All ${PLAN.goldenPaths.length} read UNMEASURED, which is
+         "nobody has checked": not passing, not failing. Run <b>npm run golden</b>, then rebuild this deck.
+         Nothing on this page will call a path green until a journey does.</div>`
+    return head + PLAN.goldenPaths.map((g, i) => {
+      const st = gpStatus(g), sty = GP_STYLE[st], rec = GP_BY_PATH.get(g) || {}
+      const noted = ov.gp[i]
+      return `<div class="row" style="align-items:flex-start;${st === 'PASSING' ? 'border-color:' + C.done + '22' : ''}">
+      <span title="${sty.label}" style="color:${sty.col};font-weight:700;font-size:12px;min-width:10px">${sty.mark}</span>
+      <span style="flex:1">
+        <span style="color:${st === 'PASSING' ? '#8aa' : '#bbb'}">${esc(g)}</span>
+        <span style="font-size:8px;letter-spacing:.08em;color:${sty.col};margin-inline-start:6px">${sty.label}</span>
+        ${rec.id ? `<span style="font-size:8px;color:#556;margin-inline-start:6px">${esc(rec.id)}</span>` : ''}
+        ${rec.error ? `<div style="font-size:9px;color:${C.blocked};margin-top:3px;white-space:pre-wrap">${esc(rec.error)}</div>` : ''}
+        ${noted ? `<div style="font-size:9px;color:${C.prog};margin-top:3px">✎ annotated by you — a note, not a measurement; it changes no count above</div>` : ''}
+      </span>
+      <button data-gp="${i}" style="background:none;border:1px solid ${noted ? C.prog + '66' : '#222'};color:${noted ? C.prog : '#445'};
+        font:inherit;font-size:8px;letter-spacing:.08em;padding:2px 5px;border-radius:3px;cursor:pointer">${noted ? 'NOTED' : 'NOTE'}</button>
+      </div>` }).join('')
+  }
 
   if (panel === 'waves') {
     const order = ['W0', 'W1', 'W2', 'W3', 'W4', 'W5']
@@ -583,8 +648,12 @@ function renderPanel() {
   }
 
   if (panel === 'score') { const avg = avgScore()
-    return `<div class="hint">Category gate: every one ≥ 9.5 before release · avg
-      <b style="color:${avg >= 9.5 ? C.done : C.prog}">${avg > 0 ? avg.toFixed(1) : '—'}</b> · scored by you from CI artefacts</div>` +
+    return `<div class="hint" style="border-color:${C.prog}33">
+      <b style="color:${C.prog}">HUMAN JUDGEMENT — not a measurement.</b>
+      These 22 numbers are yours: you read the CI artefacts and score each category out of 10. They are stored in this
+      browser only, nothing in the repository produces them, and no gate reads them. Unlike the Golden panel, a high
+      number here is an opinion. Category gate: every one ≥ 9.5 before release · avg
+      <b style="color:${avg >= 9.5 ? C.done : C.prog}">${avg > 0 ? avg.toFixed(1) : '—'}</b></div>` +
       PLAN.releaseCategories.map(cat => { const v = ov.score[cat] || 0
         const vcol = v >= 9.5 ? C.done : v >= 7 ? C.prog : C.blocked
         return `<div class="scorerow"><span class="cat">${esc(cat)}</span><div class="cells">
@@ -622,6 +691,9 @@ function bind() {
     const cur = ov.items[k]
     if (!cur) ov.items[k] = 'prog'; else if (cur === 'prog') ov.items[k] = 'blocked'; else delete ov.items[k]
     save(); render() })
+  /* An annotation, never a status. `ov.gp[i]` used to BE the golden-path
+   * status; it is now a personal note beside the measured one, drawn
+   * differently, and deliberately absent from every count on the page. */
   document.querySelectorAll('[data-gp]').forEach(b => b.onclick = () => { const i = +b.dataset.gp; ov.gp[i] = !ov.gp[i]; save(); render() })
   document.querySelectorAll('[data-score]').forEach(b => b.onclick = () => { ov.score[b.dataset.score] = +b.dataset.v; save(); render() })
   document.querySelectorAll('[data-copy]').forEach(b => b.onclick = () => {

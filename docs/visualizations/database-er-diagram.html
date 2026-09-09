@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-021 — Database ER Diagram</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: -15%; left: 50%; width: 60%; transform: translateX(-50%);
+    height: 35%; background: radial-gradient(ellipse, rgba(218,119,86,0.06) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .hero { padding: 56px 24px 20px; text-align: center; max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin: 0 auto; }
+  .badge { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(218,119,86,0.3); border-radius: 4px; padding: 3px 10px; margin-bottom: 16px; }
+  .caption-bar { max-width: 1140px; margin: 16px auto; padding: 14px 20px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; min-height: 52px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; }
+  .caption-bar .label { font-weight: 600; font-size: 0.85rem; color: var(--accent); white-space: nowrap; }
+  .caption-bar .desc { color: var(--muted); font-size: 0.88rem; }
+  .diagram-section { max-width: 1200px; margin: 0 auto; padding: 24px; background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px; border-radius: 16px; overflow-x: auto; }
+  .diagram-section svg { width: 100%; height: auto; display: block; min-width: 920px; }
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .legend-section { max-width: 1140px; margin: 48px auto 0; padding: 0 24px 80px; }
+  .legend-section h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 16px; }
+  .legend-section h2 span { color: var(--accent); }
+  .legend-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+  .legend-group { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 16px 20px; flex: 1; min-width: 200px; }
+  .legend-group h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 0.82rem; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .stats-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+  .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 18px 22px; flex: 1; min-width: 140px; text-align: center; }
+  .stat-card .num { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .stat-card .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+  @keyframes flowDash { to { stroke-dashoffset: -28; } }
+  .er-table { transition: opacity 0.25s ease; }
+  .er-table.dimmed { opacity: 0.1; }
+  .er-table.highlighted > rect:first-child { stroke-width: 2.5; filter: url(#glow); }
+  .er-connector { transition: opacity 0.25s ease; }
+  .er-connector.dimmed { opacity: 0.04; }
+  .er-connector.highlighted path { stroke-width: 2.2; stroke-opacity: 1; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">SA-VIZ-021</div>
+  <h1><span>Database</span> Entity Relationships</h1>
+  <p>Complete 23-table schema showing multi-tenant isolation, domain grouping, and every foreign-key relationship</p>
+</section>
+
+<div class="caption-bar">
+  <span class="label">Hover</span>
+  <span class="desc" id="captionText">Hover any table to highlight its relationships and see details</span>
+</div>
+
+<section class="diagram-section">
+  <svg id="erDiagram" viewBox="0 0 1400 950" xmlns="http://www.w3.org/2000/svg"></svg>
+</section>
+
+<section class="legend-section reveal">
+  <h2>Schema <span>Legend</span></h2>
+  <div class="legend-grid">
+    <div class="legend-group">
+      <h3>Domain Groups</h3>
+      <div class="legend-item"><div class="legend-dot" style="background:#8a8a93"></div> Core -- org, branch, user, audit</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6ba4d9"></div> Registry -- customer, vehicle</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#DA7756"></div> Workshop -- job card, service, estimate</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7dbb7d"></div> Finance -- invoice, payment, journal</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a98ee0"></div> Inventory -- parts, PO, supplier</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d9b86b"></div> CRM -- lead, opportunity, campaign</div>
+    </div>
+    <div class="legend-group">
+      <h3>Cardinality</h3>
+      <div class="legend-item"><svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#8a8a93" stroke-width="1.2" stroke-dasharray="6 4"/></svg> 1 : N -- one to many</div>
+      <div class="legend-item"><svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#7dbb7d" stroke-width="1.8"/></svg> 1 : 1 -- one to one</div>
+      <div class="legend-item"><svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#a98ee0" stroke-width="1.2" stroke-dasharray="2 4"/></svg> N : M -- many to many link</div>
+    </div>
+    <div class="legend-group">
+      <h3>Column Markers</h3>
+      <div class="legend-item" style="font-family:monospace;font-size:0.78rem;color:#f5f5f7">PK -- Primary Key</div>
+      <div class="legend-item" style="font-family:monospace;font-size:0.78rem;color:#6ba4d9">FK -- Foreign Key reference</div>
+      <div class="legend-item" style="font-family:monospace;font-size:0.78rem;color:#DA7756">&bull; org_id -- Tenant isolation key</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="num">23</div><div class="lbl">Tables</div></div>
+    <div class="stat-card"><div class="num">20</div><div class="lbl">Relationships</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="lbl">Domain Groups</div></div>
+    <div class="stat-card"><div class="num">19</div><div class="lbl">Multi-Tenant Tables</div></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  var F="-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif";
+  var M="'SF Mono','Fira Code','Menlo',monospace";
+  var DC={
+    core:{s:'#8a8a93',f:'rgba(138,138,147,0.04)',hf:'rgba(138,138,147,0.10)'},
+    registry:{s:'#6ba4d9',f:'rgba(107,164,217,0.04)',hf:'rgba(107,164,217,0.10)'},
+    workshop:{s:'#DA7756',f:'rgba(218,119,86,0.04)',hf:'rgba(218,119,86,0.10)'},
+    finance:{s:'#7dbb7d',f:'rgba(125,187,125,0.04)',hf:'rgba(125,187,125,0.10)'},
+    inventory:{s:'#a98ee0',f:'rgba(169,142,224,0.04)',hf:'rgba(169,142,224,0.10)'},
+    crm:{s:'#d9b86b',f:'rgba(217,184,107,0.04)',hf:'rgba(217,184,107,0.10)'}
+  };
+  function mkT(id,label,domain,x,y,w,cols){
+    return {id:id,label:label,domain:domain,x:x,y:y,w:w,cols:cols,h:24+cols.length*15+8};
+  }
+  var tables=[
+    mkT('organizations','organizations','core',560,12,178,[['id','PK'],['name',''],['subscription_plan',''],['created_at','']]),
+    mkT('branches','branches','core',340,125,150,[['id','PK'],['org_id','TK'],['name',''],['city','']]),
+    mkT('users','users','core',545,125,150,[['id','PK'],['org_id','TK'],['branch_id','FK'],['role','']]),
+    mkT('audit_logs','audit_logs','core',750,125,152,[['id','PK'],['org_id','TK'],['user_id','FK'],['action','']]),
+    mkT('customers','customers','registry',22,270,158,[['id','PK'],['org_id','TK'],['branch_id','FK'],['name',''],['phone','']]),
+    mkT('vehicles','vehicles','registry',22,400,158,[['id','PK'],['org_id','TK'],['customer_id','FK'],['vin',''],['plate_no','']]),
+    mkT('job_cards','job_cards','workshop',268,270,164,[['id','PK'],['org_id','TK'],['branch_id','FK'],['vehicle_id','FK'],['status','']]),
+    mkT('services','services','workshop',238,420,144,[['id','PK'],['job_card_id','FK'],['description',''],['cost','']]),
+    mkT('estimates','estimates','workshop',428,420,150,[['id','PK'],['job_card_id','FK'],['status',''],['total','']]),
+    mkT('estimate_items','estimate_items','workshop',428,545,158,[['id','PK'],['estimate_id','FK'],['part_id','FK'],['qty',''],['price','']]),
+    mkT('invoices','invoices','finance',648,270,164,[['id','PK'],['org_id','TK'],['job_card_id','FK'],['customer_id','FK'],['total','']]),
+    mkT('invoice_items','invoice_items','finance',625,420,155,[['id','PK'],['invoice_id','FK'],['part_id','FK'],['amount','']]),
+    mkT('payments','payments','finance',830,420,148,[['id','PK'],['invoice_id','FK'],['method',''],['amount','']]),
+    mkT('journal_entries','journal_entries','finance',1035,270,168,[['id','PK'],['org_id','TK'],['invoice_id','FK'],['debit_acct','FK'],['credit_acct','FK']]),
+    mkT('chart_of_accounts','chart_of_accounts','finance',1030,420,175,[['id','PK'],['org_id','TK'],['code',''],['name',''],['type','']]),
+    mkT('expenses','expenses','finance',830,545,150,[['id','PK'],['org_id','TK'],['branch_id','FK'],['category',''],['amount','']]),
+    mkT('inventory_parts','inventory_parts','inventory',22,705,165,[['id','PK'],['org_id','TK'],['sku',''],['name',''],['qty_on_hand','']]),
+    mkT('purchase_orders','purchase_orders','inventory',255,705,168,[['id','PK'],['org_id','TK'],['supplier_id','FK'],['status',''],['total','']]),
+    mkT('po_items','po_items','inventory',255,838,150,[['id','PK'],['po_id','FK'],['part_id','FK'],['qty','']]),
+    mkT('suppliers','suppliers','inventory',22,838,150,[['id','PK'],['org_id','TK'],['name',''],['contact','']]),
+    mkT('leads','leads','crm',648,720,150,[['id','PK'],['org_id','TK'],['name',''],['source',''],['status','']]),
+    mkT('opportunities','opportunities','crm',848,720,165,[['id','PK'],['org_id','TK'],['lead_id','FK'],['value',''],['stage','']]),
+    mkT('campaigns','campaigns','crm',1065,720,160,[['id','PK'],['org_id','TK'],['name',''],['type',''],['budget','']])
+  ];
+  var TM={};tables.forEach(function(t){TM[t.id]=t;});
+  function mkR(f,fe,t,te,card,ff,tf){return{from:f,fromEdge:fe,to:t,toEdge:te,card:card,ff:ff||0.5,tf:tf||0.5};}
+  var rels=[
+    mkR('organizations','bottom','branches','top','1:N',0.3,0.5),
+    mkR('branches','right','users','left','1:N'),
+    mkR('users','right','audit_logs','left','1:N'),
+    mkR('branches','bottom','customers','top','1:N',0.15,0.6),
+    mkR('branches','bottom','job_cards','top','1:N',0.85,0.3),
+    mkR('customers','bottom','vehicles','top','1:N'),
+    mkR('vehicles','right','job_cards','left','1:N',0.4,0.7),
+    mkR('job_cards','bottom','services','top','1:N',0.25,0.5),
+    mkR('job_cards','bottom','estimates','top','1:N',0.75,0.5),
+    mkR('estimates','bottom','estimate_items','top','1:N'),
+    mkR('job_cards','right','invoices','left','1:1',0.35,0.35),
+    mkR('invoices','bottom','invoice_items','top','1:N',0.25,0.5),
+    mkR('invoices','bottom','payments','top','1:N',0.78,0.5),
+    mkR('invoices','right','journal_entries','left','1:1',0.45,0.45),
+    mkR('journal_entries','bottom','chart_of_accounts','top','1:N'),
+    mkR('suppliers','right','purchase_orders','left','1:N',0.4,0.65),
+    mkR('purchase_orders','bottom','po_items','top','1:N'),
+    mkR('inventory_parts','right','po_items','left','N:M',0.78,0.4),
+    mkR('inventory_parts','top','invoice_items','bottom','N:M',0.88,0.15),
+    mkR('leads','right','opportunities','left','1:N')
+  ];
+  var desc={
+    organizations:'Root multi-tenant entity. Holds subscription plan, billing, and settings. Every row in the system belongs to one organization via org_id.',
+    branches:'Physical service center within an organization. Branches partition operational data -- job cards, inventory, and users are scoped here.',
+    users:'System users with RBAC roles (owner, manager, advisor, technician, accountant). Scoped to org + branch for data isolation.',
+    audit_logs:'Immutable audit trail recording every user action. Stores entity type, old/new values, IP address, and timestamp.',
+    customers:'Vehicle owners registered at a branch. Stores contact info, tax ID, and communication preferences for WhatsApp/SMS.',
+    vehicles:'Customer vehicles identified by VIN and plate number. Stores make, model, year, mileage, and full service history.',
+    job_cards:'Central workshop entity -- tracks a vehicle visit from intake through inspection, service, QC, to delivery. Links estimates, services, invoices.',
+    services:'Individual service line items on a job card. Records description, labor hours, technician assignment, and cost.',
+    estimates:'Cost estimates generated for job cards. Sent to customers for approval before work begins. Tracks approval status.',
+    estimate_items:'Line items within an estimate -- parts and labor with quantities and unit prices. Links to inventory_parts.',
+    invoices:'Tax-compliant invoices generated from completed job cards. One invoice per job card. Includes VAT and ZATCA Phase 2 fields.',
+    invoice_items:'Individual line items on an invoice -- parts, labor, fees. References inventory_parts for automatic stock deduction.',
+    payments:'Payment records against invoices. Supports cash, card, bank transfer. Tracks partial payments and outstanding balances.',
+    journal_entries:'Double-entry bookkeeping auto-posted from invoices. Each entry debits and credits accounts in chart_of_accounts.',
+    chart_of_accounts:'Standard chart of accounts per organization. Types: asset, liability, equity, revenue, expense. Drives financial reports.',
+    expenses:'Operational expenses by category and branch. Rent, utilities, supplies. Auto-creates corresponding journal entries.',
+    inventory_parts:'Spare parts inventory with SKU, bin location, cost/sell price, min/max levels, and real-time quantity tracking.',
+    purchase_orders:'Purchase orders to suppliers for restocking. Tracks order status, expected delivery, and goods receipt.',
+    po_items:'Line items on purchase orders -- specific parts, quantities, unit costs. Updates inventory_parts on receipt.',
+    suppliers:'Vendor/supplier directory. Contact info, payment terms, performance metrics. Linked to purchase_orders.',
+    leads:'Sales leads from walk-ins, calls, website, or campaigns. Tracks source, contact info, and qualification status.',
+    opportunities:'Qualified sales opportunities from leads. Tracks estimated value, pipeline stage, probability, and expected close.',
+    campaigns:'Marketing campaigns for lead generation. Types: SMS blast, WhatsApp, social media, referral. Tracks budget and ROI.'
+  };
+  var zones=[
+    {domain:'core',x:305,y:0,w:625,h:218,label:'CORE'},
+    {domain:'registry',x:8,y:248,w:188,h:262,label:'REGISTRY'},
+    {domain:'workshop',x:218,y:248,w:392,h:410,label:'WORKSHOP'},
+    {domain:'finance',x:610,y:248,w:620,h:410,label:'FINANCE'},
+    {domain:'inventory',x:8,y:685,w:435,h:255,label:'INVENTORY'},
+    {domain:'crm',x:632,y:700,w:615,h:140,label:'CRM'}
+  ];
+  var svg=document.getElementById('erDiagram');
+  var h='';
+  h+='<defs>';
+  h+='<filter id="glow"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+  for(var k in DC){
+    h+='<marker id="arr-'+k+'" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="5" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="'+DC[k].s+'"/></marker>';
+  }
+  h+='</defs>';
+  zones.forEach(function(z){
+    var c=DC[z.domain];
+    h+='<rect x="'+z.x+'" y="'+z.y+'" width="'+z.w+'" height="'+z.h+'" rx="12" fill="'+c.f+'" stroke="'+c.s+'" stroke-width="0.5" stroke-opacity="0.25"/>';
+    h+='<text x="'+(z.x+10)+'" y="'+(z.y+16)+'" fill="'+c.s+'" font-size="9.5" font-weight="600" letter-spacing="0.1em" font-family="'+F+'" opacity="0.7">'+z.label+'</text>';
+  });
+  tables.forEach(function(t){
+    var c=DC[t.domain];
+    h+='<g class="er-table" data-table="'+t.id+'" cursor="pointer">';
+    h+='<rect x="'+t.x+'" y="'+t.y+'" width="'+t.w+'" height="'+t.h+'" rx="6" fill="#111115" stroke="'+c.s+'" stroke-width="1.5"/>';
+    h+='<rect x="'+(t.x+1)+'" y="'+(t.y+1)+'" width="'+(t.w-2)+'" height="22" rx="5" fill="'+c.hf+'"/>';
+    h+='<text x="'+(t.x+t.w/2)+'" y="'+(t.y+16)+'" fill="'+c.s+'" font-size="10.5" font-weight="700" text-anchor="middle" font-family="'+F+'">'+t.label+'</text>';
+    h+='<line x1="'+t.x+'" y1="'+(t.y+23)+'" x2="'+(t.x+t.w)+'" y2="'+(t.y+23)+'" stroke="'+c.s+'" stroke-opacity="0.2" stroke-width="0.5"/>';
+    t.cols.forEach(function(col,i){
+      var cy=t.y+24+5+i*15+10;
+      var isPK=col[1]==='PK',isFK=col[1]==='FK',isTK=col[1]==='TK';
+      if(isTK){
+        h+='<circle cx="'+(t.x+12)+'" cy="'+(cy-3)+'" r="2.5" fill="#DA7756"/>';
+        h+='<text x="'+(t.x+20)+'" y="'+cy+'" fill="#DA7756" font-size="9.5" font-family="'+M+'">'+col[0]+'</text>';
+      }else{
+        var pfx=isPK?'PK':isFK?'FK':'  ';
+        var pClr=isPK?'#f5f5f7':isFK?'#6ba4d9':'#555';
+        var nClr=isPK?'#f5f5f7':'#8a8a93';
+        h+='<text x="'+(t.x+8)+'" y="'+cy+'" font-size="9.5" font-family="'+M+'">';
+        h+='<tspan fill="'+pClr+'" font-weight="'+(isPK||isFK?'600':'400')+'">'+pfx+'</tspan>';
+        h+=' <tspan fill="'+nClr+'">'+col[0]+'</tspan></text>';
+      }
+    });
+    h+='</g>';
+  });
+  function ep(t,edge,frac){
+    switch(edge){
+      case'top':return{x:t.x+t.w*frac,y:t.y};
+      case'bottom':return{x:t.x+t.w*frac,y:t.y+t.h};
+      case'left':return{x:t.x,y:t.y+t.h*frac};
+      case'right':return{x:t.x+t.w,y:t.y+t.h*frac};
+    }
+  }
+  function cp(sp,tp,fe,te){
+    var d=Math.max(40,Math.abs(sp.x-tp.x)*0.35,Math.abs(sp.y-tp.y)*0.35);
+    var dir={top:{x:0,y:-1},bottom:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
+    var fd=dir[fe],td=dir[te];
+    return[{x:sp.x+fd.x*d,y:sp.y+fd.y*d},{x:tp.x+td.x*d,y:tp.y+td.y*d}];
+  }
+  function cardOff(edge){
+    switch(edge){
+      case'top':return{dx:0,dy:-6,a:'middle'};
+      case'bottom':return{dx:0,dy:14,a:'middle'};
+      case'left':return{dx:-8,dy:-5,a:'end'};
+      case'right':return{dx:8,dy:-5,a:'start'};
+    }
+  }
+  rels.forEach(function(r){
+    var src=TM[r.from],tgt=TM[r.to];
+    if(!src||!tgt)return;
+    var sp=ep(src,r.fromEdge,r.ff);
+    var tp=ep(tgt,r.toEdge,r.tf);
+    var pts=cp(sp,tp,r.fromEdge,r.toEdge);
+    var pathD='M'+sp.x+','+sp.y+' C'+pts[0].x+','+pts[0].y+' '+pts[1].x+','+pts[1].y+' '+tp.x+','+tp.y;
+    var color=DC[src.domain].s;
+    var isNM=r.card==='N:M';
+    var dash=isNM?'3 5':'6 8';
+    var opac=isNM?0.4:0.6;
+    var sOff=cardOff(r.fromEdge),tOff=cardOff(r.toEdge);
+    var card=r.card.split(':');
+    h+='<g class="er-connector" data-from="'+r.from+'" data-to="'+r.to+'">';
+    h+='<path d="'+pathD+'" fill="none" stroke="'+color+'" stroke-width="1.2" stroke-opacity="'+opac+'" stroke-dasharray="'+dash+'" marker-end="url(#arr-'+src.domain+')" style="animation:flowDash 1.5s linear infinite"/>';
+    h+='<text x="'+(sp.x+sOff.dx)+'" y="'+(sp.y+sOff.dy)+'" fill="'+color+'" font-size="8.5" font-weight="600" text-anchor="'+sOff.a+'" font-family="'+F+'">'+card[0]+'</text>';
+    h+='<text x="'+(tp.x+tOff.dx)+'" y="'+(tp.y+tOff.dy)+'" fill="'+color+'" font-size="8.5" font-weight="600" text-anchor="'+tOff.a+'" font-family="'+F+'">'+card[1]+'</text>';
+    h+='</g>';
+  });
+  svg.innerHTML=h;
+  var captionEl=document.getElementById('captionText');
+  var defaultCap='Hover any table to highlight its relationships and see details';
+  document.querySelectorAll('.er-table').forEach(function(el){
+    el.addEventListener('mouseenter',function(){
+      var id=this.dataset.table;
+      var related=new Set();
+      rels.forEach(function(r){
+        if(r.from===id)related.add(r.to);
+        if(r.to===id)related.add(r.from);
+      });
+      document.querySelectorAll('.er-table').forEach(function(t){
+        var tid=t.dataset.table;
+        if(tid===id||related.has(tid)){t.classList.add('highlighted');t.classList.remove('dimmed');}
+        else{t.classList.add('dimmed');t.classList.remove('highlighted');}
+      });
+      document.querySelectorAll('.er-connector').forEach(function(c){
+        if(c.dataset.from===id||c.dataset.to===id){c.classList.add('highlighted');c.classList.remove('dimmed');}
+        else{c.classList.add('dimmed');c.classList.remove('highlighted');}
+      });
+      captionEl.textContent=desc[id]||id;
+    });
+    el.addEventListener('mouseleave',function(){
+      document.querySelectorAll('.er-table,.er-connector').forEach(function(el){
+        el.classList.remove('dimmed','highlighted');
+      });
+      captionEl.textContent=defaultCap;
+    });
+  });
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+})();
+</script>
+</body>
+</html>

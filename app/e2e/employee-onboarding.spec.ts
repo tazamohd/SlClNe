@@ -12,10 +12,14 @@ test.describe('Employee Onboarding (Golden Path 14)', () => {
     expect(text).toContain('HR & Payroll')
   })
 
-  test('HR management page loads', async ({ page }) => {
+  test('HR management page loads as the staff directory', async ({ page }) => {
     await gotoReady(page, '/hr-management')
     const text = await bodyText(page)
-    expect(text).toContain('HR Management')
+    expect(text).toContain('Staff Directory')
+    // Employees live on the server; the fixture build shows the empty state
+    // and names the collection rather than inventing a record.
+    expect(text).toContain('No employees to show')
+    expect(text).toContain('employees')
   })
 
   test('staff directory page loads', async ({ page }) => {
@@ -33,13 +37,15 @@ test.describe('Employee Onboarding (Golden Path 14)', () => {
   test('staff performance review page loads', async ({ page }) => {
     await gotoReady(page, '/staff-performance-review')
     const text = await bodyText(page)
-    expect(text).toContain('Performance Reviews')
+    expect(text).toContain('Staff Performance Review')
+    expect(text).toContain('performanceReviews')
   })
 
   test('timesheet management page loads', async ({ page }) => {
     await gotoReady(page, '/timesheet-management')
     const text = await bodyText(page)
-    expect(text).toContain('Timesheet Management')
+    expect(text).toContain('Timesheets')
+    expect(text).toContain('No timesheets to show')
   })
 
   test('leave requests page loads', async ({ page }) => {
@@ -48,10 +54,13 @@ test.describe('Employee Onboarding (Golden Path 14)', () => {
     expect(text).toContain('Leave Requests')
   })
 
-  test('training LMS page loads', async ({ page }) => {
+  test('training LMS page loads with the course catalogue', async ({ page }) => {
     await gotoReady(page, '/training-lms')
     const text = await bodyText(page)
-    expect(text).toContain('Training & LMS')
+    expect(text).toContain('Training')
+    expect(text).toContain('Learning Management')
+    expect(text).toContain('Total Courses')
+    expect(text).toContain('Workplace Safety Essentials')
   })
 
   test('payroll management page loads', async ({ page }) => {
@@ -73,13 +82,13 @@ test.describe('Employee onboarding lifecycle', () => {
     expect(await bodyText(page)).toContain('Staff Scheduling')
 
     await gotoReady(page, '/timesheet-management')
-    expect(await bodyText(page)).toContain('Timesheet Management')
+    expect(await bodyText(page)).toContain('Timesheets')
 
     await gotoReady(page, '/leave-requests')
     expect(await bodyText(page)).toContain('Leave Requests')
 
     await gotoReady(page, '/training-lms')
-    expect(await bodyText(page)).toContain('Training & LMS')
+    expect(await bodyText(page)).toContain('Learning Management')
 
     await gotoReady(page, '/payroll-management')
     expect(await bodyText(page)).toContain('Payroll Management')

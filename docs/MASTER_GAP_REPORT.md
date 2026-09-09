@@ -10,7 +10,6 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|---|---|
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
 | BLK-004 | CRITICAL | 285 rendered capabilities are mock-only | 05 | W2 |
-| BLK-006 | HIGH | 1 built screens owe their designed mobile layout | 18 | W3 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
 
 ## Flags across the inventory
@@ -21,13 +20,43 @@ Computed from the registry. Every line is a query, not an opinion.
 | TABLET_MISSING | 301 | no md:/lg: layout in the source — nothing written for 768–1024 |
 | MOCK_ONLY | 285 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
-| DESKTOP_ONLY | 1 | renders on desktop with no mobile treatment |
-| MOBILE_MISSING | 1 | a .Mobile design exists and is not built |
+| DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | DUPLICATE | 0 | two entries claim one route |
+| MOBILE_MISSING | 0 | a .Mobile design exists and is not built |
 | NO_CONTENT_ASSERTION | 0 | the route is visited but nothing is asserted about it |
 | PLACEHOLDER | 0 | product route renders PendingScreen |
 | RTL_BROKEN | 0 | a hard-coded physical side (ml-/pr-/text-left) the RTL flip will not mirror |
 | UNTESTED | 0 | no route check in the smoke suite |
+
+## Golden paths
+
+Measured by `app/scripts/golden-paths.mjs` — 23 passing, 0 failing, 0 unwritten of 23. UNWRITTEN means no journey exists yet; it is not a pass and it is not a failure.
+
+| Path | Status | Journey | Detail |
+|---|---|---|---|
+| New customer to paid invoice | PASSING | `e2e/new-customer-to-paid-invoice.spec.ts` | — |
+| Existing customer service | PASSING | `e2e/existing-customer-service.spec.ts` | — |
+| Mobile customer booking | PASSING | `e2e/mobile-customer-booking.spec.ts` | — |
+| Technician job completion | PASSING | `e2e/technician-job-completion.spec.ts` | — |
+| Customer estimate approval | PASSING | `e2e/customer-estimate-approval.spec.ts` | — |
+| Parts procurement | PASSING | `e2e/parts-procurement.spec.ts` | — |
+| Inventory receiving | PASSING | `e2e/inventory-receiving.spec.ts` | — |
+| Inventory consumption | PASSING | `e2e/inventory-consumption.spec.ts` | — |
+| Supplier order | PASSING | `e2e/supplier-order.spec.ts` | — |
+| CRM lead conversion | PASSING | `e2e/crm-lead-conversion.spec.ts` | — |
+| Insurance claim | PASSING | `e2e/insurance-claim.spec.ts` | — |
+| Fleet contract | PASSING | `e2e/fleet-contract.spec.ts` | — |
+| Loan workflow | PASSING | `e2e/loan-workflow.spec.ts` | — |
+| Employee onboarding | PASSING | `e2e/employee-onboarding.spec.ts` | — |
+| Organization / branch setup | PASSING | `e2e/org-branch-setup.spec.ts` | — |
+| User invitation + RBAC | PASSING | `e2e/user-invitation-rbac.spec.ts` | — |
+| Accounting reconciliation | PASSING | `e2e/accounting-reconciliation.spec.ts` | — |
+| Report generation | PASSING | `e2e/report-generation.spec.ts` | — |
+| Customer portal | PASSING | `e2e/customer-portal.spec.ts` | — |
+| Technician portal | PASSING | `e2e/technician-portal.spec.ts` | — |
+| Supplier portal | PASSING | `e2e/supplier-portal.spec.ts` | — |
+| Call center | PASSING | `e2e/call-center.spec.ts` | — |
+| Kiosk | PASSING | `e2e/kiosk.spec.ts` | — |
 
 ## Designs not in the registry
 

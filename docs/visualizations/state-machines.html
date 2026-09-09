@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SA-VIZ-026 State Machines — SALIS AUTO</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-alt: #0e0e11;
+    --text: #f5f5f7;
+    --muted: #8a8a93;
+    --accent: #DA7756;
+    --blue: #6ba4d9;
+    --green: #7dbb7d;
+    --purple: #a98ee0;
+    --gold: #d9b86b;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.09);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  .hero { padding: 56px 0 24px; text-align: center; }
+  .badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(218,119,86,0.3);
+    background: rgba(218,119,86,0.08);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #f5f5f7 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p { color: var(--muted); font-size: 16px; max-width: 600px; margin: 0 auto; }
+
+  .diagram-section { padding: 32px 0; }
+  .diagram-section h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .diagram-section .sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .diagram-wrap {
+    background: var(--bg-alt);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+  .diagram-wrap svg { display: block; min-width: 700px; }
+
+  .caption-bar {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    transition: all 0.3s ease;
+    margin-bottom: 32px;
+  }
+  .caption-bar .label { color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+  /* SVG styles */
+  .state-g { cursor: pointer; }
+  .state-g:hover .state-rect { stroke-width: 2.5; filter: brightness(1.2); }
+  .state-rect { transition: stroke-width 0.2s, filter 0.2s; }
+  .slabel { font-family: var(--font); font-weight: 600; fill: var(--text); }
+  .tlabel {
+    font-family: var(--font);
+    font-size: 8px;
+    fill: var(--muted);
+    paint-order: stroke;
+    stroke: var(--bg-alt);
+    stroke-width: 3px;
+  }
+  .guard-label {
+    font-family: var(--font);
+    font-size: 7.5px;
+    fill: var(--gold);
+    paint-order: stroke;
+    stroke: var(--bg-alt);
+    stroke-width: 3px;
+    font-weight: 600;
+  }
+  .flow { stroke-dasharray: 6 10; animation: flowmove 1.8s linear infinite; }
+  .flow-happy { stroke-dasharray: 8 12; animation: flowmove 2.2s linear infinite; }
+  @keyframes flowmove { to { stroke-dashoffset: -32; } }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 12px 0 28px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .ldot { width: 12px; height: 8px; border-radius: 3px; }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* Guard callout section */
+  .guard-section { padding: 8px 0 48px; }
+  .guard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .guard-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .guard-card:hover { transform: translateY(-3px); border-color: rgba(217,184,107,0.3); }
+  .guard-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--gold); }
+  .guard-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <span class="badge">SA-VIZ-026</span>
+    <h1>State Machines</h1>
+    <p>Lifecycle states and guarded transitions for SALIS AUTO's two core operational entities</p>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="ldot" style="background:#4a7fb5"></span> Early</div>
+    <div class="legend-item"><span class="ldot" style="background:#5a9ea8"></span> Mid</div>
+    <div class="legend-item"><span class="ldot" style="background:#5aab7d"></span> Late</div>
+    <div class="legend-item"><span class="ldot" style="background:#7dbb7d"></span> Complete</div>
+    <div class="legend-item"><span class="ldot" style="background:#c45b4e"></span> Rejected / Failed</div>
+    <div class="legend-item"><span class="ldot" style="background:none;border:1.5px solid var(--gold);width:10px;height:10px;border-radius:0;transform:rotate(45deg)"></span> Guard</div>
+  </div>
+
+  <!-- Job Card State Machine -->
+  <div class="diagram-section">
+    <h2>Job Card Lifecycle</h2>
+    <p class="sub">11 states from vehicle intake through delivery, with SAR ceiling and SOD enforcement</p>
+    <div class="diagram-wrap">
+      <svg id="jcSvg" viewBox="0 0 960 480" width="100%">
+        <defs>
+          <marker id="jarr" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 9 5 L 0 8.5" fill="none" stroke="var(--accent)" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="jarr-fail" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 9 5 L 0 8.5" fill="none" stroke="#c45b4e" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="caption-bar" id="jcCap">
+      <span class="label">Hover</span>
+      <span id="jcCapText">Hover any state to see who triggers the transition and what happens</span>
+    </div>
+  </div>
+
+  <!-- Purchase Order State Machine -->
+  <div class="diagram-section reveal">
+    <h2>Purchase Order Lifecycle</h2>
+    <p class="sub">9 states from requisition through closure, with SAR ceiling approval and goods receipt matching</p>
+    <div class="diagram-wrap">
+      <svg id="poSvg" viewBox="0 0 960 380" width="100%">
+        <defs>
+          <marker id="parr" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 9 5 L 0 8.5" fill="none" stroke="var(--accent)" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="parr-fail" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1.5 L 9 5 L 0 8.5" fill="none" stroke="#c45b4e" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <div class="caption-bar" id="poCap">
+      <span class="label">Hover</span>
+      <span id="poCapText">Hover any state to see who triggers the transition and what happens</span>
+    </div>
+  </div>
+
+  <!-- Guard conditions detail -->
+  <div class="guard-section reveal">
+    <h2 style="font-size:22px;font-weight:600;margin-bottom:4px">Guard Conditions</h2>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:20px">Business rules enforced at state transitions</p>
+    <div class="guard-grid">
+      <div class="guard-card">
+        <h3>SAR Ceiling (Job Card)</h3>
+        <p>Estimate approval requires role-based SAR limits: Advisor up to 5,000 SAR, Manager up to 50,000 SAR, Owner unlimited.</p>
+      </div>
+      <div class="guard-card">
+        <h3>SAR Ceiling (Purchase Order)</h3>
+        <p>PO approval escalates by value: Parts Manager up to 10K SAR, Procurement up to 20K, Manager up to 50K SAR.</p>
+      </div>
+      <div class="guard-card">
+        <h3>Separation of Duties</h3>
+        <p>QC inspector cannot be the technician who performed the repair. PO approver cannot be the same person who created the requisition.</p>
+      </div>
+      <div class="guard-card">
+        <h3>Customer Signature</h3>
+        <p>Vehicle delivery requires a captured customer signature confirming the handover and acceptance of completed work.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const ns = 'http://www.w3.org/2000/svg';
+
+  function el(tag, attrs, par) {
+    const e = document.createElementNS(ns, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (par) par.appendChild(e);
+    return e;
+  }
+
+  // Color for state progression (0=earliest, 1=latest)
+  function stateColor(t) {
+    if (t < 0) return '#c45b4e'; // failed/rejected
+    const colors = ['#4a7fb5','#4a8cad','#4f9da5','#5aab7d','#6bb57d','#7dbb7d'];
+    const i = Math.min(Math.floor(t * colors.length), colors.length - 1);
+    return colors[i];
+  }
+  function stateFill(t) {
+    const c = stateColor(t);
+    return c + '18'; // ~10% opacity hex
+  }
+
+  // Draw a rounded-rect state node
+  function drawState(svg, s) {
+    const g = el('g', {class: 'state-g', 'data-id': s.id}, svg);
+    const hw = s.w / 2, hh = s.h / 2;
+    el('rect', {
+      x: s.x - hw, y: s.y - hh, width: s.w, height: s.h, rx: '8',
+      fill: stateFill(s.t), stroke: stateColor(s.t), 'stroke-width': '1.8', class: 'state-rect'
+    }, g);
+    const fs = s.w > 110 ? 10.5 : 10;
+    el('text', {x: s.x, y: s.y + fs * 0.35, 'text-anchor': 'middle', 'font-size': fs, class: 'slabel'}, g).textContent = s.nm;
+    return g;
+  }
+
+  // Curved arrow between two states
+  function drawArrow(svg, x1, y1, x2, y2, bend, marker, label, dash) {
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    const cx = mx + (-dy / len) * bend;
+    const cy = my + (dx / len) * bend;
+    const d = 'M ' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' Q ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + x2.toFixed(1) + ' ' + y2.toFixed(1);
+    // Base
+    const baseAttrs = {d: d, fill: 'none', stroke: 'rgba(218,119,86,0.20)', 'stroke-width': '1.8', 'marker-end': marker};
+    if (dash) baseAttrs['stroke-dasharray'] = '4 6';
+    el('path', baseAttrs, svg);
+    // Animated flow
+    el('path', {d: d, fill: 'none', stroke: 'var(--accent)', 'stroke-width': '1.8', class: 'flow', opacity: '0.5'}, svg);
+    // Label
+    if (label) {
+      const lx = 0.25 * x1 + 0.5 * cx + 0.25 * x2;
+      const ly = 0.25 * y1 + 0.5 * cy + 0.25 * y2;
+      el('text', {x: lx.toFixed(1), y: (ly - 4).toFixed(1), 'text-anchor': 'middle', class: 'tlabel'}, svg).textContent = label;
+    }
+    return {cx: 0.25 * x1 + 0.5 * cx + 0.25 * x2, cy: 0.25 * y1 + 0.5 * cy + 0.25 * y2};
+  }
+
+  // Failure/rejection arrow (amber/red)
+  function drawFailArrow(svg, x1, y1, x2, y2, bend, marker, label) {
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    const cx = mx + (-dy / len) * bend;
+    const cy = my + (dx / len) * bend;
+    const d = 'M ' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' Q ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + x2.toFixed(1) + ' ' + y2.toFixed(1);
+    el('path', {d: d, fill: 'none', stroke: 'rgba(196,91,78,0.25)', 'stroke-width': '1.8', 'marker-end': marker, 'stroke-dasharray': '4 6'}, svg);
+    if (label) {
+      const lx = 0.25 * x1 + 0.5 * cx + 0.25 * x2;
+      const ly = 0.25 * y1 + 0.5 * cy + 0.25 * y2;
+      el('text', {x: lx.toFixed(1), y: (ly - 4).toFixed(1), 'text-anchor': 'middle', class: 'tlabel', fill: '#c45b4e'}, svg).textContent = label;
+    }
+  }
+
+  // Guard diamond
+  function drawGuard(svg, cx, cy, label) {
+    const g = el('g', {}, svg);
+    el('rect', {x: cx - 8, y: cy - 8, width: 16, height: 16, rx: '2',
+      transform: 'rotate(45 ' + cx + ' ' + cy + ')',
+      fill: 'var(--bg-alt)', stroke: 'var(--gold)', 'stroke-width': '1.5'}, g);
+    el('text', {x: cx, y: cy + 22, 'text-anchor': 'middle', class: 'guard-label'}, g).textContent = label;
+    return g;
+  }
+
+  // Sweeping inter-row connector (cubic bezier from right end of row to left start of next row)
+  function drawSweep(svg, x1, y1, x2, y2, marker) {
+    const d = 'M ' + x1 + ' ' + y1 + ' C ' + (x1 + 60) + ' ' + ((y1 + y2) / 2) + ', ' + (x2 - 60) + ' ' + ((y1 + y2) / 2) + ', ' + x2 + ' ' + y2;
+    el('path', {d: d, fill: 'none', stroke: 'rgba(218,119,86,0.20)', 'stroke-width': '1.8', 'marker-end': marker}, svg);
+    el('path', {d: d, fill: 'none', stroke: 'var(--accent)', 'stroke-width': '1.8', class: 'flow-happy', opacity: '0.4'}, svg);
+  }
+
+  // =========== JOB CARD STATE MACHINE ===========
+  const jcSvg = document.getElementById('jcSvg');
+  const jcCapText = document.getElementById('jcCapText');
+
+  const jcStates = [
+    // Row 1
+    {id:'draft',    nm:'Draft',             x:90,  y:80,  w:90,  h:38, t:0.0,
+     tip:'Created by service advisor. Job card opened with customer/vehicle info.'},
+    {id:'checkin',  nm:'Checked-In',        x:250, y:80,  w:105, h:38, t:0.1,
+     tip:'Vehicle received at bay. Advisor confirms physical handover. Avg: 15 min.'},
+    {id:'inspect',  nm:'Under Inspection',  x:430, y:80,  w:130, h:38, t:0.2,
+     tip:'Technician performs multi-point inspection. Findings recorded with photos.'},
+    {id:'estpend',  nm:'Estimate Pending',  x:630, y:80,  w:130, h:38, t:0.3,
+     tip:'Cost estimate prepared. Awaiting customer/manager approval based on SAR ceiling.'},
+    // Row 2
+    {id:'estappr',  nm:'Estimate Approved', x:90,  y:240, w:135, h:38, t:0.4,
+     tip:'Approved within SAR ceiling. Parts requisition triggered. Work authorized.'},
+    {id:'repair',   nm:'In Repair',         x:280, y:240, w:100, h:38, t:0.5,
+     tip:'Technician performing authorized services. Parts consumed from inventory.'},
+    {id:'qcpend',   nm:'QC Pending',        x:450, y:240, w:100, h:38, t:0.6,
+     tip:'Repair complete. Awaiting quality check. SOD: inspector must differ from technician.'},
+    {id:'qcpass',   nm:'QC Passed',         x:620, y:240, w:95,  h:38, t:0.7,
+     tip:'Quality check passed. All checklist items verified. Vehicle cleared for delivery.'},
+    // Row 3
+    {id:'ready',    nm:'Ready for Delivery', x:90,  y:400, w:140, h:38, t:0.8,
+     tip:'Customer notified. Invoice generated. Awaiting customer arrival and signature.'},
+    {id:'deliver',  nm:'Delivered',          x:280, y:400, w:100, h:38, t:0.9,
+     tip:'Customer signed. Vehicle handed over. Payment collected or invoiced.'},
+    {id:'closed',   nm:'Closed',             x:440, y:400, w:80,  h:38, t:1.0,
+     tip:'Job card archived. Warranty period begins. Feedback requested.'},
+    // Branch states
+    {id:'estrej',   nm:'Estimate Rejected',  x:830, y:80,  w:125, h:38, t:-1,
+     tip:'Customer declined the estimate. Job may be revised with reduced scope or cancelled.'},
+    {id:'qcfail',   nm:'QC Failed',          x:620, y:370, w:90,  h:38, t:-1,
+     tip:'Quality check failed. Rework required. Returns to In Repair for correction.'}
+  ];
+  const jcMap = {};
+  jcStates.forEach(s => jcMap[s.id] = s);
+
+  // Draw connections first (behind states)
+  const jcConnGroup = el('g', {}, jcSvg);
+
+  // Row 1 forward transitions
+  drawArrow(jcConnGroup, 135, 80, 198, 80, 0, 'url(#jarr)', '', false);
+  drawArrow(jcConnGroup, 303, 80, 365, 80, 0, 'url(#jarr)', 'advisor role', false);
+  drawArrow(jcConnGroup, 495, 80, 565, 80, 0, 'url(#jarr)', '', false);
+
+  // Row 1 to Row 2 sweep
+  drawSweep(jcConnGroup, 695, 99, 158, 221, 'url(#jarr)');
+
+  // Guard: SAR ceiling on the sweep
+  drawGuard(jcConnGroup, 430, 160, 'SAR CEILING');
+
+  // Row 2 forward transitions
+  drawArrow(jcConnGroup, 158, 240, 230, 240, 0, 'url(#jarr)', '', false);
+  drawArrow(jcConnGroup, 330, 240, 400, 240, 0, 'url(#jarr)', '', false);
+  drawArrow(jcConnGroup, 500, 240, 573, 240, 0, 'url(#jarr)', '', false);
+
+  // Guard: SOD between QC Pending and QC Passed
+  drawGuard(jcConnGroup, 536, 222, 'SOD CHECK');
+
+  // Row 2 to Row 3 sweep
+  drawSweep(jcConnGroup, 668, 259, 160, 381, 'url(#jarr)');
+
+  // Row 3 forward transitions
+  drawArrow(jcConnGroup, 160, 400, 230, 400, 0, 'url(#jarr)', '', false);
+  drawArrow(jcConnGroup, 330, 400, 400, 400, 0, 'url(#jarr)', '', false);
+
+  // Guard: customer signature before delivery
+  drawGuard(jcConnGroup, 195, 382, 'CUSTOMER SIG');
+
+  // Branch: Estimate Rejected
+  drawFailArrow(jcConnGroup, 695, 80, 768, 80, 0, 'url(#jarr-fail)', 'rejected');
+
+  // Branch: QC Failed
+  drawFailArrow(jcConnGroup, 450, 259, 575, 370, 15, 'url(#jarr-fail)', 'failed');
+  // QC Failed back to In Repair
+  drawFailArrow(jcConnGroup, 575, 370, 310, 259, -40, 'url(#jarr-fail)', 'rework');
+
+  // Draw state nodes on top
+  jcStates.forEach(s => {
+    const g = drawState(jcSvg, s);
+    g.addEventListener('mouseenter', () => { jcCapText.textContent = s.nm + ' — ' + s.tip; });
+    g.addEventListener('mouseleave', () => { jcCapText.textContent = 'Hover any state to see who triggers the transition and what happens'; });
+  });
+
+  // Role annotations (small text under transitions)
+  function roleTag(svg, x, y, text) {
+    el('text', {x:x, y:y, 'text-anchor':'middle', 'font-size':'7', fill:'var(--purple)', 'font-family':'var(--font)', 'font-weight':'600',
+      'paint-order':'stroke', stroke:'var(--bg-alt)', 'stroke-width':'2.5'}, svg).textContent = text;
+  }
+  roleTag(jcSvg, 168, 98, 'advisor');
+  roleTag(jcSvg, 433, 98, 'technician');
+  roleTag(jcSvg, 280, 258, 'technician');
+  roleTag(jcSvg, 450, 258, 'QC inspector');
+  roleTag(jcSvg, 280, 418, 'advisor');
+
+  // =========== PURCHASE ORDER STATE MACHINE ===========
+  const poSvg = document.getElementById('poSvg');
+  const poCapText = document.getElementById('poCapText');
+
+  const poStates = [
+    // Row 1
+    {id:'pdraft',   nm:'Draft',            x:80,  y:80,  w:80,  h:38, t:0.0,
+     tip:'Parts requisition created. Line items and quantities specified by technician or advisor.'},
+    {id:'submit',   nm:'Submitted',        x:220, y:80,  w:95,  h:38, t:0.12,
+     tip:'Submitted by parts_manager for review. Quantities and pricing validated.'},
+    {id:'review',   nm:'Under Review',     x:380, y:80,  w:110, h:38, t:0.25,
+     tip:'Procurement team reviewing. Checking supplier quotes and budget allocation.'},
+    {id:'approve',  nm:'Approved',         x:540, y:80,  w:90,  h:38, t:0.37,
+     tip:'Approved within SAR ceiling. SOD enforced: approver differs from requester.'},
+    {id:'sent',     nm:'Sent to Supplier', x:720, y:80,  w:120, h:38, t:0.5,
+     tip:'Purchase order transmitted to selected supplier. Delivery date confirmed.'},
+    // Row 2
+    {id:'partial',  nm:'Partially Received', x:100, y:280, w:140, h:38, t:0.62,
+     tip:'Some line items received. Goods receipt matched against PO quantities.'},
+    {id:'full',     nm:'Fully Received',     x:300, y:280, w:120, h:38, t:0.75,
+     tip:'All PO line items received and matched. Inventory stock updated.'},
+    {id:'invoiced', nm:'Invoiced',           x:480, y:280, w:90,  h:38, t:0.87,
+     tip:'Supplier invoice matched to PO and goods receipt. Three-way match complete.'},
+    {id:'pclosed',  nm:'Closed',             x:630, y:280, w:80,  h:38, t:1.0,
+     tip:'PO archived. Payment processed. Supplier performance logged.'},
+    // Branch
+    {id:'rejected', nm:'Rejected',           x:380, y:210, w:90,  h:38, t:-1,
+     tip:'PO rejected during review. Returns to Draft for revision with feedback notes.'}
+  ];
+  const poMap = {};
+  poStates.forEach(s => poMap[s.id] = s);
+
+  const poConnGroup = el('g', {}, poSvg);
+
+  // Row 1 transitions
+  drawArrow(poConnGroup, 120, 80, 173, 80, 0, 'url(#parr)', '', false);
+  drawArrow(poConnGroup, 268, 80, 325, 80, 0, 'url(#parr)', '', false);
+  drawArrow(poConnGroup, 435, 80, 495, 80, 0, 'url(#parr)', '', false);
+  drawArrow(poConnGroup, 585, 80, 660, 80, 0, 'url(#parr)', '', false);
+
+  // Guard: parts_manager role on submit
+  drawGuard(poConnGroup, 148, 62, 'PARTS MGR');
+
+  // Guard: SAR ceiling on approval
+  drawGuard(poConnGroup, 466, 62, 'SAR CEILING');
+
+  // Guard: SOD on approval
+  drawGuard(poConnGroup, 540, 50, 'SOD');
+
+  // Row 1 to Row 2 sweep
+  drawSweep(poConnGroup, 780, 99, 170, 261, 'url(#parr)');
+
+  // Guard: PO match on receive
+  drawGuard(poConnGroup, 480, 180, 'PO MATCH');
+
+  // Row 2 transitions
+  drawArrow(poConnGroup, 170, 280, 240, 280, 0, 'url(#parr)', '', false);
+  drawArrow(poConnGroup, 360, 280, 435, 280, 0, 'url(#parr)', '', false);
+  drawArrow(poConnGroup, 525, 280, 590, 280, 0, 'url(#parr)', '', false);
+
+  // Branch: Rejected from Under Review
+  drawFailArrow(poConnGroup, 380, 99, 380, 191, 0, 'url(#parr-fail)', '');
+  // Rejected back to Draft
+  drawFailArrow(poConnGroup, 335, 210, 110, 99, -35, 'url(#parr-fail)', 'revise');
+
+  // Role annotations
+  roleTag(poSvg, 148, 98, 'parts_manager');
+  roleTag(poSvg, 380, 98, 'procurement');
+  roleTag(poSvg, 720, 98, 'procurement');
+  roleTag(poSvg, 100, 298, 'warehouse');
+  roleTag(poSvg, 480, 298, 'accounts payable');
+
+  // Draw state nodes on top
+  poStates.forEach(s => {
+    const g = drawState(poSvg, s);
+    g.addEventListener('mouseenter', () => { poCapText.textContent = s.nm + ' — ' + s.tip; });
+    g.addEventListener('mouseleave', () => { poCapText.textContent = 'Hover any state to see who triggers the transition and what happens'; });
+  });
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  }), {threshold: 0.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

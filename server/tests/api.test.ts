@@ -839,14 +839,39 @@ describe('audit', () => {
      * one wording would pin the test to one deployment shape, so both are
      * accepted and what is actually asserted is that the write is refused. */
     const refused = /append-only|permission denied/
-    await expect(
-      harness.handle.db.execute(sql`update audit_log set action = 'tampered'`),
-    ).rejects.toThrow(refused)
-    await expect(harness.handle.db.execute(sql`delete from audit_log`)).rejects.toThrow(refused)
+
+    /* Asserted by walking the cause chain rather than with `rejects.toThrow`,
+     * because drizzle-orm 0.44+ wraps every driver failure in a
+     * `DrizzleQueryError` whose message is the generated SQL — the driver's
+     * own wording, which is the part that says *why* the write was refused,
+     * moved to `.cause`. `toThrow` reads only `error.message`, so it would now
+     * be matching this regex against "Failed query: update audit_log …" and
+     * failing for a reason that has nothing to do with the guarantee. The
+     * `thrown` check is what keeps this from degrading into "something went
+     * wrong somewhere": a statement that succeeds fails the test first. */
+    const expectRefused = async (statement: Promise<unknown>) => {
+      const reasons: string[] = []
+      let thrown = false
+      try {
+        await statement
+      } catch (error) {
+        thrown = true
+        let current: unknown = error
+        for (let depth = 0; depth < 8 && current instanceof Error; depth += 1) {
+          reasons.push(current.message)
+          current = current.cause
+        }
+      }
+      expect(thrown, 'the statement was not refused at all').toBe(true)
+      expect(reasons.join('\n')).toMatch(refused)
+    }
+
+    await expectRefused(harness.handle.db.execute(sql`update audit_log set action = 'tampered'`))
+    await expectRefused(harness.handle.db.execute(sql`delete from audit_log`))
     /* TRUNCATE is neither an UPDATE nor a DELETE and produces no rows for a
      * row-level trigger to see, so it would have emptied the table in one
      * statement regardless of how the other two were written. */
-    await expect(harness.handle.db.execute(sql`truncate audit_log`)).rejects.toThrow(refused)
+    await expectRefused(harness.handle.db.execute(sql`truncate audit_log`))
   })
 
   it('still accepts the inserts it exists to record', async () => {

@@ -3126,6 +3126,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Pilots": "البرامج التجريبية",
   "Pinned": "مُثبَّت",
   "Pipeline": "خط الأنابيب",
+  "Metrics": "المؤشرات",
   "Pipeline status is simulated. Connect a speech recognition provider in System Integrations to view live debug data.": "حالة خط الأنابيب محاكاة. اربط مزوّد التعرف على الكلام في تكاملات النظام لعرض بيانات التصحيح الفعلية.",
   "Play recording": "تشغيل التسجيل",
   "Playbooks and scripts for service advisors": "كتب الإرشادات والنصوص لمستشاري الخدمة",

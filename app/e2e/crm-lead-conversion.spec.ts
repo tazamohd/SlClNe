@@ -16,9 +16,10 @@ test.describe('CRM Lead Conversion (Golden Path 10)', () => {
   test('lead detail loads with contact and deal info', async ({ page }) => {
     await gotoReady(page, '/lead-detail')
     const text = await bodyText(page)
+    expect(text).toContain('Tariq Al-Dosari')
     expect(text).toContain('Contact Information')
     expect(text).toContain('Deal Information')
-    expect(text).toContain('Activity Timeline')
+    expect(text).toContain('Conversion Path')
   })
 
   test('opportunities page loads', async ({ page }) => {
@@ -45,12 +46,15 @@ test.describe('CRM Lead Conversion (Golden Path 10)', () => {
     expect(text).toContain('CRM Tasks')
   })
 
-  test('customer feedback page loads with ratings', async ({ page }) => {
+  test('customer feedback page takes a rating', async ({ page }) => {
     await gotoReady(page, '/customer-feedback')
     const text = await bodyText(page)
-    expect(text).toContain('Customer Feedback')
-    expect(text).toContain('Average Rating')
-    expect(text).toContain('NPS Score')
+    expect(text).toContain('Service Feedback')
+    expect(text).toContain('How was your experience?')
+    const submit = page.getByRole('button', { name: 'Submit Feedback' })
+    await expect(submit).toBeDisabled()
+    await page.getByRole('radiogroup', { name: 'Overall rating' }).getByRole('radio', { name: '5 stars' }).click()
+    await expect(submit).toBeEnabled()
   })
 })
 
