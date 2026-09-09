@@ -104,7 +104,16 @@ const targets = []
   targets.push({ file, src, next })
 }
 
-const drifted = targets.filter((t) => t.src !== t.next)
+/** Compare on content, not on line endings.
+ *
+ *  git hands a Windows checkout CRLF while this generator writes LF, so a
+ *  byte comparison reported all three configs as drifted on a clean tree —
+ *  the gate failing on a fresh clone, which is how a gate gets switched off
+ *  rather than fixed. Normalise both sides before comparing; still write LF,
+ *  so the committed files stay consistent whatever the checkout does.
+ */
+const eol = (text) => text.split('\r\n').join('\n')
+const drifted = targets.filter((t) => eol(t.src) !== eol(t.next))
 
 if (CHECK) {
   if (drifted.length === 0) {
