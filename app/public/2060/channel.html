@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Open a Channel — SALIS AUTO 2060</title>
+<meta name="description" content="Open a channel to the lattice — a demo, a question or a bay. Nothing on this form leaves the page." />
+<meta name="theme-color" content="#05070E" />
+<link rel="icon" href="../assets/logo-blue-orange.png" />
+<link rel="stylesheet" href="os.css" />
+</head>
+<body>
+
+<main>
+
+<section id="top" data-label="CHANNEL" class="masthead">
+  <div class="masthead-grid">
+    <div>
+      <span class="tag rise">Chapter 05 — Say something</span>
+      <h1 class="rise"><span class="thin">Open a</span> Channel</h1>
+      <p class="lede rise">
+        In 2060 you do not fill in a form; you open a channel and the lattice answers on it. In 2026
+        you fill in a form. <b>This one is local</b> — it has no backend, sends nothing anywhere, and
+        will say so out loud when you submit it.
+      </p>
+    </div>
+    <div class="rise">
+      <div class="stats two">
+        <div><div class="k">Answer within</div><div class="v">1<em>cycle hour</em></div></div>
+        <div><div class="k">Channel</div><div class="v">Open</div></div>
+        <div><div class="k">Node</div><div class="v">RUH<em>·09</em></div></div>
+        <div><div class="k">Sends</div><div class="v">0<em>bytes</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="open" data-label="OPEN A CHANNEL">
+  <div class="sec-head rise">
+    <span class="tag">01 — The handshake</span>
+    <h2>Handshake</h2>
+    <p>Tell the lattice who is calling and what for. It will read it back to you and then forget it.</p>
+  </div>
+
+  <div class="form-grid">
+    <form class="panel rise" id="channelForm" style="padding:28px" novalidate>
+      <i class="corner tl"></i><i class="corner br"></i>
+      <label class="field"><span>Who is calling</span>
+        <input id="fName" name="name" placeholder="Name, or a callsign" autocomplete="name" /></label>
+      <label class="field"><span>Return path</span>
+        <input id="fMail" name="mail" type="email" placeholder="you@workshop.sa" autocomplete="email" /></label>
+      <label class="field"><span>Standing</span>
+        <select id="fRole" name="role">
+          <option>Workshop owner</option>
+          <option>Branch manager</option>
+          <option>Service advisor</option>
+          <option>Accountant</option>
+          <option>Technician</option>
+          <option>Supplier</option>
+          <option>Just looking around</option>
+        </select></label>
+      <label class="field"><span>Bays under you</span>
+        <select id="fBays" name="bays">
+          <option>1 — 4 bays</option>
+          <option>5 — 9 bays</option>
+          <option>Several branches</option>
+          <option>None yet</option>
+        </select></label>
+      <label class="field"><span>What for</span>
+        <textarea id="fMsg" name="msg" placeholder="A demo, a question, an argument with the fiction…"></textarea></label>
+      <button class="btn" type="submit">◈ Transmit</button>
+      <div class="receipt" id="receipt" role="status" aria-live="polite"></div>
+    </form>
+
+    <div>
+      <div class="panel rise" style="padding:24px">
+        <i class="corner tr"></i><i class="corner bl"></i>
+        <span class="tag" style="display:block;margin-bottom:16px">Carrier signal</span>
+        <canvas id="signalCanvas" role="img" aria-label="A decorative oscillating carrier signal."></canvas>
+        <p class="form-note" style="margin-top:16px">
+          LOCK <b style="color:var(--cyan)">ACQUIRED</b><br/>
+          NODE RUH·09 &nbsp;·&nbsp; DRIFT <span id="sigDrift">0.0</span> Hz<br/>
+          PAYLOAD LEAVES THIS PAGE: NEVER
+        </p>
+      </div>
+
+      <div class="panel rise" style="padding:24px;margin-top:14px">
+        <i class="corner tr"></i><i class="corner bl"></i>
+        <span class="tag" style="display:block;margin-bottom:16px">Where this actually goes</span>
+        <p style="color:var(--steel);font-size:14px">
+          Nowhere. This page has no network access by design. To reach a human about the real
+          product, use the live site&rsquo;s contact page or book a demo — both are one click away in
+          the footer of every page here.
+        </p>
+        <div class="hero-actions" style="margin-top:22px">
+          <a class="btn ghost" href="../../public-portal/contact">Real contact page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="next" data-label="WHAT HAPPENS">
+  <div class="sec-head rise">
+    <span class="tag">02 — After the handshake</span>
+    <h2>What happens next</h2>
+    <p>In the fiction. In reality, step one is where it ends, because this form goes nowhere.</p>
+  </div>
+  <div class="steps rise">
+    <div><div class="n">C/01</div><h4>The lattice answers</h4>
+      <p>Within one cycle hour, on the return path you gave, from a human whose standing is printed
+         at the top of the reply.</p></div>
+    <div><div class="n">C/02</div><h4>A bay is simulated</h4>
+      <p>Your workshop is modelled on the grid — your bays, your job mix, your parts — and run
+         forward for a synthetic month before anyone quotes you anything.</p></div>
+    <div><div class="n">C/03</div><h4>You stand in it</h4>
+      <p>Twenty minutes inside the lattice with your own numbers in it, not a demo tenant with
+         somebody else&rsquo;s vehicles.</p></div>
+    <div><div class="n">C/04</div><h4>You decide, slowly</h4>
+      <p>No cycle starts until you say so, and the first one can be ended with one cycle&rsquo;s notice.
+         Nothing here needs to be decided in the room.</p></div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="coords" data-label="COORDINATES">
+  <div class="sec-head rise">
+    <span class="tag">03 — Fixed points</span>
+    <h2>Coordinates</h2>
+    <p>Two of the five rows below are real. The rest belong to 2060.</p>
+  </div>
+  <div class="matrix-wrap rise">
+    <table class="matrix">
+      <thead><tr><th>Channel</th><th>Address</th><th>Answers within</th><th>Real?</th></tr></thead>
+      <tbody>
+        <tr><th>Live site</th><td style="text-align:start">../../public-portal/contact</td><td>Business hours</td><td>Yes</td></tr>
+        <tr><th>Book a demo</th><td style="text-align:start">../../public-portal/book-demo</td><td>One working day</td><td>Yes</td></tr>
+        <tr><th>Lattice 09 · Riyadh</th><td style="text-align:start">Bay floor, gate 2</td><td>1 cycle hour</td><td class="em">Fiction</td></tr>
+        <tr><th>Orbital Ring 7 uplink</th><td style="text-align:start">Relay, 340 km</td><td>4 cycle hours</td><td class="em">Fiction</td></tr>
+        <tr><th>Empty Quarter beacon</th><td style="text-align:start">Standing listen</td><td>When the weather allows</td><td class="em">Fiction</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<script src="os.js"></script>
+<script src="p-channel.js"></script>
+</body>
+</html>
