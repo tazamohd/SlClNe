@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { pushBackHandler } from '@/lib/back-stack'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -128,6 +129,16 @@ export function Modal({
       if (at >= 0) openDialogs.splice(at, 1)
     }
   }, [open])
+
+  /* Android's back button gets the same answer Escape does. A dialog that
+   * cannot be dismissed still registers: it is the top layer, and the point is
+   * that back does not navigate out from under it. */
+  useEffect(() => {
+    if (!open) return
+    return pushBackHandler(() => {
+      if (dismissible) onClose()
+    })
+  }, [open, dismissible, onClose])
 
   // The page behind must not scroll under the dialog. Counted, so closing a
   // nested confirmation doesn't hand scrolling back to the form still open.

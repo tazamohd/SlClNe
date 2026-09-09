@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { hapticSelection } from '@/lib/native'
 import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -271,6 +272,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
       {tabbed ? (
         <nav
           aria-label={t(config.title)}
+          data-hide-on-keyboard
           className="fixed inset-x-0 bottom-0 z-20 flex border-t border-border bg-sidebar pb-safe-bottom ps-safe-start pe-safe-end md:hidden"
         >
           {nav.map((item) => (
@@ -278,6 +280,7 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
               key={item.to}
               to={item.to}
               end={item.end ?? false}
+              onClick={hapticSelection}
               className={({ isActive }) =>
                 cn(
                   'flex flex-1 flex-col items-center gap-1 py-2.5 no-underline transition-colors hover:no-underline',
