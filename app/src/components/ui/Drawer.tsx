@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { pushBackHandler } from '@/lib/back-stack'
 import { cn } from '@/lib/cn'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
@@ -77,6 +78,10 @@ export function Drawer({
       previousFocus.current?.focus()
     }
   }, [open, handleKeyDown])
+
+  /* Android back closes the drawer before it navigates — the same thing
+   * Escape does above. */
+  useEffect(() => (open ? pushBackHandler(onClose) : undefined), [open, onClose])
 
   if (!open) return null
 

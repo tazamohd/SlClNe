@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { hapticResult } from '@/lib/native'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
 
@@ -38,6 +39,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   // resets the timer rather than stacking.
   const show = useCallback<ToastValue['show']>((next, duration = 3200) => {
     clearTimeout(timer.current)
+    /* On a device the outcome gets a haptic as well as a card. A toast is the
+     * one thing in the app that reports a result the user did not time
+     * themselves — it is exactly what the system success/failure patterns are
+     * for, and it is silent everywhere except native. */
+    hapticResult(!next.error)
     setToast({ ...next, id: Date.now() })
     timer.current = setTimeout(() => setToast(null), duration)
   }, [])
