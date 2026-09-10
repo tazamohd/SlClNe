@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Grid — SALIS AUTO 2060</title>
+<meta name="description" content="Parts as geometry, printing in the bay, three portals and the service mesh that reaches every node in the kingdom." />
+<meta name="theme-color" content="#05070E" />
+<link rel="icon" href="../assets/logo-blue-orange.png" />
+<link rel="stylesheet" href="os.css" />
+</head>
+<body>
+
+<main>
+
+<section id="top" data-label="THE GRID" class="masthead">
+  <div class="masthead-grid">
+    <div>
+      <span class="tag rise">Chapter 02 — Where the metal is</span>
+      <h1 class="rise"><span class="thin">The</span> Grid</h1>
+      <p class="lede rise">
+        A workshop used to be a place you drove to, holding a part someone had shipped from
+        somewhere. In 2060 the part is <b>a licence and a geometry</b>, the bay is a vehicle of its
+        own, and the only thing that still has to be in one place is the car — and only for as long
+        as the repair takes.
+      </p>
+    </div>
+    <div class="rise">
+      <div class="stats two">
+        <div><div class="k">Grid nodes</div><div class="v">31</div></div>
+        <div><div class="k">Mobile cells</div><div class="v">12</div></div>
+        <div><div class="k">Print to fit</div><div class="v">40<em>min</em></div></div>
+        <div><div class="k">Doors</div><div class="v">3</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="mesh" data-label="SUPPLY MESH">
+  <div class="sec-head rise">
+    <span class="tag">01 — Catalogue to cooling part</span>
+    <h2>The supply mesh</h2>
+    <p>
+      Left: supplier libraries, which used to be catalogues of boxes and are now catalogues of
+      shapes. Centre: the print core. Right: the bays waiting for what it makes. Nothing in this
+      diagram is a warehouse, and that is the whole point of it.
+    </p>
+  </div>
+  <div class="panel mesh-stage rise">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <canvas id="meshCanvas" role="img"
+            aria-label="Animated flow: supplier geometry libraries feed a central print core, which feeds nine bays."></canvas>
+    <div class="mesh-cap"><b>◆</b> LIBRARY &nbsp;·&nbsp; <b>⬡</b> PRINT CORE &nbsp;·&nbsp; <b>◈</b> BAY</div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="matter" data-label="MATTER">
+  <div class="sec-head rise">
+    <span class="tag">02 — How a part comes to exist</span>
+    <h2>Matter, on demand</h2>
+    <p>Four steps, none of which involve a lorry.</p>
+  </div>
+
+  <div class="steps rise">
+    <div>
+      <div class="n">M/01</div><h4>Licence</h4>
+      <p>The core names the part and the supplier grants a single-use licence against it. This is the
+         purchase order, and it still needs an approval before it spends anything.</p>
+    </div>
+    <div>
+      <div class="n">M/02</div><h4>Print</h4>
+      <p>The geometry is cut in the bay. Forty minutes for a drive-unit housing, against eleven days
+         when the same part had to be built somewhere else and carried here.</p>
+    </div>
+    <div>
+      <div class="n">M/03</div><h4>Certify</h4>
+      <p>The printed part carries its own certificate — material batch, tolerances, the machine that
+         made it and the technician who accepted it. A second signature, as always.</p>
+    </div>
+    <div>
+      <div class="n">M/04</div><h4>Book out</h4>
+      <p>It leaves stock as it cools, and the ledger has it costed before it is bolted on. One
+         write, one journal, no re-keying.</p>
+    </div>
+  </div>
+
+  <div class="cards wide rise" style="margin-top:22px">
+    <article class="panel card">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <div class="idx"><span>TODAY</span><b>SHIPPING</b></div>
+      <h3>What this is in 2025</h3>
+      <div class="then">Parts and inventory</div>
+      <p>Stock levels with minimums, purchase orders with approvals, supplier catalogues and goods
+         received against the order. The 2060 version changes where the part comes from — not who
+         is allowed to order it, or what has to be true before it is paid for.</p>
+      <ul>
+        <li>Stock, minimums and reorder points</li>
+        <li>Purchase orders, with approval routing</li>
+        <li>Supplier catalogues and price lists</li>
+        <li>Goods received, costed into the job</li>
+      </ul>
+    </article>
+    <article class="panel card">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <div class="idx"><span>THE HONEST PART</span><b>FICTION</b></div>
+      <h3>What we made up</h3>
+      <div class="then">Printing, licensing, geometry</div>
+      <p>Everything about the printer. A workshop that could manufacture a certified structural part
+         in its own bay would rewrite supplier economics, liability and type approval — three
+         problems this page cheerfully ignores because it is a design study and not a business plan.</p>
+      <ul>
+        <li>Single-use geometry licences</li>
+        <li>In-bay certification of printed parts</li>
+        <li>Forty-minute lead time on a housing</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="portals" data-label="THREE DOORS">
+  <div class="sec-head rise">
+    <span class="tag">03 — Three ways in</span>
+    <h2>Three doors</h2>
+    <p>
+      Each door sees its own slice and nothing adjacent to it. That is not a 2060 invention —
+      it is the portal model the product ships, drawn at the scale the fiction needs.
+    </p>
+  </div>
+  <div class="cards" id="portalCards"></div>
+</section>
+
+<div class="rule"></div>
+
+<section id="stream" data-label="ORDER STREAM">
+  <div class="sec-head rise">
+    <span class="tag">04 — What the grid is doing</span>
+    <h2>Order stream</h2>
+    <p>A synthetic feed, generated on this page. No network, no supplier, no order.</p>
+  </div>
+  <div class="fleet-wrap">
+    <div class="matrix-wrap rise">
+      <table class="matrix">
+        <thead>
+          <tr><th>Part</th><th>Licence</th><th>Node</th><th>State</th><th>ETA</th></tr>
+        </thead>
+        <tbody id="orderRows"></tbody>
+      </table>
+    </div>
+    <div class="panel log rise">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <h4>Print floor</h4>
+      <ul id="printLog"></ul>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="reach" data-label="REACH">
+  <div class="sec-head rise">
+    <span class="tag">05 — How far it goes</span>
+    <h2>Node roll-call</h2>
+    <p>
+      Twelve of thirty-one nodes, with the duty each one carries. A relay holds geometry and
+      hands off; a cell can print and repair; a lattice is a full workshop that happens to have
+      no walls left.
+    </p>
+  </div>
+  <div class="matrix-wrap rise">
+    <table class="matrix">
+      <thead><tr><th>Node</th><th>Class</th><th>Cells</th><th>In flow</th><th>Standing</th></tr></thead>
+      <tbody id="nodeRows"></tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<script src="os.js"></script>
+<script src="p-grid.js"></script>
+</body>
+</html>

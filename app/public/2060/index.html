@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SALIS AUTO — GARAGE OS 2060</title>
+<meta name="description" content="SALIS AUTO 2060 — a speculative build of the workshop operating system thirty-five years from now. Neural bays, quantum diagnostics, an autonomous service lattice." />
+<meta name="theme-color" content="#05070E" />
+<link rel="icon" href="../assets/logo-blue-orange.png" />
+<link rel="stylesheet" href="os.css" />
+</head>
+<body data-boot>
+
+<main>
+
+<!-- ── HERO ────────────────────────────────────────────────────────── -->
+<section id="hero" data-label="ARRIVAL">
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-kicker rise"><span>&#9672; Riyadh &middot; Bay Lattice 09 &middot; Cycle 2060.3</span></div>
+      <h1 class="title rise">
+        <span class="thin">SALIS AUTO</span>
+        <span class="glow">2060</span>
+      </h1>
+      <p class="hero-lede rise">
+        Thirty-five years on from the job card, the workshop is no longer a building &mdash; it is a
+        <b>lattice</b>. Vehicles arrive already diagnosed. Estimates are signed before the customer
+        reaches the gate. The invoice notarises itself on the way out.
+        <b>This page is a fiction</b> built on a real system: every figure below is synthetic.
+      </p>
+      <div class="hero-actions rise">
+        <button class="btn" id="ctaEnter" type="button">&#9672; Enter the lattice</button>
+        <a class="btn ghost" href="#chrono">Replay 2025 &rarr; 2060</a>
+      </div>
+    </div>
+
+    <div class="hero-stage rise" aria-hidden="true">
+      <p class="cap">Service unit <b>SA-09</b> &middot; printed chassis, four lift pods,
+        cockpit ring &mdash; rendered live, no model file</p>
+    </div>
+  </div>
+
+  <div class="panel hero-rail rise">
+    <div>
+      <span class="tag">Lattice at a glance</span>
+      <div class="kpis">
+        <div><div class="k">Bays online</div><div class="v" id="mBays">9<em>/9</em></div></div>
+        <div><div class="k">Vehicles in flow</div><div class="v" id="mFlow">247</div></div>
+        <div><div class="k">Median service</div><div class="v" id="mTime">11<em>min</em></div></div>
+        <div><div class="k">Lattice trust</div><div class="v" id="mTrust">99.<em>994%</em></div></div>
+      </div>
+    </div>
+    <div>
+      <span class="tag">Live substrate telemetry</span>
+      <div class="readout" id="substrate">
+        <div class="row"><span>Neural bay load</span><span id="rv1">0%</span></div>
+        <div class="meter"><i id="rb1" style="width:0%"></i></div>
+        <div class="row"><span>Predictive parts flux</span><span id="rv2">0%</span></div>
+        <div class="meter"><i id="rb2" style="width:0%"></i></div>
+        <div class="row"><span>Autonomous intake</span><span id="rv3">0%</span></div>
+        <div class="meter"><i id="rb3" style="width:0%"></i></div>
+        <div class="row"><span>Thermal envelope</span><span id="rv4">0%</span></div>
+        <div class="meter warn"><i id="rb4" style="width:0%"></i></div>
+      </div>
+    </div>
+    <div>
+      <span class="tag">Spectral signature</span>
+      <div class="spectrum" id="spectrum" aria-hidden="true"></div>
+      <p class="mono" style="font-size:10px;color:var(--dim);margin-top:14px;letter-spacing:.06em;line-height:1.8">
+        SYNTHETIC FEED<br/>seeded pseudo-random<br/>no vehicle data leaves this page
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── BAY LATTICE ─────────────────────────────────────────────────── -->
+<section id="lattice" data-label="BAY LATTICE">
+  <div class="sec-head rise">
+    <span class="tag">01 — The floor that thinks</span>
+    <h2>Neural bay lattice</h2>
+    <p>
+      Nine bays, one mind. Each bay negotiates for the next vehicle against the others, bidding with
+      tool availability, technician fatigue and the customer's stated hour of return. Nobody assigns
+      work here; the floor settles it and writes the audit row afterwards.
+    </p>
+  </div>
+  <div class="bays" id="bays"></div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── DIAGNOSTIC CORE ─────────────────────────────────────────────── -->
+<section id="core" data-label="DIAGNOSTIC CORE">
+  <div class="sec-head rise">
+    <span class="tag">02 — Diagnosis before arrival</span>
+    <h2>Quantum diagnostic core</h2>
+    <p>
+      The core takes a vehicle's whole operating history — every torque event, every thermal minute,
+      every road it ever complained about — and collapses it into a single signature. The technician
+      does not read a fault code. They read a story with a confidence attached to it.
+    </p>
+  </div>
+
+  <div class="core-grid">
+    <div class="orb rise">
+      <svg viewBox="0 0 400 400" role="img" aria-label="Rotating diagnostic core: three concentric rings around a confidence figure.">
+        <defs>
+          <linearGradient id="ringA" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#0BB3FF" stop-opacity=".95"/>
+            <stop offset="100%" stop-color="#0A5ED7" stop-opacity=".08"/>
+          </linearGradient>
+          <linearGradient id="ringB" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F97316" stop-opacity=".85"/>
+            <stop offset="100%" stop-color="#F97316" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <circle cx="200" cy="200" r="188" fill="none" stroke="rgba(11,179,255,.12)"/>
+        <g class="spin-a">
+          <circle cx="200" cy="200" r="188" fill="none" stroke="url(#ringA)" stroke-width="1.5"
+                  stroke-dasharray="6 10 40 14 90 30"/>
+          <circle cx="200" cy="12" r="4" fill="#0BB3FF"/>
+        </g>
+        <g class="spin-b">
+          <circle cx="200" cy="200" r="146" fill="none" stroke="url(#ringB)" stroke-width="2"
+                  stroke-dasharray="30 16 8 12"/>
+          <circle cx="346" cy="200" r="3.5" fill="#F97316"/>
+        </g>
+        <g class="spin-c">
+          <circle cx="200" cy="200" r="108" fill="none" stroke="rgba(11,179,255,.35)" stroke-width="1" stroke-dasharray="2 8"/>
+          <circle cx="200" cy="200" r="76" fill="none" stroke="rgba(10,94,215,.55)" stroke-width="1"/>
+        </g>
+        <g class="breathe">
+          <circle cx="200" cy="200" r="58" fill="rgba(11,179,255,.06)" stroke="rgba(11,179,255,.5)"/>
+        </g>
+        <g stroke="rgba(11,179,255,.30)" stroke-width="1">
+          <line x1="200" y1="24" x2="200" y2="70"/><line x1="200" y1="330" x2="200" y2="376"/>
+          <line x1="24" y1="200" x2="70" y2="200"/><line x1="330" y1="200" x2="376" y2="200"/>
+        </g>
+      </svg>
+      <div class="orb-centre">
+        <div class="n" id="coreN">98.6%</div>
+        <div class="l">Signature confidence</div>
+      </div>
+    </div>
+
+    <div class="rise">
+      <div class="dlist" id="diagList"></div>
+      <p class="mono" style="font-size:11px;color:var(--dim);margin-top:18px;line-height:1.9">
+        READ THIS AS FICTION: the core is a narrative device. What ships today is a multi-point
+        inspection with severity, a signed estimate and an audit row per change — the same shape,
+        thirty-five years less imagination.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── FLEET GRID ──────────────────────────────────────────────────── -->
+<section id="fleet" data-label="SERVICE GRID">
+  <div class="sec-head rise">
+    <span class="tag">03 — Service comes to you</span>
+    <h2>Autonomous service grid</h2>
+    <p>
+      No appointment, no drop-off. The grid dispatches a bay to the vehicle: a mobile cell rolls out
+      from the nearest node, docks in the customer's parking bay overnight, and is gone before the
+      commute. The workshop's four walls became a delivery radius.
+    </p>
+  </div>
+
+  <div class="fleet-wrap">
+    <div class="panel map rise">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <canvas id="fleetCanvas" role="img" aria-label="Animated map of service nodes across the kingdom with dispatch arcs between them."></canvas>
+      <div class="map-legend">
+        <span><b>◆</b> NODE</span><span><b>—</b> DISPATCH</span><span><b class="e">◆</b> PRIORITY</span>
+      </div>
+    </div>
+    <div class="panel log rise">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <h4>Dispatch stream</h4>
+      <ul id="logList"></ul>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── CHRONO RAIL ─────────────────────────────────────────────────── -->
+<section id="chrono" data-label="CHRONO RAIL">
+  <div class="sec-head rise">
+    <span class="tag">04 — The long road here</span>
+    <h2>2025 → 2060</h2>
+    <p>
+      Every leap on this rail starts from something that already exists in the product today. The
+      first entry is not speculation; it is the changelog.
+    </p>
+  </div>
+  <div class="chrono" id="chronoRail"></div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── LEDGER ──────────────────────────────────────────────────────── -->
+<section id="ledger" data-label="CHRONO-LEDGER">
+  <div class="sec-head rise">
+    <span class="tag">05 — The invoice that signs itself</span>
+    <h2>Chrono-ledger</h2>
+    <p>
+      In 2025 the invoice carried a QR and a ZATCA Phase&nbsp;2 hash. In 2060 it carries its own
+      history: every part, every hand that touched the car, every minute of bay time, notarised at
+      the moment of issue and readable for the life of the vehicle. Tilt it.
+    </p>
+  </div>
+
+  <div class="ledger-grid">
+    <div class="holo-stage rise">
+      <article class="holo" id="holo">
+        <div class="hh">
+          <b>SALIS AUTO</b>
+          <span>ZATCA PHASE ∞<br/>NOTARISED 2060-03-14</span>
+        </div>
+        <div class="amt"><em>SAR</em><span id="holoAmt">4,182.00</span></div>
+        <div class="lines">
+          <div><span>Autonomous intake &amp; signature capture</span><b>0.00</b></div>
+          <div><span>Neural bay 07 — 11 min</span><b>1,240.00</b></div>
+          <div><span>Printed cell · drive unit housing</span><b>1,905.00</b></div>
+          <div><span>Core diagnosis · 98.6% confidence</span><b>402.00</b></div>
+          <div><span>VAT 15%</span><b>635.00</b></div>
+        </div>
+        <div class="seal">
+          <div class="qr" aria-hidden="true"></div>
+          <p>Notary chain<br/><span id="holoHash">7F2A·C41E·9B03</span><br/>Immutable · customer-held</p>
+        </div>
+      </article>
+    </div>
+    <div class="rise">
+      <div class="dlist">
+        <div><div><div class="t">Signed before arrival</div><div class="d">Estimate authorised from the vehicle, en route.</div></div><div class="v">−4 h</div></div>
+        <div><div><div class="t">Zero re-keying</div><div class="d">The journal entry is the invoice, written once.</div></div><div class="v">0 steps</div></div>
+        <div><div><div class="t">Held by the customer</div><div class="d">The vehicle carries its own service history, not us.</div></div><div class="v">Lifetime</div></div>
+        <div><div><div class="t">Dispute window</div><div class="d">Every figure traces to the minute that produced it.</div></div><div class="v warn">Open</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ── COMMAND DECK ────────────────────────────────────────────────── -->
+<section id="deck" data-label="COMMAND DECK">
+  <div class="sec-head rise">
+    <span class="tag">06 — Talk to the lattice</span>
+    <h2>Command deck</h2>
+    <p>
+      A console with no backend behind it — it answers from this page alone. Type
+      <span class="mono" style="color:var(--cyan)">help</span> to see what it knows.
+    </p>
+  </div>
+
+  <div class="panel deck rise">
+    <div class="deck-bar"><i></i> SALIS://lattice-09 — local shell, no network</div>
+    <pre id="deckOut"></pre>
+    <form class="deck-in" id="deckForm" autocomplete="off">
+      <span aria-hidden="true">▸</span>
+      <label class="sr" for="deckInput">Command</label>
+      <input id="deckInput" name="c" placeholder="type a command, or `help`" spellcheck="false" />
+    </form>
+  </div>
+  <div class="chips" id="chips"></div>
+</section>
+
+</main>
+
+<script src="os.js"></script>
+<script src="p-index.js"></script>
+</body>
+</html>
