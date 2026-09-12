@@ -33,6 +33,19 @@ jobs:
         working-directory: app
         run: npm run build
 
+      # TEMPORARY — reports only whether each secret is non-empty, never
+      # its value, to distinguish "secret missing" from "workflow bug"
+      # while the FTP upload below keeps failing with "Input required
+      # and not supplied: server". Remove once the upload succeeds.
+      - name: Debug — check FTP secrets are set
+        run: |
+          check() {
+            if [ -z "$2" ]; then echo "$1: EMPTY or NOT SET"; else echo "$1: set (${#2} chars)"; fi
+          }
+          check HOSTINGER_FTP_SERVER "${{ secrets.HOSTINGER_FTP_SERVER }}"
+          check HOSTINGER_FTP_USERNAME "${{ secrets.HOSTINGER_FTP_USERNAME }}"
+          check HOSTINGER_FTP_PASSWORD "${{ secrets.HOSTINGER_FTP_PASSWORD }}"
+
       # SamKirkland/FTP-Deploy-Action supports both FTPS and SFTP — set
       # HOSTINGER_FTP_PROTOCOL to "ftps" (default, Hostinger's standard FTP
       # over TLS) or "sftp" if the Hostinger plan exposes SFTP instead.
