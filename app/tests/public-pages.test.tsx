@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import type { ComponentType, ReactElement } from 'react'
 import { PreferencesProvider } from '@/providers/PreferencesProvider'
@@ -73,6 +73,12 @@ describe('website domain barrel', () => {
 })
 
 describe('Tier A public pages', () => {
+  // Landing mirrors its active page to `location.hash`; reset it before every
+  // test in this file so one test's page switch never leaks into the next.
+  beforeEach(() => {
+    window.location.hash = ''
+  })
+
   for (const page of PAGES) {
     it(`${page.name} renders signed-out with its designed h1 and page meta`, () => {
       const Page = componentOf(page.name)
@@ -100,16 +106,13 @@ describe('Tier A public pages', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Workshop Management. Saudi Standard.' })
     ).toBeInTheDocument()
-    // The design's hero CTA pair, both with real destinations. "Book a
-    // 20-minute demo" repeats in the closing band, hence getAllByRole.
+    // The Arrival page's hero CTA pair, both with real destinations. "Book a
+    // 20-minute demo" repeats in the FAQ/next-steps content, hence getAllByRole.
     expect(screen.getAllByRole('link', { name: 'Book a 20-minute demo' })[0]).toHaveAttribute(
       'href',
       '/public-portal/book-demo'
     )
-    expect(screen.getAllByRole('link', { name: 'See pricing' })[0]).toHaveAttribute(
-      'href',
-      '/public-portal/pricing'
-    )
+    expect(screen.getByRole('link', { name: /See where it.s headed/ })).toHaveAttribute('href', '#roadmap')
   })
 
   it('Landing renders in Arabic with the document flipped to RTL', () => {
@@ -117,8 +120,61 @@ describe('Tier A public pages', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     expect(document.documentElement.dir).toBe('rtl')
-    // The hero CTA carries the artifact's own Arabic, from AR_OVERRIDES.
+    // The hero CTA carries the Arabic translation from `ar-overrides.ts`.
     expect(screen.getAllByRole('link', { name: 'احجز عرضاً لعشرين دقيقة' })[0]).toBeInTheDocument()
+  })
+
+  it('Landing switches its six in-page pages and mirrors the choice to the hash', () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    // Exactly one <h1> on the Arrival page at rest.
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    fireEvent.click(screen.getByRole('button', { name: /^System/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'The System' })).toBeInTheDocument()
+    // Still exactly one <h1> — the Arrival page's markup is fully unmounted.
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    expect(window.location.hash).toBe('#system')
+  })
+
+  it("Grid's three portal doors link to the real portal routes, not a decorative dead end", () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /^Grid/ }))
+    expect(screen.getByRole('link', { name: 'Open the customer portal' })).toHaveAttribute(
+      'href',
+      '/public-portal/customer-portal'
+    )
+    expect(screen.getByRole('link', { name: 'Open the technician portal' })).toHaveAttribute(
+      'href',
+      '/public-portal/technician-portal'
+    )
+    expect(screen.getByRole('link', { name: 'Open the supplier portal' })).toHaveAttribute(
+      'href',
+      '/public-portal/supplier-portal'
+    )
+  })
+
+  it("Channel's handshake leads to a real demo booking and a real contact page, not a form that goes nowhere", () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /^Channel/ }))
+    expect(screen.getByRole('link', { name: /Book a demo/ })).toHaveAttribute('href', '/public-portal/book-demo')
+    expect(screen.getByRole('link', { name: 'Contact SALIS AUTO' })).toHaveAttribute('href', '/public-portal/contact')
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+  })
+
+  it('the command deck answers a real command with a real fact, entirely client-side', () => {
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    const input = screen.getByPlaceholderText('type a command, or `help`')
+    fireEvent.change(input, { target: { value: 'status' } })
+    fireEvent.submit(input.closest('form') as HTMLFormElement)
+    // The deck's `status` answer states the real domain and role counts —
+    // never an invented diagnostic or telemetry reading.
+    expect(screen.getByText(/ZATCA Phase 2, live/)).toBeInTheDocument()
   })
 
   it('pages render at 390px without the desktop nav', () => {

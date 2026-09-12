@@ -1,451 +1,397 @@
-/* SALIS AUTO public landing — the stylesheet of the `SALIS AUTO last` design
- * artifact, scoped to `.salis-landing` so nothing here leaks into the app.
+/* PublicPortal.Landing — the six-page SALIS AUTO tour.
  *
- * Three deliberate departures from the artifact's own sheet:
- *  - `:root` becomes `.salis-landing` and `body` becomes the same element, so
- *    the tokens live on the page root instead of the document;
- *  - the artifact's `prefers-color-scheme` / `[data-theme]` pair collapses to
- *    `html.dark`, which is what PreferencesProvider actually sets;
- *  - the `.is-ready` / `.motion-ready` flags move from `<html>` to this element.
- * Rules for the artifact's own header, footer and sibling pages are dropped —
- * PublicShell supplies the chrome. Do not hand-tune values here: re-derive from
- * the artifact so the design source stays the single origin. */
+ * A dark, futuristic HUD shell (Arrival / System / Grid / Access / Origin /
+ * Channel) for content that is entirely real: the same domains, roles,
+ * lifecycle stages, proof figures, pricing plans and FAQ the rest of the
+ * public site states in plain language. The shell's origin is a speculative
+ * "SALIS AUTO 2060" design artifact whose content was fiction; that content
+ * has since been replaced end to end, but the visual identity — the palette,
+ * the panels, the reveal/tilt motion — is kept. The palette is locked to the
+ * app's own SALIS tokens — navy ground, blue, bright blue, ember orange —
+ * plus a handful of page-only darker/lighter tones (--void, --steel, --dim,
+ * --glass, --hair) that exist nowhere else in the app and belong to this one
+ * screen alone.
+ *
+ * Unlike the rest of the public site, this page does not follow the light/
+ * dark toggle: it is a permanently dark HUD, the same way the old hero band
+ * was always dark regardless of theme. That is a deliberate reading of the
+ * source artifact, which never had a light mode.
+ *
+ * Three deliberate departures from the artifact's own sheet, same as before:
+ *  - `:root` becomes `.salis-landing`, scoped instead of global;
+ *  - the artifact's own header/footer/menu/boot-sequence chrome is dropped —
+ *    PublicShell supplies real chrome, and the six pages are React state, not
+ *    six documents, so there is no boot sequence to gate first paint;
+ *  - `SalisDisplay/SalisUI/SalisMono` become the app's own self-hosted
+ *    Montserrat / Poppins / JetBrains Mono via `--font-*`, not new files.
+ *
+ * The artifact's three WebGL scenes (wireframe hovercar, dispatch-arc map,
+ * supply-mesh flow) are not ported: they are reimplemented as static SVG/CSS,
+ * trading animation fidelity for content and structural fidelity. `.rise`/
+ * `.corner`/`.panel`/`.tag` etc. keep the artifact's own class names. */
 
-/* SALIS AUTO — product site. Base shared with the SALISCO site; Palette and faces are the SALIS token set; nothing is added to it. */
 .salis-landing{
-  /* The artifact's palette, expressed in the app's own tokens so the landing
-     themes with everything else instead of restating the hexes. Names on the
-     left are the artifact's; values on the right are `styles/tokens`. */
-  --blue:var(--salis-blue); --blue-hover:var(--salis-blue-hover); --bright:var(--salis-blue-bright);
-  --navy:var(--salis-navy); --navy-2:var(--navy-dark);
-  --orange:var(--salis-orange); --orange-hover:var(--salis-orange-hover);
-  --grad:var(--salis-gradient);
-  --page:var(--bg-page); --card:var(--surface-card); --inset:var(--bg-page-alt);
-  --border:var(--border-default); --border-hard:var(--border-strong);
-  --heading:var(--text-heading); --body:var(--text-body); --muted:var(--text-muted); --faint:var(--text-faint);
-  --chip:var(--tint-blue); --chip-fg:var(--ring-dark); --chip-o:var(--tint-orange); --chip-o-fg:var(--amber-dark);
-  /* `--*-fg` tokens are white in both themes, which is what a navy band needs. */
-  --band:var(--salis-navy); --band-fg:var(--info-fg); --band-muted:var(--neutral-300);
-  --band-line:rgba(255,255,255,.14);
-  --shadow:0 12px 32px -14px rgba(11,31,59,.28); --shadow-lg:0 30px 60px -24px rgba(11,31,59,.45);
-  --mock-bg:var(--surface-card); --mock-fg:var(--text-heading); --mock-muted:var(--text-muted);
-  --mock-line:var(--border-default); --mock-bar:var(--salis-navy);
-  --f-display:var(--font-display); --f-ui:var(--font-ui); --f-action:var(--font-action); --f-mono:var(--font-mono);
-  /* The self-hosted faces cover Latin only; Arabic falls to the platform stack. */
+  /* Every value below is `var(...)` or `color-mix(...)` onto an existing
+     design-system token (`src/styles/tokens/colors.css`) — no new hex, so
+     `check-tokens` sees nothing to drift or inline. The near-black/near-navy
+     grounds mix `--salis-navy` toward black rather than reusing the
+     dark-theme surface tokens directly, since this page is dark
+     unconditionally and those tokens are only guaranteed at that value when
+     the app's own theme class is the active ancestor, which this page does
+     not depend on. */
+  --void:color-mix(in srgb,var(--salis-navy) 45%,black); --void-2:color-mix(in srgb,var(--salis-navy) 68%,black); --void-3:color-mix(in srgb,var(--salis-navy) 82%,black);
+  --navy:var(--salis-navy); --navy-lift:color-mix(in srgb,var(--salis-navy) 82%,var(--salis-blue));
+  --blue:var(--salis-blue); --cyan:var(--salis-blue-bright);
+  --ember:var(--salis-orange);
+  --ink:var(--info-fg); --mist:var(--neutral-300); --steel:var(--neutral-400); --dim:color-mix(in srgb,var(--neutral-400) 55%,var(--salis-navy));
+  --glass:color-mix(in srgb,var(--salis-navy) 42%,transparent); --glass-2:color-mix(in srgb,var(--void) 62%,transparent);
+  --hair:color-mix(in srgb,var(--salis-blue-bright) 18%,transparent); --hair-strong:color-mix(in srgb,var(--salis-blue-bright) 42%,transparent);
+  --f-display:var(--font-display); --f-ui:var(--font-action); --f-mono:var(--font-mono);
   --f-ar:'SF Arabic','Noto Sans Arabic','IBM Plex Sans Arabic','Segoe UI',system-ui,sans-serif;
-  --ease:cubic-bezier(.23,1,.32,1);
-  --ease-out:cubic-bezier(.23,1,.32,1); --ease-in-out:cubic-bezier(.77,0,.175,1);
-  --d-1:120ms; --d-2:160ms; --d-3:200ms; --d-4:260ms; --d-5:400ms;
-  --r-1:8px; --r-2:12px; --r-3:18px; --r-4:28px;
-  --ring:rgba(11,31,59,.08); --ring-in:rgba(255,255,255,.7); --grain:.035;
-  color-scheme:light;
-}
-html.dark .salis-landing{
-  /* Only what the app tokens do not already flip on their own. */
-  --chip-fg:var(--salis-blue-bright); --chip-o-fg:var(--orange-light);
-  --shadow:0 12px 32px -14px rgba(0,0,0,.6); --shadow-lg:0 30px 60px -24px rgba(0,0,0,.7);
-  --ring:rgba(255,255,255,.08); --ring-in:rgba(255,255,255,.06); --grain:.05;
+  --ease:cubic-bezier(.16,.84,.44,1); --med:.42s; --fast:.18s;
+  --gut:clamp(20px,4vw,64px);
   color-scheme:dark;
+  display:block;
+  position:relative;
+  margin:0;
+  background:var(--void);
+  background-image:
+    radial-gradient(120% 60% at 50% -10%,rgba(10,94,215,.28),transparent 62%),
+    radial-gradient(70% 50% at 90% 6%,rgba(11,179,255,.14),transparent 60%),
+    radial-gradient(80% 55% at 4% 96%,rgba(249,115,22,.09),transparent 62%),
+    linear-gradient(rgba(11,179,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(11,179,255,.05) 1px,transparent 1px);
+  background-size:auto,auto,auto,76px 76px,76px 76px;
+  color:var(--mist);
+  font-family:var(--f-ui);
+  font-size:15px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:clip;
 }
+.salis-landing::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+html[lang="ar"] .salis-landing{font-family:var(--f-ar);font-size:16px;line-height:1.85}
 .salis-landing *{box-sizing:border-box}
-.salis-landing{margin:0;background:var(--page);color:var(--body);font-family:var(--f-ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-html[lang="ar"] .salis-landing{font-family:var(--f-ar);font-size:16px;line-height:1.75}
-.salis-landing h1,
-.salis-landing h2,
-.salis-landing h3{font-family:var(--f-display);color:var(--heading);margin:0;letter-spacing:-.02em;text-wrap:balance}
+.salis-landing h1,.salis-landing h2,.salis-landing h3,.salis-landing h4{
+  font-family:var(--f-display);color:var(--ink);margin:0;letter-spacing:-.03em;font-weight:800;line-height:1.02;text-wrap:balance
+}
 html[lang="ar"] .salis-landing h1,
 html[lang="ar"] .salis-landing h2,
-html[lang="ar"] .salis-landing h3{font-family:var(--f-ar);letter-spacing:0}
-.salis-landing h1{font-size:clamp(34px,5vw,64px);font-weight:800;line-height:1.02;letter-spacing:-.035em}
-.salis-landing h2{font-size:clamp(24px,3vw,36px);font-weight:700;line-height:1.18;letter-spacing:-.025em}
-.salis-landing h3{font-size:20px;font-weight:700;line-height:1.3}
+html[lang="ar"] .salis-landing h3,
+html[lang="ar"] .salis-landing h4{font-family:var(--f-ar);letter-spacing:0}
 .salis-landing p{margin:0;text-wrap:pretty}
 .salis-landing li{text-wrap:pretty}
-.salis-landing a{color:var(--blue)}
-.salis-landing [id]{scroll-margin-top:96px}
-.salis-landing button,
-.salis-landing a.btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.salis-landing a{color:var(--cyan)}
+.salis-landing [id]{scroll-margin-top:24px}
+.salis-landing ::selection{background:rgba(11,179,255,.28);color:var(--ink)}
 .salis-landing .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.salis-landing .eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-weight:500}
-.salis-landing .eyebrow.bright{color:var(--bright)}
-html[lang="ar"] .salis-landing .eyebrow{font-family:var(--f-ar);letter-spacing:0;font-size:13px;font-weight:600}
-.salis-landing [lang="ar"]{font-family:var(--f-ar)}
+.salis-landing .tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--cyan)}
+.salis-landing .dimtag{color:var(--dim)}
+html[lang="ar"] .salis-landing .tag{font-family:var(--f-ar);letter-spacing:.04em;font-size:12px}
 .salis-landing [dir="ltr"]{unicode-bidi:isolate}
-.salis-landing .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-.salis-landing :focus-visible{outline:2px solid var(--bright);outline-offset:3px}
+.salis-landing :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+/* ---------- layout rhythm ---------- */
+.salis-landing > section,
+.salis-landing .masthead{
+  position:relative;z-index:2;max-width:1400px;margin-inline:auto;
+  padding:clamp(56px,9vh,120px) var(--gut);
+}
+.salis-landing .sec-head{margin-bottom:clamp(28px,4.5vh,52px)}
+.salis-landing .sec-head .tag{display:block;margin-bottom:14px}
+.salis-landing .sec-head h2{font-size:clamp(26px,4.6vw,52px)}
+.salis-landing .sec-head p{margin-top:16px;max-width:64ch;color:var(--steel);font-size:clamp(14px,1.3vw,16.5px)}
+.salis-landing .rule{height:1px;background:linear-gradient(90deg,var(--hair-strong),transparent);margin-inline:var(--gut)}
+
+/* ---------- panel / corner brackets ---------- */
+.salis-landing .panel{position:relative;background:var(--glass-2);border:1px solid var(--hair);backdrop-filter:blur(10px);padding:22px;overflow:hidden}
+.salis-landing .panel::before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(11,179,255,.10),transparent 42%)}
+.salis-landing .corner{position:absolute;width:10px;height:10px;border:1px solid var(--hair-strong);pointer-events:none}
+.salis-landing .corner.tl{inset-block-start:-1px;inset-inline-start:-1px;border-inline-end:0;border-block-end:0}
+.salis-landing .corner.tr{inset-block-start:-1px;inset-inline-end:-1px;border-inline-start:0;border-block-end:0}
+.salis-landing .corner.bl{inset-block-end:-1px;inset-inline-start:-1px;border-inline-end:0;border-block-start:0}
+.salis-landing .corner.br{inset-block-end:-1px;inset-inline-end:-1px;border-inline-start:0;border-block-start:0}
 
 /* ---------- buttons ---------- */
-.salis-landing .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--f-action);font-weight:600;font-size:15px;min-height:48px;padding:0 24px;border-radius:999px;text-decoration:none;background:var(--blue);color:var(--band-fg);border:0;cursor:pointer;box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 10px 24px -14px rgba(10,94,215,.7);transition:transform var(--d-2) var(--ease-out),background var(--d-2) var(--ease-out),box-shadow var(--d-2) var(--ease-out),border-color var(--d-2) var(--ease-out),color var(--d-2) var(--ease-out)}
-.salis-landing .btn:active{transform:scale(.97)}
-.salis-landing .btn .arr{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.16);margin-inline-end:-10px;font-family:var(--f-ui);font-weight:600;font-size:15px;line-height:1;transition:transform var(--d-3) var(--ease-out),background var(--d-3) var(--ease-out)}
-html[dir="rtl"] .salis-landing .btn .arr{transform:scaleX(-1)}
-.salis-landing .btn.ghost{background:transparent;color:var(--heading);border:1.5px solid var(--border-hard);box-shadow:none}
-.salis-landing .btn.ghost .arr{background:var(--chip)}
-.salis-landing .btn.on-dark{background:var(--band-fg);color:var(--navy);box-shadow:0 10px 24px -14px rgba(0,0,0,.6)}
-.salis-landing .btn.on-dark .arr{background:var(--chip);color:var(--blue)}
-.salis-landing .btn.ghost-dark{background:transparent;color:var(--band-fg);border:1.5px solid rgba(255,255,255,.4);box-shadow:none}
-.salis-landing .btn.ghost-dark .arr{background:rgba(255,255,255,.12)}
-@media (hover:hover) and (pointer:fine) {
-  .salis-landing .btn:hover{background:var(--blue-hover);transform:translateY(-1px)}
-  .salis-landing .btn:hover .arr{transform:translate(2px,-2px) scale(1.06);background:rgba(255,255,255,.26)}
-  html[dir="rtl"] .salis-landing .btn:hover .arr{transform:translate(-2px,-2px) scale(-1.06,1.06)}
-  .salis-landing .btn.ghost:hover{border-color:var(--blue);color:var(--blue);background:transparent}
-  .salis-landing .btn.on-dark:hover{background:var(--chip)}
-  .salis-landing .btn.ghost-dark:hover{background:rgba(255,255,255,.08);border-color:var(--band-fg)}
-}
-@media (prefers-reduced-motion:reduce) {
-  .salis-landing .btn,
-  .salis-landing .btn .arr{transition:none}
-  .salis-landing .btn:hover,
-  .salis-landing .btn:hover .arr{transform:none}
+.salis-landing .btn{display:inline-flex;align-items:center;gap:10px;min-height:50px;padding:0 26px;cursor:pointer;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  border:1px solid var(--hair-strong);background:rgba(10,94,215,.16);color:var(--ink);text-decoration:none;
+  transition:background var(--med) var(--ease),box-shadow var(--med) var(--ease),transform var(--med) var(--ease);position:relative}
+html[lang="ar"] .salis-landing .btn{font-family:var(--f-ar);letter-spacing:.02em;font-size:13px}
+.salis-landing .btn:hover{background:rgba(11,179,255,.24);box-shadow:0 0 30px rgba(11,179,255,.30);color:var(--ink);text-decoration:none}
+.salis-landing .btn.ghost{background:transparent;border-color:rgba(141,160,184,.32);color:var(--steel)}
+.salis-landing .btn.ghost:hover{color:var(--ink);border-color:var(--hair-strong);box-shadow:none}
+.salis-landing .btn.disabled{background:transparent;border-style:dashed;color:var(--dim);cursor:not-allowed}
+.salis-landing .btn.disabled:hover{box-shadow:none;color:var(--dim)}
+.salis-landing .hero-actions,
+.salis-landing .btn-row{display:flex;gap:14px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){
+  .salis-landing .btn{transition:none}
+  .salis-landing .btn:hover{transform:none}
 }
 
-/* ---------- hero (home and product pages) ---------- */
-.salis-landing .hero{background:var(--band);color:var(--band-fg);position:relative;overflow:hidden}
-.salis-landing .hero .wrap{position:relative}
-.salis-landing .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-block:96px 112px}
-@media (max-width:900px) {
-  .salis-landing .hero-grid{grid-template-columns:1fr;padding-block:52px 56px;gap:36px}
-}
-.salis-landing .hero h1{color:var(--band-fg);margin-top:14px}
-.salis-landing .hero h1 .o{color:var(--orange)}
-.salis-landing .lede{color:var(--band-muted);font-size:18px;max-width:52ch;margin-top:22px}
-.salis-landing .ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
-.salis-landing .hero .eyebrow{color:var(--bright)}
-.salis-landing .statusline{margin-top:26px;padding:12px 16px;border:1px solid var(--band-line);border-inline-start:3px solid var(--orange);border-radius:0 8px 8px 0;color:var(--band-muted);font-size:14px;max-width:60ch}
-html[dir="rtl"] .salis-landing .statusline{border-radius:8px 0 0 8px}
-.salis-landing .statusline b{color:var(--band-fg)}
-.salis-landing .hero-mock{position:relative}
-.salis-landing .hero-mock .mock{box-shadow:var(--shadow-lg)}
-
-/* the trace: drawn on load, static under reduced motion */
-.salis-landing .trace{position:absolute;pointer-events:none;opacity:.55}
-.salis-landing .trace .draw path{stroke-dasharray:900;stroke-dashoffset:0}
-.salis-landing.is-ready .trace.anim .draw path{animation:draw 2.4s var(--ease) both}
-.salis-landing.is-ready .trace.anim.late .draw path{animation-delay:.5s}
-.salis-landing.is-ready .trace.anim .dots{animation:fadein .6s 1.9s var(--ease) both}
-@keyframes draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
-@keyframes fadein{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion:reduce) {
-  .salis-landing.is-ready .trace.anim .draw path,
-  .salis-landing.is-ready .trace.anim .dots{animation:none}
+/* ---------- reveal-on-scroll ---------- */
+.salis-landing .rise{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.salis-landing .rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .salis-landing .rise{opacity:1;transform:none;transition:none}
 }
 
-/* ---------- product mocks ---------- */
-.salis-landing .mock{background:var(--mock-bg);color:var(--mock-fg);border-radius:var(--r-3);overflow:hidden;border:0;box-shadow:0 0 0 1px var(--ring),0 1px 0 var(--ring-in) inset,0 0 0 8px color-mix(in srgb,var(--navy) 22%,transparent),var(--shadow);font-family:var(--f-ui);font-size:13.5px}
-html[lang="ar"] .salis-landing .mock{font-family:var(--f-ar)}
-.salis-landing .mock .bar{background:var(--mock-bar);color:var(--band-fg);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px}
-.salis-landing .mock .bar b{font-family:var(--f-action);font-weight:600}
-html[lang="ar"] .salis-landing .mock .bar b{font-family:var(--f-ar)}
-.salis-landing .mock .bar .mono{color:var(--band-muted);font-size:12px}
-.salis-landing .mock .row{display:grid;grid-template-columns:.5fr 1fr 1fr 1.1fr auto;gap:12px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--mock-line)}
-.salis-landing .mock .row.head{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mock-muted);padding-block:9px}
-html[lang="ar"] .salis-landing .mock .row.head{font-family:var(--f-ar);letter-spacing:0;font-size:12px}
-.salis-landing .mock .row:last-of-type{border-bottom:0}
-.salis-landing .mock .row .num{text-align:end}
-.salis-landing .mock .mono,
-.salis-landing .mock .st{white-space:nowrap}
-.salis-landing .mock .st{font-family:var(--f-action);font-weight:600;font-size:12px;color:var(--blue);background:var(--chip);border-radius:999px;padding:4px 10px;white-space:nowrap;justify-self:end}
-html[lang="ar"] .salis-landing .mock .st{font-family:var(--f-ar)}
-.salis-landing .mock .st.o{color:var(--chip-o-fg);background:var(--chip-o)}
-.salis-landing .mock .foot{padding:10px 18px;font-size:11.5px;color:var(--mock-muted);border-top:1px solid var(--mock-line);background:var(--inset)}
-
-/* parts and fleet mocks use different column counts */
-@media (max-width:520px) {
-  .salis-landing .mock .row{grid-template-columns:.5fr 1fr 1fr auto}
-  .salis-landing .mock .row>.num:nth-child(4){display:none}
+/* ---------- in-page tab nav ---------- */
+.salis-landing .page-nav{position:sticky;top:0;z-index:5;display:flex;gap:2px;overflow-x:auto;
+  background:rgba(5,7,14,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);
+  padding-inline:var(--gut);scrollbar-width:thin}
+.salis-landing .page-nav button{flex:none;display:flex;flex-direction:column;gap:3px;align-items:flex-start;
+  background:none;border:0;border-bottom:2px solid transparent;color:var(--steel);cursor:pointer;
+  padding:14px 16px;font-family:var(--f-mono);text-align:start}
+html[lang="ar"] .salis-landing .page-nav button{font-family:var(--f-ar)}
+.salis-landing .page-nav b{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:inherit}
+.salis-landing .page-nav span{font-size:10.5px;color:var(--dim);max-width:22ch;line-height:1.4;display:none}
+.salis-landing .page-nav button:hover{color:var(--ink)}
+.salis-landing .page-nav button.on{color:var(--ink);border-block-end-color:var(--cyan)}
+.salis-landing .page-nav button.on span{color:var(--steel)}
+@media (min-width:860px){
+  .salis-landing .page-nav span{display:block}
 }
 
-/* ---------- sections ---------- */
-.salis-landing section{padding-block:96px 112px}
-@media (max-width:760px) {
-  .salis-landing section{padding-block:56px 64px}
-}
-.salis-landing .sec-head{max-width:64ch;margin-bottom:34px}
-.salis-landing .sec-head h2{margin-top:8px}
-.salis-landing .sec-head p{color:var(--muted);margin-top:12px;font-size:16px}
+/* ---------- hero ---------- */
+.salis-landing .hero{min-height:min(92svh,900px);display:flex;flex-direction:column;justify-content:center;padding-block:56px 40px}
+.salis-landing .hero-kicker{display:inline-flex;align-items:center;gap:12px;padding:7px 14px;margin-bottom:22px;border:1px solid var(--hair);background:rgba(11,179,255,.06)}
+.salis-landing .hero-kicker span{font-family:var(--f-mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--cyan)}
+html[lang="ar"] .salis-landing .hero-kicker span{font-family:var(--f-ar);letter-spacing:.02em;font-size:12px}
+.salis-landing .hero h1{font-size:clamp(38px,7.6vw,102px);line-height:.9;letter-spacing:-.045em}
+.salis-landing .hero h1 .thin{font-weight:200;color:var(--steel);display:block}
+.salis-landing .hero h1 .glow{background:linear-gradient(96deg,var(--ink) 8%,var(--cyan) 46%,var(--blue) 84%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 40px rgba(11,179,255,.32))}
+.salis-landing .hero-lede{margin-top:22px;max-width:60ch;font-size:clamp(15px,1.5vw,18.5px);color:var(--mist)}
+.salis-landing .hero-lede b{color:var(--ink);font-weight:700}
+.salis-landing .hero-rail{margin-top:clamp(24px,4vh,46px);display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.salis-landing .hero-rail > div{background:var(--void-2);padding:20px}
+.salis-landing .hero-rail .tag{display:block;margin-bottom:16px}
+.salis-landing .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}
+.salis-landing .kpis .k{font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+html[lang="ar"] .salis-landing .kpis .k{font-family:var(--f-ar);letter-spacing:0;font-size:11px}
+.salis-landing .kpis .v{font-family:var(--f-mono);font-size:clamp(18px,2vw,25px);color:var(--ink);margin-top:5px;line-height:1}
+.salis-landing .kpis .v em{font-style:normal;color:var(--cyan);font-size:12px}
+.salis-landing .fine-note{margin-top:14px;font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:.06em;line-height:1.8}
 
-/* family map: four lines feeding one rail */
 
-/* alternating line rows */
-.salis-landing .more{display:inline-flex;gap:6px;align-items:center;font-family:var(--f-action);font-weight:600;color:var(--blue);text-decoration:none;margin-top:16px}
-.salis-landing .more:hover{text-decoration:underline}
+/* ---------- chrono rail ---------- */
+.salis-landing .chrono{position:relative;display:grid;gap:0}
+.salis-landing .chrono::before{content:'';position:absolute;inset-block:0;inset-inline-start:10px;width:1px;background:linear-gradient(var(--hair-strong),var(--hair) 85%,transparent)}
+.salis-landing .era{position:relative;padding:22px 0 22px 44px;display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr);gap:clamp(12px,3vw,40px);align-items:start}
+html[dir="rtl"] .salis-landing .era{padding-inline:44px 0}
+.salis-landing .era::before{content:'';position:absolute;inset-inline-start:5px;top:32px;width:11px;height:11px;border-radius:50%;background:var(--void);border:2px solid var(--hair-strong)}
+.salis-landing .era.in::before{background:var(--cyan);box-shadow:0 0 16px var(--cyan)}
+.salis-landing .era .yr{font-family:var(--f-mono);font-size:clamp(22px,3vw,36px);color:var(--ink);line-height:1}
+.salis-landing .era .yr small{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-top:7px}
+html[lang="ar"] .salis-landing .era .yr small{font-family:var(--f-ar);letter-spacing:0;font-size:11px}
+.salis-landing .era h3{font-size:clamp(17px,1.9vw,23px);margin-bottom:7px}
+.salis-landing .era p{color:var(--steel);max-width:62ch}
+.salis-landing .era.now .yr{color:var(--ember)}
+.salis-landing .era.now::before{border-color:var(--ember)}
+.salis-landing .era.now.in::before{background:var(--ember);box-shadow:0 0 16px var(--ember)}
 
-/* why: three columns with typographic weight */
+/* ---------- ledger / holo invoice ---------- */
+.salis-landing .ledger-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+@media (max-width:900px){.salis-landing .ledger-grid{grid-template-columns:1fr}}
+.salis-landing .holo-stage{perspective:1300px;display:flex;justify-content:center}
+.salis-landing .holo{width:min(420px,100%);padding:24px;transform-style:preserve-3d;background:linear-gradient(170deg,rgba(11,179,255,.10),var(--glass-2) 60%);border:1px solid var(--hair-strong);position:relative;transition:transform .3s var(--ease)}
+.salis-landing .holo-stage:hover .holo{transform:rotateY(-6deg) rotateX(3deg)}
+.salis-landing .holo .hh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px}
+.salis-landing .holo .hh b{font-family:var(--f-display);font-size:15px;letter-spacing:.2em;color:var(--ink)}
+.salis-landing .holo .hh span{font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;color:var(--cyan);text-align:end;text-transform:uppercase}
+.salis-landing .holo .amt{font-family:var(--f-mono);font-size:clamp(28px,4.2vw,42px);color:var(--ink);line-height:1}
+.salis-landing .holo .amt em{font-style:normal;font-size:14px;color:var(--cyan);margin-inline-end:7px}
+.salis-landing .holo .lines{margin-top:20px;display:grid;gap:9px}
+.salis-landing .holo .lines div{display:flex;justify-content:space-between;gap:12px;font-family:var(--f-mono);font-size:11.5px;color:var(--steel)}
+.salis-landing .holo .lines div b{color:var(--mist);font-weight:400;flex:none}
+.salis-landing .holo .seal{margin-top:22px;padding-top:16px;border-top:1px dashed rgba(11,179,255,.28);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.salis-landing .holo .qr{width:56px;height:56px;flex:none;background-image:repeating-linear-gradient(90deg,var(--ink) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,var(--ink) 0 4px,transparent 4px 8px);background-blend-mode:multiply;background-color:var(--navy);opacity:.85}
+.salis-landing .holo .seal p{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;text-align:end;margin:0}
+.salis-landing .dlist-plain{display:grid;gap:14px}
+.salis-landing .dlist-plain > div{display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-block-end:1px solid var(--hair);padding-block-end:14px}
+.salis-landing .dlist-plain .t{color:var(--ink);font-size:14.5px}
+.salis-landing .dlist-plain .d{color:var(--dim);font-size:12.5px;margin-top:4px}
+.salis-landing .dlist-plain .v{font-family:var(--f-mono);font-size:13px;color:var(--cyan);white-space:nowrap}
+.salis-landing .dlist-plain .v.warn{color:var(--ember)}
 
-/* proof band */
-.salis-landing .proof{background:var(--band);color:var(--band-fg)}
-.salis-landing .proof .grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;border-radius:var(--r-3);overflow:hidden;box-shadow:0 0 0 1px var(--band-line),0 1px 0 rgba(255,255,255,.06) inset,0 0 0 8px rgba(255,255,255,.03)}
-.salis-landing .proof .cell:first-child{padding:34px 32px}
-.salis-landing .proof .cell:first-child .to{font-size:56px}
-@media (max-width:760px) {
-  .salis-landing .proof .grid{grid-template-columns:1fr}
-}
-.salis-landing .proof .cell{padding:28px 26px;border-inline-end:1px solid var(--band-line)}
-.salis-landing .proof .cell:last-child{border-inline-end:0}
-@media (max-width:760px) {
-  .salis-landing .proof .cell{border-inline-end:0;border-bottom:1px solid var(--band-line)}
-  .salis-landing .proof .cell:last-child{border-bottom:0}
-}
-.salis-landing .proof .pair{display:flex;align-items:baseline;gap:14px;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.salis-landing .proof .from{font-size:26px;color:var(--band-muted);text-decoration:line-through;text-decoration-color:var(--orange);text-decoration-thickness:3px}
-.salis-landing .proof .to{font-size:44px;font-weight:500;color:var(--bright);letter-spacing:-.03em}
-.salis-landing .proof .what{margin-top:8px;font-weight:600;color:var(--band-fg)}
-.salis-landing .proof .base{margin-top:4px;font-size:13px;color:var(--band-muted)}
-.salis-landing .proof h2{color:var(--band-fg)}
-.salis-landing .proof .sec-head p{color:var(--band-muted)}
+/* ---------- command deck ---------- */
+.salis-landing .deck{padding:0;overflow:hidden}
+.salis-landing .deck-bar{display:flex;align-items:center;gap:10px;padding:13px 18px;border-block-end:1px solid var(--hair);font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.salis-landing .deck-bar i{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex:none}
+.salis-landing .deck-out{height:clamp(240px,40vh,400px);overflow-y:auto;padding:18px;margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.85;color:var(--steel);white-space:pre-wrap;word-break:break-word}
+.salis-landing .deck-out b{color:var(--cyan);font-weight:400}
+.salis-landing .deck-out u{text-decoration:none;color:var(--ink)}
+.salis-landing .deck-out s{text-decoration:none;color:var(--ember)}
+.salis-landing .deck-out .you{color:var(--mist)}
+.salis-landing .deck-in{display:flex;align-items:center;gap:12px;border-block-start:1px solid var(--hair);padding-inline:18px}
+.salis-landing .deck-in span{font-family:var(--f-mono);font-size:13px;color:var(--cyan);flex:none}
+.salis-landing .deck-in input{flex:1;min-width:0;min-height:54px;background:none;border:0;outline:none;color:var(--ink);font-family:var(--f-mono);font-size:13px}
+.salis-landing .deck-in input::placeholder{color:var(--dim)}
+.salis-landing .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.salis-landing .chip{background:rgba(11,179,255,.08);border:1px solid var(--hair);color:var(--cyan);cursor:pointer;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;transition:background var(--fast),color var(--fast)}
+.salis-landing .chip:hover{background:rgba(11,179,255,.2);color:var(--ink)}
 
-/* product page blocks */
-.salis-landing .roles{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:28px 32px}
-.salis-landing .roles>div:first-child{grid-row:span 2;padding-inline-end:24px}
-.salis-landing .roles>div:first-child b{font-size:22px}
-.salis-landing .roles>div:first-child p{font-size:16px;color:var(--body)}
-.salis-landing .roles b{display:block;font-family:var(--f-display);font-weight:700;color:var(--heading);font-size:16px;border-top:2px solid var(--blue);padding-top:12px}
-html[lang="ar"] .salis-landing .roles b{font-family:var(--f-ar)}
-.salis-landing .roles p{margin-top:8px;color:var(--muted);font-size:14px}
-@media (max-width:900px) {
-  .salis-landing .roles{grid-template-columns:repeat(2,1fr)}
-  .salis-landing .roles>div:first-child{grid-row:auto;grid-column:span 2;padding-inline-end:0}
-}
-@media (max-width:520px) {
-  .salis-landing .roles{grid-template-columns:1fr}
-  .salis-landing .roles>div:first-child{grid-column:auto}
-}
-.salis-landing .cta-end{text-align:center;padding-block:80px}
-.salis-landing .cta-end h2{font-size:clamp(26px,3.4vw,40px)}
-.salis-landing .cta-end p{margin:14px auto 0;max-width:52ch;color:var(--muted);font-size:16px}
-.salis-landing .cta-end .ctas{justify-content:center}
+/* ---------- mastheads (chapters) ---------- */
+.salis-landing .masthead h1{font-size:clamp(34px,6.8vw,88px);line-height:.94;letter-spacing:-.045em}
+.salis-landing .masthead h1 .thin{font-weight:200;color:var(--steel)}
+.salis-landing .masthead .lede{margin-top:22px;max-width:62ch;font-size:clamp(15px,1.4vw,18px);color:var(--mist)}
+.salis-landing .masthead .lede b{color:var(--ink);font-weight:700}
+.salis-landing .masthead-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(24px,4vw,56px);align-items:end}
+@media (max-width:900px){.salis-landing .masthead-grid{grid-template-columns:1fr}}
+.salis-landing .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.salis-landing .stats.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.salis-landing .stats > div{background:var(--void-2);padding:16px 18px}
+.salis-landing .stats .k{font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+html[lang="ar"] .salis-landing .stats .k{font-family:var(--f-ar);letter-spacing:0;font-size:11px}
+.salis-landing .stats .v{font-family:var(--f-mono);font-size:clamp(18px,2.2vw,27px);color:var(--ink);margin-top:6px;line-height:1}
+.salis-landing .stats .v em{font-style:normal;color:var(--cyan);font-size:12px}
 
-/* contact channels */
+/* ---------- card grids ---------- */
+.salis-landing .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.salis-landing .cards.wide{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.salis-landing .card{padding:22px}
+.salis-landing .card .idx{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.2em;color:var(--dim);display:flex;justify-content:space-between;margin-bottom:14px}
+.salis-landing .card .idx b{color:var(--cyan);font-weight:400}
+.salis-landing .card h3{font-size:18px;margin-bottom:6px}
+.salis-landing .card h4{font-size:16px;margin-bottom:6px}
+.salis-landing .card .then{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;color:var(--ember);text-transform:uppercase;margin-bottom:10px}
+.salis-landing .card p{color:var(--steel);font-size:14px}
+.salis-landing .card ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:7px}
+.salis-landing .card li{position:relative;padding-inline-start:16px;font-family:var(--f-mono);font-size:11.5px;color:var(--mist)}
+.salis-landing .card li::before{content:'▸';position:absolute;inset-inline-start:0;color:var(--cyan)}
+html[dir="rtl"] .salis-landing .card li::before{content:'◂'}
 
-/* accounts table */
+/* ---------- subsystem picker (constellation, simplified) ---------- */
+.salis-landing .subsystem-picker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.75fr);gap:14px;align-items:stretch}
+@media (max-width:900px){.salis-landing .subsystem-picker{grid-template-columns:1fr}}
+.salis-landing .subsystem-list{display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;padding:20px}
+.salis-landing .subsystem-list button{background:rgba(11,179,255,.06);border:1px solid var(--hair);color:var(--steel);cursor:pointer;padding:9px 14px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-align:start}
+html[lang="ar"] .salis-landing .subsystem-list button{font-family:var(--f-ar);letter-spacing:0;font-size:12.5px}
+.salis-landing .subsystem-list button:hover{color:var(--ink);border-color:var(--hair-strong)}
+.salis-landing .subsystem-list button.on{background:rgba(11,179,255,.18);color:var(--ink);border-color:var(--cyan)}
+.salis-landing .subsystem-detail{padding:24px;display:flex;flex-direction:column}
+.salis-landing .subsystem-detail .then{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--ember);text-transform:uppercase;margin-bottom:12px}
+.salis-landing .subsystem-detail p{color:var(--mist);font-size:14px}
+.salis-landing .subsystem-detail ul{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:1px;background:var(--hair)}
+.salis-landing .subsystem-detail li{background:var(--void-2);padding:11px 14px;font-family:var(--f-mono);font-size:11.5px;color:var(--mist);display:flex;justify-content:space-between;gap:12px}
+.salis-landing .subsystem-detail li b{color:var(--cyan);font-weight:400;flex:none}
 
-/* ---------- footer ---------- */
+/* ---------- matrix / comparison tables ---------- */
+.salis-landing .matrix-wrap{overflow-x:auto;border:1px solid var(--hair);background:var(--glass-2)}
+.salis-landing table.matrix{width:100%;border-collapse:collapse;min-width:600px}
+.salis-landing table.matrix th,.salis-landing table.matrix td{padding:13px 16px;text-align:start;border-block-end:1px solid rgba(11,179,255,.10);font-family:var(--f-mono);font-size:12px}
+.salis-landing table.matrix thead th{background:var(--void-3);color:var(--ink);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;border-block-end:1px solid var(--hair-strong)}
+html[lang="ar"] .salis-landing table.matrix thead th{font-family:var(--f-ar);letter-spacing:0;font-size:12px}
+.salis-landing table.matrix thead th:first-child{color:var(--dim)}
+.salis-landing table.matrix tbody th{color:var(--mist);font-weight:400;font-family:var(--f-ui);font-size:13.5px;text-align:start}
+html[lang="ar"] .salis-landing table.matrix tbody th{font-family:var(--f-ar)}
+.salis-landing table.matrix td{color:var(--cyan);text-align:center}
+.salis-landing table.matrix td.no{color:var(--dim)}
+.salis-landing table.matrix td.em{color:var(--ember)}
+.salis-landing table.matrix tr:last-child th,.salis-landing table.matrix tr:last-child td{border-block-end:0}
+.salis-landing table.matrix tr.group th{color:var(--cyan);font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;background:rgba(11,179,255,.05)}
 
-/* ================= SALIS AUTO additions ================= */
+/* ---------- strata (pricing) ---------- */
+.salis-landing .toggle{display:inline-flex;border:1px solid var(--hair);background:var(--glass-2)}
+.salis-landing .toggle button{background:none;border:0;cursor:pointer;color:var(--steel);padding:11px 18px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em}
+html[lang="ar"] .salis-landing .toggle button{font-family:var(--f-ar);letter-spacing:0;font-size:12.5px}
+.salis-landing .toggle button.on{background:rgba(11,179,255,.18);color:var(--ink)}
+.salis-landing .strata{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;align-items:stretch}
+.salis-landing .stratum{padding:26px;display:flex;flex-direction:column}
+.salis-landing .stratum.feature{border-color:var(--hair-strong);background:linear-gradient(170deg,rgba(10,94,215,.16),var(--glass-2) 55%)}
+.salis-landing .stratum .name{font-family:var(--f-display);font-size:20px;color:var(--ink);letter-spacing:-.01em}
+.salis-landing .stratum .for{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+html[lang="ar"] .salis-landing .stratum .for{font-family:var(--f-ar);letter-spacing:0;font-size:12px}
+.salis-landing .stratum .price{margin:22px 0 5px;font-family:var(--f-mono);font-size:clamp(26px,3.4vw,38px);color:var(--ink);line-height:1}
+.salis-landing .stratum .price em{font-style:normal;font-size:13px;color:var(--cyan);margin-inline-end:6px}
+.salis-landing .stratum .per{font-family:var(--f-mono);font-size:10.5px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.salis-landing .stratum ul{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px;flex:1}
+.salis-landing .stratum li{position:relative;padding-inline-start:20px;font-size:13.5px;color:var(--mist)}
+.salis-landing .stratum li::before{content:'◈';position:absolute;inset-inline-start:0;color:var(--cyan);font-size:9px;top:3px}
+.salis-landing .stratum li.off{color:var(--dim)}
+.salis-landing .stratum li.off::before{content:'—';color:var(--dim)}
+.salis-landing .stratum .btn{margin-top:24px;justify-content:center}
+.salis-landing .stratum .foot-note{margin-top:14px;font-family:var(--f-mono);font-size:10px;color:var(--dim);line-height:1.7}
 
-/* header logo: the vector masters, full colour on light, reversed on dark */
+/* ---------- FAQ / QA ---------- */
+.salis-landing .qa{border:1px solid var(--hair);background:var(--glass-2)}
+.salis-landing .qa details{border-block-end:1px solid rgba(11,179,255,.10)}
+.salis-landing .qa details:last-child{border-block-end:0}
+.salis-landing .qa summary{cursor:pointer;list-style:none;padding:18px 20px;display:flex;justify-content:space-between;gap:16px;align-items:center;font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--ink)}
+html[lang="ar"] .salis-landing .qa summary{font-family:var(--f-ar)}
+.salis-landing .qa summary::-webkit-details-marker{display:none}
+.salis-landing .qa summary::after{content:'+';font-family:var(--f-mono);color:var(--cyan);font-size:16px;flex:none}
+.salis-landing .qa details[open] summary::after{content:'\2212'}
+.salis-landing .qa .a{padding:0 20px 20px;color:var(--steel);font-size:14px;max-width:80ch}
 
-/* lifecycle rail: six stages, a real sequence, so the numbers carry information */
-.salis-landing .rail6{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin-top:34px}
-.salis-landing .rail6::before{content:"";position:absolute;top:22px;inset-inline:calc(100% / 12);height:4px;background:var(--grad);border-radius:2px}
-.salis-landing .rail6 a{display:grid;justify-items:center;text-align:center;gap:10px;text-decoration:none;color:var(--body);padding:0 8px}
-.salis-landing .rail6 .n{width:44px;height:44px;border-radius:50%;background:var(--blue);color:var(--band-fg);display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;font-size:15px;position:relative;z-index:1;border:4px solid var(--page);box-shadow:0 0 0 2px var(--blue)}
-.salis-landing .rail6 a:nth-child(5) .n{background:var(--bright);box-shadow:0 0 0 2px var(--bright)}
-.salis-landing .rail6 a:nth-child(6) .n{background:var(--orange);box-shadow:0 0 0 2px var(--orange)}
-.salis-landing .rail6 b{font-family:var(--f-display);font-weight:700;color:var(--heading);font-size:15px}
-html[lang="ar"] .salis-landing .rail6 b{font-family:var(--f-ar)}
-.salis-landing .rail6 span{font-size:12.5px;color:var(--muted);line-height:1.4}
-@media (max-width:860px) {
-  .salis-landing .rail6{grid-template-columns:repeat(3,1fr);row-gap:28px}
-  .salis-landing .rail6::before{display:none}
-}
-@media (max-width:480px) {
-  .salis-landing .rail6{grid-template-columns:repeat(2,1fr)}
-}
+/* ---------- dispatches (origin) ---------- */
+.salis-landing .dispatch{display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr);gap:clamp(12px,3vw,36px);padding-block:22px;border-block-end:1px solid var(--hair)}
+.salis-landing .dispatch:first-child{padding-block-start:0}
+.salis-landing .dispatch:last-child{border-block-end:0}
+@media (max-width:640px){.salis-landing .dispatch{grid-template-columns:1fr}}
+.salis-landing .dispatch .meta{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);line-height:2}
+.salis-landing .dispatch .meta b{display:block;color:var(--cyan);font-weight:400}
+.salis-landing .dispatch h3{font-size:clamp(17px,1.9vw,22px);margin-bottom:8px}
+.salis-landing .dispatch p{color:var(--steel);max-width:70ch}
 
-/* sections that are also .wrap lose their block padding to the .wrap reset; restore it */
-.salis-landing section.wrap{padding-block:72px}
-@media (max-width:760px) {
-  .salis-landing section.wrap{padding-block:52px}
-}
-
-/* stage sections on the lifecycle page */
-
-/* domains: thirteen, as a dense grid with modules under each */
-.salis-landing .domains{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.salis-landing .domains>div{background:var(--card);border:0;border-radius:var(--r-3);padding:22px 22px 20px;display:grid;gap:8px;align-content:start;box-shadow:0 0 0 1px var(--ring),0 1px 0 var(--ring-in) inset,0 0 0 6px color-mix(in srgb,var(--inset) 70%,transparent),0 16px 40px -28px rgba(11,31,59,.35)}
-.salis-landing .domains .k{font-family:var(--f-mono);font-size:11px;color:var(--blue);letter-spacing:.08em;text-transform:uppercase}
-html[lang="ar"] .salis-landing .domains .k{font-family:var(--f-ar);letter-spacing:0;font-size:12.5px}
-.salis-landing .domains b{font-family:var(--f-display);font-weight:700;color:var(--heading);font-size:17px;letter-spacing:-.01em}
-html[lang="ar"] .salis-landing .domains b{font-family:var(--f-ar)}
-.salis-landing .domains ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:5px;font-size:13.5px;color:var(--body)}
-.salis-landing .domains li{padding-inline-start:14px;position:relative}
-.salis-landing .domains li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--bright)}
-.salis-landing .domains>div.wide{grid-column:span 3;grid-template-columns:auto 1fr;gap:6px 28px;align-items:center;background:var(--band);color:var(--band-fg);border-color:transparent}
-.salis-landing .domains>div.wide b{color:var(--band-fg);font-size:20px}
-.salis-landing .domains>div.wide .k{color:var(--bright)}
-.salis-landing .domains>div.wide p{color:var(--band-muted);grid-column:2;font-size:14px;max-width:70ch}
-@media (max-width:900px) {
-  .salis-landing .domains{grid-template-columns:repeat(2,1fr)}
-  .salis-landing .domains>div.wide{grid-column:span 2}
-}
-@media (max-width:560px) {
-  .salis-landing .domains{grid-template-columns:1fr}
-  .salis-landing .domains>div.wide{grid-column:span 1;grid-template-columns:1fr}
-  .salis-landing .domains>div.wide p{grid-column:1}
-}
-
-/* phone frame for the customer app */
-
-/* invoice mock with a QR block drawn from gradients */
-
-/* pricing */
-
-/* testimonials, FAQ, checklists */
-.salis-landing .quotes{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:18px;align-items:start}
-.salis-landing .quotes blockquote{margin:0;background:var(--card);border:0;border-radius:var(--r-3);padding:26px;display:grid;gap:16px;position:relative;box-shadow:0 0 0 1px var(--ring),0 1px 0 var(--ring-in) inset,0 0 0 6px color-mix(in srgb,var(--inset) 70%,transparent)}
-.salis-landing .quotes blockquote:first-child{grid-row:span 2;padding:34px 30px}
-.salis-landing .quotes blockquote:first-child p{font-size:20px}
-.salis-landing .quotes blockquote::before{content:"\201C";font-family:var(--f-display);font-size:64px;line-height:.6;color:var(--bright);opacity:.5}
-html[lang="ar"] .salis-landing .quotes blockquote::before{content:"\201D"}
-.salis-landing .quotes p{font-size:16px;color:var(--heading);line-height:1.5}
-.salis-landing .quotes footer{background:transparent;padding:0;font-size:13px;color:var(--muted)}
-.salis-landing .quotes footer b{display:block;color:var(--body);font-weight:600}
-@media (max-width:860px) {
-  .salis-landing .quotes{grid-template-columns:1fr}
-  .salis-landing .quotes blockquote:first-child{grid-row:auto}
-}
-.salis-landing .faq{display:grid;gap:0;border-top:1px solid var(--border)}
-.salis-landing .faq details{border-bottom:1px solid var(--border)}
-.salis-landing .faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 4px;font-family:var(--f-display);font-weight:600;font-size:16px;color:var(--heading)}
-html[lang="ar"] .salis-landing .faq summary{font-family:var(--f-ar)}
-.salis-landing .faq summary::-webkit-details-marker{display:none}
-.salis-landing .faq summary::after{content:"+";font-family:var(--f-mono);font-size:20px;color:var(--blue);flex:none;transition:transform var(--d-3) var(--ease-out)}
-.salis-landing .faq details[open] summary::after{transform:rotate(45deg)}
-.salis-landing .faq details[open] p{animation:faq-in var(--d-4) var(--ease-out) both}
-@keyframes faq-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.salis-landing .faq details p{padding:0 4px 20px;max-width:70ch;color:var(--body)}
-.salis-landing .faq summary:focus-visible{outline-offset:-2px}
-
-/* ---------- motion layer: scenes, tilt, reveals (transform and opacity only) ---------- */
-.salis-landing .scene{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.salis-landing .scene canvas{display:block;width:100%;height:100%}
-.salis-landing .hero .scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(11,31,59,.92) 0,rgba(11,31,59,.7) 38%,rgba(11,31,59,.22) 62%,rgba(11,31,59,.08) 100%)}
-html[dir="rtl"] .salis-landing .hero .scrim{background:linear-gradient(270deg,rgba(11,31,59,.92) 0,rgba(11,31,59,.7) 38%,rgba(11,31,59,.22) 62%,rgba(11,31,59,.08) 100%)}
-.salis-landing .hero.has-scene .trace{opacity:0;transition:opacity .6s var(--ease)}
-.salis-landing .rail-wrap{position:relative}
-.salis-landing .rail-scene{position:relative;display:none;height:230px;margin-bottom:-56px;inset:auto}
-.salis-landing .has-scene>.rail-scene{display:block}
-.salis-landing .rail-scene canvas{pointer-events:none}
-.salis-landing .scene-cap{display:none;margin-top:14px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-html[lang="ar"] .salis-landing .scene-cap{font-family:var(--f-ar);font-size:13px}
-.salis-landing .has-scene+.scene-cap,
-.salis-landing .rail-wrap.has-scene~.scene-cap{display:block}
-.salis-landing .rail6 a{transition:opacity .3s var(--ease)}
-.salis-landing .rail-wrap.has-scene .rail6 a:not(.is-active){opacity:.55}
-.salis-landing .rail-wrap.has-scene .rail6 a.is-active b{color:var(--blue)}
-.salis-landing .rail-wrap.has-scene .rail6 a.is-active .n{transform:scale(1.12)}
-.salis-landing .rail6 .n{transition:transform .3s var(--ease)}
-.salis-landing .hero-mock .scene{inset:-6% -4%;display:none;pointer-events:auto}
-.salis-landing .hero-mock.has-scene .scene{display:block}
-.salis-landing .hero-mock.has-scene .mock{opacity:0;transition:opacity .4s var(--ease)}
-.salis-landing .tilt{position:relative;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;transition:transform var(--d-4) var(--ease-out)}
-.salis-landing .tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(11,179,255,.16),transparent 62%)}
-.salis-landing .tilt:hover::after{opacity:1}
-.salis-landing .hero-mock.tilt::after{border-radius:16px}
-.salis-landing .hero-mock.tilt .mock{box-shadow:var(--shadow-lg)}
-.salis-landing .reveal{opacity:0;transform:translateY(18px)}
-.salis-landing .reveal.in{opacity:1;transform:none;transition:opacity .52s var(--ease-out) var(--d,0ms),transform .52s var(--ease-out) var(--d,0ms)}
-.salis-landing{transition:opacity .16s var(--ease)}
-.salis-landing .proof .to{font-variant-numeric:tabular-nums;min-width:3ch;display:inline-block}
-@media (prefers-reduced-motion:reduce) {
-  .salis-landing .tilt,
-  .salis-landing .tilt:hover{transform:none}
-  .salis-landing .tilt::after{display:none}
-  .salis-landing .reveal{opacity:1;transform:none}
-  .salis-landing{transition:none}
-}
-@media (max-width:859px) {
-  .salis-landing .scene,
-  .salis-landing .rail-scene,
-  .salis-landing .scene-cap{display:none !important}
-  .salis-landing .hero.has-scene .trace{opacity:.55}
-  .salis-landing .hero-mock.has-scene .mock{opacity:1}
-}
-
-/* ---------- S4: the AI era ---------- */
-.salis-landing .ai-era{background:var(--band);color:var(--band-fg);position:relative;overflow:hidden}
-.salis-landing .ai-era h2{color:var(--band-fg)}
-.salis-landing .ai-era .sec-head p{color:var(--band-muted)}
-.salis-landing .ai-stage{position:relative;height:520px;margin-top:36px;border-radius:16px;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,rgba(10,94,215,.14),transparent 70%)}
-.salis-landing .ai-stage .map-fallback{position:absolute;inset:0;width:100%;height:100%}
-.salis-landing .ai-stage.has-scene .map-fallback{opacity:0;transition:opacity .6s var(--ease)}
-.salis-landing .ai-stage .scene{display:none}
-.salis-landing .ai-stage.has-scene .scene{display:block}
-.salis-landing .ai-overlay{position:absolute;inset:0;pointer-events:none}
-.salis-landing .fold{position:absolute;inset-inline-end:14%;top:50%;width:210px;height:130px;transform:translateY(-50%);perspective:900px;transform-style:preserve-3d}
-.salis-landing .fold .paper,
-.salis-landing .fold .slab{position:absolute;inset:0;border-radius:12px;transform-origin:50% 100%}
-.salis-landing .fold .paper{background:rgba(255,255,255,.9);border:1px solid rgba(11,31,59,.2);opacity:0;transform:rotateX(-90deg) translateY(-8px)}
-.salis-landing .fold .slab{background:var(--card);border:2px solid var(--blue);box-shadow:0 0 0 6px rgba(11,179,255,.12),0 30px 60px -20px rgba(0,0,0,.6);color:var(--heading);display:grid;align-content:start;gap:6px;padding:14px 16px;transform:translateZ(0)}
-.salis-landing .fold .slab b{font-family:var(--f-mono);font-size:13px;color:var(--blue)}
-.salis-landing .fold .slab span{font-family:var(--f-display);font-weight:700;font-size:15px}
-.salis-landing .fold .slab i{position:absolute;inset-inline-end:14px;bottom:14px;width:10px;height:10px;border-radius:50%;background:var(--orange)}
-.salis-landing .ai-stage .fold .paper{opacity:1;transform:none;transition:transform .9s var(--ease),opacity .6s var(--ease)}
-.salis-landing .ai-stage .fold .p1{transform:translateY(-26px) rotateX(0)}
-.salis-landing .ai-stage .fold .p2{transform:translateY(-13px) rotateX(0)}
-.salis-landing .ai-stage .fold .slab{opacity:0;transform:scale(.96);transition:opacity .5s var(--ease) .9s,transform .5s var(--ease) .9s}
-.salis-landing .ai-stage.in .fold .paper{opacity:0;transform:rotateX(-92deg) translateY(-10px)}
-.salis-landing .ai-stage.in .fold .p2{transition-delay:.15s}
-.salis-landing .ai-stage.in .fold .p3{transition-delay:.3s}
-.salis-landing .ai-stage.in .fold .slab{opacity:1;transform:none}
-.salis-landing .orb-label{position:absolute;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bright);background:rgba(11,31,59,.7);border:1px solid rgba(11,179,255,.35);border-radius:999px;padding:4px 9px;display:none}
-html[lang="ar"] .salis-landing .orb-label{font-family:var(--f-ar);letter-spacing:0;font-size:12px}
-.salis-landing .ai-stage.has-scene .orb-label{display:inline-block}
-.salis-landing .orb-label.l1{inset-inline-end:9%;top:22%}
-.salis-landing .orb-label.l2{inset-inline-end:36%;top:70%}
-.salis-landing .orb-label.l3{inset-inline-end:5%;top:74%}
-.salis-landing .ai-cap{display:block;color:var(--band-muted)}
-.salis-landing .ai-cards{margin-top:28px}
-.salis-landing .ai-cards b{color:var(--band-fg);border-top-color:var(--bright)}
-.salis-landing .ai-cards p{color:var(--band-muted)}
-.salis-landing .ai-cards>div:first-child p{color:var(--band-fg)}
-.salis-landing .ai-cards>div:first-child b{color:var(--band-fg)}
-@media (max-width:859px) {
-  .salis-landing .ai-stage{height:360px}
-  .salis-landing .fold{width:160px;height:100px;inset-inline-end:6%}
-  .salis-landing .ai-cards{grid-template-columns:1fr}
-}
-@media (prefers-reduced-motion:reduce) {
-  .salis-landing .ai-stage .fold .paper{display:none}
-  .salis-landing .ai-stage .fold .slab{opacity:1;transform:none;transition:none}
+/* ---------- roles list (system standings / open roles) ---------- */
+.salis-landing .roles{display:grid;gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.salis-landing .role{background:var(--void-2);padding:18px 20px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
+.salis-landing .role h4{font-size:15.5px;margin-bottom:4px}
+.salis-landing .role p{color:var(--dim);font-size:12.5px;font-family:var(--f-mono);margin:0}
+html[lang="ar"] .salis-landing .role p{font-family:var(--f-ar);font-size:13px}
+.salis-landing .role .where{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--steel);white-space:nowrap}
+html[lang="ar"] .salis-landing .role .where{font-family:var(--f-ar);letter-spacing:0}
+@media (max-width:600px){
+  .salis-landing .role{grid-template-columns:1fr}
+  .salis-landing .role .where{text-align:start}
 }
 
-/* ---------- resources: rendered documents ---------- */
+/* ---------- numbered step lists ---------- */
+.salis-landing .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.salis-landing .steps > div{background:var(--void-2);padding:22px 20px}
+.salis-landing .steps .n{font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--cyan);margin-bottom:12px}
+.salis-landing .steps h4{font-size:15.5px;margin-bottom:8px}
+.salis-landing .steps p{color:var(--steel);font-size:13.5px}
 
-/* ---------- pass 2: entrance sequence, rail underline, parallax, slab hand-off ---------- */
-.salis-landing.motion-ready .seq{animation:seq .6s var(--ease-out) both;animation-delay:calc(var(--i,0) * 70ms)}
-.salis-landing.motion-ready .seq-mock{animation-name:seq-mock;animation-duration:.9s}
-@keyframes seq{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@keyframes seq-mock{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
-.salis-landing .hero-mock.tilt.seq{animation-fill-mode:backwards}
-.salis-landing .rail6 a b{position:relative;padding-bottom:4px}
-.salis-landing .rail6 a b::after{content:"";position:absolute;inset-inline-start:0;bottom:0;width:100%;height:2px;background:var(--grad);border-radius:1px;transform:scaleX(0);transform-origin:0 50%;transition:transform .45s var(--ease)}
-html[dir="rtl"] .salis-landing .rail6 a b::after{transform-origin:100% 50%}
-.salis-landing .rail-wrap.has-scene .rail6 a.is-active b::after{transform:scaleX(1)}
-.salis-landing .rail-wrap.has-scene .rail6 a.is-active .n{box-shadow:0 0 0 4px rgba(11,179,255,.25)}
-.salis-landing .hero > .trace,
-.salis-landing .proof > .trace{transform:translateY(var(--py,0px))}
-.salis-landing .hero > .trace.late{transform:rotate(180deg) translateY(calc(var(--py,0px) * -1))}
-.salis-landing .ai-stage > .map-fallback{transform:translateY(var(--py,0px))}
-.salis-landing .ai-stage.has-scene.in .fold .slab{opacity:0;transform:scale(.9);transition:opacity .45s var(--ease) 1.5s,transform .45s var(--ease) 1.5s}
-.salis-landing .ai-stage.has-scene .orb-label{opacity:0;animation:fadein .6s var(--ease) 2.2s forwards}
-@media (prefers-reduced-motion:reduce) {
-  .salis-landing.motion-ready .seq{animation:none}
-  .salis-landing .rail6 a b::after{transition:none}
-  .salis-landing .hero > .trace,
-  .salis-landing .proof > .trace,
-  .salis-landing .ai-stage > .map-fallback{transform:none}
-  .salis-landing .ai-stage.has-scene .orb-label{animation:none;opacity:1}
+/* ---------- pull quote ---------- */
+.salis-landing .pull{padding:clamp(26px,5vw,50px);border-inline-start:2px solid var(--cyan);background:var(--glass-2)}
+.salis-landing .pull q{display:block;font-family:var(--f-display);font-size:clamp(18px,2.4vw,28px);font-weight:600;color:var(--ink);line-height:1.4;quotes:none}
+.salis-landing .pull .who{margin-top:20px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+.salis-landing .pull .who span{color:var(--dim);display:block;margin-top:6px;letter-spacing:.1em}
+
+/* ---------- diagrams (supply mesh / node map, static SVG) ---------- */
+.salis-landing .diagram-stage{position:relative;min-height:clamp(240px,34vh,360px);padding:24px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.salis-landing .diagram-stage svg{width:100%;height:100%;max-width:760px}
+.salis-landing .diagram-cap{position:absolute;inset-inline-start:16px;inset-block-end:14px;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.salis-landing .diagram-cap b{color:var(--cyan);font-weight:400}
+
+/* ---------- channel page ---------- */
+.salis-landing .channel-panel{padding:26px}
+.salis-landing .channel-panel p{color:var(--steel);font-size:14.5px}
+.salis-landing .channel-panel .btn-row{margin-top:20px}
+.salis-landing .coords-real{color:var(--cyan)}
+
+/* ---------- cta end / closing ---------- */
+.salis-landing .cta-end{text-align:center}
+.salis-landing .cta-end .btn-row{justify-content:center;margin-top:22px}
+
+/* ---------- responsive ---------- */
+@media (max-width:480px){
+  .salis-landing .kpis{grid-template-columns:1fr}
+  .salis-landing .dlist > div,
+  .salis-landing .dlist-plain > div{grid-template-columns:1fr}
+  .salis-landing .era{grid-template-columns:1fr;padding-inline-start:30px}
+  .salis-landing .card .idx{flex-direction:column;gap:4px}
 }
 
-/* ---------- design-skill pass 2026-09-05: grain, 404, guards ---------- */
-.salis-landing::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:var(--grain);mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.12 0 0 0 0 0.23 0 0 0 .55 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");background-size:160px 160px}
-html.dark .salis-landing::after{mix-blend-mode:screen}
-@media (prefers-reduced-motion:reduce) {
-  .salis-landing .faq details[open] p{animation:none}
+@media (prefers-reduced-motion:reduce){
+  .salis-landing *,.salis-landing *::before,.salis-landing *::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
 }
-
-/* ---------- decorative SVG fills ----------
-   The artifact hard-codes brand hexes on its <path> and <circle> elements.
-   Presentation attributes cannot take var(), so the colours move here and the
-   shapes carry a class instead — which also keeps them on the token set. */
-.salis-landing .s-bright{stroke:var(--bright)}
-.salis-landing .s-blue{stroke:var(--blue)}
-.salis-landing .s-orange{stroke:var(--orange)}
-.salis-landing .f-bright{fill:var(--bright)}
-.salis-landing .f-blue{fill:var(--blue)}
-.salis-landing .f-orange{fill:var(--orange)}
-.salis-landing .f-navy{fill:var(--navy)}
-.salis-landing .f-none{fill:none}
