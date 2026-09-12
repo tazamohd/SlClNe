@@ -1,16 +1,19 @@
 /** Approval authority and approval ceiling — two questions, both of which must
  *  answer yes.
  *
- *  F-002. `@salis/contract`'s `canApprove` reads the ceiling alone, so
- *  `superadmin` (`limitSar: null`) answers yes to approving any business
- *  document while its grant on `approvals` is `vx` — view and export, no
- *  approve at all. A platform administrator administers the platform; it does
- *  not release a tenant's purchase orders. The mirror case is `qc`, which holds
- *  `a` on `jobcards` with a ceiling of zero: it passes quality and releases no
- *  money.
+ *  F-002 (fixed upstream). `@salis/contract`'s `canApprove` once read the
+ *  ceiling alone, so `superadmin` (`limitSar: null`) answered yes to approving
+ *  any business document while its grant on `approvals` is `vx` — view and
+ *  export, no approve at all. A platform administrator administers the
+ *  platform; it does not release a tenant's purchase orders. The mirror case is
+ *  `qc`, which holds `a` on `jobcards` with a ceiling of zero: it passes
+ *  quality and releases no money.
  *
- *  So the ceiling cannot be read on its own in either direction, and the
- *  corrected rule matches `app/src/data/rbac.ts`:
+ *  `@salis/contract`'s `canApprove` now applies the same two-part rule and this
+ *  module's version agrees with it. Both still exist — this one is what
+ *  `security/permissions.ts` actually calls, and it stays a distinct,
+ *  hand-kept copy rather than a re-export so a future change to either side
+ *  has to touch both, on purpose, instead of drifting silently:
  *
  *    1. the role must hold `a` on the module the decision belongs to, and
  *    2. the amount, when there is one, must sit within the role's ceiling.
