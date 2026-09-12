@@ -39,6 +39,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Accounting Software": "برنامج المحاسبة",
   "About SALIS AUTO": "عن SALIS AUTO",
   "About — SALIS AUTO": "عن — SALIS AUTO",
+  "Where it started": "من أين بدأنا",
   "Above your approval ceiling, or your role cannot approve": "أعلى من حد الاعتماد الخاص بك، أو أن دورك لا يملك صلاحية الاعتماد",
   "Accept & Order": "قبول وطلب",
   "Account added": "تمت إضافة الحساب",

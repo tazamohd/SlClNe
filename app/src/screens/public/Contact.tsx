@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 import { TINT_CHIP, type Tint } from './sections/tints'
+import { CornerBrackets } from './sections/CornerBrackets'
 
 /** PublicPortal.Contact — `project/PublicPortal.Contact.dc.html`.
  *
@@ -208,7 +209,7 @@ export function PublicContact() {
 
   return (
     <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
-      <SectionIntro title="Contact Us" subtitle="Get in touch with our team" />
+      <SectionIntro eyebrow="Open a channel" title="Contact Us" subtitle="Get in touch with our team" />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <form
           noValidate
@@ -304,7 +305,8 @@ export function PublicContact() {
           </div>
         </form>
 
-        <address className="flex flex-col gap-5 not-italic">
+        <address className="relative flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 not-italic">
+          <CornerBrackets />
           {CHANNELS.map((channel) => {
             const value = channel.href ? (
               <a href={channel.href} dir={channel.ltr ? 'ltr' : undefined} className="text-[13px]">

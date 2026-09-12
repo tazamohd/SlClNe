@@ -3,6 +3,7 @@ import { Icon } from '@/components/ui/Icon'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 import { TINT_WASH, type Tint } from './sections/tints'
+import { CornerBrackets } from './sections/CornerBrackets'
 
 /** PublicPortal.Marketplace — `project/PublicPortal.Marketplace.dc.html`.
  *
@@ -47,6 +48,7 @@ export function PublicMarketplace() {
     <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro
         centered
+        eyebrow="The catalogue"
         title="Parts Marketplace"
         subtitle="Quality auto parts delivered to your doorstep"
       />
@@ -54,8 +56,9 @@ export function PublicMarketplace() {
         {PRODUCTS.map((product) => (
           <article
             key={product.name}
-            className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+            className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
           >
+            <CornerBrackets />
             <div
               aria-hidden
               className="flex h-[140px] items-center justify-center"
