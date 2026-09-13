@@ -176,14 +176,14 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | SR-RBAC-CUSTOMERS | Access to `customers` is granted to 9 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-VEHICLES | Access to `vehicles` is granted to 11 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-INVENTORY | Access to `inventory` is granted to 9 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-PROCUREMENT | Access to `procurement` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-PROCUREMENT | Access to `procurement` is granted to 8 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-INVOICES | Access to `invoices` is granted to 9 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-PAYMENTS | Access to `payments` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-ACCOUNTING | Access to `accounting` is granted to 5 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-HR | Access to `hr` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-HR | Access to `hr` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-TECHNICIANS | Access to `technicians` is granted to 9 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-CRM | Access to `crm` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-CALLCENTER | Access to `callcenter` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-CALLCENTER | Access to `callcenter` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-REPORTS | Access to `reports` is granted to 10 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-APPROVALS | Access to `approvals` is granted to 9 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-KIOSK | Access to `kiosk` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |

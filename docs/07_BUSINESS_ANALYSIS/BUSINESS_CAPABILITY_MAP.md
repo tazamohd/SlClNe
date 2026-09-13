@@ -74,11 +74,11 @@ flowchart LR
 | CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 3 | 3 | 15 | 2 | 9 |
 | CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 4 | 4 | 7 | 1 | 11 |
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 7 | 1 | 11 | 1 | 9 |
-| CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 1 | 1 | 24 | 3 | 0 |
+| CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 1 | 1 | 24 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 20 | 4 | 9 |
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 5 | 40 | 9 | 5 |
-| CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 41 | 6 | 9 |
-| CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 35 | 6 | 6 |
+| CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 41 | 6 | 10 |
+| CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 35 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 4 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 7 | 0 | 0 | 14 |
@@ -174,7 +174,7 @@ flowchart LR
 | Screens | 1 (1 data-backed) |
 | Endpoints | 24 |
 | Entities | `purchaseOrders`, `requisitions`, `suppliers` |
-| Roles with any grant | — |
+| Roles with any grant | owner, superadmin, manager, parts, accountant, procurement, supplier, test |
 | Rule guards | BR-PROCUREMENT-checkPurchaseOrderApprovable, BR-PROCUREMENT-checkReceive, BR-PROCUREMENT-purchaseOrderTotals, BR-PROCUREMENT-requisitionEstimatedTotalHalalas |
 
 ### CAP-BILLING — Invoicing and payments
@@ -216,7 +216,7 @@ flowchart LR
 | Screens | 5 (5 data-backed) |
 | Endpoints | 41 |
 | Entities | `employees`, `leaveRequests`, `payrollLines`, `payrollRuns`, `technicians`, `timesheets` |
-| Roles with any grant | owner, superadmin, manager, advisor, technician, qc, hr, frontdesk, test |
+| Roles with any grant | owner, superadmin, manager, advisor, technician, qc, accountant, hr, frontdesk, test |
 | Rule guards | BR-HR-payrollLineNetHalalas, BR-HR-sumPayrollLines |
 
 ### CAP-CRM — CRM and sales
@@ -230,7 +230,7 @@ flowchart LR
 | Screens | 12 (10 data-backed) |
 | Endpoints | 35 |
 | Entities | `campaigns`, `leads`, `opportunities`, `segments`, `crmTasks`, `customerFeedback` |
-| Roles with any grant | owner, superadmin, manager, advisor, callcenter, test |
+| Roles with any grant | owner, superadmin, manager, advisor, frontdesk, callcenter, test |
 | Rule guards | — |
 
 ### CAP-REPORTING — Reporting and analytics

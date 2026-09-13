@@ -21,6 +21,25 @@ const ACTION_NAMES = {
   x: 'export',
 }
 
+/** The object literal a declaration opens, from its first `{` to the matching
+ *  one. Slicing to the end of the file instead is how one block's parse walks
+ *  into the next. */
+function boundedBlock(source, declaration) {
+  const start = source.indexOf(declaration)
+  if (start === -1) return ''
+  const open = source.indexOf('{', start)
+  if (open === -1) return ''
+  let depth = 0
+  for (let i = open; i < source.length; i += 1) {
+    if (source[i] === '{') depth += 1
+    else if (source[i] === '}') {
+      depth -= 1
+      if (depth === 0) return source.slice(open, i + 1)
+    }
+  }
+  return source.slice(open)
+}
+
 export function extractRbac() {
   const source = readFileSync(P.contractRbac, 'utf8')
 
@@ -33,8 +52,14 @@ export function extractRbac() {
   const roles = enumOf('roleId')
   const scopes = enumOf('dataScope')
 
+  // The PERMS block must be bounded at its own closing brace, not read to the
+  // end of the file. `hr`, `callcenter` and `procurement` are each both a
+  // module and a role, so an unbounded scan ran on into ROLE_META, matched
+  // those three role entries as if they were module rows, and overwrote their
+  // real grants with an empty object — three of twenty-eight modules silently
+  // reported as denied to everyone.
   const matrix = {}
-  const permsBlock = source.slice(source.indexOf('export const PERMS'))
+  const permsBlock = boundedBlock(source, 'export const PERMS')
   for (const row of permsBlock.matchAll(/'([a-z]+)':\s*\{([^}]*)\}/g)) {
     const moduleName = row[1]
     if (!modules.includes(moduleName)) continue
@@ -46,7 +71,7 @@ export function extractRbac() {
 
   // Role metadata: data scope and approval ceiling.
   const roleMeta = {}
-  const metaBlock = source.slice(source.indexOf('ROLE_META'))
+  const metaBlock = boundedBlock(source, 'export const ROLE_META')
   for (const row of metaBlock.matchAll(/'?([a-z]+)'?:\s*\{([^}]*)\}/g)) {
     if (!roles.includes(row[1])) continue
     const scope = row[2].match(/scope:\s*'([^']+)'/)

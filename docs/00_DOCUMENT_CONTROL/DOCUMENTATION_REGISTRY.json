@@ -11,17 +11,17 @@
   ],
   "note": "A document is GENERATED only if it carries the generator banner; nothing may claim the status without it. VERIFIED is never set by this generator — it requires a human or a test run as evidence, and self-certification is exactly what this registry exists to prevent.",
   "totals": {
-    "documents": 325,
-    "inNumberedArchitecture": 56,
+    "documents": 357,
+    "inNumberedArchitecture": 88,
     "legacy": 269,
-    "generated": 55,
-    "authored": 270,
+    "generated": 75,
+    "authored": 282,
     "archived": 0,
-    "substantive": 323,
+    "substantive": 355,
     "thin": 2,
     "requiredTotal": 35,
-    "requiredPresent": 23,
-    "requiredMissing": 12
+    "requiredPresent": 34,
+    "requiredMissing": 1
   },
   "required": [
     {
@@ -55,51 +55,51 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_TRACEABILITY_REPORT.md",
       "generated": true,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "GENERATED"
     },
     {
       "path": "00_DOCUMENT_CONTROL/SOURCE_OF_TRUTH_MAP.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "00_DOCUMENT_CONTROL/TRACEABILITY_MODEL.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "00_DOCUMENT_CONTROL/MASTER_GLOSSARY.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md",
@@ -153,9 +153,9 @@
     {
       "path": "14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "15_C4_ARCHITECTURE_DIAGRAMS/C4_MODEL.md",
@@ -195,9 +195,9 @@
     {
       "path": "19_SECURITY/SECURITY_ARCHITECTURE.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "12_UML_BPMN_MODELS/STATE_MACHINES.md",
@@ -223,16 +223,16 @@
     {
       "path": "28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "29_OPERATIONS_DEVOPS/RUNBOOK_INDEX.md",
       "generated": false,
-      "present": false,
-      "substantive": false,
-      "type": null
+      "present": true,
+      "substantive": true,
+      "type": "NORMATIVE_OR_AUTHORED"
     },
     {
       "path": "30_RELEASE_CERTIFICATION/PRODUCTION_READINESS.md",
@@ -272,9 +272,20 @@
   ],
   "documents": [
     {
+      "path": "00_DOCUMENT_CONTROL/ACRONYMS.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 8211,
+      "lines": 49,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
       "path": "00_DOCUMENT_CONTROL/DOCS_INDEX.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 7391,
+      "bytes": 7393,
       "lines": 107,
       "type": "GENERATED",
       "archived": false,
@@ -285,8 +296,8 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 8053,
-      "lines": 138,
+      "bytes": 7369,
+      "lines": 127,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -294,10 +305,32 @@
       "status": "IMPLEMENTED_NOT_VERIFIED"
     },
     {
+      "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 8597,
+      "lines": 110,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_REGISTRY.json",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 105235,
-      "lines": 3851,
+      "bytes": 115867,
+      "lines": 4203,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
+      "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 5718,
+      "lines": 84,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -307,7 +340,7 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_STATUS.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 4249,
+      "bytes": 4238,
       "lines": 82,
       "type": "GENERATED",
       "archived": false,
@@ -316,9 +349,64 @@
       "status": "IMPLEMENTED_NOT_VERIFIED"
     },
     {
+      "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_TRACEABILITY_REPORT.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 3755,
+      "lines": 59,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "00_DOCUMENT_CONTROL/MASTER_GLOSSARY.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 25835,
+      "lines": 463,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
+      "path": "00_DOCUMENT_CONTROL/SOURCE_OF_TRUTH_MAP.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 6005,
+      "lines": 75,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
+      "path": "00_DOCUMENT_CONTROL/TRACEABILITY_MODEL.md",
+      "section": "00_DOCUMENT_CONTROL",
+      "bytes": 4916,
+      "lines": 75,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
+      "path": "01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md",
+      "section": "01_EXECUTIVE_STRATEGY",
+      "bytes": 7180,
+      "lines": 90,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
       "path": "07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md",
       "section": "07_BUSINESS_ANALYSIS",
-      "bytes": 14263,
+      "bytes": 14360,
       "lines": 361,
       "type": "GENERATED",
       "archived": false,
@@ -340,7 +428,7 @@
     {
       "path": "09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md",
       "section": "09_SYSTEM_ANALYSIS",
-      "bytes": 8530,
+      "bytes": 8531,
       "lines": 157,
       "type": "GENERATED",
       "archived": false,
@@ -391,6 +479,17 @@
       "substantive": true,
       "sourceOfTruth": "the source files named in its banner",
       "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md",
+      "section": "14_SOLUTION_ARCHITECTURE",
+      "bytes": 11085,
+      "lines": 126,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
     },
     {
       "path": "15_C4_ARCHITECTURE_DIAGRAMS/C4_MODEL.md",
@@ -648,13 +747,24 @@
     {
       "path": "19_SECURITY/RBAC_MATRIX.md",
       "section": "19_SECURITY",
-      "bytes": 5737,
+      "bytes": 5786,
       "lines": 106,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
       "sourceOfTruth": "the source files named in its banner",
       "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "19_SECURITY/SECURITY_ARCHITECTURE.md",
+      "section": "19_SECURITY",
+      "bytes": 9869,
+      "lines": 124,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
     },
     {
       "path": "19_SECURITY/TENANT_ISOLATION.md",
@@ -679,6 +789,215 @@
       "status": "IMPLEMENTED_NOT_VERIFIED"
     },
     {
+      "path": "21_DOMAIN_DOCUMENTATION/ACCOUNTING.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 8240,
+      "lines": 146,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/AI.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 4707,
+      "lines": 101,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/BILLING.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 6548,
+      "lines": 126,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/CRM.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 8107,
+      "lines": 146,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/CUSTOMERAPP.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 3473,
+      "lines": 76,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/CUSTOMERS.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 5328,
+      "lines": 112,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 21443,
+      "lines": 299,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/GOVERNANCE.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 4073,
+      "lines": 88,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/HR.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 7649,
+      "lines": 144,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/IDENTITY.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 5630,
+      "lines": 110,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/INVENTORY.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 6153,
+      "lines": 111,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/PLATFORM.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 8731,
+      "lines": 150,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/PORTALS.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 4333,
+      "lines": 91,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/PROCUREMENT.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 6445,
+      "lines": 117,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/README.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 2340,
+      "lines": 39,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/REPORTING.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 3464,
+      "lines": 86,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/VEHICLES.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 4636,
+      "lines": 104,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/WEBSITE.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 5618,
+      "lines": 97,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "21_DOMAIN_DOCUMENTATION/WORKSHOP.md",
+      "section": "21_DOMAIN_DOCUMENTATION",
+      "bytes": 11917,
+      "lines": 188,
+      "type": "GENERATED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "the source files named in its banner",
+      "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
       "bytes": 15661,
@@ -688,6 +1007,39 @@
       "substantive": true,
       "sourceOfTruth": "the source files named in its banner",
       "status": "IMPLEMENTED_NOT_VERIFIED"
+    },
+    {
+      "path": "28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md",
+      "section": "28_ITIL_SERVICE_MANAGEMENT",
+      "bytes": 21303,
+      "lines": 344,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
+      "path": "28_ITIL_SERVICE_MANAGEMENT/SERVICE_MANAGEMENT_MODEL.md",
+      "section": "28_ITIL_SERVICE_MANAGEMENT",
+      "bytes": 18501,
+      "lines": 221,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
+    },
+    {
+      "path": "29_OPERATIONS_DEVOPS/RUNBOOK_INDEX.md",
+      "section": "29_OPERATIONS_DEVOPS",
+      "bytes": 12044,
+      "lines": 92,
+      "type": "NORMATIVE_OR_AUTHORED",
+      "archived": false,
+      "substantive": true,
+      "sourceOfTruth": "this document",
+      "status": "DRAFT"
     },
     {
       "path": "30_RELEASE_CERTIFICATION/DOCUMENTATION_CERTIFICATION.md",

@@ -8,7 +8,7 @@
 
 # Documentation certification
 
-**Generated:** 2026-09-13 · **Score: 76 / 100**
+**Generated:** 2026-09-13 · **Score: 81 / 100**
 
 ## What this score is
 
@@ -16,7 +16,7 @@ A grade of the documentation, not of the product. Each dimension states why poin
 
 | Dimension | Weight | Score | Reasoning |
 | --- | --- | --- | --- |
-| Coverage | 15 | 10/15 | 23 of 35 required documents present; every entity, endpoint, rule and screen catalogued |
+| Coverage | 15 | 15/15 | 34 of 35 required documents present; every entity, endpoint, rule and screen catalogued |
 | Accuracy against implementation | 20 | 18/20 | Every factual document is generated from source and diffed by `docs:check`, so it cannot drift silently. Two points withheld: no human has verified that the parses capture intent, and nothing is marked VERIFIED. |
 | Traceability | 15 | 11/15 | Objective → capability → requirement → entity → API → permission → screen → test resolves in both directions and the breaks are enumerated. Withheld: requirements are as-built, so the chain has no business-need anchor at the top. |
 | Business and product documentation | 10 | 5/10 | Capability map, objectives and product structure are generated and accurate. Market, pricing and financial material is unsourced and marked `RESEARCH_REQUIRED` rather than written. |
@@ -26,7 +26,7 @@ A grade of the documentation, not of the product. Each dimension states why poin
 | Diagrams | 5 | 5/5 | ERDs, C4, state machines and sequences are generated as Mermaid source in version control, regenerated with the code. |
 | Discoverability and cross-linking | 5 | 4/5 | Index, registry, source-of-truth map and per-section purposes. Withheld: the pre-existing tree is classified but not yet migrated, so two structures coexist. |
 
-**Total: 76 / 100.**
+**Total: 81 / 100.**
 
 ## Release gates for documentation
 

@@ -14,14 +14,14 @@
 
 | Measure | Value |
 | --- | --- |
-| Documents in `docs/` | 325 |
-| In the numbered architecture | 56 |
+| Documents in `docs/` | 357 |
+| In the numbered architecture | 88 |
 | In the pre-existing folders (classified, not yet migrated) | 269 |
-| Machine-generated from source | 55 |
-| Authored | 270 |
-| Substantive (> 1.2 kB) | 323 |
+| Machine-generated from source | 75 |
+| Authored | 282 |
+| Substantive (> 1.2 kB) | 355 |
 | Thin — placeholder or stub | 2 |
-| Required documents present | 23 of 35 |
+| Required documents present | 34 of 35 |
 
 ## What is generated, and therefore cannot go stale silently
 
@@ -48,13 +48,13 @@
 | `00_DOCUMENT_CONTROL/DOCUMENTATION_REGISTRY.json` | generated | yes | yes |
 | `00_DOCUMENT_CONTROL/DOCUMENTATION_STATUS.md` | generated | yes | yes |
 | `00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md` | generated | yes | yes |
-| `00_DOCUMENT_CONTROL/DOCUMENTATION_TRACEABILITY_REPORT.md` | generated | **no** | — |
-| `00_DOCUMENT_CONTROL/SOURCE_OF_TRUTH_MAP.md` | authored | **no** | — |
-| `00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md` | authored | **no** | — |
-| `00_DOCUMENT_CONTROL/TRACEABILITY_MODEL.md` | authored | **no** | — |
-| `00_DOCUMENT_CONTROL/MASTER_GLOSSARY.md` | authored | **no** | — |
-| `00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md` | authored | **no** | — |
-| `01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md` | authored | **no** | — |
+| `00_DOCUMENT_CONTROL/DOCUMENTATION_TRACEABILITY_REPORT.md` | generated | yes | yes |
+| `00_DOCUMENT_CONTROL/SOURCE_OF_TRUTH_MAP.md` | authored | yes | yes |
+| `00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md` | authored | yes | yes |
+| `00_DOCUMENT_CONTROL/TRACEABILITY_MODEL.md` | authored | yes | yes |
+| `00_DOCUMENT_CONTROL/MASTER_GLOSSARY.md` | authored | yes | yes |
+| `00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md` | authored | yes | yes |
+| `01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md` | authored | yes | yes |
 | `07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md` | generated | yes | yes |
 | `09_SYSTEM_ANALYSIS/REQUIREMENTS_CATALOG.md` | generated | yes | yes |
 | `09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md` | generated | yes | yes |
@@ -62,18 +62,18 @@
 | `13_DATA_MODELING/ENTITY_CATALOG.md` | generated | yes | yes |
 | `13_DATA_MODELING/DATA_DICTIONARY.md` | generated | yes | yes |
 | `13_DATA_MODELING/RELATIONSHIP_CATALOG.md` | generated | yes | yes |
-| `14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md` | authored | **no** | — |
+| `14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md` | authored | yes | yes |
 | `15_C4_ARCHITECTURE_DIAGRAMS/C4_MODEL.md` | generated | yes | yes |
 | `17_API_INTEGRATION/API_OVERVIEW.md` | generated | yes | yes |
 | `18_DATABASE/DATABASE_DESIGN.md` | generated | yes | yes |
 | `19_SECURITY/RBAC_MATRIX.md` | generated | yes | yes |
 | `19_SECURITY/TENANT_ISOLATION.md` | generated | yes | yes |
-| `19_SECURITY/SECURITY_ARCHITECTURE.md` | authored | **no** | — |
+| `19_SECURITY/SECURITY_ARCHITECTURE.md` | authored | yes | yes |
 | `12_UML_BPMN_MODELS/STATE_MACHINES.md` | generated | yes | yes |
 | `20_UI_UX_EXPERIENCE/SCREEN_REGISTRY.md` | generated | yes | yes |
 | `27_TESTING_VALIDATION/TEST_CATALOG.md` | generated | yes | yes |
-| `28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md` | authored | **no** | — |
-| `29_OPERATIONS_DEVOPS/RUNBOOK_INDEX.md` | authored | **no** | — |
+| `28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md` | authored | yes | yes |
+| `29_OPERATIONS_DEVOPS/RUNBOOK_INDEX.md` | authored | yes | yes |
 | `30_RELEASE_CERTIFICATION/PRODUCTION_READINESS.md` | generated | yes | yes |
 | `30_RELEASE_CERTIFICATION/DOCUMENTATION_CERTIFICATION.md` | generated | yes | yes |
 | `30_RELEASE_CERTIFICATION/KNOWN_LIMITATIONS.md` | generated | yes | yes |

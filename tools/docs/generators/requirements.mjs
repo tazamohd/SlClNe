@@ -272,6 +272,70 @@ export function generateTraceability(model, requirements) {
     ].join('\n'),
   )
 
+  // A second, shorter view for the document-control section: the same data,
+  // asked as "is the chain intact" rather than "what is in it". The control
+  // section is where a reader goes to judge whether to trust the set, so the
+  // answer has to be there and not two directories away.
+  write(
+    join(P.docs, '00_DOCUMENT_CONTROL', 'DOCUMENTATION_TRACEABILITY_REPORT.md'),
+    [
+      banner('requirements.mjs', SOURCES),
+      '# Documentation traceability report',
+      '',
+      `**Status:** GENERATED · **Generated:** ${model.generatedAt}`,
+      '',
+      'Whether the traceability chain actually resolves, measured rather than asserted. The chain itself and the full matrix are in [the requirements traceability matrix](../09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md); this is the summary a reader needs before deciding how much to trust the set.',
+      '',
+      '## Chain integrity',
+      '',
+      table(
+        ['Link', 'Resolved', 'Of', 'How the link is made'],
+        [
+          ['Objective → capability', model.capabilities.length, model.capabilities.length, 'Declared in `tools/docs/lib/model.mjs` — the only hand-asserted link'],
+          ['Capability → requirement', requirements.functional.filter((r) => r.capability).length, model.capabilities.length, 'One functional requirement generated per capability'],
+          ['Capability → endpoint', model.capabilities.reduce((s, c) => s + c.endpointCount, 0), model.api.length, 'Permission module'],
+          ['Capability → screen', model.capabilities.reduce((s, c) => s + c.screenCount, 0), model.screens.length, 'Permission module, or screen domain where the screen has none'],
+          ['Endpoint → entity', model.api.filter((e) => e.table).length, model.api.length, 'Table name via the collection definition'],
+          ['Endpoint → permission', model.api.filter((e) => e.permissionModule && !String(e.permissionModule).startsWith('(')).length, model.api.length, '`requirePermission` call in the handler'],
+          ['Entity → relationship', model.entities.filter((e) => e.relationshipsOut.length || e.relationshipsIn.length).length, model.entities.length, 'Column name resolving to a table name'],
+          ['Rule → enforcing function', model.rules.length, model.rules.length, 'The exported function itself'],
+          ['Endpoint → test', model.api.length - untestedEndpoints.length, model.api.length, 'Path string appearing in a spec file'],
+        ],
+      ),
+      '',
+      '## Where it is intact',
+      '',
+      `Every screen and every endpoint maps to a capability — ${model.screens.length} and ${model.api.length} respectively, with no orphans. That is enforced: \`docs:check\` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.`,
+      '',
+      'Every business rule names the function that enforces it, every entity is catalogued from the schema, and every permission cell is read from the matrix the server enforces with.',
+      '',
+      '## Where it is weak',
+      '',
+      `**The top link is asserted, not derived.** Objectives and their mapping to capabilities are declared by a human; everything below is parsed from code. There is no elicited requirements baseline in this workspace to derive the top link from, so the chain has no business-need anchor. This is the largest structural gap in the documentation.`,
+      '',
+      `**Endpoint-to-test matching is by path string.** ${untestedEndpoints.length} of ${model.api.length} endpoints have no spec file naming their path. A test reaching an endpoint through a helper or a golden path does not match, so this over-reports — and it is still the right number to drive down.`,
+      '',
+      `**${unenforcedRules.length} rule guard(s) have no test naming them**, and ${untracedCapabilities.length} capabilit${untracedCapabilities.length === 1 ? 'y has' : 'ies have'} no linked test suite.`,
+      '',
+      '## Answering the reverse question',
+      '',
+      'Given any artefact, the registries say why it exists:',
+      '',
+      table(
+        ['Start from', 'Read', 'Get'],
+        [
+          ['A table', '`project-control/ENTITY_REGISTRY.json`', 'Endpoints, relationships, RLS status, tests'],
+          ['An endpoint', '`project-control/API_REGISTRY.json`', 'Capability, permission, scope, entity, tests'],
+          ['A permission cell', '`project-control/PERMISSION_REGISTRY.json`', 'Role, action, data scope, approval ceiling'],
+          ['A screen', '`project-control/MASTER_REGISTRY.json`', 'Route, module, states, data backing, coverage'],
+          ['A rule', '`project-control/BUSINESS_RULES.json`', 'Enforcing function, file, user-facing message'],
+          ['A test', '`project-control/TEST_REGISTRY.json`', 'Suite, kind, paths and roles exercised'],
+        ],
+      ),
+      '',
+    ].join('\n'),
+  )
+
   return {
     requirements: all.length,
     capabilities: capRows.length,

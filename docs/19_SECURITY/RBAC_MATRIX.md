@@ -9,7 +9,7 @@
 
 **Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Generated:** 2026-09-13
 
-28 modules × 15 roles = 420 cells, of which 196 carry at least one grant.
+28 modules × 15 roles = 420 cells, of which 217 carry at least one grant.
 
 ## Grant alphabet
 
@@ -37,14 +37,14 @@ This is not a naming quibble. A router that checked `x` on `DELETE` under the fi
 | customers | vcedax | v | vcedx | vce | v | · | · | vx | · | vce | vce | · | · | · | vcedax |
 | vehicles | vcedax | v | vcedx | vce | v | v | · | v | · | vce | v | · | · | v | vcedax |
 | inventory | vcedax | v | vcedax | v | v | · | vcedax | vx | · | · | · | vcex | · | · | vcedax |
-| procurement | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| procurement | vcedax | v | vcax | · | · | · | vc | vax | · | · | · | vcedax | v | · | vcedax |
 | invoices | vcedax | v | vceax | vc | · | · | · | vcedax | · | vc | v | · | · | v | vcedax |
 | payments | vcedax | v | vcax | vc | · | · | · | vcedax | · | vc | · | · | · | · | vcedax |
 | accounting | vax | v | vx | · | · | · | · | vcedax | · | · | · | · | · | · | vcedax |
-| hr | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| hr | vcedax | v | vx | · | · | · | · | vx | vcedax | · | · | · | · | · | vcedax |
 | technicians | vcedax | v | vcedax | v | v | v | · | · | vcedx | v | · | · | · | · | vcedax |
 | crm | vcedax | v | vcedx | vce | · | · | · | · | · | · | vced | · | · | · | vcedax |
-| callcenter | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| callcenter | vx | v | vx | v | · | · | · | · | · | v | vcedx | · | · | · | vcedax |
 | reports | vx | vx | vx | v | · | v | vx | vx | vx | · | · | vx | · | · | vcedax |
 | approvals | vax | vx | vax | va | · | · | va | vax | va | · | · | vax | · | · | vcedax |
 | kiosk | v | v | v | v | · | · | · | · | · | vcex | v | · | · | · | vcedax |

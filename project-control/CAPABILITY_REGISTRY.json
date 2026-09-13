@@ -392,7 +392,16 @@
         "BR-PROCUREMENT-purchaseOrderTotals",
         "BR-PROCUREMENT-requisitionEstimatedTotalHalalas"
       ],
-      "roles": [],
+      "roles": [
+        "owner",
+        "superadmin",
+        "manager",
+        "parts",
+        "accountant",
+        "procurement",
+        "supplier",
+        "test"
+      ],
       "goldenPaths": [
         "e2e/parts-procurement.spec.ts"
       ]
@@ -625,6 +634,7 @@
         "advisor",
         "technician",
         "qc",
+        "accountant",
         "hr",
         "frontdesk",
         "test"
@@ -708,6 +718,7 @@
         "superadmin",
         "manager",
         "advisor",
+        "frontdesk",
         "callcenter",
         "test"
       ],

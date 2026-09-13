@@ -16,9 +16,9 @@ This report exists to be read before anything else in the set is relied on. It i
 
 | Measure | Value |
 | --- | --- |
-| Required documents | 23 present of 35 |
-| Documents generated from source | 55 |
-| Documents authored by hand | 270 |
+| Required documents | 34 present of 35 |
+| Documents generated from source | 75 |
+| Documents authored by hand | 282 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 68 of 68 |
 | Relationships documented | 164 (61 FK-backed, 103 convention only) |
@@ -113,18 +113,7 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 
 | Document | Kind |
 | --- | --- |
-| `00_DOCUMENT_CONTROL/DOCUMENTATION_TRACEABILITY_REPORT.md` | generated |
-| `00_DOCUMENT_CONTROL/SOURCE_OF_TRUTH_MAP.md` | authored |
-| `00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md` | authored |
-| `00_DOCUMENT_CONTROL/TRACEABILITY_MODEL.md` | authored |
-| `00_DOCUMENT_CONTROL/MASTER_GLOSSARY.md` | authored |
-| `00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md` | authored |
-| `01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md` | authored |
 | `11_PROCESS_FLOW_MODELS/PROCESS_CATALOG.md` | authored |
-| `14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md` | authored |
-| `19_SECURITY/SECURITY_ARCHITECTURE.md` | authored |
-| `28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md` | authored |
-| `29_OPERATIONS_DEVOPS/RUNBOOK_INDEX.md` | authored |
 
 ## Recommended next actions, in order
 

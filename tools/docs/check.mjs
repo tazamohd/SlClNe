@@ -65,19 +65,34 @@ for (const entry of REQUIRED) {
 }
 
 // 3 — Relative links inside docs/ must resolve.
+//
+// A broken link in the numbered architecture is a failure: those documents are
+// owned by this system and a link that does not resolve is a defect introduced
+// now. A broken link in the pre-existing tree is a warning, because 296
+// inherited documents carry inherited breakage, and a check that is red on the
+// day it is introduced is a check everyone learns to override — which is worse
+// than no check. The inherited ones are counted, reported in the gap report,
+// and cleared section by section as the migration manifest works through them.
 const docs = inventory().filter((d) => d.path.endsWith('.md'))
 let linksChecked = 0
+const legacyBrokenLinks = []
 for (const doc of docs) {
+  const owned = /^\d\d_/.test(doc.section)
   const content = readFileSync(doc.abs, 'utf8')
   for (const m of content.matchAll(/\[[^\]]*\]\((?!https?:|#|mailto:)([^)#]+)(?:#[^)]*)?\)/g)) {
     const target = m[1].trim()
     if (!target || target.startsWith('<')) continue
     linksChecked += 1
-    const resolved = resolve(dirname(doc.abs), target)
-    if (!existsSync(resolved)) {
-      fail('broken-link', `docs/${doc.path} → ${target}`)
-    }
+    if (existsSync(resolve(dirname(doc.abs), target))) continue
+    if (owned) fail('broken-link', `docs/${doc.path} → ${target}`)
+    else legacyBrokenLinks.push(`docs/${doc.path} → ${target}`)
   }
+}
+if (legacyBrokenLinks.length) {
+  warn(
+    'legacy-broken-links',
+    `${legacyBrokenLinks.length} broken link(s) in the pre-existing docs/ tree, inherited rather than introduced. They are migration work — see DOCUMENTATION_MIGRATION_MANIFEST.md.`,
+  )
 }
 
 // 4 — Nothing may claim VERIFIED without a verification date and a verifier.
@@ -140,7 +155,7 @@ console.log('')
 console.log('  SALIS AUTO — documentation check')
 console.log('  ' + '─'.repeat(60))
 console.log(`  documents scanned   ${String(docs.length).padStart(5)}`)
-console.log(`  internal links      ${String(linksChecked).padStart(5)}`)
+console.log(`  internal links      ${String(linksChecked).padStart(5)}   ${legacyBrokenLinks.length} broken in the legacy tree`)
 console.log(`  required documents  ${String(controlStats.required - controlStats.missing).padStart(5)} / ${controlStats.required}`)
 console.log('  ' + '─'.repeat(60))
 

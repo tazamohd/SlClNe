@@ -13,6 +13,7 @@ import { generateData } from './generators/data.mjs'
 import { generateApi } from './generators/api.mjs'
 import { generateArchitecture } from './generators/architecture.mjs'
 import { generateCapability } from './generators/capability.mjs'
+import { generateDomains } from './generators/domains.mjs'
 import { buildRequirements, generateRequirements, generateTraceability } from './generators/requirements.mjs'
 import { generateControl } from './generators/control.mjs'
 import { generateRelease } from './generators/release.mjs'
@@ -31,6 +32,7 @@ function pass() {
   generateApi(model)
   generateArchitecture(model)
   generateCapability(model)
+  generateDomains(model)
 
   const requirements = buildRequirements(model)
   generateRequirements(model, requirements)
