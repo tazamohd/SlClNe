@@ -322,3 +322,46 @@ jobs:
         if: always()
         working-directory: packages/contract
         run: npm audit --audit-level=high
+
+  docs:
+    name: Documentation matches the implementation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # No install: the documentation toolchain reads the repository with
+      # nothing but the Node standard library, so this job cannot be broken by
+      # a dependency and needs no lockfile.
+      #
+      # The check regenerates every derived document from the schema, the
+      # routers, the permission matrix, the rule functions and the spec files,
+      # then fails if the committed copy differs. That is the whole point: a
+      # change to any of those sources that is not reflected in the
+      # documentation is caught here, at review, rather than months later by
+      # someone acting on a stale number.
+      #
+      # It also fails on a missing required document, a broken internal link
+      # in the numbered sections, a malformed Mermaid diagram, a screen or
+      # endpoint that maps to no capability, a tenant-scoped table with no
+      # row-level-security policy, a stale total written by hand into an
+      # authored document, and any document claiming VERIFIED without naming a
+      # verifier and a date.
+      - name: Documentation check
+        run: node tools/docs/check.mjs
+
+      - name: Upload the documentation gap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-gap-report
+          path: |
+            docs/00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md
+            docs/00_DOCUMENT_CONTROL/DOCUMENTATION_STATUS.md
+            docs/30_RELEASE_CERTIFICATION/DOCUMENTATION_CERTIFICATION.md
+            project-control/DOCUMENTATION_FINDINGS.json
+          retention-days: 14

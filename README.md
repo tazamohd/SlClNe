@@ -1,3 +1,27 @@
+# SALIS AUTO
+
+Multi-tenant workshop management for the Saudi automotive aftermarket.
+
+**Start with [`docs/00_DOCUMENT_CONTROL/DOCS_INDEX.md`](docs/00_DOCUMENT_CONTROL/DOCS_INDEX.md).** It points at the nine documents that between them explain what this system is, what state it is in, and what still blocks a release.
+
+| If you want | Read |
+|---|---|
+| What it is and why | [Executive summary](docs/01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md) |
+| What is missing or unverified | [Gap report](docs/00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md) — read this before trusting anything else |
+| How it is built | [Master architecture](docs/14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md) |
+| The API | [API overview](docs/17_API_INTEGRATION/API_OVERVIEW.md) |
+| Who may do what | [RBAC matrix](docs/19_SECURITY/RBAC_MATRIX.md) |
+
+Every factual document under `docs/` is generated from the implementation — the Drizzle schema, the route files, the shared contract, the migrations, the spec files — and regenerated with `npm run docs:generate`. `npm run docs:check` fails when the committed documentation differs from a fresh generation, so it cannot drift from the code without breaking the build. The rules those documents are held to are in [the documentation standards](docs/00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md).
+
+Layout: `app/` is the React SPA (packaged for iOS and Android with Capacitor), `server/` the Fastify API and PostgreSQL migrations, `packages/contract/` the schemas, permission matrix and business rules both sides share, `project-control/` the machine-readable registries, and `tools/docs/` the documentation toolchain.
+
+---
+
+## Historical: the original design handoff
+
+The text below is the README of the Claude Design bundle this repository started from. It is kept for provenance. It is **not** current instructions — the product described in it has been built, and `project/` now holds the design sources that the screen registry traces against rather than work waiting to be done.
+
 # CODING AGENTS: READ THIS FIRST
 
 This is a **handoff bundle** from Claude Design (claude.ai/design).
