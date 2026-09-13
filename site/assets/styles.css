@@ -507,10 +507,6 @@ a.ci-row:hover { transform: translateY(-2px); border-color: rgba(47,128,230,.4);
 .ci-text { display: grid; }
 .ci-label { font-size: .76rem; color: var(--faint); }
 .ci-val { font-weight: 600; }
-.ci-socials { display: flex; gap: .7rem; margin-top: .4rem; }
-.ci-socials a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; color: var(--muted); border: 1px solid var(--border); background: var(--panel); transition: color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease); }
-.ci-socials a:hover { color: var(--cyan); border-color: rgba(47,128,230,.5); transform: translateY(-2px); }
-.ci-socials svg { width: 20px; height: 20px; }
 .contact-form { display: grid; gap: 1rem; padding: 1.8rem; border-radius: var(--radius); border: 1px solid var(--border); background: linear-gradient(160deg, rgba(47,128,230,.06), rgba(15,25,43,.5)); }
 .field { display: grid; gap: .4rem; }
 .field label { font-size: .82rem; color: var(--muted); }
