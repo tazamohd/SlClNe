@@ -17,8 +17,8 @@ This report exists to be read before anything else in the set is relied on. It i
 | Measure | Value |
 | --- | --- |
 | Required documents | 35 present of 35 |
-| Documents generated from source | 116 |
-| Documents authored by hand | 286 |
+| Documents generated from source | 120 |
+| Documents authored by hand | 288 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 68 of 68 |
 | Relationships documented | 164 (61 FK-backed, 103 convention only) |
@@ -139,12 +139,12 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 | `docs/07_BUSINESS_ANALYSIS/README.md` | 553 |
 | `docs/08_PRODUCT/README.md` | 902 |
 | `docs/10_SCENARIOS_USE_CASES/README.md` | 658 |
-| `docs/11_PROCESS_FLOW_MODELS/README.md` | 582 |
+| `docs/11_PROCESS_FLOW_MODELS/README.md` | 694 |
 | `docs/12_UML_BPMN_MODELS/README.md` | 526 |
 | `docs/13_DATA_MODELING/README.md` | 661 |
 | `docs/14_SOLUTION_ARCHITECTURE/README.md` | 556 |
 | `docs/15_C4_ARCHITECTURE_DIAGRAMS/README.md` | 520 |
-| `docs/16_SYSTEM_DESIGN/README.md` | 923 |
+| `docs/16_SYSTEM_DESIGN/README.md` | 1146 |
 | `docs/17_API_INTEGRATION/endpoints/platform.md` | 937 |
 | `docs/18_DATABASE/README.md` | 511 |
 | `docs/19_SECURITY/README.md` | 1021 |

@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Generated:** 2026-09-13 · 402 documents, 133 in the numbered architecture
+**Generated:** 2026-09-13 · 408 documents, 139 in the numbered architecture
 
 ## Start here
 
@@ -41,12 +41,12 @@ An executive or an agent should be able to understand the state of this project 
 | `08_PRODUCT/` | Product requirements, personas, journeys, product capability model. | 1 |
 | `09_SYSTEM_ANALYSIS/` | Requirements catalogue with IDs, and the traceability matrix. | 3 |
 | `10_SCENARIOS_USE_CASES/` | Business, user and system scenarios; use cases; golden paths. | 4 |
-| `11_PROCESS_FLOW_MODELS/` | Process catalogue, user flows, system flows, data flows. | 3 |
+| `11_PROCESS_FLOW_MODELS/` | Process catalogue, user flows, system flows, data flows. | 5 |
 | `12_UML_BPMN_MODELS/` | Use case, sequence, activity, state and component models. | 2 |
 | `13_DATA_MODELING/` | Entity catalogue, data dictionary, relationships, lineage, ownership. | 4 |
 | `14_SOLUTION_ARCHITECTURE/` | Master architecture, principles, constraints, risks — current versus target. | 2 |
 | `15_C4_ARCHITECTURE_DIAGRAMS/` | Context, container and component views, and dynamic views. | 2 |
-| `16_SYSTEM_DESIGN/` | High- and low-level design of each cross-cutting mechanism. | 1 |
+| `16_SYSTEM_DESIGN/` | High- and low-level design of each cross-cutting mechanism. | 5 |
 | `17_API_INTEGRATION/` | The API surface, per domain, generated from the routers. | 22 |
 | `18_DATABASE/` | Physical model, migrations, RLS, backup, retention. | 2 |
 | `19_SECURITY/` | Authentication, authorization, isolation, audit, threat model. | 4 |

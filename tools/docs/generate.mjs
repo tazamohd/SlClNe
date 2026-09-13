@@ -16,6 +16,7 @@ import { generateCapability } from './generators/capability.mjs'
 import { generateDomains } from './generators/domains.mjs'
 import { generateScenarios } from './generators/scenarios.mjs'
 import { generateGovernance } from './generators/governance.mjs'
+import { generateDesign } from './generators/design.mjs'
 import { buildRequirements, generateRequirements, generateTraceability } from './generators/requirements.mjs'
 import { generateControl } from './generators/control.mjs'
 import { generateRelease } from './generators/release.mjs'
@@ -37,6 +38,7 @@ function pass() {
   generateDomains(model)
   generateScenarios(model)
   generateGovernance(model)
+  generateDesign(model)
 
   const requirements = buildRequirements(model)
   generateRequirements(model, requirements)

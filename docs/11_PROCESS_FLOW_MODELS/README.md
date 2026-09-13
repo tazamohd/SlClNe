@@ -16,8 +16,10 @@ Process catalogue, user flows, system flows, data flows.
 
 | Document | Kind |
 | --- | --- |
+| [`DATA_FLOW_DIAGRAMS.md`](DATA_FLOW_DIAGRAMS.md) | authored |
 | [`PROCESS_CATALOG.md`](PROCESS_CATALOG.md) | authored |
 | [`SYSTEM_FLOWS.md`](SYSTEM_FLOWS.md) | authored |
+| [`USER_FLOWS.md`](USER_FLOWS.md) | authored |
 
 
 [← Documentation index](../00_DOCUMENT_CONTROL/DOCS_INDEX.md)

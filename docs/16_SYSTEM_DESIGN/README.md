@@ -14,7 +14,12 @@ High- and low-level design of each cross-cutting mechanism.
 
 ## In this section
 
-_Nothing yet. Material for this section is listed below, or has not been written._
+| Document | Kind |
+| --- | --- |
+| [`DATA_ACCESS_DESIGN.md`](DATA_ACCESS_DESIGN.md) | generated |
+| [`FRONTEND_DESIGN.md`](FRONTEND_DESIGN.md) | generated |
+| [`MONEY_AND_RULES_DESIGN.md`](MONEY_AND_RULES_DESIGN.md) | generated |
+| [`REQUEST_PIPELINE_DESIGN.md`](REQUEST_PIPELINE_DESIGN.md) | generated |
 
 ## Related material not yet migrated
 

@@ -14,12 +14,12 @@
 
 | Measure | Value |
 | --- | --- |
-| Documents in `docs/` | 402 |
-| In the numbered architecture | 133 |
+| Documents in `docs/` | 408 |
+| In the numbered architecture | 139 |
 | In the pre-existing folders (classified, not yet migrated) | 269 |
-| Machine-generated from source | 116 |
-| Authored | 286 |
-| Substantive (> 1.2 kB) | 370 |
+| Machine-generated from source | 120 |
+| Authored | 288 |
+| Substantive (> 1.2 kB) | 376 |
 | Thin — placeholder or stub | 32 |
 | Required documents present | 35 of 35 |
 
